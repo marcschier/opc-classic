@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 29
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -235,138 +236,61 @@ Release: April 23, 2024
 
 2 / 29
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 SignCert Request](#222-signcert-request)
+    - [2.2.3 SignCert Response](#223-signcert-response)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Creating A SignCert Request Message](#3151-creating-a-signcert-request-message)
+      - [3.1.5.2 Processing A SignCert Response Message](#3152-processing-a-signcert-response-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing A SignCert Request Message](#3251-processing-a-signcert-request-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Accepted SignCert Request Example](#41-accepted-signcert-request-example)
+  - [4.2 SignCert Request with Invalid Credentials Example](#42-signcert-request-with-invalid-credentials-example)
+  - [4.3 Challenged SignCert Request Example](#43-challenged-signcert-request-example)
+  - [4.4 Invalid SignCert Request Example](#44-invalid-signcert-request-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full XML Schema](#6-appendix-a-full-xml-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 5
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 7
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Namespaces .............................................................................................. 12
-SignCert Request ........................................................................................ 12
-SignCert Response ...................................................................................... 13
-
-2.2.1
-2.2.2
-2.2.3
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 15
-Client Details ................................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Creating A SignCert Request Message ..................................................... 15
-Processing A SignCert Response Message ................................................ 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-Server Details .................................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Processing A SignCert Request Message .................................................. 17
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 19
-Accepted SignCert Request Example ................................................................... 19
-SignCert Request with Invalid Credentials Example .............................................. 20
-Challenged SignCert Request Example ................................................................ 21
-Invalid SignCert Request Example ...................................................................... 21
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Full XML Schema ................................................................................ 23
-
-7  Appendix B: Product Behavior ............................................................................... 24
-
-8  Change Tracking .................................................................................................... 26
-
-9  Index ..................................................................................................................... 27
-
-3 / 29
-
-[MS-OTPCE] - v20240423
-One-Time Password Certificate Enrollment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-[MS-OTPCE] - v20240423
-One-Time Password Certificate Enrollment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 29
-
-1  Introduction
+## 1 Introduction
 
 The One-Time Password Certificate Enrollment Protocol was created to enhance the network security
 of remote access connections. The protocol uses different components to increase network security.
@@ -377,7 +301,7 @@ component used by the protocol is a short-lived smart card logon certificate tem
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -437,7 +361,8 @@ Release: April 23, 2024
 
 5 / 29
 
-logs on to the network and then embedding these tickets into messages sent by the users. For
+
+logs on to the network and then embedding these tickets into messages sent by the users. For
 more information, see [MS-KILE].
 
 Key Distribution Center (KDC): The Kerberos service that implements the authentication and
@@ -508,14 +433,15 @@ Release: April 23, 2024
 
 6 / 29
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -553,7 +479,7 @@ names-20060816/
 Recommendation 16 August 2006, edited in place 29 September 2006,
 http://www.w3.org/TR/2006/REC-xml-20060816/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-GPNRPT] Microsoft Corporation, "Group Policy: Name Resolution Policy Table (NRPT) Data
 Extension".
@@ -572,7 +498,8 @@ Release: April 23, 2024
 
 7 / 29
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-OTPCE].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -580,7 +507,7 @@ Release: April 23, 2024
 Windows Server 2003", July 2004, http://technet.microsoft.com/en-us/library/c25f57b0-5459-4c17-
 bb3f-2f657bd23f78
 
-1.3  Overview
+### 1.3 Overview
 
 The One-Time Password Certificate Enrollment Protocol is a stateless application-layer protocol. This
 protocol defines one type of request message, sent from the client to the server, and one type of
@@ -618,7 +545,8 @@ One-Time Password Certificate Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-OTPCE].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -651,7 +579,8 @@ Release: April 23, 2024
 
 9 / 29
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-OTPCE].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -666,13 +595,14 @@ Release: April 23, 2024
 
 10 / 29
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-OTPCE].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 Figure 4: DirectAccess OTP authentication end to end flow
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The One-Time Password Certificate Enrollment Protocol is a Hypertext Transfer Protocol (HTTP)-
 based protocol. Every protocol request is a single pair of HTTP POST and HTTP response messages.
@@ -681,7 +611,7 @@ Failure to carry out the request due to server error is reported by an HTTP resp
 The parameters of the protocol's requests and responses are carried in XML-formatted body of the
 message. The full XML schema (XSD) is described in section 6.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 For One-Time Password Certificate Enrollment Protocol communication to begin, the prerequisite
 configuration is as follows:
@@ -697,7 +627,8 @@ Release: April 23, 2024
 
 11 / 29
 
-2.  The administrator establishes one or more implementation-specific<1> CA servers, configures a
+
+2.  The administrator establishes one or more implementation-specific<1> CA servers, configures a
 
 new, unique application-policy enhanced key usage (EKU) in Active Directory, and configures
 two certificate templates on it:
@@ -714,7 +645,7 @@ signing certificate template.
 In addition, configure the CA to verify that any short-lived smart card logon certificate request is
 signed by the signing certificate.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The One-Time Password Certificate Enrollment Protocol was designed to support OTP authentication
 for DirectAccess.
@@ -723,16 +654,16 @@ The use of this protocol is appropriate as the basis for any network authenticat
 involves sending a request with OTP credentials and a certificate enrollment request, and receiving a
 signed certificate enrollment request.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 For versioning control, a proprietary HTTP header "X-OTPCEP-version" is introduced and is mandatory
 in both the request and response. It is required to have the value of "1.0".
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -743,9 +674,10 @@ Release: April 23, 2024
 
 12 / 29
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The One-Time Password Certificate Enrollment Protocol does not provide its own secure transport. It
 MUST be transmitted over a secured channel, for example, Hypertext Transfer Protocol over
@@ -755,13 +687,13 @@ This protocol is encapsulated within and depends on HTTP, as specified in [RFC26
 messages. The protocol does not impose any message retransmissions or other requirements on this
 transport.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section contains common definitions used by this protocol. The protocol is HTTP-based protocol.
 "Content-type" header is always set to Application/xml;charset=utf-8. The syntax of the definitions
 uses the XML schema as specified in [XMLSCHEMA1].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces that are using the mechanisms
 specified in [XMLNS-2ED]. Although this document associates a specific XML namespace prefix for
@@ -782,7 +714,7 @@ http://www.w3.org/2001/XMLSchema
 
 otpcep  http://schemas.microsoft.com/otpcep/1.0/protocol
 
-2.2.2  SignCert Request
+#### 2.2.2 SignCert Request
 
 The SignCert Request is the message sent by a client when the end user is asked to provide OTP
 credentials in order to perform OTP authentication.
@@ -812,7 +744,8 @@ One-Time Password Certificate Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   </xs:complexType>
+
+   </xs:complexType>
  </xs:element>
 
 The signCertRequest element contains the following attributes:
@@ -829,7 +762,7 @@ MUST be created by using the certificate template as defined in section 1.5.
 
 The request MUST be digitally signed with a valid signature, as specified in [RFC2986].
 
-2.2.3  SignCert Response
+#### 2.2.3 SignCert Response
 
 A SignCert Response message is returned by the OTPCEP server as a response to a SignCert
 Request message (section 2.2.2) received from the client.
@@ -888,7 +821,8 @@ Release: April 23, 2024
 
 14 / 29
 
-SignedCertRequest (optional):  If the user credentials are valid and the statusCode attribute
+
+SignedCertRequest (optional):  If the user credentials are valid and the statusCode attribute
 equals Success, a signed certificate enrollment request is included in the SignCert Response
 message. Otherwise, this field MUST be empty.
 
@@ -899,11 +833,12 @@ Release: April 23, 2024
 
 15 / 29
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -920,17 +855,17 @@ OTP Certificate Template Name:  A null-terminated string representing the name o
 
 lived smart card certificate template that is in use.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Abstract Data Model (ADM) elements defined in section 3.1.1 are initialized during the client
 startup. They are configured by the administrator<2> and stored in persistent storage. On client
 startup, the configuration is read from the persistent storage and set in the ADM elements.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The One-Time Password Certificate Enrollment Protocol is invoked when a user logs on to a client
 computer from outside the corporate network by using a username/password, smart card, or any
@@ -938,9 +873,9 @@ other user credentials available for login, and then attempts to connect to a co
 a connection that requires one-time password (OTP) authentication. The client MUST create and
 send a SignCert Request message (section 2.2.2), as specified in section 3.1.5.2.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Creating A SignCert Request Message
+##### 3.1.5.1 Creating A SignCert Request Message
 
 When the user performs an OTP authentication, the client performs the following steps.
 
@@ -966,7 +901,8 @@ One-Time Password Certificate Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The client creates the certificate PKCS #10 request, as specified in [RFC2986], by using the
 template referred by the OTP Certificate Template Name ADM element, and sets it as the
@@ -974,7 +910,7 @@ CertRequest attribute in the SignCert Request message.
 
 2.  The client sends the SignCert Request message to the server.
 
-3.1.5.2  Processing A SignCert Response Message
+##### 3.1.5.2 Processing A SignCert Response Message
 
 Upon receiving the SignCert Response message (section 2.2.3), the client MUST send an enrollment
 request to the  Certification Authority (CA) server using the signed certificate request, and MUST
@@ -984,17 +920,17 @@ layer for authentication, thus enabling connectivity to the corporate resources.
 If the statusCode attribute does not equal Success, the client fails the operation. The client MAY<3>
 display an error message to the user indicating that the operation failed.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1016,11 +952,11 @@ Signing Certificate Template Name:  A null-terminated string representing the na
 
 signing certificate template that is in use.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The ADM elements defined in section 3.2.1 are initialized during the server startup. They are
 configured by the administrator<4> and stored in persistent storage. On server startup, the
@@ -1033,13 +969,14 @@ One-Time Password Certificate Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Processing A SignCert Request Message
+##### 3.2.5.1 Processing A SignCert Request Message
 
 Upon receiving a SignCert Request message (section 2.2.2), the server performs the following
 steps:
@@ -1114,7 +1051,8 @@ One-Time Password Certificate Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-6.  When a certificate is successfully signed, the server MUST create a SignCert Response message
+
+6.  When a certificate is successfully signed, the server MUST create a SignCert Response message
 
 with the following values in it:
 
@@ -1133,11 +1071,11 @@ the CA servers list ADM element.
 
 Then the server MUST send the response back to the client.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1148,12 +1086,13 @@ Release: April 23, 2024
 
 19 / 29
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe four examples of the SignCert Request message (section 2.2.2) and
 the SignCert Response message (section 2.2.3).
 
-4.1  Accepted SignCert Request Example
+### 4.1 Accepted SignCert Request Example
 
 The following example describes an accepted SignCert Request message (section 2.2.2).
 
@@ -1219,7 +1158,8 @@ Release: April 23, 2024
 
 20 / 29
 
-wz3DxVRRZrgB7u9xK/vM8uJLVbkOeXB3yvr&#xA;WwgoZ/n2MPqgb/SFAVnRcT/zugY7myGQgqPO8TP4Ds7M4oPZkFl+G
+
+wz3DxVRRZrgB7u9xK/vM8uJLVbkOeXB3yvr&#xA;WwgoZ/n2MPqgb/SFAVnRcT/zugY7myGQgqPO8TP4Ds7M4oPZkFl+G
 vm30dpclUWK&#xA;2alz+FqJ0OhL5BetISr8pR8aEtC6CGF+ZOvmLgQaPmctu0izTlA9TUj60UyHrNvY&#xA;tPRcqWrM
 HAVPZgrl+cceUBM8gSLQzFrI3JCA2WrRBVepEwQ7DaLmN52KnOMnRaWx&#xA;4uLRtS9c+HgiLYjWhz2ZAel1UL+1C5by
 ofUKyKuxymlZyAK8htG6ZjcpblgJ+tHp&#xA;Bo/H9LqeXxV1hGm1iaklRJ8CAwEAAaOCAp8wggKbMDsGCSsGAQQBgjcV
@@ -1251,7 +1191,7 @@ HLPGl87oaTjS4aDQaC3PxLHoltFs3UZnAbw==&#xA;"><IssuingCA
 xmlns="http://schemas.microsoft.com/otpcep/1.0/protocol">DC1.domain1.corp.company.com\RootCA-
 DC1</IssuingCA></signCertResponse>
 
-4.2  SignCert Request with Invalid Credentials Example
+### 4.2 SignCert Request with Invalid Credentials Example
 
 The following example describes a SignCert Request message (section 2.2.2) with an authentication
 error, where the user credentials validation failed.
@@ -1290,10 +1230,11 @@ Release: April 23, 2024
 
 21 / 29
 
- <signCertResponse statusCode="AuthenticationError"
+
+ <signCertResponse statusCode="AuthenticationError"
 xmlns="http://schemas.microsoft.com/otpcep/1.0/protocol"/>
 
-4.3  Challenged SignCert Request Example
+### 4.3 Challenged SignCert Request Example
 
 The following example describes a SignCert Request message (section 2.2.2) that is challenged by
 the OTP server.
@@ -1327,7 +1268,7 @@ request. The statusCode attribute equals ChallengeResponseRequired.
  <signCertResponse statusCode="ChallengeResponseRequired"
 xmlns="http://schemas.microsoft.com/otpcep/1.0/protocol"/>
 
-4.4  Invalid SignCert Request Example
+### 4.4 Invalid SignCert Request Example
 
 The following example describes a SignCert Request message (section 2.2.2) that contains an
 invalid value for the certRequest attribute.
@@ -1352,16 +1293,17 @@ Release: April 23, 2024
 
 22 / 29
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The One-Time Password Certificate Enrollment Protocol does not provide message-level signing or
 message-level encryption for either SignCert Request messages (section 2.2.2) or SignCert
 Response messages (section 2.2.3). Implementers can make use of available transport protection as
 available in HTTPS to provide security to the client/server interaction.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1372,7 +1314,8 @@ Release: April 23, 2024
 
 23 / 29
 
-6  Appendix A: Full XML Schema
+
+## 6 Appendix A: Full XML Schema
 
 For ease of implementation, the following is the full XML schema (XSD) for this protocol.
 
@@ -1437,7 +1380,8 @@ Release: April 23, 2024
 
 24 / 29
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1555,7 +1499,8 @@ Release: April 23, 2024
 
 25 / 29
 
-<4> Section 3.2.3: On Windows, implementations depend on the administrator for configuration. The
+
+<4> Section 3.2.3: On Windows, implementations depend on the administrator for configuration. The
 administrator configures this manually or by using Group Policy as specified in [MS-GPNRPT].
 
 [MS-OTPCE] - v20240423
@@ -1565,7 +1510,8 @@ Release: April 23, 2024
 
 26 / 29
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1609,7 +1555,8 @@ Release: April 23, 2024
 
 27 / 29
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -1742,7 +1689,8 @@ Server
 
 28 / 29
 
-   other local events 18
+
+   other local events 18
    timer events 18
    timers 16
 SignCert Request message 12

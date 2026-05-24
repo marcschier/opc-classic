@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 43
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Peer Content Caching and Retrieval: Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -438,216 +440,91 @@ Release: April 23, 2024
 
 3 / 43
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Peer Download Transport](#211-peer-download-transport)
+    - [2.1.2 Transport Security](#212-transport-security)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 BLOCK_RANGE](#2211-blockrange)
+      - [2.2.1.2 SEGMENT_RANGE](#2212-segmentrange)
+      - [2.2.1.3 BLOCK_RANGE_ARRAY](#2213-blockrangearray)
+      - [2.2.1.4 SEGMENT_RANGE_ARRAY](#2214-segmentrangearray)
+      - [2.2.1.5 ENCODED_SEGMENT_AGE](#2215-encodedsegmentage)
+    - [2.2.2 TRANSPORT_RESPONSE_HEADER](#222-transportresponseheader)
+    - [2.2.3 MESSAGE_HEADER](#223-messageheader)
+    - [2.2.4 Request Message](#224-request-message)
+      - [2.2.4.1 MSG_NEGO_REQ](#2241-msgnegoreq)
+      - [2.2.4.2 MSG_GETBLKLIST](#2242-msggetblklist)
+      - [2.2.4.3 MSG_GETBLKS](#2243-msggetblks)
+      - [2.2.4.4 MSG_GETSEGLIST](#2244-msggetseglist)
+    - [2.2.5 Response Message](#225-response-message)
+      - [2.2.5.1 MSG_NEGO_RESP](#2251-msgnegoresp)
+      - [2.2.5.2 MSG_BLKLIST](#2252-msgblklist)
+      - [2.2.5.3 MSG_BLK](#2253-msgblk)
+      - [2.2.5.4 MSG_SEGLIST](#2254-msgseglist)
+    - [2.2.6 Extensible BLOB](#226-extensible-blob)
+      - [2.2.6.1 Extensible Blob Version 1](#2261-extensible-blob-version-1)
+        - [2.2.6.1.1 Extensible Blob Version 1 Restrictions and Validation](#22611-extensible-blob-version-1-restrictions-and-validation)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 MSG_NEGO_REQ Request](#3141-msgnegoreq-request)
+      - [3.1.4.2 MSG_GETBLKLIST Initiation](#3142-msggetblklist-initiation)
+      - [3.1.4.3 MSG_GETBLKS Initiation](#3143-msggetblks-initiation)
+      - [3.1.4.4 MSG_GETSEGLIST Initiation](#3144-msggetseglist-initiation)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 MSG_NEGO_RESP Received](#3151-msgnegoresp-received)
+      - [3.1.5.2 MSG_BLKLIST Response Received](#3152-msgblklist-response-received)
+      - [3.1.5.3 MSG_BLK Response Received](#3153-msgblk-response-received)
+      - [3.1.5.4 MSG_SEGLIST Response Received](#3154-msgseglist-response-received)
+      - [3.1.5.5 Other Messages Received](#3155-other-messages-received)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Request Timer Expiration](#3161-request-timer-expiration)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 MSG_NEGO_REQ Received](#3251-msgnegoreq-received)
+      - [3.2.5.2 MSG_GETBLKLIST Request Received](#3252-msggetblklist-request-received)
+      - [3.2.5.3 MSG_GETBLKS Request Received](#3253-msggetblks-request-received)
+      - [3.2.5.4 MSG_GETSEGLIST Request Received](#3254-msggetseglist-request-received)
+      - [3.2.5.5 Other Messages Received](#3255-other-messages-received)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Upload Timer Expiration](#3261-upload-timer-expiration)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Download with GetBlockList and GetBlocks Exchanges](#41-download-with-getblocklist-and-getblocks-exchanges)
+  - [4.2 Simple Download with GetBlocks Download Sub-Sessions only](#42-simple-download-with-getblocks-download-sub-sessions-only)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.2.1
-
-2.1.1
-2.1.2
-
-2.2.2
-2.2.3
-2.2.4
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Peer Download Transport ............................................................................. 12
-Transport Security ...................................................................................... 12
-Message Syntax ............................................................................................... 12
-Common Data Types ................................................................................... 12
-BLOCK_RANGE ..................................................................................... 13
-SEGMENT_RANGE ................................................................................. 13
-BLOCK_RANGE_ARRAY .......................................................................... 13
-SEGMENT_RANGE_ARRAY ...................................................................... 13
-ENCODED_SEGMENT_AGE ..................................................................... 14
-TRANSPORT_RESPONSE_HEADER ................................................................. 14
-MESSAGE_HEADER ..................................................................................... 14
-Request Message ........................................................................................ 16
-MSG_NEGO_REQ .................................................................................. 17
-MSG_GETBLKLIST ................................................................................. 17
-MSG_GETBLKS ..................................................................................... 18
-MSG_GETSEGLIST ................................................................................ 19
-Response Message ...................................................................................... 20
-MSG_NEGO_RESP ................................................................................. 21
-MSG_BLKLIST ...................................................................................... 21
-MSG_BLK ............................................................................................. 22
-MSG_SEGLIST ...................................................................................... 24
-Extensible BLOB ......................................................................................... 25
-Extensible Blob Version 1 ....................................................................... 25
-Extensible Blob Version 1 Restrictions and Validation ........................... 26
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-2.2.5.4
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-
-2.2.6.1.1
-
-2.2.6.1
-
-2.2.5
-
-2.2.6
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 27
-Client Details ................................................................................................... 27
-Abstract Data Model .................................................................................... 27
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 28
-MSG_NEGO_REQ Request ...................................................................... 28
-MSG_GETBLKLIST Initiation ................................................................... 28
-MSG_GETBLKS Initiation ........................................................................ 28
-MSG_GETSEGLIST Initiation ................................................................... 29
-Message Processing Events and Sequencing Rules .......................................... 29
-MSG_NEGO_RESP Received ................................................................... 29
-MSG_BLKLIST Response Received ........................................................... 30
-MSG_BLK Response Received ................................................................. 30
-MSG_SEGLIST Response Received .......................................................... 30
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.1.5
-
-[MS-PCCRR] - v20240423
-Peer Content Caching and Retrieval: Retrieval Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 43
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.5.5
-
-3.1.6
-
-3.1.7
-
-3.1.6.1
-
-Other Messages Received ....................................................................... 31
-Timer Events .............................................................................................. 31
-Request Timer Expiration ....................................................................... 31
-Other Local Events ...................................................................................... 31
-Server Details .................................................................................................. 31
-Abstract Data Model .................................................................................... 31
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-MSG_NEGO_REQ Received ..................................................................... 32
-MSG_GETBLKLIST Request Received ....................................................... 32
-MSG_GETBLKS Request Received ............................................................ 33
-MSG_GETSEGLIST Request Received ....................................................... 33
-Other Messages Received ....................................................................... 34
-Timer Events .............................................................................................. 34
-Upload Timer Expiration ......................................................................... 34
-Other Local Events ...................................................................................... 34
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.2.6
-
-3.2.7
-
-3.2.6.1
-
-4  Protocol Examples ................................................................................................. 35
-Download with GetBlockList and GetBlocks Exchanges .......................................... 35
-Simple Download with GetBlocks Download Sub-Sessions only .............................. 36
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 37
-Security Considerations for Implementers ........................................................... 37
-Index of Security Parameters ............................................................................ 37
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 38
-
-7  Change Tracking .................................................................................................... 40
-
-8  Index ..................................................................................................................... 41
-
-[MS-PCCRR] - v20240423
-Peer Content Caching and Retrieval: Retrieval Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 43
-
-1  Introduction
+## 1 Introduction
 
 The Peer Content Caching and Retrieval: Retrieval Protocol is used by peers to query and retrieve
 content of interest on a peer-to-peer network. This protocol is used within the Peer Content Caching
@@ -674,7 +551,7 @@ hosted caches in place of peer-based caching.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -717,7 +594,8 @@ Peer Content Caching and Retrieval: Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-content server: The original source of the content that peers subsequently retrieve from each
+
+content server: The original source of the content that peers subsequently retrieve from each
 
 other.
 
@@ -796,7 +674,8 @@ Peer Content Caching and Retrieval: Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-peer-to-peer (P2P): An Internet-based networking option in which two or more computers
+
+peer-to-peer (P2P): An Internet-based networking option in which two or more computers
 
 connect directly to each other in order to communicate.
 
@@ -839,14 +718,14 @@ Version 2.0: The protocol version that adds support for efficient discovery of m
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -868,7 +747,8 @@ Release: April 23, 2024
 
 8 / 43
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
@@ -878,14 +758,14 @@ Release: April 23, 2024
 Recommendation for Block Cipher Modes of Operation: Methods and Techniques", December 2001,
 https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-BUP] Microsoft Corporation, "Background Intelligent Transfer Service (BITS) Upload Protocol".
 
 [MSDN-BITS] Microsoft Corporation, "Background Intelligent Transfer Service",
 http://msdn.microsoft.com/en-us/library/bb968799(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Peer Content Caching and Retrieval: Retrieval Protocol (PCCRR) defines four request/response
 exchanges between a client and a server on top of an HTTP [RFC2616] transport: to query the
@@ -945,7 +825,8 @@ Peer Content Caching and Retrieval: Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-PCCRR].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -962,7 +843,7 @@ PCCRD]) to locate peers who have the desired content, and then initiates exchang
 discovered peers to obtain the content. In hosted cache mode, a peer directly initiates exchanges with
 the hosted cache to obtain the desired content.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Retrieval Protocol uses HTTP [RFC2616] as a transport.
 
@@ -973,7 +854,7 @@ as specified in [MS-PCCRC].
 
 Figure 1: Protocol stack diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
   A higher-layer application using the protocol has to have the Content Information data
 
@@ -986,7 +867,7 @@ discovering and verifying the content blocks.
 The client has to identify and use the encryption algorithm and key used by the server to encrypt
 the content.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Retrieval Protocol is designed to handle the content availability query and content retrieval parts
 of the operation. It is also suitable for other types of content or object retrieval tasks because it does
@@ -998,7 +879,7 @@ link between the peers and the content server. This is because the protocol enab
 from peers on the high-speed link instead of the content server, which might be behind a slow link or
 might be heavily loaded.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol covers versioning issues in the following areas:
 
@@ -1009,7 +890,8 @@ Release: April 23, 2024
 
 10 / 43
 
-  Supported Transports: This protocol is implemented on top of HTTP as discussed in section 2.1.
+
+  Supported Transports: This protocol is implemented on top of HTTP as discussed in section 2.1.
 
   Protocol Versions: The protocol is Version 2.0. Supported versions are 1.0 and 2.0. Messages
 
@@ -1023,11 +905,11 @@ section 3.2.5.3.
 
   Localization: The protocol does not contain locale-dependent information.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1038,14 +920,15 @@ Release: April 23, 2024
 
 11 / 43
 
-2  Messages
+
+## 2 Messages
 
 The Retrieval Protocol is made up of a limited number of fully defined messages sent on top of the
 Peer Download Transport. <1>
 
-2.1  Transport
+### 2.1 Transport
 
-2.1.1  Peer Download Transport
+#### 2.1.1 Peer Download Transport
 
 The Peer Download Transport is a peer-to-peer transport built on top of HTTP [RFC2616]. The
 client/server HTTP protocol is turned into a peer-to-peer transport by having each peer implement
@@ -1066,13 +949,13 @@ The initiating/client-role peer P1 at IP address A1 initiates the transport of a
 Retrieval Protocol message to peer P2 at IP address A2, by sending an HTTP POST request to the root
 path of /116B50EB-ECE2-41ac-8429-9F9E963361B7/.
 
-2.1.2  Transport Security
+#### 2.1.2 Transport Security
 
 The Peer Download Transport does not implement any security. There is no peer authentication or
 authorization, and messages are sent in clear text. At the transport level, peers accept and process all
 messages coming from any other peer.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Messages are formed by headers and a message body. Both headers and body are formed by a
 sequence of fields. Each field is aligned according to the current protocol version’s default alignment,
@@ -1081,7 +964,7 @@ currently 4 bytes.
 All Retrieval Protocol messages are variable size messages. The valid range of the total message size
 MUST be from 16 bytes to 98,304 bytes (or 96 KB).
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
 The protocol supports four field types:
 
@@ -1103,7 +986,8 @@ Release: April 23, 2024
 
 12 / 43
 
-2.2.1.1  BLOCK_RANGE
+
+##### 2.2.1.1 BLOCK_RANGE
 
 A BLOCK_RANGE is an array of two integers that defines a consecutive array of blocks.
 
@@ -1133,7 +1017,7 @@ value in the range from 0 to 511 inclusive for the Index field, and 1 to (512–
 Count field. For example, a BLOCK_RANGE of [42, 7] represents all the blocks starting from block
 index 42 to block index 48, including the last one.
 
-2.2.1.2  SEGMENT_RANGE
+##### 2.2.1.2 SEGMENT_RANGE
 
 A SEGMENT_RANGE is an array of two integers that defines a consecutive array of segments.
 
@@ -1160,7 +1044,7 @@ the Index location. The value of this field MUST be greater than 0.
 
 Index and Count are both integer fields in the range of 0x00000000 to 0xFFFFFFFF.
 
-2.2.1.3  BLOCK_RANGE_ARRAY
+##### 2.2.1.3 BLOCK_RANGE_ARRAY
 
 The BLOCK_RANGE_ARRAY is a variable-size array containing BLOCK_RANGE entries.
 
@@ -1168,7 +1052,7 @@ This type is declared as follows.
 
  typedef BLOCK_RANGE BLOCK_RANGE_ARRAY[];
 
-2.2.1.4  SEGMENT_RANGE_ARRAY
+##### 2.2.1.4 SEGMENT_RANGE_ARRAY
 
 The SEGMENT_RANGE_ARRAY is a variable-size array containing SEGMENT_RANGE entries.
 
@@ -1183,7 +1067,8 @@ Release: April 23, 2024
 
 13 / 43
 
-2.2.1.5  ENCODED_SEGMENT_AGE
+
+##### 2.2.1.5 ENCODED_SEGMENT_AGE
 
 An ENCODED_SEGMENT_AGE is an array of four bytes that describes the age of a segment of data
 involved in a Peer Content Caching and Retrieval: Retrieval Protocol message exchange. The age
@@ -1227,7 +1112,7 @@ The age of the segment is expressed according to the unit specified in the enclo
 If no enclosing object/message is available, the age MUST be specified (and is assumed to be
 specified) in hundredths of milliseconds.
 
-2.2.2  TRANSPORT_RESPONSE_HEADER
+#### 2.2.2 TRANSPORT_RESPONSE_HEADER
 
 The following TRANSPORT_RESPONSE_HEADER is added by the transport in front of response-type
 protocol messages for reassembly purposes.
@@ -1249,7 +1134,7 @@ Size (4 bytes): Total message size, in bytes, excluding this field. The valid ra
 
 message size MUST be from 16 bytes to 98,304 bytes (or 96 KB).
 
-2.2.3  MESSAGE_HEADER
+#### 2.2.3 MESSAGE_HEADER
 
 The MESSAGE_HEADER is prefixed to all messages associated with this protocol. Messages can be
 one of two types: request-type or response-type as follows.
@@ -1271,7 +1156,8 @@ Release: April 23, 2024
 
 14 / 43
 
-The layout of the message header is as follows.
+
+The layout of the message header is as follows.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1374,7 +1260,8 @@ Peer Content Caching and Retrieval: Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1446,7 +1333,7 @@ AES 256-bit, CBC-mode encryption.
 
 0x00000003
 
-2.2.4  Request Message
+#### 2.2.4 Request Message
 
 The Retrieval Protocol specifies four Request Message types sent by the clients to the servers:
 
@@ -1468,7 +1355,8 @@ Release: April 23, 2024
 
 16 / 43
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1498,7 +1386,7 @@ MESSAGE_BODY (variable): Message body, which contains one of the following: Nego
 Request (MSG_NEGO_REQ), GetBlockList (MSG_GETBLKLIST), GetBlocks (MSG_GETBLKS), or
 GetSegmentList (MSG_GETSEGLIST) request message.
 
-2.2.4.1  MSG_NEGO_REQ
+##### 2.2.4.1 MSG_NEGO_REQ
 
 The MSG_NEGO_REQ (Negotiation Request) message is a request for the minimum and maximum
 protocol version supported by the target server-role peer. The message contains the minimum and
@@ -1525,7 +1413,7 @@ peer. The protocol version is encoded identically to the ProtVer field defined i
 MaxSupportedProtocolVersion (4 bytes): Maximum protocol version supported by the requesting
 peer. The protocol version is encoded identically to the ProtVer field defined in section 2.2.3.
 
-2.2.4.2  MSG_GETBLKLIST
+##### 2.2.4.2 MSG_GETBLKLIST
 
 The MSG_GETBLKLIST (GetBlockList) message contains a request for a download block list. It is
 used when retrieving a set of blocks defined by one or more BLOCK_RANGE_ARRAY items.
@@ -1554,7 +1442,8 @@ Release: April 23, 2024
 
 17 / 43
 
-ZeroPad (variable)
+
+ZeroPad (variable)
 
 ...
 
@@ -1589,7 +1478,7 @@ with a block range array representing the intersection between the list of block
 NeededBlockRanges array and the block range array set of blocks within the target segment
 currently available for sharing in the local cache of the server-role peer.<4>
 
-2.2.4.3  MSG_GETBLKS
+##### 2.2.4.3 MSG_GETBLKS
 
 The MSG_GETBLKS (GetBlocks) message contains a request for blocks of content. It is used to
 retrieve a set of blocks defined by a single BLOCK_RANGE_ARRAY.
@@ -1624,7 +1513,8 @@ Release: April 23, 2024
 
 18 / 43
 
-ReqBlockRanges (variable)
+
+ReqBlockRanges (variable)
 
 ...
 
@@ -1663,7 +1553,7 @@ field SHOULD be zero.
 
 DataForVrfBlock (variable): Not used by the protocol. This field SHOULD be empty.
 
-2.2.4.4  MSG_GETSEGLIST
+##### 2.2.4.4 MSG_GETSEGLIST
 
 The MSG_GETSEGLIST (GetSegmentList) message contains a request for a download segment
 list. It is used when retrieving a set of segments. This message MUST be formatted as follows.<6>
@@ -1698,7 +1588,8 @@ Release: April 23, 2024
 
 19 / 43
 
-SegmentID (variable)
+
+SegmentID (variable)
 
 ...
 
@@ -1746,7 +1637,7 @@ extensible BLOBs in MSG_GETSEGLIST messages MUST set SizeOfExtensibleBlob to zer
 omit the ExtensibleBlob field. Relative indexes contained in the extensible BLOB are relative to
 the first segment in the first SegmentRange carried by the current MSG_GETSEGLIST message.
 
-2.2.5  Response Message
+#### 2.2.5 Response Message
 
 The Retrieval Protocol defines four Response Message types sent by the servers in response to client
 requests:
@@ -1766,7 +1657,8 @@ Release: April 23, 2024
 
 20 / 43
 
-The complete layout of a response-type Peer Content Caching and Retrieval: Retrieval Protocol
+
+The complete layout of a response-type Peer Content Caching and Retrieval: Retrieval Protocol
 message is as follows.
 
 0  1  2  3  4  5  6  7  8  9
@@ -1801,7 +1693,7 @@ MESSAGE_HEADER (16 bytes): Message header.
 MESSAGE_BODY (variable): Message body, which can contain one of the following:
 MSG_NEGO_RESP, MSG_BLKLIST, MSG_BLK, or a MSG_SEGLIST message.
 
-2.2.5.1  MSG_NEGO_RESP
+##### 2.2.5.1 MSG_NEGO_RESP
 
 The MSG_NEGO_RESP (Negotiation Response) message is the response message containing the
 minimum and maximum protocol version supported by the responding server-role peer. The
@@ -1829,7 +1721,7 @@ peer. The protocol version is encoded identically to the ProtVer field defined i
 MaxSupportedProtocolVersion (4 bytes): Maximum protocol version supported by the requesting
 peer. The protocol version is encoded identically to the ProtVer field defined in section 2.2.3.
 
-2.2.5.2  MSG_BLKLIST
+##### 2.2.5.2 MSG_BLKLIST
 
 The MSG_BLKLIST message is the response message containing the download block ranges available
 on the responding server-role peer. The message is sent by the server-role peer in response to a
@@ -1842,7 +1734,8 @@ Release: April 23, 2024
 
 21 / 43
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1894,7 +1787,7 @@ NextBlockIndex (4 bytes): The index of the first block after the block sent in t
 currently available for download from this server-role peer. If no such next block is available, this
 index MUST be zero.
 
-2.2.5.3  MSG_BLK
+##### 2.2.5.3 MSG_BLK
 
 The MSG_BLK message is the response message containing a download block. This message is sent
 by the server-role peer in response to a MSG_GETBLKS message from a requesting client-role
@@ -1922,7 +1815,8 @@ Release: April 23, 2024
 
 22 / 43
 
-...
+
+...
 
 ZeroPad (variable)
 
@@ -1985,7 +1879,8 @@ Peer Content Caching and Retrieval: Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Block (variable): The actual block of data, encrypted according to the cryptographic algorithm
+
+Block (variable): The actual block of data, encrypted according to the cryptographic algorithm
 
 specified in the header of the message itself, not including the initialization vector.
 
@@ -2009,7 +1904,7 @@ IVBlock (variable): The initialization vector used by the server-role peer when 
 
 of data (Block field) sent with this message.
 
-2.2.5.4  MSG_SEGLIST
+##### 2.2.5.4 MSG_SEGLIST
 
 The MSG_SEGLIST message is the response message containing the segment range array
 describing the segments currently available for download. This message is sent by the server-role
@@ -2061,7 +1956,8 @@ Release: April 23, 2024
 
 24 / 43
 
-SegmentRanges (variable): A SEGMENT_RANGE_ARRAY (section 2.2.1.4) that describes the
+
+SegmentRanges (variable): A SEGMENT_RANGE_ARRAY (section 2.2.1.4) that describes the
 
 segments (full or partial) currently available for download from the current server-role peer. The
 indexes specified in each range in the response are the relative indexes of the segment in the
@@ -2075,7 +1971,7 @@ extensible BLOBs that are currently defined, see section 2.2.6. The relative ind
 the extensible BLOB are relative to the first segment in the first SEGMENT_RANGE (section
 2.2.1.2) carried by the current MSG_SEGLIST message.
 
-2.2.6  Extensible BLOB
+#### 2.2.6 Extensible BLOB
 
 Extensible binary large objects (BLOBs) are optional BLOBs that SHOULD be included in
 MSG_SEGLIST responses and can be included in MSG_GETSEGLIST requests.
@@ -2100,7 +1996,7 @@ the BLOB itself MUST make sure that the size of the BLOB reported through SizeOf
 compatible with the size restrictions for that specific BLOB version; if not, the BLOB MUST be
 discarded.
 
-2.2.6.1  Extensible Blob Version 1
+##### 2.2.6.1 Extensible Blob Version 1
 
 The Extensible Blob Version 1 structure MUST be formatted as follows.
 
@@ -2140,7 +2036,8 @@ Release: April 23, 2024
 
 25 / 43
 
-Value
+
+Value
 
 Meaning
 
@@ -2170,7 +2067,7 @@ this field (acceptable range: 0 - 255).
 
 SegmentAges (variable): SegmentAgeCount ENCODED_SEGMENT_AGE structures.
 
-2.2.6.1.1 Extensible Blob Version 1 Restrictions and Validation
+###### 2.2.6.1.1 Extensible Blob Version 1 Restrictions and Validation
 
 Before parsing the data in the blob, implementations MUST verify its validity as follows:
 
@@ -2197,7 +2094,8 @@ Release: April 23, 2024
 
 26 / 43
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Retrieval Protocol consists of four types of exchanges: Negotiation request/response, BlockList
 request/response, Block request/response, and SegmentList request/response as follows (see
@@ -2246,9 +2144,9 @@ and assemble complete segments of content from a combination of sources, includi
 server peers or a hosted cache, plus the original content server if the former does not have the
 complete content.
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The Retrieval Protocol client maintains the following data.
 
@@ -2263,7 +2161,8 @@ Release: April 23, 2024
 
 27 / 43
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 The Retrieval Protocol client maintains the following timer.
 
@@ -2274,13 +2173,13 @@ MSG_GETBLKS (section 2.2.4.3), or MSG_GETSEGLIST (section 2.2.4.4) request messa
 the timer expires before the exchange is completed, the client MUST cancel the current exchange.
 The default timeout value MUST be set to 2 seconds.<9>
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Retrieval Protocol client requires no explicit initialization.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  MSG_NEGO_REQ Request
+##### 3.1.4.1 MSG_NEGO_REQ Request
 
 An implementation of the Retrieval Protocol MAY support the sending of a Protocol Version
 Negotiation Request message (MSG_NEGO_REQ (section 2.2.4.1)), when triggered by a higher-
@@ -2301,7 +2200,7 @@ following:
 
 5.  Start the Request Timer.
 
-3.1.4.2  MSG_GETBLKLIST Initiation
+##### 3.1.4.2 MSG_GETBLKLIST Initiation
 
 To initiate a Retrieval Protocol query for the list of block ranges on a server, the higher-layer
 applications MUST specify a server address, a segment ID, and a set of block ranges within the
@@ -2311,7 +2210,7 @@ server, store it in the Outstanding Request List (3.1.1), and start the Request 
 SegmentID and NeededBlocksRange fields of the GetBlockList message correspond to the
 segment ID and the set of block ranges supplied by the higher-layer applications.
 
-3.1.4.3  MSG_GETBLKS Initiation
+##### 3.1.4.3 MSG_GETBLKS Initiation
 
 To initiate a Retrieval Protocol request for specific block ranges, the higher-layer applications
 MUST specify a server address, a segment ID, and a set of block ranges with the segment identified
@@ -2327,7 +2226,8 @@ Release: April 23, 2024
 
 28 / 43
 
-The Retrieval Protocol MUST only request and retrieve one block per exchange of MSG_GETBLKS
+
+The Retrieval Protocol MUST only request and retrieve one block per exchange of MSG_GETBLKS
 request and MSG_BLK (section 2.2.5.3) response messages. If the higher-layer applications need to
 retrieve more than one block, multiple GetBlocks messages MUST be sent with one block per
 request.
@@ -2335,7 +2235,7 @@ request.
 A peer SHOULD perform a simple download if it involves a limited number of consecutive blocks in a
 single block range.<10> This implies that the blocks are consecutive in the segment.
 
-3.1.4.4  MSG_GETSEGLIST Initiation
+##### 3.1.4.4 MSG_GETSEGLIST Initiation
 
 To initiate a Retrieval Protocol request for an array of segment IDs, the higher-layer application
 MUST generate a sequential or random non-repeating Request ID, and it MUST specify a server
@@ -2345,9 +2245,9 @@ Outstanding Request List (3.1.1), and start the Request Timer (3.1.2). The Reque
 SegmentID fields correspond to the ID of the current request and to the segment IDs contained in
 the request.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  MSG_NEGO_RESP Received
+##### 3.1.5.1 MSG_NEGO_RESP Received
 
 On receiving a MSG_NEGO_RESP (section 2.2.5.1) response message from a server, the client MUST
 first determine if this is a response to a previously sent request by checking the Outstanding
@@ -2395,10 +2295,11 @@ Peer Content Caching and Retrieval: Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If there is no existing request message previously sent to the server stored in the Outstanding
+
+If there is no existing request message previously sent to the server stored in the Outstanding
 Request List, the client MUST silently discard the received message.
 
-3.1.5.2  MSG_BLKLIST Response Received
+##### 3.1.5.2 MSG_BLKLIST Response Received
 
 On receiving a MSG_BLKLIST (section 2.2.5.2) response message from a server, the client MUST
 verify that it is well-formed and corresponds to a GetBlockList request message
@@ -2430,7 +2331,7 @@ address, to the higher-layer applications.
 
 Otherwise, the response message MUST be silently discarded.
 
-3.1.5.3  MSG_BLK Response Received
+##### 3.1.5.3 MSG_BLK Response Received
 
 On receiving a MSG_BLK (section 2.2.5.3) response message from a discovered peer, the client MUST
 verify that it is well-formed and corresponds to a GetBlocks request message
@@ -2454,7 +2355,7 @@ Pass the segment ID, block index, and (decrypted) block up to the higher-layer a
 
 Otherwise, the response message MUST be silently discarded, and the exchange aborted.
 
-3.1.5.4  MSG_SEGLIST Response Received
+##### 3.1.5.4 MSG_SEGLIST Response Received
 
 On receiving a MSG_SEGLIST (section 2.2.5.4) response message from a server, the client MUST
 verify that it is a well-formed GetSegmentList request message (per section 2.2.4.4) in its
@@ -2473,7 +2374,8 @@ Release: April 23, 2024
 
 30 / 43
 
-
+
+
 
 The client MUST make sure that the all index entries from the ranges reported in the
 MSG_SEGLIST received are contained within the array of segment IDs specified in the request
@@ -2492,27 +2394,27 @@ as the server address, to the higher-layer applications.
 
 Otherwise, the response message MUST be silently discarded.
 
-3.1.5.5  Other Messages Received
+##### 3.1.5.5 Other Messages Received
 
 All malformed messages received by the client and messages of unknown type sent to the Retrieval
 Protocol URLs specified in section 2.1.1 MUST be silently discarded.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Request Timer Expiration
+##### 3.1.6.1 Request Timer Expiration
 
 When the Request Timer expires before the exchange (GetBlockList
 (MSG_GETBLKLIST (section 2.2.4.2)), GetBlocks (MSG_GETBLKS (section 2.2.4.3)), Negotiation
 Request (MSG_NEGO_REQ (section 2.2.4.1)), or GetSegmentList
 (MSG_GETSEGLIST (section 2.2.4.4))) is completed, the client MUST abort the current exchange.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The Retrieval Protocol server maintains the following data.
 
@@ -2542,7 +2444,8 @@ Release: April 23, 2024
 
 31 / 43
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 The Retrieval Protocol server maintains the following timer.
 
@@ -2550,25 +2453,25 @@ Upload Timer: A per-instantiation timer set by a server when the protocol is ins
 MUST abort the protocol instance when the timer expires before the request/response exchange is
 completed. The default timeout value MUST be set to 15 seconds.<14>
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server is initialized by starting to listen for incoming HTTP requests on the URL specified in section
 2.1.1. The server MUST set the Active Client Count to zero.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 There are no explicit higher-layer triggered events for the server, other than waiting for the client
 messages as enabled by the initialization.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  MSG_NEGO_REQ Received
+##### 3.2.5.1 MSG_NEGO_REQ Received
 
 On receiving a valid MSG_NEGO_REQ (section 2.2.4.1) message from a client, the server MUST
 construct a MSG_NEGO_RESP (section 2.2.5.1) message with the maximum and minimum protocol
 versions that it supports, set the Upload Timer, and send the response message back to the client.
 
-3.2.5.2  MSG_GETBLKLIST Request Received
+##### 3.2.5.2 MSG_GETBLKLIST Request Received
 
 On receiving a valid MSG_GETBLKLIST (section 2.2.4.2) request message from a client, the server
 MUST perform the following actions in the order specified:
@@ -2607,7 +2510,8 @@ Release: April 23, 2024
 
 32 / 43
 
-3.2.5.3  MSG_GETBLKS Request Received
+
+##### 3.2.5.3 MSG_GETBLKS Request Received
 
 On receiving a valid MSG_GETBLKS (section 2.2.4.3) request message from a client, the server MUST
 perform the following actions in the order specified:
@@ -2657,7 +2561,7 @@ the CryptoAlgoID value table in section 2.2.3.
 
 If the resulting value is negative, the server MUST set the counter to zero.
 
-3.2.5.4  MSG_GETSEGLIST Request Received
+##### 3.2.5.4 MSG_GETSEGLIST Request Received
 
 On receiving a valid MSG_GETSEGLIST (section 3.1.5.4) request message from a client, the server
 MUST perform the following actions in the order specified:
@@ -2682,7 +2586,8 @@ Peer Content Caching and Retrieval: Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-clients or more, the server MUST reply to the client using a MSG_SEGLIST (section 2.2.5.4)
+
+clients or more, the server MUST reply to the client using a MSG_SEGLIST (section 2.2.5.4)
 message with an empty segment range.
 
 4.  Otherwise, the server MUST increment the Active Client Count by 1, set the Upload Timer, and
@@ -2698,18 +2603,18 @@ MSG_SEGLIST response message containing the array of segment ranges just calcula
 
 Client Count by 1.
 
-3.2.5.5  Other Messages Received
+##### 3.2.5.5 Other Messages Received
 
 All malformed messages received by the server and messages of unknown types sent to the Retrieval
 Protocol URLs specified in section 2.1.1 MUST be silently discarded.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Upload Timer Expiration
+##### 3.2.6.1 Upload Timer Expiration
 
 When the Upload Timer expires, the server-role peer MUST abort the protocol instance.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2720,13 +2625,14 @@ Release: April 23, 2024
 
 34 / 43
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-PCCRR].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Download with GetBlockList and GetBlocks Exchanges
+### 4.1 Download with GetBlockList and GetBlocks Exchanges
 
 Scenario: Peer P1 is trying to download blocks BN0 -:- BN1 and BN2 -:- BN3 of segment S1 from peer
 P2.
@@ -2761,7 +2667,8 @@ Release: April 23, 2024
 
 35 / 43
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-PCCRR].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -2769,7 +2676,7 @@ The encrypted block and initialization vector are added to the Block message and
 the client-role peer. The requesting peer will be able to decrypt the data only if it knows the
 hash of data of the segment.
 
-4.2  Simple Download with GetBlocks Download Sub-Sessions only
+### 4.2 Simple Download with GetBlocks Download Sub-Sessions only
 
 Scenario: Peer P1 is trying to download two consecutive blocks, BN and BN + 1, of segment S1 from
 peer P2.
@@ -2799,9 +2706,10 @@ Release: April 23, 2024
 
 36 / 43
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 A higher-layer application provides the server-role peer with the encryption algorithm, key size
 and the encryption key. The choice of the encryption algorithm and key size is one of the
@@ -2821,7 +2729,7 @@ There is no other explicit authentication or authorization built into the protoc
 Index strategies specified previously that can result in denial of service to peers currently considered
 untrustworthy.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2832,7 +2740,8 @@ Release: April 23, 2024
 
 37 / 43
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2899,7 +2808,8 @@ Release: April 23, 2024
 
 38 / 43
 
-<4> Section 2.2.4.2: Windows normalizes the ranges in the array of block ranges in the
+
+<4> Section 2.2.4.2: Windows normalizes the ranges in the array of block ranges in the
 MSG_GETBLKLIST and MSG_BLKLIST messages, using the following rules:
 
   Ranges in the array never overlap with each other.
@@ -2965,7 +2875,8 @@ Release: April 23, 2024
 
 39 / 43
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3009,7 +2920,8 @@ Release: April 23, 2024
 
 40 / 43
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3146,7 +3058,8 @@ Messages
 
 41 / 43
 
-   Extensible BLOB 25
+
+   Extensible BLOB 25
    MESSAGE_HEADER 14
    Request Message 16
    Response Message 20
@@ -3289,7 +3202,8 @@ Release: April 23, 2024
 
 42 / 43
 
-Vendor-extensible fields 11
+
+Vendor-extensible fields 11
 Versioning 10
 
 [MS-PCCRR] - v20240423

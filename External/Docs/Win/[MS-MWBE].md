@@ -64,7 +64,8 @@ Release: December 1, 2017
 
 1 / 51
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Release: December 1, 2017
 
 2 / 51
 
-Date
+
+Date
 
 Revision
 History
@@ -529,7 +531,8 @@ Release: December 1, 2017
 
 3 / 51
 
-Date
+
+Date
 
 Revision
 History
@@ -563,249 +566,78 @@ Release: December 1, 2017
 
 4 / 51
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Query String Response Transfer Protocol](#131-query-string-response-transfer-protocol)
+    - [1.3.2 SAML 1.1 Assertion Extension](#132-saml-11-assertion-extension)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Query String Response Transfer Protocol](#211-query-string-response-transfer-protocol)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 XML Namespace References](#221-xml-namespace-references)
+    - [2.2.2 Query String Response Transfer Protocol](#222-query-string-response-transfer-protocol)
+      - [2.2.2.1 wsignin1.0 Message](#2221-wsignin10-message)
+        - [2.2.2.1.1 Common Parameters](#22211-common-parameters)
+        - [2.2.2.1.2 wsignin1.0 Response](#22212-wsignin10-response)
+    - [2.2.3 SAML 1.1 Assertion Extension](#223-saml-11-assertion-extension)
+      - [2.2.3.1 SAML Advice Elements](#2231-saml-advice-elements)
+      - [2.2.3.2 WindowsIdentifiers Structure](#2232-windowsidentifiers-structure)
+        - [2.2.3.2.1 WindowsIdentifierFlags Structure](#22321-windowsidentifierflags-structure)
+        - [2.2.3.2.2 PACKED_SIDs Structure](#22322-packedsids-structure)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+    - [3.2.1 do not have subsections for that extension.](#321-do-not-have-subsections-for-that-extension)
+      - [3.2.1.1 Query String Response Transfer Protocol](#3211-query-string-response-transfer-protocol)
+        - [3.2.1.1.1 Aggregated Result](#32111-aggregated-result)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Query String Response Transfer Protocol](#3251-query-string-response-transfer-protocol)
+        - [3.2.5.1.1 Sending a wsignin1.0 Request](#32511-sending-a-wsignin10-request)
+        - [3.2.5.1.2 Receiving a wsignin1.0 Response That Does Not Specify a ttpindex](#32512-receiving-a-wsignin10-response-that-does-not-specify-a-ttpindex)
+        - [3.2.5.1.3 Receiving a wsignin1.0 Response That Specifies a ttpindex](#32513-receiving-a-wsignin10-response-that-specifies-a-ttpindex)
+        - [3.2.5.1.4 Processing the Complete Aggregated Result](#32514-processing-the-complete-aggregated-result)
+      - [3.2.5.2 SAML 1.1 Assertion Extension](#3252-saml-11-assertion-extension)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Web Browser Requestor Details](#33-web-browser-requestor-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Query String Response Transfer Protocol](#41-query-string-response-transfer-protocol)
+    - [4.1.1 Annotated Example](#411-annotated-example)
+    - [4.1.2 Full Network Trace](#412-full-network-trace)
+  - [4.2 SAML 1.1 Assertion Extension](#42-saml-11-assertion-extension)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Data Integrity](#511-data-integrity)
+    - [5.1.2 Privacy](#512-privacy)
+    - [5.1.3 Authorization Validation and Filtering](#513-authorization-validation-and-filtering)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Query String Response Transfer Protocol ....................................................... 11
-SAML 1.1 Assertion Extension ...................................................................... 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.1
-
-2.2
-
-2.1.1
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Query String Response Transfer Protocol ....................................................... 14
-Message Syntax ............................................................................................... 14
-XML Namespace References ......................................................................... 14
-Query String Response Transfer Protocol ....................................................... 14
-wsignin1.0 Message .............................................................................. 14
-Common Parameters ....................................................................... 14
-wsignin1.0 Response ....................................................................... 14
-SAML 1.1 Assertion Extension ...................................................................... 15
-SAML Advice Elements ........................................................................... 15
-WindowsIdentifiers Structure .................................................................. 15
-WindowsIdentifierFlags Structure ...................................................... 16
-PACKED_SIDs Structure ................................................................... 16
-Directory Service Schema Elements ................................................................... 17
-
-2.2.2.1.1
-2.2.2.1.2
-
-2.2.3.2.1
-2.2.3.2.2
-
-2.2.3.1
-2.2.3.2
-
-2.2.3
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.5.1
-
-3.1.1.1
-
-3.1.1.1.1
-3.1.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 18
-IP/STS Details ................................................................................................. 18
-Abstract Data Model .................................................................................... 18
-Query String Response Transfer Protocol ................................................. 18
-Pending Result ................................................................................ 18
-Maximum Query String Response Message Length ............................... 18
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Processing Events and Sequencing Rules ....................................................... 19
-Query String Response Transfer Protocol ................................................. 19
-Receiving a wsignin1.0 Request That Does Not Specify a ttpindex ......... 19
-Receiving a wsignin1.0 Request That Specifies a ttpindex of 0 .............. 19
-Receiving a wsignin1.0 Request That Specifies a ttpindex Other Than 0 . 19
-Responding to a wsignin1.0 Request That Specifies a ttpindex .............. 20
-SAML 1.1 Assertion Extension ................................................................. 20
-Responding to a wsignin1.0 Request .................................................. 20
-ClaimSource Element ................................................................. 20
-CookieInfoHash Element ............................................................. 20
-WindowsUserIdentifier Element ................................................... 21
-WindowsUserName Element ........................................................ 21
-WindowsIdentifiers Element ........................................................ 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-
-3.1.5.2.1.1
-3.1.5.2.1.2
-3.1.5.2.1.3
-3.1.5.2.1.4
-3.1.5.2.1.5
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-
-3.1.6
-3.1.7
-
-3.1.5.2.1
-
-3.1.5.2
-
-[MS-MWBE] - v20171201
-Microsoft Web Browser Federated Sign-On Protocol Extensions
-Copyright © 2017 Microsoft Corporation
-Release: December 1, 2017
-
-5 / 51
-
-3.2
-
-3.2.1
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-3.2.1.1
-
-3.2.1.1.1
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-
-Relying Party Details ........................................................................................ 21
-Abstract Data Model .................................................................................... 21
-Query String Response Transfer Protocol ................................................. 21
-Aggregated Result ........................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Processing Events and Sequencing Rules ....................................................... 22
-Query String Response Transfer Protocol ................................................. 22
-Sending a wsignin1.0 Request........................................................... 22
-Receiving a wsignin1.0 Response That Does Not Specify a ttpindex ....... 22
-Receiving a wsignin1.0 Response That Specifies a ttpindex ................... 22
-Processing the Complete Aggregated Result ........................................ 23
-SAML 1.1 Assertion Extension ................................................................. 23
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-Web Browser Requestor Details ......................................................................... 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher Layer Triggered Events ..................................................................... 24
-Processing Events and Sequencing Rules ....................................................... 24
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-
-3.2.5.2
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-4.1
-
-4  Protocol Examples ................................................................................................. 25
-Query String Response Transfer Protocol............................................................. 25
-Annotated Example ..................................................................................... 25
-Full Network Trace ...................................................................................... 28
-SAML 1.1 Assertion Extension ............................................................................ 42
-
-4.1.1
-4.1.2
-
-4.2
-
-5.1
-
-5  Security ................................................................................................................. 44
-Security Considerations for Implementers ........................................................... 44
-Data Integrity ............................................................................................ 44
-Privacy ...................................................................................................... 44
-Authorization Validation and Filtering ............................................................ 44
-Index of Security Parameters ............................................................................ 44
-
-5.1.1
-5.1.2
-5.1.3
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 45
-
-7  Change Tracking .................................................................................................... 49
-
-8  Index ..................................................................................................................... 50
-
-[MS-MWBE] - v20171201
-Microsoft Web Browser Federated Sign-On Protocol Extensions
-Copyright © 2017 Microsoft Corporation
-Release: December 1, 2017
-
-6 / 51
-
-1  Introduction
+## 1 Introduction
 
 This specification extends the Microsoft Web Browser Federated Sign-On Protocol described in [MS-
 MWBF]. It is assumed that the reader is familiar with its terms, concepts, and protocols.
@@ -829,7 +661,7 @@ Protocol that specifies a method for transmitting SIDs as elements in SAML advic
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -877,7 +709,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-boundary for all the objects that reside within the domains that belong to the forest. In
+
+boundary for all the objects that reside within the domains that belong to the forest. In
 contrast, a domain establishes the administrative boundary for managing objects, such as
 users, groups, and computers. In addition, each domain has individual security policies and
 trust relationships with other domains.
@@ -952,7 +785,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-SAML advice: The advice element of a SAML assertion. The data in the advice element is
+
+SAML advice: The advice element of a SAML assertion. The data in the advice element is
 
 advisory and can be ignored without affecting the validity of the assertion. See [SAMLCore]
 section 2.3.2.2. The SAML 1.1 Assertion Extension includes security identifiers (SIDs) and
@@ -1025,14 +859,15 @@ Release: December 1, 2017
 
 9 / 51
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1089,7 +924,8 @@ Release: December 1, 2017
 
 10 / 51
 
-[WSFederation] Kaler, C., Nadalin, A., Bajaj, S., et al., "Web Services Federation Language (WS-
+
+[WSFederation] Kaler, C., Nadalin, A., Bajaj, S., et al., "Web Services Federation Language (WS-
 Federation)", Version 1.1, December 2006, http://specs.xmlsoap.org/ws/2006/12/federation/ws-
 federation.pdf
 
@@ -1100,7 +936,7 @@ Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 Recommendation 16 August 2006, edited in place 29 September 2006,
 http://www.w3.org/TR/2006/REC-xml-20060816/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [FIPS180] FIPS PUBS, "Secure Hash Standard", FIPS PUB 180-1, April 1995,
 https://www.niatec.iri.isu.edu/GetFile.aspx?pid=63
@@ -1121,7 +957,7 @@ characters-in-internet-explorer
 [SIDD] Microsoft Corporation, "How Security Identifiers Work", March 2003,
 http://technet.microsoft.com/en-us/library/cc778824.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies the Query String Response Transfer Protocol and the SAML 1.1 Assertion
 Extension. These extensions are based on the federated sign-on protocol described in [MS-MWBF].
@@ -1130,7 +966,7 @@ browser requestors and a wider range of protected applications. The extensions i
 do not change the services of authentication, identity federation, or single sign-on provided by [MS-
 MWBF].
 
-1.3.1  Query String Response Transfer Protocol
+#### 1.3.1 Query String Response Transfer Protocol
 
 The scripting capability for forms submittal is not specified as part of HTTP [RFC2616]; consequently,
 not all web browser requestor implementations support forms submittal as recommended for
@@ -1154,7 +990,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-1.3.2  SAML 1.1 Assertion Extension
+
+#### 1.3.2 SAML 1.1 Assertion Extension
 
 The Microsoft Web Browser Federated Sign-On Protocol described in [MS-MWBF] does not specify a
 method for including SIDs in a security token. For applications requiring SIDs, claims are not
@@ -1164,7 +1001,7 @@ The SAML 1.1 Assertion Extension provides a method for including SIDs in a SAML 
 identity provider/security token service (IP/STS) obtains the security identifiers and how a
 relying party interprets them is implementation-specific.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Web Browser Federated Sign-On Protocol and the extensions specified in this document use
 standard web protocols, XML (as specified in [XML]), WS-Federation Passive Requestor Profile (as
@@ -1183,14 +1020,14 @@ The Web Browser Federated Sign-On Protocol and the extensions specified in this 
 applicable where other web-based authentication protocols are used. For more information, see [MS-
 MWBF] section 1.4.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The SAML 1.1 Assertion Extension requires that an IP/STS have a source of security identifiers and
 that the relying party have an authorization framework in which to interpret them. The exact
 methods by which the IP/STS obtains the SIDs, and the methods by which the relying party interprets
 them, are implementation-specific.<1><2>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Query String Response Transfer Protocol is applicable where the Web Browser Federated Sign-On
 Protocol described in [MS-MWBF] is applicable.<3> The Query String Response Transfer Protocol
@@ -1200,7 +1037,7 @@ browser requestors that do not implement scripting or form submittal via scripti
 The SAML 1.1 Assertion Extension is applicable when the protected HTTP web application requires
 SIDs to perform authorization.<4>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Web Browser Federated Sign-On Protocol as described in [MS-MWBF] section 1.7 defers all
 versioning and capability negotiation to [WSFederation], [WSFederation1.2], and [RFC2616].
@@ -1219,7 +1056,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 The extensions specified in this document make use of vendor-extensible fields that are specified as
 part of [MS-MWBF] section 1.8. Specifically, the Query String Response Transfer Protocol specifies
@@ -1234,7 +1072,7 @@ The SAML 1.1 Assertion Extension introduces the ClaimSource (section 3.1.5.2.1.1
 value is a URI that can be extended by vendors. Uniqueness of URIs is scheme-dependent. For more
 information, see [IANASCHEME] and [RFC4395].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments beyond those for XML namespaces and standard ports specified
 in [MS-MWBF] section 1.9.<5>
@@ -1246,26 +1084,27 @@ Release: December 1, 2017
 
 13 / 51
 
-2  Messages
+
+## 2 Messages
 
 The Query String Response Transfer Protocol and SAML 1.1 Assertion Extension extend the messages
 specified in [MS-MWBF] section 2 as described in this section.
 
-2.1  Transport
+### 2.1 Transport
 
 No additional transport is required other than that provided for in [MS-MWBF] section 2.1.
 
-2.1.1  Query String Response Transfer Protocol
+#### 2.1.1 Query String Response Transfer Protocol
 
 In the Query String Response Transfer Protocol, all wsignin1.0 messages MUST use HTTP GET.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Query String Response Transfer Protocol extends the wsignin1.0 message specified in [MS-
 MWBF] section 2.2. The SAML 1.1 Assertion Extension extends the SAML assertion specified in [MS-
 MWBF] section 2.2.4.2.
 
-2.2.1  XML Namespace References
+#### 2.2.1 XML Namespace References
 
 Prefixes and XML namespaces used in this specification include the following:
 
@@ -1285,13 +1124,13 @@ adfs
 
 This document
 
-2.2.2  Query String Response Transfer Protocol
+#### 2.2.2 Query String Response Transfer Protocol
 
 The Query String Response Transfer Protocol extends the wsignin1.0 message from [MS-MWBF]
 section 2.2 to enable passing results in pieces rather than using POST. The protocol does not extend
 any other message types.
 
-2.2.2.1  wsignin1.0 Message
+##### 2.2.2.1 wsignin1.0 Message
 
 [MS-MWBF] section 2.2 specifies how parameters are encoded in messages, including new parameters
 added by extensions. Specifically, it describes that in HTTP GET messages, the parameters are
@@ -1303,12 +1142,12 @@ responses that use this protocol.
 
 Section 2.2.2.1.2 specifies parameters included only in wsignin1.0 responses that use this protocol.
 
-2.2.2.1.1 Common Parameters
+###### 2.2.2.1.1 Common Parameters
 
 ttpindex: The length, in characters, of the aggregated result as a 32-bit unsigned integer in decimal
 notation.
 
-2.2.2.1.2 wsignin1.0 Response
+###### 2.2.2.1.2 wsignin1.0 Response
 
 [MS-MWBE] - v20171201
 Microsoft Web Browser Federated Sign-On Protocol Extensions
@@ -1317,12 +1156,13 @@ Release: December 1, 2017
 
 14 / 51
 
-ttpsize: The length in characters of the pending result as a 32-bit unsigned integer in decimal
+
+ttpsize: The length in characters of the pending result as a 32-bit unsigned integer in decimal
 notation.
 
 wresult: The current part of the result being transferred, as a string.
 
-2.2.3  SAML 1.1 Assertion Extension
+#### 2.2.3 SAML 1.1 Assertion Extension
 
 The SAML 1.1 Assertion Extension extends the SAML assertion subset as specified in [MS-MWBF]
 section 2.2.4.2. This extension uses the SAML advice element specified in [SAMLCore] section
@@ -1333,7 +1173,7 @@ and SIDs. These new elements are included as child elements of the advice elemen
 assertion. These elements use the XML namespace "urn:microsoft:federation". The element content is
 described using XML schema data types, as specified in [XMLSCHEMA2] section 3.
 
-2.2.3.1  SAML Advice Elements
+##### 2.2.3.1 SAML Advice Elements
 
 ClaimSource (optional): A Uniform Resource Identifier (URI) identifying a requestor IP/STS or other
 authentication service (such as a local account store) that is the source of the claims in the security
@@ -1355,7 +1195,7 @@ identify the subject of the SAML assertion and a set of flags that specify the u
 content is of type base64Binary (as specified in [XMLSCHEMA2] section 3.2.16), and the binary data
 MUST be structured as specified in WindowsIdentifiers Binary Structure (section 2.2.3.2).
 
-2.2.3.2  WindowsIdentifiers Structure
+##### 2.2.3.2 WindowsIdentifiers Structure
 
 The WindowsIdentifiers structure has variable length. It defines a set of SIDs and flags. To reduce the
 overall data size, the SIDs are not included in full binary expansion. Rather, PACKED_SIDS structures
@@ -1389,7 +1229,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-PackedSidsCount (4 bytes): A 4-byte, little-endian, unsigned integer that defines the number of
+
+PackedSidsCount (4 bytes): A 4-byte, little-endian, unsigned integer that defines the number of
 
 PackedSids fields in this structure. This field MUST NOT be 0.
 
@@ -1398,7 +1239,7 @@ PackedSids (variable): A sequence of PACKED_SIDS structures of variable size, ea
 defines a set of SIDs. The sequence defines a set of SIDs, which is the union of the sets of SIDs
 defined by all the elements.
 
-2.2.3.2.1 WindowsIdentifierFlags Structure
+###### 2.2.3.2.1 WindowsIdentifierFlags Structure
 
 The WindowsIdentifierFlags structure is a field of 32 bits.
 
@@ -1444,7 +1285,7 @@ N - NoUserSid (1 bit): A value of 1 indicates that a user SID is not encoded in 
 WindowsIdentifiers structure. A value of 0 indicates that a user SID is encoded in the
 WindowsIdentifiers structure.
 
-2.2.3.2.2 PACKED_SIDs Structure
+###### 2.2.3.2.2 PACKED_SIDs Structure
 
 The PACKED_SIDs structure encapsulates a set of SIDs that are identical except for the value of the
 final subauthority, which is called the relative identifier (RID). The identical portion of the SIDs is
@@ -1479,7 +1320,8 @@ Release: December 1, 2017
 
 16 / 51
 
-DomainSid (variable): A SID structure of variable size that defines the identical portion of the SIDs
+
+DomainSid (variable): A SID structure of variable size that defines the identical portion of the SIDs
 
 encoded in this structure. For details on the SIDs structure, see [MS-DTYP] section 2.4.2.
 
@@ -1491,7 +1333,7 @@ RID (variable): A sequence of 4-byte, little-endian, unsigned integers that defi
 
 SIDs encoded in this structure.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol accesses the following Directory Service schema classes and attributes listed in the
 following table.
@@ -1512,7 +1354,8 @@ Release: December 1, 2017
 
 17 / 51
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify the IP/STS and relying party protocol details. Each section details
 role-specific behavior for the extensions specified in this document. There is not a section for the web
@@ -1525,7 +1368,7 @@ roles. The relying party details (see section 3.2) apply to both the resource IP
 
 Because the behavior for issuance and consumption of the SIDs is implementation-specific, an
 abstract data model is not introduced for the SAML 1.1 Assertion Extension. Hence, sections 3.1.1 and
-3.2.1 do not have subsections for that extension.
+#### 3.2.1 do not have subsections for that extension.
 
 3.1  IP/STS Details
 
@@ -1576,7 +1419,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-escaping, including the scheme, authority, path, and query components (as specified in [RFC2396]
+
+escaping, including the scheme, authority, path, and query components (as specified in [RFC2396]
 section 3). The recommended value is 2,083 octets for all messages. For more information, see
 [MAXURL].<9>
 
@@ -1640,7 +1484,8 @@ Release: December 1, 2017
 
 19 / 51
 
-When the IP/STS receives a wsignin1.0 request that specifies a ttpindex parameter value other
+
+When the IP/STS receives a wsignin1.0 request that specifies a ttpindex parameter value other
 than 0, the following conditions MUST be evaluated in order:
 
 1.  The ttpindex value does not conform to message syntax rules (for example, if it is not a number,
@@ -1712,7 +1557,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-The IP/STS MAY<12> include the CookieInfoHash element in the issued SAML assertion.
+
+The IP/STS MAY<12> include the CookieInfoHash element in the issued SAML assertion.
 
 3.1.5.2.1.3  WindowsUserIdentifier Element
 
@@ -1748,12 +1594,12 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.2.1.1  Query String Response Transfer Protocol
+##### 3.2.1.1 Query String Response Transfer Protocol
 
 The following sections specify the abstract data model for receiving and concatenating the
 aggregated result as a series of messages.
 
-3.2.1.1.1 Aggregated Result
+###### 3.2.1.1.1 Aggregated Result
 
 When the Query String Response Transfer Protocol is used, the result of a wsignin1.0 action is
 transmitted by a series of message exchanges. When an aggregated result is not available, it is
@@ -1763,7 +1609,7 @@ party when processing each message exchange. The method used to maintain the ava
 aggregated result is implementation-specific. The relying party MUST discard the aggregated result
 when it receives a wsignoutcleanup1.0 message (as specified in [MS-MWBF] section 3.3.5.4.2).<17>
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no timers required other than any specified in [MS-MWBF] section 3.3.2; however, a timer
 MAY<18> be used to manage a state associated with the aggregated result.
@@ -1775,22 +1621,23 @@ Release: December 1, 2017
 
 21 / 51
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 There are no new initializations other than any described in [MS-MWBF] section 3.3.3; however, the
 aggregated result is initialized after the protocol has been initiated (as specified in section
 3.2.5.1.3).
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 There are no new higher-layer triggered events other than any described in [MS-MWBF] section 3.3.4.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 The Query String Response Transfer Protocol and the SAML 1.1 Assertion Extension introduce new
 message processing rules.
 
-3.2.5.1  Query String Response Transfer Protocol
+##### 3.2.5.1 Query String Response Transfer Protocol
 
 The following sections specify protocol details for the Query String Response Transfer Protocol when
 processing wsignin1.0 messages.
@@ -1799,7 +1646,7 @@ Section 3.2.5.1.1 specifies how to send a wsignin1.0 request by using this proto
 and 3.2.5.1.3 specify how to process a wsignin1.0 response given the presence or absence of the
 ttpindex parameter. Section 3.2.5.1.4 specifies how the completed aggregated result is processed.
 
-3.2.5.1.1 Sending a wsignin1.0 Request
+###### 3.2.5.1.1 Sending a wsignin1.0 Request
 
 When using the Query String Response Transfer Protocol, the relying party sends a wsignin1.0
 request to the IP/STS as specified in [MS-MWBF] section 3.3.5.1 and MUST add the ttpindex
@@ -1809,13 +1656,13 @@ the aggregated result.
 Note  If the aggregated result is not available, it is considered to have length 0 (see section
 3.2.1.1.1). Therefore, in the first request, the value of ttpindex MUST be 0.<19>
 
-3.2.5.1.2 Receiving a wsignin1.0 Response That Does Not Specify a ttpindex
+###### 3.2.5.1.2 Receiving a wsignin1.0 Response That Does Not Specify a ttpindex
 
 When the relying party receives a wsignin1.0 response that does not specify the ttpindex
 parameter, the message does not use the Query String Response Transfer Protocol, and the relying
 party MUST process the message as specified in [MS-MWBF] section 3.3.5.2.
 
-3.2.5.1.3 Receiving a wsignin1.0 Response That Specifies a ttpindex
+###### 3.2.5.1.3 Receiving a wsignin1.0 Response That Specifies a ttpindex
 
 When the relying party receives a wsignin1.0 response that specifies the ttpindex parameter, it
 MUST evaluate the following conditions in order:
@@ -1842,7 +1689,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-The relying party MUST evaluate the ttpsize parameter as follows:
+
+The relying party MUST evaluate the ttpsize parameter as follows:
 
 
 
@@ -1860,7 +1708,7 @@ If the length, in characters, of the new aggregated result is less than the valu
 parameter, the relying party MUST request the next portion of the result as specified in section
 3.2.5.1.1.
 
-3.2.5.1.4 Processing the Complete Aggregated Result
+###### 3.2.5.1.4 Processing the Complete Aggregated Result
 
 When the aggregated result is complete, the relying party MUST apply the following transforms to
 the aggregated result to produce an XML string:
@@ -1879,26 +1727,26 @@ return an HTTP 500 response.
 The relying party MUST process the wsignin1.0 response (as specified in [MS-MWBF] section
 3.3.5.2), substituting the string output from step 3 for the wresult parameter.
 
-3.2.5.2  SAML 1.1 Assertion Extension
+##### 3.2.5.2 SAML 1.1 Assertion Extension
 
 The method of evaluating SIDs transmitted by using the SAML 1.1 Assertion Extension is
 implementation-specific. For specifications about SIDs and their semantics in Windows, see [MS-
 DTYP].<20>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no timer events required other than any events specified in [MS-MWBF] section 3.3.6;
 however, a timer event MAY<21> be used to manage a state associated with the aggregated result.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no other local events that impact the operation of this protocol.
 
-3.3  Web Browser Requestor Details
+### 3.3 Web Browser Requestor Details
 
 This section specifies the web browser requestor role in transporting protocol messages.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 A web browser requestor does not need to understand any protocol-specific data for the correct
 operation of the protocol. It MUST be able to support HTTP query string and POST body
@@ -1912,7 +1760,8 @@ Release: December 1, 2017
 
 23 / 51
 
-3.3.2  Timers
+
+#### 3.3.2 Timers
 
 A web browser requestor does not depend on timers beyond those that are used by the underlying
 transport to transmit and receive messages over HTTP and SSL/TLS, as specified in section 3.1.2.
@@ -1920,14 +1769,14 @@ transport to transmit and receive messages over HTTP and SSL/TLS, as specified i
 A web browser requestor does not need to be aware of an implementation's use of timers to
 determine when the validity intervals of security tokens and authentication contexts expire.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 There is no protocol-specific initialization for a web browser requestor. It only needs to be ready to
 perform the standard HTTP 1.1 methods required for accessing WS resources. Specifically, it MUST
 support HTTP GET and POST methods and properly respond to HTTP 1.1 redirection and error
 responses.
 
-3.3.4  Higher Layer Triggered Events
+#### 3.3.4 Higher Layer Triggered Events
 
 Protocol messages are exchanged between a requestor IP/STS and a relying party. The only
 function of the web browser requestor with respect to the protocol is to transport these messages.
@@ -1935,7 +1784,7 @@ The web browser requestor can be triggered to begin protocol message exchange by
 HTTP/1.1 302 found that includes a location directive, or an HTTP/1.1 200 OK that includes a form
 with method set to POST.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
 A web browser requestor plays a passive role in the operation of the protocol. Its only function is to
 transport protocol message requests and responses between a requestor IP/STS and one or more
@@ -1943,13 +1792,13 @@ relying parties. It is not required to understand the types or content of these 
 web browser requestor SHOULD transport all protocol message requests and responses between a
 requestor IP/STS and a relying party without changing the messages at all.<23>
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 A web browser requestor does not need to interact with any timers, or service any timer events,
 beyond those that might be used by the underlying transport to transmit and receive messages over
 HTTP and SSL/TLS, or those specified in section 3.1.6.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 A web browser requestor does not have dependencies on local events beyond those specified in
 section 3.1.7.
@@ -1961,11 +1810,12 @@ Release: December 1, 2017
 
 24 / 51
 
-4  Protocol Examples
 
-4.1  Query String Response Transfer Protocol
+## 4 Protocol Examples
 
-4.1.1  Annotated Example
+### 4.1 Query String Response Transfer Protocol
+
+#### 4.1.1 Annotated Example
 
 The following is a protocol example for the Query String Response Transfer Protocol.
 
@@ -2037,7 +1887,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
- GET /adfs/ls/?wa=wsignin1.0&wtrealm=urn%3afederation
+
+ GET /adfs/ls/?wa=wsignin1.0&wtrealm=urn%3afederation
  %3atrey+research&wct=2006-07-13T07%3a32%3a21Z&wctx=https%
  3a%2f%2ftreyws-test%2fclaims%2f%5chttps%3a%2f%2ftreyws-test%
  2fclaims%2fDefault.aspx&ttpindex=0 HTTP/1.1
@@ -2111,7 +1962,8 @@ Release: December 1, 2017
 
 26 / 51
 
- Z7zppM9NossHQTQh5lbOxm4vpsXSbNhuK8om8MME%2bFjkyGCOP0oOAdfoz0bQS6O8
+
+ Z7zppM9NossHQTQh5lbOxm4vpsXSbNhuK8om8MME%2bFjkyGCOP0oOAdfoz0bQS6O8
  SB1E4gHuTewgTEaMN%2fpgXsJoPkWm4BSP64FuDFGOQ8DlMFfoSQKk3SSgSCvsd7q9
  C86F8YKP4apB0ly8iz2avtXR59Unj7FnGewamQQQzfzogfqo%2b6n55%2bbpz4FdnH
  o7%2bPahOsHmOyidUyyEqChi6M3%2buqdM31J7GUIoyC%2fQdZ8UqK5vj2Kulay0tQ
@@ -2183,7 +2035,8 @@ Release: December 1, 2017
 
 27 / 51
 
- %2fuCc7LNmQTigP58D%2fnQOyLk1eXYX3x3GU8rrUsn84LO%2bcGRAtt4eNHY1VD
+
+ %2fuCc7LNmQTigP58D%2fnQOyLk1eXYX3x3GU8rrUsn84LO%2bcGRAtt4eNHY1VD
  NEDcGhl%2fYOCujud%2fup3%2bZefDPvB3s9lIYB7%2b3VXuK%2bwLyUR23Le07Y
  WTLP1Dl1p62FeOiHAQuF53jLdrGTc%2b3jPFPkwJFdrk%2b9HlC7ZNDdiyLPcivf
  SV2bCmN6ZEmxMRJ0z3KS6G426mlDqL0MYcV1WJ3zzJHR8pWVozlral0wbkuYqT0l
@@ -2228,7 +2081,7 @@ result (as specified in section 3.2.5.1.4) and processes it as specified in [MS-
 relying party, which was a resource IP/STS, issued a new SAML assertion and used the Query
 String Response Transfer Protocol to transmit it to a WS resource.
 
-4.1.2  Full Network Trace
+#### 4.1.2 Full Network Trace
 
 The following is the full network trace for the protocol example in Annotated Example (section 4.1.1).
 
@@ -2258,7 +2111,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-a line with three left-angle brackets ("<<<"). The final three HTTP messages (HTTP 302, HTTP GET,
+
+a line with three left-angle brackets ("<<<"). The final three HTTP messages (HTTP 302, HTTP GET,
 and HTTP 200 OK) are an internal implementation detail and shown for completeness only. These
 messages are not necessary for interoperability.
 
@@ -2334,7 +2188,8 @@ Release: December 1, 2017
 
 29 / 51
 
- >>> adatumsts-7 (Requestor IP/STS)
+
+ >>> adatumsts-7 (Requestor IP/STS)
  GET /adfs/ls/auth/integrated/?wa=wsignin1.0&wtrealm=urn%3afederation
  %3atrey+research&wct=2006-07-13T07%3a32%3a21Z&wctx=https%3a%2f%2ftre
  yws-test%2fclaims%2f%5chttps%3a%2f%2ftreyws-test%2fclaims%2fDefault.
@@ -2410,7 +2265,8 @@ Release: December 1, 2017
 
 30 / 51
 
- %2fg8wimeeydrNq5m8OEPDc%2byv9QMB%2bVDZhHyP%2bxfD4oDco49VGJLzmyi9Ur9PK3
+
+ %2fg8wimeeydrNq5m8OEPDc%2byv9QMB%2bVDZhHyP%2bxfD4oDco49VGJLzmyi9Ur9PK3
  pzEpFdWvtYMYZg0ZZYn7%2b5Pkbdw4wdTsedx8An4SpzFJhpuj7D%2fnsv3uoeQt%2fo%2
  fGL6xcAVC%2f4%2bXCWk4yvSpy%2bHnj3xPGR5yN66r%2b22NTStx4A3yflDZuftzEW9eD
  XwDZ%2fOxj7m4K%2bOT%2bHvUn7c%2fSP%2bEWUJKgtF7%2fXdQGQUwydKL87yBVMlRs%2
@@ -2487,7 +2343,8 @@ Release: December 1, 2017
 
 31 / 51
 
- Adfoz0bQS6O8SB1E4gHuTewgTEaMN/pgXsJoPkWm4BSP64FuDFGOQ8DlMFfoSQKk3SSgSC
+
+ Adfoz0bQS6O8SB1E4gHuTewgTEaMN/pgXsJoPkWm4BSP64FuDFGOQ8DlMFfoSQKk3SSgSC
  vsd7q9C86F8YKP4apB0ly8iz2avtXR59Unj7FnGewamQQQzfzogfqo+6n55+bpz4FdnHo
  7+PahOsHmOyidUyyEqChi6M3+uqdM31J7GUIoyC/QdZ8UqK5vj2Kulay0tQyKoWL1HhnM
  8/S+vGB+ondK94312/g8wimeeydrNq5m8OEPDc+yv9QMB+VDZhHyP+xfD4oDco49VGJLzm
@@ -2564,7 +2421,8 @@ Release: December 1, 2017
 
 32 / 51
 
- application/msword, application/x-shockwave-flash, */*
+
+ application/msword, application/x-shockwave-flash, */*
  Accept-Language: en-us
  UA-CPU: x86
  Accept-Encoding: gzip, deflate
@@ -2641,7 +2499,8 @@ Release: December 1, 2017
 
 33 / 51
 
- iW7mXkXC6VIWnows1NlUVCVEQQNFGoFF5EKm6QkWpbILTJx1mYMJH6128ThSuwXlgzmUgA
+
+ iW7mXkXC6VIWnows1NlUVCVEQQNFGoFF5EKm6QkWpbILTJx1mYMJH6128ThSuwXlgzmUgA
  sew/EY2V+LCNEWpYeausmkdmY/9zGLmKbcPRADlBm8mr4AyZmprzEBjiBP3LDteZdJZZvC
  rgywCm48mCx4YM4GU16ulRXjLCe63OGWoSmgAXBHsnWKrHiWa0gkHALQyAaLAJ6bOR6Zor
  3YpxsHJdElLA9K2I7zeEdoLZey4qga6w7pt+ezEm6Pxst/pBMcQI/Eo8tV0rrnT+z2/AuJ
@@ -2718,7 +2577,8 @@ Release: December 1, 2017
 
 34 / 51
 
- NPJctVWbL2TsZNZOTdPugEvtcupyOtIikMLOZI7tGhPRPtRa7wh9RP5CwuNEqvwqs7rit
+
+ NPJctVWbL2TsZNZOTdPugEvtcupyOtIikMLOZI7tGhPRPtRa7wh9RP5CwuNEqvwqs7rit
  XKUcJsl6y291pc4gtE1qL3Zmte%2bdK88BIOrwTux%2fojel5SlqGDCC9YqeuWLyWeV5U
  xqSfdkNR3%2bREI0auD%2fKFVTuL%2bflnbVmTGV8LPfl6dhUYvF3PalX%2fhMzVLC7xz
  ZABdmSjOdqXMuqOK8xbKe4wL6bSWV6m2XykH791vFMyVaOsllrkk%2fuCc7LNmQTigP58
@@ -2795,7 +2655,8 @@ Release: December 1, 2017
 
 35 / 51
 
- grHtl0sq3JJ4gWLK5l7LVSYI8EfBNQYF6SsWgTSgXQxDRLuJ3Z0Bddyt%2fuC78OZH
+
+ grHtl0sq3JJ4gWLK5l7LVSYI8EfBNQYF6SsWgTSgXQxDRLuJ3Z0Bddyt%2fuC78OZH
  %2bd1FkWAnKAS0pJFEQC6J0e%2fIMoUJnsTATQrKjzrtm84tcKkTIGwjlqMkDuwC%2
  f27ok8pbkTPKklb4nNGnhH3C2XsYhJR74T6qfnr%2fe3Tuk183e84xKCCg49KuWODP
  SBrbt%2fIpxNfQhYEdE0rc5CEh5bdPCYIOTNLwhfuMdsMnZBew3LtkCKn%2fTRM13Y
@@ -2872,7 +2733,8 @@ Release: December 1, 2017
 
 36 / 51
 
-  07:32:28 GMT; path=/adfs/ls/; secure; HttpOnly
+
+  07:32:28 GMT; path=/adfs/ls/; secure; HttpOnly
  Set-Cookie: _LSCleanup=2006-07-13:07:32:28Zahttps://treyws-test/
  claims/; path=/adfs/ls/; secure; HttpOnly
  Set-Cookie: _TTPDest=https://treyws-test/claims/; path=/adfs/ls/;
@@ -2949,7 +2811,8 @@ Release: December 1, 2017
 
 37 / 51
 
- bjD%2b33ggfER7EiHnid7cuVD6PtxvosM9kusFHttz%2f5843WN0hbhWjYMb1qkyIait
+
+ bjD%2b33ggfER7EiHnid7cuVD6PtxvosM9kusFHttz%2f5843WN0hbhWjYMb1qkyIait
  DMfgMMO9sVbFyT6d2mzHe9R84e6xZePHWrhn76qIe4MFMbB5xsE6nDdirEdh5gyHJ%2f
  uUq67WbrbgcpKl%2fDpYLMKV2YjsJYfU3XYpt%2bnIUoY7SJupI7encWwuklO45HaNTF
  LTtSi0ecXPZ332FWa6Z2LKRu53ou1hut6G2%2fpIMTLenu%2fCkwqjaa9uSbPORqcnX9
@@ -3026,7 +2889,8 @@ Release: December 1, 2017
 
 38 / 51
 
- 7N0UsDJahjucX7G+CRTPC2iHI7OHwbJ1zxVG7rQ5cTbKU3vjLZbCeNw/WikLKbruSuvHIk
+
+ 7N0UsDJahjucX7G+CRTPC2iHI7OHwbJ1zxVG7rQ5cTbKU3vjLZbCeNw/WikLKbruSuvHIk
  Ic7GLdSW+pOo2i+TM7Bito1M1FJNzzXpWUvn/XJKkx0L+Fc0nOPPWyP08022DZGsp7R1mI
  XnBV4mAoNQ5yxphafPc2UG0Yzpk+TC3eoGoFkyFN5slVeb4E8gX8ZofwWldGiWQEm8Dbii
  zubUxxdpLFJkkBveR5ERxdkEgdcaTRoinLDBcXXP1+Ayrm7o7fzB2xGc0BbiEAAG0W3MlF
@@ -3103,7 +2967,8 @@ Release: December 1, 2017
 
 39 / 51
 
- Location: https://treyws-test/claims/?wa=wsignin1.0&ttpsize=2708&
+
+ Location: https://treyws-test/claims/?wa=wsignin1.0&ttpsize=2708&
  ttpindex=1758&wctx=https%3a%2f%2ftreyws-test%2fclaims%2fDefault.aspx
  &wresult=EwmMmbek9XRZYv4PVYMDzvptsTgCwCGWRCtpJGWaMHPDtjQZJHZC37R1sDm
  Z0Ni9wZ%2fEQQVn1JGxqJk2zWFfdZsieuGuVIb1dbSV63VUG9cFN0XVUBYbbpoKgBIVN
@@ -3180,7 +3045,8 @@ Release: December 1, 2017
 
 40 / 51
 
- Set-Cookie: _WebSsoAuth=eNrNV9uSosoS/RXDeTR6wLsY3R2nAEFQUBAVfdlRQnFRq
+
+ Set-Cookie: _WebSsoAuth=eNrNV9uSosoS/RXDeTR6wLsY3R2nAEFQUBAVfdlRQnFRq
  VIuIn79LrR1unvOzOmzYx62T0WyKnPlyiSrfE5gtO+DJEFxGhJceawU8aX6V7fTQM32pv
  lU73bZp5bndJ64Taf+xPVYB0EPOe6mVa0oSZIhBScpxOlLtcGynSe2+1RvWmy332z0G73
  1GyZ+qWYx7nvIRTEsg/TTGBWVGCUIxk5QrWhwS+IFihP67qVap4YQfzScoz1O+iXpmy8C
@@ -3257,7 +3123,8 @@ Release: December 1, 2017
 
 41 / 51
 
- 1TA0DRAaO5HLHuBzTdD43vWdkhsrjYdA4pHK8Q3YMuozOZvvLpFc43dhBrnLXpPmV+wwNy
+
+ 1TA0DRAaO5HLHuBzTdD43vWdkhsrjYdA4pHK8Q3YMuozOZvvLpFc43dhBrnLXpPmV+wwNy
  faIM9nR14hAyibcsC6Q9AZF9x2bavsyl6wUGjvNljLVg2ucIR2Cpd6sWnqpzU2Sls6ZvU9
  7TNpg9XTRs5PCzk4OJFprOh+tKC2JsU11URTZEh1iXl/IPGGQ/tmxm8tgQ+3; _WebSsoA
  uth0=vPDOngOyasChyToiOY0bV9+Ba5vkc5xVY1G4slR35cD7RUxWGxg/NLoAIdgGEVye9
@@ -3274,7 +3141,7 @@ Release: December 1, 2017
 
  [Application specific content]
 
-4.2  SAML 1.1 Assertion Extension
+### 4.2 SAML 1.1 Assertion Extension
 
 Following is a SAML assertion fragment that illustrates the message syntax of the SAML 1.1
 Assertion Extension elements in the advice element, as specified in section 2.2.3.
@@ -3326,7 +3193,8 @@ Release: December 1, 2017
 
 42 / 51
 
- CF 42 0E 6E          SubAuthority4 = 1846428367 (0x6E0E42CF)
+
+ CF 42 0E 6E          SubAuthority4 = 1846428367 (0x6E0E42CF)
  06 00 00 00        RidCount = 6 (0x00000006)
  F4 01 00 00        Rid1 = 500 (0x000001F4)
  06 02 00 00        Rid2 = 518 (0x00000206)
@@ -3356,22 +3224,23 @@ Release: December 1, 2017
 
 43 / 51
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations for the Microsoft Web Browser Federated Sign-On Protocol Extensions are
 specified in the following subsections. Additionally, the security considerations outlined in [MS-MWBF]
 section 5 apply to the Microsoft Web Browser Federated Sign-On Protocol Extensions.
 
-5.1.1  Data Integrity
+#### 5.1.1 Data Integrity
 
 Data integrity concerns, as described in [MS-MWBF] section 5.1.1, apply to the extensions specified in
 this document. Of particular concern are the SAML advice elements specified by the SAML 1.1
 Assertion Extension. These elements are included in the SAML assertion, which is signed to prevent
 tampering (see [MS-MWBF] section 2.2.4.2.2).
 
-5.1.2  Privacy
+#### 5.1.2 Privacy
 
 The privacy considerations in [MS-MWBF] section 5.1.5 apply to the extensions in this document. The
 extensions also introduce new privacy concerns.
@@ -3388,13 +3257,13 @@ The SAML 1.1 Assertion Extension provides a method for including SIDs in a SAML 
 SIDs might identify user identity, capabilities, or affiliations. For this reason, SIDs should not be
 included indiscriminately; rather, their distribution should be limited to specific relying parties.<24>
 
-5.1.3  Authorization Validation and Filtering
+#### 5.1.3 Authorization Validation and Filtering
 
 When processing SIDs from an IP/STS, relying parties must ensure that the IP/STS is authorized
 to issue SIDs that fall under a particular set of subauthorities. This is similar to namespace collision
 concerns with UPN and EmailAddress claims (as specified in [MS-MWBF] section 5.1.6).<25>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Because the Microsoft Web Browser Federated Sign-On Protocol Extensions is an authentication
 protocol, the security details are in the message processing rules section.
@@ -3420,7 +3289,8 @@ Release: December 1, 2017
 
 44 / 51
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3485,7 +3355,8 @@ Release: December 1, 2017
 
 45 / 51
 
-<4> Section 1.6: SAML1.1 Assertion Extension is supported only in Windows Server 2003 R2,
+
+<4> Section 1.6: SAML1.1 Assertion Extension is supported only in Windows Server 2003 R2,
 Windows Server 2008, and Windows Server 2008 R2.
 
 <5> Section 1.9: The following URIs are used as local assignments in fields specified by the SAML 1.1
@@ -3553,7 +3424,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-A resource IP/STS populates this field only if the user authenticated by using a security token from a
+
+A resource IP/STS populates this field only if the user authenticated by using a security token from a
 requestor IP/STS. If the SAML assertion issued by the requestor IP/STS contains a
 WindowsIdentifiers field, its value is copied to this field. Otherwise, the resource IP/STS maps
 claims from the SAML assertion of the requestor IP/STS to SIDs based on local configuration (see
@@ -3633,7 +3505,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-includes the fields. The web service resource uses the fields to provide authorization services to a
+
+includes the fields. The web service resource uses the fields to provide authorization services to a
 web-based application on the same machine by using methods that are outside the scope of this
 protocol.
 
@@ -3666,7 +3539,8 @@ Release: December 1, 2017
 
 48 / 51
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -3678,7 +3552,8 @@ Release: December 1, 2017
 
 49 / 51
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3817,7 +3692,8 @@ Microsoft Web Browser Federated Sign-On Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: December 1, 2017
 
-   syntax 14
+
+   syntax 14
    transport 14
 Query String Response Transfer protocol example 25
 Query String Response Transfer Protocol message 14

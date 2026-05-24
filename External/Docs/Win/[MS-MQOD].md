@@ -63,7 +63,8 @@ Release: September 2, 2022
 
 1 / 83
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -215,232 +216,101 @@ Release: September 2, 2022
 
 2 / 83
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 15
+## Table of Contents
 
-1.1
-1.2
-1.3
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 Purpose](#211-purpose)
+    - [2.1.2 Capabilities](#212-capabilities)
+      - [2.1.2.1 Message Delivery Assurance](#2121-message-delivery-assurance)
+      - [2.1.2.2 Message Transfer and Routing](#2122-message-transfer-and-routing)
+      - [2.1.2.3 Message Security](#2123-message-security)
+      - [2.1.2.4 Management and Administration](#2124-management-and-administration)
+    - [2.1.3 Interaction with External Components](#213-interaction-with-external-components)
+      - [2.1.3.1 Message Queuing and Applications](#2131-message-queuing-and-applications)
+      - [2.1.3.2 Reliable Message Processing Using Transactions](#2132-reliable-message-processing-using-transactions)
+      - [2.1.3.3 Message Queuing and Directory Service](#2133-message-queuing-and-directory-service)
+    - [2.1.4 Roles](#214-roles)
+      - [2.1.4.1 Application Roles](#2141-application-roles)
+      - [2.1.4.2 Queue Manager Roles](#2142-queue-manager-roles)
+        - [2.1.4.2.1 Queue Manager Roles for Application Interaction](#21421-queue-manager-roles-for-application-interaction)
+        - [2.1.4.2.2 Queue Manager Roles for Message Transfer and Routing](#21422-queue-manager-roles-for-message-transfer-and-routing)
+        - [2.1.4.2.3 Queue Manager Role for Remote Read and Management](#21423-queue-manager-role-for-remote-read-and-management)
+      - [2.1.4.3 Subcomponent Roles](#2143-subcomponent-roles)
+      - [2.1.4.4 Protocol Roles](#2144-protocol-roles)
+    - [2.1.5 Protocol Interactions](#215-protocol-interactions)
+    - [2.1.6 MSMQ Components](#216-msmq-components)
+    - [2.1.7 MSMQ Internal and External Communications](#217-msmq-internal-and-external-communications)
+      - [2.1.7.1 Communications Within MSMQ](#2171-communications-within-msmq)
+      - [2.1.7.2 Communications with External Systems](#2172-communications-with-external-systems)
+    - [2.1.8 MSMQ Applicability](#218-msmq-applicability)
+    - [2.1.9 Relevant Standards](#219-relevant-standards)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Create or Modify Queue - Application](#251-create-or-modify-queue-application)
+    - [2.5.2 Query Queue Information- Application](#252-query-queue-information-application)
+    - [2.5.3 Send Message to Queue - Application](#253-send-message-to-queue-application)
+    - [2.5.4 Send Message in Transaction - Application](#254-send-message-in-transaction-application)
+    - [2.5.5 Transfer Message](#255-transfer-message)
+    - [2.5.6 Receive a Message from a Queue - Application](#256-receive-a-message-from-a-queue-application)
+    - [2.5.7 Receive Message in Transaction – Application](#257-receive-message-in-transaction-application)
+    - [2.5.8 Exchange Message - Application](#258-exchange-message-application)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+    - [2.7.1 Queue Manager Restart](#271-queue-manager-restart)
+    - [2.7.2 Transient Network Failure](#272-transient-network-failure)
+    - [2.7.3 Transaction Coordinator Unavailable](#273-transaction-coordinator-unavailable)
+    - [2.7.4 Directory Unavailable](#274-directory-unavailable)
+    - [2.7.5 Internal Storage Failure](#275-internal-storage-failure)
+    - [2.7.6 Directory Inconsistency](#276-directory-inconsistency)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+    - [2.9.1 Security Elements](#291-security-elements)
+    - [2.9.2 Security Strategy and Mechanisms](#292-security-strategy-and-mechanisms)
+    - [2.9.3 Storage Security](#293-storage-security)
+    - [2.9.4 Communication Security](#294-communication-security)
+      - [2.9.4.1 Security Layer](#2941-security-layer)
+        - [2.9.4.1.1 Transport Layer Security](#29411-transport-layer-security)
+        - [2.9.4.1.2 Message Layer Security](#29412-message-layer-security)
+        - [2.9.4.1.3 Security Model: PKI](#29413-security-model-pki)
+        - [2.9.4.1.4 Message Layer Security Features](#29414-message-layer-security-features)
+          - [2.9.4.1.4.1 Message Integrity](#294141-message-integrity)
+          - [2.9.4.1.4.2 Sender Authentication](#294142-sender-authentication)
+          - [2.9.4.1.4.3 Message Privacy](#294143-message-privacy)
+        - [2.9.4.1.5 Message Layer Security Sequences](#29415-message-layer-security-sequences)
+    - [2.9.5 Internal Security and External Security](#295-internal-security-and-external-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Disconnected Data Entry](#31-example-1-disconnected-data-entry)
+  - [3.2 Example 2: Web Order Entry](#32-example-2-web-order-entry)
+  - [3.3 Example 3: Modify a Public Queue](#33-example-3-modify-a-public-queue)
+  - [3.4 Example 4: Creating and Monitoring a Remote Private Queue](#34-example-4-creating-and-monitoring-a-remote-private-queue)
+  - [3.5 Example 5: Branch Office Order Processing](#35-example-5-branch-office-order-processing)
+  - [3.6 Example 6: Business-to-Business Messaging Across a Firewall](#36-example-6-business-to-business-messaging-across-a-firewall)
+  - [3.7 Example 7: Server Farm](#37-example-7-server-farm)
+  - [3.8 Example 8: Stock Ticker](#38-example-8-stock-ticker)
+  - [3.9 Example 9: Business-to-Business Messaging Across Heterogeneous Systems](#39-example-9-business-to-business-messaging-across-heterogeneous-systems)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.1
-
-2.1.3
-
-2.1.4
-
-2.1.1
-2.1.2
-
-2.1.4.3
-2.1.4.4
-
-2.1.4.1
-2.1.4.2
-
-2.1.7.1
-2.1.7.2
-
-2.1.5
-2.1.6
-2.1.7
-
-2.1.3.1
-2.1.3.2
-2.1.3.3
-
-2.1.4.2.1
-2.1.4.2.2
-2.1.4.2.3
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-2.1.2.4
-
-2  Functional Architecture ......................................................................................... 17
-Overview ........................................................................................................ 17
-Purpose ..................................................................................................... 17
-Capabilities ................................................................................................ 17
-Message Delivery Assurance ................................................................... 17
-Message Transfer and Routing ................................................................ 17
-Message Security .................................................................................. 18
-Management and Administration ............................................................. 18
-Interaction with External Components ........................................................... 18
-Message Queuing and Applications .......................................................... 19
-Reliable Message Processing Using Transactions ....................................... 20
-Message Queuing and Directory Service ................................................... 23
-Roles ........................................................................................................ 25
-Application Roles................................................................................... 25
-Queue Manager Roles ............................................................................ 25
-Queue Manager Roles for Application Interaction ................................. 25
-Queue Manager Roles for Message Transfer and Routing ...................... 25
-Queue Manager Role for Remote Read and Management ...................... 26
-Subcomponent Roles ............................................................................. 26
-Protocol Roles ....................................................................................... 26
-Protocol Interactions ................................................................................... 28
-MSMQ Components ..................................................................................... 30
-MSMQ Internal and External Communications ................................................ 32
-Communications Within MSMQ................................................................ 32
-Communications with External Systems ................................................... 33
-MSMQ Applicability ..................................................................................... 34
-Relevant Standards ..................................................................................... 34
-Protocol Summary ............................................................................................ 34
-Environment .................................................................................................... 36
-Dependencies on This System ...................................................................... 36
-Dependencies on Other Systems/Components ................................................ 37
-Assumptions and Preconditions .......................................................................... 37
-Use Cases ....................................................................................................... 37
-Create or Modify Queue - Application ............................................................ 39
-Query Queue Information- Application ........................................................... 40
-Send Message to Queue - Application ............................................................ 41
-Send Message in Transaction - Application ..................................................... 42
-Transfer Message ....................................................................................... 43
-Receive a Message from a Queue - Application ............................................... 44
-Receive Message in Transaction – Application ................................................. 45
-Exchange Message - Application ................................................................... 46
-Versioning, Capability Negotiation, and Extensibility ............................................. 48
-Error Handling ................................................................................................. 48
-Queue Manager Restart ............................................................................... 48
-Transient Network Failure ............................................................................ 49
-Transaction Coordinator Unavailable ............................................................. 49
-Directory Unavailable .................................................................................. 50
-Internal Storage Failure ............................................................................... 50
-Directory Inconsistency ............................................................................... 50
-Coherency Requirements .................................................................................. 51
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-2.5.5
-2.5.6
-2.5.7
-2.5.8
-
-2.7.1
-2.7.2
-2.7.3
-2.7.4
-2.7.5
-2.7.6
-
-2.1.8
-2.1.9
-
-2.3.1
-2.3.2
-
-2.6
-2.7
-
-2.2
-2.3
-
-2.4
-2.5
-
-2.8
-
-[MS-MQOD] - v20220902
-Message Queuing Protocols Overview
-Copyright © 2022 Microsoft Corporation
-Release: September 2, 2022
-
-3 / 83
-
-2.9
-
-2.9.1
-2.9.2
-2.9.3
-2.9.4
-
-2.9.4.1
-
-2.9.4.1.1
-2.9.4.1.2
-2.9.4.1.3
-2.9.4.1.4
-
-Security .......................................................................................................... 51
-Security Elements ....................................................................................... 51
-Security Strategy and Mechanisms ............................................................... 52
-Storage Security ......................................................................................... 52
-Communication Security .............................................................................. 53
-Security Layer ...................................................................................... 53
-Transport Layer Security .................................................................. 53
-Message Layer Security .................................................................... 53
-Security Model: PKI ......................................................................... 54
-Message Layer Security Features ....................................................... 55
-Message Integrity ...................................................................... 55
-Sender Authentication ................................................................ 55
-Message Privacy ........................................................................ 56
-Message Layer Security Sequences .................................................... 56
-Internal Security and External Security ......................................................... 57
-Additional Considerations .................................................................................. 58
-
-2.9.4.1.4.1
-2.9.4.1.4.2
-2.9.4.1.4.3
-
-2.9.4.1.5
-
-2.9.5
-
-2.10
-
-3  Examples ............................................................................................................... 59
-Example 1: Disconnected Data Entry .................................................................. 59
-Example 2: Web Order Entry ............................................................................. 62
-Example 3: Modify a Public Queue ...................................................................... 64
-Example 4: Creating and Monitoring a Remote Private Queue ................................ 65
-Example 5: Branch Office Order Processing ......................................................... 67
-Example 6: Business-to-Business Messaging Across a Firewall ............................... 70
-Example 7: Server Farm ................................................................................... 72
-Example 8: Stock Ticker ................................................................................... 74
-Example 9: Business-to-Business Messaging Across Heterogeneous Systems .......... 75
-
-3.1
-3.2
-3.3
-3.4
-3.5
-3.6
-3.7
-3.8
-3.9
-
-4  Microsoft Implementations ................................................................................... 79
-Product Behavior .............................................................................................. 80
-
-4.1
-
-5  Change Tracking .................................................................................................... 81
-
-6  Index ..................................................................................................................... 82
-
-[MS-MQOD] - v20220902
-Message Queuing Protocols Overview
-Copyright © 2022 Microsoft Corporation
-Release: September 2, 2022
-
-4 / 83
-
-<!-- Extracted images from page 5 -->
-![Extracted image 1 from page 5]([MS-MQOD].images/page005-img01.png)
-<!-- /Extracted images from page 5 -->
-
-1  Introduction
+## 1 Introduction
 
 Microsoft Message Queuing (MSMQ) is a communications service that temporally decouples
 message send operations from message receive operations. The functionality enables applications
 to communicate even if those applications are not executed concurrently.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 The queue is the central abstraction in Microsoft Message Queuing (MSMQ). Applications send
 messages to a queue and/or receive messages from a queue. The queue provides persistence of the
@@ -481,7 +351,8 @@ Release: September 2, 2022
 
 5 / 83
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-MQOD].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -520,7 +391,8 @@ Release: September 2, 2022
 
 6 / 83
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-MQOD].images/page007-img01.png)
 ![Extracted image 2 from page 7]([MS-MQOD].images/page007-img02.png)
 <!-- /Extracted images from page 7 -->
@@ -555,7 +427,8 @@ Release: September 2, 2022
 
 7 / 83
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-MQOD].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -610,7 +483,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-MQOD].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -638,7 +512,7 @@ manager asynchronously transfers the message from the outgoing queue to the queu
 destination queue, optionally through interim queue managers for routing the message. Subsequently,
 a receiving application reads the message from the destination queue.
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -663,7 +537,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-application-specific ways with a resource manager in order to submit requests for work on
+
+application-specific ways with a resource manager in order to submit requests for work on
 resources.
 
 application protocol: A protocol that is used by applications to communicate with queue
@@ -737,7 +612,8 @@ Release: September 2, 2022
 
 10 / 83
 
-discretionary access control list (DACL): An access control list (ACL) that is controlled by
+
+discretionary access control list (DACL): An access control list (ACL) that is controlled by
 
 the owner of an object and that specifies the access particular users or groups can have to the
 object.
@@ -809,7 +685,8 @@ Release: September 2, 2022
 
 11 / 83
 
-Hypertext Transfer Protocol Secure (HTTPS): An extension of HTTP that securely encrypts and
+
+Hypertext Transfer Protocol Secure (HTTPS): An extension of HTTP that securely encrypts and
 
 decrypts web page requests. In some older protocols, "Hypertext Transfer Protocol over Secure
 Sockets Layer" is still used (Secure Sockets Layer has been deprecated). For more information,
@@ -887,7 +764,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-MSMQ routing link: A communication link between two sites. A routing link is represented by a
+
+MSMQ routing link: A communication link between two sites. A routing link is represented by a
 
 routing link object in the directory service. Routing links can have associated link costs. Routing
 links with their associated costs can be used to compute lowest-cost routing paths for store-and-
@@ -965,7 +843,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-receive: An atomic operation that retrieves and removes a message from a message queue.
+
+receive: An atomic operation that retrieves and removes a message from a message queue.
 
 recoverable message: A message that persists through queue manager restarts and provides
 
@@ -1039,7 +918,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Unicode string: A Unicode 8-bit string is an ordered sequence of 8-bit units, a Unicode 16-bit
+
+Unicode string: A Unicode 8-bit string is an ordered sequence of 8-bit units, a Unicode 16-bit
 string is an ordered sequence of 16-bit code units, and a Unicode 32-bit string is an ordered
 sequence of 32-bit code units. In some cases, it could be acceptable not to terminate with a
 terminating null character. Unless otherwise specified, all Unicode strings follow the UTF-16LE
@@ -1058,7 +938,7 @@ without using a Directory Service. In this mode, features pertaining to message 
 efficient routing, queue discovery, distribution lists, and aliases are not available. See also
 Directory-Integrated mode.
 
-1.3  References
+### 1.3 References
 
 [MC-COMQC] Microsoft Corporation, "Component Object Model Plus (COM+) Queued Components
 Protocol".
@@ -1108,7 +988,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-[MS-MQQP] Microsoft Corporation, "Message Queuing (MSMQ): Queue Manager to Queue Manager
+
+[MS-MQQP] Microsoft Corporation, "Message Queuing (MSMQ): Queue Manager to Queue Manager
 Protocol".
 
 [MS-MQRR] Microsoft Corporation, "Message Queuing (MSMQ): Queue Manager Remote Read
@@ -1154,18 +1035,19 @@ Release: September 2, 2022
 
 16 / 83
 
-2  Functional Architecture
 
-2.1  Overview
+## 2 Functional Architecture
 
-2.1.1  Purpose
+### 2.1 Overview
+
+#### 2.1.1 Purpose
 
 The primary purpose of the MSMQ protocols is to enable a temporal decoupling of applications by
 providing an asynchronous messaging service between applications that have to communicate
 reliably with each other through messages that they send and receive. The MSMQ protocols account
 for transient networking failure, system availability, and queue location.
 
-2.1.2  Capabilities
+#### 2.1.2 Capabilities
 
 The Microsoft Message Queuing (MSMQ) protocols provide the following capabilities to messaging
 applications:
@@ -1178,7 +1060,7 @@ Message Security (section 2.1.2.3)
 
 Management and Administration (section 2.1.2.4)
 
-2.1.2.1  Message Delivery Assurance
+##### 2.1.2.1 Message Delivery Assurance
 
 The MSMQ protocols provide the following levels of message delivery assurance:
 
@@ -1202,7 +1084,7 @@ processes messages as part of a transaction. Whether the messages are treated as
 depends on the outcome of the transaction. A Message Queuing System is required to receive
 and deliver these messages only in the scope of a transaction.
 
-2.1.2.2  Message Transfer and Routing
+##### 2.1.2.2 Message Transfer and Routing
 
 The MSMQ protocol set supports message transfer across complex network topologies and over a
 variety of network transport protocols that include the Transmission Control Protocol/Internet Protocol
@@ -1219,23 +1101,24 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-MQOD].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-2.1.2.3  Message Security
+##### 2.1.2.3 Message Security
 
 The MSMQ protocols enable secure messaging between applications by supporting a variety of
 security features that include user authentication, authorization, message integrity, and message
 encryption and decryption. The MSMQ security architecture is described in section 2.9 of this
 document.
 
-2.1.2.4  Management and Administration
+##### 2.1.2.4 Management and Administration
 
 The MSMQ protocol set defines protocols for management applications for its configuration,
 management, and administration.
 
-2.1.3  Interaction with External Components
+#### 2.1.3 Interaction with External Components
 
 This section describes the externally visible view of the MSMQ protocols and the components in the
 system.
@@ -1259,7 +1142,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-MQOD].images/page019-img01.png)
 ![Extracted image 2 from page 19]([MS-MQOD].images/page019-img02.png)
 <!-- /Extracted images from page 19 -->
@@ -1278,7 +1162,7 @@ section 2.1.3.3.
 The following subsections describe the relationship of the queue manager with the preceding
 subcomponents.
 
-2.1.3.1  Message Queuing and Applications
+##### 2.1.3.1 Message Queuing and Applications
 
 Applications use the Microsoft Message Queuing (MSMQ) application protocols to accomplish
 asynchronous messaging functionalities. An application typically interacts with one queue
@@ -1312,7 +1196,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-MQOD].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1321,7 +1206,7 @@ MQAC protocol. The following figure shows this deployment mode.
 
 Figure 10: Queue manager as Management Server
 
-2.1.3.2  Reliable Message Processing Using Transactions
+##### 2.1.3.2 Reliable Message Processing Using Transactions
 
 As described in section 2.1.3, the Microsoft Message Queuing (MSMQ) protocol set supports end-to-
 end exactly-once delivery assurance through transactional messages, as opposed to best-effort
@@ -1377,7 +1262,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-6.  The Transaction Coordinator coordinates the transaction with all the RMs enlisted in the
+
+6.  The Transaction Coordinator coordinates the transaction with all the RMs enlisted in the
 
 transaction, including the queue manager. For simplicity, the Prepare and Commit steps of a
 two-phase commit are depicted as a single TxCommit message in the following figure.
@@ -1448,7 +1334,8 @@ Release: September 2, 2022
 
 21 / 83
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-MQOD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1476,14 +1363,15 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-MQOD].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
 destination queue, the queue manager places the message in the designated dead-letter queue for
 the sending application to perform application-specific error handling.
 
-2.1.3.3  Message Queuing and Directory Service
+##### 2.1.3.3 Message Queuing and Directory Service
 
 The Microsoft Message Queuing (MSMQ) protocol set optionally supports a Directory Service to
 enable a set of features pertaining to message security, efficient routing, and the publishing of
@@ -1531,7 +1419,8 @@ Release: September 2, 2022
 
 23 / 83
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-MQOD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1595,14 +1484,15 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-The routing server algorithm as specified in [MS-MQBR] section 3.1 is used to determine the least-cost
+
+The routing server algorithm as specified in [MS-MQBR] section 3.1 is used to determine the least-cost
 message route between the source and destination queue managers.
 
-2.1.4  Roles
+#### 2.1.4 Roles
 
 The MSMQ protocol set supports the following components that interact with each another.
 
-2.1.4.1  Application Roles
+##### 2.1.4.1 Application Roles
 
 The following roles represent the external actors of the MSMQ protocol set:
 
@@ -1619,12 +1509,12 @@ Queuing (MSMQ): Queue Manager Management Protocol (MQMR) and MQAC protocols to
 interact with the MSMQ management server role of the queue manager, as described in the
 following section.
 
-2.1.4.2  Queue Manager Roles
+##### 2.1.4.2 Queue Manager Roles
 
 This section describes the roles exhibited by the queue manager in the Message Queuing (MSMQ)
 protocol set.
 
-2.1.4.2.1 Queue Manager Roles for Application Interaction
+###### 2.1.4.2.1 Queue Manager Roles for Application Interaction
 
 The Message Queuing (MSMQ) protocol set supports the following server roles that allow interaction
 with the applications, as described in section 2.1.3.1:
@@ -1648,7 +1538,7 @@ Supporting Server: This is a queue manager role that implements the server side 
 
 supporting server protocol as specified in [MS-MQMP].
 
-2.1.4.2.2 Queue Manager Roles for Message Transfer and Routing
+###### 2.1.4.2.2 Queue Manager Roles for Message Transfer and Routing
 
 The following roles of the queue manager involve transferring messages from the source to the
 destination.
@@ -1665,7 +1555,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Messaging Protocol (MQQB) and the Message Queuing (MSMQ): SOAP Reliable Messaging
+
+Messaging Protocol (MQQB) and the Message Queuing (MSMQ): SOAP Reliable Messaging
 Protocol (SRMP).
 
 Routing Server: The queue manager performs the routing server role for facilitating the transfer
@@ -1675,7 +1566,7 @@ Binary Reliable Message Routing Algorithm [MS-MQBR]. A more specialized version 
 routing server role is the site gate role, where the queue manager provides routing between
 sites.
 
-2.1.4.2.3 Queue Manager Role for Remote Read and Management
+###### 2.1.4.2.3 Queue Manager Role for Remote Read and Management
 
 This queue manager role involves message read and management operations from a remote queue
 manager. Such operations are triggered by user applications as described in section 2.1.4.1. In
@@ -1685,7 +1576,7 @@ functionality. This role implements both the client and server roles of the remo
 Message Queuing (MSMQ): Queue Manager to Queue Manager Protocol (MQQP) and the Message
 Queuing (MSMQ): Queue Manager Remote Read Protocol (MQRR).
 
-2.1.4.3  Subcomponent Roles
+##### 2.1.4.3 Subcomponent Roles
 
 As described in section 2.1.3, the Transaction Coordinator and Directory Service subsystems interact
 with the Microsoft Message Queuing (MSMQ) protocol set. In addition to external implementations for
@@ -1709,7 +1600,7 @@ MSMQ Directory Service server predates and is superseded by Active Directory. Su
 versions of the MSMQ protocol set use the Lightweight Directory Access Protocol (LDAP) to
 interact with the Active Directory implementation of the Directory Service.
 
-2.1.4.4  Protocol Roles
+##### 2.1.4.4 Protocol Roles
 
 The following table summarizes the roles of each protocol in the Microsoft Message Queuing (MSMQ)
 protocol set.
@@ -1741,7 +1632,8 @@ Release: September 2, 2022
 
 26 / 83
 
-Protocol name
+
+Protocol name
 
 Protocol role
 
@@ -1861,7 +1753,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Protocol name
+
+Protocol name
 
 Protocol role
 
@@ -1926,7 +1819,7 @@ and server sides of this protocol. This protocol does not replace MQQP and does 
 change the co-implementation requirement of MQMP and MQQP. When this protocol is
 implemented, MQMP and MQQP can also be implemented for backward compatibility.
 
-2.1.5  Protocol Interactions
+#### 2.1.5 Protocol Interactions
 
 The following figure shows the interactions among the MSMQ protocol set components, queue
 manager roles, and the external entities, as described in section 2.1.3. How these components work
@@ -1939,7 +1832,8 @@ Release: September 2, 2022
 
 28 / 83
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-MQOD].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -1971,7 +1865,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-(MQMR) and MQAC protocols to accomplish administrative and management-related activities of the
+
+(MQMR) and MQAC protocols to accomplish administrative and management-related activities of the
 MSMQ protocol set.
 
 As described in section 2.1.3.2, a Transaction Coordinator interacts with MSMQ to send and receive
@@ -1987,7 +1882,7 @@ directory service becomes another queue manager role in the preceding figure. In
 versions of the MSMQ protocol set, Active Directory is used as the directory service. Applications and
 the queue manager interact with the directory service.
 
-2.1.6  MSMQ Components
+#### 2.1.6 MSMQ Components
 
 The queue manager is the central piece of the Microsoft Message Queuing (MSMQ) communication
 service. Conceptually, the queue manager deals with every queued messaging aspect of the MSMQ
@@ -2010,7 +1905,8 @@ Release: September 2, 2022
 
 30 / 83
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-MQOD].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2038,7 +1934,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-and is collocated with the queue manager as part of the Directory facet. Client applications on these
+
+and is collocated with the queue manager as part of the Directory facet. Client applications on these
 versions of MSMQ use the client side of the MQDS protocol to interact with the Directory Server.
 Similarly, a queue manager that is not collocated with the MSMQ Directory Service server uses the
 client side of MQDS to interact with a remote MSMQ Directory Service server. Furthermore, the queue
@@ -2081,7 +1978,7 @@ manager uses the server protocols to accept such messages. Operations on the Mes
 facet are initiated by the actions performed by the Client facet, as well as the Change Notification
 facet of the queue manager.
 
-2.1.7  MSMQ Internal and External Communications
+#### 2.1.7 MSMQ Internal and External Communications
 
 The MSMQ protocol set does not define any communication constraints or additional message types
 beyond those described in the specifications of the protocols supported by the system, as listed in
@@ -2090,7 +1987,7 @@ section 2.2.
 The following sections describe communications within the MSMQ protocol set and between it and
 external entities.
 
-2.1.7.1  Communications Within MSMQ
+##### 2.1.7.1 Communications Within MSMQ
 
 Microsoft Message Queuing (MSMQ) components communicate with one another using the following
 protocols and algorithms:
@@ -2102,7 +1999,8 @@ Release: September 2, 2022
 
 32 / 83
 
-  Message Queuing (MSMQ): Binary Reliable Messaging Protocol (MQQB): Used by one queue
+
+  Message Queuing (MSMQ): Binary Reliable Messaging Protocol (MQQB): Used by one queue
 
 manager to transfer messages to another queue manager.
 
@@ -2143,7 +2041,7 @@ the role of an MSMQ Directory Service server.
 Abstracts for these protocols and the specific communication within the Message Queuing components
 are listed in section 2.2.
 
-2.1.7.2  Communications with External Systems
+##### 2.1.7.2 Communications with External Systems
 
 Microsoft Message Queuing (MSMQ) communicates with external systems via different protocols, as
 follows:
@@ -2182,7 +2080,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-2.1.8  MSMQ Applicability
+
+#### 2.1.8 MSMQ Applicability
 
 The Microsoft Messing Queuing (MSMQ) protocol set supports asynchronous messaging; therefore, it is
 not applicable to the following messaging applications:
@@ -2205,7 +2104,7 @@ transactional capability between the participating applications. Instead, MSMQ s
 transactional boundaries, reliable message transfer, and well-defined failure handling semantics.
 Therefore, MSMQ cannot be used for atomic update between applications.
 
-2.1.9  Relevant Standards
+#### 2.1.9 Relevant Standards
 
 The following table lists specific standards assignments for the Microsoft Message Queuing (MSMQ)
 protocol set.
@@ -2218,7 +2117,7 @@ LDAP: Lightweight Directory Access Protocol
 
 [RFC3377]
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table provides a comprehensive list of the Microsoft Message Queuing (MSMQ) protocols.
 
@@ -2294,7 +2193,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Protocol Name
+
+Protocol Name
 
 Description
 
@@ -2434,7 +2334,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Member protocols of this group provide message queuing functionality to applications and are invoked
+
+Member protocols of this group provide message queuing functionality to applications and are invoked
 either directly by client applications or indirectly by the queue manager as a result of a client
 application requesting specific messaging functionality from the MSMQ protocols.
 
@@ -2508,13 +2409,13 @@ ADTS: Active Directory Technical Specification
 
 [MS-ADTS]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. This context includes the
 systems that use the interfaces provided by this system of protocols, other systems that depend on
 this system, and, as appropriate, the methods by which components of the system communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 The following systems use the interfaces provided by the Microsoft Message Queuing (MSMQ)
 protocols:
@@ -2530,7 +2431,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-RPC: Can use the MSMQ protocols as a transport for supporting asynchronous RPC calls.<1>
+
+RPC: Can use the MSMQ protocols as a transport for supporting asynchronous RPC calls.<1>
 
 Windows Communication Foundation (WCF): Uses the MSMQ protocols as a transport for
 supporting queued communication. WCF uses the MSMQ primitives to provide additional
@@ -2541,7 +2443,7 @@ designated queue when the number of such attempts exceeds a certain application-
 such that the application does not receive the poison message anymore and can process other
 messages. See [MSDN-WCF] for more information.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 In addition to the external subsystem dependencies specified in each Microsoft Message Queuing
 (MSMQ) protocol document, the MSMQ protocol set requires:
@@ -2552,7 +2454,7 @@ In addition to the external subsystem dependencies specified in each Microsoft M
 
   Security infrastructure as described in section 2.9.
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions are required for a Message Queuing System to start
 operation successfully:
@@ -2597,7 +2499,7 @@ Directory Service server is initialized and available on a domain controller.
 
 objects are specified in [MS-MQDS] and [MS-MQDSSM].
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 This section breaks down the functionality of the Microsoft Message Queuing (MSMQ) protocols into
 small granular use cases that can then be combined to build and manage complex distributed
@@ -2610,7 +2512,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-MQOD].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2640,7 +2543,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Application Users: Application users are the primary actors of a Message Queuing System. Application
+
+Application Users: Application users are the primary actors of a Message Queuing System. Application
 users perform business operations by using the functionality of distributed applications, which invoke
 message queuing activities within the system.
 
@@ -2680,7 +2584,7 @@ Application Users: Application users are the primary actors of a Message Queuing
 users perform business operations by using the functionality of distributed applications, which invoke
 message queuing activities within the system.
 
-2.5.1  Create or Modify Queue - Application
+#### 2.5.1 Create or Modify Queue - Application
 
  Context of Use: The application makes changes to the queuing environment to facilitate message
 exchange operations between other participating applications of a Message Queuing System.
@@ -2713,7 +2617,8 @@ Release: September 2, 2022
 
 39 / 83
 
-
+
+
 
 
 
@@ -2758,7 +2663,7 @@ The queue is created or modified.
 
 None.
 
-2.5.2  Query Queue Information- Application
+#### 2.5.2 Query Queue Information- Application
 
  Context of Use: The application collects administrative information about a Message Queuing
 System and presents the information for management purposes.
@@ -2789,7 +2694,8 @@ Release: September 2, 2022
 
 40 / 83
 
- Preconditions
+
+ Preconditions
 
 
 
@@ -2828,7 +2734,7 @@ The application receives the requested information.
 
 None.
 
-2.5.3  Send Message to Queue - Application
+#### 2.5.3 Send Message to Queue - Application
 
  Context of Use: An application creates a message and interacts with the queue manager to send the
 message. The application optionally uses a Directory Service for looking up the queue name.
@@ -2875,7 +2781,8 @@ Release: September 2, 2022
 
 41 / 83
 
- Trigger: The direct actor triggers this use case based on the actions of the primary actor. It is also
+
+ Trigger: The direct actor triggers this use case based on the actions of the primary actor. It is also
 triggered by the Exchange Message – Application (section 2.5.8) use case.
 
 The steps involved in this use case are:
@@ -2908,7 +2815,7 @@ The message is placed in the destination queue.
 
 See Send Message in Transaction - Application.
 
-2.5.4  Send Message in Transaction - Application
+#### 2.5.4 Send Message in Transaction - Application
 
  Context of Use: This use case extends the Send Message to Queue - Application (section 2.5.3) use
 case by adding transactional semantics to the message send operation. In this use case, the
@@ -2947,7 +2854,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-
+
+
 
 The Transaction Coordinator is accessible to the application and the queue manager in order to
 coordinate the transaction execution.
@@ -2991,7 +2899,7 @@ Extensions
 
 None.
 
-2.5.5  Transfer Message
+#### 2.5.5 Transfer Message
 
  Context of Use: This use case is optionally used by the use case in Send Message to Queue –
 Application, Send Message to Queue, as well as by the use case in Send Message in Transaction -
@@ -3023,7 +2931,8 @@ Release: September 2, 2022
 
 43 / 83
 
- Preconditions
+
+ Preconditions
 
 This use case has the following preconditions, in addition to those of the invoking use cases (Send
 Message to Queue – Application or Send Message in Transaction - Application:
@@ -3074,7 +2983,7 @@ queue manager uses the MQBR algorithm in step 1 to determine the next hop queue 
 the steps described in this section are repeated until the message reaches the final destination queue
 manager.
 
-2.5.6  Receive a Message from a Queue - Application
+#### 2.5.6 Receive a Message from a Queue - Application
 
  Context of Use: This use case covers the counterpart of the Send Message use case. An application
 receives a message from a queue. The application optionally uses a Directory Service to look up the
@@ -3097,7 +3006,8 @@ Release: September 2, 2022
 
 44 / 83
 
- Stakeholders
+
+ Stakeholders
 
 Developers: See section 2.5.
 
@@ -3145,7 +3055,7 @@ the receive operation, the message is removed from the queue.
 
 None.
 
-2.5.7  Receive Message in Transaction – Application
+#### 2.5.7 Receive Message in Transaction – Application
 
  Context of Use: This use case extends the use case described in Receive a Message from a Queue -
 Application (section 2.5.6) by adding transactional semantics to the message receive operation. In this
@@ -3171,7 +3081,8 @@ Release: September 2, 2022
 
 45 / 83
 
-Transaction Coordinator:  See section 2.5.
+
+Transaction Coordinator:  See section 2.5.
 
  Stakeholders
 
@@ -3232,7 +3143,7 @@ If the outcome of the transaction is not successful, the messages are placed bac
 
 None.
 
-2.5.8  Exchange Message - Application
+#### 2.5.8 Exchange Message - Application
 
  Context of Use: The sending application creates the messages and sends them to the queue
 manager that hosts the queue. The receiving application receives the messages from the queue. This
@@ -3245,7 +3156,8 @@ Release: September 2, 2022
 
 46 / 83
 
-  Send Message to Queue - Application (section 2.5.3) (or Send Message in Transaction -
+
+  Send Message to Queue - Application (section 2.5.3) (or Send Message in Transaction -
 
 Application (section 2.5.4) if a transaction is used for sending messages)
 
@@ -3339,11 +3251,12 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
- Extensions
+
+ Extensions
 
 None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 There are multiple versions of the MSMQ protocol set.<2>A summary of different versions and the
 protocols or protocol subsets implemented by these versions follows.
@@ -3411,12 +3324,12 @@ documented in the respective protocol documents. Abstracts for these protocols a
 Capability negotiations between client and server implementations of these protocols are described in
 the sections titled "Versioning and Capability Negotiation" in the respective protocol specifications.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 This section describes the common failures encountered by a Message Queuing System and its
 behavior under such conditions.
 
-2.7.1  Queue Manager Restart
+#### 2.7.1 Queue Manager Restart
 
 The queue manager can undergo both controlled and uncontrolled shutdown, resulting from either a
 planned system downtime or an unexpected failure of a component in the underlying operating
@@ -3431,7 +3344,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-messages as described in section 2.1.2.1. Specifically, the following rules apply for different message
+
+messages as described in section 2.1.2.1. Specifically, the following rules apply for different message
 types:
 
   A transactional message sent by an application to deliver to a remote queue is required to persist
@@ -3455,7 +3369,7 @@ through system restart until it is consumed by the receiving application or the 
 
   An express message is discarded following a system restart.
 
-2.7.2  Transient Network Failure
+#### 2.7.2 Transient Network Failure
 
 A Message Queuing System is required to gracefully handle network outages and restore normal
 operations when the network comes back online according to the following rules:
@@ -3480,7 +3394,7 @@ Queuing System is required to fail the client operations that require synchronou
 across the network. When the network becomes available, a Message Queuing System is required
 to resume these operations without requiring any additional external intervention.
 
-2.7.3  Transaction Coordinator Unavailable
+#### 2.7.3 Transaction Coordinator Unavailable
 
 The external Transaction Coordinator subcomponent of the Microsoft Message Queuing (MSMQ)
 protocol set provides transactional message processing, as described in section 2.1.3.2. The
@@ -3509,14 +3423,15 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-of a Transaction Coordinator in an undisrupted manner, including message transfer to a remote
+
+of a Transaction Coordinator in an undisrupted manner, including message transfer to a remote
 transactional queue that does not require the Transaction Coordinator.
 
   When the Transaction Coordinator becomes available, the queue manager resumes normal
 
 transacted receive and send operations, without requiring external intervention.
 
-2.7.4  Directory Unavailable
+#### 2.7.4 Directory Unavailable
 
 A Message Queuing System uses a directory if it is operating in the Directory-Integrated mode. The
 directory can become temporarily unavailable to one of more queue managers in the entire Message
@@ -3543,7 +3458,7 @@ directory becomes available, the queue manager resets the DirectoryOffline ADM a
 local QueueManager ADM element instance to False and resumes operations in Directory-
 Integrated mode.
 
-2.7.5  Internal Storage Failure
+#### 2.7.5 Internal Storage Failure
 
 The queue manage uses a local persistent store to persist its state and data in an implementation-
 specific manner that is independent of the protocol. The Microsoft Message Queuing (MSMQ) protocol
@@ -3573,7 +3488,7 @@ the persistent store cannot be restored to a consistent state, the queue manager
 completely uninstalled and reinstalled on the particular machine, resulting in the permanent loss
 of configuration and data.
 
-2.7.6  Directory Inconsistency
+#### 2.7.6 Directory Inconsistency
 
 As described in [MS-MQDMPR] section 3.1.1, certain abstract data model (ADM) attributes of the ADM
 elements of the MSMQ protocol set are persisted in the directory and shared across all queue
@@ -3586,7 +3501,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-under the Machine Directory Service object of the machine domain, as described in [MS-MQDS]
+
+under the Machine Directory Service object of the machine domain, as described in [MS-MQDS]
 section 2.2.10.3, and in [MS-MQDSSM] sections 2.2.1, 2.2.2, and 3.1.6.4.1. The queue manager on a
 particular machine verifies that the state maintained under the directory belongs to this queue
 manager. An inconsistency arises if the machine and the directory go out-of-sync due to a manual
@@ -3599,7 +3515,7 @@ MQDSSM), if one exists. If the Directory object exists and there is a mismatch, 
 sets the DirectoryOffline ADM attribute of the local QueueManager ADM element instance to True
 and starts the Directory Online Timer ([MS-MQDMPR] section 3.1.2.5).
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 The queue manager uses a local persistent store to persist its state and data in an implementation-
 specific protocol-independent manner. The Microsoft Message Queuing (MSMQ) protocol set does not
@@ -3608,14 +3524,14 @@ requirement for the implementation of the persistent store. If the storage syste
 data due to exceeded capacity, the MSMQ protocol set fails the entire related operation and performs
 any necessary clean-up operation to restore coherency of the store.
 
-2.9  Security
+### 2.9 Security
 
 This section documents those system-wide security issues that are not otherwise described in the
 Technical Documents (TDs) for the member protocols. It does not duplicate what is already described
 in the member protocol TDs unless there is some unique aspect that applies to the MSMQ protocol set
 as a whole.
 
-2.9.1  Security Elements
+#### 2.9.1 Security Elements
 
 A Message Queuing System is composed of components that store data and communicate with other
 components. Both the storage of components and the communications between components is
@@ -3631,7 +3547,8 @@ Release: September 2, 2022
 
 51 / 83
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-MQOD].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
@@ -3642,7 +3559,7 @@ manager and an external entity (2, 3, 4: external communication) are shown in th
 The communications between external entities are handled by those entities and are not included in
 the figure.
 
-2.9.2  Security Strategy and Mechanisms
+#### 2.9.2 Security Strategy and Mechanisms
 
 To secure both data objects and communications, the system uses the following set of security
 mechanisms:
@@ -3661,7 +3578,7 @@ entries (ACEs) to specify authorization policy on data objects as described in [
 
 protect communications during component interactions.
 
-2.9.3  Storage Security
+#### 2.9.3 Storage Security
 
 Data objects are stored, and the storage is protected by the owning component. The system defines
 discretionary access control lists (DACLs) on each data object so that unauthorized access is not
@@ -3677,24 +3594,25 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Adding a message object to a queue object is controlled by the queue manager according to the ACLs
+
+Adding a message object to a queue object is controlled by the queue manager according to the ACLs
 specified on the queue object. The message carries the sender identity, which is used by the queue
 manager to perform access checks. The queue manager authenticates the sender as described in
 section 2.9.4.1.4. Without the implementation of sender authentication, a malicious user can provide a
 fake user identity in a message and bypass the access control defined for the queue object.
 
-2.9.4  Communication Security
+#### 2.9.4 Communication Security
 
 Communications occur over transports that are listed in the table in section 2.9.4.1. The system relies
 on the use of transport security features to secure communication. When needed, it augments the
 security features to provide required communication security support.
 
-2.9.4.1  Security Layer
+##### 2.9.4.1 Security Layer
 
 Data transmitted between two components can be protected at two layers: the transport layer and the
 message layer.
 
-2.9.4.1.1 Transport Layer Security
+###### 2.9.4.1.1 Transport Layer Security
 
 The transport layer security refers to the security features that are provided by a transport that the
 system uses. For example, the remote procedure call (RPC) and Lightweight Directory Access Protocol
@@ -3753,7 +3671,7 @@ Exchange/Sequenced Packet Exchange (IPX/SPX) transport that is used by the Messa
 (MSMQ): Binary Reliable Messaging Protocol (MQQB) to transfer messages. In this case, the system
 provides a set of security features in the message layer to meet security needs.
 
-2.9.4.1.2 Message Layer Security
+###### 2.9.4.1.2 Message Layer Security
 
 [MS-MQOD] - v20220902
 Message Queuing Protocols Overview
@@ -3762,7 +3680,8 @@ Release: September 2, 2022
 
 53 / 83
 
-Message layer security, which is independent of the underlying transport, refers to security features
+
+Message layer security, which is independent of the underlying transport, refers to security features
 that are provided by the system on a per-message basis. It includes message integrity, sender
 authentication, and message privacy. Message integrity and sender authentication provide end-to-end
 protection of the message, ensuring that a message is sent by the original sender without being
@@ -3772,7 +3691,7 @@ that the message content is not disclosed to unauthorized users during network t
 The message layer security features are built on the public key infrastructure (PKI) model as specified
 in [SP800-32] and in [MSFT-PKI].
 
-2.9.4.1.3 Security Model: PKI
+###### 2.9.4.1.3 Security Model: PKI
 
 A public key infrastructure (PKI) is an arrangement that binds a public key certificate with a respective
 user identity through a trusted third party. The main elements in the PKI are:
@@ -3833,18 +3752,19 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-element ([MS-MQDMPR] section 3.1.1.1). The private keys are stored securely and have to be
+
+element ([MS-MQDMPR] section 3.1.1.1). The private keys are stored securely and have to be
 available to the queue manager. The public keys are published in the Directory Service under the
 Machine object for this queue manager. For more details about the queue manager cryptography
 keys, see [MS-MQDMPR] section 3.1.1.1 and [MS-MQDSSM] sections 2.2.1 and 3.1.6.20.1.
 
-2.9.4.1.4 Message Layer Security Features
+###### 2.9.4.1.4 Message Layer Security Features
 
 Using the user certificates, service cryptography keys, and the Directory Service for public key
 distribution, the system provides three message layer security features: message integrity, sender
 authentication, and message privacy.
 
-2.9.4.1.4.1  Message Integrity
+###### 2.9.4.1.4.1 Message Integrity
 
 Message integrity is achieved through the following sequence:
 
@@ -3878,7 +3798,7 @@ The signature format is protocol-specific. See [MS-MQMQ] section 2.2.20.6 for th
 For more details about the hash algorithms, the message properties used for hashing, and the
 algorithm to encrypt and decrypt the hash, see [MS-MQMQ] section 2.2.20.6.
 
-2.9.4.1.4.2  Sender Authentication
+###### 2.9.4.1.4.2 Sender Authentication
 
 When a message contains the signature, the user certificate, and user identity of the sender, the
 queue manager of the destination queue verifies the sender identity that is carried in the message as
@@ -3912,7 +3832,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-4.  If a matching User ADM element instance is found:
+
+4.  If a matching User ADM element instance is found:
 
 1.  Extracts the sender identity from the message.
 
@@ -3929,7 +3850,7 @@ unauthenticated.
 When the message does not contain the signature, the user certificate, or the user identity of the
 sender, the queue manager does not verify the sender identity.
 
-2.9.4.1.4.3  Message Privacy
+###### 2.9.4.1.4.3 Message Privacy
 
 Message privacy is achieved through the following sequence:
 
@@ -3962,7 +3883,7 @@ MQDS] section 2.2.20) to ensure that the receiving queue manager can decrypt the
 For more details about the encryption algorithm and related message properties, see [MS-MQQB]
 section 3.1.7.1.5.
 
-2.9.4.1.5 Message Layer Security Sequences
+###### 2.9.4.1.5 Message Layer Security Sequences
 
 The following figure shows the sequences of the three message layer security features.
 
@@ -3973,13 +3894,14 @@ Release: September 2, 2022
 
 56 / 83
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-MQOD].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
 Figure 18: Message layer security sequences
 
-2.9.5  Internal Security and External Security
+#### 2.9.5 Internal Security and External Security
 
 Internal and external security is another view of protecting the data and the communications in the
 system.
@@ -3996,12 +3918,13 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-"Component storage and communications" in section 2.9.1, 1 is internal communication, and 2, 3, and
+
+"Component storage and communications" in section 2.9.1, 1 is internal communication, and 2, 3, and
 4 are external communications.
 
 The security mechanisms previously described are used to ensure both internal and external security.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 None.
 
@@ -4012,7 +3935,8 @@ Release: September 2, 2022
 
 58 / 83
 
-3  Examples
+
+## 3 Examples
 
 The examples presented in the following subsections depend on these common prerequisites.
 
@@ -4056,7 +3980,7 @@ domain controller.
 The necessary Directory Service objects exist and are configured correctly, as specified in [MS-
 MQDS] for MSMQ versions 1.0 and 2.0 and in [MS-MQDSSM] for MSMQ versions 3.0 and 4.0.
 
-3.1  Example 1: Disconnected Data Entry
+### 3.1 Example 1: Disconnected Data Entry
 
 This example demonstrates disconnected data entry as described in the Send Message in Transaction -
 Application (section 2.5.4) and Receive Message in Transaction – Application (section 2.5.7) use
@@ -4107,7 +4031,8 @@ Release: September 2, 2022
 
 59 / 83
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-MQOD].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
@@ -4135,7 +4060,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-2.  The order entry application sends message 1 to the salesperson laptop Queue Manager by
+
+2.  The order entry application sends message 1 to the salesperson laptop Queue Manager by
 
 invoking the rpc_ACSendMessageEx ([MS-MQMP] section 3.1.5.2) method of the qmcomm2
 interface, providing a ptb input parameter initialized with the XACTUOW structure created at step
@@ -4214,7 +4140,8 @@ Release: September 2, 2022
 
 61 / 83
 
-19. The salesperson laptop Queue Manager again attempts to initialize a session with the central office
+
+19. The salesperson laptop Queue Manager again attempts to initialize a session with the central office
 
 server Queue Manager by sending an EstablishConnection Packet and a
 ConnectionParameters Packet  and attempts to send message 2  stored in the outgoing queue
@@ -4233,7 +4160,7 @@ in the dead-letter queue.
 Manager and receives message 2 from the salesperson laptop Queue Manager, as described in
 steps 8 through 10.
 
-3.2  Example 2: Web Order Entry
+### 3.2 Example 2: Web Order Entry
 
 This example demonstrates web order entry as described in the Send Message in Transaction -
 Application (section 2.5.4) and Receive Message in Transaction – Application (section 2.5.7) use
@@ -4300,7 +4227,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MS-MQOD].images/page063-img01.png)
 <!-- /Extracted images from page 63 -->
 
@@ -4336,7 +4264,8 @@ Release: September 2, 2022
 
 63 / 83
 
-7.  The back-end application receives the MSMQ message from the back-end Queue Manager by
+
+7.  The back-end application receives the MSMQ message from the back-end Queue Manager by
 
 invoking the rpc_ACReceiveMessageEx ([MS-MQMP] section 3.1.5.3) method of the qmcomm2
 interface, providing a ptb input parameter initialized with the XACTUOW structure created at step
@@ -4370,7 +4299,7 @@ described in steps 12 and 13 of Example 1: Disconnected Data Entry (section 3.1)
 
 13. The back-end application sends an order completion email to the web client.
 
-3.3  Example 3: Modify a Public Queue
+### 3.3 Example 3: Modify a Public Queue
 
 This example demonstrates modifying a public queue as described in the Create or Modify Queue -
 Application (section 2.5.1) use case.
@@ -4411,7 +4340,8 @@ Release: September 2, 2022
 
 64 / 83
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MS-MQOD].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
@@ -4446,7 +4376,7 @@ Updates ([MS-MQCN] section 2.2.6) and sends the update to the server Queue Manag
 
 7.  The server Queue Manager updates its local queue with the data received in step 6.
 
-3.4  Example 4: Creating and Monitoring a Remote Private Queue
+### 3.4 Example 4: Creating and Monitoring a Remote Private Queue
 
 This example demonstrates creating and monitoring a remote private queue as described in the
 Create or Modify Queue - Application (section 2.5.1) and Query Queue Information-
@@ -4461,7 +4391,8 @@ Release: September 2, 2022
 
 65 / 83
 
-<!-- Extracted images from page 66 -->
+
+<!-- Extracted images from page 66 -->
 ![Extracted image 1 from page 66]([MS-MQOD].images/page066-img01.png)
 <!-- /Extracted images from page 66 -->
 
@@ -4524,7 +4455,8 @@ Release: September 2, 2022
 
 66 / 83
 
-3.  The Admin Application sets the path name indicating the queue to be referenced by the
+
+3.  The Admin Application sets the path name indicating the queue to be referenced by the
 
 MSMQMessageInfo class instance by invoking the PathName  ([MC-MQAC] section 3.10.4.1.7)
 method of the IMSMQQueueInfo4 interface. Next, the Admin Application calls the Create ([MC-
@@ -4552,7 +4484,7 @@ an aProp[] parameter array with a single entry set to PROPID_MGMT_QUEUE_MESSAGE_
 a single entry containing a PROPID_MGMT_QUEUE_MESSAGE_COUNT ([MS-MQMQ] section
 2.3.12.7) property value with the number of messages in the remote queue.
 
-3.5  Example 5: Branch Office Order Processing
+### 3.5 Example 5: Branch Office Order Processing
 
 This example demonstrates branch office order processing as described in the Send Message to Queue
 – Application (section 2.5.3) use case.
@@ -4608,7 +4540,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 68 -->
+
+<!-- Extracted images from page 68 -->
 ![Extracted image 1 from page 68]([MS-MQOD].images/page068-img01.png)
 <!-- /Extracted images from page 68 -->
 
@@ -4638,7 +4571,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-S_DSGetProps method returns an apVar[] output parameter array populated with routing link
+
+S_DSGetProps method returns an apVar[] output parameter array populated with routing link
 properties ([MS-MQDS] section 3.1.4.21.8.1.9) and a return code of MQ_OK (0x00000000).
 
 2.  The branch office server initializes its RoutingTable ([MS-MQBR] sections 3.1.1.2 and 3.1.3.1)
@@ -4715,7 +4649,8 @@ Release: September 2, 2022
 
 69 / 83
 
-3.6  Example 6: Business-to-Business Messaging Across a Firewall
+
+### 3.6 Example 6: Business-to-Business Messaging Across a Firewall
 
 This example demonstrates business-to-business messaging across a firewall as described in use
 cases Send Message to Queue – Application (section 2.5.3) and Receive a Message from a Queue –
@@ -4779,7 +4714,8 @@ Release: September 2, 2022
 
 70 / 83
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MS-MQOD].images/page071-img01.png)
 <!-- /Extracted images from page 71 -->
 
@@ -4813,7 +4749,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-including the message identifierof the original message, as specified in [MC-MQSRM] section
+
+including the message identifierof the original message, as specified in [MC-MQSRM] section
 2.2.4.3.
 
 5.  The order entry application receives the acknowledgment message from the manufacturer server
@@ -4839,7 +4776,7 @@ Manager by invoking the rpc_ACReceiveMessageEx method, providing a ptb input par
 initialized with the XACTUOW structure created at step 1, and commits the transaction by
 invoking the R_QMCommitTransaction method.
 
-3.7  Example 7: Server Farm
+### 3.7 Example 7: Server Farm
 
 This example demonstrates the sequence of events for messages in a server farm, as described in the
 Send Message to Queue – Application (section 2.5.3) and Receive a Message from a Queue –
@@ -4888,7 +4825,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MS-MQOD].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
@@ -4923,7 +4861,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-4.  The analysis program application creates a new unique transactional unit of work identifier
+
+4.  The analysis program application creates a new unique transactional unit of work identifier
 
 XACTUOW structure and receives the message from the intermediary server Queue Manager, as
 described in steps 8 through 9 of Example 1: Disconnected Data Entry.
@@ -4949,7 +4888,7 @@ created at step 2.
 
 10. The sales program application processes the received message to get the analysis result.
 
-3.8  Example 8: Stock Ticker
+### 3.8 Example 8: Stock Ticker
 
 This example demonstrates business-to-business messaging, as described in the Send Message to
 Queue – Application (section 2.5.3) and Receive a Message from a Queue - Application (section 2.5.6)
@@ -5006,7 +4945,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-MQOD].images/page075-img01.png)
 <!-- /Extracted images from page 75 -->
 
@@ -5036,7 +4976,7 @@ parameter initialized with the newly created XACTUOW structure.
 
 and displays the stock symbol and price.
 
-3.9  Example 9: Business-to-Business Messaging Across Heterogeneous Systems
+### 3.9 Example 9: Business-to-Business Messaging Across Heterogeneous Systems
 
 This example demonstrates business-to-business messaging across heterogeneous systems, as
 described in the Send Message to Queue - Application (section 2.5.3), Transfer
@@ -5061,7 +5001,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-
+
+
 
 
 
@@ -5108,7 +5049,8 @@ Release: September 2, 2022
 
 76 / 83
 
-<!-- Extracted images from page 77 -->
+
+<!-- Extracted images from page 77 -->
 ![Extracted image 1 from page 77]([MS-MQOD].images/page077-img01.png)
 <!-- /Extracted images from page 77 -->
 
@@ -5139,7 +5081,8 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-alternate next hops from which the least cost alternate route to the ultimate destination is
+
+alternate next hops from which the least cost alternate route to the ultimate destination is
 constructed using Dijkstra's algorithm.
 
 4.  The next hop to get to the foreign queue is the connector queue on the messaging gateway
@@ -5190,7 +5133,8 @@ Release: September 2, 2022
 
 78 / 83
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this overview is applicable to the following versions of Windows.
 
@@ -5257,7 +5201,8 @@ Release: September 2, 2022
 
 79 / 83
 
-4.1  Product Behavior
+
+### 4.1 Product Behavior
 
 <1> Section 2.3.1: The RPC system in Windows 2000 Server supports MSMQ as a means of transport.
 
@@ -5310,7 +5255,8 @@ Release: September 2, 2022
 
 80 / 83
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5354,7 +5300,8 @@ Release: September 2, 2022
 
 81 / 83
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 58
@@ -5488,7 +5435,8 @@ System protocols 34
 
 82 / 83
 
-System requirements - overview 5
+
+System requirements - overview 5
 System use cases
    create or modify queue - application 39
    exchange message - application 46

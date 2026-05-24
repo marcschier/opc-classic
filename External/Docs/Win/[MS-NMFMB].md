@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -277,7 +278,8 @@ Release: March 13, 2019
 
 2 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -337,211 +339,90 @@ Release: March 13, 2019
 
 3 / 32
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+      - [2.2.3.1 MSMQ Best-Effort](#2231-msmq-best-effort)
+      - [2.2.3.2 MSMQ Session](#2232-msmq-session)
+      - [2.2.3.3 MSMQ Volatile](#2233-msmq-volatile)
+      - [2.2.3.4 MSMQ Authenticated](#2234-msmq-authenticated)
+      - [2.2.3.5 MSMQ Windows Domain](#2235-msmq-windows-domain)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 NetMsmqMessage](#3111-netmsmqmessage)
+      - [3.1.1.2 net.msmq URI](#3112-netmsmq-uri)
+      - [3.1.1.3 MQPCO](#3113-mqpco)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Construct Direct Format Name](#3171-construct-direct-format-name)
+      - [3.1.7.2 Construct Public Format Name](#3172-construct-public-format-name)
+      - [3.1.7.3 Construct SRMP Format Name](#3173-construct-srmp-format-name)
+  - [3.2 Initiator Details](#32-initiator-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 SendQueue](#3211-sendqueue)
+      - [3.2.1.2 SendNetMsmqMessage](#3212-sendnetmsmqmessage)
+      - [3.2.1.3 UseActiveDirectory](#3213-useactivedirectory)
+      - [3.2.1.4 QueueTransferProtocol](#3214-queuetransferprotocol)
+      - [3.2.1.5 Message](#3215-message)
+      - [3.2.1.6 Transaction](#3216-transaction)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Initialize Session](#3241-initialize-session)
+      - [3.2.4.2 Send Message](#3242-send-message)
+      - [3.2.4.3 Session Close](#3243-session-close)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Constructing an MSMQ Message](#3251-constructing-an-msmq-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Open Queue for Send](#3271-open-queue-for-send)
+  - [3.3 Receiver Details](#33-receiver-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 ReceiveQueue](#3311-receivequeue)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Initialize Session](#3341-initialize-session)
+      - [3.3.4.2 Receive Message](#3342-receive-message)
+      - [3.3.4.3 Session Close](#3343-session-close)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Open Queue for Receive](#3371-open-queue-for-receive)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+  - [6.1 .Net Message Framing MSMQ Binding Protocol WSDL and Policy Assertions](#61-net-message-framing-msmq-binding-protocol-wsdl-and-policy-assertions)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Message Syntax ................................................................................. 10
-Namespaces .............................................................................................. 10
-Messages ................................................................................................... 10
-Elements ................................................................................................... 10
-MSMQ Best-Effort.................................................................................. 10
-MSMQ Session ...................................................................................... 11
-MSMQ Volatile ...................................................................................... 11
-MSMQ Authenticated ............................................................................. 11
-MSMQ Windows Domain ........................................................................ 11
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-
-3.1
-
-3.1.1
-
-3.1.7.1
-3.1.7.2
-3.1.7.3
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 12
-Common Details .............................................................................................. 12
-Abstract Data Model .................................................................................... 12
-NetMsmqMessage ................................................................................. 12
-net.msmq URI ...................................................................................... 12
-MQPCO ................................................................................................ 12
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-Construct Direct Format Name ................................................................ 13
-Construct Public Format Name ................................................................ 14
-Construct SRMP Format Name ................................................................ 14
-Initiator Details ................................................................................................ 15
-Abstract Data Model .................................................................................... 15
-SendQueue .......................................................................................... 15
-SendNetMsmqMessage .......................................................................... 15
-UseActiveDirectory ................................................................................ 15
-QueueTransferProtocol .......................................................................... 16
-Message .............................................................................................. 16
-Transaction .......................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Initialize Session ................................................................................... 16
-Send Message ...................................................................................... 16
-Session Close ....................................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 18
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-3.2.1.5
-3.2.1.6
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.1
-
-3.2
-
-[MS-NMFMB] - v20190313
-.NET Message Framing MSMQ Binding Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 32
-
-3.3
-
-3.2.5.1
-
-3.2.6
-3.2.7
-
-3.2.7.1
-
-3.3.1.1
-
-3.3.1
-
-3.3.2
-3.3.3
-3.3.4
-
-3.3.4.1
-3.3.4.2
-3.3.4.3
-
-Constructing an MSMQ Message .............................................................. 18
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-Open Queue for Send ............................................................................ 19
-Receiver Details ............................................................................................... 20
-Abstract Data Model .................................................................................... 21
-ReceiveQueue....................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Initialize Session ................................................................................... 21
-Receive Message ................................................................................... 21
-Session Close ....................................................................................... 22
-Message Processing Events and Sequencing Rules .......................................... 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-Open Queue for Receive ........................................................................ 22
-
-3.3.5
-3.3.6
-3.3.7
-
-3.3.7.1
-
-4  Protocol Examples ................................................................................................. 24
-
-5  Security ................................................................................................................. 25
-Security Considerations for Implementers ........................................................... 25
-Index of Security Parameters ............................................................................ 25
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 26
-.Net Message Framing MSMQ Binding Protocol WSDL and Policy Assertions ............. 26
-
-6.1
-
-7  Appendix B: Product Behavior ............................................................................... 27
-
-8  Change Tracking .................................................................................................... 29
-
-9  Index ..................................................................................................................... 30
-
-[MS-NMFMB] - v20190313
-.NET Message Framing MSMQ Binding Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 32
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the .NET Message Framing MSMQ Binding Protocol, as well as a collection of
 Web service policy assertions that define behavior for the interaction with a Web service entity. This
@@ -552,7 +433,7 @@ message exchanges.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -612,7 +493,8 @@ receiver: The node that is the receiver of the protocol stream.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-recoverable message: A message that persists through queue manager restarts and provides
+
+recoverable message: A message that persists through queue manager restarts and provides
 
 best-effort, at-most-once delivery assurance.
 
@@ -652,14 +534,14 @@ document type at a relatively high level of abstraction.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -682,7 +564,8 @@ Processing Rules".
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[MS-MQMQ] Microsoft Corporation, "Message Queuing (MSMQ): Data Structures".
+
+[MS-MQMQ] Microsoft Corporation, "Message Queuing (MSMQ): Data Structures".
 
 [MS-MQQB] Microsoft Corporation, "Message Queuing (MSMQ): Message Queuing Binary Protocol".
 
@@ -714,13 +597,13 @@ Language (WSDL) 1.1", W3C Note, March 2001, https://www.w3.org/TR/2001/NOTE-wsdl
 [XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
 W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-20091208/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-MQOD] Microsoft Corporation, "Message Queuing Protocols Overview".
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 The .Net Message Framing MSMQ Binding Protocol specifies how the mechanism described in [MC-
 NMF] for framing messages over any transport protocol can be applied over Message Queue (MSMQ).
@@ -749,7 +632,8 @@ Release: March 13, 2019
 
 8 / 32
 
-The MSMQ Volatile policy assertion indicates that a Web service endpoint requires the use of
+
+The MSMQ Volatile policy assertion indicates that a Web service endpoint requires the use of
 express messages; otherwise, recoverable messages are required.
 
   MSMQ Authenticated
@@ -770,7 +654,7 @@ intended.
 The .Net Message Framing MSMQ Binding Protocol makes use of MSMQ protocols to set the proper
 message attributes in order to conform with policy assertions set by the Web service.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol uses events defined in Message Queuing (MSMQ): Common Data Model and Processing
 Rules [MS-MQDMPR] to transfer messages between the client and the destination endpoint.
@@ -778,20 +662,20 @@ Rules [MS-MQDMPR] to transfer messages between the client and the destination en
 This protocol uses MSMQ as the transport to send envelope records, as specified in section 2.2.4 of
 [MC-NMF].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The .NET Message Framing MSMQ Binding Protocol requires that both the initiator and receiver
 satisfy all preconditions stated in section 2.4 of [MS-MQOD]. The Queue, as defined in section 3.1.1.2
 of [MS-MQDMPR], is used for communication exists and is accessible by both the sender and receiver.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The .NET Message Framing MSMQ Binding Protocol is applicable in scenarios where an initiator and a
 receiver require a communication mechanism to send and receive envelope records [MC-NMF] over
 MSMQ. This is the case if the WSDL file contains a SOAP binding element with a transport value of
 "http://schemas.microsoft.com/soap/msmq" as specified in section 2.1.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol requires .NET Message Framing Protocol version 1.0 [MC-NMF]. When this protocol is
 implemented by using SOAP, it requires the use of SOAP version 1.1 [SOAP1.1] or SOAP version 1.2
@@ -799,11 +683,11 @@ implemented by using SOAP, it requires the use of SOAP version 1.1 [SOAP1.1] or 
 
 This protocol does not support capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -814,12 +698,13 @@ Release: March 13, 2019
 
 9 / 32
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify the message transport and the common data types of the .Net Message
 Framing MSMQ Binding Protocol.
 
-2.1  Transport
+### 2.1 Transport
 
 The .NET Message Framing MSMQ Binding Protocol requires MSMQ.
 
@@ -831,9 +716,9 @@ An endpoint that uses the .NET Message Framing MSMQ Binding Protocol with [SOAP1
 specify the value of the transport attribute of the <soap:binding> element [WSDL] to be
 "http://schemas.microsoft.com/soap/msmq".
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -870,17 +755,17 @@ http://schemas.xmlsoap.org/ws/2004/09/policy
 
 [WS-Policy]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any messages.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 The following sections contain the XML schema description for the policy assertions defined in this
 document and the schema for the transport that this protocol operates on. The following elements are
 policy assertions and belong to the wsp:Policy tag, as described in [WS-Policy].
 
-2.2.3.1  MSMQ Best-Effort
+##### 2.2.3.1 MSMQ Best-Effort
 
  <msmq:BestEffort
      xmlns:msmq="http://schemas.microsoft.com/ws/06/2004/mspolicy/msmq" />
@@ -894,11 +779,12 @@ The following describes the content model of the <MsmqBestEffort> element.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-/msmq:BestEffort: A Web service endpoint with MSMQ best-effort policy assertion MUST NOT
+
+/msmq:BestEffort: A Web service endpoint with MSMQ best-effort policy assertion MUST NOT
 transfer messages as part of a transaction which ensures exactly once guarantee. The client and
 service instead MUST make a best effort attempt to deliver messages.
 
-2.2.3.2  MSMQ Session
+##### 2.2.3.2 MSMQ Session
 
  <msmq:Session
      xmlns:msmq="http://schemas.microsoft.com/ws/06/2004/mspolicy/msmq" />
@@ -909,7 +795,7 @@ The following describes the content model of the <MsmqSession> element.
 the initiator to create a connection with the service in which numerous messages are sent within a
 single MSMQ message.
 
-2.2.3.3  MSMQ Volatile
+##### 2.2.3.3 MSMQ Volatile
 
  <msmq:Volatile
      xmlns:msmq="http://schemas.microsoft.com/ws/06/2004/mspolicy/msmq" />
@@ -919,7 +805,7 @@ The following describes the content model of the <MsmqVolatile> element.
 /msmq:Volatile: A Web service endpoint with MSMQ volatile policy assertion MUST require the
 client to send express messages.
 
-2.2.3.4  MSMQ Authenticated
+##### 2.2.3.4 MSMQ Authenticated
 
  <msmq:Authenticated
      xmlns:msmq="http://schemas.microsoft.com/ws/06/2004/mspolicy/msmq" />
@@ -929,7 +815,7 @@ The following describes the content model of the <MsmqAuthenticated> element.
 /msmq:Authenticated: A Web service endpoint with MSMQ authenticated policy assertion MUST
 require MSMQ messages sent on the transport to be authenticated.
 
-2.2.3.5  MSMQ Windows Domain
+##### 2.2.3.5 MSMQ Windows Domain
 
  <msmq:WindowsDomain
      xmlns:msmq="http://schemas.microsoft.com/ws/06/2004/mspolicy/msmq" />
@@ -948,18 +834,19 @@ Release: March 13, 2019
 
 11 / 32
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 A node can participate in this protocol in one of two roles: initiator or receiver. An initiator begins
 the process by opening and delivering messages to a queue that the receiver is monitoring. MSMQ is
 used as the lower-level protocol transport for performing the .NET Message Framing Protocol [MC-
 NMF].
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
-3.1.1.1  NetMsmqMessage
+##### 3.1.1.1 NetMsmqMessage
 
 A NetMsmqMessage is a structure that encapsulates the data placed into a Message.Body, as
 defined in section 3.1.1.12 of [MS-MQDMPR]. It contains the following attributes:
@@ -976,7 +863,7 @@ EndRecord: An end record as specified in section 2.2.3.9 of the .NET Message Fra
 
 NMF].
 
-3.1.1.2  net.msmq URI
+##### 3.1.1.2 net.msmq URI
 
 A net.msmq URI is a URI that satisfies the following constraints:
 
@@ -1004,7 +891,7 @@ The URI MUST NOT include the query URI component.
 
 The URI MUST NOT include the fragment URI component.
 
-3.1.1.3  MQPCO
+##### 3.1.1.3 MQPCO
 
 An MQPCO is a configuration object as defined in section 3.1.3 of [MC-NMF], but with the following
 constraints:
@@ -1032,30 +919,31 @@ Release: March 13, 2019
 
 12 / 32
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 A MQPCO with an uninitialized transport is made available to the protocol as part of a higher-layer
 triggered event.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Construct Direct Format Name
+##### 3.1.7.1 Construct Direct Format Name
 
 This event MUST be generated with the following argument:
 
@@ -1107,9 +995,10 @@ If the host section of the Via URI is an IPv4 address in string format:
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Set rFormatName to rFormat.
 
-3.1.7.2  Construct Public Format Name
+  Set rFormatName to rFormat.
+
+##### 3.1.7.2 Construct Public Format Name
 
 This event MUST be generated with the following argument:
 
@@ -1175,7 +1064,7 @@ If the rStatus returned by the Read Directory event is not set to Success:
 
   Set rFormatName to rFormat.
 
-3.1.7.3  Construct SRMP Format Name
+##### 3.1.7.3 Construct SRMP Format Name
 
 This event MUST be generated with the following argument:
 
@@ -1200,7 +1089,8 @@ Release: March 13, 2019
 
 14 / 32
 
-The initiator MUST construct a direct format name as specified in section 2.1.2 for [MS-MQMQ], as
+
+The initiator MUST construct a direct format name as specified in section 2.1.2 for [MS-MQMQ], as
 follows:
 
 
@@ -1231,26 +1121,26 @@ If the port number of the iVia URI is set:
 
   Set rFormatName to rFormat.
 
-3.2  Initiator Details
+### 3.2 Initiator Details
 
 The initiator MUST use the binding and policy assertions enforced by the Web service in the WSDL
 to properly construct a valid MQPCO as specified in section 3.1.1.2. To communicate with the receiver
 the initiator MUST send an MSMQ Message [MS-MQDMPR] with a NetMsmqMessage in the
 Message.Body to an opened queue.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
-3.2.1.1  SendQueue
+##### 3.2.1.1 SendQueue
 
 SendQueue is an OpenQueueDescriptor as defined in section 3.1.1.16 of [MS-MQDMPR]. The
 initiator MUST maintain an instance of this element referred to as rSendQueue.
 
-3.2.1.2  SendNetMsmqMessage
+##### 3.2.1.2 SendNetMsmqMessage
 
 SendNetMsmqMessage is a NetMsmqMessage structure as defined in section 3.1.1.1. The initiator
 MUST maintain an instance of this element referred to as rNetMsmqMessage.
 
-3.2.1.3  UseActiveDirectory
+##### 3.2.1.3 UseActiveDirectory
 
 UseActiveDirectory is a user-configurable element that changes how the protocol constructs a
 format name. This element MUST be enabled for authentication to be performed as specified in
@@ -1270,7 +1160,8 @@ Release: March 13, 2019
 
 15 / 32
 
-3.2.1.4  QueueTransferProtocol
+
+##### 3.2.1.4 QueueTransferProtocol
 
 QueueTransferProtocol is a user-configurable element that allows messages to be delivered using
 the Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP) [MC-MQSRM]. The initiator
@@ -1284,27 +1175,27 @@ Valid values for this element are:
 
   SecureSRMP = Use SRMP [MC-MQSRM] over HTTPS.
 
-3.2.1.5  Message
+##### 3.2.1.5 Message
 
 Message is defined in section 3.1.1.12 of [MS-MQDMPR]. The initiator MUST maintain an instance of
 this element referred to as rMsmqMessage.
 
-3.2.1.6  Transaction
+##### 3.2.1.6 Transaction
 
 Transaction is defined in section 3.1.1.14 of [MS-MQDMPR]. The initiator MUST maintain an
 instance of this element referred to as rTransaction.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Initialize Session
+##### 3.2.4.1 Initialize Session
 
 The initiator MUST open a queue by performing the following:
 
@@ -1329,7 +1220,7 @@ propagated to the higher layer, and no further processing done.
 
 The initiator MUST set rMsmqMessage equal to NULL.
 
-3.2.4.2  Send Message
+##### 3.2.4.2 Send Message
 
 The initiator MUST perform the following steps.
 
@@ -1344,7 +1235,8 @@ Release: March 13, 2019
 
 16 / 32
 
-  Construct an MSMQ Message as specified in section 3.2.5.1 with the following parameters:
+
+  Construct an MSMQ Message as specified in section 3.2.5.1 with the following parameters:
 
 
 
@@ -1393,7 +1285,7 @@ propagated to the higher layer.
 
   Set rMsmqMessage equal to NULL.
 
-3.2.4.3  Session Close
+##### 3.2.4.3 Session Close
 
 If the MSMQ Session policy assertion described in section 2.2.3.2 is set, the initiator MUST deliver the
 envelope records together as one MSMQ Message by performing the following:
@@ -1440,7 +1332,8 @@ The initiator MUST also close the queue by performing the following:
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Raise the Close Queue event from section 3.1.7.1.6 of [MS-MQDMPR], with the following
+
+  Raise the Close Queue event from section 3.1.7.1.6 of [MS-MQDMPR], with the following
 
 parameters:
 
@@ -1453,9 +1346,9 @@ iQueueDesc set to rSendQueue.
 If the returned rStatus, is not equal to MQ_OK (0x00000000), then an error MUST be propagated
 to the higher layer, and no further processing done.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Constructing an MSMQ Message
+##### 3.2.5.1 Constructing an MSMQ Message
 
 This event MUST be generated with the following arguments:
 
@@ -1531,7 +1424,8 @@ Release: March 13, 2019
 
 18 / 32
 
-  Otherwise:
+
+  Otherwise:
 
   Set Message.AuthenticationLevel to Sig30.
 
@@ -1557,13 +1451,13 @@ If the Windows Domain policy assertion described in section 2.2.3.5 is set:
 
   Set rReturnMsmqMessage to the constructed Message.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  Open Queue for Send
+##### 3.2.7.1 Open Queue for Send
 
 This event MUST be generated with the following arguments:
 
@@ -1617,7 +1511,8 @@ Release: March 13, 2019
 
 19 / 32
 
-
+
+
 
 If iQueueTransferProtocol is set to SecureSRMP
 
@@ -1692,7 +1587,7 @@ MQDMPR].
 
   Set rReturnStatus to the returned rStatus.
 
-3.3  Receiver Details
+### 3.3 Receiver Details
 
 The receiver listens on the queue discovered at the path name introduced in section 3.1.7.2. The
 receiver MUST open a queue at this address and process the messages as described in the following
@@ -1705,24 +1600,25 @@ Release: March 13, 2019
 
 20 / 32
 
-3.3.1  Abstract Data Model
 
-3.3.1.1  ReceiveQueue
+#### 3.3.1 Abstract Data Model
+
+##### 3.3.1.1 ReceiveQueue
 
 ReceiveQueue is an OpenQueueDescriptor as defined in section 3.1.1.16 of [MS-MQDMPR]. The
 receiver MUST maintain an instance of this element referred to as rReceiveQueue.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  Initialize Session
+##### 3.3.4.1 Initialize Session
 
 The receiver MUST open a queue by performing the following:
 
@@ -1730,7 +1626,7 @@ The receiver MUST open a queue by performing the following:
 
   Set rReceiveQueue to the returned rOpenQueue.
 
-3.3.4.2  Receive Message
+##### 3.3.4.2 Receive Message
 
 The receiver MUST receive the MSMQ Message, referred to as rMsmqMessage, by performing the
 following:
@@ -1778,7 +1674,8 @@ following:
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Assign rMsmqMessage.Body to a NetMsmqMessage, referred to as rNetMsmqMessage.
+
+  Assign rMsmqMessage.Body to a NetMsmqMessage, referred to as rNetMsmqMessage.
 
 
 
@@ -1789,7 +1686,7 @@ on rNetMsmqMessage.Preamble.
 
 layer as specified in section 3.3.4.4 of [MC-NMF].
 
-3.3.4.3  Session Close
+##### 3.3.4.3 Session Close
 
 The receiver MUST also close the queue by performing the following:
 
@@ -1806,17 +1703,17 @@ iQueueDesc set to rReceiveQueue.
 If the returned rStatus, is not equal to MQ_OK (0x00000000), then an error MUST be propagated
 to the higher layer, and no further processing done.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
-3.3.7.1  Open Queue for Receive
+##### 3.3.7.1 Open Queue for Receive
 
 This event is raised without any arguments supplied.
 
@@ -1862,7 +1759,8 @@ Release: March 13, 2019
 
 22 / 32
 
-
+
+
 
 
 
@@ -1883,7 +1781,8 @@ Release: March 13, 2019
 
 23 / 32
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following packet capture shows the message payload of the Preamble message sent out while
 using the .NET Message Framing MSMQ Binding Protocol. The specifics of network transport are
@@ -1924,13 +1823,14 @@ Release: March 13, 2019
 
 24 / 32
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1941,13 +1841,14 @@ Release: March 13, 2019
 
 25 / 32
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 For ease of implementation the full WSDL with schemas is provided in the following section.
 
-6.1
+### 6.1 .Net Message Framing MSMQ Binding Protocol WSDL and Policy Assertions
 
-.Net Message Framing MSMQ Binding Protocol WSDL and Policy Assertions
+
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions name="OrderProcessorService"
@@ -2013,7 +1914,8 @@ Release: March 13, 2019
 
 26 / 32
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2078,7 +1980,8 @@ Release: March 13, 2019
 
 27 / 32
 
-Member Name
+
+Member Name
 
 Value
 
@@ -2109,7 +2012,8 @@ Release: March 13, 2019
 
 28 / 32
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2146,7 +2050,8 @@ Release: March 13, 2019
 
 29 / 32
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2279,7 +2184,8 @@ Initiator
 
 30 / 32
 
-         initialize 16
+
+         initialize 16
    initialization (section 3.1.3 13, section 3.2.3 16)
    local events
       Construct Direct Format Name 13
@@ -2423,7 +2329,8 @@ Tracking changes 29
 
 31 / 32
 
-Transport 10
+
+Transport 10
 Triggered events - higher-layer
    initiator
       message - send 16

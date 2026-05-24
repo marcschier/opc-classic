@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 46
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 46
 
-Date
+
+Date
 
 Revision
 History
@@ -447,299 +449,122 @@ Release: April 23, 2024
 
 3 / 46
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Initialization Sequence](#131-initialization-sequence)
+    - [1.3.2 Data Transfer Sequence](#132-data-transfer-sequence)
+    - [1.3.3 Format Change Sequence](#133-format-change-sequence)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 SNDIN_PDU Header](#221-sndinpdu-header)
+    - [2.2.2 Initialization Messages](#222-initialization-messages)
+      - [2.2.2.1 Version PDU (MSG_SNDIN_VERSION)](#2221-version-pdu-msgsndinversion)
+      - [2.2.2.2 Sound Formats PDU (MSG_SNDIN_FORMATS)](#2222-sound-formats-pdu-msgsndinformats)
+      - [2.2.2.3 Open PDU (MSG_SNDIN_OPEN)](#2223-open-pdu-msgsndinopen)
+        - [2.2.2.3.1 Extended Wave Format Structure (WAVEFORMAT_EXTENSIBLE)](#22231-extended-wave-format-structure-waveformatextensible)
+      - [2.2.2.4 Open Reply PDU (MSG_SNDIN_OPEN_REPLY)](#2224-open-reply-pdu-msgsndinopenreply)
+    - [2.2.3 Data Transfer Messages](#223-data-transfer-messages)
+      - [2.2.3.1 Incoming Data PDU (MSG_SNDIN_DATA_INCOMING)](#2231-incoming-data-pdu-msgsndindataincoming)
+      - [2.2.3.2 Data PDU (MSG_SNDIN_DATA)](#2232-data-pdu-msgsndindata)
+    - [2.2.4 Format Change Messages](#224-format-change-messages)
+      - [2.2.4.1 Format Change PDU (MSG_SNDIN_FORMATCHANGE)](#2241-format-change-pdu-msgsndinformatchange)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Recording Audio](#3141-recording-audio)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Protocol Initialization](#3151-protocol-initialization)
+      - [3.1.5.2 Protocol Termination](#3152-protocol-termination)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Initialization Sequence](#3251-initialization-sequence)
+        - [3.2.5.1.1 Processing a Version PDU](#32511-processing-a-version-pdu)
+        - [3.2.5.1.2 Sending a Version PDU](#32512-sending-a-version-pdu)
+        - [3.2.5.1.3 Processing a Sound Formats PDU](#32513-processing-a-sound-formats-pdu)
+        - [3.2.5.1.4 Sending an Incoming Data PDU](#32514-sending-an-incoming-data-pdu)
+        - [3.2.5.1.5 Sending a Sound Formats PDU](#32515-sending-a-sound-formats-pdu)
+        - [3.2.5.1.6 Processing an Open PDU](#32516-processing-an-open-pdu)
+        - [3.2.5.1.7 Sending a Format Change PDU](#32517-sending-a-format-change-pdu)
+        - [3.2.5.1.8 Sending an Open Reply PDU](#32518-sending-an-open-reply-pdu)
+      - [3.2.5.2 Data Transfer Sequence](#3252-data-transfer-sequence)
+        - [3.2.5.2.1 Sending an Incoming Data PDU](#32521-sending-an-incoming-data-pdu)
+        - [3.2.5.2.2 Sending a Data PDU](#32522-sending-a-data-pdu)
+      - [3.2.5.3 Format Change Sequence](#3253-format-change-sequence)
+        - [3.2.5.3.1 Processing a Format Change PDU](#32531-processing-a-format-change-pdu)
+        - [3.2.5.3.2 Sending a Format Change PDU](#32532-sending-a-format-change-pdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Initialization Sequence](#3351-initialization-sequence)
+        - [3.3.5.1.1 Sending a Version PDU](#33511-sending-a-version-pdu)
+        - [3.3.5.1.2 Processing a Version PDU](#33512-processing-a-version-pdu)
+        - [3.3.5.1.3 Sending a Sound Formats PDU](#33513-sending-a-sound-formats-pdu)
+        - [3.3.5.1.4 Processing an Incoming Data PDU](#33514-processing-an-incoming-data-pdu)
+        - [3.3.5.1.5 Processing a Sound Formats PDU](#33515-processing-a-sound-formats-pdu)
+        - [3.3.5.1.6 Sending an Open PDU](#33516-sending-an-open-pdu)
+        - [3.3.5.1.7 Processing a Format Change PDU](#33517-processing-a-format-change-pdu)
+        - [3.3.5.1.8 Processing an Open Reply PDU](#33518-processing-an-open-reply-pdu)
+      - [3.3.5.2 Data Transfer Sequence](#3352-data-transfer-sequence)
+        - [3.3.5.2.1 Processing an Incoming Data PDU](#33521-processing-an-incoming-data-pdu)
+        - [3.3.5.2.2 Processing a Data PDU](#33522-processing-a-data-pdu)
+      - [3.3.5.3 Format Change Sequence](#3353-format-change-sequence)
+        - [3.3.5.3.1 Sending a Format Change PDU](#33531-sending-a-format-change-pdu)
+        - [3.3.5.3.2 Processing a Format Change PDU](#33532-processing-a-format-change-pdu)
+    - [3.3.6 Termination](#336-termination)
+    - [3.3.7 Timer Events](#337-timer-events)
+    - [3.3.8 Other Local Events](#338-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Annotated Initialization Sequence](#41-annotated-initialization-sequence)
+    - [4.1.1 Server Version PDU](#411-server-version-pdu)
+    - [4.1.2 Client Version PDU](#412-client-version-pdu)
+    - [4.1.3 Server Sound Formats PDU](#413-server-sound-formats-pdu)
+    - [4.1.4 Incoming Data PDU](#414-incoming-data-pdu)
+    - [4.1.5 Client Sound Formats PDU](#415-client-sound-formats-pdu)
+    - [4.1.6 Open PDU](#416-open-pdu)
+    - [4.1.7 Format Change PDU](#417-format-change-pdu)
+    - [4.1.8 Open Reply PDU](#418-open-reply-pdu)
+  - [4.2 Annotated Data Transfer Sequence](#42-annotated-data-transfer-sequence)
+    - [4.2.1 Incoming Data PDU](#421-incoming-data-pdu)
+    - [4.2.2 Data PDU](#422-data-pdu)
+  - [4.3 Annotated Format Change Sequence](#43-annotated-format-change-sequence)
+    - [4.3.1 Server Format Change PDU](#431-server-format-change-pdu)
+    - [4.3.2 Client Format Change PDU](#432-client-format-change-pdu)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Initialization Sequence .................................................................................. 8
-Data Transfer Sequence ................................................................................ 9
-Format Change Sequence ............................................................................ 10
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-1.3.3
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-SNDIN_PDU Header .................................................................................... 12
-Initialization Messages ................................................................................ 12
-Version PDU (MSG_SNDIN_VERSION) ..................................................... 13
-Sound Formats PDU (MSG_SNDIN_FORMATS) .......................................... 13
-Open PDU (MSG_SNDIN_OPEN) .............................................................. 14
-Extended Wave Format Structure (WAVEFORMAT_EXTENSIBLE) ........... 15
-Open Reply PDU (MSG_SNDIN_OPEN_REPLY) ........................................... 17
-Data Transfer Messages .............................................................................. 17
-Incoming Data PDU (MSG_SNDIN_DATA_INCOMING) ................................ 17
-Data PDU (MSG_SNDIN_DATA) .............................................................. 17
-Format Change Messages ............................................................................ 18
-Format Change PDU (MSG_SNDIN_FORMATCHANGE) ................................ 18
-
-2.2.3.1
-2.2.3.2
-
-2.2.2.3.1
-
-2.2.2.4
-
-2.2.4.1
-
-2.2.3
-
-2.2.4
-
-3.1
-
-3.1.5
-
-3.1.4.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 19
-Common Details .............................................................................................. 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Recording Audio .................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 20
-Protocol Initialization ............................................................................. 20
-Protocol Termination ............................................................................. 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Client Details ................................................................................................... 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Initialization Sequence ........................................................................... 21
-Processing a Version PDU ................................................................. 21
-Sending a Version PDU ..................................................................... 21
-Processing a Sound Formats PDU ...................................................... 21
-Sending an Incoming Data PDU ......................................................... 22
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-3.2
-
-[MS-RDPEAI] - v20240423
-Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 46
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-
-3.2.5.2
-
-3.2.5.3
-
-3.2.5.3.1
-3.2.5.3.2
-
-3.2.5.2.1
-3.2.5.2.2
-
-3.2.5.1.5
-3.2.5.1.6
-3.2.5.1.7
-3.2.5.1.8
-
-Sending a Sound Formats PDU .......................................................... 22
-Processing an Open PDU .................................................................. 22
-Sending a Format Change PDU .......................................................... 22
-Sending an Open Reply PDU ............................................................. 22
-Data Transfer Sequence ......................................................................... 23
-Sending an Incoming Data PDU ......................................................... 23
-Sending a Data PDU ........................................................................ 23
-Format Change Sequence ...................................................................... 23
-Processing a Format Change PDU ...................................................... 23
-Sending a Format Change PDU .......................................................... 23
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-Server Details .................................................................................................. 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 24
-Initialization Sequence ........................................................................... 24
-Sending a Version PDU ..................................................................... 24
-Processing a Version PDU ................................................................. 24
-Sending a Sound Formats PDU .......................................................... 24
-Processing an Incoming Data PDU ..................................................... 24
-Processing a Sound Formats PDU ...................................................... 24
-Sending an Open PDU ...................................................................... 25
-Processing a Format Change PDU ...................................................... 25
-Processing an Open Reply PDU .......................................................... 25
-Data Transfer Sequence ......................................................................... 25
-Processing an Incoming Data PDU ..................................................... 25
-Processing a Data PDU ..................................................................... 25
-Format Change Sequence ...................................................................... 25
-Sending a Format Change PDU .......................................................... 25
-Processing a Format Change PDU ...................................................... 26
-Termination ............................................................................................... 26
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-
-3.3.5.1.1
-3.3.5.1.2
-3.3.5.1.3
-3.3.5.1.4
-3.3.5.1.5
-3.3.5.1.6
-3.3.5.1.7
-3.3.5.1.8
-
-3.3.5.3.1
-3.3.5.3.2
-
-3.3.5.2.1
-3.3.5.2.2
-
-3.3.5.2
-
-3.3.5.3
-
-3.3.6
-3.3.7
-3.3.8
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-4.1.6
-4.1.7
-4.1.8
-
-4  Protocol Examples ................................................................................................. 27
-Annotated Initialization Sequence ...................................................................... 27
-Server Version PDU ..................................................................................... 27
-Client Version PDU ...................................................................................... 27
-Server Sound Formats PDU .......................................................................... 27
-Incoming Data PDU ..................................................................................... 31
-Client Sound Formats PDU ........................................................................... 31
-Open PDU .................................................................................................. 36
-Format Change PDU .................................................................................... 36
-Open Reply PDU ......................................................................................... 36
-Annotated Data Transfer Sequence .................................................................... 36
-Incoming Data PDU ..................................................................................... 36
-Data PDU ................................................................................................... 37
-Annotated Format Change Sequence .................................................................. 37
-Server Format Change PDU.......................................................................... 37
-Client Format Change PDU ........................................................................... 37
-
-4.3.1
-4.3.2
-
-4.2.1
-4.2.2
-
-4.2
-
-4.3
-
-5  Security ................................................................................................................. 38
-Security Considerations for Implementers ........................................................... 38
-Index of Security Parameters ............................................................................ 38
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 39
-
-[MS-RDPEAI] - v20240423
-Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 46
-
-7  Change Tracking .................................................................................................... 42
-
-8  Index ..................................................................................................................... 43
-
-[MS-RDPEAI] - v20240423
-Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 46
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension seamlessly transfers
 audio data from a Remote Desktop Protocol client to a Remote Desktop Protocol server.
@@ -747,7 +572,7 @@ audio data from a Remote Desktop Protocol client to a Remote Desktop Protocol se
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -795,7 +620,7 @@ Wave Capture Device: A device that captures audio to the computer.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -809,7 +634,8 @@ Release: April 23, 2024
 
 7 / 46
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -832,7 +658,7 @@ Extension".
 [RFC2361] Fleischman, E., "WAVE and AVI Codec Registries", RFC 2361, June 1998, https://www.rfc-
 editor.org/info/rfc2361
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ETSI-GSM] European Telecommunications Standards Organization, "GSM UMTS 3GPP Numbering
 Cross Reference", March 2008,
@@ -841,7 +667,7 @@ http://webapp.etsi.org/key/key.asp?GSMSpecPart1=06&GSMSpecPart2=10&Search=search
 [MSDN-WAVEFMTEXT] Microsoft Corporation, "WAVEFORMATEXTENSIBLE",
 http://msdn.microsoft.com/en-us/library/ms713496.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This section provides a high-level overview of the operation of the Remote Desktop Protocol: Audio
 Input Redirection Virtual Channel Extension. The purpose of this protocol is to transfer audio data from
@@ -862,7 +688,7 @@ Format change sequence: The server requests a new audio format, and the client c
 
 request.
 
-1.3.1  Initialization Sequence
+#### 1.3.1 Initialization Sequence
 
 The initialization sequence has the following goals:
 
@@ -877,7 +703,8 @@ Release: April 23, 2024
 
 8 / 46
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-RDPEAI].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -896,7 +723,7 @@ begin sending audio data.
 
 Figure 1: Initialization sequence
 
-1.3.2  Data Transfer Sequence
+#### 1.3.2 Data Transfer Sequence
 
 The data transfer sequence simply transfers audio data from the client to the server. The client will
 encode captured audio data using the current audio format agreed on during either the initialization
@@ -911,14 +738,15 @@ Release: April 23, 2024
 
 9 / 46
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RDPEAI].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-RDPEAI].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 2: Data transfer sequence
 
-1.3.3  Format Change Sequence
+#### 1.3.3 Format Change Sequence
 
 The format change sequence provides a mechanism for the server to request that the client use a
 different format for encoding the audio data. The server initiates the sequence by sending a Format
@@ -929,12 +757,12 @@ format.
 
 Figure 3: Format change sequence
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension is embedded in a
 dynamic virtual channel transport, as specified in [MS-RDPEDYC].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension operates only after
 the dynamic virtual channel transport, as specified in [MS-RDPEDYC], is fully established. If the
@@ -951,14 +779,15 @@ Release: April 23, 2024
 
 10 / 46
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension is designed to run
 within the context of a Remote Desktop Protocol (RDP) dynamic virtual channel established
 between an RDP client and RDP server. The protocol is applicable when the client is required to
 record audio and transfer the recorded audio to the server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension is capability-based.
 The client and the server exchange capabilities during the protocol initialization sequence (as specified
@@ -966,13 +795,13 @@ in section 3.2.5.1, and section 3.3.5.1). After the capabilities have been excha
 server do not send protocol data units (PDUs) or data formats that cannot be processed by the
 other.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1.1. Vendors can define their
 own HRESULT values, provided that they set the C bit (0x20000000) for each vendor-defined value,
 indicating that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -983,9 +812,10 @@ Release: April 23, 2024
 
 11 / 46
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol is designed to operate over a dynamic virtual channel, as specified in [MS-RDPEDYC]
 section 1.1. The dynamic virtual channel name is the null-terminated ANSI encoded character string
@@ -993,12 +823,12 @@ section 1.1. The dynamic virtual channel name is the null-terminated ANSI encode
 when opening a dynamic virtual channel is specified in [MS-RDPEDYC] section 2.2.2.1. The RDP layer
 manages the creation, setup, and transmission of data over the dynamic virtual channel.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections define the syntax for the various PDUs in each protocol sequence. The listing is
 not exclusive; some PDUs can appear in other sequences.
 
-2.2.1  SNDIN_PDU Header
+#### 2.2.1 SNDIN_PDU Header
 
 The SNDIN_PDU header MUST be included in all audio capture PDUs. It identifies the type of the PDU.
 
@@ -1063,7 +893,7 @@ Format Change PDU
 
 0x07
 
-2.2.2  Initialization Messages
+#### 2.2.2 Initialization Messages
 
 The following sections contain the Remote Desktop Protocol: Audio Input Redirection Virtual Channel
 Extension message syntax for exchanging versions and capabilities, establishing a list of audio formats
@@ -1075,10 +905,11 @@ Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-supported by both the client and the server, and starting audio data recording. For more information,
+
+supported by both the client and the server, and starting audio data recording. For more information,
 see section 3.1.3.
 
-2.2.2.1  Version PDU (MSG_SNDIN_VERSION)
+##### 2.2.2.1 Version PDU (MSG_SNDIN_VERSION)
 
 The Version PDU is sent by the server and the client to negotiate which version of the protocol MUST
 be used.
@@ -1122,7 +953,7 @@ Version 2
 
 The advertised version affects the usage of the Format Change PDU (section 3.3.5.3.1).
 
-2.2.2.2  Sound Formats PDU (MSG_SNDIN_FORMATS)
+##### 2.2.2.2 Sound Formats PDU (MSG_SNDIN_FORMATS)
 
 The Sound Formats PDU is sent by the server and the client to negotiate a common list of supported
 audio formats.
@@ -1169,7 +1000,8 @@ Release: April 23, 2024
 
 13 / 46
 
-...
+
+...
 
 Header (1 byte): An SNDIN_PDU header (section 2.2.1). The MessageId field of the SNDIN_PDU
 
@@ -1202,7 +1034,7 @@ encapsulated in the Dynamic VC Data First PDU ([MS-RDPEDYC] section 2.2.3.1) and
 Data PDU ([MS-RDPEDYC] section 2.2.3.2). The length of these PDUs is determined as described
 in [MS-RDPEDYC] sections 3.1.5.1 and 3.1.5.2.
 
-2.2.2.3  Open PDU (MSG_SNDIN_OPEN)
+##### 2.2.2.3 Open PDU (MSG_SNDIN_OPEN)
 
 The Open PDU is sent by the server and indicates that the server requests to start recording from the
 client device. The wFormatTag, nChannels, nSamplesPerSec, nAvgBytesPerSec, nBlockAlign,
@@ -1257,7 +1089,8 @@ Release: April 23, 2024
 
 14 / 46
 
-...
+
+...
 
 cbSize
 
@@ -1316,7 +1149,7 @@ ExtraFormatData, in bytes, is cbSize. If cbSize is 0, this field MUST NOT exist.
 is set to WAVE_FORMAT_EXTENSIBLE (0xFFFE), this field MUST be a WAVEFORMAT_EXTENSIBLE
 structure.
 
-2.2.2.3.1 Extended Wave Format Structure (WAVEFORMAT_EXTENSIBLE)
+###### 2.2.2.3.1 Extended Wave Format Structure (WAVEFORMAT_EXTENSIBLE)
 
 The Extended Wave Format Structure provides detailed audio format information. For more
 information, see [MSDN-WAVEFMTEXT].
@@ -1343,7 +1176,8 @@ Release: April 23, 2024
 
 15 / 46
 
-...
+
+...
 
 ...
 
@@ -1449,10 +1283,11 @@ Release: April 23, 2024
 
 16 / 46
 
-SubFormat (16 bytes): A GUID that specifies the audio format to use for recording data. This field
+
+SubFormat (16 bytes): A GUID that specifies the audio format to use for recording data. This field
 MUST be set to KSDATAFORMAT_SUBTYPE_PCM ({00000001-0000-0010-8000-00aa00389b71}).
 
-2.2.2.4  Open Reply PDU (MSG_SNDIN_OPEN_REPLY)
+##### 2.2.2.4 Open Reply PDU (MSG_SNDIN_OPEN_REPLY)
 
 The Open Reply PDU is sent by the client to convey the result of an attempt to open the audio capture
 device.
@@ -1482,13 +1317,13 @@ Result (4 bytes): An HRESULT containing the status of the attempt to open the cl
 
 Capture Device.
 
-2.2.3  Data Transfer Messages
+#### 2.2.3 Data Transfer Messages
 
 The following sections contain the Remote Desktop Protocol: Audio Input Redirection Virtual Channel
 Extension message syntax for transferring audio data from client to server. For more information, see
 section 3.2.5.2.
 
-2.2.3.1  Incoming Data PDU (MSG_SNDIN_DATA_INCOMING)
+##### 2.2.3.1 Incoming Data PDU (MSG_SNDIN_DATA_INCOMING)
 
 The Incoming Data PDU is sent by the client to indicate that the next packet sent MUST either be a
 Data PDU or a Sound Formats PDU. This PDU is used for diagnostic purposes. The time used to
@@ -1514,7 +1349,7 @@ Header (1 byte):  An SNDIN_PDU header (section 2.2.1). The MessageId field of th
 
 header MUST be set to MSG_SNDIN_DATA_INCOMING (0x05).
 
-2.2.3.2  Data PDU (MSG_SNDIN_DATA)
+##### 2.2.3.2 Data PDU (MSG_SNDIN_DATA)
 
 The Data PDU is sent by the client and contains a fragment of audio data.
 
@@ -1542,7 +1377,8 @@ Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -1557,13 +1393,13 @@ PDU. The MSG_SNDIN_DATA structure is encapsulated in the Dynamic VC Data First P
 RDPEDYC] section 2.2.3.1) and Dynamic VC Data PDU ([MS-RDPEDYC] section 2.2.3.2). The
 length of these PDUs is determined as described in [MS-RDPEDYC] sections 3.1.5.1 and 3.1.5.2.
 
-2.2.4  Format Change Messages
+#### 2.2.4 Format Change Messages
 
 The following section specifies the Remote Desktop Protocol: Audio Input Redirection Virtual Channel
 Extension message syntax for changing audio data encoding format. For more information, see section
 3.2.5.1.7 and section 3.3.5.1.7.
 
-2.2.4.1  Format Change PDU (MSG_SNDIN_FORMATCHANGE)
+##### 2.2.4.1 Format Change PDU (MSG_SNDIN_FORMATCHANGE)
 
 The Format Change PDU is sent by the server to request that the client change audio formats and by
 the client to confirm a format change.
@@ -1602,11 +1438,12 @@ Release: April 23, 2024
 
 18 / 46
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1641,11 +1478,11 @@ Protocol version: The client and server store the protocol version negotiated du
 
 sequence.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Before this protocol begins, the dynamic virtual channel transport MUST be established as specified
 in section 2.1. The server and client also need to negotiate the protocol version and a common list of
@@ -1654,9 +1491,9 @@ audio formats list have been exchanged, the server sends an Open PDU to the clie
 the server requests to start recording. The client attempts to start recording and returns the result to
 the server in an Open Reply PDU message.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Recording Audio
+##### 3.1.4.1 Recording Audio
 
 When the server attempts to start recording audio, for example the server runs Sound Recorder, the
 client MUST redirect the audio data. If the initialization sequence has not happened, the server MUST
@@ -1669,11 +1506,12 @@ Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-RDPEAI].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The state transition diagram in the following figure summarizes the message sequencing rules for the
 Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension. Further details on
@@ -1684,7 +1522,7 @@ any request.
 
 Figure 4: State transition diagram
 
-3.1.5.1  Protocol Initialization
+##### 3.1.5.1 Protocol Initialization
 
 The protocol begins when the server opens the dynamic virtual channel. The first PDU sent is
 always the Version PDU.
@@ -1696,58 +1534,59 @@ Release: April 23, 2024
 
 20 / 46
 
-3.1.5.2  Protocol Termination
+
+##### 3.1.5.2 Protocol Termination
 
 The protocol is terminated when the dynamic virtual channel is closed. This can occur at any time
 during the protocol sequence and not merely on the state transition labeled "Close dynamic virtual
 channel". The close can be initiated by either the RDP server or the RDP client, but it is normally
 initiated by the RDP client.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 See section 3.1.4 for more information.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Initialization Sequence
+##### 3.2.5.1 Initialization Sequence
 
-3.2.5.1.1 Processing a Version PDU
+###### 3.2.5.1.1 Processing a Version PDU
 
 The structure and fields of the Version PDU are specified in section 2.2.2.1.
 
 The Version PDU MUST be the first PDU received by the client. The client MUST store the protocol
 version and use this to determine which messages are supported by the server.
 
-3.2.5.1.2 Sending a Version PDU
+###### 3.2.5.1.2 Sending a Version PDU
 
 The structure and fields of the Version PDU are specified in section 2.2.2.1.
 
 The client MUST acknowledge the Version PDU sent by the server by sending its own Version PDU to
 the server.
 
-3.2.5.1.3 Processing a Sound Formats PDU
+###### 3.2.5.1.3 Processing a Sound Formats PDU
 
 The structure and fields of the Sound Formats PDU are specified in section 2.2.2.2.
 
@@ -1758,16 +1597,17 @@ Release: April 23, 2024
 
 21 / 46
 
-The client uses the audio formats sent by the server when selecting which formats will be used.
 
-3.2.5.1.4 Sending an Incoming Data PDU
+The client uses the audio formats sent by the server when selecting which formats will be used.
+
+###### 3.2.5.1.4 Sending an Incoming Data PDU
 
 The structure and format of the Incoming Data PDU are specified in section 2.2.3.1.
 
 The client MUST send an Incoming Data PDU before responding to the server with a Sound Formats
 PDU.
 
-3.2.5.1.5 Sending a Sound Formats PDU
+###### 3.2.5.1.5 Sending a Sound Formats PDU
 
 The structure and fields of the Sound Formats PDU are specified in section 2.2.2.2.
 
@@ -1781,7 +1621,7 @@ formats MUST be referenced by the NewFormat field of the Format Change PDUs and 
 initialFormat field of the Open PDU. A value of I refers to the Ith format of this list and means that
 audio data MUST be encoded in the Ith format in the list.
 
-3.2.5.1.6 Processing an Open PDU
+###### 3.2.5.1.6 Processing an Open PDU
 
 The structure and fields of the Open PDU are specified in section 2.2.2.3.
 
@@ -1795,7 +1635,7 @@ The second format is specified by the wFormatTag, nChannels, nSamplesPerSec,
 nAvgBytesPerSec, nBlockAlign, nBitsPerSample, cbSize, and ExtraFormatData fields. These
 fields specify the format that SHOULD be used to capture data from the actual audio input device.
 
-3.2.5.1.7 Sending a Format Change PDU
+###### 3.2.5.1.7 Sending a Format Change PDU
 
 The structure and format of the Format Change PDU are specified in section 2.2.4.1.
 
@@ -1807,7 +1647,7 @@ Client also sends Format Change PDU after it receives Open PDU from server. Clie
 Change PDU before sending Open Reply PDU, and the NewFormat field MUST be set to the same
 value as the initialFormat field in the server’s Open PDU.
 
-3.2.5.1.8 Sending an Open Reply PDU
+###### 3.2.5.1.8 Sending an Open Reply PDU
 
 The structure and fields of the Open Reply PDU are specified in section 2.2.2.4.
 
@@ -1823,25 +1663,26 @@ Release: April 23, 2024
 
 22 / 46
 
-3.2.5.2  Data Transfer Sequence
 
-3.2.5.2.1 Sending an Incoming Data PDU
+##### 3.2.5.2 Data Transfer Sequence
+
+###### 3.2.5.2.1 Sending an Incoming Data PDU
 
 The structure and format of the Incoming Data PDU are specified in section 2.2.3.1.
 
 Once the client has captured a packet of audio data to send to the server, the client MUST send an
 Incoming Data PDU immediately before sending each Data PDU.
 
-3.2.5.2.2 Sending a Data PDU
+###### 3.2.5.2.2 Sending a Data PDU
 
 The structure and format of the Data PDU are specified in section 2.2.3.2.
 
 This message MUST be sent immediately after sending an Incoming Data PDU. The client MUST fill the
 Data field with an audio packet encoded using the current audio format.
 
-3.2.5.3  Format Change Sequence
+##### 3.2.5.3 Format Change Sequence
 
-3.2.5.3.1 Processing a Format Change PDU
+###### 3.2.5.3.1 Processing a Format Change PDU
 
 The structure and format of the Format Change PDU are specified in section 2.2.4.1.
 
@@ -1852,7 +1693,7 @@ confirm the format change by replying with a Format Change PDU. After sending a 
 PDU, all audio data MUST be encoded using the new format until the server requests another format
 change.
 
-3.2.5.3.2 Sending a Format Change PDU
+###### 3.2.5.3.2 Sending a Format Change PDU
 
 The structure and format of the Format Change PDU are specified in section 2.2.4.1.
 
@@ -1861,17 +1702,17 @@ own Format Change PDU. The NewFormat field MUST be set to the new value of the c
 format. After sending a Format Change PDU, all audio data MUST be encoded using the new format,
 until the server requests another format change. The format change operation MUST always succeed.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
@@ -1882,7 +1723,8 @@ Release: April 23, 2024
 
 23 / 46
 
-3.3.2  Timers
+
+#### 3.3.2 Timers
 
 After sending Version PDU, the server MAY use a time-out when waiting for the client's Version
 PDU.<2>
@@ -1893,38 +1735,38 @@ Formats PDU.<3>
 After sending Open PDU, the server MAY use a time-out when waiting for the client's Open Reply
 PDU.<4>
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 See section 3.1.4 for more information.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Initialization Sequence
+##### 3.3.5.1 Initialization Sequence
 
-3.3.5.1.1 Sending a Version PDU
+###### 3.3.5.1.1 Sending a Version PDU
 
 The structure and fields of the Version PDU are specified in section 2.2.2.1.
 
 The Version PDU MUST be the first PDU sent by the server.
 
-3.3.5.1.2 Processing a Version PDU
+###### 3.3.5.1.2 Processing a Version PDU
 
 The structure and fields of the Version PDU are specified in section 2.2.2.1.
 
 The server MUST store the protocol version sent by the client.
 
-3.3.5.1.3 Sending a Sound Formats PDU
+###### 3.3.5.1.3 Sending a Sound Formats PDU
 
 The structure and fields of the Sound Formats PDU are specified in section 2.2.2.2.
 
 The server MUST send a Sound Formats PDU after processing the client's Version PDU. The Sound
 Formats PDU informs the client of the audio formats that are supported by the server.
 
-3.3.5.1.4 Processing an Incoming Data PDU
+###### 3.3.5.1.4 Processing an Incoming Data PDU
 
 The structure and format of the Incoming Data PDU are specified in section 2.2.3.1.
 
@@ -1932,7 +1774,7 @@ The client sends an Incoming Data PDU to inform the server that it is about to r
 Formats PDU. This PDU is used for diagnostic purposes. An Incoming Data PDU also precedes a Data
 PDU (see section 3.3.5.2.1).
 
-3.3.5.1.5 Processing a Sound Formats PDU
+###### 3.3.5.1.5 Processing a Sound Formats PDU
 
 The structure and fields of the Sound Formats PDU are specified in section 2.2.2.2.
 
@@ -1946,14 +1788,15 @@ Release: April 23, 2024
 
 24 / 46
 
-3.3.5.1.6 Sending an Open PDU
+
+###### 3.3.5.1.6 Sending an Open PDU
 
 The structure and fields of the Open PDU are specified in section 2.2.2.3.
 
 The server sends an Open PDU after the audio format exchange is completed. The fields of the Open
 PDU MUST be set according to section 3.2.5.1.6.
 
-3.3.5.1.7 Processing a Format Change PDU
+###### 3.3.5.1.7 Processing a Format Change PDU
 
 The structure and format of the Format Change PDU are specified in section 2.2.4.1.
 
@@ -1961,7 +1804,7 @@ Before sending the Open Reply PDU and beginning the transmission of audio data, 
 Format Change PDU. This PDU confirms the initial format chosen by the server and informs the server
 that all audio data MUST initially be encoded in the format specified by the NewFormat field.
 
-3.3.5.1.8 Processing an Open Reply PDU
+###### 3.3.5.1.8 Processing an Open Reply PDU
 
 The structure and fields of the Open Reply PDU are specified in section 2.2.2.4.
 
@@ -1970,9 +1813,9 @@ Result field is a success code, the client will begin sending audio data. If the
 code, the client MUST not send audio data. If the Result field is an error code, then the server MAY
 send an additional Open PDU.
 
-3.3.5.2  Data Transfer Sequence
+##### 3.3.5.2 Data Transfer Sequence
 
-3.3.5.2.1 Processing an Incoming Data PDU
+###### 3.3.5.2.1 Processing an Incoming Data PDU
 
 The structure and format of the Incoming Data PDU are specified in section 2.2.3.1.
 
@@ -1980,16 +1823,16 @@ The Incoming Data PDU indicates that the client is about to send a packet of aud
 uses this information for diagnostic purposes. An Incoming Data PDU also precedes a Sound Formats
 PDU (see section 3.3.5.1.4).
 
-3.3.5.2.2 Processing a Data PDU
+###### 3.3.5.2.2 Processing a Data PDU
 
 The structure and format of the Data PDU are specified in section 2.2.3.2.
 
 After receiving a Data PDU, the server decodes the audio data according to the current audio format.
 The decoded audio is then provided to server-side applications that are recording audio.
 
-3.3.5.3  Format Change Sequence
+##### 3.3.5.3 Format Change Sequence
 
-3.3.5.3.1 Sending a Format Change PDU
+###### 3.3.5.3.1 Sending a Format Change PDU
 
 The structure and format of the Format Change PDU are specified in section 2.2.4.1.
 
@@ -2010,7 +1853,8 @@ Release: April 23, 2024
 
 25 / 46
 
-
+
+
 
 
 
@@ -2021,7 +1865,7 @@ If both the client and server advertised support for version 0x00000002 or great
 SHOULD send the Format Change PDU to request that the client use a different AAC format if
 changes in network conditions require using an AAC codec with different parameters.
 
-3.3.5.3.2 Processing a Format Change PDU
+###### 3.3.5.3.2 Processing a Format Change PDU
 
 The structure and format of the Format Change PDU are specified in section 2.2.4.1.
 
@@ -2030,15 +1874,15 @@ server MUST set Current audio format as NewFormat. From this point, all audio da
 client MUST be encoded using the new audio format. The server MUST decode all audio packets that
 arrive after this PDU according to the new audio format.
 
-3.3.6  Termination
+#### 3.3.6 Termination
 
 Termination is specified in section 3.1.5.2.
 
-3.3.7  Timer Events
+#### 3.3.7 Timer Events
 
 None.
 
-3.3.8  Other Local Events
+#### 3.3.8 Other Local Events
 
 None.
 
@@ -2049,13 +1893,14 @@ Release: April 23, 2024
 
 26 / 46
 
-4  Protocol Examples
 
-4.1  Annotated Initialization Sequence
+## 4 Protocol Examples
+
+### 4.1 Annotated Initialization Sequence
 
 The following is an annotated dump of an initialization sequence, as described in section 1.3.1.
 
-4.1.1  Server Version PDU
+#### 4.1.1 Server Version PDU
 
 The following is an annotated dump of a Version PDU.
 
@@ -2063,7 +1908,7 @@ The following is an annotated dump of a Version PDU.
  01 -> MSG_SNDIN_PDU_HEADER::MessageId = MSG_SNDIN_VERSION (1)
  01 00 00 00 -> MSG_SNDIN_VERSION::Version = 1
 
-4.1.2  Client Version PDU
+#### 4.1.2 Client Version PDU
 
 The following is an annotated dump of a Version PDU.
 
@@ -2071,7 +1916,7 @@ The following is an annotated dump of a Version PDU.
  01 -> MSG_SNDIN_PDU_HEADER::MessageId = MSG_SNDIN_VERSION (1)
  01 00 00 00 -> MSG_SNDIN_VERSION::Version = 1
 
-4.1.3  Server Sound Formats PDU
+#### 4.1.3 Server Sound Formats PDU
 
 The following is an annotated dump of a Sound Formats PDU.
 
@@ -2114,7 +1959,8 @@ Release: April 23, 2024
 
 27 / 46
 
- 000001f0 ff 00 00 00 00 c0 00 40 00 f0 00 00 00 cc 01 30
+
+ 000001f0 ff 00 00 00 00 c0 00 40 00 f0 00 00 00 cc 01 30
  00000200 ff 88 01 18 ff 11 00 01 00 11 2b 00 00 d4 15 00
  00000210 00 00 01 04 00 02 00 f9 01 31 00 01 00 22 56 00
  00000220 00 7e 11 00 00 41 00 00 00 02 00 40 01 02 00 01
@@ -2191,7 +2037,8 @@ Release: April 23, 2024
 
 28 / 46
 
-    f9 03 -> data
+
+    f9 03 -> data
 
  02 00 01 00 44 ac 00 00 a3 56 00 00 00 04 04 00 20 00 f4 07 07 00 00 01 00 00 00
  02 00 ff 00 00 00 00 c0 00 40 00 f0 00 00 00 cc 01 30 ff 88 01 18 ff ->
@@ -2268,7 +2115,8 @@ Release: April 23, 2024
 
 29 / 46
 
- 31 00 01 00 44 ac 00 00 fd 22 00 00 41 00 00 00 02 00 40 01 -> AUDIO_FORMAT
+
+ 31 00 01 00 44 ac 00 00 fd 22 00 00 41 00 00 00 02 00 40 01 -> AUDIO_FORMAT
     31 00 -> AUDIO_FORMAT::wFormatTag = WAVE_FORMAT_GSM610 (49)
     01 00 -> AUDIO_FORMAT::nChannels = 0x1 = 1
     44 ac 00 00 -> AUDIO_FORMAT::nSamplesPerSecond = 0xac44 = 44100
@@ -2344,7 +2192,8 @@ Release: April 23, 2024
 
 30 / 46
 
-    40 1f 00 00 -> AUDIO_FORMAT::nSamplesPerSecond = 0x1f40 = 8000
+
+    40 1f 00 00 -> AUDIO_FORMAT::nSamplesPerSecond = 0x1f40 = 8000
     00 10 00 00 -> AUDIO_FORMAT::nAvgBytesPerSecond = 0x1000 = 4096
     00 01 -> AUDIO_FORMAT::nBlockAlign = 0x100 = 256
     04 00 -> AUDIO_FORMAT::wBitsPerSample = 0x4 = 4
@@ -2382,14 +2231,14 @@ Release: April 23, 2024
     02 00 -> AUDIO_FORMAT::cbSize = 0x2 = 2
     40 01 -> data
 
-4.1.4  Incoming Data PDU
+#### 4.1.4 Incoming Data PDU
 
 The following is an annotated dump of an Incoming Data PDU.
 
  00000000 05
  05 -> MSG_SNDIN_PDU_HEADER::Version = MSG_SNDIN_DATA_INCOMING (5)
 
-4.1.5  Client Sound Formats PDU
+#### 4.1.5 Client Sound Formats PDU
 
 The following is an annotated dump of a Sound Formats PDU.
 
@@ -2413,7 +2262,8 @@ Release: April 23, 2024
 
 31 / 46
 
- 000000c0 00 00 02 00 ff 00 00 00 00 c0 00 40 00 f0 00 00
+
+ 000000c0 00 00 02 00 ff 00 00 00 00 c0 00 40 00 f0 00 00
  000000d0 00 cc 01 30 ff 88 01 18 ff 11 00 01 00 44 ac 00
  000000e0 00 6d 56 00 00 00 04 04 00 02 00 f9 07 02 00 02
  000000f0 00 11 2b 00 00 19 2c 00 00 00 02 04 00 20 00 f4
@@ -2490,7 +2340,8 @@ Release: April 23, 2024
 
 32 / 46
 
- 02 00 02 00 22 56 00 00 27 57 00 00 00 04 04 00 20 00 f4 03 07 00 00 01 00 00 00
+
+ 02 00 02 00 22 56 00 00 27 57 00 00 00 04 04 00 20 00 f4 03 07 00 00 01 00 00 00
  02 00 ff 00 00 00 00 c0 00 40 00 f0 00 00 00 cc 01 30 ff 88 01 18 ff
  -> AUDIO_FORMAT
     02 00 -> AUDIO_FORMAT::wFormatTag = WAVE_FORMAT_ADPCM (2)
@@ -2566,7 +2417,8 @@ Release: April 23, 2024
 
 33 / 46
 
- 02 00 01 00 22 56 00 00 93 2b 00 00 00 02 04 00 20 00 f4 03 07 00 00 01 00 00 00
+
+ 02 00 01 00 22 56 00 00 93 2b 00 00 00 02 04 00 20 00 f4 03 07 00 00 01 00 00 00
  02 00 ff 00 00 00 00 c0 00 40 00 f0 00 00 00 cc 01 30 ff 88 01 18 ff ->
  AUDIO_FORMAT
     02 00 -> AUDIO_FORMAT::wFormatTag = WAVE_FORMAT_ADPCM (2)
@@ -2642,7 +2494,8 @@ Release: April 23, 2024
 
 34 / 46
 
- 11 00 01 00 11 2b 00 00 d4 15 00 00 00 01 04 00 02 00 f9 01 -> AUDIO_FORMAT
+
+ 11 00 01 00 11 2b 00 00 d4 15 00 00 00 01 04 00 02 00 f9 01 -> AUDIO_FORMAT
     11 00 -> AUDIO_FORMAT::wFormatTag = WAVE_FORMAT_DVI_ADPCM (17)
     01 00 -> AUDIO_FORMAT::nChannels = 0x1 = 1
     11 2b 00 00 -> AUDIO_FORMAT::nSamplesPerSecond = 0x2b11 = 11025
@@ -2714,7 +2567,8 @@ Release: April 23, 2024
 
 35 / 46
 
-4.1.6  Open PDU
+
+#### 4.1.6 Open PDU
 
 The following is an annotated dump of an Open PDU.
 
@@ -2741,7 +2595,7 @@ The following is an annotated dump of an Open PDU.
     01 00 00 00 00 00 10 00 80 00 00 aa 00 38 9b 71 -> WAVEFORMAT_EXTENSIBLE::SubFormat
          = KSDATAFORMAT_SUBTYPE_PCM {00000001-0000-0010-8000-00aa00389b71}
 
-4.1.7  Format Change PDU
+#### 4.1.7 Format Change PDU
 
 The following is an annotated Format Change PDU.
 
@@ -2749,7 +2603,7 @@ The following is an annotated Format Change PDU.
  07 -> MSG_SNDIN_PDU_HEADER::Version = MSG_SNDIN_FORMATCHANGE (7)
  0b 00 00 00 -> MSG_SNDIN_FORMATCHANGE::NewFormat = 0xb = 11
 
-4.1.8  Open Reply PDU
+#### 4.1.8 Open Reply PDU
 
 The following is an annotated dump of an Open Reply PDU.
 
@@ -2757,11 +2611,11 @@ The following is an annotated dump of an Open Reply PDU.
  04 -> MSG_SNDIN_PDU_HEADER::Version = MSG_SNDIN_OPEN_REPLY (4)
  00 00 00 00 -> MSG_SNDIN_OPEN_REPLY::Result = S_OK (0)
 
-4.2  Annotated Data Transfer Sequence
+### 4.2 Annotated Data Transfer Sequence
 
 The following is an annotated dump of a data transfer sequence as described in section 1.3.2.
 
-4.2.1  Incoming Data PDU
+#### 4.2.1 Incoming Data PDU
 
 The following is an annotated dump of an Incoming Data PDU.
 
@@ -2775,7 +2629,8 @@ Release: April 23, 2024
 
 36 / 46
 
-4.2.2  Data PDU
+
+#### 4.2.2 Data PDU
 
 The following is an annotated dump of a Data PDU.
 
@@ -2808,11 +2663,11 @@ The following is an annotated dump of a Data PDU.
  06 -> MSG_SNDIN_PDU_HEADER::Version = MSG_SNDIN_DATA (6)
  d6... 23 b4 4d -> Data
 
-4.3  Annotated Format Change Sequence
+### 4.3 Annotated Format Change Sequence
 
 The following is an annotated format change sequence as described in section 1.3.3.
 
-4.3.1  Server Format Change PDU
+#### 4.3.1 Server Format Change PDU
 
 The following is an annotated Format Change PDU.
 
@@ -2820,7 +2675,7 @@ The following is an annotated Format Change PDU.
  07 -> MSG_SNDIN_PDU_HEADER::Version = MSG_SNDIN_FORMATCHANGE (7)
  0b 00 00 00 -> MSG_SNDIN_FORMATCHANGE::NewFormat = 0xb = 11
 
-4.3.2  Client Format Change PDU
+#### 4.3.2 Client Format Change PDU
 
 The following is an annotated Format Change PDU.
 
@@ -2835,14 +2690,15 @@ Release: April 23, 2024
 
 37 / 46
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
  All dynamic virtual traffic is secured by the underlying core RDP. An overview of the implemented
 security-related mechanisms is as described in [MS-RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2853,7 +2709,8 @@ Release: April 23, 2024
 
 38 / 46
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2937,7 +2794,8 @@ Release: April 23, 2024
 
 39 / 46
 
-Codec name
+
+Codec name
 
 Microsoft MULAW
 
@@ -3016,7 +2874,8 @@ Release: April 23, 2024
 
 40 / 46
 
-<4> Section 3.3.2: Servers implemented for Windows will wait 5 seconds after sending an Open PDU.
+
+<4> Section 3.3.2: Servers implemented for Windows will wait 5 seconds after sending an Open PDU.
 If the Open Reply PDU from the client is not received within this time, the server terminates the
 protocol.
 
@@ -3027,7 +2886,8 @@ Release: April 23, 2024
 
 41 / 46
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3071,7 +2931,8 @@ Release: April 23, 2024
 
 42 / 46
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3210,7 +3071,8 @@ Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-H
+
+H
 
 Higher-layer triggered events
    client (section 3.1.4 19, section 3.2.4 21)
@@ -3357,7 +3219,8 @@ Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   sending Data 23
+
+   sending Data 23
    sending Format Change
       client (section 3.2.5.1.7 22, section 3.2.5.3.2
 
@@ -3510,7 +3373,8 @@ Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      server 24
+
+      server 24
    sending
       client 21
       server 24

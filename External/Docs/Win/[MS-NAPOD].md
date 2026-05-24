@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 43
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -182,110 +183,50 @@ Release: June 1, 2017
 
 2 / 43
 
-Table of Contents
 
-1.1
+## Table of Contents
 
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+    - [1.1.1 Network Access Protection Concepts](#111-network-access-protection-concepts)
+  - [1.2 Supported Deployment Scenarios](#12-supported-deployment-scenarios)
+    - [1.2.1 VPN Server](#121-vpn-server)
+    - [1.2.2 Network Access Devices/Servers](#122-network-access-devicesservers)
+    - [1.2.3 DHCP Servers](#123-dhcp-servers)
+    - [1.2.4 IPsec-Protected Networks](#124-ipsec-protected-networks)
+    - [1.2.5 Terminal Services Networks](#125-terminal-services-networks)
+  - [1.3 Glossary](#13-glossary)
+  - [1.4 References](#14-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 Requesting Network Access](#211-requesting-network-access)
+      - [2.1.1.1 Overview](#2111-overview)
+      - [2.1.1.2 Internal Architecture](#2112-internal-architecture)
+    - [2.1.2 Relevant Standards](#212-relevant-standards)
+    - [2.1.3 Relationship Between Standards and Microsoft Extensions](#213-relationship-between-standards-and-microsoft-extensions)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Health Validation](#251-health-validation)
+    - [2.5.2 Request Network Access](#252-request-network-access)
+    - [2.5.3 Remediation](#253-remediation)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Validate Health of NAP Client for IPsec Communication](#31-example-1-validate-health-of-nap-client-for-ipsec-communication)
+  - [3.2 Example 2: Validate Health of NAP Client for DHCP Communication](#32-example-2-validate-health-of-nap-client-for-dhcp-communication)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-1.1.1
-
-1  Introduction ............................................................................................................ 4
-Conceptual Overview .......................................................................................... 4
-Network Access Protection Concepts ............................................................... 6
-Supported Deployment Scenarios ......................................................................... 7
-VPN Server .................................................................................................. 8
-Network Access Devices/Servers .................................................................... 9
-DHCP Servers .............................................................................................. 9
-IPsec-Protected Networks ............................................................................ 10
-Terminal Services Networks ......................................................................... 12
-Glossary ......................................................................................................... 12
-References ...................................................................................................... 15
-
-1.2.1
-1.2.2
-1.2.3
-1.2.4
-1.2.5
-
-1.3
-1.4
-
-2.1
-
-2.1.1
-
-2.2
-2.3
-
-2.1.2
-2.1.3
-
-2.3.1
-2.3.2
-
-2.1.1.1
-2.1.1.2
-
-2  Functional Architecture ......................................................................................... 18
-Overview ........................................................................................................ 18
-Requesting Network Access.......................................................................... 20
-Overview ............................................................................................. 21
-Internal Architecture ............................................................................. 21
-Relevant Standards ..................................................................................... 23
-Relationship Between Standards and Microsoft Extensions ............................... 24
-Protocol Summary ............................................................................................ 24
-Environment .................................................................................................... 25
-Dependencies on This System ...................................................................... 25
-Dependencies on Other Systems/Components ................................................ 26
-Assumptions and Preconditions .......................................................................... 26
-Use Cases ....................................................................................................... 26
-Health Validation ........................................................................................ 27
-Request Network Access .............................................................................. 28
-Remediation ............................................................................................... 29
-Versioning, Capability Negotiation, and Extensibility ............................................. 30
-Error Handling ................................................................................................. 30
-Coherency Requirements .................................................................................. 31
-Security .......................................................................................................... 31
-Additional Considerations .................................................................................. 31
-
-2.6
-2.7
-2.8
-2.9
-2.10
-
-2.5.1
-2.5.2
-2.5.3
-
-2.4
-2.5
-
-3  Examples ............................................................................................................... 32
-Example 1: Validate Health of NAP Client for IPsec Communication ........................ 32
-Example 2: Validate Health of NAP Client for DHCP Communication ........................ 35
-
-3.1
-3.2
-
-4  Microsoft Implementations ................................................................................... 39
-Product Behavior .............................................................................................. 39
-
-4.1
-
-5  Change Tracking .................................................................................................... 40
-
-6  Index ..................................................................................................................... 41
-
-[MS-NAPOD] - v20170601
-Network Access Protection Protocols Overview
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-3 / 43
-
-1  Introduction
+## 1 Introduction
 
 This document provides an overview of the functionality and relationships of the protocols used in
 Network Access Protection (NAP). NAP verifies the identities of users and the proper software
@@ -296,7 +237,7 @@ NAP extends the Internet Engineering Task Force (IETF) network access architectu
 extension is the introduction of client health evaluation as part of the process of determining network
 access. NAP uses underlying standards-based protocols for network access.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 The Windows client/server operating systems implement a set of NAP protocols. These protocols are
 used when a client attempts to gain access to an enterprise network, such as an enterprise-based
@@ -345,7 +286,8 @@ Release: June 1, 2017
 
 4 / 43
 
-<!-- Extracted images from page 5 -->
+
+<!-- Extracted images from page 5 -->
 ![Extracted image 1 from page 5]([MS-NAPOD].images/page005-img01.png)
 <!-- /Extracted images from page 5 -->
 
@@ -391,7 +333,8 @@ Release: June 1, 2017
 
 5 / 43
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-NAPOD].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -409,7 +352,7 @@ that the NAP client has access to only those servers required for remediation. T
 RADIUS Attributes for Network Access Protection (NAP) Data Structure (RNAP) [MS-RNAP] allows the
 NAP communication to NAP policy servers.
 
-1.1.1  Network Access Protection Concepts
+#### 1.1.1 Network Access Protection Concepts
 
 The following diagram depicts the NAP components.
 
@@ -420,7 +363,8 @@ Release: June 1, 2017
 
 6 / 43
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-NAPOD].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -453,7 +397,7 @@ latest version, and installing an updated set of anti-virus signatures and runni
 can take these directives, perform the required remediation, and then retry requesting network access
 with a new SoH.
 
-1.2  Supported Deployment Scenarios
+### 1.2 Supported Deployment Scenarios
 
 NAP is implemented for the following network access deployment scenarios and their related data link
 protocols:
@@ -483,7 +427,8 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-NAPOD].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -516,7 +461,7 @@ between the NAP client and the NPS. The PEAP protocol is an EAP method; therefor
 SoH message is simply transported in EAP. A major feature of the PEAP protocol is that it provides
 strong cryptographic protection for communication between the NAP client and the NPS.
 
-1.2.1  VPN Server
+#### 1.2.1 VPN Server
 
 The following diagram shows how NAP is deployed with a VPN server.
 
@@ -537,7 +482,8 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-NAPOD].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -546,7 +492,7 @@ client to access network resources required for remediation, such as software di
 Group Policy servers, or configuration file servers. After remediation, the client can retry gaining full
 access to the network to remove filtering.
 
-1.2.2  Network Access Devices/Servers
+#### 1.2.2 Network Access Devices/Servers
 
 The following diagram shows how NAP is deployed with network access devices.
 
@@ -576,7 +522,7 @@ to-date software, group policy servers, or configuration file servers.
 
 After remediation the client can retry to gain full access to the enterprise network.
 
-1.2.3  DHCP Servers
+#### 1.2.3 DHCP Servers
 
 The following diagram shows how NAP is deployed with a DHCP Server.
 
@@ -587,7 +533,8 @@ Release: June 1, 2017
 
 9 / 43
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-NAPOD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -608,7 +555,7 @@ to perform remediation. These resources can include software distribution server
 servers, or configuration file servers. After remediation, the client retries accessing the network to
 obtain a new IP address that has full access to the enterprise network.
 
-1.2.4  IPsec-Protected Networks
+#### 1.2.4 IPsec-Protected Networks
 
 The following diagram shows how NAP is deployed with IPsec-protected networks.
 
@@ -619,7 +566,8 @@ Release: June 1, 2017
 
 10 / 43
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-NAPOD].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -662,11 +610,12 @@ Release: June 1, 2017
 
 11 / 43
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-NAPOD].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.2.5  Terminal Services Networks
+#### 1.2.5 Terminal Services Networks
 
 The following diagram shows how NAP is deployed with Remote Desktop networks.
 
@@ -680,7 +629,7 @@ The Remote Desktop gateway then communicates with an NPS to evaluate the client'
 gateway uses the response from the NPS to either grant or deny access, and it can also direct the
 client to a set of remediation servers to fix software configuration, virus signatures, and so on.
 
-1.3  Glossary
+### 1.3 Glossary
 
 This document uses the following terms:
 
@@ -709,7 +658,8 @@ Release: June 1, 2017
 
 12 / 43
 
-DIAMETER: An authentication, authorization, and accounting (AAA) protocol for computer
+
+DIAMETER: An authentication, authorization, and accounting (AAA) protocol for computer
 
 networks and an alternative to RADIUS. The Diameter Base Protocol [RFC3588] defines the
 minimum requirements for an AAA protocol.
@@ -780,7 +730,8 @@ Release: June 1, 2017
 
 13 / 43
 
-NAP enforcement point (NEP): A computer acting as a server that enforces Network Access
+
+NAP enforcement point (NEP): A computer acting as a server that enforces Network Access
 Protection. Examples of NEPs are VPN Servers, DHCP Servers, Remote Desktop gateways,
 802.1x Routers, and Health Registration Authority Servers.
 
@@ -856,12 +807,13 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Windows Security Health Validator (WSHV): A utility that responds to the report received from
+
+Windows Security Health Validator (WSHV): A utility that responds to the report received from
 the Windows Security Health Agent (WSHA). If the status that is reported by the WSHA does not
 comply with the defined security health policy, the response from the WSHV includes quarantine
 and remediation instructions as specified in [MS-WSH].
 
-1.4  References
+### 1.4 References
 
 [IEEE802.1X] Institute of Electrical and Electronics Engineers, "IEEE Standard for Local and
 Metropolitan Area Networks - Port-Based Network Access Control", IEEE Std 802.1X-2004,
@@ -921,7 +873,8 @@ Release: June 1, 2017
 
 15 / 43
 
-[MS-WSH] Microsoft Corporation, "Windows Security Health Agent (WSHA) and Windows Security
+
+[MS-WSH] Microsoft Corporation, "Windows Security Health Agent (WSHA) and Windows Security
 Health Validator (WSHV) Protocol".
 
 [RFC1661] Simpson, W., Ed., "The Point-to-Point Protocol (PPP)", STD 51, RFC 1661, July 1994,
@@ -987,7 +940,8 @@ Release: June 1, 2017
 
 16 / 43
 
-[TNC-IF-TNCCSPBSoH] TCG, "TNC IF-TNCCS: Protocol Bindings for SoH", version 1.0, May 2007,
+
+[TNC-IF-TNCCSPBSoH] TCG, "TNC IF-TNCCS: Protocol Bindings for SoH", version 1.0, May 2007,
 https://trustedcomputinggroup.org/tnc-if-tnccs-protocol-bindings-soh/
 
 [TNC-IF-TNCCSTLVB] TCG, "TNC IF-TNCCS: TLV Binding", version 2.0, January 2010,
@@ -1000,11 +954,12 @@ Release: June 1, 2017
 
 17 / 43
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-NAPOD].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-2  Functional Architecture
+## 2 Functional Architecture
 
 NAP provides network management and control services for the following tasks:
 
@@ -1024,7 +979,7 @@ the network.
 
 This document focuses on the network access request task.
 
-2.1  Overview
+### 2.1 Overview
 
 The following figure shows the high-level interactions between the NAP components and other external
 services, such as the Authentication service, Active Directory service, and Group Policy service.
@@ -1041,7 +996,8 @@ Release: June 1, 2017
 
 18 / 43
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-NAPOD].images/page019-img01.png)
 ![Extracted image 2 from page 19]([MS-NAPOD].images/page019-img02.png)
 <!-- /Extracted images from page 19 -->
@@ -1069,7 +1025,8 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-NAP supports the following data link protocols:
+
+NAP supports the following data link protocols:
 
 
 
@@ -1134,7 +1091,7 @@ user and machine based policies and to group users and machines into logical gro
 administration. Group Policy servers [MS-GPOD] are used to configure, manage, and distribute policies
 across clients and replicated servers.
 
-2.1.1  Requesting Network Access
+#### 2.1.1 Requesting Network Access
 
 This section describes the network access authentication and authorization process used by NAP.
 Network access authentication and authorization is used as follows:
@@ -1150,7 +1107,8 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-NAPOD].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1167,7 +1125,7 @@ the NPS to use to determine if the client has network access. The NPS sends the 
 (SoHR) back to the client via the NEP, and the NEP can grant or limit network access based on the
 SoH response (SoHR).
 
-2.1.1.1  Overview
+##### 2.1.1.1 Overview
 
 The following figure depicts the black box diagram for the NAP architecture. In the figure, the
 components on the client computer are the NAP client, the Network Access protocol components that
@@ -1179,7 +1137,7 @@ machine identities.
 
 Figure 12: Black box diagram for the NAP architecture
 
-2.1.1.2  Internal Architecture
+##### 2.1.1.2 Internal Architecture
 
 The following figure depicts the client architecture of NAP. The data link and NAP protocols are as
 follows:
@@ -1205,7 +1163,8 @@ Release: June 1, 2017
 
 21 / 43
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-NAPOD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1253,7 +1212,8 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-NAPOD].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1264,7 +1224,7 @@ The following figure depicts the server-side NAP architecture for an NPS.
 
 Figure 14: Server-side NAP architecture for NPS
 
-2.1.2  Relevant Standards
+#### 2.1.2 Relevant Standards
 
 The NAP protocols use and extend the following standards:
 
@@ -1298,7 +1258,8 @@ Release: June 1, 2017
 
 23 / 43
 
-2.1.3  Relationship Between Standards and Microsoft Extensions
+
+#### 2.1.3 Relationship Between Standards and Microsoft Extensions
 
 For details about these relationships, refer to the Normative References section of the individual
 protocol technical documents.
@@ -1331,7 +1292,7 @@ networks.
 
 implemented as an EAP method [RFC2716].
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following tables provide a comprehensive list of the NAP member protocols, where the protocols
 are grouped according to their primary purpose for NAP deployment.
@@ -1394,7 +1355,8 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1485,13 +1447,13 @@ compliant with the defined security health policy.
 
  [MS-WSH]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. This includes the systems that
 use the interfaces provided by this system of protocols, other systems that depend on this system,
 and, as appropriate, how components of the system communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 Because NAP determines whether or not a client has access to the network, any system or protocol
 that accesses the network is influenced by this system. In general, applications and OS software are
@@ -1513,10 +1475,11 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-managing servers as specified in [MS-RDSOD]. This system depends on the services of NAP to gain
+
+managing servers as specified in [MS-RDSOD]. This system depends on the services of NAP to gain
 access in the Remote Desktop system.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 NAP depends on the following systems:
 
@@ -1528,7 +1491,7 @@ Public Key Infrastructure (PKI) [MS-CERSOD]
 
   Group Policy [MS-GPOD]
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions apply to this document.
 
@@ -1562,7 +1525,7 @@ The client and server machines have been joined to the domain.
 
 authenticating client and server systems, such as Group Policy [MS-GPOD].
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 The following is the list of use cases which are described in detail in the following sections.
 
@@ -1579,11 +1542,12 @@ Release: June 1, 2017
 
 26 / 43
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-NAPOD].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
-2.5.1  Health Validation
+#### 2.5.1 Health Validation
 
 Figure 15: Client Computer Health Validation use case
 
@@ -1639,7 +1603,8 @@ Release: June 1, 2017
 
 27 / 43
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-NAPOD].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -1671,7 +1636,7 @@ remediation.
 
 Post-Condition: The NEP has state that grants the Client computer network access.
 
-2.5.2  Request Network Access
+#### 2.5.2 Request Network Access
 
 Figure 16: Client computer gaining network access use case
 
@@ -1696,7 +1661,8 @@ Release: June 1, 2017
 
 28 / 43
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-NAPOD].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -1750,7 +1716,7 @@ Post-Condition: The NEP allows network access to the Client computer.
 
 Extensions: None.
 
-2.5.3  Remediation
+#### 2.5.3 Remediation
 
 Figure 17: Remediation use case
 
@@ -1764,7 +1730,8 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Goal: To remediate the client based on the health evaluation response. The exact method of
+
+Goal: To remediate the client based on the health evaluation response. The exact method of
 remediation depends on the specifics of the SHA/SHV. However, this document uses the
 WSHA/WSHV as described in [MS-WSH], as an example.
 
@@ -1814,7 +1781,7 @@ Post-Condition: Remediation is attempted and the health state of the client is r
 
 Extensions: None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 There is no capability negotiation that is associated with this system. Any deviations from a specific
 version's implementation of these protocol specifications are documented in the respective protocol
@@ -1823,7 +1790,7 @@ specified in the System Versioning and Capability Negotiation sections in their 
 documents (TDs). For more details, see sections 1.7 of the member protocol technical documents
 listed in section 2.2 of this document.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 The NAP protocols do not handle errors at the system level for cross-protocol error states. The
 individual protocol documents describe the errors that the protocols return and what they mean for
@@ -1835,14 +1802,15 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-the system. How to handle the errors, based on the protocol descriptions, is determined by the
+
+the system. How to handle the errors, based on the protocol descriptions, is determined by the
 implementer.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 None.
 
-2.9  Security
+### 2.9 Security
 
 The NEP and the NAP health policy server (NPS) have a trust relationship that might have to be
 configured and protected.
@@ -1860,7 +1828,7 @@ secure network infrastructure for NEP and NPS, as do all deployments of the IETF
 In the case of HCEP, the NAP client requires that the X.509 certificate use SSL as specified in [MS-
 TLSP].
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 None.
 
@@ -1871,9 +1839,10 @@ Release: June 1, 2017
 
 31 / 43
 
-3  Examples
 
-3.1  Example 1: Validate Health of NAP Client for IPsec Communication
+## 3 Examples
+
+### 3.1 Example 1: Validate Health of NAP Client for IPsec Communication
 
 This example demonstrates the use cases described in sections 2.5.1 and 2.5.3.
 
@@ -1924,7 +1893,8 @@ Release: June 1, 2017
 
 32 / 43
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-NAPOD].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -1977,7 +1947,8 @@ Release: June 1, 2017
 
 33 / 43
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-NAPOD].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -2016,7 +1987,8 @@ Release: June 1, 2017
 
 34 / 43
 
-6.  The NAP client communicates with the remediation server to obtain the required updates. For
+
+6.  The NAP client communicates with the remediation server to obtain the required updates. For
 
 example, the SHA might call the Microsoft Windows Server Update Service and obtain the latest
 operating system or it might call the Windows Security Service and enable the firewall.
@@ -2054,7 +2026,7 @@ IPsec communication.
 
 using IPsec.
 
-3.2  Example 2: Validate Health of NAP Client for DHCP Communication
+### 3.2 Example 2: Validate Health of NAP Client for DHCP Communication
 
 This example demonstrates the use case described in sections 2.5.1 and 2.5.3.
 
@@ -2097,7 +2069,8 @@ Release: June 1, 2017
 
 35 / 43
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-NAPOD].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -2147,7 +2120,8 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-NAPOD].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
@@ -2176,7 +2150,8 @@ Release: June 1, 2017
 
 37 / 43
 
-1.  When the NAP client starts, it sends an NAP-SoH ([MS-DHCPN] section 2.2.1.1) within the vendor-
+
+1.  When the NAP client starts, it sends an NAP-SoH ([MS-DHCPN] section 2.2.1.1) within the vendor-
 
 specific option ([RFC2132] section 8.4) in a DHCPDISCOVER message to determine whether the
 DHCP server is NAP-enabled.
@@ -2254,7 +2229,8 @@ Release: June 1, 2017
 
 38 / 43
 
-17. The DHCP server responds with the network configuration options and includes an appropriate SoH
+
+17. The DHCP server responds with the network configuration options and includes an appropriate SoH
 
 response (SoHR) (obtained from the health policy server) in the DHCP acknowledgment message
 (DHCPACK).
@@ -2266,7 +2242,8 @@ Release: June 1, 2017
 
 39 / 43
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 There are no variations in the behavior of the NAP System in different versions of Windows beyond
 those described in the specifications of the protocols supported by the system, as listed in section 2.2.
@@ -2297,7 +2274,7 @@ Exceptions, if any, are noted below. If a service pack number appears with the p
 behavior changed in that service pack. The new behavior also applies to subsequent service packs of
 the product unless otherwise specified.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 None.
 
@@ -2308,7 +2285,8 @@ Release: June 1, 2017
 
 40 / 43
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2320,7 +2298,8 @@ Release: June 1, 2017
 
 41 / 43
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 31
@@ -2456,7 +2435,8 @@ Use cases 26
 
 42 / 43
 
-   health validation 27
+
+   health validation 27
    remediation 29
    request network access 28
 Use cases - overview 26

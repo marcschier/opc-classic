@@ -63,7 +63,8 @@ Release: May 11, 2026
 
 1 / 145
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -297,683 +298,282 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Table of Contents
 
-1.1
-1.2
-
-1.3
-1.4
-1.5
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 8
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Client Implementation Requirements............................................................. 11
-Server Implementation Requirements ........................................................... 12
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.6
-1.7
-1.8
-1.9
-
-1.5.1
-1.5.2
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-2.2.2.13
-2.2.2.14
-2.2.2.15
-2.2.2.16
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-Common Data Types ................................................................................... 15
-RDPGFX_POINT16 ................................................................................. 15
-RDPGFX_RECT16 .................................................................................. 15
-RDPGFX_COLOR32 ................................................................................ 16
-RDPGFX_PIXELFORMAT ......................................................................... 16
-RDPGFX_HEADER .................................................................................. 16
-RDPGFX_CAPSET .................................................................................. 18
-Graphics Messages ..................................................................................... 19
-RDPGFX_WIRE_TO_SURFACE_PDU_1 ...................................................... 19
-RDPGFX_WIRE_TO_SURFACE_PDU_2 ...................................................... 21
-RDPGFX_DELETE_ENCODING_CONTEXT_PDU........................................... 22
-RDPGFX_SOLIDFILL_PDU ....................................................................... 22
-RDPGFX_SURFACE_TO_SURFACE_PDU .................................................... 23
-RDPGFX_SURFACE_TO_CACHE_PDU ....................................................... 24
-RDPGFX_CACHE_TO_SURFACE_PDU ....................................................... 24
-RDPGFX_EVICT_CACHE_ENTRY_PDU ....................................................... 25
-RDPGFX_CREATE_SURFACE_PDU ............................................................ 25
-RDPGFX_DELETE_SURFACE_PDU ............................................................ 26
-RDPGFX_START_FRAME_PDU ................................................................. 26
-RDPGFX_END_FRAME_PDU .................................................................... 27
-RDPGFX_FRAME_ACKNOWLEDGE_PDU .................................................... 27
-RDPGFX_RESET_GRAPHICS_PDU ............................................................ 28
-RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU .............................................. 29
-RDPGFX_CACHE_IMPORT_OFFER_PDU .................................................... 30
-RDPGFX_CACHE_ENTRY_METADATA .................................................. 30
-RDPGFX_CACHE_IMPORT_REPLY_PDU ..................................................... 31
-RDPGFX_CAPS_ADVERTISE_PDU ............................................................ 32
-RDPGFX_CAPS_CONFIRM_PDU ............................................................... 32
-RDPGFX_MAP_SURFACE_TO_WINDOW_PDU ............................................ 33
-RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU ............................................ 33
-RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU ................................. 34
-RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU ............................... 35
-Capability Sets ........................................................................................... 36
-RDPGFX_CAPSET_VERSION8 .................................................................. 36
-RDPGFX_CAPSET_VERSION81 ................................................................ 37
-RDPGFX_CAPSET_VERSION10 ................................................................ 37
-RDPGFX_CAPSET_VERSION101 .............................................................. 38
-
-2.2.2.17
-2.2.2.18
-2.2.2.19
-2.2.2.20
-2.2.2.21
-2.2.2.22
-2.2.2.23
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-
-2.2.2.16.1
-
-2.2.3
-
-[MS-RDPEGFX] - v20260511
-Remote Desktop Protocol: Graphics Pipeline Extension
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-3 / 145
-
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-
-2.2.4
-
-2.2.4.1
-
-2.2.4.1.1
-
-2.2.4.1.1.3
-
-2.2.4.1.1.2
-
-2.2.4.1.1.1
-
-2.2.4.1.1.3.1
-
-2.2.4.1.1.2.1
-
-2.2.4.1.1.1.1
-
-2.2.4.1.1.3.1.1
-
-2.2.4.1.1.2.1.1
-
-2.2.4.1.1.3.1.1.1
-2.2.4.1.1.3.1.1.2
-
-2.2.4.1.1.2.1.1.1
-2.2.4.1.1.2.1.1.2
-2.2.4.1.1.2.1.1.3
-
-RDPGFX_CAPSET_VERSION102 .............................................................. 39
-RDPGFX_CAPSET_VERSION103 .............................................................. 39
-RDPGFX_CAPSET_VERSION104 .............................................................. 40
-RDPGFX_CAPSET_VERSION105 .............................................................. 41
-RDPGFX_CAPSET_VERSION106 .............................................................. 42
-RDPGFX_CAPSET_VERSION107 .............................................................. 42
-Bitmap Compression ................................................................................... 43
-CLEARCODEC_BITMAP_STREAM ............................................................. 43
-CLEARCODEC_COMPOSITE_PAYLOAD ................................................ 44
-CLEARCODEC_RESIDUAL_DATA ................................................... 45
-CLEARCODEC_RGB_RUN_SEGMENT ........................................ 45
-CLEARCODEC_BANDS_DATA ....................................................... 46
-CLEARCODEC_BAND ............................................................. 46
-CLEARCODEC_VBAR ........................................................ 47
-VBAR_CACHE_HIT ..................................................... 48
-SHORT_VBAR_CACHE_HIT ......................................... 48
-SHORT_VBAR_CACHE_MISS ....................................... 49
-CLEARCODEC_SUBCODECS_DATA ............................................... 50
-CLEARCODEC_SUBCODEC ..................................................... 50
-CLEARCODEC_SUBCODEC_RLEX ....................................... 51
-RLEX_RGB_TRIPLET .................................................. 52
-CLEARCODEC_SUBCODEC_RLEX_SEGMENT .................. 52
-RFX_PROGRESSIVE_BITMAP_STREAM ..................................................... 53
-RFX_PROGRESSIVE_DATABLOCK ...................................................... 54
-RFX_PROGRESSIVE_SYNC .......................................................... 55
-RFX_PROGRESSIVE_FRAME_BEGIN .............................................. 55
-RFX_PROGRESSIVE_FRAME_END ................................................. 56
-RFX_PROGRESSIVE_CONTEXT ..................................................... 56
-RFX_PROGRESSIVE_REGION ....................................................... 57
-RFX_PROGRESSIVE_CODEC_QUANT ....................................... 59
-RFX_COMPONENT_CODEC_QUANT ......................................... 59
-RFX_PROGRESSIVE_TILE_SIMPLE .......................................... 60
-RFX_PROGRESSIVE_TILE_FIRST ............................................ 62
-RFX_PROGRESSIVE_TILE_UPGRADE ....................................... 64
-ALPHACODEC_BITMAP_STREAM ............................................................. 66
-CLEARCODEC_ALPHA_RLE_SEGMENT ................................................ 67
-RFX_AVC420_BITMAP_STREAM .............................................................. 67
-RFX_AVC420_METABLOCK................................................................ 68
-RDPGFX_AVC420_QUANT_QUALITY ................................................... 68
-RFX_AVC444_BITMAP_STREAM .............................................................. 69
-RFX_AVC444V2_BITMAP_STREAM ........................................................... 70
-Data Packaging .......................................................................................... 72
-RDP_SEGMENTED_DATA ........................................................................ 72
-RDP_DATA_SEGMENT ............................................................................ 73
-RDP8_BULK_ENCODED_DATA ................................................................ 73
-Directory Service Schema Elements ................................................................... 74
-
-2.2.4.2.1.5.1
-2.2.4.2.1.5.2
-2.2.4.2.1.5.3
-2.2.4.2.1.5.4
-2.2.4.2.1.5.5
-
-2.2.4.2.1.1
-2.2.4.2.1.2
-2.2.4.2.1.3
-2.2.4.2.1.4
-2.2.4.2.1.5
-
-2.2.4.3
-
-2.2.4.3.1
-
-2.2.4.4
-
-2.2.4.4.1
-2.2.4.4.2
-
-2.2.5
-
-2.2.4.5
-2.2.4.6
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-
-2.3
-
-2.2.4.2
-
-2.2.4.2.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 75
-Common Details .............................................................................................. 75
-Abstract Data Model .................................................................................... 75
-Timers ...................................................................................................... 75
-Initialization ............................................................................................... 75
-Higher-Layer Triggered Events ..................................................................... 75
-Message Processing Events and Sequencing Rules .......................................... 75
-Processing a Graphics Message ............................................................... 75
-Timer Events .............................................................................................. 75
-Other Local Events ...................................................................................... 75
-Bitmap Compression ................................................................................... 75
-
-3.1.6
-3.1.7
-3.1.8
-
-3.1.5.1
-
-[MS-RDPEGFX] - v20260511
-Remote Desktop Protocol: Graphics Pipeline Extension
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-4 / 145
-
-3.2
-
-3.2.1
-
-3.2.1.1
-3.2.1.2
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.8.1.6
-
-3.1.9
-
-3.1.9.1
-
-3.1.9.1.1
-3.1.9.1.2
-
-3.1.8.1
-
-3.1.8.1.1
-3.1.8.1.2
-3.1.8.1.3
-3.1.8.1.4
-3.1.8.1.5
-
-3.1.8.1.5.1
-3.1.8.1.5.2
-
-RemoteFX Progressive Codec Compression ............................................... 75
-General Terms and Concepts ............................................................ 75
-Sub-Band Diffing ............................................................................. 76
-Extra Quantization ........................................................................... 76
-State Tracking ................................................................................ 77
-Simplified Run-Length (SRL) ............................................................. 77
-Zero Run-Length Encoding .......................................................... 77
-Unary Encoding ......................................................................... 78
-Summary of Terms .......................................................................... 78
-Bulk Data Compression ............................................................................... 79
-RDP 8.0 ............................................................................................... 79
-Overview ........................................................................................ 79
-Detailed Description ......................................................................... 79
-De-Blocking .............................................................................. 80
-3.1.9.1.2.1
-Compressed Segment Header ...................................................... 80
-3.1.9.1.2.2
-Compressed Segment Bit Stream ................................................. 80
-3.1.9.1.2.3
-Compressed Segment Trailer ....................................................... 80
-3.1.9.1.2.4
-3.1.9.1.2.5
-Bit Stream Encoding Examples .................................................... 83
-Server Details .................................................................................................. 83
-Abstract Data Model .................................................................................... 83
-Bitmap Cache Map ................................................................................ 84
-Unacknowledged Frames........................................................................ 84
-Timers ...................................................................................................... 84
-Initialization ............................................................................................... 84
-Higher-Layer Triggered Events ..................................................................... 84
-Message Processing Events and Sequencing Rules .......................................... 84
-Sending an RDPGFX_WIRE_TO_SURFACE_PDU_1 message ........................ 84
-Sending an RDPGFX_WIRE_TO_SURFACE_PDU_2 message ........................ 84
-Sending an RDPGFX_DELETE_ENCODING_CONTEXT_PDU message ............. 84
-Sending an RDPGFX_SOLIDFILL_PDU message ......................................... 85
-Sending an RDPGFX_SURFACE_TO_SURFACE_PDU message ...................... 85
-Sending an RDPGFX_SURFACE_TO_CACHE_PDU message ......................... 85
-Sending an RDPGFX_CACHE_TO_SURFACE_PDU message ......................... 85
-Sending an RDPGFX_EVICT_CACHE_ENTRY_PDU message ......................... 85
-Sending an RDPGFX_CREATE_SURFACE_PDU message .............................. 85
-Sending an RDPGFX_DELETE_SURFACE_PDU message .............................. 86
-Sending an RDPGFX_START_FRAME_PDU message ................................... 86
-Sending an RDPGFX_END_FRAME_PDU message ...................................... 86
-Processing an RDPGFX_FRAME_ACKNOWLEDGE_PDU message ................... 86
-Sending an RDPGFX_RESET_GRAPHICS_PDU message .............................. 86
-Sending an RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message ................ 86
-Processing an RDPGFX_CACHE_IMPORT_OFFER_PDU message ................... 87
-Sending an RDPGFX_CACHE_IMPORT_REPLY_PDU message ....................... 87
-Processing an RDPGFX_CAPS_ADVERTISE_PDU message ........................... 87
-Sending an RDPGFX_CAPS_CONFIRM_PDU message ................................. 87
-Sending an RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message .............. 87
-Processing an RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message ........... 88
-Sending an RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU message ... 88
-Sending an RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU message . 88
-Timer Events .............................................................................................. 88
-Other Local Events ...................................................................................... 88
-Bitmap Compression ................................................................................... 88
-RemoteFX Progressive Codec Compression ............................................... 88
-Color Conversion (RGB to YCbCr) ...................................................... 89
-DWT .............................................................................................. 89
-Original Method ......................................................................... 89
-Reduce-Extrapolate Method ......................................................... 89
-Quantization and Linearization .......................................................... 91
-
-3.2.8.1.2.1
-3.2.8.1.2.2
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-3.2.5.10
-3.2.5.11
-3.2.5.12
-3.2.5.13
-3.2.5.14
-3.2.5.15
-3.2.5.16
-3.2.5.17
-3.2.5.18
-3.2.5.19
-3.2.5.20
-3.2.5.21
-3.2.5.22
-3.2.5.23
-
-3.2.8.1
-
-3.2.8.1.1
-3.2.8.1.2
-
-3.2.8.1.3
-
-3.2.6
-3.2.7
-3.2.8
-
-[MS-RDPEGFX] - v20260511
-Remote Desktop Protocol: Graphics Pipeline Extension
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-5 / 145
-
-3.3
-
-3.3.1
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.2.8.1.4
-3.2.8.1.5
-
-3.3.1.1
-3.3.1.2
-3.3.1.3
-3.3.1.4
-3.3.1.5
-3.3.1.6
-3.3.1.7
-3.3.1.8
-3.3.1.9
-3.3.1.10
-3.3.1.11
-3.3.1.12
-3.3.1.13
-3.3.1.14
-3.3.1.15
-
-3.2.8.1.5.2.1
-
-3.2.8.1.5.1
-3.2.8.1.5.2
-
-Sub-Band Diffing ............................................................................. 91
-Progressive Entropy Encoding ........................................................... 92
-Performing the First Progressive Pass ........................................... 93
-Performing Upgrade Progressive Passes ........................................ 93
-Sending Raw Bits ................................................................. 94
-3.2.8.1.5.3
-Maintaining the Decoder Reference .............................................. 94
-Client Details ................................................................................................... 94
-Abstract Data Model .................................................................................... 94
-Codec Contexts ..................................................................................... 95
-Progressive Tile Contexts ....................................................................... 95
-Sub-Band Diffing Tile Contexts ............................................................... 95
-Bitmap Cache ....................................................................................... 95
-Persistent Bitmap Cache ........................................................................ 95
-Offscreen Surface ................................................................................. 96
-Graphics Output Buffer .......................................................................... 96
-Surface to Output Mapping ..................................................................... 96
-Decompressor Glyph Storage ................................................................. 96
-V-Bar Storage ...................................................................................... 96
-V-Bar Storage Cursor ............................................................................ 96
-Short-V-Bar Storage .............................................................................. 96
-Short V-Bar Storage Cursor .................................................................... 96
-Confirmed Graphics Capabilities .............................................................. 96
-Surface to Window Mapping ................................................................... 97
-Timers ...................................................................................................... 97
-Initialization ............................................................................................... 97
-Higher-Layer Triggered Events ..................................................................... 97
-Message Processing Events and Sequencing Rules .......................................... 97
-Processing an RDPGFX_WIRE_TO_SURFACE_PDU_1 message .................... 97
-Processing an RDPGFX_WIRE_TO_SURFACE_PDU_2 message .................... 97
-Processing an RDPGFX_DELETE_ENCODING_CONTEXT_PDU message ......... 98
-Processing an RDPGFX_SOLIDFILL_PDU message ..................................... 98
-Processing an RDPGFX_SURFACE_TO_SURFACE_PDU message................... 98
-Processing an RDPGFX_SURFACE_TO_CACHE_PDU message ...................... 98
-Processing an RDPGFX_CACHE_TO_SURFACE_PDU message ...................... 98
-Processing an RDPGFX_EVICT_CACHE_ENTRY_PDU message ..................... 99
-Processing an RDPGFX_CREATE_SURFACE_PDU message .......................... 99
-Processing an RDPGFX_DELETE_SURFACE_PDU message ........................... 99
-Processing an RDPGFX_START_FRAME_PDU message ................................ 99
-Processing an RDPGFX_END_FRAME_PDU message ................................... 99
-Sending an RDPGFX_FRAME_ACKNOWLEDGE_PDU message ...................... 99
-Processing an RDPGFX_RESET_GRAPHICS_PDU message .......................... 99
-Processing an RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message............ 100
-Sending an RDPGFX_CACHE_IMPORT_OFFER_PDU message ..................... 100
-Processing an RDPGFX_CACHE_IMPORT_REPLY_PDU message .................. 100
-Sending an RDPGFX_CAPS_ADVERTISE_PDU message ............................. 100
-Processing an RDPGFX_CAPS_CONFIRM_PDU message ............................. 100
-Processing an RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message .......... 100
-Sending an RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message ............. 101
-Processing an RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU message101
-Processing an RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU message
- ......................................................................................................... 101
-Timer Events ............................................................................................. 101
-Other Local Events ..................................................................................... 101
-Bitmap Compression .................................................................................. 101
-ClearCodec Compression ....................................................................... 101
-ClearCodec Run-Length Encoding ..................................................... 102
-Decompressing a Bitmap ................................................................. 102
-RemoteFX Progressive Codec Compression .............................................. 103
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-3.3.5.7
-3.3.5.8
-3.3.5.9
-3.3.5.10
-3.3.5.11
-3.3.5.12
-3.3.5.13
-3.3.5.14
-3.3.5.15
-3.3.5.16
-3.3.5.17
-3.3.5.18
-3.3.5.19
-3.3.5.20
-3.3.5.21
-3.3.5.22
-3.3.5.23
-
-3.3.8.1
-
-3.3.8.1.1
-3.3.8.1.2
-
-3.3.8.2
-
-3.3.6
-3.3.7
-3.3.8
-
-[MS-RDPEGFX] - v20260511
-Remote Desktop Protocol: Graphics Pipeline Extension
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-6 / 145
-
-3.3.8.2.1
-
-3.3.8.2.1.1
-3.3.8.2.1.2
-
-3.3.8.2.2
-3.3.8.2.3
-
-3.3.8.3
-
-3.3.8.3.1
-3.3.8.3.2
-3.3.8.3.3
-
-Progressive Entropy Decode............................................................. 104
-Performing the First Progressive Pass .......................................... 104
-Performing the Upgrade Progressive Passes ................................. 105
-Inverse DWT .................................................................................. 106
-Color Conversion ............................................................................ 106
-MPEG-4 AVC/H.264 Compression ........................................................... 106
-Color Conversion ............................................................................ 106
-YUV420p Stream Combination for YUV444 mode ................................ 107
-YUV420p Stream Combination for YUV444v2 mode ............................ 110
-
-4.1
-
-4.1.2
-
-4.1.1
-
-4.1.2.1
-
-4.1.1.1
-4.1.1.2
-4.1.1.3
-4.1.1.4
-4.1.1.5
-
-4.1.2.1.1
-4.1.2.1.2
-4.1.2.1.3
-4.1.2.1.4
-4.1.2.1.5
-
-4  Protocol Examples ............................................................................................... 114
-Bitmap Compression ........................................................................................ 114
-ClearCodec Compression ............................................................................ 114
-Example 1 ........................................................................................... 114
-Example 2 ........................................................................................... 114
-Example 3 ........................................................................................... 116
-Example 4 ........................................................................................... 118
-Example 5 ........................................................................................... 119
-Progressive Entropy Encode and Decode ....................................................... 121
-Encode ............................................................................................... 122
-Encode Frame #1 at 25% ................................................................ 122
-Encode Frame #1 at 50% ................................................................ 122
-Encode Frame #2 at 25% ................................................................ 123
-Encode Frame #2 at 50% ................................................................ 124
-Encode Frame #2 at 100% .............................................................. 125
-Decode ............................................................................................... 125
-Decode Frame #1 at 25% ............................................................... 125
-Decode Frame #1 at 50% ............................................................... 126
-Decode Frame #2 at 25% ............................................................... 127
-Decode Frame #2 at 50% ............................................................... 127
-Decode Frame #2 at 100% .............................................................. 127
-Bulk Data Compression .................................................................................... 128
-RDP 8.0 .................................................................................................... 128
-Compression Samples .......................................................................... 128
-Example 1 ..................................................................................... 128
-Example 2 ..................................................................................... 128
-Example 3 ..................................................................................... 129
-Example 4 ..................................................................................... 129
-Example 5 ..................................................................................... 130
-Sample Code ....................................................................................... 131
-
-4.2.1.1.1
-4.2.1.1.2
-4.2.1.1.3
-4.2.1.1.4
-4.2.1.1.5
-
-4.1.2.2.1
-4.1.2.2.2
-4.1.2.2.3
-4.1.2.2.4
-4.1.2.2.5
-
-4.2.1.1
-
-4.1.2.2
-
-4.2.1.2
-
-4.2.1
-
-4.2
-
-5  Security ............................................................................................................... 138
-Security Considerations for Implementers .......................................................... 138
-Index of Security Parameters ........................................................................... 138
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 139
-
-7  Change Tracking .................................................................................................. 141
-
-8  Index ................................................................................................................... 142
-
-[MS-RDPEGFX] - v20260511
-Remote Desktop Protocol: Graphics Pipeline Extension
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-7 / 145
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+    - [1.5.1 Client Implementation Requirements](#151-client-implementation-requirements)
+    - [1.5.2 Server Implementation Requirements](#152-server-implementation-requirements)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 RDPGFX_POINT16](#2211-rdpgfxpoint16)
+      - [2.2.1.2 RDPGFX_RECT16](#2212-rdpgfxrect16)
+      - [2.2.1.3 RDPGFX_COLOR32](#2213-rdpgfxcolor32)
+      - [2.2.1.4 RDPGFX_PIXELFORMAT](#2214-rdpgfxpixelformat)
+      - [2.2.1.5 RDPGFX_HEADER](#2215-rdpgfxheader)
+      - [2.2.1.6 RDPGFX_CAPSET](#2216-rdpgfxcapset)
+    - [2.2.2 Graphics Messages](#222-graphics-messages)
+      - [2.2.2.1 RDPGFX_WIRE_TO_SURFACE_PDU_1](#2221-rdpgfxwiretosurfacepdu1)
+      - [2.2.2.2 RDPGFX_WIRE_TO_SURFACE_PDU_2](#2222-rdpgfxwiretosurfacepdu2)
+      - [2.2.2.3 RDPGFX_DELETE_ENCODING_CONTEXT_PDU](#2223-rdpgfxdeleteencodingcontextpdu)
+      - [2.2.2.4 RDPGFX_SOLIDFILL_PDU](#2224-rdpgfxsolidfillpdu)
+      - [2.2.2.5 RDPGFX_SURFACE_TO_SURFACE_PDU](#2225-rdpgfxsurfacetosurfacepdu)
+      - [2.2.2.6 RDPGFX_SURFACE_TO_CACHE_PDU](#2226-rdpgfxsurfacetocachepdu)
+      - [2.2.2.7 RDPGFX_CACHE_TO_SURFACE_PDU](#2227-rdpgfxcachetosurfacepdu)
+      - [2.2.2.8 RDPGFX_EVICT_CACHE_ENTRY_PDU](#2228-rdpgfxevictcacheentrypdu)
+      - [2.2.2.9 RDPGFX_CREATE_SURFACE_PDU](#2229-rdpgfxcreatesurfacepdu)
+      - [2.2.2.10 RDPGFX_DELETE_SURFACE_PDU](#22210-rdpgfxdeletesurfacepdu)
+      - [2.2.2.11 RDPGFX_START_FRAME_PDU](#22211-rdpgfxstartframepdu)
+      - [2.2.2.12 RDPGFX_END_FRAME_PDU](#22212-rdpgfxendframepdu)
+      - [2.2.2.13 RDPGFX_FRAME_ACKNOWLEDGE_PDU](#22213-rdpgfxframeacknowledgepdu)
+      - [2.2.2.14 RDPGFX_RESET_GRAPHICS_PDU](#22214-rdpgfxresetgraphicspdu)
+      - [2.2.2.15 RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU](#22215-rdpgfxmapsurfacetooutputpdu)
+      - [2.2.2.16 RDPGFX_CACHE_IMPORT_OFFER_PDU](#22216-rdpgfxcacheimportofferpdu)
+        - [2.2.2.16.1 RDPGFX_CACHE_ENTRY_METADATA](#222161-rdpgfxcacheentrymetadata)
+      - [2.2.2.17 RDPGFX_CACHE_IMPORT_REPLY_PDU](#22217-rdpgfxcacheimportreplypdu)
+      - [2.2.2.18 RDPGFX_CAPS_ADVERTISE_PDU](#22218-rdpgfxcapsadvertisepdu)
+      - [2.2.2.19 RDPGFX_CAPS_CONFIRM_PDU](#22219-rdpgfxcapsconfirmpdu)
+      - [2.2.2.20 RDPGFX_MAP_SURFACE_TO_WINDOW_PDU](#22220-rdpgfxmapsurfacetowindowpdu)
+      - [2.2.2.21 RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU](#22221-rdpgfxqoeframeacknowledgepdu)
+      - [2.2.2.22 RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU](#22222-rdpgfxmapsurfacetoscaledoutputpdu)
+      - [2.2.2.23 RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU](#22223-rdpgfxmapsurfacetoscaledwindowpdu)
+    - [2.2.3 Capability Sets](#223-capability-sets)
+      - [2.2.3.1 RDPGFX_CAPSET_VERSION8](#2231-rdpgfxcapsetversion8)
+      - [2.2.3.2 RDPGFX_CAPSET_VERSION81](#2232-rdpgfxcapsetversion81)
+      - [2.2.3.3 RDPGFX_CAPSET_VERSION10](#2233-rdpgfxcapsetversion10)
+      - [2.2.3.4 RDPGFX_CAPSET_VERSION101](#2234-rdpgfxcapsetversion101)
+      - [2.2.3.5 RDPGFX_CAPSET_VERSION102](#2235-rdpgfxcapsetversion102)
+      - [2.2.3.6 RDPGFX_CAPSET_VERSION103](#2236-rdpgfxcapsetversion103)
+      - [2.2.3.7 RDPGFX_CAPSET_VERSION104](#2237-rdpgfxcapsetversion104)
+      - [2.2.3.8 RDPGFX_CAPSET_VERSION105](#2238-rdpgfxcapsetversion105)
+      - [2.2.3.9 RDPGFX_CAPSET_VERSION106](#2239-rdpgfxcapsetversion106)
+      - [2.2.3.10 RDPGFX_CAPSET_VERSION107](#22310-rdpgfxcapsetversion107)
+    - [2.2.4 Bitmap Compression](#224-bitmap-compression)
+      - [2.2.4.1 CLEARCODEC_BITMAP_STREAM](#2241-clearcodecbitmapstream)
+        - [2.2.4.1.1 CLEARCODEC_COMPOSITE_PAYLOAD](#22411-clearcodeccompositepayload)
+          - [2.2.4.1.1.1 CLEARCODEC_RESIDUAL_DATA](#224111-clearcodecresidualdata)
+            - [2.2.4.1.1.1.1 CLEARCODEC_RGB_RUN_SEGMENT](#2241111-clearcodecrgbrunsegment)
+          - [2.2.4.1.1.2 CLEARCODEC_BANDS_DATA](#224112-clearcodecbandsdata)
+            - [2.2.4.1.1.2.1 CLEARCODEC_BAND](#2241121-clearcodecband)
+              - [2.2.4.1.1.2.1.1 CLEARCODEC_VBAR](#22411211-clearcodecvbar)
+                - [2.2.4.1.1.2.1.1.1 VBAR_CACHE_HIT](#224112111-vbarcachehit)
+                - [2.2.4.1.1.2.1.1.2 SHORT_VBAR_CACHE_HIT](#224112112-shortvbarcachehit)
+                - [2.2.4.1.1.2.1.1.3 SHORT_VBAR_CACHE_MISS](#224112113-shortvbarcachemiss)
+          - [2.2.4.1.1.3 CLEARCODEC_SUBCODECS_DATA](#224113-clearcodecsubcodecsdata)
+            - [2.2.4.1.1.3.1 CLEARCODEC_SUBCODEC](#2241131-clearcodecsubcodec)
+              - [2.2.4.1.1.3.1.1 CLEARCODEC_SUBCODEC_RLEX](#22411311-clearcodecsubcodecrlex)
+                - [2.2.4.1.1.3.1.1.1 RLEX_RGB_TRIPLET](#224113111-rlexrgbtriplet)
+                - [2.2.4.1.1.3.1.1.2 CLEARCODEC_SUBCODEC_RLEX_SEGMENT](#224113112-clearcodecsubcodecrlexsegment)
+      - [2.2.4.2 RFX_PROGRESSIVE_BITMAP_STREAM](#2242-rfxprogressivebitmapstream)
+        - [2.2.4.2.1 RFX_PROGRESSIVE_DATABLOCK](#22421-rfxprogressivedatablock)
+          - [2.2.4.2.1.1 RFX_PROGRESSIVE_SYNC](#224211-rfxprogressivesync)
+          - [2.2.4.2.1.2 RFX_PROGRESSIVE_FRAME_BEGIN](#224212-rfxprogressiveframebegin)
+          - [2.2.4.2.1.3 RFX_PROGRESSIVE_FRAME_END](#224213-rfxprogressiveframeend)
+          - [2.2.4.2.1.4 RFX_PROGRESSIVE_CONTEXT](#224214-rfxprogressivecontext)
+          - [2.2.4.2.1.5 RFX_PROGRESSIVE_REGION](#224215-rfxprogressiveregion)
+            - [2.2.4.2.1.5.1 RFX_PROGRESSIVE_CODEC_QUANT](#2242151-rfxprogressivecodecquant)
+            - [2.2.4.2.1.5.2 RFX_COMPONENT_CODEC_QUANT](#2242152-rfxcomponentcodecquant)
+            - [2.2.4.2.1.5.3 RFX_PROGRESSIVE_TILE_SIMPLE](#2242153-rfxprogressivetilesimple)
+            - [2.2.4.2.1.5.4 RFX_PROGRESSIVE_TILE_FIRST](#2242154-rfxprogressivetilefirst)
+            - [2.2.4.2.1.5.5 RFX_PROGRESSIVE_TILE_UPGRADE](#2242155-rfxprogressivetileupgrade)
+      - [2.2.4.3 ALPHACODEC_BITMAP_STREAM](#2243-alphacodecbitmapstream)
+        - [2.2.4.3.1 CLEARCODEC_ALPHA_RLE_SEGMENT](#22431-clearcodecalpharlesegment)
+      - [2.2.4.4 RFX_AVC420_BITMAP_STREAM](#2244-rfxavc420bitmapstream)
+        - [2.2.4.4.1 RFX_AVC420_METABLOCK](#22441-rfxavc420metablock)
+        - [2.2.4.4.2 RDPGFX_AVC420_QUANT_QUALITY](#22442-rdpgfxavc420quantquality)
+      - [2.2.4.5 RFX_AVC444_BITMAP_STREAM](#2245-rfxavc444bitmapstream)
+      - [2.2.4.6 RFX_AVC444V2_BITMAP_STREAM](#2246-rfxavc444v2bitmapstream)
+    - [2.2.5 Data Packaging](#225-data-packaging)
+      - [2.2.5.1 RDP_SEGMENTED_DATA](#2251-rdpsegmenteddata)
+      - [2.2.5.2 RDP_DATA_SEGMENT](#2252-rdpdatasegment)
+      - [2.2.5.3 RDP8_BULK_ENCODED_DATA](#2253-rdp8bulkencodeddata)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing a Graphics Message](#3151-processing-a-graphics-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+    - [3.1.8 Bitmap Compression](#318-bitmap-compression)
+      - [3.1.8.1 RemoteFX Progressive Codec Compression](#3181-remotefx-progressive-codec-compression)
+        - [3.1.8.1.1 General Terms and Concepts](#31811-general-terms-and-concepts)
+        - [3.1.8.1.2 Sub-Band Diffing](#31812-sub-band-diffing)
+        - [3.1.8.1.3 Extra Quantization](#31813-extra-quantization)
+        - [3.1.8.1.4 State Tracking](#31814-state-tracking)
+        - [3.1.8.1.5 Simplified Run-Length (SRL)](#31815-simplified-run-length-srl)
+          - [3.1.8.1.5.1 Zero Run-Length Encoding](#318151-zero-run-length-encoding)
+          - [3.1.8.1.5.2 Unary Encoding](#318152-unary-encoding)
+        - [3.1.8.1.6 Summary of Terms](#31816-summary-of-terms)
+    - [3.1.9 Bulk Data Compression](#319-bulk-data-compression)
+      - [3.1.9.1 RDP 8.0](#3191-rdp-80)
+        - [3.1.9.1.1 Overview](#31911-overview)
+        - [3.1.9.1.2 Detailed Description](#31912-detailed-description)
+          - [3.1.9.1.2.1 De-Blocking](#319121-de-blocking)
+          - [3.1.9.1.2.2 Compressed Segment Header](#319122-compressed-segment-header)
+          - [3.1.9.1.2.3 Compressed Segment Bit Stream](#319123-compressed-segment-bit-stream)
+          - [3.1.9.1.2.4 Compressed Segment Trailer](#319124-compressed-segment-trailer)
+          - [3.1.9.1.2.5 Bit Stream Encoding Examples](#319125-bit-stream-encoding-examples)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Bitmap Cache Map](#3211-bitmap-cache-map)
+      - [3.2.1.2 Unacknowledged Frames](#3212-unacknowledged-frames)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending an RDPGFX_WIRE_TO_SURFACE_PDU_1 message](#3251-sending-an-rdpgfxwiretosurfacepdu1-message)
+      - [3.2.5.2 Sending an RDPGFX_WIRE_TO_SURFACE_PDU_2 message](#3252-sending-an-rdpgfxwiretosurfacepdu2-message)
+      - [3.2.5.3 Sending an RDPGFX_DELETE_ENCODING_CONTEXT_PDU message](#3253-sending-an-rdpgfxdeleteencodingcontextpdu-message)
+      - [3.2.5.4 Sending an RDPGFX_SOLIDFILL_PDU message](#3254-sending-an-rdpgfxsolidfillpdu-message)
+      - [3.2.5.5 Sending an RDPGFX_SURFACE_TO_SURFACE_PDU message](#3255-sending-an-rdpgfxsurfacetosurfacepdu-message)
+      - [3.2.5.6 Sending an RDPGFX_SURFACE_TO_CACHE_PDU message](#3256-sending-an-rdpgfxsurfacetocachepdu-message)
+      - [3.2.5.7 Sending an RDPGFX_CACHE_TO_SURFACE_PDU message](#3257-sending-an-rdpgfxcachetosurfacepdu-message)
+      - [3.2.5.8 Sending an RDPGFX_EVICT_CACHE_ENTRY_PDU message](#3258-sending-an-rdpgfxevictcacheentrypdu-message)
+      - [3.2.5.9 Sending an RDPGFX_CREATE_SURFACE_PDU message](#3259-sending-an-rdpgfxcreatesurfacepdu-message)
+      - [3.2.5.10 Sending an RDPGFX_DELETE_SURFACE_PDU message](#32510-sending-an-rdpgfxdeletesurfacepdu-message)
+      - [3.2.5.11 Sending an RDPGFX_START_FRAME_PDU message](#32511-sending-an-rdpgfxstartframepdu-message)
+      - [3.2.5.12 Sending an RDPGFX_END_FRAME_PDU message](#32512-sending-an-rdpgfxendframepdu-message)
+      - [3.2.5.13 Processing an RDPGFX_FRAME_ACKNOWLEDGE_PDU message](#32513-processing-an-rdpgfxframeacknowledgepdu-message)
+      - [3.2.5.14 Sending an RDPGFX_RESET_GRAPHICS_PDU message](#32514-sending-an-rdpgfxresetgraphicspdu-message)
+      - [3.2.5.15 Sending an RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message](#32515-sending-an-rdpgfxmapsurfacetooutputpdu-message)
+      - [3.2.5.16 Processing an RDPGFX_CACHE_IMPORT_OFFER_PDU message](#32516-processing-an-rdpgfxcacheimportofferpdu-message)
+      - [3.2.5.17 Sending an RDPGFX_CACHE_IMPORT_REPLY_PDU message](#32517-sending-an-rdpgfxcacheimportreplypdu-message)
+      - [3.2.5.18 Processing an RDPGFX_CAPS_ADVERTISE_PDU message](#32518-processing-an-rdpgfxcapsadvertisepdu-message)
+      - [3.2.5.19 Sending an RDPGFX_CAPS_CONFIRM_PDU message](#32519-sending-an-rdpgfxcapsconfirmpdu-message)
+      - [3.2.5.20 Sending an RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message](#32520-sending-an-rdpgfxmapsurfacetowindowpdu-message)
+      - [3.2.5.21 Processing an RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message](#32521-processing-an-rdpgfxqoeframeacknowledgepdu-message)
+      - [3.2.5.22 Sending an RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU](#32522-sending-an-rdpgfxmapsurfacetoscaledoutputpdu)
+      - [3.2.5.23 Sending an RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU](#32523-sending-an-rdpgfxmapsurfacetoscaledwindowpdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+    - [3.2.8 Bitmap Compression](#328-bitmap-compression)
+      - [3.2.8.1 RemoteFX Progressive Codec Compression](#3281-remotefx-progressive-codec-compression)
+        - [3.2.8.1.1 Color Conversion (RGB to YCbCr)](#32811-color-conversion-rgb-to-ycbcr)
+        - [3.2.8.1.2 DWT](#32812-dwt)
+          - [3.2.8.1.2.1 Original Method](#328121-original-method)
+          - [3.2.8.1.2.2 Reduce-Extrapolate Method](#328122-reduce-extrapolate-method)
+        - [3.2.8.1.3 Quantization and Linearization](#32813-quantization-and-linearization)
+        - [3.2.8.1.4 Sub-Band Diffing](#32814-sub-band-diffing)
+        - [3.2.8.1.5 Progressive Entropy Encoding](#32815-progressive-entropy-encoding)
+          - [3.2.8.1.5.1 Performing the First Progressive Pass](#328151-performing-the-first-progressive-pass)
+          - [3.2.8.1.5.2 Performing Upgrade Progressive Passes](#328152-performing-upgrade-progressive-passes)
+            - [3.2.8.1.5.2.1 Sending Raw Bits](#3281521-sending-raw-bits)
+          - [3.2.8.1.5.3 Maintaining the Decoder Reference](#328153-maintaining-the-decoder-reference)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Codec Contexts](#3311-codec-contexts)
+      - [3.3.1.2 Progressive Tile Contexts](#3312-progressive-tile-contexts)
+      - [3.3.1.3 Sub-Band Diffing Tile Contexts](#3313-sub-band-diffing-tile-contexts)
+      - [3.3.1.4 Bitmap Cache](#3314-bitmap-cache)
+      - [3.3.1.5 Persistent Bitmap Cache](#3315-persistent-bitmap-cache)
+      - [3.3.1.6 Offscreen Surface](#3316-offscreen-surface)
+      - [3.3.1.7 Graphics Output Buffer](#3317-graphics-output-buffer)
+      - [3.3.1.8 Surface to Output Mapping](#3318-surface-to-output-mapping)
+      - [3.3.1.9 Decompressor Glyph Storage](#3319-decompressor-glyph-storage)
+      - [3.3.1.10 V-Bar Storage](#33110-v-bar-storage)
+      - [3.3.1.11 V-Bar Storage Cursor](#33111-v-bar-storage-cursor)
+      - [3.3.1.12 Short-V-Bar Storage](#33112-short-v-bar-storage)
+      - [3.3.1.13 Short V-Bar Storage Cursor](#33113-short-v-bar-storage-cursor)
+      - [3.3.1.14 Confirmed Graphics Capabilities](#33114-confirmed-graphics-capabilities)
+      - [3.3.1.15 Surface to Window Mapping](#33115-surface-to-window-mapping)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Processing an RDPGFX_WIRE_TO_SURFACE_PDU_1 message](#3351-processing-an-rdpgfxwiretosurfacepdu1-message)
+      - [3.3.5.2 Processing an RDPGFX_WIRE_TO_SURFACE_PDU_2 message](#3352-processing-an-rdpgfxwiretosurfacepdu2-message)
+      - [3.3.5.3 Processing an RDPGFX_DELETE_ENCODING_CONTEXT_PDU message](#3353-processing-an-rdpgfxdeleteencodingcontextpdu-message)
+      - [3.3.5.4 Processing an RDPGFX_SOLIDFILL_PDU message](#3354-processing-an-rdpgfxsolidfillpdu-message)
+      - [3.3.5.5 Processing an RDPGFX_SURFACE_TO_SURFACE_PDU message](#3355-processing-an-rdpgfxsurfacetosurfacepdu-message)
+      - [3.3.5.6 Processing an RDPGFX_SURFACE_TO_CACHE_PDU message](#3356-processing-an-rdpgfxsurfacetocachepdu-message)
+      - [3.3.5.7 Processing an RDPGFX_CACHE_TO_SURFACE_PDU message](#3357-processing-an-rdpgfxcachetosurfacepdu-message)
+      - [3.3.5.8 Processing an RDPGFX_EVICT_CACHE_ENTRY_PDU message](#3358-processing-an-rdpgfxevictcacheentrypdu-message)
+      - [3.3.5.9 Processing an RDPGFX_CREATE_SURFACE_PDU message](#3359-processing-an-rdpgfxcreatesurfacepdu-message)
+      - [3.3.5.10 Processing an RDPGFX_DELETE_SURFACE_PDU message](#33510-processing-an-rdpgfxdeletesurfacepdu-message)
+      - [3.3.5.11 Processing an RDPGFX_START_FRAME_PDU message](#33511-processing-an-rdpgfxstartframepdu-message)
+      - [3.3.5.12 Processing an RDPGFX_END_FRAME_PDU message](#33512-processing-an-rdpgfxendframepdu-message)
+      - [3.3.5.13 Sending an RDPGFX_FRAME_ACKNOWLEDGE_PDU message](#33513-sending-an-rdpgfxframeacknowledgepdu-message)
+      - [3.3.5.14 Processing an RDPGFX_RESET_GRAPHICS_PDU message](#33514-processing-an-rdpgfxresetgraphicspdu-message)
+      - [3.3.5.15 Processing an RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message](#33515-processing-an-rdpgfxmapsurfacetooutputpdu-message)
+      - [3.3.5.16 Sending an RDPGFX_CACHE_IMPORT_OFFER_PDU message](#33516-sending-an-rdpgfxcacheimportofferpdu-message)
+      - [3.3.5.17 Processing an RDPGFX_CACHE_IMPORT_REPLY_PDU message](#33517-processing-an-rdpgfxcacheimportreplypdu-message)
+      - [3.3.5.18 Sending an RDPGFX_CAPS_ADVERTISE_PDU message](#33518-sending-an-rdpgfxcapsadvertisepdu-message)
+      - [3.3.5.19 Processing an RDPGFX_CAPS_CONFIRM_PDU message](#33519-processing-an-rdpgfxcapsconfirmpdu-message)
+      - [3.3.5.20 Processing an RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message](#33520-processing-an-rdpgfxmapsurfacetowindowpdu-message)
+      - [3.3.5.21 Sending an RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message](#33521-sending-an-rdpgfxqoeframeacknowledgepdu-message)
+      - [3.3.5.22 Processing an RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU](#33522-processing-an-rdpgfxmapsurfacetoscaledoutputpdu)
+      - [3.3.5.23 Processing an RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU](#33523-processing-an-rdpgfxmapsurfacetoscaledwindowpdu)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+    - [3.3.8 Bitmap Compression](#338-bitmap-compression)
+      - [3.3.8.1 ClearCodec Compression](#3381-clearcodec-compression)
+        - [3.3.8.1.1 ClearCodec Run-Length Encoding](#33811-clearcodec-run-length-encoding)
+        - [3.3.8.1.2 Decompressing a Bitmap](#33812-decompressing-a-bitmap)
+      - [3.3.8.2 RemoteFX Progressive Codec Compression](#3382-remotefx-progressive-codec-compression)
+        - [3.3.8.2.1 Progressive Entropy Decode](#33821-progressive-entropy-decode)
+          - [3.3.8.2.1.1 Performing the First Progressive Pass](#338211-performing-the-first-progressive-pass)
+          - [3.3.8.2.1.2 Performing the Upgrade Progressive Passes](#338212-performing-the-upgrade-progressive-passes)
+        - [3.3.8.2.2 Inverse DWT](#33822-inverse-dwt)
+        - [3.3.8.2.3 Color Conversion](#33823-color-conversion)
+      - [3.3.8.3 MPEG-4 AVC/H.264 Compression](#3383-mpeg-4-avch264-compression)
+        - [3.3.8.3.1 Color Conversion](#33831-color-conversion)
+        - [3.3.8.3.2 YUV420p Stream Combination for YUV444 mode](#33832-yuv420p-stream-combination-for-yuv444-mode)
+        - [3.3.8.3.3 YUV420p Stream Combination for YUV444v2 mode](#33833-yuv420p-stream-combination-for-yuv444v2-mode)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Bitmap Compression](#41-bitmap-compression)
+    - [4.1.1 ClearCodec Compression](#411-clearcodec-compression)
+      - [4.1.1.1 Example 1](#4111-example-1)
+      - [4.1.1.2 Example 2](#4112-example-2)
+      - [4.1.1.3 Example 3](#4113-example-3)
+      - [4.1.1.4 Example 4](#4114-example-4)
+      - [4.1.1.5 Example 5](#4115-example-5)
+    - [4.1.2 Progressive Entropy Encode and Decode](#412-progressive-entropy-encode-and-decode)
+      - [4.1.2.1 Encode](#4121-encode)
+        - [4.1.2.1.1 Encode Frame #1 at 25%](#41211-encode-frame-1-at-25)
+        - [4.1.2.1.2 Encode Frame #1 at 50%](#41212-encode-frame-1-at-50)
+        - [4.1.2.1.3 Encode Frame #2 at 25%](#41213-encode-frame-2-at-25)
+        - [4.1.2.1.4 Encode Frame #2 at 50%](#41214-encode-frame-2-at-50)
+        - [4.1.2.1.5 Encode Frame #2 at 100%](#41215-encode-frame-2-at-100)
+      - [4.1.2.2 Decode](#4122-decode)
+        - [4.1.2.2.1 Decode Frame #1 at 25%](#41221-decode-frame-1-at-25)
+        - [4.1.2.2.2 Decode Frame #1 at 50%](#41222-decode-frame-1-at-50)
+        - [4.1.2.2.3 Decode Frame #2 at 25%](#41223-decode-frame-2-at-25)
+        - [4.1.2.2.4 Decode Frame #2 at 50%](#41224-decode-frame-2-at-50)
+        - [4.1.2.2.5 Decode Frame #2 at 100%](#41225-decode-frame-2-at-100)
+  - [4.2 Bulk Data Compression](#42-bulk-data-compression)
+    - [4.2.1 RDP 8.0](#421-rdp-80)
+      - [4.2.1.1 Compression Samples](#4211-compression-samples)
+        - [4.2.1.1.1 Example 1](#42111-example-1)
+        - [4.2.1.1.2 Example 2](#42112-example-2)
+        - [4.2.1.1.3 Example 3](#42113-example-3)
+        - [4.2.1.1.4 Example 4](#42114-example-4)
+        - [4.2.1.1.5 Example 5](#42115-example-5)
+      - [4.2.1.2 Sample Code](#4212-sample-code)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Remote Desktop Protocol: Graphics Pipeline Extension applies to the Remote Desktop Protocol:
 Basic Connectivity and Graphics Remoting, as specified in [MS-RDPBCGR] sections 1 to 5. The
@@ -985,7 +585,7 @@ application running on a remote terminal server will appear to a user as if it i
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1029,7 +629,7 @@ the blue component. XRGB effectively has the same color range as RGB.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1043,7 +643,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1075,7 +676,7 @@ Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSKB-5089570] Microsoft Corporation, "May 26, 2026—KB5089570", May 2026,
 https://www.catalog.update.microsoft.com/Search.aspx?q=KB5089570
@@ -1086,7 +687,7 @@ https://www.catalog.update.microsoft.com/Search.aspx?q=KB5089573
 [SAYOOD] Sayood, K., "Lossless Compression Handbook, First Edition", Academic Press, August 2002,
 ISBN: 0126208611.
 
-1.3  Overview
+### 1.3 Overview
 
 The graphics commands specified in section 2.2 are used to efficiently encode graphics display data
 generated in the session associated with a remote user and can be separated into five categories.
@@ -1108,7 +709,8 @@ Release: May 11, 2026
 
 9 / 145
 
-2.  Surface management commands are used to manage the lifetime of offscreen surfaces, to map
+
+2.  Surface management commands are used to manage the lifetime of offscreen surfaces, to map
 
 offscreen surfaces to a graphics output buffer, and to adjust the dimensions of any associated
 graphics output buffers.
@@ -1163,7 +765,8 @@ Release: May 11, 2026
 
 10 / 145
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RDPEGFX].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1172,12 +775,12 @@ Figure 1: Overview of the blit commands
 For more details regarding the graphics protocol behavior, sequencing, and processing rules, see
 section 3.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Graphics Pipeline Extension is embedded in a dynamic virtual channel
 transport, as specified in [MS-RDPEDYC] sections 1 through 3.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Graphics Pipeline Extension operates only after the dynamic virtual
 channel transport is fully established. If the dynamic virtual channel transport is terminated, the
@@ -1185,7 +788,7 @@ Remote Desktop Protocol: Graphics Virtual Channel Extension is also terminated. 
 terminated by closing the underlying virtual channel. For details about closing the dynamic virtual
 channel, refer to [MS-RDPEDYC] section 3.3.5.2.
 
-1.5.1  Client Implementation Requirements
+#### 1.5.1 Client Implementation Requirements
 
 Clients implementing the Remote Desktop Protocol: Graphics Pipeline Extension must set the
 RNS_UD_CS_SUPPORT_DYNVC_GFX_PROTOCOL (0x0100) flag in the earlyCapabilityFlags field of
@@ -1209,7 +812,8 @@ Release: May 11, 2026
 
 11 / 145
 
-  RDPGFX_SURFACE_TO_CACHE_PDU (section 2.2.2.6)
+
+  RDPGFX_SURFACE_TO_CACHE_PDU (section 2.2.2.6)
 
   RDPGFX_CACHE_TO_SURFACE_PDU (section 2.2.2.7)
 
@@ -1255,7 +859,7 @@ following messages:
 
 implementing Enhanced RemoteApp
 
-1.5.2  Server Implementation Requirements
+#### 1.5.2 Server Implementation Requirements
 
 Servers implementing the Remote Desktop Protocol: Graphics Pipeline Extension must be capable of
 sending the following messages:
@@ -1279,7 +883,8 @@ Release: May 11, 2026
 
 12 / 145
 
-  RDPGFX_CACHE_TO_SURFACE_PDU (section 2.2.2.7)
+
+  RDPGFX_CACHE_TO_SURFACE_PDU (section 2.2.2.7)
 
   RDPGFX_EVICT_CACHE_ENTRY_PDU (section 2.2.2.8)
 
@@ -1318,13 +923,13 @@ RDPGFX_CAPSET_VERSION102 (section 2.2.3.5), RDPGFX_CAPSET_VERSION103 (section
 RDPGFX_CAPSET_VERSION107 (section 2.2.3.10) capability sets must be capable of processing
 the RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU (section 2.2.2.21) message.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Graphics Pipeline Extension is applicable in scenarios where the
 efficient transfer of server-side graphics display data is required from a terminal server to a terminal
 server client.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Capability exchange using the RDPGFX_CAPS_ADVERTISE_PDU (section 2.2.2.18) and
 RDPGFX_CAPS_CONFIRM_PDU (section 2.2.2.19) messages takes place before any graphics
@@ -1347,7 +952,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-RDPGFX_CAPSET_VERSION104, RDPGFX_CAPSET_VERSION105,
+
+RDPGFX_CAPSET_VERSION104, RDPGFX_CAPSET_VERSION105,
 RDPGFX_CAPSET_VERSION106, or RDPGFX_CAPSET_VERSION107 structure (sections 2.2.3.1,
 2.2.3.2, 2.2.3.3, 2.2.3.5, 2.2.3.6, 2.2.3.7, 2.2.3.8, 2.2.3.9, and 2.2.3.10 respectively). Usage of the
 MPEG-4 AVC/H.264 Codec in YUV420p, YUV444, or YUV444v2 mode (sections 2.2.4.3, 2.2.4.4,
@@ -1365,11 +971,11 @@ capability set structures are encapsulated in the RDPGFX_CAPS_ADVERTISE_PDU (sec
 exchanged in the Bitmap Codecs Capability Set ([MS-RDPBCGR] section 2.2.7.2.10) does not influence
 the choice of codecs used by the Remote Desktop Protocol: Graphics Pipeline Extension.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1380,9 +986,10 @@ Release: May 11, 2026
 
 14 / 145
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Graphics Pipeline Extension is designed to operate over a non-lossy
 dynamic virtual channel, as specified in [MS-RDPEDYC] sections 1 through 3. The dynamic virtual
@@ -1402,15 +1009,15 @@ the "Microsoft::Windows::RDS::Graphics" dynamic virtual channel.
 To ensure that the transport is utilized effectively, continuous network characteristics detection
 SHOULD be enabled as specified in [MS-RDPBCGR] sections 1.3.9 and 2.2.14.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the Remote Desktop Protocol: Graphics Pipeline Extension message
 syntax. All multiple-byte fields within a message MUST be marshaled in little-endian byte order,
 unless otherwise specified.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  RDPGFX_POINT16
+##### 2.2.1.1 RDPGFX_POINT16
 
 The RDPGFX_POINT16 structure specifies a point relative to the origin of a target surface.
 
@@ -1433,7 +1040,7 @@ x (2 bytes):  A 16-bit signed integer that specifies the x-coordinate of the poi
 
 y (2 bytes):  A 16-bit signed integer that specifies the y-coordinate of the point.
 
-2.2.1.2  RDPGFX_RECT16
+##### 2.2.1.2 RDPGFX_RECT16
 
 The RDPGFX_RECT16 structure specifies a rectangle relative to the origin of a target surface using
 exclusive coordinates (the right and bottom bounds are not included in the rectangle).
@@ -1464,7 +1071,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-left (2 bytes):  A 16-bit unsigned integer that specifies the leftmost bound of the rectangle.
+
+left (2 bytes):  A 16-bit unsigned integer that specifies the leftmost bound of the rectangle.
 
 top (2 bytes):  A 16-bit unsigned integer that specifies the upper bound of the rectangle.
 
@@ -1472,7 +1080,7 @@ right (2 bytes):  A 16-bit unsigned integer that specifies the rightmost bound o
 
 bottom (2 bytes):  A 16-bit unsigned integer that specifies the lower bound of the rectangle.
 
-2.2.1.3  RDPGFX_COLOR32
+##### 2.2.1.3 RDPGFX_COLOR32
 
 The RDPGFX_COLOR32 structure specifies a 32bpp ARGB or XRGB color value.
 
@@ -1505,7 +1113,7 @@ XA (1 byte):  An 8-bit unsigned integer that in the case of ARGB specifies the a
 
 or in the case of XRGB MUST be ignored.
 
-2.2.1.4  RDPGFX_PIXELFORMAT
+##### 2.2.1.4 RDPGFX_PIXELFORMAT
 
 The RDPGFX_PIXELFORMAT structure specifies the color component layout in a pixel.
 
@@ -1540,7 +1148,7 @@ PIXEL_FORMAT_ARGB_8888
 
 0x21
 
-2.2.1.5  RDPGFX_HEADER
+##### 2.2.1.5 RDPGFX_HEADER
 
 The RDPGFX_HEADER structure is included in all graphics command PDUs and specifies the graphics
 command type, the transport flags, and the length of the PDU.
@@ -1552,7 +1160,8 @@ Release: May 11, 2026
 
 16 / 145
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1691,7 +1300,8 @@ Release: May 11, 2026
 
 17 / 145
 
-Value
+
+Value
 
 Meaning
 
@@ -1751,7 +1361,7 @@ pduLength (4 bytes): A 32-bit unsigned integer that specifies the length of the 
 
 PDU, in bytes. This value MUST include the length of the RDPGFX_HEADER (8 bytes).
 
-2.2.1.6  RDPGFX_CAPSET
+##### 2.2.1.6 RDPGFX_CAPSET
 
 The RDPGFX_CAPSET structure specifies the layout of a capability set sent in the
 RDPGFX_CAPS_ADVERTISE_PDU (section 2.2.2.18) message. All of the capability sets specified in
@@ -1797,7 +1407,8 @@ Release: May 11, 2026
 
 18 / 145
 
-Value
+
+Value
 
 Meaning
 
@@ -1866,9 +1477,9 @@ capsData (variable): A variable-length array of bytes that contains data specifi
 
 set. The number of bytes in this array is specified by the capsDataLength field.
 
-2.2.2  Graphics Messages
+#### 2.2.2 Graphics Messages
 
-2.2.2.1  RDPGFX_WIRE_TO_SURFACE_PDU_1
+##### 2.2.2.1 RDPGFX_WIRE_TO_SURFACE_PDU_1
 
 The RDPGFX_WIRE_TO_SURFACE_PDU_1 message is used to transfer encoded bitmap data from
 the server to a client-side destination surface.
@@ -1903,7 +1514,8 @@ Release: May 11, 2026
 
 19 / 145
 
-...
+
+...
 
 ...
 
@@ -2010,7 +1622,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-height) of the bitmap data encapsulated in the bitmapData field. This field specifies a bounding
+
+height) of the bitmap data encapsulated in the bitmapData field. This field specifies a bounding
 rectangle if the codecId field contains the RDPGFX_CODECID_AVC420 (0x000B),
 RDPGFX_CODECID_AVC444 (0x000E), or the RDPGFX_CODECID_AVC444V2 (0x000F) identifier.
 
@@ -2022,7 +1635,7 @@ bitmapData (variable):  A variable-length array of bytes containing bitmap data 
 
 codec identified by the ID in the codecId field.
 
-2.2.2.2  RDPGFX_WIRE_TO_SURFACE_PDU_2
+##### 2.2.2.2 RDPGFX_WIRE_TO_SURFACE_PDU_2
 
 The RDPGFX_WIRE_TO_SURFACE_PDU_2 message is used to transfer encoded bitmap data
 progressively from the server to a client-side destination surface by leveraging a compression context
@@ -2097,7 +1710,8 @@ Release: May 11, 2026
 
 21 / 145
 
-bitmapDataLength (4 bytes):  A 32-bit unsigned integer that specifies the length, in bytes, of the
+
+bitmapDataLength (4 bytes):  A 32-bit unsigned integer that specifies the length, in bytes, of the
 
 bitmapData field.
 
@@ -2105,7 +1719,7 @@ bitmapData (variable):  A variable-length array of bytes containing bitmap data 
 
 codec identified by the ID in the codecId field.
 
-2.2.2.3  RDPGFX_DELETE_ENCODING_CONTEXT_PDU
+##### 2.2.2.3 RDPGFX_DELETE_ENCODING_CONTEXT_PDU
 
 The RDPGFX_DELETE_ENCODING_CONTEXT_PDU message is sent by the server to instruct the
 client to delete a compression context that was used by a collection of
@@ -2145,7 +1759,7 @@ codecContextId (4 bytes):  A 32-bit unsigned integer that specifies the ID of th
 
 context to delete.
 
-2.2.2.4  RDPGFX_SOLIDFILL_PDU
+##### 2.2.2.4 RDPGFX_SOLIDFILL_PDU
 
 The RDPGFX_SOLIDFILL_PDU message is used to instruct the client to fill a collection of rectangles
 on a destination surface with a solid color.
@@ -2184,7 +1798,8 @@ Release: May 11, 2026
 
 22 / 145
 
-...
+
+...
 
 header (8 bytes):  An RDPGFX_HEADER (section 2.2.1.5) structure. The cmdId field MUST be set
 
@@ -2205,7 +1820,7 @@ fillRects (variable):  A variable-length array of RDPGFX_RECT16 structures that 
 rectangles on the destination surface to be filled. The number of structures in this array is
 specified by the fillRectCount field.
 
-2.2.2.5  RDPGFX_SURFACE_TO_SURFACE_PDU
+##### 2.2.2.5 RDPGFX_SURFACE_TO_SURFACE_PDU
 
 The RDPGFX_SURFACE_TO_SURFACE_PDU message is used to instruct the client to copy bitmap
 data from a source surface to a destination surface or to replicate bitmap data within the same
@@ -2266,12 +1881,13 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-destPts (variable):  A variable-length array of RDPGFX_POINT16 structures that specifies target
+
+destPts (variable):  A variable-length array of RDPGFX_POINT16 structures that specifies target
 
 points on the destination surface to which to copy the source bitmap. The number of structures in
 this array is specified by the destPtsCount field.
 
-2.2.2.6  RDPGFX_SURFACE_TO_CACHE_PDU
+##### 2.2.2.6 RDPGFX_SURFACE_TO_CACHE_PDU
 
 The RDPGFX_SURFACE_TO_CACHE_PDU message is used to instruct the client to copy bitmap
 data from a source surface to the bitmap cache.
@@ -2324,7 +1940,7 @@ rectSrc (8 bytes):  An RDPGFX_RECT16 (section 2.2.1.2) structure that specifies 
 
 bounds the source bitmap.
 
-2.2.2.7  RDPGFX_CACHE_TO_SURFACE_PDU
+##### 2.2.2.7 RDPGFX_CACHE_TO_SURFACE_PDU
 
 The RDPGFX_CACHE_TO_SURFACE_PDU message is used to instruct the client to copy bitmap
 data from the bitmap cache to a destination surface.
@@ -2351,7 +1967,8 @@ Release: May 11, 2026
 
 24 / 145
 
-cacheSlot
+
+cacheSlot
 
 destPtsCount
 
@@ -2381,7 +1998,7 @@ destPts (variable):  A variable-length array of RDPGFX_POINT16 structures that s
 points on the destination surface to which to copy the source bitmap. The number of structures in
 this array is specified by the destPtsCount field.
 
-2.2.2.8  RDPGFX_EVICT_CACHE_ENTRY_PDU
+##### 2.2.2.8 RDPGFX_EVICT_CACHE_ENTRY_PDU
 
 The RDPGFX_EVICT_CACHE_ENTRY_PDU message is used to instruct the client to delete an entry
 from the bitmap cache.
@@ -2409,7 +2026,7 @@ to RDPGFX_CMDID_EVICTCACHEENTRY (0x0008), while the flags field MUST be set to z
 cacheSlot (2 bytes):  A 16-bit unsigned integer that specifies the index of the bitmap cache entry to
 delete from the bitmap cache. The value of this field is constrained as specified in section 3.3.1.4.
 
-2.2.2.9  RDPGFX_CREATE_SURFACE_PDU
+##### 2.2.2.9 RDPGFX_CREATE_SURFACE_PDU
 
 The RDPGFX_CREATE_SURFACE_PDU message is used to instruct the client to create a surface of a
 given width, height, and pixel format.
@@ -2434,7 +2051,8 @@ Release: May 11, 2026
 
 25 / 145
 
-...
+
+...
 
 surfaceId
 
@@ -2460,9 +2078,9 @@ pixelFormat (1 byte):  An RDPGFX_PIXELFORMAT (section 2.2.1.4) structure that sp
 
 pixel format of the surface to create.
 
-2.2.2.10
+##### 2.2.2.10 RDPGFX_DELETE_SURFACE_PDU
 
-RDPGFX_DELETE_SURFACE_PDU
+
 
 The RDPGFX_DELETE_SURFACE_PDU message is used to instruct the client to delete a surface.
 
@@ -2489,9 +2107,9 @@ to RDPGFX_CMDID_DELETESURFACE (0x000A), while the flags field MUST be set to zer
 
 surfaceId (2 bytes):  A 16-bit unsigned integer that specifies the ID of the surface to delete.
 
-2.2.2.11
+##### 2.2.2.11 RDPGFX_START_FRAME_PDU
 
-RDPGFX_START_FRAME_PDU
+
 
 The RDPGFX_START_FRAME_PDU message is sent by the server to specify the start of a logical
 frame, enabling related graphics commands to be grouped together.
@@ -2522,7 +2140,8 @@ Release: May 11, 2026
 
 26 / 145
 
-header (8 bytes):  An RDPGFX_HEADER (section 2.2.1.5) structure. The cmdId field MUST be set
+
+header (8 bytes):  An RDPGFX_HEADER (section 2.2.1.5) structure. The cmdId field MUST be set
 
 to RDPGFX_CMDID_STARTFRAME (0x000B), while the flags field MUST be set to zero.
 
@@ -2569,9 +2188,9 @@ field MUST be greater than or equal to 0, and less than or equal to 23.
 
 frameId (4 bytes):  A 32-bit unsigned integer that specifies a unique ID assigned to the frame.
 
-2.2.2.12
+##### 2.2.2.12 RDPGFX_END_FRAME_PDU
 
-RDPGFX_END_FRAME_PDU
+
 
 The RDPGFX_END_FRAME_PDU message is sent by the server to specify the end of a logical frame.
 
@@ -2600,9 +2219,9 @@ frameId (4 bytes):  A 32-bit unsigned integer that contains the ID assigned to t
 
 RDPGFX_START_FRAME_PDU (section 2.2.2.11) message.
 
-2.2.2.13
+##### 2.2.2.13 RDPGFX_FRAME_ACKNOWLEDGE_PDU
 
-RDPGFX_FRAME_ACKNOWLEDGE_PDU
+
 
 The RDPGFX_FRAME_ACKNOWLEDGE_PDU message is sent by the client to indicate to the server
 that a logical frame of graphics commands has been successfully decoded. This message MUST be
@@ -2616,7 +2235,8 @@ Release: May 11, 2026
 
 27 / 145
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2683,9 +2303,9 @@ totalFramesDecoded (4 bytes):  A 32-bit unsigned integer that specifies the numb
 
 have been decoded by the client since the connection was initiated.
 
-2.2.2.14
+##### 2.2.2.14 RDPGFX_RESET_GRAPHICS_PDU
 
-RDPGFX_RESET_GRAPHICS_PDU
+
 
 The RDPGFX_RESET_GRAPHICS_PDU message is sent by the server to instruct the client to
 change the width and height of the Graphics Output Buffer (section 3.3.1.7) ADM element, and to
@@ -2713,7 +2333,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-width
+
+width
 
 height
 
@@ -2759,9 +2380,9 @@ monitorCount, and monitorDefArray fields from the total size of the PDU (which i
 the pduLength field embedded in the header field). The contents of the pad field MUST be
 ignored.
 
-2.2.2.15
+##### 2.2.2.15 RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU
 
-RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU
+
 
 The RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message is sent by the server to instruct the
 client to map a surface to a rectangular area of the Graphics Output Buffer (section 3.3.1.7) ADM
@@ -2789,7 +2410,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-surfaceId
+
+surfaceId
 
 reserved
 
@@ -2818,9 +2440,9 @@ outputOriginY (4 bytes):  A 32-bit unsigned integer that specifies the y-coordin
 relative to the origin of the Graphics Output Buffer ADM element, at which to map the upper-
 left corner of the surface.
 
-2.2.2.16
+##### 2.2.2.16 RDPGFX_CACHE_IMPORT_OFFER_PDU
 
-RDPGFX_CACHE_IMPORT_OFFER_PDU
+
 
 The RDPGFX_CACHE_IMPORT_OFFER_PDU message is sent by the client to inform the server of
 bitmap data that is present in an optional client-side persistent bitmap cache.
@@ -2861,7 +2483,7 @@ cacheEntries (variable):  A variable-length array of RDPGFX_CACHE_ENTRY_METADATA
 structures that identifies a collection of bitmap cache entries present on the client. The number of
 structures in this array is specified by the cacheEntriesCount field.
 
-2.2.2.16.1  RDPGFX_CACHE_ENTRY_METADATA
+###### 2.2.2.16.1 RDPGFX_CACHE_ENTRY_METADATA
 
 [MS-RDPEGFX] - v20260511
 Remote Desktop Protocol: Graphics Pipeline Extension
@@ -2870,7 +2492,8 @@ Release: May 11, 2026
 
 30 / 145
 
-The RDPGFX_CACHE_ENTRY_METADATA structure specifies attributes of a bitmap cache entry
+
+The RDPGFX_CACHE_ENTRY_METADATA structure specifies attributes of a bitmap cache entry
 stored on the client.
 
 0  1  2  3  4  5  6  7  8  9
@@ -2898,9 +2521,9 @@ bitmapLength (4 bytes):  A 32-bit unsigned integer that specifies the size of th
 
 entry, in bytes.
 
-2.2.2.17
+##### 2.2.2.17 RDPGFX_CACHE_IMPORT_REPLY_PDU
 
-RDPGFX_CACHE_IMPORT_REPLY_PDU
+
 
 The RDPGFX_CACHE_IMPORT_REPLY_PDU message is sent by the server to indicate that
 persistent bitmap cache metadata advertised in the RDPGFX_CACHE_IMPORT_OFFER_PDU
@@ -2955,9 +2578,10 @@ Release: May 11, 2026
 
 31 / 145
 
-2.2.2.18
 
-RDPGFX_CAPS_ADVERTISE_PDU
+##### 2.2.2.18 RDPGFX_CAPS_ADVERTISE_PDU
+
+
 
 The RDPGFX_CAPS_ADVERTISE_PDU message is sent by the client to advertise supported
 capabilities.
@@ -2997,9 +2621,9 @@ capsSets (variable):  A variable-length array of RDPGFX_CAPSET structures. The n
 
 elements in this array is specified by the capsSetCount field.
 
-2.2.2.19
+##### 2.2.2.19 RDPGFX_CAPS_CONFIRM_PDU
 
-RDPGFX_CAPS_CONFIRM_PDU
+
 
 The RDPGFX_CAPS_CONFIRM_PDU message is sent by the server to confirm capabilities for the
 connection.
@@ -3040,9 +2664,10 @@ Release: May 11, 2026
 
 32 / 145
 
-2.2.2.20
 
-RDPGFX_MAP_SURFACE_TO_WINDOW_PDU
+##### 2.2.2.20 RDPGFX_MAP_SURFACE_TO_WINDOW_PDU
+
+
 
 The RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message is sent by the server to instruct the
 client to map a surface to a RAIL window on the client.
@@ -3100,9 +2725,9 @@ mappedHeight (4 bytes): A 32-bit unsigned integer that specifies the height of t
 
 region on the surface to which the window is mapped.
 
-2.2.2.21
+##### 2.2.2.21 RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU
 
-RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU
+
 
 The optional RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message is sent by the client to enable
 the calculation of Quality of Experience (QoE) metrics. This message is sent solely for informational
@@ -3133,7 +2758,8 @@ Release: May 11, 2026
 
 33 / 145
 
-frameId
+
+frameId
 
 timestamp
 
@@ -3167,9 +2793,9 @@ elapsed between the decoding of the RDPGFX_END_FRAME_PDU message and the complet
 of the rendering operation for the commands contained in the logical graphics frame. If the
 elapsed time is greater than 65 seconds, then this field SHOULD be set to 0x0000.
 
-2.2.2.22
+##### 2.2.2.22 RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU
 
-RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU
+
 
 The RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU message is sent by the server to
 instruct the client to map a surface to a rectangular area of the Graphics Output Buffer (section
@@ -3209,7 +2835,8 @@ Release: May 11, 2026
 
 34 / 145
 
-header (8 bytes): An RDPGFX_HEADER (section 2.2.1.5) structure. The cmdId field MUST be set
+
+header (8 bytes): An RDPGFX_HEADER (section 2.2.1.5) structure. The cmdId field MUST be set
 to RDPGFX_CMDID_MAPSURFACETOSCALEDOUTPUT (0x0017), while the flags field MUST be set
 to zero.
 
@@ -3239,9 +2866,9 @@ targetHeight (4 bytes): A 32-bit unsigned integer that specifies the height of t
 
 Output Buffer ADM element to which the surface will be mapped.
 
-2.2.2.23
+##### 2.2.2.23 RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU
 
-RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU
+
 
 The RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU message is sent by the server to
 instruct the client to map a surface to a RAIL window on the client, including a target width and
@@ -3298,7 +2925,8 @@ Release: May 11, 2026
 
 35 / 145
 
-surfaceId (2 bytes): A 16-bit unsigned integer that specifies the ID of the surface to be associated
+
+surfaceId (2 bytes): A 16-bit unsigned integer that specifies the ID of the surface to be associated
 
 with the surface-to-window mapping.
 
@@ -3324,9 +2952,9 @@ targetHeight (4 bytes): A 32-bit unsigned integer that specifies the height of t
 
 output to which the surface will be mapped.
 
-2.2.3  Capability Sets
+#### 2.2.3 Capability Sets
 
-2.2.3.1  RDPGFX_CAPSET_VERSION8
+##### 2.2.3.1 RDPGFX_CAPSET_VERSION8
 
 The RDPGFX_CAPSET_VERSION8 structure specifies an RDP version 8.0 Graphics Capability Set
 and conforms to the capability set layout specified in section 2.2.1.6.
@@ -3388,10 +3016,11 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-RDPGFX_CAPS_FLAG_SMALL_CACHE capability flag is specified, then the bitmap cache size is
+
+RDPGFX_CAPS_FLAG_SMALL_CACHE capability flag is specified, then the bitmap cache size is
 assumed to be 100 MB in size, if it is used.
 
-2.2.3.2  RDPGFX_CAPSET_VERSION81
+##### 2.2.3.2 RDPGFX_CAPSET_VERSION81
 
 The RDPGFX_CAPSET_VERSION81 structure specifies an RDP version 8.1 Graphics Capability Set
 and conforms to the capability set layout specified in section 2.2.1.6.
@@ -3466,7 +3095,7 @@ THINCLIENT
 If neither the RDPGFX_CAPS_FLAG_THINCLIENT nor the RDPGFX_CAPS_FLAG_SMALL_CACHE
 capability flag is specified, the bitmap cache size is assumed to be 100 MB in size, if it is used.
 
-2.2.3.3  RDPGFX_CAPSET_VERSION10
+##### 2.2.3.3 RDPGFX_CAPSET_VERSION10
 
 The RDPGFX_CAPSET_VERSION10 structure specifies an RDP version 10.0 Graphics Capability Set
 and conforms to the capability set layout specified in section 2.2.1.6.
@@ -3478,7 +3107,8 @@ Release: May 11, 2026
 
 37 / 145
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3527,7 +3157,7 @@ message. If the flag is not set, the client MUST be capable of
 processing the MPEG-4 AVC/H.264 Codec in YUV444 mode in the
 RDPGFX_WIRE_TO_SURFACE_PDU_1 message.
 
-2.2.3.4  RDPGFX_CAPSET_VERSION101
+##### 2.2.3.4 RDPGFX_CAPSET_VERSION101
 
 The RDPGFX_CAPSET_VERSION101 structure specifies an RDP version 10.1 Graphics Capability
 Set and conforms to the capability set layout specified in section 2.2.1.6.
@@ -3566,7 +3196,8 @@ Release: May 11, 2026
 
 38 / 145
 
-capsDataLength (4 bytes): A 32-bit, unsigned integer that specifies the size, in bytes, of the
+
+capsDataLength (4 bytes): A 32-bit, unsigned integer that specifies the size, in bytes, of the
 
 capability set data. This field MUST be set to 0x00000010.
 
@@ -3574,7 +3205,7 @@ reserved (16 bytes): An array of sixteen 8-bit, unsigned integers reserved for f
 
 integers within this array MUST be set to zero.
 
-2.2.3.5  RDPGFX_CAPSET_VERSION102
+##### 2.2.3.5 RDPGFX_CAPSET_VERSION102
 
 The RDPGFX_CAPSET_VERSION102 structure specifies an RDP version 10.2 Graphics Capability
 Set and conforms to the capability set layout specified in section 2.2.1.6. It is identical in form to the
@@ -3629,7 +3260,7 @@ message. If the flag is not set, the client MUST be capable of
 processing the MPEG-4 AVC/H.264 Codec in YUV444 mode in the
 RDPGFX_WIRE_TO_SURFACE_PDU_1 message.
 
-2.2.3.6  RDPGFX_CAPSET_VERSION103
+##### 2.2.3.6 RDPGFX_CAPSET_VERSION103
 
 The RDPGFX_CAPSET_VERSION103 structure specifies an RDP version 10.3 Graphics Capability
 Set and conforms to the capability set layout specified in section 2.2.1.6. Selection of this capability
@@ -3657,7 +3288,8 @@ Release: May 11, 2026
 
 39 / 145
 
-flags
+
+flags
 
 version (4 bytes): A 32-bit unsigned integer that specifies the version of the capability set. This field
 
@@ -3693,7 +3325,7 @@ Indicates that the client prefers the MPEG-4 AVC/H.264 Codec in
 YUV444 mode. If this flag is set, the
 RDPGFX_CAPS_FLAG_AVC_DISABLED flag MUST NOT be set.
 
-2.2.3.7  RDPGFX_CAPSET_VERSION104
+##### 2.2.3.7 RDPGFX_CAPSET_VERSION104
 
 The RDPGFX_CAPSET_VERSION104 structure specifies an RDP version 10.4 Graphics Capability
 Set and conforms to the capability set layout specified in section 2.2.1.6.
@@ -3749,7 +3381,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Flag
+
+Flag
 
 0x00000020
 
@@ -3774,7 +3407,7 @@ See the definition of the
 RDPGFX_CAPS_FLAG_AVC_THINCLIENT (0x00000040) flag
 in section 2.2.3.6 for details.
 
-2.2.3.8  RDPGFX_CAPSET_VERSION105
+##### 2.2.3.8 RDPGFX_CAPSET_VERSION105
 
 The RDPGFX_CAPSET_VERSION105 structure specifies an RDP version 10.5 Graphics Capability
 Set and conforms to the capability set layout specified in section 2.2.1.6.
@@ -3841,7 +3474,8 @@ Release: May 11, 2026
 
 41 / 145
 
-2.2.3.9  RDPGFX_CAPSET_VERSION106
+
+##### 2.2.3.9 RDPGFX_CAPSET_VERSION106
 
 The RDPGFX_CAPSET_VERSION106 structure specifies an RDP version 10.6 Graphics Capability
 Set and conforms to the capability set layout specified in section 2.2.1.6.
@@ -3901,9 +3535,9 @@ See the definition of the
 RDPGFX_CAPS_FLAG_AVC_THINCLIENT
 (0x00000040) flag in section 2.2.3.6 for details.
 
-2.2.3.10
+##### 2.2.3.10 RDPGFX_CAPSET_VERSION107
 
-RDPGFX_CAPSET_VERSION107
+
 
 The RDPGFX_CAPSET_VERSION107 structure specifies an RDP version 10.7 Graphics Capability
 Set and conforms to the capability set layout specified in section 2.2.1.6.
@@ -3932,7 +3566,8 @@ Release: May 11, 2026
 
 42 / 145
 
-version (4 bytes): A 32-bit unsigned integer that specifies the version of the capability set. This field
+
+version (4 bytes): A 32-bit unsigned integer that specifies the version of the capability set. This field
 
 MUST be set to RDPGFX_CAPVERSION_107 (0x000A0701).
 
@@ -3980,9 +3615,9 @@ RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU
 RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU
 (section 2.2.2.23) messages are not supported.
 
-2.2.4  Bitmap Compression
+#### 2.2.4 Bitmap Compression
 
-2.2.4.1  CLEARCODEC_BITMAP_STREAM
+##### 2.2.4.1 CLEARCODEC_BITMAP_STREAM
 
 The CLEARCODEC_BITMAP_STREAM structure encapsulates metadata and a stream of bitmap data
 encoded using ClearCodec compression techniques. Bitmaps with widths larger than 65,535 pixels and
@@ -4022,7 +3657,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Flag
+
+Flag
 
 Meaning
 
@@ -4079,7 +3715,7 @@ CLEARCODEC_COMPOSITE_PAYLOAD (section 2.2.4.1.1) structure. This field MUST NOT 
 present if the CLEARCODEC_FLAG_GLYPH_INDEX (0x01) flag and the
 CLEARCODEC_FLAG_GLYPH_HIT (0x02) flag are both present in the flags field.
 
-2.2.4.1.1 CLEARCODEC_COMPOSITE_PAYLOAD
+###### 2.2.4.1.1 CLEARCODEC_COMPOSITE_PAYLOAD
 
 The CLEARCODEC_COMPOSITE_PAYLOAD structure contains bitmap data encoded using
 ClearCodec compression techniques.
@@ -4112,7 +3748,8 @@ Release: May 11, 2026
 
 44 / 145
 
-...
+
+...
 
 bandsData (variable)
 
@@ -4151,7 +3788,7 @@ subcodecData (variable):  An optional variable-length CLEARCODEC_SUBCODECS_DATA 
 2.2.4.1.1.3) structure that contains the compressed data for the third layer of the image. If the
 subcodecByteCount field is zero, this field MUST NOT be present.
 
-2.2.4.1.1.1  CLEARCODEC_RESIDUAL_DATA
+###### 2.2.4.1.1.1 CLEARCODEC_RESIDUAL_DATA
 
 The CLEARCODEC_RESIDUAL_DATA structure contains the first layer of pixels in an encoded
 image. The number of pixels encoded by this structure MUST be less than or equal to the number of
@@ -4177,7 +3814,7 @@ runSegments (variable)
 
 runSegments (variable):  A variable-length array of CLEARCODEC_RGB_RUN_SEGMENT structures.
 
-2.2.4.1.1.1.1  CLEARCODEC_RGB_RUN_SEGMENT
+###### 2.2.4.1.1.1.1 CLEARCODEC_RGB_RUN_SEGMENT
 
 45 / 145
 
@@ -4186,7 +3823,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-The CLEARCODEC_RGB_RUN_SEGMENT structure encodes a single RGB run segment.
+
+The CLEARCODEC_RGB_RUN_SEGMENT structure encodes a single RGB run segment.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -4239,7 +3877,7 @@ it contains the run length, and the current pixel MUST be repeated for the next
 runLengthFactor3 positions. This field SHOULD NOT be used if the run length is smaller than
 65,535 (0xFFFF). If present, the value of runLengthFactor3 MUST be greater than zero.
 
-2.2.4.1.1.2  CLEARCODEC_BANDS_DATA
+###### 2.2.4.1.1.2 CLEARCODEC_BANDS_DATA
 
 The CLEARCODEC_BANDS_DATA structure contains the second layer of pixels in an encoded image.
 This layer MUST be decoded on top of the first layer, in some cases overwriting pixels in the first
@@ -4264,7 +3902,7 @@ bands (variable)
 
 bands (variable):  A variable-length array of CLEARCODEC_BAND structures.
 
-2.2.4.1.1.2.1  CLEARCODEC_BAND
+###### 2.2.4.1.1.2.1 CLEARCODEC_BAND
 
 The CLEARCODEC_BAND structure specifies a horizontal band that is composed of columns of pixels.
 Each of these columns is referred to as a "V-Bar". The maximum height of a band is 52 pixels.
@@ -4276,7 +3914,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4341,9 +3980,9 @@ structures. The total count of CLEARCODEC_VBAR structures MUST be equal to (xEnd
 + 1), one per x-coordinate in the band. The V-Bars are encoded from left to right, with the first V-
 Bar corresponding to the xStart field and the last corresponding to the xEnd field.
 
-2.2.4.1.1.2.1.1
+###### 2.2.4.1.1.2.1.1 CLEARCODEC_VBAR
 
-CLEARCODEC_VBAR
+
 
 The CLEARCODEC_VBAR structure is used to encode a single column of pixels (referred to as a "V-
 Bar") and is encapsulated inside a CLEARCODEC_BAND (section 2.2.4.1.1.2.1) structure. The
@@ -4374,7 +4013,8 @@ Release: May 11, 2026
 
 47 / 145
 
-shortVBarPixels (variable)
+
+shortVBarPixels (variable)
 
 ...
 
@@ -4400,9 +4040,9 @@ xPos = xStart + position of the V-Bar in the vBars field of the CLEARCODEC_BAND 
 
 yPos = yStart + position of the pixel in the V-Bar Storage ADM element
 
-2.2.4.1.1.2.1.1.1
+###### 2.2.4.1.1.2.1.1.1 VBAR_CACHE_HIT
 
-VBAR_CACHE_HIT
+
 
 The VBAR_CACHE_HIT structure is used to specify a V-Bar cache hit.
 
@@ -4434,9 +4074,9 @@ ADM element for the current V-Bar.
 
 x (1 bit):  A 1-bit field that MUST be set to 0x1.
 
-2.2.4.1.1.2.1.1.2
+###### 2.2.4.1.1.2.1.1.2 SHORT_VBAR_CACHE_HIT
 
-SHORT_VBAR_CACHE_HIT
+
 
 The SHORT_VBAR_CACHE_HIT structure is used to specify a Short V-Bar cache hit.
 
@@ -4454,7 +4094,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-As part of processing this header, each pixel position in the V-Bar Storage ADM element at the V-
+
+As part of processing this header, each pixel position in the V-Bar Storage ADM element at the V-
 Bar Storage Cursor (section 3.3.1.11) ADM element MUST be updated using the data in the Short
 V-Bar Storage ADM element. The number of pixels placed into the V-Bar Storage ADM element
 MUST equal yEnd – yStart + 1. For each position y within the V-Bar, the pixels MUST be updated as
@@ -4505,9 +4146,9 @@ shortVBarYOn (8 bits):  An 8-bit unsigned integer that specifies where the Short
 
 expressed as an offset from the top of the V-Bar.
 
-2.2.4.1.1.2.1.1.3
+###### 2.2.4.1.1.2.1.1.3 SHORT_VBAR_CACHE_MISS
 
-SHORT_VBAR_CACHE_MISS
+
 
 The SHORT_VBAR_CACHE_MISS structure is used to specify a Short V-Bar cache miss.
 
@@ -4548,7 +4189,8 @@ Release: May 11, 2026
 
 49 / 145
 
-The V-Bar Storage Cursor (section 3.3.1.11) ADM element MUST be incremented by 1 and MUST
+
+The V-Bar Storage Cursor (section 3.3.1.11) ADM element MUST be incremented by 1 and MUST
 wrap to zero when incremented from 32767.
 
 0  1  2  3  4  5  6  7  8  9
@@ -4578,7 +4220,7 @@ expressed as an offset from the top of the V-Bar.
 
 x (2 bits):  A 2-bit unsigned integer that MUST be set to 0x0.
 
-2.2.4.1.1.3  CLEARCODEC_SUBCODECS_DATA
+###### 2.2.4.1.1.3 CLEARCODEC_SUBCODECS_DATA
 
 The CLEARCODEC_SUBCODECS_DATA structure contains the third layer of pixels in an encoded
 image. This layer MUST be decoded on top of the second layer, in some cases overwriting pixels in the
@@ -4604,7 +4246,7 @@ subcodecs (variable)
 
 subcodecs (variable):  A variable-length array of CLEARCODEC_SUBCODEC structures.
 
-2.2.4.1.1.3.1  CLEARCODEC_SUBCODEC
+###### 2.2.4.1.1.3.1 CLEARCODEC_SUBCODEC
 
 The CLEARCODEC_SUBCODEC structure encapsulates an uncompressed bitmap or a bitmap encoded
 with the NSCodec Codec ([MS-RDPNSC] sections 1 through 3) or the RLEX scheme as specified in
@@ -4646,7 +4288,8 @@ Release: May 11, 2026
 
 50 / 145
 
-xStart (2 bytes):  A 16-bit unsigned integer that specifies the horizontal position (relative to the left
+
+xStart (2 bytes):  A 16-bit unsigned integer that specifies the horizontal position (relative to the left
 
 edge of the bitmap) where the subcodec-encoded bitmap MUST be placed once it has been
 decoded.
@@ -4683,9 +4326,9 @@ NSCodec Codec ([MS-RDPNSC] section 1, 2 and 3).
 If the subCodecId field equals 0x02, the bitmapData field contains a
 CLEARCODEC_SUBCODEC_RLEX (section 2.2.4.1.1.3.1.1) structure.
 
-2.2.4.1.1.3.1.1
+###### 2.2.4.1.1.3.1.1 CLEARCODEC_SUBCODEC_RLEX
 
-CLEARCODEC_SUBCODEC_RLEX
+
 
 The CLEARCODEC_SUBCODEC_RLEX structure contains a palette and segments that contain
 encoded indexes that reference colors in the palette.
@@ -4727,7 +4370,8 @@ Release: May 11, 2026
 
 51 / 145
 
-CLEARCODEC_SUBCODEC_RLEX_SEGMENT (section 2.2.4.1.1.3.1.1.2) structure embedded in
+
+CLEARCODEC_SUBCODEC_RLEX_SEGMENT (section 2.2.4.1.1.3.1.1.2) structure embedded in
 the segments field is given by floor(log2(paletteCount – 1)) + 1.
 
 paletteEntries (variable):  A variable-length array of RLEX_RGB_TRIPLET structures. The number
@@ -4738,9 +4382,9 @@ segments (variable):  A variable-length array of CLEARCODEC_SUBCODEC_RLEX_SEGMEN
 
 structures.
 
-2.2.4.1.1.3.1.1.1
+###### 2.2.4.1.1.3.1.1.1 RLEX_RGB_TRIPLET
 
-RLEX_RGB_TRIPLET
+
 
 The RLEX_RGB_TRIPLET structure is used to express the red, green, and blue components
 necessary to reproduce a color in the additive RGB space.
@@ -4768,9 +4412,9 @@ green (1 byte):  An 8-bit unsigned integer that specifies the green RGB color co
 
 red (1 byte):  An 8-bit unsigned integer that specifies the red RGB color component.
 
-2.2.4.1.1.3.1.1.2
+###### 2.2.4.1.1.3.1.1.2 CLEARCODEC_SUBCODEC_RLEX_SEGMENT
 
-CLEARCODEC_SUBCODEC_RLEX_SEGMENT
+
 
 The CLEARCODEC_SUBCODEC_RLEX_SEGMENT structure contains a collection of encoded palette
 indexes. This encoding exploits the fact that a collection of palette indexes can consist of the
@@ -4816,7 +4460,8 @@ Release: May 11, 2026
 
 52 / 145
 
-...
+
+...
 
 runLengthFactor1
 
@@ -4864,7 +4509,7 @@ runLengthFactor3 (4 bytes, optional):  An optional 32-bit unsigned integer. If t
 it contains the run length. The startColor value MUST be applied to the next runLengthFactor3
 pixels. This field SHOULD NOT be used if the run length is smaller than 65,535 (0xFFFF).
 
-2.2.4.2  RFX_PROGRESSIVE_BITMAP_STREAM
+##### 2.2.4.2 RFX_PROGRESSIVE_BITMAP_STREAM
 
 The RFX_PROGRESSIVE_BITMAP_STREAM structure encapsulates regions of a graphics frame
 compressed using discrete wavelet transforms (DWTs), sub-band diffing, and progressive compression
@@ -4893,13 +4538,14 @@ Release: May 11, 2026
 
 53 / 145
 
-...
+
+...
 
 progressiveDataBlocks (variable):  A variable-length array of RFX_PROGRESSIVE_DATABLOCK
 
 (section 2.2.4.2.1) structures.
 
-2.2.4.2.1 RFX_PROGRESSIVE_DATABLOCK
+###### 2.2.4.2.1 RFX_PROGRESSIVE_DATABLOCK
 
 The RFX_PROGRESSIVE_DATABLOCK structure is used to wrap data sent from the server to the
 client. All RemoteFX Progressive data blocks conform to this basic structure and are specified in
@@ -4995,11 +4641,12 @@ Release: May 11, 2026
 
 54 / 145
 
-blockData (variable):  A variable-length field that contains data that conforms to the structure of
+
+blockData (variable):  A variable-length field that contains data that conforms to the structure of
 
 the type specified by the blockType field.
 
-2.2.4.2.1.1  RFX_PROGRESSIVE_SYNC
+###### 2.2.4.2.1.1 RFX_PROGRESSIVE_SYNC
 
 The RFX_PROGRESSIVE_SYNC structure is used to transport codec version information. It is
 optional and SHOULD appear only once as the first block in the progressiveDataBlocks field of the
@@ -5046,7 +4693,7 @@ bits indicate the major version number, while the lower 8 bits indicate the mino
 The current version of the wire format is 1.0 (encoded as 0x0100). The decoder SHOULD ignore
 this value.
 
-2.2.4.2.1.2  RFX_PROGRESSIVE_FRAME_BEGIN
+###### 2.2.4.2.1.2 RFX_PROGRESSIVE_FRAME_BEGIN
 
 The RFX_PROGRESSIVE_FRAME_BEGIN structure marks the beginning of the frame in the codec
 payload. This block MUST appear only once, before any RFX_PROGRESSIVE_REGION (section
@@ -5088,7 +4735,8 @@ Release: May 11, 2026
 
 55 / 145
 
-blockType (2 bytes):  A 16-bit unsigned integer that specifies the block type. This field MUST be set
+
+blockType (2 bytes):  A 16-bit unsigned integer that specifies the block type. This field MUST be set
 
 to WBT_FRAME_BEGIN (0xCCC1).
 
@@ -5112,7 +4760,7 @@ number of elements in this array is specified by the regionCount field. If the n
 specified by the regionCount field is larger than the actual number of elements in the regions
 field, the decoder SHOULD ignore this inconsistency.
 
-2.2.4.2.1.3  RFX_PROGRESSIVE_FRAME_END
+###### 2.2.4.2.1.3 RFX_PROGRESSIVE_FRAME_END
 
 The RFX_PROGRESSIVE_FRAME_END structure marks the end of the frame in the codec payload.
 This block SHOULD appear only once, after the final RFX_PROGRESSIVE_REGION (section
@@ -5143,7 +4791,7 @@ to WBT_FRAME_END (0xCCC2).
 blockLen (4 bytes):  A 32-bit unsigned integer that specifies the size, in bytes, of the
 RFX_PROGRESSIVE_FRAME_END block. This field MUST be set to 0x00000006.
 
-2.2.4.2.1.4  RFX_PROGRESSIVE_CONTEXT
+###### 2.2.4.2.1.4 RFX_PROGRESSIVE_CONTEXT
 
 The RFX_PROGRESSIVE_CONTEXT structure provides information about the compressed data. It is
 optional and SHOULD appear before the RFX_PROGRESSIVE_FRAME_BEGIN (section 2.2.4.2.1.2)
@@ -5186,7 +4834,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-blockLen (4 bytes):  A 32-bit unsigned integer that specifies the size, in bytes, of the
+
+blockLen (4 bytes):  A 32-bit unsigned integer that specifies the size, in bytes, of the
 
 RFX_PROGRESSIVE_CONTEXT block. This field MUST be set to 10 (0x0000000A).
 
@@ -5210,7 +4859,7 @@ Indicates that sub-band diffing is enabled.
 
 0x01
 
-2.2.4.2.1.5  RFX_PROGRESSIVE_REGION
+###### 2.2.4.2.1.5 RFX_PROGRESSIVE_REGION
 
 The RFX_PROGRESSIVE_REGION structure contains the compressed data for a set of tiles from the
 frame. All RFX_PROGRESSIVE_REGION blocks SHOULD be present between the
@@ -5279,7 +4928,8 @@ Release: May 11, 2026
 
 57 / 145
 
-...
+
+...
 
 ...
 
@@ -5356,7 +5006,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-quantVals (variable): A variable-length array of RFX_COMPONENT_CODEC_QUANT structures
+
+quantVals (variable): A variable-length array of RFX_COMPONENT_CODEC_QUANT structures
 
 (the number of quantization tables in this field is specified by the numQuant field).
 
@@ -5370,7 +5021,7 @@ structures. The value of the blockType field of each block present in the array 
 WBT_TILE_SIMPLE (0xCCC5), WBT_TILE_PROGRESSIVE_FIRST (0xCCC6), or
 WBT_TILE_PROGRESSIVE_UPGRADE (0xCCC7).
 
-2.2.4.2.1.5.1  RFX_PROGRESSIVE_CODEC_QUANT
+###### 2.2.4.2.1.5.1 RFX_PROGRESSIVE_CODEC_QUANT
 
 The RFX_PROGRESSIVE_CODEC_QUANT structure specifies a progressive quantization table for
 compressing a tile.
@@ -5415,7 +5066,7 @@ crQuantValues (5 bytes):  An RFX_COMPONENT_CODEC_QUANT structure that contains t
 
 progressive quantization table for the Chroma Red (Cr) component.
 
-2.2.4.2.1.5.2  RFX_COMPONENT_CODEC_QUANT
+###### 2.2.4.2.1.5.2 RFX_COMPONENT_CODEC_QUANT
 
 The RFX_COMPONENT_CODEC_QUANT structure stores information regarding the scalar
 quantization values for the ten sub-bands in the three-level discrete wavelet transform (DWT)
@@ -5438,7 +5089,8 @@ Release: May 11, 2026
 
 59 / 145
 
-Note that the RFX_COMPONENT_CODEC_QUANT structure differs from the
+
+Note that the RFX_COMPONENT_CODEC_QUANT structure differs from the
 TS_RFX_CODEC_QUANT ([MS-RDPRFX] section 2.2.2.1.5) structure with respect to the order of the
 bands.
 
@@ -5493,7 +5145,7 @@ LH1 (4 bits):  A 4-bit, unsigned integer. The LH quantization factor for the lev
 
 HH1 (4 bits):  A 4-bit, unsigned integer. The HH quantization factor for the level-1 DWT sub-band.
 
-2.2.4.2.1.5.3  RFX_PROGRESSIVE_TILE_SIMPLE
+###### 2.2.4.2.1.5.3 RFX_PROGRESSIVE_TILE_SIMPLE
 
 The RFX_PROGRESSIVE_TILE_SIMPLE structure specifies a tile that has been compressed without
 progressive techniques.
@@ -5550,7 +5202,8 @@ Release: May 11, 2026
 
 60 / 145
 
-cbData (variable)
+
+cbData (variable)
 
 ...
 
@@ -5626,7 +5279,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-crLen (2 bytes):  A 16-bit unsigned integer that specifies the size, in bytes, of the crData field.
+
+crLen (2 bytes):  A 16-bit unsigned integer that specifies the size, in bytes, of the crData field.
 
 tailLen (2 bytes):  A 16-bit unsigned integer that specifies the size, in bytes, of the tailData field.
 
@@ -5651,7 +5305,7 @@ tailData (variable):  A variable-length array of bytes that contains data that S
 
 ignored. The size of this field, in bytes, is specified by the tailLen field.
 
-2.2.4.2.1.5.4  RFX_PROGRESSIVE_TILE_FIRST
+###### 2.2.4.2.1.5.4 RFX_PROGRESSIVE_TILE_FIRST
 
 The RFX_PROGRESSIVE_TILE_FIRST structure specifies the first-pass compression of a tile with
 progressive techniques. Subsequent passes, which improve the quality of the tile, are specified using
@@ -5723,7 +5377,8 @@ Release: May 11, 2026
 
 62 / 145
 
-...
+
+...
 
 ...
 
@@ -5802,7 +5457,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-tailLen (2 bytes):  A 16-bit unsigned integer that specifies the size, in bytes, of the tailData field.
+
+tailLen (2 bytes):  A 16-bit unsigned integer that specifies the size, in bytes, of the tailData field.
 
 This field SHOULD<3> be set to zero.
 
@@ -5825,7 +5481,7 @@ tailData (variable):  A variable-length array of bytes that contains data that S
 
 ignored. The size of this field, in bytes, is specified by the tailLen field.
 
-2.2.4.2.1.5.5  RFX_PROGRESSIVE_TILE_UPGRADE
+###### 2.2.4.2.1.5.5 RFX_PROGRESSIVE_TILE_UPGRADE
 
 The RFX_PROGRESSIVE_TILE_UPGRADE structure contains data required for an upgrade pass of a
 tile using progressive techniques. The block contains information that MUST be added to the
@@ -5895,7 +5551,8 @@ Release: May 11, 2026
 
 64 / 145
 
-...
+
+...
 
 ...
 
@@ -5966,7 +5623,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-yRawLen (2 bytes):  A 16-bit unsigned integer that specifies the size, in bytes, of the yRawData
+
+yRawLen (2 bytes):  A 16-bit unsigned integer that specifies the size, in bytes, of the yRawData
 
 field.
 
@@ -6010,7 +5668,7 @@ crRawData (variable): A variable-length array of bytes that contains raw bits fo
 
 (Cr) component.
 
-2.2.4.3  ALPHACODEC_BITMAP_STREAM
+##### 2.2.4.3 ALPHACODEC_BITMAP_STREAM
 
 The ALPHACODEC_BITMAP_STREAM structure specifies the opacity of each pixel in the encoded
 bitmap. The number of pixels encoded in the segments field MUST equal the area of the original
@@ -6051,12 +5709,13 @@ Release: May 11, 2026
 
 66 / 145
 
-segments (variable): An optional variable-length array of bytes or
+
+segments (variable): An optional variable-length array of bytes or
 
 CLEARCODEC_ALPHA_RLE_SEGMENT structures, depending on the value of the compressed
 field.
 
-2.2.4.3.1 CLEARCODEC_ALPHA_RLE_SEGMENT
+###### 2.2.4.3.1 CLEARCODEC_ALPHA_RLE_SEGMENT
 
 The CLEARCODEC_ALPHA_RLE_SEGMENT structure encodes a single alpha channel run segment.
 
@@ -6100,7 +5759,7 @@ it contains the run length. The current alpha value MUST be applied to the next
 runLengthFactor3 pixels. This field SHOULD NOT be used if the run length is smaller than
 65,535 (0xFFFF).
 
-2.2.4.4  RFX_AVC420_BITMAP_STREAM
+##### 2.2.4.4 RFX_AVC420_BITMAP_STREAM
 
 The RFX_AVC420_BITMAP_STREAM structure encapsulates regions of a graphics frame
 compressed using the MPEG-4 AVC/H.264 codec in YUV420p mode (as specified in [ITU-H.264-
@@ -6138,7 +5797,8 @@ Release: May 11, 2026
 
 67 / 145
 
-avc420EncodedBitstream (variable)
+
+avc420EncodedBitstream (variable)
 
 ...
 
@@ -6154,7 +5814,7 @@ using the MPEG-4 AVC/H.264 codec in YUV420p mode (as specified in [ITU-H.264-201
 conforming to the byte stream format specified in [ITU-H.264-201201] Annex B. Color conversion
 is described in section 3.3.8.3.1.
 
-2.2.4.4.1 RFX_AVC420_METABLOCK
+###### 2.2.4.4.1 RFX_AVC420_METABLOCK
 
 The RFX_AVC420_METABLOCK structure describes metadata associated with MPEG-4 AVC/H.264
 encoded data sent from the server to the client. The data contained within the
@@ -6201,7 +5861,7 @@ quantQualityVals (variable): A variable-length array of RDPGFX_AVC420_QUANT_QUAL
 associated with each rectangle in the regionRects field. The total number of elements in this field
 is specified by the numRegionRects field.
 
-2.2.4.4.2 RDPGFX_AVC420_QUANT_QUALITY
+###### 2.2.4.4.2 RDPGFX_AVC420_QUANT_QUALITY
 
 68 / 145
 
@@ -6210,7 +5870,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-The RDPGFX_AVC420_QUANT_QUALITY structure describes the quantization parameter and
+
+The RDPGFX_AVC420_QUANT_QUALITY structure describes the quantization parameter and
 quality level associated with a rectangular region.
 
 0  1  2  3  4  5  6  7  8  9
@@ -6264,7 +5925,7 @@ qualityVal (1 byte): An 8-bit unsigned integer that specifies the quality level 
 
 rectangular region. This value MUST be in the range 0 to 100 inclusive.
 
-2.2.4.5  RFX_AVC444_BITMAP_STREAM
+##### 2.2.4.5 RFX_AVC444_BITMAP_STREAM
 
 The RFX_AVC444_BITMAP_STREAM structure encapsulates regions of a graphics frame
 compressed using MPEG-4 AVC/H.264 compression techniques [ITU-H.264-201201] in YUV444 mode.
@@ -6305,7 +5966,8 @@ Release: May 11, 2026
 
 69 / 145
 
-...
+
+...
 
 avc420EncodedBitstream2 (variable)
 
@@ -6377,7 +6039,7 @@ avc420EncodedBitstream2 (variable): An RFX_AVC420_BITMAP_STREAM structure that
 contains the second YUV420p subframe (if it exists) of a single frame that was encoded using the
 MPEG-4 AVC/H.264 codec in YUV444 mode.
 
-2.2.4.6  RFX_AVC444V2_BITMAP_STREAM
+##### 2.2.4.6 RFX_AVC444V2_BITMAP_STREAM
 
 The RFX_AVC444V2_BITMAP_STREAM structure encapsulates regions of a graphics frame
 compressed using MPEG-4 AVC/H.264 compression techniques [ITU-H.264-201201] in YUV444v2
@@ -6391,7 +6053,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-To send all the chroma data for a YUV444 frame, two RFX_AVC420_BITMAP_STREAM structures
+
+To send all the chroma data for a YUV444 frame, two RFX_AVC420_BITMAP_STREAM structures
 (section 2.2.4.4) are used. The format of the RFX_AVC444V2_BITMAP_STREAM structure is a
 four-byte integer that specifies which subframes are encoded, and the size of the first YUV420p
 subframe encoded bitstream, followed by the first subframe, and then, optionally, the second
@@ -6482,7 +6145,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -6502,9 +6166,9 @@ avc420EncodedBitstream2 (variable): An RFX_AVC420_BITMAP_STREAM structure that
 contains the second YUV420p subframe (if it exists) of a single frame that was encoded using the
 MPEG-4 AVC/H.264 codec in YUV444v2 mode.
 
-2.2.5  Data Packaging
+#### 2.2.5 Data Packaging
 
-2.2.5.1  RDP_SEGMENTED_DATA
+##### 2.2.5.1 RDP_SEGMENTED_DATA
 
 The RDP_SEGMENTED_DATA structure is used to wrap one or more RDP_DATA_SEGMENT
 (section 2.2.5.2) structures. Each segment contains data that has been encoded using RDP 8.0 Bulk
@@ -6575,7 +6239,8 @@ Release: May 11, 2026
 
 72 / 145
 
-uncompressedSize (4 bytes, optional):  An optional 32-bit unsigned integer that specifies the size,
+
+uncompressedSize (4 bytes, optional):  An optional 32-bit unsigned integer that specifies the size,
 
 in bytes, of the data present in the segmentArray field once it has been reassembled and
 decompressed.
@@ -6588,7 +6253,7 @@ segmentArray (variable): An optional variable-length array of RDP_DATA_SEGMENT s
 
 The number of elements in this array is specified by the segmentCount field.
 
-2.2.5.2  RDP_DATA_SEGMENT
+##### 2.2.5.2 RDP_DATA_SEGMENT
 
 The RDP_DATA_SEGMENT structure contains data that has been encoded using RDP 8.0 Bulk
 Compression techniques (section 3.1.9.1).
@@ -6616,7 +6281,7 @@ size (4 bytes):  A 32-bit unsigned integer that specifies the size, in bytes, of
 
 bulkData (variable): A variable-length RDP8_BULK_ENCODED_DATA structure (section 2.2.5.3).
 
-2.2.5.3  RDP8_BULK_ENCODED_DATA
+##### 2.2.5.3 RDP8_BULK_ENCODED_DATA
 
 The RDP8_BULK_ENCODED_DATA structure contains a header byte and data that has been
 encoded using RDP 8.0 Bulk Compression techniques (section 3.1.9.1).
@@ -6666,7 +6331,8 @@ Release: May 11, 2026
 
 73 / 145
 
-Value
+
+Value
 
 Meaning
 
@@ -6681,7 +6347,7 @@ data (variable):  A variable-length array of bytes that contains data encoded us
 Compression techniques. If the PACKET_COMPRESSED (0x20) flag is specified in the header field,
 then the data is compressed.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 None.
 
@@ -6692,29 +6358,30 @@ Release: May 11, 2026
 
 74 / 145
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.5.1  Processing a Graphics Message
+None.
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Processing a Graphics Message
 
 All graphics messages are prefaced by the RDPGFX_HEADER (section 2.2.1.5) structure.
 
@@ -6726,17 +6393,17 @@ If the message is in the correct sequence, the pduLength field MUST be examined 
 it is consistent with the amount of data read from the "Microsoft::Windows::RDS::Graphics" dynamic
 virtual channel (section 2.1). If this is not the case, the connection SHOULD be dropped.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.1.8  Bitmap Compression
+#### 3.1.8 Bitmap Compression
 
-3.1.8.1  RemoteFX Progressive Codec Compression
+##### 3.1.8.1 RemoteFX Progressive Codec Compression
 
 The RemoteFX Progressive Codec extends the RemoteFX Codec ([MS-RDPRFX] sections 2.2.2 and
 3.1.8) by adding sub-band diffing and the ability to progressively encode an image. Sub-band diffing
@@ -6751,7 +6418,8 @@ Release: May 11, 2026
 
 75 / 145
 
-3.1.8.1.1 General Terms and Concepts
+
+###### 3.1.8.1.1 General Terms and Concepts
 
 Assume that F1, F2, F3, ... are the frames being encoded. Further, for simplicity, assume that every
 frame contains only one tile and the same component from the YCbCr color-space.
@@ -6762,7 +6430,7 @@ DwtQ is composed of 10 bands: LL3, LH3, HL3, HH3, LH2, HL2, HH2, LH1, HL1, and H
 RDPRFX] section 2.2.2.1.5). The LL3 band is designated as DwtQ-LL, and the remaining 9 bands as
 DwtQ-NonLL.
 
-3.1.8.1.2 Sub-Band Diffing
+###### 3.1.8.1.2 Sub-Band Diffing
 
 Sub-band diffing is used to determine whether a difference tile or an original tile is sent to the RLGR
 Entropy Encoder ([MS-RDPRFX] section 3.1.8.1.7).
@@ -6786,7 +6454,7 @@ Encoder:
 
 Diff-NonLL, Diff-LL -> RLGR Entropy Encoder
 
-3.1.8.1.3 Extra Quantization
+###### 3.1.8.1.3 Extra Quantization
 
 When performing progressive encoding, an extra quantization step is performed on the data resulting
 from the Sub-Band Diffing Stage. Quantization is expressed in terms of the number of bits that are
@@ -6828,7 +6496,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-if (SB < 0) then ProgQ(chunk) = -((-SB) >> BitPos(chunk))
+
+if (SB < 0) then ProgQ(chunk) = -((-SB) >> BitPos(chunk))
 
 This can also be expressed as:
 
@@ -6843,7 +6512,7 @@ the elements is performed toward negative infinity, resulting in the following f
 
 ProgQ-LL(chunk) = SB >> BitPos(chunk)
 
-3.1.8.1.4 State Tracking
+###### 3.1.8.1.4 State Tracking
 
 To correctly perform sub-band diffing and progressive encoding, the decoder's state MUST be tracked,
 specifically the following:
@@ -6861,14 +6530,14 @@ the encoder sends a difference, it MUST be based on Ref, not on the DwtQ of the 
 because the decoder might not have received all of the associated progressive chunks. Maintaining
 Ref is specified in section 3.2.8.1.5.2.1.
 
-3.1.8.1.5 Simplified Run-Length (SRL)
+###### 3.1.8.1.5 Simplified Run-Length (SRL)
 
 The Simplified Run-Length (SRL) Encoder uses the same zero run-length engine as the RLGR entropy
 encoder ([MS-RDPRFX] section 3.1.8.1.7). However, it differs when encoding nonzero elements,
 because these elements are unary-encoded (there is no Golomb-Rice coding). An extra zero byte is
 always emitted after the last SRL byte.
 
-3.1.8.1.5.1  Zero Run-Length Encoding
+###### 3.1.8.1.5.1 Zero Run-Length Encoding
 
 Runs of zeros are encoded using the same techniques as RLGR. The KP state value defines the
 likelihood of encountering long runs of zeros.
@@ -6906,7 +6575,8 @@ Release: May 11, 2026
 
 77 / 145
 
-
+
+
 
 The count of zeros is written using K bits
 
@@ -6917,7 +6587,7 @@ The count of zeros is written using K bits
 Note that, contrary to RLGR, it is possible to encode a run of zeros with K = 0. If the length of the run
 is zero, a single "1" bit is written.
 
-3.1.8.1.5.2  Unary Encoding
+###### 3.1.8.1.5.2 Unary Encoding
 
 Unary encoding is based on the number of bits of magnitude that the current upgrade pass (section
 3.2.8.1.5.2) is encoding. The value to encode MUST be nonzero, positive or negative, and the
@@ -6956,7 +6626,7 @@ Consider the case where nBits = 3. In this scenario, the magnitude MUST be betwe
 
 In the case where nBits = 1, only the sign would be written, because the magnitude cannot exceed 1.
 
-3.1.8.1.6 Summary of Terms
+###### 3.1.8.1.6 Summary of Terms
 
 DwtQ: A tile after DWT transformation and quantization.
 
@@ -6981,13 +6651,14 @@ Release: May 11, 2026
 
 78 / 145
 
-PQF: The Progressive Quantization Factor, defined as (1 << BitPos).
+
+PQF: The Progressive Quantization Factor, defined as (1 << BitPos).
 
 ProgQ: Data from SB that has been "extra quantized" using PQF.
 
-3.1.9  Bulk Data Compression
+#### 3.1.9 Bulk Data Compression
 
-3.1.9.1  RDP 8.0
+##### 3.1.9.1 RDP 8.0
 
 RDP 8.0 lossless compression is a specialization of the Lempel-Ziv ("LZ77") technique ([SAYOOD]
 section 6.2.3.2.2) paired with static Huffman encoding ([SAYOOD] sections 4.1 to 4.7). It is most-
@@ -7002,7 +6673,7 @@ conforming compressed encoding and produce output that exactly matches the origi
 compressor. This document specifies at least one way to decode RDP 8.0 compressed data, although
 numerous implementation approaches are possible.
 
-3.1.9.1.1 Overview
+###### 3.1.9.1.1 Overview
 
 The essential elements of a decompressor include de-blocking, Huffman decoding, and maintaining a
 history of recent output.
@@ -7021,7 +6692,7 @@ match token is followed by an encoded length, indicating the number of bytes to 
 As decompressed data is presented, it MUST be stored into a "history" buffer, which tracks the most-
 recent bytes of output, which could be referenced by a subsequent match token.
 
-3.1.9.1.2 Detailed Description
+###### 3.1.9.1.2 Detailed Description
 
 This section describes a method to accept a compressed stream of data of a given length and to
 output the decompressed bytes and a byte count.
@@ -7048,12 +6719,13 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-  Minimum match length: 3 bytes.
+
+  Minimum match length: 3 bytes.
 
 The compression type code to identify RDP 8.0 compressed data is PACKET_COMPR_TYPE_RDP8
 (0x04).
 
-3.1.9.1.2.1  De-Blocking
+###### 3.1.9.1.2.1 De-Blocking
 
 Each compressed stream MUST begin with an RDP_SEGMENTED_DATA (section 2.2.5.1) structure.
 A descriptor field value of SINGLE (0xE0) indicates that the original input was processed as one
@@ -7075,7 +6747,7 @@ descriptor field value is SINGLE (0xE0), the size field is omitted, and the numb
 can be derived from the total size of the provided RDP_SEGMENTED_DATA structure (the total input
 size minus the size of the 1-byte descriptor field).
 
-3.1.9.1.2.2  Compressed Segment Header
+###### 3.1.9.1.2.2 Compressed Segment Header
 
 The PACKET_COMPRESSED bit (0x20) in the header field of each RDP8_BULK_ENCODED_DATA
 (section 2.2.5.3) structure indicates that the stream of bytes that follows in the data field is a bit
@@ -7084,7 +6756,7 @@ copied directly to the output. The four low-order bits of the header field conta
 identifier, which is always four (0x04) for the format described in this document. The remaining bits in
 the header field are reserved.
 
-3.1.9.1.2.3  Compressed Segment Bit Stream
+###### 3.1.9.1.2.3 Compressed Segment Bit Stream
 
 Huffman decoding views the input bytes as a stream of bits. The input bits are examined until a token
 is recognized. The first bit to decode is the most-significant bit of the first byte, followed by the next
@@ -7092,7 +6764,7 @@ most-significant bit, and so on. In Huffman decoding, the number of bits in each
 until the leading bits in that token are examined. A decoder typically reads one to several bits at a
 time, until the next token is recognized.
 
-3.1.9.1.2.4  Compressed Segment Trailer
+###### 3.1.9.1.2.4 Compressed Segment Trailer
 
 The bit stream can end with some number of unused bits (0-7) in the last byte, which MUST NOT be
 decoded. (Attempting to decode can overrun input and produce too many bytes of output). The value
@@ -7114,7 +6786,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-There is no "end of block" token or other marker. The decoder MUST stop when this number of bits
+
+There is no "end of block" token or other marker. The decoder MUST stop when this number of bits
 has been decoded.
 
 Huffman symbols or "tokens" are defined for:
@@ -7239,7 +6912,8 @@ Release: May 11, 2026
 
 81 / 145
 
-Bit
+
+Bit
 Prefix
 
 Decimal
@@ -7428,7 +7102,8 @@ Release: May 11, 2026
 
 82 / 145
 
-Bit Prefix
+
+Bit Prefix
 
 Value Bits  Definition
 
@@ -7520,7 +7195,7 @@ Length 32768...65535
 
 A single compressed segment MUST NOT translate to more than 65,535 uncompressed bytes.
 
-3.1.9.1.2.5  Bit Stream Encoding Examples
+###### 3.1.9.1.2.5 Bit Stream Encoding Examples
 
 The following example bit streams contain spaces added for clarity:
 
@@ -7533,9 +7208,9 @@ bits with a value of 101, resulting in a length of 13.
 0 0100 1001 10001 00001 110 001 decodes to ten bytes of 0x49 (one byte 0x49, followed by a match
 with distance = 1 and length = 8 + 1 = 9, which replicates the first 0x49 nine more times).
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -7554,13 +7229,14 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-3.2.1.1  Bitmap Cache Map
+
+##### 3.2.1.1 Bitmap Cache Map
 
 The Bitmap Cache Map abstract data model (ADM) element stores a list of keys and slot indices.
 Each key uniquely identifies a bitmap stored in the client-side bitmap cache in an assigned slot
 (identified by a slot index). The specific slot in which a bitmap is stored is determined by the server.
 
-3.2.1.2  Unacknowledged Frames
+##### 3.2.1.2 Unacknowledged Frames
 
 The Unacknowledged Frames ADM element contains a list of logical frames (each represented by a
 frame ID) that have been sent to the client but that have not yet been acknowledged by the
@@ -7568,21 +7244,21 @@ RDPGFX_FRAME_ACKNOWLEDGE_PDU (section 2.2.2.13) message. Logical frames are deli
 by the RDPGFX_START_FRAME_PDU (section 2.2.2.11) and RDPGFX_END_FRAME_PDU (section
 2.2.2.12) messages.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Sending an RDPGFX_WIRE_TO_SURFACE_PDU_1 message
+##### 3.2.5.1 Sending an RDPGFX_WIRE_TO_SURFACE_PDU_1 message
 
 The structure and fields of the RDPGFX_WIRE_TO_SURFACE_PDU_1 message are specified in
 section 2.2.2.1. The command fields MUST be populated in accordance with this description.
@@ -7591,7 +7267,7 @@ delineated by the RDPGFX_START_FRAME_PDU (section 2.2.2.11) and
 RDPGFX_END_FRAME_PDU (section 2.2.2.12) messages, and the target surface identified in the
 surfaceId field MUST exist on the client.
 
-3.2.5.2  Sending an RDPGFX_WIRE_TO_SURFACE_PDU_2 message
+##### 3.2.5.2 Sending an RDPGFX_WIRE_TO_SURFACE_PDU_2 message
 
 The structure and fields of the RDPGFX_WIRE_TO_SURFACE_PDU_2 message are specified in
 section 2.2.2.2. The command fields MUST be populated in accordance with this description.
@@ -7601,7 +7277,7 @@ RDPGFX_END_FRAME_PDU (section 2.2.2.12) messages), and the target surface identi
 surfaceId field MUST exist on the client. The codecContextId field MUST also contain a valid ID that
 is associated with a bitmap that is being progressively transferred to the client.
 
-3.2.5.3  Sending an RDPGFX_DELETE_ENCODING_CONTEXT_PDU message
+##### 3.2.5.3 Sending an RDPGFX_DELETE_ENCODING_CONTEXT_PDU message
 
 The structure and fields of the RDPGFX_DELETE_ENCODING_CONTEXT_PDU message are
 specified in section 2.2.2.3. The command fields MUST be populated in accordance with this
@@ -7615,7 +7291,8 @@ Release: May 11, 2026
 
 84 / 145
 
-3.2.5.4  Sending an RDPGFX_SOLIDFILL_PDU message
+
+##### 3.2.5.4 Sending an RDPGFX_SOLIDFILL_PDU message
 
 The structure and fields of the RDPGFX_SOLIDFILL_PDU message are specified in section 2.2.2.4.
 The command fields MUST be populated in accordance with this description. Furthermore, the
@@ -7624,7 +7301,7 @@ RDPGFX_START_FRAME_PDU (section 2.2.2.11) and RDPGFX_END_FRAME_PDU (section
 2.2.2.12) messages, and the target surface identified in the surfaceId field MUST exist on the client.
 The format of the data in the fillPixel field MUST match the pixel format of the target surface.
 
-3.2.5.5  Sending an RDPGFX_SURFACE_TO_SURFACE_PDU message
+##### 3.2.5.5 Sending an RDPGFX_SURFACE_TO_SURFACE_PDU message
 
 The structure and fields of the RDPGFX_SURFACE_TO_SURFACE_PDU message are specified in
 section 2.2.2.5. The command fields MUST be populated in accordance with this description.
@@ -7633,7 +7310,7 @@ delineated by the RDPGFX_START_FRAME_PDU (section 2.2.2.11) and
 RDPGFX_END_FRAME_PDU (section 2.2.2.12) messages, and the source and target surfaces
 identified in the surfaceIdSrc and surfaceIdDest fields, respectively, MUST exist on the client.
 
-3.2.5.6  Sending an RDPGFX_SURFACE_TO_CACHE_PDU message
+##### 3.2.5.6 Sending an RDPGFX_SURFACE_TO_CACHE_PDU message
 
 The structure and fields of the RDPGFX_SURFACE_TO_CACHE_PDU message are specified in
 section 2.2.2.6. The command fields MUST be populated in accordance with this description.
@@ -7644,7 +7321,7 @@ surfaceId field MUST exist on the client. Once the RDPGFX_SURFACE_TO_CACHE_PDU m
 has been sent to the client, the Bitmap Cache Map (section 3.2.1.1) ADM element MUST be updated
 with the key (cacheKey field) and slot index (cacheSlot field) that were transmitted to the client.
 
-3.2.5.7  Sending an RDPGFX_CACHE_TO_SURFACE_PDU message
+##### 3.2.5.7 Sending an RDPGFX_CACHE_TO_SURFACE_PDU message
 
 The structure and fields of the RDPGFX_CACHE_TO_SURFACE_PDU message are specified in
 section 2.2.2.7. The command fields MUST be populated in accordance with this description.
@@ -7654,7 +7331,7 @@ RDPGFX_END_FRAME_PDU (section 2.2.2.12) messages. Additionally, the target surfa
 in the surfaceId field MUST exist on the client, and the bitmap cache slot identified by the cacheSlot
 field MUST contain a valid bitmap entry on the client.
 
-3.2.5.8  Sending an RDPGFX_EVICT_CACHE_ENTRY_PDU message
+##### 3.2.5.8 Sending an RDPGFX_EVICT_CACHE_ENTRY_PDU message
 
 The structure and fields of the RDPGFX_EVICT_CACHE_ENTRY_PDU message are specified in
 section 2.2.2.8. The command fields MUST be populated in accordance with this description.
@@ -7663,7 +7340,7 @@ entry on the client. Once the RDPGFX_EVICT_CACHE_ENTRY_PDU message has been sent
 client, the key and slot index associated with the bitmap MUST be removed from the Bitmap Cache
 Map (section 3.2.1.1) ADM element.
 
-3.2.5.9  Sending an RDPGFX_CREATE_SURFACE_PDU message
+##### 3.2.5.9 Sending an RDPGFX_CREATE_SURFACE_PDU message
 
 The structure and fields of the RDPGFX_CREATE_SURFACE_PDU message are specified in section
 2.2.2.9. The command fields MUST be populated in accordance with this description. Furthermore, the
@@ -7677,25 +7354,26 @@ Release: May 11, 2026
 
 85 / 145
 
-3.2.5.10
 
-Sending an RDPGFX_DELETE_SURFACE_PDU message
+##### 3.2.5.10 Sending an RDPGFX_DELETE_SURFACE_PDU message
+
+
 
 The structure and fields of the RDPGFX_DELETE_SURFACE_PDU message are specified in section
 2.2.2.10. The command fields MUST be populated in accordance with this description. Furthermore,
 the surfaceId field MUST identify a surface that exists on the client.
 
-3.2.5.11
+##### 3.2.5.11 Sending an RDPGFX_START_FRAME_PDU message
 
-Sending an RDPGFX_START_FRAME_PDU message
+
 
 The structure and fields of the RDPGFX_START_FRAME_PDU message are specified in section
 2.2.2.11. The command fields MUST be populated in accordance with this description. Logical frames
 SHOULD NOT be nested within each other.
 
-3.2.5.12
+##### 3.2.5.12 Sending an RDPGFX_END_FRAME_PDU message
 
-Sending an RDPGFX_END_FRAME_PDU message
+
 
 The structure and fields of the RDPGFX_END_FRAME_PDU message are specified in section
 2.2.2.12. The command fields MUST be populated in accordance with this description. The frameId
@@ -7704,9 +7382,9 @@ RDPGFX_START_FRAME_PDU (section 2.2.2.11) message. Once the RDPGFX_END_FRAME_PDU
 message has been sent to the client, the frame ID MUST be added to the Unacknowledged Frames
 (section 3.2.1.2) ADM element.
 
-3.2.5.13
+##### 3.2.5.13 Processing an RDPGFX_FRAME_ACKNOWLEDGE_PDU message
 
-Processing an RDPGFX_FRAME_ACKNOWLEDGE_PDU message
+
 
 The structure and fields of the RDPGFX_FRAME_ACKNOWLEDGE_PDU message are specified in
 section 2.2.2.13. The header field MUST be processed as specified in section 3.2.5.1. Once the
@@ -7727,16 +7405,16 @@ MUST NOT wait or block on unacknowledged frames (as the
 RDPGFX_FRAME_ACKNOWLEDGE_PDU message is not sent by the client) and MUST assume that
 the client is able to decode graphics data at a rate faster than it is receiving frames.
 
-3.2.5.14
+##### 3.2.5.14 Sending an RDPGFX_RESET_GRAPHICS_PDU message
 
-Sending an RDPGFX_RESET_GRAPHICS_PDU message
+
 
 The structure and fields of the RDPGFX_RESET_GRAPHICS_PDU message are specified in section
 2.2.2.14. The command fields MUST be populated in accordance with this description.
 
-3.2.5.15
+##### 3.2.5.15 Sending an RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message
 
-Sending an RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message
+
 
 The structure and fields of the RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message are specified
 in section 2.2.2.15. The command fields MUST be populated in accordance with this description.
@@ -7749,9 +7427,10 @@ Release: May 11, 2026
 
 86 / 145
 
-3.2.5.16
 
-Processing an RDPGFX_CACHE_IMPORT_OFFER_PDU message
+##### 3.2.5.16 Processing an RDPGFX_CACHE_IMPORT_OFFER_PDU message
+
+
 
 The structure and fields of the RDPGFX_CACHE_IMPORT_OFFER_PDU message are specified in
 section 2.2.2.16. The header field MUST be processed as specified in section 3.1.5.1. If the message
@@ -7761,9 +7440,9 @@ Once the RDPGFX_CACHE_IMPORT_OFFER_PDU message has been processed, the server MU
 respond by sending the RDPGFX_CACHE_IMPORT_REPLY_PDU (section 2.2.2.17) message to the
 client (section 3.2.5.17).
 
-3.2.5.17
+##### 3.2.5.17 Sending an RDPGFX_CACHE_IMPORT_REPLY_PDU message
 
-Sending an RDPGFX_CACHE_IMPORT_REPLY_PDU message
+
 
 The structure and fields of the RDPGFX_CACHE_IMPORT_REPLY_PDU message are specified in
 section 2.2.2.17. The command fields MUST be populated in accordance with this description. The
@@ -7773,9 +7452,9 @@ RDPGFX_CACHE_IMPORT_OFFER_PDU (section 2.2.2.16) message, as specified in sectio
 3.2.5.16. Furthermore, the cache slot assigned to each entry imported by the server MUST be
 enumerated in the cacheSlots field.
 
-3.2.5.18
+##### 3.2.5.18 Processing an RDPGFX_CAPS_ADVERTISE_PDU message
 
-Processing an RDPGFX_CAPS_ADVERTISE_PDU message
+
 
 The structure and fields of the RDPGFX_CAPS_ADVERTISE_PDU message are specified in section
 2.2.2.18. The header field MUST be processed as specified in section 3.1.5.1. Once the
@@ -7790,9 +7469,9 @@ RDPGFX_CAPS_CONFIRM_PDU (section 2.2.2.19) message to the client. The server MUS
 reset the protocol to the initial state and assume that the client has disregarded all the messages sent
 by the server prior to RDPGFX_CAPS_CONFIRM_PDU in this channel.
 
-3.2.5.19
+##### 3.2.5.19 Sending an RDPGFX_CAPS_CONFIRM_PDU message
 
-Sending an RDPGFX_CAPS_CONFIRM_PDU message
+
 
 The structure and fields of the RDPGFX_CAPS_CONFIRM_PDU message are specified in section
 2.2.2.19. The command fields MUST be populated in accordance with this description.
@@ -7804,9 +7483,9 @@ sets received are specified in section 2.2.3, the server SHOULD<5> close the dyn
 Otherwise, the server MUST populate the capsSet field with the highest supported capability set from
 the RDPGFX_CAPS_ADVERTISE_PDU message.
 
-3.2.5.20
+##### 3.2.5.20 Sending an RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message
 
-Sending an RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message
+
 
 The structure and fields of the RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message are
 specified in section 2.2.2.20. The command fields MUST be populated in accordance with this
@@ -7819,22 +7498,23 @@ Release: May 11, 2026
 
 87 / 145
 
-<!-- Extracted images from page 88 -->
+
+<!-- Extracted images from page 88 -->
 ![Extracted image 1 from page 88]([MS-RDPEGFX].images/page088-img01.png)
 <!-- /Extracted images from page 88 -->
 
-3.2.5.21
+##### 3.2.5.21 Processing an RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message
 
-Processing an RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message
+
 
 The structure and fields of the RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message are specified
 in section 2.2.2.21. The header field MUST be processed as specified in section 3.2.5.1. The
 timestamp, timeDiffSE, and timeDiffEDR fields describe metrics associated with the frame
 identified by the frameId field and SHOULD only be used for informational and debugging purposes.
 
-3.2.5.22
+##### 3.2.5.22 Sending an RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU
 
-Sending an RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU
+
 
 message
 
@@ -7842,9 +7522,9 @@ The structure and fields of the RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU message 
 specified in section 2.2.2.22. The command fields MUST be populated in accordance with this
 description. Furthermore, the surface identified in the surfaceId field MUST exist on the client.
 
-3.2.5.23
+##### 3.2.5.23 Sending an RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU
 
-Sending an RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU
+
 
 message
 
@@ -7852,17 +7532,17 @@ The structure and fields of the RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU message
 are specified in section 2.2.2.23. The command fields MUST be populated in accordance with this
 description. Furthermore, the surface identified in the surfaceId field MUST exist on the client.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.2.8  Bitmap Compression
+#### 3.2.8 Bitmap Compression
 
-3.2.8.1  RemoteFX Progressive Codec Compression
+##### 3.2.8.1 RemoteFX Progressive Codec Compression
 
 The functional stages involved in the encoding path are illustrated in the following figure. Each of
 these stages is described in the following subsections.
@@ -7876,7 +7556,8 @@ Release: May 11, 2026
 
 88 / 145
 
-<!-- Extracted images from page 89 -->
+
+<!-- Extracted images from page 89 -->
 ![Extracted image 1 from page 89]([MS-RDPEGFX].images/page089-img01.png)
 <!-- /Extracted images from page 89 -->
 
@@ -7884,17 +7565,17 @@ When this encoding path is compared to [MS-RDPRFX] section 3.1.8.1, differencing
 removed, sub-band diffing has been added, and progressive encoding has been incorporated into the
 entropy encoder.
 
-3.2.8.1.1 Color Conversion (RGB to YCbCr)
+###### 3.2.8.1.1 Color Conversion (RGB to YCbCr)
 
 Color conversion is identical to the technique specified in [MS-RDPRFX] section 3.1.8.1.3.
 
-3.2.8.1.2 DWT
+###### 3.2.8.1.2 DWT
 
 The discrete wavelet transform (DWT) is performed as specified in [MS-RDPRFX] section 3.1.8.1.4
 with one exception. To improve the quality around tile edges, a variation has been added to the
 transform, which modifies the behavior on pixel boundaries and changes the size of the bands.
 
-3.2.8.1.2.1  Original Method
+###### 3.2.8.1.2.1 Original Method
 
 DWT results are calculated using an input coefficient and the surrounding coefficients. Tile boundaries
 are handled by mirroring the input coefficients. The coefficients to the right of the leftmost input
@@ -7911,7 +7592,7 @@ This technique is also used on the right edges and for vertical transforms.
 The first pass for a given direction (horizontal or vertical) takes an input of 64 coefficients and
 produces 32 low-frequency results and 32 high-frequency results.
 
-3.2.8.1.2.2  Reduce-Extrapolate Method
+###### 3.2.8.1.2.2 Reduce-Extrapolate Method
 
 The Original Method (section 3.2.8.1.2.1) for dealing with boundaries when encoding tiles introduces
 tile artifacts. The result is that users can perceive where the tile boundaries are in a decoded image.
@@ -7936,7 +7617,8 @@ Release: May 11, 2026
 
 89 / 145
 
-<!-- Extracted images from page 90 -->
+
+<!-- Extracted images from page 90 -->
 ![Extracted image 1 from page 90]([MS-RDPEGFX].images/page090-img01.png)
 <!-- /Extracted images from page 90 -->
 
@@ -7955,19 +7637,20 @@ Release: May 11, 2026
 
 90 / 145
 
-<!-- Extracted images from page 91 -->
+
+<!-- Extracted images from page 91 -->
 ![Extracted image 1 from page 91]([MS-RDPEGFX].images/page091-img01.png)
 <!-- /Extracted images from page 91 -->
 
 Figure 3: Bands resulting from the Reduce-Extrapolate DWT Method
 
-3.2.8.1.3 Quantization and Linearization
+###### 3.2.8.1.3 Quantization and Linearization
 
 Quantization is performed as specified in [MS-RDPRFX] section 3.1.8.1.5, while linearization is
 performed as specified in [MS-RDPRFX] section 3.1.8.1.6. Ordering of the bands is identical to the
 ordering specified in [MS-RDPRFX] section 3.1.8.1.6.
 
-3.2.8.1.4 Sub-Band Diffing
+###### 3.2.8.1.4 Sub-Band Diffing
 
 Sub-band diffing enables increased compression without any further quality loss by sending the
 differences of the quantized values between frames.
@@ -7989,7 +7672,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-<!-- Extracted images from page 92 -->
+
+<!-- Extracted images from page 92 -->
 ![Extracted image 1 from page 92]([MS-RDPEGFX].images/page092-img01.png)
 ![Extracted image 2 from page 92]([MS-RDPEGFX].images/page092-img02.png)
 ![Extracted image 3 from page 92]([MS-RDPEGFX].images/page092-img03.png)
@@ -8009,7 +7693,7 @@ the bands except for the LL3 band. The tile with the most number of zeros is sel
 RLGR Entropy Encoder. In the case of a tie, the original tile is preferred. If an original tile is selected
 over a difference tile, the reference bits MUST be cleared and filled with zeros.
 
-3.2.8.1.5 Progressive Entropy Encoding
+###### 3.2.8.1.5 Progressive Entropy Encoding
 
 The progressive encoder either can send a complete tile or can transmit multiple versions of the same
 tile over a period of time, with each subsequent version becoming more refined and improving in
@@ -8045,7 +7729,8 @@ Release: May 11, 2026
 
 92 / 145
 
-<!-- Extracted images from page 93 -->
+
+<!-- Extracted images from page 93 -->
 ![Extracted image 1 from page 93]([MS-RDPEGFX].images/page093-img01.png)
 ![Extracted image 2 from page 93]([MS-RDPEGFX].images/page093-img02.png)
 <!-- /Extracted images from page 93 -->
@@ -8053,7 +7738,7 @@ Release: May 11, 2026
 Each time a progressive pass is performed, DRS is reduced by the current DTS, and DAS is increased
 by the current DTS for the next pass.
 
-3.2.8.1.5.1  Performing the First Progressive Pass
+###### 3.2.8.1.5.1 Performing the First Progressive Pass
 
 The first progressive pass for a tile occurs when the encoder receives new pixels to encode and send
 to the decoder.
@@ -8090,7 +7775,7 @@ zero, and DRS = SB - DTS.
 The data generated by the first pass is written to an RFX_PROGRESSIVE_TILE_FIRST (section
 2.2.4.2.1.5.4) structure.
 
-3.2.8.1.5.2  Performing Upgrade Progressive Passes
+###### 3.2.8.1.5.2 Performing Upgrade Progressive Passes
 
 To upgrade a tile, the encoder uses the previously calculated DRS, quantizes the data, and then (a)
 sends it to the Simplified Run-Length (SRL) Encoder (section 3.1.8.1.5) or (b) transmits the raw bits
@@ -8106,7 +7791,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-The progressive chunk that the decoder is being driven toward is referred to as the "target chunk"
+
+The progressive chunk that the decoder is being driven toward is referred to as the "target chunk"
 ("TargetC" for brevity), while the most recent progressive chunk that the decoder has processed is
 referred to as the "previous chunk" ("PrevC" for brevity).
 
@@ -8135,12 +7821,12 @@ RFX_PROGRESSIVE_TILE_UPGRADE (section 2.2.4.2.1.5.5) structure. All of the data 
 written as raw bits is packaged in the yRawData (Luma), cbRawData (Chroma Blue), and
 crRawData (Chroma Red) fields of the RFX_PROGRESSIVE_TILE_UPGRADE structure.
 
-3.2.8.1.5.2.1  Sending Raw Bits
+###### 3.2.8.1.5.2.1 Sending Raw Bits
 
 Raw bits are sent as a simple bit stream. The following sequence of bits "abc", "defg", "hijkl", when
 written, would produce the bytes "abcdefgh" and "ijkl0000".
 
-3.2.8.1.5.3  Maintaining the Decoder Reference
+###### 3.2.8.1.5.3 Maintaining the Decoder Reference
 
 After each progressive pass, the data that has been sent is added to the reference bits:
 
@@ -8148,9 +7834,9 @@ Ref = Ref + DTS
 
 The reference bits are specified in section 3.1.8.1.4.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -8169,7 +7855,8 @@ Release: May 11, 2026
 
 94 / 145
 
-3.3.1.1  Codec Contexts
+
+##### 3.3.1.1 Codec Contexts
 
 The Codec Contexts ADM element contains a list of codec contexts. Each codec context is associated
 with an offscreen surface and a bitmap that is being progressively rendered to the surface. The
@@ -8178,7 +7865,7 @@ bitmap has been fully rendered, the associated context is no longer required. Fu
 server determines that a specific context will no longer be used, then the
 RDPGFX_DELETE_ENCODING_CONTEXT_PDU (section 2.2.2.3) message is sent to the client.
 
-3.3.1.2  Progressive Tile Contexts
+##### 3.3.1.2 Progressive Tile Contexts
 
 The Progressive Tile Contexts ADM element contains a list of progressive tile contexts. Each
 progressive tile context is associated with a tile in an off-screen surface and one or more codec
@@ -8189,7 +7876,7 @@ position for each band (described as BitPos in section 3.3.8.2.1.2).
 A progressive tile context can be discarded once all of the codec contexts with which it is associated
 have been deleted.
 
-3.3.1.3  Sub-Band Diffing Tile Contexts
+##### 3.3.1.3 Sub-Band Diffing Tile Contexts
 
 The Sub-Band Diffing Tile Contexts ADM element contains a list of sub-band diffing tile contexts.
 Each sub-band diffing tile context is associated with a tile in an off-screen surface. This context
@@ -8198,7 +7885,7 @@ contains the DWT coefficient data for the tile (described as DecDwtQ in section 
 Each sub-band diffing tile context MUST be preserved for the duration of the RDP connection or until
 the off-screen surface with which it is associated has been deleted.
 
-3.3.1.4  Bitmap Cache
+##### 3.3.1.4 Bitmap Cache
 
 The Bitmap Cache ADM element is used to store bitmaps of arbitrary dimensions. Each bitmap is
 associated with a key and is stored in a variable-length slot (identified by a one-based slot index). The
@@ -8217,7 +7904,7 @@ possible number of variable-length slots is 25,600 in the case of a 100 MB cache
 of a 16 MB cache. The size of the bitmap data stored across all of the in-use variable-length slots at
 any point in time MUST NOT exceed the total size of the cache.
 
-3.3.1.5  Persistent Bitmap Cache
+##### 3.3.1.5 Persistent Bitmap Cache
 
 The Persistent Bitmap Cache ADM element is optional offline storage that is used to selectively
 persist bitmaps and any associated metadata that has been cached in the Bitmap Cache (section
@@ -8230,30 +7917,31 @@ Release: May 11, 2026
 
 95 / 145
 
-3.3.1.6  Offscreen Surface
+
+##### 3.3.1.6 Offscreen Surface
 
 The Offscreen Surface ADM element contains a collection of bitmaps, each bitmap representing an
 offscreen surface.
 
-3.3.1.7  Graphics Output Buffer
+##### 3.3.1.7 Graphics Output Buffer
 
 The Graphics Output Buffer ADM element is the end-user visible output bitmap.
 
-3.3.1.8  Surface to Output Mapping
+##### 3.3.1.8 Surface to Output Mapping
 
 The Surface to Output Mapping ADM element contains a list of where offscreen surfaces in the
 Offscreen Surface (section 3.3.1.6) ADM element are mapped to the Graphics Output Buffer
 (section 3.3.1.7) ADM element.
 
-3.3.1.9  Decompressor Glyph Storage
+##### 3.3.1.9 Decompressor Glyph Storage
 
 The Decompressor Glyph Storage ADM element is used to cache bitmaps decompressed using
 ClearCodec decompression techniques (section 3.3.8.1). It contains 4,000 storage slots, each of which
 can hold a bitmap image no larger than 1,024 square pixels.
 
-3.3.1.10
+##### 3.3.1.10 V-Bar Storage
 
-V-Bar Storage
+
 
 The V-Bar Storage ADM element is used to cache decompressed pixel columns from
 CLEARCODEC_BAND (section 2.2.4.1.1.2.1) structures. These pixel columns (which are the same
@@ -8261,16 +7949,16 @@ height as the containing band) are referred to as "V-Bars". Encoded V-Bars are e
 CLEARCODEC_BANDS_DATA (section 2.2.4.1.1.2) structure. The maximum number of V-Bars that
 can be stored in the cache is 32,768.
 
-3.3.1.11
+##### 3.3.1.11 V-Bar Storage Cursor
 
-V-Bar Storage Cursor
+
 
 The V-Bar Storage Cursor ADM element is used to specify the position in the V-Bar Storage
 (section 3.3.1.10) where the next V-Bar MUST be inserted. This element MUST be initialized to zero.
 
-3.3.1.12
+##### 3.3.1.12 Short-V-Bar Storage
 
-Short-V-Bar Storage
+
 
 The Short-V-Bar Storage ADM element is used to cache decompressed pixel columns from
 CLEARCODEC_BAND (section 2.2.4.1.1.2.1) structures. These pixel columns (which are the same or
@@ -8278,17 +7966,17 @@ shorter than the height of the containing band) are referred to as "Short-V-Bars
 Bars are encapsulated in the CLEARCODEC_BANDS_DATA (section 2.2.4.1.1.2) structure. The
 maximum number of Short-V-Bars that can be stored in the cache is 16,384.
 
-3.3.1.13
+##### 3.3.1.13 Short V-Bar Storage Cursor
 
-Short V-Bar Storage Cursor
+
 
 The Short V-Bar Storage Cursor ADM element is used to specify the position in the Short V-Bar
 Storage (section 3.3.1.12) ADM element where the next Short V-Bar MUST be inserted. This element
 MUST be initialized to zero.
 
-3.3.1.14
+##### 3.3.1.14 Confirmed Graphics Capabilities
 
-Confirmed Graphics Capabilities
+
 
 The Confirmed Graphics Capabilities ADM element is used to store the set of graphics capabilities
 specified by the server in the RDPGFX_CAPS_CONFIRM_PDU (section 3.3.5.19) message.
@@ -8300,28 +7988,29 @@ Release: May 11, 2026
 
 96 / 145
 
-3.3.1.15
 
-Surface to Window Mapping
+##### 3.3.1.15 Surface to Window Mapping
+
+
 
 The Surface to Window Mapping ADM element contains a list of surfaces and the RAIL window
 and rectangular region to which each of these surfaces is mapped.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Processing an RDPGFX_WIRE_TO_SURFACE_PDU_1 message
+##### 3.3.5.1 Processing an RDPGFX_WIRE_TO_SURFACE_PDU_1 message
 
 The structure and fields of the RDPGFX_WIRE_TO_SURFACE_PDU_1 message are specified in
 section 2.2.2.1. The header field MUST be processed as specified in section 3.1.5.1. The surfaceId
@@ -8350,7 +8039,7 @@ If the encoding type enumerated in the codecId field is RDPGFX_CODECID_ALPHA:
   Only the alpha channel of the target surface MUST be updated with the contents of the source
 bitmap (the red, green, and blue channels of the target surface MUST NOT be changed).
 
-3.3.5.2  Processing an RDPGFX_WIRE_TO_SURFACE_PDU_2 message
+##### 3.3.5.2 Processing an RDPGFX_WIRE_TO_SURFACE_PDU_2 message
 
 The structure and fields of the RDPGFX_WIRE_TO_SURFACE_PDU_2 message are specified in
 section 2.2.2.2. The header field MUST be processed as specified in section 3.1.5.1. The surfaceId
@@ -8370,7 +8059,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-SRCCOPY ROP3 operation ([MS-RDPEGDI] section 2.2.2.2.1.1.1.7) once enough data has been
+
+SRCCOPY ROP3 operation ([MS-RDPEGDI] section 2.2.2.2.1.1.1.7) once enough data has been
 decoded to render a discernible image and SHOULD then continue to be updated as subsequent
 RDPGFX_WIRE_TO_SURFACE_PDU_2 messages are processed. Note that if the type (specified in
 the blockType field) of the current RFX_PROGRESSIVE_DATABLOCK structure (section 2.2.4.2.1)
@@ -8378,7 +8068,7 @@ of an RFX_PROGRESSIVE_BITMAP_STREAM (section 2.2.4.2) is
 WBT_TILE_PROGRESSIVE_UPGRADE (0xCCC7), then the codecContextId field in the Codec
 Contexts (section 3.3.1.1) ADM element MUST be known.
 
-3.3.5.3  Processing an RDPGFX_DELETE_ENCODING_CONTEXT_PDU message
+##### 3.3.5.3 Processing an RDPGFX_DELETE_ENCODING_CONTEXT_PDU message
 
 The structure and fields of the RDPGFX_DELETE_ENCODING_CONTEXT_PDU message are
 specified in section 2.2.2.3. The header field MUST be processed as specified in section 3.1.5.1. Once
@@ -8386,7 +8076,7 @@ the RDPGFX_DELETE_ENCODING_CONTEXT_PDU message has been successfully decoded, th
 codec context identified by the codecContextId field (which is associated with the surface identified
 by the surfaceId field) MUST be removed from the Codec Contexts (section 3.3.1.1) ADM element.
 
-3.3.5.4  Processing an RDPGFX_SOLIDFILL_PDU message
+##### 3.3.5.4 Processing an RDPGFX_SOLIDFILL_PDU message
 
 The structure and fields of the RDPGFX_SOLIDFILL_PDU message are specified in section 2.2.2.4.
 The header field MUST be processed as specified in section 3.1.5.1. The surfaceId field MUST
@@ -8395,7 +8085,7 @@ RDPGFX_SOLIDFILL_PDU message has been successfully decoded, the rectangles speci
 fillRects field MUST be filled with the 32-bpp color specified by the fillPixel field using an
 R2_COPYPEN ROP2 operation ([MS-RDPEGDI] section 2.2.2.2.1.1.1.6).
 
-3.3.5.5  Processing an RDPGFX_SURFACE_TO_SURFACE_PDU message
+##### 3.3.5.5 Processing an RDPGFX_SURFACE_TO_SURFACE_PDU message
 
 The structure and fields of the RDPGFX_SURFACE_TO_SURFACE_PDU message are specified in
 section 2.2.2.5. The header field MUST be processed as specified in section 3.1.5.1. The
@@ -8405,7 +8095,7 @@ message has been successfully decoded, the pixels in the source rectangle on the
 (specified in the rectSrc field) MUST be copied to the target surface at each of the points specified in
 the destPts field using a SRCCOPY ROP3 operation ([MS-RDPEGDI] section 2.2.2.2.1.1.1.7).
 
-3.3.5.6  Processing an RDPGFX_SURFACE_TO_CACHE_PDU message
+##### 3.3.5.6 Processing an RDPGFX_SURFACE_TO_CACHE_PDU message
 
 The structure and fields of the RDPGFX_SURFACE_TO_CACHE_PDU message are specified in
 section 2.2.2.6. The header field MUST be processed as specified in section 3.1.5.1. The surfaceId
@@ -8416,7 +8106,7 @@ slot in the Bitmap Cache (section 3.3.1.4) ADM element identified by the cacheSl
 SRCCOPY ROP3 operation ([MS-RDPEGDI] section 2.2.2.2.1.1.1.7) and tagged with the key specified
 in the cacheKey field.
 
-3.3.5.7  Processing an RDPGFX_CACHE_TO_SURFACE_PDU message
+##### 3.3.5.7 Processing an RDPGFX_CACHE_TO_SURFACE_PDU message
 
 The structure and fields of the RDPGFX_CACHE_TO_SURFACE_PDU message are specified in
 section 2.2.2.7. The header field MUST be processed as specified in section 3.1.5.1. The surfaceId
@@ -8434,7 +8124,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-3.3.5.8  Processing an RDPGFX_EVICT_CACHE_ENTRY_PDU message
+
+##### 3.3.5.8 Processing an RDPGFX_EVICT_CACHE_ENTRY_PDU message
 
 The structure and fields of the RDPGFX_EVICT_CACHE_ENTRY_PDU message are specified in
 section 2.2.2.8. The header field MUST be processed as specified in section 3.1.5.1. Once the
@@ -8442,7 +8133,7 @@ RDPGFX_EVICT_CACHE_ENTRY_PDU message has been successfully decoded, the entry in
 Bitmap Cache (section 3.3.1.4) ADM element present in the slot identified by the cacheSlot field
 MUST be removed from the cache.
 
-3.3.5.9  Processing an RDPGFX_CREATE_SURFACE_PDU message
+##### 3.3.5.9 Processing an RDPGFX_CREATE_SURFACE_PDU message
 
 The structure and fields of the RDPGFX_CREATE_SURFACE_PDU message are specified in section
 2.2.2.9. The header field MUST be processed as specified in section 3.1.5.1. Once the
@@ -8451,25 +8142,25 @@ created with the appropriate width, height, and pixel format and MUST be placed 
 Surface (section 3.3.1.6) ADM element. The entry MUST be tagged with the ID specified in the
 surfaceId field.
 
-3.3.5.10
+##### 3.3.5.10 Processing an RDPGFX_DELETE_SURFACE_PDU message
 
-Processing an RDPGFX_DELETE_SURFACE_PDU message
+
 
 The structure and fields of the RDPGFX_DELETE_SURFACE_PDU message are specified in section
 2.2.2.10. The header field MUST be processed as specified in section 3.1.5.1. Once the
 RDPGFX_DELETE_SURFACE_PDU message has been successfully decoded, the surface identified by
 the surfaceId field MUST be deleted from the Offscreen Surface (section 3.3.1.6) ADM element.
 
-3.3.5.11
+##### 3.3.5.11 Processing an RDPGFX_START_FRAME_PDU message
 
-Processing an RDPGFX_START_FRAME_PDU message
+
 
 The structure and fields of the RDPGFX_START_FRAME_PDU message are specified in section
 2.2.2.11. The header field MUST be processed as specified in section 3.1.5.1.
 
-3.3.5.12
+##### 3.3.5.12 Processing an RDPGFX_END_FRAME_PDU message
 
-Processing an RDPGFX_END_FRAME_PDU message
+
 
 The structure and fields of the RDPGFX_END_FRAME_PDU message are specified in section
 2.2.2.12. The header field MUST be processed as specified in section 3.1.5.1. Once the
@@ -8479,18 +8170,18 @@ contents of every updated off-screen surface that is present in the Surface to O
 the copy is complete, the client MUST send the RDPGFX_FRAME_ACKNOWLEDGE_PDU (section
 2.2.2.13) message to the server, as specified in section 3.3.5.13.
 
-3.3.5.13
+##### 3.3.5.13 Sending an RDPGFX_FRAME_ACKNOWLEDGE_PDU message
 
-Sending an RDPGFX_FRAME_ACKNOWLEDGE_PDU message
+
 
 The structure and fields of the RDPGFX_FRAME_ACKNOWLEDGE_PDU message are specified in
 section 2.2.2.13. The command fields MUST be populated in accordance with this description. The
 client MUST populate the frameId field with the ID of the most recently processed logical frame, as
 specified in section 3.2.5.12.
 
-3.3.5.14
+##### 3.3.5.14 Processing an RDPGFX_RESET_GRAPHICS_PDU message
 
-Processing an RDPGFX_RESET_GRAPHICS_PDU message
+
 
 The structure and fields of the RDPGFX_RESET_GRAPHICS_PDU message are specified in section
 2.2.2.14. The header field MUST be processed as specified in section 3.1.5.1. Once the
@@ -8504,9 +8195,10 @@ Release: May 11, 2026
 
 99 / 145
 
-3.3.5.15
 
-Processing an RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message
+##### 3.3.5.15 Processing an RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message
+
+
 
 The structure and fields of the RDPGFX_MAP_SURFACE_TO_OUTPUT_PDU message are specified
 in section 2.2.2.15. The header field MUST be processed as specified in section 3.1.5.1. Once the
@@ -8516,18 +8208,18 @@ updated by mapping the surface identified by the surfaceId field to the point on
 Output Buffer (section 3.3.1.7) ADM element specified by the outputOriginX and outputOriginY
 fields.
 
-3.3.5.16
+##### 3.3.5.16 Sending an RDPGFX_CACHE_IMPORT_OFFER_PDU message
 
-Sending an RDPGFX_CACHE_IMPORT_OFFER_PDU message
+
 
 The structure and fields of the RDPGFX_CACHE_IMPORT_OFFER_PDU message are specified in
 section 2.2.2.16. The command fields MUST be populated in accordance with this description. The
 client MUST populate the cacheEntries field by enumerating the bitmaps stored in the Persistent
 Bitmap Cache (section 3.3.1.5) ADM element.
 
-3.3.5.17
+##### 3.3.5.17 Processing an RDPGFX_CACHE_IMPORT_REPLY_PDU message
 
-Processing an RDPGFX_CACHE_IMPORT_REPLY_PDU message
+
 
 The structure and fields of the RDPGFX_CACHE_IMPORT_REPLY_PDU message are specified in
 section 2.2.2.17. The header field MUST be processed as specified in section 3.1.5.1. Once the
@@ -8536,18 +8228,18 @@ copy the number of entries specified in the importedEntriesCount field from the 
 Cache (section 3.3.1.5) ADM element to the assigned slots in the Bitmap Cache (section 3.3.1.4)
 ADM element.
 
-3.3.5.18
+##### 3.3.5.18 Sending an RDPGFX_CAPS_ADVERTISE_PDU message
 
-Sending an RDPGFX_CAPS_ADVERTISE_PDU message
+
 
 The structure and fields of the RDPGFX_CAPS_ADVERTISE_PDU message are specified in section
 2.2.2.18. The command fields MUST be populated in accordance with this description. The client MUST
 correctly populate the capsSet field with one or more of the capability sets specified in section 2.2.3.
 Each capability set type MUST NOT appear more than once.
 
-3.3.5.19
+##### 3.3.5.19 Processing an RDPGFX_CAPS_CONFIRM_PDU message
 
-Processing an RDPGFX_CAPS_CONFIRM_PDU message
+
 
 The structure and fields of the RDPGFX_CAPS_CONFIRM_PDU message are specified in section
 2.2.2.19. The header field MUST be processed as specified in section 3.1.5.1.
@@ -8565,9 +8257,9 @@ message during the connection to reset the protocol. The client MUST reset the c
 sending the RDPGFX_CAPS_ADVERTISE_PDU message and MUST ignore any messages sent by the
 server until RDPGFX_CAPS_CONFIRM_PDU message is received.
 
-3.3.5.20
+##### 3.3.5.20 Processing an RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message
 
-Processing an RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message
+
 
 The structure and fields of the RDPGFX_MAP_SURFACE_TO_WINDOW_PDU message are
 specified in section 2.2.2.20. The header field MUST be processed as specified in section 3.1.5.1.
@@ -8580,14 +8272,15 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-the surface-to-window mapping in the Surface to Window Mapping (section 3.3.1.15) ADM element
+
+the surface-to-window mapping in the Surface to Window Mapping (section 3.3.1.15) ADM element
 MUST be updated by associating the rectangular region (specified by the mappedWidth and
 mappedHeight fields) on the surface identified by the surfaceId field to the RAIL window specified
 by the windowId field.
 
-3.3.5.21
+##### 3.3.5.21 Sending an RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message
 
-Sending an RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message
+
 
 The structure and fields of the RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message are specified
 in section 2.2.2.21. The command fields MUST be populated in accordance with this description. The
@@ -8599,9 +8292,9 @@ message, then, with respect to sequencing, the RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU
 message SHOULD only be sent after the RDPGFX_FRAME_ACKNOWLEDGE_PDU message has been
 transmitted.
 
-3.3.5.22
+##### 3.3.5.22 Processing an RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU
 
-Processing an RDPGFX_MAP_SURFACE_TO_SCALED_OUTPUT_PDU
+
 
 message
 
@@ -8613,9 +8306,9 @@ MUST be updated by mapping the surface identified by the surfaceId field to the 
 Graphics Output Buffer (section 3.3.1.7) ADM element specified by the outputOriginX and
 outputOriginY fields, and scaled to the targetWidth and targetHeight fields specified.
 
-3.3.5.23
+##### 3.3.5.23 Processing an RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU
 
-Processing an RDPGFX_MAP_SURFACE_TO_SCALED_WINDOW_PDU
+
 
 message
 
@@ -8628,17 +8321,17 @@ and mappedHeight fields) on the surface identified by the surfaceId field to the
 specified by the windowId field with the entire surface scaled to the targetWidth and targetHeight
 fields specified.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
-3.3.8  Bitmap Compression
+#### 3.3.8 Bitmap Compression
 
-3.3.8.1  ClearCodec Compression
+##### 3.3.8.1 ClearCodec Compression
 
 The ClearCodec Codec is used to encode bitmaps sent in the RDPGFX_WIRE_TO_SURFACE_PDU_1
 (section 2.2.2.1) message. The encoded bitmap data MUST be transported in the bitmapData field of
@@ -8650,7 +8343,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-the RDPGFX_WIRE_TO_SURFACE_PDU_1 message, and the codecId field MUST be set to
+
+the RDPGFX_WIRE_TO_SURFACE_PDU_1 message, and the codecId field MUST be set to
 RDPGFX_CODECID_CLEARCODEC (0x0008).
 
 The ClearCodec bitmap stream is described in section 2.2.4.1 and is composed of a maximum of three
@@ -8668,7 +8362,7 @@ The bands layer (section 2.2.4.1.1.2)
 
 The subcodec layer (section 2.2.4.1.1.3)
 
-3.3.8.1.1 ClearCodec Run-Length Encoding
+###### 3.3.8.1.1 ClearCodec Run-Length Encoding
 
 ClearCodec run-length encoding uses a standard RLE compression scheme that parses a pixel stream
 and encodes run lengths.
@@ -8685,7 +8379,7 @@ Note that in the real case, each ANSI character is a pixel represented by 3 byte
 components). This type of encoding is suitable for the content in the residual layer (section
 2.2.4.1.1.1).
 
-3.3.8.1.2 Decompressing a Bitmap
+###### 3.3.8.1.2 Decompressing a Bitmap
 
 The following flowchart shows how to decompress a bitmap that is compressed using ClearCodec
 compression techniques.
@@ -8697,13 +8391,14 @@ Release: May 11, 2026
 
 102 / 145
 
-<!-- Extracted images from page 103 -->
+
+<!-- Extracted images from page 103 -->
 ![Extracted image 1 from page 103]([MS-RDPEGFX].images/page103-img01.png)
 <!-- /Extracted images from page 103 -->
 
 Figure 4: Decompressing a bitmap using ClearCodec Bitmap Compression
 
-3.3.8.2  RemoteFX Progressive Codec Compression
+##### 3.3.8.2 RemoteFX Progressive Codec Compression
 
 The functional stages involved in the decoding path are illustrated in the following figure. Compared to
 the encoding stages, the decoding stage operations are the operations of the encoding stage in
@@ -8716,7 +8411,8 @@ Release: May 11, 2026
 
 103 / 145
 
-<!-- Extracted images from page 104 -->
+
+<!-- Extracted images from page 104 -->
 ![Extracted image 1 from page 104]([MS-RDPEGFX].images/page104-img01.png)
 <!-- /Extracted images from page 104 -->
 
@@ -8726,7 +8422,7 @@ When compared to [MS-RDPRFX] section 3.1.8.2, the codec now maintains state. "Cu
 contains the DWT coefficients of the tiles, and "Persistent progressive state" is used to maintain
 information pertinent to tiles that have been received in progressive chunks.
 
-3.3.8.2.1 Progressive Entropy Decode
+###### 3.3.8.2.1 Progressive Entropy Decode
 
 The first stage of decoding aims to reconstruct the DWT data of a tile.
 
@@ -8746,7 +8442,7 @@ the Persistent progressive state MUST be cleared. Furthermore, if the tile is an
 difference tile), then the tile MUST be zeroed out in the current frame. The result of the entropy
 decode operation MUST be added to the current frame.
 
-3.3.8.2.1.1  Performing the First Progressive Pass
+###### 3.3.8.2.1.1 Performing the First Progressive Pass
 
 For the first pass, the data received is sent to the RLGR entropy decoder to produce the progressively
 quantized coefficients DecProgQ.
@@ -8763,7 +8459,8 @@ Release: May 11, 2026
 
 104 / 145
 
-Sign = 0 if DecProgQ-NonLL = 0
+
+Sign = 0 if DecProgQ-NonLL = 0
 
 Sign = 1 if DecProgQ-NonLL > 0
 
@@ -8786,7 +8483,7 @@ simply added to the DecDwtQ elements:
 
 DecDwtQ = DecDwtQ + DecProgQ * PQF
 
-3.3.8.2.1.2  Performing the Upgrade Progressive Passes
+###### 3.3.8.2.1.2 Performing the Upgrade Progressive Passes
 
 Except in the case of an LL3 element, the Sign state is used to determine how to decode the next
 element (referred to as input).
@@ -8833,12 +8530,13 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-<!-- Extracted images from page 106 -->
+
+<!-- Extracted images from page 106 -->
 ![Extracted image 1 from page 106]([MS-RDPEGFX].images/page106-img01.png)
 ![Extracted image 2 from page 106]([MS-RDPEGFX].images/page106-img02.png)
 <!-- /Extracted images from page 106 -->
 
-3.3.8.2.2 Inverse DWT
+###### 3.3.8.2.2 Inverse DWT
 
 The inverse discrete wavelet transform (IDWT) is based on the equations specified in [MS-
 RDPRFX] section 3.1.8.2.4. However, as described in section 3.2.8.1.2, the associated forward
@@ -8857,13 +8555,13 @@ zero as the 32nd high-frequency element allows the final pass to be performed in
 the first two passes and produces 65 coefficients. The 65th element is an extrapolation of the previous
 two elements and is not used; therefore, it is dropped.
 
-3.3.8.2.3 Color Conversion
+###### 3.3.8.2.3 Color Conversion
 
 Color conversion is identical to the technique specified in [MS-RDPRFX] section 3.1.8.2.5.
 
-3.3.8.3  MPEG-4 AVC/H.264 Compression
+##### 3.3.8.3 MPEG-4 AVC/H.264 Compression
 
-3.3.8.3.1 Color Conversion
+###### 3.3.8.3.1 Color Conversion
 
 The forward transformation from ARGB to AYUV is based on full-range BT.709 ([ITU-BT.709-5] section
 4) and is described by the following two formulas:
@@ -8885,11 +8583,12 @@ Release: May 11, 2026
 
 106 / 145
 
-<!-- Extracted images from page 107 -->
+
+<!-- Extracted images from page 107 -->
 ![Extracted image 1 from page 107]([MS-RDPEGFX].images/page107-img01.png)
 <!-- /Extracted images from page 107 -->
 
-3.3.8.3.2 YUV420p Stream Combination for YUV444 mode
+###### 3.3.8.3.2 YUV420p Stream Combination for YUV444 mode
 
 The RFX_AVC444_BITMAP_STREAM structure (section 2.2.4.5) encapsulates two
 RFX_AVC420_BITMAP_STREAM structures (section 2.2.4.4). These two YUV420p streams MUST be
@@ -8912,7 +8611,8 @@ Release: May 11, 2026
 
 107 / 145
 
-<!-- Extracted images from page 108 -->
+
+<!-- Extracted images from page 108 -->
 ![Extracted image 1 from page 108]([MS-RDPEGFX].images/page108-img01.png)
 <!-- /Extracted images from page 108 -->
 
@@ -8929,7 +8629,8 @@ Release: May 11, 2026
 
 108 / 145
 
-<!-- Extracted images from page 109 -->
+
+<!-- Extracted images from page 109 -->
 ![Extracted image 1 from page 109]([MS-RDPEGFX].images/page109-img01.png)
 ![Extracted image 2 from page 109]([MS-RDPEGFX].images/page109-img02.png)
 <!-- /Extracted images from page 109 -->
@@ -8965,12 +8666,13 @@ Release: May 11, 2026
 
 109 / 145
 
-<!-- Extracted images from page 110 -->
+
+<!-- Extracted images from page 110 -->
 ![Extracted image 1 from page 110]([MS-RDPEGFX].images/page110-img01.png)
 ![Extracted image 2 from page 110]([MS-RDPEGFX].images/page110-img02.png)
 <!-- /Extracted images from page 110 -->
 
-3.3.8.3.3 YUV420p Stream Combination for YUV444v2 mode
+###### 3.3.8.3.3 YUV420p Stream Combination for YUV444v2 mode
 
 The RFX_AVC444V2_BITMAP_STREAM structure (section 2.2.4.6) encapsulates two
 RFX_AVC420_BITMAP_STREAM structures (section 2.2.4.4). These two YUV420p streams MUST be
@@ -8996,7 +8698,8 @@ Release: May 11, 2026
 
 110 / 145
 
-<!-- Extracted images from page 111 -->
+
+<!-- Extracted images from page 111 -->
 ![Extracted image 1 from page 111]([MS-RDPEGFX].images/page111-img01.png)
 <!-- /Extracted images from page 111 -->
 
@@ -9013,7 +8716,8 @@ Release: May 11, 2026
 
 111 / 145
 
-<!-- Extracted images from page 112 -->
+
+<!-- Extracted images from page 112 -->
 ![Extracted image 1 from page 112]([MS-RDPEGFX].images/page112-img01.png)
 ![Extracted image 2 from page 112]([MS-RDPEGFX].images/page112-img02.png)
 <!-- /Extracted images from page 112 -->
@@ -9049,7 +8753,8 @@ Release: May 11, 2026
 
 112 / 145
 
-<!-- Extracted images from page 113 -->
+
+<!-- Extracted images from page 113 -->
 ![Extracted image 1 from page 113]([MS-RDPEGFX].images/page113-img01.png)
 <!-- /Extracted images from page 113 -->
 
@@ -9060,13 +8765,14 @@ Release: May 11, 2026
 
 113 / 145
 
-4  Protocol Examples
 
-4.1  Bitmap Compression
+## 4 Protocol Examples
 
-4.1.1  ClearCodec Compression
+### 4.1 Bitmap Compression
 
-4.1.1.1  Example 1
+#### 4.1.1 ClearCodec Compression
+
+##### 4.1.1.1 Example 1
 
 The following example shows a network dump of an image compressed using ClearCodec. The width of
 the bitmap is 8, and the height is 9. ClearCodec returned 4 bytes after compressing this image.
@@ -9085,7 +8791,7 @@ The sequence number is validated and incremented. The pixels for this image can 
 Decompressor Glyph Storage (section 3.3.1.9) ADM element at position 17, ordered from left to
 right and then top to bottom.
 
-4.1.1.2  Example 2
+##### 4.1.1.2 Example 2
 
 The following example shows a network dump of an image compressed using ClearCodec. The width of
 the bitmap is 78, and the height is 17. ClearCodec returned 144 bytes after compressing this image.
@@ -9128,7 +8834,8 @@ Release: May 11, 2026
 
 114 / 145
 
- Decoding the first subcodec header:
+
+ Decoding the first subcodec header:
  00 00 -> CLEARCODEC_SUBCODEC::xStart = 0
  00 00 -> CLEARCODEC_SUBCODEC::yStart = 0
  4e 00 -> CLEARCODEC_SUBCODEC::width = 78
@@ -9199,7 +8906,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- CLEARCODEC_SUBCODEC_RLEX_SEGMENT::runLengthFactor3 is not present
+
+ CLEARCODEC_SUBCODEC_RLEX_SEGMENT::runLengthFactor3 is not present
 
  Using the above values, the following sequence of palette indexes is decoded:
  0x00, 0x00, ... [76 total], 0x00, 0x01
@@ -9225,7 +8933,7 @@ In a similar fashion, the remaining SUBCODEC_RLEX_SEGMENTS in the packet are dec
 is no more data left in the SUBCODEC_RLEX DATA payload, at which point subcodec decoding is
 complete.
 
-4.1.1.3  Example 3
+##### 4.1.1.3 Example 3
 
 The following example shows a network dump of an image compressed using ClearCodec. The width of
 the bitmap is 64, and the height is 24. ClearCodec returned 167 bytes after compressing this image.
@@ -9270,7 +8978,8 @@ Release: May 11, 2026
 
 116 / 145
 
- 80 05 -> CLEARCODEC_RGB_RUN_SEGMENT::runLengthFactor2 = 1408
+
+ 80 05 -> CLEARCODEC_RGB_RUN_SEGMENT::runLengthFactor2 = 1408
  CLEARCODEC_RGB_RUN_SEGMENT::runLengthFactor3 is not present.
 
 The white pixel (254, 254, 254) is replicated 1408 times (starting in the top-left corner and
@@ -9334,12 +9043,13 @@ Release: May 11, 2026
 
 117 / 145
 
-Since there is no more data remaining in the bands payload, it follows that there are no more bands
+
+Since there is no more data remaining in the bands payload, it follows that there are no more bands
 remaining and that bands decoding is complete.
 
 Since there is no more data in the payload, it follows that decoding is complete.
 
-4.1.1.4  Example 4
+##### 4.1.1.4 Example 4
 
 The following example shows a network dump of an image compressed using ClearCodec. The width of
 the bitmap is 7, and the height is 15. ClearCodec returned 86 bytes after compressing this image.
@@ -9404,7 +9114,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-<!-- Extracted images from page 119 -->
+
+<!-- Extracted images from page 119 -->
 ![Extracted image 1 from page 119]([MS-RDPEGFX].images/page119-img01.png)
 <!-- /Extracted images from page 119 -->
 
@@ -9441,7 +9152,7 @@ Since the glyphIndex field was present in the CLEARCODEC_BITMAP_STREAM header of
 the Decompressor Glyph Storage (section 3.3.1.9) ADM element at position 120 is updated with
 the decoded bitmap.
 
-4.1.1.5  Example 5
+##### 4.1.1.5 Example 5
 
 In order to instruct a client to render a glyph and then insert the glyph into the Decompressor Glyph
 Storage (section 3.3.1.9) ADM element, the server encapsulates an encoded representation of the
@@ -9466,7 +9177,8 @@ Release: May 11, 2026
 
 119 / 145
 
-<!-- Extracted images from page 120 -->
+
+<!-- Extracted images from page 120 -->
 ![Extracted image 1 from page 120]([MS-RDPEGFX].images/page120-img01.png)
 ![Extracted image 2 from page 120]([MS-RDPEGFX].images/page120-img02.png)
 <!-- /Extracted images from page 120 -->
@@ -9499,7 +9211,8 @@ Release: May 11, 2026
 
 120 / 145
 
-<!-- Extracted images from page 121 -->
+
+<!-- Extracted images from page 121 -->
 ![Extracted image 1 from page 121]([MS-RDPEGFX].images/page121-img01.png)
 <!-- /Extracted images from page 121 -->
 
@@ -9510,7 +9223,7 @@ can be blitted into a number of rectangular configurations, as long as all of th
 configuration. The ultimate configuration is determined by cache hits encountered by the server
 encoder.
 
-4.1.2  Progressive Entropy Encode and Decode
+#### 4.1.2 Progressive Entropy Encode and Decode
 
 The example in this section illustrates the process of entropy encoding and decoding for a tile at
 various quality levels. For simplicity, this example only encodes one color component, which consists
@@ -9638,9 +9351,10 @@ Release: May 11, 2026
 
 121 / 145
 
-4.1.2.1  Encode
 
-4.1.2.1.1 Encode Frame #1 at 25%
+##### 4.1.2.1 Encode
+
+###### 4.1.2.1.1 Encode Frame #1 at 25%
 
 The coefficients for frame #1 are quantized for the 25% progressive quality. Deltas are calculated for
 the coefficients for the LL band. The resulting coefficients are encoded using the RLGR1 encoder.
@@ -9770,7 +9484,7 @@ Zeros are added to complete the final byte, which results in the following bytes
 
  0xA8 0x62 0x6D 0xFF 0xF7 0x00
 
-4.1.2.1.2 Encode Frame #1 at 50%
+###### 4.1.2.1.2 Encode Frame #1 at 50%
 
 The quantized data is dequantized and subtracted from the input, yielding the remaining values to be
 sent (known as "DRS"). These values are quantized for the 50% progressive quality.
@@ -9797,7 +9511,8 @@ Release: May 11, 2026
 
 122 / 145
 
-The SRL encoder first encodes an empty run-length ("10") before encoding the value -13. The sign is
+
+The SRL encoder first encodes an empty run-length ("10") before encoding the value -13. The sign is
 written as one bit ("1"); the magnitude minus one (12) is unary-encoded with 12 zeros and
 terminated with "1".
 
@@ -9930,7 +9645,7 @@ This results in the bytes:
 
 Zeros are added to each of these streams to complete the final byte.
 
-4.1.2.1.3 Encode Frame #2 at 25%
+###### 4.1.2.1.3 Encode Frame #2 at 25%
 
 The coefficients for frame #2 are subtracted from the reference coefficients Ref (which are the
 coefficients the client currently possesses). This difference is then quantized for the 25% progressive
@@ -9949,7 +9664,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-LL
+
+LL
 
 1
 
@@ -10123,7 +9839,7 @@ This results in the bytes:
 
  0x88 0x76 0xBD 0xFF 0xFE 0xF2
 
-4.1.2.1.4 Encode Frame #2 at 50%
+###### 4.1.2.1.4 Encode Frame #2 at 50%
 
 Similar to frame #1, as described in sections 4.1.2.1.1 and 4.1.2.1.2, the remaining bits are quantized
 for the 50% progressive quality and are written out, either as raw bits or encoded with SRL.
@@ -10248,11 +9964,12 @@ Release: May 11, 2026
 
 124 / 145
 
-This results in the bytes:
+
+This results in the bytes:
 
  0x80 0x07 0x00 0x16 0x9C
 
-4.1.2.1.5 Encode Frame #2 at 100%
+###### 4.1.2.1.5 Encode Frame #2 at 100%
 
 After the processing described in sections 4.1.2.1.3 and 4.1.2.1.4, the remaining bits in each band are
 transmitted to reach the 100% progressive quality. Since there is no progressive quantization, the
@@ -10378,9 +10095,9 @@ This results in the byte:
 
  0xB0
 
-4.1.2.2  Decode
+##### 4.1.2.2 Decode
 
-4.1.2.2.1 Decode Frame #1 at 25%
+###### 4.1.2.2.1 Decode Frame #1 at 25%
 
 The decoder receives the encoded data produced in section 4.1.2.1.1. This is an original tile, so the
 sub-band reference (Ref) is initialized to zero.
@@ -10392,7 +10109,8 @@ Release: May 11, 2026
 
 125 / 145
 
-For details on the formulas for DecProgQ-LL, DecProgQ, DecDwtQ and tri-state (referred to as
+
+For details on the formulas for DecProgQ-LL, DecProgQ, DecDwtQ and tri-state (referred to as
 Sign), see section 3.3.8.2.1.1.
 
 Elements are RLGR1 ([MS-RDPRFX] section 3.1.8.1.7.1) decoded. LL entries are deduced from the
@@ -10563,7 +10281,7 @@ The last non-LL RLGR1 result is positive, and Sign is 1.
 
 All other values are zeros, and Sign in all these cases is 0.
 
-4.1.2.2.2 Decode Frame #1 at 50%
+###### 4.1.2.2.2 Decode Frame #1 at 50%
 
 Ref corresponds to the values for DecDwtQ from the previous decode. The number of bits is deduced
 from the progressive quality table and the fact that this is an upgrade from 25% to 50%. For the LL
@@ -10738,7 +10456,8 @@ Release: May 11, 2026
 
 126 / 145
 
-4.1.2.2.3 Decode Frame #2 at 25%
+
+###### 4.1.2.2.3 Decode Frame #2 at 25%
 
 The decoder receives a difference tile, and the Ref values are maintained from the previous decode
 (DecDwtQ values as described in sections 4.1.2.2.1 and 4.1.2.2.2).
@@ -10905,7 +10624,7 @@ The first decoded value is 2, which becomes 32 after dequantization. Added to th
 34, we get -2. Because all other values in the non-LL bands are zero, the DecDwtQ values are
 identical to the Ref values.
 
-4.1.2.2.4 Decode Frame #2 at 50%
+###### 4.1.2.2.4 Decode Frame #2 at 50%
 
 This decode upgrades the tile to 50%. The steps followed are identical to the decoding of frame #1 at
 50%, as described in section 4.1.2.2.2.
@@ -11060,7 +10779,7 @@ LL
 
 -1
 
-4.1.2.2.5 Decode Frame #2 at 100%
+###### 4.1.2.2.5 Decode Frame #2 at 100%
 
 After the processing in the previous sections 4.1.2.2.3 and 4.1.2.2.4, the frame is upgraded to 100%.
 
@@ -11167,7 +10886,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-HL
+
+HL
 
 DecDwtQ
 
@@ -11230,16 +10950,16 @@ no Sign for the LL band. The values are added to DecDwtQ, with no sign adjustmen
 
 DecDwtQ finally matches the coefficients for frame #2 described previously.
 
-4.2  Bulk Data Compression
+### 4.2 Bulk Data Compression
 
-4.2.1  RDP 8.0
+#### 4.2.1 RDP 8.0
 
-4.2.1.1  Compression Samples
+##### 4.2.1.1 Compression Samples
 
 These contrived samples are encoded as shown for expositive clarity, although most are so small that
 the output is larger than the input.
 
-4.2.1.1.1 Example 1
+###### 4.2.1.1.1 Example 1
 
 Uncompressed input:
 
@@ -11261,7 +10981,7 @@ Decoded binary stream:
  0 01100101 = literal 0x65
  10001 00001 10 00 = match, distance 1, length 4 + 0
 
-4.2.1.1.2 Example 2
+###### 4.2.1.1.2 Example 2
 
 Uncompressed input:
 
@@ -11281,7 +11001,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-of the data is unencoded. Compression did not reduce the size, because there is little repetition in the
+
+of the data is unencoded. Compression did not reduce the size, because there is little repetition in the
 source.
 
  E0 04 54 68 65 20 71 75 69 63 6B 20 62 72 6F 77  ..The quick brow
@@ -11292,7 +11013,7 @@ source.
  04 = compression type 4 (not PACKET_COMPRESSED)
  remainder = unencoded input
 
-4.2.1.1.3 Example 3
+###### 4.2.1.1.3 Example 3
 
 Uncompressed input:
 
@@ -11335,7 +11056,7 @@ Decoded binary stream:
  11110 11001 = match length = 32 + 25 = 57
  (0) ignored
 
-4.2.1.1.4 Example 4
+###### 4.2.1.1.4 Example 4
 
 Uncompressed input:
 
@@ -11346,7 +11067,8 @@ Release: May 11, 2026
 
 129 / 145
 
- 54 68 65 20 71 75 69 63 6B 20 62 72 6F 77 6E 20  The quick brown
+
+ 54 68 65 20 71 75 69 63 6B 20 62 72 6F 77 6E 20  The quick brown
  66 6F 78 20 6A 75 6D 70 73 20 6F 76 65 72 20 74  fox jumps over t
  68 65 20 6C 61 7A 79 20 64 6F 67                 he lazy dog
 
@@ -11398,7 +11120,7 @@ Decoded binary stream:
  0 01100111 = literal 0x67 = "g"
  (00) = ignored
 
-4.2.1.1.5 Example 5
+###### 4.2.1.1.5 Example 5
 
 Uncompressed input consists of 1,002 random bytes, beginning as in Example 4 (section 4.2.1.1.4).
 
@@ -11415,7 +11137,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- (954 bytes omitted)
+
+ (954 bytes omitted)
 
 Compressed output:
 
@@ -11450,7 +11173,7 @@ Decoded binary stream:
  (1001 bytes omitted)
  00000000 = no bits unused
 
-4.2.1.2  Sample Code
+##### 4.2.1.2 Sample Code
 
 The following C++ code implements a sample decompressor for RDP 8.0 Bulk Compression. Error
 handling has been omitted for clarity.
@@ -11484,7 +11207,8 @@ Release: May 11, 2026
 
 131 / 145
 
- typedef struct
+
+ typedef struct
  {
      uint32  size;
  //  byte    data[size];
@@ -11559,7 +11283,8 @@ Release: May 11, 2026
 
 132 / 145
 
- class Rdp8Decompressor
+
+ class Rdp8Decompressor
  {
  public:
 
@@ -11634,7 +11359,8 @@ Release: May 11, 2026
 
 133 / 145
 
-         }
+
+         }
      }
 
      // decompress one segment into m_outputBuffer
@@ -11711,7 +11437,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-             // until the resulting token is found.
+
+             // until the resulting token is found.
 
              for (int opIndex = 0;
                  tokenTable[opIndex].prefixLength != 0;
@@ -11788,7 +11515,8 @@ Release: May 11, 2026
 
 135 / 145
 
-             continue;
+
+             continue;
 
          output_match:
 
@@ -11865,7 +11593,8 @@ Release: May 11, 2026
 
 136 / 145
 
-         m_cBitsCurrent -= bitCount;
+
+         m_cBitsCurrent -= bitCount;
 
          uint32 result = m_BitsCurrent >> m_cBitsCurrent;
 
@@ -11882,13 +11611,14 @@ Release: May 11, 2026
 
 137 / 145
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -11899,7 +11629,8 @@ Release: May 11, 2026
 
 138 / 145
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -11965,7 +11696,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-If the version of the received capability set is 0x000B0101, 0x000B0200, or 0x000B0300, Windows
+
+If the version of the received capability set is 0x000B0101, 0x000B0200, or 0x000B0300, Windows
 11, version 26H1 operating system without [MSKB-5089570] reflects the received capability set data
 in the RDPGFX_CAPS_CONFIRM_PDU message, but the session behavior will be the same as for
 RDPGFX_CAPSET_VERSION107.
@@ -11977,7 +11709,8 @@ Release: May 11, 2026
 
 140 / 145
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -12040,7 +11773,8 @@ Release: May 11, 2026
 
 141 / 145
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -12232,7 +11966,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Index of security parameters 138
+
+Index of security parameters 138
 Informative references 9
 Initialization
    client (section 3.1.3 75, section 3.3.3 97)
@@ -12424,7 +12159,8 @@ processing 100
 
 143 / 145
 
-      RDPGFX_CACHE_TO_SURFACE_PDU message -
+
+      RDPGFX_CACHE_TO_SURFACE_PDU message -
 
       RDPGFX_SURFACE_TO_CACHE_PDU message -
 
@@ -12677,7 +12413,8 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-      RDPGFX_CREATE_SURFACE_PDU message -
+
+      RDPGFX_CREATE_SURFACE_PDU message -
 
 sending 85
 

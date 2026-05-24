@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 62
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 62
 
-Date
+
+Date
 
 Revision
 History
@@ -535,7 +537,8 @@ Release: April 23, 2024
 
 3 / 62
 
-Date
+
+Date
 
 Revision
 History
@@ -576,354 +579,142 @@ Release: April 23, 2024
 
 4 / 62
 
-Table of Contents
 
-1.3
-
-1.3.1
-
-1.1
-1.2
-
-1.3.2
-1.3.3
-
-1.2.1
-1.2.2
-
-1.3.1.1
-1.3.1.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Encapsulation of DVC Traffic ........................................................................ 10
-Encapsulation in the DRDYNVC Static Virtual Channel ................................ 10
-Encapsulation in a Multitransport Tunnel Message ..................................... 10
-DVC Setup ................................................................................................. 10
-Message Flows ........................................................................................... 11
-Opening a DVC ..................................................................................... 11
-Sending and Receiving Data ................................................................... 12
-Sending Data .................................................................................. 13
-Receiving Data ................................................................................ 13
-Closing a DVC ....................................................................................... 14
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 15
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3.2.1
-1.3.3.2.2
-
-1.3.3.1
-1.3.3.2
-
-1.3.3.3
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Message Syntax ............................................................................................... 16
-Initializing DVCs ......................................................................................... 17
-DVC Capabilities Request PDU ................................................................ 18
-Version 1 (DYNVC_CAPS_VERSION1) ................................................. 18
-Version 2 (DYNVC_CAPS_VERSION2) ................................................. 18
-Version 3 (DYNVC_CAPS_VERSION3) ................................................. 19
-DVC Capabilities Response PDU (DYNVC_CAPS_RSP)................................. 20
-Opening a DVC ........................................................................................... 21
-DVC Create Request PDU (DYNVC_CREATE_REQ) ..................................... 21
-DVC Create Response PDU (DYNVC_CREATE_RSP) .................................... 22
-Sending and Receiving Data ......................................................................... 22
-DVC Data First PDU (DYNVC_DATA_FIRST) .............................................. 23
-DVC Data PDU (DYNVC_DATA) ............................................................... 24
-DVC Data First Compressed PDU (DYNVC_DATA_FIRST_COMPRESSED) ....... 25
-DVC Data Compressed PDU (DYNVC_DATA_COMPRESSED) ........................ 26
-Closing a DVC (DYNVC_CLOSE) .................................................................... 27
-Soft-Sync .................................................................................................. 27
-Soft-Sync Request PDU (DYNVC_SOFT_SYNC_REQUEST) ........................... 28
-Soft-Sync Channel List (DYNVC_SOFT_SYNC_CHANNEL_LIST) .............. 28
-Soft-Sync Response PDU (DYNVC_SOFT_SYNC_RESPONSE) ....................... 29
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-
-2.2.2.1
-2.2.2.2
-
-2.2.4
-2.2.5
-
-2.2.5.1.1
-
-2.2.5.1
-
-2.2.5.2
-
-2.2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 31
-Common Details .............................................................................................. 31
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 33
-Initialization ............................................................................................... 33
-Higher-Layer Triggered Events ..................................................................... 33
-Message Processing Events and Sequencing Rules .......................................... 33
-Sending Data ....................................................................................... 33
-DVC Data First (DYNVC_DATA_FIRST) ............................................... 33
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1
-
-3.1.5.1
-
-[MS-RDPEDYC] - v20240423
-Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 62
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-
-3.2.3.1
-
-3.2.3.1.1
-3.2.3.1.2
-3.2.3.1.3
-3.2.3.1.4
-
-3.2.3.2
-
-3.2.3.2.1
-
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-
-3.1.5.2
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-3.1.5.2.5
-3.1.5.2.6
-
-3.1.5.3
-3.1.5.4
-
-3.1.5.4.1
-3.1.5.4.2
-3.1.5.4.3
-3.1.5.4.4
-3.1.5.4.5
-
-DVC Data (DYNVC_DATA)................................................................. 34
-DVC Data First Compressed (DYNVC_DATA_FIRST_COMPRESSED) ........ 34
-DVC Data Compressed (DYNVC_DATA_COMPRESSED) ......................... 34
-Receiving Data ..................................................................................... 34
-DVC Data First (DYNVC_DATA_FIRST) ............................................... 35
-DVC Data (DYNVC_DATA)................................................................. 35
-Reassembly of Fragmented Virtual Channel Data ................................. 35
-Processing Packet Errors .................................................................. 35
-DVC Data First Compressed (DYNVC_DATA_FIRST_COMPRESSED) ........ 35
-DVC Data Compressed (DYNVC_DATA_COMPRESSED) ......................... 36
-Soft-Sync ............................................................................................. 36
-Tunneling Static VC Traffic ..................................................................... 37
-Initialization .................................................................................... 37
-Creating Tunneling DVCs .................................................................. 37
-Relation to Soft-Sync ....................................................................... 37
-Recovering Static Virtual Channel Flags .............................................. 38
-Termination .................................................................................... 38
-Timer Events .............................................................................................. 38
-Other Local Events ...................................................................................... 38
-Client Details ................................................................................................... 38
-Abstract Data Model .................................................................................... 38
-Timers ...................................................................................................... 39
-Initialization ............................................................................................... 39
-DVC Client Manager Initialization ............................................................ 39
-Version Level 1 (DYNVC_CAPS_VERSION1) ........................................ 39
-Version Level 2 (DYNVC_CAPS_VERSION2) ........................................ 39
-Version Level 3 (DYNVC_CAPS_VERSION3) ........................................ 39
-Capabilities Response (DYNVC_CAPS_RSP) ......................................... 40
-DVC Initialization .................................................................................. 40
-DVC Create Response (DYNVC_CREATE_RSP) ..................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Sending and Receiving Data ................................................................... 40
-Closing a DVC (DYNVC_CLOSE) .............................................................. 40
-Soft-Sync ............................................................................................. 41
-Processing the Soft-Sync Request PDU ............................................... 41
-Sending the Soft-Sync Response PDU ................................................ 41
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-Server Details .................................................................................................. 42
-Abstract Data Model .................................................................................... 42
-Timers ...................................................................................................... 42
-Initialization ............................................................................................... 42
-DVC Server Manager Initialization ........................................................... 42
-Version Level 1 (DYNVC_CAPS_VERSION1) ........................................ 42
-Version Level 2 (DYNVC_CAPS_VERSION2) ........................................ 43
-Version Level 3 (DYNVC_CAPS_VERSION3) ........................................ 43
-Capabilities Response (DYNVC_CAPS_RSP) ......................................... 43
-DVC Initialization .................................................................................. 43
-Higher-Layer Triggered Events ..................................................................... 43
-Message Processing Events and Sequencing Rules .......................................... 44
-Sending and Receiving Data ................................................................... 44
-Closing a DVC (DYNVC_CLOSE) .............................................................. 44
-Soft-Sync ............................................................................................. 44
-Sending the Soft-Sync Request PDU .................................................. 44
-Processing the Soft-Sync Response PDU ............................................. 44
-Timer Events .............................................................................................. 45
-Other Local Events ...................................................................................... 45
-
-3.3.3.1
-
-3.3.3.1.1
-3.3.3.1.2
-3.3.3.1.3
-3.3.3.1.4
-
-3.3.3.2
-
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-
-3.3.5.3.1
-3.3.5.3.2
-
-3.3.6
-3.3.7
-
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.5.3.1
-3.2.5.3.2
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-
-[MS-RDPEDYC] - v20240423
-Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 62
-
-4.2
-
-4.1
-
-4.2.1
-4.2.2
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ................................................................................................. 46
-Annotated Initializing DVCs ............................................................................... 46
-DVC Capabilities Request (Version2) PDU ...................................................... 46
-DVC Capabilities Response PDU .................................................................... 46
-Annotated Opening a DVC ................................................................................. 47
-DVC Create Request PDU ............................................................................. 47
-DVC Create Response PDU ........................................................................... 47
-Annotated Sending and Receiving Data ............................................................... 47
-DVC Data First PDU ..................................................................................... 47
-DVC Data PDU ............................................................................................ 49
-DVC Data First Compressed PDU .................................................................. 51
-DVC Data Compressed PDU ......................................................................... 53
-Annotated Closing a DVC .................................................................................. 56
-DVC Close PDU ........................................................................................... 56
-
-4.3.1
-4.3.2
-4.3.3
-4.3.4
-
-4.4.1
-
-4.3
-
-4.4
-
-5  Security ................................................................................................................. 57
-Security Considerations for Implementers ........................................................... 57
-Index of Security Parameters ............................................................................ 57
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 58
-
-7  Change Tracking .................................................................................................... 60
-
-8  Index ..................................................................................................................... 61
-
-[MS-RDPEDYC] - v20240423
-Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 62
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Encapsulation of DVC Traffic](#131-encapsulation-of-dvc-traffic)
+      - [1.3.1.1 Encapsulation in the DRDYNVC Static Virtual Channel](#1311-encapsulation-in-the-drdynvc-static-virtual-channel)
+      - [1.3.1.2 Encapsulation in a Multitransport Tunnel Message](#1312-encapsulation-in-a-multitransport-tunnel-message)
+    - [1.3.2 DVC Setup](#132-dvc-setup)
+    - [1.3.3 Message Flows](#133-message-flows)
+      - [1.3.3.1 Opening a DVC](#1331-opening-a-dvc)
+      - [1.3.3.2 Sending and Receiving Data](#1332-sending-and-receiving-data)
+        - [1.3.3.2.1 Sending Data](#13321-sending-data)
+        - [1.3.3.2.2 Receiving Data](#13322-receiving-data)
+      - [1.3.3.3 Closing a DVC](#1333-closing-a-dvc)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Initializing DVCs](#221-initializing-dvcs)
+      - [2.2.1.1 DVC Capabilities Request PDU](#2211-dvc-capabilities-request-pdu)
+        - [2.2.1.1.1 Version 1 (DYNVC_CAPS_VERSION1)](#22111-version-1-dynvccapsversion1)
+        - [2.2.1.1.2 Version 2 (DYNVC_CAPS_VERSION2)](#22112-version-2-dynvccapsversion2)
+        - [2.2.1.1.3 Version 3 (DYNVC_CAPS_VERSION3)](#22113-version-3-dynvccapsversion3)
+      - [2.2.1.2 DVC Capabilities Response PDU (DYNVC_CAPS_RSP)](#2212-dvc-capabilities-response-pdu-dynvccapsrsp)
+    - [2.2.2 Opening a DVC](#222-opening-a-dvc)
+      - [2.2.2.1 DVC Create Request PDU (DYNVC_CREATE_REQ)](#2221-dvc-create-request-pdu-dynvccreatereq)
+      - [2.2.2.2 DVC Create Response PDU (DYNVC_CREATE_RSP)](#2222-dvc-create-response-pdu-dynvccreatersp)
+    - [2.2.3 Sending and Receiving Data](#223-sending-and-receiving-data)
+      - [2.2.3.1 DVC Data First PDU (DYNVC_DATA_FIRST)](#2231-dvc-data-first-pdu-dynvcdatafirst)
+      - [2.2.3.2 DVC Data PDU (DYNVC_DATA)](#2232-dvc-data-pdu-dynvcdata)
+      - [2.2.3.3 DVC Data First Compressed PDU (DYNVC_DATA_FIRST_COMPRESSED)](#2233-dvc-data-first-compressed-pdu-dynvcdatafirstcompressed)
+      - [2.2.3.4 DVC Data Compressed PDU (DYNVC_DATA_COMPRESSED)](#2234-dvc-data-compressed-pdu-dynvcdatacompressed)
+    - [2.2.4 Closing a DVC (DYNVC_CLOSE)](#224-closing-a-dvc-dynvcclose)
+    - [2.2.5 Soft-Sync](#225-soft-sync)
+      - [2.2.5.1 Soft-Sync Request PDU (DYNVC_SOFT_SYNC_REQUEST)](#2251-soft-sync-request-pdu-dynvcsoftsyncrequest)
+        - [2.2.5.1.1 Soft-Sync Channel List (DYNVC_SOFT_SYNC_CHANNEL_LIST)](#22511-soft-sync-channel-list-dynvcsoftsyncchannellist)
+      - [2.2.5.2 Soft-Sync Response PDU (DYNVC_SOFT_SYNC_RESPONSE)](#2252-soft-sync-response-pdu-dynvcsoftsyncresponse)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending Data](#3151-sending-data)
+        - [3.1.5.1.1 DVC Data First (DYNVC_DATA_FIRST)](#31511-dvc-data-first-dynvcdatafirst)
+        - [3.1.5.1.2 DVC Data (DYNVC_DATA)](#31512-dvc-data-dynvcdata)
+        - [3.1.5.1.3 DVC Data First Compressed (DYNVC_DATA_FIRST_COMPRESSED)](#31513-dvc-data-first-compressed-dynvcdatafirstcompressed)
+        - [3.1.5.1.4 DVC Data Compressed (DYNVC_DATA_COMPRESSED)](#31514-dvc-data-compressed-dynvcdatacompressed)
+      - [3.1.5.2 Receiving Data](#3152-receiving-data)
+        - [3.1.5.2.1 DVC Data First (DYNVC_DATA_FIRST)](#31521-dvc-data-first-dynvcdatafirst)
+        - [3.1.5.2.2 DVC Data (DYNVC_DATA)](#31522-dvc-data-dynvcdata)
+        - [3.1.5.2.3 Reassembly of Fragmented Virtual Channel Data](#31523-reassembly-of-fragmented-virtual-channel-data)
+        - [3.1.5.2.4 Processing Packet Errors](#31524-processing-packet-errors)
+        - [3.1.5.2.5 DVC Data First Compressed (DYNVC_DATA_FIRST_COMPRESSED)](#31525-dvc-data-first-compressed-dynvcdatafirstcompressed)
+        - [3.1.5.2.6 DVC Data Compressed (DYNVC_DATA_COMPRESSED)](#31526-dvc-data-compressed-dynvcdatacompressed)
+      - [3.1.5.3 Soft-Sync](#3153-soft-sync)
+      - [3.1.5.4 Tunneling Static VC Traffic](#3154-tunneling-static-vc-traffic)
+        - [3.1.5.4.1 Initialization](#31541-initialization)
+        - [3.1.5.4.2 Creating Tunneling DVCs](#31542-creating-tunneling-dvcs)
+        - [3.1.5.4.3 Relation to Soft-Sync](#31543-relation-to-soft-sync)
+        - [3.1.5.4.4 Recovering Static Virtual Channel Flags](#31544-recovering-static-virtual-channel-flags)
+        - [3.1.5.4.5 Termination](#31545-termination)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+      - [3.2.3.1 DVC Client Manager Initialization](#3231-dvc-client-manager-initialization)
+        - [3.2.3.1.1 Version Level 1 (DYNVC_CAPS_VERSION1)](#32311-version-level-1-dynvccapsversion1)
+        - [3.2.3.1.2 Version Level 2 (DYNVC_CAPS_VERSION2)](#32312-version-level-2-dynvccapsversion2)
+        - [3.2.3.1.3 Version Level 3 (DYNVC_CAPS_VERSION3)](#32313-version-level-3-dynvccapsversion3)
+        - [3.2.3.1.4 Capabilities Response (DYNVC_CAPS_RSP)](#32314-capabilities-response-dynvccapsrsp)
+      - [3.2.3.2 DVC Initialization](#3232-dvc-initialization)
+        - [3.2.3.2.1 DVC Create Response (DYNVC_CREATE_RSP)](#32321-dvc-create-response-dynvccreatersp)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending and Receiving Data](#3251-sending-and-receiving-data)
+      - [3.2.5.2 Closing a DVC (DYNVC_CLOSE)](#3252-closing-a-dvc-dynvcclose)
+      - [3.2.5.3 Soft-Sync](#3253-soft-sync)
+        - [3.2.5.3.1 Processing the Soft-Sync Request PDU](#32531-processing-the-soft-sync-request-pdu)
+        - [3.2.5.3.2 Sending the Soft-Sync Response PDU](#32532-sending-the-soft-sync-response-pdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+      - [3.3.3.1 DVC Server Manager Initialization](#3331-dvc-server-manager-initialization)
+        - [3.3.3.1.1 Version Level 1 (DYNVC_CAPS_VERSION1)](#33311-version-level-1-dynvccapsversion1)
+        - [3.3.3.1.2 Version Level 2 (DYNVC_CAPS_VERSION2)](#33312-version-level-2-dynvccapsversion2)
+        - [3.3.3.1.3 Version Level 3 (DYNVC_CAPS_VERSION3)](#33313-version-level-3-dynvccapsversion3)
+        - [3.3.3.1.4 Capabilities Response (DYNVC_CAPS_RSP)](#33314-capabilities-response-dynvccapsrsp)
+      - [3.3.3.2 DVC Initialization](#3332-dvc-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Sending and Receiving Data](#3351-sending-and-receiving-data)
+      - [3.3.5.2 Closing a DVC (DYNVC_CLOSE)](#3352-closing-a-dvc-dynvcclose)
+      - [3.3.5.3 Soft-Sync](#3353-soft-sync)
+        - [3.3.5.3.1 Sending the Soft-Sync Request PDU](#33531-sending-the-soft-sync-request-pdu)
+        - [3.3.5.3.2 Processing the Soft-Sync Response PDU](#33532-processing-the-soft-sync-response-pdu)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Annotated Initializing DVCs](#41-annotated-initializing-dvcs)
+    - [4.1.1 DVC Capabilities Request (Version2) PDU](#411-dvc-capabilities-request-version2-pdu)
+    - [4.1.2 DVC Capabilities Response PDU](#412-dvc-capabilities-response-pdu)
+  - [4.2 Annotated Opening a DVC](#42-annotated-opening-a-dvc)
+    - [4.2.1 DVC Create Request PDU](#421-dvc-create-request-pdu)
+    - [4.2.2 DVC Create Response PDU](#422-dvc-create-response-pdu)
+  - [4.3 Annotated Sending and Receiving Data](#43-annotated-sending-and-receiving-data)
+    - [4.3.1 DVC Data First PDU](#431-dvc-data-first-pdu)
+    - [4.3.2 DVC Data PDU](#432-dvc-data-pdu)
+    - [4.3.3 DVC Data First Compressed PDU](#433-dvc-data-first-compressed-pdu)
+    - [4.3.4 DVC Data Compressed PDU](#434-dvc-data-compressed-pdu)
+  - [4.4 Annotated Closing a DVC](#44-annotated-closing-a-dvc)
+    - [4.4.1 DVC Close PDU](#441-dvc-close-pdu)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Remote Desktop Protocol: Dynamic Virtual Channel Extension is an extension and refinement of
 the virtual channel protocol, as specified in [MS-RDPBCGR]. It supports features such as classes of
@@ -933,7 +724,7 @@ using dynamic virtual channel (DVC) listeners.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -995,7 +786,8 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-and display information is transmitted over the network. Each user sees only his or her
+
+and display information is transmitted over the network. Each user sees only his or her
 individual session, which is managed transparently by the server operating system and is
 independent of any other client session.
 
@@ -1006,14 +798,14 @@ running at the server and applications running on the TS client.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1033,11 +825,11 @@ Remoting".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension implements a generic
 connection-oriented communication channel on top of the virtual channel protocol. A dynamic virtual
@@ -1060,7 +852,8 @@ Release: April 23, 2024
 
 9 / 62
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RDPEDYC].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-RDPEDYC].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
@@ -1073,7 +866,7 @@ channels are used to exchange messages between applications running on the TS se
 listeners running on the TS client. Sending and receiving messages is symmetrical between the client
 and server, and either side can initiate sending a data message (or message).
 
-1.3.1  Encapsulation of DVC Traffic
+#### 1.3.1 Encapsulation of DVC Traffic
 
 If a multitransport connection ([MS-RDPEMT] section 1.3) is associated with a given RDP connection,
 the DVC PDUs, specified in section 2.2, can be embedded inside either the dedicated DRDYNVC static
@@ -1081,7 +874,7 @@ virtual channel, or inside a Tunnel Data PDU ([MS-RDPEMT] section 2.2.2.3). If a
 connection is not present, then the DVC PDUs are encapsulated inside the dedicated DRDYNVC static
 virtual channel.
 
-1.3.1.1  Encapsulation in the DRDYNVC Static Virtual Channel
+##### 1.3.1.1 Encapsulation in the DRDYNVC Static Virtual Channel
 
 The following diagram illustrates the wire-level encapsulation when a DVC is embedded inside the
 dedicated static virtual channel named DRDYNVC.
@@ -1099,14 +892,14 @@ Channel Virtual Channel Extension makes use of the following features of a stati
 
 PDUs used for version negotiation and channel open/close functionality.
 
-1.3.1.2  Encapsulation in a Multitransport Tunnel Message
+##### 1.3.1.2 Encapsulation in a Multitransport Tunnel Message
 
 The following diagram illustrates the wire-level encapsulation when a DVC is embedded inside a
 multitransport connection tunnel ([MS-RDPEMT] sections 1.3 and 1.4).
 
 Figure 2: Encapsulation inside a multitransport connection tunnel
 
-1.3.2  DVC Setup
+#### 1.3.2 DVC Setup
 
 The following diagram illustrates the sequence of operations involved in initializing the client and
 server environments.
@@ -1118,7 +911,8 @@ Release: April 23, 2024
 
 10 / 62
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RDPEDYC].images/page011-img01.png)
 ![Extracted image 2 from page 11]([MS-RDPEDYC].images/page011-img02.png)
 <!-- /Extracted images from page 11 -->
@@ -1143,9 +937,9 @@ level that it supports. The server adjusts the protocol features to match the cl
 this negotiation, the DVC server manager and DVC client manager are ready to establish individual
 DVCs.
 
-1.3.3  Message Flows
+#### 1.3.3 Message Flows
 
-1.3.3.1  Opening a DVC
+##### 1.3.3.1 Opening a DVC
 
 The following diagram illustrates the sequence of operations involved in the creation of a DVC.
 
@@ -1163,7 +957,8 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Channels are established by the DVC managers exchanging Create Request and Create Response
+
+Channels are established by the DVC managers exchanging Create Request and Create Response
 PDUs. Channels are created by a DVC server manager in response to a channel-create request by an
 application. When an application makes a request to a DVC server manager to create a channel, the
 server generates a channel identifier (that is, a unique number for the requested session), and sends
@@ -1186,7 +981,7 @@ latency-sensitive, such as audio output redirection.
 The server DVC manager sends the Create Request PDU over the selected transport, and the client
 responds by sending the Create Response PDU back to the server over the same transport.
 
-1.3.3.2  Sending and Receiving Data
+##### 1.3.3.2 Sending and Receiving Data
 
 The maximum size of a message that a sender can pass to a DVC manager is 2^32-1 bytes (see
 section 3.1.5.2.3). The Remote Desktop Protocol: Dynamic Virtual Channel Extension specifies a
@@ -1205,13 +1000,14 @@ Release: April 23, 2024
 
 12 / 62
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-RDPEDYC].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 5: Send data sequence via DVC PDUs
 
-1.3.3.2.1 Sending Data
+###### 1.3.3.2.1 Sending Data
 
 If the sender makes a request to send a message that has a data size of no more than 1590 bytes,
 then a single PDU is sent that contains the message and a header with the Cmd field set to indicate
@@ -1225,7 +1021,7 @@ sending. Subsequent PDUs of type Data are sent until the entire message is trans
 
 The receiver does not acknowledge receipt of the data.
 
-1.3.3.2.2 Receiving Data
+###### 1.3.3.2.2 Receiving Data
 
 If a message has been fragmented, the first data PDU received will be of type Data First. If the
 message has not been fragmented, the first and only PDU for this message will be of type Data.
@@ -1246,11 +1042,12 @@ Release: April 23, 2024
 
 13 / 62
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-RDPEDYC].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-1.3.3.3  Closing a DVC
+##### 1.3.3.3 Closing a DVC
 
 Either an application running on the TS server or a listener running on the TS client can request that
 a channel be closed. The following diagram illustrates the sequence of operations involved in closing a
@@ -1265,26 +1062,26 @@ that specifies the ChannelId.
 When a client initiates a channel-close, it sends an unsolicited Close Response PDU that specifies the
 ChannelId to the server. The server does not respond to the Client Close Response PDU.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Dynamic Virtual Channel Extension is embedded in a static virtual
 channel transport, as specified in [MS-RDPBCGR].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Dynamic Virtual Channel Extension operates only after the static
 virtual channel transport (as specified in [MS-RDPBCGR]) is fully established. If the static virtual
 channel transport is terminated, no other communication over the Remote Desktop Protocol: Dynamic
 Virtual Channel Extension occurs.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Dynamic Virtual Channel Extension is designed to be run within the
 context of an RDP virtual channel established between a client and a server. The Remote Desktop
 Protocol: Dynamic Virtual Channel Extension is applicable when creating applications such as Plug and
 Play device redirection and media infrastructure layer composition engine commands.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The version of the Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension is negotiated
 by a DVC client manager in response to a Capabilities PDU sent by a DVC server manager. The
@@ -1304,7 +1101,8 @@ Release: April 23, 2024
 
 14 / 62
 
-  Version 2: The second version introduced the capability to specify priority classes for virtual
+
+  Version 2: The second version introduced the capability to specify priority classes for virtual
 channels in order to allocate different bandwidth to different classes of virtual channels.
 
   Version 3: The third version introduced the ability to send and receive compressed data.
@@ -1312,13 +1110,13 @@ channels in order to allocate different bandwidth to different classes of virtua
 Implementations can support version 1, versions 1 and 2, or versions 1, 2, and 3 of the protocol. The
 negotiation of the protocol between the server and the client is described in section 2.2.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses NTSTATUS values as defined in [MS-ERREF] section 2.3. Vendors are free to choose
 their own values for this field, as long as the C bit (0x20000000) is set, indicating it is a customer
 code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Remote Desktop Protocol: Dynamic Virtual Channel Extension does not use any standards
 assignments.
@@ -1330,14 +1128,15 @@ Release: April 23, 2024
 
 15 / 62
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Remote Desktop Protocol: Dynamic Virtual Channel Extension
 messages are encapsulated on the wire and common data types.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 Remote Desktop Protocol: Dynamic Virtual Channel Extension messages are passed between a DVC
 manager on a server and a DVC manager on a client, and are transmitted over one of the following
@@ -1352,7 +1151,7 @@ is the ANSI character string "DRDYNVC" and bulk compression is enabled.
 The Remote Desktop Protocol: Dynamic Virtual Channel Extension does not establish any transport
 connections.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Remote Desktop Protocol: Dynamic Virtual Channel Extension consists of the following five types
 of messages exchanged between the server and the client.
@@ -1413,7 +1212,8 @@ Release: April 23, 2024
 
 16 / 62
 
-Value  Meaning
+
+Value  Meaning
 
 0x03
 
@@ -1469,7 +1269,7 @@ The message contained in the optionalFields field is a Soft-Sync Response PDU (s
 optionalFields (variable): The data following the message header depends on the type of the
 message and is addressed in the following sections.
 
-2.2.1  Initializing DVCs
+#### 2.2.1 Initializing DVCs
 
 Capabilities PDUs are exchanged to negotiate the version level of the Remote Desktop Protocol:
 Dynamic Channel Virtual Channel Extension that is supported. Three different Capabilities PDUs are
@@ -1505,14 +1305,15 @@ Release: April 23, 2024
 
 17 / 62
 
-The DVC server manager MUST send a Capabilities message prior to creating a DVC and wait for a
+
+The DVC server manager MUST send a Capabilities message prior to creating a DVC and wait for a
 response from the client. This happens just once; if capability exchange has already been completed,
 the channel creation continues. The DVC client manager MUST reply with a
 DYNVC_CAPS_RSP (section 2.2.1.2) PDU as soon as it receives the server request.
 
-2.2.1.1  DVC Capabilities Request PDU
+##### 2.2.1.1 DVC Capabilities Request PDU
 
-2.2.1.1.1 Version 1 (DYNVC_CAPS_VERSION1)
+###### 2.2.1.1.1 Version 1 (DYNVC_CAPS_VERSION1)
 
 The DYNVC_CAPS_VERSION1 PDU is sent by the DVC server manager to indicate that it supports
 version 1 of the Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension.<1>
@@ -1546,7 +1347,7 @@ Pad (1 byte): An 8-bit unsigned integer. Unused. MUST be set to 0x00.
 
 Version (2 bytes): A 16-bit unsigned integer. MUST be set to 0x0001.
 
-2.2.1.1.2 Version 2 (DYNVC_CAPS_VERSION2)
+###### 2.2.1.1.2 Version 2 (DYNVC_CAPS_VERSION2)
 
 The DYNVC_CAPS_VERSION2 PDU is sent by the DVC server manager to indicate that it supports
 version 2 of the Remote Desktop Protocol: Dynamic Virtual Channel Extension.<3>
@@ -1603,7 +1404,8 @@ Release: April 23, 2024
 
 18 / 62
 
-PriorityCharge2 (2 bytes): A 16-bit unsigned integer. Specifies the amount of bandwidth that is
+
+PriorityCharge2 (2 bytes): A 16-bit unsigned integer. Specifies the amount of bandwidth that is
 
 allotted for each priority class, in accordance with the following algorithm.
 
@@ -1670,7 +1472,8 @@ Release: April 23, 2024
 
 19 / 62
 
-2.2.1.1.3 Version 3 (DYNVC_CAPS_VERSION3)
+
+###### 2.2.1.1.3 Version 3 (DYNVC_CAPS_VERSION3)
 
 The DYNVC_CAPS_VERSION3 PDU is sent by the DVC server manager to indicate that it supports
 version 3 of the Remote Desktop Protocol: Dynamic Virtual Channel Extension.<5>
@@ -1725,7 +1528,7 @@ allotted for each priority class, in accordance with the algorithm specified in 
 PriorityCharge3 (2 bytes): A 16-bit unsigned integer. Specifies the amount of bandwidth that is
 allotted for each priority class, in accordance with the algorithm specified in section 2.2.1.1.2.
 
-2.2.1.2  DVC Capabilities Response PDU (DYNVC_CAPS_RSP)
+##### 2.2.1.2 DVC Capabilities Response PDU (DYNVC_CAPS_RSP)
 
 The DYNVC_CAPS_RSP (section 2.2.1.2) PDU is sent by the DVC client manager to the DVC server
 manager acknowledging the version level capabilities supported.
@@ -1768,7 +1571,8 @@ Release: April 23, 2024
 
 20 / 62
 
-Value  Meaning
+
+Value  Meaning
 
 0x0001  Version level one is supported.
 
@@ -1776,14 +1580,14 @@ Release: April 23, 2024
 
 0x0003  Version level three is supported.
 
-2.2.2  Opening a DVC
+#### 2.2.2 Opening a DVC
 
 The DVC server manager initiates opening a DVC by exchanging Create PDUs with a DVC client
 manager. The server sends a DYNVC_CREATE_REQ (section 2.2.2.1) PDU to the client, and the client
 responds with a DYNVC_CREATE_RSP (section 2.2.2.2) PDU that indicates the status of the client
 endpoint creation.
 
-2.2.2.1  DVC Create Request PDU (DYNVC_CREATE_REQ)
+##### 2.2.2.1 DVC Create Request PDU (DYNVC_CREATE_REQ)
 
 The DYNVC_CREATE_REQ (section 2.2.2.1) PDU is sent by the DVC server manager to the DVC
 client manager to request that a channel be opened.
@@ -1853,7 +1657,8 @@ Release: April 23, 2024
 
 21 / 62
 
-ChannelId (variable): A variable-length 8-bit, 16-bit, or 32-bit unsigned integer. This is a server-
+
+ChannelId (variable): A variable-length 8-bit, 16-bit, or 32-bit unsigned integer. This is a server-
 
 generated identifier for the channel being created. The DVC server manager MUST ensure that this
 number is unique within a static virtual channel connection.
@@ -1863,7 +1668,7 @@ ChannelName (variable): A null-terminated ANSI encoded character string. The nam
 listener on the TS client with which the TS server application is requesting that a channel be
 opened.
 
-2.2.2.2  DVC Create Response PDU (DYNVC_CREATE_RSP)
+##### 2.2.2.2 DVC Create Response PDU (DYNVC_CREATE_RSP)
 
 The DYNVC_CREATE_RSP (section 2.2.2.2) PDU is sent by the DVC client manager to indicate the
 status of the client DVC create operation.
@@ -1921,7 +1726,7 @@ CreationStatus (4 bytes): A 32-bit, signed integer that specifies the HRESULT co
 success or failure of the client DVC creation. HRESULT codes are specified in [MS-ERREF] section
 2.1. A zero or positive value indicates success; a negative value indicates failure.
 
-2.2.3  Sending and Receiving Data
+#### 2.2.3 Sending and Receiving Data
 
 The maximum size of a message that a sender can pass to a DVC manager is 2^32-1 bytes. The
 Remote Desktop Protocol: Dynamic Virtual Channel Extension specifies a maximum PDU size of 1,600
@@ -1941,14 +1746,15 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-handle a sequence beginning with either a DYNVC_DATA_FIRST (section 2.2.3.1) structure or a
+
+handle a sequence beginning with either a DYNVC_DATA_FIRST (section 2.2.3.1) structure or a
 DYNVC_DATA_FIRST_COMPRESSED (section 2.2.3.3) structure, followed by an arbitrary sequence of
 DYNVC_DATA (section 2.2.3.2) structures and DYNVC_DATA_COMPRESSED (section 2.2.3.4)
 structures.
 
 For an overview of sending and receiving data, see section 1.3.3.2.
 
-2.2.3.1  DVC Data First PDU (DYNVC_DATA_FIRST)
+##### 2.2.3.1 DVC Data First PDU (DYNVC_DATA_FIRST)
 
 The DYNVC_DATA_FIRST PDU is used to send the first block of data of a fragmented message when
 compression is not being used for the data block. It MUST be the first PDU sent when a message has
@@ -2040,7 +1846,8 @@ Release: April 23, 2024
 
 23 / 62
 
-Data (variable): An array of bytes. The first block of data of a fragmented message. Message data is
+
+Data (variable): An array of bytes. The first block of data of a fragmented message. Message data is
 sent as 8-bit unsigned integers. The DVC header size is defined as the sum of the sizes of the
 Cmd, Len, cbId, ChannelId and Length fields. The length of the data in the Data field is
 determined as follows:
@@ -2056,7 +1863,7 @@ If the sum of the DVC header size and the value specified by the Length field is
 larger than 1,600 bytes, then the actual data length equals 1,600 bytes minus the DVC header
 size.
 
-2.2.3.2  DVC Data PDU (DYNVC_DATA)
+##### 2.2.3.2 DVC Data PDU (DYNVC_DATA)
 
 The DYNVC_DATA PDU is used to send both single messages and blocks of fragmented messages
 when compression is not being used for the data block.
@@ -2132,7 +1939,8 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3.3  DVC Data First Compressed PDU (DYNVC_DATA_FIRST_COMPRESSED)
+
+##### 2.2.3.3 DVC Data First Compressed PDU (DYNVC_DATA_FIRST_COMPRESSED)
 
 The DYNVC_DATA_FIRST_COMPRESSED PDU is used to send the first block of data of a fragmented
 message when the data block is compressed. It MUST be the first PDU sent when the message has
@@ -2232,7 +2040,8 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Maximum number of uncompressed bytes in a single segment: 8,192 instead of 65,535.
+
+  Maximum number of uncompressed bytes in a single segment: 8,192 instead of 65,535.
 
   Maximum match distance / minimum history size: 8,192 bytes instead of 2,500,000 bytes.
 
@@ -2247,7 +2056,7 @@ RDP_SEGMENTED_DATA descriptor and RDP8_BULK_ENCODED_DATA header fields. Thus, th
 maximum length of the data block, before compression, is 1,598 bytes minus the space taken for
 the Cmd, Len, cbId, ChannelId, and Length fields.
 
-2.2.3.4  DVC Data Compressed PDU (DYNVC_DATA_COMPRESSED)
+##### 2.2.3.4 DVC Data Compressed PDU (DYNVC_DATA_COMPRESSED)
 
 The DYNVC_DATA_COMPRESSED PDU is used to send both single messages and blocks of fragmented
 messages when the data block is compressed.
@@ -2319,7 +2128,8 @@ Release: April 23, 2024
 
 26 / 62
 
-Data (variable): An RDP_SEGMENTED_DATA ([MS-RDPEGFX] section 2.2.5.1) structure containing a
+
+Data (variable): An RDP_SEGMENTED_DATA ([MS-RDPEGFX] section 2.2.5.1) structure containing a
 single RDP8_BULK_ENCODED_DATA ([MS-RDPEGFX] section 2.2.5.3) segment. The segment
 contains the first and only block of data in an unfragmented message, or a block of data following
 the first block in a fragmented message, where the data has been compressed with the RDP 8.0
@@ -2340,7 +2150,7 @@ RDP_SEGMENTED_DATA descriptor and RDP8_BULK_ENCODED_DATA header fields. Thus, th
 maximum length of the data block, before compression, is 1,598 bytes minus the space taken for
 Cmd, Sp, cbId, and ChannelId fields.
 
-2.2.4  Closing a DVC (DYNVC_CLOSE)
+#### 2.2.4 Closing a DVC (DYNVC_CLOSE)
 
 A DYNVC_CLOSE (section 2.2.4) PDU is sent by either a DVC server manager or a DVC client
 manager to close a DVC. A DYNVC_CLOSE (section 2.2.4) PDU is used for both a close request and a
@@ -2393,7 +2203,7 @@ ChannelId (variable): A variable length 8-bit, 16-bit, or 32-bit unsigned intege
 
 the ChannelId associated with the DVC that is being closed.
 
-2.2.5  Soft-Sync
+#### 2.2.5 Soft-Sync
 
 Soft-Sync is an optional feature used to defer the use of the multitransport tunnels (reliable UDP and
 lossy UDP as described in [MS-RDPEMT] section 1.3) as a transport for dynamic virtual channels until
@@ -2406,7 +2216,8 @@ Release: April 23, 2024
 
 27 / 62
 
-2.2.5.1  Soft-Sync Request PDU (DYNVC_SOFT_SYNC_REQUEST)
+
+##### 2.2.5.1 Soft-Sync Request PDU (DYNVC_SOFT_SYNC_REQUEST)
 
 A DYNVC_SOFT_SYNC_REQUEST PDU is sent by a DVC server manager over the DRDYNVC static
 virtual channel on the main RDP connection.
@@ -2481,7 +2292,7 @@ SoftSyncChannelLists (variable): This field can contain one or more
 DYNVC_SOFT_SYNC_CHANNEL_LIST (section 3.1.5.1.1) structures as indicated by the
 NumberOfTunnels field and the SOFT_SYNC_CHANNEL_LIST_PRESENT flag.
 
-2.2.5.1.1 Soft-Sync Channel List (DYNVC_SOFT_SYNC_CHANNEL_LIST)
+###### 2.2.5.1.1 Soft-Sync Channel List (DYNVC_SOFT_SYNC_CHANNEL_LIST)
 
 One or more DYNVC_SOFT_SYNC_CHANNEL_LISTs are contained in a Soft-Sync Request PDU to
 indicate which dynamic virtual channels have data written by the server on the specified
@@ -2508,7 +2319,8 @@ Release: April 23, 2024
 
 28 / 62
 
-NumberOfDVCs
+
+NumberOfDVCs
 
 ListOfDVCIds (variable)
 
@@ -2542,7 +2354,7 @@ ListOfDVCIds (variable): One or more 32-bit, unsigned integers, as indicated by 
 NumberOfDVCs field, containing the channel ID of each DVC that will have data written by the
 server manager on this tunnel.
 
-2.2.5.2  Soft-Sync Response PDU (DYNVC_SOFT_SYNC_RESPONSE)
+##### 2.2.5.2 Soft-Sync Response PDU (DYNVC_SOFT_SYNC_RESPONSE)
 
 A DYNVC_SOFT_SYNC_RESPONSE PDU is sent by a DVC client manager over the DRDYNVC static
 virtual channel on the main RDP connection in response to a Soft-Sync Request PDU (section 2.2.5.1).
@@ -2604,7 +2416,8 @@ Release: April 23, 2024
 
 29 / 62
 
-Value
+
+Value
 
 Meaning
 
@@ -2625,16 +2438,17 @@ Release: April 23, 2024
 
 30 / 62
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-RDPEDYC].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The following sections specify details of the Remote Desktop Protocol: Dynamic Virtual Channel
 Extension, including common, client, and server abstract data models and message processing rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
 The following diagram illustrates the states and transitions of this protocol.
 
@@ -2671,7 +2485,8 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-RDPEDYC].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2706,7 +2521,7 @@ Single fragment: Only a single DYNVC_DATA packet is received.
 
 These reassembly rules are described in more detail in section 3.1.5.2.3.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -2740,15 +2555,16 @@ Release: April 23, 2024
 
 32 / 62
 
-Version: The number exchanged between clients in DVC Capabilities Request/Response packets, see
+
+Version: The number exchanged between clients in DVC Capabilities Request/Response packets, see
 section 2.2.1.1. It is used by both sides to determine what features the protocol supports as
 described in section 3.2.3.1.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No common timers are used.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The TS server DVC manager begins the initialization sequence immediately following the
 establishment of a static virtual channel session, as specified in [MS-RDPBCGR] section 3.1.5.2. A
@@ -2757,12 +2573,12 @@ section 2.2.1 and initialize themselves to the version level negotiated. Individ
 the DVC server manager exchanging the DVC Create Request/Response, as described in section 2.2.2,
 with the DVC client manager only after the Capabilities PDUs have been exchanged.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no common events specified for the Remote Desktop Protocol: Dynamic Virtual Channel
 Extension.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Sending and receiving messages is symmetrical between the DVC server manager and the DVC
 client manager. After the server creates a DVC, applications running on either the server or the client
@@ -2792,9 +2608,9 @@ transports described in section 2.1, static virtual channels and UDP-R multitran
 provide reliable data transportation, while UDP-L multitransport connections are unreliable and MUST
 NOT transport fragmented data.
 
-3.1.5.1  Sending Data
+##### 3.1.5.1 Sending Data
 
-3.1.5.1.1 DVC Data First (DYNVC_DATA_FIRST)
+###### 3.1.5.1.1 DVC Data First (DYNVC_DATA_FIRST)
 
 [MS-RDPEDYC] - v20240423
 Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
@@ -2803,7 +2619,8 @@ Release: April 23, 2024
 
 33 / 62
 
-When the length of the message data being sent exceeds 1,590 bytes, the
+
+When the length of the message data being sent exceeds 1,590 bytes, the
 DYNVC_DATA_FIRST (section 2.2.3.1) PDU is sent as the first data PDU. The Length field is set to the
 total length of the message, and the Data field contains the first block of fragmented data.
 Subsequent DYNVC_DATA (section 2.2.3.2) PDUs are sent until all the data has been sent.
@@ -2811,7 +2628,7 @@ Subsequent DYNVC_DATA (section 2.2.3.2) PDUs are sent until all the data has bee
 To send compressed data, the DYNVC_DATA_FIRST_COMPRESSED (section 2.2.3.3) PDU can be used
 in place of the DYNVC_DATA_FIRST PDU, as specified in section 3.1.5.1.3.
 
-3.1.5.1.2 DVC Data (DYNVC_DATA)
+###### 3.1.5.1.2 DVC Data (DYNVC_DATA)
 
 The DYNVC_DATA (section 2.2.3.2) PDU is used to send data when the total length of the PDU
 message plus the PDU header exceeds 1,600 bytes or the length of the message data being sent is
@@ -2822,7 +2639,7 @@ followed by DYNVC_DATA (section 2.2.3.2) PDUs until all the data has been sent.
 To send compressed data, the DYNVC_DATA_COMPRESSED (section 2.2.3.4) PDU can be used in
 place of the DYNVC_DATA PDU, as specified in section 3.1.5.1.4.
 
-3.1.5.1.3 DVC Data First Compressed (DYNVC_DATA_FIRST_COMPRESSED)
+###### 3.1.5.1.3 DVC Data First Compressed (DYNVC_DATA_FIRST_COMPRESSED)
 
 When the length of the original uncompressed message data being sent exceeds 1,590 bytes, and
 bulk data compression of the channel data is desired, the DYNVC_DATA_FIRST_COMPRESSED (section
@@ -2838,7 +2655,7 @@ data refers only to the prior data sent on that channel.
 This PDU MUST be used only over a reliable transport (UDP-R or TCP) between two DVC managers
 that support version 3 of the Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension.
 
-3.1.5.1.4 DVC Data Compressed (DYNVC_DATA_COMPRESSED)
+###### 3.1.5.1.4 DVC Data Compressed (DYNVC_DATA_COMPRESSED)
 
 The DYNVC_DATA_COMPRESSED (section 2.2.3.4) PDU is used to send data when bulk data
 compression of the channel data is desired. If the total uncompressed length of the message exceeds
@@ -2853,7 +2670,7 @@ data refers only to the prior data sent on that channel.
 This PDU MUST be used only over a reliable transport (UDP-R or TCP) between two DVC managers
 that support version 3 of the Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension.
 
-3.1.5.2  Receiving Data
+##### 3.1.5.2 Receiving Data
 
 Data transmitted over an unreliable channel MUST NOT be fragmented, because an unreliable channel
 cannot guarantee that there will be no dropped or out-of-order sequence packets. In terms of the
@@ -2868,7 +2685,8 @@ Release: April 23, 2024
 
 34 / 62
 
-3.1.5.2.1 DVC Data First (DYNVC_DATA_FIRST)
+
+###### 3.1.5.2.1 DVC Data First (DYNVC_DATA_FIRST)
 
 When the DVC manager receives a PDU, it checks the Cmd field to determine the type of PDU that
 has been sent. If the Cmd field is set to 0x02, the PDU type is DYNVC_DATA_FIRST (section 2.2.3.1).
@@ -2876,7 +2694,7 @@ The Length field indicates the total length of the message that is being sent, a
 contains the first block of the fragmented message. The DVC manager stores the data and reads the
 next data PDU.
 
-3.1.5.2.2 DVC Data (DYNVC_DATA)
+###### 3.1.5.2.2 DVC Data (DYNVC_DATA)
 
 When the DVC manager receives a PDU, it checks the Cmd field to determine the type of PDU that
 has been sent. If the Cmd field is set to 0x03, the PDU type is DYNVC_DATA (section 2.2.3.2). This
@@ -2892,7 +2710,7 @@ If a DYNVC_DATA (section 2.2.3.2) PDU is not preceded by a DYNVC_DATA_FIRST (sec
 PDU, the receiver passes the message in the Data field directly to the receiver without further
 processing.
 
-3.1.5.2.3 Reassembly of Fragmented Virtual Channel Data
+###### 3.1.5.2.3 Reassembly of Fragmented Virtual Channel Data
 
 The DVC message can span multiple DVC data packets. If a transmission sequence starts with
 DYNVC_DATA_FIRST (section 2.2.3.1) or DYNVC_DATA_FIRST_COMPRESSED (section 2.2.3.3), this
@@ -2907,7 +2725,7 @@ If a transmission sequence starts with a DYNVC_DATA or DYNVC_DATA_COMPRESSED pac
 the DVC data message does not span multiple DVC packets, and the data can be processed
 immediately.
 
-3.1.5.2.4 Processing Packet Errors
+###### 3.1.5.2.4 Processing Packet Errors
 
 When an unrecognized or malformed packet is received by the server or the client, the
 implementation MUST terminate the static virtual channel connection. This action MUST be taken
@@ -2919,7 +2737,7 @@ terminate the static virtual channel connection.
 Out-of-sequence packets, or the receipt of multiples of packets that are supposed to be received only
 once, MUST terminate the static virtual channel connection.
 
-3.1.5.2.5 DVC Data First Compressed (DYNVC_DATA_FIRST_COMPRESSED)
+###### 3.1.5.2.5 DVC Data First Compressed (DYNVC_DATA_FIRST_COMPRESSED)
 
 When the DVC manager receives a PDU, the Cmd field MUST be checked to determine the type of PDU
 that has been sent. If the Cmd field is set to 0x06, the PDU type is
@@ -2935,14 +2753,15 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-RDPEDYC].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
 Each channel MUST use a dedicated decompression context for receiving data, as any compressed
 data received will refer only to the prior data received on that channel.
 
-3.1.5.2.6 DVC Data Compressed (DYNVC_DATA_COMPRESSED)
+###### 3.1.5.2.6 DVC Data Compressed (DYNVC_DATA_COMPRESSED)
 
 When the DVC manager receives a PDU, the Cmd field MUST be checked to determine the type of PDU
 that has been sent. If the Cmd field is set to 0x07, the PDU type is DYNVC_DATA_COMPRESSED
@@ -2964,7 +2783,7 @@ directly to the receiver without further processing.
 Each channel MUST use a dedicated decompression context for receiving data, as any compressed
 data received will refer only to the prior data received on that channel.
 
-3.1.5.3  Soft-Sync
+##### 3.1.5.3 Soft-Sync
 
 Soft-Sync is an optional feature used to defer the use of the multitransport tunnels (reliable UDP and
 lossy UDP as described in [MS-RDPEMT] section 1.3) as a transport for dynamic virtual channels until
@@ -2990,7 +2809,8 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Initiate Multitransport Response PDU ([MS-RDPBCGR] section 2.2.15.2) MUST be sent to the
+
+The Initiate Multitransport Response PDU ([MS-RDPBCGR] section 2.2.15.2) MUST be sent to the
 server after a multitransport tunnel is created. Soft-Sync MUST NOT occur until a successful Initiate
 Multitransport Response PDU has been received by the server for all supported multitransport tunnels.
 
@@ -3001,12 +2821,12 @@ server manager and then starts sending and receiving dynamic virtual channel dat
 multitransport tunnels. After receiving the Soft-Sync Response PDU, the server manager starts to
 receive dynamic virtual channel data on the multitransport tunnels.
 
-3.1.5.4  Tunneling Static VC Traffic
+##### 3.1.5.4 Tunneling Static VC Traffic
 
 Static virtual channel traffic can optionally be tunneled over a reliable multitransport tunnel, using
 dynamic virtual channels, if this capability is supported by the server and client.
 
-3.1.5.4.1 Initialization
+###### 3.1.5.4.1 Initialization
 
 The server and client indicate support for tunneling static virtual channel traffic over a reliable
 multitransport tunnel by setting the TRANSPORTTYPE_UDP_PREFERRED (0x100) flag in the Server
@@ -3021,7 +2841,7 @@ Server MCS Channel Join Confirm PDUs ([MS-RDPBCGR] section 2.2.1.9). Data MUST N
 received over these static virtual channels, with the exception of the DRDYNVC channel, which is used
 to encapsulate dynamic virtual channel data (section 1.3.1.1).
 
-3.1.5.4.2 Creating Tunneling DVCs
+###### 3.1.5.4.2 Creating Tunneling DVCs
 
 After the server has completed processing of all the MCS Channel Join Request PDUs ([MS-RDPBCGR]
 section 2.2.1.8), sent the corresponding Channel Join Confirm PDUs ([MS-RDPBCGR] section 2.2.1.9),
@@ -3040,7 +2860,7 @@ delivered as-is so that the application endpoint can perform the reassembly (as 
 RDPBCGR] section 3.1.5.2.2.1), hence ensuring that there is no change in the data transfer interface
 layer.
 
-3.1.5.4.3 Relation to Soft-Sync
+###### 3.1.5.4.3 Relation to Soft-Sync
 
 Before Soft-Sync is complete, the dynamic virtual channels that are tunneling static virtual channel
 data will send and receive data using the DRDYNVC static virtual channel on the main RDP connection.
@@ -3054,13 +2874,14 @@ Release: April 23, 2024
 
 37 / 62
 
-The server manager SHOULD perform Soft-Sync on all dynamic virtual channels that are tunneling
+
+The server manager SHOULD perform Soft-Sync on all dynamic virtual channels that are tunneling
 static virtual channel data by indicating each channel ID in the SoftSyncChannelLists field of the
 Soft-Sync Request PDU (section 2.2.5.1). The server manager MUST specify a reliable transport (for
 example, TUNNELTYPE_UDPFECR) in the TunnelType field of a Soft-Sync Request PDU that specifies
 one or more dynamic virtual channels tunneling static virtual channel data.
 
-3.1.5.4.4 Recovering Static Virtual Channel Flags
+###### 3.1.5.4.4 Recovering Static Virtual Channel Flags
 
 The encapsulations in section 1.3.1 are also valid for static virtual channel tunneling. No additional
 Channel PDU Header is present for the encapsulated data ([MS-RDPBCGR] section 2.2.6.1.1). Thus,
@@ -3091,24 +2912,24 @@ DYNVC_DATA_COMPRESSED PDU (section 2.2.3.4).
 The remaining flags (which are used for static virtual channel bulk compression and flow control)
 cannot be used.
 
-3.1.5.4.5 Termination
+###### 3.1.5.4.5 Termination
 
 Each tunneling dynamic virtual channel SHOULD remain open for the duration of the static virtual
 channel connection. If the application endpoint requests that the static virtual channel be closed, the
 DVC manager SHOULD silently discard any received data on the associated dynamic virtual channel.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 There are no common timer events.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no local events specified for the Remote Desktop Protocol: Dynamic Virtual Channel
 Extension.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
@@ -3119,13 +2940,14 @@ Release: April 23, 2024
 
 38 / 62
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 There are no client timers.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
-3.2.3.1  DVC Client Manager Initialization
+##### 3.2.3.1 DVC Client Manager Initialization
 
 The Remote Desktop Protocol: Dynamic Virtual Channel Extension encompasses three version levels.
 The server specifies priority charges in Version 2 or 3 (as described in section 2.2.1.1.2); no such
@@ -3162,11 +2984,11 @@ determine what protocol version level the DVC server manager is requesting suppo
 MUST respond with a DYNVC_CAPS_RSP (section 2.2.1.2) PDU indicating the highest version level
 supported by the client.
 
-3.2.3.1.1 Version Level 1 (DYNVC_CAPS_VERSION1)
+###### 3.2.3.1.1 Version Level 1 (DYNVC_CAPS_VERSION1)
 
 A DYNVC_CAPS_VERSION1 (section 2.2.1.1.1) PDU has the Version field set to 0x01.
 
-3.2.3.1.2 Version Level 2 (DYNVC_CAPS_VERSION2)
+###### 3.2.3.1.2 Version Level 2 (DYNVC_CAPS_VERSION2)
 
 A DYNVC_CAPS_VERSION2 PDU has the Version field set to 0x02.
 
@@ -3175,7 +2997,7 @@ priority class. The client SHOULD use this information to allocate bandwidth for
 for the data that it sends to the server. Section 2.2.1.1.2 specifies how bandwidth is allocated based
 on the priority class.
 
-3.2.3.1.3 Version Level 3 (DYNVC_CAPS_VERSION3)
+###### 3.2.3.1.3 Version Level 3 (DYNVC_CAPS_VERSION3)
 
 A DYNVC_CAPS_VERSION3 PDU has the Version field set to 0x03.
 
@@ -3186,19 +3008,20 @@ Release: April 23, 2024
 
 39 / 62
 
-A DYNVC_CAPS_VERSION3 (section 2.2.1.1.3) PDU specifies a message priority class. The client
+
+A DYNVC_CAPS_VERSION3 (section 2.2.1.1.3) PDU specifies a message priority class. The client
 SHOULD use this information to allocate bandwidth for each priority class for the data that it sends to
 the server. Section 2.2.1.1.2 specifies how bandwidth is allocated based on the priority class.
 
-3.2.3.1.4 Capabilities Response (DYNVC_CAPS_RSP)
+###### 3.2.3.1.4 Capabilities Response (DYNVC_CAPS_RSP)
 
 If a client receives a DYNVC_CAPS_VERSION1 (section 2.2.1.1.1), a
 DYNVC_CAPS_VERSION2 (section 2.2.1.1.2), or a DYNVC_CAPS_VERSION3 (section 2.2.1.1.3) PDU
 from the server, it MUST reply with a Capabilities Response PDU (section 2.2.1.2).
 
-3.2.3.2  DVC Initialization
+##### 3.2.3.2 DVC Initialization
 
-3.2.3.2.1 DVC Create Response (DYNVC_CREATE_RSP)
+###### 3.2.3.2.1 DVC Create Response (DYNVC_CREATE_RSP)
 
 When a DVC client manager receives a DYNVC_CREATE_REQ (section 2.2.2.1) PDU from the DVC
 server manager, it uses the listener name and ChannelId to create a named channel. The DVC client
@@ -3218,7 +3041,7 @@ ChannelId into the list of active ChannelIds.
 If the channel creation was successful, the client SHOULD maintain this channel until it is closed or the
 connection is terminated.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Channel Close Request: Sent by a listener to the DVC client manager requesting that a DVC be
 
@@ -3226,16 +3049,16 @@ closed.
 
 Send-Data Request: A message passed to the DVC client manager for sending data over a DVC.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Sending and Receiving Data
+##### 3.2.5.1 Sending and Receiving Data
 
 Sending and receiving messages is symmetrical between the DVC server manager and the DVC
 client manager. After the server creates a DVC, applications running on either the server or the client
 can initiate sending a message. The PDUs and the sending sequence are the same regardless of who
 initiates sending the message. The sending and receiving of data is specified in section 3.1.5.
 
-3.2.5.2  Closing a DVC (DYNVC_CLOSE)
+##### 3.2.5.2 Closing a DVC (DYNVC_CLOSE)
 
 A channel can be closed by either a DVC client manager or a DVC server manager. A
 DYNVC_CLOSE (section 2.2.4) PDU is used for both a close request and a close response.
@@ -3250,7 +3073,8 @@ Release: April 23, 2024
 
 40 / 62
 
-When a client initiates a channel-close, it sends an unsolicited DYNVC_CLOSE (section 2.2.4) PDU
+
+When a client initiates a channel-close, it sends an unsolicited DYNVC_CLOSE (section 2.2.4) PDU
 specifying the ChannelId to the server. The server does not respond to the
 DYNVC_CLOSE (section 2.2.4) PDU.
 
@@ -3261,9 +3085,9 @@ If the client receives a DYNVC_CLOSE (section 2.2.4) PDU for a channel that is n
 ChannelIds, the client MUST ignore the PDU and SHOULD NOT respond with a DYNVC_CLOSE
 (section 2.2.4) PDU.
 
-3.2.5.3  Soft-Sync
+##### 3.2.5.3 Soft-Sync
 
-3.2.5.3.1 Processing the Soft-Sync Request PDU
+###### 3.2.5.3.1 Processing the Soft-Sync Request PDU
 
 The structure and fields of the Soft-Sync Request PDU are specified in section 2.2.5.1. The receipt of
 this PDU indicates to the client manager that the server manager is now sending data for specific
@@ -3277,7 +3101,7 @@ Response PDU. If the client DVC manager does not send a Soft-Sync Response PDU, 
 virtual channel data MUST be sent over the DRDYNVC static virtual channel on the main RDP
 connection.
 
-3.2.5.3.2 Sending the Soft-Sync Response PDU
+###### 3.2.5.3.2 Sending the Soft-Sync Response PDU
 
 The structure and fields of the Soft-Sync Response PDU are specified in section 2.2.5.2, and the PDU
 MUST be initialized according to this specification. For each dynamic virtual channel, the client DVC
@@ -3295,11 +3119,11 @@ connection. Immediately after sending this PDU, for each dynamic virtual channel
 manager MUST consistently use either a multitransport tunnel or the DRDYNVC static virtual channel
 on the main RDP connection to send data.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no client timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no other local events used by the client.
 
@@ -3310,13 +3134,14 @@ Release: April 23, 2024
 
 41 / 62
 
-3.3  Server Details
 
-3.3.1  Abstract Data Model
+### 3.3 Server Details
+
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The DVC server manager sets a timer when it is initializing a DVC. The timer is set to expire 10
 seconds after the server sends a Capabilities Request to the DVC client manager. The server sends
@@ -3325,12 +3150,12 @@ or a DYNVC_CAPS_VERSION3 (section 2.2.1.1.3) PDU, depending on the protocol vers
 supports. If the client does not respond to the Capabilities Request within 10 seconds, the server fails
 the creation of the DVC.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Before protocol operation can commence, the static virtual channel MUST be established using the
 parameters specified in section 2.1.
 
-3.3.3.1  DVC Server Manager Initialization
+##### 3.3.3.1 DVC Server Manager Initialization
 
 The DVC managers on the TS server and the TS client initialize themselves by exchanging
 Capabilities PDUs to negotiate the version level of the Remote Desktop Protocol: Dynamic Virtual
@@ -3366,7 +3191,7 @@ expires, the server fails the creation of the DVC.
 
 The DVC server manager MUST adjust to the version level supported by the DVC client manager.
 
-3.3.3.1.1 Version Level 1 (DYNVC_CAPS_VERSION1)
+###### 3.3.3.1.1 Version Level 1 (DYNVC_CAPS_VERSION1)
 
 A DYNVC_CAPS_VERSION1 (section 2.2.1.1.1) PDU is sent to indicate that the highest protocol
 version level that the DVC server manager supports is version level 1. For PDU initialization see
@@ -3379,19 +3204,20 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.3.1.2 Version Level 2 (DYNVC_CAPS_VERSION2)
+
+###### 3.3.3.1.2 Version Level 2 (DYNVC_CAPS_VERSION2)
 
 A DYNVC_CAPS_VERSION2 (section 2.2.1.1.2) PDU is sent to indicate that the highest protocol
 version level the DVC server manager supports is version level 2. For PDU initialization see section
 Version Level 2 (DYNVC_CAPS_VERSION2) (section 3.2.3.1.2).
 
-3.3.3.1.3 Version Level 3 (DYNVC_CAPS_VERSION3)
+###### 3.3.3.1.3 Version Level 3 (DYNVC_CAPS_VERSION3)
 
 A DYNVC_CAPS_VERSION3 (section 2.2.1.1.3) PDU is sent to indicate that the highest protocol
 version level the DVC server manager supports is version level 3. For PDU initialization, see Version
 Level 3 (DYNVC_CAPS_VERSION3) (section 3.2.3.1.3).
 
-3.3.3.1.4 Capabilities Response (DYNVC_CAPS_RSP)
+###### 3.3.3.1.4 Capabilities Response (DYNVC_CAPS_RSP)
 
 The DYNVC_CAPS_RSP (section 2.2.1.2) PDU is sent by the DVC client manager to indicate the
 protocol version level it supports.
@@ -3400,7 +3226,7 @@ The version level supported is indicated by the value of the Version field. If t
 with a Capabilities Response packet within 10 seconds, the server MUST NOT make any further
 attempts to send a DVC Create Request packet.
 
-3.3.3.2  DVC Initialization
+##### 3.3.3.2 DVC Initialization
 
 A DVC server manager initializes a channel by exchanging Create PDUs with a DVC client manager.
 
@@ -3430,7 +3256,7 @@ SHOULD reuse a Channel ID if the channel creation failed, or if the channel has 
 There is no processing specified by the Remote Desktop Protocol: Dynamic Virtual Channel Extension
 for a priority class.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
   Static virtual channel created: Immediately upon creation of a static virtual channel, as
 specified in [MS-RDPBCGR], the DVC server manager begins the initialization sequence.
@@ -3446,7 +3272,8 @@ Release: April 23, 2024
 
 43 / 62
 
-  Channel close request: Sent by an application to the DVC server manager requesting the closure
+
+  Channel close request: Sent by an application to the DVC server manager requesting the closure
 
 of a DVC.
 
@@ -3454,16 +3281,16 @@ of a DVC.
 
 sending data over a DVC.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Sending and Receiving Data
+##### 3.3.5.1 Sending and Receiving Data
 
 Sending and receiving messages is symmetrical between the DVC server manager and the DVC
 client manager. After the server creates a DVC, applications running on either the server or the client
 can initiate sending a message. The PDUs and the sending sequence are the same regardless of who
 initiates sending the message. The sending and receiving of data is specified in section 3.1.5.
 
-3.3.5.2  Closing a DVC (DYNVC_CLOSE)
+##### 3.3.5.2 Closing a DVC (DYNVC_CLOSE)
 
 The closure of a channel can be requested by either an application running on the TS server or a
 listener running on the TS client. A DYNVC_CLOSE (section 2.2.4) PDU is used for both a close
@@ -3479,9 +3306,9 @@ respond to the DYNVC_CLOSE (section 2.2.4) PDU.
 Upon closing the channel, the DVC server manager MAY reuse the ChannelId in the next DVC Create
 Request PDU (section 2.2.2.1).
 
-3.3.5.3  Soft-Sync
+##### 3.3.5.3 Soft-Sync
 
-3.3.5.3.1 Sending the Soft-Sync Request PDU
+###### 3.3.5.3.1 Sending the Soft-Sync Request PDU
 
 The structure and fields of the Soft-Sync Request PDU are specified in section 2.2.5.1, and the PDU
 MUST be initialized according to this specification. The server manager MUST NOT send this PDU until
@@ -3503,7 +3330,7 @@ connection. Immediately after sending this PDU, for each dynamic virtual channel
 MUST consistently use either a multitransport tunnel or the DRDYNVC static virtual channel on the
 main RDP connection to send data.
 
-3.3.5.3.2 Processing the Soft-Sync Response PDU
+###### 3.3.5.3.2 Processing the Soft-Sync Response PDU
 
 [MS-RDPEDYC] - v20240423
 Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
@@ -3512,18 +3339,19 @@ Release: April 23, 2024
 
 44 / 62
 
-The structure and fields of the Soft-Sync Response PDU are specified in section 2.2.5. The receipt of
+
+The structure and fields of the Soft-Sync Response PDU are specified in section 2.2.5. The receipt of
 this PDU indicates to the server DVC manager that the client DVC manager is now sending data for
 some or all dynamic virtual channels on a multitransport tunnel. If Soft-Sync is supported by the
 server and client, then, in order to ensure that no data is received out of order, the server DVC
 manager MUST NOT begin to read dynamic virtual channel data on any multitransport tunnel until
 after the Soft-Sync Response PDU has been received.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 There are no timer events used by the Remote Desktop Protocol: Dynamic Virtual Channel Extension.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 There are no other local events.
 
@@ -3534,14 +3362,15 @@ Release: April 23, 2024
 
 45 / 62
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Remote Desktop Protocol: Dynamic Virtual Channel Extension Specification.
 
-4.1  Annotated Initializing DVCs
+### 4.1 Annotated Initializing DVCs
 
-4.1.1  DVC Capabilities Request (Version2) PDU
+#### 4.1.1 DVC Capabilities Request (Version2) PDU
 
 The following is an annotated sample of the DYNVC_CAPS_VERSION2 PDU (section 2.2.1.1.2).
 
@@ -3567,7 +3396,7 @@ The following is an annotated sample of the DYNVC_CAPS_VERSION2 PDU (section 2.2
  3d 0a -> DYNVC_CAPS_VERSION2::PriorityCharge2 = 0x0a3d = 2621 (~25%)
  a7 04 -> DYNVC_CAPS_VERSION2::PriorityCharge3 = 0x04a7 = 1191 (~55%)
 
-4.1.2  DVC Capabilities Response PDU
+#### 4.1.2 DVC Capabilities Response PDU
 
 The following is an annotated sample of the DYNVC_CAPS_RSP PDU (section 2.2.1.2).
 
@@ -3595,9 +3424,10 @@ Release: April 23, 2024
 
 46 / 62
 
-4.2  Annotated Opening a DVC
 
-4.2.1  DVC Create Request PDU
+### 4.2 Annotated Opening a DVC
+
+#### 4.2.1 DVC Create Request PDU
 
 The following is an annotated sample of the DYNVC_CREATE_REQ PDU (section 2.2.2.1).
 
@@ -3619,7 +3449,7 @@ The following is an annotated sample of the DYNVC_CREATE_REQ PDU (section 2.2.2.
  74 65 73 74 64 76 63 00 -> DYNVC_CREATE_REQ::ChannelName = "testdvc" (null-terminated
 character string)
 
-4.2.2  DVC Create Response PDU
+#### 4.2.2 DVC Create Response PDU
 
 The following is an annotated sample of the DYNVC_CREATE_RSP PDU (section 2.2.2.2).
 
@@ -3640,9 +3470,9 @@ The following is an annotated sample of the DYNVC_CREATE_RSP PDU (section 2.2.2.
 
  00 00 00 00 -> DYNVC_CREATE_RSP::CreationStatus = 0x00000000
 
-4.3  Annotated Sending and Receiving Data
+### 4.3 Annotated Sending and Receiving Data
 
-4.3.1  DVC Data First PDU
+#### 4.3.1 DVC Data First PDU
 
 The following is an annotated sample of the DYNVC_DATA_FIRST PDU (section 2.2.3.1).
 
@@ -3662,7 +3492,8 @@ Release: April 23, 2024
 
 47 / 62
 
- 00000080 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
+
+ 00000080 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000090 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  000000a0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  000000b0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
@@ -3739,7 +3570,8 @@ Release: April 23, 2024
 
 48 / 62
 
- 000004d0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
+
+ 000004d0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  000004e0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  000004f0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000500 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
@@ -3780,7 +3612,7 @@ Release: April 23, 2024
 
  71 .... 71 -> DYNVC_DATA_FIRST::Data = (1600 - 4) bytes of actual payload
 
-4.3.2  DVC Data PDU
+#### 4.3.2 DVC Data PDU
 
 The following is an annotated sample of the DYNVC_DATA PDU (section 2.2.3.2).
 
@@ -3813,7 +3645,8 @@ Release: April 23, 2024
 
 49 / 62
 
- 00000150 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
+
+ 00000150 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000160 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000170 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000180 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
@@ -3890,7 +3723,8 @@ Release: April 23, 2024
 
 50 / 62
 
- 000005a0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
+
+ 000005a0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  000005b0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  000005c0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  000005d0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
@@ -3935,7 +3769,7 @@ The last packet in the sequence for the remaining data: DYNVC_DATA PDU (section 
 
  71 -> DYNVC_DATA::Data = (3 - 2) bytes of actual payload.
 
-4.3.3  DVC Data First Compressed PDU
+#### 4.3.3 DVC Data First Compressed PDU
 
 The following is an annotated sample of the DYNVC_DATA_FIRST_COMPRESSED PDU (section
 2.2.3.3).
@@ -3961,7 +3795,8 @@ Release: April 23, 2024
 
 51 / 62
 
- 7b 0c -> DYNVC_DATA_FIRST_COMPRESSED::Length = 0x0c7b = 3195 bytes
+
+ 7b 0c -> DYNVC_DATA_FIRST_COMPRESSED::Length = 0x0c7b = 3195 bytes
 
  e0 .... 01 -> DYNVC_DATA_COMPRESSED::Data = 8 bytes of compressed payload
  e0 = DEBLOCK_SINGLE
@@ -4032,7 +3867,8 @@ Release: April 23, 2024
 
 52 / 62
 
- 00000280 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
+
+ 00000280 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000290 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  000002a0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  000002b0 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
@@ -4093,7 +3929,7 @@ Release: April 23, 2024
  00000620 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000630 71 71 71 71 71 71 71 71 71 71 71                qqqqqqqqqqq
 
-4.3.4  DVC Data Compressed PDU
+#### 4.3.4 DVC Data Compressed PDU
 
 The following is an annotated sample of the DYNVC_DATA_COMPRESSED PDU (section 2.2.3.4).
 
@@ -4106,7 +3942,8 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 70 -> Header bitmask fields
+
+ 70 -> Header bitmask fields
 
  0 - --\
  1 -   | DYNVC_DATA_COMPRESSED::Cmd = DataCompressed (7)
@@ -4179,7 +4016,8 @@ Release: April 23, 2024
 
 54 / 62
 
- 00000200 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
+
+ 00000200 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000210 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000220 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
  00000230 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 71 qqqqqqqqqqqqqqqq
@@ -4255,7 +4093,8 @@ Release: April 23, 2024
 
 55 / 62
 
-The last packet in the sequence for the remaining data: DYNVC_DATA_COMPRESSED
+
+The last packet in the sequence for the remaining data: DYNVC_DATA_COMPRESSED
 PDU (section 2.2.3.4).
 
  00000000 70 03 06 71 71 71                               p..qqq
@@ -4279,9 +4118,9 @@ PDU (section 2.2.3.4).
 
  71 .... 71 = 3 bytes of actual payload
 
-4.4  Annotated Closing a DVC
+### 4.4 Annotated Closing a DVC
 
-4.4.1  DVC Close PDU
+#### 4.4.1 DVC Close PDU
 
 The following is an annotated sample of the DYNVC_CLOSE PDU (section 2.2.4).
 
@@ -4307,18 +4146,19 @@ Release: April 23, 2024
 
 56 / 62
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Remote Desktop
 Protocol: Dynamic Virtual Channel Extension.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for Remote Desktop Protocol: Dynamic Virtual Channel Extension
 messages because all static virtual channel traffic is secured by the underlying RDP core protocol.
 For an overview of the implemented security-related mechanisms, see [MS-RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters in the Remote Desktop Protocol: Dynamic Virtual Channel Extension.
 
@@ -4329,7 +4169,8 @@ Release: April 23, 2024
 
 57 / 62
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4398,7 +4239,8 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<7> Section 2.2.1.2: Windows implementations do not initialize the Sp field. As a result, its value is
+
+<7> Section 2.2.1.2: Windows implementations do not initialize the Sp field. As a result, its value is
 random.
 
 <8> Section 2.2.3.2: Windows implementations do not initialize this field. As a result, its value is
@@ -4426,7 +4268,8 @@ Release: April 23, 2024
 
 59 / 62
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4470,7 +4313,8 @@ Release: April 23, 2024
 
 60 / 62
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -4622,7 +4466,8 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Soft-Sync message 27
+
+Soft-Sync message 27
 Standards assignments 15
 Syntax - message 16
 

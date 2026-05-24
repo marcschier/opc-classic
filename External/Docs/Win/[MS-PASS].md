@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 39
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: April 23, 2024
 
 2 / 39
 
-Date
+
+Date
 
 Revision
 History
@@ -530,7 +532,8 @@ Release: April 23, 2024
 
 3 / 39
 
-Date
+
+Date
 
 Revision
 History
@@ -563,215 +566,92 @@ Release: April 23, 2024
 
 4 / 39
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.4 Protocol is based on HTTP (as specified in [RFC2616]) for authenticating a client to a server](#14-protocol-is-based-on-http-as-specified-in-rfc2616-for-authenticating-a-client-to-a-server)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Definitions](#221-common-definitions)
+    - [2.2.2 Authentication Server Challenge Message](#222-authentication-server-challenge-message)
+    - [2.2.3 Authentication Server-Instructed Update Message](#223-authentication-server-instructed-update-message)
+    - [2.2.4 Authentication Server Logout Message](#224-authentication-server-logout-message)
+    - [2.2.5 Authentication Server Redirect Message](#225-authentication-server-redirect-message)
+    - [2.2.6 First Authenticated Request Message](#226-first-authenticated-request-message)
+    - [2.2.7 Sign-in Request Message](#227-sign-in-request-message)
+    - [2.2.8 Partner Server Challenge Message](#228-partner-server-challenge-message)
+    - [2.2.9 Set Token Message](#229-set-token-message)
+    - [2.2.10 Token Request Message](#2210-token-request-message)
+    - [2.2.11 Token Response Message](#2211-token-response-message)
+    - [2.2.12 Update Configuration Message](#2212-update-configuration-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Opening a Passport Session](#3141-opening-a-passport-session)
+      - [3.1.4.2 Closing a Passport Session](#3142-closing-a-passport-session)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing Partner Server Challenge Messages](#3151-processing-partner-server-challenge-messages)
+      - [3.1.5.2 Processing Authentication Server Challenge Messages](#3152-processing-authentication-server-challenge-messages)
+      - [3.1.5.3 Processing Authentication Server-Instructed Update Messages](#3153-processing-authentication-server-instructed-update-messages)
+      - [3.1.5.4 Updating Configuration Messages](#3154-updating-configuration-messages)
+      - [3.1.5.5 Processing Authentication Server Logout Messages](#3155-processing-authentication-server-logout-messages)
+      - [3.1.5.6 Processing Authentication Server Redirect Messages](#3156-processing-authentication-server-redirect-messages)
+      - [3.1.5.7 Processing Token Response Messages](#3157-processing-token-response-messages)
+      - [3.1.5.8 Processing Set Token Messages](#3158-processing-set-token-messages)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Partner Server Details](#32-partner-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing First Authenticated Request Messages](#3251-processing-first-authenticated-request-messages)
+      - [3.2.5.2 Attempting to Access a Restricted Resource](#3252-attempting-to-access-a-restricted-resource)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Authentication Server Details](#33-authentication-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Processing Sign-in Request Messages](#3351-processing-sign-in-request-messages)
+      - [3.3.5.2 Processing Token Request Messages](#3352-processing-token-request-messages)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Configuration Server Details](#34-configuration-server-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+      - [3.4.4.1 Processing HTTP GET](#3441-processing-http-get)
+    - [3.4.5 Processing Events and Sequencing Rules](#345-processing-events-and-sequencing-rules)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Common Definitions .................................................................................... 12
-2.2.1
-Authentication Server Challenge Message ...................................................... 13
-2.2.2
-Authentication Server-Instructed Update Message .......................................... 14
-2.2.3
-Authentication Server Logout Message .......................................................... 14
-2.2.4
-Authentication Server Redirect Message ........................................................ 14
-2.2.5
-First Authenticated Request Message ............................................................ 14
-2.2.6
-Sign-in Request Message ............................................................................. 15
-2.2.7
-Partner Server Challenge Message ................................................................ 15
-2.2.8
-Set Token Message ..................................................................................... 16
-2.2.9
-Token Request Message .............................................................................. 16
-2.2.10
-Token Response Message ............................................................................ 17
-2.2.11
-2.2.12  Update Configuration Message ..................................................................... 17
-
-3.1
-
-3.1.5
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 19
-Client Details ................................................................................................... 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Opening a Passport Session .................................................................... 20
-Closing a Passport Session ..................................................................... 20
-Processing Events and Sequencing Rules ....................................................... 20
-Processing Partner Server Challenge Messages ......................................... 22
-Processing Authentication Server Challenge Messages ............................... 23
-Processing Authentication Server-Instructed Update Messages ................... 23
-Updating Configuration Messages ............................................................ 23
-Processing Authentication Server Logout Messages ................................... 23
-Processing Authentication Server Redirect Messages ................................. 23
-Processing Token Response Messages ..................................................... 24
-Processing Set Token Messages .............................................................. 24
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-Partner Server Details ...................................................................................... 24
-Abstract Data Model .................................................................................... 24
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Processing Events and Sequencing Rules ....................................................... 24
-Processing First Authenticated Request Messages ..................................... 25
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2.5.1
-
-3.2
-
-[MS-PASS] - v20240423
-Passport Server Side Include (SSI) Version 1.4 Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 39
-
-3.2.5.2
-
-3.3.5.1
-3.3.5.2
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.4
-
-3.3.6
-3.3.7
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.5
-3.4.6
-3.4.7
-
-Attempting to Access a Restricted Resource ............................................. 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-Authentication Server Details............................................................................. 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Processing Events and Sequencing Rules ....................................................... 26
-Processing Sign-in Request Messages ...................................................... 27
-Processing Token Request Messages ....................................................... 28
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-Configuration Server Details .............................................................................. 29
-Abstract Data Model .................................................................................... 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 29
-Processing HTTP GET ............................................................................. 29
-Processing Events and Sequencing Rules ....................................................... 29
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-
-3.4.4.1
-
-4  Protocol Examples ................................................................................................. 30
-
-5  Security ................................................................................................................. 33
-Security Considerations for Implementers ........................................................... 33
-Index of Security Parameters ............................................................................ 33
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 34
-
-7  Change Tracking .................................................................................................... 36
-
-8  Index ..................................................................................................................... 37
-
-[MS-PASS] - v20240423
-Passport Server Side Include (SSI) Version 1.4 Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 39
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Passport Server Side Include (SSI) Version 1.4 Protocol (or the Passport
 SSI Version 1.4 Protocol), also known as the "Passport Tweener" protocol. The Passport SSI Version
-1.4 Protocol is based on HTTP (as specified in [RFC2616]) for authenticating a client to a server
+### 1.4 Protocol is based on HTTP (as specified in [RFC2616]) for authenticating a client to a server
 with the assistance of an authentication server.
 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
@@ -844,7 +724,8 @@ Release: April 23, 2024
 
 7 / 39
 
-resource: An object that a client is requesting access to, typically referenced by a Uniform
+
+resource: An object that a client is requesting access to, typically referenced by a Uniform
 Resource Locator (URL) or Uniform Resource Identifier (URI), as specified in [RFC3986].
 
 token: A block of data that is issued to a user on successful authentication by the
@@ -913,7 +794,8 @@ Release: April 23, 2024
 
 8 / 39
 
-[RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
+
+[RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
 1.2.2  Informative References
@@ -979,7 +861,8 @@ Passport Server Side Include (SSI) Version 1.4 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-to the configuration server's URL to obtain updated configuration information. For more information,
+
+to the configuration server's URL to obtain updated configuration information. For more information,
 see section 3.1.5.3.
 
 1.4  Relationship to Other Protocols
@@ -988,7 +871,7 @@ The Passport SSI Version 1.4 Protocol is built on HTTP (as specified in [RFC2617
 Transport Layer Security (TLS) (as specified in [RFC2818]). No other higher-layer protocols explicitly
 depend on the Passport SSI Version 1.4 Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The following prerequisites and preconditions are required by the Passport SSI Version 1.4 Protocol:
 
@@ -1034,7 +917,7 @@ section 2.2.11.
 The configuration server for the realm is provisioned with all the configuration data necessary to
 construct an update configuration message, as specified in section 2.2.12.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Passport SSI Version 1.4 Protocol applies to environments in which one or more services require
 HTTP-based authentication (as specified in [RFC2616] section 11) of members of a common base of
@@ -1052,16 +935,17 @@ Release: April 23, 2024
 
 10 / 39
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 Versioning and capability negotiation does not apply to the Passport SSI Version 1.4 Protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The ExtraParams parameter (as specified in section 2.2.1) can be used to extend the Passport SSI
 Version 1.4 Protocol.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The only standards assignments for the Passport SSI Version 1.4 Protocol are those inherited from its
 transport protocols, as specified in [RFC2616] and [RFC2818].
@@ -1073,12 +957,13 @@ Release: April 23, 2024
 
 11 / 39
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Passport SSI Version 1.4 Protocol messages are transported and
 message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 The Passport SSI Version 1.4 Protocol MUST use HTTP (as specified in [RFC2616]) or HTTP over TLS
 (as specified in [RFC2818]) as the transport layer. The use of HTTP over TLS is triggered by the
@@ -1095,9 +980,9 @@ named data items to be sent from one party to another as part of an HTTP message
 receiving party and returned automatically to the original party as part of all subsequent HTTP
 messages to that party.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Common Definitions
+#### 2.2.1 Common Definitions
 
 Except where noted, the headers in this document are specified using the Augmented Backus-Naur
 Form (ABNF) grammar, as specified in [RFC4234] section 2.2. The following common constructions
@@ -1137,7 +1022,8 @@ Release: April 23, 2024
 
 12 / 39
 
-OrgVerb: A string containing the HTTP verb that triggered the original server challenge, for example,
+
+OrgVerb: A string containing the HTTP verb that triggered the original server challenge, for example,
 
 "GET".
 
@@ -1153,7 +1039,7 @@ from-PP: A string that is opaque to the client. This value is received from a se
 
 passed back unchanged on a subsequent request.<2>
 
-2.2.2  Authentication Server Challenge Message
+#### 2.2.2 Authentication Server Challenge Message
 
 The Authentication Server Challenge message is sent by the authentication server to the client and
 indicates that the sign-in request or token request failed.
@@ -1204,7 +1090,8 @@ Release: April 23, 2024
 
 13 / 39
 
-2.2.3  Authentication Server-Instructed Update Message
+
+#### 2.2.3 Authentication Server-Instructed Update Message
 
 The Authentication Server-Instructed Update message MAY be included by the authentication
 server in any of its response messages to the client to indicate the current configuration version.
@@ -1219,7 +1106,7 @@ Example:
 
  PassportConfig: ConfigVersion=14
 
-2.2.4  Authentication Server Logout Message
+#### 2.2.4 Authentication Server Logout Message
 
 The Authentication Server Logout message MUST be sent by the authentication server to the client
 to indicate that the user has successfully logged out.
@@ -1233,7 +1120,7 @@ Example:
 
  Authentication-Info: Passport1.4 da-status=logout
 
-2.2.5  Authentication Server Redirect Message
+#### 2.2.5 Authentication Server Redirect Message
 
 The Authentication Server Redirect message is used to indicate that the client SHOULD redirect its
 Sign-in Request message or its Token Request message to a different authentication server. It is
@@ -1248,7 +1135,7 @@ Example:
 
  Authentication-Info: Passport1.4 da-status=redir
 
-2.2.6  First Authenticated Request Message
+#### 2.2.6 First Authenticated Request Message
 
 The client MUST issue a First Authenticated Request message to the partner server after receiving a
 partner token from the authentication server.
@@ -1262,11 +1149,12 @@ Passport Server Side Include (SSI) Version 1.4 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Example:
+
+Example:
 
  Authorization: Passport1.4 from-PP=1puV5BFuLD
 
-2.2.7  Sign-in Request Message
+#### 2.2.7 Sign-in Request Message
 
 This message contains the user's credentials and is sent by the client to the authentication
 server. It MUST contain the parameters in the Authentication Server Challenge message received
@@ -1311,7 +1199,7 @@ Note  The challenge is in whatever format the partners in the realm and the AS a
 not part of the protocol. It MUST be a comma-separated set of ptoken elements, as specified in the
 ABNF in section 2.2.1.
 
-2.2.8  Partner Server Challenge Message
+#### 2.2.8 Partner Server Challenge Message
 
 The Partner Server Challenge message, sent by the partner server to the client, indicates that the
 client's request failed and MUST describe the partner token needed to gain access to the URL.
@@ -1327,7 +1215,8 @@ Release: April 23, 2024
 
 15 / 39
 
-This message SHOULD be processed only when included in an HTTP response with a 302 or 401 status
+
+This message SHOULD be processed only when included in an HTTP response with a 302 or 401 status
 code.<4>
 
  Partner-Server-Challenge-Message = "WWW-Authenticate:" scheme 1*SP challenge["," upgrade]
@@ -1339,7 +1228,7 @@ Example:
 
  WWW-Authenticate: Passport1.4 param1,param2,Negotiate2SupportedIf=LiveSSP
 
-2.2.9  Set Token Message
+#### 2.2.9 Set Token Message
 
 The Set Token message MUST be sent by the partner server to the client in response to successful
 processing of a First Authenticated Request message. Successful processing here means that the
@@ -1354,7 +1243,7 @@ Example:
 
  Authentication-Info: Passport1.4 tname=MSPAuth,tname=MSPProf
 
-2.2.10 Token Request Message
+#### 2.2.10 Token Request Message
 
 The Token Request message is sent by the client to the authentication server to retrieve a new
 partner token. The request MUST contain the challenge from the Partner Server Challenge message
@@ -1383,7 +1272,8 @@ Release: April 23, 2024
 
 16 / 39
 
-2.2.11 Token Response Message
+
+#### 2.2.11 Token Response Message
 
 The authentication server sends a Token Response message to the client when it can issue a
 partner token or tokens that are satisfactory to the partner server.
@@ -1403,7 +1293,7 @@ Example:
  from-PP=1puV5BFuLD,
  ru=http://partner.example.com/default.asp
 
-2.2.12 Update Configuration Message
+#### 2.2.12 Update Configuration Message
 
 The Update Configuration message is sent from the configuration server to the client and contains
 configuration information.
@@ -1453,7 +1343,8 @@ Release: April 23, 2024
 
 17 / 39
 
-Example:
+
+Example:
 
  PassportURLs: DARealm=Passport.Net,DALogin=sign-in.live.com/login2.srf,
  DAReg=https://accountservices.passport.net/UIXPWiz.srf,
@@ -1469,7 +1360,8 @@ Release: April 23, 2024
 
 18 / 39
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Passport SSI Version 1.4 Protocol, including abstract data
 models and message processing rules.
@@ -1480,9 +1372,9 @@ An implementation MAY implement the partner server role specified in section 3.2
 
 An implementation MAY implement the authentication server role specified in section 3.3.
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1529,7 +1421,7 @@ as specified in section 2.2.8.
 
 second at which the credentials were stored.<6>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -1540,15 +1432,16 @@ Release: April 23, 2024
 
 19 / 39
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 Passport Session Table is initialized to empty.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.4.1  Opening a Passport Session
+##### 3.1.4.1 Opening a Passport Session
 
 When a higher-layer application initiates an HTTP request that supports the Passport SSI Version 1.4
 Protocol, it creates a new entry in the Passport Session Table to be used with the HTTP request.
@@ -1564,12 +1457,12 @@ When a new entry is created, its state is initialized as follows:
 
   Sent First Authenticated Request is initialized to FALSE.
 
-3.1.4.2  Closing a Passport Session
+##### 3.1.4.2 Closing a Passport Session
 
 When a higher-layer application completes an HTTP request (including the Passport processing
 described in section 3.1.5), its entry in the Passport Session Table is deleted.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 The following two diagrams illustrate message processing at the client:
 
@@ -1580,7 +1473,8 @@ Release: April 23, 2024
 
 20 / 39
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-PASS].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1593,13 +1487,14 @@ Release: April 23, 2024
 
 21 / 39
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-PASS].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
 Figure 2: Message processing at the client part B (continued)
 
-3.1.5.1  Processing Partner Server Challenge Messages
+##### 3.1.5.1 Processing Partner Server Challenge Messages
 
 After receiving a Partner Server Challenge message with Sent First Authenticated Request set to
 FALSE, the client MUST send the authentication server a Token Request message. The client MUST
@@ -1620,10 +1515,11 @@ Passport Server Side Include (SSI) Version 1.4 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the client receives an upgrade token it MAY evaluate the condition. The client MAY then choose to
+
+If the client receives an upgrade token it MAY evaluate the condition. The client MAY then choose to
 ignore the Passport Tweener WWW-Authenticate header. <7>
 
-3.1.5.2  Processing Authentication Server Challenge Messages
+##### 3.1.5.2 Processing Authentication Server Challenge Messages
 
 If the received "da-status" value in the Authentication Server Challenge message is set to "fail-
 noretry", or if the received value of srealm does not equal the value of DARealm in the client's
@@ -1650,7 +1546,7 @@ then be set to the values in the client's stored state for Original HTTP Verb an
 If present, the cburl and cbtxt parameters indicate co-branding URL and text that the client SHOULD
 pass to the application to be displayed to the user.
 
-3.1.5.3  Processing Authentication Server-Instructed Update Messages
+##### 3.1.5.3 Processing Authentication Server-Instructed Update Messages
 
 The client MUST compare the version number of its stored Passport Configuration Data (as
 specified in section 3.1.1) to the version number supplied in this message. If the client's stored
@@ -1658,7 +1554,7 @@ version number is lower than the version number supplied in the message, the cli
 HTTP GET to the configuration server URL (as specified in section 1.5). Handling of the response to
 this HTTP GET message is specified in section 3.1.5.4.
 
-3.1.5.4  Updating Configuration Messages
+##### 3.1.5.4 Updating Configuration Messages
 
 The client MUST update its Passport Configuration Data with the name/value pairs from this
 message if it does not have a value stored for "ConfigVersion", or if the stored value is less than that
@@ -1666,13 +1562,13 @@ of the version returned by the configuration server. The client MUST NOT update 
 Configuration Data if its stored "ConfigVersion" value is equal to or greater than the "ConfigVersion"
 value returned by the configuration server.
 
-3.1.5.5  Processing Authentication Server Logout Messages
+##### 3.1.5.5 Processing Authentication Server Logout Messages
 
 The client MUST delete the cookie containing the authentication token for the authentication
 server (identified by the domain in the URL) from its store of Passport Cookies (as specified in
 section 3.1.1).
 
-3.1.5.6  Processing Authentication Server Redirect Messages
+##### 3.1.5.6 Processing Authentication Server Redirect Messages
 
 On receiving an Authentication Server Redirect message, the client MUST retry the sign-in request by
 sending an exact duplicate of the most recently sent Sign-in Request message stored in Last Sign-in
@@ -1684,10 +1580,11 @@ Passport Server Side Include (SSI) Version 1.4 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Request to the indicated URL. This duplicate MUST be retrieved from the client's stored state, as
+
+Request to the indicated URL. This duplicate MUST be retrieved from the client's stored state, as
 specified in section 3.1.1.
 
-3.1.5.7  Processing Token Response Messages
+##### 3.1.5.7 Processing Token Response Messages
 
 The client MUST respond by sending a First Authenticated Request message to the URL indicated by
 the ru parameter (typically the original partner server's URL) and setting Sent First Authenticated
@@ -1699,41 +1596,41 @@ specified in [RFC2109]) every time an HTTP request is issued to that server unti
 either by user action or in response to an Authentication Server Logout message (see section
 3.1.5.5).<9>
 
-3.1.5.8  Processing Set Token Messages
+##### 3.1.5.8 Processing Set Token Messages
 
 The tname parameter values, if present, are strictly informational and MAY be ignored. However, the
 Passport Cookies set on the client by the authentication server as part of the accompanying
 HTTP response MUST be passed to the partner server (as specified in [RFC2109]) every time an
 HTTP request is issued to that server until they are deleted by user action.<10>
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Partner Server Details
+### 3.2 Partner Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Partner servers are stateless and store no data that changes during the running of the protocol.
 They do, however, store some static, preconfigured information, as specified in section 1.5.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 The following diagram illustrates messages processing at the partner server.
 
@@ -1744,13 +1641,14 @@ Release: April 23, 2024
 
 24 / 39
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-PASS].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
 Figure 3: Message processing at partner server
 
-3.2.5.1  Processing First Authenticated Request Messages
+##### 3.2.5.1 Processing First Authenticated Request Messages
 
 The partner server MUST examine the from-PP parameter in the First Authenticated Request
 message and determine if it contains valid tokens, according to the validity criteria previously agreed
@@ -1768,7 +1666,7 @@ parameter in the received First Authenticated Request message. One or more corre
 parameter values MAY be included in the Set Token message. If included, they MUST contain the
 names of the HTTP cookies set on the client.
 
-3.2.5.2  Attempting to Access a Restricted Resource
+##### 3.2.5.2 Attempting to Access a Restricted Resource
 
 On receiving an HTTP request for a URL designated by the partner server as requiring Passport SSI
 Version 1.4 Protocol authentication, the partner server MUST send the client a Partner Server
@@ -1782,34 +1680,35 @@ Passport Server Side Include (SSI) Version 1.4 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Authentication Server Details
+### 3.3 Authentication Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 Authentication servers are stateless and store no data that changes during the running of the
 protocol. They do, however, store some static, preconfigured information, as specified in section 1.5.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
 The following diagram illustrates messages processing at the authentication server.
 
@@ -1820,13 +1719,14 @@ Release: April 23, 2024
 
 26 / 39
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-PASS].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
 Figure 4: Message processing at authentication server
 
-3.3.5.1  Processing Sign-in Request Messages
+##### 3.3.5.1 Processing Sign-in Request Messages
 
 The authentication server MUST determine, based on the sign-in parameter in the message, if it is
 the correct authentication server to handle this Sign-in Request message based on its configuration
@@ -1866,7 +1766,8 @@ Passport Server Side Include (SSI) Version 1.4 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-request to access the partner server on successful authentication, as previously agreed between the
+
+request to access the partner server on successful authentication, as previously agreed between the
 authentication server and partner server (as specified in section 1.5).
 
 As part of the HTTP response that includes the Token Response message, the authentication server
@@ -1879,7 +1780,7 @@ An Authentication Server-Instructed Update message containing the current config
 as configured on the authentication server (as specified in section 1.5), MAY be sent to the client
 along with the Token Response message.<12>
 
-3.3.5.2  Processing Token Request Messages
+##### 3.3.5.2 Processing Token Request Messages
 
 If the parameters relayed from the partner server are valid, according to the predetermined criteria
 (as specified in section 1.5), and the Token Request message is accompanied by an HTTP cookie or
@@ -1935,49 +1836,50 @@ Release: April 23, 2024
 
 28 / 39
 
-If the value of either the OrgVerb parameter or the OrgUrl parameter is invalid, the processing of the
+
+If the value of either the OrgVerb parameter or the OrgUrl parameter is invalid, the processing of the
 Token Request message is implementation-specific.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
-3.4  Configuration Server Details
+### 3.4 Configuration Server Details
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 Configuration servers are stateless and store no data that changes during the running of the
 protocol. They do, however, store some static, preconfigured information, as specified in section 1.5.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 None.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
-3.4.4.1  Processing HTTP GET
+##### 3.4.4.1 Processing HTTP GET
 
 On receiving an HTTP GET from a client, the configuration server MUST send a response containing
 an Update Configuration message. The parameters of the message MUST be set to the configuration
 server's preprovisioned configuration data, as specified in section 1.5.
 
-3.4.5  Processing Events and Sequencing Rules
+#### 3.4.5 Processing Events and Sequencing Rules
 
 None.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
@@ -1988,11 +1890,12 @@ Release: April 23, 2024
 
 29 / 39
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-PASS].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 This example illustrates how a user obtains access to a restricted resource using the Passport SSI
 Version 1.4 Protocol.
@@ -2019,7 +1922,8 @@ Release: April 23, 2024
 
 30 / 39
 
- WWW-Authenticate : Passport1.4
+
+ WWW-Authenticate : Passport1.4
  param1,param2
 
 3.  The Passport SSI Version 1.4 Protocol client recognizes this response as a Partner Server
@@ -2084,7 +1988,8 @@ Release: April 23, 2024
 
 31 / 39
 
- HTTP/1.1 200 OK
+
+ HTTP/1.1 200 OK
  Authentication-Info : Passport1.4
     tname=MSPAuth,tname=MSPProf
  Set-Cookie : MSPAuth = "auth blob in msn.com" ;
@@ -2099,17 +2004,18 @@ Release: April 23, 2024
 
 32 / 39
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Passport SSI Version 1.4
 Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 Communications to the authentication server and configuration server should use HTTP over TLS,
 as specified in [RFC2818].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2120,7 +2026,8 @@ Release: April 23, 2024
 
 33 / 39
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2188,7 +2095,8 @@ Release: April 23, 2024
 
 34 / 39
 
-<4> Section 2.2.8: On Windows, the client processes the Partner Server Challenge message only
+
+<4> Section 2.2.8: On Windows, the client processes the Partner Server Challenge message only
 when returned with a 302 HTTP status code.
 
 <5> Section 2.2.9: On Windows, the client processes the tokens, which are set as cookies, as part
@@ -2232,7 +2140,8 @@ Release: April 23, 2024
 
 35 / 39
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2276,7 +2185,8 @@ Release: April 23, 2024
 
 36 / 39
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2415,7 +2325,8 @@ Local events
 
 37 / 39
 
-   authentication server 29
+
+   authentication server 29
    client 24
    configuration server 29
 
@@ -2571,7 +2482,8 @@ Token Response message
 
 38 / 39
 
-Token Response Message message 17
+
+Token Response Message message 17
 Tracking changes 36
 Transport 12
 Transport - message 12

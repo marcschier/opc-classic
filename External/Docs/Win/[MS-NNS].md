@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 35
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: March 13, 2019
 
 2 / 35
 
-Date
+
+Date
 
 Revision
 History
@@ -501,201 +503,88 @@ Release: March 13, 2019
 
 3 / 35
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Handshake Message](#221-handshake-message)
+    - [2.2.2 Data Message](#222-data-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Underlying TCP Connection](#3111-underlying-tcp-connection)
+      - [3.1.1.2 Stream State](#3112-stream-state)
+      - [3.1.1.3 Required Protection Level](#3113-required-protection-level)
+      - [3.1.1.4 Negotiated Protection Level](#3114-negotiated-protection-level)
+      - [3.1.1.5 Allowed Impersonation Level](#3115-allowed-impersonation-level)
+      - [3.1.1.6 Negotiated Impersonation Level](#3116-negotiated-impersonation-level)
+      - [3.1.1.7 Client Credentials](#3117-client-credentials)
+      - [3.1.1.8 Security Provider Context](#3118-security-provider-context)
+      - [3.1.1.9 Framing Buffer](#3119-framing-buffer)
+      - [3.1.1.10 Channel Binding Token](#31110-channel-binding-token)
+      - [3.1.1.11 Target Name](#31111-target-name)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Application Invocation of the .NET NegotiateStream Protocol](#3141-application-invocation-of-the-net-negotiatestream-protocol)
+      - [3.1.4.2 Application Request to Send Data](#3142-application-request-to-send-data)
+      - [3.1.4.3 Application Request to Close Stream](#3143-application-request-to-close-stream)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 GSS_Init_sec_context Returns While in the CreatingSecurityToken State](#3151-gssinitseccontext-returns-while-in-the-creatingsecuritytoken-state)
+      - [3.1.5.2 Receiving Data in the WaitingForHandshakeMessage State](#3152-receiving-data-in-the-waitingforhandshakemessage-state)
+      - [3.1.5.3 GSS_Init_sec_context Returns While in the ProcessingFinalToken State](#3153-gssinitseccontext-returns-while-in-the-processingfinaltoken-state)
+      - [3.1.5.4 Receiving Data in the WaitingForHandshakeDone State](#3154-receiving-data-in-the-waitingforhandshakedone-state)
+      - [3.1.5.5 Receiving Data in the Authenticated State](#3155-receiving-data-in-the-authenticated-state)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Underlying TCP Connection](#3211-underlying-tcp-connection)
+      - [3.2.1.2 Stream State](#3212-stream-state)
+      - [3.2.1.3 Required Protection Level](#3213-required-protection-level)
+      - [3.2.1.4 Negotiated Protection Level](#3214-negotiated-protection-level)
+      - [3.2.1.5 Required Impersonation Level](#3215-required-impersonation-level)
+      - [3.2.1.6 Negotiated Impersonation Level](#3216-negotiated-impersonation-level)
+      - [3.2.1.7 Server Credentials](#3217-server-credentials)
+      - [3.2.1.8 Security Provider Context](#3218-security-provider-context)
+      - [3.2.1.9 Framing Buffer](#3219-framing-buffer)
+      - [3.2.1.10 Expected Channel Binding](#32110-expected-channel-binding)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Application Invocation of the .NET NegotiateStream Protocol](#3241-application-invocation-of-the-net-negotiatestream-protocol)
+      - [3.2.4.2 Application Request to Send Data](#3242-application-request-to-send-data)
+      - [3.2.4.3 Application Request to Close Stream](#3243-application-request-to-close-stream)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving Data in the WaitingForHandshakeMessage State](#3251-receiving-data-in-the-waitingforhandshakemessage-state)
+      - [3.2.5.2 GSS_Accept_sec_context Returns While in the CreatingSecurityToken State](#3252-gssacceptseccontext-returns-while-in-the-creatingsecuritytoken-state)
+      - [3.2.5.3 GSS_Accept_sec_context Returns While in the ProcessingFinalToken State](#3253-gssacceptseccontext-returns-while-in-the-processingfinaltoken-state)
+      - [3.2.5.4 Receiving Data in the Authenticated State](#3254-receiving-data-in-the-authenticated-state)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Handshake Message .................................................................................... 10
-Data Message ............................................................................................ 11
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-3.1.1.6
-3.1.1.7
-3.1.1.8
-3.1.1.9
-3.1.1.10
-3.1.1.11
-
-3  Protocol Details ..................................................................................................... 13
-Client Details ................................................................................................... 13
-Abstract Data Model .................................................................................... 13
-Underlying TCP Connection .................................................................... 14
-Stream State ........................................................................................ 14
-Required Protection Level ....................................................................... 14
-Negotiated Protection Level .................................................................... 14
-Allowed Impersonation Level .................................................................. 14
-Negotiated Impersonation Level .............................................................. 15
-Client Credentials .................................................................................. 15
-Security Provider Context....................................................................... 15
-Framing Buffer ..................................................................................... 15
-Channel Binding Token .......................................................................... 15
-Target Name ........................................................................................ 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Application Invocation of the .NET NegotiateStream Protocol ...................... 15
-Application Request to Send Data ........................................................... 16
-Application Request to Close Stream ....................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-GSS_Init_sec_context Returns While in the CreatingSecurityToken State ..... 16
-Receiving Data in the WaitingForHandshakeMessage State ......................... 17
-GSS_Init_sec_context Returns While in the ProcessingFinalToken State ....... 17
-Receiving Data in the WaitingForHandshakeDone State ............................. 18
-Receiving Data in the Authenticated State ................................................ 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Server Details .................................................................................................. 19
-Abstract Data Model .................................................................................... 19
-Underlying TCP Connection .................................................................... 19
-Stream State ........................................................................................ 20
-Required Protection Level ....................................................................... 20
-Negotiated Protection Level .................................................................... 20
-Required Impersonation Level ................................................................ 20
-Negotiated Impersonation Level .............................................................. 20
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-3.2.1.5
-3.2.1.6
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.1.5
-
-3.2
-
-[MS-NNS] - v20190313
-.NET NegotiateStream Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 35
-
-3.2.1.7
-3.2.1.8
-3.2.1.9
-3.2.1.10
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.6
-3.2.7
-
-Server Credentials ................................................................................ 20
-Security Provider Context....................................................................... 21
-Framing Buffer ..................................................................................... 21
-Expected Channel Binding ...................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Application Invocation of the .NET NegotiateStream Protocol ...................... 21
-Application Request to Send Data ........................................................... 21
-Application Request to Close Stream ....................................................... 22
-Message Processing Events and Sequencing Rules .......................................... 22
-Receiving Data in the WaitingForHandshakeMessage State ......................... 22
-GSS_Accept_sec_context Returns While in the CreatingSecurityToken State  22
-GSS_Accept_sec_context Returns While in the ProcessingFinalToken State .. 23
-Receiving Data in the Authenticated State ................................................ 23
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-
-4  Protocol Examples ................................................................................................. 25
-
-5  Security ................................................................................................................. 30
-Security Considerations for Implementers ........................................................... 30
-Index of Security Parameters ............................................................................ 30
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 31
-
-7  Change Tracking .................................................................................................... 32
-
-8  Index ..................................................................................................................... 33
-
-[MS-NNS] - v20190313
-.NET NegotiateStream Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 35
-
-1  Introduction
+## 1 Introduction
 
 The .NET NegotiateStream Protocol provides mutually authenticated and confidential communication
 over a TCP connection. It defines a framing mechanism used to transfer Generic Security Service
@@ -708,7 +597,7 @@ services (authentication, key derivation, and data encryption and decryption).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -735,14 +624,14 @@ no visibility into the contents of the token.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -762,7 +651,8 @@ Release: March 13, 2019
 
 6 / 35
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2743] Linn, J., "Generic Security Service Application Program Interface Version 2, Update 1", RFC
@@ -772,7 +662,7 @@ Release: March 13, 2019
 Security Service Application Program Interface (GSS-API) Negotiation Mechanism", RFC 4178, October
 2005, https://www.rfc-editor.org/info/rfc4178
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-KILE] Microsoft Corporation, "Kerberos Protocol Extensions".
 
@@ -784,7 +674,7 @@ Service (V5)", RFC 4120, July 2005, https://www.rfc-editor.org/rfc/rfc4120
 [RFC5246] Dierks, T., and Rescorla, E., "The Transport Layer Security (TLS) Protocol Version 1.2",
 RFC 5246, August 2008, https://www.rfc-editor.org/info/rfc5246
 
-1.3  Overview
+### 1.3 Overview
 
 The .NET NegotiateStream Protocol was introduced to address the need for a simple and lightweight
 authentication and security mechanism between a client and a server when the client or server needs
@@ -829,7 +719,8 @@ is protected using the agreed-upon authentication, integrity, and confidentialit
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-server can initiate a data transfer to the client, or the client can initiate a data transfer to the server. A
+
+server can initiate a data transfer to the client, or the client can initiate a data transfer to the server. A
 data transfer can happen at any time after the security context negotiation is complete.
 
 An error in the negotiation process or the data transfer process invalidates the stream, and a new
@@ -838,7 +729,7 @@ communicated to the other application taking part in the negotiation. An error i
 process can include transfer of data with an authentication, integrity, or confidentiality mechanism
 different from what was negotiated.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The .NET NegotiateStream Protocol relies on TCP for transport, and it relies on the SPNEGO security
 protocol and the NTLM security protocol for authentication and message security. If the client
@@ -857,11 +748,11 @@ encrypting application data, the .NET NegotiateStream Protocol allows authentica
 exchange to be performed securely without the need for digital certificates through the use of SPNEGO
 and NTLM.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol assumes that a TCP connection has been established between client and server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The .NET NegotiateStream Protocol is designed to secure information transmitted between a client and
 a server. The protocol provides security services without using digital certificates, and is thus useful to
@@ -875,7 +766,7 @@ Protocol enables:
 
   Data integrity and confidentiality
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -892,7 +783,8 @@ Release: March 13, 2019
 
 8 / 35
 
-Security and Authentication Methods: The .NET NegotiateStream Protocol supports the use of the
+
+Security and Authentication Methods: The .NET NegotiateStream Protocol supports the use of the
 SPNEGO and NTLM security protocols. The use of these security protocols is discussed in sections
 2.2, 3.1.4, and 3.2.5.
 
@@ -900,13 +792,13 @@ Capability Negotiation: This protocol performs explicit negotiation of a securit
 authentication, data integrity, and data confidentiality as specified in sections 2.2, 3.1.4, and
 3.2.5.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1. Vendors can define their
 own HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value,
 indicating the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -917,16 +809,17 @@ Release: March 13, 2019
 
 9 / 35
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The .NET NegotiateStream Protocol transports messages using a TCP stream. This protocol specifies a
 framing for messages over a TCP stream (see section 2.2 for message syntax). The protocol does not
 define a mechanism to establish the TCP connection; rather, an established TCP connection is a
 precondition for this protocol.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 There are two types of messages defined by the .NET NegotiateStream Protocol: Handshake messages
 and Data messages. Handshake messages are used to carry GSS-API security tokens used to
@@ -936,7 +829,7 @@ mechanism.
 
 All multi-byte integer fields are transmitted using little-endian representation.
 
-2.2.1  Handshake Message
+#### 2.2.1 Handshake Message
 
 The Handshake message structure is defined as follows.
 
@@ -1008,7 +901,8 @@ Release: March 13, 2019
 
 10 / 35
 
-HighByteOfPayloadSize (1 byte): An unsigned integer that, along with the
+
+HighByteOfPayloadSize (1 byte): An unsigned integer that, along with the
 
 LowByteOfPayloadSize field, defines the size, in bytes, of the AuthPayload field. This field
 represents the high-order byte of the payload size.
@@ -1057,7 +951,7 @@ ErrorCode (4 bytes): An HRESULT describing an error encountered by the remote si
 
 package, or the value 0x000006FE.
 
-2.2.2  Data Message
+#### 2.2.2 Data Message
 
 This section defines the structure of the data exchange messages. These messages are used to
 transfer application-specific data after the handshake phase is complete. The .NET NegotiateStream
@@ -1092,7 +986,8 @@ Release: March 13, 2019
 
 11 / 35
 
-PayloadSize (4 bytes): The unsigned size, in bytes, of the Payload field. The maximum value for
+
+PayloadSize (4 bytes): The unsigned size, in bytes, of the Payload field. The maximum value for
 
 this field is 0x0000FC30 (64,560).
 
@@ -1107,20 +1002,21 @@ Release: March 13, 2019
 
 12 / 35
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-NNS].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Client Details
+### 3.1 Client Details
 
 The following figure represents the client state machine for the .NET NegotiateStream Protocol. The
 remainder of this section will discuss the state machine in depth.
 
 Figure 1: Client details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. This specification does not mandate that implementations
@@ -1132,15 +1028,16 @@ maintains to participate in this protocol. This specification does not mandate t
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-adhere to this model, as long as their external behavior is consistent with that specified in this
+
+adhere to this model, as long as their external behavior is consistent with that specified in this
 specification.
 
-3.1.1.1  Underlying TCP Connection
+##### 3.1.1.1 Underlying TCP Connection
 
 The .NET NegotiateStream Protocol uses the Underlying TCP Connection to exchange data with the
 server.
 
-3.1.1.2  Stream State
+##### 3.1.1.2 Stream State
 
 The .NET NegotiateStream Protocol uses the Stream State to keep track of the state of the stream.
 The possible values for the state of the stream are:
@@ -1159,7 +1056,7 @@ The possible values for the state of the stream are:
 
   Closed
 
-3.1.1.3  Required Protection Level
+##### 3.1.1.3 Required Protection Level
 
 The .NET NegotiateStream Protocol uses the Required Protection Level to keep track of the
 protection level required by the client application. The possible values for the Required Protection
@@ -1173,13 +1070,13 @@ Level and Negotiated Protection Level are:
 
 EncryptAndSign
 
-3.1.1.4  Negotiated Protection Level
+##### 3.1.1.4 Negotiated Protection Level
 
 The .NET NegotiateStream Protocol uses the Negotiated Protection Level to keep track of the
 protection level agreed upon during the security context negotiation with the server. The possible
 values are the same as those for the Required Protection Level.
 
-3.1.1.5  Allowed Impersonation Level
+##### 3.1.1.5 Allowed Impersonation Level
 
 The .NET NegotiateStream Protocol uses the Allowed Impersonation Level to keep track of the way
 in which the client application has specified that its credentials can be used by the server application.
@@ -1203,55 +1100,56 @@ Release: March 13, 2019
 
 14 / 35
 
-3.1.1.6  Negotiated Impersonation Level
+
+##### 3.1.1.6 Negotiated Impersonation Level
 
 The .NET NegotiateStream Protocol uses the Negotiated Impersonation Level to keep track of the
 impersonation level agreed upon during the security context negotiation with the server. The possible
 values are the same as those for the Allowed Impersonation Level.
 
-3.1.1.7  Client Credentials
+##### 3.1.1.7 Client Credentials
 
 The .NET NegotiateStream Protocol uses the Client Credentials to store a GSS-API handle to the
 credentials specified by the client application for authenticating to the server.
 
-3.1.1.8  Security Provider Context
+##### 3.1.1.8 Security Provider Context
 
 The .NET NegotiateStream Protocol tracks the context of the current security provider chosen during
 the handshake phase.
 
-3.1.1.9  Framing Buffer
+##### 3.1.1.9 Framing Buffer
 
 The .NET NegotiateStream Protocol employs a buffer mechanism to handle the receiving and
 processing of full frames while in the handshake phase, and when the data payloads are signed,
 and/or encrypted.
 
-3.1.1.10
+##### 3.1.1.10 Channel Binding Token
 
-Channel Binding Token
+
 
 The .NET NegotiateStream Protocol uses the Channel Binding Token to store the channel binding
 token provided by the application.
 
-3.1.1.11
+##### 3.1.1.11 Target Name
 
-Target Name
+
 
 The .NET NegotiateStream Protocol uses the Target Name to store the target name of the server
 provided by the application.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The .NET NegotiateStream Protocol does not use timers. Protocols above and below this protocol layer
 are responsible for implementing any timers for time-out events.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The .NET NegotiateStream Protocol initialization for the client role is triggered by an application event.
 See section 3.1.4.1 for more details.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Application Invocation of the .NET NegotiateStream Protocol
+##### 3.1.4.1 Application Invocation of the .NET NegotiateStream Protocol
 
 The .NET NegotiateStream Protocol is triggered by an invocation from the application while in the
 Uninitialized state. If an application invocation is received when the Stream State is not equal to
@@ -1269,7 +1167,8 @@ specified desired_name MUST be passed to the GSS_Acquire_cred function ([RFC2743
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.1.1). If the Required Protection Level is None, the implementation MUST pass a desired_mechs
+
+2.1.1). If the Required Protection Level is None, the implementation MUST pass a desired_mechs
 parameter indicating the NTLM mechanism. Otherwise, the implementation MUST pass a
 desired_mechs parameter indicating the SPNEGO mechanism. The cred_usage parameter MUST be set
 to INITIATE-ONLY and the lifetime_req parameter MUST be set to 0.
@@ -1293,7 +1192,7 @@ Negotiated Protection Level is EncryptAndSign. If the conf_avail return value is
 integ_avail return value is true, the Negotiated Protection Level is Sign. Otherwise, the
 Negotiated Protection Level is None.
 
-3.1.4.2  Application Request to Send Data
+##### 3.1.4.2 Application Request to Send Data
 
 When the Stream State is set to Authenticated, the application can at any time request that the
 protocol transfer an application-specific data message to the server. If the application requests that
@@ -1308,15 +1207,15 @@ Data Message (as specified in section 2.2.2) and transmitted to the server via t
 Connection. If any other major_status is returned, the client application MUST be notified of the
 failure without writing anything to the Underlying TCP Connection.
 
-3.1.4.3  Application Request to Close Stream
+##### 3.1.4.3 Application Request to Close Stream
 
 The application can at any time request that the stream be closed. When this trigger is received, the
 Security Provider Context MUST be deleted, the Underlying TCP Connection MUST be closed,
 and the Stream State MUST be set to Closed.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  GSS_Init_sec_context Returns While in the CreatingSecurityToken State
+##### 3.1.5.1 GSS_Init_sec_context Returns While in the CreatingSecurityToken State
 
 If GSS_Init_sec_context returns a major_status of GSS_S_COMPLETE, the Negotiated Protection
 Level and Negotiated Impersonation Level MUST be set based on the returned state flags. The
@@ -1333,7 +1232,8 @@ HandshakeError (as specified in section 2.2) and transmitted to the server. The 
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Context MUST be deleted and the Stream State MUST be set to Uninitialized. Otherwise, the
+
+Context MUST be deleted and the Stream State MUST be set to Uninitialized. Otherwise, the
 output_token MUST be wrapped in the AuthPayload field of a Handshake message with the
 HandshakeId set to HandshakeDone (as specified in section 2.2) and transmitted to the server. In
 this case, the Stream State MUST be set to WaitingForHandshakeDone.
@@ -1348,7 +1248,7 @@ If any other major_status is returned, an HRESULT error code describing the erro
 in the AuthPayload of a Handshake message with the HandshakeId set to HandshakeError (as
 specified in section 2.2) and sent to the server. The Stream State MUST be set to Uninitialized.
 
-3.1.5.2  Receiving Data in the WaitingForHandshakeMessage State
+##### 3.1.5.2 Receiving Data in the WaitingForHandshakeMessage State
 
 The first five bytes received MUST be interpreted as the header of a Handshake message (as
 specified in section 2.2). The payload size MUST be reassembled from the HighByteOfPayloadSize
@@ -1387,7 +1287,7 @@ Stream State MUST be set to Closed. The application MUST be notified of the fail
 application wishes to retry the authentication, it can do so by invoking a new instance of the
 protocol with a new Underlying TCP Connection.)
 
-3.1.5.3  GSS_Init_sec_context Returns While in the ProcessingFinalToken State
+##### 3.1.5.3 GSS_Init_sec_context Returns While in the ProcessingFinalToken State
 
 If GSS_Init_sec_context returns a major_status of GSS_S_COMPLETE, the Negotiated Protection
 Level and Negotiated Impersonation Level MUST be set based on the returned state flags. If the
@@ -1402,7 +1302,8 @@ MUST be wrapped in the AuthPayload field of a Handshake message with the Handsha
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-HandshakeError (as specified in section 2.2) and transmitted to the server. The Security Provider
+
+HandshakeError (as specified in section 2.2) and transmitted to the server. The Security Provider
 Context MUST be deleted, and the Stream State MUST be set to Uninitialized. Otherwise, the
 Stream State MUST be set to Authenticated and the client application MUST be notified of the
 successful authentication.
@@ -1412,7 +1313,7 @@ a Handshake message with the HandshakeId set to HandshakeError (as specified in 
 transmitted to the server. The Security Provider Context MUST be deleted and the Stream State
 MUST be set to Uninitialized. The application MUST be notified of the authentication failure.
 
-3.1.5.4  Receiving Data in the WaitingForHandshakeDone State
+##### 3.1.5.4 Receiving Data in the WaitingForHandshakeDone State
 
 The first five bytes received MUST be interpreted as the header of a Handshake message (as specified
 in section 2.2). The payload size MUST be reassembled from the HighByteOfPayloadSize and
@@ -1434,7 +1335,7 @@ be closed, and the Stream State MUST be set to Closed. The application MUST be n
 failure. (If the application wishes to retry the authentication, it can do so by invoking a new instance
 of the protocol with a new Underlying TCP Connection.)
 
-3.1.5.5  Receiving Data in the Authenticated State
+##### 3.1.5.5 Receiving Data in the Authenticated State
 
 When data arrives on the Underlying TCP Connection, the following actions MUST be taken:
 
@@ -1453,11 +1354,11 @@ the function returns a major_status of GSS_S_COMPLETE, the output_message MUST b
 to the application. If the function returns any other major_status, the application MUST be notified
 of the failure and the buffered message MUST be discarded.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 If the server closes the Underlying TCP Connection, the Security Provider Context MUST be
 deleted, the Underlying TCP Connection MUST be closed, and the Stream State MUST be set to
@@ -1470,25 +1371,26 @@ Closed. The application MUST be notified that the server has closed the connecti
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-NNS].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
-3.2  Server Details
+### 3.2 Server Details
 
 The following figure represents the server state machine for the .NET NegotiateStream Protocol. The
 remainder of this section will discuss the state machine in depth.
 
 Figure 2: Server details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. This specification does not mandate that implementations
 adhere to this model as long as their external behavior is consistent with that specified in this
 specification.
 
-3.2.1.1  Underlying TCP Connection
+##### 3.2.1.1 Underlying TCP Connection
 
 The .NET NegotiateStream Protocol uses the Underlying TCP Connection to exchange data with the
 client.
@@ -1500,7 +1402,8 @@ client.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.2.1.2  Stream State
+
+##### 3.2.1.2 Stream State
 
 The .NET NegotiateStream Protocol uses the Stream State to keep track of the state of the stream.
 The possible values for the state of the stream are:
@@ -1519,7 +1422,7 @@ ProcessingFinalToken
 
   Closed
 
-3.2.1.3  Required Protection Level
+##### 3.2.1.3 Required Protection Level
 
 The .NET NegotiateStream Protocol uses the Required Protection Level to keep track of the
 protection level required by the server application. The possible values for Required Protection
@@ -1533,13 +1436,13 @@ Level and Negotiated Protection Level are:
 
 EncryptAndSign
 
-3.2.1.4  Negotiated Protection Level
+##### 3.2.1.4 Negotiated Protection Level
 
 The .NET NegotiateStream Protocol uses the Negotiated Protection Level to keep track of the
 protection level agreed upon during the security context negotiation with the client. The possible
 values are the same as those for the Required Protection Level.
 
-3.2.1.5  Required Impersonation Level
+##### 3.2.1.5 Required Impersonation Level
 
 The .NET NegotiateStream Protocol uses the Required Impersonation Level to keep track of the
 way in which the server application intends to use the credentials specified by the client. The possible
@@ -1555,13 +1458,13 @@ Impersonation
 
   Delegation
 
-3.2.1.6  Negotiated Impersonation Level
+##### 3.2.1.6 Negotiated Impersonation Level
 
 The .NET NegotiateStream Protocol uses the Negotiated Impersonation Level to keep track of the
 impersonation level agreed upon during the security context negotiation with the client. The possible
 values are the same as those for the Required Impersonation Level.
 
-3.2.1.7  Server Credentials
+##### 3.2.1.7 Server Credentials
 
 The .NET NegotiateStream Protocol uses the Server Credentials to store a GSS-API handle to the
 credentials specified by the server application for authenticating itself to the client.
@@ -1573,37 +1476,38 @@ credentials specified by the server application for authenticating itself to the
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.2.1.8  Security Provider Context
+
+##### 3.2.1.8 Security Provider Context
 
 The .NET NegotiateStream Protocol tracks the context of the current security provider chosen during
 the handshake phase.
 
-3.2.1.9  Framing Buffer
+##### 3.2.1.9 Framing Buffer
 
 The .NET NegotiateStream Protocol employs a buffer mechanism to handle the receiving and
 processing of full frames while in the handshake phase, and when the data payloads are signed,
 and/or encrypted.
 
-3.2.1.10
+##### 3.2.1.10 Expected Channel Binding
 
-Expected Channel Binding
+
 
 The .NET NegotiateStream Protocol uses the Expected Channel Binding to store the channel binding
 token, which the client is expected to provide along with its credentials.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The .NET NegotiateStream Protocol does not use timers. Protocols above and below this protocol layer
 are responsible for implementing any timers for time-out events.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The .NET NegotiateStream Protocol initialization for the server role is triggered by an application
 event. See section 3.2.4.1 for more details.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Application Invocation of the .NET NegotiateStream Protocol
+##### 3.2.4.1 Application Invocation of the .NET NegotiateStream Protocol
 
 The .NET NegotiateStream Protocol is triggered by an invocation from the application while the
 Stream State is set to Uninitialized. If an application invocation is received when the Stream State
@@ -1622,7 +1526,7 @@ the application of the failure without writing anything to the Underlying TCP Co
 the implementation MUST store the returned credential handle as the Server Credentials and set the
 Stream State to WaitingForHandshakeMessage.
 
-3.2.4.2  Application Request to Send Data
+##### 3.2.4.2 Application Request to Send Data
 
 When the Stream State is set to Authenticated, the application can at any time request that the
 protocol transfer an application-specific data message to the client. If the application requests that
@@ -1638,22 +1542,23 @@ parameter to the GSS_Wrap function ([RFC2743] section 2.3.3) along with the Secu
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Context as the context_handle parameter. The conf_req_flag MUST be set if and only if the
+
+Context as the context_handle parameter. The conf_req_flag MUST be set if and only if the
 Negotiated Protection Level is EncryptAndSign, and the qop_req parameter MUST be set to 0. If
 the function returns a major_status of GSS_S_COMPLETE, the output_message MUST be wrapped in a
 Data message (as specified in section 2.2) and transmitted to the client via the Underlying TCP
 Connection. If any other major_status is returned, the server application MUST be notified of the
 failure without writing anything to the Underlying TCP Connection.
 
-3.2.4.3  Application Request to Close Stream
+##### 3.2.4.3 Application Request to Close Stream
 
 The application can at any time request that the stream be closed. When this trigger is received, the
 Security Provider Context MUST be deleted, the Underlying TCP Connection MUST be closed,
 and the Stream State MUST be set to Closed.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving Data in the WaitingForHandshakeMessage State
+##### 3.2.5.1 Receiving Data in the WaitingForHandshakeMessage State
 
 The first five bytes received MUST be interpreted as the header of a Handshake message (as specified
 in section 2.2). The payload size MUST be reassembled from the HighByteOfPayloadSize and
@@ -1693,7 +1598,7 @@ Stream State MUST be set to Closed. The application MUST be notified of the fail
 application wishes to retry the authentication, it can do so by invoking a new instance of the
 protocol with a new Underlying TCP Connection.)
 
-3.2.5.2  GSS_Accept_sec_context Returns While in the CreatingSecurityToken State
+##### 3.2.5.2 GSS_Accept_sec_context Returns While in the CreatingSecurityToken State
 
 If GSS_Accept_sec_context returns a major_status of GSS_S_COMPLETE, the Negotiated Protection
 Level and Negotiated Impersonation Level MUST be set based on the returned state flags. The
@@ -1707,7 +1612,8 @@ Impersonation Level is less than the Required Impersonation Level or the Negotia
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Protection Level is less than the Required Protection Level, the value 0x000006FE MUST be
+
+Protection Level is less than the Required Protection Level, the value 0x000006FE MUST be
 wrapped in the AuthPayload field of a Handshake message with the HandshakeId set to
 HandshakeError (as specified in section 2.2) and transmitted to the client. The Security Provider
 Context MUST be deleted, and the Stream State MUST be set to Uninitialized. Otherwise, the
@@ -1727,7 +1633,7 @@ the AuthPayload field of a Handshake message with the HandshakeId set to Handsha
 specified in section 2.2) and transmitted to the client. The Security Provider Context MUST be
 deleted, and the Stream State MUST be set to Uninitialized.
 
-3.2.5.3  GSS_Accept_sec_context Returns While in the ProcessingFinalToken State
+##### 3.2.5.3 GSS_Accept_sec_context Returns While in the ProcessingFinalToken State
 
 If GSS_Accept_sec_context returns a major_status of GSS_S_COMPLETE, the Negotiated Protection
 Level and Negotiated Impersonation Level MUST be set based on the returned state flags. The
@@ -1747,7 +1653,7 @@ specified in section 2.2) and transmitted to the client. The Security Provider C
 deleted and the Stream State MUST be set to Uninitialized. The application MUST be notified of the
 authentication failure.
 
-3.2.5.4  Receiving Data in the Authenticated State
+##### 3.2.5.4 Receiving Data in the Authenticated State
 
 After sending a HandshakeDone message to the client, the server can receive Data messages from the
 client at any time. When data arrives on the Underlying TCP Connection, the following actions
@@ -1775,11 +1681,12 @@ failure and the buffered message MUST be discarded.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 If the client closes the Underlying TCP Connection, the Security Provider Context MUST be
 deleted, the Underlying TCP Connection MUST be closed, and the Stream State MUST be set to
@@ -1792,11 +1699,12 @@ Release: March 13, 2019
 
 24 / 35
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-NNS].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 Figure 3: Protocol sequence example
 
@@ -1823,7 +1731,8 @@ AuthPayload field of a HandShakeInProgress message, and sends this message to th
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.  The client receives the HandshakeInProgress message, and passes the token in the AuthPayload
+
+3.  The client receives the HandshakeInProgress message, and passes the token in the AuthPayload
 
 to GSS_Init_sec_context. The number of HandshakeInProgress messages exchanged between
 the client and server is dependent on the authentication level selected by the client and the
@@ -1860,7 +1769,8 @@ Release: March 13, 2019
 
 26 / 35
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-NNS].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -1889,7 +1799,8 @@ AuthPayload field of a HandShakeInProgress message, and sends this message to th
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-NNS].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -1934,7 +1845,8 @@ message, which is sent to the server.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.  Upon receipt of this HandshakeInProgress message, the server passes the AuthPayload to the
+
+2.  Upon receipt of this HandshakeInProgress message, the server passes the AuthPayload to the
 
 GSS_Accept_sec_context function. In this example, this function returns an error indicating
 that the client's credentials have been rejected.
@@ -1955,16 +1867,17 @@ Release: March 13, 2019
 
 29 / 35
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The .NET NegotiateStream Protocol is dependent on the security services of the SPNEGO and NTLM
 security packages. Before using the .NET NegotiateStream Protocol, implementers will want to
 carefully review the characteristics of the NTLM security package and all security providers used by
 SPNEGO on the platforms where the implementation will be used.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security Parameter
 
@@ -1987,7 +1900,8 @@ Release: March 13, 2019
 
 30 / 35
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2031,7 +1945,8 @@ Release: March 13, 2019
 
 31 / 35
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2085,7 +2000,8 @@ Release: March 13, 2019
 
 32 / 35
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2219,7 +2135,8 @@ Examples - overview 25
 
 33 / 35
 
-F
+
+F
 
 Fields - vendor-extensible 9
 
@@ -2359,7 +2276,8 @@ Server
 
 34 / 35
 
-      Stream state 20
+
+      Stream state 20
       TCP connection - underlying 19
    higher-layer triggered events
       application

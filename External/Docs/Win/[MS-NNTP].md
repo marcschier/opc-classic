@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: June 1, 2017
 
 2 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -489,187 +491,80 @@ Release: June 1, 2017
 
 3 / 32
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 AUTHINFO GENERIC Extensions](#221-authinfo-generic-extensions)
+      - [2.2.1.1 NNTP_AUTH_NTLM_Initiation_Command Message](#2211-nntpauthntlminitiationcommand-message)
+      - [2.2.1.2 NNTP_NTLM_Supported_Response Message](#2212-nntpntlmsupportedresponse-message)
+      - [2.2.1.3 NNTP_AUTH_NTLM_Blob_Response Message](#2213-nntpauthntlmblobresponse-message)
+      - [2.2.1.4 NNTP_AUTH_Fail_Response Message](#2214-nntpauthfailresponse-message)
+      - [2.2.1.5 NNTP_AUTH_NTLM_Succeeded_Response Message](#2215-nntpauthntlmsucceededresponse-message)
+      - [2.2.1.6 NNTP_AUTH_NTLM_Blob_Command Message](#2216-nntpauthntlmblobcommand-message)
+      - [2.2.1.7 AUTHINFO GENERIC Discovery Message](#2217-authinfo-generic-discovery-message)
+      - [2.2.1.8 NNTP_NTLM_Not_Supported_Response](#2218-nntpntlmnotsupportedresponse)
+    - [2.2.2 NNTP Server Messages](#222-nntp-server-messages)
+    - [2.2.3 NNTP Client Messages](#223-nntp-client-messages)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 NNTP State Model](#3111-nntp-state-model)
+      - [3.1.1.2 NTLM Software Interaction](#3112-ntlm-software-interaction)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving an NNTP_NTLM_Supported_Response Message](#3151-receiving-an-nntpntlmsupportedresponse-message)
+      - [3.1.5.2 Receiving an NNTP_NTLM_Not_Supported_Response](#3152-receiving-an-nntpntlmnotsupportedresponse)
+      - [3.1.5.3 Receiving an NNTP_AUTH_NTLM_Blob_Response](#3153-receiving-an-nntpauthntlmblobresponse)
+        - [3.1.5.3.1 Error from NTLM](#31531-error-from-ntlm)
+        - [3.1.5.3.2 NTLM Reports Success and Returns an NTLM Message](#31532-ntlm-reports-success-and-returns-an-ntlm-message)
+      - [3.1.5.4 Receiving an NNTP_AUTH_NTLM_Succeeded_Response Message](#3154-receiving-an-nntpauthntlmsucceededresponse-message)
+      - [3.1.5.5 Receiving an NNTP_AUTH_Fail_Response](#3155-receiving-an-nntpauthfailresponse)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 NNTP State Model](#3211-nntp-state-model)
+      - [3.2.1.2 NTLM Software Interaction](#3212-ntlm-software-interaction)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving an NNTP_AUTH_NTLM_Initiation_Command Message](#3251-receiving-an-nntpauthntlminitiationcommand-message)
+      - [3.2.5.2 Receiving an NNTP_AUTH_NTLM_Blob_Command Message](#3252-receiving-an-nntpauthntlmblobcommand-message)
+        - [3.2.5.2.1 NTLM Returns Success and an NTLM Message](#32521-ntlm-returns-success-and-an-ntlm-message)
+        - [3.2.5.2.2 NTLM Indicates the Authentication Completed Successfully](#32522-ntlm-indicates-the-authentication-completed-successfully)
+        - [3.2.5.2.3 NTLM Indicates That the User Name or Password Was Incorrect](#32523-ntlm-indicates-that-the-user-name-or-password-was-incorrect)
+        - [3.2.5.2.4 NTLM Returns a Failure Status Indicating Any Other Error](#32524-ntlm-returns-a-failure-status-indicating-any-other-error)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 NNTP Client Successfully Authenticates to an NNTP Server](#41-nntp-client-successfully-authenticates-to-an-nntp-server)
+  - [4.2 NNTP Client Does Not Successfully Authenticate to an NNTP Server](#42-nntp-client-does-not-successfully-authenticate-to-an-nntp-server)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-AUTHINFO GENERIC Extensions ................................................................... 11
-NNTP_AUTH_NTLM_Initiation_Command Message ..................................... 12
-NNTP_NTLM_Supported_Response Message ............................................. 12
-NNTP_AUTH_NTLM_Blob_Response Message ............................................ 12
-NNTP_AUTH_Fail_Response Message ....................................................... 12
-NNTP_AUTH_NTLM_Succeeded_Response Message ................................... 12
-NNTP_AUTH_NTLM_Blob_Command Message ........................................... 13
-AUTHINFO GENERIC Discovery Message .................................................. 13
-NNTP_NTLM_Not_Supported_Response ................................................... 13
-NNTP Server Messages ................................................................................ 13
-NNTP Client Messages ................................................................................. 14
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-
-2.2.2
-2.2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3  Protocol Details ..................................................................................................... 15
-Client Details ................................................................................................... 15
-Abstract Data Model .................................................................................... 15
-NNTP State Model ................................................................................. 15
-NTLM Software Interaction ..................................................................... 16
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Receiving an NNTP_NTLM_Supported_Response Message .......................... 17
-Receiving an NNTP_NTLM_Not_Supported_Response ................................. 17
-Receiving an NNTP_AUTH_NTLM_Blob_Response ...................................... 17
-Error from NTLM .............................................................................. 17
-NTLM Reports Success and Returns an NTLM Message ......................... 18
-Receiving an NNTP_AUTH_NTLM_Succeeded_Response Message ................ 18
-Receiving an NNTP_AUTH_Fail_Response ................................................. 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Server Details .................................................................................................. 19
-Abstract Data Model .................................................................................... 19
-NNTP State Model ................................................................................. 19
-NTLM Software Interaction ..................................................................... 20
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Receiving an NNTP_AUTH_NTLM_Initiation_Command Message .................. 21
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.5.3.1
-3.1.5.3.2
-
-3.1.5.4
-3.1.5.5
-
-3.2.1.1
-3.2.1.2
-
-3.1.6
-3.1.7
-
-3.2.5.1
-
-3.2.1
-
-3.2
-
-[MS-NNTP] - v20170601
-NT LAN Manager (NTLM) Authentication: Network News Transfer Protocol (NNTP) Extension
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 32
-
-3.2.5.2
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-3.2.5.2.4
-
-Receiving an NNTP_AUTH_NTLM_Blob_Command Message ........................ 21
-NTLM Returns Success and an NTLM Message ..................................... 21
-NTLM Indicates the Authentication Completed Successfully ................... 22
-NTLM Indicates That the User Name or Password Was Incorrect ............ 22
-NTLM Returns a Failure Status Indicating Any Other Error .................... 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 23
-NNTP Client Successfully Authenticates to an NNTP Server .................................... 23
-NNTP Client Does Not Successfully Authenticate to an NNTP Server ........................ 25
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 28
-Security Considerations for Implementers ........................................................... 28
-Index of Security Parameters ............................................................................ 28
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 29
-
-7  Change Tracking .................................................................................................... 30
-
-8  Index ..................................................................................................................... 31
-
-[MS-NNTP] - v20170601
-NT LAN Manager (NTLM) Authentication: Network News Transfer Protocol (NNTP) Extension
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 32
-
-1  Introduction
+## 1 Introduction
 
 The NT LAN Manager (NTLM) Authentication: Network News Transfer Protocol (NNTP) Extension
 specifies the use of NTLM authentication by NNTP to facilitate client authentication to an NNTP server.
@@ -685,7 +580,7 @@ is specified in [RFC2980] section 3.1.3.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -742,7 +637,8 @@ Release: June 1, 2017
 
 6 / 32
 
-NTLM message: A message that carries authentication information. Its payload data is passed to
+
+NTLM message: A message that carries authentication information. Its payload data is passed to
 the application that supports embedded NTLM authentication by the NTLM software installed on
 the local computer. NTLM messages are transmitted between the client and server embedded
 within the application protocol that is using NTLM authentication. There are three types of NTLM
@@ -762,14 +658,14 @@ Protocol.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -793,7 +689,7 @@ editor.org/rfc/rfc2980.txt
 [RFC977] Kantor, B., and Lapsley, P., "Network News Transfer Protocol", RFC 977, February, 1986,
 https://www.rfc-editor.org/info/rfc977
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [SSPI] Microsoft Corporation, "SSPI", https://learn.microsoft.com/en-
 us/windows/desktop/SecAuthN/sspi
@@ -805,11 +701,12 @@ Release: June 1, 2017
 
 7 / 32
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-NNTP].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
-1.3  Overview
+### 1.3 Overview
 
 Client applications that connect to the Network News Transport Protocol (NNTP) service that is
 included in Windows 2000 Server operating system and Windows Server 2003 operating system can
@@ -868,7 +765,8 @@ Release: June 1, 2017
 
 8 / 32
 
-4.  If the authentication is continuing, the response message is stripped of the NNTP padding, base64
+
+4.  If the authentication is continuing, the response message is stripped of the NNTP padding, base64
 decoded, and passed into the NTLM software, upon which the NTLM software can return another
 NTLM message that needs to be sent to the server. Steps 2 through 4 are repeated until
 authentication succeeds or fails.
@@ -927,7 +825,7 @@ The Multipurpose Internet Mail Extensions (MIME) base64 encoding method, as spec
 
 The NTLM Authentication Protocol, as specified in [MS-NLMP].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The NT LAN Manager (NTLM) Authentication: Network News Transfer Protocol (NNTP) Extension uses
 the NNTP AUTHINFO GENERIC extension mechanism, as specified in [RFC2980], and is an embedded
@@ -945,7 +843,8 @@ Release: June 1, 2017
 
 9 / 32
 
-client obtains NTLM messages from the local NTLM software or how the NNTP server processes NTLM
+
+client obtains NTLM messages from the local NTLM software or how the NNTP server processes NTLM
 messages.
 
 The NNTP client and NNTP server implementations depend on the availability of an implementation of
@@ -954,18 +853,18 @@ messages; and depend on the availability of the base64 encoding and decoding mec
 specified in [RFC1521], to encode and decode the NTLM messages that are embedded in NNTP
 packets.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Because the NTLM Authentication: NNTP Extension depends on NTLM to authenticate the client to the
 server, both server and client need to have access to an implementation of the NTLM Authentication
 Protocol, as specified in [MS-NLMP], that is capable of supporting connection-oriented NTLM.<2>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The NTLM Authentication: NNTP Extension is used only when implementing an NNTP client that needs
 to authenticate to an NNTP server by using NTLM authentication.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues for the NTLM Authentication: NNTP Extension in the following
 areas:
@@ -991,11 +890,11 @@ supported authentication mechanisms. If NTLM is supported, the server will inclu
 "NTLM" in the list. The messages involved are formally described in other sections of this
 document.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The NTLM Authentication: NNTP Extension does not have any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The NTLM Authentication: NNTP Extension does not use any standards assignments.
 
@@ -1006,18 +905,19 @@ Release: June 1, 2017
 
 10 / 32
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how NTLM Authentication: NNTP Extension messages are transported
 and message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 The NTLM Authentication: NNTP Extension does not establish transport connections. Instead,
 extension messages are encapsulated in NNTP commands and responses. Section 2.2 specifies how
 these messages MUST be encapsulated in NNTP commands.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The NTLM Authentication: NNTP Extension messages are divided into three categories, depending on
 whether the message was sent by the server or the client. The message categories are:
@@ -1031,7 +931,7 @@ whether the message was sent by the server or the client. The message categories
 The formal syntax of messages is provided in Augmented Backus-Naur Form (ABNF), as specified in
 [RFC4234].
 
-2.2.1  AUTHINFO GENERIC Extensions
+#### 2.2.1 AUTHINFO GENERIC Extensions
 
 The first category of NNTP messages are messages that fall within the AUTHINFO GENERIC
 extensibility framework. These messages are defined in [RFC2980]. Some of the messages have
@@ -1073,13 +973,14 @@ NT LAN Manager (NTLM) Authentication: Network News Transfer Protocol (NNTP) Exte
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-NNTP_AUTH_Other_Failure_Response is defined as any NNTP message other than
+
+NNTP_AUTH_Other_Failure_Response is defined as any NNTP message other than
 NNTP_AUTH_NTLM_Succeeded_Response, NNTP_AUTH_Fail_Response and
 NNTP_AUTH_NTLM_Blob_Response. The interpretation of NNTP_AUTH_Other_Failure_Response,
 and the suggested client action when receiving such a message, is defined in [RFC2980]. This
 message represents an exit from AUTH and is, as such, not really part of AUTH negotiation.
 
-2.2.1.1  NNTP_AUTH_NTLM_Initiation_Command Message
+##### 2.2.1.1 NNTP_AUTH_NTLM_Initiation_Command Message
 
 Section 3.1.3 of [RFC2980] defines the syntax of the AUTHINFO GENERIC command that is used to
 initiate authentication. The authenticator parameter MUST be the string "NTLM" for the NTLM
@@ -1089,7 +990,7 @@ referred to as NNTP_AUTH_NTLM_Initiation_Command in this document:
 
  AUTHINFO GENERIC NTLM<CR><LF>
 
-2.2.1.2  NNTP_NTLM_Supported_Response Message
+##### 2.2.1.2 NNTP_NTLM_Supported_Response Message
 
 If NTLM is supported, the NNTP server will respond with an NNTP message that is prefixed with a
 status code of 381 to indicate that NTLM is supported. The only useful data in this message is the
@@ -1101,7 +1002,7 @@ NNTP_NTLM_Supported_Response in this document.
 
 <human-readable-string> MUST be ignored by the client.
 
-2.2.1.3  NNTP_AUTH_NTLM_Blob_Response Message
+##### 2.2.1.3 NNTP_AUTH_NTLM_Blob_Response Message
 
 NNTP_AUTH_NTLM_Blob_Response is defined as follows. This message is partially defined in
 [RFC2980]. The status code 381 indicates ongoing authentication and indicates that the <base64-
@@ -1110,7 +1011,7 @@ MUST de-encapsulate the data and pass it to the NTLM software.
 
  381 <base64-encoded-NTLM-message><CR><LF>
 
-2.2.1.4  NNTP_AUTH_Fail_Response Message
+##### 2.2.1.4 NNTP_AUTH_Fail_Response Message
 
 NNTP_AUTH_Fail_Response is defined as follows. This message is defined in [RFC2980] and
 indicates that the authentication has terminated unsuccessfully—either because the user name or
@@ -1119,7 +1020,7 @@ error.
 
  502 <human-readable-string><CR><LF>
 
-2.2.1.5  NNTP_AUTH_NTLM_Succeeded_Response Message
+##### 2.2.1.5 NNTP_AUTH_NTLM_Succeeded_Response Message
 
 NNTP_AUTH_NTLM_Succeeded_Response is defined as follows. This message is defined in
 [RFC2980] and indicates that the authentication negotiation has completed with the client successfully
@@ -1132,9 +1033,10 @@ Release: June 1, 2017
 
 12 / 32
 
- 281 <human-readable-string><CR><LF>
 
-2.2.1.6  NNTP_AUTH_NTLM_Blob_Command Message
+ 281 <human-readable-string><CR><LF>
+
+##### 2.2.1.6 NNTP_AUTH_NTLM_Blob_Command Message
 
 NTLM messages encapsulated by the client and sent to the server, are referred to as
 NNTP_AUTH_NTLM_Blob_Command in this document. They have the following syntax, as defined
@@ -1142,7 +1044,7 @@ in ABNF, and conform to the prescription of [RFC2980].
 
  AUTHINFO GENERIC < base64-encoded-NTLM-message><CR><LF>
 
-2.2.1.7  AUTHINFO GENERIC Discovery Message
+##### 2.2.1.7 AUTHINFO GENERIC Discovery Message
 
 The NTLM Authentication: NNTP Extension also supports the discovery of supported authentication
 procedures, as defined in [RFC2980] section 3.1.3. When the AUTHINFO GENERIC command is
@@ -1151,7 +1053,7 @@ authentication mechanisms using the syntax that is defined in [RFC2980]. The NTL
 indicated by the string "NTLM", which is returned if NTLM authentication is enabled for the NNTP
 server.
 
-2.2.1.8  NNTP_NTLM_Not_Supported_Response
+##### 2.2.1.8 NNTP_NTLM_Not_Supported_Response
 
  If NTLM is not supported, the NNTP server will respond with an NNTP message that is prefixed with a
 status code of 485 to indicate that NTLM is not supported. The only useful data in this message is the
@@ -1162,7 +1064,7 @@ document.
 
 <human-readable-string> MUST be ignored by the client.
 
-2.2.2  NNTP Server Messages
+#### 2.2.2 NNTP Server Messages
 
 This section defines the creation of NNTP_AUTH_NTLM_Blob_Response messages. These NTLM
 messages are sent by the server and MUST be encapsulated as follows, in order to conform to syntax
@@ -1195,13 +1097,14 @@ Release: June 1, 2017
 
 13 / 32
 
-2.  Remove the NNTP response code string "381 " (the ASCII digits 3, 8, and 1 followed by the ASCII
+
+2.  Remove the NNTP response code string "381 " (the ASCII digits 3, 8, and 1 followed by the ASCII
 
 space character 0x20).
 
 3.  Use base64 to decode the NNTP data in order to produce the original NTLM message data.
 
-2.2.3  NNTP Client Messages
+#### 2.2.3 NNTP Client Messages
 
 This section defines the processing of NNTP_AUTH_NTLM_Blob_Command messages. These NTLM
 messages are sent by the client and MUST be encapsulated as follows, in order to conform to the
@@ -1238,20 +1141,21 @@ Release: June 1, 2017
 
 14 / 32
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-NNTP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
  The following sections specify details of the NTLM Authentication: NNTP Extension, including abstract
 data models and message processing rules.
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
-3.1.1.1  NNTP State Model
+##### 3.1.1.1 NNTP State Model
 
 Figure 2: Client state model for NNTP_NTLM authentication
 
@@ -1270,7 +1174,8 @@ Release: June 1, 2017
 
 15 / 32
 
-This is the state of the client after the NNTP_AUTH_NTLM_Initiation_Command has been sent.
+
+This is the state of the client after the NNTP_AUTH_NTLM_Initiation_Command has been sent.
 
 3.
 
@@ -1319,7 +1224,7 @@ For either client or server: any failure is reported by the NTLM software.
 This is the state of the client when it exits the inside_authentication state. The rules for how the
 inside_authentication state is exited are specified in section 3.1.5.
 
-3.1.1.2  NTLM Software Interaction
+##### 3.1.1.2 NTLM Software Interaction
 
 During the inside_authentication phase, the NNTP client invokes the NTLM software, as described
 in [MS-NLMP] section 3.1. The NTLM Authentication Protocol is used with these options:
@@ -1352,7 +1257,8 @@ Release: June 1, 2017
 
 16 / 32
 
-
+
+
 
 
 
@@ -1376,26 +1282,26 @@ Failures reported from the NTLM software (which can occur for any reason, includ
 data being passed in or implementation-specific errors), might be reported to the client by
 NTLM and cause the client to transition to the completed_authentication state.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no timers that are specific to authentication.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 There is no protocol-specific initialization.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events in common to all parts of this protocol.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The NTLM Authentication: NNTP Extension is driven by a series of message exchanges between an
 NNTP server and an NNTP client. The rules that govern the sequencing of commands and the internal
 states of the client and server are defined by [RFC2980] and [MS-NLMP]. Section 3.1.1 completely
 defines how the rules that are specified in [RFC2980] and [MS-NLMP] govern NNTP authentication.
 
-3.1.5.1  Receiving an NNTP_NTLM_Supported_Response Message
+##### 3.1.5.1 Receiving an NNTP_NTLM_Supported_Response Message
 
 The expected state is sent_authentication_request.
 
@@ -1405,13 +1311,13 @@ NLMP]. The NTLM message is then encapsulated as previously defined and sent to t
 
 The state of the client is changed to inside_authentication.
 
-3.1.5.2  Receiving an NNTP_NTLM_Not_Supported_Response
+##### 3.1.5.2 Receiving an NNTP_NTLM_Not_Supported_Response
 
 The expected state is sent_authentication_request.
 
 When a client receives this message, it MUST abort the NTLM authentication attempt.
 
-3.1.5.3  Receiving an NNTP_AUTH_NTLM_Blob_Response
+##### 3.1.5.3 Receiving an NNTP_AUTH_NTLM_Blob_Response
 
 The expected state is inside_authentication.
 
@@ -1422,11 +1328,12 @@ Release: June 1, 2017
 
 17 / 32
 
-When a client receives this message, it MUST de-encapsulate it to obtain the embedded NTLM
+
+When a client receives this message, it MUST de-encapsulate it to obtain the embedded NTLM
 message and pass it to the NTLM software for processing. The NTLM software may then either
 report an error or report success, and return an NTLM message to be sent to the server.
 
-3.1.5.3.1 Error from NTLM
+###### 3.1.5.3.1 Error from NTLM
 
 If the NTLM software reports an error, the client MUST change its internal state to
 completed_authentication and assume that the authentication has failed. The client can then take
@@ -1434,12 +1341,12 @@ any appropriate action. Typical actions are to attempt other non-authentication�
 commands or to disconnect the connection. This document does not mandate any specific course of
 action.
 
-3.1.5.3.2 NTLM Reports Success and Returns an NTLM Message
+###### 3.1.5.3.2 NTLM Reports Success and Returns an NTLM Message
 
 The NTLM message MUST be encapsulated and sent to the server. No change occurs in the state of
 the client.
 
-3.1.5.4  Receiving an NNTP_AUTH_NTLM_Succeeded_Response Message
+##### 3.1.5.4 Receiving an NNTP_AUTH_NTLM_Succeeded_Response Message
 
 The expected state is inside_authentication.
 
@@ -1447,7 +1354,7 @@ The NNTP client MUST change its internal state to completed_authentication and a
 authentication succeeded. The client can then take any appropriate action. This document does not
 mandate any specific course of action.
 
-3.1.5.5  Receiving an NNTP_AUTH_Fail_Response
+##### 3.1.5.5 Receiving an NNTP_AUTH_Fail_Response
 
 The expected state is inside_authentication.
 
@@ -1455,11 +1362,11 @@ The NNTP client MUST change its internal state to completed_authentication and a
 authentication has failed. The client can then take any appropriate action. This document does not
 mandate any specific course of action.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1470,15 +1377,16 @@ Release: June 1, 2017
 
 18 / 32
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-NNTP].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
-3.2.1.1  NNTP State Model
+##### 3.2.1.1 NNTP State Model
 
 Figure 3: Server state model for NNTP_NTLM authentication
 
@@ -1505,7 +1413,8 @@ Release: June 1, 2017
 
 19 / 32
 
-This is the state that a server enters after it has sent an NNTP_NTLM_Supported_Response. In this
+
+This is the state that a server enters after it has sent an NNTP_NTLM_Supported_Response. In this
 state, the server initializes the NTLM software and repeats the following steps:
 
   Waits for a message from the client.
@@ -1540,7 +1449,7 @@ NNTP_AUTH_Fail_Response message, as described in [RFC2980].
 This is the state of the server when it exits the inside_authentication state. The rules for how the
 inside_authentication state is exited are defined in section 3.2.5.
 
-3.2.1.2  NTLM Software Interaction
+##### 3.2.1.2 NTLM Software Interaction
 
 During the inside_authentication state, the NNTP server invokes the NTLM software, as described
 in [MS-NLMP] section 3.2. The NTLM protocol is used with these options:
@@ -1586,33 +1495,34 @@ Release: June 1, 2017
 
 20 / 32
 
-
+
+
 
 If a failure occurs on the server because of any other reason than an incorrect password error,
 the server enters the completed_authentication state and sends the client an
 NNTP_AUTH_Fail_Response message. Upon receiving this message, the client enters the
 completed_authentication state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no timers that are specific to authentication.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 There is no protocol-specific initialization.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events in common to all parts of this protocol.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The NTLM Authentication: NNTP Extension is driven by a series of message exchanges between an
 NNTP server and an NNTP client. The rules that govern the sequencing of commands and the internal
 states of the client and server are defined by [RFC2980] and [MS-NLMP]. Section 3.2.1 completely
 defines how the rules that are specified in [RFC2980] and [MS-NLMP] govern NNTP authentication.
 
-3.2.5.1  Receiving an NNTP_AUTH_NTLM_Initiation_Command Message
+##### 3.2.5.1 Receiving an NNTP_AUTH_NTLM_Initiation_Command Message
 
 The expected state is start.
 
@@ -1622,7 +1532,7 @@ message if it supports NTLM and then change its state to the inside_authenticati
 If the server does not support NTLM, it MUST respond with the NNTP_NTLM_Not_Supported_Response
 message, and change its state to the completed_authentication state.
 
-3.2.5.2  Receiving an NNTP_AUTH_NTLM_Blob_Command Message
+##### 3.2.5.2 Receiving an NNTP_AUTH_NTLM_Blob_Command Message
 
 The expected state is inside_authentication.
 
@@ -1644,7 +1554,7 @@ NLMP].
 
 corruption.
 
-3.2.5.2.1 NTLM Returns Success and an NTLM Message
+###### 3.2.5.2.1 NTLM Returns Success and an NTLM Message
 
 The NTLM message MUST be encapsulated and sent to the client. The internal state of the NNTP
 server remains unchanged.
@@ -1656,26 +1566,27 @@ NT LAN Manager (NTLM) Authentication: Network News Transfer Protocol (NNTP) Exte
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.5.2.2 NTLM Indicates the Authentication Completed Successfully
+
+###### 3.2.5.2.2 NTLM Indicates the Authentication Completed Successfully
 
 The server MUST return the NNTP_AUTH_NTLM_Succeeded_Response message and change its
 internal state to completed_authentication.<3>
 
-3.2.5.2.3 NTLM Indicates That the User Name or Password Was Incorrect
+###### 3.2.5.2.3 NTLM Indicates That the User Name or Password Was Incorrect
 
 The server MUST return the NNTP_AUTH_Fail_Response message and change its internal state to
 completed_authentication.
 
-3.2.5.2.4 NTLM Returns a Failure Status Indicating Any Other Error
+###### 3.2.5.2.4 NTLM Returns a Failure Status Indicating Any Other Error
 
 The server MUST return the NNTP_AUTH_Fail_Response message and change its internal state to
 completed_authentication.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1686,16 +1597,17 @@ Release: June 1, 2017
 
 22 / 32
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-NNTP].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe operations that are used in a common scenario to illustrate the
 function of the NTLM Authentication: NNTP Extension.
 
-4.1  NNTP Client Successfully Authenticates to an NNTP Server
+### 4.1 NNTP Client Successfully Authenticates to an NNTP Server
 
 This section illustrates the NTLM Authentication: NNTP Extension with an example scenario in which an
 NNTP client successfully authenticates to an NNTP server by using NTLM.
@@ -1721,7 +1633,8 @@ Release: June 1, 2017
 
 23 / 32
 
-3.  The client sends an NNTP_AUTH_NTLM_Blob_Command message that contains a base64-encoded
+
+3.  The client sends an NNTP_AUTH_NTLM_Blob_Command message that contains a base64-encoded
 
 NTLM NEGOTIATE_MESSAGE.
 
@@ -1783,7 +1696,8 @@ Release: June 1, 2017
 
 24 / 32
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-NNTP].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1797,7 +1711,7 @@ Release: June 1, 2017
 
  281 Authentication ok
 
-4.2  NNTP Client Does Not Successfully Authenticate to an NNTP Server
+### 4.2 NNTP Client Does Not Successfully Authenticate to an NNTP Server
 
 This section illustrates the NTLM Authentication: NNTP Extension with an example scenario in which an
 NNTP client attempts NTLM authentication to an NNTP server and the authentication fails.
@@ -1821,7 +1735,8 @@ Release: June 1, 2017
 
 25 / 32
 
- 381 Protocol supported, proceed
+
+ 381 Protocol supported, proceed
 
 3.  The client sends an NNTP_AUTH_NTLM_Blob_Command message.
 
@@ -1878,7 +1793,8 @@ Release: June 1, 2017
 
 26 / 32
 
- 0x00000070  43 00 4C 00 49 00 2D 00 36 00 36 00 C5 BA F9 1A   C.L.I.-.6.6.E:y.
+
+ 0x00000070  43 00 4C 00 49 00 2D 00 36 00 36 00 C5 BA F9 1A   C.L.I.-.6.6.E:y.
  0x00000080  17 D0 E8 20 00 00 00 00 00 00 00 00 00 00 00 00   .Ph ............
  0x00000090  00 00 00 00 A9 35 04 43 BF 02 9A CC 77 77 F4 B4   ....)5.C?._Lwwt4
  0x000000A0  BB 57 31 EB 26 5B 64 4A DA 2C 71 51 A0 8B 23 77   ;W1k&[dJZ,qQ #w
@@ -1895,18 +1811,19 @@ Release: June 1, 2017
 
 27 / 32
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the NTLM Authentication:
 NNTP Extension.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 Implementers need to be aware of the security considerations of using NTLM authentication.
 Information about the security considerations of using NTLM authentication is specified in [MS-NLMP]
 section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -1924,7 +1841,8 @@ Release: June 1, 2017
 
 28 / 32
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1970,7 +1888,8 @@ Release: June 1, 2017
 
 29 / 32
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1982,7 +1901,8 @@ Release: June 1, 2017
 
 30 / 32
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2145,7 +2065,8 @@ NT LAN Manager (NTLM) Authentication: Network News Transfer Protocol (NNTP) Exte
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-      NNTP_AUTH_NTLM_Initiation_Command
+
+      NNTP_AUTH_NTLM_Initiation_Command
 
 message - receiving 21
 

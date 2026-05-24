@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 85
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 85
 
-Date
+
+Date
 
 Revision
 History
@@ -517,7 +519,8 @@ Release: April 23, 2024
 
 3 / 85
 
-Date
+
+Date
 
 Revision
 History
@@ -591,424 +594,169 @@ Release: April 23, 2024
 
 4 / 85
 
-Table of Contents
 
-1.3
-
-1.3.1
-
-1.1
-1.2
-
-1.3.1.1
-
-1.2.1
-1.2.2
-
-1.3.1.1.1
-1.3.1.1.2
-1.3.1.1.3
-1.3.1.1.4
-1.3.1.1.5
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 8
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Clipboard Basics ........................................................................................... 9
-Data Types ........................................................................................... 10
-Generic .......................................................................................... 10
-Palette ........................................................................................... 10
-Metafile .......................................................................................... 10
-File List .......................................................................................... 10
-File Stream ..................................................................................... 10
-Clipboard Format .................................................................................. 11
-Monitoring Clipboard Updates ................................................................. 11
-Delayed Rendering of Clipboard Data....................................................... 12
-Clipboard Redirection Virtual Channel Protocol ................................................ 12
-Initialization Sequence ........................................................................... 12
-Data Transfer Sequences ....................................................................... 13
-Copy Sequence ............................................................................... 14
-Locking and Unlocking Clipboard Data ................................................ 14
-Paste Sequence ............................................................................... 14
-Interacting with Local Clipboard and Applications ...................................... 14
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 17
-
-1.3.2.2.1
-1.3.2.2.2
-1.3.2.2.3
-
-1.3.1.2
-1.3.1.3
-1.3.1.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.2.1
-1.3.2.2
-
-1.3.2.3
-
-1.3.2
-
-2.2.3
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.3.1
-
-2.2.2.1.1
-
-2.2.1
-2.2.2
-
-2.2.2.1.1.1
-
-2.2.2.2
-2.2.2.3
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Message Syntax ............................................................................................... 18
-Clipboard PDU Header (CLIPRDR_HEADER) .................................................... 18
-Initialization Sequence ................................................................................ 19
-Clipboard Capabilities PDU (CLIPRDR_CAPS) ............................................ 19
-Capability Set (CLIPRDR_CAPS_SET) ................................................. 20
-General Capability Set (CLIPRDR_GENERAL_CAPABILITY) ............... 20
-Server Monitor Ready PDU (CLIPRDR_MONITOR_READY) ........................... 21
-Client Temporary Directory PDU (CLIPRDR_TEMP_DIRECTORY) .................. 22
-Copy Sequence .......................................................................................... 22
-Format List PDU (CLIPRDR_FORMAT_LIST) .............................................. 22
-Short Format Names (CLIPRDR_SHORT_FORMAT_NAMES) ................... 23
-Short Format Name (CLIPRDR_SHORT_FORMAT_NAME) ................. 23
-Long Format Names (CLIPRDR_LONG_FORMAT_NAMES) ...................... 23
-Long Format Name (CLIPRDR_LONG_FORMAT_NAME) .................... 24
-Format List Response PDU (FORMAT_LIST_RESPONSE) ............................. 24
-Locking and Unlocking Clipboard Data ........................................................... 25
-Lock Clipboard Data PDU (CLIPRDR_LOCK_CLIPDATA) .............................. 25
-Unlock Clipboard Data PDU (CLIPRDR_UNLOCK_CLIPDATA) ....................... 25
-Paste Sequence .......................................................................................... 26
-Format Data Request PDU (CLIPRDR_FORMAT_DATA_REQUEST) ................ 26
-Format Data Response PDU (CLIPRDR_FORMAT_DATA_RESPONSE) ............ 26
-Packed Metafile Payload (CLIPRDR_MFPICT) ....................................... 26
-Packed Palette Payload (CLIPRDR_PALETTE) ....................................... 28
-
-2.2.5.2.1
-2.2.5.2.2
-
-2.2.4.1
-2.2.4.2
-
-2.2.5.1
-2.2.5.2
-
-2.2.3.1.1.1
-
-2.2.3.1.2.1
-
-2.2.3.1.1
-
-2.2.3.1.2
-
-2.2.3.2
-
-2.2.4
-
-2.2.5
-
-[MS-RDPECLIP] - v20240423
-Remote Desktop Protocol: Clipboard Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 85
-
-2.2.5.2.2.1
-
-2.2.5.2.3
-
-2.2.5.2.3.1
-
-Palette Entry (PALETTEENTRY) .................................................... 28
-Packed File List (CLIPRDR_FILELIST) ................................................. 28
-File Descriptor (CLIPRDR_FILEDESCRIPTOR) ................................. 29
-File Contents Request PDU (CLIPRDR_FILECONTENTS_REQUEST) ............... 30
-File Contents Response PDU (CLIPRDR_FILECONTENTS_RESPONSE) ........... 32
-
-2.2.5.3
-2.2.5.4
-
-3.1
-
-3.1.5
-
-3.1.1
-
-3.1.5.4
-
-3.1.5.3
-
-3.1.4.1
-3.1.4.2
-
-3.1.5.1
-3.1.5.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-3.1.5.3.1
-3.1.5.3.2
-3.1.5.3.3
-3.1.5.3.4
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-
-3  Protocol Details ..................................................................................................... 33
-Common Details .............................................................................................. 33
-Abstract Data Model .................................................................................... 33
-Clipboard Format ID Map ....................................................................... 33
-File List ................................................................................................ 33
-Direct File Access .................................................................................. 34
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 34
-Local Clipboard Update .......................................................................... 34
-Local Paste Operation ............................................................................ 34
-Processing Events and Sequencing Rules ....................................................... 35
-Processing a Clipboard PDU .................................................................... 35
-Copy Sequence ..................................................................................... 35
-Sending a Format List PDU ............................................................... 35
-Processing a Format List PDU ............................................................ 35
-Sending a Format List Response PDU ................................................. 36
-Processing a Format List Response PDU ............................................. 36
-Locking and Unlocking Clipboard Data ..................................................... 36
-Sending a Lock Clipboard Data PDU ................................................... 36
-Processing a Lock Clipboard Data PDU ............................................... 36
-Sending an Unlock Clipboard Data PDU .............................................. 36
-Processing a Unlock Clipboard Data PDU ............................................ 36
-Paste Sequence .................................................................................... 37
-Sending a Format Data Request PDU ................................................. 37
-Processing a Format Data Request PDU .............................................. 37
-Sending a Format Data Response PDU ............................................... 37
-Processing a Format Data Response PDU ............................................ 38
-Sending a File Contents Request PDU ................................................. 38
-Processing a File Contents Request PDU ............................................. 38
-Sending a File Contents Response PDU............................................... 38
-Processing a File Contents Response PDU ........................................... 39
-Timer Events .............................................................................................. 39
-Other Local Events ...................................................................................... 39
-Client Details ................................................................................................... 39
-Abstract Data Model .................................................................................... 39
-Server Capabilities ................................................................................ 39
-Timers ...................................................................................................... 39
-Initialization ............................................................................................... 39
-Higher-Layer Triggered Events ..................................................................... 39
-Processing Events and Sequencing Rules ....................................................... 40
-Initialization Sequence ........................................................................... 40
-Processing a Server Clipboard Capabilities PDU ................................... 40
-Processing a Monitor Ready PDU ....................................................... 40
-Sending a Client Clipboard Capabilities PDU ........................................ 40
-Sending a Temporary Directory PDU .................................................. 40
-Timer Events .............................................................................................. 40
-Other Local Events ...................................................................................... 41
-Server Details .................................................................................................. 41
-Abstract Data Model .................................................................................... 41
-Client Capabilities ................................................................................. 41
-Client Temporary Directory .................................................................... 41
-
-3.1.5.4.1
-3.1.5.4.2
-3.1.5.4.3
-3.1.5.4.4
-3.1.5.4.5
-3.1.5.4.6
-3.1.5.4.7
-3.1.5.4.8
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.3.1.1
-3.3.1.2
-
-3.2.6
-3.2.7
-
-3.1.6
-3.1.7
-
-3.2.5.1
-
-3.2.1.1
-
-3.3.1
-
-3.2.1
-
-3.3
-
-3.2
-
-[MS-RDPECLIP] - v20240423
-Remote Desktop Protocol: Clipboard Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 85
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-Timers ...................................................................................................... 41
-Initialization ............................................................................................... 41
-Higher-Layer Triggered Events ..................................................................... 41
-Processing Events and Sequencing Rules ....................................................... 41
-Initialization Sequence ........................................................................... 41
-Sending a Server Clipboard Capabilities PDU ....................................... 41
-Sending a Monitor Ready PDU ........................................................... 42
-Processing a Client Clipboard Capabilities PDU .................................... 42
-Processing a Temporary Directory PDU............................................... 42
-Timer Events .............................................................................................. 42
-Other Local Events ...................................................................................... 42
-
-3.3.5.1
-
-3.3.5.1.1
-3.3.5.1.2
-3.3.5.1.3
-3.3.5.1.4
-
-3.3.6
-3.3.7
-
-4.4
-
-4.3
-
-4.1
-
-4.2
-
-4.2.1
-4.2.2
-
-4.3.1
-4.3.2
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-4.1.6
-
-4  Protocol Examples ................................................................................................. 43
-Annotated Initialization Sequence ...................................................................... 43
-Server Clipboard Capabilities PDU ................................................................. 43
-Server Monitor Ready PDU ........................................................................... 43
-Client Clipboard Capabilities PDU .................................................................. 43
-Client Temporary Directory PDU ................................................................... 44
-Format List PDU ......................................................................................... 45
-Format List Response PDU ........................................................................... 45
-Annotated Copy Sequence ................................................................................. 45
-Format List PDU ......................................................................................... 46
-Format List Response PDU ........................................................................... 46
-Locking and Unlocking Clipboard Data ................................................................ 47
-Lock Clipboard Data PDU ............................................................................. 47
-Unlock Clipboard Data PDU .......................................................................... 47
-Annotated Paste Sequence ................................................................................ 47
-Format Data Request PDU ........................................................................... 47
-Format Data Response PDU ......................................................................... 47
-File Contents Request PDU ........................................................................... 48
-Requesting the Size of a File................................................................... 48
-Requesting the Contents of a File ............................................................ 48
-File Contents Response PDU ......................................................................... 48
-Sending the Size of a File ....................................................................... 48
-Sending the Contents of a File ................................................................ 49
-Metafile Data Contained in a Format Data Response PDU ................................. 49
-Palette Data Contained in a Format Data Response PDU .................................. 54
-Retrieving a File List ......................................................................................... 74
-Format List PDU ......................................................................................... 74
-Format List Response PDU ........................................................................... 74
-Format Data Request PDU ........................................................................... 74
-Format Data Response PDU ......................................................................... 75
-
-4.5.1
-4.5.2
-4.5.3
-4.5.4
-
-4.4.1
-4.4.2
-4.4.3
-
-4.4.3.1
-4.4.3.2
-
-4.4.4.1
-4.4.4.2
-
-4.4.5
-4.4.6
-
-4.4.4
-
-4.5
-
-5  Security ................................................................................................................. 79
-Security Considerations for Implementers ........................................................... 79
-Index of Security Parameters ............................................................................ 79
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 80
-
-7  Change Tracking .................................................................................................... 82
-
-8  Index ..................................................................................................................... 83
-
-[MS-RDPECLIP] - v20240423
-Remote Desktop Protocol: Clipboard Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 85
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Clipboard Basics](#131-clipboard-basics)
+      - [1.3.1.1 Data Types](#1311-data-types)
+        - [1.3.1.1.1 Generic](#13111-generic)
+        - [1.3.1.1.2 Palette](#13112-palette)
+        - [1.3.1.1.3 Metafile](#13113-metafile)
+        - [1.3.1.1.4 File List](#13114-file-list)
+        - [1.3.1.1.5 File Stream](#13115-file-stream)
+      - [1.3.1.2 Clipboard Format](#1312-clipboard-format)
+      - [1.3.1.3 Monitoring Clipboard Updates](#1313-monitoring-clipboard-updates)
+      - [1.3.1.4 Delayed Rendering of Clipboard Data](#1314-delayed-rendering-of-clipboard-data)
+    - [1.3.2 Clipboard Redirection Virtual Channel Protocol](#132-clipboard-redirection-virtual-channel-protocol)
+      - [1.3.2.1 Initialization Sequence](#1321-initialization-sequence)
+      - [1.3.2.2 Data Transfer Sequences](#1322-data-transfer-sequences)
+        - [1.3.2.2.1 Copy Sequence](#13221-copy-sequence)
+        - [1.3.2.2.2 Locking and Unlocking Clipboard Data](#13222-locking-and-unlocking-clipboard-data)
+        - [1.3.2.2.3 Paste Sequence](#13223-paste-sequence)
+      - [1.3.2.3 Interacting with Local Clipboard and Applications](#1323-interacting-with-local-clipboard-and-applications)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Clipboard PDU Header (CLIPRDR_HEADER)](#221-clipboard-pdu-header-cliprdrheader)
+    - [2.2.2 Initialization Sequence](#222-initialization-sequence)
+      - [2.2.2.1 Clipboard Capabilities PDU (CLIPRDR_CAPS)](#2221-clipboard-capabilities-pdu-cliprdrcaps)
+        - [2.2.2.1.1 Capability Set (CLIPRDR_CAPS_SET)](#22211-capability-set-cliprdrcapsset)
+          - [2.2.2.1.1.1 General Capability Set (CLIPRDR_GENERAL_CAPABILITY)](#222111-general-capability-set-cliprdrgeneralcapability)
+      - [2.2.2.2 Server Monitor Ready PDU (CLIPRDR_MONITOR_READY)](#2222-server-monitor-ready-pdu-cliprdrmonitorready)
+      - [2.2.2.3 Client Temporary Directory PDU (CLIPRDR_TEMP_DIRECTORY)](#2223-client-temporary-directory-pdu-cliprdrtempdirectory)
+    - [2.2.3 Copy Sequence](#223-copy-sequence)
+      - [2.2.3.1 Format List PDU (CLIPRDR_FORMAT_LIST)](#2231-format-list-pdu-cliprdrformatlist)
+        - [2.2.3.1.1 Short Format Names (CLIPRDR_SHORT_FORMAT_NAMES)](#22311-short-format-names-cliprdrshortformatnames)
+          - [2.2.3.1.1.1 Short Format Name (CLIPRDR_SHORT_FORMAT_NAME)](#223111-short-format-name-cliprdrshortformatname)
+        - [2.2.3.1.2 Long Format Names (CLIPRDR_LONG_FORMAT_NAMES)](#22312-long-format-names-cliprdrlongformatnames)
+          - [2.2.3.1.2.1 Long Format Name (CLIPRDR_LONG_FORMAT_NAME)](#223121-long-format-name-cliprdrlongformatname)
+      - [2.2.3.2 Format List Response PDU (FORMAT_LIST_RESPONSE)](#2232-format-list-response-pdu-formatlistresponse)
+    - [2.2.4 Locking and Unlocking Clipboard Data](#224-locking-and-unlocking-clipboard-data)
+      - [2.2.4.1 Lock Clipboard Data PDU (CLIPRDR_LOCK_CLIPDATA)](#2241-lock-clipboard-data-pdu-cliprdrlockclipdata)
+      - [2.2.4.2 Unlock Clipboard Data PDU (CLIPRDR_UNLOCK_CLIPDATA)](#2242-unlock-clipboard-data-pdu-cliprdrunlockclipdata)
+    - [2.2.5 Paste Sequence](#225-paste-sequence)
+      - [2.2.5.1 Format Data Request PDU (CLIPRDR_FORMAT_DATA_REQUEST)](#2251-format-data-request-pdu-cliprdrformatdatarequest)
+      - [2.2.5.2 Format Data Response PDU (CLIPRDR_FORMAT_DATA_RESPONSE)](#2252-format-data-response-pdu-cliprdrformatdataresponse)
+        - [2.2.5.2.1 Packed Metafile Payload (CLIPRDR_MFPICT)](#22521-packed-metafile-payload-cliprdrmfpict)
+        - [2.2.5.2.2 Packed Palette Payload (CLIPRDR_PALETTE)](#22522-packed-palette-payload-cliprdrpalette)
+          - [2.2.5.2.2.1 Palette Entry (PALETTEENTRY)](#225221-palette-entry-paletteentry)
+        - [2.2.5.2.3 Packed File List (CLIPRDR_FILELIST)](#22523-packed-file-list-cliprdrfilelist)
+          - [2.2.5.2.3.1 File Descriptor (CLIPRDR_FILEDESCRIPTOR)](#225231-file-descriptor-cliprdrfiledescriptor)
+      - [2.2.5.3 File Contents Request PDU (CLIPRDR_FILECONTENTS_REQUEST)](#2253-file-contents-request-pdu-cliprdrfilecontentsrequest)
+      - [2.2.5.4 File Contents Response PDU (CLIPRDR_FILECONTENTS_RESPONSE)](#2254-file-contents-response-pdu-cliprdrfilecontentsresponse)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Clipboard Format ID Map](#3111-clipboard-format-id-map)
+      - [3.1.1.2 File List](#3112-file-list)
+      - [3.1.1.3 Direct File Access](#3113-direct-file-access)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Local Clipboard Update](#3141-local-clipboard-update)
+      - [3.1.4.2 Local Paste Operation](#3142-local-paste-operation)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing a Clipboard PDU](#3151-processing-a-clipboard-pdu)
+      - [3.1.5.2 Copy Sequence](#3152-copy-sequence)
+        - [3.1.5.2.1 Sending a Format List PDU](#31521-sending-a-format-list-pdu)
+        - [3.1.5.2.2 Processing a Format List PDU](#31522-processing-a-format-list-pdu)
+        - [3.1.5.2.3 Sending a Format List Response PDU](#31523-sending-a-format-list-response-pdu)
+        - [3.1.5.2.4 Processing a Format List Response PDU](#31524-processing-a-format-list-response-pdu)
+      - [3.1.5.3 Locking and Unlocking Clipboard Data](#3153-locking-and-unlocking-clipboard-data)
+        - [3.1.5.3.1 Sending a Lock Clipboard Data PDU](#31531-sending-a-lock-clipboard-data-pdu)
+        - [3.1.5.3.2 Processing a Lock Clipboard Data PDU](#31532-processing-a-lock-clipboard-data-pdu)
+        - [3.1.5.3.3 Sending an Unlock Clipboard Data PDU](#31533-sending-an-unlock-clipboard-data-pdu)
+        - [3.1.5.3.4 Processing a Unlock Clipboard Data PDU](#31534-processing-a-unlock-clipboard-data-pdu)
+      - [3.1.5.4 Paste Sequence](#3154-paste-sequence)
+        - [3.1.5.4.1 Sending a Format Data Request PDU](#31541-sending-a-format-data-request-pdu)
+        - [3.1.5.4.2 Processing a Format Data Request PDU](#31542-processing-a-format-data-request-pdu)
+        - [3.1.5.4.3 Sending a Format Data Response PDU](#31543-sending-a-format-data-response-pdu)
+        - [3.1.5.4.4 Processing a Format Data Response PDU](#31544-processing-a-format-data-response-pdu)
+        - [3.1.5.4.5 Sending a File Contents Request PDU](#31545-sending-a-file-contents-request-pdu)
+        - [3.1.5.4.6 Processing a File Contents Request PDU](#31546-processing-a-file-contents-request-pdu)
+        - [3.1.5.4.7 Sending a File Contents Response PDU](#31547-sending-a-file-contents-response-pdu)
+        - [3.1.5.4.8 Processing a File Contents Response PDU](#31548-processing-a-file-contents-response-pdu)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Server Capabilities](#3211-server-capabilities)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Initialization Sequence](#3251-initialization-sequence)
+        - [3.2.5.1.1 Processing a Server Clipboard Capabilities PDU](#32511-processing-a-server-clipboard-capabilities-pdu)
+        - [3.2.5.1.2 Processing a Monitor Ready PDU](#32512-processing-a-monitor-ready-pdu)
+        - [3.2.5.1.3 Sending a Client Clipboard Capabilities PDU](#32513-sending-a-client-clipboard-capabilities-pdu)
+        - [3.2.5.1.4 Sending a Temporary Directory PDU](#32514-sending-a-temporary-directory-pdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Client Capabilities](#3311-client-capabilities)
+      - [3.3.1.2 Client Temporary Directory](#3312-client-temporary-directory)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Initialization Sequence](#3351-initialization-sequence)
+        - [3.3.5.1.1 Sending a Server Clipboard Capabilities PDU](#33511-sending-a-server-clipboard-capabilities-pdu)
+        - [3.3.5.1.2 Sending a Monitor Ready PDU](#33512-sending-a-monitor-ready-pdu)
+        - [3.3.5.1.3 Processing a Client Clipboard Capabilities PDU](#33513-processing-a-client-clipboard-capabilities-pdu)
+        - [3.3.5.1.4 Processing a Temporary Directory PDU](#33514-processing-a-temporary-directory-pdu)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Annotated Initialization Sequence](#41-annotated-initialization-sequence)
+    - [4.1.1 Server Clipboard Capabilities PDU](#411-server-clipboard-capabilities-pdu)
+    - [4.1.2 Server Monitor Ready PDU](#412-server-monitor-ready-pdu)
+    - [4.1.3 Client Clipboard Capabilities PDU](#413-client-clipboard-capabilities-pdu)
+    - [4.1.4 Client Temporary Directory PDU](#414-client-temporary-directory-pdu)
+    - [4.1.5 Format List PDU](#415-format-list-pdu)
+    - [4.1.6 Format List Response PDU](#416-format-list-response-pdu)
+  - [4.2 Annotated Copy Sequence](#42-annotated-copy-sequence)
+    - [4.2.1 Format List PDU](#421-format-list-pdu)
+    - [4.2.2 Format List Response PDU](#422-format-list-response-pdu)
+  - [4.3 Locking and Unlocking Clipboard Data](#43-locking-and-unlocking-clipboard-data)
+    - [4.3.1 Lock Clipboard Data PDU](#431-lock-clipboard-data-pdu)
+    - [4.3.2 Unlock Clipboard Data PDU](#432-unlock-clipboard-data-pdu)
+  - [4.4 Annotated Paste Sequence](#44-annotated-paste-sequence)
+    - [4.4.1 Format Data Request PDU](#441-format-data-request-pdu)
+    - [4.4.2 Format Data Response PDU](#442-format-data-response-pdu)
+    - [4.4.3 File Contents Request PDU](#443-file-contents-request-pdu)
+      - [4.4.3.1 Requesting the Size of a File](#4431-requesting-the-size-of-a-file)
+      - [4.4.3.2 Requesting the Contents of a File](#4432-requesting-the-contents-of-a-file)
+    - [4.4.4 File Contents Response PDU](#444-file-contents-response-pdu)
+      - [4.4.4.1 Sending the Size of a File](#4441-sending-the-size-of-a-file)
+      - [4.4.4.2 Sending the Contents of a File](#4442-sending-the-contents-of-a-file)
+    - [4.4.5 Metafile Data Contained in a Format Data Response PDU](#445-metafile-data-contained-in-a-format-data-response-pdu)
+    - [4.4.6 Palette Data Contained in a Format Data Response PDU](#446-palette-data-contained-in-a-format-data-response-pdu)
+  - [4.5 Retrieving a File List](#45-retrieving-a-file-list)
+    - [4.5.1 Format List PDU](#451-format-list-pdu)
+    - [4.5.2 Format List Response PDU](#452-format-list-response-pdu)
+    - [4.5.3 Format Data Request PDU](#453-format-data-request-pdu)
+    - [4.5.4 Format Data Response PDU](#454-format-data-response-pdu)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The goal of the Remote Desktop Protocol: Clipboard Virtual Channel Extension is to allow users to
 seamlessly transfer data, via the system clipboard, between applications that are running on different
@@ -1020,7 +768,7 @@ available to another application on a remote computer (via its local clipboard).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1059,7 +807,7 @@ over a main data connection, in 1600-byte chunks, as specified in Static Virtual
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1073,7 +821,8 @@ Release: April 23, 2024
 
 8 / 85
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1087,17 +836,17 @@ Remoting".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-SHELLCLIP] Microsoft Corporation, "Shell Clipboard Formats", http://msdn.microsoft.com/en-
 us/library/bb776902.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This section describes the fundamentals of the system clipboard and gives a high-level overview of the
 operation of the Remote Desktop Protocol: Clipboard Virtual Channel Extension.
 
-1.3.1  Clipboard Basics
+#### 1.3.1 Clipboard Basics
 
 The system clipboard provided by modern operating systems allows users to transfer data of various
 formats between applications that are running on the same computer.
@@ -1144,14 +893,15 @@ Release: April 23, 2024
 
 9 / 85
 
-  Register to receive notifications when the system clipboard is updated.
+
+  Register to receive notifications when the system clipboard is updated.
 
 Applications that leverage operating system-supplied clipboard functionality can share data
 seamlessly, provided that the data is of the appropriate format. Of course, if an application does not
 make use of system-supplied clipboard functionality, its ability to exchange data with other
 applications is constrained and limited to ad-hoc or proprietary mechanisms.
 
-1.3.1.1  Data Types
+##### 1.3.1.1 Data Types
 
 Data placed onto the clipboard can conform to any format, and any application can use this data as
 long as it is able to correctly interpret the format. The type of data that can be transferred by using
@@ -1176,20 +926,20 @@ File Stream data (section 1.3.1.1.5)
 These five classes of data are the only data formats manipulated by the Remote Desktop Protocol:
 Clipboard Virtual Channel Extension.
 
-1.3.1.1.1 Generic
+###### 1.3.1.1.1 Generic
 
 Generic data is not manipulated or re-encoded by the Remote Desktop Protocol: Clipboard Virtual
 Channel Extension. It is treated as opaque and passed from one virtual channel endpoint to
 another without any modification.
 
-1.3.1.1.2 Palette
+###### 1.3.1.1.2 Palette
 
 Palette data contains a predefined set of mappings from a given index to a red, green, and blue (RGB)
 triplet. Each triplet represents a color in the additive RGB color space. Palette data to be transferred
 between virtual channel endpoints is specially encoded for transport on the wire by the Remote
 Desktop Protocol: Clipboard Virtual Channel Extension.
 
-1.3.1.1.3 Metafile
+###### 1.3.1.1.3 Metafile
 
 A Windows metafile (as specified in [MS-WMF] section 2) is a collection of structures that can store an
 image in an application-independent format. The stored image can be recreated by processing the
@@ -1199,11 +949,11 @@ output by a printer or plotter, stored in memory, or saved to a file or stream. 
 transferred between virtual channel endpoints is specially encoded and decoded for transport on the
 wire by the Remote Desktop Protocol: Clipboard Virtual Channel Extension.
 
-1.3.1.1.4 File List
+###### 1.3.1.1.4 File List
 
 A File List contains a list of files to be transferred.
 
-1.3.1.1.5 File Stream
+###### 1.3.1.1.5 File Stream
 
 A File Stream encapsulates the contents of a file that resides on some form of long-term storage. The
 Remote Desktop Protocol: Clipboard Virtual Channel Extension provides the ability to transfer selected
@@ -1216,10 +966,11 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-image. A File Stream can also be part of a larger collection of streams, where each stream can be
+
+image. A File Stream can also be part of a larger collection of streams, where each stream can be
 referenced independently (for example, when transferring a group of files).
 
-1.3.1.2  Clipboard Format
+##### 1.3.1.2 Clipboard Format
 
 All data copied to a system clipboard has to conform to a format specification, known as a Clipboard
 Format. Each Clipboard Format is identified by a unique numeric format ID. This format ID is used to
@@ -1268,7 +1019,7 @@ File List (section 1.3.1.1.4)
 When referring to File List data within the context of the Remote Desktop Protocol: Clipboard Virtual
 Channel Extension PDUs, this Clipboard Format name is always used.
 
-1.3.1.3  Monitoring Clipboard Updates
+##### 1.3.1.3 Monitoring Clipboard Updates
 
 To be able to keep two independent system clipboards in sync, it is necessary to monitor both in order
 to detect when one of them has been updated with new Clipboard Formats (section 1.3.1.2). This
@@ -1284,11 +1035,12 @@ Release: April 23, 2024
 
 11 / 85
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RDPECLIP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.3.1.4  Delayed Rendering of Clipboard Data
+##### 1.3.1.4 Delayed Rendering of Clipboard Data
 
 Delayed rendering is a data transfer principle that makes it possible to keep two clipboards in sync
 while minimizing the network bandwidth required for communication. The underlying premise of
@@ -1299,7 +1051,7 @@ clipboard. The data associated with the Clipboard Format is sent only if a paste
 The Remote Desktop Protocol: Clipboard Virtual Channel Extension requires that the system clipboard
 support delayed rendering of data to ensure the efficiency of clipboard synchronization.
 
-1.3.2  Clipboard Redirection Virtual Channel Protocol
+#### 1.3.2 Clipboard Redirection Virtual Channel Protocol
 
 The Remote Desktop Protocol: Clipboard Virtual Channel Extension is divided into two distinct
 sequences:
@@ -1314,7 +1066,7 @@ During the Initialization Sequence, the connection is set up and capabilities an
 The transfer of Clipboard Format IDs, names, and data takes place during the Data Transfer
 Sequence.
 
-1.3.2.1  Initialization Sequence
+##### 1.3.2.1 Initialization Sequence
 
 The goal of the Initialization Sequence is to establish the client and the server capabilities, exchange
 settings, and synchronize the initial state of the client and server clipboards.
@@ -1332,7 +1084,8 @@ Release: April 23, 2024
 
 12 / 85
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-RDPECLIP].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1355,7 +1108,7 @@ the client by forcing it to send a Format List PDU.
 
 6.  The server responds with a Format List Response PDU.
 
-1.3.2.2  Data Transfer Sequences
+##### 1.3.2.2 Data Transfer Sequences
 
 The goal of the Data Transfer Sequences is to perform a copy or paste operation. The diagram that
 follows presents a possible data transfer sequence.
@@ -1373,11 +1126,12 @@ Release: April 23, 2024
 
 13 / 85
 
-2.  However, the messages exchanged to transfer File Stream data during a paste operation differs
+
+2.  However, the messages exchanged to transfer File Stream data during a paste operation differs
 
 from those used to transfer other format data, as specified in section 1.3.2.2.3.
 
-1.3.2.2.1 Copy Sequence
+###### 1.3.2.2.1 Copy Sequence
 
 The goal of the Copy Sequence is to synchronize the list of available formats across the client and the
 server clipboards.
@@ -1390,14 +1144,14 @@ local system clipboard with IDs of the Clipboard Formats that are available on t
 then send the Format List Response PDU in response. The sender of the Format List Response PDU is
 called the "Local Clipboard Owner." The format data is delay rendered, as specified in section 1.3.1.4.
 
-1.3.2.2.2 Locking and Unlocking Clipboard Data
+###### 1.3.2.2.2 Locking and Unlocking Clipboard Data
 
 The Lock Clipboard Data PDU can be sent at any point in time by a Local Clipboard Owner after the
 clipboard capabilities and temporary directory have been exchanged in the Clipboard Initialization
 Sequence. The purpose of this PDU is to request that the Shared Clipboard Owner retain all File
 Stream data on the clipboard until the Unlock Clipboard Data PDU is received.
 
-1.3.2.2.3 Paste Sequence
+###### 1.3.2.2.3 Paste Sequence
 
 The goal of the Paste Sequence is to transfer the data for a single format from the Shared Clipboard
 Owner to the Local Clipboard Owner.
@@ -1415,7 +1169,7 @@ sending a File Contents Request PDU to the Shared Clipboard Owner. The resultant
 is transmitted by the Shared Clipboard Owner to the Local Clipboard Owner by using a File Contents
 Response PDU.
 
-1.3.2.3  Interacting with Local Clipboard and Applications
+##### 1.3.2.3 Interacting with Local Clipboard and Applications
 
 The following diagram and accompanying explanation illustrate how an application, the system
 clipboards, and the Remote Desktop Protocol: Clipboard Virtual Channel Extension endpoints interact
@@ -1428,7 +1182,8 @@ Release: April 23, 2024
 
 14 / 85
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RDPECLIP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1474,7 +1229,8 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-RDPECLIP].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1488,12 +1244,12 @@ Response PDU.
 
 15. Virtual Channel Endpoint B sends the optional Unlock Clipboard Data PDU.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Clipboard Virtual Channel Extension is embedded in a static virtual
 channel transport, as specified in [MS-RDPBCGR] sections 1.3.3, 2.2.6 and 3.1.5.2.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Clipboard Virtual Channel Extension operates only after the static
 virtual channel transport (as specified in [MS-RDPBCGR] sections 1.3.3, 2.2.6 and 3.1.5.2) is fully
@@ -1501,14 +1257,14 @@ established and the Confirm Active PDU ([MS-RDPBCGR] section 2.2.1.13.2) has bee
 from the client to the server. If the static virtual channel transport is terminated, no other
 communication over the Remote Desktop Protocol: Clipboard Virtual Channel Extension occurs.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Clipboard Virtual Channel Extension is designed to be run within the
 context of a Remote Desktop Protocol virtual channel established between a client and server. This
 protocol is applicable when bidirectional data transfer between the local client clipboard and the
 clipboard in the remote session (hosted on the server) is required.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Remote Desktop Protocol: Clipboard Virtual Channel Extension is capability-based. The client and
 the server exchange capabilities during the protocol Initialization Sequence (section 1.3.2.1) by using
@@ -1521,7 +1277,7 @@ Figure 4: Combined capability set structure
 After the capabilities have been received and stored, the client and the server do not send PDUs or
 data formats that cannot be processed by the peer.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -1532,7 +1288,8 @@ Release: April 23, 2024
 
 16 / 85
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -1543,21 +1300,22 @@ Release: April 23, 2024
 
 17 / 85
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Clipboard Virtual Channel Extension is designed to operate over a static
 virtual channel, as specified in [MS-RDPBCGR] sections 1.3.3, 2.2.6 and 3.1.5.2. The virtual channel
 name is "CLIPRDR". The Remote Desktop Protocol layer manages the creation, setup, and
 transmission of data over the virtual channel.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections contain Remote Desktop Protocol: Desktop Composition Virtual Channel
 Extension message syntax.
 
-2.2.1  Clipboard PDU Header (CLIPRDR_HEADER)
+#### 2.2.1 Clipboard PDU Header (CLIPRDR_HEADER)
 
 The CLIPRDR_HEADER structure is present in all clipboard PDUs. It is used to identify the PDU type,
 specify the length of the PDU, and convey message flags.
@@ -1642,7 +1400,8 @@ Release: April 23, 2024
 
 18 / 85
 
-Value
+
+Value
 
 Meaning
 
@@ -1698,12 +1457,12 @@ dataLen (4 bytes): An unsigned, 32-bit integer that specifies the size, in bytes
 
 follows the Clipboard PDU Header.<1>
 
-2.2.2  Initialization Sequence
+#### 2.2.2 Initialization Sequence
 
 The following sections contain Remote Desktop Protocol: Desktop Composition Virtual Channel
 Extension message syntax for the Initialization Sequence (section 1.3.2.1).
 
-2.2.2.1  Clipboard Capabilities PDU (CLIPRDR_CAPS)
+##### 2.2.2.1 Clipboard Capabilities PDU (CLIPRDR_CAPS)
 
 The Clipboard Capabilities PDU is an optional PDU used to exchange capability information. It is first
 sent from the server to the client. Upon receipt of the Monitor Ready PDU, the client sends the
@@ -1742,7 +1501,8 @@ Release: April 23, 2024
 
 19 / 85
 
-clipHeader (8 bytes): A Clipboard PDU Header. The msgType field of the Clipboard PDU Header
+
+clipHeader (8 bytes): A Clipboard PDU Header. The msgType field of the Clipboard PDU Header
 MUST be set to CB_CLIP_CAPS (0x0007), while the msgFlags field MUST be set to 0x0000.
 
 cCapabilitiesSets (2 bytes): An unsigned, 16-bit integer that specifies the number of
@@ -1755,7 +1515,7 @@ capabilitySets (variable): A variable-sized array of capability sets, each confo
 
 the CLIPRDR_CAPS_SET.
 
-2.2.2.1.1 Capability Set (CLIPRDR_CAPS_SET)
+###### 2.2.2.1.1 Capability Set (CLIPRDR_CAPS_SET)
 
 The CLIPRDR_CAPS_SET structure is used to wrap capability set data and to specify the type and size
 of this data exchanged between the client and the server. All capability sets conform to this basic
@@ -1802,7 +1562,7 @@ capabilityData (variable): Capability set data specified by the type given in th
 
 field. This field is a variable number of bytes.
 
-2.2.2.1.1.1  General Capability Set (CLIPRDR_GENERAL_CAPABILITY)
+###### 2.2.2.1.1.1 General Capability Set (CLIPRDR_GENERAL_CAPABILITY)
 
 The CLIPRDR_GENERAL_CAPABILITY structure is used to advertise general clipboard settings.
 
@@ -1836,7 +1596,8 @@ Release: April 23, 2024
 
 20 / 85
 
-lengthCapability (2 bytes): An unsigned, 16-bit integer that specifies the length, in bytes, of the
+
+lengthCapability (2 bytes): An unsigned, 16-bit integer that specifies the length, in bytes, of the
 
 capabilitySetType, capability data and lengthCapability fields.
 
@@ -1915,7 +1676,7 @@ If the General Capability Set is not present in the Clipboard Capabilities PDU, 
 general capabilities MUST be assumed. By definition the default set does not specify any flags in the
 generalFlags field, that is the generalFlags field is set to 0x00000000.
 
-2.2.2.2  Server Monitor Ready PDU (CLIPRDR_MONITOR_READY)
+##### 2.2.2.2 Server Monitor Ready PDU (CLIPRDR_MONITOR_READY)
 
 The Monitor Ready PDU is sent from the server to the client to indicate that the server is initialized
 and ready. This PDU is transmitted by the server after it has sent the Clipboard Capabilities PDU to
@@ -1941,13 +1702,14 @@ Release: April 23, 2024
 
 21 / 85
 
-...
+
+...
 
 clipHeader (8 bytes):  A Clipboard PDU Header. The msgType field of the Clipboard PDU Header
 
 MUST be set to CB_MONITOR_READY (0x0001), while the msgFlags field MUST be set to 0x0000.
 
-2.2.2.3  Client Temporary Directory PDU (CLIPRDR_TEMP_DIRECTORY)
+##### 2.2.2.3 Client Temporary Directory PDU (CLIPRDR_TEMP_DIRECTORY)
 
 The Temporary Directory PDU is an optional PDU sent from the client to the server. This PDU informs
 the server of a location on the client file system that MUST be used to deposit files being copied to the
@@ -1985,12 +1747,12 @@ the directory on the client that MUST be used to store temporary clipboard relat
 The supplied path MUST be absolute and relative to the local client system, for example,
 "c:\temp\clipdata". Any space not used in this field SHOULD be filled with null characters.
 
-2.2.3  Copy Sequence
+#### 2.2.3 Copy Sequence
 
 The following sections contain Remote Desktop Protocol: Desktop Composition Virtual Channel
 Extension message syntax for the Copy Sequence (section 1.3.2.2.1).
 
-2.2.3.1  Format List PDU (CLIPRDR_FORMAT_LIST)
+##### 2.2.3.1 Format List PDU (CLIPRDR_FORMAT_LIST)
 
 The Format List PDU is sent by either the client or the server when its local system clipboard is
 updated with new clipboard data. This PDU contains the Clipboard Format ID and name pairs of the
@@ -2018,7 +1780,8 @@ Release: April 23, 2024
 
 22 / 85
 
-formatListData (variable)
+
+formatListData (variable)
 
 ...
 
@@ -2036,7 +1799,7 @@ pairs available on the local system clipboard of the sender. If Short Format Nam
 and the embedded Clipboard Format names are in ASCII 8 format, then the msgFlags field of the
 clipHeader must contain the CB_ASCII_NAMES (0x0004) flag.
 
-2.2.3.1.1 Short Format Names (CLIPRDR_SHORT_FORMAT_NAMES)
+###### 2.2.3.1.1 Short Format Names (CLIPRDR_SHORT_FORMAT_NAMES)
 
 The CLIPRDR_SHORT_FORMAT_NAMES structure holds a collection of
 CLIPRDR_SHORT_FORMAT_NAME structures.
@@ -2058,7 +1821,7 @@ shortFormatNames (variable)
 
 shortFormatNames (variable): An array of CLIPRDR_SHORT_FORMAT_NAME structures.
 
-2.2.3.1.1.1  Short Format Name (CLIPRDR_SHORT_FORMAT_NAME)
+###### 2.2.3.1.1.1 Short Format Name (CLIPRDR_SHORT_FORMAT_NAME)
 
 The CLIPRDR_SHORT_FORMAT_NAME structure holds a Clipboard Format ID and Clipboard Format
 name pair.
@@ -2090,7 +1853,7 @@ Clipboard Format (32 ASCII 8 characters or 16 Unicode characters). If the name d
 MUST be truncated. Not all Clipboard Formats have a name, and in that case the formatName
 field MUST contain only zeros.
 
-2.2.3.1.2 Long Format Names (CLIPRDR_LONG_FORMAT_NAMES)
+###### 2.2.3.1.2 Long Format Names (CLIPRDR_LONG_FORMAT_NAMES)
 
 23 / 85
 
@@ -2099,7 +1862,8 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The CLIPRDR_LONG_FORMAT_NAMES structure holds a collection of CLIPRDR_LONG_FORMAT_NAME
+
+The CLIPRDR_LONG_FORMAT_NAMES structure holds a collection of CLIPRDR_LONG_FORMAT_NAME
 structures.
 
 0  1  2  3  4  5  6  7  8  9
@@ -2119,7 +1883,7 @@ longFormatNames (variable)
 
 longFormatNames (variable): An array of CLIPRDR_LONG_FORMAT_NAME structures.
 
-2.2.3.1.2.1  Long Format Name (CLIPRDR_LONG_FORMAT_NAME)
+###### 2.2.3.1.2.1 Long Format Name (CLIPRDR_LONG_FORMAT_NAME)
 
 The CLIPRDR_LONG_FORMAT_NAME structure holds a Clipboard Format ID and a Clipboard Format
 name pair.
@@ -2148,7 +1912,7 @@ wszFormatName (variable): A variable length null-terminated Unicode string name 
 the Clipboard Format name. Not all Clipboard Formats have a name; in such cases, the
 formatName field MUST consist of a single Unicode null character.
 
-2.2.3.2  Format List Response PDU (FORMAT_LIST_RESPONSE)
+##### 2.2.3.2 Format List Response PDU (FORMAT_LIST_RESPONSE)
 
 The Format List Response PDU is sent as a reply to the Format List PDU. It is used to indicate whether
 processing of the Format List PDU was successful.
@@ -2181,9 +1945,10 @@ Release: April 23, 2024
 
 24 / 85
 
-2.2.4  Locking and Unlocking Clipboard Data
 
-2.2.4.1  Lock Clipboard Data PDU (CLIPRDR_LOCK_CLIPDATA)
+#### 2.2.4 Locking and Unlocking Clipboard Data
+
+##### 2.2.4.1 Lock Clipboard Data PDU (CLIPRDR_LOCK_CLIPDATA)
 
 The Lock Clipboard Data PDU can be sent at any point in time after the clipboard capabilities and
 temporary directory have been exchanged in the Clipboard Initialization Sequence (section 1.3.2.1) by
@@ -2219,7 +1984,7 @@ clipDataId (4 bytes): An unsigned, 32-bit integer that is used to tag File Strea
 Owner clipboard so that it can be requested in a subsequent File Contents Request PDU (section
 2.2.5.3).
 
-2.2.4.2  Unlock Clipboard Data PDU (CLIPRDR_UNLOCK_CLIPDATA)
+##### 2.2.4.2 Unlock Clipboard Data PDU (CLIPRDR_UNLOCK_CLIPDATA)
 
 The Unlock Clipboard Data PDU can be sent at any point in time after the Clipboard Initialization
 Sequence (section 1.3.2.1) by a Local Clipboard Owner (section 1.3.2.2.1). The purpose of this PDU is
@@ -2258,12 +2023,13 @@ Release: April 23, 2024
 
 25 / 85
 
-2.2.5  Paste Sequence
+
+#### 2.2.5 Paste Sequence
 
 The following sections contain Remote Desktop Protocol: Desktop Composition Virtual Channel
 Extension message syntax for the Paste Sequence (section 1.3.2.2.3).
 
-2.2.5.1  Format Data Request PDU (CLIPRDR_FORMAT_DATA_REQUEST)
+##### 2.2.5.1 Format Data Request PDU (CLIPRDR_FORMAT_DATA_REQUEST)
 
 The Format Data Request PDU is sent by the recipient of the Format List PDU. It is used to request the
 data for one of the formats that was listed in the Format List PDU.
@@ -2293,7 +2059,7 @@ MUST be set to CB_FORMAT_DATA_REQUEST (0x0004), while the msgFlags field MUST be
 requestedFormatId (4 bytes): An unsigned, 32-bit integer that specifies the Clipboard Format ID of
 the clipboard data. The Clipboard Format ID MUST be one listed previously in the Format List PDU.
 
-2.2.5.2  Format Data Response PDU (CLIPRDR_FORMAT_DATA_RESPONSE)
+##### 2.2.5.2 Format Data Response PDU (CLIPRDR_FORMAT_DATA_RESPONSE)
 
 The Format Data Response PDU is sent as a reply to the Format Data Request PDU. It is used to
 indicate whether processing of the Format Data Request PDU was successful. If the processing was
@@ -2326,7 +2092,7 @@ Header structure.
 requestedFormatData (variable): Variable length clipboard format data. The contents of this field
 MUST be one of the following types: generic, Packed Metafile Payload, or Packed Palette Payload.
 
-2.2.5.2.1 Packed Metafile Payload (CLIPRDR_MFPICT)
+###### 2.2.5.2.1 Packed Metafile Payload (CLIPRDR_MFPICT)
 
 The CLIPRDR_MFPICT structure is used to transfer a Windows metafile. The Windows metafile format
 is specified in [MS-WMF] section 2.
@@ -2338,7 +2104,8 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2439,7 +2206,8 @@ Release: April 23, 2024
 
 27 / 85
 
-yExt (4 bytes): An unsigned, 32-bit integer that specifies the height of the rectangle within which the
+
+yExt (4 bytes): An unsigned, 32-bit integer that specifies the height of the rectangle within which the
 picture is drawn, except in the MM_ISOTROPIC and MM_ANISOTROPIC modes. The coordinates
 are in units that correspond to the mapping mode.
 
@@ -2447,7 +2215,7 @@ metaFileData (variable): The variable sized contents of the metafile as specifie
 
 section 2.
 
-2.2.5.2.2 Packed Palette Payload (CLIPRDR_PALETTE)
+###### 2.2.5.2.2 Packed Palette Payload (CLIPRDR_PALETTE)
 
 The CLIPRDR_PALETTE structure is used to transfer palette format data.
 
@@ -2468,7 +2236,7 @@ paletteEntriesData (variable)
 
 paletteEntriesData (variable): A variable sized array of PALETTEENTRY structures.
 
-2.2.5.2.2.1  Palette Entry (PALETTEENTRY)
+###### 2.2.5.2.2.1 Palette Entry (PALETTEENTRY)
 
 The PALETTEENTRY structure contains a single palette entry that specifies the red, green, and blue
 components for a given color index, in addition to any application-specific information related to the
@@ -2503,7 +2271,7 @@ extra (1 byte): This field MAY be used to convey application-specific palette in
 
 applications use this field to specify how the palette entry is used.
 
-2.2.5.2.3 Packed File List (CLIPRDR_FILELIST)
+###### 2.2.5.2.3 Packed File List (CLIPRDR_FILELIST)
 
 The CLIPRDR_FILELIST structure is used to describe a list of files, each file in the list being
 represented by a File Descriptor (section 2.2.5.2.3.1).
@@ -2536,11 +2304,12 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-fileDescriptorArray (variable): An array of File Descriptors (section 2.2.5.2.3.1). The number of
+
+fileDescriptorArray (variable): An array of File Descriptors (section 2.2.5.2.3.1). The number of
 
 elements in the array is specified by the cItems field.
 
-2.2.5.2.3.1  File Descriptor (CLIPRDR_FILEDESCRIPTOR)
+###### 2.2.5.2.3.1 File Descriptor (CLIPRDR_FILEDESCRIPTOR)
 
 The CLIPRDR_FILEDESCRIPTOR structure describes the properties of a file.
 
@@ -2618,7 +2387,8 @@ Release: April 23, 2024
 
 29 / 85
 
-Value
+
+Value
 
 Meaning
 
@@ -2698,7 +2468,7 @@ fileName (520 bytes): A null-terminated 260 character Unicode string that contai
 
 file.
 
-2.2.5.3  File Contents Request PDU (CLIPRDR_FILECONTENTS_REQUEST)
+##### 2.2.5.3 File Contents Request PDU (CLIPRDR_FILECONTENTS_REQUEST)
 
 The File Contents Request PDU is sent by the recipient of the Format List PDU. It is used to request
 either the size of a remote file copied to the clipboard or a portion of the data in the file.
@@ -2725,7 +2495,8 @@ Release: April 23, 2024
 
 30 / 85
 
-streamId
+
+streamId
 
 lindex
 
@@ -2802,7 +2573,8 @@ Release: April 23, 2024
 
 31 / 85
 
-CB_HUGE_FILE_SUPPORT_ENABLED (0x00000020) flag in the General Capability Set (section
+
+CB_HUGE_FILE_SUPPORT_ENABLED (0x00000020) flag in the General Capability Set (section
 2.2.2.1.1.1) of the Clipboard Capabilities PDU (section 2.2.2.1).
 
 cbRequested (4 bytes): An unsigned, 32-bit integer that specifies the size, in bytes, of the data to
@@ -2815,7 +2587,7 @@ clipDataId (4 bytes): An optional unsigned, 32-bit integer that identifies File 
 
 tagged in a prior Lock Clipboard Data PDU (section 2.2.4.1).
 
-2.2.5.4  File Contents Response PDU (CLIPRDR_FILECONTENTS_RESPONSE)
+##### 2.2.5.4 File Contents Response PDU (CLIPRDR_FILECONTENTS_RESPONSE)
 
 The File Contents Response PDU is sent as a reply to the File Contents Request PDU. It is used to
 indicate whether processing of the File Contents Request PDU was successful. If the processing was
@@ -2866,13 +2638,14 @@ Release: April 23, 2024
 
 32 / 85
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
 
-3.1.1.1  Clipboard Format ID Map
+#### 3.1.1 Abstract Data Model
+
+##### 3.1.1.1 Clipboard Format ID Map
 
 The Clipboard Format ID Map is used to translate local Clipboard Format IDs to remote Clipboard
 Format IDs.
@@ -2892,7 +2665,7 @@ Format X: Local ID 0x00002222 maps to Remote ID 0x00001111
 The Clipboard Format ID Map is cleared and initialized whenever a Format List PDU is processed
 (section 3.1.5.2.2).
 
-3.1.1.2  File List
+##### 3.1.1.2 File List
 
 When a collection of files is copied to the system clipboard, accompanying metadata containing the list
 of files, called the "file list," is also placed onto the clipboard using a generic, operating system-
@@ -2927,7 +2700,8 @@ Release: April 23, 2024
 
 33 / 85
 
-3.1.1.3  Direct File Access
+
+##### 3.1.1.3 Direct File Access
 
 If the client or server has direct access to the local file system of the peer, a File List that uses
 absolute paths (as opposed to relative paths) MAY be used to point directly to the source files, thus
@@ -2955,26 +2729,26 @@ using direct access MUST NOT be attempted. To enforce this condition, any attemp
 List with a Format Data Request PDU (section 2.2.5.1) MUST fail and the resulting Format Data
 Response PDU (section 2.2.5.2) MUST contain the CB_RESPONSE_FAIL (0x0002) flag.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The static virtual channel MUST be established, using the parameters specified in section 2.1, before
 protocol operation can commence.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 This section contains details about the higher-layer triggered events.
 
-3.1.4.1  Local Clipboard Update
+##### 3.1.4.1 Local Clipboard Update
 
 When the local system clipboard is updated, the client or the server associated with the clipboard
 MUST send the Format List PDU (section 3.1.5.2.1) to ensure that the formats available on the remote
 clipboards are kept in sync.
 
-3.1.4.2  Local Paste Operation
+##### 3.1.4.2 Local Paste Operation
 
 When a local application requests data from the clipboard, and that data resides on the clipboard of a
 remote computer, the local computer MUST send the Format Data Request PDU or the File Contents
@@ -2987,9 +2761,10 @@ Release: April 23, 2024
 
 34 / 85
 
-3.1.5  Processing Events and Sequencing Rules
 
-3.1.5.1  Processing a Clipboard PDU
+#### 3.1.5 Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Processing a Clipboard PDU
 
 All clipboard PDUs are prefaced by the Clipboard PDU Header structure.
 
@@ -3001,9 +2776,9 @@ After determining that the PDU is in the correct sequence, the dataLen field MUS
 make sure that it is consistent with the amount of data read from the "CLIPRDR" static virtual
 channel. If this is not the case, the connection SHOULD be dropped.
 
-3.1.5.2  Copy Sequence
+##### 3.1.5.2 Copy Sequence
 
-3.1.5.2.1 Sending a Format List PDU
+###### 3.1.5.2.1 Sending a Format List PDU
 
 The fields of the Format List PDU are specified in section 2.2.3.1.
 
@@ -3020,7 +2795,7 @@ Capability Set. If short format names in ASCII 8 format are being used, the CB_A
 MUST be set in the msgFlags field of the clipHeader field. Unicode names MUST always be used
 with the long format names.
 
-3.1.5.2.2 Processing a Format List PDU
+###### 3.1.5.2.2 Processing a Format List PDU
 
 The fields of the Format List PDU are specified in section 2.2.3.1.
 
@@ -3054,7 +2829,8 @@ Release: April 23, 2024
 
 35 / 85
 
-3.1.5.2.3 Sending a Format List Response PDU
+
+###### 3.1.5.2.3 Sending a Format List Response PDU
 
 The fields of the Format List Response PDU are specified in section 2.2.3.2.
 
@@ -3062,7 +2838,7 @@ The Format List Response PDU is sent to indicate the success or failure of proce
 PDU, as specified in section 3.1.5.2.2. On success, the msgFlags field of the clipHeader field MUST
 contain the CB_RESPONSE_OK flag. On failure, it MUST contain the CB_RESPONSE_FAIL flag.
 
-3.1.5.2.4 Processing a Format List Response PDU
+###### 3.1.5.2.4 Processing a Format List Response PDU
 
 The fields of the Format List Response PDU are specified in section 2.2.3.2.
 
@@ -3078,9 +2854,9 @@ recipient MUST respond to any subsequent Format Data Request PDUs or File Conten
 by sending a Format Data Response or File Contents Response indicating failure (sections 3.1.5.4.3
 and 3.1.5.4.7).
 
-3.1.5.3  Locking and Unlocking Clipboard Data
+##### 3.1.5.3 Locking and Unlocking Clipboard Data
 
-3.1.5.3.1 Sending a Lock Clipboard Data PDU
+###### 3.1.5.3.1 Sending a Lock Clipboard Data PDU
 
 The fields of the Lock Clipboard Data PDU are specified in section 2.2.4.1.
 
@@ -3092,7 +2868,7 @@ The clipDataId field MUST contain an unsigned integer value that will serve as a
 uniquely tag any File Stream data (section 1.3.1.1.5) on the clipboard of the Shared Clipboard Owner
 (section 1.3.2.1).
 
-3.1.5.3.2 Processing a Lock Clipboard Data PDU
+###### 3.1.5.3.2 Processing a Lock Clipboard Data PDU
 
 The fields of the Lock Clipboard Data PDU are specified in section 2.2.4.1.
 
@@ -3102,7 +2878,7 @@ that any subsequent File Contents Request PDU (section 2.2.5.3) can be serviced,
 no longer available on the clipboard. The File Stream data MUST be stored until an Unlock Clipboard
 Data PDU (section 2.2.4.2) is received.
 
-3.1.5.3.3 Sending an Unlock Clipboard Data PDU
+###### 3.1.5.3.3 Sending an Unlock Clipboard Data PDU
 
 The fields of the Unlock Clipboard Data PDU are specified in section 2.2.4.2.
 
@@ -3111,7 +2887,7 @@ Initialization Sequence (section 1.3.2.1) has completed. The clipDataId field MU
 was previously sent in a Lock Clipboard Data PDU (section 2.2.4.1), but has not been sent in an
 Unlock Clipboard Data PDU.
 
-3.1.5.3.4 Processing a Unlock Clipboard Data PDU
+###### 3.1.5.3.4 Processing a Unlock Clipboard Data PDU
 
 36 / 85
 
@@ -3120,16 +2896,17 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The fields of the Unlock Clipboard Data PDU are specified in section 2.2.4.2.
+
+The fields of the Unlock Clipboard Data PDU are specified in section 2.2.4.2.
 
 The clipHeader field MUST be processed as specified in section 3.1.5.1. If the PDU is valid then the
 File Stream data that was stored and associated with the ID in the clipDataId field (section 3.1.5.3.2)
 MUST be released. If there is no File Stream data associated with the ID, then the PDU MUST be
 ignored.
 
-3.1.5.4  Paste Sequence
+##### 3.1.5.4 Paste Sequence
 
-3.1.5.4.1 Sending a Format Data Request PDU
+###### 3.1.5.4.1 Sending a Format Data Request PDU
 
 The fields of the Format Data Request PDU are specified in section 2.2.5.1.
 
@@ -3153,7 +2930,7 @@ For all other formats the Clipboard Format ID Map MUST be used to map the local 
 of the requested clipboard data to the equivalent value on the remote system and then the
 requestedFormatId field MUST be populated with that value.
 
-3.1.5.4.2 Processing a Format Data Request PDU
+###### 3.1.5.4.2 Processing a Format Data Request PDU
 
 The fields of the Format Data Request PDU are specified in section 2.2.5.1.
 
@@ -3179,7 +2956,7 @@ File List data MUST be encoded using the Packed File List structure.
 The clipboard data MUST then be sent to the remote computer by using a Format Data Response PDU,
 as specified in section 3.1.5.4.3.
 
-3.1.5.4.3 Sending a Format Data Response PDU
+###### 3.1.5.4.3 Sending a Format Data Response PDU
 
 The fields of the Format Data Response PDU are specified in section 2.2.5.2.
 
@@ -3200,7 +2977,8 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5.4.4 Processing a Format Data Response PDU
+
+###### 3.1.5.4.4 Processing a Format Data Response PDU
 
 The fields of the Format Data Response PDU are specified in section 2.2.5.2.
 
@@ -3224,7 +3002,7 @@ If the data is not a metafile, palette, or file list, it does not need to be dec
 The processed clipboard data MUST be returned to the system clipboard so that the paste operation
 can be completed.
 
-3.1.5.4.5 Sending a File Contents Request PDU
+###### 3.1.5.4.5 Sending a File Contents Request PDU
 
 The fields of the File Contents Request PDU are specified in section 2.2.5.3.
 
@@ -3244,7 +3022,7 @@ obtain the file contents at a particular offset by setting the FILECONTENTS_RANG
 on the dwFlags field and populating the PDU fields. The specified range MUST be within the bounds of
 the file size.
 
-3.1.5.4.6 Processing a File Contents Request PDU
+###### 3.1.5.4.6 Processing a File Contents Request PDU
 
 The fields of the Format Data Response PDU are specified in section 2.2.5.2.
 
@@ -3263,7 +3041,7 @@ sent as specified in section 3.1.5.4.7. If the request cannot be satisfied, a Fi
 that contains the CB_RESPONSE_FAIL (0x0002) flag MUST be sent; otherwise, the CB_RESPONSE_OK
 (0x0001) flag MUST be specified.
 
-3.1.5.4.7 Sending a File Contents Response PDU
+###### 3.1.5.4.7 Sending a File Contents Response PDU
 
 The fields of the File Contents Response PDU are specified in section 2.2.5.4.
 
@@ -3274,13 +3052,14 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If there is response data to send, the data MUST be copied into the requestedFileContentsData
+
+If there is response data to send, the data MUST be copied into the requestedFileContentsData
 field and the clipHeader field MUST contain the CB_RESPONSE_OK (0x0001) flag. If the requested
 file data could not be retrieved or the sender received an unsuccessful Format List Response PDU
 (section 3.1.5.2.4), then the clipHeader field MUST contain the CB_RESPONSE_FAIL (0x0002) flag
 and the requestedFileContentsData field MUST contain no data (zero-length).
 
-3.1.5.4.8 Processing a File Contents Response PDU
+###### 3.1.5.4.8 Processing a File Contents Response PDU
 
 The fields of the File Contents Response PDU are specified in section 2.2.5.4.
 
@@ -3289,19 +3068,19 @@ contains file contents data, the bytes MUST be extracted from the PDU and return
 to satisfy the paste operation. If the PDU contains the size of the file, it MUST be read from the
 requestedFileContentsData field as a 64-bit little-endian unsigned integer.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
-3.2.1.1  Server Capabilities
+##### 3.2.1.1 Server Capabilities
 
 The Server Capabilities store contains capability data received from the server in the Clipboard
 Capabilities PDU. The client MUST ensure that it does not violate any of the server capabilities when
@@ -3310,16 +3089,16 @@ sending data.
 If a Clipboard Capabilities PDU is not received from the server, it MUST be assumed that the server is
 using the default capability values as specified in section 2.2.2.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The static virtual channel MUST be established, using the parameters as specified in section 2.1,
 before protocol operation can commence.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
@@ -3330,18 +3109,19 @@ Release: April 23, 2024
 
 39 / 85
 
-3.2.5  Processing Events and Sequencing Rules
 
-3.2.5.1  Initialization Sequence
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1.1 Processing a Server Clipboard Capabilities PDU
+##### 3.2.5.1 Initialization Sequence
+
+###### 3.2.5.1.1 Processing a Server Clipboard Capabilities PDU
 
 The fields of the Clipboard Capabilities PDU are as specified in section 2.2.2.1.
 
 The clipHeader field MUST be processed as specified in section 3.1.5.1. If the PDU is valid, the
 capability data MUST be extracted and stored in the Server Capabilities store.
 
-3.2.5.1.2 Processing a Monitor Ready PDU
+###### 3.2.5.1.2 Processing a Monitor Ready PDU
 
 The fields of the Monitor Ready PDU are as specified in section 2.2.2.2.
 
@@ -3360,7 +3140,7 @@ After possibly sending the Clipboard Capabilities PDU and Temporary Directory PD
 send a Format List PDU to the server, as specified in section 3.1.5.2.1. This ensures that the peer
 system clipboards are in sync.
 
-3.2.5.1.3 Sending a Client Clipboard Capabilities PDU
+###### 3.2.5.1.3 Sending a Client Clipboard Capabilities PDU
 
 The fields of the Clipboard Capabilities PDU are as specified in section 2.2.2.1.
 
@@ -3386,7 +3166,7 @@ Locking and unlocking clipboard data
 If the Server Capabilities store indicates that the server does not support a particular feature, then the
 client SHOULD NOT indicate support for that feature.
 
-3.2.5.1.4 Sending a Temporary Directory PDU
+###### 3.2.5.1.4 Sending a Temporary Directory PDU
 
 The fields of the Temporary Directory PDU are specified in section 2.2.2.3.
 
@@ -3394,7 +3174,7 @@ Prior to sending the Temporary Directory PDU, the client MUST ensure that the lo
 accessible to the server. If this location is inaccessible or becomes inaccessible at a later time, all
 server-to-client file copies using direct file (section 3.1.1.3) access MUST fail.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -3405,15 +3185,16 @@ Release: April 23, 2024
 
 40 / 85
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
-3.3.1.1  Client Capabilities
+##### 3.3.1.1 Client Capabilities
 
 The Client Capabilities store contains capability data received from the client in the Clipboard
 Capabilities PDU. The server MUST ensure that it does not violate any of the client capabilities when
@@ -3422,7 +3203,7 @@ sending data.
 If a Clipboard Capabilities PDU is not received from the client, it MUST be assumed that the client is
 using the default capability values as specified in section 2.2.2.1.
 
-3.3.1.2  Client Temporary Directory
+##### 3.3.1.2 Client Temporary Directory
 
 The Client Temporary Directory store holds the path to a location on the client file system that MUST
 be used to deposit files being copied to the client. This information is received when processing the
@@ -3430,24 +3211,24 @@ Temporary Directory PDU, as specified in section 3.3.5.1.4. If the Temporary Dir
 received from the client, the server MUST NOT copy files to the client using direct file access
 techniques (section 3.1.1.3).
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The static virtual channel MUST be established, using the parameters as specified in section 2.1,
 before protocol operation can commence.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1  Initialization Sequence
+##### 3.3.5.1 Initialization Sequence
 
-3.3.5.1.1 Sending a Server Clipboard Capabilities PDU
+###### 3.3.5.1.1 Sending a Server Clipboard Capabilities PDU
 
 The fields of the Clipboard Capabilities PDU are as specified in section 2.2.2.1.
 
@@ -3473,14 +3254,15 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Locking and unlocking clipboard data
 
 After sending the Clipboard Capabilities PDU, the server MUST send the Monitor Ready PDU to the
 client, as specified in section 3.3.5.1.2.
 
-3.3.5.1.2 Sending a Monitor Ready PDU
+###### 3.3.5.1.2 Sending a Monitor Ready PDU
 
 The fields of the Monitor Ready PDU are specified in section 2.2.2.2.
 
@@ -3489,14 +3271,14 @@ updates contained in Format List PDUs, which it receives from the client, as spe
 3.1.5.2.2. The server MUST still be prepared to receive and process the client Clipboard Capabilities
 PDU (as specified in section 3.3.5.1.3) and Temporary Directory PDU, as specified in section 3.3.5.1.4.
 
-3.3.5.1.3 Processing a Client Clipboard Capabilities PDU
+###### 3.3.5.1.3 Processing a Client Clipboard Capabilities PDU
 
 The fields of the Clipboard Capabilities PDU are specified in section 2.2.2.1.
 
 The clipHeader field MUST be processed as specified in section 3.1.5.1. If the PDU is valid, the
 capability data MUST be extracted and stored in the Client Capabilities store as specified in 3.3.1.1.
 
-3.3.5.1.4 Processing a Temporary Directory PDU
+###### 3.3.5.1.4 Processing a Temporary Directory PDU
 
 The fields of the Temporary Directory PDU are specified in section 2.2.2.3.
 
@@ -3504,11 +3286,11 @@ The clipHeader field MUST be processed as specified in section 3.1.5.1. If the P
 temporary directory path MUST be extracted and stored in the Client Temporary Directory
 store (section 3.3.1.2).
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -3519,13 +3301,14 @@ Release: April 23, 2024
 
 42 / 85
 
-4  Protocol Examples
 
-4.1  Annotated Initialization Sequence
+## 4 Protocol Examples
+
+### 4.1 Annotated Initialization Sequence
 
 The following is an annotated dump of an Initialization Sequence (section 1.3.2.1).
 
-4.1.1  Server Clipboard Capabilities PDU
+#### 4.1.1 Server Clipboard Capabilities PDU
 
 The following is an annotated dump of a server-to-client Clipboard Capabilities PDU (section 2.2.2.1).
 
@@ -3552,7 +3335,7 @@ The following is an annotated dump of a server-to-client Clipboard Capabilities 
    CB_STREAM_FILECLIP_ENABLED |
    CB_FILECLIP_NO_FILE_PATHS
 
-4.1.2  Server Monitor Ready PDU
+#### 4.1.2 Server Monitor Ready PDU
 
 The following is an annotated dump of a Monitor Ready PDU (section 2.2.2.2).
 
@@ -3562,7 +3345,7 @@ The following is an annotated dump of a Monitor Ready PDU (section 2.2.2.2).
  00 00 -> CLIPRDR_HEADER::msgFlags = 0
  00 00 00 00 -> CLIPRDR_HEADER::dataLen = 0 bytes
 
-4.1.3  Client Clipboard Capabilities PDU
+#### 4.1.3 Client Clipboard Capabilities PDU
 
 The following is an annotated dump of a client-to-server Clipboard Capabilities PDU (section 2.2.2.1).
 
@@ -3586,7 +3369,8 @@ Release: April 23, 2024
 
 43 / 85
 
- 02 00 00 00 -> CLIPRDR_GENERAL_CAPABILITY::version = CB_CAPS_VERSION_2 (2)
+
+ 02 00 00 00 -> CLIPRDR_GENERAL_CAPABILITY::version = CB_CAPS_VERSION_2 (2)
  0e 00 00 00 -> CLIPRDR_GENERAL_CAPABILITY::capabilityFlags = 0x0000000e
  0x0e
  = 0x02 |
@@ -3596,7 +3380,7 @@ Release: April 23, 2024
    CB_STREAM_FILECLIP_ENABLED |
    CB_FILECLIP_NO_FILE_PATHS
 
-4.1.4  Client Temporary Directory PDU
+#### 4.1.4 Client Temporary Directory PDU
 
 The following is an annotated dump of a Temporary Directory PDU (section 2.2.2.3).
 
@@ -3659,7 +3443,8 @@ Release: April 23, 2024
 
 44 / 85
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -3681,7 +3466,7 @@ Release: April 23, 2024
  00 00 00 00 00 00 00 00 -> CLIPRDR_TEMP_DIRECTORY::wszTempDir =
  "c:\docume~1\eltons~1.ntd\locals~1\Temp\cdepotslhrdp_1\_TSABD.tmp"
 
-4.1.5  Format List PDU
+#### 4.1.5 Format List PDU
 
 The following is an annotated dump of a Format List PDU (section 2.2.3.1).
 
@@ -3705,7 +3490,7 @@ The following is an annotated dump of a Format List PDU (section 2.2.3.1).
  11 00 00 00  -> CLIPRDR_LONG_FORMAT_NAME::formatId = 0x11 = 17
  00 00 -> CLIPRDR_LONG_FORMAT_NAME::formatName = ""
 
-4.1.6  Format List Response PDU
+#### 4.1.6 Format List Response PDU
 
 The following is an annotated dump of a Format List Response PDU (section 2.2.3.2).
 
@@ -3715,7 +3500,7 @@ The following is an annotated dump of a Format List Response PDU (section 2.2.3.
  01 00 -> CLIPRDR_HEADER::msgFlags = 0x0001 = CB_RESPONSE_OK
  00 00 00 00 -> CLIPRDR_HEADER::dataLen = 0 bytes
 
-4.2  Annotated Copy Sequence
+### 4.2 Annotated Copy Sequence
 
 The following is an annotated dump of a Copy Sequence (section 1.3.2.2.1).
 
@@ -3726,7 +3511,8 @@ Release: April 23, 2024
 
 45 / 85
 
-4.2.1  Format List PDU
+
+#### 4.2.1 Format List PDU
 
 The following is an annotated dump of a Format List PDU (section 2.2.3.1).
 
@@ -3789,7 +3575,7 @@ The following is an annotated dump of a Format List PDU (section 2.2.3.1).
  07 00 00 00 -> CLIPRDR_LONG_FORMAT_NAME::formatId = 7
  00 00 -> CLIPRDR_LONG_FORMAT_NAME::formatName = ""
 
-4.2.2  Format List Response PDU
+#### 4.2.2 Format List Response PDU
 
 The following is an annotated dump of a Format List Response PDU (section 2.2.3.2).
 
@@ -3800,15 +3586,16 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000000 03 00 01 00 00 00 00 00                         ........
+
+ 00000000 03 00 01 00 00 00 00 00                         ........
 
  03 00 -> CLIPRDR_HEADER::msgType = CB_FORMAT_LIST_RESPONSE (3)
  01 00 -> CLIPRDR_HEADER::msgFlags = 0x0001 = CB_RESPONSE_OK
  00 00 00 00 -> CLIPRDR_HEADER::dataLen = 0 bytes
 
-4.3  Locking and Unlocking Clipboard Data
+### 4.3 Locking and Unlocking Clipboard Data
 
-4.3.1  Lock Clipboard Data PDU
+#### 4.3.1 Lock Clipboard Data PDU
 
 The following is an annotated dump of a Lock Clipboard Data Request PDU (section 2.2.4.1).
 
@@ -3820,7 +3607,7 @@ The following is an annotated dump of a Lock Clipboard Data Request PDU (section
 
  08 00 00 00 -> CLIPRDR_LOCK_CLIPDATA::clipDataId = 0x08
 
-4.3.2  Unlock Clipboard Data PDU
+#### 4.3.2 Unlock Clipboard Data PDU
 
 The following is an annotated dump of an Unlock Clipboard Data Request PDU (section 2.2.4.2).
 
@@ -3832,11 +3619,11 @@ The following is an annotated dump of an Unlock Clipboard Data Request PDU (sect
 
  08 00 00 00 -> CLIPRDR_UNLOCK_CLIPDATA::clipDataId = 0x08
 
-4.4  Annotated Paste Sequence
+### 4.4 Annotated Paste Sequence
 
 The following is an annotated dump of a Paste Sequence (section 1.3.2.2.3).
 
-4.4.1  Format Data Request PDU
+#### 4.4.1 Format Data Request PDU
 
 The following is an annotated dump of a Format Data Request PDU (section 2.2.5.1).
 
@@ -3848,7 +3635,7 @@ The following is an annotated dump of a Format Data Request PDU (section 2.2.5.1
 
  0d 00 00 00 -> CLIPRDR_FORMAT_DATA_REQUEST::requestedFormatId = 0x0d
 
-4.4.2  Format Data Response PDU
+#### 4.4.2 Format Data Response PDU
 
 The following is an annotated dump of a Format Data Response PDU (section 2.2.5.2).
 
@@ -3862,16 +3649,17 @@ Release: April 23, 2024
 
 47 / 85
 
- 05 00 -> CLIPRDR_HEADER::msgType = CB_FORMAT_DATA_RESPONSE (5)
+
+ 05 00 -> CLIPRDR_HEADER::msgType = CB_FORMAT_DATA_RESPONSE (5)
  01 00 -> CLIPRDR_HEADER::msgFlags = 0x0001 = CB_RESPONSE_OK
  18 00 00 00 -> CLIPRDR_HEADER::dataLen = 0x18 = 24 bytes
 
  68 00 65 00 6c 00 6c 00 6f 00 20 00 77 00 6f 00
  72 00 6c 00 64 00 00 00 -> CLIPRDR_FORMAT_DATA_RESPONSE::requestedFormatData
 
-4.4.3  File Contents Request PDU
+#### 4.4.3 File Contents Request PDU
 
-4.4.3.1  Requesting the Size of a File
+##### 4.4.3.1 Requesting the Size of a File
 
 The following is an annotated dump of a File Contents Request PDU (section 2.2.5.3).
 
@@ -3889,7 +3677,7 @@ The following is an annotated dump of a File Contents Request PDU (section 2.2.5
  00 00 00 00 -> CLIPRDR_FILECONTENTS_REQUEST::nPositionHigh = 0
  08 00 00 00 -> CLIPRDR_FILECONTENTS_REQUEST::cbRequested = 8
 
-4.4.3.2  Requesting the Contents of a File
+##### 4.4.3.2 Requesting the Contents of a File
 
 The following is an annotated dump of a File Contents Request PDU (section 2.2.5.3).
 
@@ -3907,9 +3695,9 @@ The following is an annotated dump of a File Contents Request PDU (section 2.2.5
  00 00 00 00 -> CLIPRDR_FILECONTENTS_REQUEST::nPositionHigh = 0
  00 00 01 00 -> CLIPRDR_FILECONTENTS_REQUEST::cbRequested = 0x00010000 = 65536 bytes
 
-4.4.4  File Contents Response PDU
+#### 4.4.4 File Contents Response PDU
 
-4.4.4.1  Sending the Size of a File
+##### 4.4.4.1 Sending the Size of a File
 
 The following is an annotated dump of a File Contents Response PDU (section 2.2.5.4).
 
@@ -3927,11 +3715,12 @@ Release: April 23, 2024
 
 48 / 85
 
- 02 00 00 00 -> CLIPRDR_FILECONTENTS_RESPONSE::streamId = 2
+
+ 02 00 00 00 -> CLIPRDR_FILECONTENTS_RESPONSE::streamId = 2
  2c 00 00 00 00 00 00 00 -> CLIPRDR_FILECONTENTS_RESPONSE::requestedFileContentsData = 44
 bytes
 
-4.4.4.2  Sending the Contents of a File
+##### 4.4.4.2 Sending the Contents of a File
 
 The following is an annotated dump of a File Contents Response PDU (section 2.2.5.4).
 
@@ -3951,7 +3740,7 @@ The following is an annotated dump of a File Contents Response PDU (section 2.2.
  68 65 20 6c 61 7a 79 20 64 6f 67 2e ->
 CLIPRDR_FILECONTENTS_RESPONSE::requestedFileContentsData
 
-4.4.5  Metafile Data Contained in a Format Data Response PDU
+#### 4.4.5 Metafile Data Contained in a Format Data Response PDU
 
 The following is an annotated dump of a Format Data Response PDU (section 2.2.5.2) that contains a
 Windows metafile ([MS-WMF] section 2) wrapped in a Packed Metafile Payload (section 2.2.5.2.1)
@@ -3997,7 +3786,8 @@ Release: April 23, 2024
 
 49 / 85
 
- 00000200 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+ 00000200 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00000210 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00000220 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00000230 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -4074,7 +3864,8 @@ Release: April 23, 2024
 
 50 / 85
 
- 00000650 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+ 00000650 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00000660 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00000670 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00000680 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -4151,7 +3942,8 @@ Release: April 23, 2024
 
 51 / 85
 
- a7 01 00 00 -> CLIPRDR_MFPICT::yExt = 0x1a7 = 423
+
+ a7 01 00 00 -> CLIPRDR_MFPICT::yExt = 0x1a7 = 423
 
  01 00 09 00 00 03 07 05 00 00 01 00 e1 02 00 00
  00 00 04 00 00 00 03 01 08 00 05 00 00 00 0c 02
@@ -4228,7 +4020,8 @@ Release: April 23, 2024
 
 52 / 85
 
- 00 00 00 00 00 00 00 00 04 00 00 00 34 02 00 00
+
+ 00 00 00 00 00 00 00 00 04 00 00 00 34 02 00 00
  03 00 00 00 35 00 e1 02 00 00 41 0b 20 00 cc 00
  10 00 15 00 00 00 00 00 f0 ff 15 00 00 00 00 00
  28 00 00 00 15 00 00 00 10 00 00 00 01 00 08 00
@@ -4305,7 +4098,8 @@ Release: April 23, 2024
 
 53 / 85
 
- 00 00 00 00 00 00 00 00 0e 0e 0e 0e 0e 0e 0e 0e
+
+ 00 00 00 00 00 00 00 00 0e 0e 0e 0e 0e 0e 0e 0e
  0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 00 00 00
  0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e
  0e 0e 0e 0e 0e 00 00 00 0e 0e 0e 0e 0e 0e 0e 0e
@@ -4331,7 +4125,7 @@ Release: April 23, 2024
  0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e 0e
  0e 0e 0e 0e 0e 00 00 00 03 00 00 00 00 00 -> CLIPRDR_MFPICT::metaFileData
 
-4.4.6  Palette Data Contained in a Format Data Response PDU
+#### 4.4.6 Palette Data Contained in a Format Data Response PDU
 
 The following is an annotated dump of a Format Data Response PDU (section 2.2.5.2) that contains a
 216-color palette wrapped in a Packed Palette Payload (section 2.2.5.2.2) structure.
@@ -4379,7 +4173,8 @@ Release: April 23, 2024
 
 54 / 85
 
- 00000230 00 ff 99 00 33 ff 99 00 66 ff 99 00 99 ff 99 00 ....3...f.......
+
+ 00000230 00 ff 99 00 33 ff 99 00 66 ff 99 00 99 ff 99 00 ....3...f.......
  00000240 cc ff 99 00 ff ff 99 00 00 00 cc 00 33 00 cc 00 ............3...
  00000250 66 00 cc 00 99 00 cc 00 cc 00 cc 00 ff 00 cc 00 f...............
  00000260 00 33 cc 00 33 33 cc 00 66 33 cc 00 99 33 cc 00 .3..33..f3...3..
@@ -4456,7 +4251,8 @@ Release: April 23, 2024
 
 55 / 85
 
- PALETTEENTRY::red = 0x33
+
+ PALETTEENTRY::red = 0x33
  PALETTEENTRY::green = 0x33
  PALETTEENTRY::blue = 0x00
  PALETTEENTRY::extra = 0x00
@@ -4533,7 +4329,8 @@ Release: April 23, 2024
 
 56 / 85
 
- PALETTEENTRY::extra = 0x00
+
+ PALETTEENTRY::extra = 0x00
 
  33 99 00 00 -> CLIPRDR_PALETTE::paletteEntriesData[19] = 0x00009933
  PALETTEENTRY::red = 0x33
@@ -4610,7 +4407,8 @@ Release: April 23, 2024
 
 57 / 85
 
- PALETTEENTRY::red = 0x00
+
+ PALETTEENTRY::red = 0x00
  PALETTEENTRY::green = 0xff
  PALETTEENTRY::blue = 0x00
  PALETTEENTRY::extra = 0x00
@@ -4687,7 +4485,8 @@ Release: April 23, 2024
 
 58 / 85
 
- PALETTEENTRY::extra = 0x00
+
+ PALETTEENTRY::extra = 0x00
 
  00 33 33 00 -> CLIPRDR_PALETTE::paletteEntriesData[42] = 0x00333300
  PALETTEENTRY::red = 0x00
@@ -4764,7 +4563,8 @@ Release: April 23, 2024
 
 59 / 85
 
- PALETTEENTRY::red = 0xff
+
+ PALETTEENTRY::red = 0xff
  PALETTEENTRY::green = 0x66
  PALETTEENTRY::blue = 0x33
  PALETTEENTRY::extra = 0x00
@@ -4841,7 +4641,8 @@ Release: April 23, 2024
 
 60 / 85
 
- PALETTEENTRY::extra = 0x00
+
+ PALETTEENTRY::extra = 0x00
 
  ff cc 33 00 -> CLIPRDR_PALETTE::paletteEntriesData[65] = 0x0033ccff
  PALETTEENTRY::red = 0xff
@@ -4918,7 +4719,8 @@ Release: April 23, 2024
 
 61 / 85
 
- PALETTEENTRY::red = 0xcc
+
+ PALETTEENTRY::red = 0xcc
  PALETTEENTRY::green = 0x00
  PALETTEENTRY::blue = 0x66
  PALETTEENTRY::extra = 0x00
@@ -4995,7 +4797,8 @@ Release: April 23, 2024
 
 62 / 85
 
- PALETTEENTRY::extra = 0x00
+
+ PALETTEENTRY::extra = 0x00
 
  cc 66 66 00 -> CLIPRDR_PALETTE::paletteEntriesData[88] = 0x006666cc
  PALETTEENTRY::red = 0xcc
@@ -5072,7 +4875,8 @@ Release: April 23, 2024
 
 63 / 85
 
- PALETTEENTRY::red = 0x99
+
+ PALETTEENTRY::red = 0x99
  PALETTEENTRY::green = 0xcc
  PALETTEENTRY::blue = 0x66
  PALETTEENTRY::extra = 0x00
@@ -5149,7 +4953,8 @@ Release: April 23, 2024
 
 64 / 85
 
- PALETTEENTRY::extra = 0x00
+
+ PALETTEENTRY::extra = 0x00
 
  99 00 99 00 -> CLIPRDR_PALETTE::paletteEntriesData[111] = 0x00990099
  PALETTEENTRY::red = 0x99
@@ -5226,7 +5031,8 @@ Release: April 23, 2024
 
 65 / 85
 
- PALETTEENTRY::red = 0x66
+
+ PALETTEENTRY::red = 0x66
  PALETTEENTRY::green = 0x66
  PALETTEENTRY::blue = 0x99
  PALETTEENTRY::extra = 0x00
@@ -5303,7 +5109,8 @@ Release: April 23, 2024
 
 66 / 85
 
- PALETTEENTRY::extra = 0x00
+
+ PALETTEENTRY::extra = 0x00
 
  66 cc 99 00 -> CLIPRDR_PALETTE::paletteEntriesData[134] = 0x0099cc66
  PALETTEENTRY::red = 0x66
@@ -5380,7 +5187,8 @@ Release: April 23, 2024
 
 67 / 85
 
- PALETTEENTRY::red = 0x33
+
+ PALETTEENTRY::red = 0x33
  PALETTEENTRY::green = 0x00
  PALETTEENTRY::blue = 0xcc
  PALETTEENTRY::extra = 0x00
@@ -5457,7 +5265,8 @@ Release: April 23, 2024
 
 68 / 85
 
- PALETTEENTRY::extra = 0x00
+
+ PALETTEENTRY::extra = 0x00
 
  33 66 cc 00 -> CLIPRDR_PALETTE::paletteEntriesData[157] = 0x00cc6633
  PALETTEENTRY::red = 0x33
@@ -5534,7 +5343,8 @@ Release: April 23, 2024
 
 69 / 85
 
- PALETTEENTRY::red = 0x00
+
+ PALETTEENTRY::red = 0x00
  PALETTEENTRY::green = 0xcc
  PALETTEENTRY::blue = 0xcc
  PALETTEENTRY::extra = 0x00
@@ -5611,7 +5421,8 @@ Release: April 23, 2024
 
 70 / 85
 
- PALETTEENTRY::extra = 0x00
+
+ PALETTEENTRY::extra = 0x00
 
  00 00 ff 00 -> CLIPRDR_PALETTE::paletteEntriesData[180] = 0x00ff0000
  PALETTEENTRY::red = 0x00
@@ -5688,7 +5499,8 @@ Release: April 23, 2024
 
 71 / 85
 
- PALETTEENTRY::red = 0xff
+
+ PALETTEENTRY::red = 0xff
  PALETTEENTRY::green = 0x33
  PALETTEENTRY::blue = 0xff
  PALETTEENTRY::extra = 0x00
@@ -5765,7 +5577,8 @@ Release: April 23, 2024
 
 72 / 85
 
- PALETTEENTRY::extra = 0x00
+
+ PALETTEENTRY::extra = 0x00
 
  ff 99 ff 00 -> CLIPRDR_PALETTE::paletteEntriesData[203] = 0x00ff99ff
  PALETTEENTRY::red = 0xff
@@ -5842,7 +5655,8 @@ Release: April 23, 2024
 
 73 / 85
 
- PALETTEENTRY::red = 0xcc
+
+ PALETTEENTRY::red = 0xcc
  PALETTEENTRY::green = 0xff
  PALETTEENTRY::blue = 0xff
  PALETTEENTRY::extra = 0x00
@@ -5853,12 +5667,12 @@ Release: April 23, 2024
  PALETTEENTRY::blue = 0xff
  PALETTEENTRY::extra = 0x00
 
-4.5  Retrieving a File List
+### 4.5 Retrieving a File List
 
 The following is an annotated dump that shows the sequence of messages involved in obtaining a File
 List.
 
-4.5.1  Format List PDU
+#### 4.5.1 Format List PDU
 
 The following is an annotated dump of a Format List PDU (section 2.2.3.1). This format list advertises
 the fact that File List data is available from the peer (the FileGroupDescriptorW format is a File List).
@@ -5878,7 +5692,7 @@ the fact that File List data is available from the peer (the FileGroupDescriptor
  74 00 6f 00 72 00 57 00 00 00 ->
  CLIPRDR_LONG_FORMAT_NAME::formatName = "FileGroupDescriptorW"
 
-4.5.2  Format List Response PDU
+#### 4.5.2 Format List Response PDU
 
 The following is an annotated dump of a Format List Response PDU (section 2.2.3.2).
 
@@ -5888,7 +5702,7 @@ The following is an annotated dump of a Format List Response PDU (section 2.2.3.
  01 00 -> CLIPRDR_HEADER::msgFlags = 0x0001 = CB_RESPONSE_OK
  00 00 00 00 -> CLIPRDR_HEADER::dataLen = 0 bytes
 
-4.5.3  Format Data Request PDU
+#### 4.5.3 Format Data Request PDU
 
 The following is an annotated dump of a Format Data Request PDU (section 2.2.5.1). The format being
 requested is the File List that was advertised in section 4.5.1 (the advertised ID in the Format List PDU
@@ -5907,9 +5721,10 @@ Release: April 23, 2024
 
 74 / 85
 
- 79 c0 00 00 -> CLIPRDR_FORMAT_DATA_REQUEST::requestedFormatId = 0xc079 = 49273
 
-4.5.4  Format Data Response PDU
+ 79 c0 00 00 -> CLIPRDR_FORMAT_DATA_REQUEST::requestedFormatId = 0xc079 = 49273
+
+#### 4.5.4 Format Data Response PDU
 
 The following is an annotated dump of a Format Data Response PDU (section 2.2.5.1) sent in response
 to the File List format request in section 4.5.2.
@@ -5981,7 +5796,8 @@ Release: April 23, 2024
 
 75 / 85
 
- 000003b0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+ 000003b0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000003c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000003d0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000003e0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -6058,7 +5874,8 @@ Release: April 23, 2024
 
 76 / 85
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -6135,7 +5952,8 @@ Release: April 23, 2024
 
 77 / 85
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ->
  CLIPRDR_FILEDESCRIPTOR::cFileName = "File2.txt"
@@ -6147,18 +5965,19 @@ Release: April 23, 2024
 
 78 / 85
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Remote Desktop
 Protocol: Clipboard Virtual Channel Extension.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for protocol messages because all static virtual channel traffic is
 secured by the underlying core Remote Desktop Protocol. An overview of the implemented security-
 related mechanisms is as specified in [MS-RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -6169,7 +5988,8 @@ Release: April 23, 2024
 
 79 / 85
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6237,7 +6057,8 @@ Release: April 23, 2024
 
 80 / 85
 
-<3> Section 3.1.1.2: On Windows-based systems, the file list is encapsulated in a "File Group
+
+<3> Section 3.1.1.2: On Windows-based systems, the file list is encapsulated in a "File Group
 Descriptor" (for more information, see [MSDN-SHELLCLIP], "CFSTR_FILEDESCRIPTOR") generic data
 format. This format consists of an array of File Descriptors, each of which describes a single file in a
 collection. The Format Name of the File Group Descriptor format is "FileGroupDescriptorW" if the
@@ -6251,7 +6072,8 @@ Release: April 23, 2024
 
 81 / 85
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6308,7 +6130,8 @@ Release: April 23, 2024
 
 82 / 85
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6459,7 +6282,8 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-FORMAT_LIST_RESPONSE 24
+
+FORMAT_LIST_RESPONSE 24
 FORMAT_LIST_RESPONSE packet 24
 
 P
@@ -6608,7 +6432,8 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   timers (section 3.1.2 34, section 3.3.2 41)
+
+   timers (section 3.1.2 34, section 3.3.2 41)
 Server Capabilities store 39
 Server Clipboard Capabilities PDU example 43
 Server Monitor Ready PDU example 43

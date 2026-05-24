@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 47
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 47
 
-Date
+
+Date
 
 Revision
 History
@@ -529,7 +531,8 @@ Release: April 23, 2024
 
 3 / 47
 
-Date
+
+Date
 
 Revision
 History
@@ -580,199 +583,86 @@ Release: April 23, 2024
 
 4 / 47
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Remote Assistance Connection String 1](#221-remote-assistance-connection-string-1)
+    - [2.2.2 Remote Assistance Connection String 2](#222-remote-assistance-connection-string-2)
+    - [2.2.3 SessionStateEnum](#223-sessionstateenum)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IPCHService Remote Assistance Server Details](#31-ipchservice-remote-assistance-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 IPCHService](#3141-ipchservice)
+        - [3.1.4.1.1 RemoteConnectionParms (Opnum 19)](#31411-remoteconnectionparms-opnum-19)
+        - [3.1.4.1.2 RemoteUserSessionInfo (Opnum 20)](#31412-remoteusersessioninfo-opnum-20)
+          - [3.1.4.1.2.1 IPCHCollection](#314121-ipchcollection)
+            - [3.1.4.1.2.1.1 _NewEnum (Opnum 7)](#3141211-newenum-opnum-7)
+            - [3.1.4.1.2.1.2 Item (Opnum 8)](#3141212-item-opnum-8)
+            - [3.1.4.1.2.1.3 Count (Opnum 9)](#3141213-count-opnum-9)
+          - [3.1.4.1.2.2 ISAFSession](#314122-isafsession)
+            - [3.1.4.1.2.2.1 DomainName (Get) (Opnum 11)](#3141221-domainname-get-opnum-11)
+            - [3.1.4.1.2.2.2 DomainName (Set) (Opnum 12)](#3141222-domainname-set-opnum-12)
+            - [3.1.4.1.2.2.3 SessionID (Get) (Opnum 7)](#3141223-sessionid-get-opnum-7)
+            - [3.1.4.1.2.2.4 SessionID (Set) (Opnum 8)](#3141224-sessionid-set-opnum-8)
+            - [3.1.4.1.2.2.5 SessionState (Get) (Opnum 9)](#3141225-sessionstate-get-opnum-9)
+            - [3.1.4.1.2.2.6 SessionState (Set) (Opnum 10)](#3141226-sessionstate-set-opnum-10)
+            - [3.1.4.1.2.2.7 UserName (Get) (Opnum 13)](#3141227-username-get-opnum-13)
+            - [3.1.4.1.2.2.8 UserName (Set) (Opnum 14)](#3141228-username-set-opnum-14)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 IPCHService Remote Assistance Client Details](#32-ipchservice-remote-assistance-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 IRASrv Remote Assistance Server Details](#33-irasrv-remote-assistance-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 IRASrv](#3341-irasrv)
+        - [3.3.4.1.1 GetNoviceUserInfo (Opnum 7)](#33411-getnoviceuserinfo-opnum-7)
+        - [3.3.4.1.2 GetSessionInfo (Opnum 8)](#33412-getsessioninfo-opnum-8)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 IRASrv Remote Assistance Client Details](#34-irasrv-remote-assistance-client-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Remote Assistance Invitation File Format](#6-appendix-a-remote-assistance-invitation-file-format)
+- [7 Appendix B: Full IDL](#7-appendix-b-full-idl)
+- [8 Appendix C: Product Behavior](#8-appendix-c-product-behavior)
+- [9 Change Tracking](#9-change-tracking)
+- [10 Index](#10-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Common Data Types ........................................................................................ 13
-Remote Assistance Connection String 1 ......................................................... 13
-Remote Assistance Connection String 2 ......................................................... 14
-SessionStateEnum ...................................................................................... 16
-
-2.2.1
-2.2.2
-2.2.3
-
-3.1
-
-3.1.4.1
-
-3.1.4.1.2.2
-
-3.1.4.1.2.1
-
-3.1.4.1.1
-3.1.4.1.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.2.1.1
-3.1.4.1.2.1.2
-3.1.4.1.2.1.3
-
-3  Protocol Details ..................................................................................................... 17
-IPCHService Remote Assistance Server Details .................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-IPCHService ......................................................................................... 17
-RemoteConnectionParms (Opnum 19) ................................................ 18
-RemoteUserSessionInfo (Opnum 20) ................................................. 19
-IPCHCollection ........................................................................... 19
-_NewEnum (Opnum 7) .......................................................... 20
-Item (Opnum 8) ................................................................... 20
-Count (Opnum 9) ................................................................. 21
-ISAFSession .............................................................................. 21
-DomainName (Get) (Opnum 11) ............................................ 22
-DomainName (Set) (Opnum 12) ............................................. 23
-SessionID (Get) (Opnum 7) ................................................... 23
-SessionID (Set) (Opnum 8) ................................................... 24
-SessionState (Get) (Opnum 9) ............................................... 24
-SessionState (Set) (Opnum 10) ............................................. 24
-UserName (Get) (Opnum 13) ................................................. 25
-UserName (Set) (Opnum 14) ................................................. 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-IPCHService Remote Assistance Client Details...................................................... 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 27
-Message Processing Events and Sequencing Rules .......................................... 27
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 27
-IRASrv Remote Assistance Server Details ............................................................ 27
-Abstract Data Model .................................................................................... 28
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-
-3.1.4.1.2.2.1
-3.1.4.1.2.2.2
-3.1.4.1.2.2.3
-3.1.4.1.2.2.4
-3.1.4.1.2.2.5
-3.1.4.1.2.2.6
-3.1.4.1.2.2.7
-3.1.4.1.2.2.8
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.3.1
-3.3.2
-3.3.3
-
-3.1.5
-3.1.6
-
-3.2
-
-3.3
-
-[MS-RAI] - v20240423
-Remote Assistance Initiation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 47
-
-3.3.4
-
-3.3.4.1
-
-3.3.4.1.1
-3.3.4.1.2
-
-Message Processing Events and Sequencing Rules .......................................... 28
-IRASrv ................................................................................................. 28
-GetNoviceUserInfo (Opnum 7) .......................................................... 28
-GetSessionInfo (Opnum 8) ............................................................... 29
-Timer Events .............................................................................................. 30
-Other Local Events ...................................................................................... 30
-IRASrv Remote Assistance Client Details ............................................................. 30
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-
-3.4
-
-3.3.5
-3.3.6
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-3.4.6
-
-4  Protocol Examples ................................................................................................. 32
-
-5  Security ................................................................................................................. 33
-Security Considerations for Implementers ........................................................... 33
-Index of Security Parameters ............................................................................ 33
-
-5.1
-5.2
-
-6  Appendix A: Remote Assistance Invitation File Format ......................................... 34
-
-7  Appendix B: Full IDL .............................................................................................. 38
-
-8  Appendix C: Product Behavior ............................................................................... 41
-
-9  Change Tracking .................................................................................................... 44
-
-10  Index ..................................................................................................................... 45
-
-[MS-RAI] - v20240423
-Remote Assistance Initiation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 47
-
-1  Introduction
+## 1 Introduction
 
 The Remote Assistance Initiation Protocol is a set of Distributed Component Object Model
 (DCOM) interfaces, as specified in [MS-DCOM], for initiating a Remote Assistance connection to
@@ -783,7 +673,7 @@ make a Remote Assistance connection from the expert computer to the novice compu
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -846,7 +736,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-remote procedure call (RPC): A communication protocol used primarily between client and
+
+remote procedure call (RPC): A communication protocol used primarily between client and
 
 server. The term has three definitions that are often used interchangeably: a runtime
 environment providing for communication facilities between computers (the RPC runtime); a set
@@ -885,14 +776,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -916,7 +807,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-OAUT] Microsoft Corporation, "OLE Automation Protocol".
+
+[MS-OAUT] Microsoft Corporation, "OLE Automation Protocol".
 
 [MS-RA] Microsoft Corporation, "Remote Assistance Protocol".
 
@@ -928,12 +820,12 @@ Remoting".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CRYPTO] Microsoft Corporation, "Cryptography Reference", http://msdn.microsoft.com/en-
 us/library/aa380256.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Assistance Initiation Protocol provides a set of DCOM interfaces that enable an expert to
 retrieve the Remote Assistance connection-specific data from the remote novice computer. This
@@ -948,7 +840,7 @@ The expert is the DCOM client and the novice is the DCOM server.
  Before the expert's DCOM call is executed on the novice computer, DCOM performs a check to verify
 that the expert is on the list of authorized Remote Assistance helpers on the novice computer.<1>
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Assistance Initiation Protocol relies on the OLE Automation Protocol [MS-OAUT], the
 Distributed Component Object Model (DCOM) Remote Protocol [MS-DCOM], and on the Microsoft
@@ -967,13 +859,14 @@ Release: April 23, 2024
 
 9 / 47
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RAI].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 1: Relationships between protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol is implemented over DCOM and RPC, and, as a result, has the prerequisites specified in
 the Distributed Component Object Model (DCOM) Remote Protocol [MS-DCOM] and Remote Procedure
@@ -989,7 +882,8 @@ Release: April 23, 2024
 
 10 / 47
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 This protocol is used to perform the following functions:
 
@@ -1008,7 +902,7 @@ waiting for the expert to make a peer-to-peer connection to its terminal service
 to-peer Remote Assistance connection to the novice's Terminal Service session on the novice
 computer.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas.
 
@@ -1039,11 +933,11 @@ interfaces.
 The expert computer negotiates for a given set of server functionality by specifying the UUID
 corresponding to the wanted RPC interface when binding to the novice.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not define any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 No standards assignments have been received for this protocol. All values used in these extensions
 are in private ranges specified in section 2.1.
@@ -1067,7 +961,8 @@ Release: April 23, 2024
 
 11 / 47
 
- Parameter
+
+ Parameter
 
  Value
 
@@ -1108,9 +1003,10 @@ Release: April 23, 2024
 
 12 / 47
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 DCOM [MS-DCOM] is used as the transport protocol. The Remote Assistance Initiation Protocol
 documented here relies upon DCOM [MS-DCOM] authentication and encryption for all protocol
@@ -1146,7 +1042,7 @@ section 1.9:
 
 (3C3A70A7-A468-49B9-8ADA-28E11FCCAD5D)
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types and definitions specified in [C706] and [MS-DTYP], additional data
 types are defined in the following sections.
@@ -1154,7 +1050,7 @@ types are defined in the following sections.
 There are two version-specific forms of the Remote Assistance Connection String, appended with 1
 and 2 to differentiate them.
 
-2.2.1  Remote Assistance Connection String 1
+#### 2.2.1 Remote Assistance Connection String 1
 
 The Remote Assistance Connection String 1 contains the Remote Desktop Protocol parameters to
 establish a Remote Assistance connection. The Remote Assistance Connection String 1 is a
@@ -1186,7 +1082,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RASessionPwd: Remote Assistance session password. This MUST be set to "*".
+
+RASessionPwd: Remote Assistance session password. This MUST be set to "*".
 
 protocolSpecificParms: Parameter specific to a Remote Desktop Protocol.
 
@@ -1207,7 +1104,7 @@ follows.
  RASessionPwd = *
  protocolSpecificParms = RcfwecK8dpcT1fjZ6iQ5M0+q7iU=
 
-2.2.2  Remote Assistance Connection String 2
+#### 2.2.2 Remote Assistance Connection String 2
 
 The second type of the Remote Assistance Connection String packet is a Unicode string in XML
 format.<4> The details of this are as follows.
@@ -1249,7 +1146,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The Auth String Node <A> has the following attributes.
+
+1.  The Auth String Node <A> has the following attributes.
 
 Value  Meaning
 
@@ -1334,7 +1232,8 @@ Release: April 23, 2024
 
 15 / 47
 
-Session ID - SID = "1440550163"
+
+Session ID - SID = "1440550163"
 
 3.  The Transport Node has two Listener child Nodes <L> with the following server and port
 
@@ -1348,7 +1247,7 @@ Port - P = "49751"
 
 Server Name - N = "172.31.250.64".
 
-2.2.3  SessionStateEnum
+#### 2.2.3 SessionStateEnum
 
 The SessionStateEnum enumeration defines the states of a terminal services session.
 
@@ -1398,9 +1297,10 @@ Release: April 23, 2024
 
 16 / 47
 
-3  Protocol Details
 
-3.1  IPCHService Remote Assistance Server Details
+## 3 Protocol Details
+
+### 3.1 IPCHService Remote Assistance Server Details
 
 The Remote Assistance server provides methods that allow a client to:
 
@@ -1411,22 +1311,22 @@ The Remote Assistance server provides methods that allow a client to:
 The following sections specify server details of the IPCHService interface of the Remote Assistance
 Initiation Protocol, including abstract data models, timers, and message processing rules.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
  No abstract data model is used.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers or time-out periods are associated with this section of the protocol.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST listen on the well-known endpoint defined for this RPC interface. For more
 information, see section 2.1.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
-3.1.4.1  IPCHService
+##### 3.1.4.1 IPCHService
 
 The IPCHService interface is implemented by the novice to allow the expert to request a Remote
 Assistance Connection String.<6>
@@ -1471,7 +1371,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -1481,7 +1382,7 @@ SessionState for each session.
 
 Opnum: 20
 
-3.1.4.1.1 RemoteConnectionParms (Opnum 19)
+###### 3.1.4.1.1 RemoteConnectionParms (Opnum 19)
 
 The RemoteConnectionParms method gets the Remote Assistance connection parameters for a
 specific UserName, DomainName, and SessionID triple.
@@ -1545,7 +1446,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -1575,7 +1477,7 @@ administrator.
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2 RemoteUserSessionInfo (Opnum 20)
+###### 3.1.4.1.2 RemoteUserSessionInfo (Opnum 20)
 
 The RemoteUserSessionInfo method returns the collection of the terminal services sessions on the
 remote novice machine. All the terminal services session information is returned as a standard
@@ -1628,9 +1530,9 @@ policy. For more information, contact the system administrator.
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.1
+###### 3.1.4.1.2.1 IPCHCollection
 
-IPCHCollection
+
 
 The IPCHCollection interface provides methods to enumerate the elements of a collection.
 
@@ -1641,7 +1543,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The UUID for this interface is: "833E4100-AFF7-4AC3-AAC2-9F24C1457BCE".
+
+The UUID for this interface is: "833E4100-AFF7-4AC3-AAC2-9F24C1457BCE".
 
 Opnums 3 and 4 are not used across the network. These opnums are reserved and MUST NOT be
 reused by non-Microsoft implementations.<10>
@@ -1673,7 +1576,7 @@ used by the standard COM IUnknown interface, as specified in [MS-DCOM] section 3
 5 and 6 are reserved for the GetIDsOfNames and Invoke methods in the IDispatch interface, as
 specified in [MS-OAUT] section 3.1.
 
-3.1.4.1.2.1.1  _NewEnum (Opnum 7)
+###### 3.1.4.1.2.1.1 _NewEnum (Opnum 7)
 
 The _NewEnum method creates a copy of the collection.
 
@@ -1712,7 +1615,7 @@ Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.1.2  Item (Opnum 8)
+###### 3.1.4.1.2.1.2 Item (Opnum 8)
 
 The Item method retrieves an element.
 
@@ -1725,7 +1628,8 @@ Release: April 23, 2024
 
 20 / 47
 
-   [in] long vIndex,
+
+   [in] long vIndex,
    [out, retval] VARIANT* ppEntry
  );
 
@@ -1764,7 +1668,7 @@ Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.1.3  Count (Opnum 9)
+###### 3.1.4.1.2.1.3 Count (Opnum 9)
 
 The Count method retrieves the number of elements in the collection.
 
@@ -1810,9 +1714,10 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.2.2
 
-ISAFSession
+###### 3.1.4.1.2.2 ISAFSession
+
+
 
 The ISAFSession interface is implemented by servers to describe sessions.
 
@@ -1876,7 +1781,7 @@ used by the standard COM IUnknown interface, as specified in [MS-DCOM] section 3
 5 and 6 are reserved for the GetIDsOfNames and Invoke methods in the IDispatch interface, as
 specified in [MS-OAUT] section 3.1.
 
-3.1.4.1.2.2.1  DomainName (Get) (Opnum 11)
+###### 3.1.4.1.2.2.1 DomainName (Get) (Opnum 11)
 
 The DomainName (Get) method retrieves the domain name for the session user.
 
@@ -1898,7 +1803,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code  Description
+
+Return value/code  Description
 
 0x00000000
 
@@ -1916,7 +1822,7 @@ The method failed due to an invalid pointer.
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.2.2  DomainName (Set) (Opnum 12)
+###### 3.1.4.1.2.2.2 DomainName (Set) (Opnum 12)
 
 The DomainName (Set) method sets the domain name for the session user.
 
@@ -1943,7 +1849,7 @@ Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.2.3  SessionID (Get) (Opnum 7)
+###### 3.1.4.1.2.2.3 SessionID (Get) (Opnum 7)
 
 The SessionID (Get) method retrieves the identifier number of the session.
 
@@ -1979,11 +1885,12 @@ Release: April 23, 2024
 
 23 / 47
 
-Exceptions Thrown:
+
+Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.2.4  SessionID (Set) (Opnum 8)
+###### 3.1.4.1.2.2.4 SessionID (Set) (Opnum 8)
 
 The SessionID (Set) method sets the identifier number of the session.
 
@@ -2010,7 +1917,7 @@ Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.2.5  SessionState (Get) (Opnum 9)
+###### 3.1.4.1.2.2.5 SessionState (Get) (Opnum 9)
 
 The SessionState (Get) method retrieves the state of the session.
 
@@ -2045,7 +1952,7 @@ Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.2.6  SessionState (Set) (Opnum 10)
+###### 3.1.4.1.2.2.6 SessionState (Set) (Opnum 10)
 
 [MS-RAI] - v20240423
 Remote Assistance Initiation Protocol
@@ -2054,7 +1961,8 @@ Release: April 23, 2024
 
 24 / 47
 
-The SessionState (Set) method sets the state of the session.
+
+The SessionState (Set) method sets the state of the session.
 
  [propput, id(DISPID_SAF_SESS__SESSIONSTATE)] HRESULT SessionState(
    [in] SessionStateEnum pVal
@@ -2087,7 +1995,7 @@ Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.2.7  UserName (Get) (Opnum 13)
+###### 3.1.4.1.2.2.7 UserName (Get) (Opnum 13)
 
 The UserName (Get) method retrieves the user name for the session.
 
@@ -2120,7 +2028,7 @@ The method failed due to an invalid pointer.
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.4.1.2.2.8  UserName (Set) (Opnum 14)
+###### 3.1.4.1.2.2.8 UserName (Set) (Opnum 14)
 
 The UserName (Set) method sets the user name for the session.
 
@@ -2133,7 +2041,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   [in] BSTR pVal
+
+   [in] BSTR pVal
  );
 
 pVal: User name to assign for the session.
@@ -2155,22 +2064,22 @@ Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No timer events are required beyond the events maintained in the underlying RPC transport (see
 section 2.1).
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No additional local events are used beyond the events maintained in the underlying RPC transport
 (see section 2.1).
 
-3.2  IPCHService Remote Assistance Client Details
+### 3.2 IPCHService Remote Assistance Client Details
 
 The following sections specify client details of the Remote Assistance Initiation Protocol, including
 abstract data models, timers, and message processing rules.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The expert MUST specify the IP address or FQDN of the novice computer to use this protocol.
 
@@ -2184,7 +2093,7 @@ specifying the terminal services Session's DomainName, UserName and SessionID, i
 RemoteConnectionParms method of IPCHService on the remote novice computer to obtain the
 Remote Assistance Connection String.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required other than those internal ones used in RPC to implement resiliency to
 network outages, as specified in [MS-RPCE].
@@ -2196,13 +2105,14 @@ Release: April 23, 2024
 
 26 / 47
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 The client creates an RPC association (or binding) to the server RPC before an RPC method is called.
 The client can either create a separate association for each method invocation, or it can reuse an
 association for multiple invocations.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The following list shows the sequence of steps involved in a Remote Assistance Connection String
 request:
@@ -2233,17 +2143,17 @@ UserName MUST be ignored.
 
 6.  This Remote Assistance Connection String is valid to begin the Remote Assistance connection.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No protocol timer events are required on the client other than the events maintained in the underlying
 RPC transport.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 No additional local events are used on the client other than the events maintained in the underlying
 RPC transport.
 
-3.3  IRASrv Remote Assistance Server Details
+### 3.3 IRASrv Remote Assistance Server Details
 
 The Remote Assistance Server provides methods to allow a client to:
 
@@ -2263,23 +2173,24 @@ Release: April 23, 2024
 
 27 / 47
 
-3.3.1  Abstract Data Model
+
+#### 3.3.1 Abstract Data Model
 
 No abstract data model is used.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No protocol timers are required other than those internal ones used in RPC to implement resiliency to
 network outages, as specified in [MS-RPCE].
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The server MUST listen on the well-known endpoint defined for this RPC interface. For more
 information, see section 2.1.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
-3.3.4.1  IRASrv
+##### 3.3.4.1 IRASrv
 
 The IRASrv interface is implemented by the novice computer to allow the expert computer to
 request a Remote Assistance Connection String.<12>
@@ -2316,7 +2227,7 @@ used by the standard COM IUnknown interface, as specified in [MS-DCOM] section 3
 5 and 6 are reserved for the GetIDsOfNames, and Invoke methods in the IDispatch interface, as
 specified in [MS-OAUT] section 3.1.
 
-3.3.4.1.1 GetNoviceUserInfo (Opnum 7)
+###### 3.3.4.1.1 GetNoviceUserInfo (Opnum 7)
 
 The GetNoviceUserInfo method is received by the server in an RPC_REQUEST packet. The method is
 received in the terminal services session as specified by the Client. In response, the server returns
@@ -2333,7 +2244,8 @@ Release: April 23, 2024
 
 28 / 47
 
-szName: A pointer to a NULL-terminated Unicode string that contains the Remote Assistance
+
+szName: A pointer to a NULL-terminated Unicode string that contains the Remote Assistance
 
 Connection String 2 for the specified terminal services session.
 
@@ -2374,7 +2286,7 @@ Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.3.4.1.2 GetSessionInfo (Opnum 8)
+###### 3.3.4.1.2 GetSessionInfo (Opnum 8)
 
 The GetSessionInfo method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the terminal services session information for the various sessions on the computer.
@@ -2419,7 +2331,8 @@ Release: April 23, 2024
 
 29 / 47
 
-Return value/code  Description
+
+Return value/code  Description
 
 0x80004003
 
@@ -2437,21 +2350,21 @@ Exceptions Thrown:
 
 No exceptions are thrown beyond those thrown by the underlying RPC protocol [MS-RPCE].
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 No protocol timer events are required on the client other than the events maintained in the underlying
 RPC transport.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 No additional local events are used other than the events maintained in the underlying RPC transport.
 
-3.4  IRASrv Remote Assistance Client Details
+### 3.4 IRASrv Remote Assistance Client Details
 
 The following sections specify client details of the Remote Assistance Initiation Protocol, including
 abstract data models, timers, and message processing rules.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 The expert computer MUST specify the IP address or FQDN of the novice computer to use this
 protocol.
@@ -2466,12 +2379,12 @@ and invokes the GetNoviceUserInfo method of the IRASrv interface running on the 
 computer. The GetNoviceUserInfo method returns the Remote Assistance Connection String for the
 terminal services session where it is being invoked.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 No protocol timers are required other than those internal ones used in RPC to implement resiliency to
 network outages, as specified in [MS-RPCE].
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 The client creates an RPC association (or binding) to the server RPC before an RPC method is called.
 The client can either create a separate association for each method invocation, or it can reuse an
@@ -2484,7 +2397,8 @@ Release: April 23, 2024
 
 30 / 47
 
-3.4.4  Message Processing Events and Sequencing Rules
+
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 The following list shows the sequence of steps involved in a Remote Assistance Connection String
 request:
@@ -2511,12 +2425,12 @@ returns the Remote Assistance Connection String for the specified session.
 
 the expert computer to the novice computer.
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 No protocol timer events are required on the client other than the events maintained in the underlying
 RPC transport.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 No additional local events are used on the client other than the events maintained in the underlying
 RPC transport.
@@ -2528,7 +2442,8 @@ Release: April 23, 2024
 
 31 / 47
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following example demonstrates the client and server for IPCHService interface, using the
 RemoteUserSessionInfo and RemoteConnectionParms methods.
@@ -2574,15 +2489,16 @@ Release: April 23, 2024
 
 32 / 47
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol relies on the security features provided by DCOM [MS-DCOM]. Review the security
 considerations listed in [MS-RPCE] section 5.1, as these are also valid for DCOM and DCOM-based
 protocols.<14>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for this protocol.
 
@@ -2593,7 +2509,8 @@ Release: April 23, 2024
 
 33 / 47
 
-6  Appendix A: Remote Assistance Invitation File Format
+
+## 6 Appendix A: Remote Assistance Invitation File Format
 
 The purpose of the Remote Assistance Initiation Protocol is to obtain the Remote Assistance
 Connection String using DCOM. However, the implementer is free to use alternative approaches to
@@ -2662,7 +2579,8 @@ Release: April 23, 2024
 
 34 / 47
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-RAI].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2684,7 +2602,8 @@ Remote Assistance Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      0B958BD4F47966DBBC76E72F6F47FEE1AC50844D654D2D86A760854286F9DAA3823F0346D41063C7
+
+      0B958BD4F47966DBBC76E72F6F47FEE1AC50844D654D2D86A760854286F9DAA3823F0346D41063C7
       6378535688017C2D00D263AC187F6BE26FDB854B01E1BC8E4328F54163DB2E901D3805E0D6CF2593
       7A2D43C959F51809124DA2E70807A737323968644CB8BC56ECDCD43AAA40B3B2BA7021198D98AA4D
       5B9818095053C0104A52743343489AD1E12AC0CB7001E56910718B9A8155A60AFF3CC26D2B163629
@@ -2758,7 +2677,8 @@ Release: April 23, 2024
 
 36 / 47
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-RAI].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
@@ -2771,7 +2691,8 @@ Release: April 23, 2024
 
 37 / 47
 
-7  Appendix B: Full IDL
+
+## 7 Appendix B: Full IDL
 
 For ease of implementation, the full IDL is provided below.
 
@@ -2843,7 +2764,8 @@ Release: April 23, 2024
 
 38 / 47
 
-     object,
+
+     object,
      uuid(833E4200-AFF7-4AC3-AAC2-9F24C1457BCE),
      dual,
      oleautomation,
@@ -2920,7 +2842,8 @@ Release: April 23, 2024
 
 39 / 47
 
- interface IRASrv : IDispatch{
+
+ interface IRASrv : IDispatch{
      [id(1), helpstring("method GetNoviceUserInfo")] HRESULT GetNoviceUserInfo(
       [in,out] LPWSTR * szName);
      [id(2), helpstring("method GetSessionInfo")] HRESULT GetSessionInfo(
@@ -2952,7 +2875,8 @@ Release: April 23, 2024
 
 40 / 47
 
-8  Appendix C: Product Behavior
+
+## 8 Appendix C: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3020,7 +2944,8 @@ Release: April 23, 2024
 
 41 / 47
 
-  Windows XP and Windows Server 2003 do not implement IRASrv. A novice running one of these
+
+  Windows XP and Windows Server 2003 do not implement IRASrv. A novice running one of these
 
 versions of Windows cannot be initiated through IRASrv.
 
@@ -3090,7 +3015,8 @@ Release: April 23, 2024
 
 42 / 47
 
-  Authentication Service - RPC_C_AUTHN_WINNT
+
+  Authentication Service - RPC_C_AUTHN_WINNT
 
   Authorization Service - RPC_C_AUTHZ_DEFAULT
 
@@ -3144,7 +3070,8 @@ Release: April 23, 2024
 
 43 / 47
 
-9  Change Tracking
+
+## 9 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3188,7 +3115,8 @@ Release: April 23, 2024
 
 44 / 47
 
-10  Index
+
+## 10 Index
 _
 
 _NewEnum [Protocol] 20
@@ -3331,7 +3259,8 @@ IPCHService server
 
 45 / 47
 
-   local events 26
+
+   local events 26
    message processing 17
    overview 17
    sequencing rules 17
@@ -3485,7 +3414,8 @@ Standards assignments 11
 
 46 / 47
 
-T
+
+T
 
 Timer events
    client (section 3.2.5 27, section 3.4.5 31)

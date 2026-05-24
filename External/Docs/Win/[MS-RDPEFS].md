@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 90
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 90
 
-Date
+
+Date
 
 Revision
 History
@@ -528,565 +530,234 @@ Release: April 23, 2024
 
 3 / 90
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Protocol Initialization ................................................................................... 10
-Drive Redirection ........................................................................................ 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.5
-
-2.2.1.2.1
-
-2.2.1.3
-2.2.1.4
-
-2.2.1.1
-2.2.1.2
-
-2.2.1.5.1
-2.2.1.5.2
-2.2.1.5.3
-2.2.1.5.4
-2.2.1.5.5
-
-2.2.1.4.1
-2.2.1.4.2
-2.2.1.4.3
-2.2.1.4.4
-2.2.1.4.5
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Common Data Types ................................................................................... 14
-Shared Header (RDPDR_HEADER) ........................................................... 14
-Capability Header (CAPABILITY_HEADER) ................................................ 15
-Capability Message (CAPABILITY_SET) ............................................... 16
-Device Announce Header (DEVICE_ANNOUNCE) ....................................... 17
-Device I/O Request (DR_DEVICE_IOREQUEST) ......................................... 18
-Device Create Request (DR_CREATE_REQ) ......................................... 20
-Device Close Request (DR_CLOSE_REQ) ............................................ 21
-Device Read Request (DR_READ_REQ)............................................... 21
-Device Write Request (DR_WRITE_REQ) ............................................ 22
-Device Control Request (DR_CONTROL_REQ)...................................... 23
-Device I/O Response (DR_DEVICE_IOCOMPLETION) ................................. 24
-Device Create Response (DR_CREATE_RSP) ....................................... 24
-Device Close Response (DR_CLOSE_RSP) ........................................... 25
-Device Read Response (DR_READ_RSP) ............................................. 26
-Device Write Response (DR_WRITE_RSP) ........................................... 26
-Device Control Response (DR_CONTROL_RSP) .................................... 27
-RDP_LOCK_INFO .................................................................................. 28
-Initialization Messages ................................................................................ 28
-Server Device Announce Response (DR_CORE_DEVICE_ANNOUNCE_RSP) ... 28
-Server Announce Request (DR_CORE_SERVER_ANNOUNCE_REQ) ............... 28
-Client Announce Reply (DR_CORE_CLIENT_ANNOUNCE_RSP) ..................... 29
-Client Name Request (DR_CORE_CLIENT_NAME_REQ) .............................. 30
-Server User Logged On (DR_CORE_USER_LOGGEDON) ............................. 30
-Server Client ID Confirm (DR_CORE_SERVER_CLIENTID_CONFIRM) ........... 31
-Server Core Capability Request (DR_CORE_CAPABILITY_REQ) ................... 31
-General Capability Set (GENERAL_CAPS_SET) ..................................... 32
-Printer Capability Set (PRINTER_CAPS_SET) ....................................... 34
-Port Capability Set (PORT_CAPS_SET) ............................................... 34
-Drive Capability Set (DRIVE_CAPS_SET) ............................................ 35
-Smart Card Capability Set (SMARTCARD_CAPS_SET) ........................... 35
-Client Core Capability Response (DR_CORE_CAPABILITY_RSP) ................... 35
-Client Device List Announce Request (DR_CORE_DEVICELIST_ANNOUNCE_REQ)
- .......................................................................................................... 35
-Drive Redirection Messages .......................................................................... 36
-Client Device List Announce (DR_DEVICELIST_ANNOUNCE) ....................... 36
-Client Drive Device List Remove (DR_DEVICELIST_REMOVE) ...................... 37
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-
-2.2.2.7.1
-2.2.2.7.2
-2.2.2.7.3
-2.2.2.7.4
-2.2.2.7.5
-
-2.2.3.1
-2.2.3.2
-
-2.2.2.8
-2.2.2.9
-
-2.2.1.6
-
-2.2.3
-
-2.2.2
-
-[MS-RDPEFS] - v20240423
-Remote Desktop Protocol: File System Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 90
-
-2.2.3.3
-
-2.2.3.3.1
-2.2.3.3.2
-2.2.3.3.3
-2.2.3.3.4
-2.2.3.3.5
-2.2.3.3.6
-
-2.2.3.3.7
-
-2.2.3.3.8
-
-2.2.3.3.9
-
-2.2.3.3.9.1
-
-2.2.3.3.10
-
-2.2.3.3.11
-
-2.2.3.3.12
-
-2.2.3.4
-
-2.2.3.4.1
-2.2.3.4.2
-2.2.3.4.3
-2.2.3.4.4
-2.2.3.4.5
-2.2.3.4.6
-
-2.2.3.4.7
-
-2.2.3.4.8
-
-2.2.3.4.9
-
-2.2.3.4.10
-
-2.2.3.4.11
-
-2.2.3.4.12
-
-Server Drive I/O Request (DR_DRIVE_CORE_DEVICE_IOREQUEST) ............ 37
-Server Create Drive Request (DR_DRIVE_CREATE_REQ) ...................... 37
-Server Close Drive Request (DR_DRIVE_CLOSE_REQ) ......................... 38
-Server Drive Read Request (DR_DRIVE_READ_REQ) ............................ 38
-Server Drive Write Request (DR_DRIVE_WRITE_REQ) .......................... 38
-Server Drive Control Request (DR_DRIVE_CONTROL_REQ) ................... 39
-Server Drive Query Volume Information Request
-(DR_DRIVE_QUERY_VOLUME_INFORMATION_REQ) ............................. 40
-Server Drive Set Volume Information Request
-(DR_DRIVE_SET_VOLUME_INFORMATION_REQ) ................................. 41
-Server Drive Query Information Request
-(DR_DRIVE_QUERY_INFORMATION_REQ) .......................................... 42
-Server Drive Set Information Request
-(DR_DRIVE_SET_INFORMATION_REQ) .............................................. 43
-RDP_FILE_RENAME_INFORMATION .............................................. 44
-
-Server Drive Query Directory Request
-(DR_DRIVE_QUERY_DIRECTORY_REQ) .............................................. 45
-Server Drive NotifyChange Directory Request
-(DR_DRIVE_NOTIFY_CHANGE_DIRECTORY_REQ) ................................ 46
-Server Drive Lock Control Request (DR_DRIVE_LOCK_REQ) ................. 47
-Client Drive I/O Response (DR_DRIVE_CORE_DEVICE_IOCOMPLETION) ...... 48
-Client Drive Create Response (DR_DRIVE_CREATE_RSP) ...................... 48
-Client Drive Close Response (DR_DRIVE_CLOSE_RSP) ......................... 49
-Client Drive Read Response (DR_DRIVE_READ_RSP) ........................... 49
-Client Drive Write Response (DR_DRIVE_WRITE_RSP) ......................... 50
-Client Drive Control Response (DR_DRIVE_CONTROL_RSP) .................. 50
-Client Drive Query Volume Information Response
-(DR_DRIVE_QUERY_VOLUME_INFORMATION_RSP) ............................. 50
-Client Drive Set Volume Information Response
-(DR_DRIVE_SET_VOLUME_INFORMATION_RSP) ................................. 51
-Client Drive Query Information Response
-(DR_DRIVE_QUERY_INFORMATION_RSP) ........................................... 52
-Client Drive Set Information Response
-(DR_DRIVE_SET_INFORMATION_RSP) ............................................... 52
-Client Drive Query Directory Response
-(DR_DRIVE_QUERY_DIRECTORY_RSP) .............................................. 53
-Client Drive NotifyChange Directory Response
-(DR_DRIVE_NOTIFY_CHANGE_DIRECTORY_RSP) ................................ 53
-Client Drive Lock Control Response (DR_DRIVE_LOCK_RSP) ................. 54
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 56
-Common Details .............................................................................................. 56
-Abstract Data Model .................................................................................... 56
-Timers ...................................................................................................... 56
-Initialization ............................................................................................... 57
-Higher-Layer Triggered Events ..................................................................... 57
-Message Processing Events and Sequencing Rules .......................................... 57
-Processing I/O Requests and Responses .................................................. 58
-Processing Packet Errors ........................................................................ 58
-Timer Events .............................................................................................. 59
-Other Local Events ...................................................................................... 59
-Client Details ................................................................................................... 59
-Abstract Data Model .................................................................................... 59
-Timers ...................................................................................................... 60
-Initialization ............................................................................................... 60
-Higher-Layer Triggered Events ..................................................................... 60
-Message Processing Events and Sequencing Rules .......................................... 60
-Initialization Messages ........................................................................... 60
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2.5.1
-
-3.2
-
-[MS-RDPEFS] - v20240423
-Remote Desktop Protocol: File System Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 90
-
-3.2.5.2
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-3.2.5.1.6
-3.2.5.1.7
-3.2.5.1.8
-3.2.5.1.9
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-3.2.5.2.4
-3.2.5.2.5
-3.2.5.2.6
-3.2.5.2.7
-3.2.5.2.8
-3.2.5.2.9
-3.2.5.2.10
-3.2.5.2.11
-3.2.5.2.12
-3.2.5.2.13
-3.2.5.2.14
-3.2.5.2.15
-3.2.5.2.16
-3.2.5.2.17
-3.2.5.2.18
-3.2.5.2.19
-3.2.5.2.20
-3.2.5.2.21
-3.2.5.2.22
-3.2.5.2.23
-3.2.5.2.24
-3.2.5.2.25
-3.2.5.2.26
-
-Processing a Server Device Announce Response Message ..................... 60
-Processing a Server Announce Request Message ................................. 60
-Sending a Client Announce Reply Message.......................................... 60
-Sending a Client Name Request Message ............................................ 60
-Processing a User Logged On Message ............................................... 60
-Processing a Server Client ID Confirm Message ................................... 61
-Processing a Server Core Capability Request Message .......................... 61
-Sending a Client Core Capability Response Message ............................ 61
-Sending a Client Device List Announce Request Message ...................... 61
-Drive Redirection Messages .................................................................... 61
-Sending a Client Device List Announce Message .................................. 61
-Sending a Client Drive Device List Remove Message ............................ 61
-Processing a Server Create Drive Request Message ............................. 62
-Sending a Client Create Drive Response Message ................................ 62
-Processing a Server Close Drive Request Message ............................... 62
-Sending a Client Close Drive Response Message .................................. 62
-Processing a Server Drive Read Request Message ................................ 62
-Sending a Client Drive Read Response Message .................................. 62
-Processing a Server Drive Write Request Message ............................... 62
-Sending a Client Drive Write Response Message .................................. 62
-Processing a Server Drive Control Request Message ............................ 63
-Sending a Client Drive Control Response Message ............................... 63
-Processing a Server Drive Query Volume Information Request Message . 63
-Sending a Client Drive Query Volume Information Response Message .... 63
-Processing a Server Drive Set Volume Information Request Message ..... 63
-Sending a Client Drive Set Volume Information Response Message ........ 63
-Processing a Server Drive Query Information Request Message ............. 63
-Sending a Client Drive Query Information Response Message ............... 63
-Processing a Server Drive Set Information Request Message ................. 63
-Sending a Client Drive Set Information Response Message ................... 63
-Processing a Server Drive Query Directory Request Message ................ 63
-Sending a Client Drive Query Directory Response Message ................... 63
-Processing a Server Drive Notify Change Directory Request Message ..... 63
-Sending a Client Drive Notify Change Directory Response Message ........ 63
-Processing a Server Drive Lock Control Request Message ..................... 64
-Sending a Client Drive Lock Control Response Message ........................ 64
-Timer Events .............................................................................................. 64
-Other Local Events ...................................................................................... 64
-Server Details .................................................................................................. 64
-Abstract Data Model .................................................................................... 64
-Timers ...................................................................................................... 64
-Initialization ............................................................................................... 64
-Higher-Layer Triggered Events ..................................................................... 64
-Message Processing Events and Sequencing Rules .......................................... 64
-Initialization Messages ........................................................................... 64
-Sending a Server Device Announce Response Message ........................ 64
-Sending a Server Announce Request Message ..................................... 65
-Processing a Client Announce Reply Message ...................................... 65
-Processing a Client Name Request Message ........................................ 65
-Sending a Server User Logged On Message ........................................ 65
-Sending a Server Core Capability Request Message ............................. 65
-Sending a Server Client ID Confirm Message ...................................... 65
-Processing a Client Core Capability Response Message ......................... 65
-Processing a Client Device List Announce Message ............................... 65
-Drive Redirection Messages .................................................................... 66
-Processing a Client List Announce Message ......................................... 66
-Processing a Client Drive Device List Remove Message ......................... 66
-Sending a Server Create Drive Request Message ................................. 66
-
-3.3.5.1.1
-3.3.5.1.2
-3.3.5.1.3
-3.3.5.1.4
-3.3.5.1.5
-3.3.5.1.6
-3.3.5.1.7
-3.3.5.1.8
-3.3.5.1.9
-
-3.3.5.2.1
-3.3.5.2.2
-3.3.5.2.3
-
-3.3.5.2
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-
-[MS-RDPEFS] - v20240423
-Remote Desktop Protocol: File System Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 90
-
-3.3.5.2.4
-3.3.5.2.5
-3.3.5.2.6
-3.3.5.2.7
-3.3.5.2.8
-3.3.5.2.9
-3.3.5.2.10
-3.3.5.2.11
-3.3.5.2.12
-3.3.5.2.13
-3.3.5.2.14
-3.3.5.2.15
-3.3.5.2.16
-3.3.5.2.17
-3.3.5.2.18
-3.3.5.2.19
-3.3.5.2.20
-3.3.5.2.21
-3.3.5.2.22
-3.3.5.2.23
-3.3.5.2.24
-3.3.5.2.25
-3.3.5.2.26
-
-Processing a Client Create Drive Response Message ............................. 66
-Sending a Server Close Drive Request Message ................................... 66
-Processing a Client Close Drive Response Message .............................. 66
-Sending a Server Drive Read Request Message ................................... 66
-Processing a Client Drive Read Response Message ............................... 66
-Sending a Server Drive Write Request Message ................................... 66
-Processing a Client Drive Write Response Message .............................. 66
-Sending a Server Drive Control Request Message ................................ 67
-Processing a Client Drive Control Response Message ............................ 67
-Sending a Server Drive Query Volume Information Request Message ..... 67
-Processing a Client Drive Query Volume Information Response Message  67
-Sending a Server Drive Set Volume Information Request Message ......... 67
-Processing a Client Drive Set Volume Information Response Message .... 67
-Sending a Server Drive Query Information Request Message ................ 67
-Processing a Client Drive Query Information Response Message ............ 67
-Sending a Server Drive Set Information Request Message .................... 67
-Processing a Client Drive Set Information Response Message ................ 67
-Sending a Server Drive Query Directory Request Message .................... 67
-Processing a Client Drive Query Directory Response Message ................ 67
-Sending a Server Drive Notify Change Directory Request Message ......... 67
-Processing a Client Drive Notify Change Directory Response Message .... 67
-Sending a Server Drive Lock Control Request Message ......................... 68
-Processing a Client Drive Lock Control Response Message .................... 68
-Timer Events .............................................................................................. 68
-Other Local Events ...................................................................................... 68
-
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 69
-Packet Sequences ............................................................................................ 69
-4.1
-Server Device Announce Response ..................................................................... 70
-4.2
-Server Announce Request ................................................................................. 70
-4.3
-Client Announce Reply ...................................................................................... 70
-4.4
-Client Name Request ........................................................................................ 71
-4.5
-Server User Logged On ..................................................................................... 71
-4.6
-Server Client ID Confirm ................................................................................... 71
-4.7
-Server Core Capability Request .......................................................................... 71
-4.8
-Client Core Capability Response ......................................................................... 72
-4.9
-Client Device List Announce Request .................................................................. 73
-4.10
-Client Drive Device List Remove ......................................................................... 73
-4.11
-Server Create Drive Request ............................................................................. 73
-4.12
-Client Drive Create Response ............................................................................. 74
-4.13
-Server Close Drive Request ............................................................................... 74
-4.14
-Client Drive Close Response .............................................................................. 74
-4.15
-Server Drive Read Request ................................................................................ 74
-4.16
-Client Drive Read Response ............................................................................... 75
-4.17
-Server Drive Write Request ............................................................................... 76
-4.18
-Client Drive Write Response .............................................................................. 77
-4.19
-Server Drive Control Request ............................................................................ 77
-4.20
-4.21
-Client Drive Control Response ............................................................................ 77
-4.22  Drive Query Volume Information Request ........................................................... 77
-Client Drive Query Volume Information Response................................................. 78
-4.23
-Server Drive Set Volume Information Request ..................................................... 78
-4.24
-Client Drive Set Volume Information Response .................................................... 79
-4.25
-Server Drive Query Information Request ............................................................. 79
-4.26
-Client Drive Query Information Response ............................................................ 79
-4.27
-Server Drive Set Information Request................................................................. 80
-4.28
-Client Drive Set Information Response ................................................................ 80
-4.29
-Server Drive Query Directory Request ................................................................ 80
-4.30
-Client Drive Query Directory Response ................................................................ 81
-4.31
-
-[MS-RDPEFS] - v20240423
-Remote Desktop Protocol: File System Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 90
-
-4.32
-4.33
-4.34
-4.35
-
-Server Drive NotifyChange Directory Request ...................................................... 82
-Client Drive NotifyChange Directory Response ..................................................... 82
-Server Drive Lock Control Request ..................................................................... 82
-Client Drive Lock Control Response .................................................................... 83
-
-5  Security ................................................................................................................. 84
-Security Considerations for Implementers ........................................................... 84
-Index of Security Parameters ............................................................................ 84
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 85
-
-7  Change Tracking .................................................................................................... 87
-
-8  Index ..................................................................................................................... 88
-
-[MS-RDPEFS] - v20240423
-Remote Desktop Protocol: File System Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 90
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Protocol Initialization](#131-protocol-initialization)
+    - [1.3.2 Drive Redirection](#132-drive-redirection)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 Shared Header (RDPDR_HEADER)](#2211-shared-header-rdpdrheader)
+      - [2.2.1.2 Capability Header (CAPABILITY_HEADER)](#2212-capability-header-capabilityheader)
+        - [2.2.1.2.1 Capability Message (CAPABILITY_SET)](#22121-capability-message-capabilityset)
+      - [2.2.1.3 Device Announce Header (DEVICE_ANNOUNCE)](#2213-device-announce-header-deviceannounce)
+      - [2.2.1.4 Device I/O Request (DR_DEVICE_IOREQUEST)](#2214-device-io-request-drdeviceiorequest)
+        - [2.2.1.4.1 Device Create Request (DR_CREATE_REQ)](#22141-device-create-request-drcreatereq)
+        - [2.2.1.4.2 Device Close Request (DR_CLOSE_REQ)](#22142-device-close-request-drclosereq)
+        - [2.2.1.4.3 Device Read Request (DR_READ_REQ)](#22143-device-read-request-drreadreq)
+        - [2.2.1.4.4 Device Write Request (DR_WRITE_REQ)](#22144-device-write-request-drwritereq)
+        - [2.2.1.4.5 Device Control Request (DR_CONTROL_REQ)](#22145-device-control-request-drcontrolreq)
+      - [2.2.1.5 Device I/O Response (DR_DEVICE_IOCOMPLETION)](#2215-device-io-response-drdeviceiocompletion)
+        - [2.2.1.5.1 Device Create Response (DR_CREATE_RSP)](#22151-device-create-response-drcreatersp)
+        - [2.2.1.5.2 Device Close Response (DR_CLOSE_RSP)](#22152-device-close-response-drclosersp)
+        - [2.2.1.5.3 Device Read Response (DR_READ_RSP)](#22153-device-read-response-drreadrsp)
+        - [2.2.1.5.4 Device Write Response (DR_WRITE_RSP)](#22154-device-write-response-drwritersp)
+        - [2.2.1.5.5 Device Control Response (DR_CONTROL_RSP)](#22155-device-control-response-drcontrolrsp)
+      - [2.2.1.6 RDP_LOCK_INFO](#2216-rdplockinfo)
+    - [2.2.2 Initialization Messages](#222-initialization-messages)
+      - [2.2.2.1 Server Device Announce Response (DR_CORE_DEVICE_ANNOUNCE_RSP)](#2221-server-device-announce-response-drcoredeviceannouncersp)
+      - [2.2.2.2 Server Announce Request (DR_CORE_SERVER_ANNOUNCE_REQ)](#2222-server-announce-request-drcoreserverannouncereq)
+      - [2.2.2.3 Client Announce Reply (DR_CORE_CLIENT_ANNOUNCE_RSP)](#2223-client-announce-reply-drcoreclientannouncersp)
+      - [2.2.2.4 Client Name Request (DR_CORE_CLIENT_NAME_REQ)](#2224-client-name-request-drcoreclientnamereq)
+      - [2.2.2.5 Server User Logged On (DR_CORE_USER_LOGGEDON)](#2225-server-user-logged-on-drcoreuserloggedon)
+      - [2.2.2.6 Server Client ID Confirm (DR_CORE_SERVER_CLIENTID_CONFIRM)](#2226-server-client-id-confirm-drcoreserverclientidconfirm)
+      - [2.2.2.7 Server Core Capability Request (DR_CORE_CAPABILITY_REQ)](#2227-server-core-capability-request-drcorecapabilityreq)
+        - [2.2.2.7.1 General Capability Set (GENERAL_CAPS_SET)](#22271-general-capability-set-generalcapsset)
+        - [2.2.2.7.2 Printer Capability Set (PRINTER_CAPS_SET)](#22272-printer-capability-set-printercapsset)
+        - [2.2.2.7.3 Port Capability Set (PORT_CAPS_SET)](#22273-port-capability-set-portcapsset)
+        - [2.2.2.7.4 Drive Capability Set (DRIVE_CAPS_SET)](#22274-drive-capability-set-drivecapsset)
+        - [2.2.2.7.5 Smart Card Capability Set (SMARTCARD_CAPS_SET)](#22275-smart-card-capability-set-smartcardcapsset)
+      - [2.2.2.8 Client Core Capability Response (DR_CORE_CAPABILITY_RSP)](#2228-client-core-capability-response-drcorecapabilityrsp)
+      - [2.2.2.9 Client Device List Announce Request](#2229-client-device-list-announce-request)
+    - [2.2.3 Drive Redirection Messages](#223-drive-redirection-messages)
+      - [2.2.3.1 Client Device List Announce (DR_DEVICELIST_ANNOUNCE)](#2231-client-device-list-announce-drdevicelistannounce)
+      - [2.2.3.2 Client Drive Device List Remove (DR_DEVICELIST_REMOVE)](#2232-client-drive-device-list-remove-drdevicelistremove)
+      - [2.2.3.3 Server Drive I/O Request (DR_DRIVE_CORE_DEVICE_IOREQUEST)](#2233-server-drive-io-request-drdrivecoredeviceiorequest)
+        - [2.2.3.3.1 Server Create Drive Request (DR_DRIVE_CREATE_REQ)](#22331-server-create-drive-request-drdrivecreatereq)
+        - [2.2.3.3.2 Server Close Drive Request (DR_DRIVE_CLOSE_REQ)](#22332-server-close-drive-request-drdriveclosereq)
+        - [2.2.3.3.3 Server Drive Read Request (DR_DRIVE_READ_REQ)](#22333-server-drive-read-request-drdrivereadreq)
+        - [2.2.3.3.4 Server Drive Write Request (DR_DRIVE_WRITE_REQ)](#22334-server-drive-write-request-drdrivewritereq)
+        - [2.2.3.3.5 Server Drive Control Request (DR_DRIVE_CONTROL_REQ)](#22335-server-drive-control-request-drdrivecontrolreq)
+        - [2.2.3.3.6 Server Drive Query Volume Information Request](#22336-server-drive-query-volume-information-request)
+        - [2.2.3.3.7 Server Drive Set Volume Information Request](#22337-server-drive-set-volume-information-request)
+        - [2.2.3.3.8 Server Drive Query Information Request](#22338-server-drive-query-information-request)
+        - [2.2.3.3.9 Server Drive Set Information Request (DR_DRIVE_SET_INFORMATION_REQ)](#22339-server-drive-set-information-request-drdrivesetinformationreq)
+          - [2.2.3.3.9.1 RDP_FILE_RENAME_INFORMATION](#223391-rdpfilerenameinformation)
+        - [2.2.3.3.10 Server Drive Query Directory Request](#223310-server-drive-query-directory-request)
+        - [2.2.3.3.11 Server Drive NotifyChange Directory Request](#223311-server-drive-notifychange-directory-request)
+        - [2.2.3.3.12 Server Drive Lock Control Request (DR_DRIVE_LOCK_REQ)](#223312-server-drive-lock-control-request-drdrivelockreq)
+      - [2.2.3.4 Client Drive I/O Response (DR_DRIVE_CORE_DEVICE_IOCOMPLETION)](#2234-client-drive-io-response-drdrivecoredeviceiocompletion)
+        - [2.2.3.4.1 Client Drive Create Response (DR_DRIVE_CREATE_RSP)](#22341-client-drive-create-response-drdrivecreatersp)
+        - [2.2.3.4.2 Client Drive Close Response (DR_DRIVE_CLOSE_RSP)](#22342-client-drive-close-response-drdriveclosersp)
+        - [2.2.3.4.3 Client Drive Read Response (DR_DRIVE_READ_RSP)](#22343-client-drive-read-response-drdrivereadrsp)
+        - [2.2.3.4.4 Client Drive Write Response (DR_DRIVE_WRITE_RSP)](#22344-client-drive-write-response-drdrivewritersp)
+        - [2.2.3.4.5 Client Drive Control Response (DR_DRIVE_CONTROL_RSP)](#22345-client-drive-control-response-drdrivecontrolrsp)
+        - [2.2.3.4.6 Client Drive Query Volume Information Response](#22346-client-drive-query-volume-information-response)
+        - [2.2.3.4.7 Client Drive Set Volume Information Response](#22347-client-drive-set-volume-information-response)
+        - [2.2.3.4.8 Client Drive Query Information Response](#22348-client-drive-query-information-response)
+        - [2.2.3.4.9 Client Drive Set Information Response](#22349-client-drive-set-information-response)
+        - [2.2.3.4.10 Client Drive Query Directory Response](#223410-client-drive-query-directory-response)
+        - [2.2.3.4.11 Client Drive NotifyChange Directory Response](#223411-client-drive-notifychange-directory-response)
+        - [2.2.3.4.12 Client Drive Lock Control Response (DR_DRIVE_LOCK_RSP)](#223412-client-drive-lock-control-response-drdrivelockrsp)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing I/O Requests and Responses](#3151-processing-io-requests-and-responses)
+      - [3.1.5.2 Processing Packet Errors](#3152-processing-packet-errors)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Initialization Messages](#3251-initialization-messages)
+        - [3.2.5.1.1 Processing a Server Device Announce Response Message](#32511-processing-a-server-device-announce-response-message)
+        - [3.2.5.1.2 Processing a Server Announce Request Message](#32512-processing-a-server-announce-request-message)
+        - [3.2.5.1.3 Sending a Client Announce Reply Message](#32513-sending-a-client-announce-reply-message)
+        - [3.2.5.1.4 Sending a Client Name Request Message](#32514-sending-a-client-name-request-message)
+        - [3.2.5.1.5 Processing a User Logged On Message](#32515-processing-a-user-logged-on-message)
+        - [3.2.5.1.6 Processing a Server Client ID Confirm Message](#32516-processing-a-server-client-id-confirm-message)
+        - [3.2.5.1.7 Processing a Server Core Capability Request Message](#32517-processing-a-server-core-capability-request-message)
+        - [3.2.5.1.8 Sending a Client Core Capability Response Message](#32518-sending-a-client-core-capability-response-message)
+        - [3.2.5.1.9 Sending a Client Device List Announce Request Message](#32519-sending-a-client-device-list-announce-request-message)
+      - [3.2.5.2 Drive Redirection Messages](#3252-drive-redirection-messages)
+        - [3.2.5.2.1 Sending a Client Device List Announce Message](#32521-sending-a-client-device-list-announce-message)
+        - [3.2.5.2.2 Sending a Client Drive Device List Remove Message](#32522-sending-a-client-drive-device-list-remove-message)
+        - [3.2.5.2.3 Processing a Server Create Drive Request Message](#32523-processing-a-server-create-drive-request-message)
+        - [3.2.5.2.4 Sending a Client Create Drive Response Message](#32524-sending-a-client-create-drive-response-message)
+        - [3.2.5.2.5 Processing a Server Close Drive Request Message](#32525-processing-a-server-close-drive-request-message)
+        - [3.2.5.2.6 Sending a Client Close Drive Response Message](#32526-sending-a-client-close-drive-response-message)
+        - [3.2.5.2.7 Processing a Server Drive Read Request Message](#32527-processing-a-server-drive-read-request-message)
+        - [3.2.5.2.8 Sending a Client Drive Read Response Message](#32528-sending-a-client-drive-read-response-message)
+        - [3.2.5.2.9 Processing a Server Drive Write Request Message](#32529-processing-a-server-drive-write-request-message)
+        - [3.2.5.2.10 Sending a Client Drive Write Response Message](#325210-sending-a-client-drive-write-response-message)
+        - [3.2.5.2.11 Processing a Server Drive Control Request Message](#325211-processing-a-server-drive-control-request-message)
+        - [3.2.5.2.12 Sending a Client Drive Control Response Message](#325212-sending-a-client-drive-control-response-message)
+        - [3.2.5.2.13 Processing a Server Drive Query Volume Information Request Message](#325213-processing-a-server-drive-query-volume-information-request-message)
+        - [3.2.5.2.14 Sending a Client Drive Query Volume Information Response Message](#325214-sending-a-client-drive-query-volume-information-response-message)
+        - [3.2.5.2.15 Processing a Server Drive Set Volume Information Request Message](#325215-processing-a-server-drive-set-volume-information-request-message)
+        - [3.2.5.2.16 Sending a Client Drive Set Volume Information Response Message](#325216-sending-a-client-drive-set-volume-information-response-message)
+        - [3.2.5.2.17 Processing a Server Drive Query Information Request Message](#325217-processing-a-server-drive-query-information-request-message)
+        - [3.2.5.2.18 Sending a Client Drive Query Information Response Message](#325218-sending-a-client-drive-query-information-response-message)
+        - [3.2.5.2.19 Processing a Server Drive Set Information Request Message](#325219-processing-a-server-drive-set-information-request-message)
+        - [3.2.5.2.20 Sending a Client Drive Set Information Response Message](#325220-sending-a-client-drive-set-information-response-message)
+        - [3.2.5.2.21 Processing a Server Drive Query Directory Request Message](#325221-processing-a-server-drive-query-directory-request-message)
+        - [3.2.5.2.22 Sending a Client Drive Query Directory Response Message](#325222-sending-a-client-drive-query-directory-response-message)
+        - [3.2.5.2.23 Processing a Server Drive Notify Change Directory Request Message](#325223-processing-a-server-drive-notify-change-directory-request-message)
+        - [3.2.5.2.24 Sending a Client Drive Notify Change Directory Response Message](#325224-sending-a-client-drive-notify-change-directory-response-message)
+        - [3.2.5.2.25 Processing a Server Drive Lock Control Request Message](#325225-processing-a-server-drive-lock-control-request-message)
+        - [3.2.5.2.26 Sending a Client Drive Lock Control Response Message](#325226-sending-a-client-drive-lock-control-response-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Initialization Messages](#3351-initialization-messages)
+        - [3.3.5.1.1 Sending a Server Device Announce Response Message](#33511-sending-a-server-device-announce-response-message)
+        - [3.3.5.1.2 Sending a Server Announce Request Message](#33512-sending-a-server-announce-request-message)
+        - [3.3.5.1.3 Processing a Client Announce Reply Message](#33513-processing-a-client-announce-reply-message)
+        - [3.3.5.1.4 Processing a Client Name Request Message](#33514-processing-a-client-name-request-message)
+        - [3.3.5.1.5 Sending a Server User Logged On Message](#33515-sending-a-server-user-logged-on-message)
+        - [3.3.5.1.6 Sending a Server Core Capability Request Message](#33516-sending-a-server-core-capability-request-message)
+        - [3.3.5.1.7 Sending a Server Client ID Confirm Message](#33517-sending-a-server-client-id-confirm-message)
+        - [3.3.5.1.8 Processing a Client Core Capability Response Message](#33518-processing-a-client-core-capability-response-message)
+        - [3.3.5.1.9 Processing a Client Device List Announce Message](#33519-processing-a-client-device-list-announce-message)
+      - [3.3.5.2 Drive Redirection Messages](#3352-drive-redirection-messages)
+        - [3.3.5.2.1 Processing a Client List Announce Message](#33521-processing-a-client-list-announce-message)
+        - [3.3.5.2.2 Processing a Client Drive Device List Remove Message](#33522-processing-a-client-drive-device-list-remove-message)
+        - [3.3.5.2.3 Sending a Server Create Drive Request Message](#33523-sending-a-server-create-drive-request-message)
+        - [3.3.5.2.4 Processing a Client Create Drive Response Message](#33524-processing-a-client-create-drive-response-message)
+        - [3.3.5.2.5 Sending a Server Close Drive Request Message](#33525-sending-a-server-close-drive-request-message)
+        - [3.3.5.2.6 Processing a Client Close Drive Response Message](#33526-processing-a-client-close-drive-response-message)
+        - [3.3.5.2.7 Sending a Server Drive Read Request Message](#33527-sending-a-server-drive-read-request-message)
+        - [3.3.5.2.8 Processing a Client Drive Read Response Message](#33528-processing-a-client-drive-read-response-message)
+        - [3.3.5.2.9 Sending a Server Drive Write Request Message](#33529-sending-a-server-drive-write-request-message)
+        - [3.3.5.2.10 Processing a Client Drive Write Response Message](#335210-processing-a-client-drive-write-response-message)
+        - [3.3.5.2.11 Sending a Server Drive Control Request Message](#335211-sending-a-server-drive-control-request-message)
+        - [3.3.5.2.12 Processing a Client Drive Control Response Message](#335212-processing-a-client-drive-control-response-message)
+        - [3.3.5.2.13 Sending a Server Drive Query Volume Information Request Message](#335213-sending-a-server-drive-query-volume-information-request-message)
+        - [3.3.5.2.14 Processing a Client Drive Query Volume Information Response Message](#335214-processing-a-client-drive-query-volume-information-response-message)
+        - [3.3.5.2.15 Sending a Server Drive Set Volume Information Request Message](#335215-sending-a-server-drive-set-volume-information-request-message)
+        - [3.3.5.2.16 Processing a Client Drive Set Volume Information Response Message](#335216-processing-a-client-drive-set-volume-information-response-message)
+        - [3.3.5.2.17 Sending a Server Drive Query Information Request Message](#335217-sending-a-server-drive-query-information-request-message)
+        - [3.3.5.2.18 Processing a Client Drive Query Information Response Message](#335218-processing-a-client-drive-query-information-response-message)
+        - [3.3.5.2.19 Sending a Server Drive Set Information Request Message](#335219-sending-a-server-drive-set-information-request-message)
+        - [3.3.5.2.20 Processing a Client Drive Set Information Response Message](#335220-processing-a-client-drive-set-information-response-message)
+        - [3.3.5.2.21 Sending a Server Drive Query Directory Request Message](#335221-sending-a-server-drive-query-directory-request-message)
+        - [3.3.5.2.22 Processing a Client Drive Query Directory Response Message](#335222-processing-a-client-drive-query-directory-response-message)
+        - [3.3.5.2.23 Sending a Server Drive Notify Change Directory Request Message](#335223-sending-a-server-drive-notify-change-directory-request-message)
+        - [3.3.5.2.24 Processing a Client Drive Notify Change Directory Response Message](#335224-processing-a-client-drive-notify-change-directory-response-message)
+        - [3.3.5.2.25 Sending a Server Drive Lock Control Request Message](#335225-sending-a-server-drive-lock-control-request-message)
+        - [3.3.5.2.26 Processing a Client Drive Lock Control Response Message](#335226-processing-a-client-drive-lock-control-response-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Packet Sequences](#41-packet-sequences)
+  - [4.2 Server Device Announce Response](#42-server-device-announce-response)
+  - [4.3 Server Announce Request](#43-server-announce-request)
+  - [4.4 Client Announce Reply](#44-client-announce-reply)
+  - [4.5 Client Name Request](#45-client-name-request)
+  - [4.6 Server User Logged On](#46-server-user-logged-on)
+  - [4.7 Server Client ID Confirm](#47-server-client-id-confirm)
+  - [4.8 Server Core Capability Request](#48-server-core-capability-request)
+  - [4.9 Client Core Capability Response](#49-client-core-capability-response)
+  - [4.10 Client Device List Announce Request](#410-client-device-list-announce-request)
+  - [4.11 Client Drive Device List Remove](#411-client-drive-device-list-remove)
+  - [4.12 Server Create Drive Request](#412-server-create-drive-request)
+  - [4.13 Client Drive Create Response](#413-client-drive-create-response)
+  - [4.14 Server Close Drive Request](#414-server-close-drive-request)
+  - [4.15 Client Drive Close Response](#415-client-drive-close-response)
+  - [4.16 Server Drive Read Request](#416-server-drive-read-request)
+  - [4.17 Client Drive Read Response](#417-client-drive-read-response)
+  - [4.18 Server Drive Write Request](#418-server-drive-write-request)
+  - [4.19 Client Drive Write Response](#419-client-drive-write-response)
+  - [4.20 Server Drive Control Request](#420-server-drive-control-request)
+  - [4.21 Client Drive Control Response](#421-client-drive-control-response)
+  - [4.22 Drive Query Volume Information Request](#422-drive-query-volume-information-request)
+  - [4.23 Client Drive Query Volume Information Response](#423-client-drive-query-volume-information-response)
+  - [4.24 Server Drive Set Volume Information Request](#424-server-drive-set-volume-information-request)
+  - [4.25 Client Drive Set Volume Information Response](#425-client-drive-set-volume-information-response)
+  - [4.26 Server Drive Query Information Request](#426-server-drive-query-information-request)
+  - [4.27 Client Drive Query Information Response](#427-client-drive-query-information-response)
+  - [4.28 Server Drive Set Information Request](#428-server-drive-set-information-request)
+  - [4.29 Client Drive Set Information Response](#429-client-drive-set-information-response)
+  - [4.30 Server Drive Query Directory Request](#430-server-drive-query-directory-request)
+  - [4.31 Client Drive Query Directory Response](#431-client-drive-query-directory-response)
+  - [4.32 Server Drive NotifyChange Directory Request](#432-server-drive-notifychange-directory-request)
+  - [4.33 Client Drive NotifyChange Directory Response](#433-client-drive-notifychange-directory-response)
+  - [4.34 Server Drive Lock Control Request](#434-server-drive-lock-control-request)
+  - [4.35 Client Drive Lock Control Response](#435-client-drive-lock-control-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document specifies the Remote Desktop Protocol: File System Virtual Channel Extension, which
 runs over a static virtual channel with the name RDPDR. The purpose of this protocol is to redirect
@@ -1095,7 +766,7 @@ access from the server to the client file system.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1153,14 +824,15 @@ Release: April 23, 2024
 
 9 / 90
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1186,12 +858,12 @@ Channel Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RDPEA] Microsoft Corporation, "Remote Desktop Protocol: Audio Output Virtual Channel
 Extension".
 
-1.3  Overview
+### 1.3 Overview
 
 In a typical terminal server scenario, many of the nonvolatile resources used by the terminal server
 user (such as hard drives, flash drives, and floppy disks) are located on the client. The server
@@ -1202,7 +874,7 @@ The Remote Desktop Protocol: File System Virtual Channel Extension allows access
 and the client file system drivers by redirecting all input/output requests and responses between the
 two. This protocol is also used as a base for some non-file system drivers (section 1.4).
 
-1.3.1  Protocol Initialization
+#### 1.3.1 Protocol Initialization
 
 The following figure shows the initial packet sequence that initializes the protocol. The sequence of
 messages complies with the following set of rules. The first packet exchange, Server Announce
@@ -1218,7 +890,8 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RDPEFS].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1252,11 +925,12 @@ Release: April 23, 2024
 
 11 / 90
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RDPEFS].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.3.2  Drive Redirection
+#### 1.3.2 Drive Redirection
 
 Drives can be announced or deleted at any point in time after the connection has been established.
 For example, Drive redirection sequence shows the sequence for adding and removing a file system
@@ -1273,7 +947,7 @@ been removed from the client, and that all I/O to that device will fail in the f
 
 Figure 2: Drive redirection sequence
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: File System Virtual Channel Extension is embedded in a static virtual
 channel transport, as specified in [MS-RDPBCGR].
@@ -1286,7 +960,7 @@ Note  Some of the structures in this protocol are mapped to Server Message Block
 protocol structures. However, there are no protocol messages or processing that depend on SMB2.
 See [MS-SMB2] for more information about the SMB2 protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: File System Virtual Channel Extension operates only after the static
 virtual channel transport (as specified in [MS-RDPBCGR]) is fully established. If the static virtual
@@ -1298,21 +972,22 @@ Release: April 23, 2024
 
 12 / 90
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-RDPEFS].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 channel transport is terminated, no other communication over the Remote Desktop Protocol: File
 System Virtual Channel Extension occurs.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: File System Virtual Channel Extension is designed to be run within the
 context of a Remote Desktop Protocol virtual channel established between a client and a server. This
 protocol extension is applicable when applications running on the terminal server access the file
 system physically located on a client machine.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The version numbers for the client and the server are sent in the Server Announce
 Request (section 2.2.2.2) and Client Announce Reply (section 2.2.2.3) messages. These messages are
@@ -1332,13 +1007,13 @@ After the header, an array of capabilities follows, each one of which has a comm
 header (section 2.2.1.2); this header describes the type of the capability and its length. The content of
 the capability depends on its type.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses NTSTATUS values, as defined in [MS-ERREF] (section 2.3). Vendors are free to
 choose their own values for this field, as long as the C-bit (0x20000000) is set, indicating that it is a
 customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol contains no standards assignments.
 
@@ -1349,25 +1024,26 @@ Release: April 23, 2024
 
 13 / 90
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Remote Desktop Protocol: File System Virtual Channel Extension
 messages are transported and Remote Desktop Protocol: File System Virtual Channel Extension
 message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol runs over a static virtual channel with the null-terminated ANSI encoded name
 "RDPDR".<1> Static virtual channels are defined in [MS-RDPBCGR] section 3.1.5.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections describe Remote Desktop Protocol: File System Virtual Channel Extension
 message syntax.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  Shared Header (RDPDR_HEADER)
+##### 2.2.1.1 Shared Header (RDPDR_HEADER)
 
 This header is present at the beginning of every message in this protocol. The purpose of this header
 is to describe the type of the message.
@@ -1445,7 +1121,8 @@ Release: April 23, 2024
 
 14 / 90
 
-Value
+
+Value
 
 0x4441
 
@@ -1509,7 +1186,7 @@ PAKID_PRN_USING_XPS
 Server Printer Set XPS Mode, as specified in [MS-RDPEPC] section
 2.2.2.2.
 
-2.2.1.2  Capability Header (CAPABILITY_HEADER)
+##### 2.2.1.2 Capability Header (CAPABILITY_HEADER)
 
 This is a header that is embedded in the Server Core Capability Request and Client Core Capability
 Response. The purpose of this header is to describe capabilities for different device types.
@@ -1562,7 +1239,8 @@ Release: April 23, 2024
 
 15 / 90
 
-Value
+
+Value
 
 0x0003
 
@@ -1646,7 +1324,7 @@ Version 1 of smart card capabilities.
 
 0x00000001
 
-2.2.1.2.1 Capability Message (CAPABILITY_SET)
+###### 2.2.1.2.1 Capability Message (CAPABILITY_SET)
 
 The CAPABILITY_SET structure is used to describe the type, size, and version of a capability set
 exchanged between clients and servers. All Capability Messages conform to this basic structure. The
@@ -1667,7 +1345,8 @@ Release: April 23, 2024
 
 16 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1694,7 +1373,7 @@ capabilityData (variable): Capability set data that conforms to the structure of
 
 the CapabilityType field of the CAPABILITY_HEADER.
 
-2.2.1.3  Device Announce Header (DEVICE_ANNOUNCE)
+##### 2.2.1.3 Device Announce Header (DEVICE_ANNOUNCE)
 
 This header is embedded in the Client Device List Announce message. Its purpose is to describe
 different types of devices.
@@ -1757,7 +1436,8 @@ Release: April 23, 2024
 
 17 / 90
 
-Value
+
+Value
 
 Meaning
 
@@ -1807,7 +1487,7 @@ parallel port device types. See section 2.2.3.1 of this protocol for the file sy
 smart card device, the DeviceDataLength field MUST be set to zero. See [MS-RDPESC] for
 details about the smart card device type.
 
-2.2.1.4  Device I/O Request (DR_DEVICE_IOREQUEST)
+##### 2.2.1.4 Device I/O Request (DR_DEVICE_IOREQUEST)
 
 This header is embedded in all server requests on a specific device.
 
@@ -1841,7 +1521,8 @@ Release: April 23, 2024
 
 18 / 90
 
-Header (4 bytes): An RDPDR_HEADER header. The Component field MUST be set to
+
+Header (4 bytes): An RDPDR_HEADER header. The Component field MUST be set to
 
 RDPDR_CTYP_CORE, and the PacketId field MUST be set to PAKID_CORE_DEVICE_IOREQUEST.
 
@@ -1952,7 +1633,8 @@ Release: April 23, 2024
 
 19 / 90
 
-Value
+
+Value
 
 0x00000001
 
@@ -1964,7 +1646,7 @@ Notify change directory request
 
 0x00000002
 
-2.2.1.4.1 Device Create Request (DR_CREATE_REQ)
+###### 2.2.1.4.1 Device Create Request (DR_CREATE_REQ)
 
 This header initiates a create request. This message can have different purposes depending on the
 device for which it is issued. The device type is determined by the DeviceId field in the
@@ -2026,7 +1708,8 @@ Release: April 23, 2024
 
 20 / 90
 
-FileAttributes (4 bytes):  A 32-bit unsigned integer that specifies the attributes for the file being
+
+FileAttributes (4 bytes):  A 32-bit unsigned integer that specifies the attributes for the file being
 
 created. This field is specified in [MS-SMB2] section 2.2.13.
 
@@ -2051,7 +1734,7 @@ Path (variable): A variable-length array of Unicode characters, including the nu
 whose size is specified by the PathLength field. The protocol imposes no limitations on the
 characters used in this field.
 
-2.2.1.4.2 Device Close Request (DR_CLOSE_REQ)
+###### 2.2.1.4.2 Device Close Request (DR_CLOSE_REQ)
 
 This header initiates a close request. This message can have different purposes depending on the
 device for which it is issued. The device type is determined by the DeviceId field in the
@@ -2088,7 +1771,7 @@ Padding (32 bytes):  An array of 32 bytes. Reserved. This field can be set to an
 
 be ignored.
 
-2.2.1.4.3 Device Read Request (DR_READ_REQ)
+###### 2.2.1.4.3 Device Read Request (DR_READ_REQ)
 
 This header initiates a read request. This message can have different purposes depending on the
 device for which it is issued. The device type is determined by the DeviceId field in the
@@ -2101,7 +1784,8 @@ Release: April 23, 2024
 
 21 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2146,7 +1830,7 @@ Padding (20 bytes):  An array of 20 bytes. Reserved. This field can be set to an
 
 ignored.
 
-2.2.1.4.4 Device Write Request (DR_WRITE_REQ)
+###### 2.2.1.4.4 Device Write Request (DR_WRITE_REQ)
 
 This header initiates a write request. This message can have different purposes depending on the
 device for which it is issued. The device type is determined by the DeviceId field in the
@@ -2182,7 +1866,8 @@ Release: April 23, 2024
 
 22 / 90
 
-Padding (20 bytes)
+
+Padding (20 bytes)
 
 ...
 
@@ -2213,7 +1898,7 @@ WriteData (variable):  A variable-length array of bytes, where the length is spe
 
 field in this packet. This array contains data to be written on the target device.
 
-2.2.1.4.5 Device Control Request (DR_CONTROL_REQ)
+###### 2.2.1.4.5 Device Control Request (DR_CONTROL_REQ)
 
 This header initiates a device control request. This message can have different purposes depending on
 the device for which it is issued. The device type is determined by the DeviceId field in the
@@ -2255,7 +1940,8 @@ Release: April 23, 2024
 
 23 / 90
 
-InputBuffer (variable)
+
+InputBuffer (variable)
 
 ...
 
@@ -2281,7 +1967,7 @@ InputBuffer (variable):  A variable-size byte array whose size is specified by t
 
 InputBufferLength field.
 
-2.2.1.5  Device I/O Response (DR_DEVICE_IOCOMPLETION)
+##### 2.2.1.5 Device I/O Response (DR_DEVICE_IOCOMPLETION)
 
 A message with this header indicates that the I/O request is complete. In a Device I/O Response
 message, a request message is matched to the Device I/O Request (section 2.2.1.4) header based on
@@ -2322,7 +2008,7 @@ packet with this ID, the same ID MUST be reused in another request.
 IoStatus (4 bytes): A 32-bit unsigned integer that specifies the NTSTATUS code that indicates
 success or failure for the request. NTSTATUS codes are specified in [MS-ERREF] section 2.3.
 
-2.2.1.5.1 Device Create Response (DR_CREATE_RSP)
+###### 2.2.1.5.1 Device Create Response (DR_CREATE_RSP)
 
  A message with this header describes a response to a Device Create Request (section 2.2.1.4.1).
 
@@ -2333,7 +2019,8 @@ Release: April 23, 2024
 
 24 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2415,7 +2102,7 @@ FILE_OVERWRITTEN
 
 FILE_OVERWRITE_IF
 
-2.2.1.5.2 Device Close Response (DR_CLOSE_RSP)
+###### 2.2.1.5.2 Device Close Response (DR_CLOSE_RSP)
 
  This message is a reply to a Device Close Request (section 2.2.1.4.2).
 
@@ -2426,7 +2113,8 @@ Release: April 23, 2024
 
 25 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2454,7 +2142,7 @@ Padding (4 bytes):  An array of 4 bytes. Reserved. This field can be set to any 
 
 ignored.
 
-2.2.1.5.3 Device Read Response (DR_READ_RSP)
+###### 2.2.1.5.3 Device Read Response (DR_READ_RSP)
 
  A message with this header describes a response to a Device Read Request (section 2.2.1.4.3).
 
@@ -2494,7 +2182,7 @@ ReadData (variable):  A variable-length array of bytes that specifies the output
 
 request. The length of ReadData is specified by the Length field in this packet.
 
-2.2.1.5.4 Device Write Response (DR_WRITE_RSP)
+###### 2.2.1.5.4 Device Write Response (DR_WRITE_RSP)
 
  A message with this header describes a response to a Device Write Request (section 2.2.1.4.4).
 
@@ -2505,7 +2193,8 @@ Release: April 23, 2024
 
 26 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2539,7 +2228,7 @@ Padding (1 byte): An 8-bit unsigned integer intended to allow the client minor f
 
 determining the overall packet length. This field is unused and MUST be ignored.
 
-2.2.1.5.5 Device Control Response (DR_CONTROL_RSP)
+###### 2.2.1.5.5 Device Control Response (DR_CONTROL_RSP)
 
  A message with this header describes a response to a Device Control Request (section 2.2.1.4.5).
 
@@ -2585,7 +2274,8 @@ Release: April 23, 2024
 
 27 / 90
 
-2.2.1.6  RDP_LOCK_INFO
+
+##### 2.2.1.6 RDP_LOCK_INFO
 
 The RDP_LOCK_INFO packet specifies the region of the file to lock or unlock.
 
@@ -2614,9 +2304,9 @@ valid and MUST result in locking the zero length region.
 
 Offset (8 bytes): A 64-bit unsigned integer that specifies the offset at which the region starts.
 
-2.2.2  Initialization Messages
+#### 2.2.2 Initialization Messages
 
-2.2.2.1  Server Device Announce Response (DR_CORE_DEVICE_ANNOUNCE_RSP)
+##### 2.2.2.1 Server Device Announce Response (DR_CORE_DEVICE_ANNOUNCE_RSP)
 
 The server responds to a Client Device List Announce Request with this message.
 
@@ -2651,7 +2341,7 @@ ResultCode (4 bytes):  A 32-bit unsigned integer that specifies the NTSTATUS cod
 the success or failure of device initialization. NTSTATUS codes are specified in [MS-ERREF] section
 2.3.
 
-2.2.2.2  Server Announce Request (DR_CORE_SERVER_ANNOUNCE_REQ)
+##### 2.2.2.2 Server Announce Request (DR_CORE_SERVER_ANNOUNCE_REQ)
 
 The server initiates the protocol with this message.
 
@@ -2675,7 +2365,8 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-VersionMajor
+
+VersionMajor
 
 VersionMinor
 
@@ -2697,7 +2388,7 @@ ClientId (4 bytes):  A 32-bit unsigned integer that specifies the unique ID gene
 
 as specified in section 3.3.5.1.2.
 
-2.2.2.3  Client Announce Reply (DR_CORE_CLIENT_ANNOUNCE_RSP)
+##### 2.2.2.3 Client Announce Reply (DR_CORE_CLIENT_ANNOUNCE_RSP)
 
 The client replies to the Server Announce Request message.
 
@@ -2755,7 +2446,8 @@ Release: April 23, 2024
 
 29 / 90
 
-2.2.2.4  Client Name Request (DR_CORE_CLIENT_NAME_REQ)
+
+##### 2.2.2.4 Client Name Request (DR_CORE_CLIENT_NAME_REQ)
 
 The client announces its machine name.
 
@@ -2815,7 +2507,7 @@ which is determined by the UnicodeFlag field. This is a string that identifies t
 name. The string MUST be null-terminated. The protocol imposes no limitations on the characters
 used in this field.
 
-2.2.2.5  Server User Logged On (DR_CORE_USER_LOGGEDON)
+##### 2.2.2.5 Server User Logged On (DR_CORE_USER_LOGGEDON)
 
  The server announces that it has successfully logged on to the session.
 
@@ -2843,7 +2535,8 @@ Release: April 23, 2024
 
 30 / 90
 
-2.2.2.6  Server Client ID Confirm (DR_CORE_SERVER_CLIENTID_CONFIRM)
+
+##### 2.2.2.6 Server Client ID Confirm (DR_CORE_SERVER_CLIENTID_CONFIRM)
 
  The server confirms the client ID sent by the client in the Client Announce Reply message.
 
@@ -2894,7 +2587,7 @@ ClientId (4 bytes):  A 32-bit unsigned integer that confirms the unique ID value
 
 field, which was sent by the client in the Client Announce Reply message.
 
-2.2.2.7  Server Core Capability Request (DR_CORE_CAPABILITY_REQ)
+##### 2.2.2.7 Server Core Capability Request (DR_CORE_CAPABILITY_REQ)
 
  The server announces its capabilities and requests the same from the client.
 
@@ -2930,7 +2623,8 @@ Release: April 23, 2024
 
 31 / 90
 
-numCapabilities (2 bytes):  A 16-bit integer that specifies the number of items in the
+
+numCapabilities (2 bytes):  A 16-bit integer that specifies the number of items in the
 
 CapabilityMessage array.
 
@@ -2940,7 +2634,7 @@ CapabilityMessage (variable): An array of CAPABILITY_SET structures (section 2.2
 
 number of capabilities is specified by the numCapabilities field.
 
-2.2.2.7.1 General Capability Set (GENERAL_CAPS_SET)
+###### 2.2.2.7.1 General Capability Set (GENERAL_CAPS_SET)
 
  This packet is embedded into Server Core Capability Request and Client Core Capability Response
 messages. It describes non–device-specific capabilities.
@@ -3015,7 +2709,8 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-protocolMajorVersion (2 bytes):  A 16-bit unsigned integer. This field MUST be set to 1.
+
+protocolMajorVersion (2 bytes):  A 16-bit unsigned integer. This field MUST be set to 1.
 
 protocolMinorVersion (2 bytes):  A 16-bit unsigned integer. This field MUST be set to one of the
 values described by the VersionMinor field of the Server Client ID Confirm (section 2.2.2.6)
@@ -3132,7 +2827,8 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x00008000
 
@@ -3192,7 +2888,7 @@ SpecialTypeDeviceCap (4 bytes):  A 32-bit unsigned integer that specifies the nu
 devices to be redirected before the user is logged on. Special devices are those that are safe
 and/or required to be redirected before a user logs on (such as smart cards and serial ports).
 
-2.2.2.7.2 Printer Capability Set (PRINTER_CAPS_SET)
+###### 2.2.2.7.2 Printer Capability Set (PRINTER_CAPS_SET)
 
 This packet is embedded into Server Core Capability Request and Client Core Capability Response
 messages. It indicates that printer devices are supported.
@@ -3216,7 +2912,7 @@ Header (8 bytes): A CAPABILITY_HEADER header. The CapabilityType field of this h
 
 set to CAP_PRINTER_TYPE, and the Version field MUST be set to 0x00000001.
 
-2.2.2.7.3 Port Capability Set (PORT_CAPS_SET)
+###### 2.2.2.7.3 Port Capability Set (PORT_CAPS_SET)
 
  This packet is embedded into Server Core Capability Request and Client Core Capability Response
 messages. It indicates that parallel and serial port devices are supported.
@@ -3228,7 +2924,8 @@ Release: April 23, 2024
 
 34 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3247,7 +2944,7 @@ Header (8 bytes): A CAPABILITY_HEADER header. The CapabilityType field of this h
 
 set to CAP_PORT_TYPE, and the Version field MUST be set to 0x00000001.
 
-2.2.2.7.4 Drive Capability Set (DRIVE_CAPS_SET)
+###### 2.2.2.7.4 Drive Capability Set (DRIVE_CAPS_SET)
 
  This packet is embedded into Server Core Capability Request and Client Core Capability Response
 messages. It indicates that file system devices are supported.
@@ -3270,7 +2967,7 @@ Header
 Header (8 bytes): A CAPABILITY_HEADER header. The CapabilityType field of this header MUST be
 set to CAP_DRIVE_TYPE, and the Version field MUST be set to DRIVE_CAPABILITY_VERSION_02.
 
-2.2.2.7.5 Smart Card Capability Set (SMARTCARD_CAPS_SET)
+###### 2.2.2.7.5 Smart Card Capability Set (SMARTCARD_CAPS_SET)
 
 This packet is embedded into Server Core Capability Request and Client Core Capability Response
 messages. It indicates that smart card devices are supported.<10>
@@ -3294,13 +2991,13 @@ Header (8 bytes): A CAPABILITY_HEADER header. The CapabilityType field of this h
 
 set to CAP_SMARTCARD_TYPE, and the Version field MUST be set to 0x00000001.
 
-2.2.2.8  Client Core Capability Response (DR_CORE_CAPABILITY_RSP)
+##### 2.2.2.8 Client Core Capability Response (DR_CORE_CAPABILITY_RSP)
 
 This packet is identical to Server Core Capability Request (section 2.2.2.7) with the exception that the
 PacketId field in RDPDR_HEADER (section 2.2.1.1) MUST be set to
 PAKID_CORE_CLIENT_CAPABILITY.
 
-2.2.2.9  Client Device List Announce Request
+##### 2.2.2.9 Client Device List Announce Request
 
 (DR_CORE_DEVICELIST_ANNOUNCE_REQ)
 
@@ -3313,7 +3010,8 @@ Release: April 23, 2024
 
 35 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3347,9 +3045,9 @@ This field specifies a list of devices that are being announced. The number of e
 the DeviceCount field. There is no alignment padding between individual DEVICE_ANNOUNCE
 structures. They are ordered sequentially within this packet.
 
-2.2.3  Drive Redirection Messages
+#### 2.2.3 Drive Redirection Messages
 
-2.2.3.1  Client Device List Announce (DR_DEVICELIST_ANNOUNCE)
+##### 2.2.3.1 Client Device List Announce (DR_DEVICELIST_ANNOUNCE)
 
  The client announces a list of new file system devices to redirect on the server.
 
@@ -3397,14 +3095,15 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-specified in the DeviceData field, as a null-terminated Unicode string. If the
+
+specified in the DeviceData field, as a null-terminated Unicode string. If the
 DeviceDataLength field is nonzero, the content of the PreferredDosName field is ignored.
 There is no alignment padding between individual DEVICE_ANNOUNCE headers. They are ordered
 sequentially within this packet.
 
 Note  The PreferredDosName field is used for all device types and is not limited to drives.
 
-2.2.3.2  Client Drive Device List Remove (DR_DEVICELIST_REMOVE)
+##### 2.2.3.2 Client Drive Device List Remove (DR_DEVICELIST_REMOVE)
 
 The client removes a list of already-announced devices from the server.
 
@@ -3445,13 +3144,13 @@ removed device, including file system and port devices. The server can also acce
 DeviceIds of devices that have been removed, providing the implementation uses the
 DR_DEVICE_REMOVE message to do so.
 
-2.2.3.3  Server Drive I/O Request (DR_DRIVE_CORE_DEVICE_IOREQUEST)
+##### 2.2.3.3 Server Drive I/O Request (DR_DRIVE_CORE_DEVICE_IOREQUEST)
 
 The server issues a device I/O request on a redirected file system device. Each request begins with a
 DR_DEVICE_IOREQUEST (section 2.2.1.4) header, in which the DeviceId field MUST be set to a
 device that has been announced as a file system device.
 
-2.2.3.3.1 Server Create Drive Request (DR_DRIVE_CREATE_REQ)
+###### 2.2.3.3.1 Server Create Drive Request (DR_DRIVE_CREATE_REQ)
 
 The server opens or creates a file on a redirected file system device.
 
@@ -3477,14 +3176,15 @@ Release: April 23, 2024
 
 37 / 90
 
-DeviceCreateRequest (variable): A DR_CREATE_REQ header. The PathLength and Path fields
+
+DeviceCreateRequest (variable): A DR_CREATE_REQ header. The PathLength and Path fields
 
 contain the file name of the file to be created. The file name does not contain a drive letter, which
 means that the drive is specified by the DeviceId field of the request. The DeviceId is associated
 with a drive letter when the device is announced in the DR_DEVICELIST_ANNOUNCE (section
 2.2.3.1) message. The drive letter is contained in the PreferredDosName field.
 
-2.2.3.3.2 Server Close Drive Request (DR_DRIVE_CLOSE_REQ)
+###### 2.2.3.3.2 Server Close Drive Request (DR_DRIVE_CLOSE_REQ)
 
  The server closes a file on a redirected file system device.
 
@@ -3509,7 +3209,7 @@ DeviceCloseRequest (56 bytes): A DR_CLOSE_REQ header. This request closes a file
 
 Server Create Drive Request (section 2.2.3.3.1).
 
-2.2.3.3.3 Server Drive Read Request (DR_DRIVE_READ_REQ)
+###### 2.2.3.3.3 Server Drive Read Request (DR_DRIVE_READ_REQ)
 
  The server reads from a file on a redirected file system device.
 
@@ -3534,7 +3234,7 @@ DeviceReadRequest (56 bytes): A DR_READ_REQ header. The Length field contains th
 bytes to be read from the file. The Offset field specifies the offset within the file at which the read
 operation starts.
 
-2.2.3.3.4 Server Drive Write Request (DR_DRIVE_WRITE_REQ)
+###### 2.2.3.3.4 Server Drive Write Request (DR_DRIVE_WRITE_REQ)
 
  The server writes to a file on a redirected file system device.
 
@@ -3565,7 +3265,8 @@ Release: April 23, 2024
 
 38 / 90
 
-2.2.3.3.5 Server Drive Control Request (DR_DRIVE_CONTROL_REQ)
+
+###### 2.2.3.3.5 Server Drive Control Request (DR_DRIVE_CONTROL_REQ)
 
 The server issues a device control request on a redirected file system device.
 
@@ -3684,7 +3385,8 @@ Release: April 23, 2024
 
 39 / 90
 
-
+
+
 
 
 
@@ -3716,7 +3418,7 @@ FSCTL_SIS_COPYFILE
 
 FSCTL_WRITE_USN_CLOSE_RECORD
 
-2.2.3.3.6 Server Drive Query Volume Information Request
+###### 2.2.3.3.6 Server Drive Query Volume Information Request
 
 (DR_DRIVE_QUERY_VOLUME_INFORMATION_REQ)
 
@@ -3780,7 +3482,8 @@ Release: April 23, 2024
 
 40 / 90
 
-Value
+
+Value
 
 Meaning
 
@@ -3822,7 +3525,7 @@ QueryVolumeBuffer field. For a complete list of these structures, refer to [MS-F
 2.5. The "File system information class" table defines all the possible values for the
 FsInformationClass field.
 
-2.2.3.3.7 Server Drive Set Volume Information Request
+###### 2.2.3.3.7 Server Drive Set Volume Information Request
 
 (DR_DRIVE_SET_VOLUME_INFORMATION_REQ)
 
@@ -3866,7 +3569,8 @@ Release: April 23, 2024
 
 41 / 90
 
-DeviceIoRequest (24 bytes): A DR_DEVICE_IOREQUEST (section 2.2.1.4) header. The
+
+DeviceIoRequest (24 bytes): A DR_DEVICE_IOREQUEST (section 2.2.1.4) header. The
 
 MajorFunction field in the DR_DEVICE_IOREQUEST header MUST be set to
 IRP_MJ_SET_VOLUME_INFORMATION.
@@ -3898,7 +3602,7 @@ which determines the different structures that MUST be contained in the SetVolum
 For a complete list of these structures, refer to [MS-FSCC] section 2.5. The "File system
 information class" table defines all the possible values for the FsInformationClass field.
 
-2.2.3.3.8 Server Drive Query Information Request
+###### 2.2.3.3.8 Server Drive Query Information Request
 
 (DR_DRIVE_QUERY_INFORMATION_REQ)
 
@@ -3947,7 +3651,8 @@ Release: April 23, 2024
 
 42 / 90
 
-FsInformationClass (4 bytes): A 32-bit unsigned integer. The possible values for this field are
+
+FsInformationClass (4 bytes): A 32-bit unsigned integer. The possible values for this field are
 
 defined in [MS-FSCC] section 2.4. This field MUST contain one of the following values.
 
@@ -3993,7 +3698,7 @@ which determines the different structures that MUST be contained in the QueryBuf
 complete list of these structures, see [MS-FSCC] section 2.4. The "File information class" table
 defines all the possible values for the FsInformationClass field.
 
-2.2.3.3.9 Server Drive Set Information Request (DR_DRIVE_SET_INFORMATION_REQ)
+###### 2.2.3.3.9 Server Drive Set Information Request (DR_DRIVE_SET_INFORMATION_REQ)
 
 The server issues a set information request on a redirected file system device.
 
@@ -4035,7 +3740,8 @@ Release: April 23, 2024
 
 43 / 90
 
-DeviceIoRequest (24 bytes): A DR_DEVICE_IOREQUEST (section 2.2.1.4) header. The
+
+DeviceIoRequest (24 bytes): A DR_DEVICE_IOREQUEST (section 2.2.1.4) header. The
 
 MajorFunction field in the DR_DEVICE_IOREQUEST header MUST be set to
 IRP_MJ_SET_INFORMATION.
@@ -4110,7 +3816,7 @@ FileRenameInformation
 
 See RDP_FILE_RENAME_INFORMATION.
 
-2.2.3.3.9.1  RDP_FILE_RENAME_INFORMATION
+###### 2.2.3.3.9.1 RDP_FILE_RENAME_INFORMATION
 
 RDP_FILE_RENAME_INFORMATION is a structure representing FileRenameInformation as a possible
 value of the FsInformationClass field. All fields have the same meaning as in
@@ -4124,7 +3830,8 @@ Release: April 23, 2024
 
 44 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4157,9 +3864,9 @@ FileNameLength (4 bytes): See [MS-FSCC] section 2.4.42 for a description of this
 
 FileName (variable): See [MS-FSCC] section 2.4.42 for a description of this field.
 
-2.2.3.3.10
+###### 2.2.3.3.10 Server Drive Query Directory Request
 
-Server Drive Query Directory Request
+
 
 (DR_DRIVE_QUERY_DIRECTORY_REQ)
 
@@ -4218,7 +3925,8 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -4271,9 +3979,9 @@ this operation will be performed. The Path field MUST be null-terminated. If the
 InitialQuery field is zero, then the contents of the Path field MUST be ignored, irrespective of the
 value specified in the PathLength field.
 
-2.2.3.3.11
+###### 2.2.3.3.11 Server Drive NotifyChange Directory Request
 
-Server Drive NotifyChange Directory Request
+
 (DR_DRIVE_NOTIFY_CHANGE_DIRECTORY_REQ)
 
 The server issues a notify change directory request on a redirected file system device to request
@@ -4315,7 +4023,8 @@ Release: April 23, 2024
 
 46 / 90
 
-DeviceIoRequest (24 bytes): A DR_DEVICE_IOREQUEST (section 2.2.1.4) header. The
+
+DeviceIoRequest (24 bytes): A DR_DEVICE_IOREQUEST (section 2.2.1.4) header. The
 
 MajorFunction field in the DR_DEVICE_IOREQUEST header MUST be set to
 IRP_MJ_DIRECTORY_CONTROL, and the MinorFunction field MUST be set to
@@ -4332,9 +4041,9 @@ section 2.2.35.
 
 Padding (27 bytes):  An array of 27 bytes. This field is unused and MUST be ignored.
 
-2.2.3.3.12
+###### 2.2.3.3.12 Server Drive Lock Control Request (DR_DRIVE_LOCK_REQ)
 
-Server Drive Lock Control Request (DR_DRIVE_LOCK_REQ)
+
 
 The server issues a request to lock or unlock portions of a file.
 
@@ -4399,7 +4108,8 @@ Release: April 23, 2024
 
 47 / 90
 
-Value
+
+Value
 
 Meaning
 
@@ -4442,7 +4152,7 @@ Locks (variable): A variable-length array of RDP_LOCK_INFO structures. This fiel
 
 more regions of the file to lock or unlock.
 
-2.2.3.4  Client Drive I/O Response (DR_DRIVE_CORE_DEVICE_IOCOMPLETION)
+##### 2.2.3.4 Client Drive I/O Response (DR_DRIVE_CORE_DEVICE_IOCOMPLETION)
 
  This type of message is sent by the client as a response to the Server Drive I/O
 Request (section 2.2.3.3).
@@ -4468,7 +4178,7 @@ DeviceIoResponse (16 bytes): A DR_DEVICE_IOCOMPLETION header. This common respon
 
 header indicating the I/O response is the same as the Device I/O Response (section 2.2.1.5).
 
-2.2.3.4.1 Client Drive Create Response (DR_DRIVE_CREATE_RSP)
+###### 2.2.3.4.1 Client Drive Create Response (DR_DRIVE_CREATE_RSP)
 
  This message is sent by the client as a response to the Server Create Drive
 Request (section 2.2.3.3.1).
@@ -4495,7 +4205,8 @@ Release: April 23, 2024
 
 48 / 90
 
-...
+
+...
 
 ...
 
@@ -4528,7 +4239,7 @@ The CreateDisposition field was set to any other value.
 
 0x00
 
-2.2.3.4.2 Client Drive Close Response (DR_DRIVE_CLOSE_RSP)
+###### 2.2.3.4.2 Client Drive Close Response (DR_DRIVE_CLOSE_RSP)
 
 This message is sent by the client as a response to the Server Close Drive Request (section 2.2.3.3.2).
 
@@ -4560,7 +4271,7 @@ Padding (1 byte): An 8-bit unsigned integer that is intended to allow the client
 
 determining the overall packet length. This field is unused and MUST be ignored.
 
-2.2.3.4.3 Client Drive Read Response (DR_DRIVE_READ_RSP)
+###### 2.2.3.4.3 Client Drive Read Response (DR_DRIVE_READ_RSP)
 
  This message is sent by the client as a response to the Server Drive Read
 Request (section 2.2.3.3.3).
@@ -4572,7 +4283,8 @@ Release: April 23, 2024
 
 49 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4593,7 +4305,7 @@ is equal to STATUS_SUCCESS), then the amount of data read is any number between 
 number of bytes specified by the Length field in the Server Drive Read Request (section
 2.2.3.3.3) message.
 
-2.2.3.4.4 Client Drive Write Response (DR_DRIVE_WRITE_RSP)
+###### 2.2.3.4.4 Client Drive Write Response (DR_DRIVE_WRITE_RSP)
 
  This message is sent by the client as a response to the Server Drive Write
 Request (section 2.2.3.3.4).
@@ -4619,7 +4331,7 @@ the common Device Write Response (section 2.2.1.5.4). If successful (that is, if
 is equal to STATUS_SUCCESS), then the number of bytes written is specified by the Length field
 of the Server Drive Write Request (section 2.2.3.3.4) message.
 
-2.2.3.4.5 Client Drive Control Response (DR_DRIVE_CONTROL_RSP)
+###### 2.2.3.4.5 Client Drive Control Response (DR_DRIVE_CONTROL_RSP)
 
  This message is sent by the client as a response to the Server Drive Control
 Request (section 2.2.3.3.5).
@@ -4644,7 +4356,7 @@ DeviceIoResponse (variable):  Returns the result of DR_DRIVE_CONROL_REQ; it is t
 the common Device Control Response (section 2.2.1.5.5). The content of the OutputBuffer field
 is described in [MS-FSCC] section 2.3 as a reply type message.
 
-2.2.3.4.6 Client Drive Query Volume Information Response
+###### 2.2.3.4.6 Client Drive Query Volume Information Response
 
 (DR_DRIVE_QUERY_VOLUME_INFORMATION_RSP)
 
@@ -4658,7 +4370,8 @@ Release: April 23, 2024
 
 50 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4702,7 +4415,7 @@ FsInformationClass field.
 Padding (1 byte): An optional, 8-bit unsigned integer that is intended to allow the client minor
 flexibility in determining the overall packet length. This field is unused and MUST be ignored.
 
-2.2.3.4.7 Client Drive Set Volume Information Response
+###### 2.2.3.4.7 Client Drive Set Volume Information Response
 
 (DR_DRIVE_SET_VOLUME_INFORMATION_RSP)
 
@@ -4740,11 +4453,12 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Length (4 bytes): A 32-bit unsigned integer. It MUST match the Length field in the Server Drive Set
+
+Length (4 bytes): A 32-bit unsigned integer. It MUST match the Length field in the Server Drive Set
 
 Volume Information Request.
 
-2.2.3.4.8 Client Drive Query Information Response
+###### 2.2.3.4.8 Client Drive Query Information Response
 
 (DR_DRIVE_QUERY_INFORMATION_RSP)
 
@@ -4788,7 +4502,7 @@ that MUST be contained in the Buffer field. For a complete list of these structu
 FSCC] section 2.4. The "File information class" table defines all the possible values for the
 FsInformationClass field.
 
-2.2.3.4.9 Client Drive Set Information Response
+###### 2.2.3.4.9 Client Drive Set Information Response
 (DR_DRIVE_SET_INFORMATION_RSP)
 
 This message is sent by the client as a response to the Server Drive Set Information
@@ -4820,7 +4534,8 @@ Release: April 23, 2024
 
 52 / 90
 
-Padding (optional)
+
+Padding (optional)
 
 DeviceIoReply (16 bytes): A DR_DEVICE_IOCOMPLETION (section 2.2.1.5) header. The
 
@@ -4834,9 +4549,9 @@ Server Drive Set Information Request (section 2.2.3.3.9).
 Padding (1 byte): An optional, 8-bit unsigned integer that is intended to allow the client minor
 flexibility in determining the overall packet length. This field is unused and MUST be ignored.
 
-2.2.3.4.10
+###### 2.2.3.4.10 Client Drive Query Directory Response
 
-Client Drive Query Directory Response
+
 
 (DR_DRIVE_QUERY_DIRECTORY_RSP)
 
@@ -4887,9 +4602,9 @@ Padding (1 byte):  An optional, 8-bit unsigned integer intended to allow the cli
 
 determining the overall packet length. This field is unused and MUST be ignored.
 
-2.2.3.4.11
+###### 2.2.3.4.11 Client Drive NotifyChange Directory Response
 
-Client Drive NotifyChange Directory Response
+
 (DR_DRIVE_NOTIFY_CHANGE_DIRECTORY_RSP)
 
 [MS-RDPEFS] - v20240423
@@ -4899,7 +4614,8 @@ Release: April 23, 2024
 
 53 / 90
 
-This message is sent by the client as a response to the Server Drive NotifyChange Directory
+
+This message is sent by the client as a response to the Server Drive NotifyChange Directory
 Request (section 2.2.3.3.11).
 
 0  1  2  3  4  5  6  7  8  9
@@ -4945,9 +4661,9 @@ Padding (1 byte): An optional, 8-bit unsigned integer intended to allow the clie
 
 determining the overall packet length. This field is unused and MUST be ignored.
 
-2.2.3.4.12
+###### 2.2.3.4.12 Client Drive Lock Control Response (DR_DRIVE_LOCK_RSP)
 
-Client Drive Lock Control Response (DR_DRIVE_LOCK_RSP)
+
 
 This message is sent by the client as a response to the Server Drive Lock Control
 Request (section 2.2.3.3.12).
@@ -4980,7 +4696,8 @@ Release: April 23, 2024
 
 54 / 90
 
-DeviceIoReply (16 bytes):  A DR_DEVICE_IOCOMPLETION (section 2.2.1.5) header. The
+
+DeviceIoReply (16 bytes):  A DR_DEVICE_IOCOMPLETION (section 2.2.1.5) header. The
 
 CompletionId field of the DR_DEVICE_IOCOMPLETION header MUST match a Device I/O Request
 (section 2.2.1.4) that has the MajorFunction field set to IRP_MJ_LOCK_CONTROL.
@@ -4994,14 +4711,15 @@ Release: April 23, 2024
 
 55 / 90
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify protocol details, including abstract data models and message processing
 rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -5048,7 +4766,7 @@ Capabilities: The client and server store the capability packets that they recei
 
 of the capability packets, some packets will not be supported, as specified in this protocol.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are used.
 
@@ -5059,7 +4777,8 @@ Release: April 23, 2024
 
 56 / 90
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
  A virtual channel MUST be established to facilitate protocol operation. The static virtual channel is
 initialized as part of the basic Remote Desktop Protocol: File System Virtual Channel Extension
@@ -5084,7 +4803,7 @@ capabilities and confirms client version.
 (section 2.2.2.8) and Client Device List Announce Request (section 2.2.2.9): this establishes client
 capabilities and list of devices to be redirected.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The announcement of different devices can be triggered by an event, such as when a user has
 successfully logged on to a terminal server. This behavior ensures that the required devices are visible
@@ -5103,7 +4822,7 @@ message.
 I/O requests are generated in response to I/O calls that server applications make on the redirected
 device.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The DeviceId field is valid if all of the following conditions are met:
 
@@ -5129,7 +4848,8 @@ Release: April 23, 2024
 
 57 / 90
 
-
+
+
 
 The server has sent a packet that has a Device I/O Request (section 2.2.1.4) in its header with
 that ID.
@@ -5138,7 +4858,7 @@ that ID.
 
 with that ID.
 
-3.1.5.1  Processing I/O Requests and Responses
+##### 3.1.5.1 Processing I/O Requests and Responses
 
 This protocol connects server-based applications and client file systems such that each component is
 unaware of the other's local location, as specified in section 1.3. This protocol forwards server
@@ -5162,7 +4882,7 @@ those fields MUST match.
 In case of sudden termination of the underlying transport, all outstanding requests against the file
 system drivers are completed on both sides.
 
-3.1.5.2  Processing Packet Errors
+##### 3.1.5.2 Processing Packet Errors
 
 When an unrecognized or malformed packet is received by the server or the client, the
 implementation SHOULD terminate the virtual channel connection. This action SHOULD be taken for
@@ -5205,7 +4925,8 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If the DeviceType field has a value that is not specified by this protocol, the server SHOULD send
 a Server Device Announce Response (DR_CORE_DEVICE_ANNOUNCE_RSP) message with the
@@ -5268,17 +4989,17 @@ DR_CORE_CAPABILITY_REQ packet.
 Note  The details for client versions are specified in DR_CORE_SERVER_ANNOUNCE_REQ.The details
 for server versions are specified in DR_CORE_CLIENT_ANNOUNCE_RSP.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No common timer events are used.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no common local events.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
@@ -5289,23 +5010,24 @@ Release: April 23, 2024
 
 59 / 90
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 No timers are used.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Higher-layer triggered events are specified in section 3.1.4.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Initialization Messages
+##### 3.2.5.1 Initialization Messages
 
-3.2.5.1.1 Processing a Server Device Announce Response Message
+###### 3.2.5.1.1 Processing a Server Device Announce Response Message
 
 This response indicates the success or failure of a device announcement in the Client Device List
 Announce Request. The client does not take any actions that affect the protocol state. This packet
@@ -5313,7 +5035,7 @@ informs the client whether the device specified by the DeviceId field can be red
 If the ResultCode field is set to STATUS_SUCCESS, the device MUST be redirected; any other value
 indicates an error.
 
-3.2.5.1.2 Processing a Server Announce Request Message
+###### 3.2.5.1.2 Processing a Server Announce Request Message
 
 This request is initiated by the server and is the first packet that goes across this virtual channel. It
 indicates the server's version number and that the server is ready to start the protocol sequence. If
@@ -5324,7 +5046,7 @@ new session and the whole sequence has been reset. The client MUST treat this pa
 beginning of a new sequence. The client MUST also cancel all outstanding requests and release
 previous references to all devices.
 
-3.2.5.1.3 Sending a Client Announce Reply Message
+###### 3.2.5.1.3 Sending a Client Announce Reply Message
 
 The client MUST send this reply immediately after receiving the Server Announce Request packet. It
 sends its own version number in the VersionMajor and VersionMinor fields. If the value of
@@ -5336,13 +5058,13 @@ the client or the protocol channel is disconnected. After the Client Drive Devic
 sent, the ClientIds in that packet MUST be reused in a subsequent Client Device List Announce
 packet.
 
-3.2.5.1.4 Sending a Client Name Request Message
+###### 3.2.5.1.4 Sending a Client Name Request Message
 
 The client MUST send this packet immediately after sending the Client Announce Reply packet. In this
 packet, the client specifies the client computer name in the ComputerName field, and the code page
 in which the name is described.
 
-3.2.5.1.5 Processing a User Logged On Message
+###### 3.2.5.1.5 Processing a User Logged On Message
 
 [MS-RDPEFS] - v20240423
 Remote Desktop Protocol: File System Virtual Channel Extension
@@ -5351,32 +5073,33 @@ Release: April 23, 2024
 
 60 / 90
 
-This packet indicates that the user on the server is logged on, and that the client MUST now announce
+
+This packet indicates that the user on the server is logged on, and that the client MUST now announce
 devices that are suitable for applications running on the server. Typically, the client sends an
 additional Client Device List Announce Request with an additional list of devices. If the client does not
 support this message, the client MUST announce its devices immediately after receiving both the
 Server Core Capability Request message and the Server Client ID Confirm message.
 
-3.2.5.1.6 Processing a Server Client ID Confirm Message
+###### 3.2.5.1.6 Processing a Server Client ID Confirm Message
 
 This packet indicates that the server accepted the client ID that was received in the Client Announce
 Reply packet, or that the user logged on to the server (see section 3.3.5.1.7). The ClientId field of
 this packet MUST be the same as the ClientId field of the Client Announce Reply packet.
 
-3.2.5.1.7 Processing a Server Core Capability Request Message
+###### 3.2.5.1.7 Processing a Server Core Capability Request Message
 
 This packet contains capabilities for every device type supported by this channel. The
 numCapabilities field indicates the number of sub-packets in the CapabilityMessage. Each sub-
 packet has a CAPABILITY_HEADER header, depending on the value of CapabilityType in this header.
 The client MUST reply with its own set of capabilities.
 
-3.2.5.1.8 Sending a Client Core Capability Response Message
+###### 3.2.5.1.8 Sending a Client Core Capability Response Message
 
 The packet is identical to the Server Core Capability Request packet. The client MUST list the
 capabilities that it can support in this packet.<12> The client MUST send this packet immediately after
 receiving a Server Core Capability Request packet.
 
-3.2.5.1.9 Sending a Client Device List Announce Request Message
+###### 3.2.5.1.9 Sending a Client Device List Announce Request Message
 
 This packet can be sent by the client in one of the following cases:
 
@@ -5395,11 +5118,11 @@ the Client Name Request packet.
 This packet MUST contain only devices that have not been announced by previous Client Device List
 Announce packets.
 
-3.2.5.2  Drive Redirection Messages
+##### 3.2.5.2 Drive Redirection Messages
 
 This section describes data packets that are specific to drive (file system) redirection.
 
-3.2.5.2.1 Sending a Client Device List Announce Message
+###### 3.2.5.2.1 Sending a Client Device List Announce Message
 
 The client MAY choose to send announce messages for each file system individually, all in one packet,
 or mixed with other devices. In all cases, the packet SHOULD start with a standard header, as
@@ -5407,7 +5130,7 @@ specified in section 2.2.3.1; and the DeviceType in each announce sub-packet MUS
 RDPDR_DTYP_FILESYSTEM.<13> The client MAY choose to send this packet if a new file system
 appears at any time, according to the rules defined in section 3.2.5.1.9.
 
-3.2.5.2.2 Sending a Client Drive Device List Remove Message
+###### 3.2.5.2.2 Sending a Client Drive Device List Remove Message
 
 The client MAY send this packet at any time after receiving the Server Device Announce Response
 message for the specified file system. Any requests to that device after sending this message MUST be
@@ -5420,13 +5143,14 @@ Release: April 23, 2024
 
 61 / 90
 
-Note  The client MUST send the DR_DEVICELIST_REMOVE message for devices that are removed
+
+Note  The client MUST send the DR_DEVICELIST_REMOVE message for devices that are removed
 after a session is connected. The server can accept the DR_DEVICE_REMOVE message for any
 removed device, including file system and port devices. The server MUST also accept reused DeviceIds
 of devices that have been removed, providing the implementation uses the DR_DEVICE_REMOVE
 message to do so.
 
-3.2.5.2.3 Processing a Server Create Drive Request Message
+###### 3.2.5.2.3 Processing a Server Create Drive Request Message
 
 This message is processed according to the rules defined in section 3.1.5.1. If the Path field of this
 request is equal to any of the strings described below, the request MUST be completed with
@@ -5452,36 +5176,36 @@ CON
 
 CLOCK$
 
-3.2.5.2.4 Sending a Client Create Drive Response Message
+###### 3.2.5.2.4 Sending a Client Create Drive Response Message
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.5 Processing a Server Close Drive Request Message
+###### 3.2.5.2.5 Processing a Server Close Drive Request Message
 
 This message is processed according to the rules defined in section 3.1.5.1. If there are any pending
 or incomplete I/O requests with this FileId that are about to be closed, those requests are canceled.
 That is, they are completed with an NTSTATUS code STATUS_CANCELLED (0xC0000120) value for the
 IoStatus field in the response.
 
-3.2.5.2.6 Sending a Client Close Drive Response Message
+###### 3.2.5.2.6 Sending a Client Close Drive Response Message
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.7 Processing a Server Drive Read Request Message
+###### 3.2.5.2.7 Processing a Server Drive Read Request Message
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.8 Sending a Client Drive Read Response Message
+###### 3.2.5.2.8 Sending a Client Drive Read Response Message
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.9 Processing a Server Drive Write Request Message
+###### 3.2.5.2.9 Processing a Server Drive Write Request Message
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.10
+###### 3.2.5.2.10 Sending a Client Drive Write Response Message
 
-Sending a Client Drive Write Response Message
+
 
 [MS-RDPEFS] - v20240423
 Remote Desktop Protocol: File System Virtual Channel Extension
@@ -5490,89 +5214,90 @@ Release: April 23, 2024
 
 62 / 90
 
-This packet is generated according to the rules defined in section 3.1.5.1.
-
-3.2.5.2.11
-
-Processing a Server Drive Control Request Message
-
-This message is processed according to the rules defined in section 3.1.5.1.
-
-3.2.5.2.12
-
-Sending a Client Drive Control Response Message
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.13
+###### 3.2.5.2.11 Processing a Server Drive Control Request Message
 
-Processing a Server Drive Query Volume Information Request Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.14
+###### 3.2.5.2.12 Sending a Client Drive Control Response Message
 
-Sending a Client Drive Query Volume Information Response Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.15
+###### 3.2.5.2.13 Processing a Server Drive Query Volume Information Request Message
 
-Processing a Server Drive Set Volume Information Request Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.16
+###### 3.2.5.2.14 Sending a Client Drive Query Volume Information Response Message
 
-Sending a Client Drive Set Volume Information Response Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.17
+###### 3.2.5.2.15 Processing a Server Drive Set Volume Information Request Message
 
-Processing a Server Drive Query Information Request Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.18
+###### 3.2.5.2.16 Sending a Client Drive Set Volume Information Response Message
 
-Sending a Client Drive Query Information Response Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.19
+###### 3.2.5.2.17 Processing a Server Drive Query Information Request Message
 
-Processing a Server Drive Set Information Request Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.20
+###### 3.2.5.2.18 Sending a Client Drive Query Information Response Message
 
-Sending a Client Drive Set Information Response Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.21
+###### 3.2.5.2.19 Processing a Server Drive Set Information Request Message
 
-Processing a Server Drive Query Directory Request Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.22
+###### 3.2.5.2.20 Sending a Client Drive Set Information Response Message
 
-Sending a Client Drive Query Directory Response Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.23
+###### 3.2.5.2.21 Processing a Server Drive Query Directory Request Message
 
-Processing a Server Drive Notify Change Directory Request Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.24
+###### 3.2.5.2.22 Sending a Client Drive Query Directory Response Message
 
-Sending a Client Drive Notify Change Directory Response Message
+
+
+This packet is generated according to the rules defined in section 3.1.5.1.
+
+###### 3.2.5.2.23 Processing a Server Drive Notify Change Directory Request Message
+
+
+
+This message is processed according to the rules defined in section 3.1.5.1.
+
+###### 3.2.5.2.24 Sending a Client Drive Notify Change Directory Response Message
+
+
 
 [MS-RDPEFS] - v20240423
 Remote Desktop Protocol: File System Virtual Channel Extension
@@ -5581,7 +5306,8 @@ Release: April 23, 2024
 
 63 / 90
 
-This packet is generated according to the rules defined in section 3.1.5.1. There are two
+
+This packet is generated according to the rules defined in section 3.1.5.1. There are two
 distinguishable cases in which this response can indicate success:
 
   When any of the conditions requested in the Server Drive NotifyChange Directory
@@ -5593,49 +5319,49 @@ Buffer field contains the appropriate indication for the events.
 
 Buffer field is empty.
 
-3.2.5.2.25
+###### 3.2.5.2.25 Processing a Server Drive Lock Control Request Message
 
-Processing a Server Drive Lock Control Request Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.2.5.2.26
+###### 3.2.5.2.26 Sending a Client Drive Lock Control Response Message
 
-Sending a Client Drive Lock Control Response Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no other local events.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No timers are used.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 Higher-layer triggered events are specified in section 3.1.4.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Initialization Messages
+##### 3.3.5.1 Initialization Messages
 
-3.3.5.1.1 Sending a Server Device Announce Response Message
+###### 3.3.5.1.1 Sending a Server Device Announce Response Message
 
 After the server initializes its virtual file system drivers for each announced device in the Client
 Device List Announce Request, the server MUST send a Server Device Announce Response for each
@@ -5649,37 +5375,38 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.5.1.2 Sending a Server Announce Request Message
+
+###### 3.3.5.1.2 Sending a Server Announce Request Message
 
 This is the first packet that the server MUST send after it establishes the transport over the virtual
 channel. This packet contains version information. The ClientId field MUST be set to a unique ID that
 will not collide with any other connection where this protocol is used.
 
-3.3.5.1.3 Processing a Client Announce Reply Message
+###### 3.3.5.1.3 Processing a Client Announce Reply Message
 
 The server stores the information that it received in a Client Announce Reply message. Based on the
 information included in this packet, the server can perform analysis on the supported client version.
 The ClientId field is stored and then later sent to the client in a Server Client ID Confirm message.
 
-3.3.5.1.4 Processing a Client Name Request Message
+###### 3.3.5.1.4 Processing a Client Name Request Message
 
 The server stores the ComputerName field into each virtual file system driver.
 
-3.3.5.1.5 Sending a Server User Logged On Message
+###### 3.3.5.1.5 Sending a Server User Logged On Message
 
 With this packet, the server indicates that the user is completely logged on. It is sent when the user is
 logged on, or when the server reconnects to a session with an already logged-on user, immediately
 after it receives a Client Core Capability Response. This packet is sent only if the client's general
 capability set has the RDPDR_USER_LOGGEDON_PDU bit set in the extendedPDU field.
 
-3.3.5.1.6 Sending a Server Core Capability Request Message
+###### 3.3.5.1.6 Sending a Server Core Capability Request Message
 
 The server MUST send its capability request immediately after it receives the Client Announce Reply
 message, if the VersionMinor field of the Client Announce Reply message is at least 5.<15> If the
 VersionMinor field is less than 5, the client does not support capability exchange. In this case, the
 server sends the Server Client ID Confirm message.
 
-3.3.5.1.7 Sending a Server Client ID Confirm Message
+###### 3.3.5.1.7 Sending a Server Client ID Confirm Message
 
 The server MUST send this packet immediately after receiving the Client Announce Reply message and
 when all of the following conditions are met:
@@ -5701,12 +5428,12 @@ again when the user logs on.
 
 The VersionMajor and VersionMinor fields of this packet are set to the server version numbers.
 
-3.3.5.1.8 Processing a Client Core Capability Response Message
+###### 3.3.5.1.8 Processing a Client Core Capability Response Message
 
 The server stores all client capabilities for later use in deciding what kinds of requests the client
 supports.
 
-3.3.5.1.9 Processing a Client Device List Announce Message
+###### 3.3.5.1.9 Processing a Client Device List Announce Message
 
 The server initializes virtual device drivers for each of the announced devices in this packet. The
 result of the initialization of those device drivers is sent in the Server Device Announce Response
@@ -5718,65 +5445,66 @@ Release: April 23, 2024
 
 65 / 90
 
-message. The server sends separate Server Device Announce Response messages for each device in
+
+message. The server sends separate Server Device Announce Response messages for each device in
 the Client Device List Announce message.
 
-3.3.5.2  Drive Redirection Messages
+##### 3.3.5.2 Drive Redirection Messages
 
-3.3.5.2.1 Processing a Client List Announce Message
+###### 3.3.5.2.1 Processing a Client List Announce Message
 
 The server creates a virtual file system driver for each file system device. If this message contains
 DeviceIds that were previously sent in a Client Device List Announce message and the DeviceIds
 have not been invalidated by a Client Drive Device List Remove message, the protocol MUST be
 terminated.
 
-3.3.5.2.2 Processing a Client Drive Device List Remove Message
+###### 3.3.5.2.2 Processing a Client Drive Device List Remove Message
 
 The server removes the virtual file system driver for the specified device. If the specified device was
 not previously announced in a Client Device List Announce message, the Processing a Client Drive
 Device List Remove message MUST be ignored.
 
-3.3.5.2.3 Sending a Server Create Drive Request Message
+###### 3.3.5.2.3 Sending a Server Create Drive Request Message
 
 The server sends the Server Create Drive Request message whenever a new file or directory is being
 created or when an existing file, directory, or volume is being opened. All the relevant fields are
 packaged in an appropriate request and are sent to the client.
 
-3.3.5.2.4 Processing a Client Create Drive Response Message
+###### 3.3.5.2.4 Processing a Client Create Drive Response Message
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.5 Sending a Server Close Drive Request Message
+###### 3.3.5.2.5 Sending a Server Close Drive Request Message
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.6 Processing a Client Close Drive Response Message
+###### 3.3.5.2.6 Processing a Client Close Drive Response Message
 
 This message is processed according to the rules defined in section 3.1.5.1. All pending or incomplete
 I/O requests for this FileId MUST be canceled. That is, they MUST be completed with an NTSTATUS
 code STATUS_CANCELLED (0xC0000120).
 
-3.3.5.2.7 Sending a Server Drive Read Request Message
+###### 3.3.5.2.7 Sending a Server Drive Read Request Message
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.8 Processing a Client Drive Read Response Message
+###### 3.3.5.2.8 Processing a Client Drive Read Response Message
 
 This message is processed according to the rules defined in section 3.1.5.1. The server MUST not send
 multiple read requests on the same file unless the ENABLE_ASYNCIO flag is set in General Capability
 Set message. If the flag is not set, then the server MUST wait for the read on a particular file to
 complete before sending the next read on the same file.
 
-3.3.5.2.9 Sending a Server Drive Write Request Message
+###### 3.3.5.2.9 Sending a Server Drive Write Request Message
 
 This packet is generated according to the rules defined in section 3.1.5.1. The server MUST not send
 multiple write requests on the same file unless the ENABLE_ASYNCIO flag is set in General Capability
 Set message. If the flag is not set, then the server MUST wait for the write on a particular file to
 complete before sending the next write on the same file.
 
-3.3.5.2.10
+###### 3.3.5.2.10 Processing a Client Drive Write Response Message
 
-Processing a Client Drive Write Response Message
+
 
 66 / 90
 
@@ -5785,89 +5513,90 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This message is processed according to the rules defined in section 3.1.5.1.
-
-3.3.5.2.11
-
-Sending a Server Drive Control Request Message
-
-This packet is generated according to the rules defined in section 3.1.5.1.
-
-3.3.5.2.12
-
-Processing a Client Drive Control Response Message
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.13
+###### 3.3.5.2.11 Sending a Server Drive Control Request Message
 
-Sending a Server Drive Query Volume Information Request Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.14
+###### 3.3.5.2.12 Processing a Client Drive Control Response Message
 
-Processing a Client Drive Query Volume Information Response Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.15
+###### 3.3.5.2.13 Sending a Server Drive Query Volume Information Request Message
 
-Sending a Server Drive Set Volume Information Request Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.16
+###### 3.3.5.2.14 Processing a Client Drive Query Volume Information Response Message
 
-Processing a Client Drive Set Volume Information Response Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.17
+###### 3.3.5.2.15 Sending a Server Drive Set Volume Information Request Message
 
-Sending a Server Drive Query Information Request Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.18
+###### 3.3.5.2.16 Processing a Client Drive Set Volume Information Response Message
 
-Processing a Client Drive Query Information Response Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.19
+###### 3.3.5.2.17 Sending a Server Drive Query Information Request Message
 
-Sending a Server Drive Set Information Request Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.20
+###### 3.3.5.2.18 Processing a Client Drive Query Information Response Message
 
-Processing a Client Drive Set Information Response Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.21
+###### 3.3.5.2.19 Sending a Server Drive Set Information Request Message
 
-Sending a Server Drive Query Directory Request Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.22
+###### 3.3.5.2.20 Processing a Client Drive Set Information Response Message
 
-Processing a Client Drive Query Directory Response Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.23
+###### 3.3.5.2.21 Sending a Server Drive Query Directory Request Message
 
-Sending a Server Drive Notify Change Directory Request Message
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.24
+###### 3.3.5.2.22 Processing a Client Drive Query Directory Response Message
 
-Processing a Client Drive Notify Change Directory Response Message
+
+
+This message is processed according to the rules defined in section 3.1.5.1.
+
+###### 3.3.5.2.23 Sending a Server Drive Notify Change Directory Request Message
+
+
+
+This packet is generated according to the rules defined in section 3.1.5.1.
+
+###### 3.3.5.2.24 Processing a Client Drive Notify Change Directory Response Message
+
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
@@ -5878,23 +5607,24 @@ Release: April 23, 2024
 
 67 / 90
 
-3.3.5.2.25
 
-Sending a Server Drive Lock Control Request Message
+###### 3.3.5.2.25 Sending a Server Drive Lock Control Request Message
+
+
 
 This packet is generated according to the rules defined in section 3.1.5.1.
 
-3.3.5.2.26
+###### 3.3.5.2.26 Processing a Client Drive Lock Control Response Message
 
-Processing a Client Drive Lock Control Response Message
+
 
 This message is processed according to the rules defined in section 3.1.5.1.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 There are no timer events.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 There are no other local events.
 
@@ -5905,16 +5635,17 @@ Release: April 23, 2024
 
 68 / 90
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-RDPEFS].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Remote Desktop Protocol: File System Virtual Channel Extension.
 
-4.1  Packet Sequences
+### 4.1 Packet Sequences
 
 Packet sequence with the Server User Logged On message shows a sequence of packets for a client
 that supports the Server User Logged On message.
@@ -5932,13 +5663,14 @@ Release: April 23, 2024
 
 69 / 90
 
-<!-- Extracted images from page 70 -->
+
+<!-- Extracted images from page 70 -->
 ![Extracted image 1 from page 70]([MS-RDPEFS].images/page070-img01.png)
 <!-- /Extracted images from page 70 -->
 
 Figure 5: Packet sequence without the Server User Logged On message
 
-4.2  Server Device Announce Response
+### 4.2 Server Device Announce Response
 
  12 bytes, server to client
  00000000 72 44 72 64 01 00 00 00 00 00 00 00
@@ -5947,7 +5679,7 @@ Figure 5: Packet sequence without the Server User Logged On message
  01 00 00 00       DeviceId   = 0x00000001
  00 00 00 00       ResultCode = 0x00000000
 
-4.3  Server Announce Request
+### 4.3 Server Announce Request
 
  12 bytes, server to client
  00000000 72 44 6e 49 01 00 0c 00 01 00 00 00
@@ -5957,7 +5689,7 @@ Figure 5: Packet sequence without the Server User Logged On message
  0c 00             VersionMinor = 0x000c
  01 00 00 00       ClientId = 0x00000001
 
-4.4  Client Announce Reply
+### 4.4 Client Announce Reply
 
  12 bytes, client to server
  00000000 72 44 43 43 01 00 0c 00 01 00 00 00
@@ -5974,7 +5706,8 @@ Release: April 23, 2024
 
 70 / 90
 
-4.5  Client Name Request
+
+### 4.5 Client Name Request
 
  46 bytes, client to server
  00000000 72 44 4e 43 01 00 00 00 00 00 00 00 1e 00 00 00
@@ -5994,14 +5727,14 @@ Release: April 23, 2024
  53 00 54 00        ComputerName (continued)
  00 00       ComputerName (continued)
 
-4.6  Server User Logged On
+### 4.6 Server User Logged On
 
  4 bytes, server to client
  00000000 72 44 4c 55
  72 44             Header->RDPDR_CTYP_CORE = 0x4472
  4c 55             Header->PAKID_CORE_USER_LOGGEDON = 0x554c
 
-4.7  Server Client ID Confirm
+### 4.7 Server Client ID Confirm
 
  12 bytes, server to client
  00000000 72 44 43 43 01 00 0c 00 01 00 00 00
@@ -6011,7 +5744,7 @@ Release: April 23, 2024
  0c 00          VersionMinor = 0x000c
  01 00 00 00    ClientId = 0x00000001
 
-4.8  Server Core Capability Request
+### 4.8 Server Core Capability Request
 
  84 bytes, server to client
  00000000 72 44 50 53 05 00 00 00 01 00 2c 00 02 00 00 00
@@ -6045,7 +5778,8 @@ Release: April 23, 2024
 
 71 / 90
 
- 00 00 00 00   extraFlags1 = 0x00000000
+
+ 00 00 00 00   extraFlags1 = 0x00000000
  00 00 00 00   extraFlags2 = 0x00000000
  02 00 00 00   SpecialTypeDeviceCap = 0x00000002
  02 00         CAPABILITY_HEADER->CapabilityType =
@@ -6065,7 +5799,7 @@ Release: April 23, 2024
  08 00         CAPABILITY_HEADER->CapabilityLength = 0x0008 (8)
  01 00 00 00   CAPABILITY_HEADER->version = 0x00000001 (SMARTCARD_CAPABILITY_VERSION_01)
 
-4.9  Client Core Capability Response
+### 4.9 Client Core Capability Response
 
  84 bytes, client to server
  00000000 72 44 50 43 05 00 00 00 01 00 2c 00 02 00 00 00
@@ -6118,7 +5852,8 @@ Release: April 23, 2024
 
 72 / 90
 
-4.10  Client Device List Announce Request
+
+### 4.10 Client Device List Announce Request
 
  68 bytes, client to server
  00000000 72 44 41 44 03 00 00 00 08 00 00 00 03 00 00 00
@@ -6149,7 +5884,7 @@ Release: April 23, 2024
  00 00 00 00       PreferredDosName (continued) = 0x00000000
  00 00 00 00       DeviceDataLength = 0x00000000
 
-4.11  Client Drive Device List Remove
+### 4.11 Client Drive Device List Remove
 
  12 bytes, client to server
  00000000 72 44 4d 44 01 00 00 00 01 00 00 00
@@ -6159,7 +5894,7 @@ Release: April 23, 2024
  01 00 00 00          DeviceCount = 0x00000001
  01 00 00 00            DeviceIds = 0x00000001
 
-4.12  Server Create Drive Request
+### 4.12 Server Create Drive Request
 
  56 bytes, server to client
  00000000 72 44 52 49 03 00 00 00 00 00 00 00 01 00 00 00
@@ -6189,7 +5924,8 @@ Release: April 23, 2024
 
 73 / 90
 
-4.13  Client Drive Create Response
+
+### 4.13 Client Drive Create Response
 
  21 bytes, client to server
  00000000 72 44 43 49 03 00 00 00 01 00 00 00 a3 00 00 c0
@@ -6202,7 +5938,7 @@ Release: April 23, 2024
  00 00 00 00             FileId = 0x00000000
  00                 Information = 0x00
 
-4.14  Server Close Drive Request
+### 4.14 Server Close Drive Request
 
  56 bytes, server to client
  00000000 72 44 52 49 02 00 00 00 01 00 00 00 01 00 00 00
@@ -6225,7 +5961,7 @@ Release: April 23, 2024
  00 00 00 00        Padding (continued) = 0x00000000
  00 00 00 00        Padding (continued) = 0x00000000
 
-4.15  Client Drive Close Response
+### 4.15 Client Drive Close Response
 
  20 bytes, client to server
  00000000 72 44 43 49 02 00 00 00 01 00 00 00 00 00 00 00
@@ -6237,7 +5973,7 @@ Release: April 23, 2024
  00 00 00 00       IoStatus = 0x00000000
  00 00 00 00        Padding = 0x00000000
 
-4.16  Server Drive Read Request
+### 4.16 Server Drive Read Request
 
  56 bytes, server to client
  00000000 72 44 52 49 01 00 00 00 32 00 00 00 03 00 00 00
@@ -6260,7 +5996,8 @@ Release: April 23, 2024
 
 74 / 90
 
- 00 2c 00 00         Offset = 0x00002c00
+
+ 00 2c 00 00         Offset = 0x00002c00
  00 00 00 00        Offset (continued) = 0x00000000
  00 00 00 00        Padding = 0x00000000
  00 00 00 00       Padding (continued) = 0x00000000
@@ -6268,7 +6005,7 @@ Release: April 23, 2024
  00 00 00 00       Padding (continued) = 0x00000000
  00 00 00 00       Padding (continued) = 0x00000000
 
-4.17  Client Drive Read Response
+### 4.17 Client Drive Read Response
 
  1556 bytes, client to server
  00000000 72 44 43 49 01 00 00 00 03 00 00 00 00 00 00 00
@@ -6335,7 +6072,8 @@ Release: April 23, 2024
 
 75 / 90
 
- 00000380 6d 00 65 00 00 00 00 00 4d 00 69 00 63 00 72 00
+
+ 00000380 6d 00 65 00 00 00 00 00 4d 00 69 00 63 00 72 00
  00000390 6f 00 73 00 6f 00 66 00 74 00 20 00 28 00 52 00
  000003a0 29 00 20 00 57 00 69 00 6e 00 64 00 6f 00 77 00
  000003b0 73 00 20 00 28 00 52 00 29 00 20 00 4f 00 70 00
@@ -6385,7 +6123,7 @@ Release: April 23, 2024
  00 06 00 00         Length = 0x00000600 (1536)
  Rest Data         ReadData (1536 bytes)
 
-4.18  Server Drive Write Request
+### 4.18 Server Drive Write Request
 
  65 bytes, server to client
  00000000 72 44 52 49 01 00 00 00 23 02 00 00 06 00 00 00
@@ -6410,7 +6148,8 @@ Release: April 23, 2024
 
 76 / 90
 
- 00 00 00 00       Offset (continued) = 0x00000000
+
+ 00 00 00 00       Offset (continued) = 0x00000000
  00 00 00 00       Padding = 0x00000000
  00 00 00 00       Padding (continued) = 0x00000000
  00 00 00 00       Padding (continued) = 0x00000000
@@ -6420,7 +6159,7 @@ Release: April 23, 2024
  73 61 66 73
  61
 
-4.19  Client Drive Write Response
+### 4.19 Client Drive Write Response
 
  21 bytes, client to server
  00000000 72 44 43 49 01 00 00 00 06 00 00 00 00 00 00 00
@@ -6433,7 +6172,7 @@ Release: April 23, 2024
  09 00 00 00         Length = 0x00000009 (9)
  00                 Padding = 0x00
 
-4.20  Server Drive Control Request
+### 4.20 Server Drive Control Request
 
  56 bytes, server to client
  00000000 72 44 52 49 01 00 00 00 f8 01 00 00 08 00 00 00
@@ -6456,7 +6195,7 @@ Release: April 23, 2024
  00 00 00 00    Padding (continue) = 0x00000000
  00 00 00 00    Padding (continue) = 0x00000000
 
-4.21  Client Drive Control Response
+### 4.21 Client Drive Control Response
 
  20 bytes, client to server
  00000000 72 44 43 49 01 00 00 00 08 00 00 00 01 00 00 c0
@@ -6468,7 +6207,7 @@ Release: April 23, 2024
  01 00 00 c0            IoStatus = 0xc0000001 (STATUS_UNSUCCESSFUL)
  00 00 00 00  OutputBufferLength = 0x00000000 (0)
 
-4.22  Drive Query Volume Information Request
+### 4.22 Drive Query Volume Information Request
 
  56 bytes, server to client
 
@@ -6479,7 +6218,8 @@ Release: April 23, 2024
 
 77 / 90
 
- 00000000 72 44 52 49 01 00 00 00 fa 01 00 00 08 00 00 00
+
+ 00000000 72 44 52 49 01 00 00 00 fa 01 00 00 08 00 00 00
  00000010 0a 00 00 00 00 00 00 00 05 00 00 00 00 00 00 00
  00000020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00000030 00 00 00 00 00 00 00 00
@@ -6500,7 +6240,7 @@ Release: April 23, 2024
  00 00 00 00       Padding (continued) = 0x00000000
  00 00 00 00       Padding (continued) = 0x00000000
 
-4.23  Client Drive Query Volume Information Response
+### 4.23 Client Drive Query Volume Information Response
 
  40 bytes, client to server
  00000000 72 44 43 49 01 00 00 00 08 00 00 00 00 00 00 00
@@ -6518,7 +6258,7 @@ Release: April 23, 2024
  4e 00 54 00
  46 00 53 00
 
-4.24  Server Drive Set Volume Information Request
+### 4.24 Server Drive Set Volume Information Request
 
  84 bytes, server to client
  00000000 72 44 52 49 02 00 00 00 06 00 00 00 02 00 00 00
@@ -6552,14 +6292,15 @@ Release: April 23, 2024
 
 78 / 90
 
- 54 00 65 00
+
+ 54 00 65 00
  73 00 74 00
  20 00 56 00
  6f 00 6c 00
  75 00 6d 00
  65 00 00 00
 
-4.25  Client Drive Set Volume Information Response
+### 4.25 Client Drive Set Volume Information Response
 
  21 bytes, client to server
  00000000 72 44 43 49 02 00 00 00 02 00 00 00 22 00 00 c0
@@ -6572,7 +6313,7 @@ Release: April 23, 2024
  1c 00 00 00         Length = 0x0000001c
  00
 
-4.26  Server Drive Query Information Request
+### 4.26 Server Drive Query Information Request
 
  56 bytes, server to client
  00000000 72 44 52 49 02 00 00 00 01 00 00 00 01 00 00 00
@@ -6596,7 +6337,7 @@ Release: April 23, 2024
  00 00 00 00       Padding (continued) = 0x00000000
  00 00 00 00       Padding (continued) = 0x00000000
 
-4.27  Client Drive Query Information Response
+### 4.27 Client Drive Query Information Response
 
  56 bytes, client to server
  00000000 72 44 43 49 02 00 00 00 01 00 00 00 00 00 00 00
@@ -6622,12 +6363,13 @@ Release: April 23, 2024
 
 79 / 90
 
- 95 a6 c7 01       Buffer (continued)
+
+ 95 a6 c7 01       Buffer (continued)
  00 00 00 00       Buffer (continued)
  00 00 00 00       Buffer (continued)
  16 00 00 00       Buffer (continued)
 
-4.28  Server Drive Set Information Request
+### 4.28 Server Drive Set Information Request
 
  92 bytes, server to client
  00000000 72 44 52 49 01 00 00 00 0c 02 00 00 08 00 00 00
@@ -6661,7 +6403,7 @@ Release: April 23, 2024
  00 00 00 00
  a0 00 00 00
 
-4.29  Client Drive Set Information Response
+### 4.29 Client Drive Set Information Response
 
  21 bytes, client to server
  00000000 72 44 43 49 01 00 00 00 08 00 00 00 00 00 00 00
@@ -6674,7 +6416,7 @@ Release: April 23, 2024
  24 00 00 00         Length = 0x00000024 (36)
  00                Padding
 
-4.30  Server Drive Query Directory Request
+### 4.30 Server Drive Query Directory Request
 
  62 bytes, server to client
  00000000 72 44 52 49 01 00 00 00 02 00 00 00 01 00 00 00
@@ -6693,7 +6435,8 @@ Release: April 23, 2024
 
 80 / 90
 
- 01 00 00 00       CompletionId = 0x00000001
+
+ 01 00 00 00       CompletionId = 0x00000001
  0c 00 00 00       MajorFunction = 0x0000000c (IRP_MJ_QUERY_DIRECTORY)
  01 00 00 00       MinorFunction = 0x00000001 (IRP_MN_QUERY_DIRECTORY)
  03 00 00 00       FsInformationClass = 0x00000003 (FileFsSizeInformation)
@@ -6709,7 +6452,7 @@ Release: April 23, 2024
  5c 00 2a 00       Path
  00 00             Path (continued)
 
-4.31  Client Drive Query Directory Response
+### 4.31 Client Drive Query Directory Response
 
  137 bytes, client to server
  00000000 72 44 43 49 01 00 00 00 01 00 00 00 00 00 00 00
@@ -6765,7 +6508,8 @@ Release: April 23, 2024
 
 81 / 90
 
-4.32  Server Drive NotifyChange Directory Request
+
+### 4.32 Server Drive NotifyChange Directory Request
 
  56 bytes, server to client
  00000000 72 44 52 49 01 00 00 00 03 00 00 00 02 00 00 00
@@ -6791,7 +6535,7 @@ Release: April 23, 2024
  00 00 00 00       Padding (continued) = 0x00000000
  00 00 00 00       Padding (continued) = 0x00000000
 
-4.33  Client Drive NotifyChange Directory Response
+### 4.33 Client Drive NotifyChange Directory Response
 
  21 bytes, client to server
  00000000 72 44 43 49 01 00 00 00 02 00 00 00 00 00 00 00
@@ -6804,7 +6548,7 @@ Release: April 23, 2024
  00 00 00 00         Length = 0x00000000
  00                 Padding = 0x00
 
-4.34  Server Drive Lock Control Request
+### 4.34 Server Drive Lock Control Request
 
  72 bytes, server to client
  00000000 72 44 52 49 0c 00 00 00-52 00 00 00 02 00 00 00
@@ -6837,9 +6581,10 @@ Release: April 23, 2024
 
 82 / 90
 
- c8 00 00 00 00 00 00 00 - Offset = 0x00000000000000c8
 
-4.35  Client Drive Lock Control Response
+ c8 00 00 00 00 00 00 00 - Offset = 0x00000000000000c8
+
+### 4.35 Client Drive Lock Control Response
 
  21 bytes, client to server
  00000000 72 44 43 49 0c 00 00 00-02 00 00 00 00 00 00 00
@@ -6859,19 +6604,20 @@ Release: April 23, 2024
 
 83 / 90
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Remote Desktop
 Protocol: File System Virtual Channel Extension.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for Remote Desktop Protocol: File System Virtual Channel
 Extension messages because all static virtual channel traffic is secured by the underlying Remote
 Desktop Protocol core protocol. For the implemented security-related mechanisms, see [MS-
 RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for the Remote Desktop Protocol: File System Virtual Channel
 Extension.
@@ -6883,7 +6629,8 @@ Release: April 23, 2024
 
 84 / 90
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6950,7 +6697,8 @@ Release: April 23, 2024
 
 85 / 90
 
-<5> Section 2.2.1.4: In the Windows implementation, the MinorFunction field is not initialized when
+
+<5> Section 2.2.1.4: In the Windows implementation, the MinorFunction field is not initialized when
 the MajorFunction field is set to IRP_MJ_DEVICE_CONTROL.
 
 <6> Section 2.2.1.4.4:  If the client did not advertise a minor version of at least 0x000D in the Client
@@ -7010,7 +6758,8 @@ Release: April 23, 2024
 
 86 / 90
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7054,7 +6803,8 @@ Release: April 23, 2024
 
 87 / 90
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -7208,7 +6958,8 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   server create drive request 73
+
+   server create drive request 73
    server device announce response 70
    server drive control request 77
    server drive notifychange directory request 82
@@ -7352,7 +7103,8 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   client (section 3.1.6 59, section 3.2.6 64)
+
+   client (section 3.1.6 59, section 3.2.6 64)
    server (section 3.1.6 59, section 3.3.6 68)
 Timers
    client (section 3.1.2 56, section 3.2.2 60)

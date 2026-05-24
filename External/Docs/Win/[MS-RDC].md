@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 70
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: April 23, 2024
 
 2 / 70
 
-Date
+
+Date
 
 Revision
 History
@@ -518,7 +520,8 @@ Release: April 23, 2024
 
 3 / 70
 
-Date
+
+Date
 
 Revision
 History
@@ -567,152 +570,65 @@ Release: April 23, 2024
 
 4 / 70
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 RdcVersion](#2211-rdcversion)
+      - [2.2.1.2 FileHeader](#2212-fileheader)
+    - [2.2.2 Signature Files](#222-signature-files)
+      - [2.2.2.1 ChunkSignature](#2221-chunksignature)
+    - [2.2.3 Similarity Data](#223-similarity-data)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Chunk Generation](#3151-chunk-generation)
+        - [3.1.5.1.1 H3 Hash](#31511-h3-hash)
+        - [3.1.5.1.2 Finding Chunk Boundaries](#31512-finding-chunk-boundaries)
+      - [3.1.5.2 Signature Computation](#3152-signature-computation)
+      - [3.1.5.3 Recursion](#3153-recursion)
+        - [3.1.5.3.1 Recursion Depth](#31531-recursion-depth)
+      - [3.1.5.4 Similarity](#3154-similarity)
+        - [3.1.5.4.1 Similarity Data Calculation](#31541-similarity-data-calculation)
+        - [3.1.5.4.2 Finding Seed Files](#31542-finding-seed-files)
+      - [3.1.5.5 Generating the Target File](#3155-generating-the-target-file)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example System Architecture](#41-example-system-architecture)
+  - [4.2 H3](#42-h3)
+  - [4.3 FilterMax](#43-filtermax)
+  - [4.4 Sample Recursive Client Transfer](#44-sample-recursive-client-transfer)
+  - [4.5 Sample Input and Generated Signature File](#45-sample-input-and-generated-signature-file)
+  - [4.6 Sample Similarity Calculation](#46-sample-similarity-calculation)
+  - [4.7 Other Considerations](#47-other-considerations)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Common Data Types ................................................................................... 12
-RdcVersion ........................................................................................... 12
-FileHeader ............................................................................................ 12
-Signature Files ........................................................................................... 13
-ChunkSignature .................................................................................... 13
-Similarity Data ........................................................................................... 14
-
-2.2.1.1
-2.2.1.2
-
-2.2.2.1
-
-2.2.2
-
-2.2.3
-
-3.1
-
-3.1.5.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 15
-Common Details .............................................................................................. 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Chunk Generation ................................................................................. 18
-H3 Hash ......................................................................................... 18
-Finding Chunk Boundaries ................................................................ 20
-Signature Computation .......................................................................... 20
-Recursion ............................................................................................. 21
-Recursion Depth .............................................................................. 22
-Similarity ............................................................................................. 22
-Similarity Data Calculation ................................................................ 23
-Finding Seed Files............................................................................ 24
-Generating the Target File ...................................................................... 24
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.5.4.1
-3.1.5.4.2
-
-3.1.5.2
-3.1.5.3
-
-3.1.6
-3.1.7
-
-3.1.5.3.1
-
-3.1.5.4
-
-3.1.5.5
-
-4  Protocol Examples ................................................................................................. 27
-Example System Architecture ............................................................................ 27
-H3 .................................................................................................................. 28
-FilterMax ......................................................................................................... 29
-Sample Recursive Client Transfer ....................................................................... 30
-Sample Input and Generated Signature File ......................................................... 32
-Sample Similarity Calculation ............................................................................ 65
-Other Considerations ........................................................................................ 65
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5  Security ................................................................................................................. 66
-Security Considerations for Implementers ........................................................... 66
-Index of Security Parameters ............................................................................ 66
-
-5.1
-5.2
-
-[MS-RDC] - v20240423
-Remote Differential Compression Algorithm
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 70
-
-6  Appendix A: Product Behavior ............................................................................... 67
-
-7  Change Tracking .................................................................................................... 69
-
-8  Index ..................................................................................................................... 70
-
-[MS-RDC] - v20240423
-Remote Differential Compression Algorithm
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 70
-
-1  Introduction
+## 1 Introduction
 
 Remote differential compression (RDC), a compression algorithm, enables efficient
 synchronization of files with a remote source by using compression techniques to minimize the amount
@@ -725,7 +641,7 @@ stream. The application can then transfer the missing chunks from the source loc
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -788,7 +704,8 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-rolling hash function: A hash function that can be computed incrementally over a set of data. A
+
+rolling hash function: A hash function that can be computed incrementally over a set of data. A
 hash function h is a rolling hash function if one can compute h(b1 .. bn) in time that does
 not depend on n.
 
@@ -838,14 +755,14 @@ compressed by RDC.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -861,10 +778,11 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [FIPS180-2] National Institute of Standards and Technology, "Secure Hash Standard", FIPS PUB 180-
 2, August 2002, http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
@@ -880,7 +798,7 @@ http://msdn.microsoft.com/en-us/library/aa373254.aspx
 [UASDC] Ziv, J. and Lempel, A., "A Universal Algorithm for Sequential Data Compression", May 1977,
 http://www.cs.duke.edu/courses/spring03/cps296.5/papers/ziv_lempel_1977_universal_algorithm.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 Remote differential compression (RDC) is a compression algorithm that is used in other protocols,
 but it is not a protocol itself. For example, it is used by the SD Microsoft Distributed File System
@@ -927,7 +845,8 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-of H3 within a given horizon. Because this computation depends only on the bytes within the horizon
+
+of H3 within a given horizon. Because this computation depends only on the bytes within the horizon
 (plus possibly one hash window size of bytes before the horizon), any change outside of the horizon
 will not affect the chunk boundaries. Thus, the chunking will produce identical chunks sufficiently far
 away from the change, including insertions and deletions.
@@ -973,17 +892,17 @@ application of RDC is possible by feeding the signature file obtained in step 2 
 cases in which the file to be transferred is so large that even its signature file is large relative to the
 set of bytes that have changed.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 RDC is not a protocol, but provides a way for other protocols to increase their efficiency when these
 protocols are involved in moving files from one machine to another. The Distributed File System (DFS)
 replication system [MS-FRS2] is the only application that currently uses RDC.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 RDC can be used any time it would be helpful to store or transfer the differences between a source
 and a set of seeds instead of storing or transferring the source file in its entirety. RDC is only useful
@@ -995,7 +914,8 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-when there is data in common between the files being compared. However, RDC is the compression
+
+when there is data in common between the files being compared. However, RDC is the compression
 and differencing algorithm and is in no way involved with the actual data transfer.
 
 An example of when it can be helpful to use RDC is when individuals collaborate on shared documents
@@ -1004,15 +924,15 @@ local copy of the shared document.  It is recommended that the shared document b
 the involved sites when a different editor takes over. Instead of copying over the entire contents of
 the document, it might be beneficial to copy over only what has been edited.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 RDC supports versioning through a version number in the signature header. See section 2.2.1.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1023,14 +943,15 @@ Release: April 23, 2024
 
 11 / 70
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Because RDC is an algorithm, it does not have a defined transport. It is entirely up to the application
 using RDC to define a transport mechanism, if required.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section defines the format of the files that RDC uses between the target location and source
 location.
@@ -1040,9 +961,9 @@ called little-endian.
 
 All integer constants that appear are in decimal, unless otherwise noted.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  RdcVersion
+##### 2.2.1.1 RdcVersion
 
 RdcVersion represents a version of RDC and is used to determine whether two versions of RDC,
 possibly on different machines, can interoperate.
@@ -1074,7 +995,7 @@ BuildNumber (2 bytes): A 16-bit unsigned integer that indicates the version of t
 
 implementing the algorithm. The value of BuildNumber MUST be set to 0x0001.
 
-2.2.1.2  FileHeader
+##### 2.2.1.2 FileHeader
 
 The FileHeader structure represents the header of a signature file, which is defined in section 2.2.2.
 
@@ -1106,7 +1027,8 @@ Release: April 23, 2024
 
 12 / 70
 
-FileType
+
+FileType
 
 …
 
@@ -1124,7 +1046,7 @@ FileType (8 bytes): An unsigned 64-bit integer that indicates the RDC file type 
 
 FileType MUST be set to 0x00000001.
 
-2.2.2  Signature Files
+#### 2.2.2 Signature Files
 
 The signature file consists of a header and zero or more RDC chunk signatures, as shown in the
 following diagram.
@@ -1158,7 +1080,7 @@ the FileHeader structure MUST be 1 for a signature file.
 
 ChunkSignatures (variable): Zero or more ChunkSignatures. See section 2.2.2.1.
 
-2.2.2.1  ChunkSignature
+##### 2.2.2.1 ChunkSignature
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1184,7 +1106,8 @@ Release: April 23, 2024
 
 13 / 70
 
-BlockLength
+
+BlockLength
 
 HashValue (16 bytes): MUST be the MD4 digest of a data chunk.
 
@@ -1197,7 +1120,7 @@ the rows in the diagram does not evenly divide into 18 bytes, the last 16 bits o
 that is not part of the signature at all. This fact is represented by an empty area in the preceding
 diagram.
 
-2.2.3  Similarity Data
+#### 2.2.3 Similarity Data
 
 Applications of RDC can include similarity data in their network protocols. The format of the
 similarity data is as follows.
@@ -1255,9 +1178,10 @@ Release: April 23, 2024
 
 14 / 70
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 The target location and source location MUST compute identical signatures for identical chunks,
 and both the target location and source location MUST use the same algorithm and the same
@@ -1266,7 +1190,7 @@ chunks, as described in section 3.1.5.1. The specific parameters used as input t
 responsibility of the user of RDC, and are not addressed in this document. This section specifies these
 processes.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains in order to use this algorithm. The described organization is provided to facilitate the
@@ -1278,11 +1202,11 @@ H3 Lookup Table: A table containing 256 entries of 32-bit, unsigned integers use
 H3 hash function. The entries to the table are indexed from 0 through 255. This table is constant
 (that is, the values in this table do not change during the execution of RDC).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no timers in the RDC chunking and signature generation components.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 After initialization, the H3 lookup table MUST contain the following data.
 
@@ -1381,7 +1305,8 @@ Release: April 23, 2024
 
 15 / 70
 
- Index
+
+ Index
 
  Values
 
@@ -1606,7 +1531,8 @@ Release: April 23, 2024
 
 16 / 70
 
- Index
+
+ Index
 
  Values
 
@@ -1757,12 +1683,12 @@ unsigned integers) to the MD4 hash of 16 bytes of zeros. Each successive 16 byte
 MD4 hash of the previous 16 bytes of the table. Implementing this procedure results in running the
 MD4 hash 64 times.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events in the RDC chunking and signature generation
 components.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Because RDC is not a protocol, it does not have messages. Instead, this section specifies the actions
 upon getting a request to determine the chunk boundaries in a file, or to compute the signature for
@@ -1779,14 +1705,15 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-RDC].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
 difference, and is usually pronounced as the English word "without." For example, {a,b,c} \ {b} =
 {a,c}.
 
-3.1.5.1  Chunk Generation
+##### 3.1.5.1 Chunk Generation
 
 This section specifies the RDC FilterMax algorithm, which is used to generate chunks.
 
@@ -1805,7 +1732,7 @@ Figure 1: RDC chunk generation
 
 With each chunk, RDC computes a signature. See section 3.1.5.2.
 
-3.1.5.1.1 H3 Hash
+###### 3.1.5.1.1 H3 Hash
 
 RDC uses a rolling hash function called H3 in determining its chunk boundaries. H3 computes the
 hash of the hash window bytes (denoted as windowSize below) up to and including a particular byte
@@ -1822,7 +1749,8 @@ Release: April 23, 2024
 
 18 / 70
 
- shift_amount := 1
+
+ shift_amount := 1
  i := 32
  while ((i > 0) AND ((windowSize MODULUS i) ≠ 0))
  BEGIN
@@ -1889,13 +1817,14 @@ Release: April 23, 2024
 
 19 / 70
 
-             H3 lookup table[leadingEdgeData],
+
+             H3 lookup table[leadingEdgeData],
              shift_amount)
  END
 
 For an example of H3 hash calculation, see section 4.2.
 
-3.1.5.1.2 Finding Chunk Boundaries
+###### 3.1.5.1.2 Finding Chunk Boundaries
 
 Given a file F of length n consisting of bytes b0 .. bn–1 and parameters windowSize and horizon, RDC
 finds the chunk boundaries. windowSize MUST be an integer that is at least 2 and no more than 96.
@@ -1933,7 +1862,7 @@ Note The "\" operator means exclusion; so in this construct, it means all values
 
 Define boundaryi to be the ith chunk boundary.
 
-3.1.5.2  Signature Computation
+##### 3.1.5.2 Signature Computation
 
 There are two fields in a chunk signature: hash and block length. Given a chunk, the hash MUST be
 the MD4 hash [RFC1320] of the data in the chunk, and the block length MUST be the number of bytes
@@ -1949,7 +1878,8 @@ Release: April 23, 2024
 
 20 / 70
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-RDC].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1980,7 +1910,7 @@ Thus, the set of signatures is specified by the following.
 
  END
 
-3.1.5.3  Recursion
+##### 3.1.5.3 Recursion
 
 Just as RDC can be used to determine the differences between the two original files, RDC can first be
 applied to determine the differences between the two signature files, or between the signature files of
@@ -1995,7 +1925,8 @@ Release: April 23, 2024
 
 21 / 70
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-RDC].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -2003,7 +1934,7 @@ Figure 3: RDC recursion
 
 For an example of recursion, see section 4.4.
 
-3.1.5.3.1 Recursion Depth
+###### 3.1.5.3.1 Recursion Depth
 
 An implementation MUST support a recursion depth of at least eight levels.<2> The depth of recursion
 that an application uses depends on the size of the signature file that is being transferred versus how
@@ -2014,7 +1945,7 @@ signature file to avoid another round of signature data transfer.
 The determination of recursion depth is application-specific, and is not addressed in this document.
 For an example of the determination of recursion depth, see [MS-FRS2] section 3.3.1.5.
 
-3.1.5.4  Similarity
+##### 3.1.5.4 Similarity
 
 The effectiveness of data replication using RDC techniques depends to a large degree on the seed
 files that can be found at the target location. If the RDC scenario is simple, such as the
@@ -2042,13 +1973,14 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-RDC].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
 Figure 4: Similarity data calculation
 
-3.1.5.4.1 Similarity Data Calculation
+###### 3.1.5.4.1 Similarity Data Calculation
 
 Given a file F to calculate the similarity data, a 16-byte array is required to store intermediate MD4
 digests. The data construct is called a digest for the purpose of this discussion. The calculation of
@@ -2084,7 +2016,8 @@ Release: April 23, 2024
 
 23 / 70
 
-The less-than comparison "md4Results < sData[index]" is a byte-by-byte comparison. For example,
+
+The less-than comparison "md4Results < sData[index]" is a byte-by-byte comparison. For example,
 given A and B (two digests), the digests are considered as arrays of 16 unsigned 8-bit integers, where
 A0 is the first byte and A15 is the last byte of A. A < B is true if the first Ai that is different from Bi is
 less than Bi for values of i in 0 to 15.
@@ -2105,7 +2038,7 @@ Each trait of similarity data MUST be a value from 0 to 63 inclusive.
 
 An implementation that does not compute similarity data MUST fill in all traits as zero.
 
-3.1.5.4.2 Finding Seed Files
+###### 3.1.5.4.2 Finding Seed Files
 
 Using the similarity data that has been calculated for files on the target location, it might be
 possible to find RDC seed files for files that have been added to the source location but not to the
@@ -2128,7 +2061,7 @@ Any number of target location files can be used as seed files for an RDC operati
 with the greatest number of similarity traits that match the similarity traits of the new source location
 file are generally the best candidates.
 
-3.1.5.5  Generating the Target File
+##### 3.1.5.5 Generating the Target File
 
 To generate a target file, the protocol using RDC MUST obtain a signature file from the source
 location, and MUST select one or more seed files on the target location. The seed files can be
@@ -2148,7 +2081,8 @@ Release: April 23, 2024
 
 24 / 70
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-RDC].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -2187,15 +2121,16 @@ Release: April 23, 2024
 
 25 / 70
 
-                                                 of the Source.
+
+                                                 of the Source.
      END
  END
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -2206,13 +2141,14 @@ Release: April 23, 2024
 
 26 / 70
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-RDC].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Example System Architecture
+### 4.1 Example System Architecture
 
 Figure 6: Data flow of RDC in an application
 
@@ -2250,7 +2186,8 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Chunks of both the seed data and the corresponding source data are examined, and a signature is
+
+Chunks of both the seed data and the corresponding source data are examined, and a signature is
 generated for each chunk. The signatures generated on the target location (that is, the seed
 signatures) can be stored using any mechanism. The signatures generated on the source location
 (that is, the source signatures) are sent to the target location in the form of a signature file.
@@ -2267,7 +2204,7 @@ the signature file that was received from the source location.
 
 For more information on the high-level aspects of RDC, see [MSDN-RDCAPI].
 
-4.2  H3
+### 4.2 H3
 
 This section gives an example of computing the H3 hashes of a sequence of 11 bytes of data with a
 windowSize of 4.
@@ -2303,13 +2240,14 @@ Release: April 23, 2024
 
 28 / 70
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-RDC].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
 Figure 7: H3 hash computation
 
-4.3  FilterMax
+### 4.3 FilterMax
 
 The relationship between local maximum and horizon is illustrated in the following figure, which
 assumes a horizon size of 128.
@@ -2321,7 +2259,8 @@ Release: April 23, 2024
 
 29 / 70
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-RDC].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2331,7 +2270,7 @@ In the preceding diagram, consider if hvN is the largest in the indicated range 
 follows that none of the other values in this range can be a local maximum (because they are smaller
 than hvN). Therefore, local maxima have to be separated by at least horizon bytes.
 
-4.4  Sample Recursive Client Transfer
+### 4.4 Sample Recursive Client Transfer
 
 This example illustrates the use of the RDC algorithm over a network protocol.
 
@@ -2342,7 +2281,8 @@ Release: April 23, 2024
 
 30 / 70
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-RDC].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2372,7 +2312,8 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The terms client and server in this discussion refer only to the computers' roles in the RDC
 scenario, not to their operating systems.
@@ -2414,7 +2355,7 @@ the source data across the network. If, for example, the source data is approxim
 first-level signature file will be approximately 92 megabytes, but the second-level signature file will be
 only about 944 kilobytes.
 
-4.5  Sample Input and Generated Signature File
+### 4.5 Sample Input and Generated Signature File
 
 To test an implementation, the following example of a source file (the full text of rfc1320.txt) is
 used, and the resultant signature file is generated using windowSize 16 and horizon 512.
@@ -2452,7 +2393,8 @@ Release: April 23, 2024
 
 32 / 70
 
- 00000170: 61 74 75 73  20 6f 66 20  74 68 69 65  20 4d 65 6d
+
+ 00000170: 61 74 75 73  20 6f 66 20  74 68 69 65  20 4d 65 6d
  00000180: 6f 0d 0a 0d  0a 20 20 20  54 68 69 73  20 6d 65 6d
  00000190: 6f 20 70 72  6f 76 69 64  65 73 20 69  6e 66 6f 72
  000001a0: 6d 61 74 69  6f 6e 20 66  6f 72 20 74  68 65 20 49
@@ -2529,7 +2471,8 @@ Release: April 23, 2024
 
 33 / 70
 
- 000005c0: 61 6e 64 20  70 72 6f 64  75 63 65 73  0d 0a 20 20
+
+ 000005c0: 61 6e 64 20  70 72 6f 64  75 63 65 73  0d 0a 20 20
  000005d0: 20 61 73 20  6f 75 74 70  75 74 20 61  20 31 32 38
  000005e0: 2d 62 69 74  20 22 66 69  6e 67 65 72  70 72 69 6e
  000005f0: 74 22 20 6f  72 20 22 6d  65 73 73 61  67 65 20 64
@@ -2606,7 +2549,8 @@ Release: April 23, 2024
 
 34 / 70
 
- 00000a10: 72 65 6e 63  65 20 69 6d  70 6c 65 6d  65 6e 74 61
+
+ 00000a10: 72 65 6e 63  65 20 69 6d  70 6c 65 6d  65 6e 74 61
  00000a20: 74 69 6f 6e  20 6f 66 20  4d 44 34 20  69 6e 20 74
  00000a30: 68 65 0d 0a  20 20 20 61  70 70 65 6e  64 69 78 20
  00000a40: 69 73 20 6d  6f 72 65 20  70 6f 72 74  61 62 6c 65
@@ -2683,7 +2627,8 @@ Release: April 23, 2024
 
 35 / 70
 
- 00000e60: 20 74 68 65  20 69 2d 74  68 0d 0a 20  20 20 70 6f
+
+ 00000e60: 20 74 68 65  20 69 2d 74  68 0d 0a 20  20 20 70 6f
  00000e70: 77 65 72 2e  0d 0a 0d 0a  20 20 20 4c  65 74 20 74
  00000e80: 68 65 20 73  79 6d 62 6f  6c 20 22 2b  22 20 64 65
  00000e90: 6e 6f 74 65  20 61 64 64  69 74 69 6f  6e 20 6f 66
@@ -2759,7 +2704,8 @@ Release: April 23, 2024
 
 36 / 70
 
- 00001290: 65 70 20 31  2e 20 41 70  70 65 6e 64  20 50 61 64
+
+ 00001290: 65 70 20 31  2e 20 41 70  70 65 6e 64  20 50 61 64
  000012a0: 64 69 6e 67  20 42 69 74  73 0d 0a 0d  0a 20 20 20
  000012b0: 54 68 65 20  6d 65 73 73  61 67 65 20  69 73 20 22
  000012c0: 70 61 64 64  65 64 22 20  28 65 78 74  65 6e 64 65
@@ -2836,7 +2782,8 @@ Release: April 23, 2024
 
 37 / 70
 
- 000016e0: 20 62 69 74  73 20 61 6e  64 20 77 69  74 68 0d 0a
+
+ 000016e0: 20 62 69 74  73 20 61 6e  64 20 77 69  74 68 0d 0a
  000016f0: 20 20 20 62  29 20 68 61  73 20 61 20  6c 65 6e 67
  00001700: 74 68 20 74  68 61 74 20  69 73 20 61  6e 20 65 78
  00001710: 61 63 74 20  6d 75 6c 74  69 70 6c 65  20 6f 66 20
@@ -2913,7 +2860,8 @@ Release: April 23, 2024
 
 38 / 70
 
- 00001b30: 0a 20 20 20  49 6e 20 65  61 63 68 20  62 69 74 20
+
+ 00001b30: 0a 20 20 20  49 6e 20 65  61 63 68 20  62 69 74 20
  00001b40: 70 6f 73 69  74 69 6f 6e  20 46 20 61  63 74 73 20
  00001b50: 61 73 20 61  20 63 6f 6e  64 69 74 69  6f 6e 61 6c
  00001b60: 3a 20 69 66  20 58 20 74  68 65 6e 20  59 20 65 6c
@@ -2990,7 +2938,8 @@ Release: April 23, 2024
 
 39 / 70
 
- 00001f80: 20 5b 61 62  63 64 20 6b  20 73 5d 20  64 65 6e 6f
+
+ 00001f80: 20 5b 61 62  63 64 20 6b  20 73 5d 20  64 65 6e 6f
  00001f90: 74 65 20 74  68 65 20 6f  70 65 72 61  74 69 6f 6e
  00001fa0: 0d 0a 20 20  20 20 20 20  20 20 20 20  20 20 20 61
  00001fb0: 20 3d 20 28  61 20 2b 20  46 28 62 2c  63 2c 64 29
@@ -3066,7 +3015,8 @@ Release: April 23, 2024
 
 40 / 70
 
- 000023b0: 20 61 20 3d  20 28 61 20  2b 20 48 28  62 2c 63 2c
+
+ 000023b0: 20 61 20 3d  20 28 61 20  2b 20 48 28  62 2c 63 2c
  000023c0: 64 29 20 2b  20 58 5b 6b  5d 20 2b 20  36 45 44 39
  000023d0: 45 42 41 31  29 20 3c 3c  3c 20 73 2e  20 2a 2f 0d
  000023e0: 0a 20 20 20  20 20 20 20  20 2f 2a 20  44 6f 20 74
@@ -3143,7 +3093,8 @@ Release: April 23, 2024
 
 41 / 70
 
- 00002800: 28 53 65 6d  69 6e 75 6d  65 72 69 63  61 6c 0d 0a
+
+ 00002800: 28 53 65 6d  69 6e 75 6d  65 72 69 63  61 6c 0d 0a
  00002810: 20 20 20 41  6c 67 6f 72  69 74 68 6d  73 29 2c 20
  00002820: 53 65 63 6f  6e 64 20 45  64 69 74 69  6f 6e 20 28
  00002830: 31 39 38 31  29 2c 20 41  64 64 69 73  6f 6e 2d 57
@@ -3220,7 +3171,8 @@ Release: April 23, 2024
 
 42 / 70
 
- 00002c50: 72 20 73 65  63 75 72 69  74 79 20 61  6e 61 6c 79
+
+ 00002c50: 72 20 73 65  63 75 72 69  74 79 20 61  6e 61 6c 79
  00002c60: 73 69 73 20  69 73 20 6f  66 20 63 6f  75 72 73 65
  00002c70: 0d 0a 20 20  20 6a 75 73  74 69 66 69  65 64 2c 20
  00002c80: 61 73 20 69  73 20 74 68  65 20 63 61  73 65 20 77
@@ -3296,7 +3248,8 @@ Release: April 23, 2024
 
 43 / 70
 
- 00003080: 61 74 69 6f  6e 20 69 73  20 70 6f 72  74 61 62 6c
+
+ 00003080: 61 74 69 6f  6e 20 69 73  20 70 6f 72  74 61 62 6c
  00003090: 65 20 61 6e  64 20 73 68  6f 75 6c 64  20 77 6f 72
  000030a0: 6b 20 6f 6e  20 6d 61 6e  79 20 64 69  66 66 65 72
  000030b0: 65 6e 74 0d  0a 20 20 20  70 6c 61 66  6f 72 6d 73
@@ -3373,7 +3326,8 @@ Release: April 23, 2024
 
 44 / 70
 
- 000034d0: 69 6e 65 73  20 61 20 66  6f 75 72 20  62 79 74 65
+
+ 000034d0: 69 6e 65 73  20 61 20 66  6f 75 72 20  62 79 74 65
  000034e0: 20 77 6f 72  64 20 2a 2f  0d 0a 74 79  70 65 64 65
  000034f0: 66 20 75 6e  73 69 67 6e  65 64 20 6c  6f 6e 67 20
  00003500: 69 6e 74 20  55 49 4e 54  34 3b 0d 0a  0d 0a 2f 2a
@@ -3450,7 +3404,8 @@ Release: April 23, 2024
 
 45 / 70
 
- 00003920: 68 65 20 64  65 72 69 76  65 64 20 77  6f 72 6b 2e
+
+ 00003920: 68 65 20 64  65 72 69 76  65 64 20 77  6f 72 6b 2e
  00003930: 0d 0a 0d 0a  20 20 20 52  53 41 20 44  61 74 61 20
  00003940: 53 65 63 75  72 69 74 79  2c 20 49 6e  63 2e 20 6d
  00003950: 61 6b 65 73  20 6e 6f 20  72 65 70 72  65 73 65 6e
@@ -3527,7 +3482,8 @@ Release: April 23, 2024
 
 46 / 70
 
- 00003d70: 75 72 69 74  79 2c 20 49  6e 63 2e 20  4d 44 34 20
+
+ 00003d70: 75 72 69 74  79 2c 20 49  6e 63 2e 20  4d 44 34 20
  00003d80: 4d 65 73 73  61 67 65 2d  44 69 67 65  73 74 0d 0a
  00003d90: 20 20 20 41  6c 67 6f 72  69 74 68 6d  22 20 69 6e
  00003da0: 20 61 6c 6c  20 6d 61 74  65 72 69 61  6c 20 6d 65
@@ -3603,7 +3559,8 @@ Release: April 23, 2024
 
 47 / 70
 
- 000041a0: 65 66 69 6e  65 20 53 32  32 20 35 0d  0a 23 64 65
+
+ 000041a0: 65 66 69 6e  65 20 53 32  32 20 35 0d  0a 23 64 65
  000041b0: 66 69 6e 65  20 53 32 33  20 39 0d 0a  23 64 65 66
  000041c0: 69 6e 65 20  53 32 34 20  31 33 0d 0a  23 64 65 66
  000041d0: 69 6e 65 20  53 33 31 20  33 0d 0a 23  64 65 66 69
@@ -3680,7 +3637,8 @@ Release: April 23, 2024
 
 48 / 70
 
- 000045f0: 20 73 65 70  61 72 61 74  65 20 66 72  6f 6d 20 61
+
+ 000045f0: 20 73 65 70  61 72 61 74  65 20 66 72  6f 6d 20 61
  00004600: 64 64 69 74  69 6f 6e 20  74 6f 20 70  72 65 76 65
  00004610: 6e 74 20 72  65 63 6f 6d  70 75 74 61  74 69 6f 6e
  00004620: 20 2a 2f 0d  0a 0d 0a 0d  0a 0d 0a 52  69 76 65 73
@@ -3757,7 +3715,8 @@ Release: April 23, 2024
 
 49 / 70
 
- 00004a40: 65 73 73 69  6e 67 20 61  6e 6f 74 68  65 72 20 6d
+
+ 00004a40: 65 73 73 69  6e 67 20 61  6e 6f 74 68  65 72 20 6d
  00004a50: 65 73 73 61  67 65 20 62  6c 6f 63 6b  2c 20 61 6e
  00004a60: 64 20 75 70  64 61 74 69  6e 67 20 74  68 65 0d 0a
  00004a70: 20 20 20 20  20 63 6f 6e  74 65 78 74  2e 0d 0a 20
@@ -3834,7 +3793,8 @@ Release: April 23, 2024
 
 50 / 70
 
- 00004e90: 6e 3b 20 69  20 2b 3d 20  36 34 29 0d  0a 20 20 20
+
+ 00004e90: 6e 3b 20 69  20 2b 3d 20  36 34 29 0d  0a 20 20 20
  00004ea0: 20 20 20 4d  44 34 54 72  61 6e 73 66  6f 72 6d 20
  00004eb0: 28 63 6f 6e  74 65 78 74  2d 3e 73 74  61 74 65 2c
  00004ec0: 20 26 69 6e  70 75 74 5b  69 5d 29 3b  0d 0a 0d 0a
@@ -3910,7 +3870,8 @@ Release: April 23, 2024
 
 51 / 70
 
- 000052c0: 28 50 4f 49  4e 54 45 52  29 63 6f 6e  74 65 78 74
+
+ 000052c0: 28 50 4f 49  4e 54 45 52  29 63 6f 6e  74 65 78 74
  000052d0: 2c 20 30 2c  20 73 69 7a  65 6f 66 20  28 2a 63 6f
  000052e0: 6e 74 65 78  74 29 29 3b  0d 0a 0d 0a  0d 0a 0d 0a
  000052f0: 52 69 76 65  73 74 20 20  20 20 20 20  20 20 20 20
@@ -3987,7 +3948,8 @@ Release: April 23, 2024
 
 52 / 70
 
- 00005710: 2c 20 78 5b  31 35 5d 2c  20 53 31 34  29 3b 20 2f
+
+ 00005710: 2c 20 78 5b  31 35 5d 2c  20 53 31 34  29 3b 20 2f
  00005720: 2a 20 31 36  20 2a 2f 0d  0a 0d 0a 20  20 2f 2a 20
  00005730: 52 6f 75 6e  64 20 32 20  2a 2f 0d 0a  20 20 47 47
  00005740: 20 28 61 2c  20 62 2c 20  63 2c 20 64  2c 20 78 5b
@@ -4064,7 +4026,8 @@ Release: April 23, 2024
 
 53 / 70
 
- 00005b60: 5b 31 30 5d  2c 20 53 33  32 29 3b 20  2f 2a 20 33
+
+ 00005b60: 5b 31 30 5d  2c 20 53 33  32 29 3b 20  2f 2a 20 33
  00005b70: 38 20 2a 2f  0d 0a 20 20  48 48 20 28  63 2c 20 64
  00005b80: 2c 20 61 2c  20 62 2c 20  78 5b 20 36  5d 2c 20 53
  00005b90: 33 33 29 3b  20 2f 2a 20  33 39 20 2a  2f 0d 0a 20
@@ -4141,7 +4104,8 @@ Release: April 23, 2024
 
 54 / 70
 
- 00005fb0: 20 7d 0d 0a  7d 0d 0a 0d  0a 2f 2a 20  44 65 63 6f
+
+ 00005fb0: 20 7d 0d 0a  7d 0d 0a 0d  0a 2f 2a 20  44 65 63 6f
  00005fc0: 64 65 73 20  69 6e 70 75  74 20 28 75  6e 73 69 67
  00005fd0: 6e 65 64 20  63 68 61 72  29 20 69 6e  74 6f 20 6f
  00005fe0: 75 74 70 75  74 20 28 55  49 4e 54 34  29 2e 20 41
@@ -4217,7 +4181,8 @@ Release: April 23, 2024
 
 55 / 70
 
- 000063e0: 29 76 61 6c  75 65 3b 0d  0a 7d 0d 0a  0d 0a 41 2e
+
+ 000063e0: 29 76 61 6c  75 65 3b 0d  0a 7d 0d 0a  0d 0a 41 2e
  000063f0: 34 20 6d 64  64 72 69 76  65 72 2e 63  0d 0a 0d 0a
  00006400: 2f 2a 20 4d  44 44 52 49  56 45 52 2e  43 20 2d 20
  00006410: 74 65 73 74  20 64 72 69  76 65 72 20  66 6f 72 20
@@ -4294,7 +4259,8 @@ Release: April 23, 2024
 
 56 / 70
 
- 00006830: 63 6b 73 2e  0d 0a 20 2a  2f 0d 0a 23  64 65 66 69
+
+ 00006830: 63 6b 73 2e  0d 0a 20 2a  2f 0d 0a 23  64 65 66 69
  00006840: 6e 65 20 54  45 53 54 5f  42 4c 4f 43  4b 5f 4c 45
  00006850: 4e 20 31 30  30 30 0d 0a  23 64 65 66  69 6e 65 20
  00006860: 54 45 53 54  5f 42 4c 4f  43 4b 5f 43  4f 55 4e 54
@@ -4371,7 +4337,8 @@ Release: April 23, 2024
 
 57 / 70
 
- 00006c80: 72 64 20 69  6e 70 75 74  0d 0a 20 2a  2f 0d 0a 69
+
+ 00006c80: 72 64 20 69  6e 70 75 74  0d 0a 20 2a  2f 0d 0a 69
  00006c90: 6e 74 20 6d  61 69 6e 20  28 61 72 67  63 2c 20 61
  00006ca0: 72 67 76 29  0d 0a 69 6e  74 20 61 72  67 63 3b 0d
  00006cb0: 0a 63 68 61  72 20 2a 61  72 67 76 5b  5d 3b 0d 0a
@@ -4447,7 +4414,8 @@ Release: April 23, 2024
 
 58 / 70
 
- 000070b0: 65 54 72 69  61 6c 20 28  29 0d 0a 7b  0d 0a 20 20
+
+ 000070b0: 65 54 72 69  61 6c 20 28  29 0d 0a 7b  0d 0a 20 20
  000070c0: 4d 44 5f 43  54 58 20 63  6f 6e 74 65  78 74 3b 0d
  000070d0: 0a 20 20 74  69 6d 65 5f  74 20 65 6e  64 54 69 6d
  000070e0: 65 2c 20 73  74 61 72 74  54 69 6d 65  3b 0d 0a 20
@@ -4524,7 +4492,8 @@ Release: April 23, 2024
 
 59 / 70
 
- 00007500: 2a 2f 0d 0a  73 74 61 74  69 63 20 76  6f 69 64 20
+
+ 00007500: 2a 2f 0d 0a  73 74 61 74  69 63 20 76  6f 69 64 20
  00007510: 4d 44 54 65  73 74 53 75  69 74 65 20  28 29 0d 0a
  00007520: 7b 0d 0a 20  20 70 72 69  6e 74 66 20  28 22 4d 44
  00007530: 25 64 20 74  65 73 74 20  73 75 69 74  65 3a 5c 6e
@@ -4601,7 +4570,8 @@ Release: April 23, 2024
 
 60 / 70
 
- 00007950: 20 20 20 70  72 69 6e 74  66 20 28 22  5c 6e 22 29
+
+ 00007950: 20 20 20 70  72 69 6e 74  66 20 28 22  5c 6e 22 29
  00007960: 3b 0d 0a 20  20 7d 0d 0a  7d 0d 0a 0d  0a 2f 2a 20
  00007970: 44 69 67 65  73 74 73 20  74 68 65 20  73 74 61 6e
  00007980: 64 61 72 64  20 69 6e 70  75 74 20 61  6e 64 20 70
@@ -4678,7 +4648,8 @@ Release: April 23, 2024
 
 61 / 70
 
- 00007da0: 39 30 31 32  33 34 35 36  37 38 39 30  31 32 33 34
+
+ 00007da0: 39 30 31 32  33 34 35 36  37 38 39 30  31 32 33 34
  00007db0: 35 36 37 38  39 30 31 32  33 34 35 36  37 38 39 30
  00007dc0: 31 32 33 34  35 36 0d 0a  37 38 39 30  31 32 33 34
  00007dd0: 35 36 37 38  39 30 22 29  20 3d 20 65  33 33 62 34
@@ -4754,7 +4725,8 @@ Release: April 23, 2024
 
 62 / 70
 
- 000081d0: 20 4c 61 62  6f 72 61 74  6f 72 79 20  66 6f 72 20
+
+ 000081d0: 20 4c 61 62  6f 72 61 74  6f 72 79 20  66 6f 72 20
  000081e0: 43 6f 6d 70  75 74 65 72  20 53 63 69  65 6e 63 65
  000081f0: 0d 0a 20 20  20 4e 45 34  33 2d 33 32  34 0d 0a 20
  00008200: 20 20 35 34  35 20 54 65  63 68 6e 6f  6c 6f 67 79
@@ -4832,7 +4804,8 @@ Release: April 23, 2024
 
 63 / 70
 
-0 1 2 3 4 5 6 7 8 9 1 0 1 2 3 4 5 6 7 8 9 2 0 1 2 3 4 5 6 7 8 9 3 0 1
+
+0 1 2 3 4 5 6 7 8 9 1 0 1 2 3 4 5 6 7 8 9 2 0 1 2 3 4 5 6 7 8 9 3 0 1
 
 0xd9, 0x23, 0x81, 0xdc
 
@@ -4885,7 +4858,8 @@ Release: April 23, 2024
 
 64 / 70
 
-0 1 2 3 4 5 6 7 8 9 1 0 1 2 3 4 5 6 7 8 9 2 0 1 2 3 4 5 6 7 8 9 3 0 1
+
+0 1 2 3 4 5 6 7 8 9 1 0 1 2 3 4 5 6 7 8 9 2 0 1 2 3 4 5 6 7 8 9 3 0 1
 
 0x42, 0x80, 0x9f, 0x62
 
@@ -4895,7 +4869,7 @@ Release: April 23, 2024
 
 0x22, 0x2c, 0xDA, 0x0C
 
-4.6  Sample Similarity Calculation
+### 4.6 Sample Similarity Calculation
 
 To test an implementation, the following sample similarity data computation is used for a file. The
 similarity data shown is as computed over the preceding set of signatures. Each value is displayed in
@@ -4945,7 +4919,7 @@ t15
 
 39
 
-4.7  Other Considerations
+### 4.7 Other Considerations
 
 The size of RDC chunks can be shown mathematically to be on average two times the horizon size.
 
@@ -4972,9 +4946,10 @@ Release: April 23, 2024
 
 65 / 70
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 RDC relies on a relatively weak hash function (that is, MD4) for its chunks. MD4 was chosen because
 it requires few cycles per byte, has a relatively low startup cost (because several hashes are computed
@@ -4998,7 +4973,7 @@ RDC). If it is possible that the input data to RDC is generated by a source that
 ensure that this secondary hash is cryptographically secure, so that an attacker cannot intentionally
 generate a file update that could result in a signature collision and consequent errant transfer.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -5009,7 +4984,8 @@ Release: April 23, 2024
 
 66 / 70
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5075,7 +5051,8 @@ Release: April 23, 2024
 
 67 / 70
 
-<5> Section 5.1: Windows Distributed File System (DFS) replication [MS-FRS2], the only Microsoft
+
+<5> Section 5.1: Windows Distributed File System (DFS) replication [MS-FRS2], the only Microsoft
 component using RDC at the time of this writing, computes a SHA-1 hash [FIPS180-2] over the
 contents of the file. And if it does not match, it transfers the file without using RDC.
 
@@ -5086,7 +5063,8 @@ Release: April 23, 2024
 
 68 / 70
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5130,7 +5108,8 @@ Release: April 23, 2024
 
 69 / 70
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 10

@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 93
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: March 13, 2019
 
 2 / 93
 
-Date
+
+Date
 
 Revision
 History
@@ -498,481 +500,201 @@ Release: March 13, 2019
 
 3 / 93
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 13
-Normative References ................................................................................. 13
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 14
-Remote Method Invocation Model ................................................................. 15
-Passing Server Objects ................................................................................ 16
-Server Object Instantiation and Binding ........................................................ 17
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 18
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 19
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 19
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-1.3.3
-
-2.1
-
-2.1.3
-
-2.1.2
-
-2.1.1
-
-2.1.3.1
-
-2.1.2.2
-
-2.1.2.1
-
-2.1.1.2
-
-2.1.1.1
-
-2.1.3.1.1
-
-2.1.2.1.1
-2.1.2.1.2
-
-2.1.1.2.1
-2.1.1.2.2
-
-2.1.1.1.1
-2.1.1.1.2
-
-2.1.2.2.1
-2.1.2.2.2
-
-2  Messages ............................................................................................................... 20
-Transport ........................................................................................................ 20
-TCP Transport ............................................................................................ 20
-Client Details ........................................................................................ 20
-Sending Request ............................................................................. 20
-Receiving Reply ............................................................................... 20
-Server Details ....................................................................................... 21
-Receiving Request ........................................................................... 21
-Sending Reply ................................................................................. 21
-HTTP Transport .......................................................................................... 22
-Client Details ........................................................................................ 22
-Sending Request ............................................................................. 22
-Receiving Reply ............................................................................... 22
-Server Details ....................................................................................... 23
-Receiving Request ........................................................................... 23
-Sending Reply ................................................................................. 23
-SOAP Transport .......................................................................................... 23
-SOAP on HTTP ...................................................................................... 24
-Client Details .................................................................................. 24
-Sending Request ........................................................................ 24
-Receiving Reply ......................................................................... 24
-Server Details ................................................................................. 24
-Receiving Request ...................................................................... 24
-Sending Reply ........................................................................... 24
-SOAP on TCP ........................................................................................ 25
-Client Details .................................................................................. 25
-Sending Request ........................................................................ 25
-Receiving Reply ......................................................................... 25
-Server Details ................................................................................. 25
-Receiving Request ...................................................................... 25
-2.1.3.2.2.1
-2.1.3.2.2.2
-Sending Reply ........................................................................... 25
-Message Syntax ............................................................................................... 25
-Common Patterns ....................................................................................... 25
-IdentifierName ..................................................................................... 26
-RemotingTypeName .............................................................................. 26
-LibraryName ........................................................................................ 26
-Method Signature .................................................................................. 27
-Common Types .......................................................................................... 27
-ObjRef ................................................................................................. 27
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2.1.3.2.1.1
-2.1.3.2.1.2
-
-2.1.3.1.1.1
-2.1.3.1.1.2
-
-2.1.3.1.2.1
-2.1.3.1.2.2
-
-2.1.3.2.1
-
-2.1.3.2.2
-
-2.1.3.1.2
-
-2.2.2.1
-
-2.1.3.2
-
-2.2.2
-
-2.2.1
-
-2.2
-
-[MS-NRTP] - v20190313
-.NET Remoting: Core Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 93
-
-2.2.3
-
-2.2.3.1
-
-2.2.3.1.1
-2.2.3.1.2
-2.2.3.1.3
-2.2.3.1.4
-2.2.3.1.5
-2.2.3.1.6
-
-TypeInfo .............................................................................................. 28
-2.2.2.2
-EnvoyInfo ............................................................................................ 28
-2.2.2.3
-ChannelInfo ......................................................................................... 29
-2.2.2.4
-ChannelDataStore ................................................................................. 29
-2.2.2.5
-DictionaryEntry ..................................................................................... 29
-2.2.2.6
-System.Exception ................................................................................. 30
-2.2.2.7
-SystemException .................................................................................. 31
-2.2.2.8
-RemotingException ............................................................................... 31
-2.2.2.9
-SerializationException ............................................................................ 31
-2.2.2.10
-2.2.2.11
-System.Type ........................................................................................ 31
-2.2.2.12  UnitySerializationHolder ......................................................................... 32
-2.2.2.13  MemberInfoSerializationHolder ............................................................... 32
-2.2.2.14  DelegateEntry ...................................................................................... 33
-2.2.2.15  DelegateSerializationHolder .................................................................... 34
-CallContextRemotingData ...................................................................... 35
-2.2.2.16
-ServerFault .......................................................................................... 35
-2.2.2.17
-TCP Message Syntax ................................................................................... 36
-Common Enumerations .......................................................................... 36
-OperationType ................................................................................ 36
-ContentDistribution .......................................................................... 36
-HeaderToken .................................................................................. 37
-HeaderDataFormat .......................................................................... 37
-StringEncoding ................................................................................ 37
-TCPStatusCode ............................................................................... 38
-Common Types ..................................................................................... 38
-CountedString ................................................................................. 38
-TcpUriString ................................................................................... 38
-ChunkDelimiter ............................................................................... 39
-Message Frame Structure....................................................................... 39
-Single Message Content ................................................................... 39
-Chunked Message Content ................................................................ 40
-Frame Headers................................................................................ 42
-EndHeader ................................................................................ 42
-CustomHeader ........................................................................... 42
-StatusCodeHeader ..................................................................... 42
-StatusPhraseHeader ................................................................... 43
-RequestUriHeader ...................................................................... 43
-CloseConnectionHeader .............................................................. 44
-ContentTypeHeader ................................................................... 44
-UnknownHeader ........................................................................ 44
-SOAP Serialization Format ........................................................................... 45
-SOAP Action String ................................................................................ 45
-Remoting Type Name Encoding ............................................................... 45
-Method Name Encoding ......................................................................... 45
-Method Signature SOAP Header .............................................................. 45
-Call Context SOAP Header ...................................................................... 46
-.NET Remoting Description Notation .............................................................. 46
-
-2.2.3.3.3.1
-2.2.3.3.3.2
-2.2.3.3.3.3
-2.2.3.3.3.4
-2.2.3.3.3.5
-2.2.3.3.3.6
-2.2.3.3.3.7
-2.2.3.3.3.8
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-
-2.2.3.3.1
-2.2.3.3.2
-2.2.3.3.3
-
-2.2.3.2.1
-2.2.3.2.2
-2.2.3.2.3
-
-2.2.3.3
-
-2.2.3.2
-
-2.2.4
-
-2.2.5
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 49
-Common Details .............................................................................................. 49
-Abstract Data Model .................................................................................... 49
-Timers ...................................................................................................... 53
-Initialization ............................................................................................... 53
-Higher-Layer Triggered Events ..................................................................... 53
-Message Processing Events and Sequencing Rules .......................................... 54
-Mapping to Binary Format ...................................................................... 54
-Mapping Remote Method Request ...................................................... 54
-Mapping Remote Method Invocation Reply .......................................... 55
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.5.1
-
-[MS-NRTP] - v20190313
-.NET Remoting: Core Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 93
-
-3.1.5.3
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.5
-
-3.2.5.1
-
-3.1.5.2
-
-Mapping Remote Field Get ................................................................ 56
-3.1.5.1.3
-Mapping Remote Field Set ................................................................ 56
-3.1.5.1.4
-Mapping Library Information ............................................................. 57
-3.1.5.1.5
-Mapping Class Instances .................................................................. 57
-3.1.5.1.6
-Mapping Array Instances .................................................................. 58
-3.1.5.1.7
-Mapping Primitive Values .................................................................. 58
-3.1.5.1.8
-Mapping Enum Values ...................................................................... 58
-3.1.5.1.9
-3.1.5.1.10  Mapping Delegate ............................................................................ 58
-3.1.5.1.11  Mapping String Values ..................................................................... 58
-3.1.5.1.12  Mapping Null Object ......................................................................... 58
-Mapping Remoting Data Model to SOAP Format ........................................ 59
-Mapping Remote Method Invocation .................................................. 59
-3.1.5.2.1
-Mapping Remote Method Invocation Reply .......................................... 59
-3.1.5.2.2
-Mapping Remote Field Get ................................................................ 60
-3.1.5.2.3
-Mapping Remote Field Set ................................................................ 60
-3.1.5.2.4
-Mapping Class Instances .................................................................. 60
-3.1.5.2.5
-Mapping Array Instances .................................................................. 60
-3.1.5.2.6
-Mapping Primitive Values .................................................................. 60
-3.1.5.2.7
-Mapping Enum Values ...................................................................... 60
-3.1.5.2.8
-3.1.5.2.9
-Mapping Delegate ............................................................................ 60
-3.1.5.2.10  Mapping Null Object ......................................................................... 61
-3.1.5.2.11  Mapping Exception........................................................................... 61
-Resolving Object Reference .................................................................... 61
-Timer Events .............................................................................................. 61
-Other Local Events ...................................................................................... 61
-Server Details .................................................................................................. 62
-Abstract Data Model .................................................................................... 62
-Timers ...................................................................................................... 62
-Initialization ............................................................................................... 62
-Higher-Layer Triggered Events ..................................................................... 63
-Register SAO ServerType ....................................................................... 63
-Marshal Server Object ........................................................................... 63
-Unmarshal Server Object ....................................................................... 63
-Message Processing Events and Sequencing Rules .......................................... 63
-Receiving a Message ............................................................................. 63
-Process the Message Frame .............................................................. 63
-Binding to Server Object .................................................................. 64
-De-Serializing the Message Content ................................................... 64
-Dispatching the Call ......................................................................... 65
-Serializing the Reply ........................................................................ 65
-Serializing to Binary Serialization Format ...................................... 65
-Serializing to SOAP Serialization Format ....................................... 65
-Marshaling Server Objects and Proxy Instances ............................. 65
-Sending Reply ................................................................................. 66
-Constructing Exception Messages ...................................................... 66
-Constructing SerializationException .............................................. 66
-Constructing a Remoting Exception .............................................. 67
-Timer Events .............................................................................................. 67
-Other Local Events ...................................................................................... 67
-Client Details ................................................................................................... 67
-Abstract Data Model .................................................................................... 67
-Timers ...................................................................................................... 67
-Initialization ............................................................................................... 68
-Higher-Layer Triggered Events ..................................................................... 68
-Get SAO Proxy ...................................................................................... 68
-Creating Proxy from Request URI and Server Type .............................. 68
-Remote Method Invocation ..................................................................... 68
-Serializing the Request ..................................................................... 68
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-
-3.2.5.1.5.1
-3.2.5.1.5.2
-3.2.5.1.5.3
-
-3.2.5.1.7.1
-3.2.5.1.7.2
-
-3.2.5.1.6
-3.2.5.1.7
-
-3.3.4.1.1
-
-3.3.4.2.1
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.4.1
-
-3.3.4.2
-
-[MS-NRTP] - v20190313
-.NET Remoting: Core Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-6 / 93
-
-3.3.4.2.2
-3.3.4.2.3
-3.3.4.2.4
-3.3.4.2.5
-
-3.3.4.2.1.1
-3.3.4.2.1.2
-
-Serializing to Binary Serialization Format ...................................... 68
-Serializing to SOAP Serialization Format ....................................... 69
-Sending the Request ........................................................................ 69
-Reading the Reply ........................................................................... 69
-De-Serializing the Response ............................................................. 70
-Completing the Invocation ................................................................ 70
-Message Processing Events and Sequencing Rules .......................................... 70
-Timer Events .............................................................................................. 70
-Other Local Events ...................................................................................... 70
-
-3.3.5
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 71
-Two-Way Method Invocation Using TCP-Binary .................................................... 71
-Two-Way Method Invocation Using SOAP Over HTTP ............................................ 76
-Faults in SOAP Over HTTP ................................................................................. 79
-One-Way Method Invocation Using SOAP Over TCP .............................................. 80
-One-Way Method Invocation Using HTTP-Binary ................................................... 81
-
-4.1
-4.2
-4.3
-4.4
-4.5
-
-5  Security ................................................................................................................. 83
-Security Considerations for Implementers ........................................................... 83
-Index of Security Parameters ............................................................................ 83
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 84
-
-7  Change Tracking .................................................................................................... 90
-
-8  Index ..................................................................................................................... 91
-
-[MS-NRTP] - v20190313
-.NET Remoting: Core Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-7 / 93
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Remote Method Invocation Model](#131-remote-method-invocation-model)
+    - [1.3.2 Passing Server Objects](#132-passing-server-objects)
+    - [1.3.3 Server Object Instantiation and Binding](#133-server-object-instantiation-and-binding)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 TCP Transport](#211-tcp-transport)
+      - [2.1.1.1 Client Details](#2111-client-details)
+        - [2.1.1.1.1 Sending Request](#21111-sending-request)
+        - [2.1.1.1.2 Receiving Reply](#21112-receiving-reply)
+      - [2.1.1.2 Server Details](#2112-server-details)
+        - [2.1.1.2.1 Receiving Request](#21121-receiving-request)
+        - [2.1.1.2.2 Sending Reply](#21122-sending-reply)
+    - [2.1.2 HTTP Transport](#212-http-transport)
+      - [2.1.2.1 Client Details](#2121-client-details)
+        - [2.1.2.1.1 Sending Request](#21211-sending-request)
+        - [2.1.2.1.2 Receiving Reply](#21212-receiving-reply)
+      - [2.1.2.2 Server Details](#2122-server-details)
+        - [2.1.2.2.1 Receiving Request](#21221-receiving-request)
+        - [2.1.2.2.2 Sending Reply](#21222-sending-reply)
+    - [2.1.3 SOAP Transport](#213-soap-transport)
+      - [2.1.3.1 SOAP on HTTP](#2131-soap-on-http)
+        - [2.1.3.1.1 Client Details](#21311-client-details)
+          - [2.1.3.1.1.1 Sending Request](#213111-sending-request)
+          - [2.1.3.1.1.2 Receiving Reply](#213112-receiving-reply)
+        - [2.1.3.1.2 Server Details](#21312-server-details)
+          - [2.1.3.1.2.1 Receiving Request](#213121-receiving-request)
+          - [2.1.3.1.2.2 Sending Reply](#213122-sending-reply)
+      - [2.1.3.2 SOAP on TCP](#2132-soap-on-tcp)
+        - [2.1.3.2.1 Client Details](#21321-client-details)
+          - [2.1.3.2.1.1 Sending Request](#213211-sending-request)
+          - [2.1.3.2.1.2 Receiving Reply](#213212-receiving-reply)
+        - [2.1.3.2.2 Server Details](#21322-server-details)
+          - [2.1.3.2.2.1 Receiving Request](#213221-receiving-request)
+          - [2.1.3.2.2.2 Sending Reply](#213222-sending-reply)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Patterns](#221-common-patterns)
+      - [2.2.1.1 IdentifierName](#2211-identifiername)
+      - [2.2.1.2 RemotingTypeName](#2212-remotingtypename)
+      - [2.2.1.3 LibraryName](#2213-libraryname)
+      - [2.2.1.4 Method Signature](#2214-method-signature)
+    - [2.2.2 Common Types](#222-common-types)
+      - [2.2.2.1 ObjRef](#2221-objref)
+      - [2.2.2.2 TypeInfo](#2222-typeinfo)
+      - [2.2.2.3 EnvoyInfo](#2223-envoyinfo)
+      - [2.2.2.4 ChannelInfo](#2224-channelinfo)
+      - [2.2.2.5 ChannelDataStore](#2225-channeldatastore)
+      - [2.2.2.6 DictionaryEntry](#2226-dictionaryentry)
+      - [2.2.2.7 System.Exception](#2227-systemexception)
+      - [2.2.2.8 SystemException](#2228-systemexception)
+      - [2.2.2.9 RemotingException](#2229-remotingexception)
+      - [2.2.2.10 SerializationException](#22210-serializationexception)
+      - [2.2.2.11 System.Type](#22211-systemtype)
+      - [2.2.2.12 UnitySerializationHolder](#22212-unityserializationholder)
+      - [2.2.2.13 MemberInfoSerializationHolder](#22213-memberinfoserializationholder)
+      - [2.2.2.14 DelegateEntry](#22214-delegateentry)
+      - [2.2.2.15 DelegateSerializationHolder](#22215-delegateserializationholder)
+      - [2.2.2.16 CallContextRemotingData](#22216-callcontextremotingdata)
+      - [2.2.2.17 ServerFault](#22217-serverfault)
+    - [2.2.3 TCP Message Syntax](#223-tcp-message-syntax)
+      - [2.2.3.1 Common Enumerations](#2231-common-enumerations)
+        - [2.2.3.1.1 OperationType](#22311-operationtype)
+        - [2.2.3.1.2 ContentDistribution](#22312-contentdistribution)
+        - [2.2.3.1.3 HeaderToken](#22313-headertoken)
+        - [2.2.3.1.4 HeaderDataFormat](#22314-headerdataformat)
+        - [2.2.3.1.5 StringEncoding](#22315-stringencoding)
+        - [2.2.3.1.6 TCPStatusCode](#22316-tcpstatuscode)
+      - [2.2.3.2 Common Types](#2232-common-types)
+        - [2.2.3.2.1 CountedString](#22321-countedstring)
+        - [2.2.3.2.2 TcpUriString](#22322-tcpuristring)
+        - [2.2.3.2.3 ChunkDelimiter](#22323-chunkdelimiter)
+      - [2.2.3.3 Message Frame Structure](#2233-message-frame-structure)
+        - [2.2.3.3.1 Single Message Content](#22331-single-message-content)
+        - [2.2.3.3.2 Chunked Message Content](#22332-chunked-message-content)
+        - [2.2.3.3.3 Frame Headers](#22333-frame-headers)
+          - [2.2.3.3.3.1 EndHeader](#223331-endheader)
+          - [2.2.3.3.3.2 CustomHeader](#223332-customheader)
+          - [2.2.3.3.3.3 StatusCodeHeader](#223333-statuscodeheader)
+          - [2.2.3.3.3.4 StatusPhraseHeader](#223334-statusphraseheader)
+          - [2.2.3.3.3.5 RequestUriHeader](#223335-requesturiheader)
+          - [2.2.3.3.3.6 CloseConnectionHeader](#223336-closeconnectionheader)
+          - [2.2.3.3.3.7 ContentTypeHeader](#223337-contenttypeheader)
+          - [2.2.3.3.3.8 UnknownHeader](#223338-unknownheader)
+    - [2.2.4 SOAP Serialization Format](#224-soap-serialization-format)
+      - [2.2.4.1 SOAP Action String](#2241-soap-action-string)
+      - [2.2.4.2 Remoting Type Name Encoding](#2242-remoting-type-name-encoding)
+      - [2.2.4.3 Method Name Encoding](#2243-method-name-encoding)
+      - [2.2.4.4 Method Signature SOAP Header](#2244-method-signature-soap-header)
+      - [2.2.4.5 Call Context SOAP Header](#2245-call-context-soap-header)
+    - [2.2.5 .NET Remoting Description Notation](#225-net-remoting-description-notation)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Mapping to Binary Format](#3151-mapping-to-binary-format)
+        - [3.1.5.1.1 Mapping Remote Method Request](#31511-mapping-remote-method-request)
+        - [3.1.5.1.2 Mapping Remote Method Invocation Reply](#31512-mapping-remote-method-invocation-reply)
+        - [3.1.5.1.3 Mapping Remote Field Get](#31513-mapping-remote-field-get)
+        - [3.1.5.1.4 Mapping Remote Field Set](#31514-mapping-remote-field-set)
+        - [3.1.5.1.5 Mapping Library Information](#31515-mapping-library-information)
+        - [3.1.5.1.6 Mapping Class Instances](#31516-mapping-class-instances)
+        - [3.1.5.1.7 Mapping Array Instances](#31517-mapping-array-instances)
+        - [3.1.5.1.8 Mapping Primitive Values](#31518-mapping-primitive-values)
+        - [3.1.5.1.9 Mapping Enum Values](#31519-mapping-enum-values)
+        - [3.1.5.1.10 Mapping Delegate](#315110-mapping-delegate)
+        - [3.1.5.1.11 Mapping String Values](#315111-mapping-string-values)
+        - [3.1.5.1.12 Mapping Null Object](#315112-mapping-null-object)
+      - [3.1.5.2 Mapping Remoting Data Model to SOAP Format](#3152-mapping-remoting-data-model-to-soap-format)
+        - [3.1.5.2.1 Mapping Remote Method Invocation](#31521-mapping-remote-method-invocation)
+        - [3.1.5.2.2 Mapping Remote Method Invocation Reply](#31522-mapping-remote-method-invocation-reply)
+        - [3.1.5.2.3 Mapping Remote Field Get](#31523-mapping-remote-field-get)
+        - [3.1.5.2.4 Mapping Remote Field Set](#31524-mapping-remote-field-set)
+        - [3.1.5.2.5 Mapping Class Instances](#31525-mapping-class-instances)
+        - [3.1.5.2.6 Mapping Array Instances](#31526-mapping-array-instances)
+        - [3.1.5.2.7 Mapping Primitive Values](#31527-mapping-primitive-values)
+        - [3.1.5.2.8 Mapping Enum Values](#31528-mapping-enum-values)
+        - [3.1.5.2.9 Mapping Delegate](#31529-mapping-delegate)
+        - [3.1.5.2.10 Mapping Null Object](#315210-mapping-null-object)
+        - [3.1.5.2.11 Mapping Exception](#315211-mapping-exception)
+      - [3.1.5.3 Resolving Object Reference](#3153-resolving-object-reference)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Register SAO ServerType](#3241-register-sao-servertype)
+      - [3.2.4.2 Marshal Server Object](#3242-marshal-server-object)
+      - [3.2.4.3 Unmarshal Server Object](#3243-unmarshal-server-object)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Message](#3251-receiving-a-message)
+        - [3.2.5.1.1 Process the Message Frame](#32511-process-the-message-frame)
+        - [3.2.5.1.2 Binding to Server Object](#32512-binding-to-server-object)
+        - [3.2.5.1.3 De-Serializing the Message Content](#32513-de-serializing-the-message-content)
+        - [3.2.5.1.4 Dispatching the Call](#32514-dispatching-the-call)
+        - [3.2.5.1.5 Serializing the Reply](#32515-serializing-the-reply)
+          - [3.2.5.1.5.1 Serializing to Binary Serialization Format](#325151-serializing-to-binary-serialization-format)
+          - [3.2.5.1.5.2 Serializing to SOAP Serialization Format](#325152-serializing-to-soap-serialization-format)
+          - [3.2.5.1.5.3 Marshaling Server Objects and Proxy Instances](#325153-marshaling-server-objects-and-proxy-instances)
+        - [3.2.5.1.6 Sending Reply](#32516-sending-reply)
+        - [3.2.5.1.7 Constructing Exception Messages](#32517-constructing-exception-messages)
+          - [3.2.5.1.7.1 Constructing SerializationException](#325171-constructing-serializationexception)
+          - [3.2.5.1.7.2 Constructing a Remoting Exception](#325172-constructing-a-remoting-exception)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Get SAO Proxy](#3341-get-sao-proxy)
+        - [3.3.4.1.1 Creating Proxy from Request URI and Server Type](#33411-creating-proxy-from-request-uri-and-server-type)
+      - [3.3.4.2 Remote Method Invocation](#3342-remote-method-invocation)
+        - [3.3.4.2.1 Serializing the Request](#33421-serializing-the-request)
+          - [3.3.4.2.1.1 Serializing to Binary Serialization Format](#334211-serializing-to-binary-serialization-format)
+          - [3.3.4.2.1.2 Serializing to SOAP Serialization Format](#334212-serializing-to-soap-serialization-format)
+        - [3.3.4.2.2 Sending the Request](#33422-sending-the-request)
+        - [3.3.4.2.3 Reading the Reply](#33423-reading-the-reply)
+        - [3.3.4.2.4 De-Serializing the Response](#33424-de-serializing-the-response)
+        - [3.3.4.2.5 Completing the Invocation](#33425-completing-the-invocation)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Two-Way Method Invocation Using TCP-Binary](#41-two-way-method-invocation-using-tcp-binary)
+  - [4.2 Two-Way Method Invocation Using SOAP Over HTTP](#42-two-way-method-invocation-using-soap-over-http)
+  - [4.3 Faults in SOAP Over HTTP](#43-faults-in-soap-over-http)
+  - [4.4 One-Way Method Invocation Using SOAP Over TCP](#44-one-way-method-invocation-using-soap-over-tcp)
+  - [4.5 One-Way Method Invocation Using HTTP-Binary](#45-one-way-method-invocation-using-http-binary)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The .NET Remoting: Core Protocol Specification specifies a mechanism by which a calling program can
 invoke a method in a different address space over the network. Arguments are passed along as part of
@@ -981,7 +703,7 @@ the invocation message and return values are sent in the response.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1041,7 +763,8 @@ contains information about the chosen transport (for example, TCP) and supports 
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-formats (for example, binary or SOAP). A server can host one or more Channels. For more
+
+formats (for example, binary or SOAP). A server can host one or more Channels. For more
 information, see [MS-NRTP] section 3.2.3.
 
 channel URI: A part of a Request-URI message. It contains the URI scheme, host name, and
@@ -1114,7 +837,8 @@ Release: March 13, 2019
 
 9 / 93
 
-Generic Remote Method: A Remote Method that is parameterized by one or more Remoting
+
+Generic Remote Method: A Remote Method that is parameterized by one or more Remoting
 Types. The method caller has to provide the actual Remoting Types (in addition to the Input
 Arguments). For more information, see [MS-NRTP] section 3.1.1.
 
@@ -1194,7 +918,8 @@ mechanism for authentication in which clients are able to verify their identitie
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-password to the server. It consists of three messages, commonly referred to as Type 1
+
+password to the server. It consists of three messages, commonly referred to as Type 1
 (negotiation), Type 2 (challenge) and Type 3 (authentication).
 
 Null Object: Part of the Remoting Data Model. Null Object is a special value that can be used
@@ -1271,7 +996,8 @@ Release: March 13, 2019
 
 11 / 93
 
-serialize: The process of taking an in-memory data structure, flat or otherwise, and turning it into
+
+serialize: The process of taking an in-memory data structure, flat or otherwise, and turning it into
 
 a flat stream of bytes. See also marshal.
 
@@ -1349,7 +1075,8 @@ routing through the Internet.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Two-Way Method: A Remote Method that has a response sent from the implementation of the
+
+Two-Way Method: A Remote Method that has a response sent from the implementation of the
 
 Remote Method back to the caller.
 
@@ -1380,14 +1107,14 @@ names but come from different sources. For more information, see [XMLNS-2ED].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1418,7 +1145,8 @@ October 1989, https://www.rfc-editor.org/info/rfc1123
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[RFC1766] Alvestrand, H., "Tags for the Identification of Languages", RFC 1766, March 1995,
+
+[RFC1766] Alvestrand, H., "Tags for the Identification of Languages", RFC 1766, March 1995,
 https://www.rfc-editor.org/info/rfc1766
 
 [RFC1945] Berners-Lee, T., Fielding, R., and Frystyk, H., "Hypertext Transfer Protocol -- HTTP/1.0",
@@ -1451,14 +1179,14 @@ W3C Note, May 2000, https://www.w3.org/TR/2000/NOTE-SOAP-20000508/
 [UNICODENORMFORMS] Davis, M., "Unicode Normalization Forms", November, 1999,
 https://www.unicode.org/reports/tr15/tr15-18.html
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ECMA-335] ECMA, "Common Language Infrastructure (CLI): Partitions I through VI", Standard ECMA-
 335, https://ecma-international.org/publications-and-standards/standards/ecma-335/
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 The .NET Remoting Protocol specifies a mechanism by which a calling program on one machine can
 invoke a method on a different machine. Arguments are passed along as part of the invocation
@@ -1484,7 +1212,8 @@ Remoting Protocol. The notation is used in this specification and in [MS-NRLS].
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-NRTP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1498,7 +1227,7 @@ Passing Server Objects
 
   Server Objects Instantiation and Binding
 
-1.3.1  Remote Method Invocation Model
+#### 1.3.1 Remote Method Invocation Model
 
  The .NET Remoting Protocol specifies a mechanism to invoke a method where the calling program
 and the target method are in different address spaces. Following is an example.
@@ -1537,14 +1266,15 @@ Serialization Exception.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-NRTP].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
 Remote Method Arguments, Return Value, Call Context, Message Properties, and Exceptions are all
 represented by Data Values.
 
-1.3.2  Passing Server Objects
+#### 1.3.2 Passing Server Objects
 
 The Server Object or a Proxy can be part of a graph of nodes of a Data Value. However, unlike
 other Data Values, when a graph that contains a Server Object or a Proxy is passed as part of a
@@ -1571,14 +1301,15 @@ Release: March 13, 2019
 
 16 / 93
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-NRTP].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
 Figure 3: A Server Object Reference being sent by the client and then used by the server to
 call back the client
 
-1.3.3  Server Object Instantiation and Binding
+#### 1.3.3 Server Object Instantiation and Binding
 
 A client's Remote Method invocation is targeted to a given Server Object by the passing of the
 Request URI of the Server Object as part of the call. A server implementation uses the Request URI
@@ -1597,7 +1328,7 @@ request. These Server Objects are called Marshaled Server Objects (MSO). When a 
 bound to such an object, the object is used to dispatch the server call in an implementation-specific
 way.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol defines the central mechanisms of the .NET Remoting Protocol stack, which convert a
 Remote Method invocation into an exchange of encoded messages. This protocol depends on other
@@ -1611,7 +1342,8 @@ this protocol to provide additional services, such as .NET Remoting Lifetime Ser
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-NRTP].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1635,7 +1367,7 @@ this specification.
 
 Figure 4: Relationships between .NET Remoting protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 If the HTTPS transport is used, a server certificate must be deployed and a client certificate can be
 deployed.
@@ -1659,17 +1391,18 @@ Release: March 13, 2019
 
 18 / 93
 
-3.  The names of the Libraries that contain the types
+
+3.  The names of the Libraries that contain the types
 
 4.  The Library that is the System Library
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is useful for transferring object method invocation information in a distributed
 environment. This protocol is designed for use on private networks, and is not appropriate for use on
 public networks. See Security Considerations for Implementers (section 5.1) for more details.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -1701,7 +1434,7 @@ Agent header as specified in Versioning and Capability Negotiation (section 2.1.
 server role uses this information when sending a SOAP fault as specified in
 ServerFault (section 2.2.2.17).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol allows custom headers to be added to the message frame structure when TCP is used
 as a transport, as specified in CustomHeader (section 2.2.3.3.3.2). Custom headers added to the TCP
@@ -1710,7 +1443,7 @@ when HTTP is used as a transport. However, this protocol does not preclude imple
 adding HTTP headers, as specified in [RFC2616] section 4.2. This protocol also does not preclude
 implementers from adding SOAP headers as specified in [SOAP1.1] section 4.2.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 No standards assignments are made by this protocol.
 
@@ -1721,11 +1454,12 @@ Release: March 13, 2019
 
 19 / 93
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
 
-2.1.1  TCP Transport
+### 2.1 Transport
+
+#### 2.1.1 TCP Transport
 
 This section specifies the protocol to use TCP as specified in [RFC793] to transmit method invocation
 and return information.
@@ -1740,9 +1474,9 @@ authentication information before transmission. Such processing typically happen
 implementations of lower protocol layers. An extension of this protocol MAY use the credentials from
 the lower protocol layers for authorization or impersonation.
 
-2.1.1.1  Client Details
+##### 2.1.1.1 Client Details
 
-2.1.1.1.1 Sending Request
+###### 2.1.1.1.1 Sending Request
 
 In the client role, an implementation MUST first establish a TCP connection to the server. A client
 implementation MAY cache and reuse a connection to a specific server port or create a new
@@ -1779,7 +1513,7 @@ If the Remote Method is One-Way then the connection MAY be reused after the mess
 sent. If the Remote Method is Two-Way then the connection MUST NOT be used to send any
 other requests to the server until the response for the request is received.<4>
 
-2.1.1.1.2 Receiving Reply
+###### 2.1.1.1.2 Receiving Reply
 
 If the OperationType of the message is Request(0), an implementation MUST wait for the Two-Way
 Reply message in the same connection. The implementation MAY have an implementation-specific
@@ -1793,7 +1527,8 @@ notified of the time-out error.<5>
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-If the message frame of the reply message does not conform to the structure specified in Message
+
+If the message frame of the reply message does not conform to the structure specified in Message
 Frame Structure (section 2.2.3.3) or if the OperationType field of the message frame is not Reply(2),
 then the implementation MUST notify the higher layer of the error.
 
@@ -1805,9 +1540,9 @@ The data in the transport buffer MUST be consumed so that the connection can be 
  An implementation of the protocol MAY cache the connection after reading the reply, unless the
 message frame has a CloseConnectionHeader.
 
-2.1.1.2  Server Details
+##### 2.1.1.2 Server Details
 
-2.1.1.2.1 Receiving Request
+###### 2.1.1.2.1 Receiving Request
 
 The server implementation of this protocol MUST listen on the TCP port as specified in section 3.2.3.
 When a connection is available, the implementation of the protocol MUST process the message from
@@ -1850,7 +1585,7 @@ after processing this message.
 
 The implementation MUST NOT write any MessageContent.
 
-2.1.1.2.2 Sending Reply
+###### 2.1.1.2.2 Sending Reply
 
 If the OperationType of the request message is OneWayRequest(1), then an implementation MUST
 NOT send any response. The rest of this section applies only to incoming request messages where the
@@ -1875,7 +1610,8 @@ Release: March 13, 2019
 
 21 / 93
 
-
+
+
 
 The associated Method Type of the target Remote Method obtained as specified in Dispatching
 the Call (section 3.2.5.1.4) MUST be obtained in an implementation-specific way. If the Method
@@ -1889,7 +1625,7 @@ implementation MAY use the Close Connection header specified in the CloseConnect
 subsection under the Message Frame Structure (section 2.2.3.3) to indicate the client should not send
 any more messages in this connection.
 
-2.1.2  HTTP Transport
+#### 2.1.2 HTTP Transport
 
 This section specifies the protocol to use HTTP transport as specified in [RFC1945] and [RFC2616] to
 transmit method invocation and return information. At a high level, the message request of a Remote
@@ -1911,9 +1647,9 @@ form of user name/password or a client-side certificate. Implementations of this
 process the credentials or authentication information. Such processing typically happens entirely
 inside implementations of lower protocol layers.
 
-2.1.2.1  Client Details
+##### 2.1.2.1 Client Details
 
-2.1.2.1.1 Sending Request
+###### 2.1.2.1.1 Sending Request
 
 A Remote Method invocation request MUST be mapped to an HTTP request and MUST have the
 following HTTP headers:
@@ -1944,7 +1680,7 @@ body MAY be sent using chunked transfer coding as specified in [RFC2616] section
 message body is not chunked then the Content-Length entity header MUST contain the length of
 the message body in decimal number of octets.<11>
 
-2.1.2.1.2 Receiving Reply
+###### 2.1.2.1.2 Receiving Reply
 
 [MS-NRTP] - v20190313
 .NET Remoting: Core Protocol
@@ -1953,7 +1689,8 @@ Release: March 13, 2019
 
 22 / 93
 
-If the target Remote Method that is identified by the higher layer as specified in Remote Method
+
+If the target Remote Method that is identified by the higher layer as specified in Remote Method
 Invocation (section 3.3.4.2) is Two-Way, then the implementation MUST wait for a response. If a
 response is not received before an implementation-defined time-out, the implementation SHOULD
 cancel the request and report an error to the higher layer.<12>
@@ -1968,9 +1705,9 @@ For both Two-Way and One-Way Remote Methods an implementation MAY handle other s
 codes in an implementation-specific way that complies with [RFC2616]. If an error occurs in
 processing of the other status codes, the response MUST NOT be processed any further.<13>
 
-2.1.2.2  Server Details
+##### 2.1.2.2 Server Details
 
-2.1.2.2.1 Receiving Request
+###### 2.1.2.2.1 Receiving Request
 
 A Remote Method invocation request is mapped to an HTTP request. An implementation MUST
 accept request messages that are sent using either HTTP/1.0 or HTTP/1.1. If the HTTP method is
@@ -1992,7 +1729,7 @@ The Reason-Phrase SHOULD be "Bad Request".
 
 The Body of the response MUST be empty.
 
-2.1.2.2.2 Sending Reply
+###### 2.1.2.2.2 Sending Reply
 
 A Remote Method reply is mapped to an HTTP response and MUST have the following HTTP header
 fields:
@@ -2021,7 +1758,7 @@ OK
 
 Serialized message content
 
-2.1.3  SOAP Transport
+#### 2.1.3 SOAP Transport
 
 At a high level, a Two-Way Remote Method invocation is modeled as a SOAP request message with
 an associated response message. A One-Way Remote Method invocation is modeled as a SOAP
@@ -2036,7 +1773,8 @@ A request message MUST be constructed as follows:
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -2073,13 +1811,13 @@ For HTTP, .NET Remoting method invocation MUST be bound to an HTTP request/respo
 
 For TCP, see section 2.1.1 (raw TCP binding).
 
-2.1.3.1  SOAP on HTTP
+##### 2.1.3.1 SOAP on HTTP
 
 When using HTTP, the message MUST be transmitted as specified in [SOAP1.1] section 6.
 
-2.1.3.1.1 Client Details
+###### 2.1.3.1.1 Client Details
 
-2.1.3.1.1.1  Sending Request
+###### 2.1.3.1.1.1 Sending Request
 
 HTTP request MUST be constructed as specified in [SOAP1.1] section 6 with the following additional
 constraints:
@@ -2097,7 +1835,7 @@ The User-Agent SHOULD contain the string "MS .NET Remoting".<14>
 
 The charset of the Content-Type SHOULD be UTF-8.
 
-2.1.3.1.1.2  Receiving Reply
+###### 2.1.3.1.1.2 Receiving Reply
 
 An HTTP response MUST be processed as specified in [SOAP1.1] section 6.
 
@@ -2106,13 +1844,13 @@ section 10.2 or one of the server-error codes as specified in [RFC2616] section 
 implementation-specific way that complies with [RFC2616]. If an error occurs in the processing of the
 other status codes, the response MUST NOT be processed any further.<15>
 
-2.1.3.1.2 Server Details
+###### 2.1.3.1.2 Server Details
 
-2.1.3.1.2.1  Receiving Request
+###### 2.1.3.1.2.1 Receiving Request
 
 HTTP request MUST be processed as specified in [SOAP1.1] section 6.
 
-2.1.3.1.2.2  Sending Reply
+###### 2.1.3.1.2.2 Sending Reply
 
 [MS-NRTP] - v20190313
 .NET Remoting: Core Protocol
@@ -2121,14 +1859,15 @@ Release: March 13, 2019
 
 24 / 93
 
-HTTP response MUST be constructed as specified in [SOAP1.1] section 6 with the following additional
+
+HTTP response MUST be constructed as specified in [SOAP1.1] section 6 with the following additional
 constraint:
 
 
 
 The charset of the Content-Type SHOULD be UTF-8.
 
-2.1.3.2  SOAP on TCP
+##### 2.1.3.2 SOAP on TCP
 
 This section specifies a binding of SOAP to TCP for use in .NET Remoting:
 
@@ -2149,9 +1888,9 @@ header) to identify the Server Object and the format identifier.
 
   SOAP Faults have no impact on the TCP Message Frame structure.
 
-2.1.3.2.1 Client Details
+###### 2.1.3.2.1 Client Details
 
-2.1.3.2.1.1  Sending Request
+###### 2.1.3.2.1.1 Sending Request
 
 A SOAP request parameter using TCP transport MUST be sent as specified in the Sending Request
 subsection under the TCP Transport section with the following additional constraint:
@@ -2160,14 +1899,14 @@ subsection under the TCP Transport section with the following additional constra
 
 The Content-Type header MUST be set to a SOAP format identifier.
 
-2.1.3.2.1.2  Receiving Reply
+###### 2.1.3.2.1.2 Receiving Reply
 
 A SOAP reply using TCP transport MUST be processed as specified in the Receiving Reply subsection
 under the TCP Transport section.
 
-2.1.3.2.2 Server Details
+###### 2.1.3.2.2 Server Details
 
-2.1.3.2.2.1  Receiving Request
+###### 2.1.3.2.2.1 Receiving Request
 
 A SOAP request parameter using TCP transport MUST be processed as specified in the Receiving
 Request subsection under the TCP Transport section with the following additional constraint:
@@ -2178,14 +1917,14 @@ If the Content-Type is not a SOAP format identifier, the message does not belong
 transport protocol. A transport fault MUST be sent back as specified in the Receiving Request
 subsection under the TCP Transport section.
 
-2.1.3.2.2.2  Sending Reply
+###### 2.1.3.2.2.2 Sending Reply
 
 A SOAP reply parameter using TCP transport MUST be sent as specified in the Sending Reply
 subsection under the TCP Transport section.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Common Patterns
+#### 2.2.1 Common Patterns
 
 This section specifies common string patterns using Augmented Backus-Naur Form (ABNF) syntax
 specified in [RFC4234].
@@ -2197,7 +1936,8 @@ specified in [RFC4234].
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.1.1  IdentifierName
+
+##### 2.2.1.1 IdentifierName
 
 IdentifierName MUST follow Annex 7 of Technical Report 15 of the Unicode Standard 3.0 governing
 the set of characters permitted to start and be included in identifiers as specified in
@@ -2206,7 +1946,7 @@ Normalization Form C.
 
 For more information see [ECMA-335] section 8.5.1.
 
-2.2.1.2  RemotingTypeName
+##### 2.2.1.2 RemotingTypeName
 
 A value that complies with this pattern identifies a Remoting Type. It MUST be of the following
 format.
@@ -2254,7 +1994,7 @@ QualifiedTypeName
 
 =  TypeName ',' LibraryName
 
-2.2.1.3  LibraryName
+##### 2.2.1.3 LibraryName
 
 A value complying with this pattern identifies a Library in the Remoting Data Model. It MUST be of
 the following format.
@@ -2312,7 +2052,8 @@ Release: March 13, 2019
 
 26 / 93
 
-Formats for library names
+
+Formats for library names
 
 NULLSTRING
 
@@ -2326,7 +2067,7 @@ CultureProperty
 
 independent (nonsatellite) assemblies.
 
-2.2.1.4  Method Signature
+##### 2.2.1.4 Method Signature
 
 A value complying with this pattern uniquely identifies a Method in a Class. The value MUST be of the
 following format.
@@ -2359,7 +2100,7 @@ TypeIdentifier
 
 =  See RemotingTypeName (section 2.2.1.2)
 
-2.2.2  Common Types
+#### 2.2.2 Common Types
 
 This section defines Classes that are used by this protocol. The Class definitions in this section use
 the notation defined in section 2.2.5. The definitions correspond to the Remoting Data Model and
@@ -2367,7 +2108,7 @@ can be mapped to the formats specified in [MS-NRBF] or [SOAP1.1]. The instructio
 Classes to the binary format specified in [MS-NRBF] are specified in 3.1.5.1. The instructions to map
 the Classes to the SOAP format [SOAP1.1] are specified in 3.1.5.2.
 
-2.2.2.1  ObjRef
+##### 2.2.2.1 ObjRef
 
 ObjRef is a Class. The Library name of the Class is "mscorlib". It represents a Server Object
 Reference. It is Assignable to Remoting Types of all Server Objects.
@@ -2394,7 +2135,8 @@ Release: March 13, 2019
 
 27 / 93
 
-objRefFlags: An Int32 value that indicates whether the ObjRef is created from a MSO or from a
+
+objRefFlags: An Int32 value that indicates whether the ObjRef is created from a MSO or from a
 
 SAO. If the second lowest bit (value of 2) is set, then ObjRef is created from an SAO.
 Otherwise, it is created from an MSO.
@@ -2432,7 +2174,7 @@ The channelInfo field is not a Null Object.
 If the second lowest bit (value of 2) is set, then the value of the uri field MUST be an absolute
 URI. Otherwise, the value of the uri field MUST be a relative URI.
 
-2.2.2.2  TypeInfo
+##### 2.2.2.2 TypeInfo
 
 TypeInfo is a Class. The Library name of the Class is "mscorlib". It contains information about the
 Server Type and is used in an ObjRef class.
@@ -2459,7 +2201,7 @@ interfacesImplemented: An Array of String that identifies the Server Interfaces 
 by Server Type. The format of the String value is specified as QualifiedTypeName in section
 TypeName.
 
-2.2.2.3  EnvoyInfo
+##### 2.2.2.3 EnvoyInfo
 
 EnvoyInfo is a Class. The Library name of the Class is "mscorlib". An instance of this Class contains
 Envoy Sink Information.
@@ -2473,7 +2215,8 @@ Release: March 13, 2019
 
 28 / 93
 
- {
+
+ {
    class EnvoyInfo
    {
      System.Object envoySinks;
@@ -2484,7 +2227,7 @@ envoySinks: A Data Value that represents the Envoy Sink Information of a Server 
 
 value of this field MUST NOT be a Server Object or a Proxy.
 
-2.2.2.4  ChannelInfo
+##### 2.2.2.4 ChannelInfo
 
 ChannelInfo is a Class. The Library name of the Class is "mscorlib". It contains the information about
 available channels in the server. It is used by ObjRef.
@@ -2501,7 +2244,7 @@ channelData: An Array that can contain instances of ChannelDataStore specified i
 
 ChannelDataStore (section 2.2.2.5).
 
-2.2.2.5  ChannelDataStore
+##### 2.2.2.5 ChannelDataStore
 
 ChannelDataStore is a Class. The Library name of the Class is "mscorlib". It is an item in the
 'channelData' Array in the ChannelInfo Class.
@@ -2519,7 +2262,7 @@ _channelURIs: Contains a Channel URI. The Array MUST contain at least one item.
 
 extraData: This field SHOULD be a Null Object. Readers MUST ignore this field.
 
-2.2.2.6  DictionaryEntry
+##### 2.2.2.6 DictionaryEntry
 
 DictionaryEntry is a Class. The Library name of the Class is "mscorlib". It is defined as follows.
 
@@ -2538,13 +2281,14 @@ Release: March 13, 2019
 
 29 / 93
 
- }
+
+ }
 
 key: _An instance of any Remoting Type.
 
 _value: An instance of any Remoting Type.
 
-2.2.2.7  System.Exception
+##### 2.2.2.7 System.Exception
 
 System.Exception is a Class. The Library name of the Class is "mscorlib". This is the Base Class for all
 Exception Classes.
@@ -2609,13 +2353,14 @@ HResult: An Int32 value that specifies the numerical error code.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Source: A string value that is set by the code that throws the Exception. This MAY be any string.
+
+Source: A string value that is set by the code that throws the Exception. This MAY be any string.
 
 Data: An instance of any Data Value that provides additional information about the Exception.
 
 The semantics of the value are not part of this protocol.<18>
 
-2.2.2.8  SystemException
+##### 2.2.2.8 SystemException
 
 SystemException is a Derived Class of System.Exception. The Library name of the Class is "mscorlib".
 There are no Members other than the Members inherited from the System.Exception Class. This Class
@@ -2628,7 +2373,7 @@ has an additional constraint: The HResult MUST be hex value 0x80131501.
    }
  }
 
-2.2.2.9  RemotingException
+##### 2.2.2.9 RemotingException
 
 RemotingException is a Derived Class of SystemException. The Library name of the Class is
 "mscorlib". There are no Members other than the Members inherited from the System.Exception
@@ -2641,9 +2386,9 @@ Class. This Class has an additional constraint: The HResult MUST be hex value 0x
    }
  }
 
-2.2.2.10
+##### 2.2.2.10 SerializationException
 
-SerializationException
+
 
 SerializationException is a Derived Class of SystemException. The Library name of the Class is
 "mscorlib". There are no Members other than the Members inherited from the System.Exception
@@ -2656,9 +2401,9 @@ Class. This Class has an additional constraint: The HResult MUST be hex value 0x
    }
  }
 
-2.2.2.11
+##### 2.2.2.11 System.Type
 
-System.Type
+
 
 System.Type is a Class contained in the System Assembly. An instance of System.Type represents a
 Remoting Type. The instance can be part of a Data Value graph. The Class has no Members. It
@@ -2675,16 +2420,17 @@ Release: March 13, 2019
 
 31 / 93
 
-   class System.Type
+
+   class System.Type
    {
    }
  }
 
 This Class has no Members.
 
-2.2.2.12
+##### 2.2.2.12 UnitySerializationHolder
 
-UnitySerializationHolder
+
 
 UnitySerializationHolder is a Class. The Library name of the Class is "mscorlib". It contains metadata
 that provides information about a Remoting Type. It is Assignable to System.Type.
@@ -2729,9 +2475,9 @@ Type. This field MUST be present if UnityType is 8. This field MUST NOT be prese
 values of UnityType. This field MUST have at least one entry and MUST NOT contain any null
 entries.<19>
 
-2.2.2.13
+##### 2.2.2.13 MemberInfoSerializationHolder
 
-MemberInfoSerializationHolder
+
 
 MemberInfoSerializationHolder is a Class. The Library name of the Class is "mscorlib". It contains
 information about a Member. The Class is defined as follows.
@@ -2751,7 +2497,8 @@ Release: March 13, 2019
 
 32 / 93
 
-      String               Signature;
+
+      String               Signature;
       Int32                MemberType;
       System.Type[]        GenericArguments;
     }
@@ -2805,9 +2552,9 @@ GenericArguments: A System.Type Array value that contains the information about 
 Remoting Type of the actual parameters that were used to construct the Instantiated Generic
 Method. If the Member is not generic, then this field MUST contain Null Object.<20>
 
-2.2.2.14
+##### 2.2.2.14 DelegateEntry
 
-DelegateEntry
+
 
 DelegateEntry is a Class. The Library name of the Class is "mscorlib". The full name of the Class is
 System.DelegateSerializationHolder+DelegateEntry. It is a linked list that has one node for each
@@ -2835,7 +2582,8 @@ Release: March 13, 2019
 
 33 / 93
 
-assembly: A String value that contains the name of a Library that contains the Delegate. The
+
+assembly: A String value that contains the name of a Library that contains the Delegate. The
 
 value MUST conform to the format specified in LibraryName (section 2.2.1.3).
 
@@ -2862,9 +2610,9 @@ type: A String value that contains the name of the Delegate. The value MUST conf
 
 format specified in RemotingTypeName (section 2.2.1.2).
 
-2.2.2.15
+##### 2.2.2.15 DelegateSerializationHolder
 
-DelegateSerializationHolder
+
 
 DelegateSerializationHolder is a Class. The Library name of the Class is "mscorlib". Its full name is
 'System.DelegateSerializationHolder'. It contains information about a Delegate.
@@ -2915,13 +2663,14 @@ Release: March 13, 2019
 
 34 / 93
 
-For a given DelegateSerializationHolder, the value of the Index MUST start from 0 and MUST increase
+
+For a given DelegateSerializationHolder, the value of the Index MUST start from 0 and MUST increase
 by 1 for each Method Member. The Index value MUST match the index of the DelegateEntry for the
 Remote Method in the linked list.<22>
 
-2.2.2.16
+##### 2.2.2.16 CallContextRemotingData
 
-CallContextRemotingData
+
 
 CallContextRemotingData is a Class. The Library name of the Class is "mscorlib". It is used to send
 Logical Call ID as part of the Call Context.
@@ -2938,9 +2687,9 @@ _logicalCallID: A string value that represents the Logical Call ID. The value MA
 
 string.
 
-2.2.2.17
+##### 2.2.2.17 ServerFault
 
-ServerFault
+
 
 ServerFault is a Class. The Library name of the Class is "mscorlib". It contains fault detail information
 that is used as part of SOAP fault.
@@ -2993,7 +2742,8 @@ The transport is HTTP and the User-Agent header contains "MS .Net Remoting" (cas
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.3  TCP Message Syntax
+
+#### 2.2.3 TCP Message Syntax
 
 The Remote Method payload is transmitted in message content between clients and server. The
 protocol does not consume or modify the message content (except in the case of chunked encoding
@@ -3019,9 +2769,9 @@ message.
 
 6.  Custom Headers from higher layers.
 
-2.2.3.1  Common Enumerations
+##### 2.2.3.1 Common Enumerations
 
-2.2.3.1.1 OperationType
+###### 2.2.3.1.1 OperationType
 
 The type of the values of this enumeration is UInt16. The enumeration is used in the OperationType
 field of the TCP message frame. The possible values of the enumeration and their meanings are
@@ -3047,7 +2797,7 @@ Reply
 
 Identifies a reply message of a Two-Way Method.
 
-2.2.3.1.2 ContentDistribution
+###### 2.2.3.1.2 ContentDistribution
 
 The type of the values of this enumeration is UInt16. The enumeration is used in the
 ContentDistribution field of the TCP message frame. The possible values of the enumeration and
@@ -3074,7 +2824,8 @@ Release: March 13, 2019
 
 36 / 93
 
-2.2.3.1.3 HeaderToken
+
+###### 2.2.3.1.3 HeaderToken
 
 The type of the values of this enumeration is UInt16. The enumeration is used to identify the message
 frame headers. The possible values of the enumeration and their meanings are given as follows.
@@ -3123,7 +2874,7 @@ Identifies a ContentTypeHeader.
 
 6
 
-2.2.3.1.4 HeaderDataFormat
+###### 2.2.3.1.4 HeaderDataFormat
 
 The type of the values of this enumeration is Byte. A value of the enumeration is contained in a
 message frame header and identifies the type of the data contained in the header. The possible
@@ -3161,7 +2912,7 @@ Indicates that the following data is a UINT16.
 
 Indicates that the following data is an INT32.
 
-2.2.3.1.5 StringEncoding
+###### 2.2.3.1.5 StringEncoding
 
 [MS-NRTP] - v20190313
 .NET Remoting: Core Protocol
@@ -3170,7 +2921,8 @@ Release: March 13, 2019
 
 37 / 93
 
-The type of the values of this enumeration is Byte. The enumeration is used in the CountedString
+
+The type of the values of this enumeration is Byte. The enumeration is used in the CountedString
 type. The values for the StringEncoding constant are as follows.
 
 Constant/value  Description
@@ -3187,7 +2939,7 @@ UTF8
 
 Byte that identifies the string as a UTF-8-encoded string.
 
-2.2.3.1.6 TCPStatusCode
+###### 2.2.3.1.6 TCPStatusCode
 
 The type of the values of this enumeration is UInt16. The enumeration is used in the
 StatusCodeHeader. The possible values and their meanings are as follows.
@@ -3206,9 +2958,9 @@ Error
 
 Error when processing the message frame.
 
-2.2.3.2  Common Types
+##### 2.2.3.2 Common Types
 
-2.2.3.2.1 CountedString
+###### 2.2.3.2.1 CountedString
 
 The strings in the header section are defined as CountedString. The CountedString has a one-byte
 format identifier, followed by the length of the encoded string in bytes and the encoded bytes.
@@ -3244,7 +2996,7 @@ StringData (variable): The string data whose length is specified in the Length f
 
 specified in the StringEncoding field.
 
-2.2.3.2.2 TcpUriString
+###### 2.2.3.2.2 TcpUriString
 
 This is the Request URI for the TCP transport. The format of the URI MUST conform to the form
 specified in [RFC3986] section 3 with the following constraints:
@@ -3256,7 +3008,8 @@ specified in [RFC3986] section 3 with the following constraints:
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -3274,7 +3027,7 @@ There are no fixed ports for this protocol. The URI MUST contain the port subcom
 
 The Server Object URI path MUST be the path subcomponent.
 
-2.2.3.2.3 ChunkDelimiter
+###### 2.2.3.2.3 ChunkDelimiter
 
 When a message frame contains multiple chunks of message content, an instance of the
 ChunkDelimiter type is used at the end of each chunk.
@@ -3296,14 +3049,14 @@ DelimiterValue (2 bytes): This field contains a UInt16 value that indicates a de
 
 MUST be hex 0x0D0A ('\r' '\n').
 
-2.2.3.3  Message Frame Structure
+##### 2.2.3.3 Message Frame Structure
 
 The message body consists of a message frame structure followed by the message content. The
 protocol allows writing all of the message content in a single chunk after the message frame or as
 multiple chunks that appear contiguously after the message frame. Each chunk is prefixed by the
 length of the chunk and the last chunk as a length of 0 bytes.<24>
 
-2.2.3.3.1 Single Message Content
+###### 2.2.3.3.1 Single Message Content
 
 The message content follows the message frame. The message frame's ContentLength field
 indicates this with a value of 0 followed by an int32 value that indicates the length of the message
@@ -3347,7 +3100,8 @@ Release: March 13, 2019
 
 39 / 93
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-NRTP].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -3406,7 +3160,7 @@ MessageContent (variable): A stream of bytes that contains the content. The numb
 the stream MUST equal the value of the Length field of the ContentLength field of the message
 frame.
 
-2.2.3.3.2 Chunked Message Content
+###### 2.2.3.3.2 Chunked Message Content
 
 In this mode, the message content is segmented into multiple parts. The mode is indicated with a
 value of 1 in the ContentDistribution field of the message frame. A chunked message content is
@@ -3436,7 +3190,8 @@ Release: March 13, 2019
 
 40 / 93
 
-MajorVersion
+
+MajorVersion
 
 MinorVersion
 
@@ -3517,11 +3272,12 @@ LastTrailer (2 bytes): Indicates the end of a chunk. The type of this field is C
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-NRTP].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
-2.2.3.3.3 Frame Headers
+###### 2.2.3.3.3 Frame Headers
 
 Message frames SHOULD have one or more frame headers. The last frame header MUST be an
 EndHeader that marks the end of headers. The following diagram describes the layout of headers in a
@@ -3535,7 +3291,7 @@ Frame Structure (section 2.2.3.3).
 The following sections describe the headers that are available for the Headers and EndHeader sections
 of this packet.
 
-2.2.3.3.3.1  EndHeader
+###### 2.2.3.3.3.1 EndHeader
 
 The EndHeader marks the end of the headers.
 
@@ -3556,7 +3312,7 @@ EndHeadersToken (2 bytes): The field contains a HeaderToken value that identifie
 
 type. Its value MUST be 0.
 
-2.2.3.3.3.2  CustomHeader
+###### 2.2.3.3.3.2 CustomHeader
 
 The CustomHeader is used for passing implementation-specific information.
 
@@ -3589,7 +3345,7 @@ HeaderName (variable): A CountedString value that represents the name of the cus
 
 HeaderValue (variable): A CountedString value that represents the value of the custom header.
 
-2.2.3.3.3.3  StatusCodeHeader
+###### 2.2.3.3.3.3 StatusCodeHeader
 
 [MS-NRTP] - v20190313
 .NET Remoting: Core Protocol
@@ -3598,7 +3354,8 @@ Release: March 13, 2019
 
 42 / 93
 
-The StatusCodeHeader is included in reply messages of Two-Way Method invocation.
+
+The StatusCodeHeader is included in reply messages of Two-Way Method invocation.
 StatusCodeHeader contains the error code for any error that occurred when the server interpreted the
 request message frame.
 
@@ -3631,7 +3388,7 @@ Its value MUST be 3.
 
 StatusCodeValue (2 bytes): A TCPStatusCode enumeration that indicates the status code.
 
-2.2.3.3.3.4  StatusPhraseHeader
+###### 2.2.3.3.3.4 StatusPhraseHeader
 
 The StatusPhraseHeader header is optionally included along with StatusCodeHeader with an error
 code. It contains a human-readable message about the error.
@@ -3671,7 +3428,7 @@ message.
 This header MAY accompany StatusCodeHeader to indicate the error in human-readable form. A
 missing header implies a value of empty string.
 
-2.2.3.3.3.5  RequestUriHeader
+###### 2.2.3.3.3.5 RequestUriHeader
 
 The RequestUriHeader header contains the RequestURI.
 
@@ -3701,7 +3458,8 @@ Release: March 13, 2019
 
 43 / 93
 
-RequestUriHeaderToken (2 bytes): A HeaderToken enumeration that indicates the Header type.
+
+RequestUriHeaderToken (2 bytes): A HeaderToken enumeration that indicates the Header type.
 
 Its value MUST be 4.
 
@@ -3713,7 +3471,7 @@ UriValue (variable): A TcpUriString value that represents the RequestURI.
 
 The requested URI can be a relative or an absolute URI.
 
-2.2.3.3.3.6  CloseConnectionHeader
+###### 2.2.3.3.3.6 CloseConnectionHeader
 
 The CloseConnectionHeader packet header indicates that the receiver is not supposed to cache the
 connection after processing message containing this header.
@@ -3741,7 +3499,7 @@ DataType (1 byte): A HeaderDataFormat enumeration that indicates the type of the
 
 MUST be 0 indicating that there is no Data for this record.
 
-2.2.3.3.3.7  ContentTypeHeader
+###### 2.2.3.3.3.7 ContentTypeHeader
 
  The ContentTypeHeader header indicates the serialization format of the message content.
 
@@ -3777,7 +3535,7 @@ ContentTypeValue (variable): A CountedString value that represents the content-t
 
 message content.
 
-2.2.3.3.3.8  UnknownHeader
+###### 2.2.3.3.3.8 UnknownHeader
 
 An UnknownHeader header has an unknown HeaderToken. It is meant for handling the addition of
 headers in future. An implementation MUST NOT write this header. However this header MUST be
@@ -3807,7 +3565,8 @@ Release: March 13, 2019
 
 44 / 93
 
-...
+
+...
 
 UnknownHeaderToken (2 bytes): An UInt16 value. Its value MUST be greater than 6.
 
@@ -3815,9 +3574,9 @@ DataType (1 byte): A HeaderDataFormat enumeration that indicates the type of the
 
 DataValue (variable): The type of this field is as specified in the table in HeaderDataFormat.
 
-2.2.4  SOAP Serialization Format
+#### 2.2.4 SOAP Serialization Format
 
-2.2.4.1  SOAP Action String
+##### 2.2.4.1 SOAP Action String
 
 A SOAP Action string is a URI that is used as the SOAP Action field in the HTTP header as specified in
 [SOAP1.1] section 6. The SOAP action is derived from the Remote Method. An implementation MUST
@@ -3825,7 +3584,7 @@ define its own mechanism to create a SOAP action for the given Remote Method. Th
 MUST agree on the mechanism so that a given Remote Method ends up with the same SOAP action on
 both sides.<25>
 
-2.2.4.2  Remoting Type Name Encoding
+##### 2.2.4.2 Remoting Type Name Encoding
 
 SOAP XML messages use qualified names to identify Remoting Type names, which consist of an
 XML namespace and a local name. An implementation MUST define its own mechanism to derive
@@ -3833,7 +3592,7 @@ the XML namespace and local name for the given Remoting Type. The client and the
 agree on the mechanism so that a given Remoting Type ends up with the same qualified name on
 both sides.<26>
 
-2.2.4.3  Method Name Encoding
+##### 2.2.4.3 Method Name Encoding
 
 As specified in [SOAP1.1] section 7, the Remoting Method MUST be mapped to a SOAP struct. The
 name of the struct MUST be a qualified name and MUST be distinct for request and response. An
@@ -3841,7 +3600,7 @@ implementation MUST define its own mechanism to derive the XML namespace and loc
 the request and response. The client and the server MUST agree on the mechanism so that a given
 method ends up with the same qualified names on both sides.<27>
 
-2.2.4.4  Method Signature SOAP Header
+##### 2.2.4.4 Method Signature SOAP Header
 
 The Method Signature in SOAP is serialized as an element whose schema is as follows.
 
@@ -3868,7 +3627,8 @@ Release: March 13, 2019
 
 45 / 93
 
-2.2.4.5  Call Context SOAP Header
+
+##### 2.2.4.5 Call Context SOAP Header
 
 The Call Context MUST be encoded as a SOAP header element. The element's local name MUST be
 "__CallContext" and its XML namespace MUST be
@@ -3878,7 +3638,7 @@ specified in [SOAP1.1] section 5. The name of the struct MUST be "LogicalCallCon
 value pair of the Call Context MUST be mapped to a Member name and a Member value of the struct.
 The Member values MUST be encoded as specified in [SOAP1.1] section 5.
 
-2.2.5  .NET Remoting Description Notation
+#### 2.2.5 .NET Remoting Description Notation
 
 This section specifies a description notation to describe the metadata of the Remoting Data Model.
 The notation is meant for higher-level services such as [MS-NRLS] that are layered on top of this
@@ -3970,7 +3730,8 @@ Release: March 13, 2019
 
 46 / 93
 
-consists of a Remoting Type name followed by the name of the Member terminated with a semicolon
+
+consists of a Remoting Type name followed by the name of the Member terminated with a semicolon
 ';'.
 
 An Array is constructed by appending opening and closing brackets '[]' to the item Remoting Type
@@ -4069,7 +3830,8 @@ Method
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Grammar
+
+Grammar
 
 ArgumentList
 
@@ -4158,11 +3920,12 @@ Release: March 13, 2019
 
 48 / 93
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4225,7 +3988,8 @@ The Data Value is of the specified Server Type.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -4319,7 +4083,8 @@ Release: March 13, 2019
 
 50 / 93
 
-Null Object is a special value that can be used in place of an instance of a Server Type, Class, Array,
+
+Null Object is a special value that can be used in place of an instance of a Server Type, Class, Array,
 or String. Null Object indicates that no instance is being specified.
 
 Class
@@ -4386,7 +4151,8 @@ Release: March 13, 2019
 
 51 / 93
 
-A Remote Field is a remotely accessible field declared in a Server Interface or a Server Type. A
+
+A Remote Field is a remotely accessible field declared in a Server Interface or a Server Type. A
 definition of a Remote Field includes the following:
 
   Name: A String value representing the name of the Remote Field.
@@ -4469,7 +4235,8 @@ Method's execution fails there are no Return Values or Output Arguments.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-NRTP].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
@@ -4499,15 +4266,15 @@ The following state diagram captures the state transitions during the lifetime o
 
 Figure 7: State transitions during the lifetime of a client connection
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no timers that are common to the server and the client.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 There is no initialization that is common to the server and the client.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events that are common to the server and the client.
 
@@ -4518,11 +4285,12 @@ Release: March 13, 2019
 
 53 / 93
 
-3.1.5  Message Processing Events and Sequencing Rules
 
-3.1.5.1  Mapping to Binary Format
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1.1 Mapping Remote Method Request
+##### 3.1.5.1 Mapping to Binary Format
+
+###### 3.1.5.1.1 Mapping Remote Method Request
 
 Information required to perform a Remote Method invocation consists of a Server Type or Server
 Interface name, a Remote Method name, Input Arguments, Generic Arguments values, Method
@@ -4647,7 +4415,8 @@ record
 
 54 / 93
 
- Item name
+
+ Item name
 
  Condition
 
@@ -4693,7 +4462,7 @@ Signature, Call Context, and Message Properties MUST be serialized. Each node in
 graph MUST be iterated and each node MUST be serialized exactly once as specified in the following
 sections.
 
-3.1.5.1.2 Mapping Remote Method Invocation Reply
+###### 3.1.5.1.2 Mapping Remote Method Invocation Reply
 
 The Remote Method invocation reply consists of Return Value, OutputArguments, Exception, and
 Call Context.
@@ -4784,7 +4553,8 @@ Args field of the
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- Item
+
+ Item
 name
 
 Argument
@@ -4879,7 +4649,7 @@ Following this, the Data Value contained in the Return Value, OutputArguments, E
 Context, and Message Properties MUST be serialized. Each node in the Data Value graph MUST be
 iterated and each node MUST be serialized exactly once as specified in the following sections.
 
-3.1.5.1.3 Mapping Remote Field Get
+###### 3.1.5.1.3 Mapping Remote Field Get
 
 An implementation MUST implement getting the value of a Remote Field as a Remote Method
 invocation of the method FieldGetter as specified in [MS-NRLS] section 3.5.4.1, with the following
@@ -4896,7 +4666,7 @@ Remote Field.
 
 The output value of the val Argument MUST be used as the Field value.
 
-3.1.5.1.4 Mapping Remote Field Set
+###### 3.1.5.1.4 Mapping Remote Field Set
 
 An implementation MUST implement setting the value of a Remote Field as a Remote Method
 invocation of the method FieldSetter as specified in [MS-NRLS] section 3.5.4.2, with the following
@@ -4922,7 +4692,8 @@ The val Argument MUST be set to the new value of the field.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.1.5.1.5 Mapping Library Information
+
+###### 3.1.5.1.5 Mapping Library Information
 
 The following records defined in [MS-NRBF] reference a Library:
 
@@ -4933,7 +4704,7 @@ The following records defined in [MS-NRBF] reference a Library:
 Each of the preceding records references a BinaryLibrary record by LibraryId field. Before serializing
 any of the preceding records, the referenced BinaryLibrary record MUST be written.
 
-3.1.5.1.6 Mapping Class Instances
+###### 3.1.5.1.6 Mapping Class Instances
 
 A Class instance MUST be serialized by using the Class records specified in [MS-NRBF].
 
@@ -4988,7 +4759,8 @@ Release: March 13, 2019
 
 57 / 93
 
- Data value type
+
+ Data value type
 
  Binary record
 
@@ -5014,7 +4786,7 @@ Member ReferenceRecord
 
 MemberReference or Class records
 
-3.1.5.1.7 Mapping Array Instances
+###### 3.1.5.1.7 Mapping Array Instances
 
 An Array with more than one dimension or with a dimension whose first index is not 0 MUST be
 serialized by using the BinaryArray record.
@@ -5032,31 +4804,31 @@ The values of the Array items MUST be serialized following the BinaryArray, Arra
 ArraySinglePrimitive or ArraySingleObject record. The record types that MUST be used for various
 types of Array item values are given in the table in the Mapping Class Instances section.
 
-3.1.5.1.8 Mapping Primitive Values
+###### 3.1.5.1.8 Mapping Primitive Values
 
 Primitive Values in Classes and Arrays MUST be serialized as part of MemberPrimitiveUnTyped or
 MemberPrimitiveTyped. If the value is part of Arguments inlined in the BinaryMethodCall or
 BinaryMethodReturn record then they MUST be serialized as ValueWithCode.
 
-3.1.5.1.9 Mapping Enum Values
+###### 3.1.5.1.9 Mapping Enum Values
 
 An Enum MUST be serialized as a Class with a single Member called "value__". The Member Type
 MUST be the underlying Primitive Type of the Enum.
 
-3.1.5.1.10  Mapping Delegate
+###### 3.1.5.1.10 Mapping Delegate
 
  A Delegate MUST be serialized as the DelegateSerializationHolder Class, as specified in section
 2.2.2.15. Each Remote Method of the Delegate is mapped to a Method and each Proxy is mapped to
 a Target in the DelegateSerializationHolder instance.
 
-3.1.5.1.11  Mapping String Values
+###### 3.1.5.1.11 Mapping String Values
 
 String values in Classes and Arrays MUST be serialized as part of BinaryObjectString, as specified
 in [MS-NRBF]. If the value is part of Arguments inlined in the BinaryMethodCall or
 BinaryMethodReturn record, as specified in [MS-NRBF], then they MUST be serialized as
 StringValueWithCode, as specified in [MS-NRBF] section 2.2.2.2.
 
-3.1.5.1.12  Mapping Null Object
+###### 3.1.5.1.12 Mapping Null Object
 
 [MS-NRTP] - v20190313
 .NET Remoting: Core Protocol
@@ -5065,15 +4837,16 @@ Release: March 13, 2019
 
 58 / 93
 
-A Null Object in Classes and Arrays MUST be serialized using ObjectNull, ObjectNullMultiple or
+
+A Null Object in Classes and Arrays MUST be serialized using ObjectNull, ObjectNullMultiple or
 ObjectNullMultiple256 records, as specified in [MS-NRBF]. A Null Object in Arguments inlined in the
 BinaryMethodCall or BinaryMethodReturn record, as specified in [MS-NRBF], MUST be serialized as
 ValueWithCode, as specifed in [MS-NRBF] section 2.2.2.1, with the value of the PrimitiveTypeEnum
 field set to 17 (Null).
 
-3.1.5.2  Mapping Remoting Data Model to SOAP Format
+##### 3.1.5.2 Mapping Remoting Data Model to SOAP Format
 
-3.1.5.2.1 Mapping Remote Method Invocation
+###### 3.1.5.2.1 Mapping Remote Method Invocation
 
 The message content of a Remote Method call MUST be encoded as a SOAP Envelope as specified
 in [SOAP1.1] section 4:
@@ -5115,7 +4888,7 @@ The Input Arguments MUST be mapped as specified in [SOAP1.1] section 7.1.
 Each Data Value in the Arguments MUST be encoded by using the SOAP encoding style. The
 specification for SOAP encoding is specified in [SOAP1.1] section 5.
 
-3.1.5.2.2 Mapping Remote Method Invocation Reply
+###### 3.1.5.2.2 Mapping Remote Method Invocation Reply
 
 The message content of a Remote Method invocation reply MUST be encoded as a SOAP Envelope
 as specified in [SOAP1.1] section 4:
@@ -5154,10 +4927,11 @@ Release: March 13, 2019
 
 59 / 93
 
-If the method resulted in an Exception, then the Exception MUST be encoded as a SOAP fault as
+
+If the method resulted in an Exception, then the Exception MUST be encoded as a SOAP fault as
 specified in the Mapping Exception section.
 
-3.1.5.2.3 Mapping Remote Field Get
+###### 3.1.5.2.3 Mapping Remote Field Get
 
 An implementation MUST implement getting the value of a Remote Field as a Remote Method
 invocation of the method FieldGetter as specified in [MS-NRLS] section 3.5.4.1, with the following
@@ -5174,7 +4948,7 @@ Remote Field.
 
 The output value of the val Argument MUST be used as the Remote Field value.
 
-3.1.5.2.4 Mapping Remote Field Set
+###### 3.1.5.2.4 Mapping Remote Field Set
 
 An implementation MUST implement setting the value of a Remote Field as a Remote Method
 invocation of the FieldSetter method as specified in [MS-NRLS] section 3.5.4.2, with the following
@@ -5193,13 +4967,13 @@ Remote Field.
 
 The val Argument MUST be set to the new value of the Remote Field.
 
-3.1.5.2.5 Mapping Class Instances
+###### 3.1.5.2.5 Mapping Class Instances
 
 Classes MUST be encoded as SOAP structs as specified in [SOAP1.1] section 5.4.1, where the
 Member names are the accessor names. The Class name MUST be encoded as specified in Remoting
 Type Name Encoding (section 2.2.4.2).
 
-3.1.5.2.6 Mapping Array Instances
+###### 3.1.5.2.6 Mapping Array Instances
 
 Arrays MUST be encoded as SOAP Arrays as specified in [SOAP1.1] section 5.4.2. The Remoting
 Type name of the Array MUST be encoded as specified in the Remoting Type Name Encoding section.
@@ -5208,17 +4982,17 @@ section 5.4.2.
 
 An Array of bytes MUST be encoded as specified in [SOAP1.1] section 5.2.3.
 
-3.1.5.2.7 Mapping Primitive Values
+###### 3.1.5.2.7 Mapping Primitive Values
 
 Primitive Type Values MUST be encoded as SOAP simple values as specified in [SOAP1.1] section
 5.2.
 
-3.1.5.2.8 Mapping Enum Values
+###### 3.1.5.2.8 Mapping Enum Values
 
 Enum Values MUST be encoded using the name associated with the value as SOAP enumerations as
 specified in [SOAP1.1] section 5.2.2.
 
-3.1.5.2.9 Mapping Delegate
+###### 3.1.5.2.9 Mapping Delegate
 
  A Delegate MUST be serialized as the DelegateSerializationHolder Class, as specified in section
 2.2.2.15. Each Remote Method of the Delegate is mapped to a Method and each Proxy is mapped to
@@ -5231,11 +5005,12 @@ a Target in the DelegateSerializationHolder instance.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.1.5.2.10  Mapping Null Object
+
+###### 3.1.5.2.10 Mapping Null Object
 
 Null Object MUST be encoded as specified in [SOAP1.1] section 5.
 
-3.1.5.2.11  Mapping Exception
+###### 3.1.5.2.11 Mapping Exception
 
 Exceptions returned by the server MUST be turned into SOAP faults as specified in [SOAP1.1]
 section 4.4:
@@ -5251,7 +5026,7 @@ error information. In .NET Remoting, the detail MUST contain a serialized instan
 as specified in section 2.2.2.17. The instance MUST be encoded as specified in [SOAP1.1] section
 5.
 
-3.1.5.3  Resolving Object Reference
+##### 3.1.5.3 Resolving Object Reference
 
 When de-serializing the message content, if an ObjRef is encountered and has the fIsMarshalled
 field set to true, then it MUST be converted either into a Proxy or a Server Object. To create a Proxy,
@@ -5280,11 +5055,11 @@ graph contains the actual Server Object. Otherwise, a new Proxy MUST be created 
 URI and the Server Type, as specified in Creating Proxy from Request URI and Server
 Type (section 3.3.4.1.1).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 There are no timer events that are common to the server and the client.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no other local events that are common to the server and the client.
 
@@ -5295,9 +5070,10 @@ Release: March 13, 2019
 
 61 / 93
 
-3.2  Server Details
 
-3.2.1  Abstract Data Model
+### 3.2 Server Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5331,11 +5107,11 @@ binary format identifier and a SOAP format identifier.
 
 "SOAP-TCP", "HTTP", and "SOAP-HTTP".
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no timers used by this protocol.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server Channel Table is initialized by the higher layer. Each Channel has a Channel URI.
 Higher-level protocols MUST indicate in an implementation-specific way the following information
@@ -5364,9 +5140,10 @@ Release: March 13, 2019
 
 62 / 93
 
-3.2.4  Higher-Layer Triggered Events
 
-3.2.4.1  Register SAO ServerType
+#### 3.2.4 Higher-Layer Triggered Events
+
+##### 3.2.4.1 Register SAO ServerType
 
 When the higher-layer registers a Server Type with a Server Object URI and a Boolean value
 specifying whether the SAO is singleton, an implementation MUST do the following:
@@ -5381,7 +5158,7 @@ implementation MUST notify the higher layer about the error.
 If there were no errors then the implementation MUST add the Server Type, Server Object URI,
 and the boolean value to the Server Type Table.
 
-3.2.4.2  Marshal Server Object
+##### 3.2.4.2 Marshal Server Object
 
 When the higher layer registers a Server Object with a Server Object URI, the implementation MUST
 do the following:
@@ -5396,7 +5173,7 @@ implementation MUST notify the higher layer about the error.
 If there were no errors, then the implementation MUST add the Server Object URI and Server
 Object to the Server Object Table.
 
-3.2.4.3  Unmarshal Server Object
+##### 3.2.4.3 Unmarshal Server Object
 
 When the higher layer unregisters a Server Object using its Server Object URI, an implementation
 MUST do the following:
@@ -5412,9 +5189,9 @@ notified about the error and not do the following:
 
 The requests that are being processed, if any, MUST be allowed to complete.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a Message
+##### 3.2.5.1 Receiving a Message
 
 On receiving a message, an implementation of the protocol MUST perform the following actions:
 
@@ -5430,7 +5207,7 @@ On receiving a message, an implementation of the protocol MUST perform the follo
 
 6.  Send the Reply.
 
-3.2.5.1.1 Process the Message Frame
+###### 3.2.5.1.1 Process the Message Frame
 
 [MS-NRTP] - v20190313
 .NET Remoting: Core Protocol
@@ -5439,7 +5216,8 @@ Release: March 13, 2019
 
 63 / 93
 
- An implementation MUST determine the Channel associated with the received message in an
+
+ An implementation MUST determine the Channel associated with the received message in an
 implementation-specific way. How the message frame is processed depends on the transport
 information of the associated Channel, as specified in the following table.
 
@@ -5504,7 +5282,7 @@ HTTP message
 Content-Type entity-header
 field
 
-3.2.5.1.2 Binding to Server Object
+###### 3.2.5.1.2 Binding to Server Object
 
 An implementation MUST look up the Server Object URI got from the message in the Server Object
 Table. If Server Object Table does not have the Server Object, then the Server Type Table MUST be
@@ -5518,7 +5296,7 @@ Server Type Table, then a new Server Object MUST be created. If the Boolean valu
 Object URI in the Server Object Table indicated that the SAO is a singleton then the Server Object
 MUST be added to the Server Object Table.
 
-3.2.5.1.3 De-Serializing the Message Content
+###### 3.2.5.1.3 De-Serializing the Message Content
 
 An implementation MUST use the Content Type retrieved from the message to identify the
 serialization format of the message content as specified in the following table.
@@ -5553,10 +5331,11 @@ Exception message SHOULD convey the nature of the structural error. If the Data 
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-message content contain ObjRefs they MUST be resolved as specified in Resolving Object
+
+message content contain ObjRefs they MUST be resolved as specified in Resolving Object
 Reference (section 3.1.5.3).
 
-3.2.5.1.4 Dispatching the Call
+###### 3.2.5.1.4 Dispatching the Call
 
 This section defines the mechanism to invoke the Remote Method implementation targeted for the
 Server Object that was bound to the Server Object URI as specified in Binding to Server
@@ -5591,7 +5370,7 @@ An implementation of the protocol MUST invoke the Remote Method targeted for the
 with the Input Arguments and CallContext got by de-serialization as specified in De-Serializing the
 Message Content (section 3.2.5.1.3).<44>
 
-3.2.5.1.5 Serializing the Reply
+###### 3.2.5.1.5 Serializing the Reply
 
 The completion of a Remote Method can yield a Return Value, Output Arguments, or Exception. The
 values of the Call Context that were part of the request message MUST be returned back as part of
@@ -5601,18 +5380,18 @@ the request. If there is any error during serialization then a SerializationExce
 constructed as specified in Constructing SerializationException (section 3.2.5.1.7.1) and the Exception
 MUST be returned to the client.
 
-3.2.5.1.5.1  Serializing to Binary Serialization Format
+###### 3.2.5.1.5.1 Serializing to Binary Serialization Format
 
 An implementation MUST construct a BinaryMethodReturn record and insert any additional required
 records as defined in Mapping Remote Method Invocation Reply (section 3.1.5.1.2) using the Return
 Value, Output Arguments, Call Context, and Exception values.
 
-3.2.5.1.5.2  Serializing to SOAP Serialization Format
+###### 3.2.5.1.5.2 Serializing to SOAP Serialization Format
 
 An implementation MUST serialize the Return Value, Output Arguments, Call Context, and
 Exception values as specified in Mapping Remote Method Invocation Reply (section 3.1.5.2.2).
 
-3.2.5.1.5.3  Marshaling Server Objects and Proxy Instances
+###### 3.2.5.1.5.3 Marshaling Server Objects and Proxy Instances
 
 A Data Value that is being serialized can contain a Server Object or a Proxy. These MUST be
 serialized as ObjRef instances.
@@ -5624,7 +5403,8 @@ Release: March 13, 2019
 
 65 / 93
 
-In case of a Server Object, the Server Object MUST be marshaled as specified in the Marshal Server
+
+In case of a Server Object, the Server Object MUST be marshaled as specified in the Marshal Server
 Object section if it is not already marshaled. An implementation MUST provide a valid Server Object
 URI but MAY use any algorithm to create it.<45>
 
@@ -5677,7 +5457,7 @@ fIsMarshalled  True
 
 ChannelInfo  Null Object
 
-3.2.5.1.6 Sending Reply
+###### 3.2.5.1.6 Sending Reply
 
 The serialized message content of the reply MUST be sent back as the reply. The mechanism to
 send the reply message is dependent on the transport that is used. The actual mechanism is specified
@@ -5703,9 +5483,9 @@ Sending Reply under HTTP Transport (section 2.1.2)
 
 SOAP-HTTP  Sending Reply under the SOAP on HTTP (section 2.1.3.1)
 
-3.2.5.1.7 Constructing Exception Messages
+###### 3.2.5.1.7 Constructing Exception Messages
 
-3.2.5.1.7.1  Constructing SerializationException
+###### 3.2.5.1.7.1 Constructing SerializationException
 
 [MS-NRTP] - v20190313
 .NET Remoting: Core Protocol
@@ -5714,25 +5494,26 @@ Release: March 13, 2019
 
 66 / 93
 
-An instance of SerializationException as specified in section 2.2.2.10 MUST be constructed with the
+
+An instance of SerializationException as specified in section 2.2.2.10 MUST be constructed with the
 InnerException field as a Null Object. The value of the field Data MUST be a Null Object.<46>
 
-3.2.5.1.7.2  Constructing a Remoting Exception
+###### 3.2.5.1.7.2 Constructing a Remoting Exception
 
 A RemotingException (as specified in section 2.2.2.9) MUST be constructed with the InnerException
 field as a Null Object. The value of the field Data MUST be a Null Object.<47>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no timer events in this protocol.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no other local events.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5762,7 +5543,7 @@ Transport: A string value that indicates which transport protocol to use. Valid 
 
 "SOAP-TCP", "HTTP", and "SOAP-HTTP".
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 There are no timers used by this protocol.
 
@@ -5773,16 +5554,17 @@ Release: March 13, 2019
 
 67 / 93
 
-3.3.3  Initialization
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.3 Initialization
 
-3.3.4.1  Get SAO Proxy
+#### 3.3.4 Higher-Layer Triggered Events
+
+##### 3.3.4.1 Get SAO Proxy
 
 When the higher layer requests a Proxy for a Request URI and a Server Type name, an
 implementation MUST create a Proxy as specified in the following section.
 
-3.3.4.1.1 Creating Proxy from Request URI and Server Type
+###### 3.3.4.1.1 Creating Proxy from Request URI and Server Type
 
 If the Request URI is not well-formed, the higher layer MUST be notified of the error. The format of
 the Request URI for TCP is specified in the TcpUriString section. The format of the Request URI for
@@ -5793,7 +5575,7 @@ name, Transport Protocol information, and the serialization format to the Proxy 
 mechanism for determining the serialization format and the Transport Protocol for the given
 Request URI is implementation-specific and beyond the scope of this protocol.
 
-3.3.4.2  Remote Method Invocation
+##### 3.3.4.2 Remote Method Invocation
 
 When the higher layer invokes a Remote Method using a Proxy that passes Arguments and Call
 Context, the implementation MUST do the following:
@@ -5810,7 +5592,7 @@ Context, the implementation MUST do the following:
 
 6.  Pass the de-serialized values to the higher layer that invoked the Remote Method.
 
-3.3.4.2.1 Serializing the Request
+###### 3.3.4.2.1 Serializing the Request
 
 An implementation MUST look up the Proxy Table to get the Request URI, ServerTypeName,
 Transport, and Content-Type. If the Proxy Table does not contain the Proxy, then the higher layer
@@ -5831,7 +5613,7 @@ SOAP format identifier
 
 SOAP format as specified in [SOAP1.1]
 
-3.3.4.2.1.1  Serializing to Binary Serialization Format
+###### 3.3.4.2.1.1 Serializing to Binary Serialization Format
 
 [MS-NRTP] - v20190313
 .NET Remoting: Core Protocol
@@ -5840,11 +5622,12 @@ Release: March 13, 2019
 
 68 / 93
 
-An implementation MUST construct a BinaryMethodCall record and insert any additional required
+
+An implementation MUST construct a BinaryMethodCall record and insert any additional required
 records as defined in Mapping Remote Method Request (section 3.1.5.1.1) using the Server Type
 name, Remote Method name, Method Signature, Input Arguments, and Call Context.
 
-3.3.4.2.1.2  Serializing to SOAP Serialization Format
+###### 3.3.4.2.1.2 Serializing to SOAP Serialization Format
 
 An implementation MUST serialize the Server Type name, Remote Method name, Method
 Signature, Input Arguments, and Call Context as specified in Mapping Remote Method
@@ -5866,7 +5649,7 @@ with "SOAPAction" as the name as specified in Custom Header (section 2.2.3.3.3.2
 If the serialized Data Values contain a Server Object or a Proxy, they MUST be serialized as specified
 in Marshaling Server Objects and Proxy instances (section 3.2.5.1.5.3).
 
-3.3.4.2.2 Sending the Request
+###### 3.3.4.2.2 Sending the Request
 
  How the Request URI and Content-Type are transmitted depends on the transport information
 associated with the Proxy, which was obtained in an earlier step, "Serializing the Request" (section
@@ -5936,7 +5719,7 @@ Sending Request
 under SOAP on
 HTTP
 
-3.3.4.2.3 Reading the Reply
+###### 3.3.4.2.3 Reading the Reply
 
 For a One-Way Method, there is no reply message and hence an implementation MUST NOT wait for
 a reply. For a Two-Way Method, the implementation MUST wait for the reply. How the Reply
@@ -5959,7 +5742,8 @@ Release: March 13, 2019
 
 69 / 93
 
- Transport
+
+ Transport
 
  Section specifying the process
 
@@ -5973,7 +5757,7 @@ Receiving Reply under HTTP Transport section
 
 SOAP-HTTP  Receiving Reply under the SOAP on HTTP section
 
-3.3.4.2.4 De-Serializing the Response
+###### 3.3.4.2.4 De-Serializing the Response
 
 The Return Value and Output Arguments or an Exception along with values MUST be obtained by
 de-serializing the message content. The serialization format MUST be the same as that specified
@@ -6001,22 +5785,22 @@ higher layer MUST be notified of the error. In case of an error the implementati
 the message further. If the Data Values in the message content contain ObjRefs they MUST be
 resolved as specified in Resolving Object Reference (section 3.1.5.3)
 
-3.3.4.2.5 Completing the Invocation
+###### 3.3.4.2.5 Completing the Invocation
 
 The de-serialized values MUST be returned to the calling method as ReturnValue, Output
 Arguments, Call Context, or Exception. If the Remoting Type of any of the de-serialized values
 does not match the Remoting Types expected by the remote method, then the higher-layer
 abstraction MUST be notified of the type mismatch error.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 There are no events processed by the client role.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 There are no timer events in the client role.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 There are no other local events in the client role.
 
@@ -6027,9 +5811,10 @@ Release: March 13, 2019
 
 70 / 93
 
-4  Protocol Examples
 
-4.1  Two-Way Method Invocation Using TCP-Binary
+## 4 Protocol Examples
+
+### 4.1 Two-Way Method Invocation Using TCP-Binary
 
 This code sample illustrates the message exchanged for a Remote Method invocation.
 
@@ -6076,7 +5861,8 @@ Release: March 13, 2019
 
 71 / 93
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-NRTP].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -6143,7 +5929,8 @@ The OperationType field indicates this is a Request message of a Two-Way Method.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -6252,7 +6039,8 @@ Release: March 13, 2019
 
 73 / 93
 
-             PrimitiveTypeEnum: String (0x12)
+
+             PrimitiveTypeEnum: String (0x12)
              Data: SendAddress
        TypeName:
              PrimitiveTypeEnum: String (0x12)
@@ -6327,7 +6115,8 @@ CallContext that is sent as part of this message.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -6416,7 +6205,8 @@ Release: March 13, 2019
 
 75 / 93
 
-       BinaryHeaderEnum: BinaryMethodReturn (0x16)
+
+       BinaryHeaderEnum: BinaryMethodReturn (0x16)
        MessageEnum: 00000811
              NoArgs:                 (...............................1)
              ArgsInline:             (..............................0.)
@@ -6446,7 +6236,7 @@ Arguments or Call Context associated with this call. The ReturnValueInline flag 
 MessageEnum field indicates that the Return Value is part of the Method Return record. The actual
 value is encoded as StringValueWithCode.
 
-4.2  Two-Way Method Invocation Using SOAP Over HTTP
+### 4.2 Two-Way Method Invocation Using SOAP Over HTTP
 
 The next example shows the message trace using the SOAP transport with HTTP. In this sample, the
 client invokes the SendAddress method defined in the Server Interface RemotingTest.MyServer
@@ -6483,7 +6273,8 @@ Release: March 13, 2019
 
 76 / 93
 
-The HTTP headers of the request message are shown as follows.
+
+The HTTP headers of the request message are shown as follows.
 
  POST /MyServer.soap HTTP/1.1
  User-Agent: Mozilla/4.0+(compatible; MSIE 6.0; Windows 6.0.6000.0; MS .NET
@@ -6555,7 +6346,8 @@ The body of the message is as follows.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <item>0</item>
+
+       <item>0</item>
        <item>0</item>
        <item>0</item>
        <item>0</item>
@@ -6621,7 +6413,8 @@ a reference to the Return Value. The Return Value is serialized under the "Addre
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <SOAP-ENV:Header>
+
+   <SOAP-ENV:Header>
      <h3:__MethodSignature xsi:type="SOAP-ENC:methodSignature"
        SOAP-ENC:root="1"
        xmlns:h3="http://schemas.microsoft.com/clr/soap/messageProperties"
@@ -6655,7 +6448,7 @@ Release: March 13, 2019
    </SOAP-ENV:Body>
  </SOAP-ENV:Envelope>
 
-4.3  Faults in SOAP Over HTTP
+### 4.3 Faults in SOAP Over HTTP
 
 If the Remoting Method implementation of "DoIt" throws an Exception, then it is returned to the
 client as a SOAP fault. The HTTP headers of the reply message are shown in the following code
@@ -6689,7 +6482,8 @@ Release: March 13, 2019
 
 79 / 93
 
-   xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0"
+
+   xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0"
    SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
 
    <SOAP-ENV:Header>
@@ -6746,7 +6540,7 @@ Release: March 13, 2019
    </SOAP-ENV:Body>
  </SOAP-ENV:Envelope>
 
-4.4  One-Way Method Invocation Using SOAP Over TCP
+### 4.4 One-Way Method Invocation Using SOAP Over TCP
 
 The SOAP envelope is constructed in the same way as SOAP over HTTP. However, a TCP message
 frame is used as specified in the Sending Request subsection under the SOAP on TCP section.
@@ -6767,7 +6561,8 @@ The TCP message frame for a One-Way Method with SOAP payload is as follows.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- 0020
+
+ 0020
  0030
  0040
  0050
@@ -6828,7 +6623,7 @@ The key field to note for a One-Way Method request is the OperationType field. I
 1 indicating the request as One-Way. Because the payload is SOAP, the content-type is text/xml and
 the message frame has a custom header for SOAPAction.
 
-4.5  One-Way Method Invocation Using HTTP-Binary
+### 4.5 One-Way Method Invocation Using HTTP-Binary
 
 The binary message content of HTTP with binary is constructed the same way as TCP with binary as
 shown in the Two-Way Method Invocation Using TCP-Binary section. However, the message frame is
@@ -6847,7 +6642,8 @@ The HTTP headers for a One-Way Method with Binary payload is shown as follows.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- MS .NET Remoting; MS .NET CLR 2.0.50727.1318 )
+
+ MS .NET Remoting; MS .NET CLR 2.0.50727.1318 )
  Content-Type: application/octet-stream
  Host: localhost:8080
  Content-Length: 607
@@ -6871,9 +6667,10 @@ Release: March 13, 2019
 
 82 / 93
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 As specified in [MS-NRBF], the .NET Remoting Binary Format has constructs that could lead to security
 attacks. Such attacks are also possible in the SOAP encoding, where the Array sizes can be specified
@@ -6895,7 +6692,7 @@ content includes unsafe Remoting Types. Such attacks can be mitigated by authent
 Alternatively, an implementation can allow the higher layer to configure a list of Remoting Types in an
 implementation-specific way and disallow de-serialization of any Remoting Type that is not in the list.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -6920,7 +6717,8 @@ Release: March 13, 2019
 
 83 / 93
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6988,7 +6786,8 @@ users to configure the number of retransmissions. The default count is 1.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<6> Section 2.1.1.2.1: If the serialization format is SOAP, then the SOAPAction in the CustomHeader
+
+<6> Section 2.1.1.2.1: If the serialization format is SOAP, then the SOAPAction in the CustomHeader
 of a request message is processed as specified in the first Windows behavior note in section 3.2.5.1.4.
 
 <7> Section 2.1.1.2.2: Windows never writes chunked messages. However, it can consume chunked
@@ -7060,7 +6859,8 @@ Release: March 13, 2019
 
 85 / 93
 
-For a given DelegateSerializationHolder, the Index value starts from 0 and increases by 1 for each
+
+For a given DelegateSerializationHolder, the Index value starts from 0 and increases by 1 for each
 target Member. The Index value matches the index of the DelegateEntry for the Remote Method in the
 linked list.
 
@@ -7145,7 +6945,8 @@ namespace from the Server Type name and the Library name by using the ABNF synta
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-How Windows derives an XML namespace from the Server Type name and the Library name
+
+How Windows derives an XML namespace from the Server Type name and the Library name
 
 MethodNamespace                   =  CLRNSASSEMPREFIX '/' ClrNamespace( TypeName ) '/' LibraryIdentifier(
 
@@ -7227,7 +7028,8 @@ Release: March 13, 2019
 
 87 / 93
 
-<38> Section 3.1.5.2.1: Windows allows extensions of its implementation to participate in the
+
+<38> Section 3.1.5.2.1: Windows allows extensions of its implementation to participate in the
 serialization of a message. Windows allows the extensions to provide a collection of name-value pairs.
 The name is written as the local name of the header element. The namespace of the header element
 is "http://schemas.microsoft.com/clr/soap/messageProperties". The value is encoded as specified in
@@ -7309,7 +7111,8 @@ table.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The GuidPart is a string representation of a GUID with '-' replaced by '_'. Windows uses the same
+
+The GuidPart is a string representation of a GUID with '-' replaced by '_'. Windows uses the same
 GUID for all the Server Object URIs hosted in an AppDomain. The BytePart consists of 18 randomly
 generated bytes that are Base64 encoded. The bytes are generated for every Marshaled Server
 Object. SequenceId is an integer ranging from -2,147,483,648 to 2,147,483,647. It starts from 1 and
@@ -7339,7 +7142,8 @@ Release: March 13, 2019
 
 89 / 93
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7402,7 +7206,8 @@ Release: March 13, 2019
 
 90 / 93
 
-8  Index
+
+## 8 Index
 .
 
 .NET Remoting Description Notation message 46
@@ -7542,7 +7347,8 @@ M
 
 91 / 93
 
-Mapping
+
+Mapping
    Array Instances (section 3.1.5.1.7 58, section
 
 3.1.5.2.6 60)
@@ -7706,7 +7512,8 @@ Server Type 68
 
 92 / 93
 
-V
+
+V
 
 Vendor-extensible fields 19
 Versioning 19

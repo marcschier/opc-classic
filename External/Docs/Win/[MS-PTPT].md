@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 28
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -291,7 +292,8 @@ Release: April 23, 2024
 
 2 / 28
 
-Date
+
+Date
 
 Revision
 History
@@ -416,189 +418,82 @@ Release: April 23, 2024
 
 3 / 28
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common (PAC/PNS) Details](#31-common-pacpns-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Start-Control-Connection-Request Message](#3151-start-control-connection-request-message)
+        - [3.1.5.1.1 Start-Control-Connection-Request Collision Handling](#31511-start-control-connection-request-collision-handling)
+      - [3.1.5.2 Start-Control-Connection-Reply Message](#3152-start-control-connection-reply-message)
+      - [3.1.5.3 Stop-Control-Connection-Request Message](#3153-stop-control-connection-request-message)
+      - [3.1.5.4 Stop-Control-Connection-Reply Message](#3154-stop-control-connection-reply-message)
+      - [3.1.5.5 Echo-Request Message](#3155-echo-request-message)
+      - [3.1.5.6 Echo-Reply Message](#3156-echo-reply-message)
+      - [3.1.5.7 Sliding Window Protocol](#3157-sliding-window-protocol)
+      - [3.1.5.8 Handling Out-of-Sequence Packets](#3158-handling-out-of-sequence-packets)
+      - [3.1.5.9 Acknowledgment Time-Outs](#3159-acknowledgment-time-outs)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 TCP Disconnect](#3171-tcp-disconnect)
+  - [3.2 PAC/Server Details](#32-pacserver-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Call ID Values](#3251-call-id-values)
+      - [3.2.5.2 Outgoing-Call-Reply Message](#3252-outgoing-call-reply-message)
+      - [3.2.5.3 Incoming-Call-Request Message](#3253-incoming-call-request-message)
+      - [3.2.5.4 Incoming-Call-Connected Message](#3254-incoming-call-connected-message)
+      - [3.2.5.5 Call-Disconnect–Notify Message](#3255-call-disconnectnotify-message)
+      - [3.2.5.6 WAN-Error–Notify Message](#3256-wan-errornotify-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 PNS/Client Details](#33-pnsclient-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Establish PPTP Call Session](#3341-establish-pptp-call-session)
+      - [3.3.4.2 Disconnect PPTP Call Session](#3342-disconnect-pptp-call-session)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Call ID Values](#3351-call-id-values)
+      - [3.3.5.2 Outgoing-Call-Request Message](#3352-outgoing-call-request-message)
+      - [3.3.5.3 Incoming-Call-Reply Message](#3353-incoming-call-reply-message)
+      - [3.3.5.4 Call-Clear-Request Message](#3354-call-clear-request-message)
+      - [3.3.5.5 Set-Link-Info Message](#3355-set-link-info-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-
-2.1
-2.2
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-
-3  Protocol Details ..................................................................................................... 10
-Common (PAC/PNS) Details............................................................................... 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Processing Events and Sequencing Rules ....................................................... 10
-Start-Control-Connection-Request Message .............................................. 10
-Start-Control-Connection-Request Collision Handling ........................... 11
-Start-Control-Connection-Reply Message ................................................. 11
-Stop-Control-Connection-Request Message .............................................. 11
-Stop-Control-Connection-Reply Message .................................................. 11
-Echo-Request Message .......................................................................... 11
-Echo-Reply Message .............................................................................. 11
-Sliding Window Protocol ......................................................................... 11
-Handling Out-of-Sequence Packets .......................................................... 11
-Acknowledgment Time-Outs ................................................................... 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-TCP Disconnect ..................................................................................... 12
-PAC/Server Details ........................................................................................... 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Processing Events and Sequencing Rules ....................................................... 13
-Call ID Values ....................................................................................... 13
-Outgoing-Call-Reply Message ................................................................. 13
-Incoming-Call-Request Message ............................................................. 13
-Incoming-Call-Connected Message .......................................................... 13
-Call-Disconnect–Notify Message .............................................................. 13
-WAN-Error–Notify Message .................................................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 14
-PNS/Client Details ............................................................................................ 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.3.1
-3.3.2
-3.3.3
-
-3.2.6
-3.2.7
-
-3.1.7.1
-
-3.3
-
-3.2
-
-[MS-PTPT] - v20240423
-Point-to-Point Tunneling Protocol (PPTP) Profile
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 28
-
-3.3.4
-
-3.3.4.1
-3.3.4.2
-
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-
-3.3.6
-3.3.7
-
-Higher-Layer Triggered Events ..................................................................... 14
-Establish PPTP Call Session .................................................................... 14
-Disconnect PPTP Call Session .................................................................. 14
-Processing Events and Sequencing Rules ....................................................... 14
-Call ID Values ....................................................................................... 15
-Outgoing-Call-Request Message .............................................................. 15
-Incoming-Call-Reply Message ................................................................. 15
-Call-Clear-Request Message ................................................................... 15
-Set-Link-Info Message ........................................................................... 15
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 15
-
-4  Protocol Examples ................................................................................................. 16
-
-5  Security ................................................................................................................. 20
-Security Considerations for Implementers ........................................................... 20
-Index of Security Parameters ............................................................................ 20
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 21
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-PTPT] - v20240423
-Point-to-Point Tunneling Protocol (PPTP) Profile
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 28
-
-1  Introduction
+## 1 Introduction
 
 The Point-to-Point Tunneling Protocol (PPTP) is an Internet Engineering Task Force (IETF) standard
 protocol that allows the Point-to-Point Protocol (PPP) [RFC1661] to be tunneled through an IP
@@ -616,7 +511,7 @@ server) and PNS (as the remote client).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -641,14 +536,14 @@ protocols, and policy control information for supporting interactive logon.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -664,7 +559,8 @@ Release: April 23, 2024
 
 6 / 28
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2637] Hamzeh, K., Pall, G., Verthein, W., et al., "Point-to-Point Tunneling Protocol (PPTP)", RFC
@@ -673,7 +569,7 @@ Release: April 23, 2024
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [RFC1661] Simpson, W., Ed., "The Point-to-Point Protocol (PPP)", STD 51, RFC 1661, July 1994,
 https://www.rfc-editor.org/info/rfc1661
@@ -681,7 +577,7 @@ https://www.rfc-editor.org/info/rfc1661
 [RFC1701] Hanks, S., Li, T., Farinacci, D., and Traina, P., "Generic Routing Encapsulation (GRE)", RFC
 1701, October 1994, https://www.rfc-editor.org/info/rfc1701
 
-1.3  Overview
+### 1.3 Overview
 
 The profile described in this document differs from the PPTP protocol defined in [RFC2637] as follows:
 
@@ -727,7 +623,7 @@ support specifying the value "General Error" for the Result Code and passing the
 information in the Error Code field. This profile defines a new Result Code value of "0" as
 specified in section 3.2.5.5.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 PPTP has two parallel components, as specified in [RFC2637] section 1.3:
 
@@ -746,30 +642,31 @@ Point-to-Point Tunneling Protocol (PPTP) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-PTPT].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
 Figure 1: Relationship of parallel components to PPTP
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable when the implementation uses PPTP [RFC2637].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 PPTP is based on version 1, revision 0 of the Point-to-Point Tunneling Protocol (PPTP), as specified in
 [RFC2637] section 1.4.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -780,14 +677,15 @@ Release: April 23, 2024
 
 8 / 28
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 PPTP control packets are transported over a TCP connection, as described in [RFC2637] section 1.4.
 PPP data frames are transported over the GRE tunnel, as described in [RFC2637] section 4.<1>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 PPTP uses the message format specified in [RFC2637]. The PPTP control message formats are
 specified in [RFC2637] section 2. The GRE message format that is used to carry PPP frames is
@@ -804,15 +702,16 @@ Release: April 23, 2024
 
 9 / 28
 
-3  Protocol Details
 
-3.1  Common (PAC/PNS) Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common (PAC/PNS) Details
+
+#### 3.1.1 Abstract Data Model
 
 The PTPT state machine conforms to the state machine specified in [RFC2637] section 3.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The following timers are used by the PAC/PNS.
 
@@ -829,18 +728,18 @@ the connection is not in the established state within the time period specified 
 of this timer is 30 seconds, rather than 60 seconds as specified in [RFC2637] section 3.1.4. For more
 information, see section 3.1.5.1.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The PAC/PNS SHOULD initialize and listen on the PPTP port as specified in [RFC2637] section
 3.1.2.<3>
 
 The PAC/PNS SHOULD initialize the echo timeout value specified in [RFC2637] section 3.1.4.<4><5>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 Except as noted in this section, the message processing and sequencing rules are unchanged from
 PPTP as specified in [RFC2637]. As a first step in establishing a PPTP call session, a control connection
@@ -853,7 +752,7 @@ PAC and PNS MAY validate GRE packets received so that  the source IP address is 
 peer's IP address used in PPTP control channel establishment and for when packets do not validate
 and are then subsequently dropped.<6>
 
-3.1.5.1  Start-Control-Connection-Request Message
+##### 3.1.5.1 Start-Control-Connection-Request Message
 
 The Start-Control-Connection-Request message specified in [RFC2637] section 2.1 is used to initialize
 the tunnel. The originator SHOULD start the Control Connection Idle Timer (section 3.1.2) and enter
@@ -867,7 +766,8 @@ Point-to-Point Tunneling Protocol (PPTP) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the Start-Control-Connection-Reply message from the peer or after the Control Connection Idle Timer
+
+the Start-Control-Connection-Reply message from the peer or after the Control Connection Idle Timer
 expires.
 
 When the PAC/PNS receives an incoming connection on the PPTP TCP port (default 1723), it SHOULD
@@ -876,7 +776,7 @@ the PAC/PNS does not receive the Start-Control-Connection-Request message from t
 TCP connection before the Control Connection Idle Timer expires, it SHOULD discard the attempted
 connection.
 
-3.1.5.1.1 Start-Control-Connection-Request Collision Handling
+###### 3.1.5.1.1 Start-Control-Connection-Request Collision Handling
 
 The Point-to-Point Tunneling Protocol (PPTP) Profile does not implement handling of the Start Control
 Connection Initiation Request Collision message as specified in [RFC2637] section 3.1.3.
@@ -884,41 +784,41 @@ Connection Initiation Request Collision message as specified in [RFC2637] sectio
 The PAC/PNS SHOULD be capable of having multiple control connections between them where each
 control connection is independent of all other control connections.
 
-3.1.5.2  Start-Control-Connection-Reply Message
+##### 3.1.5.2 Start-Control-Connection-Reply Message
 
 Start-Control-Connection-Reply is the control message sent in response to the Start-Control-
 Connection-Request message. The format of this message is specified in [RFC2637] section 2.2.
 
-3.1.5.3  Stop-Control-Connection-Request Message
+##### 3.1.5.3 Stop-Control-Connection-Request Message
 
 The Stop-Control-Connection-Request message is the control message sent by any peer to notify a
 peer to close the control connection. The format of this message is specified in [RFC2637] section 2.3.
 
-3.1.5.4  Stop-Control-Connection-Reply Message
+##### 3.1.5.4 Stop-Control-Connection-Reply Message
 
 This control message is sent in response to the receipt of Stop-Control-Connection-Request. The
 format of this message is specified in [RFC2637] section 2.4.
 
-3.1.5.5  Echo-Request Message
+##### 3.1.5.5 Echo-Request Message
 
 This control message is sent by either peer of a PAC/PNS control connection to inform the other peer
 that this peer is alive as specified in [RFC2637] section 3.1.4. The PAC/PNS SHOULD send this
 message whenever the Echo Timer (section 3.1.2) expires. The format of this message is specified in
 [RFC2637] section 2.5.
 
-3.1.5.6  Echo-Reply Message
+##### 3.1.5.6 Echo-Reply Message
 
 This control message is sent in response to the receipt of a Echo-Request message. The format of this
 message is specified in [RFC2637] section 2.6.
 
-3.1.5.7  Sliding Window Protocol
+##### 3.1.5.7 Sliding Window Protocol
 
 The sliding window protocol for flow control is described in [RFC2637] section 4.2. The Point-to-Point
 Tunneling Protocol (PPTP) Profile does not implement the sliding window protocol for flow control of
 data packets. The PAC/PNS SHOULD ignore the received "Packet Recv. Window Size" value from the
 peer.
 
-3.1.5.8  Handling Out-of-Sequence Packets
+##### 3.1.5.8 Handling Out-of-Sequence Packets
 
 The process for handling out-of-sequence packets is described in [RFC2637] section 4.3. The
 PAC/PNS SHOULD attempt to reorder packets before sending them to the higher layer.<7> However,
@@ -930,7 +830,8 @@ Point-to-Point Tunneling Protocol (PPTP) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-when reordering is not possible, the packets SHOULD continue to be sent to the higher layer even
+
+when reordering is not possible, the packets SHOULD continue to be sent to the higher layer even
 though the packets might be sent out of order.
 
 Packets with duplicate sequence numbers SHOULD never occur, as specified in [RFC2637] section 4.3.
@@ -941,7 +842,7 @@ Note  Sending out-of-sequence packets to the higher layer is in direct contraven
 section 4.3, which states that such behavior could cause problems because proper PPP protocol
 operation is premised upon receiving packets in sequence.
 
-3.1.5.9  Acknowledgment Time-Outs
+##### 3.1.5.9 Acknowledgment Time-Outs
 
 The PPTP profile does not implement acknowledgment-related time-outs as specified in [RFC2637]
 section 4.4. The PAC/PNS SHOULD start the Packet Acknowledgment Timer (section 3.1.2) when it
@@ -950,34 +851,34 @@ expires and there are no outstanding GRE data packets to send, the PAC/PNS SHOUL
 acknowledgment GRE packet to the peer; otherwise, the sent GRE data packets will also carry the
 acknowledgment and the Packet Acknowledgment Timer SHOULD be stopped.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.1.7.1  TCP Disconnect
+##### 3.1.7.1 TCP Disconnect
 
 When the underlying control channel (TCP connection) gets closed at any time, the call sessions
 associated with the control channel SHOULD be closed automatically.
 
-3.2  PAC/Server Details
+### 3.2 PAC/Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The PPTP state machine conforms to the state machine specified in [RFC2637] section 3.2.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are defined beyond those described in section 3.1.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Events can be triggered from the higher-layer to disconnect a PPTP call session. When the PAC
 receives a request to disconnect the PPTP call session from the higher-layer, the PAC MUST send a
@@ -991,19 +892,20 @@ Release: April 23, 2024
 
 12 / 28
 
-connection with the PNS by sending the Stop-Control-Connection-Request message ([RFC2637]
+
+connection with the PNS by sending the Stop-Control-Connection-Request message ([RFC2637]
 section 2.3) to the PNS, as specified in [RFC2637] section 3.1.1.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 None.
 
-3.2.5.1  Call ID Values
+##### 3.2.5.1 Call ID Values
 
 PAC assigns a Call ID value to each user session it requests or accepts, as specified in [RFC2637]
 section 3.2.2.
 
-3.2.5.2  Outgoing-Call-Reply Message
+##### 3.2.5.2 Outgoing-Call-Reply Message
 
 The Outgoing-Call-Reply message is a PPTP control message sent by the PAC to the PNS in response
 to a received Outgoing-Call-Request message (section 3.3.5.2). The format of this message is
@@ -1012,20 +914,20 @@ specified in [RFC2637] section 2.8.<8>
 In the Outgoing-Call-Reply message, the PAC SHOULD set the value of the Packet Recv. Window
 Size field to 0 and the PNS MUST ignore the value of this field.<9>
 
-3.2.5.3  Incoming-Call-Request Message
+##### 3.2.5.3 Incoming-Call-Request Message
 
 Since the Point-to-Point Tunneling Protocol (PPTP) Profile does not allow a remote system to connect
 to the PAC over a PPP link, such as a dial-up link, the PAC MUST NOT send an Incoming-Call-Request
 message to the PNS. However, the PNS SHOULD handle this message, as specified in [RFC2637]
 section 2.9.
 
-3.2.5.4  Incoming-Call-Connected Message
+##### 3.2.5.4 Incoming-Call-Connected Message
 
 The Incoming-Call-Connected message is a PPTP control message sent by the PAC to the PNS in
 response to a received Incoming-Call-Reply message (section 3.3.5.3). The format of this message is
 specified in [RFC2637] section 2.11.
 
-3.2.5.5  Call-Disconnect–Notify Message
+##### 3.2.5.5 Call-Disconnect–Notify Message
 
 The Call-Disconnect–Notify message is a PPTP control message sent by the PAC to the PNS. It is
 issued whenever a call is disconnected due to the receipt by the PAC of a Call-Clear-Request message
@@ -1034,12 +936,12 @@ MUST set the value of the Result Code field in this message to 0 irrespective of
 disconnection, including general error conditions, as specified in [RFC2637] section 2.13. The PNS
 MUST ignore the value of the Result Code field in this message.
 
-3.2.5.6  WAN-Error–Notify Message
+##### 3.2.5.6 WAN-Error–Notify Message
 
 PAC MUST NOT send this message to PNS. If PNS receives this message, it MUST ignore the
 message.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -1050,17 +952,18 @@ Release: April 23, 2024
 
 13 / 28
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  PNS/Client Details
+### 3.3 PNS/Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The PPTP state machine conforms to the state machine specified in [RFC2637] section 3.2.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 In addition to the timers specified in section 3.1.2, the PNS uses the following timer:
 
@@ -1068,11 +971,11 @@ Dial out Timer: This timer specifies the period of time within which the control
 has to be in the established state as specified in [RFC2637] section 3.1.1. The value of this timer is 60
 seconds.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The primary higher-layer trigger events include:
 
@@ -1084,7 +987,7 @@ To establish a PPTP call session with the PAC.
 
 To disconnect an established PPTP call session with the PAC.
 
-3.3.4.1  Establish PPTP Call Session
+##### 3.3.4.1 Establish PPTP Call Session
 
 To establish a PPTP call session, the PNS MUST establish a control connection with the PAC, as
 specified in [RFC2637] section 1.3.1, if a control connection is not already established. On the newly
@@ -1096,14 +999,14 @@ Before attempting to establish the connection, the PNS SHOULD start the Dial out
 Timer (section 3.3.2) and the timer SHOULD be stopped only when the control connection is in the
 established state. When the timer expires, the control connection MUST be closed.
 
-3.3.4.2  Disconnect PPTP Call Session
+##### 3.3.4.2 Disconnect PPTP Call Session
 
 To disconnect a PPTP call session, the PNS MUST send a Call-Clear-Request message ([RFC2637]
 section 2.12) to the PAC, as specified in [RFC2637] section 3.2.4.2. If no more call sessions exist with
 the PAC, the PNS SHOULD close the control connection with the PAC by sending the Stop-Control-
 Connection-Request message ([RFC2637] section 2.3) as specified in [RFC2637] section 3.1.1.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
 None.
 
@@ -1114,12 +1017,13 @@ Release: April 23, 2024
 
 14 / 28
 
-3.3.5.1  Call ID Values
+
+##### 3.3.5.1 Call ID Values
 
 PNS assigns a Call ID value to each user session it requests or accepts, as specified in [RFC2637]
 section 3.2.2.
 
-3.3.5.2  Outgoing-Call-Request Message
+##### 3.3.5.2 Outgoing-Call-Request Message
 
 This control message is sent by the PNS to the PAC to initiate a call. The format of this message is
 specified in [RFC2637] section 2.7.<10>
@@ -1128,7 +1032,7 @@ The PNS SHOULD set the value of the Packet Recv. Window Size field in the Outgoi
 message to 0 and the PAC MUST ignore the value of the Packet Recv. Window Size field in the
 message.<11>
 
-3.3.5.3  Incoming-Call-Reply Message
+##### 3.3.5.3 Incoming-Call-Reply Message
 
 The PNS sends this message to the PAC in response to the Incoming-Call-Request
 message (section 3.2.5.3). The format of this message is specified in [RFC2637] section
@@ -1138,21 +1042,21 @@ The PNS SHOULD set the value of the Packet Recv. Window Size field in the Incomi
 message to 0 and the PAC MUST ignore the value of the Packet Recv. Window Size field in the
 message.<14>
 
-3.3.5.4  Call-Clear-Request Message
+##### 3.3.5.4 Call-Clear-Request Message
 
 PNS sends this message to PAC to close a particular call. The format of this message is specified in
 [RFC2637] section 2.12.
 
-3.3.5.5  Set-Link-Info Message
+##### 3.3.5.5 Set-Link-Info Message
 
 The Set-Link-Info message is a PPTP control message sent by the PNS to the PAC to set PPP
 negotiated options. The format of this message is specified in [RFC2637] section 2.15.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1163,7 +1067,8 @@ Release: April 23, 2024
 
 15 / 28
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following example shows the sequence of messages exchanged when a machine running Windows
 Vista operating system with Service Pack 1 (SP1) (name: "testclient.contoso.com") with IP address
@@ -1237,7 +1142,8 @@ Point-to-Point Tunneling Protocol (PPTP) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     Packet Fields:
+
+     Packet Fields:
          Length: set to 168 (0xA8).
          PPTP Message Type: Set to 1 (Control Message)
          Magic Cookie: Set to 0x1A2B3C4D
@@ -1312,7 +1218,8 @@ Release: April 23, 2024
 
 17 / 28
 
-             R:      (.0..............) Offset Absent
+
+             R:      (.0..............) Offset Absent
              K:      (..1.............) Key Present
              S:      (...1............) Sequence Number Present
              ssr:    (....0...........) Strict Source Route Absent
@@ -1389,7 +1296,8 @@ Point-to-Point Tunneling Protocol (PPTP) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         Error Code: 0
+
+         Error Code: 0
          Reserved1: 0
 
 [MS-PTPT] - v20240423
@@ -1399,14 +1307,15 @@ Release: April 23, 2024
 
 19 / 28
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 All security considerations applicable to PPTP [RFC2637] also apply to the extensions defined in this
 document, the Point-to-Point Tunneling Protocol (PPTP) Profile.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1417,7 +1326,8 @@ Release: April 23, 2024
 
 20 / 28
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1486,7 +1396,8 @@ Point-to-Point Tunneling Protocol (PPTP) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<4> Section 3.1.3: The Windows implementation reads the registry value "<PPTP-Registry-
+
+<4> Section 3.1.3: The Windows implementation reads the registry value "<PPTP-Registry-
 Location>\InactivityIdleSeconds" to obtain the echo timeout value. If this registry value is not
 present, the PAC/PNS uses an echo timeout value of 60 seconds.
 
@@ -1554,7 +1465,8 @@ Release: April 23, 2024
 
 22 / 28
 
-SubAddress = SubAddress has the Correlation ID (a GUID). The Correlation ID is randomly generated
+
+SubAddress = SubAddress has the Correlation ID (a GUID). The Correlation ID is randomly generated
 once per session. It is a 16-byte long value. The remaining 48 bytes are filled by zeros. The peer
 simply logs the Correlation ID specified in this field and does not use it with any packet exchange for
 that session.
@@ -1590,7 +1502,8 @@ Release: April 23, 2024
 
 23 / 28
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1634,7 +1547,8 @@ Release: April 23, 2024
 
 24 / 28
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1774,7 +1688,8 @@ Message processing
 
 25 / 28
 
-      acknowledgment time-outs 12
+
+      acknowledgment time-outs 12
       Call ID value 15
       Call-Clear-Request message 15
       Echo-Reply message 11
@@ -1921,7 +1836,8 @@ PPTP Network Server (PNS)
 
 26 / 28
 
-      Incoming-Call-Reply message 15
+
+      Incoming-Call-Reply message 15
       Outgoing-Call-Request message 15
       overview 10
       Set-Link-Info message 15
@@ -2065,7 +1981,8 @@ Timer events
 
 27 / 28
 
-   server (section 3.1.6 12, section 3.2.6 13)
+
+   server (section 3.1.6 12, section 3.2.6 13)
 Timers
    client 14
       Control Connection Idle 10

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 39
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -234,242 +235,102 @@ Release: April 23, 2024
 
 2 / 39
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Common Data Types](#222-common-data-types)
+      - [2.2.2.1 TWO_BYTE_UNSIGNED_INTEGER](#2221-twobyteunsignedinteger)
+      - [2.2.2.2 TWO_BYTE_SIGNED_INTEGER](#2222-twobytesignedinteger)
+      - [2.2.2.3 FOUR_BYTE_UNSIGNED_INTEGER](#2223-fourbyteunsignedinteger)
+      - [2.2.2.4 FOUR_BYTE_SIGNED_INTEGER](#2224-fourbytesignedinteger)
+      - [2.2.2.5 EIGHT_BYTE_UNSIGNED_INTEGER](#2225-eightbyteunsignedinteger)
+      - [2.2.2.6 RDPINPUT_HEADER](#2226-rdpinputheader)
+    - [2.2.3 Input Messages](#223-input-messages)
+      - [2.2.3.1 RDPINPUT_SC_READY_PDU](#2231-rdpinputscreadypdu)
+      - [2.2.3.2 RDPINPUT_CS_READY_PDU](#2232-rdpinputcsreadypdu)
+      - [2.2.3.3 RDPINPUT_TOUCH_EVENT_PDU](#2233-rdpinputtoucheventpdu)
+        - [2.2.3.3.1 RDPINPUT_TOUCH_FRAME](#22331-rdpinputtouchframe)
+          - [2.2.3.3.1.1 RDPINPUT_TOUCH_CONTACT](#223311-rdpinputtouchcontact)
+      - [2.2.3.4 RDPINPUT_SUSPEND_INPUT_PDU](#2234-rdpinputsuspendinputpdu)
+      - [2.2.3.5 RDPINPUT_RESUME_INPUT_PDU](#2235-rdpinputresumeinputpdu)
+      - [2.2.3.6 RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU](#2236-rdpinputdismisshoveringtouchcontactpdu)
+      - [2.2.3.7 RDPINPUT_PEN_EVENT_PDU](#2237-rdpinputpeneventpdu)
+        - [2.2.3.7.1 RDPINPUT_PEN_FRAME](#22371-rdpinputpenframe)
+          - [2.2.3.7.1.1 RDPINPUT_PEN_CONTACT](#223711-rdpinputpencontact)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Touch Contact State Transitions](#3111-touch-contact-state-transitions)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing an Input Message](#3151-processing-an-input-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending an RDPINPUT_SC_READY_PDU Message](#3251-sending-an-rdpinputscreadypdu-message)
+      - [3.2.5.2 Processing an RDPINPUT_CS_READY_PDU Message](#3252-processing-an-rdpinputcsreadypdu-message)
+      - [3.2.5.3 Processing an RDPINPUT_TOUCH_EVENT_PDU Message](#3253-processing-an-rdpinputtoucheventpdu-message)
+      - [3.2.5.4 Sending an RDPINPUT_SUSPEND_INPUT_PDU message](#3254-sending-an-rdpinputsuspendinputpdu-message)
+      - [3.2.5.5 Sending an RDPINPUT_RESUME_INPUT_PDU Message](#3255-sending-an-rdpinputresumeinputpdu-message)
+      - [3.2.5.6 Processing an RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU](#3256-processing-an-rdpinputdismisshoveringtouchcontactpdu)
+      - [3.2.5.7 Processing an RDPINPUT_PEN_EVENT_PDU Message](#3257-processing-an-rdpinputpeneventpdu-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Input Transmission Suspended](#3311-input-transmission-suspended)
+      - [3.3.1.2 Pen Input Allowed](#3312-pen-input-allowed)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Processing an RDPINPUT_SC_READY_PDU message](#3351-processing-an-rdpinputscreadypdu-message)
+      - [3.3.5.2 Sending an RDPINPUT_CS_READY_PDU message](#3352-sending-an-rdpinputcsreadypdu-message)
+      - [3.3.5.3 Sending an RDPINPUT_TOUCH_EVENT_PDU message](#3353-sending-an-rdpinputtoucheventpdu-message)
+      - [3.3.5.4 Processing an RDPINPUT_SUSPEND_INPUT_PDU message](#3354-processing-an-rdpinputsuspendinputpdu-message)
+      - [3.3.5.5 Processing an RDPINPUT_RESUME_INPUT_PDU message](#3355-processing-an-rdpinputresumeinputpdu-message)
+      - [3.3.5.6 Sending an RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU](#3356-sending-an-rdpinputdismisshoveringtouchcontactpdu)
+      - [3.3.5.7 Sending an RDPINPUT_PEN_EVENT_PDU message](#3357-sending-an-rdpinputpeneventpdu-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Touch Contact Geometry Examples](#41-touch-contact-geometry-examples)
+    - [4.1.1 Touch Contact Oriented at 0 Degrees](#411-touch-contact-oriented-at-0-degrees)
+    - [4.1.2 Touch Contact Oriented at 45 Degrees](#412-touch-contact-oriented-at-45-degrees)
+    - [4.1.3 Touch Contact Oriented at 90 Degrees](#413-touch-contact-oriented-at-90-degrees)
+    - [4.1.4 Touch Contact Oriented at 315 Degrees](#414-touch-contact-oriented-at-315-degrees)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.3
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Namespaces ................................................................................................ 8
-Common Data Types ..................................................................................... 8
-TWO_BYTE_UNSIGNED_INTEGER ............................................................. 8
-TWO_BYTE_SIGNED_INTEGER.................................................................. 8
-FOUR_BYTE_UNSIGNED_INTEGER ............................................................ 9
-FOUR_BYTE_SIGNED_INTEGER .............................................................. 10
-EIGHT_BYTE_UNSIGNED_INTEGER ......................................................... 11
-RDPINPUT_HEADER ............................................................................... 12
-Input Messages .......................................................................................... 13
-RDPINPUT_SC_READY_PDU ................................................................... 13
-RDPINPUT_CS_READY_PDU ................................................................... 14
-RDPINPUT_TOUCH_EVENT_PDU .............................................................. 15
-RDPINPUT_TOUCH_FRAME ............................................................... 16
-RDPINPUT_TOUCH_CONTACT ...................................................... 16
-RDPINPUT_SUSPEND_INPUT_PDU ........................................................... 19
-RDPINPUT_RESUME_INPUT_PDU ............................................................ 20
-RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU .......................... 20
-RDPINPUT_PEN_EVENT_PDU .................................................................. 20
-RDPINPUT_PEN_FRAME .................................................................... 21
-RDPINPUT_PEN_CONTACT .......................................................... 21
-2.2.3.7.1.1
-Directory Service Schema Elements ................................................................... 24
-
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.2.3.3.1.1
-
-2.2.3.3.1
-
-2.2.3.7.1
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 25
-Common Details .............................................................................................. 25
-Abstract Data Model .................................................................................... 25
-Touch Contact State Transitions .............................................................. 25
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-Processing an Input Message .................................................................. 26
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-Server Details .................................................................................................. 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 27
-Higher-Layer Triggered Events ..................................................................... 27
-Message Processing Events and Sequencing Rules .......................................... 27
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.1.5.1
-
-3.2
-
-[MS-RDPEI] - v20240423
-Remote Desktop Protocol: Input Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 39
-
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.2.5.7
-
-Sending an RDPINPUT_SC_READY_PDU Message ...................................... 27
-Processing an RDPINPUT_CS_READY_PDU Message .................................. 27
-Processing an RDPINPUT_TOUCH_EVENT_PDU Message ............................ 27
-Sending an RDPINPUT_SUSPEND_INPUT_PDU message ............................. 27
-Sending an RDPINPUT_RESUME_INPUT_PDU Message ............................... 28
-Processing an RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU
-Message .............................................................................................. 28
-Processing an RDPINPUT_PEN_EVENT_PDU Message ................................. 28
-Timer Events .............................................................................................. 28
-Other Local Events ...................................................................................... 28
-Client Details ................................................................................................... 28
-Abstract Data Model .................................................................................... 28
-Input Transmission Suspended ............................................................... 29
-Pen Input Allowed ................................................................................. 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 29
-Message Processing Events and Sequencing Rules .......................................... 29
-Processing an RDPINPUT_SC_READY_PDU message .................................. 29
-Sending an RDPINPUT_CS_READY_PDU message ..................................... 29
-Sending an RDPINPUT_TOUCH_EVENT_PDU message ................................ 30
-Processing an RDPINPUT_SUSPEND_INPUT_PDU message ......................... 30
-Processing an RDPINPUT_RESUME_INPUT_PDU message ........................... 30
-Sending an RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU message
- .......................................................................................................... 30
-Sending an RDPINPUT_PEN_EVENT_PDU message .................................... 30
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-
-3.3.1.1
-3.3.1.2
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-
-3.3.5.7
-
-3.3.6
-3.3.7
-
-4.1
-
-4  Protocol Examples ................................................................................................. 32
-Touch Contact Geometry Examples .................................................................... 32
-Touch Contact Oriented at 0 Degrees ............................................................ 32
-Touch Contact Oriented at 45 Degrees .......................................................... 33
-Touch Contact Oriented at 90 Degrees .......................................................... 33
-Touch Contact Oriented at 315 Degrees ........................................................ 34
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-
-5  Security ................................................................................................................. 35
-Security Considerations for Implementers ........................................................... 35
-Index of Security Parameters ............................................................................ 35
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 36
-
-7  Change Tracking .................................................................................................... 37
-
-8  Index ..................................................................................................................... 38
-
-[MS-RDPEI] - v20240423
-Remote Desktop Protocol: Input Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 39
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: Input Virtual Channel Extension applies to the Remote Desktop
 Protocol: Basic Connectivity and Graphics Remoting, as specified in [MS-RDPBCGR] sections 1 to 5.
@@ -482,7 +343,7 @@ effectively remoting the multitouch and pen input generated at the client.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -501,14 +362,14 @@ terminal server: A computer on which terminal services is running.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -523,7 +384,7 @@ Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -534,11 +395,12 @@ Release: April 23, 2024
 
 5 / 39
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-RDPEI].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
-1.3  Overview
+### 1.3 Overview
 
 An example message flow encapsulating all of the Input Messages, described in section 2.2.3, and
 protocol phases is presented in the following figure.
@@ -575,7 +437,8 @@ Remote Desktop Protocol: Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-To transition touch contacts in the "hovering" state to the "out of range" state (section 3.1.1.1), the
+
+To transition touch contacts in the "hovering" state to the "out of range" state (section 3.1.1.1), the
 client can send the RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU (section 2.2.3.6)
 message to the server. This message effectively allows individual contacts (in the hovering state) to
 be transitioned to the out of range state without requiring the construction and transmission of a
@@ -583,12 +446,12 @@ touch frame from client to server. If the contact specified in the
 RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU message does not exist on the server,
 then the message is simply ignored.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Input Virtual Channel Extension is embedded in a dynamic virtual
 channel transport, as specified in [MS-RDPEDYC] sections 1 to 3.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Input Virtual Channel Extension operates only after the dynamic virtual
 channel transport is fully established. If the dynamic virtual channel transport is terminated, the
@@ -596,21 +459,21 @@ Remote Desktop Protocol: Input Virtual Channel Extension is also terminated. The
 terminated by closing the underlying virtual channel. For details about closing the dynamic virtual
 channel, see [MS-RDPEDYC] section 3.2.5.2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Input Virtual Channel Extension is applicable in scenarios where the
 transfer of multitouch or pen input frames (generated by a physical or virtual digitizer) is required
 from a terminal server client to a terminal server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -621,9 +484,10 @@ Release: April 23, 2024
 
 7 / 39
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Input Virtual Channel Extension is designed to operate over a dynamic
 virtual channel, as specified in [MS-RDPEDYC] sections 1 to 3. The dynamic virtual channel name is
@@ -632,17 +496,17 @@ names in the context of opening a dynamic virtual channel is specified in [MS-RD
 2.2.2.1. The "Microsoft::Windows::RDS::Input" dynamic virtual channel SHOULD NOT be opened by
 the client if a touch digitizer is not present.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the Remote Desktop Protocol: Input Virtual Channel Extension message
 syntax. All multiple-byte fields within a message MUST be marshaled in little-endian byte order,
 unless otherwise specified.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
-2.2.2  Common Data Types
+#### 2.2.2 Common Data Types
 
-2.2.2.1  TWO_BYTE_UNSIGNED_INTEGER
+##### 2.2.2.1 TWO_BYTE_UNSIGNED_INTEGER
 
 The TWO_BYTE_UNSIGNED_INTEGER structure is used to encode a value in the range 0x0000 to
 0x7FFF by using a variable number of bytes. For example, 0x1A1B is encoded as { 0x9A, 0x1B }. The
@@ -694,7 +558,7 @@ val2 (1 byte, optional):  An 8-bit unsigned integer containing the least signifi
 
 represented by this structure.
 
-2.2.2.2  TWO_BYTE_SIGNED_INTEGER
+##### 2.2.2.2 TWO_BYTE_SIGNED_INTEGER
 
 The TWO_BYTE_SIGNED_INTEGER structure is used to encode a value in the range -0x3FFF to
 0x3FFF by using a variable number of bytes. For example, -0x1A1B is encoded as { 0xDA, 0x1B },
@@ -706,7 +570,8 @@ Remote Desktop Protocol: Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-and -0x0002 is encoded as { 0x42 }. The most significant bits of the first byte encode the number of
+
+and -0x0002 is encoded as { 0x42 }. The most significant bits of the first byte encode the number of
 bytes in the structure and the sign.
 
 0  1  2  3  4  5  6  7  8  9
@@ -775,7 +640,7 @@ val2 (1 byte, optional):  An 8-bit unsigned integer containing the least signifi
 
 represented by this structure.
 
-2.2.2.3  FOUR_BYTE_UNSIGNED_INTEGER
+##### 2.2.2.3 FOUR_BYTE_UNSIGNED_INTEGER
 
 The FOUR_BYTE_UNSIGNED_INTEGER structure is used to encode a value in the range
 0x00000000 to 0x3FFFFFFF by using a variable number of bytes. For example, 0x001A1B1C is
@@ -825,7 +690,8 @@ Release: April 23, 2024
 
 9 / 39
 
-Value
+
+Value
 
 Meaning
 
@@ -866,7 +732,7 @@ val4 (1 byte, optional):  An 8-bit unsigned integer containing the least signifi
 
 represented by this structure.
 
-2.2.2.4  FOUR_BYTE_SIGNED_INTEGER
+##### 2.2.2.4 FOUR_BYTE_SIGNED_INTEGER
 
 The FOUR_BYTE_SIGNED_INTEGER structure is used to encode a value in the range -0x1FFFFFFF
 to 0x1FFFFFFF by using a variable number of bytes. For example, -0x001A1B1C is encoded as {0xBA,
@@ -943,7 +809,8 @@ Release: April 23, 2024
 
 10 / 39
 
-Value
+
+Value
 
 Meaning
 
@@ -975,7 +842,7 @@ val4 (1 byte, optional):  An 8-bit unsigned integer containing the least signifi
 
 represented by this structure.
 
-2.2.2.5  EIGHT_BYTE_UNSIGNED_INTEGER
+##### 2.2.2.5 EIGHT_BYTE_UNSIGNED_INTEGER
 
 The EIGHT_BYTE_UNSIGNED_INTEGER structure is used to encode a value in the range
 0x0000000000000000 to 0x1FFFFFFFFFFFFFFF by using a variable number of bytes. For example,
@@ -1068,7 +935,8 @@ Remote Desktop Protocol: Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 5
 
@@ -1123,7 +991,7 @@ val8 (1 byte, optional): An 8-bit unsigned integer containing the least signific
 
 represented by this structure.
 
-2.2.2.6  RDPINPUT_HEADER
+##### 2.2.2.6 RDPINPUT_HEADER
 
 The RDPINPUT_HEADER structure is included in all input event PDUs and is used to identify the
 input event type and to specify the length of the PDU.
@@ -1170,7 +1038,8 @@ Release: April 23, 2024
 
 12 / 39
 
-Value
+
+Value
 
 EVENTID_TOUCH
 
@@ -1209,9 +1078,9 @@ pduLength (4 bytes):  A 32-bit unsigned integer that specifies the length of the
 
 bytes. This value MUST include the length of the RDPINPUT_HEADER (6 bytes).
 
-2.2.3  Input Messages
+#### 2.2.3 Input Messages
 
-2.2.3.1  RDPINPUT_SC_READY_PDU
+##### 2.2.3.1 RDPINPUT_SC_READY_PDU
 
 The RDPINPUT_SC_READY_PDU message is sent by the server endpoint and is used to indicate
 readiness to commence with input remoting transactions.
@@ -1279,7 +1148,8 @@ Release: April 23, 2024
 
 13 / 39
 
-Value
+
+Value
 
 Meaning
 
@@ -1309,7 +1179,7 @@ devices is supported.
 This field SHOULD be present if the protocolVersion field is set to RPDINPUT_PROTOCOL_V300
 (0x00030000).
 
-2.2.3.2  RDPINPUT_CS_READY_PDU
+##### 2.2.3.2 RDPINPUT_CS_READY_PDU
 
 The RDPINPUT_CS_READY_PDU message is sent by the client endpoint and is used to indicate
 readiness to commence with input remoting transactions.
@@ -1382,7 +1252,8 @@ Remote Desktop Protocol: Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flag
+
+Flag
 
 Meaning
 
@@ -1436,7 +1307,7 @@ maxTouchContacts (2 bytes): A 16-bit unsigned integer that specifies the maximum
 
 simultaneous touch contacts supported by the client.
 
-2.2.3.3  RDPINPUT_TOUCH_EVENT_PDU
+##### 2.2.3.3 RDPINPUT_TOUCH_EVENT_PDU
 
 The RDPINPUT_TOUCH_EVENT_PDU message is sent by the client endpoint and is used to remote
 a collection of touch frames.
@@ -1479,7 +1350,8 @@ Release: April 23, 2024
 
 15 / 39
 
-encodeTime (variable): A FOUR_BYTE_UNSIGNED_INTEGER (section 2.2.2.3) structure that
+
+encodeTime (variable): A FOUR_BYTE_UNSIGNED_INTEGER (section 2.2.2.3) structure that
 specifies the time that has elapsed (in milliseconds) from when the oldest touch frame was
 generated to when it was encoded for transmission by the client.
 
@@ -1492,7 +1364,7 @@ frames (variable): An array of RDPINPUT_TOUCH_FRAME structures ordered from the 
 time to the most recent in time. The number of structures in this array is specified by the
 frameCount field.
 
-2.2.3.3.1 RDPINPUT_TOUCH_FRAME
+###### 2.2.3.3.1 RDPINPUT_TOUCH_FRAME
 
 The RDPINPUT_TOUCH_FRAME structure encapsulates a collection of RDPINPUT_TOUCH_CONTACT
 (section 2.2.3.3.1.1) structures that are part of the same logical touch frame.
@@ -1532,7 +1404,7 @@ contacts (variable):  An array of RDPINPUT_TOUCH_CONTACT structures. The number 
 
 structures in this array is specified by the contactCount field.
 
-2.2.3.3.1.1  RDPINPUT_TOUCH_CONTACT
+###### 2.2.3.3.1.1 RDPINPUT_TOUCH_CONTACT
 
 The RDPINPUT_TOUCH_CONTACT structure describes the characteristics of a contact that is
 encapsulated in an RDPINPUT_TOUCH_FRAME (section 2.2.3.3.1) structure.
@@ -1563,7 +1435,8 @@ Release: April 23, 2024
 
 16 / 39
 
-...
+
+...
 
 y (variable)
 
@@ -1633,7 +1506,8 @@ Remote Desktop Protocol: Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flag
+
+Flag
 
 0x0004
 
@@ -1725,7 +1599,8 @@ Release: April 23, 2024
 
 18 / 39
 
-geometry. The presence of the contactRectLeft field is indicated by the
+
+geometry. The presence of the contactRectLeft field is indicated by the
 TOUCH_CONTACT_CONTACTRECT_PRESENT (0x0001) flag in the fieldsPresent field.
 
 contactRectTop (variable):  An optional TWO_BYTE_SIGNED_INTEGER structure that specifies
@@ -1767,7 +1642,7 @@ contact pressure. This value MUST be normalized in the range 0x00000000 to 0x000
 (1024), inclusive. The presence of this field is indicated by the
 TOUCH_CONTACT_PRESSURE_PRESENT (0x0004) flag in the fieldsPresent field.
 
-2.2.3.4  RDPINPUT_SUSPEND_INPUT_PDU
+##### 2.2.3.4 RDPINPUT_SUSPEND_INPUT_PDU
 
 The RDPINPUT_SUSPEND_INPUT_PDU message is sent by the server endpoint and is used to
 instruct the client to suspend the transmission of the RDPINPUT_TOUCH_EVENT_PDU (section 2.2.3.3)
@@ -1799,7 +1674,8 @@ Release: April 23, 2024
 
 19 / 39
 
-2.2.3.5  RDPINPUT_RESUME_INPUT_PDU
+
+##### 2.2.3.5 RDPINPUT_RESUME_INPUT_PDU
 
 The RDPINPUT_RESUME_INPUT_PDU message is sent by the server endpoint and is used to
 instruct the client to resume the transmission of the RDPINPUT_TOUCH_EVENT_PDU (section 2.2.3.3)
@@ -1824,7 +1700,7 @@ header (6 bytes):  An RDPINPUT_HEADER (section 2.2.2.6) structure. The eventId f
 
 set to EVENTID_RESUME_INPUT (0x0005).
 
-2.2.3.6  RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU
+##### 2.2.3.6 RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU
 
 The RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU message is sent by the client
 endpoint to instruct the server to transition a contact in the "hovering" state to the "out of range"
@@ -1855,7 +1731,7 @@ contactId (1 byte):  An 8-bit unsigned integer that specifies the ID assigned to
 
 value MUST be in the range 0x00 to 0xFF (inclusive).
 
-2.2.3.7  RDPINPUT_PEN_EVENT_PDU
+##### 2.2.3.7 RDPINPUT_PEN_EVENT_PDU
 
 The RDPINPUT_PEN_EVENT_PDU message is sent by the client endpoint and is used to remote a
 collection of pen frames.
@@ -1890,7 +1766,8 @@ Release: April 23, 2024
 
 20 / 39
 
-frames (variable)
+
+frames (variable)
 
 ...
 
@@ -1911,7 +1788,7 @@ frames (variable): An array of RDPINPUT_PEN_FRAME structures ordered from the ol
 the most recent in time. The number of structures in this array is specified by the frameCount
 field.
 
-2.2.3.7.1 RDPINPUT_PEN_FRAME
+###### 2.2.3.7.1 RDPINPUT_PEN_FRAME
 
 The RDPINPUT_PEN_FRAME structure encapsulates a collection of RDPINPUT_PEN_CONTACT
 (section 2.2.3.7.1.1) structures that are part of the same logical pen frame.
@@ -1951,7 +1828,7 @@ contacts (variable): An array of RDPINPUT_PEN_CONTACT structures. The number of 
 
 in this array is specified by the contactCount field.
 
-2.2.3.7.1.1  RDPINPUT_PEN_CONTACT
+###### 2.2.3.7.1.1 RDPINPUT_PEN_CONTACT
 
 The RDPINPUT_PEN_CONTACT structure describes the characteristics of a contact that is
 encapsulated in an RDPINPUT_PEN_FRAME (section 2.2.3.7.1) structure.
@@ -1963,7 +1840,8 @@ Release: April 23, 2024
 
 21 / 39
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2028,7 +1906,8 @@ Release: April 23, 2024
 
 22 / 39
 
-Flag
+
+Flag
 
 Meaning
 
@@ -2134,7 +2013,8 @@ Release: April 23, 2024
 
 23 / 39
 
-  UPDATE | INRANGE | INCONTACT
+
+  UPDATE | INRANGE | INCONTACT
 
   UP | INRANGE
 
@@ -2196,7 +2076,7 @@ tilt of the pen along the y-axis. This value MUST be in the range -0x0000005A (-
 (90), inclusive: a positive value indicates a tilt toward the user. The presence of this field is
 indicated by the PEN_CONTACT_TILTY_PRESENT (0x0010) flag in the fieldsPresent field.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 None.
 
@@ -2207,17 +2087,18 @@ Release: April 23, 2024
 
 24 / 39
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-RDPEI].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
-3.1.1.1  Touch Contact State Transitions
+##### 3.1.1.1 Touch Contact State Transitions
 
 The following finite state machine diagram describes the states through which a contact involved in a
 touch or pen transaction can transition during its lifetime.
@@ -2237,7 +2118,8 @@ Release: April 23, 2024
 
 25 / 39
 
-
+
+
 
 Engaged
 
@@ -2251,21 +2133,21 @@ When transitioning from the "engaged" state to the "hovering" state, or from the
 the "out of range" state, the contact position cannot change; it is only allowed to change after the
 transition has taken place.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
  None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Processing an Input Message
+##### 3.1.5.1 Processing an Input Message
 
  All input messages are prefaced by the RDPINPUT_HEADER (section 2.2.2.6) structure.
 
@@ -2277,17 +2159,17 @@ If the message is in the correct sequence, the pduLength field MUST be examined 
 it is consistent with the amount of data read from the "Microsoft::Windows::RDS::Input" dynamic
 virtual channel (section 2.1). If this is not the case, the message SHOULD be ignored.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
  None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
@@ -2298,22 +2180,23 @@ Release: April 23, 2024
 
 26 / 39
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server MUST send the RDPINPUT_SC_READY_PDU (section 2.2.3.1) message to the client, as
 specified in section 3.2.5.1, to initiate the process of remoting touch input frames.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Sending an RDPINPUT_SC_READY_PDU Message
+##### 3.2.5.1 Sending an RDPINPUT_SC_READY_PDU Message
 
 The structure and fields of the RDPINPUT_SC_READY_PDU message are specified in section
 2.2.3.1.
@@ -2323,7 +2206,7 @@ protocolVersion field SHOULD be set to at least RDPINPUT_PROTOCOL_V200 (0x000200
 server supports the injection of pen input using the RDPINPUT_PEN_EVENT_PDU (section 2.2.3.7)
 message.
 
-3.2.5.2  Processing an RDPINPUT_CS_READY_PDU Message
+##### 3.2.5.2 Processing an RDPINPUT_CS_READY_PDU Message
 
 The structure and fields of the RDPINPUT_CS_READY_PDU message are specified in section
 2.2.3.2.
@@ -2332,7 +2215,7 @@ The header field MUST be processed as specified in section 3.1.5.1. If the messa
 server SHOULD use the value specified by the client in the maxTouchContacts field to initialize the
 touch injection subsystem.
 
-3.2.5.3  Processing an RDPINPUT_TOUCH_EVENT_PDU Message
+##### 3.2.5.3 Processing an RDPINPUT_TOUCH_EVENT_PDU Message
 
 The structure and fields of the RDPINPUT_TOUCH_EVENT_PDU message are specified in section
 2.2.3.3.
@@ -2346,7 +2229,7 @@ If any of the contacts does not conform to the finite state machine described in
 touch transaction SHOULD be canceled in the session, and all subsequent frames associated with the
 transaction SHOULD be ignored until a new touch transaction is initiated at the client.
 
-3.2.5.4  Sending an RDPINPUT_SUSPEND_INPUT_PDU message
+##### 3.2.5.4 Sending an RDPINPUT_SUSPEND_INPUT_PDU message
 
 The structure and fields of the RDPINPUT_SUSPEND_INPUT_PDU message are specified in section
 2.2.3.4.
@@ -2362,7 +2245,8 @@ Remote Desktop Protocol: Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.5  Sending an RDPINPUT_RESUME_INPUT_PDU Message
+
+##### 3.2.5.5 Sending an RDPINPUT_RESUME_INPUT_PDU Message
 
 The structure and fields of the RDPINPUT_RESUME_INPUT_PDU message are specified in section
 2.2.3.5.
@@ -2371,7 +2255,7 @@ The RDPINPUT_RESUME_INPUT_PDU (section 2.2.3.5) message SHOULD be sent only if t
 transmission of input messages was suspended by using the RDPINPUT_SUSPEND_INPUT_PDU
 (section 2.2.3.4) message, as specified in section 3.2.5.4.
 
-3.2.5.6  Processing an RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU
+##### 3.2.5.6 Processing an RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU
 
 Message
 
@@ -2383,7 +2267,7 @@ server MUST transition the contact specified by the contactId field to the "out 
 in the hovering state. If no contact with the specified contact ID exists, or if the contact is in the
 engaged state, then no action MUST be taken.
 
-3.2.5.7  Processing an RDPINPUT_PEN_EVENT_PDU Message
+##### 3.2.5.7 Processing an RDPINPUT_PEN_EVENT_PDU Message
 
 The structure and fields of the RDPINPUT_PEN_EVENT_PDU message are specified in section
 2.2.3.7.
@@ -2397,17 +2281,17 @@ If any of the contacts does not conform to the finite state machine described in
 pen transaction SHOULD be canceled in the session, and all subsequent frames associated with the
 transaction SHOULD be ignored until a new pen transaction is initiated at the client.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2426,7 +2310,8 @@ Release: April 23, 2024
 
 28 / 39
 
-3.3.1.1  Input Transmission Suspended
+
+##### 3.3.1.1 Input Transmission Suspended
 
 The Input Transmission Suspended abstract data model (ADM) element contains a Boolean value
 that indicates whether the capture, encoding, and transmission of touch and pen frames on the client
@@ -2434,29 +2319,29 @@ have been suspended. This value is toggled by the receipt of the RDPINPUT_SUSPEN
 (section 2.2.3.4) message, as specified in section 3.3.5.4, and the RDPINPUT_RESUME_INPUT_PDU
 (section 2.2.3.5) message, as specified in section 3.3.5.5.
 
-3.3.1.2  Pen Input Allowed
+##### 3.3.1.2 Pen Input Allowed
 
 The Pen Input Allowed abstract data model (ADM) element contains a Boolean value that indicates
 whether the server supports the injection of pen input using the RDPINPUT_PEN_EVENT_PDU (section
 2.2.3.7) message. This value is set by the client when processing the RDPINPUT_SC_READY_PDU
 (section 2.2.3.1) message, as specified in section 3.3.5.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The client SHOULD NOT open the "Microsoft::Windows::RDS::Input" virtual channel transport (section
 2.1) if a physical or virtual touch digitizer is not attached to the system.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Processing an RDPINPUT_SC_READY_PDU message
+##### 3.3.5.1 Processing an RDPINPUT_SC_READY_PDU message
 
 The structure and fields of the RDPINPUT_SC_READY_PDU message are specified in section
 2.2.3.1.
@@ -2472,7 +2357,7 @@ remoting multitouch and pen input frames by sending the RDPINPUT_TOUCH_EVENT_PDU
 2.2.3.3) and RDPINPUT_PEN_EVENT_PDU (section 2.2.3.7) messages to the server, as specified in
 sections 3.3.5.3 and 3.3.5.7, respectively.
 
-3.3.5.2  Sending an RDPINPUT_CS_READY_PDU message
+##### 3.3.5.2 Sending an RDPINPUT_CS_READY_PDU message
 
 The structure and fields of the RDPINPUT_CS_READY_PDU message are specified in section
 2.2.3.2.
@@ -2488,7 +2373,8 @@ Release: April 23, 2024
 
 29 / 39
 
-3.3.5.3  Sending an RDPINPUT_TOUCH_EVENT_PDU message
+
+##### 3.3.5.3 Sending an RDPINPUT_TOUCH_EVENT_PDU message
 
 The structure and fields of the RDPINPUT_TOUCH_EVENT_PDU message are specified in section
 2.2.3.3.
@@ -2505,7 +2391,7 @@ RDPINPUT_TOUCH_CONTACT structures. The number of encoded frames depends on the r
 which the digitizer generates touch frames. Once the touch frames have been encoded, they MUST be
 encapsulated in an RDPINPUT_TOUCH_EVENT_PDU message.
 
-3.3.5.4  Processing an RDPINPUT_SUSPEND_INPUT_PDU message
+##### 3.3.5.4 Processing an RDPINPUT_SUSPEND_INPUT_PDU message
 
 The structure and fields of the RDPINPUT_SUSPEND_INPUT_PDU message are specified in section
 2.2.3.4.
@@ -2515,7 +2401,7 @@ MUST set the Input Transmission Suspended (section 3.3.1.1) ADM element to TRUE 
 suspend the transmission of input messages to the server. If the Input Transmission Suspended
 ADM element is already set to TRUE, the client SHOULD ignore this message.
 
-3.3.5.5  Processing an RDPINPUT_RESUME_INPUT_PDU message
+##### 3.3.5.5 Processing an RDPINPUT_RESUME_INPUT_PDU message
 
 The structure and fields of the RDPINPUT_RESUME_INPUT_PDU message are specified in section
 2.2.3.5.
@@ -2525,7 +2411,7 @@ SHOULD set the Input Transmission Suspended (section 3.3.1.1) ADM element to FAL
 MUST resume the transmission of input messages to the server. If the Input Transmission
 Suspended ADM element is already set to FALSE, the client SHOULD ignore this message.
 
-3.3.5.6  Sending an RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU
+##### 3.3.5.6 Sending an RDPINPUT_DISMISS_HOVERING_TOUCH_CONTACT_PDU
 
 message
 
@@ -2535,7 +2421,7 @@ message are specified in section 2.2.3.6.
 The contactId field MUST be initialized with the ID of a valid hovering contact that has to be
 transitioned to the "out of range" state.
 
-3.3.5.7  Sending an RDPINPUT_PEN_EVENT_PDU message
+##### 3.3.5.7 Sending an RDPINPUT_PEN_EVENT_PDU message
 
 The structure and fields of the RDPINPUT_PEN_EVENT_PDU message are specified in section
 2.2.3.7.
@@ -2553,17 +2439,18 @@ Release: April 23, 2024
 
 30 / 39
 
-Every pen frame received by the client from a pen digitizer MUST be encoded as an
+
+Every pen frame received by the client from a pen digitizer MUST be encoded as an
 RDPINPUT_PEN_FRAME structure, the contacts being encoded as RDPINPUT_PEN_CONTACT
 structures. The number of encoded frames depends on the rate at which the digitizer generates pen
 frames. Once the pen frames have been encoded, they MUST be encapsulated in an
 RDPINPUT_PEN_EVENT_PDU message.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -2574,20 +2461,21 @@ Release: April 23, 2024
 
 31 / 39
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-RDPEI].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Touch Contact Geometry Examples
+### 4.1 Touch Contact Geometry Examples
 
 The examples in sections 4.1.1 through to 4.1.4 present illustrations of touch contacts orientated at 0,
 45, 90 and 315 degrees respectively. Based on the orientation of the contact, the contact geometry is
 rotated so that the height of the contact rectangle is parallel to the y-axis and the width parallel to the
 x-axis.
 
-4.1.1  Touch Contact Oriented at 0 Degrees
+#### 4.1.1 Touch Contact Oriented at 0 Degrees
 
 In this case, the x, y, contact rectangle, and orientation of the RDPINPUT_TOUCH_CONTACT (section
 2.2.3.3.1.1) structure are populated by using the following values:
@@ -2607,12 +2495,13 @@ Release: April 23, 2024
 
 32 / 39
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-RDPEI].images/page033-img01.png)
 ![Extracted image 2 from page 33]([MS-RDPEI].images/page033-img02.png)
 <!-- /Extracted images from page 33 -->
 
-4.1.2  Touch Contact Oriented at 45 Degrees
+#### 4.1.2 Touch Contact Oriented at 45 Degrees
 
 In this case, the x, y, contact rectangle, and orientation fields of the RDPINPUT_TOUCH_CONTACT
 (section 2.2.3.3.1.1) structure are populated by using the following values:
@@ -2625,7 +2514,7 @@ contact rectangle = (R1', R2', R3', R4')
 
 orientation = 45 degrees
 
-4.1.3  Touch Contact Oriented at 90 Degrees
+#### 4.1.3 Touch Contact Oriented at 90 Degrees
 
 In this case, the x, y, contact rectangle, and orientation fields of the RDPINPUT_TOUCH_CONTACT
 (section 2.2.3.3.1.1) structure are populated by using the following values:
@@ -2645,11 +2534,12 @@ Release: April 23, 2024
 
 33 / 39
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-RDPEI].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
-4.1.4  Touch Contact Oriented at 315 Degrees
+#### 4.1.4 Touch Contact Oriented at 315 Degrees
 
 In this case, the x, y, contact rectangle, and orientation fields of the RDPINPUT_TOUCH_CONTACT
 (section 2.2.3.3.1.1)  structure are populated by using the following values:
@@ -2669,13 +2559,14 @@ Release: April 23, 2024
 
 34 / 39
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2686,7 +2577,8 @@ Release: April 23, 2024
 
 35 / 39
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2728,7 +2620,8 @@ Release: April 23, 2024
 
 36 / 39
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2772,7 +2665,8 @@ Release: April 23, 2024
 
 37 / 39
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2919,7 +2813,8 @@ Remote Desktop Protocol: Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   client (section 3.1.6 26, section 3.3.6 31)
+
+   client (section 3.1.6 26, section 3.3.6 31)
    server (section 3.1.6 26, section 3.2.6 28)
 Timers
    client (section 3.1.2 26, section 3.3.2 29)

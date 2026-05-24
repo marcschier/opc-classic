@@ -63,7 +63,8 @@ Release: June 25, 2021
 
 1 / 95
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -277,7 +278,8 @@ Release: June 25, 2021
 
 2 / 95
 
-Date
+
+Date
 
 Revision
 History
@@ -322,406 +324,177 @@ Release: June 25, 2021
 
 3 / 95
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Graph Topology](#131-graph-topology)
+    - [1.3.2 Connecting and Disconnecting](#132-connecting-and-disconnecting)
+      - [1.3.2.1 Signature](#1321-signature)
+      - [1.3.2.2 Contacts](#1322-contacts)
+      - [1.3.2.3 Partition Detection](#1323-partition-detection)
+      - [1.3.2.4 Short Term Partition Repair](#1324-short-term-partition-repair)
+      - [1.3.2.5 Long Term Partition Repair](#1325-long-term-partition-repair)
+    - [1.3.3 Direct Connection](#133-direct-connection)
+    - [1.3.4 Security Extension Points](#134-security-extension-points)
+      - [1.3.4.1 Connection Security](#1341-connection-security)
+      - [1.3.4.2 Record Security](#1342-record-security)
+    - [1.3.5 Shared Database](#135-shared-database)
+      - [1.3.5.1 Records](#1351-records)
+      - [1.3.5.2 Record Lifetime](#1352-record-lifetime)
+      - [1.3.5.3 Record Flooding](#1353-record-flooding)
+      - [1.3.5.4 Record Synchronization](#1354-record-synchronization)
+      - [1.3.5.5 Record Types](#1355-record-types)
+        - [1.3.5.5.1 Graph Info](#13551-graph-info)
+        - [1.3.5.5.2 Signature](#13552-signature)
+        - [1.3.5.5.3 Contact](#13553-contact)
+        - [1.3.5.5.4 Presence](#13554-presence)
+    - [1.3.6 Time Synchronization](#136-time-synchronization)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Message Components](#221-message-components)
+      - [2.2.1.1 Message Framing](#2211-message-framing)
+      - [2.2.1.2 PEER_MESSAGE](#2212-peermessage)
+      - [2.2.1.3 PEER_IN6_ADDRESS](#2213-peerin6address)
+      - [2.2.1.4 PEER_IN6_ADDRESS_EX](#2214-peerin6addressex)
+      - [2.2.1.5 PEER_ADDRESS](#2215-peeraddress)
+      - [2.2.1.6 RECORD_ABSTRACT](#2216-recordabstract)
+      - [2.2.1.7 HASH_INFO_ENTRY](#2217-hashinfoentry)
+      - [2.2.1.8 HASH_ENTRY_BOUNDARY](#2218-hashentryboundary)
+      - [2.2.1.9 PEER_RECORD](#2219-peerrecord)
+    - [2.2.2 Messages](#222-messages)
+      - [2.2.2.1 AUTH_INFO](#2221-authinfo)
+      - [2.2.2.2 CONNECT](#2222-connect)
+      - [2.2.2.3 WELCOME](#2223-welcome)
+      - [2.2.2.4 REFUSE](#2224-refuse)
+      - [2.2.2.5 DISCONNECT](#2225-disconnect)
+      - [2.2.2.6 SOLICIT_NEW](#2226-solicitnew)
+      - [2.2.2.7 SOLICIT_TIME](#2227-solicittime)
+      - [2.2.2.8 SOLICIT_HASH](#2228-solicithash)
+      - [2.2.2.9 ADVERTISE](#2229-advertise)
+      - [2.2.2.10 REQUEST](#22210-request)
+      - [2.2.2.11 FLOOD](#22211-flood)
+      - [2.2.2.12 SYNC_END](#22212-syncend)
+      - [2.2.2.13 PT2PT](#22213-pt2pt)
+      - [2.2.2.14 ACK](#22214-ack)
+    - [2.2.3 Internal Record types](#223-internal-record-types)
+      - [2.2.3.1 Graph Info Record](#2231-graph-info-record)
+      - [2.2.3.2 Signature Record](#2232-signature-record)
+      - [2.2.3.3 Contact Record](#2233-contact-record)
+      - [2.2.3.4 Presence Record](#2234-presence-record)
+      - [2.2.3.5 Record Attributes](#2235-record-attributes)
+    - [2.2.4 Internal Messages](#224-internal-messages)
+      - [2.2.4.1 Ping](#2241-ping)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Creating a New Graph](#3141-creating-a-new-graph)
+      - [3.1.4.2 Opening an Existing Graph](#3142-opening-an-existing-graph)
+      - [3.1.4.3 Application Adds a Record](#3143-application-adds-a-record)
+      - [3.1.4.4 Application Updates a Record](#3144-application-updates-a-record)
+      - [3.1.4.5 Application Deletes a Record](#3145-application-deletes-a-record)
+      - [3.1.4.6 Application Publishes Presence](#3146-application-publishes-presence)
+      - [3.1.4.7 Application Allows Direct Connections](#3147-application-allows-direct-connections)
+      - [3.1.4.8 Application Initiates Listening](#3148-application-initiates-listening)
+      - [3.1.4.9 Application Requests to Connect to the Graph](#3149-application-requests-to-connect-to-the-graph)
+      - [3.1.4.10 Application Requests that Deferred Records be Revalidated](#31410-application-requests-that-deferred-records-be-revalidated)
+      - [3.1.4.11 Application Requests To Be Notified About a Specific Record Type](#31411-application-requests-to-be-notified-about-a-specific-record-type)
+      - [3.1.4.12 Application Closes the Graph](#31412-application-closes-the-graph)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Pre-Authentication Messages](#3151-pre-authentication-messages)
+        - [3.1.5.1.1 Receive AUTH_INFO](#31511-receive-authinfo)
+        - [3.1.5.1.2 Receive Other Messages During Authentication](#31512-receive-other-messages-during-authentication)
+      - [3.1.5.2 Post-Authentication Messages](#3152-post-authentication-messages)
+        - [3.1.5.2.1 Receive CONNECT](#31521-receive-connect)
+        - [3.1.5.2.2 Receive WELCOME](#31522-receive-welcome)
+        - [3.1.5.2.3 Receive REFUSE](#31523-receive-refuse)
+        - [3.1.5.2.4 Receive DISCONNECT](#31524-receive-disconnect)
+        - [3.1.5.2.5 Receive SOLICIT_NEW](#31525-receive-solicitnew)
+        - [3.1.5.2.6 Receive SOLICIT_TIME](#31526-receive-solicittime)
+        - [3.1.5.2.7 Receive SOLICIT_HASH](#31527-receive-solicithash)
+        - [3.1.5.2.8 Receive ADVERTISE](#31528-receive-advertise)
+        - [3.1.5.2.9 Receive REQUEST](#31529-receive-request)
+        - [3.1.5.2.10 Receive FLOOD](#315210-receive-flood)
+        - [3.1.5.2.11 Receive SYNC_END](#315211-receive-syncend)
+        - [3.1.5.2.12 Receive ACK](#315212-receive-ack)
+        - [3.1.5.2.13 Receive PT2PT](#315213-receive-pt2pt)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Authentication Timer](#3161-authentication-timer)
+      - [3.1.6.2 Connect Timer](#3162-connect-timer)
+      - [3.1.6.3 Contact Timer](#3163-contact-timer)
+      - [3.1.6.4 Signature Timer](#3164-signature-timer)
+      - [3.1.6.5 Partition Detection Timer](#3165-partition-detection-timer)
+      - [3.1.6.6 Graph Maintenance Timer](#3166-graph-maintenance-timer)
+      - [3.1.6.7 Record Expiration Timer](#3167-record-expiration-timer)
+      - [3.1.6.8 Autorefresh Timer](#3168-autorefresh-timer)
+      - [3.1.6.9 Presence Timer](#3169-presence-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Sending a Message](#3171-sending-a-message)
+      - [3.1.7.2 Creating a Record](#3172-creating-a-record)
+      - [3.1.7.3 Publishing a Record](#3173-publishing-a-record)
+      - [3.1.7.4 Publishing a Presence Record](#3174-publishing-a-presence-record)
+      - [3.1.7.5 Publishing a Contact Record](#3175-publishing-a-contact-record)
+      - [3.1.7.6 Publishing a Signature Record](#3176-publishing-a-signature-record)
+      - [3.1.7.7 Publishing a Graph Info Record](#3177-publishing-a-graph-info-record)
+      - [3.1.7.8 Updating a Record](#3178-updating-a-record)
+      - [3.1.7.9 Deleting a Record](#3179-deleting-a-record)
+      - [3.1.7.10 Receiving a Record](#31710-receiving-a-record)
+        - [3.1.7.10.1 Receive an Application Record](#317101-receive-an-application-record)
+        - [3.1.7.10.2 Receive a Graph Info Record](#317102-receive-a-graph-info-record)
+        - [3.1.7.10.3 Receive a Signature Record](#317103-receive-a-signature-record)
+        - [3.1.7.10.4 Receive a Contact Record](#317104-receive-a-contact-record)
+        - [3.1.7.10.5 Receive a Presence Record](#317105-receive-a-presence-record)
+      - [3.1.7.11 Signature Calculation](#31711-signature-calculation)
+      - [3.1.7.12 Contact Maintenance](#31712-contact-maintenance)
+      - [3.1.7.13 Partition Detection](#31713-partition-detection)
+      - [3.1.7.14 Connection Maintenance](#31714-connection-maintenance)
+      - [3.1.7.15 Long-Term Partition Repair](#31715-long-term-partition-repair)
+      - [3.1.7.16 Graph Maintenance](#31716-graph-maintenance)
+      - [3.1.7.17 Presence Maintenance](#31717-presence-maintenance)
+      - [3.1.7.18 Expiring Application Record](#31718-expiring-application-record)
+      - [3.1.7.19 Expired Signature Record Found](#31719-expired-signature-record-found)
+      - [3.1.7.20 Expired Presence Record Found](#31720-expired-presence-record-found)
+      - [3.1.7.21 Expired Contact Record Found](#31721-expired-contact-record-found)
+      - [3.1.7.22 Autorefreshing Records](#31722-autorefreshing-records)
+      - [3.1.7.23 Local IP Addresses Change](#31723-local-ip-addresses-change)
+      - [3.1.7.24 Establishing a New Connection](#31724-establishing-a-new-connection)
+      - [3.1.7.25 Disconnecting a Connection](#31725-disconnecting-a-connection)
+      - [3.1.7.26 An Incoming Connection Is Established](#31726-an-incoming-connection-is-established)
+      - [3.1.7.27 Validating a Received Record](#31727-validating-a-received-record)
+      - [3.1.7.28 Securing a Record](#31728-securing-a-record)
+      - [3.1.7.29 Performing a Sync All](#31729-performing-a-sync-all)
+      - [3.1.7.30 Performing a Time-Based Sync](#31730-performing-a-time-based-sync)
+      - [3.1.7.31 Performing a Hash-Based Sync](#31731-performing-a-hash-based-sync)
+      - [3.1.7.32 Record Conflict Resolution](#31732-record-conflict-resolution)
+      - [3.1.7.33 Updating Connection Utility](#31733-updating-connection-utility)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Establishing a Connection](#41-establishing-a-connection)
+  - [4.2 Sync All](#42-sync-all)
+  - [4.3 Hash-Based Sync](#43-hash-based-sync)
+  - [4.4 Record Flooding](#44-record-flooding)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1.3.3
-1.3.4
-
-1.3.4.1
-1.3.4.2
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-1.3.2.4
-1.3.2.5
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Graph Topology .......................................................................................... 10
-Connecting and Disconnecting ...................................................................... 11
-Signature ............................................................................................. 12
-Contacts .............................................................................................. 12
-Partition Detection ................................................................................ 12
-Short Term Partition Repair .................................................................... 12
-Long Term Partition Repair ..................................................................... 12
-Direct Connection ....................................................................................... 13
-Security Extension Points ............................................................................. 13
-Connection Security .............................................................................. 13
-Record Security .................................................................................... 13
-Shared Database ........................................................................................ 13
-Records ............................................................................................... 13
-Record Lifetime..................................................................................... 13
-Record Flooding .................................................................................... 14
-Record Synchronization ......................................................................... 14
-Record Types ....................................................................................... 14
-Graph Info ...................................................................................... 14
-Signature ....................................................................................... 14
-Contact .......................................................................................... 14
-Presence ........................................................................................ 14
-Time Synchronization .................................................................................. 15
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 17
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 17
-
-1.3.5.5.1
-1.3.5.5.2
-1.3.5.5.3
-1.3.5.5.4
-
-1.3.5.1
-1.3.5.2
-1.3.5.3
-1.3.5.4
-1.3.5.5
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.5
-
-1.3.6
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Message Syntax ............................................................................................... 18
-Message Components .................................................................................. 18
-Message Framing .................................................................................. 18
-PEER_MESSAGE .................................................................................... 19
-PEER_IN6_ADDRESS ............................................................................. 19
-PEER_IN6_ADDRESS_EX ........................................................................ 20
-PEER_ADDRESS .................................................................................... 20
-RECORD_ABSTRACT .............................................................................. 21
-HASH_INFO_ENTRY ............................................................................... 21
-HASH_ENTRY_BOUNDARY ...................................................................... 22
-PEER_RECORD...................................................................................... 23
-Messages ................................................................................................... 26
-AUTH_INFO .......................................................................................... 26
-CONNECT ............................................................................................. 27
-WELCOME ............................................................................................ 28
-REFUSE ............................................................................................... 29
-DISCONNECT ....................................................................................... 30
-SOLICIT_NEW ...................................................................................... 31
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-2.2.2
-
-[MS-PPGRH] - v20210625
-Peer-to-Peer Graphing Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-4 / 95
-
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-2.2.2.13
-2.2.2.14
-
-2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-
-2.2.4
-
-2.2.4.1
-
-SOLICIT_TIME ...................................................................................... 32
-SOLICIT_HASH ..................................................................................... 33
-ADVERTISE .......................................................................................... 34
-REQUEST ............................................................................................. 35
-FLOOD ................................................................................................. 36
-SYNC_END ........................................................................................... 36
-PT2PT .................................................................................................. 37
-ACK..................................................................................................... 38
-Internal Record types .................................................................................. 39
-Graph Info Record ................................................................................. 39
-Signature Record .................................................................................. 41
-Contact Record ..................................................................................... 42
-Presence Record ................................................................................... 42
-Record Attributes .................................................................................. 43
-Internal Messages ....................................................................................... 44
-Ping .................................................................................................... 44
-
-3.1
-
-3.1.5
-
-3.1.5.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-
-3  Protocol Details ..................................................................................................... 46
-Client Details ................................................................................................... 46
-Abstract Data Model .................................................................................... 46
-Timers ...................................................................................................... 49
-Initialization ............................................................................................... 50
-Higher-Layer Triggered Events ..................................................................... 50
-Creating a New Graph ........................................................................... 50
-Opening an Existing Graph ..................................................................... 51
-Application Adds a Record ...................................................................... 52
-Application Updates a Record ................................................................. 53
-Application Deletes a Record .................................................................. 54
-Application Publishes Presence ................................................................ 54
-Application Allows Direct Connections ...................................................... 54
-Application Initiates Listening ................................................................. 54
-Application Requests to Connect to the Graph .......................................... 55
-Application Requests that Deferred Records be Revalidated ........................ 55
-Application Requests To Be Notified About a Specific Record Type ............... 55
-Application Closes the Graph .................................................................. 55
-Processing Events and Sequencing Rules ....................................................... 56
-Pre-Authentication Messages .................................................................. 56
-Receive AUTH_INFO ........................................................................ 56
-Receive Other Messages During Authentication ................................... 57
-Post-Authentication Messages ................................................................. 57
-Receive CONNECT ........................................................................... 58
-Receive WELCOME ........................................................................... 59
-Receive REFUSE .............................................................................. 61
-Receive DISCONNECT ...................................................................... 61
-Receive SOLICIT_NEW ..................................................................... 62
-Receive SOLICIT_TIME ..................................................................... 62
-Receive SOLICIT_HASH .................................................................... 63
-Receive ADVERTISE ......................................................................... 64
-Receive REQUEST ............................................................................ 64
-Receive FLOOD ............................................................................... 65
-Receive SYNC_END .......................................................................... 65
-Receive ACK ................................................................................... 67
-Receive PT2PT ................................................................................ 67
-Timer Events .............................................................................................. 67
-Authentication Timer ............................................................................. 67
-Connect Timer ...................................................................................... 68
-Contact Timer ....................................................................................... 68
-Signature Timer .................................................................................... 68
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-3.1.5.2.5
-3.1.5.2.6
-3.1.5.2.7
-3.1.5.2.8
-3.1.5.2.9
-3.1.5.2.10
-3.1.5.2.11
-3.1.5.2.12
-3.1.5.2.13
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-3.1.6.4
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.5.2
-
-3.1.6
-
-[MS-PPGRH] - v20210625
-Peer-to-Peer Graphing Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-5 / 95
-
-3.1.7
-
-3.1.6.5
-3.1.6.6
-3.1.6.7
-3.1.6.8
-3.1.6.9
-
-3.1.7.10.1
-3.1.7.10.2
-3.1.7.10.3
-3.1.7.10.4
-3.1.7.10.5
-
-3.1.7.1
-3.1.7.2
-3.1.7.3
-3.1.7.4
-3.1.7.5
-3.1.7.6
-3.1.7.7
-3.1.7.8
-3.1.7.9
-3.1.7.10
-
-Partition Detection Timer ....................................................................... 68
-Graph Maintenance Timer ...................................................................... 68
-Record Expiration Timer ......................................................................... 68
-Autorefresh Timer ................................................................................. 69
-Presence Timer ..................................................................................... 69
-Other Local Events ...................................................................................... 69
-Sending a Message ............................................................................... 69
-Creating a Record ................................................................................. 70
-Publishing a Record ............................................................................... 70
-Publishing a Presence Record ................................................................. 71
-Publishing a Contact Record ................................................................... 71
-Publishing a Signature Record ................................................................ 71
-Publishing a Graph Info Record ............................................................... 72
-Updating a Record................................................................................. 72
-Deleting a Record ................................................................................. 73
-Receiving a Record ................................................................................ 73
-Receive an Application Record ........................................................... 73
-Receive a Graph Info Record ............................................................. 73
-Receive a Signature Record .............................................................. 74
-Receive a Contact Record ................................................................. 74
-Receive a Presence Record ............................................................... 74
-3.1.7.11
-Signature Calculation............................................................................. 75
-3.1.7.12
-Contact Maintenance ............................................................................. 75
-3.1.7.13
-Partition Detection ................................................................................ 76
-3.1.7.14
-Connection Maintenance ........................................................................ 76
-Long-Term Partition Repair .................................................................... 76
-3.1.7.15
-3.1.7.16  Graph Maintenance ............................................................................... 76
-Presence Maintenance ........................................................................... 77
-3.1.7.17
-Expiring Application Record .................................................................... 77
-3.1.7.18
-Expired Signature Record Found ............................................................. 77
-3.1.7.19
-Expired Presence Record Found .............................................................. 77
-3.1.7.20
-Expired Contact Record Found ................................................................ 78
-3.1.7.21
-Autorefreshing Records .......................................................................... 78
-3.1.7.22
-3.1.7.23
-Local IP Addresses Change ..................................................................... 78
-Establishing a New Connection ............................................................... 78
-3.1.7.24
-3.1.7.25  Disconnecting a Connection .................................................................... 80
-An Incoming Connection Is Established .................................................... 80
-3.1.7.26
-Validating a Received Record .................................................................. 81
-3.1.7.27
-Securing a Record ................................................................................. 82
-3.1.7.28
-Performing a Sync All ............................................................................ 82
-3.1.7.29
-Performing a Time-Based Sync ............................................................... 83
-3.1.7.30
-Performing a Hash-Based Sync ............................................................... 83
-3.1.7.31
-3.1.7.32
-Record Conflict Resolution ...................................................................... 84
-3.1.7.33  Updating Connection Utility .................................................................... 84
-
-4  Protocol Examples ................................................................................................. 86
-Establishing a Connection .................................................................................. 86
-Sync All .......................................................................................................... 86
-Hash-Based Sync ............................................................................................. 87
-Record Flooding ............................................................................................... 89
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 90
-Security Considerations for Implementers ........................................................... 90
-Index of Security Parameters ............................................................................ 90
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 91
-
-7  Change Tracking .................................................................................................... 92
-
-8  Index ..................................................................................................................... 93
-
-6 / 95
-
-[MS-PPGRH] - v20210625
-Peer-to-Peer Graphing Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-[MS-PPGRH] - v20210625
-Peer-to-Peer Graphing Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-7 / 95
-
-1  Introduction
+## 1 Introduction
 
 The Peer-to-Peer Graphing Protocol is a peer-to-peer protocol for establishing and maintaining a
 connected set of nodes (referred to as a graph) and for replicating data among the nodes.
@@ -729,7 +502,7 @@ connected set of nodes (referred to as a graph) and for replicating data among t
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -798,7 +571,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-neighbor: A node that is connected to another node via a neighbor connection.
+
+neighbor: A node that is connected to another node via a neighbor connection.
 
 neighbor connection: A connection between two nodes that is used for Record flooding and
 
@@ -845,14 +619,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -872,7 +646,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-[MS-DTYP] Microsoft Corporation, "Windows Data Types".
+
+[MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
 [MS-RPCE] Microsoft Corporation, "Remote Procedure Call Protocol Extensions".
 
@@ -891,13 +666,13 @@ December 1998, https://www.rfc-editor.org/info/rfc2460
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-PNRP] Microsoft Corporation, "Peer Name Resolution Protocol (PNRP) Version 4.0".
 
 [MS-PPSEC] Microsoft Corporation, "Peer-to-Peer Grouping Security Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 The Peer-to-Peer Graphing Protocol enables applications to publish data into a database shared
 among a number of nodes organized into a graph, and have the database synchronized over all the
@@ -905,7 +680,7 @@ nodes in the graph. The Peer-to-Peer Graphing Protocol builds a network topology
 graph to scale to large numbers of nodes, provides reliable synchronization of the database, and
 evolves the graph topology so as to minimize latency as conditions change.
 
-1.3.1  Graph Topology
+#### 1.3.1 Graph Topology
 
 A graph strives to maintain a good topology by balancing the following goals:
 
@@ -931,13 +706,14 @@ Release: June 25, 2021
 
 10 / 95
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-PPGRH].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 Figure 1: Example of a graph
 
-1.3.2  Connecting and Disconnecting
+#### 1.3.2 Connecting and Disconnecting
 
 When establishing the first connection to a graph, it is necessary for an application to supply the
 Peer-to-Peer Graphing Protocol with the address and port of an active node. The Peer-to-Peer
@@ -997,12 +773,13 @@ Release: June 25, 2021
 
 11 / 95
 
-When a node disconnects from a neighbor, either because it is leaving the graph or because it has
+
+When a node disconnects from a neighbor, either because it is leaving the graph or because it has
 pruned the connection as part of graph maintenance, it first sends a message to the neighbor. The
 message contains the reason for disconnecting and provides a list of the disconnecting node's
 neighbors. For more information, see section 3.1.7.25.
 
-1.3.2.1  Signature
+##### 1.3.2.1 Signature
 
 The signature is defined to be the lowest node ID in the graph. The node with the lowest node ID
 is called the signature node. The signature node publishes the signature record and refreshes it
@@ -1021,7 +798,7 @@ incorrect, is called signature record. For more information, see section 3.1.7.1
 
 The signature record is different from all other record types in that it has a fixed record ID.
 
-1.3.2.2  Contacts
+##### 1.3.2.2 Contacts
 
 Each graph contains a number of contacts, the number of which scales with the size of the graph.
 The contacts are self-selected in such a way that the total number of contacts remains at or near the
@@ -1030,19 +807,19 @@ contact publishes its addresses and its locally cached signature in a contact re
 record is periodically refreshed and updated any time the contact sees a change in the signature. For
 more information, see section 3.1.7.12.
 
-1.3.2.3  Partition Detection
+##### 1.3.2.3 Partition Detection
 
 Each node monitors the signature record and the signature contained in contact records. If the
 signature in any contact record is different from the locally cached signature, a partition is detected.
 
-1.3.2.4  Short Term Partition Repair
+##### 1.3.2.4 Short Term Partition Repair
 
 When a partition is detected, the nodes that detect the partition will wait a short period of time for
 the contact record and signature record to match again (via receiving a new signature record or
 contact record). If this does not happen, the node will attempt to connect to the contact whose
 record does not match. For more information, see section 3.1.7.13.
 
-1.3.2.5  Long Term Partition Repair
+##### 1.3.2.5 Long Term Partition Repair
 
 It is not possible to detect all partitions. To help repair partitions that cannot be detected, each
 contact node will periodically attempt to form a connection to a new node. Because a node in a
@@ -1059,20 +836,21 @@ Release: June 25, 2021
 
 12 / 95
 
-1.3.3  Direct Connection
+
+#### 1.3.3 Direct Connection
 
 In addition to neighbor connections, a node can also have direct connections. A direct connection
 is one over which no record flooding or synchronization occurs. A direct connection is only used for
 application messages. direct connections do not take part in graph maintenance. For more
 information, see section 3.1.7.24.
 
-1.3.4  Security Extension Points
+#### 1.3.4 Security Extension Points
 
 The Peer-to-Peer Graphing Protocol exposes a security extension point, allowing an application to
 specify a graph security provider. A graph security provider extends the capabilities of the protocol
 to provide connection security and data security.
 
-1.3.4.1  Connection Security
+##### 1.3.4.1 Connection Security
 
 If specified, the Peer-to-Peer Graphing Protocol will call into the graph security provider for
 authentication whenever a new connection is established. The graph security provider can supply and
@@ -1081,7 +859,7 @@ After authentication is complete, the graph security provider will be called to 
 encryption/decryption on all messages sent/received over the connection. For more information, see
 section 3.1.7.28.
 
-1.3.4.2  Record Security
+##### 1.3.4.2 Record Security
 
 If specified, the Peer-to-Peer Graphing Protocol will call into the graph security provider whenever a
 record is sent or received, allowing it to provide authorization and record integrity.
@@ -1091,7 +869,7 @@ security provider can use for storage of additional data about the record. For e
 data field can contain a cryptographic signature of the record data. For more information, see section
 3.1.7.28.
 
-1.3.5  Shared Database
+#### 1.3.5 Shared Database
 
 The primary way in which nodes in a graph communicate with each other is through records in a
 shared database. The graph database is the set of all records that have been published in the graph
@@ -1101,7 +879,7 @@ other nodes in the graph. A node that is newly joined or reconnected to the grap
 copy of the database with other active members in the graph. Section 3 describes the details of these
 operations.
 
-1.3.5.1  Records
+##### 1.3.5.1 Records
 
 A record is the basic unit of information in the database, and therefore in the graph. Each record
 has a unique record ID (that is formed by generating a GUID and combining it with a hash of the
@@ -1109,7 +887,7 @@ record's Creator ID. Each record also has a type, defined by a GUID. The Peer-to
 Protocol defines a range of reserved types that applications cannot use, but otherwise the record type
 is application-defined.
 
-1.3.5.2  Record Lifetime
+##### 1.3.5.2 Record Lifetime
 
 Each record has a specific lifetime between the time it is created and the time it is scheduled to
 expire. The creation, last modification, and expiration times are all transmitted in the record and are
@@ -1122,13 +900,14 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-A record remains in the database until it expires. Expired records are purged periodically from the
+
+A record remains in the database until it expires. Expired records are purged periodically from the
 database (see sections 3.1.7.18 through3.1.7.21), and are never sent over a network connection.
 When modifying a record, the expiration time can be increased, but never decreased. A record that is
 no longer wanted is marked as "deleted"; the record still exists in the database and will be purged
 after it has expired.
 
-1.3.5.3  Record Flooding
+##### 1.3.5.3 Record Flooding
 
 Whenever a record is added, updated, or deleted, the record is flooded throughout the graph,
 ensuring that all connected nodes get the updated information. When a node receives a record from a
@@ -1136,7 +915,7 @@ neighbor that was useful (the record was one that the node did not have, or was 
 version that the node had), the connection utility for that connection is incremented. Otherwise, the
 connection utility is decremented.
 
-1.3.5.4  Record Synchronization
+##### 1.3.5.4 Record Synchronization
 
 Whenever a new neighbor connection is formed, the initiating node begins record synchronization.
 Record synchronization ensures that both nodes in the connection have identical databases. There
@@ -1155,30 +934,30 @@ graph. In this case, it is expected that both nodes will have identical or nearl
 Hash-based Sync compares the databases using record hashes, and sends only those records that are
 found to be different or missing.
 
-1.3.5.5  Record Types
+##### 1.3.5.5 Record Types
 
 There are four internal record types defined by the Peer-to-Peer Graphing Protocol: Signature,
 Contact, Presence, and Graph Info, which are used to implement graph maintenance, node
 presence, and publication of graph information.
 
-1.3.5.5.1 Graph Info
+###### 1.3.5.5.1 Graph Info
 
 The Graph Info Record (section 2.2.3.1) contains basic information about the graph and its
 configuration. This record is published when the graph is created and updated as its configuration is
 changed. When a Graph Info Record is received, its information is cached by the local node.
 
-1.3.5.5.2 Signature
+###### 1.3.5.5.2 Signature
 
 The signature record (section 2.2.3.2) is used to compute and publish the graph signature. For
 more information, see section 1.3.2.1.
 
-1.3.5.5.3 Contact
+###### 1.3.5.5.3 Contact
 
 The contact record (section 2.2.3.3) is used to publish the addresses of contacts and the signature
 of the graph. This information is used for partition detection and repair. For more information, see
 section 1.3.2.2.
 
-1.3.5.5.4 Presence
+###### 1.3.5.5.4 Presence
 
 [MS-PPGRH] - v20210625
 Peer-to-Peer Graphing Protocol
@@ -1187,7 +966,8 @@ Release: June 25, 2021
 
 14 / 95
 
-The presence record (section 3.1.4.4) is used to publish information about a node. The information
+
+The presence record (section 3.1.4.4) is used to publish information about a node. The information
 contains the addresses on which the node is listening, the node ID, and an application-defined
 attribute string. The lifetime of a presence record is controlled by the Presence Lifetime field of the
 Graph Info Record.
@@ -1207,7 +987,7 @@ more nodes in the graph than just its neighbors. This additional knowledge allow
 when performing graph maintenance, and enables application scenarios that require knowledge
 about other nodes in the graph.
 
-1.3.6  Time Synchronization
+#### 1.3.6 Time Synchronization
 
 In order to enforce the expiration of records, each node in the graph has a synchronized view of
 time. To accomplish this, the Peer-to-Peer Graphing Protocol implements the concept of peer time.
@@ -1226,7 +1006,7 @@ Note that this averaging does allow peer time to move backward by small amounts 
 peer time is measured as the number of 100s of nanosecond intervals since Jan. 1, 1601 and
 expressed in UTC format.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Peer-to-Peer Graphing Protocol exposes a set of APIs to access its functionalities and an interface
 to allow applications to plug in a graph security provider to implement network and data security.
@@ -1245,13 +1025,14 @@ Release: June 25, 2021
 
 15 / 95
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-PPGRH].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
 Figure 2: P2P Graphing relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 In order to connect to a graph, a node already knows the address and port of another node. These
 are obtained via external mechanisms or protocols by the applications that use the Peer-to-Peer
@@ -1263,7 +1044,7 @@ security provider is an optional component, and if none is specified, then the P
 Protocol simply does not implement any security. However, if a graph security provider is used, each
 node in a given graph is configured to use the same one.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The protocol is intended for a setting in which all nodes in a graph have symmetric connectivity--any
 node can successfully form a TCP connection to any other node. To the extent that this is not true, the
@@ -1276,14 +1057,15 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Because there is redundancy inherent in the record flooding protocol, the Peer-to-Peer Graphing
+
+Because there is redundancy inherent in the record flooding protocol, the Peer-to-Peer Graphing
 Protocol is better suited to smaller chunks of data. For example, using a graph for distribution of file
 metadata is more appropriate than using a graph for file distribution.
 
 The Peer-to-Peer Graphing Protocol is equally suited to scenarios where one node is a broadcaster and
 all others are receivers and scenarios where all nodes are equally publishing.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1308,13 +1090,13 @@ The Peer-to-Peer Graphing Protocol messages each contain a version number. The m
 allows for future data to be added to the message payload without breaking backward compatibility.
 However, there is no version or capability negotiation implemented.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Applications that use the Peer-to-Peer Graphing Protocol are able to define their own Record types.
 Each record in a graph has a Record Type, which is expressed as a GUID. A vendor MAY use any
 GUID except those in the reserved range (see section 2.2.3).
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1325,13 +1107,14 @@ Release: June 25, 2021
 
 17 / 95
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
 Unless otherwise qualified, instances of GUID in sections 2 and 3 refer to [MS-DTYP] section 2.3.4.
 
-2.1  Transport
+### 2.1 Transport
 
 The Peer-to-Peer Graphing Protocol uses TCP [RFC793] over IPv6 [RFC2460] as its transport. The
 specific port used is determined by each client independently and can be either provided by the
@@ -1340,7 +1123,7 @@ applications to specify a graph security provider, which can inject messages int
 exchange and can encrypt (or even augment or modify) each message before it is sent over the TCP
 connection.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The message syntax specified following does not require any particular field alignment for fields that
 follow a variable-length field.
@@ -1353,9 +1136,9 @@ common message components specified in sections 2.2.1.2 through 2.2.1.9. The def
 used by the protocol is 16,379 bytes. Any message received by the protocol with a size larger than the
 frame size MUST be dropped, and the connection MUST be aborted.
 
-2.2.1  Message Components
+#### 2.2.1 Message Components
 
-2.2.1.1  Message Framing
+##### 2.2.1.1 Message Framing
 
 The Peer-to-Peer Graphing Protocol uses TCP, which is a stream-based communication mechanism.
 However, the protocol is message-oriented. Additionally, the size of a message can be quite large.
@@ -1395,13 +1178,14 @@ Release: June 25, 2021
 
 18 / 95
 
-Frame Size (2 bytes): The total number of bytes in the current frame. This value MUST be at least 1
+
+Frame Size (2 bytes): The total number of bytes in the current frame. This value MUST be at least 1
 and the maximum MUST be less than or equal to the size specified in the Max Frame Size element
 described in section 3.1.1.
 
 Frame Payload (variable): The frame payload.
 
-2.2.1.2  PEER_MESSAGE
+##### 2.2.1.2 PEER_MESSAGE
 
 Each message that is exchanged between nodes MUST be prefixed by the following structure.
 
@@ -1490,7 +1274,7 @@ ACK
 
 Reserved (2 bytes): MUST be set to zero and ignored on receipt.
 
-2.2.1.3  PEER_IN6_ADDRESS
+##### 2.2.1.3 PEER_IN6_ADDRESS
 
 This structure represents a single IPv6 address.
 
@@ -1501,7 +1285,8 @@ Release: June 25, 2021
 
 19 / 95
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1528,7 +1313,7 @@ Port (2 bytes): The TCP port on which the Node is listening.
 
 IPv6 Address (16 bytes): The numerical value of an IPv6 Address [RFC4291].
 
-2.2.1.4  PEER_IN6_ADDRESS_EX
+##### 2.2.1.4 PEER_IN6_ADDRESS_EX
 
 This structure represents a single IPv6 address and a Peer ID.
 
@@ -1565,7 +1350,7 @@ IPv6 Address (16 bytes): The numerical value of an IPv6 Address [RFC4291].
 
 Peer ID (variable): The null-terminated UTF-8 string representing the Peer ID.
 
-2.2.1.5  PEER_ADDRESS
+##### 2.2.1.5 PEER_ADDRESS
 
 This structure represents a single IPv6 address and appears in the message syntax for records.
 
@@ -1589,7 +1374,8 @@ Release: June 25, 2021
 
 20 / 95
 
-Protocol Family
+
+Protocol Family
 
 Port
 
@@ -1615,7 +1401,7 @@ IPv6 Address (16 bytes): The numeric value of the IPv6 Address [RFC4291].
 
 Zero (4 bytes): MUST be set to 0x00000000.
 
-2.2.1.6  RECORD_ABSTRACT
+##### 2.2.1.6 RECORD_ABSTRACT
 
 Used in the ADVERTISE (section 2.2.2.9) message, a RECORD_ABSTRACT represents the record ID
 and version of a given record.
@@ -1643,7 +1429,7 @@ Record ID (16 bytes): The record ID, expressed as a GUID.
 
 Version (4 bytes): The version number of this record.
 
-2.2.1.7  HASH_INFO_ENTRY
+##### 2.2.1.7 HASH_INFO_ENTRY
 
 Used in the SOLICIT_HASH (section 2.2.2.8) message, a HASH_INFO_ENTRY represents the hash of
 Record Abstracts for the given record range.
@@ -1668,7 +1454,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-...
+
+...
 
 ...
 
@@ -1692,7 +1479,7 @@ Record ID (16 bytes): The record ID at the upper boundary of the record range, e
 
 GUID.
 
-2.2.1.8  HASH_ENTRY_BOUNDARY
+##### 2.2.1.8 HASH_ENTRY_BOUNDARY
 
 Used in the ADVERTISE (section 2.2.2.9) message, a HASH_ENTRY_BOUNDARY represents a range of
 record IDs and modification times.
@@ -1737,7 +1524,8 @@ Release: June 25, 2021
 
 22 / 95
 
-Modification Time Lower (8 bytes): The lowest value of the last modification time for the range of
+
+Modification Time Lower (8 bytes): The lowest value of the last modification time for the range of
 
 records.
 
@@ -1755,7 +1543,7 @@ a GUID.
 
 Count (4 bytes): The number of records present in this range.
 
-2.2.1.9  PEER_RECORD
+##### 2.2.1.9 PEER_RECORD
 
 This represents a record that is part of the graph database. Each record is identified by a record
 type that defines the format of the payload data. The Peer-to-Peer Graphing Protocol defines four
@@ -1812,7 +1600,8 @@ Release: June 25, 2021
 
 23 / 95
 
-Security Data (variable)
+
+Security Data (variable)
 
 ...
 
@@ -1887,7 +1676,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-A - Z1 (1 bit): MUST be set to 0.
+
+A - Z1 (1 bit): MUST be set to 0.
 
 B - Z2 (1 bit): MUST be set to 0.
 
@@ -1968,12 +1758,13 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Attributes Length value is 0x00000000. See section 2.2.3.5 for the specification of the syntax of
+
+Attributes Length value is 0x00000000. See section 2.2.3.5 for the specification of the syntax of
 Attributes.
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
-2.2.2.1  AUTH_INFO
+##### 2.2.2.1 AUTH_INFO
 
 AUTH_INFO is the first message sent by the connection initiator when establishing a connection.
 Because this message is sent before the graph security provider negotiation, it is always sent in the
@@ -2057,7 +1848,8 @@ Release: June 25, 2021
 
 26 / 95
 
-Graph ID Offset (2 bytes): The offset, in bytes, from the beginning of the message to the graph
+
+Graph ID Offset (2 bytes): The offset, in bytes, from the beginning of the message to the graph
 
 ID.
 
@@ -2079,7 +1871,7 @@ Destination Peer ID Data (variable): A null-terminated UTF-8 string representing
 the node that the connection is intended for. If the Destination Peer ID Offset is equal to
 Message Size, this field MUST NOT be present.
 
-2.2.2.2  CONNECT
+##### 2.2.2.2 CONNECT
 
 The CONNECT message is used by a node to establish a direct connection or neighbor connection
 with another node. This message provides the destination node with the listening addresses of the
@@ -2143,7 +1935,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Z1 (1 bit): MUST be set to 0 and MUST be ignored on receipt.
+
+Z1 (1 bit): MUST be set to 0 and MUST be ignored on receipt.
 
 Z2 (1 bit): MUST be set to 0 and MUST be ignored on receipt.
 
@@ -2190,7 +1983,7 @@ Friendly Name (variable): A null-terminated UTF-8 string representing the friend
 sender. If the Friendly Name Offset is equal to the Message Size, this field MUST NOT be
 present.
 
-2.2.2.3  WELCOME
+##### 2.2.2.3 WELCOME
 
 The WELCOME message is sent in response to a CONNECT message if the connection is accepted.
 
@@ -2228,7 +2021,8 @@ Release: June 25, 2021
 
 28 / 95
 
-Address Count
+
+Address Count
 
 Reserved2
 
@@ -2287,7 +2081,7 @@ Peer ID (variable): A null-terminated UTF-8 string representing the Peer ID of t
 Friendly Name (variable): A null-terminated UTF-8 string representing the friendly name of the
 sender. If Friendly Name Offset is equal to Message Size, this field MUST NOT be present.
 
-2.2.2.4  REFUSE
+##### 2.2.2.4 REFUSE
 
 The REFUSE message is sent in response to the CONNECT (section 2.2.2.2) message when the
 connection is not accepted.
@@ -2299,7 +2093,8 @@ Release: June 25, 2021
 
 29 / 95
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2385,7 +2180,7 @@ IPv6 Address Array (variable): An array of Address Count IPv6 addresses in PEER_
 
 (section 2.2.1.3) form. This field MUST NOT be present if the Address Count is 0x00.
 
-2.2.2.5  DISCONNECT
+##### 2.2.2.5 DISCONNECT
 
 The DISCONNECT message is sent by a node before terminating an existing connection. After
 receiving this message, the remote node MUST terminate the connection.
@@ -2397,7 +2192,8 @@ Release: June 25, 2021
 
 30 / 95
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2472,7 +2268,7 @@ IPv6 Address Array (variable): An array of IPv6 addresses in PEER_IN6_ADDRESS (s
 
 2.2.1.3) form. This field MUST NOT be present if the Address Count is 0x00.
 
-2.2.2.6  SOLICIT_NEW
+##### 2.2.2.6 SOLICIT_NEW
 
 The SOLICIT_NEW message is sent by a node that connected to the graph for the first time (and has
 never synchronized before). This message initiates a sync of the entire database.
@@ -2503,7 +2299,8 @@ Release: June 25, 2021
 
 31 / 95
 
-Inclusion Count
+
+Inclusion Count
 
 Exclusion Count
 
@@ -2549,7 +2346,7 @@ Record Types array.
 
 Record Types array.
 
-2.2.2.7  SOLICIT_TIME
+##### 2.2.2.7 SOLICIT_TIME
 
 The SOLICIT_TIME message is used to initiate Time-based Sync.
 
@@ -2591,7 +2388,8 @@ Release: June 25, 2021
 
 32 / 95
 
-...
+
+...
 
 Message Size (4 bytes): The total number of bytes in the message.
 
@@ -2624,7 +2422,7 @@ Record Types (variable): The array of record types that are included or excluded
 array of GUIDs in big-endian byte order. This array is interpreted the same as in SOLICIT_NEW
 (section 2.2.2.6).
 
-2.2.2.8  SOLICIT_HASH
+##### 2.2.2.8 SOLICIT_HASH
 
 The SOLICIT_HASH message is used to initiate a Hash-based Sync.
 
@@ -2676,7 +2474,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Version (1 byte): The Peer-to-Peer Graphing Protocol version number. This MUST be set to 0x10 to
+
+Version (1 byte): The Peer-to-Peer Graphing Protocol version number. This MUST be set to 0x10 to
 
 signify version 1.0.
 
@@ -2714,7 +2513,7 @@ Hash Entry Array (variable): The array of HASH_INFO_ENTRY structures that descri
 
 in the Database.
 
-2.2.2.9  ADVERTISE
+##### 2.2.2.9 ADVERTISE
 
 The ADVERTISE message is sent in response to a SOLICIT_HASH (section 2.2.2.8) message. This
 message describes the boundaries and record lists for each record range in the SOLICIT_HASH
@@ -2760,7 +2559,8 @@ Release: June 25, 2021
 
 34 / 95
 
-Record Abstracts array (variable)
+
+Record Abstracts array (variable)
 
 ...
 
@@ -2796,9 +2596,9 @@ Hash Entry Boundary array (variable): The array of HASH_ENTRY_BOUNDARY structure
 
 Record Abstracts array (variable): The array of RECORD_ABSTRACT structures.
 
-2.2.2.10
+##### 2.2.2.10 REQUEST
 
-REQUEST
+
 
 The REQUEST message is sent in response to an ADVERTISE (section 2.2.2.9) message. The receiver
 responds by sending FLOOD (section 2.2.2.11) messages for each record that is requested.
@@ -2843,7 +2643,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Message Type (1 byte): MUST be set to 0x0A.
+
+Message Type (1 byte): MUST be set to 0x0A.
 
 Reserved (2 bytes): MUST be set to zero and ignored on receipt.
 
@@ -2855,9 +2656,9 @@ Record Abstracts Offset (4 bytes): The offset of the Record Abstracts Array.
 
 Record Abstracts Array (variable): The array of RECORD_ABSTRACT structures.
 
-2.2.2.11
+##### 2.2.2.11 FLOOD
 
-FLOOD
+
 
 The FLOOD message is used to send a record from one node to another.
 
@@ -2906,9 +2707,9 @@ Reserved2 (2 bytes): MUST be set to zero and MUST be ignored on receipt.
 
 Record Data (variable): The record data, in PEER_RECORD (section 2.2.1.9) format.
 
-2.2.2.12
+##### 2.2.2.12 SYNC_END
 
-SYNC_END
+
 
 The SYNC_END message is sent to mark the end of a synchronization phase.
 
@@ -2944,7 +2745,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Message Size (4 bytes): The total number of bytes in the message.
+
+Message Size (4 bytes): The total number of bytes in the message.
 
 Version (1 byte): The Peer-to-Peer Graphing Protocol version number. This MUST be set to 0x10 to
 
@@ -2976,9 +2778,9 @@ Reserved2 (1 byte): MUST be set to zero and MUST be ignored on receipt.
 
 Reserved3 (2 bytes): MUST be set to zero and MUST be ignored on receipt.
 
-2.2.2.13
+##### 2.2.2.13 PT2PT
 
-PT2PT
+
 
 The PT2PT message is used by the application to send data from one Node to another. The PT2PT
 message can be sent on either a Direct or a Neighbor connection.
@@ -3025,7 +2827,8 @@ Release: June 25, 2021
 
 37 / 95
 
-Version (1 byte): The Peer-to-Peer Graphing Protocol version number. This MUST be set to 0x10 to
+
+Version (1 byte): The Peer-to-Peer Graphing Protocol version number. This MUST be set to 0x10 to
 
 signify version 1.0.
 
@@ -3045,9 +2848,9 @@ application. For more details, see section 2.2.4.1.
 
 Payload Data (variable): The application-supplied data.
 
-2.2.2.14
+##### 2.2.2.14 ACK
 
-ACK
+
 
 The ACK message is sent to acknowledge one or more FLOOD (section 2.2.2.11) messages, and to
 report whether each Record sent in the FLOOD message or messages was useful.
@@ -3119,7 +2922,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-...
+
+...
 
 ...
 
@@ -3135,7 +2939,7 @@ U (1 bit): When set, indicates that the acknowledged FLOOD for this Record ID wa
 
 not set, the FLOOD was not useful.
 
-2.2.3  Internal Record types
+#### 2.2.3 Internal Record types
 
 This section defines a set of internal record types used by the Peer-to-Peer Graphing Protocol, and
 defines the structure of the Payload Data field of the PEER_RECORD (section 2.2.1.9) structure for
@@ -3151,7 +2955,7 @@ those types.
 
 Presence Record (section 2.2.3.4)
 
-2.2.3.1  Graph Info Record
+##### 2.2.3.1 Graph Info Record
 
 The Graph Info Record is used to publish the graph configuration to every member of the graph. It is
 represented as a PEER_RECORD (section 2.2.1.9) with the following fields set:
@@ -3196,7 +3000,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Creator ID (variable)
+
+Creator ID (variable)
 
 ...
 
@@ -3275,7 +3080,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Friendly Name Length (4 bytes): The length, in characters, of the Friendly Name string, including
+
+Friendly Name Length (4 bytes): The length, in characters, of the Friendly Name string, including
 
 the terminating null character. This field MUST be in the range 0 to 256.
 
@@ -3325,7 +3131,7 @@ record that can be added to a graph. This value MUST be either 0x00000000 or bet
 interpreted as the maximum size, 60 MB. This value constrains only the combined size of the
 record payload and Attributes.
 
-2.2.3.2  Signature Record
+##### 2.2.3.2 Signature Record
 
 The Signature Record is used to publish the signature of the graph. It is represented as a
 PEER_RECORD (section 2.2.1.9) with the following fields set:
@@ -3360,7 +3166,8 @@ Release: June 25, 2021
 
 41 / 95
 
-2.2.3.3  Contact Record
+
+##### 2.2.3.3 Contact Record
 
 The Contact Record is used to publish the address information for a contact node, along with the
 signature of the graph at the time the Record was published.
@@ -3406,7 +3213,7 @@ Addresses (variable): The array of addresses for the gen node. The address is ex
 
 PEER_ADDRESS (section 2.2.1.5) format.
 
-2.2.3.4  Presence Record
+##### 2.2.3.4 Presence Record
 
 The Presence Record is used to publish information about a node.
 
@@ -3440,7 +3247,8 @@ Release: June 25, 2021
 
 42 / 95
 
-Attributes (variable)
+
+Attributes (variable)
 
 ...
 
@@ -3466,7 +3274,7 @@ Addresses (variable): The array of addresses for the given node. Each address is
 
 PEER_ADDRESS (section 2.2.1.5) format.
 
-2.2.3.5  Record Attributes
+##### 2.2.3.5 Record Attributes
 
 Each record can contain a set of attributes, which are name/value pairs encoded in XML. These
 attributes allow record searching at the application level.
@@ -3509,7 +3317,8 @@ Release: June 25, 2021
 
 43 / 95
 
-attribute/name: The name of the name/value pair. This is a sequence of no more than 40
+
+attribute/name: The name of the name/value pair. This is a sequence of no more than 40
 alphanumeric characters defined as the set of the numbers 0 to 9, the letters a to z and the letters A
 to Z; no other characters are allowed.
 
@@ -3562,9 +3371,9 @@ An example of the expected format of the attributes string is as follows.
     <attribute name="Priority" type="int">1</attribute>
  </attributes>
 
-2.2.4  Internal Messages
+#### 2.2.4 Internal Messages
 
-2.2.4.1  Ping
+##### 2.2.4.1 Ping
 
 A Ping message is sent by the local Node over a Neighbor connection to test connectivity with the
 remote Neighbor. The message MUST be a PT2PT (section 2.2.2.13) message with the following
@@ -3589,7 +3398,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Reserved2 (2 byte unsigned integer value): MUST be set to zero and MUST be ignored on receipt.
+
+Reserved2 (2 byte unsigned integer value): MUST be set to zero and MUST be ignored on receipt.
 
 Data Type (16 byte GUID): MUST be set to GUID {0ccbb0d2-be41-4bd6-914b058ec5dcce64}
 
@@ -3602,16 +3412,17 @@ Release: June 25, 2021
 
 45 / 95
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Peer-to-Peer Graphing Protocol only has one protocol role, often referred as "peer", following the
 peer-to-peer networking convention. This single role handles both the client- and server-style
 functionality defined in the protocol. In this document, the role is referred to as "client"; there is no
 "server" role defined in this document.
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an instance of an
 implementation maintains to participate in this protocol. The described organization is provided to
@@ -3668,7 +3479,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Value
+
+Value
 
 Meaning
 
@@ -3748,7 +3560,8 @@ Release: June 25, 2021
 
 47 / 95
 
-IsListening: A Boolean value indicating whether the node is currently listening for incoming
+
+IsListening: A Boolean value indicating whether the node is currently listening for incoming
 connections.
 
 Listening addresses: The list of addresses the node is listening on. This list is kept updated by the
@@ -3830,7 +3643,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-PPGRH].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3885,7 +3699,7 @@ LINK_STATE_CONNECT_FAILED: The connection supporting this link failed.
 Note that the above conceptual data can be implemented using a variety of techniques. An
 implementation is at liberty to implement such data in any way it pleases.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Authentication Timer: The timer that is used to terminate a connection that has not authenticated
 quickly enough. The timer is based on the Node's local time and MUST be initialized for each
@@ -3913,7 +3727,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Signature Timer: The timer that is used to wait after detecting that a signature is either
+
+Signature Timer: The timer that is used to wait after detecting that a signature is either
 unpublished or incorrect. This time is based on the node's local time. For more details, see section
 3.1.6.4.
 
@@ -3939,13 +3754,13 @@ Record Autorefresh Timer: The timer that is used to scan the graph database to a
 update the expiration time on specially flagged internal records. This timer is based on the node's local
 time. For more details, see section 3.1.7.22.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Creating a New Graph
+##### 3.1.4.1 Creating a New Graph
 
 Creating a new graph is an application-initiated operation. The application MUST supply the following
 information:
@@ -3989,7 +3804,8 @@ Release: June 25, 2021
 
 50 / 95
 
-  An optional null-terminated Unicode string not longer than 512 characters containing a Comment
+
+  An optional null-terminated Unicode string not longer than 512 characters containing a Comment
 
 to be used to describe of the graph.
 
@@ -4034,7 +3850,7 @@ A graph is uniquely identified by the Graph ID. A graph MUST NOT have more than 
 (that is, it MUST have only one Graph Info Record). A security provider layer such as [MS-PPSEC]
 SHOULD be used to prevent graph merger by requiring authentication.
 
-3.1.4.2  Opening an Existing Graph
+##### 3.1.4.2 Opening an Existing Graph
 
 When opening an existing graph, the application MUST supply the following information:
 
@@ -4073,7 +3889,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.1.7.27. When loading a persisted database, the Presence, Signature, and Contact Records MUST
+
+3.1.7.27. When loading a persisted database, the Presence, Signature, and Contact Records MUST
 NOT be included.
 
 If a persistent database is loaded, the NeverConnected flag MUST be initialized to FALSE.
@@ -4098,7 +3915,7 @@ If Defer Expiration is false, the Record Expiration Timer MUST be set to expire 
 
 
 
-3.1.4.3  Application Adds a Record
+##### 3.1.4.3 Application Adds a Record
 
 When the application requests that a record be added to the database, the following PEER_RECORD
 (section 2.2.1.9) field values MUST be provided to the Peer-to-Peer Graphing Protocol:
@@ -4161,7 +3978,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.1.4.4  Application Updates a Record
+
+##### 3.1.4.4 Application Updates a Record
 
 When the application requests that a record be updated, it MUST provide the following information:
 
@@ -4254,9 +4072,10 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-The record MUST then be written in the database, as specified in section 3.1.7.8.
 
-3.1.4.5  Application Deletes a Record
+The record MUST then be written in the database, as specified in section 3.1.7.8.
+
+##### 3.1.4.5 Application Deletes a Record
 
 When the application requests that a record be deleted, the application MUST provide the following
 information:
@@ -4285,18 +4104,18 @@ error MUST be returned to the application.
 
 If the record passes the validation, it MUST then be deleted. For more details, see section 3.1.7.9.
 
-3.1.4.6  Application Publishes Presence
+##### 3.1.4.6 Application Publishes Presence
 
 When the application requests that the node's presence be published, the local presence record
 MUST be published, as specified in section 3.1.7.4. The node's Force Publish Presence flag MUST then
 be set and presence maintenance MUST then be performed as specified in section 3.1.7.17.
 
-3.1.4.7  Application Allows Direct Connections
+##### 3.1.4.7 Application Allows Direct Connections
 
 When the application requests that the node accept incoming direct connections, the
 fAcceptDirectConnection flag MUST be set.
 
-3.1.4.8  Application Initiates Listening
+##### 3.1.4.8 Application Initiates Listening
 
 When the application requests that the local node begin listening, it MUST specify the following
 information:
@@ -4333,7 +4152,8 @@ Release: June 25, 2021
 
 54 / 95
 
-
+
+
 
 
 
@@ -4356,7 +4176,7 @@ The Source Node ID MUST be the node ID of the local node.
 
 The Address Array MUST contain the list of addresses that the node is listening on.
 
-3.1.4.9  Application Requests to Connect to the Graph
+##### 3.1.4.9 Application Requests to Connect to the Graph
 
 When the application requests that the node initiate a connection, it MUST specify the following
 information:
@@ -4379,25 +4199,25 @@ an error MUST be returned to the application and the request MUST NOT be process
 Otherwise a new connection MUST be attempted and the Direct Connect flag MUST be set according to
 the application request. For more details, see section 3.1.7.24.
 
-3.1.4.10
+##### 3.1.4.10 Application Requests that Deferred Records be Revalidated
 
-Application Requests that Deferred Records be Revalidated
+
 
 When the application requests that deferred records be revalidated, each record in the Deferred
 Record List is removed from the list and re-processed as if it had just been received in a FLOOD
 message. For more details, see section 3.1.5.2.10.
 
-3.1.4.11
+##### 3.1.4.11 Application Requests To Be Notified About a Specific Record Type
 
-Application Requests To Be Notified About a Specific Record Type
+
 
 When an application requests to be notified when a change in the local database occurs for a
 specified list of record types, the local node MUST store the list of Record types in the Record Notify
 List.
 
-3.1.4.12
+##### 3.1.4.12 Application Closes the Graph
 
-Application Closes the Graph
+
 
 When the application requests that the local node close, the following actions MUST be performed:
 
@@ -4426,7 +4246,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-
+
+
 
 
 
@@ -4435,11 +4256,11 @@ The local node MUST terminate any connection in any state.
 If the application requests to persist the database, the graph database MUST be persisted on
 disk along with the node's current Peer Time Delta.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Pre-Authentication Messages
+##### 3.1.5.1 Pre-Authentication Messages
 
-3.1.5.1.1 Receive AUTH_INFO
+###### 3.1.5.1.1 Receive AUTH_INFO
 
 The AUTH_INFO message (section 2.2.2.1) MUST be the first message sent on a connection, and
 MUST be sent only by the connection's initiator.
@@ -4517,7 +4338,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-
+
+
 
 
 
@@ -4529,7 +4351,7 @@ If the Graph Security Provider indicates that the security negotiation is not co
 state of the Connection MUST NOT be changed and any message received MUST be forwarded
 to the Graph Security Provider.
 
-3.1.5.1.2 Receive Other Messages During Authentication
+###### 3.1.5.1.2 Receive Other Messages During Authentication
 
 If the local node is the connection initiator for a connection in the
 OUT_CONN_STATE_SENT_AUTHINFO state or a connection responder for a connection in the
@@ -4582,7 +4404,7 @@ The Friendly Name field MAY contain a string, though this field has no impact on
 
 TConnect MUST be set to the local node's Peer Time when the CONNECT message is sent.
 
-3.1.5.2  Post-Authentication Messages
+##### 3.1.5.2 Post-Authentication Messages
 
 If a graph security provider is configured on the local node, every message that is received on a
 connection in state IN_CON_AUTHENTICATED or OUT_CON_AUTHENTICATED MUST be forwarded to
@@ -4603,7 +4425,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.1.5.2.1 Receive CONNECT
+
+###### 3.1.5.2.1 Receive CONNECT
 
 This message is sent by the connection initiator after authentication completes. It is also sent when
 the initiator begins listening, if the initiator was not listening at the time that it first sends the
@@ -4680,7 +4503,8 @@ Release: June 25, 2021
 
 58 / 95
 
-The node MUST then halt processing of the message and terminate the connection.
+
+The node MUST then halt processing of the message and terminate the connection.
 
 If the local node already has a count of Neighbors greater than or equal to Maximum neighbors, the
 node MUST respond by sending (see section 3.1.7.1) a REFUSE message, and then halt processing of
@@ -4738,7 +4562,7 @@ The connection state MUST then be set to LINK_STATE_AUTHENTICATED.
 If the Defer Expiration flag is set to true, the Record Expiration Timer MUST be set to expire in 0
 seconds.
 
-3.1.5.2.2 Receive WELCOME
+###### 3.1.5.2.2 Receive WELCOME
 
 This message is sent by the connection responder in response to a CONNECT message. If the message
 fails to conform to any of the following conditions, then the message MUST be discarded unprocessed
@@ -4759,7 +4583,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-PPGRH].images/page060-img01.png)
 ![Extracted image 2 from page 60]([MS-PPGRH].images/page060-img02.png)
 ![Extracted image 3 from page 60]([MS-PPGRH].images/page060-img03.png)
@@ -4837,11 +4662,12 @@ Release: June 25, 2021
 
 60 / 95
 
-Finally, the local node MUST begin synchronizing the local database with the remote node. If the
+
+Finally, the local node MUST begin synchronizing the local database with the remote node. If the
 NeverConnected flag is set to true, it MUST begin a Sync All (see section 3.1.7.29). Otherwise, it
 MUST begin a Time-based Sync (see section 3.1.7.30).
 
-3.1.5.2.3 Receive REFUSE
+###### 3.1.5.2.3 Receive REFUSE
 
 This message is sent by the connection responder in response to a CONNECT message. If the message
 fails to conform to any of the following conditions, then the message MUST be discarded unprocessed
@@ -4881,7 +4707,7 @@ If a node is selected after executing the previous two steps, the local node MUS
 the selected node. The selected node's Referral Entries MUST be flagged to indicate that a
 connection attempt has been made.
 
-3.1.5.2.4 Receive DISCONNECT
+###### 3.1.5.2.4 Receive DISCONNECT
 
 This message is sent over a Neighbor or direct connection to inform the receiving node that this
 connection MUST be terminated.
@@ -4912,7 +4738,8 @@ Release: June 25, 2021
 
 61 / 95
 
-3.1.5.2.5 Receive SOLICIT_NEW
+
+###### 3.1.5.2.5 Receive SOLICIT_NEW
 
 This message is sent by the connection initiator after it reaches the LINK_STATE_CONNECTED state, if
 the connection initiator has never synchronized with a node in the graph as indicated by the flag
@@ -4970,7 +4797,7 @@ not listed in Record Types, and with the Final flag not set otherwise.
 
 SyncType flag on the connection to NONE.
 
-3.1.5.2.6 Receive SOLICIT_TIME
+###### 3.1.5.2.6 Receive SOLICIT_TIME
 
 This message is sent by the connection initiator after it reaches the LINK_STATE_CONNECTED state, if
 the connection initiator has previously synchronized with a node in the graph, but is reconnecting to
@@ -5003,7 +4830,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-If the message is received when the Link is not in the LINK_STATE_CONNECTED state, the message
+
+If the message is received when the Link is not in the LINK_STATE_CONNECTED state, the message
 MUST be ignored and the connection MUST be terminated.
 
 Otherwise, in response to this message, the local node MUST perform the following actions:
@@ -5031,7 +4859,7 @@ section 2.2.2.11.
 
 not listed in Record Types, and with the Final flag unset otherwise.
 
-3.1.5.2.7 Receive SOLICIT_HASH
+###### 3.1.5.2.7 Receive SOLICIT_HASH
 
 This message is sent by the connection initiator after it reaches the LINK_STATE_CONNECTED state, if
 the connection initiator has already synchronized with another node in the graph.
@@ -5090,7 +4918,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-
+
+
 
 
 
@@ -5100,7 +4929,7 @@ match.
 The Record Abstract Count MUST be equal to the total number of records in all the ranges
 that did not match.
 
-3.1.5.2.8 Receive ADVERTISE
+###### 3.1.5.2.8 Receive ADVERTISE
 
 This message is sent by the connection responder in response to a SOLICIT_HASH message.
 
@@ -5163,7 +4992,7 @@ list.
 
 The Record Version in each RECORD_ABSTRACT MUST be the Record Version being requested.
 
-3.1.5.2.9 Receive REQUEST
+###### 3.1.5.2.9 Receive REQUEST
 
 This message is sent by the connection initiator in response to an ADVERTISE message.
 
@@ -5181,7 +5010,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  Record Abstracts Offset MUST be at most Message Size.
+
+  Record Abstracts Offset MUST be at most Message Size.
 
 
 
@@ -5196,7 +5026,7 @@ each record requested in the Record Abstracts. The FLOOD messages MAY be sent in
 the last FLOOD message (see section 2.2.2.11), a SYNC_END message with the Final bit set MUST be
 sent (see section 3.1.7.1), and the connection's Sync State MUST be set to NONE.
 
-3.1.5.2.10  Receive FLOOD
+###### 3.1.5.2.10 Receive FLOOD
 
 This message is sent any time a remote node updates a record or receives an updated record. The
 message is also sent as part of synchronization.
@@ -5247,7 +5077,7 @@ connection utility associated with this connection, as specified in section 3.1.
 Further processing MUST be performed on the received record according to its Record Type. For more
 details, see sections 3.1.7.10 through 3.1.7.10.5.
 
-3.1.5.2.11  Receive SYNC_END
+###### 3.1.5.2.11 Receive SYNC_END
 
 [MS-PPGRH] - v20210625
 Peer-to-Peer Graphing Protocol
@@ -5256,7 +5086,8 @@ Release: June 25, 2021
 
 65 / 95
 
-The SYNC_END message is sent by the connection responder when it has completed the requested
+
+The SYNC_END message is sent by the connection responder when it has completed the requested
 synchronization process.
 
 If the message fails to conform to any of the following conditions, then the message MUST be
@@ -5344,7 +5175,8 @@ Release: June 25, 2021
 
 66 / 95
 
-
+
+
 
 Inclusion count MUST be 0.
 
@@ -5364,7 +5196,7 @@ TRUE, initialize the Record Expiration Timer to expire in 0 seconds.
 
 If the SYNC_END is received and the Final flag is not set, the message MUST be ignored.
 
-3.1.5.2.12  Receive ACK
+###### 3.1.5.2.12 Receive ACK
 
 This message is sent in response to a FLOOD message to inform the receiver whether or not the
 FLOOD was useful.
@@ -5388,7 +5220,7 @@ connection MUST be terminated.
 Otherwise, the local node MUST update the connection utility associated with this connection, as
 specified in section 3.1.7.33.
 
-3.1.5.2.13  Receive PT2PT
+###### 3.1.5.2.13 Receive PT2PT
 
 The PT2PT message is sent when requested by the application.
 
@@ -5408,9 +5240,9 @@ If the Data Type is { 0ccbb0d2-be41-4bd6-914b058ec5dcce64 }, the message is an i
 section 2.2.4.1) and MUST NOT be processed further. Otherwise, the local node MUST pass the
 payload of this message to the higher-layer application.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Authentication Timer
+##### 3.1.6.1 Authentication Timer
 
 When this timer fires, it means that the connection associated with the timer has not completed
 authentication. The connection MUST be terminated.
@@ -5422,12 +5254,13 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.1.6.2  Connect Timer
+
+##### 3.1.6.2 Connect Timer
 
 When this timer fires, it means that the local node sent a CONNECT message over the associated
 connection, but no WELCOME or REFUSE was received. The connection MUST be terminated.
 
-3.1.6.3  Contact Timer
+##### 3.1.6.3 Contact Timer
 
 When this timer fires, it means that contact maintenance found that the number of contacts in the
 graph was either too high or too low.
@@ -5450,7 +5283,7 @@ number of contacts is still lower than the minimum value calculated as specified
 The local node MUST publish a contact record in the graph database. For more details, see section
 3.1.7.5.
 
-3.1.6.4  Signature Timer
+##### 3.1.6.4 Signature Timer
 
 When this timer fires, it MUST be reset to fire in 24 hours. Also, if no Signature Record is present in
 the graph database or the Signature Record in the graph database has the Deleted flag set or the
@@ -5458,7 +5291,7 @@ Signature value in the Signature Record is greater than the local node ID, a new
 MUST be created with the signature value set to the local node’s node ID. This Signature record
 MUST then be published, as specified in section 3.1.7.6.
 
-3.1.6.5  Partition Detection Timer
+##### 3.1.6.5 Partition Detection Timer
 
 If this timer fires, it means that partition detection (see section 3.1.7.13) found a contact record  in
 the graph database with its Deleted flag unset, whose Signature field value did not match the
@@ -5468,7 +5301,7 @@ match the signature record, a new connection MUST be established with the contac
 the nonmatching Signature, using the address information in the contact record. For more details, see
 section 3.1.7.24.
 
-3.1.6.6  Graph Maintenance Timer
+##### 3.1.6.6 Graph Maintenance Timer
 
 This is a periodic timer, initially set when the node begins listening, as specified in section 3.1.4.8.
 When the timer fires, graph maintenance MUST be performed as specified in section 3.1.7.16 and
@@ -5476,7 +5309,7 @@ the timer MUST be reset to fire in 300 seconds if the node has at least one Link
 LINK_STATE_CONNECTED state, or in 30 seconds if the node has no Links in the
 LINK_STATE_CONNECTED state.
 
-3.1.6.7  Record Expiration Timer
+##### 3.1.6.7 Record Expiration Timer
 
 When this timer fires, the database MUST be scanned for expired records (records for which the
 PEER_RECORD expiration value is larger than the current peer time). When an Application record is
@@ -5491,7 +5324,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-PPGRH].images/page069-img01.png)
 ![Extracted image 2 from page 69]([MS-PPGRH].images/page069-img02.png)
 <!-- /Extracted images from page 69 -->
@@ -5509,12 +5343,12 @@ where:
 
 .  delayMax = 24 hours
 
-3.1.6.8  Autorefresh Timer
+##### 3.1.6.8 Autorefresh Timer
 
 When this timer fires, a graph database autorefresh MUST be performed as specified in section
 3.1.7.22.
 
-3.1.6.9  Presence Timer
+##### 3.1.6.9 Presence Timer
 
 When this timer fires, it means that presence maintenance detected an incorrect number of presence
 records (with their Deleted flags unset) currently published in the graph.
@@ -5535,9 +5369,9 @@ its Deleted flag unset, and the number of presence records is still lower than M
 The local node MUST publish a presence record containing its node ID, as specified in section
 3.1.7.4.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Sending a Message
+##### 3.1.7.1 Sending a Message
 
 If a graph security provider is configured on the local Node, every message that is sent on a
 connection in state IN_CONN_AUTHENTICATED or OUT_CONN_AUTENTICATED MUST be forwarded to
@@ -5552,7 +5386,8 @@ Release: June 25, 2021
 
 69 / 95
 
-3.1.7.2  Creating a Record
+
+##### 3.1.7.2 Creating a Record
 
 When creating a record, a PEER_RECORD MUST be created, and the following fields MUST be
 initialized as follows:
@@ -5599,7 +5434,7 @@ The Creator ID MUST be set to the local Peer ID.
 
 The Last Modified By ID field MUST be empty.
 
-3.1.7.3  Publishing a Record
+##### 3.1.7.3 Publishing a Record
 
 The steps of publishing a record are as follows:
 
@@ -5632,7 +5467,8 @@ Release: June 25, 2021
 
 70 / 95
 
-3.1.7.4  Publishing a Presence Record
+
+##### 3.1.7.4 Publishing a Presence Record
 
 To publish a presence record, a new record MUST first be created, as specified in section 3.1.7.2. If
 the local node has already published a presence record for the local node's node ID in the graph
@@ -5675,7 +5511,7 @@ If there is already a presence record in the graph database with its Deleted fla
 local node's node ID, the record MUST be updated using the newly created record, as specified in
 section 3.1.7.8. Otherwise, the new record MUST be published, as specified in section 3.1.7.3.
 
-3.1.7.5  Publishing a Contact Record
+##### 3.1.7.5 Publishing a Contact Record
 
 To publish a contact record, a new record MUST be created as specified in section 3.1.7.2. If there
 is already a contact record in the graph database with its Deleted flag unset and with the local
@@ -5712,7 +5548,7 @@ If there already exists a contact record in the graph database with its Deleted 
 local node's node ID, the record MUST be updated using the newly created record, as specified in
 section 3.1.7.8. Otherwise, the new record MUST be published; see section 3.1.7.3.
 
-3.1.7.6  Publishing a Signature Record
+##### 3.1.7.6 Publishing a Signature Record
 
 To publish a signature record, a new record MUST be created as specified in section 3.1.7.2. If a
 signature record is already present in the graph database with its Deleted flag unset, the values
@@ -5725,7 +5561,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Moreover, the record fields MUST be set as follows:
+
+Moreover, the record fields MUST be set as follows:
 
 
 
@@ -5757,7 +5594,7 @@ If a signature record already exists in the database with its Deleted flag unset
 updated using the newly created record, as specified in section 3.1.7.8. Otherwise, the new record
 MUST be published, as specified in section 3.1.7.3.
 
-3.1.7.7  Publishing a Graph Info Record
+##### 3.1.7.7 Publishing a Graph Info Record
 
 To publish a graph info record, a new record MUST be created as specified in section 3.1.7.2. If the
 graph info record already exists in the database with its Deleted flag unset, the values from the
@@ -5793,7 +5630,7 @@ MUST be published, as specified in section 3.1.7.3.
 When updating a graph info record, the fields that MUST NOT be changed, as specified in section
 2.2.3.1, MUST be left unchanged by the update.
 
-3.1.7.8  Updating a Record
+##### 3.1.7.8 Updating a Record
 
 When a record is updated, a new record MUST be supplied that meets the following conditions, in
 addition to those listed in section 3.1.4.4.
@@ -5825,7 +5662,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-
+
+
 
 
 
@@ -5847,7 +5685,7 @@ If any of the above conditions are not met, the record MUST NOT be updated.
 Otherwise, the existing record MUST be deleted from the database, as specified in section 3.1.7.9, and
 the new one MUST be published, as specified in section 3.1.7.3.
 
-3.1.7.9  Deleting a Record
+##### 3.1.7.9 Deleting a Record
 
 When a record is deleted, an update MUST be performed, as specified in section 3.1.6.8, but with the
 following differences:
@@ -5876,9 +5714,9 @@ The record attribute MUST be empty.
 
 record being deleted.
 
-3.1.7.10
+##### 3.1.7.10 Receiving a Record
 
-Receiving a Record
+
 
 If a received record is classified as "new" and added to the database, the Record Expiration Timer
 and Autorefresh Timer MUST be updated as follows:
@@ -5905,13 +5743,13 @@ fire at the new record's Expiration Time value.
 If the record's Autorefresh Timer expiration time is less than 4 seconds, it MUST be set to 4
 seconds.
 
-3.1.7.10.1  Receive an Application Record
+###### 3.1.7.10.1 Receive an Application Record
 
 If the record contained in the FLOOD message is not an internal record (see section 2.2.3), the
 application MUST be notified of the new incoming record if the record type is listed in the Record
 Notify List.
 
-3.1.7.10.2  Receive a Graph Info Record
+###### 3.1.7.10.2 Receive a Graph Info Record
 
 [MS-PPGRH] - v20210625
 Peer-to-Peer Graphing Protocol
@@ -5920,16 +5758,17 @@ Release: June 25, 2021
 
 73 / 95
 
-If the record contained in the FLOOD message is a graph info record and its Deleted flag is unset,
+
+If the record contained in the FLOOD message is a graph info record and its Deleted flag is unset,
 the Presence Lifetime, Max Presence Records, and Max Record Size MUST be read from the
 graph info record and stored in the corresponding data items specified in section 3.1.1.
 
-3.1.7.10.3  Receive a Signature Record
+###### 3.1.7.10.3 Receive a Signature Record
 
 If the record contained in the FLOOD message is a signature record and its Deleted flag is unset,
 signature calculation MUST be performed as specified in section 3.1.7.11.
 
-3.1.7.10.4  Receive a Contact Record
+###### 3.1.7.10.4 Receive a Contact Record
 
 If the record contained in the FLOOD message is a contact record with its Deleted flag set and an
 entry with the same record ID is present in the Contact List, it MUST be removed from the Contact
@@ -5960,7 +5799,7 @@ the Contact List. For more details, see section 3.1.1.
 After receiving a contact record, the local node MUST perform contact maintenance, as specified in
 section 3.1.7.12.
 
-3.1.7.10.5  Receive a Presence Record
+###### 3.1.7.10.5 Receive a Presence Record
 
 If the record contained in the FLOOD message is a Presence Record that has its Deleted flag set and
 an entry with the same record ID is present in the Presence List, it MUST be removed from the
@@ -5993,16 +5832,17 @@ Release: June 25, 2021
 
 74 / 95
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-PPGRH].images/page075-img01.png)
 ![Extracted image 2 from page 75]([MS-PPGRH].images/page075-img02.png)
 ![Extracted image 3 from page 75]([MS-PPGRH].images/page075-img03.png)
 ![Extracted image 4 from page 75]([MS-PPGRH].images/page075-img04.png)
 <!-- /Extracted images from page 75 -->
 
-3.1.7.11
+##### 3.1.7.11 Signature Calculation
 
-Signature Calculation
+
 
 The signature of a graph is defined as the lowest node ID in the graph.
 
@@ -6031,9 +5871,9 @@ value of 0.1 seconds.
 After the delay value has been calculated, the signature timer MUST be set to fire after delay seconds.
 For more details, see section 3.1.6.4.
 
-3.1.7.12
+##### 3.1.7.12 Contact Maintenance
 
-Contact Maintenance
+
 
 Contact Maintenance involves calculating the desired range of Contact Records, and then checking
 that the current Contact count falls within that range. If there is no contact record in the local
@@ -6057,9 +5897,10 @@ Release: June 25, 2021
 
 75 / 95
 
-3.1.7.13
 
-Partition Detection
+##### 3.1.7.13 Partition Detection
+
+
 
 Partition detection is the process that looks for mismatches between the graph signature and the
 signature reported by contacts. When partition detection is performed, the database MUST be
@@ -6068,9 +5909,9 @@ signature value in the database's signature record. If any of these are found, t
 timer MUST be set with a random delay between 5 and 30 seconds. For more details, see section
 3.1.6.5.
 
-3.1.7.14
+##### 3.1.7.14 Connection Maintenance
 
-Connection Maintenance
+
 
 Connection Maintenance is the process that attempts to maintain an ideal number of connections to
 other Graph Nodes, and chooses which connections to keep based on the usefulness of the
@@ -6117,17 +5958,17 @@ The Local node MUST NOT have a connection with the selected node.
 
   After a node is selected, a connection to it MUST be attempted, as specified in section3.1.7.24.
 
-3.1.7.15
+##### 3.1.7.15 Long-Term Partition Repair
 
-Long-Term Partition Repair
+
 
 When performing long-term partition repair, if there is a Contact Record with its Deleted flag unset in
 the database and with the local node's node ID, the higher-layer application MUST be requested to
 form another connection.
 
-3.1.7.16
+##### 3.1.7.16 Graph Maintenance
 
-Graph Maintenance
+
 
 Graph maintenance is performed periodically, and as a result of several events. When graph
 maintenance is performed, the following steps MUST be taken in the following order:
@@ -6149,16 +5990,17 @@ Release: June 25, 2021
 
 76 / 95
 
-
+
+
 
 Long-term partition repair, as specified in section 3.1.7.15.
 
 After every step in graph maintenance has completed, the Graph Maintenance Timer MUST be reset as
 specified in section 3.1.6.6.
 
-3.1.7.17
+##### 3.1.7.17 Presence Maintenance
 
-Presence Maintenance
+
 
 The presence maintenance process ensures that the local node publishes its presence record when
 valid, and strives to maintain the configured number of presence records in the graph.
@@ -6198,9 +6040,9 @@ database, or all such records have their Deleted flags set, and the number of pr
 in the database is less than Max Presence Records, the Presence Timer MUST be set to fire at
 a random delay between 30 seconds and 180 seconds.
 
-3.1.7.18
+##### 3.1.7.18 Expiring Application Record
 
-Expiring Application Record
+
 
 For each expired Application record the following actions MUST be taken by the local node:
 
@@ -6213,18 +6055,18 @@ The local node MUST remove the expired record from the database.
 If the record's Record type is in the Record Notify list, the local node MUST notify the higher-layer
 application.
 
-3.1.7.19
+##### 3.1.7.19 Expired Signature Record Found
 
-Expired Signature Record Found
+
 
 If an expired Signature Record is found, Signature Calculation MUST begin immediately, as specified in
 section 3.1.7.11.
 
 Also, the expired record MUST be removed from the database.
 
-3.1.7.20
+##### 3.1.7.20 Expired Presence Record Found
 
-Expired Presence Record Found
+
 
 When an expired Presence Record is found:
 
@@ -6239,20 +6081,21 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 78 -->
+
+<!-- Extracted images from page 78 -->
 ![Extracted image 1 from page 78]([MS-PPGRH].images/page078-img01.png)
 <!-- /Extracted images from page 78 -->
 
-3.1.7.21
+##### 3.1.7.21 Expired Contact Record Found
 
-Expired Contact Record Found
+
 
 When an expired Contact Record is found, Contact Maintenance MUST be performed immediately, as
 specified in section 3.1.7.12. The expired record MUST be removed from the database.
 
-3.1.7.22
+##### 3.1.7.22 Autorefreshing Records
 
-Autorefreshing Records
+
 
 The following actions MUST be taken by the local node, in order, when autorefreshing records:
 
@@ -6292,9 +6135,9 @@ Time, the new Expiration Time field's value MUST be set to 300 seconds.
 The new record's Last Modification Time field value MUST be set to the current value of the local
 node's peer time.
 
-3.1.7.23
+##### 3.1.7.23 Local IP Addresses Change
 
-Local IP Addresses Change
+
 
 The local node MUST perform the following actions in sequence when a local IP address changes:
 
@@ -6311,9 +6154,9 @@ The list of Listening addresses MUST be updated to reflect the change.
 
 The local node MUST perform graph maintenance, as specified in section 3.1.7.16.
 
-3.1.7.24
+##### 3.1.7.24 Establishing a New Connection
 
-Establishing a New Connection
+
 
 The following state machine demonstrates the state transitions to set up and shut down a Link from
 the initiator side.
@@ -6325,7 +6168,8 @@ Release: June 25, 2021
 
 78 / 95
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-PPGRH].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
@@ -6371,7 +6215,8 @@ Release: June 25, 2021
 
 79 / 95
 
-
+
+
 
 
 
@@ -6390,9 +6235,9 @@ security provider to complete the connection security negotiation.
 If any error occurs during connection establishment, the connection MUST be aborted and any further
 messages received on the connection MUST NOT be processed.
 
-3.1.7.25
+##### 3.1.7.25 Disconnecting a Connection
 
-Disconnecting a Connection
+
 
 When disconnecting a neighbor connection, the local node MUST send (See section 3.1.7.1) a
 DISCONNECT message on the neighbor link. If the local node's Neighbor List is not empty, the
@@ -6417,9 +6262,9 @@ If the local node's Neighbor List is empty, the DISCONNECT message MUST be built
 After disconnecting a connection, the local node MUST perform graph maintenance, as specified in
 section 3.1.7.16.
 
-3.1.7.26
+##### 3.1.7.26 An Incoming Connection Is Established
 
-An Incoming Connection Is Established
+
 
 The diagram below shows the finite state machine associated with accepting an incoming connection
 and disconnect.
@@ -6431,7 +6276,8 @@ Release: June 25, 2021
 
 80 / 95
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MS-PPGRH].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
@@ -6456,9 +6302,9 @@ The Connection state MUST be set to IN_CONN_STATE_ACCEPTED.
 
 The connection's connection utility MUST be set to 0.
 
-3.1.7.27
+##### 3.1.7.27 Validating a Received Record
 
-Validating a Received Record
+
 
 The Record Data field in a received FLOOD message MUST conform to the format of a
 PEER_RECORD. In addition, it MUST meet the following conditions:
@@ -6488,7 +6334,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-
+
+
 
 The value of highVal MUST match the high-order 64 bits of the Record ID.
 
@@ -6539,9 +6386,9 @@ List. The Record MUST NOT be processed further at this time.
 
 response.
 
-3.1.7.28
+##### 3.1.7.28 Securing a Record
 
-Securing a Record
+
 
 When the local application creates, modifies, or deletes a record (see sections 3.1.4.3,3.1.4.4, and
 3.1.4.5), the record MUST first be passed to the graph security provider, if one is configured on the
@@ -6552,9 +6399,9 @@ The graph security provider MAY return an error while securing a record. This MU
 operation (creation, update, or deletion) to be aborted, and the record MUST NOT be processed
 further.
 
-3.1.7.29
+##### 3.1.7.29 Performing a Sync All
 
-Performing a Sync All
+
 
 A node performing a Sync All over a particular connection MUST first initialize the Sync Record Types
 array for the connection with the following Record Type GUIDs, in order:
@@ -6576,7 +6423,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-The node MUST then initialize Current Sync Record Type for the connection to point to the first entry
+
+The node MUST then initialize Current Sync Record Type for the connection to point to the first entry
 in the Sync Record Types array, initialize SYNC_TYPE for the connection to the value SYNC_NEW, and
 initialize the All Record Types Synched flag to FALSE.
 
@@ -6595,9 +6443,9 @@ The Exclusion Count MUST be set to 0x00.
 
 The Record Types  array MUST include one entry for the Graph Info Record Type.
 
-3.1.7.30
+##### 3.1.7.30 Performing a Time-Based Sync
 
-Performing a Time-Based Sync
+
 
 When a node reconnects to a graph and already has a copy of the database, it MUST perform a
 Time-based Sync to synchronize all records changed while it was offline. To do so, it MUST first
@@ -6637,9 +6485,9 @@ The Exclusion Count MUST be set to 0x00.
 
 The Record Types array MUST include one entry for the Graph Info Record Type.
 
-3.1.7.31
+##### 3.1.7.31 Performing a Hash-Based Sync
 
-Performing a Hash-Based Sync
+
 
 A Hash-based Sync is performed after a Time-based Sync and any time that a connection is made
 after the first one (the first connection uses either Sync All or Time-based Sync).
@@ -6666,7 +6514,8 @@ Release: June 25, 2021
 
 83 / 95
 
-  RecordID <= RecordIDMAX
+
+  RecordID <= RecordIDMAX
 
 (ModificationTimeMIN, RecordIDMIN)is the lower boundary of the Record Range.
 
@@ -6705,9 +6554,9 @@ described above.
 
 Each HASH_INFO_ENTRY MUST contain the upper boundary for its range as described above.
 
-3.1.7.32
+##### 3.1.7.32 Record Conflict Resolution
 
-Record Conflict Resolution
+
 
 When a record is received in a FLOOD message and the local node already has a record with that
 record ID in its database, the local node MUST determine whether the received record is "newer"
@@ -6741,9 +6590,9 @@ and the other is "older".
 
   Otherwise, the record is "already present".
 
-3.1.7.33
+##### 3.1.7.33 Updating Connection Utility
 
-Updating Connection Utility
+
 
 The connection utility is a measure of the usefulness of a connection. When a FLOOD message is
 sent over the connection, both nodes on either end of the connection MUST update the connection
@@ -6757,7 +6606,8 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 85 -->
+
+<!-- Extracted images from page 85 -->
 ![Extracted image 1 from page 85]([MS-PPGRH].images/page085-img01.png)
 <!-- /Extracted images from page 85 -->
 
@@ -6768,13 +6618,14 @@ Release: June 25, 2021
 
 85 / 95
 
-<!-- Extracted images from page 86 -->
+
+<!-- Extracted images from page 86 -->
 ![Extracted image 1 from page 86]([MS-PPGRH].images/page086-img01.png)
 <!-- /Extracted images from page 86 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Establishing a Connection
+### 4.1 Establishing a Connection
 
 Node 2 wants to connect to a graph previously created by Node 1. Node 1 is already listening for
 incoming connections, and its address and port are known by Node 2. Node 2 has never connected to
@@ -6798,7 +6649,7 @@ contained in the CONNECT message.
 accepts the new neighbor connection. In response, Node 1 sends a WELCOME message to Node
 2.
 
-4.2  Sync All
+### 4.2 Sync All
 
 After establishing the connection, Node 2 synchronizes the graph database. Because Node 2 has
 never synchronized with this graph before, it performs a Sync All.
@@ -6810,7 +6661,8 @@ Release: June 25, 2021
 
 86 / 95
 
-<!-- Extracted images from page 87 -->
+
+<!-- Extracted images from page 87 -->
 ![Extracted image 1 from page 87]([MS-PPGRH].images/page087-img01.png)
 <!-- /Extracted images from page 87 -->
 
@@ -6835,7 +6687,7 @@ send a CONNECT message to Node 1 with the Update bit set and its listening addre
 message. Node 1does not send a response to this CONNECT message because the Update bit is
 set.
 
-4.3  Hash-Based Sync
+### 4.3 Hash-Based Sync
 
 Node 3 is a node that has previously been connected to this graph, and the graph database at the
 time it was last connected to the graph was persisted to disk. Prior to connecting to the graph, Node 3
@@ -6855,7 +6707,8 @@ Release: June 25, 2021
 
 87 / 95
 
-<!-- Extracted images from page 88 -->
+
+<!-- Extracted images from page 88 -->
 ![Extracted image 1 from page 88]([MS-PPGRH].images/page088-img01.png)
 <!-- /Extracted images from page 88 -->
 
@@ -6905,14 +6758,15 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 89 -->
+
+<!-- Extracted images from page 89 -->
 ![Extracted image 1 from page 89]([MS-PPGRH].images/page089-img01.png)
 <!-- /Extracted images from page 89 -->
 
 to find a Node that it is not already connected to. Node 3 establishes a connection to Node 1, as
 above. At this point, all three nodes are interconnected.
 
-4.4  Record Flooding
+### 4.4 Record Flooding
 
 Node 1 publishes a record in the graph.
 
@@ -6949,9 +6803,10 @@ Release: June 25, 2021
 
 89 / 95
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 No security whatsoever is provided by default by the Peer-to-Peer Graphing Protocol. Therefore there
 is no guarantee that a neighbor providing new or updated records for inclusion in the graph
@@ -6970,7 +6825,7 @@ handle:
 A well-designed graph security provider, such as P2P Grouping [MS-PPSEC], can protect against
 unauthorized record injection, modification, or on-the-wire inspection.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -6981,7 +6836,8 @@ Release: June 25, 2021
 
 90 / 95
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -7019,7 +6875,8 @@ Release: June 25, 2021
 
 91 / 95
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7056,7 +6913,8 @@ Release: June 25, 2021
 
 92 / 95
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 46
@@ -7192,7 +7050,8 @@ Local events
 
 93 / 95
 
-   signature calculation 75
+
+   signature calculation 75
    sync
       hash-based - performing 83
       time-based - performing 83
@@ -7332,7 +7191,8 @@ V
 
 94 / 95
 
-Vendor-extensible fields 17
+
+Vendor-extensible fields 17
 Versioning 17
 
 W

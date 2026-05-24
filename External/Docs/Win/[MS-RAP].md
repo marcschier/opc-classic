@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 133
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: September 16, 2024
 
 2 / 133
 
-Date
+
+Date
 
 Revision
 History
@@ -536,7 +538,8 @@ Significantly changed the technical content.
 
 3 / 133
 
-Date
+
+Date
 
 Revision
 History
@@ -570,433 +573,190 @@ Release: September 16, 2024
 
 4 / 133
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ........................................................................................................ 9
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.5.5.3
-
-2.5.5.2
-
-2.5.5.1
-
-2.5.5.4
-
-2.1
-2.2
-2.3
-2.4
-2.5
-
-2.5.5.3.1
-2.5.5.3.2
-
-2.5.5.1.1
-2.5.5.1.2
-
-2.5.5.2.1
-2.5.5.2.2
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-2.5.5
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Information Levels ........................................................................................... 14
-String Field Length Limits .................................................................................. 15
-Message Definitions .......................................................................................... 17
-RAP Request Message ................................................................................. 17
-RAP Response Message ............................................................................... 19
-RAP Request/Response Summary Table ......................................................... 20
-RAP Opcodes .............................................................................................. 21
-RAP Server Commands ................................................................................ 22
-NetServerGetInfo Command ................................................................... 22
-RAP NetServerGetInfoRequest .......................................................... 22
-RAP NetServerGetInfoResponse ........................................................ 23
-NetServerEnum2................................................................................... 23
-RAP NetServerEnum2Request ........................................................... 23
-RAP NetServerEnum2Response ......................................................... 26
-NetServerEnum3 Command ................................................................... 27
-RAP NetServerEnum3Request ........................................................... 27
-RAP NetServerEnum3Response ......................................................... 30
-RAP Server Response Structures ............................................................. 30
-NetServerInfo0 Data Structure .......................................................... 30
-NetServerInfo1 Data Structure .......................................................... 30
-RAP Share Commands ................................................................................. 31
-NetShareEnum Command ...................................................................... 31
-RAP NetShareEnumRequest .............................................................. 31
-RAP NetShareEnumResponse ............................................................ 32
-NetShareGetInfo Command .................................................................... 33
-NetShareGetInfoRequest .................................................................. 33
-NetShareGetInfoResponse ................................................................ 34
-RAP Share Response Structures .............................................................. 34
-NetShareInfo0 Data Structure ........................................................... 34
-NetShareInfo1 Data Structure ........................................................... 35
-NetShareInfo2 Data Structure ........................................................... 36
-RAP Print Commands .................................................................................. 37
-NetPrintQEnum Command ...................................................................... 37
-RAP NetPrintQEnumRequest.............................................................. 37
-RAP NetPrintQEnumResponse ........................................................... 38
-NetPrintQGetInfo Command ................................................................... 39
-RAP NetPrintQGetInfoRequest ........................................................... 39
-RAP NetPrintQGetInfoResponse ......................................................... 41
-NetPrintJobSetInfo Command ................................................................. 41
-
-2.5.6.3.1
-2.5.6.3.2
-2.5.6.3.3
-
-2.5.7.2.1
-2.5.7.2.2
-
-2.5.7.1.1
-2.5.7.1.2
-
-2.5.6.2.1
-2.5.6.2.2
-
-2.5.5.4.1
-2.5.5.4.2
-
-2.5.6.1.1
-2.5.6.1.2
-
-2.5.7.3
-
-2.5.7.2
-
-2.5.6.3
-
-2.5.7.1
-
-2.5.6.1
-
-2.5.6.2
-
-2.5.7
-
-2.5.6
-
-[MS-RAP] - v20240916
-Remote Administration Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 133
-
-2.5.8
-
-2.5.7.5
-
-2.5.7.4
-
-2.5.8.2
-
-2.5.8.1
-
-2.5.7.7
-
-2.5.7.8
-
-2.5.7.6
-
-2.5.7.3.1
-2.5.7.3.2
-
-2.5.8.1.1
-2.5.8.1.2
-
-2.5.7.5.1
-2.5.7.5.2
-
-2.5.7.6.1
-2.5.7.6.2
-
-2.5.7.7.1
-2.5.7.7.2
-
-2.5.7.4.1
-2.5.7.4.2
-
-2.5.7.8.1
-2.5.7.8.2
-2.5.7.8.3
-2.5.7.8.4
-2.5.7.8.5
-2.5.7.8.6
-2.5.7.8.7
-2.5.7.8.8
-
-RAP NetPrintJobSetInfoRequest ......................................................... 41
-RAP NetPrintJobSetInfoResponse ....................................................... 43
-NetPrintJobGetInfo Command ................................................................. 43
-RAP NetPrintJobGetInfoRequest ........................................................ 43
-RAP NetPrintJobGetInfoResponse ...................................................... 44
-NetPrintJobPause Command ................................................................... 45
-RAP NetPrintJobPauseRequest ........................................................... 45
-RAP NetPrintJobPauseResponse ......................................................... 45
-NetPrintJobContinue Command ............................................................... 45
-RAP NetPrintJobContinueRequest ....................................................... 45
-RAP NetPrintJobContinueResponse ..................................................... 46
-NetPrintJobDelete Command .................................................................. 46
-RAP NetPrintJobDeleteRequest .......................................................... 46
-RAP NetPrintJobDeleteResponse ........................................................ 46
-RAP Print Response Structures ................................................................ 47
-PrintQueue0 Data Structure .............................................................. 47
-PrintQueue1 Data Structure .............................................................. 47
-PrintQueue3 Data Structure .............................................................. 50
-PrintQueue5 Data Structure .............................................................. 53
-PrintJobInfo0 Data Structure ............................................................. 53
-PrintJobInfo1 Data Structure ............................................................. 53
-PrintJobInfo2 Data Structure ............................................................. 55
-PrintJobInfo3 Data Structure ............................................................. 57
-RAP User Commands ................................................................................... 60
-NetUserPasswordSet2 Command ............................................................ 60
-RAP NetUserPasswordSet2Request .................................................... 61
-RAP NetUserPasswordSet2Response .................................................. 62
-NetUserGetInfo Commands .................................................................... 62
-NetUserGetInfoRequest .................................................................... 62
-NetUserGetInfoResponse .................................................................. 63
-RAP User Structures .............................................................................. 63
-NetUserInfo0 Data Structure ............................................................. 63
-NetUserInfo1 Data Structure ............................................................. 64
-NetUserInfo2 Data Structure ............................................................. 65
-NetUserInfo10 Data Structure ........................................................... 69
-NetUserInfo11 Data Structure ........................................................... 70
-RAP Time Commands .................................................................................. 74
-NetRemoteTOD Command ...................................................................... 74
-RAP NetRemoteTODRequest ............................................................. 74
-RAP NetRemoteTODResponse ........................................................... 74
-RAP Time Structures ............................................................................. 74
-RAP TimeOfDayInfo Data Structure .................................................... 74
-RAP Workstation Commands ........................................................................ 76
-2.5.10.1  NetWkstaGetInfo Command ................................................................... 76
-2.5.10.1.1  NetWkstaGetInfoRequest .................................................................. 76
-2.5.10.1.2  NetWkstaGetInfoResponse................................................................ 76
-2.5.10.2  NetWkstaUserLogon Command ............................................................... 77
-2.5.10.2.1  NetWkstaUserLogonRequest ............................................................. 77
-RAP NetWkstaUserLogonResponse ..................................................... 78
-2.5.10.2.2
-2.5.10.3  NetWkstaUserLogoff Command ............................................................... 78
-2.5.10.3.1  NetWkstaUserLogoffRequest ............................................................. 78
-RAP NetWkstaUserLogoffResponse ..................................................... 79
-2.5.10.3.2
-RAP Workstation Structures .................................................................... 79
-2.5.10.4.1  NetWkstaInfo10 Data Structure ......................................................... 79
-2.5.10.4.2  NetWkstaUserLogonRequestData Data Structure ................................. 80
-2.5.10.4.3  NetWkstaUserLogonResponseData Data Structure ............................... 81
-2.5.10.4.4  NetWkstaUserLogoffRequestData Data Structure ................................. 84
-2.5.10.4.5  NetWkstaUserLogoffResponseData Data Structure ............................... 84
-
-2.5.8.3.1
-2.5.8.3.2
-2.5.8.3.3
-2.5.8.3.4
-2.5.8.3.5
-
-2.5.9.1.1
-2.5.9.1.2
-
-2.5.8.2.1
-2.5.8.2.2
-
-2.5.9.2.1
-
-2.5.10.4
-
-2.5.9.2
-
-2.5.8.3
-
-2.5.9.1
-
-2.5.9
-
-2.5.10
-
-[MS-RAP] - v20240916
-Remote Administration Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 133
-
-2.5.11
-
-RAP Response Data Marshaling ..................................................................... 85
-
-3.1
-
-3.2
-
-3.1.5
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 87
-RAP Client Details ............................................................................................ 87
-Abstract Data Model .................................................................................... 87
-Timers ...................................................................................................... 87
-Initialization ............................................................................................... 87
-Higher-Layer Triggered Events ..................................................................... 87
-NetShareEnum Command ...................................................................... 88
-3.1.4.1
-NetShareGetInfo Command .................................................................... 88
-3.1.4.2
-NetServerGetInfo Command ................................................................... 88
-3.1.4.3
-NetPrintQEnum Command ...................................................................... 88
-3.1.4.4
-NetPrintQGetInfo Command ................................................................... 88
-3.1.4.5
-NetPrintJobSetInfo Command ................................................................. 88
-3.1.4.6
-NetPrintJobGetInfo Command ................................................................. 88
-3.1.4.7
-NetPrintJobDelete Command .................................................................. 88
-3.1.4.8
-NetPrintJobPause Command ................................................................... 88
-3.1.4.9
-3.1.4.10  NetPrintJobContinue Command ............................................................... 88
-3.1.4.11  NetRemoteTOD Command ...................................................................... 88
-3.1.4.12  NetServerEnum2 Command ................................................................... 88
-3.1.4.13  NetUserGetInfo Command ..................................................................... 89
-3.1.4.14  NetUserPasswordSet2 Command ............................................................ 89
-3.1.4.15  NetServerEnum3 Command ................................................................... 89
-3.1.4.16  NetWkstaGetInfo Command ................................................................... 89
-3.1.4.17  NetWkstaUserLogon Command ............................................................... 89
-3.1.4.18  NetWkstaUserLogoff Command ............................................................... 89
-Processing Events and Sequencing Rules ....................................................... 89
-Timer Events .............................................................................................. 89
-Other Local Events ...................................................................................... 89
-RAP Server Details ........................................................................................... 89
-Abstract Data Model .................................................................................... 89
-Global.................................................................................................. 90
-Timers ...................................................................................................... 90
-Initialization ............................................................................................... 90
-Higher-Layer Triggered Events ..................................................................... 90
-Processing Events and Sequencing Rules ....................................................... 90
-NetShareEnum Command ...................................................................... 90
-NetShareGetInfo Command .................................................................... 92
-NetServerGetInfo Command ................................................................... 93
-NetPrintQEnum Command ...................................................................... 94
-Mapping PRINTER_INFO_2 Status Values to PrintQueue3 Status Values . 98
-NetPrintQGetInfo Command ................................................................... 98
-NetPrintJobSetInfo Command ................................................................. 99
-NetPrintJobGetInfo Command ................................................................ 100
-Mapping JOB_INFO_2 Status Values to PrintJobInfo2 Status Values ...... 103
-NetPrintJobDelete Command ................................................................. 104
-3.2.5.8
-3.2.5.9
-NetPrintJobPause Command .................................................................. 104
-3.2.5.10  NetPrintJobContinue Command .............................................................. 105
-3.2.5.11  NetRemoteTOD Command ..................................................................... 106
-3.2.5.12  NetServerEnum2 Command .................................................................. 106
-3.2.5.13  NetUserGetInfo Command .................................................................... 107
-3.2.5.14  NetUserPasswordSet2 Command ........................................................... 109
-3.2.5.15  NetServerEnum3 Command .................................................................. 111
-3.2.5.16  NetWkstaGetInfo Command .................................................................. 112
-3.2.5.17  NetWkstaUserLogon Command .............................................................. 113
-3.2.5.18  NetWkstaUserLogoff Command .............................................................. 113
-Timer Events ............................................................................................. 114
-Other Local Events ..................................................................................... 114
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.5.5
-3.2.5.6
-3.2.5.7
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2.5.7.1
-
-3.2.5.4.1
-
-3.2.1.1
-
-3.2.1
-
-[MS-RAP] - v20240916
-Remote Administration Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-7 / 133
-
-4  Protocol Examples ............................................................................................... 115
-NetShareEnum ............................................................................................... 115
-NetServerEnum2 ............................................................................................. 117
-NetPrintJobDel ................................................................................................ 119
-
-4.1
-4.2
-4.3
-
-5  Security ............................................................................................................... 121
-Security Considerations for Implementers .......................................................... 121
-Index of Security Parameters ........................................................................... 121
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 122
-
-7  Change Tracking .................................................................................................. 130
-
-8  Index ................................................................................................................... 131
-
-[MS-RAP] - v20240916
-Remote Administration Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-8 / 133
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+  - [2.3 Information Levels](#23-information-levels)
+  - [2.4 String Field Length Limits](#24-string-field-length-limits)
+  - [2.5 Message Definitions](#25-message-definitions)
+    - [2.5.1 RAP Request Message](#251-rap-request-message)
+    - [2.5.2 RAP Response Message](#252-rap-response-message)
+    - [2.5.3 RAP Request/Response Summary Table](#253-rap-requestresponse-summary-table)
+    - [2.5.4 RAP Opcodes](#254-rap-opcodes)
+    - [2.5.5 RAP Server Commands](#255-rap-server-commands)
+      - [2.5.5.1 NetServerGetInfo Command](#2551-netservergetinfo-command)
+        - [2.5.5.1.1 RAP NetServerGetInfoRequest](#25511-rap-netservergetinforequest)
+        - [2.5.5.1.2 RAP NetServerGetInfoResponse](#25512-rap-netservergetinforesponse)
+      - [2.5.5.2 NetServerEnum2](#2552-netserverenum2)
+        - [2.5.5.2.1 RAP NetServerEnum2Request](#25521-rap-netserverenum2request)
+        - [2.5.5.2.2 RAP NetServerEnum2Response](#25522-rap-netserverenum2response)
+      - [2.5.5.3 NetServerEnum3 Command](#2553-netserverenum3-command)
+        - [2.5.5.3.1 RAP NetServerEnum3Request](#25531-rap-netserverenum3request)
+        - [2.5.5.3.2 RAP NetServerEnum3Response](#25532-rap-netserverenum3response)
+      - [2.5.5.4 RAP Server Response Structures](#2554-rap-server-response-structures)
+        - [2.5.5.4.1 NetServerInfo0 Data Structure](#25541-netserverinfo0-data-structure)
+        - [2.5.5.4.2 NetServerInfo1 Data Structure](#25542-netserverinfo1-data-structure)
+    - [2.5.6 RAP Share Commands](#256-rap-share-commands)
+      - [2.5.6.1 NetShareEnum Command](#2561-netshareenum-command)
+        - [2.5.6.1.1 RAP NetShareEnumRequest](#25611-rap-netshareenumrequest)
+        - [2.5.6.1.2 RAP NetShareEnumResponse](#25612-rap-netshareenumresponse)
+      - [2.5.6.2 NetShareGetInfo Command](#2562-netsharegetinfo-command)
+        - [2.5.6.2.1 NetShareGetInfoRequest](#25621-netsharegetinforequest)
+        - [2.5.6.2.2 NetShareGetInfoResponse](#25622-netsharegetinforesponse)
+      - [2.5.6.3 RAP Share Response Structures](#2563-rap-share-response-structures)
+        - [2.5.6.3.1 NetShareInfo0 Data Structure](#25631-netshareinfo0-data-structure)
+        - [2.5.6.3.2 NetShareInfo1 Data Structure](#25632-netshareinfo1-data-structure)
+        - [2.5.6.3.3 NetShareInfo2 Data Structure](#25633-netshareinfo2-data-structure)
+    - [2.5.7 RAP Print Commands](#257-rap-print-commands)
+      - [2.5.7.1 NetPrintQEnum Command](#2571-netprintqenum-command)
+        - [2.5.7.1.1 RAP NetPrintQEnumRequest](#25711-rap-netprintqenumrequest)
+        - [2.5.7.1.2 RAP NetPrintQEnumResponse](#25712-rap-netprintqenumresponse)
+      - [2.5.7.2 NetPrintQGetInfo Command](#2572-netprintqgetinfo-command)
+        - [2.5.7.2.1 RAP NetPrintQGetInfoRequest](#25721-rap-netprintqgetinforequest)
+        - [2.5.7.2.2 RAP NetPrintQGetInfoResponse](#25722-rap-netprintqgetinforesponse)
+      - [2.5.7.3 NetPrintJobSetInfo Command](#2573-netprintjobsetinfo-command)
+        - [2.5.7.3.1 RAP NetPrintJobSetInfoRequest](#25731-rap-netprintjobsetinforequest)
+        - [2.5.7.3.2 RAP NetPrintJobSetInfoResponse](#25732-rap-netprintjobsetinforesponse)
+      - [2.5.7.4 NetPrintJobGetInfo Command](#2574-netprintjobgetinfo-command)
+        - [2.5.7.4.1 RAP NetPrintJobGetInfoRequest](#25741-rap-netprintjobgetinforequest)
+        - [2.5.7.4.2 RAP NetPrintJobGetInfoResponse](#25742-rap-netprintjobgetinforesponse)
+      - [2.5.7.5 NetPrintJobPause Command](#2575-netprintjobpause-command)
+        - [2.5.7.5.1 RAP NetPrintJobPauseRequest](#25751-rap-netprintjobpauserequest)
+        - [2.5.7.5.2 RAP NetPrintJobPauseResponse](#25752-rap-netprintjobpauseresponse)
+      - [2.5.7.6 NetPrintJobContinue Command](#2576-netprintjobcontinue-command)
+        - [2.5.7.6.1 RAP NetPrintJobContinueRequest](#25761-rap-netprintjobcontinuerequest)
+        - [2.5.7.6.2 RAP NetPrintJobContinueResponse](#25762-rap-netprintjobcontinueresponse)
+      - [2.5.7.7 NetPrintJobDelete Command](#2577-netprintjobdelete-command)
+        - [2.5.7.7.1 RAP NetPrintJobDeleteRequest](#25771-rap-netprintjobdeleterequest)
+        - [2.5.7.7.2 RAP NetPrintJobDeleteResponse](#25772-rap-netprintjobdeleteresponse)
+      - [2.5.7.8 RAP Print Response Structures](#2578-rap-print-response-structures)
+        - [2.5.7.8.1 PrintQueue0 Data Structure](#25781-printqueue0-data-structure)
+        - [2.5.7.8.2 PrintQueue1 Data Structure](#25782-printqueue1-data-structure)
+        - [2.5.7.8.3 PrintQueue3 Data Structure](#25783-printqueue3-data-structure)
+        - [2.5.7.8.4 PrintQueue5 Data Structure](#25784-printqueue5-data-structure)
+        - [2.5.7.8.5 PrintJobInfo0 Data Structure](#25785-printjobinfo0-data-structure)
+        - [2.5.7.8.6 PrintJobInfo1 Data Structure](#25786-printjobinfo1-data-structure)
+        - [2.5.7.8.7 PrintJobInfo2 Data Structure](#25787-printjobinfo2-data-structure)
+        - [2.5.7.8.8 PrintJobInfo3 Data Structure](#25788-printjobinfo3-data-structure)
+    - [2.5.8 RAP User Commands](#258-rap-user-commands)
+      - [2.5.8.1 NetUserPasswordSet2 Command](#2581-netuserpasswordset2-command)
+        - [2.5.8.1.1 RAP NetUserPasswordSet2Request](#25811-rap-netuserpasswordset2request)
+        - [2.5.8.1.2 RAP NetUserPasswordSet2Response](#25812-rap-netuserpasswordset2response)
+      - [2.5.8.2 NetUserGetInfo Commands](#2582-netusergetinfo-commands)
+        - [2.5.8.2.1 NetUserGetInfoRequest](#25821-netusergetinforequest)
+        - [2.5.8.2.2 NetUserGetInfoResponse](#25822-netusergetinforesponse)
+      - [2.5.8.3 RAP User Structures](#2583-rap-user-structures)
+        - [2.5.8.3.1 NetUserInfo0 Data Structure](#25831-netuserinfo0-data-structure)
+        - [2.5.8.3.2 NetUserInfo1 Data Structure](#25832-netuserinfo1-data-structure)
+        - [2.5.8.3.3 NetUserInfo2 Data Structure](#25833-netuserinfo2-data-structure)
+        - [2.5.8.3.4 NetUserInfo10 Data Structure](#25834-netuserinfo10-data-structure)
+        - [2.5.8.3.5 NetUserInfo11 Data Structure](#25835-netuserinfo11-data-structure)
+    - [2.5.9 RAP Time Commands](#259-rap-time-commands)
+      - [2.5.9.1 NetRemoteTOD Command](#2591-netremotetod-command)
+        - [2.5.9.1.1 RAP NetRemoteTODRequest](#25911-rap-netremotetodrequest)
+        - [2.5.9.1.2 RAP NetRemoteTODResponse](#25912-rap-netremotetodresponse)
+      - [2.5.9.2 RAP Time Structures](#2592-rap-time-structures)
+        - [2.5.9.2.1 RAP TimeOfDayInfo Data Structure](#25921-rap-timeofdayinfo-data-structure)
+    - [2.5.10 RAP Workstation Commands](#2510-rap-workstation-commands)
+      - [2.5.10.1 NetWkstaGetInfo Command](#25101-netwkstagetinfo-command)
+        - [2.5.10.1.1 NetWkstaGetInfoRequest](#251011-netwkstagetinforequest)
+        - [2.5.10.1.2 NetWkstaGetInfoResponse](#251012-netwkstagetinforesponse)
+      - [2.5.10.2 NetWkstaUserLogon Command](#25102-netwkstauserlogon-command)
+        - [2.5.10.2.1 NetWkstaUserLogonRequest](#251021-netwkstauserlogonrequest)
+        - [2.5.10.2.2 RAP NetWkstaUserLogonResponse](#251022-rap-netwkstauserlogonresponse)
+      - [2.5.10.3 NetWkstaUserLogoff Command](#25103-netwkstauserlogoff-command)
+        - [2.5.10.3.1 NetWkstaUserLogoffRequest](#251031-netwkstauserlogoffrequest)
+        - [2.5.10.3.2 RAP NetWkstaUserLogoffResponse](#251032-rap-netwkstauserlogoffresponse)
+      - [2.5.10.4 RAP Workstation Structures](#25104-rap-workstation-structures)
+        - [2.5.10.4.1 NetWkstaInfo10 Data Structure](#251041-netwkstainfo10-data-structure)
+        - [2.5.10.4.2 NetWkstaUserLogonRequestData Data Structure](#251042-netwkstauserlogonrequestdata-data-structure)
+        - [2.5.10.4.3 NetWkstaUserLogonResponseData Data Structure](#251043-netwkstauserlogonresponsedata-data-structure)
+        - [2.5.10.4.4 NetWkstaUserLogoffRequestData Data Structure](#251044-netwkstauserlogoffrequestdata-data-structure)
+        - [2.5.10.4.5 NetWkstaUserLogoffResponseData Data Structure](#251045-netwkstauserlogoffresponsedata-data-structure)
+    - [2.5.11 RAP Response Data Marshaling](#2511-rap-response-data-marshaling)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 RAP Client Details](#31-rap-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 NetShareEnum Command](#3141-netshareenum-command)
+      - [3.1.4.2 NetShareGetInfo Command](#3142-netsharegetinfo-command)
+      - [3.1.4.3 NetServerGetInfo Command](#3143-netservergetinfo-command)
+      - [3.1.4.4 NetPrintQEnum Command](#3144-netprintqenum-command)
+      - [3.1.4.5 NetPrintQGetInfo Command](#3145-netprintqgetinfo-command)
+      - [3.1.4.6 NetPrintJobSetInfo Command](#3146-netprintjobsetinfo-command)
+      - [3.1.4.7 NetPrintJobGetInfo Command](#3147-netprintjobgetinfo-command)
+      - [3.1.4.8 NetPrintJobDelete Command](#3148-netprintjobdelete-command)
+      - [3.1.4.9 NetPrintJobPause Command](#3149-netprintjobpause-command)
+      - [3.1.4.10 NetPrintJobContinue Command](#31410-netprintjobcontinue-command)
+      - [3.1.4.11 NetRemoteTOD Command](#31411-netremotetod-command)
+      - [3.1.4.12 NetServerEnum2 Command](#31412-netserverenum2-command)
+      - [3.1.4.13 NetUserGetInfo Command](#31413-netusergetinfo-command)
+      - [3.1.4.14 NetUserPasswordSet2 Command](#31414-netuserpasswordset2-command)
+      - [3.1.4.15 NetServerEnum3 Command](#31415-netserverenum3-command)
+      - [3.1.4.16 NetWkstaGetInfo Command](#31416-netwkstagetinfo-command)
+      - [3.1.4.17 NetWkstaUserLogon Command](#31417-netwkstauserlogon-command)
+      - [3.1.4.18 NetWkstaUserLogoff Command](#31418-netwkstauserlogoff-command)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 RAP Server Details](#32-rap-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Global](#3211-global)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 NetShareEnum Command](#3251-netshareenum-command)
+      - [3.2.5.2 NetShareGetInfo Command](#3252-netsharegetinfo-command)
+      - [3.2.5.3 NetServerGetInfo Command](#3253-netservergetinfo-command)
+      - [3.2.5.4 NetPrintQEnum Command](#3254-netprintqenum-command)
+        - [3.2.5.4.1 Mapping PRINTER_INFO_2 Status Values to PrintQueue3 Status Values](#32541-mapping-printerinfo2-status-values-to-printqueue3-status-values)
+      - [3.2.5.5 NetPrintQGetInfo Command](#3255-netprintqgetinfo-command)
+      - [3.2.5.6 NetPrintJobSetInfo Command](#3256-netprintjobsetinfo-command)
+      - [3.2.5.7 NetPrintJobGetInfo Command](#3257-netprintjobgetinfo-command)
+        - [3.2.5.7.1 Mapping JOB_INFO_2 Status Values to PrintJobInfo2 Status Values](#32571-mapping-jobinfo2-status-values-to-printjobinfo2-status-values)
+      - [3.2.5.8 NetPrintJobDelete Command](#3258-netprintjobdelete-command)
+      - [3.2.5.9 NetPrintJobPause Command](#3259-netprintjobpause-command)
+      - [3.2.5.10 NetPrintJobContinue Command](#32510-netprintjobcontinue-command)
+      - [3.2.5.11 NetRemoteTOD Command](#32511-netremotetod-command)
+      - [3.2.5.12 NetServerEnum2 Command](#32512-netserverenum2-command)
+      - [3.2.5.13 NetUserGetInfo Command](#32513-netusergetinfo-command)
+      - [3.2.5.14 NetUserPasswordSet2 Command](#32514-netuserpasswordset2-command)
+      - [3.2.5.15 NetServerEnum3 Command](#32515-netserverenum3-command)
+      - [3.2.5.16 NetWkstaGetInfo Command](#32516-netwkstagetinfo-command)
+      - [3.2.5.17 NetWkstaUserLogon Command](#32517-netwkstauserlogon-command)
+      - [3.2.5.18 NetWkstaUserLogoff Command](#32518-netwkstauserlogoff-command)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 NetShareEnum](#41-netshareenum)
+  - [4.2 NetServerEnum2](#42-netserverenum2)
+  - [4.3 NetPrintJobDel](#43-netprintjobdel)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Remote Administration Protocol (RAP) is included in the Windows operating system for
 compatibility reasons to perform remote administrative functions such as share maintenance and
@@ -1006,7 +766,7 @@ Browser Protocol uses the Remote Administration Protocol to enumerate the server
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1054,7 +814,7 @@ B$, C$ (and other local disk names followed by a dollar sign), assigned to local
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1066,10 +826,11 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1096,7 +857,7 @@ Transport: Concepts and Methods", RFC 1001, March 1987, https://www.rfc-editor.o
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [CIFSPRINT] Leach, P., and Naik, D., "CIFS Printing Specification Preliminary Draft", January 1997,
 http://tools.ietf.org/id/draft-leach-cifs-print-spec-00.txt
@@ -1112,7 +873,7 @@ us/library/aa378749.aspx
 [RYAN] Ryan, R., and Ryan, B., "LAN Manager: A Programmer's Guide, Version 2", Microsoft Press,
 July 1990, ISBN: 1556151667.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Administration Protocol provides a simple remote procedure call (RPC)-like mechanism
 that enables clients to perform administrative functions on servers that implement the protocol. For a
@@ -1132,11 +893,12 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-As specified in [MS-CIFS] section 2.2.4.67, a file written to a printer share results in a print job being
+
+As specified in [MS-CIFS] section 2.2.4.67, a file written to a printer share results in a print job being
 added to the printer queue. As specified in [MS-CIFS] section 2.2.4.5, a file is spooled to the printer
 when the file handle to a print file is closed.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Administration Protocol is implemented using the Server Message Block (SMB) Protocol.
 The data flow for the Remote Administration Protocol is identical to the data flow for the SMB Protocol,
@@ -1164,13 +926,14 @@ Release: September 16, 2024
 
 11 / 133
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RAP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 1: Relationships to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Administration Protocol has the following preconditions:
 
@@ -1194,7 +957,8 @@ Release: September 16, 2024
 
 12 / 133
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Remote Administration Protocol is used when a client, which is designed to interoperate with
 Microsoft LAN Manager 1.0, needs to retrieve information on a server. If a server requires
@@ -1203,7 +967,7 @@ interoperability with such clients, it implements this protocol.<1>
  The Remote Administration Protocol is designed for 16-bit operating systems and is incapable of
 transmitting more than 64 KB of data in any protocol exchange.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning in the following areas:
 
@@ -1231,7 +995,7 @@ of the processing system.
 detected by the Remote Administration Protocol at the command and protocol levels through
 mechanisms specified in [MS-SMB] section 2.2.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields in the Remote Administration Protocol. The commands that the
 Remote Administration Protocol processes can include vendor-extensible fields such as version
@@ -1241,7 +1005,7 @@ This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Imple
 SHOULD<3> reuse those values with their indicated meanings. Choosing any other value runs the risk
 of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Remote Administration Protocol utilizes a single parameter assignment: the Name parameter is
 assigned the case sensitive string "\PIPE\LANMAN". For more information, see section 3.
@@ -1253,9 +1017,10 @@ Release: September 16, 2024
 
 13 / 133
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Administration Protocol is implemented using the SMB_COM_TRANSACTION functionality
 in the SMB Protocol. A client of the Remote Administration Protocol MUST first connect to the SMB
@@ -1263,7 +1028,7 @@ server and exchange the SMB_COM_NEGOTIATE, SMB_COM_SESSION_SETUP_ANDX, and
 SMB_COM_TREE_CONNECT_ANDX commands to establish the connection, as specified in [MS-SMB]
 section 3.2.4.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Remote Administration Protocol is a request/response protocol. A Remote Administration Protocol
 request is carried in a single SMB_COM_TRANSACTION request, and the Remote Administration
@@ -1273,7 +1038,7 @@ request, as specified in [MS-CIFS] section 2.2.4.33.
 All multiple-byte elements in the Remote Administration Protocol MUST be treated as little-endian,
 unless otherwise specified.
 
-2.3  Information Levels
+### 2.3 Information Levels
 
 The Remote Administration Protocol supports the concept of an information level (or level of detail)
 required for a particular response. An information level is an unsigned 16-bit integer. A Remote
@@ -1364,7 +1129,8 @@ Release: September 16, 2024
 
 14 / 133
 
- Command
+
+ Command
 
  Information level
 
@@ -1470,7 +1236,7 @@ NetWkstaUserLogoff  0x0001
 
 NetWkstaUserLogoffResponseData
 
-2.4  String Field Length Limits
+### 2.4 String Field Length Limits
 
 Many of the string elements specified in the Remote Administration Protocol have maximum length
 constraints associated with them. A client MUST NOT transmit strings that exceed the maximum
@@ -1490,7 +1256,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The following table lists the length limits for RAP commands.
+
+The following table lists the length limits for RAP commands.
 
 RAP Command
 
@@ -1663,9 +1430,10 @@ Release: September 16, 2024
 
 16 / 133
 
-2.5  Message Definitions
 
-2.5.1  RAP Request Message
+### 2.5 Message Definitions
+
+#### 2.5.1 RAP Request Message
 
 Each Remote Administration Protocol request message MUST be transmitted in the parameters section
 of an SMB_COM_TRANSACTION protocol exchange (as specified in [MS-CIFS] section 2.2.4.33). The
@@ -1769,7 +1537,8 @@ Release: September 16, 2024
 
 17 / 133
 
-Descriptor  Data type
+
+Descriptor  Data type
 
 Format
 
@@ -1901,7 +1670,8 @@ Release: September 16, 2024
 
 18 / 133
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1921,7 +1691,7 @@ RAPInData (variable): Additional data for the Remote Administration Protocol req
 MUST be present in the NetPrintJobSetInfoRequest command. This field cannot be present in any
 other command.
 
-2.5.2  RAP Response Message
+#### 2.5.2 RAP Response Message
 
 The response to a Remote Administration Protocol command consists of two parts. The first is
 transmitted in the Parameters field of the SMB_COM_TRANSACTION response; the second is
@@ -2000,7 +1770,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-codes specified in [MS-ERREF], and the client MUST treat any error code not explicitly listed in the
+
+codes specified in [MS-ERREF], and the client MUST treat any error code not explicitly listed in the
 preceding table as a failure.
 
 Converter (2 bytes): This field MUST contain a 16-bit signed integer, which a client MUST subtract
@@ -2041,7 +1812,7 @@ Administration Protocol command and the parameters of each Remote Administration
 command. See Remote Administration Protocol responses for each Remote Administration
 Protocol command in sections 2.5.5, 2.5.6, 2.5.7, 2.5.8, and 2.5.9.
 
-2.5.3  RAP Request/Response Summary Table
+#### 2.5.3 RAP Request/Response Summary Table
 
 Some Remote Administration Protocol commands require the RAPOutParams structure, as specified in
 section 2.5.2. The following table specifies the message request and response for a specific Remote
@@ -2125,7 +1896,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- Command
+
+ Command
 
  Request
 
@@ -2229,7 +2001,7 @@ se
 NetWkstaUserLogoffResponse
 Data
 
-2.5.4  RAP Opcodes
+#### 2.5.4 RAP Opcodes
 
 The following tables summarize Remote Administration Protocol command operation codes.
 
@@ -2270,7 +2042,8 @@ Release: September 16, 2024
 
 21 / 133
 
-Command
+
+Command
 
 Opcode
 
@@ -2330,15 +2103,15 @@ NetWkstaUserLogon  0x0084
 
 NetWkstaUserLogoff  0x0085
 
-2.5.5  RAP Server Commands
+#### 2.5.5 RAP Server Commands
 
 The following Remote Administration Protocol commands are for operations involving servers.
 
-2.5.5.1  NetServerGetInfo Command
+##### 2.5.5.1 NetServerGetInfo Command
 
 The NetServerGetInfo command returns information on the server.
 
-2.5.5.1.1 RAP NetServerGetInfoRequest
+###### 2.5.5.1.1 RAP NetServerGetInfoRequest
 
 The fields in the NetServerGetInfoRequest message MUST have the following format.<7>
 
@@ -2368,7 +2141,8 @@ Release: September 16, 2024
 
 22 / 133
 
-...
+
+...
 
 RAPParams
 
@@ -2407,7 +2181,7 @@ ReceiveBufferSize (2 bytes): A 16-bit unsigned integer that represents the maxim
 of bytes of data that can be returned in the Data field of the SMB_COM_TRANSACTION
 response to the command.
 
-2.5.5.1.2 RAP NetServerGetInfoResponse
+###### 2.5.5.1.2 RAP NetServerGetInfoResponse
 
 The RAPOutParams RAP response to the NetServerGetInfo command is as follows.<8>
 
@@ -2436,12 +2210,12 @@ If the InfoLevel specified in the NetServerGetInfo is 1, and the response is not
 RAPOutData field of the SMB_COM_TRANSACTION response MUST be filled with a NetServerInfo1
 structure.
 
-2.5.5.2  NetServerEnum2
+##### 2.5.5.2 NetServerEnum2
 
 The NetServerEnum2 command specifies that the server is to return its list of servers to the
 client.<9>
 
-2.5.5.2.1 RAP NetServerEnum2Request
+###### 2.5.5.2.1 RAP NetServerEnum2Request
 
 The fields in the NetServerEnum2Request message MUST be set as follows.
 
@@ -2452,7 +2226,8 @@ Release: September 16, 2024
 
 23 / 133
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2543,7 +2318,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 0x00000001
 
@@ -2666,7 +2442,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2750,7 +2527,7 @@ computers. If the ParamDesc is "WrLehD0", then this field MUST NOT be present. I
 is not present or is empty (a single null byte), the server MUST return the list of servers for
 the server's current domain or workgroup.
 
-2.5.5.2.2 RAP NetServerEnum2Response
+###### 2.5.5.2.2 RAP NetServerEnum2Response
 
 The RAPOutParams structure for the NetServerEnum2 Command MUST be as follows.
 
@@ -2781,7 +2558,8 @@ Release: September 16, 2024
 
 26 / 133
 
-EntriesAvailable (2 bytes): A 16-bit unsigned integer that represents the total number of servers
+
+EntriesAvailable (2 bytes): A 16-bit unsigned integer that represents the total number of servers
 
 available on the server.
 
@@ -2795,12 +2573,12 @@ If the InfoLevel specified in the NetServerEnum2Request is 0x0001, the RAPOutDat
 SMB_COM_TRANSACTION response MUST be filled with an array of EntriesReturned NetServerInfo1
 structures.
 
-2.5.5.3  NetServerEnum3 Command
+##### 2.5.5.3 NetServerEnum3 Command
 
 The NetServerEnum3 command specifies that the server MUST return to the client a list of servers
 that exist on the network.<11>
 
-2.5.5.3.1 RAP NetServerEnum3Request
+###### 2.5.5.3.1 RAP NetServerEnum3Request
 
 The fields in the NetServerEnum3Request message MUST be set as follows.
 
@@ -2867,7 +2645,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-...
+
+...
 
 FirstNameToReturn (variable)
 
@@ -2976,7 +2755,8 @@ Windows NT, Windows 2000, Windows XP, Windows Server
 
 28 / 133
 
-Value
+
+Value
 
 0x00001000
 
@@ -3099,14 +2879,15 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-FirstNameToReturn (variable): This field MUST contain a null-terminated ASCII string with a
+
+FirstNameToReturn (variable): This field MUST contain a null-terminated ASCII string with a
 
 maximum length of 16 bytes, including the null-terminator. This string MUST specify the name
 of the first server that the RAP server MUST return in its enumeration. If this parameter is
 empty (a single null byte), the server MUST return entries starting with the first server in the
 list. See section 3.2.5.15.
 
-2.5.5.3.2 RAP NetServerEnum3Response
+###### 2.5.5.3.2 RAP NetServerEnum3Response
 
 The RAPOutParams structure for the NetServerEnum3 Command MUST be as follows.
 
@@ -3144,9 +2925,9 @@ If the InfoLevel specified in the NetServerEnum3Request is 0x0001, the RAPOutDat
 SMB_COM_TRANSACTION response MUST be filled with an array of EntriesReturned NetServerInfo1
 structures.
 
-2.5.5.4  RAP Server Response Structures
+##### 2.5.5.4 RAP Server Response Structures
 
-2.5.5.4.1 NetServerInfo0 Data Structure
+###### 2.5.5.4.1 NetServerInfo0 Data Structure
 
 The NetServerInfo0 structure MUST be returned by the server in the Data field of the
 SMB_COM_TRANSACTION response that corresponds to a NetServerEnum2 command, a
@@ -3175,7 +2956,7 @@ ServerName (16 bytes): A 16-character null-terminated ASCII string that contains
 name (as specified in [RFC1001] section 5.2) of the server. The ServerName field MUST be
 padded to 16 bytes with null characters.
 
-2.5.5.4.2 NetServerInfo1 Data Structure
+###### 2.5.5.4.2 NetServerInfo1 Data Structure
 
 30 / 133
 
@@ -3184,7 +2965,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The NetServerInfo1 structure is returned by the server in the Data field of the
+
+The NetServerInfo1 structure is returned by the server in the Data field of the
 SMB_COM_TRANSACTION response that corresponds to a NetServerEnum2 command, a
 NetServerEnum3 command, or a NetServerGetInfo Command when the InfoLevel parameter to the
 command is 0x0001.
@@ -3247,13 +3029,13 @@ ServerCommentHigh (2 bytes): Unused. Can be set to any arbitrary value when sent
 
 ignored on receipt.
 
-2.5.6  RAP Share Commands
+#### 2.5.6 RAP Share Commands
 
-2.5.6.1  NetShareEnum Command
+##### 2.5.6.1 NetShareEnum Command
 
 The NetShareEnum command MUST return to the client information on each list of shared resources.
 
-2.5.6.1.1 RAP NetShareEnumRequest
+###### 2.5.6.1.1 RAP NetShareEnumRequest
 
 The fields in the NetShareEnumRequest message MUST be set as follows.<14>
 
@@ -3264,7 +3046,8 @@ Release: September 16, 2024
 
 31 / 133
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3334,7 +3117,7 @@ ReceiveBufferSize (2 bytes): A 16-bit unsigned integer that represents the maxim
 of bytes of data that can be returned in the Data field of the SMB_COM_TRANSACTION
 response to the command.
 
-2.5.6.1.2 RAP NetShareEnumResponse
+###### 2.5.6.1.2 RAP NetShareEnumResponse
 
 The RAPOutParams structure for the NetShareEnum command MUST be as follows.<15>
 
@@ -3365,7 +3148,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-EntriesAvailable (2 bytes): A 16-bit unsigned integer that represents the number of shares on the
+
+EntriesAvailable (2 bytes): A 16-bit unsigned integer that represents the number of shares on the
 
 server.
 
@@ -3383,11 +3167,11 @@ If the InfoLevel specified in the NetShareEnumRequest is 2, the RAPOutData field
 SMB_COM_TRANSACTION response MUST be filled with an array of EntriesReturned NetShareInfo2
 structures.
 
-2.5.6.2  NetShareGetInfo Command
+##### 2.5.6.2 NetShareGetInfo Command
 
 The NetShareGetInfo command returns information about shared resources.
 
-2.5.6.2.1 NetShareGetInfoRequest
+###### 2.5.6.2.1 NetShareGetInfoRequest
 
 The NetShareGetInfoRequest packet has the following fields.<16>
 
@@ -3447,7 +3231,8 @@ Release: September 16, 2024
 
 33 / 133
 
-...
+
+...
 
 InfoLevel
 
@@ -3480,7 +3265,7 @@ ReceiveBufferSize (2 bytes): A 16-bit unsigned integer that represents the maxim
 of bytes of data that can be returned in the Data field of the SMB_COM_TRANSACTION
 response to the command.
 
-2.5.6.2.2 NetShareGetInfoResponse
+###### 2.5.6.2.2 NetShareGetInfoResponse
 
 The RAPOutParams structure for the NetShareGetInfo Command has the following fields.<17>
 
@@ -3513,9 +3298,9 @@ If the InfoLevel specified in the NetShareGetInfo is 2, and the response is not 
 RAPOutData field of the SMB_COM_TRANSACTION response MUST be filled with a NetShareInfo2
 structure.
 
-2.5.6.3  RAP Share Response Structures
+##### 2.5.6.3 RAP Share Response Structures
 
-2.5.6.3.1 NetShareInfo0 Data Structure
+###### 2.5.6.3.1 NetShareInfo0 Data Structure
 
 The NetShareInfo0 data structure has the following fields.
 
@@ -3526,7 +3311,8 @@ Release: September 16, 2024
 
 34 / 133
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3550,7 +3336,7 @@ the share. If the name is shorter than 13 bytes, the NetworkName field MUST be f
 characters up to 13 bytes in length. If the name of the share is longer than 13 bytes, it MUST NOT
 be included in the enumeration.
 
-2.5.6.3.2 NetShareInfo1 Data Structure
+###### 2.5.6.3.2 NetShareInfo1 Data Structure
 
 The NetShareInfo1 data structure has the following fields.
 
@@ -3612,7 +3398,8 @@ Release: September 16, 2024
 
 35 / 133
 
-RemarkOffsetLow (2 bytes): A 16-bit unsigned integer that represents the offset, in bytes,
+
+RemarkOffsetLow (2 bytes): A 16-bit unsigned integer that represents the offset, in bytes,
 from the start of the response to a null-terminated ASCII string allocated in the response
 block (see section 2.5.11). The string is an optional comment about the share.
 
@@ -3624,7 +3411,7 @@ RemarkOffsetHigh (2 bytes): Unused. Can be set to any arbitrary value when sent,
 
 be ignored on receipt.
 
-2.5.6.3.3 NetShareInfo2 Data Structure
+###### 2.5.6.3.3 NetShareInfo2 Data Structure
 
 The NetShareInfo2 data structure has the following fields.
 
@@ -3707,7 +3494,8 @@ Release: September 16, 2024
 
 36 / 133
 
-Value
+
+Value
 
 Meaning
 
@@ -3760,14 +3548,14 @@ string.
 
 Pad2 (1 byte): SHOULD be set to zero when sent, and MUST be ignored on receipt.
 
-2.5.7  RAP Print Commands
+#### 2.5.7 RAP Print Commands
 
-2.5.7.1  NetPrintQEnum Command
+##### 2.5.7.1 NetPrintQEnum Command
 
 The NetPrintQEnum command enables the server to return information that is an enumeration of the
 print queues on the server.
 
-2.5.7.1.1 RAP NetPrintQEnumRequest
+###### 2.5.7.1.1 RAP NetPrintQEnumRequest
 
 The fields in the NetPrintQEnumRequest message MUST be set as follows.<18>
 
@@ -3793,7 +3581,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-...
+
+...
 
 DataDesc (14 bytes)
 
@@ -3874,7 +3663,7 @@ response to the command.
 
 AuxDesc (18 bytes): MUST be set to "WB21BB16B10zWWzDDz".
 
-2.5.7.1.2 RAP NetPrintQEnumResponse
+###### 2.5.7.1.2 RAP NetPrintQEnumResponse
 
 38 / 133
 
@@ -3883,7 +3672,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The RAPOutParams structure for the NetPrintQEnumResponse is as follows.<20>
+
+The RAPOutParams structure for the NetPrintQEnumResponse is as follows.<20>
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -3944,12 +3734,12 @@ RAPOutData field of the SMB_COM_TRANSACTION response MUST be filled with an arra
 EntriesReturned PrintQueue5 data structures. For rules on how to initialize the data structures, see
 section 3.2.5.4.
 
-2.5.7.2  NetPrintQGetInfo Command
+##### 2.5.7.2 NetPrintQGetInfo Command
 
 The NetPrintQGetInfo command specifies that the server is to return information on the named print
 queue on the server.
 
-2.5.7.2.1 RAP NetPrintQGetInfoRequest
+###### 2.5.7.2.1 RAP NetPrintQGetInfoRequest
 
 The fields in the NetPrintQGetInfoRequest message MUST be set as follows.<23>
 
@@ -3960,7 +3750,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4057,7 +3848,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-InfoLevel (2 bytes): A 16-bit unsigned integer that specifies the information level for
+
+InfoLevel (2 bytes): A 16-bit unsigned integer that specifies the information level for
 
 NetPrintQGetInfoRequest.
 
@@ -4069,7 +3861,7 @@ AuxDesc (variable): If InfoLevel is set to 0x0002, this MUST be set to "WB21BB16
 
 If InfoLevel is set to 0x0000 or 0x0003, this field MUST NOT be present.
 
-2.5.7.2.2 RAP NetPrintQGetInfoResponse
+###### 2.5.7.2.2 RAP NetPrintQGetInfoResponse
 
 The RAPOutParams structure responds to the NetPrintQGetInfo command as follows.<25>
 
@@ -4118,12 +3910,12 @@ If the InfoLevel specified in the NetPrintQGetInfoRequest is 5, and the response
 RAPOutData field of the SMB_COM_TRANSACTION response MUST be filled with a PrintQueue5
 structure. For rules on how to initialize the data structures, see section 3.2.5.5.
 
-2.5.7.3  NetPrintJobSetInfo Command
+##### 2.5.7.3 NetPrintJobSetInfo Command
 
 The NetPrintJobSetInfo command specifies that the server MUST modify information on the specified
 print job.
 
-2.5.7.3.1 RAP NetPrintJobSetInfoRequest
+###### 2.5.7.3.1 RAP NetPrintJobSetInfoRequest
 
 The fields in the NetPrintJobSetInfoRequest message MUST be set as follows.<27>
 
@@ -4134,7 +3926,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4235,7 +4028,8 @@ Release: September 16, 2024
 
 42 / 133
 
-Value
+
+Value
 
 Meaning
 
@@ -4298,17 +4092,17 @@ For example, if the incoming application request sets the ParamNum value to 0x00
 RAPInData field MUST be set to a null-terminated ASCII string that represents the new value for the
 JobComment field in the print job specified by the incoming job ID parameter.
 
-2.5.7.3.2 RAP NetPrintJobSetInfoResponse
+###### 2.5.7.3.2 RAP NetPrintJobSetInfoResponse
 
 The RAPOutParams field and the RAPOutData field of the Remote Administration Protocol response
 to the NetPrintJobSetInfo command MUST be empty.<29>
 
-2.5.7.4  NetPrintJobGetInfo Command
+##### 2.5.7.4 NetPrintJobGetInfo Command
 
 The NetPrintJobGetInfo command specifies that the server MUST return information on the specified
 print job.
 
-2.5.7.4.1 RAP NetPrintJobGetInfoRequest
+###### 2.5.7.4.1 RAP NetPrintJobGetInfoRequest
 
 The fields in the NetPrintJobGetInfoRequest message MUST be set as follows.<30>
 
@@ -4336,7 +4130,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DataDesc (19 bytes)
+
+DataDesc (19 bytes)
 
 ...
 
@@ -4388,7 +4183,7 @@ ReceiveBufferSize (2 bytes): A 16-bit unsigned integer that represents the maxim
 of bytes of data that can be returned in the Data field of the SMB_COM_TRANSACTION
 response to the command.
 
-2.5.7.4.2 RAP NetPrintJobGetInfoResponse
+###### 2.5.7.4.2 RAP NetPrintJobGetInfoResponse
 
 The RAPOutParams response to the NetPrintJobGetInfo command is as follows.<31>
 
@@ -4422,17 +4217,18 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If the InfoLevel of the NetPrintJobGetInfoRequest is 0x0002, the RAPOutData of the Remote
+
+If the InfoLevel of the NetPrintJobGetInfoRequest is 0x0002, the RAPOutData of the Remote
 Administration Protocol response MUST be set to the PrintJobInfo2 structure for the specified job ID.
 
 If the InfoLevel of the NetPrintJobGetInfoRequest is 0x0003, the RAPOutData of the Remote
 Administration Protocol response MUST be set to the PrintJobInfo3 structure for the specified job ID.
 
-2.5.7.5  NetPrintJobPause Command
+##### 2.5.7.5 NetPrintJobPause Command
 
 The NetPrintJobPause command specifies that the server MUST pause the specified print job.
 
-2.5.7.5.1 RAP NetPrintJobPauseRequest
+###### 2.5.7.5.1 RAP NetPrintJobPauseRequest
 
 The fields in the NetPrintJobPauseRequest message MUST be set as follows.<32>
 
@@ -4480,16 +4276,16 @@ JobID (2 bytes): A 16-bit unsigned integer that represents the job ID of the pri
 
 paused.
 
-2.5.7.5.2 RAP NetPrintJobPauseResponse
+###### 2.5.7.5.2 RAP NetPrintJobPauseResponse
 
 The RAPOutParams field and the RAPOutData field of the SMB_COM_TRANSACTION response to
 the NetPrintJobPause command MUST be empty.<33>
 
-2.5.7.6  NetPrintJobContinue Command
+##### 2.5.7.6 NetPrintJobContinue Command
 
 The NetPrintJobContinue command specifies that the server MUST continue the specified print job.
 
-2.5.7.6.1 RAP NetPrintJobContinueRequest
+###### 2.5.7.6.1 RAP NetPrintJobContinueRequest
 
 The fields in the NetPrintJobContinueRequest message MUST be set as follows.<34>
 
@@ -4515,7 +4311,8 @@ Release: September 16, 2024
 
 45 / 133
 
-DataDesc
+
+DataDesc
 
 RAPParams
 
@@ -4544,16 +4341,16 @@ JobID (2 bytes): A 16-bit unsigned integer that represents the job ID of the pri
 
 continued.
 
-2.5.7.6.2 RAP NetPrintJobContinueResponse
+###### 2.5.7.6.2 RAP NetPrintJobContinueResponse
 
 The RAPOutParams field and the RAPOutData field of the SMB_COM_TRANSACTION response to
 the NetPrintJobContinue command MUST be empty.<35>
 
-2.5.7.7  NetPrintJobDelete Command
+##### 2.5.7.7 NetPrintJobDelete Command
 
 The NetPrintJobDelete command specifies that the server is to delete the specified print job.
 
-2.5.7.7.1 RAP NetPrintJobDeleteRequest
+###### 2.5.7.7.1 RAP NetPrintJobDeleteRequest
 
 The fields in the NetPrintJobDeleteRequest message MUST be set as follows.<36>
 
@@ -4601,7 +4398,7 @@ JobID (2 bytes): A 16-bit unsigned integer that represents the job ID of the pri
 
 deleted.
 
-2.5.7.7.2 RAP NetPrintJobDeleteResponse
+###### 2.5.7.7.2 RAP NetPrintJobDeleteResponse
 
 [MS-RAP] - v20240916
 Remote Administration Protocol
@@ -4610,10 +4407,11 @@ Release: September 16, 2024
 
 46 / 133
 
-The RAPOutParams field and the RAPOutData field of the SMB_COM_TRANSACTION response to
+
+The RAPOutParams field and the RAPOutData field of the SMB_COM_TRANSACTION response to
 the NetPrintJobDelete command MUST be empty.<37>
 
-2.5.7.8  RAP Print Response Structures
+##### 2.5.7.8 RAP Print Response Structures
 
 The data field (section 2.5.2) in the response to a NetPrintQGetInfo and NetPrintQEnum commands
 MUST consist of the following structure.
@@ -4642,7 +4440,7 @@ PrintQueue. If the name is shorter than 13 bytes, the PrintQName field MUST be f
 characters up to 13 bytes in length. If the name of the PrintQueue is longer than 13 bytes, it
 MUST NOT be included in the enumeration.
 
-2.5.7.8.1 PrintQueue0 Data Structure
+###### 2.5.7.8.1 PrintQueue0 Data Structure
 
 The data field (see section 2.5.2) in the response to NetPrintQGetInfo and NetPrintQEnum commands
 MUST consist of the following structure.
@@ -4671,7 +4469,7 @@ print queue. If the name is shorter than 13 bytes, the PrintQName field MUST be 
 characters up to 13 bytes in length. If the name of the share is longer than 13 bytes, it SHOULD
 be truncated to a 13-character null-terminated ASCII string. <38>
 
-2.5.7.8.2 PrintQueue1 Data Structure
+###### 2.5.7.8.2 PrintQueue1 Data Structure
 
 The data field (see section 2.5.2) in the response to NetPrintQGetInfo and NetPrintQEnum commands
 MUST consist of the following structure.
@@ -4696,7 +4494,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-...
+
+...
 
 ...
 
@@ -4781,7 +4580,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-PrintProcessorDllNameLow (2 bytes):  A 16-bit unsigned integer that represents the offset, in
+
+PrintProcessorDllNameLow (2 bytes):  A 16-bit unsigned integer that represents the offset, in
 bytes, from the start of the response to a null-terminated ASCII string that is allocated in the
 response block (as specified in section 2.5.11) and that specifies the file name of the DLL that
 contains the print processor for this print queue.
@@ -4859,7 +4659,8 @@ Release: September 16, 2024
 
 49 / 133
 
-Value
+
+Value
 
 Meaning
 
@@ -4885,7 +4686,7 @@ PrintJobCount (2 bytes): A 16-bit unsigned integer that represents the number of
 
 structures that follow the PrintQueue1 structure.
 
-2.5.7.8.3 PrintQueue3 Data Structure
+###### 2.5.7.8.3 PrintQueue3 Data Structure
 
 The data field in the response to a NetPrintQGetInfo command MUST consist of the following structure.
 
@@ -4962,7 +4763,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-PrintQueueNameHigh (2 bytes): Unused. Can be set to any arbitrary value when sent and MUST
+
+PrintQueueNameHigh (2 bytes): Unused. Can be set to any arbitrary value when sent and MUST
 
 be ignored on receipt.
 
@@ -5037,7 +4839,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-CommentStringLow (2 bytes): A 16-bit unsigned integer that represents the offset, in bytes, from
+
+CommentStringLow (2 bytes): A 16-bit unsigned integer that represents the offset, in bytes, from
 the start of the response to a null-terminated ASCII string that is allocated in the response block
 (as specified in section 2.5.11) and that describes this print queue.
 
@@ -5119,7 +4922,8 @@ Release: September 16, 2024
 
 52 / 133
 
-PrintDriverDataLow (2 bytes): A 16-bit unsigned integer that represents the offset, in bytes, from
+
+PrintDriverDataLow (2 bytes): A 16-bit unsigned integer that represents the offset, in bytes, from
 the start of the response to a null-terminated ASCII string that is allocated in the response block
 (as specified in section 2.5.11) and that contains driver-specific binary data.
 
@@ -5142,7 +4946,7 @@ This field is present if, and only if, the PrinterDriverDataLow field is also pr
 For more information on the PrintQueue3 structure, see [CIFSPRINT] section 6.1.1 and [RYAN] page
 409.
 
-2.5.7.8.4 PrintQueue5 Data Structure
+###### 2.5.7.8.4 PrintQueue5 Data Structure
 
 The data field (see section 2.5.2) in the response to a NetPrintQGetInfo Command and NetPrintQEnum
 Command commands MUST consist of the following structure.
@@ -5177,7 +4981,7 @@ PrintQueueNameHigh (2 bytes): Unused. Can be set to any arbitrary value when sen
 
 be ignored on receipt.
 
-2.5.7.8.5 PrintJobInfo0 Data Structure
+###### 2.5.7.8.5 PrintJobInfo0 Data Structure
 
 The PrintJobInfo0 structure is returned by the NetPrintJobGetInfo command.
 
@@ -5196,7 +5000,7 @@ JobID
 
 JobID (2 bytes): A 16-bit unsigned integer that represents the job ID of the print job.
 
-2.5.7.8.6 PrintJobInfo1 Data Structure
+###### 2.5.7.8.6 PrintJobInfo1 Data Structure
 
 53 / 133
 
@@ -5205,7 +5009,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The PrintJobInfo1 packet is used by the NetPrintJobGetInfo Command.
+
+The PrintJobInfo1 packet is used by the NetPrintJobGetInfo Command.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -5293,7 +5098,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-block (as specified in section 2.5.11) and that specifies the parameters for this print job. Before
+
+block (as specified in section 2.5.11) and that specifies the parameters for this print job. Before
 using this value, the Remote Administration Protocol client MUST subtract the Converter field, as
 specified in section 2.5.2, from the PrintParametersStringLow value and then use that result as
 the offset within the response.
@@ -5373,7 +5179,7 @@ JobCommentStringHigh (2 bytes): Unused. Can be set to any arbitrary value when s
 
 be ignored on receipt.
 
-2.5.7.8.7 PrintJobInfo2 Data Structure
+###### 2.5.7.8.7 PrintJobInfo2 Data Structure
 
 The PrintJobInfo2 packet is used by the NetPrintJobGetInfo Command.
 
@@ -5384,7 +5190,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5471,7 +5278,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DocumentNameLow (2 bytes): A 16-bit unsigned integer that represents the offset, in bytes, from
+
+DocumentNameLow (2 bytes): A 16-bit unsigned integer that represents the offset, in bytes, from
 the start of the response to a null-terminated ASCII string that is allocated in the response block
 (as specified in section 2.5.11) and that specifies the name of the document.
 
@@ -5483,7 +5291,7 @@ DocumentNameHigh (2 bytes): Unused. Can be set to any arbitrary value when sent,
 
 ignored on receipt.
 
-2.5.7.8.8 PrintJobInfo3 Data Structure
+###### 2.5.7.8.8 PrintJobInfo3 Data Structure
 
 The PrintJobInfo3 structure is returned by the NetPrintJobGetInfo command and has the following
 fields.
@@ -5570,7 +5378,8 @@ Release: September 16, 2024
 
 57 / 133
 
-JobID (2 bytes): A 16-bit unsigned integer that represents the job ID of the print job.
+
+JobID (2 bytes): A 16-bit unsigned integer that represents the job ID of the print job.
 
 Priority (2 bytes): A 16-bit unsigned integer that represents the priority of the print job. If the value
 is 0x0000, the priority of the print queue determines the job priority. Other valid values are
@@ -5643,7 +5452,8 @@ Release: September 16, 2024
 
 58 / 133
 
-NotifyNameHigh (2 bytes):  Unused. Can be set to any arbitrary value when sent, and MUST be
+
+NotifyNameHigh (2 bytes):  Unused. Can be set to any arbitrary value when sent, and MUST be
 
 ignored on receipt.
 
@@ -5718,7 +5528,8 @@ Release: September 16, 2024
 
 59 / 133
 
-PrintProcessorParamsLow (2 bytes): 16-bit unsigned integer that represents the offset, in bytes,
+
+PrintProcessorParamsLow (2 bytes): 16-bit unsigned integer that represents the offset, in bytes,
 
 from the start of the response to a null-terminated ASCII string that is allocated in the response
 block (as specified in section 2.5.11) and that specifies the printer processor parameters.
@@ -5774,9 +5585,9 @@ PrinterNameOffsetHigh (2 bytes): Unused. Can be set to any arbitrary value when 
 
 be ignored on receipt.
 
-2.5.8  RAP User Commands
+#### 2.5.8 RAP User Commands
 
-2.5.8.1  NetUserPasswordSet2 Command
+##### 2.5.8.1 NetUserPasswordSet2 Command
 
 The NetUserPasswordSet2 command specifies that the server is to change the password of the
 indicated user.
@@ -5788,7 +5599,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.5.8.1.1 RAP NetUserPasswordSet2Request
+
+###### 2.5.8.1.1 RAP NetUserPasswordSet2Request
 
 The fields in the NetUserPasswordSet2Request message MUST be set as follows.<40>
 
@@ -5875,7 +5687,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-EncryptedPassword (2 bytes): A 16-bit unsigned integer that specifies whether the
+
+EncryptedPassword (2 bytes): A 16-bit unsigned integer that specifies whether the
 
 OldPassword and NewPassword fields are encrypted. If set to 0x0000, the fields are not
 encrypted; if not 0, the fields are encrypted.
@@ -5884,16 +5697,16 @@ RealPasswordLength (2 bytes): A 16-bit unsigned integer that specifies the actua
 
 the NewPassword field.<41>
 
-2.5.8.1.2 RAP NetUserPasswordSet2Response
+###### 2.5.8.1.2 RAP NetUserPasswordSet2Response
 
 The RAPOutParams field and the RAPOutData field of the SMB_COM_TRANSACTION response to
 the NetUserPasswordSet2 command MUST be empty. <42><43>
 
-2.5.8.2  NetUserGetInfo Commands
+##### 2.5.8.2 NetUserGetInfo Commands
 
 The NetUserGetInfo command returns information about a user.
 
-2.5.8.2.1 NetUserGetInfoRequest
+###### 2.5.8.2.1 NetUserGetInfoRequest
 
 The fields in the NetUserGetInfoRequest message MUST have the following format.<44>
 
@@ -5962,11 +5775,12 @@ Release: September 16, 2024
 
 62 / 133
 
-ReceiveBufferSize (2 bytes): A 16-bit unsigned integer that represents the maximum number
+
+ReceiveBufferSize (2 bytes): A 16-bit unsigned integer that represents the maximum number
 of bytes of data that can be returned in the Data field of the SMB_COM_TRANSACTION
 response to the command.
 
-2.5.8.2.2 NetUserGetInfoResponse
+###### 2.5.8.2.2 NetUserGetInfoResponse
 
 The RAPOutParams structure for the NetUserGetInfoResponse command has the following
 fields.<45>
@@ -6008,9 +5822,9 @@ If the InfoLevel specified in the NetUserGetInfo is 11, and the response is not 
 RAPOutData field of the SMB_COM_TRANSACTION response MUST be filled with a NetUserInfo11
 structure.
 
-2.5.8.3  RAP User Structures
+##### 2.5.8.3 RAP User Structures
 
-2.5.8.3.1 NetUserInfo0 Data Structure
+###### 2.5.8.3.1 NetUserInfo0 Data Structure
 
 The NetUserInfo0 packet contains the following fields.
 
@@ -6044,7 +5858,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.5.8.3.2 NetUserInfo1 Data Structure
+
+###### 2.5.8.3.2 NetUserInfo1 Data Structure
 
 The NetUserInfo1 packet contains the following fields.
 
@@ -6142,7 +5957,8 @@ Release: September 16, 2024
 
 64 / 133
 
-Value
+
+Value
 
 2
 
@@ -6229,7 +6045,7 @@ ScriptPathHigh (2 bytes): Unused. Can be set to any arbitrary value when sent, a
 
 ignored on receipt.
 
-2.5.8.3.3 NetUserInfo2 Data Structure
+###### 2.5.8.3.3 NetUserInfo2 Data Structure
 
 The NetUserInfo2 packet contains the following fields.
 
@@ -6240,7 +6056,8 @@ Release: September 16, 2024
 
 65 / 133
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6346,7 +6163,8 @@ Release: September 16, 2024
 
 66 / 133
 
-CountryCode
+
+CountryCode
 
 CodePage
 
@@ -6444,7 +6262,8 @@ Release: September 16, 2024
 
 67 / 133
 
-Value
+
+Value
 
 Meaning
 
@@ -6550,7 +6369,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-WorkStationsLow (2 bytes): A pointer to a null-terminated ASCII string that contains the names of
+
+WorkStationsLow (2 bytes): A pointer to a null-terminated ASCII string that contains the names of
 workstations the user can log on from. There can be up to eight workstations, with the names
 separated by commas. A null string indicates there are no restrictions.
 
@@ -6620,7 +6440,7 @@ CodePage (2 bytes): A 16-bit unsigned integer that specifies the code page for t
 
 of choice.
 
-2.5.8.3.4 NetUserInfo10 Data Structure
+###### 2.5.8.3.4 NetUserInfo10 Data Structure
 
 69 / 133
 
@@ -6629,7 +6449,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The NetUserInfo10 packet contains the following fields.
+
+The NetUserInfo10 packet contains the following fields.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -6700,7 +6521,7 @@ FullNameHigh (2 bytes): Unused. Can be set to any arbitrary value when sent and 
 
 on receipt.
 
-2.5.8.3.5 NetUserInfo11 Data Structure
+###### 2.5.8.3.5 NetUserInfo11 Data Structure
 
 The NetUserInfo11 packet contains the following fields.
 
@@ -6724,7 +6545,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-...
+
+...
 
 ...
 
@@ -6813,7 +6635,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-UserCommentLow (2 bytes): Before using this value, the Remote Administration Protocol client
+
+UserCommentLow (2 bytes): Before using this value, the Remote Administration Protocol client
 
 MUST subtract the Converter field specified in section 2.5.2 from the UserCommentLow value,
 and then use that result as the offset within the response.
@@ -6914,7 +6737,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Converter field specified in section 2.5.2 from the ParmsLow value, and then use that result as
+
+Converter field specified in section 2.5.2 from the ParmsLow value, and then use that result as
 the offset within the response.
 
 ParmsHigh (2 bytes): Unused. Can be set to any arbitrary value when sent and MUST be ignored on
@@ -6996,13 +6820,14 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.5.9  RAP Time Commands
 
-2.5.9.1  NetRemoteTOD Command
+#### 2.5.9 RAP Time Commands
+
+##### 2.5.9.1 NetRemoteTOD Command
 
 The NetRemoteTOD command specifies that the server is to return its current time information.
 
-2.5.9.1.1 RAP NetRemoteTODRequest
+###### 2.5.9.1.1 RAP NetRemoteTODRequest
 
 The fields in the NetRemoteTODRequest message MUST be set as follows.<48>
 
@@ -7059,16 +6884,16 @@ ReceiveBufferSize (2 bytes): A 16-bit unsigned integer that represents the maxim
 of bytes of data returned in the Data field of the SMB_COM_TRANSACTION response to the
 command.
 
-2.5.9.1.2 RAP NetRemoteTODResponse
+###### 2.5.9.1.2 RAP NetRemoteTODResponse
 
 If the Win32ErrorCode specified in the response to the NetRemoteTODRequest is ERROR_SUCCESS
 (0x0000), the RAPOutData field of the SMB_COM_TRANSACTION response MUST be filled with a
 TimeOfDayInfo structure.<49> If the Win32ErrorCode is any other value, the
 SMB_COM_TRANSACTION response MUST be empty.
 
-2.5.9.2  RAP Time Structures
+##### 2.5.9.2 RAP Time Structures
 
-2.5.9.2.1 RAP TimeOfDayInfo Data Structure
+###### 2.5.9.2.1 RAP TimeOfDayInfo Data Structure
 
 The data section of the response to a NetRemoteTOD command MUST be as follows.
 
@@ -7079,7 +6904,8 @@ Release: September 16, 2024
 
 74 / 133
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7170,15 +6996,16 @@ Release: September 16, 2024
 
 75 / 133
 
-2.5.10 RAP Workstation Commands
 
-2.5.10.1
+#### 2.5.10 RAP Workstation Commands
 
-NetWkstaGetInfo Command
+##### 2.5.10.1 NetWkstaGetInfo Command
+
+
 
 The NetWkstaGetInfo command returns information about the workstation.
 
-2.5.10.1.1  NetWkstaGetInfoRequest
+###### 2.5.10.1.1 NetWkstaGetInfoRequest
 
 The fields in the NetWkstaGetInfoRequest message MUST have the following format.<51>
 
@@ -7238,7 +7065,7 @@ ReceiveBufferSize (2 bytes): A 16-bit unsigned integer that represents the maxim
 of bytes of data that can be returned in the Data field of the SMB_COM_TRANSACTION
 response to the command.
 
-2.5.10.1.2  NetWkstaGetInfoResponse
+###### 2.5.10.1.2 NetWkstaGetInfoResponse
 
 The RAPOutParams structure for the NetWkstaGetInfo Command is as follows.<52>
 
@@ -7266,17 +7093,18 @@ Release: September 16, 2024
 
 76 / 133
 
-If the InfoLevel specified in the NetWkstaGetInfoRequest is 10, and the response is not an error, the
+
+If the InfoLevel specified in the NetWkstaGetInfoRequest is 10, and the response is not an error, the
 RAPOutData field of the SMB_COM_TRANSACTION response MUST be filled with a NetWkstaInfo10
 structure.
 
-2.5.10.2
+##### 2.5.10.2 NetWkstaUserLogon Command
 
-NetWkstaUserLogon Command
+
 
 The NetWkstaUserLogon represents a user request to log on.
 
-2.5.10.2.1  NetWkstaUserLogonRequest
+###### 2.5.10.2.1 NetWkstaUserLogonRequest
 
 The fields in the NetWkstaUserLogonRequest message MUST be set as follows.<53>
 
@@ -7351,7 +7179,8 @@ Release: September 16, 2024
 
 77 / 133
 
-...
+
+...
 
 Reserved (2 bytes): An unused, null-terminated ASCII string. SHOULD be set to zero when sent
 
@@ -7365,7 +7194,7 @@ WkstaUserLogonBuffer (54 bytes): This buffer contains a NetWkstaUserLogonRequest
 
 structure.
 
-2.5.10.2.2  RAP NetWkstaUserLogonResponse
+###### 2.5.10.2.2 RAP NetWkstaUserLogonResponse
 
 The RAPOutParams structure for the NetWkstaUserLogon Command is as follows.<54><55>
 
@@ -7390,13 +7219,13 @@ If the InfoLevel specified in the NetWkstaUserLogon is 1, and the response is no
 RAPOutData field of the SMB_COM_TRANSACTION response MUST be filled with a
 NetWkstaUserLogonResponseData.
 
-2.5.10.3
+##### 2.5.10.3 NetWkstaUserLogoff Command
 
-NetWkstaUserLogoff Command
+
 
 The NetWkstaUserLogoff represents a user request to log off.
 
-2.5.10.3.1  NetWkstaUserLogoffRequest
+###### 2.5.10.3.1 NetWkstaUserLogoffRequest
 
 The fields in the NetWkstaUserLogoffRequest message MUST be set as follows.<56>
 
@@ -7438,7 +7267,8 @@ Release: September 16, 2024
 
 78 / 133
 
-RAPOpcode (2 bytes): MUST be set to 0x0085. For more information, see section 2.5.1.
+
+RAPOpcode (2 bytes): MUST be set to 0x0085. For more information, see section 2.5.1.
 
 ParamDesc (11 bytes): MUST be set to "zzWb38WrLh". For more information, see section 2.5.1.
 
@@ -7481,7 +7311,7 @@ NetWkstaUserLogoffRequest.
 
 WkstaUserLogoffBuffer (38 bytes): The buffer contains a NetWkstaUserLogoffRequestData.
 
-2.5.10.3.2  RAP NetWkstaUserLogoffResponse
+###### 2.5.10.3.2 RAP NetWkstaUserLogoffResponse
 
 The RAPOutParams structure for the NetWkstaUserLogoff Command is as follows.<57><58>
 
@@ -7506,11 +7336,11 @@ If the InfoLevel field value specified in the NetWkstaUserLogoff message is 1, a
 an error, the RAPOutData field of the SMB_COM_TRANSACTION response MUST be filled with a
 NetWkstaUserLogoffResponseData structure.
 
-2.5.10.4
+##### 2.5.10.4 RAP Workstation Structures
 
-RAP Workstation Structures
 
-2.5.10.4.1  NetWkstaInfo10 Data Structure
+
+###### 2.5.10.4.1 NetWkstaInfo10 Data Structure
 
 The NetWkstaInfo10 packet is used in the RAPOutData field of the SMB_COM_TRANSACTION
 response.
@@ -7522,7 +7352,8 @@ Release: September 16, 2024
 
 79 / 133
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7579,7 +7410,7 @@ OtherDomain (4 bytes): SHOULD be a pointer to a null-terminated ASCII string tha
 
 domains in which the computer is enlisted.<63>
 
-2.5.10.4.2  NetWkstaUserLogonRequestData Data Structure
+###### 2.5.10.4.2 NetWkstaUserLogonRequestData Data Structure
 
 The NetWkstaUserLogonRequestData packet is used in a NetWkstaUserLogonRequest.
 
@@ -7617,7 +7448,8 @@ Release: September 16, 2024
 
 80 / 133
 
-...
+
+...
 
 Pad2
 
@@ -7647,7 +7479,7 @@ WorkstationName (16 bytes): MUST be a null-terminated ASCII string specifying th
 
 workstation.
 
-2.5.10.4.3  NetWkstaUserLogonResponseData Data Structure
+###### 2.5.10.4.3 NetWkstaUserLogonResponseData Data Structure
 
 The NetWkstaUserLogonResponseData packet is used in the RAPOutData field of the
 SMB_COM_TRANSACTION response.
@@ -7710,7 +7542,8 @@ Release: September 16, 2024
 
 81 / 133
 
-...
+
+...
 
 ...
 
@@ -7820,7 +7653,8 @@ Release: September 16, 2024
 
 82 / 133
 
-Value
+
+Value
 
 Meaning
 
@@ -7917,7 +7751,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Computer (4 bytes): MUST be a pointer to a null-terminated ASCII string that specifies the
+
+Computer (4 bytes): MUST be a pointer to a null-terminated ASCII string that specifies the
 
 computer where the user is logged on.
 
@@ -7933,7 +7768,7 @@ Reserved1 (4 bytes): An unused value. SHOULD be set to zero when sent and MUST b
 
 receipt.
 
-2.5.10.4.4  NetWkstaUserLogoffRequestData Data Structure
+###### 2.5.10.4.4 NetWkstaUserLogoffRequestData Data Structure
 
 The NetWkstaUserLogoffRequestData is used in the NetWkstaUserLogoffRequest.
 
@@ -7978,7 +7813,7 @@ Workstation (16 bytes): MUST be a null-terminated ASCII string that specifies th
 
 workstation.
 
-2.5.10.4.5  NetWkstaUserLogoffResponseData Data Structure
+###### 2.5.10.4.5 NetWkstaUserLogoffResponseData Data Structure
 
 The NetWkstaUserLogoffResponseData structure is used in the RAPOutData field of the
 SMB_COM_TRANSACTION.
@@ -8011,7 +7846,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -8041,7 +7877,7 @@ NumLogons (2 bytes): A 16-bit signed integer that specifies the number of times 
 
 logged on. A value of 0xffff indicates the number is unknown.
 
-2.5.11 RAP Response Data Marshaling
+#### 2.5.11 RAP Response Data Marshaling
 
 Depending on the command, the response for a Remote Administration Protocol command can contain
 one or more fixed-size items, each of which can contain offsets to variable-length data (typically
@@ -8090,7 +7926,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-As an example of this marshaling format, consider the case of a server marshaling a fixed-size data
+
+As an example of this marshaling format, consider the case of a server marshaling a fixed-size data
 structure that has one or more auxiliary data structures associated with it. In this example, the fixed-
 size data structure consists of two 16-bit unsigned integers, an unsigned AUXCOUNT value, and an
 additional 16-bit unsigned integer, while the auxiliary data structure consists of two 32-bit unsigned
@@ -8156,24 +7993,25 @@ Release: September 16, 2024
 
 86 / 133
 
-3  Protocol Details
 
-3.1  RAP Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 RAP Client Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
+
+None.
+
+#### 3.1.3 Initialization
 
 The Remote Administration Protocol client MUST establish a connection to the server by using the pipe
 name \PIPE\LANMAN, as specified in section 2.1. No initializations are required.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 There is a one-to-one correspondence between higher-layer triggered events and commands specified
 in section 2.3. When a higher layer requests a particular action, the associated command MUST be
@@ -8220,61 +8058,62 @@ Release: September 16, 2024
 
 87 / 133
 
-  NetWkstaGetInfo
+
+  NetWkstaGetInfo
 
   NetShareGetInfo
 
-3.1.4.1  NetShareEnum Command
+##### 3.1.4.1 NetShareEnum Command
 
 The client MUST create a NetShareEnumRequest.
 
-3.1.4.2  NetShareGetInfo Command
+##### 3.1.4.2 NetShareGetInfo Command
 
 The client MUST create a NetShareGetInfoRequest.
 
-3.1.4.3  NetServerGetInfo Command
+##### 3.1.4.3 NetServerGetInfo Command
 
 The client MUST create a NetServerGetInfoRequest.
 
-3.1.4.4  NetPrintQEnum Command
+##### 3.1.4.4 NetPrintQEnum Command
 
 The client MUST create a NetPrintQEnumRequest.
 
-3.1.4.5  NetPrintQGetInfo Command
+##### 3.1.4.5 NetPrintQGetInfo Command
 
 The client MUST create a NetPrintQGetInfoRequest.
 
-3.1.4.6  NetPrintJobSetInfo Command
+##### 3.1.4.6 NetPrintJobSetInfo Command
 
 The client MUST create a NetPrintJobSetInfoRequest.
 
-3.1.4.7  NetPrintJobGetInfo Command
+##### 3.1.4.7 NetPrintJobGetInfo Command
 
 The client MUST create a NetPrintJobGetInfoRequest.
 
-3.1.4.8  NetPrintJobDelete Command
+##### 3.1.4.8 NetPrintJobDelete Command
 
 The client MUST create a NetPrintJobDeleteRequest.
 
-3.1.4.9  NetPrintJobPause Command
+##### 3.1.4.9 NetPrintJobPause Command
 
 The client MUST create a NetPrintJobPauseRequest.
 
-3.1.4.10
+##### 3.1.4.10 NetPrintJobContinue Command
 
-NetPrintJobContinue Command
+
 
 The client MUST create a NetPrintJobContinueRequest.
 
-3.1.4.11
+##### 3.1.4.11 NetRemoteTOD Command
 
-NetRemoteTOD Command
+
 
 The client MUST create a NetRemoteTODRequest.
 
-3.1.4.12
+##### 3.1.4.12 NetServerEnum2 Command
 
-NetServerEnum2 Command
+
 
 The client MUST create a NetServerEnum2Request.
 
@@ -8285,43 +8124,44 @@ Release: September 16, 2024
 
 88 / 133
 
-3.1.4.13
 
-NetUserGetInfo Command
+##### 3.1.4.13 NetUserGetInfo Command
+
+
 
 The client MUST create a NetUserGetInfoRequest.
 
-3.1.4.14
+##### 3.1.4.14 NetUserPasswordSet2 Command
 
-NetUserPasswordSet2 Command
+
 
 The client MUST create a NetUserPasswordSet2Request.
 
-3.1.4.15
+##### 3.1.4.15 NetServerEnum3 Command
 
-NetServerEnum3 Command
+
 
 The client MUST create a NetServerEnum3Request.
 
-3.1.4.16
+##### 3.1.4.16 NetWkstaGetInfo Command
 
-NetWkstaGetInfo Command
+
 
 The client MUST create a NetWkstaGetInfoRequest.
 
-3.1.4.17
+##### 3.1.4.17 NetWkstaUserLogon Command
 
-NetWkstaUserLogon Command
+
 
 The client MUST create a NetWkstaUserLogon.
 
-3.1.4.18
+##### 3.1.4.18 NetWkstaUserLogoff Command
 
-NetWkstaUserLogoff Command
+
 
 The client MUST create a NetWkstaUserLogoff.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 If the underlying SMB protocol indicates that a response has been successfully received from the
 server, the values returned in the Win32ErrorCode field of the Remote Administration Protocol
@@ -8330,17 +8170,17 @@ response (as well as any response parameters or data) MUST be returned to the ca
 If the underlying SMB protocol indicates that an error has occurred or that the connection has been
 disconnected, the error code MUST be returned to the calling higher layer with no response data.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
  None.
 
-3.2  RAP Server Details
+### 3.2 RAP Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -8355,7 +8195,8 @@ Release: September 16, 2024
 
 89 / 133
 
-3.2.1.1  Global
+
+##### 3.2.1.1 Global
 
 A Remote Administration Protocol implementation maintains the following data. These data
 descriptions are provided to explain the protocol's behavior. This specification does not mandate the
@@ -8370,28 +8211,28 @@ LogonList: A list of workstation names and names of users who have logged on the
 
 MUST be uniquely indexed by workstation and user name.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The Remote Administration Protocol server MUST register pipe name \PIPE\LANMAN with the local
 SMB service so that the client behavior, as specified in section 2.1, can enable the client to connect to
 the Remote Administration Protocol server.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
  None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 The server receives the Remote Administration Protocol request from the underlying SMB transport.
 The server MUST process the request based on the RAPOpcode received. The following sections
 specify the actions the server takes based on the command, as specified by RAPOpcode. Once the
 response is generated, it MUST be sent back to the client.
 
-3.2.5.1  NetShareEnum Command
+##### 3.2.5.1 NetShareEnum Command
 
 The Remote Administration Protocol server MUST process NetShareEnumRequest as follows:
 
@@ -8430,7 +8271,8 @@ Release: September 16, 2024
 
 90 / 133
 
-Parameter
+
+Parameter
 
 Value
 
@@ -8522,7 +8364,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-NetShareInfo2
+
+NetShareInfo2
 
 SHARE_INFO_2
 
@@ -8564,7 +8407,7 @@ server MUST fill the Win32ErrorCode value in the Remote Administration Protocol 
 message with the Win32 error code corresponding to the error. Otherwise, the Remote
 Administration Protocol server MUST set Win32ErrorCode to ERROR_SUCCESS (0X0000).
 
-3.2.5.2  NetShareGetInfo Command
+##### 3.2.5.2 NetShareGetInfo Command
 
 The Remote Administration Protocol server MUST process NetShareGetInfoRequest as follows:
 
@@ -8613,7 +8456,8 @@ Release: September 16, 2024
 
 92 / 133
 
-If the call succeeds, the server MUST use the resulting SHARE_INFO structure to generate the
+
+If the call succeeds, the server MUST use the resulting SHARE_INFO structure to generate the
 response as specified in 3.2.5.1. The Remote Administration Protocol server MUST create a
 Remote Administration Protocol response message with the RAPOutParams set to the contents
 of a NetShareGetInfoResponse message.
@@ -8624,7 +8468,7 @@ message with the Win32ErrorCode corresponding to the error, as specified in [MS-
 Otherwise, the Remote Administration Protocol server MUST set Win32ErrorCode to
 ERROR_SUCCESS (0X0000).
 
-3.2.5.3  NetServerGetInfo Command
+##### 3.2.5.3 NetServerGetInfo Command
 
 The Remote Administration Protocol server MUST process the NetServerGetInfoRequest as follows:
 
@@ -8700,13 +8544,14 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-5.  If any other errors occur during the response processing, the Remote Administration Protocol
+
+5.  If any other errors occur during the response processing, the Remote Administration Protocol
 server MUST fill the Win32ErrorCode value in the Remote Administration Protocol response
 message with the Win32ErrorCode corresponding to the error, as specified in [MS-ERREF].
 Otherwise, the Remote Administration Protocol server MUST set Win32ErrorCode to
 ERROR_SUCCESS (0X0000).
 
-3.2.5.4  NetPrintQEnum Command
+##### 3.2.5.4 NetPrintQEnum Command
 
 The Remote Administration Protocol server MUST process the NetPrintQEnumRequest as follows:
 
@@ -8796,7 +8641,8 @@ Release: September 16, 2024
 
 94 / 133
 
-Parameter
+
+Parameter
 
 Value
 
@@ -8896,7 +8742,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Parameter  Value
+
+Parameter  Value
 
 FirstJob
 
@@ -9006,7 +8853,8 @@ Release: September 16, 2024
 
 96 / 133
 
-PrintQueue3
+
+PrintQueue3
 
 PRINTER_INFO_2
 
@@ -9114,10 +8962,11 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-message with the Win32 error code corresponding to the error. Otherwise, the Remote
+
+message with the Win32 error code corresponding to the error. Otherwise, the Remote
 Administration Protocol server MUST set Win32ErrorCode to ERROR_SUCCESS (0X0000).
 
-3.2.5.4.1 Mapping PRINTER_INFO_2 Status Values to PrintQueue3 Status Values
+###### 3.2.5.4.1 Mapping PRINTER_INFO_2 Status Values to PrintQueue3 Status Values
 
 Status values for the PrintQueue3 structure are specified in 2.5.7.8.3. Status values for the [MS-
 RPRN] PRINTER_INFO_2 structure are specified in [MS-RPRN] 2.2.3.12. The mapping between
@@ -9140,7 +8989,7 @@ PRINTER_STATUS_PENDING_DELETION  PRQ_PENDING
 All PRINTER_INFO_2 status values not in this table MUST be mapped to the value PRQ_ACTIVE
 defined in 2.5.7.8.3.
 
-3.2.5.5  NetPrintQGetInfo Command
+##### 3.2.5.5 NetPrintQGetInfo Command
 
 The Remote Administration Protocol server MUST process the NetPrintQGetInfoRequest as follows:
 
@@ -9190,7 +9039,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-server MUST walk PrintQueue.PrintJobList and fill in as many PrintJobInfo2 structures as are
+
+server MUST walk PrintQueue.PrintJobList and fill in as many PrintJobInfo2 structures as are
 represented in the PrintJobCount field in the corresponding PrintQueue3 structure.
 
 6.  If the input information level is 0x0005, the RAPOutData field of the Remote Administration
@@ -9215,7 +9065,7 @@ ERROR_SUCCESS (0X0000).
 Remote Administration Protocol server MUST set the Win32ErrorCode value in the Remote
 Administration Protocol response message to NERR_BufTooSmall (0x084B).
 
-3.2.5.6  NetPrintJobSetInfo Command
+##### 3.2.5.6 NetPrintJobSetInfo Command
 
 The Remote Administration Protocol server MUST process the NetPrintJobSetInfoRequest as follows:
 
@@ -9275,7 +9125,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Parameter  Value
+
+Parameter  Value
 
 Level
 
@@ -9344,7 +9195,7 @@ server MUST fill in the Win32ErrorCode value in the Remote Administration Protoc
 message with the Win32 error code corresponding to the error. Otherwise, the Remote
 Administration Protocol server MUST set Win32ErrorCode to ERROR_SUCCESS (0X0000).
 
-3.2.5.7  NetPrintJobGetInfo Command
+##### 3.2.5.7 NetPrintJobGetInfo Command
 
 The Remote Administration Protocol server MUST process the NetPrintJobGetInfoRequest as follows:
 
@@ -9368,7 +9219,8 @@ Release: September 16, 2024
 
 100 / 133
 
-Parameter
+
+Parameter
 
 Value
 
@@ -9474,7 +9326,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-PrintJobInfo1 Field
+
+PrintJobInfo1 Field
 
 JOB_INFO_2 Field
 
@@ -9593,7 +9446,8 @@ Release: September 16, 2024
 
 102 / 133
 
-PrintJobInfo3
+
+PrintJobInfo3
 
 JOB_INFO_2
 
@@ -9669,7 +9523,7 @@ server MUST fill in the Win32ErrorCode value in the Remote Administration Protoc
 message with the Win32 error code corresponding to the error. Otherwise, the Remote
 Administration Protocol server MUST set Win32ErrorCode to ERROR_SUCCESS (0X0000).
 
-3.2.5.7.1 Mapping JOB_INFO_2 Status Values to PrintJobInfo2 Status Values
+###### 3.2.5.7.1 Mapping JOB_INFO_2 Status Values to PrintJobInfo2 Status Values
 
 JOB_INFO_2 status values are defined in [MS-RPRN] 2.2.3.12. PrintJobInfo2 status values are defined
 in 2.5.7.8.7. The mapping between these two sets of status values is as follows:
@@ -9701,7 +9555,8 @@ Release: September 16, 2024
 
 103 / 133
 
-3.2.5.8  NetPrintJobDelete Command
+
+##### 3.2.5.8 NetPrintJobDelete Command
 
 The Remote Administration Protocol server MUST process the NetPrintJobDeleteRequest as follows:
 
@@ -9758,7 +9613,7 @@ with the Win32 error code corresponding to the error. Otherwise, the Remote Admi
 Protocol server MUST fill in the Win32ErrorCode value in the Remote Administration Protocol
 response message with ERROR_SUCCESS (0x0000).
 
-3.2.5.9  NetPrintJobPause Command
+##### 3.2.5.9 NetPrintJobPause Command
 
 The Remote Administration Protocol server MUST process the NetPrintJobPauseRequest as follows:
 
@@ -9797,7 +9652,8 @@ Release: September 16, 2024
 
 104 / 133
 
-If this call succeeds, the server MUST call RpcSetJob with the following parameters:
+
+If this call succeeds, the server MUST call RpcSetJob with the following parameters:
 
 Parameter
 
@@ -9824,9 +9680,9 @@ with the Win32 error code corresponding to the error. Otherwise, the Remote Admi
 Protocol server MUST fill in the Win32ErrorCode value in the Remote Administration Protocol
 response message with ERROR_SUCCESS (0X0000).
 
-3.2.5.10
+##### 3.2.5.10 NetPrintJobContinue Command
 
-NetPrintJobContinue Command
+
 
 The Remote Administration Protocol server MUST process the NetPrintJobContinueRequest as follows:
 
@@ -9890,9 +9746,10 @@ Release: September 16, 2024
 
 105 / 133
 
-3.2.5.11
 
-NetRemoteTOD Command
+##### 3.2.5.11 NetRemoteTOD Command
+
+
 
 The Remote Administration Protocol server MUST process the NetRemoteTODRequest as follows:
 
@@ -9912,9 +9769,9 @@ server MUST fill in the Win32ErrorCode value in the Remote Administration Protoc
 message with the Win32 error code corresponding to the error. Otherwise, the Remote
 Administration Protocol server MUST set Win32ErrorCode to ERROR_SUCCESS (0X0000).
 
-3.2.5.12
+##### 3.2.5.12 NetServerEnum2 Command
 
-NetServerEnum2 Command
+
 
 The Remote Administration Protocol server MUST process the NetServerEnum2Request as follows:
 
@@ -9969,7 +9826,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The server MUST set the EntriesReturned field in the NetServerEnum2Response to the number
+
+The server MUST set the EntriesReturned field in the NetServerEnum2Response to the number
 of NetServerInfo0 structures in the RAPOutData field of the response.
 
 If the InfoLevel of the NetServerEnum2Request structure is 1, the Remote Administration
@@ -9990,9 +9848,9 @@ server MUST fill in the Win32ErrorCode value in the Remote Administration Protoc
 message with the Win32 error code corresponding to the error. Otherwise, the Remote
 Administration Protocol server MUST set Win32ErrorCode to ERROR_SUCCESS (0X0000).
 
-3.2.5.13
+##### 3.2.5.13 NetUserGetInfo Command
 
-NetUserGetInfo Command
+
 
 The Remote Administration Protocol server MUST process NetUserGetInfoRequest as follows:
 
@@ -10041,7 +9899,8 @@ Release: September 16, 2024
 
 107 / 133
 
-Parameter
+
+Parameter
 
 Value
 
@@ -10146,7 +10005,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-information in the SAMPR_USER_ALL_INFORMATION structure according to the following
+
+information in the SAMPR_USER_ALL_INFORMATION structure according to the following
 mapping:
 
 NetUserGetInfoResponse field
@@ -10242,9 +10102,9 @@ message with the Win32ErrorCode corresponding to the error, as specified in [MS-
 Otherwise, the Remote Administration Protocol server MUST set Win32ErrorCode to
 ERROR_SUCCESS (0X0000).
 
-3.2.5.14
+##### 3.2.5.14 NetUserPasswordSet2 Command
 
-NetUserPasswordSet2 Command
+
 
 The Remote Administration Protocol server MUST process the NetUserPasswordSet2Request as
 follows:
@@ -10259,7 +10119,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-format a Remote Administration Protocol response with the Win32ErrorCode set to
+
+format a Remote Administration Protocol response with the Win32ErrorCode set to
 ERROR_INVALID_PARAMETER (0x0057), and then return the response to the client.<85>
 
 2.  If the input EncryptedPassword parameter is not 0x0000, the Remote Administration Protocol
@@ -10354,7 +10215,8 @@ Release: September 16, 2024
 
 110 / 133
 
-Parameter
+
+Parameter
 
 Value
 
@@ -10425,9 +10287,9 @@ server MUST fill in the Win32ErrorCode value in the Remote Administration Protoc
 message with the Win32 error code corresponding to the error. Otherwise, the Remote
 Administration Protocol server MUST set Win32ErrorCode to ERROR_SUCCESS (0X0000).
 
-3.2.5.15
+##### 3.2.5.15 NetServerEnum3 Command
 
-NetServerEnum3 Command
+
 
 The Remote Administration Protocol server MUST process the NetServerEnum3Request as follows:
 
@@ -10453,7 +10315,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-exist on the same subnet as the server, as specified in [MS-BRWS] section 3.3.4.2. If the server
+
+exist on the same subnet as the server, as specified in [MS-BRWS] section 3.3.4.2. If the server
 cannot determine the list of servers on the current subnet, or if its list of servers (or domains) on
 the current subnet is empty, it MUST return an empty set of servers (or domains) and set the
 Win32ErrorCode value in the Remote Administration Protocol Response Message to
@@ -10513,9 +10376,9 @@ server MUST fill in the Win32ErrorCode value in the Remote Administration Protoc
 message with the Win32 error code corresponding to the error. Otherwise, the Remote
 Administration Protocol server MUST set Win32ErrorCode to ERROR_SUCCESS (0X0000).
 
-3.2.5.16
+##### 3.2.5.16 NetWkstaGetInfo Command
 
-NetWkstaGetInfo Command
+
 
 The Remote Administration Protocol server MUST process NetWkstaGetInfoRequest as follows:
 
@@ -10526,7 +10389,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-1.  The server MUST validate that the incoming ParamDesc field of the Remote Administration
+
+1.  The server MUST validate that the incoming ParamDesc field of the Remote Administration
 
 Protocol request contains the ASCII string "WrLh"; if it does not, the server SHOULD format a
 Remote Administration Protocol response with the Win32ErrorCode set to
@@ -10554,9 +10418,9 @@ message with the Win32ErrorCode corresponding to the error, as specified in [MS-
 Otherwise, the Remote Administration Protocol server MUST set Win32ErrorCode to
 ERROR_SUCCESS (0X0000).
 
-3.2.5.17
+##### 3.2.5.17 NetWkstaUserLogon Command
 
-NetWkstaUserLogon Command
+
 
 The Remote Administration Protocol server MUST process a NetWkstaUserLogonRequest as follows:
 
@@ -10588,9 +10452,9 @@ message with the Win32ErrorCode corresponding to the error, as specified in [MS-
 Otherwise, the Remote Administration Protocol server MUST set Win32ErrorCode to
 ERROR_SUCCESS (0X0000).
 
-3.2.5.18
+##### 3.2.5.18 NetWkstaUserLogoff Command
 
-NetWkstaUserLogoff Command
+
 
 The Remote Administration Protocol server MUST process NetWkstaUserLogoffRequest as follows:
 
@@ -10601,7 +10465,8 @@ Release: September 16, 2024
 
 113 / 133
 
-1.  The server MUST validate that the incoming ParamDesc field of the Remote Administration
+
+1.  The server MUST validate that the incoming ParamDesc field of the Remote Administration
 Protocol request contains the ASCII string "zzWb38WrLh"; if it does not, the server SHOULD
 format a Remote Administration Protocol response with the Win32ErrorCode set to
 ERROR_INVALID_PARAMETER (0x0057), and then return the response to the client.<91>
@@ -10630,11 +10495,11 @@ message with the Win32ErrorCode corresponding to the error, as specified in [MS-
 Otherwise, the Remote Administration Protocol server MUST set Win32ErrorCode to
 ERROR_SUCCESS (0X0000).
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -10645,13 +10510,14 @@ Release: September 16, 2024
 
 114 / 133
 
-<!-- Extracted images from page 115 -->
+
+<!-- Extracted images from page 115 -->
 ![Extracted image 1 from page 115]([MS-RAP].images/page115-img01.png)
 <!-- /Extracted images from page 115 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  NetShareEnum
+### 4.1 NetShareEnum
 
 The following diagram demonstrates the steps taken to enumerate the shares on a remote server by
 using the Remote Administration Protocol. Assume that this sequence is executed over an existing
@@ -10704,7 +10570,8 @@ Release: September 16, 2024
 
 115 / 133
 
-   DataCount: 0 (0x0)
+
+   DataCount: 0 (0x0)
    DataOffset: 0 (0x0)
    SetupCount: 0 (0x0)
    Reserved3: 0 (0x0)
@@ -10774,11 +10641,12 @@ Release: September 16, 2024
 
 116 / 133
 
-<!-- Extracted images from page 117 -->
+
+<!-- Extracted images from page 117 -->
 ![Extracted image 1 from page 117]([MS-RAP].images/page117-img01.png)
 <!-- /Extracted images from page 117 -->
 
-4.2  NetServerEnum2
+### 4.2 NetServerEnum2
 
 The following diagram demonstrates the steps taken to retrieve an enumeration of servers on the
 network from a remote server by using the Remote Administration Protocol. Assume that this
@@ -10835,7 +10703,8 @@ Release: September 16, 2024
 
 117 / 133
 
-   ByteCount: 53 (0x35)
+
+   ByteCount: 53 (0x35)
    Pad: 113 (0x71)
    UnicodeFileName: \PIPE\LANMAN
    Parameters: RAPParams and NetServerEnum2 Request (26 Bytes)
@@ -10911,7 +10780,8 @@ Release: September 16, 2024
 
 118 / 133
 
-<!-- Extracted images from page 119 -->
+
+<!-- Extracted images from page 119 -->
 ![Extracted image 1 from page 119]([MS-RAP].images/page119-img01.png)
 <!-- /Extracted images from page 119 -->
 
@@ -10920,7 +10790,7 @@ Release: September 16, 2024
      35 36 37 38 39 30 31 32 33 34 35 36 37 38 39 30   (5678901234567890)
      31 32 33 34 35 36 37 38 00 00 00                  (12345678...)
 
-4.3  NetPrintJobDel
+### 4.3 NetPrintJobDel
 
 The following diagram demonstrates the steps taken to enumerate the deletion of a print job on a
 remote server by using the Remote Administration Protocol. Assume that this sequence is executed
@@ -10968,7 +10838,8 @@ Release: September 16, 2024
 
 119 / 133
 
-   Flags: Do not disconnect TID
+
+   Flags: Do not disconnect TID
     BIT0: ...............0 Do not disconnect TID
    Timeout: 5000 sec(s)
    Reserved2: 0 (0x0)
@@ -11031,9 +10902,10 @@ Release: September 16, 2024
 
 120 / 133
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Remote Administration Protocol uses descriptor strings to define the data being passed between
 the client and the server. As such, an implementer might implement a generic parsing engine that can
@@ -11054,7 +10926,7 @@ the server or client.
 Password operations specified for the Remote Administration Protocol send the password in plain text
 over the network, and thus are not secure; consider this before using them to change passwords.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -11065,7 +10937,8 @@ Release: September 16, 2024
 
 121 / 133
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -11134,7 +11007,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-system. The Remote Administration Protocol is obsolete and is used primarily for communications with
+
+system. The Remote Administration Protocol is obsolete and is used primarily for communications with
 Windows 98 clients. The Windows 98 operating system uses the Remote Administration Protocol for
 the following operations:
 
@@ -11212,7 +11086,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 0x06
 
@@ -11291,7 +11166,8 @@ Release: September 16, 2024
 
 124 / 133
 
-<23> Section 2.5.7.2.1: This command is only supported on Windows 2000, Windows XP, and
+
+<23> Section 2.5.7.2.1: This command is only supported on Windows 2000, Windows XP, and
 Windows Vista.
 
 <24> Section 2.5.7.2.1: Windows-based servers ignore the input descriptor provided by the client,
@@ -11364,7 +11240,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The contents of the OldPassword and NewPassword fields (past the end of the OldPassword
 and NewPassword fields) are not initialized and are ignored.
@@ -11433,7 +11310,8 @@ Release: September 16, 2024
 
 126 / 133
 
-<58> Section 2.5.10.3.2: This command is only supported on Windows 2000 Server, Windows Server
+
+<58> Section 2.5.10.3.2: This command is only supported on Windows 2000 Server, Windows Server
 2003, or Windows Server 2008.
 
 <59> Section 2.5.10.4.1: Windows-based servers will set the field to NULL.
@@ -11501,7 +11379,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<69> Section 3.2.5.2: Windows-based servers will fail the underlying SMB_COM_TRANSACT request
+
+<69> Section 3.2.5.2: Windows-based servers will fail the underlying SMB_COM_TRANSACT request
 with STATUS_INVALID_PARAMETER, as specified in [MS-ERREF] section 2.3.1, instead of sending back
 an error in the RAP response.
 
@@ -11569,7 +11448,8 @@ Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<86> Section 3.2.5.14: Windows-based servers accept values other than 0x0000 and perform the
+
+<86> Section 3.2.5.14: Windows-based servers accept values other than 0x0000 and perform the
 processing specified in section 3.1.5.10.1, SamrChangePasswordUser, [MS-SAMR].
 
 <87> Section 3.2.5.15: Windows-based servers will fail the underlying SMB_COM_TRANSACT
@@ -11599,7 +11479,8 @@ Release: September 16, 2024
 
 129 / 133
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -11611,7 +11492,8 @@ Release: September 16, 2024
 
 130 / 133
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -11762,7 +11644,8 @@ section 3.2.5.15 111)
 
 131 / 133
 
-NetServerGetInfo command 93
+
+NetServerGetInfo command 93
 NetServerGetInfoResponse packet 23
 NetShareEnum command 90
 NetShareEnum example 115
@@ -11904,7 +11787,8 @@ Time commands 74
 
 132 / 133
 
-Time structures 74
+
+Time structures 74
 Timer events
    client 89
    server 114

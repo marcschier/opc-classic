@@ -63,7 +63,8 @@ Release: February 10, 2025
 
 1 / 28
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -159,254 +160,105 @@ Release: February 10, 2025
 
 2 / 28
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HTTP Headers](#221-http-headers)
+    - [2.2.2 Common URI Parameters](#222-common-uri-parameters)
+    - [2.2.3 Common Data Structures](#223-common-data-structures)
+      - [2.2.3.1 ID Token](#2231-id-token)
+      - [2.2.3.2 OpenID Provider Metadata](#2232-openid-provider-metadata)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 OpenID Connect Extension Client Details](#31-openid-connect-extension-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Authorization endpoint (/authorize)](#3151-authorization-endpoint-authorize)
+        - [3.1.5.1.1 GET](#31511-get)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+        - [3.1.5.1.2 POST](#31512-post)
+          - [3.1.5.1.2.1 Request Body](#315121-request-body)
+          - [3.1.5.1.2.2 Response Body](#315122-response-body)
+          - [3.1.5.1.2.3 Processing Details](#315123-processing-details)
+      - [3.1.5.2 Token endpoint (/token)](#3152-token-endpoint-token)
+        - [3.1.5.2.1 POST](#31521-post)
+          - [3.1.5.2.1.1 Request Body](#315211-request-body)
+          - [3.1.5.2.1.2 Response Body](#315212-response-body)
+          - [3.1.5.2.1.3 Processing Details](#315213-processing-details)
+      - [3.1.5.3 OpenID Provider Configuration endpoint (/.well-known/openid-configuration)](#3153-openid-provider-configuration-endpoint-well-knownopenid-configuration)
+        - [3.1.5.3.1 GET](#31531-get)
+          - [3.1.5.3.1.1 Request Body](#315311-request-body)
+          - [3.1.5.3.1.2 Response Body](#315312-response-body)
+          - [3.1.5.3.1.3 Processing Details](#315313-processing-details)
+      - [3.1.5.4 Logout endpoint (/logout)](#3154-logout-endpoint-logout)
+        - [3.1.5.4.1 GET](#31541-get)
+          - [3.1.5.4.1.1 Request Body](#315411-request-body)
+          - [3.1.5.4.1.2 Response Body](#315412-response-body)
+          - [3.1.5.4.1.3 Processing Details](#315413-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 OpenID Connect Extension Server Details](#32-openid-connect-extension-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Authorization endpoint (/authorize)](#3251-authorization-endpoint-authorize)
+        - [3.2.5.1.1 GET](#32511-get)
+          - [3.2.5.1.1.1 Request Body](#325111-request-body)
+          - [3.2.5.1.1.2 Response Body](#325112-response-body)
+          - [3.2.5.1.1.3 Processing Details](#325113-processing-details)
+        - [3.2.5.1.2 POST](#32512-post)
+          - [3.2.5.1.2.1 Request Body](#325121-request-body)
+          - [3.2.5.1.2.2 Response Body](#325122-response-body)
+          - [3.2.5.1.2.3 Processing Details](#325123-processing-details)
+      - [3.2.5.2 Token endpoint (/token)](#3252-token-endpoint-token)
+        - [3.2.5.2.1 POST](#32521-post)
+          - [3.2.5.2.1.1 Request Body](#325211-request-body)
+          - [3.2.5.2.1.2 Response Body](#325212-response-body)
+          - [3.2.5.2.1.3 Processing Details](#325213-processing-details)
+      - [3.2.5.3 OpenID Provider Configuration endpoint (/.well-known/openid-configuration)](#3253-openid-provider-configuration-endpoint-well-knownopenid-configuration)
+        - [3.2.5.3.1 GET](#32531-get)
+          - [3.2.5.3.1.1 Request Body](#325311-request-body)
+          - [3.2.5.3.1.2 Response Body](#325312-response-body)
+          - [3.2.5.3.1.3 Processing Details](#325313-processing-details)
+      - [3.2.5.4 Logout endpoint (/logout)](#3254-logout-endpoint-logout)
+        - [3.2.5.4.1 GET](#32541-get)
+          - [3.2.5.4.1.1 Request Body](#325411-request-body)
+          - [3.2.5.4.1.2 Response Body](#325412-response-body)
+          - [3.2.5.4.1.3 Processing Details](#325413-processing-details)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example ID Token](#41-example-id-token)
+  - [4.2 Example OpenID Provider Configuration Response](#42-example-openid-provider-configuration-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Data Types ........................................................................................ 10
-HTTP Headers ............................................................................................ 10
-Common URI Parameters ............................................................................ 10
-Common Data Structures ............................................................................ 10
-ID Token .............................................................................................. 10
-OpenID Provider Metadata ..................................................................... 11
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-2.2.3.2
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.5.1.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.2.1
-3.1.5.1.2.2
-3.1.5.1.2.3
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3  Protocol Details ..................................................................................................... 12
-OpenID Connect Extension Client Details ............................................................ 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Message Processing Events and Sequencing Rules .......................................... 12
-Authorization endpoint (/authorize) ......................................................... 12
-GET ............................................................................................... 13
-Request Body ............................................................................ 13
-Response Body .......................................................................... 13
-Processing Details ...................................................................... 13
-POST ............................................................................................. 13
-Request Body ............................................................................ 13
-Response Body .......................................................................... 13
-Processing Details ...................................................................... 13
-Token endpoint (/token) ........................................................................ 13
-POST ............................................................................................. 14
-Request Body ............................................................................ 14
-Response Body .......................................................................... 14
-Processing Details ...................................................................... 14
-OpenID Provider Configuration endpoint (/.well-known/openid-configuration)14
-GET ............................................................................................... 14
-Request Body ............................................................................ 14
-Response Body .......................................................................... 14
-Processing Details ...................................................................... 15
-Logout endpoint (/logout) ...................................................................... 15
-GET ............................................................................................... 15
-Request Body ............................................................................ 15
-Response Body .......................................................................... 15
-Processing Details ...................................................................... 15
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 15
-
-3.1.5.2.1.1
-3.1.5.2.1.2
-3.1.5.2.1.3
-
-3.1.5.4.1.1
-3.1.5.4.1.2
-3.1.5.4.1.3
-
-3.1.5.3.1.1
-3.1.5.3.1.2
-3.1.5.3.1.3
-
-3.1.6
-3.1.7
-
-3.1.5.3.1
-
-3.1.5.4.1
-
-3.1.5.2.1
-
-3.1.5.3
-
-3.1.5.4
-
-3.1.5.2
-
-[MS-OIDCE] - v20250210
-OpenID Connect 1.0 Protocol Extensions
-Copyright © 2025 Microsoft Corporation
-Release: February 10, 2025
-
-3 / 28
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1.2
-
-3.2.5.1
-
-3.2.5.1.1
-
-3.2.5.1.2.1
-3.2.5.1.2.2
-3.2.5.1.2.3
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-
-OpenID Connect Extension Server Details ........................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Authorization endpoint (/authorize) ......................................................... 16
-GET ............................................................................................... 16
-Request Body ............................................................................ 17
-Response Body .......................................................................... 17
-Processing Details ...................................................................... 17
-POST ............................................................................................. 18
-Request Body ............................................................................ 18
-Response Body .......................................................................... 18
-Processing Details ...................................................................... 18
-Token endpoint (/token) ........................................................................ 18
-POST ............................................................................................. 18
-Request Body ............................................................................ 19
-Response Body .......................................................................... 19
-Processing Details ...................................................................... 19
-OpenID Provider Configuration endpoint (/.well-known/openid-configuration)19
-GET ............................................................................................... 19
-Request Body ............................................................................ 19
-Response Body .......................................................................... 19
-Processing Details ...................................................................... 20
-Logout endpoint (/logout) ...................................................................... 20
-GET ............................................................................................... 20
-Request Body ............................................................................ 20
-Response Body .......................................................................... 21
-Processing Details ...................................................................... 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-
-3.2.5.3.1.1
-3.2.5.3.1.2
-3.2.5.3.1.3
-
-3.2.5.2.1.1
-3.2.5.2.1.2
-3.2.5.2.1.3
-
-3.2.5.4.1.1
-3.2.5.4.1.2
-3.2.5.4.1.3
-
-3.2.5.2
-
-3.2.5.2.1
-
-3.2.5.3
-
-3.2.5.3.1
-
-3.2.5.4
-
-3.2.5.4.1
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 22
-Example ID Token ............................................................................................ 22
-Example OpenID Provider Configuration Response ............................................... 22
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 23
-Security Considerations for Implementers ........................................................... 23
-Index of Security Parameters ............................................................................ 23
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 24
-
-7  Change Tracking .................................................................................................... 26
-
-8  Index ..................................................................................................................... 27
-
-[MS-OIDCE] - v20250210
-OpenID Connect 1.0 Protocol Extensions
-Copyright © 2025 Microsoft Corporation
-Release: February 10, 2025
-
-4 / 28
-
-1  Introduction
+## 1 Introduction
 
 The OpenID Connect 1.0 Protocol Extensions specify extensions to [OIDCCore] (OpenID Connect Core
 1.0) and [OIDCDiscovery] (OpenID Connect Discovery). When no operating system version
@@ -417,7 +269,7 @@ FS behavior levels.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -479,14 +331,15 @@ OpenID Connect 1.0 Protocol Extensions
 Copyright © 2025 Microsoft Corporation
 Release: February 10, 2025
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -546,19 +399,20 @@ OpenID Connect 1.0 Protocol Extensions
 Copyright © 2025 Microsoft Corporation
 Release: February 10, 2025
 
-[RFC7519] Internet Engineering Task Force, "JSON Web Token (JWT)", https://www.rfc-
+
+[RFC7519] Internet Engineering Task Force, "JSON Web Token (JWT)", https://www.rfc-
 editor.org/info/rfc7519
 
 [RFC8628] Denniss, W., Bradley, J., Jones, M., and Tschofenig, H., "OAuth 2.0 Device Authorization
 Grant", RFC 8628, August 2019, https://www.rfc-editor.org/info/rfc8628
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-CVE-2021-33779] Microsoft Corporation, "Windows ADFS Security Feature Bypass
 Vulnerability", CVE-2021-33779, July 13, 2021, https://msrc.microsoft.com/update-
 guide/vulnerability/CVE-2021-33779
 
-1.3  Overview
+### 1.3 Overview
 
 The OpenID Connect 1.0 identity layer enhances the OAuth 2.0 protocol by providing a means for
 clients to verify end-user identities. Active Directory Federation Services (AD FS) implements
@@ -593,7 +447,7 @@ Issuer
 Note  Throughout this specification, the fictitious names "client.example.com" and
 "server.example.com" are used as they are used in [RFC6749].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The OpenID Connect 1.0 Protocol Extensions (this document) specify extensions to the industry
 standard OpenID Connect 1.0 Protocol that is defined in [OIDCCore] and [OIDCDiscovery]. These
@@ -608,13 +462,14 @@ Release: February 10, 2025
 
 7 / 28
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-OIDCE].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
 Figure 1: Protocol dependency
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The OpenID Connect 1.0 Protocol Extensions define extensions to [OIDCCore], [OIDCFrontChanLO],
 and [OIDCDiscovery]. The following prerequisites are required for implementing the OpenID Connect
@@ -640,14 +495,14 @@ The OAuth 2.0 Protocol Extensions [MS-OAPX], the OAuth 2.0 Protocol Extensions f
 [MS-OAPXBC], and the OpenID Connect 1.0 Protocol Extensions (this document), if being used, MUST
 all be running on the same AD FS server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The OpenID Connect 1.0 Protocol Extensions are supported by all AD FS servers that support the
 OpenID Connect 1.0 Protocol.<2> OpenID Connect 1.0 clients that request authorization using the
 OpenID Connect 1.0 protocol are required to implement the mandatory extensions defined in this
 protocol document.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -663,16 +518,17 @@ OpenID Connect 1.0 Protocol Extensions
 Copyright © 2025 Microsoft Corporation
 Release: February 10, 2025
 
-Localization: The OpenID Connect 1.0 Protocol Extensions do not return localized strings.
+
+Localization: The OpenID Connect 1.0 Protocol Extensions do not return localized strings.
 
 Capability Negotiation: The OpenID Connect 1.0 Protocol Extensions do not support capability
 negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -683,26 +539,27 @@ Release: February 10, 2025
 
 9 / 28
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The HTTPS protocol [RFC2818] MUST be used as the transport.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  HTTP Headers
+#### 2.2.1 HTTP Headers
 
 In addition to the existing set of standard HTTP headers, messages exchanged in the OpenID Connect
 1.0 Protocol Extensions also use the headers defined in [MS-OAPX] section 2.2.1.
 
-2.2.2  Common URI Parameters
+#### 2.2.2 Common URI Parameters
 
 In addition to the query parameters defined in [RFC6749] and [OIDCCore], the messages exchanged
 in the OpenID Connect 1.0 Protocol Extensions also use the URI parameters defined in [MS-OAPX]
 section 2.2.2.
 
-2.2.3  Common Data Structures
+#### 2.2.3 Common Data Structures
 
 In addition to the request and response parameters defined in [RFC6749] and [OIDCCore], the
 messages exchanged in the OpenID Connect 1.0 Protocol Extensions also use the parameters defined
@@ -741,7 +598,7 @@ The OpenID Connect 1.0 Protocol Extensions define
 additional values that can be included in the OpenID Provider
 Metadata.
 
-2.2.3.1  ID Token
+##### 2.2.3.1 ID Token
 
 The ID Token is a JSON Web Token (JWT) that contains claims about the authentication of an end user
 as described in [OIDCCore] section 2.
@@ -757,7 +614,8 @@ OpenID Connect 1.0 Protocol Extensions
 Copyright © 2025 Microsoft Corporation
 Release: February 10, 2025
 
-upn: OPTIONAL. The user principal name (UPN) of the end user represented in this ID Token. Note
+
+upn: OPTIONAL. The user principal name (UPN) of the end user represented in this ID Token. Note
 that for clients constructed according to [MS-OAPXBC], claims must have either the upn or the
 email. It is not necessary to have both.
 
@@ -777,7 +635,7 @@ email: OPTIONAL. The email address of the user represented in this ID token. Not
 constructed according to [MS-OAPXBC], claims must have either the upn or the email. It is not
 necessary to have both.
 
-2.2.3.2  OpenID Provider Metadata
+##### 2.2.3.2 OpenID Provider Metadata
 
 OpenID Provider Metadata provides information about the OpenID connect provider, as described in
 [OIDCDiscovery] section 3.
@@ -821,16 +679,17 @@ Release: February 10, 2025
 
 11 / 28
 
-3  Protocol Details
 
-3.1  OpenID Connect Extension Client Details
+## 3 Protocol Details
+
+### 3.1 OpenID Connect Extension Client Details
 
 The client role of the OpenID Connect 1.0 Protocol Extensions corresponds to any OpenID Connect 1.0
 client that needs to request authorization to access a resource secured by an AD FS server.
 
 The client role of this protocol uses the extensions defined in this document.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The client role is expected to be aware of the relying party or resource identifier of the resource
 server if it requests authorization for a particular resource. The client role sends this value to the AD
@@ -839,19 +698,19 @@ FS server using the resource query string parameter ([MS-OAPX] section 2.2.2.1).
 The client role is also expected to be aware of its own client identifier and all relevant client
 authentication information if it is a confidential client.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The OpenID Connect 1.0 Protocol Extensions do not define any special initialization requirements.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
  None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The resources accessed and manipulated by this protocol are the same as those defined in
 [OIDCCore], [OIDCFrontChanLO], and [OIDCDiscovery]. They are also listed below for reference:
@@ -889,7 +748,8 @@ Release: February 10, 2025
 
 12 / 28
 
-3.1.5.1  Authorization endpoint (/authorize)
+
+##### 3.1.5.1 Authorization endpoint (/authorize)
 
 As defined in [OIDCCore] sections 3.1.2, 3.2.2, and 3.3.2, the authorization endpoint performs
 authentication of the end user and returns an ID Token, access token, and/or authorization grant as
@@ -905,40 +765,40 @@ For a description, see section 3.1.5.1.1.
 
 For a description, see section 3.1.5.1.2.
 
-3.1.5.1.1 GET
+###### 3.1.5.1.1 GET
 
 For the syntax and semantics of the GET method, see section 3.2.5.1.1.
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 The format of the request is defined in [OIDCCore] sections 3.1.2.1, 3.2.2.1, and 3.3.2.1.
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 The format of the response body is defined in [OIDCCore] sections 3.1.2.5, 3.2.2.5, and 3.3.2.5 for
 successful responses, and sections 3.1.2.6, 3.2.2.6, and 3.3.2.6 for error responses.
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 The steps performed by the OpenID Connect 1.0 client to request authentication are defined in
 [OIDCCore] sections 3.1.2.1, 3.2.2.1, and 3.3.2.1.
 
 The client MUST meet the requirements specified in [MS-OAPX] section 3.1.5.1.1.3.
 
-3.1.5.1.2 POST
+###### 3.1.5.1.2 POST
 
 For the syntax and semantics of the POST method, see section 3.2.5.1.2.
 
-3.1.5.1.2.1  Request Body
+###### 3.1.5.1.2.1 Request Body
 
 The format of the request is defined in [OIDCCore] sections 3.1.2.1, 3.2.2.1, and 3.3.2.1.
 
-3.1.5.1.2.2  Response Body
+###### 3.1.5.1.2.2 Response Body
 
 The format of the response body is defined in [OIDCCore] sections 3.1.2.5, 3.2.2.5, and 3.3.2.5 for
 successful responses, and sections 3.1.2.6, 3.2.2.6, and 3.3.2.6 for error responses.
 
-3.1.5.1.2.3  Processing Details
+###### 3.1.5.1.2.3 Processing Details
 
 The steps performed by the OpenID Connect 1.0 client to request authentication are defined in
 [OIDCCore] sections 3.1.2.1, 3.2.2.1, and 3.3.2.1.
@@ -952,7 +812,8 @@ Release: February 10, 2025
 
 13 / 28
 
-3.1.5.2  Token endpoint (/token)
+
+##### 3.1.5.2 Token endpoint (/token)
 
 As defined in [OIDCCore] sections 3.1.3 and 3.3.3, the client uses the token endpoint to retrieve an ID
 Token, an access token, and optionally a refresh token by presenting its authorization grant or refresh
@@ -964,19 +825,19 @@ POST
 
 For a description, see section 3.1.5.2.1.
 
-3.1.5.2.1 POST
+###### 3.1.5.2.1 POST
 
 For the syntax and semantics of the POST method, see section 3.2.5.2.1.
 
 The client MUST meet the requirements specified in [MS-OAPX] section 3.1.5.2.1.
 
-3.1.5.2.1.1  Request Body
+###### 3.1.5.2.1.1 Request Body
 
 The format of the request is defined in [OIDCCore] sections 3.1.3.1 and 3.3.3.1.
 
 The client can also provide the additional request parameters listed in [MS-OAPX] section 3.2.5.2.1.1.
 
-3.1.5.2.1.2  Response Body
+###### 3.1.5.2.1.2 Response Body
 
 The format of the response is defined in [OIDCCore] sections 3.1.3.3 and 3.3.3.3 for successful
 responses, and sections 3.1.3.4 and 3.3.3.4 for error responses.
@@ -984,7 +845,7 @@ responses, and sections 3.1.3.4 and 3.3.3.4 for error responses.
 The server can also provide the additional response parameters listed in [MS-OAPX] section
 3.2.5.2.1.2.
 
-3.1.5.2.1.3  Processing Details
+###### 3.1.5.2.1.3 Processing Details
 
 The steps performed by the OpenID Connect 1.0 client to request an access token are defined in
 [OIDCCore] sections 3.1.3.1 and 3.3.3.1.
@@ -993,7 +854,7 @@ Additionally, the OpenID Connect 1.0 client MUST expect the AD FS server to resp
 response according to the requirements of [OIDCCore] sections 3.1.3.4 and 3.3.3.4, with the error
 parameter of the response set to the server_error error code as defined in [MS-OAPX] section 2.2.4.2.
 
-3.1.5.3  OpenID Provider Configuration endpoint (/.well-known/openid-configuration)
+##### 3.1.5.3 OpenID Provider Configuration endpoint (/.well-known/openid-configuration)
 
 As defined in [OIDCDiscovery] section 4, the OpenID Provider Configuration endpoint serves the
 OpenID provider's configuration information as a JSON object. The following HTTP methods are
@@ -1005,7 +866,7 @@ GET
 
 For a description, see section 3.1.5.3.1.
 
-3.1.5.3.1 GET
+###### 3.1.5.3.1 GET
 
 For the syntax and semantics of the GET method, see section 3.2.5.3.1.
 
@@ -1016,23 +877,24 @@ Release: February 10, 2025
 
 14 / 28
 
-3.1.5.3.1.1  Request Body
+
+###### 3.1.5.3.1.1 Request Body
 
 The format of the request is defined in [OIDCDiscovery] section 4.1.
 
-3.1.5.3.1.2  Response Body
+###### 3.1.5.3.1.2 Response Body
 
 The format of the response is defined in [OIDCDiscovery] section 4.2.
 
 The server can also include additional fields, described in section 2.2.3.2, in the returned OpenID
 Provider Metadata.
 
-3.1.5.3.1.3  Processing Details
+###### 3.1.5.3.1.3 Processing Details
 
 The steps performed by the OpenID Connect 1.0 client to request the OpenID Provider Configuration
 are defined in [OIDCDiscovery] section 4.
 
-3.1.5.4  Logout endpoint (/logout)
+##### 3.1.5.4 Logout endpoint (/logout)
 
 As defined in the [OIDCFrontChanLO] section 4, the Logout endpoint logs out the user from the AD FS
 server. The following HTTP methods are allowed to be performed on this endpoint.<8>
@@ -1045,32 +907,32 @@ GET
 
 For a description, see section 3.1.5.4.1.
 
-3.1.5.4.1 GET
+###### 3.1.5.4.1 GET
 
 For the syntax and semantics of the GET method, see section 3.2.5.4.1.
 
-3.1.5.4.1.1  Request Body
+###### 3.1.5.4.1.1 Request Body
 
 The format of the request is defined in [OIDCFrontChanLO] section 4.
 
-3.1.5.4.1.2  Response Body
+###### 3.1.5.4.1.2 Response Body
 
 The format of the response is defined in [OIDCFrontChanLO] section 4.
 
-3.1.5.4.1.3  Processing Details
+###### 3.1.5.4.1.3 Processing Details
 
 The steps performed by the OpenID Connect 1.0 client to request the Logout endpoint are defined in
 [OIDCFrontChanLO] section 4.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
  None.
 
-3.2  OpenID Connect Extension Server Details
+### 3.2 OpenID Connect Extension Server Details
 
 The server role of the OpenID Connect 1.0 Protocol Extensions corresponds to the notion of an
 OpenID provider, as defined in [OIDCCore] section 1.
@@ -1082,25 +944,26 @@ OpenID Connect 1.0 Protocol Extensions
 Copyright © 2025 Microsoft Corporation
 Release: February 10, 2025
 
-The server role of this protocol implements support for the extensions defined in this document.
 
-3.2.1  Abstract Data Model
+The server role of this protocol implements support for the extensions defined in this document.
+
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
  None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The OpenID Connect 1.0 Protocol Extensions do not define any special initialization requirements.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
  None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The resources accessed and manipulated by this protocol are the same as those defined in
 [OIDCCore], [OIDCFrontChanLO], and [OIDCDiscovery]. They are also listed below for reference:
@@ -1131,7 +994,7 @@ The HTTP responses to all the HTTP methods are defined in corresponding sections
 
 The response messages for these methods do not contain custom HTTP headers.
 
-3.2.5.1  Authorization endpoint (/authorize)
+##### 3.2.5.1 Authorization endpoint (/authorize)
 
 As defined in [OIDCCore] sections 3.1.2, 3.2.2, and 3.3.2, the authorization endpoint performs
 authentication of the end user and returns an ID Token, an access token, and/or an authorization
@@ -1163,7 +1026,8 @@ OpenID Connect 1.0 Protocol Extensions
 Copyright © 2025 Microsoft Corporation
 Release: February 10, 2025
 
-HTTP
+
+HTTP
 method
 
 Description
@@ -1174,7 +1038,7 @@ of the AD FS server in accordance with the requirements of [OIDCCore] sections 3
 When using the POST method, the request parameters are provided in the POST body as specified
 in [OIDCCore] sections 3.1.2.1, 3.2.2.1, and 3.3.2.1.
 
-3.2.5.1.1 GET
+###### 3.2.5.1.1 GET
 
 This method is transported by an HTTP GET.
 
@@ -1190,16 +1054,16 @@ sections.
 In addition to the [OIDCCore] parameters mentioned previously, the OpenID Connect 1.0 client uses
 the parameters and HTTP headers given in [MS-OAPX] section 3.2.5.1.1.
 
-3.2.5.1.1.1  Request Body
+###### 3.2.5.1.1.1 Request Body
 
 The format of the request is defined in [OIDCCore] sections 3.1.2.1, 3.2.2.1, and 3.3.2.1.
 
-3.2.5.1.1.2  Response Body
+###### 3.2.5.1.1.2 Response Body
 
 The format of the response body is defined in [OIDCCore] sections 3.1.2.5, 3.2.2.5, and 3.3.2.5 for
 successful responses, and sections 3.1.2.6, 3.2.2.6, and 3.3.2.6 for error responses.
 
-3.2.5.1.1.3  Processing Details
+###### 3.2.5.1.1.3 Processing Details
 
 The steps performed by the AD FS server to respond to an authentication request are defined in
 [OIDCCore] sections 3.1.2, 3.2.2, and 3.3.2.
@@ -1236,7 +1100,8 @@ OpenID Connect 1.0 Protocol Extensions
 Copyright © 2025 Microsoft Corporation
 Release: February 10, 2025
 
-
+
+
 
 
 
@@ -1258,7 +1123,7 @@ have a password but does have a similar authentication secret such as a PIN that
 interactively changed by visiting a particular URL, the server can provide that URL
 instead.<11>
 
-3.2.5.1.2 POST
+###### 3.2.5.1.2 POST
 
 This method is transported by an HTTP POST.
 
@@ -1273,21 +1138,21 @@ sections.
 In addition to the [OIDCCore] parameters mentioned previously, the OpenID Connect 1.0 client uses
 the parameters and HTTP headers given in [MS-OAPX] section 3.2.5.1.1.
 
-3.2.5.1.2.1  Request Body
+###### 3.2.5.1.2.1 Request Body
 
 The format of the request is defined in [OIDCCore] sections 3.1.2.1, 3.2.2.1, and 3.3.2.1.
 
-3.2.5.1.2.2  Response Body
+###### 3.2.5.1.2.2 Response Body
 
 The format of the response body is defined in [OIDCCore] sections 3.1.2.5, 3.2.2.5, and 3.3.2.5 for
 successful responses, and sections 3.1.2.6, 3.2.2.6, and 3.3.2.6 for error responses.
 
-3.2.5.1.2.3  Processing Details
+###### 3.2.5.1.2.3 Processing Details
 
 The steps performed by the AD FS server to respond to an authentication request are the same as
 those defined in section 3.1.5.1.1.3 for the client.
 
-3.2.5.2  Token endpoint (/token)
+##### 3.2.5.2 Token endpoint (/token)
 
 As defined in [OIDCCore] sections 3.1.3 and 3.3.3, the client uses the token endpoint to retrieve an ID
 Token, an access token, and optionally a refresh token by presenting its authorization grant or refresh
@@ -1309,14 +1174,15 @@ OpenID Connect 1.0 Protocol Extensions
 Copyright © 2025 Microsoft Corporation
 Release: February 10, 2025
 
-HTTP
+
+HTTP
 method
 
 Description
 
 server in accordance with the requirements of [OIDCCore] sections 3.1.3 and 3.3.3.
 
-3.2.5.2.1 POST
+###### 3.2.5.2.1 POST
 
 This method is transported by an HTTP POST.
 
@@ -1330,16 +1196,16 @@ OpenID Connect 1.0 client MUST specify the parameters marked as REQUIRED in thes
 In addition to the [OIDCCore] parameters mentioned previously, the OpenID Connect 1.0 client uses
 the parameters and HTTP headers given in [MS-OAPX] section 3.1.5.2.1.
 
-3.2.5.2.1.1  Request Body
+###### 3.2.5.2.1.1 Request Body
 
 The format of the request is defined in [OIDCCore] sections 3.1.3.1 and 3.3.3.1.
 
-3.2.5.2.1.2  Response Body
+###### 3.2.5.2.1.2 Response Body
 
 The format of the response is defined in [OIDCCore] sections 3.1.3.3 and 3.3.3.3 for successful
 responses, and sections 3.1.3.4 and 3.3.3.4 for error responses.
 
-3.2.5.2.1.3  Processing Details
+###### 3.2.5.2.1.3 Processing Details
 
 The steps performed by the AD FS server to respond to a token request are defined in [OIDCCore]
 sections 3.1.3 and 3.3.3.
@@ -1356,7 +1222,7 @@ The AD FS server performs the additional processing steps listed in [MS-OAPX] se
 Token as described in section 3.2.5.1.1.3 (specifically, the information about additional ID Token
 claims).
 
-3.2.5.3  OpenID Provider Configuration endpoint (/.well-known/openid-configuration)
+##### 3.2.5.3 OpenID Provider Configuration endpoint (/.well-known/openid-configuration)
 
 As defined in [OIDCDiscovery] section 4, the OpenID Provider Configuration endpoint serves the
 OpenID provider's configuration information as a JSON object. The following HTTP methods are
@@ -1380,7 +1246,8 @@ Release: February 10, 2025
 
 19 / 28
 
-3.2.5.3.1 GET
+
+###### 3.2.5.3.1 GET
 
 This method is transported by an HTTP GET.
 
@@ -1388,15 +1255,15 @@ The method can be invoked through the following URI:
 
  /.well-known/openid-configuration
 
-3.2.5.3.1.1  Request Body
+###### 3.2.5.3.1.1 Request Body
 
 The format of the OpenID Provider Configuration request is specified in [OIDCDiscovery] section 4.1.
 
-3.2.5.3.1.2  Response Body
+###### 3.2.5.3.1.2 Response Body
 
 The format of the OpenID Provider Configuration response is specified in [OIDCDiscovery] section 4.2.
 
-3.2.5.3.1.3  Processing Details
+###### 3.2.5.3.1.3 Processing Details
 
 The steps performed by the AD FS server to respond to an OpenID Provider Configuration request
 are defined in [OIDCDiscovery] section 4.
@@ -1442,7 +1309,7 @@ version for deriving the Session Key, as specified in [MS-OAPXBC] section 3.1.5.
 
 See [MS-OAPX] section 3.2.1.1 for the formal definition of AD FS behavior level.
 
-3.2.5.4  Logout endpoint (/logout)
+##### 3.2.5.4 Logout endpoint (/logout)
 
 As defined in [OIDCFrontChanLO] section 4, the Logout endpoint logs out the user from the AD FS
 server. The following HTTP methods are allowed to be performed on this endpoint.<14>
@@ -1454,7 +1321,8 @@ Release: February 10, 2025
 
 20 / 28
 
-HTTP method
+
+HTTP method
 
 Description
 
@@ -1464,7 +1332,7 @@ A logout request is issued by the OpenID Connect 1.0 client to the Logout
 endpoint of the AD FS server in accordance with the requirements of
 [OIDCFrontChanLO] section 4.
 
-3.2.5.4.1 GET
+###### 3.2.5.4.1 GET
 
 This method is transported by an HTTP GET.
 
@@ -1472,24 +1340,24 @@ The method can be invoked through the following URI:
 
 /logout?post_logout_redirect_uri=[redirect_uri]&state=[state]&id_token_hint=[token_hint]
 
-3.2.5.4.1.1  Request Body
+###### 3.2.5.4.1.1 Request Body
 
 The format of the Logout request is specified in [OIDCFrontChanLO] section 4.
 
-3.2.5.4.1.2  Response Body
+###### 3.2.5.4.1.2 Response Body
 
 The format of the Logout response is specified in [OIDCFrontChanLO] section 4.
 
-3.2.5.4.1.3  Processing Details
+###### 3.2.5.4.1.3 Processing Details
 
 The steps performed by the AD FS server to respond to a logout request are defined in
 [OIDCFrontChanLO] section 4.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1500,14 +1368,15 @@ Release: February 10, 2025
 
 21 / 28
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Note  Throughout these examples, the fictitious names "client.example.com", "server.example.com",
 and "janedoe@example.com" are used as they are used in [OIDCCore].
 
 Note  Throughout these examples, the HTTP samples contain extra line breaks to enhance readability.
 
-4.1  Example ID Token
+### 4.1 Example ID Token
 
 The following example shows an ID Token that contains the additional claims defined in section
 2.2.3.1:
@@ -1527,7 +1396,7 @@ The following example shows an ID Token that contains the additional claims defi
     "pwd_url": "https://server.example.com/changePassword"
    }
 
-4.2  Example OpenID Provider Configuration Response
+### 4.2 Example OpenID Provider Configuration Response
 
 The following example shows a response to an OpenID Provider Configuration request. The response
 includes the additional fields defined in section 2.2.3.2.
@@ -1569,13 +1438,14 @@ Release: February 10, 2025
 
 22 / 28
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1586,7 +1456,8 @@ Release: February 10, 2025
 
 23 / 28
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1678,7 +1549,8 @@ Release: February 10, 2025
 
 24 / 28
 
-<5> Section 2.2.3.2: [RFC8628] is supported in Windows Server v1809 operating system and later
+
+<5> Section 2.2.3.2: [RFC8628] is supported in Windows Server v1809 operating system and later
 and in Windows Server 2019 and later. It is also supported in Windows Server 2016 if [MSKB-
 4457127] is installed.
 
@@ -1744,7 +1616,8 @@ Release: February 10, 2025
 
 25 / 28
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1788,7 +1661,8 @@ Release: February 10, 2025
 
 26 / 28
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1927,7 +1801,8 @@ Protocol examples
 
 27 / 28
 
-Protocol versions 8
+
+Protocol versions 8
 Protocols - relationships 7
 
 Q

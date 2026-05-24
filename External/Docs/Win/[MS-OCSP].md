@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 23
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 23
 
-Date
+
+Date
 
 Revision
 History
@@ -526,7 +528,8 @@ Release: April 23, 2024
 
 3 / 23
 
-Date
+
+Date
 
 Revision
 History
@@ -598,114 +601,54 @@ Release: April 23, 2024
 
 4 / 23
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Structures](#221-common-structures)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Example](#4-protocol-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Keeping Information Secret](#511-keeping-information-secret)
+    - [5.1.2 Coding Practices](#512-coding-practices)
+    - [5.1.3 Security Consideration Citations](#513-security-consideration-citations)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Common Structures .................................................................................... 11
-
-2.1
-2.2
-
-2.2.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 12
-Client Details ................................................................................................... 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Processing Events and Sequencing Rules ....................................................... 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-Server Details .................................................................................................. 12
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 13
-Processing Events and Sequencing Rules ....................................................... 13
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 15
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Example................................................................................................... 16
-
-5.1
-
-5  Security ................................................................................................................. 17
-Security Considerations for Implementers ........................................................... 17
-Keeping Information Secret ......................................................................... 17
-Coding Practices ......................................................................................... 17
-Security Consideration Citations ................................................................... 17
-Index of Security Parameters ............................................................................ 18
-
-5.1.1
-5.1.2
-5.1.3
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 19
-
-7  Change Tracking .................................................................................................... 21
-
-8  Index ..................................................................................................................... 22
-
-[MS-OCSP] - v20240423
-Online Certificate Status Protocol (OCSP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 23
-
-1  Introduction
+## 1 Introduction
 
 The Online Certificate Status Protocol (OCSP) Extensions provide the Microsoft implementation of the
 Lightweight Online Certificate Status Protocol (OCSP) Profile for High Volume Environments
@@ -720,7 +663,7 @@ excellent introduction to PKI and certificate concepts.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -774,7 +717,8 @@ Release: April 23, 2024
 
 6 / 23
 
-public key infrastructure (PKI): The laws, policies, standards, and software that regulate or
+
+public key infrastructure (PKI): The laws, policies, standards, and software that regulate or
 
 manipulate certificates and public and private keys. In practice, it is a system of digital
 certificates, certificate authorities (CAs), and other registration authorities that verify and
@@ -818,14 +762,14 @@ described in the previous sentence.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -845,7 +789,8 @@ Release: April 23, 2024
 
 7 / 23
 
-[MS-CSRA] Microsoft Corporation, "Certificate Services Remote Administration Protocol".
+
+[MS-CSRA] Microsoft Corporation, "Certificate Services Remote Administration Protocol".
 
 [MS-OCSPA] Microsoft Corporation, "Microsoft OCSP Administration Protocol".
 
@@ -875,7 +820,7 @@ http://www.itu.int/rec/T-REC-X.509/en
 Operation of OSI Registration Authorities: General Procedures and Top Arcs of the ASN.1 Object
 Identifier Tree", Recommendation X.660, August 2004, http://www.itu.int/rec/T-REC-X.660/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [CRYPTO] Menezes, A., Vanstone, S., and Oorschot, P., "Handbook of Applied Cryptography", 1997,
 https://cacr.uwaterloo.ca/hac/
@@ -894,7 +839,7 @@ CMS", RFC 2797, April 2000, http://www.rfc-editor.org/info/rfc2797
 [RFC2986] Nystrom, M. and Kaliski, B., "PKCS#10: Certificate Request Syntax Specification", RFC
 2986, November 2000, http://www.rfc-editor.org/info/rfc2986
 
-1.3  Overview
+### 1.3 Overview
 
 The Online Certificate Status Protocol (OCSP), described in [RFC2560], provides a mechanism, as a
 supplement to checking against a periodic certificate revocation list (CRL), to obtain timely
@@ -910,7 +855,8 @@ Release: April 23, 2024
 
 8 / 23
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-OCSP].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -943,12 +889,12 @@ responder to request certificate status.
 3.3). The protocols and data structures used for OCSP are defined in section 2.2. The connection
 over which OCSP is conducted is shown in the preceding figure as a solid bold horizontal line.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Hypertext Transfer Protocol (HTTP/1.1) [RFC2616] is the transport protocol for Online Certificate
 Status Protocol (OCSP) Extensions messages.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 OCSP Extensions requires HTTP/1.1 ([RFC2616]) for transport of all messages.
 
@@ -965,20 +911,21 @@ Release: April 23, 2024
 
 9 / 23
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 OCSP Extensions is applicable to an environment in which clients are able to interact with an OCSP
 responder for the purpose of requesting the revocation status of an [X509] certificate.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -989,24 +936,25 @@ Release: April 23, 2024
 
 10 / 23
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how messages of the OCSP Extensions are transported and encoded on
 the wire.
 
-2.1  Transport
+### 2.1 Transport
 
 OCSP is commonly used over HTTP [RFC2616], although additional transports are allowed per
 [RFC2560] section 4.1.<2>
 
 OCSP Extensions uses HTTP as the transport.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections define the message syntax for OCSP Extensions. OCSP messages are defined in
 ASN.1 as specified in [X660] and encoded by using DER encoding as specified in [ITUX690].
 
-2.2.1  Common Structures
+#### 2.2.1 Common Structures
 
 OCSP client and server implementations MUST use the ASN.1 structures specified in [RFC2560] when
 constructing an OCSP request and response. The following fields are introduced and defined in
@@ -1029,33 +977,34 @@ Release: April 23, 2024
 
 11 / 23
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify protocol details, including abstract data models and message processing
 rules.
 
-3.1  Client Details
+### 3.1 Client Details
 
 The client role in OCSP Extensions is to generate a request, as specified in section 2.2.1, and upon
 receipt, validate the response.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 OCSP request creation MUST adhere to [RFC5019] section 2.1.<3>
 
@@ -1070,15 +1019,15 @@ The private key that was used to sign the inspected certificate.
 
 was used to sign the inspected certificate.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
 The following sections define the server sequencing and processing rules for the OCSP
 implementation.<4>
@@ -1090,7 +1039,8 @@ Release: April 23, 2024
 
 12 / 23
 
-3.2.1  Abstract Data Model
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation can
 maintain to participate in this protocol. The organization is provided to help explain how the protocol
@@ -1121,19 +1071,19 @@ Protocol, this variable can be set to "Allowed" by adding the bit value "0x00000
 SigningFlags property of the revocation configuration, as documented in [MS-OCSPA] section
 3.2.4.1.3.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The responder MUST acquire a certificate as defined in [RFC2560] section 4.2.2.2.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 The OCSP Extensions server processes an OCSP request and generates an OCSP response as
 follows:
@@ -1158,7 +1108,8 @@ Online Certificate Status Protocol (OCSP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the OCSP Extensions responder rejects with an "unauthorized" response, as specified in
+
+the OCSP Extensions responder rejects with an "unauthorized" response, as specified in
 [RFC2560] section 2.3.
 
 4.  While [RFC5019] section 2.1.1 "RECOMMENDS that [the requestExtensions structure] contain only
@@ -1219,7 +1170,7 @@ an HTTP 304 (not modified) status message if it does not (see [RFC2616]).
 With the exception of the deviations and extensions previously enumerated, OCSP request processing
 and response generation complies with [RFC5019].
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -1230,7 +1181,8 @@ Release: April 23, 2024
 
 14 / 23
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1241,11 +1193,12 @@ Release: April 23, 2024
 
 15 / 23
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-OCSP].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
-4  Protocol Example
+## 4 Protocol Example
 
 The client determines that it has to validate the revocation status of a certificate. When the client
 invokes the revocation-checking process, the following event sequence occurs:
@@ -1265,11 +1218,12 @@ Release: April 23, 2024
 
 16 / 23
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the OCSP Extensions.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 Any cryptographic protocol has security considerations with key handling during cryptographic
 operations and key distribution. Although a public key certificate is not a protocol by itself, it has
@@ -1285,7 +1239,7 @@ security considerations around the use and provisioning of those names. In some 
 there are attributes bound to either a name or a key, and there are security considerations regarding
 the use and provisioning of those attributes.
 
-5.1.1  Keeping Information Secret
+#### 5.1.1 Keeping Information Secret
 
 Any cryptographic key has to be kept secret. Any function of a secret (such as a key schedule) also
 has to be kept secret, because knowing such functions would reduce an attacker's work in
@@ -1300,14 +1254,14 @@ Typically, one finds such memory in a hardware security module (HSM). If an HSM 
 be compliant with [FIPS140], or the equivalent at a level consistent with the security requirements of
 the customer deploying the cryptographic protocol or the CA that uses the HSM.
 
-5.1.2  Coding Practices
+#### 5.1.2 Coding Practices
 
 Any implementation of a protocol exposes code to security attacks. Such code has to be developed
 according to secure coding and development practices in order to avoid buffer overflows, denial-of-
 service attacks, escalation of privilege, and disclosure of information. For an introduction to these
 concepts, secure development best practices, and common errors, see [HOWARD].
 
-5.1.3  Security Consideration Citations
+#### 5.1.3 Security Consideration Citations
 
 Implementers of OCSP Extensions are advised to consider the following security precautions, as OCSP
 client and server implementations should observe the following:
@@ -1333,7 +1287,8 @@ Online Certificate Status Protocol (OCSP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Validate and verify the freshness of revocation information of all digital certificates prior to
+
+  Validate and verify the freshness of revocation information of all digital certificates prior to
 
 usage, trust, or encryption as identified in section 6.3 of [RFC3280]. See section 9 of [RFC3280]
 for more information on the requirement for revocation freshness.
@@ -1351,7 +1306,7 @@ normative reference has a specific security section.
 
 For more information on generic denial-of-service mitigation techniques, see [HOWARD].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  None.
 
@@ -1362,7 +1317,8 @@ Release: April 23, 2024
 
 18 / 23
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1491,7 +1447,8 @@ Release: April 23, 2024
 
 19 / 23
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 1.5: On Windows, only the URL specified in the validated certificate AIA extension is
@@ -1533,7 +1490,8 @@ Release: April 23, 2024
 
 20 / 23
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1577,7 +1535,8 @@ Release: April 23, 2024
 
 21 / 23
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1708,7 +1667,8 @@ Release: April 23, 2024
 
 22 / 23
 
-   overview 12
+
+   overview 12
    sequencing rules 13
    timer events 14
    timers 13

@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 31
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 31
 
-Date
+
+Date
 
 Revision
 History
@@ -523,170 +525,73 @@ Release: April 23, 2024
 
 3 / 31
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 AUTH Extensions](#221-auth-extensions)
+    - [2.2.2 POP3 Server Messages](#222-pop3-server-messages)
+    - [2.2.3 POP3 Client Messages](#223-pop3-client-messages)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 POP3 State Model](#3111-pop3-state-model)
+      - [3.1.1.2 NTLM Subsystem Interaction](#3112-ntlm-subsystem-interaction)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a POP3_NTLM_Supported_Response Message](#3151-receiving-a-pop3ntlmsupportedresponse-message)
+      - [3.1.5.2 Receiving a POP3_AUTH_NTLM_Fail_Response Message](#3152-receiving-a-pop3authntlmfailresponse-message)
+      - [3.1.5.3 Receiving a POP3_AUTH_NTLM_Blob_Response Message](#3153-receiving-a-pop3authntlmblobresponse-message)
+        - [3.1.5.3.1 Error from NTLM](#31531-error-from-ntlm)
+        - [3.1.5.3.2 NTLM Reports Success and Returns an NTLM Message](#31532-ntlm-reports-success-and-returns-an-ntlm-message)
+      - [3.1.5.4 Receiving a POP3_AUTH_NTLM_Succeeded_Response Message](#3154-receiving-a-pop3authntlmsucceededresponse-message)
+      - [3.1.5.5 Receiving a POP3_AUTH_NTLM_Cancelled_Response Message](#3155-receiving-a-pop3authntlmcancelledresponse-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 POP3 State Model](#3211-pop3-state-model)
+      - [3.2.1.2 NTLM Subsystem Interaction](#3212-ntlm-subsystem-interaction)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a POP3_AUTH_NTLM_Initiation_Command Message](#3251-receiving-a-pop3authntlminitiationcommand-message)
+      - [3.2.5.2 Receiving a POP3_AUTH_NTLM_Blob_Command Message](#3252-receiving-a-pop3authntlmblobcommand-message)
+        - [3.2.5.2.1 NTLM Returns Success, Returning an NTLM Message](#32521-ntlm-returns-success-returning-an-ntlm-message)
+        - [3.2.5.2.2 NTLM Returns Success, Indicating Authentication Completed Successfully](#32522-ntlm-returns-success-indicating-authentication-completed-successfully)
+        - [3.2.5.2.3 NTLM Returns Status, Indicating User Name or Password Was Incorrect](#32523-ntlm-returns-status-indicating-user-name-or-password-was-incorrect)
+        - [3.2.5.2.4 NTLM Returns a Failure Status, Indicating Any Other Error](#32524-ntlm-returns-a-failure-status-indicating-any-other-error)
+      - [3.2.5.3 Receiving a POP3_AUTH_Cancellation_Command Message](#3253-receiving-a-pop3authcancellationcommand-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 POP3 Client Successfully Authenticating to a POP3 Server](#41-pop3-client-successfully-authenticating-to-a-pop3-server)
+  - [4.2 POP3 Client Unsuccessfully Authenticating to a POP3 Server](#42-pop3-client-unsuccessfully-authenticating-to-a-pop3-server)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-AUTH Extensions ........................................................................................ 11
-POP3 Server Messages ................................................................................ 13
-POP3 Client Messages ................................................................................. 14
-
-2.2.1
-2.2.2
-2.2.3
-
-3.1
-
-3.1.1
-
-3.1.6
-3.1.7
-
-3.1.1.1
-3.1.1.2
-
-3.1.5.4
-3.1.5.5
-
-3.1.5.3.1
-3.1.5.3.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3  Protocol Details ..................................................................................................... 15
-Client Details ................................................................................................... 15
-Abstract Data Model .................................................................................... 15
-POP3 State Model ................................................................................. 15
-NTLM Subsystem Interaction .................................................................. 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Receiving a POP3_NTLM_Supported_Response Message ............................ 17
-Receiving a POP3_AUTH_NTLM_Fail_Response Message............................. 17
-Receiving a POP3_AUTH_NTLM_Blob_Response Message ........................... 17
-Error from NTLM .............................................................................. 17
-NTLM Reports Success and Returns an NTLM Message ......................... 17
-Receiving a POP3_AUTH_NTLM_Succeeded_Response Message .................. 18
-Receiving a POP3_AUTH_NTLM_Cancelled_Response Message .................... 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Server Details .................................................................................................. 19
-Abstract Data Model .................................................................................... 19
-POP3 State Model ................................................................................. 19
-NTLM Subsystem Interaction .................................................................. 20
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Receiving a POP3_AUTH_NTLM_Initiation_Command Message .................... 21
-Receiving a POP3_AUTH_NTLM_Blob_Command Message .......................... 21
-NTLM Returns Success, Returning an NTLM Message ............................ 21
-NTLM Returns Success, Indicating Authentication Completed Successfully22
-NTLM Returns Status, Indicating User Name or Password Was Incorrect . 22
-NTLM Returns a Failure Status, Indicating Any Other Error ................... 22
-Receiving a POP3_AUTH_Cancellation_Command Message ......................... 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-3.2.5.2.4
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.1.1
-3.2.1.2
-
-3.2.5.1
-3.2.5.2
-
-3.2.6
-3.2.7
-
-3.2.5.3
-
-3.2.1
-
-3.2
-
-[MS-POP3] - v20240423
-NT LAN Manager (NTLM) Authentication: Post Office Protocol - Version 3 (POP3) Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 31
-
-4  Protocol Examples ................................................................................................. 23
-POP3 Client Successfully Authenticating to a POP3 Server ..................................... 23
-POP3 Client Unsuccessfully Authenticating to a POP3 Server .................................. 25
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 27
-Security Considerations for Implementers ........................................................... 27
-Index of Security Parameters ............................................................................ 27
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 28
-
-7  Change Tracking .................................................................................................... 29
-
-8  Index ..................................................................................................................... 30
-
-[MS-POP3] - v20240423
-NT LAN Manager (NTLM) Authentication: Post Office Protocol - Version 3 (POP3) Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 31
-
-1  Introduction
+## 1 Introduction
 
 The NT LAN Manager (NTLM) Authentication: Post Office Protocol–Version 3 (POP3) Extension specifies
 the use of NTLM authentication (see [MS-NLMP]) by the Post Office Protocol 3 (POP3) to facilitate
@@ -703,7 +608,7 @@ authentication and to send authentication data.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -759,7 +664,8 @@ Release: April 23, 2024
 
 6 / 31
 
-messages: NTLM NEGOTIATE_MESSAGE, NTLM CHALLENGE_MESSAGE, and NTLM
+
+messages: NTLM NEGOTIATE_MESSAGE, NTLM CHALLENGE_MESSAGE, and NTLM
 AUTHENTICATE_MESSAGE.
 
 NTLM NEGOTIATE_MESSAGE: The NEGOTIATE_MESSAGE packet defines an NTLM negotiate
@@ -784,14 +690,14 @@ the two are on-the-wire compatible.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -822,16 +728,17 @@ Release: April 23, 2024
 
 7 / 31
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-POP3].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [SSPI] Microsoft Corporation, "SSPI", https://learn.microsoft.com/en-
 us/windows/desktop/SecAuthN/sspi
 
-1.3  Overview
+### 1.3 Overview
 
 Client applications that connect to the Post Office Protocol 3 (POP3) service included in Windows
 Server 2003 operating system and Windows Server 2003 R2 operating system can use either standard
@@ -882,7 +789,8 @@ Release: April 23, 2024
 
 8 / 31
 
-3.  The client waits for a response from the server. When the response is received, the client checks
+
+3.  The client waits for a response from the server. When the response is received, the client checks
 to see whether the response indicates the end of authentication (success or failure), or that
 authentication is continuing.
 
@@ -945,7 +853,7 @@ The Multipurpose Internet Mail Extensions (MIME) base64 encoding method, as spec
 
 The NTLM Authentication Protocol, as specified in [MS-NLMP].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The NTLM POP3 Extension uses the POP3 AUTH extension mechanism, as specified in [RFC1734], and
 is an embedded protocol. Unlike standalone application protocols, such as Telnet or Hypertext Transfer
@@ -962,23 +870,24 @@ Release: April 23, 2024
 
 9 / 31
 
-POP3 client and POP3 server implementations depend on the availability of an implementation of the
+
+POP3 client and POP3 server implementations depend on the availability of an implementation of the
 NTLM Authentication Protocol (as specified in [MS-NLMP]) to obtain and process NTLM messages and
 on the availability of the base64 encoding and decoding mechanisms (as specified in [RFC1521]) to
 encode and decode the NTLM messages embedded in POP3 packets.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Because POP3 depends on NTLM to authenticate the client to the server, both the server and the
 client have to have access to an implementation of the NTLM Authentication Protocol (as specified in
 [MS-NLMP]) that is capable of supporting connection-oriented NTLM.<1>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The NTLM POP3 Extension is used only when implementing a POP3 client that needs to authenticate to
 a POP3 server by using NTLM authentication.<2>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -998,11 +907,11 @@ Extensions (section 2.2.1)), upon which the server responds with a list of suppo
 mechanisms followed by a line containing only a period (.). If NTLM is supported, the server
 includes the word "NTLM" in the list. The messages involved are formally described in section 2.2.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The NTLM POP3 Extension does not have any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The NTLM POP3 Extension does not use any standards assignments.
 
@@ -1013,18 +922,19 @@ Release: April 23, 2024
 
 10 / 31
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how the NTLM POP3 Extension messages are transported and NTLM
 POP3 Extension message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 The NTLM POP3 Extension does not establish transport connections. Instead, NTLM POP3 Extension
 messages are encapsulated in POP3 commands and responses. How NTLM POP3 Extension messages
 must be encapsulated in POP3 commands is specified in section 2.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The NTLM POP3 Extension messages are divided into the three categories, depending on whether the
 message was sent by the server or the client:
@@ -1039,7 +949,7 @@ POP3 server messages
 
 POP3 client messages
 
-2.2.1  AUTH Extensions
+#### 2.2.1 AUTH Extensions
 
 The first category of POP3 messages is messages that fall within the AUTH extensibility framework.
 These messages are specified in [RFC1734]. Some messages have parameters that must be
@@ -1082,7 +992,8 @@ Release: April 23, 2024
 
 11 / 31
 
-
+
+
 
 
 
@@ -1152,7 +1063,8 @@ Release: April 23, 2024
 
 12 / 31
 
-
+
+
 
 POP3_AUTH_NTLM_Succeeded_Response: This message is defined in [RFC1734] and indicates
 that the authentication negotiation has completed with the client successfully authenticating to
@@ -1184,7 +1096,7 @@ POP3_AUTH_Cancellation_Command. This has the following syntax, defined in ABNF.
 As specified in [RFC1734], the client can cancel the authentication request at any point during the
 exchange. Once sent, the client then remains in an unauthenticated state.
 
-2.2.2  POP3 Server Messages
+#### 2.2.2 POP3 Server Messages
 
 This section defines the creation of POP3_AUTH_NTLM_Blob_Response messages. These are NTLM
 messages that are sent by the server and that must be encapsulated as follows to conform to syntax
@@ -1217,7 +1129,8 @@ Release: April 23, 2024
 
 13 / 31
 
-2.2.3  POP3 Client Messages
+
+#### 2.2.3 POP3 Client Messages
 
 This section defines the processing of POP3_AUTH_NTLM_Blob_Command messages. These NTLM
 messages sent by the client are encapsulated as follows to conform to the AUTH mechanism:
@@ -1245,17 +1158,18 @@ Release: April 23, 2024
 
 14 / 31
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-POP3].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
-3.1.1.1  POP3 State Model
+##### 3.1.1.1 POP3 State Model
 
 Figure 2: Client POP3 state model
 
@@ -1281,7 +1195,8 @@ Release: April 23, 2024
 
 15 / 31
 
-
+
+
 
 Encapsulates the NTLM message, returned by the NTLM subsystem, into a POP3 message.
 
@@ -1315,7 +1230,7 @@ the inside_authentication state are defined in Message Processing Events and Seq
 section 3.1.5. The behavior of POP3 in this state is not in the scope of this document—it
 represents the end state of the authentication protocol.
 
-3.1.1.2  NTLM Subsystem Interaction
+##### 3.1.1.2 NTLM Subsystem Interaction
 
 During the inside_authentication phase, the POP3 client invokes the NTLM subsystem as described in
 [MS-NLMP] section 3.1. The NTLM protocol is used with these options:
@@ -1364,26 +1279,27 @@ Release: April 23, 2024
 
 16 / 31
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The NTLM POP3 Extension is driven by a series of message exchanges between a POP3 server and a
 POP3 client. The rules governing the sequencing of commands and the internal states of the client and
 server are defined by a combination of [RFC1734] and [MS-NLMP]. Section 3.1.1 completely defines
 how the rules specified in [RFC1734] and [MS-NLMP] govern POP3 authentication.
 
-3.1.5.1  Receiving a POP3_NTLM_Supported_Response Message
+##### 3.1.5.1 Receiving a POP3_NTLM_Supported_Response Message
 
 The expected state is sent_authentication_request.
 
@@ -1393,7 +1309,7 @@ NLMP]. The NTLM message is then encapsulated as defined previously and sent to t
 
 The state of the client is changed to inside_authentication.
 
-3.1.5.2  Receiving a POP3_AUTH_NTLM_Fail_Response Message
+##### 3.1.5.2 Receiving a POP3_AUTH_NTLM_Fail_Response Message
 
 Expected state: sent_authentication_request
 
@@ -1405,7 +1321,7 @@ On receiving this message while in this state, the POP3 client MUST change its i
 completed_authentication and consider that the authentication has failed. The client can then take any
 action it considers appropriate; this document does not mandate any specific course of action.
 
-3.1.5.3  Receiving a POP3_AUTH_NTLM_Blob_Response Message
+##### 3.1.5.3 Receiving a POP3_AUTH_NTLM_Blob_Response Message
 
 The expected state is inside_authentication.
 
@@ -1413,7 +1329,7 @@ On receiving this message, a client must de-encapsulate it to obtain the embedde
 and pass it to the NTLM subsystem for processing. The NTLM subsystem can then either report an
 error, or report success and return an NTLM message to be sent to the server.
 
-3.1.5.3.1 Error from NTLM
+###### 3.1.5.3.1 Error from NTLM
 
 Any NTLM authentication error is reported as an authentication failure and the client MUST change its
 internal state to completed_authentication and consider that the authentication has failed. The client
@@ -1427,15 +1343,16 @@ Release: April 23, 2024
 
 17 / 31
 
-Typical actions are to attempt other (nonauthentication-related) POP3 commands, or to disconnect the
+
+Typical actions are to attempt other (nonauthentication-related) POP3 commands, or to disconnect the
 connection.
 
-3.1.5.3.2 NTLM Reports Success and Returns an NTLM Message
+###### 3.1.5.3.2 NTLM Reports Success and Returns an NTLM Message
 
 The NTLM message is encapsulated and sent to the server. No change occurs in the state of the
 client.
 
-3.1.5.4  Receiving a POP3_AUTH_NTLM_Succeeded_Response Message
+##### 3.1.5.4 Receiving a POP3_AUTH_NTLM_Succeeded_Response Message
 
 Expected state: inside_authentication.
 
@@ -1443,18 +1360,18 @@ The POP3 client MUST change its internal state to completed_authentication and c
 authentication has succeeded. The client can then take any action it considers appropriate. This
 document does not mandate any specific course of action.
 
-3.1.5.5  Receiving a POP3_AUTH_NTLM_Cancelled_Response Message
+##### 3.1.5.5 Receiving a POP3_AUTH_NTLM_Cancelled_Response Message
 
 Expected state: inside_authentication
 
 On receiving this message, the client MUST change its internal state to completed_authentication and
 consider that the authentication has failed.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1465,15 +1382,16 @@ Release: April 23, 2024
 
 18 / 31
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-POP3].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
-3.2.1.1  POP3 State Model
+##### 3.2.1.1 POP3 State Model
 
 Figure 3: Server POP3 state model
 
@@ -1496,7 +1414,8 @@ Release: April 23, 2024
 
 19 / 31
 
-This is the state entered by a server after the server sends a POP3_NTLM_Supported_Response.
+
+This is the state entered by a server after the server sends a POP3_NTLM_Supported_Response.
 In this state, the server initializes the NTLM subsystem and repeats the following steps:
 
   Waits for a message from the client.
@@ -1532,7 +1451,7 @@ This is the state of the server after it exits the inside_authentication state. 
 the inside_authentication state are defined in section 3.2.5. The behavior of POP3 in this state is
 defined in [RFC1734]—it represents the end_state of the authentication protocol.
 
-3.2.1.2  NTLM Subsystem Interaction
+##### 3.2.1.2 NTLM Subsystem Interaction
 
 During the inside_authentication state, the POP3 server invokes the NTLM subsystem as specified in
 [MS-NLMP] section 3.1.1. The NTLM protocol is used with the following options:
@@ -1581,22 +1500,23 @@ NT LAN Manager (NTLM) Authentication: Post Office Protocol - Version 3 (POP3) Ex
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-POP3_AUTH_NTLM_Fail_Response message. On receiving this message, the client MUST enter
+
+POP3_AUTH_NTLM_Fail_Response message. On receiving this message, the client MUST enter
 the completed_authentication state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The NTLM POP3 Extension is driven by a series of message exchanges between a POP3 server and a
 POP3 client. The rules governing the sequencing of commands and the internal states of the client and
@@ -1604,7 +1524,7 @@ server are defined by a combination of [RFC1734] and [MS-NLMP]. Abstract Data
 Model (section 3.2.1) completely defines how the rules specified in [RFC1734] and [MS-NLMP] govern
 POP3 authentication.
 
-3.2.5.1  Receiving a POP3_AUTH_NTLM_Initiation_Command Message
+##### 3.2.5.1 Receiving a POP3_AUTH_NTLM_Initiation_Command Message
 
 The expected state is start.
 
@@ -1614,7 +1534,7 @@ supports NTLM, and change its state to the inside_authentication state.
 If the server does not support NTLM, it MUST respond with the POP3_AUTH_NTLM_Fail_Response, and
 change its internal state to completed_authentication.
 
-3.2.5.2  Receiving a POP3_AUTH_NTLM_Blob_Command Message
+##### 3.2.5.2 Receiving a POP3_AUTH_NTLM_Blob_Command Message
 
 The expected state is inside_authentication.
 
@@ -1634,7 +1554,7 @@ authentication.
 
 specified in [MS-NLMP].
 
-3.2.5.2.1 NTLM Returns Success, Returning an NTLM Message
+###### 3.2.5.2.1 NTLM Returns Success, Returning an NTLM Message
 
 The NTLM message must be encapsulated and sent to the client as the
 POP3_AUTH_NTLM_Blob_Response message. The internal state of the POP3 server remains
@@ -1647,33 +1567,34 @@ Release: April 23, 2024
 
 21 / 31
 
-3.2.5.2.2 NTLM Returns Success, Indicating Authentication Completed Successfully
+
+###### 3.2.5.2.2 NTLM Returns Success, Indicating Authentication Completed Successfully
 
 The server MUST return the POP3_AUTH_NTLM_Succeeded_Response and change its internal state to
 completed_authentication.
 
-3.2.5.2.3 NTLM Returns Status, Indicating User Name or Password Was Incorrect
+###### 3.2.5.2.3 NTLM Returns Status, Indicating User Name or Password Was Incorrect
 
 The server MUST return the POP3_AUTH_NTLM_Fail_Response and change its internal state to
 completed_authentication.
 
-3.2.5.2.4 NTLM Returns a Failure Status, Indicating Any Other Error
+###### 3.2.5.2.4 NTLM Returns a Failure Status, Indicating Any Other Error
 
 If any other error occurs in the NTLM sub system, the server MUST return the
 POP3_AUTH_NTLM_Fail_Response and change its internal state to completed_authentication.
 
-3.2.5.3  Receiving a POP3_AUTH_Cancellation_Command Message
+##### 3.2.5.3 Receiving a POP3_AUTH_Cancellation_Command Message
 
 The expected state is inside_authentication.
 
 On receiving this message, the server MUST return the POP3_AUTH_NTLM_Cancelled_Response to the
 client and change its internal state to completed_authentication.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1684,16 +1605,17 @@ Release: April 23, 2024
 
 22 / 31
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-POP3].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following section describes operations used in a common scenario to illustrate the function of the
 Post Office Protocol 3 (POP3).
 
-4.1  POP3 Client Successfully Authenticating to a POP3 Server
+### 4.1 POP3 Client Successfully Authenticating to a POP3 Server
 
 This section illustrates the NTLM POP3 Extension with a scenario in which a POP3 client successfully
 authenticates to a POP3 server using NTLM.
@@ -1712,7 +1634,8 @@ Release: April 23, 2024
 
 23 / 31
 
- AUTH NTLM
+
+ AUTH NTLM
 
 2.  The server sends the POP3_NTLM_Supported_Response message, indicating that it can perform
 
@@ -1779,11 +1702,12 @@ Release: April 23, 2024
 
 24 / 31
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-POP3].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-4.2  POP3 Client Unsuccessfully Authenticating to a POP3 Server
+### 4.2 POP3 Client Unsuccessfully Authenticating to a POP3 Server
 
 This section illustrates the NTLM POP3 Extension with a scenario in which a POP3 client attempts
 NTLM authentication to a POP3 server and the authentication fails.
@@ -1812,7 +1736,8 @@ Release: April 23, 2024
 
 25 / 31
 
- 00000030:05 02 ce 0e 00 00 00 0f 54 00 45 00 53 00 54 00    ..Î.....T.E.S.T.
+
+ 00000030:05 02 ce 0e 00 00 00 0f 54 00 45 00 53 00 54 00    ..Î.....T.E.S.T.
  00000040:53 00 45 00 52 00 56 00 45 00 52 00 02 00 14 00    S.E.R.V.E.R.....
  00000050:54 00 45 00 53 00 54 00 53 00 45 00 52 00 56 00    T.E.S.T.S.E.R.V.
  00000060:45 00 52 00 01 00 14 00 54 00 45 00 53 00 54 00    E.R.....T.E.S.T.
@@ -1851,17 +1776,18 @@ Release: April 23, 2024
 
 26 / 31
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the NTLM POP3 Extension.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 Implementers have to be aware of the security considerations of using NTLM authentication.
 Information about the security considerations for using NTLM authentication is specified in [MS-NLMP]
 section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for this protocol.
 
@@ -1872,7 +1798,8 @@ Release: April 23, 2024
 
 27 / 31
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1939,7 +1866,8 @@ Release: April 23, 2024
 
 28 / 31
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1983,7 +1911,8 @@ Release: April 23, 2024
 
 29 / 31
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2149,7 +2078,8 @@ NT LAN Manager (NTLM) Authentication: Post Office Protocol - Version 3 (POP3) Ex
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      overview 21
+
+      overview 21
       POP3_AUTH_NTLM_Blob_Command message -
 
 receiving 21

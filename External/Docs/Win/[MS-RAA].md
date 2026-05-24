@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 40
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -225,150 +226,60 @@ Release: April 23, 2024
 
 2 / 40
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Data Types](#221-data-types)
+      - [2.2.1.1 AUTHZR_HANDLE](#2211-authzrhandle)
+    - [2.2.2 Enumerations](#222-enumerations)
+      - [2.2.2.1 AUTHZ_CONTEXT_INFORMATION_CLASS](#2221-authzcontextinformationclass)
+      - [2.2.2.2 AUTHZ_SECURITY_ATTRIBUTE_OPERATION](#2222-authzsecurityattributeoperation)
+      - [2.2.2.3 AUTHZ_SID_OPERATION](#2223-authzsidoperation)
+    - [2.2.3 Structures](#223-structures)
+      - [2.2.3.6 AUTHZR_SECURITY_ATTRIBUTES_INFORMATION 2.2.3.7](#2236-authzrsecurityattributesinformation-2237)
+      - [2.2.3.8 Contains information about the security identifiers](#2238-contains-information-about-the-security-identifiers)
+      - [2.2.3.9 Represents a security identifier (SID) and its](#2239-represents-a-security-identifier-sid-and-its)
+      - [2.2.3.11 Contains a self-relative security descriptor.](#22311-contains-a-self-relative-security-descriptor)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 authzr Server Details](#31-authzr-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 AuthzrFreeContext (Opnum 0)](#3141-authzrfreecontext-opnum-0)
+      - [3.1.4.2 AuthzrInitializeContextFromSid (Opnum 1)](#3142-authzrinitializecontextfromsid-opnum-1)
+      - [3.1.4.3 AuthzrInitializeCompoundContext (Opnum 2)](#3143-authzrinitializecompoundcontext-opnum-2)
+      - [3.1.4.4 AuthzrAccessCheck (Opnum 3)](#3144-authzraccesscheck-opnum-3)
+      - [3.1.4.5 AuthzGetInformationFromContext (Opnum 4)](#3145-authzgetinformationfromcontext-opnum-4)
+      - [3.1.4.6 AuthzrModifyClaims (Opnum 5)](#3146-authzrmodifyclaims-opnum-5)
+      - [3.1.4.7 AuthzrModifySids (Opnum 6)](#3147-authzrmodifysids-opnum-6)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.3
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Common Data Types .......................................................................................... 9
-Data Types ................................................................................................ 10
-AUTHZR_HANDLE ................................................................................. 10
-Enumerations ............................................................................................. 10
-AUTHZ_CONTEXT_INFORMATION_CLASS ................................................. 10
-AUTHZ_SECURITY_ATTRIBUTE_OPERATION ............................................. 11
-AUTHZ_SID_OPERATION ....................................................................... 12
-Structures ................................................................................................. 12
-AUTHZR_ACCESS_REPLY ....................................................................... 13
-AUTHZR_ACCESS_REQUEST ................................................................... 13
-AUTHZR_CONTEXT_INFORMATION .......................................................... 14
-AUTHZR_SECURITY_ATTRIBUTE_STRING_VALUE ...................................... 14
-AUTHZR_SECURITY_ATTRIBUTE_V1 ........................................................ 15
-AUTHZR_SECURITY_ATTRIBUTE_V1_VALUE ............................................. 15
-AUTHZR_SECURITY_ATTRIBUTES_INFORMATION ..................................... 16
-AUTHZR_SID_AND_ATTRIBUTES ............................................................ 16
-AUTHZR_TOKEN_GROUPS ...................................................................... 17
-AUTHZR_TOKEN_USER .......................................................................... 17
-SR_SD ................................................................................................. 17
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-2.2.3.11
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 19
-authzr Server Details ........................................................................................ 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 20
-AuthzrFreeContext (Opnum 0) ................................................................ 20
-AuthzrInitializeContextFromSid (Opnum 1) .............................................. 20
-AuthzrInitializeCompoundContext (Opnum 2) ........................................... 22
-AuthzrAccessCheck (Opnum 3) ............................................................... 23
-AuthzGetInformationFromContext (Opnum 4) ........................................... 24
-AuthzrModifyClaims (Opnum 5) .............................................................. 26
-AuthzrModifySids (Opnum 6) .................................................................. 28
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-
-3.1.5
-3.1.6
-
-4  Protocol Examples ................................................................................................. 30
-
-5  Security ................................................................................................................. 33
-Security Considerations for Implementers ........................................................... 33
-Index of Security Parameters ............................................................................ 33
-
-5.1
-5.2
-
-3 / 40
-
-[MS-RAA] - v20240423
-Remote Authorization API Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6  Appendix A: Full IDL .............................................................................................. 34
-
-7  Appendix B: Product Behavior ............................................................................... 37
-
-8  Change Tracking .................................................................................................... 38
-
-9  Index ..................................................................................................................... 39
-
-[MS-RAA] - v20240423
-Remote Authorization API Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 40
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Remote Authorization API Protocol. The Remote Authorization API Protocol
 is a Remote Procedure Call (RPC)-based protocol used to perform various authorization queries on
@@ -377,7 +288,7 @@ remote computers.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -439,7 +350,8 @@ Release: April 23, 2024
 
 5 / 40
 
-[MS-DTYP] section 2.4.6; a string representation of security descriptors, called SDDL, is
+
+[MS-DTYP] section 2.4.6; a string representation of security descriptors, called SDDL, is
 specified in [MS-DTYP] section 2.5.1.
 
 security identifier (SID): An identifier for security principals that is used to identify an account
@@ -470,14 +382,14 @@ be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -505,17 +417,18 @@ Release: April 23, 2024
 
 6 / 40
 
-[MS-SFU] Microsoft Corporation, "Kerberos Protocol Extensions: Service for User and Constrained
+
+[MS-SFU] Microsoft Corporation, "Kerberos Protocol Extensions: Service for User and Constrained
 Delegation Protocol".
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Authorization API (RAZA) protocol is designed to allow applications to simulate an access
 control decision that would be made when a given principal attempts to access a resource on a
@@ -577,17 +490,18 @@ Release: April 23, 2024
 
 7 / 40
 
-  AuthzrModifyClaims
+
+  AuthzrModifyClaims
 
   AuthzrModifySids
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Authorization API Protocol is dependent on RPC and TCP for its transport.
 
 No other protocol currently depends on the Remote Authorization API Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Authorization API Protocol is an RPC interface and, as a result, has the prerequisites
 specified in [MS-RPCE] (section 1.5) as being common to RPC interfaces.
@@ -595,12 +509,12 @@ specified in [MS-RPCE] (section 1.5) as being common to RPC interfaces.
 It is assumed that a Remote Authorization API Protocol client has obtained the name of a remote
 computer that supports the Remote Authorization API Protocol before this protocol is invoked.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is appropriate only for implementing a tool to remotely approximate and profile "what-if"
 authorization decisions.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -613,7 +527,7 @@ section 2.1.
   Capability Negotiation: The RAZA protocol does not support negotiation of the interface version
 to use. Instead, an implementation needs to be configured with the interface version to use.
 
-1.8  Vendor Extensible Fields
+### 1.8 Vendor Extensible Fields
 
 This protocol cannot be extended by any party other than Microsoft.
 
@@ -621,7 +535,7 @@ This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Vendo
 those values with their indicated meaning. Choosing any other value runs the risk of a collision in the
 future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following table lists the universally unique identifier (UUID) value for the authzr interface
 specified in section 3.1.
@@ -643,9 +557,10 @@ Release: April 23, 2024
 
 8 / 40
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses the following RPC protocol sequences as specified in [MS-RPCE] (section 2.1.1.1 for
 TCP/IP - NCACN_IP_TCP and section 2.1.1.2 for SMB - NCACN_NP):
@@ -666,7 +581,7 @@ authzr interface: 0b1c2170-5732-4e0e-8cd3-d9b16f3b84d7
 
 46324f25e90b
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST indicate to the RPC runtime that it is to support both the NDR and NDR64 transfer
 syntaxes and provide a negotiation mechanism for determining which transfer syntax will be used
@@ -747,7 +662,8 @@ Release: April 23, 2024
 
 9 / 40
 
-Data type name
+
+Data type name
 
 Section
 
@@ -767,7 +683,7 @@ WORD
 
 2.2.61
 
-2.2.1  Data Types
+#### 2.2.1 Data Types
 
 This protocol defines the following data type.
 
@@ -778,7 +694,7 @@ AUTHZR_HANDLE  2.2.1.1
 Represents an explicit RPC binding handle associated with an authzr interface.
 Used to maintain security information about a principal.
 
-2.2.1.1  AUTHZR_HANDLE
+##### 2.2.1.1 AUTHZR_HANDLE
 
 The AUTHZR_HANDLE data type is used to maintain security information about a principal; it
 represents an explicit RPC binding handle associated with an authzr interface. This is used to identify
@@ -787,7 +703,7 @@ for each ClientContext ADM element in its ClientContextList.
 
  typedef [context_handle] PVOID AUTHZR_HANDLE;
 
-2.2.2  Enumerations
+#### 2.2.2 Enumerations
 
 This protocol uses the following enumeration.
 
@@ -813,7 +729,7 @@ AUTHZ_SID_OPERATION
 Indicates the type of SID operations that can be made
 by a call to the AuthzrModifySids method.
 
-2.2.2.1  AUTHZ_CONTEXT_INFORMATION_CLASS
+##### 2.2.2.1 AUTHZ_CONTEXT_INFORMATION_CLASS
 
 The AUTHZ_CONTEXT_INFORMATION_CLASS enumeration is used to indicate security attributes of a
 principal represented by an AUTHZR_HANDLE.
@@ -828,7 +744,8 @@ Remote Authorization API Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     AuthzContextInfoGroupsSids = 2,
+
+     AuthzContextInfoGroupsSids = 2,
      AuthzContextInfoRestrictedSids = 3,
      ReservedEnumValue4 = 4,
      ReservedEnumValue5 = 5,
@@ -883,7 +800,7 @@ ReservedEnumValue15: Not used.
 
 ReservedEnumValue16: Not used.
 
-2.2.2.2  AUTHZ_SECURITY_ATTRIBUTE_OPERATION
+##### 2.2.2.2 AUTHZ_SECURITY_ATTRIBUTE_OPERATION
 
 The AUTHZ_SECURITY_ATTRIBUTE_OPERATION enumeration structure is used with the
 AuthzrModifyClaims operation (section 3.1.4.6) to identify operation types on a client context object.
@@ -900,7 +817,8 @@ Release: April 23, 2024
 
 11 / 40
 
-     AUTHZ_SECURITY_ATTRIBUTE_OPERATION_DELETE = 3,
+
+     AUTHZ_SECURITY_ATTRIBUTE_OPERATION_DELETE = 3,
      AUTHZ_SECURITY_ATTRIBUTE_OPERATION_REPLACE = 4
  } AUTHZ_SECURITY_ATTRIBUTE_OPERATION;
 
@@ -922,7 +840,7 @@ AUTHZ_SECURITY_ATTRIBUTE_OPERATION_REPLACE: An existing claim will be replaced i
 ImpersonationAccessToken array associated with the specified client context if it is present in
 the array.
 
-2.2.2.3  AUTHZ_SID_OPERATION
+##### 2.2.2.3 AUTHZ_SID_OPERATION
 
 The AUTHZ_SID_OPERATION enumeration indicates the type of SID operations that can be made by a
 call to the AuthzrModifySids operation (section 3.1.4.7).
@@ -952,7 +870,7 @@ AUTHZ_SID_OPERATION_REPLACE: Replace the existing SID with the specified SID. If
 
 does not exist, add the specified SID.
 
-2.2.3  Structures
+#### 2.2.3 Structures
 
 This protocol uses the following structures.
 
@@ -974,7 +892,8 @@ Remote Authorization API Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Structure name
+
+Structure name
 
 Section  Description
 
@@ -1002,9 +921,9 @@ AUTHZR_SECURITY_ATTRIBUTE_V1
 
 AUTHZR_SECURITY_ATTRIBUTE_V1_VALUE
 
-2.2.3.6
+##### 2.2.3.6 AUTHZR_SECURITY_ATTRIBUTES_INFORMATION 2.2.3.7
 
-AUTHZR_SECURITY_ATTRIBUTES_INFORMATION  2.2.3.7
+
 
 Specifies a security attribute and one or more
 value pairs.
@@ -1017,16 +936,16 @@ values.
 
 AUTHZR_SID_AND_ATTRIBUTES
 
-2.2.3.8
+##### 2.2.3.8 Contains information about the security identifiers
 
-Contains information about the security identifiers
+
 (SIDs) in a token.
 
 AUTHZR_TOKEN_GROUPS
 
-2.2.3.9
+##### 2.2.3.9 Represents a security identifier (SID) and its
 
-Represents a security identifier (SID) and its
+
 attributes.
 
 AUTHZR_TOKEN_USER
@@ -1037,7 +956,7 @@ Identifies the user associated with a token.
 
 SR_SD
 
-2.2.3.11  Contains a self-relative security descriptor.
+##### 2.2.3.11 Contains a self-relative security descriptor.
 
 2.2.3.1  AUTHZR_ACCESS_REPLY
 
@@ -1075,7 +994,8 @@ Release: April 23, 2024
 
 13 / 40
 
-     [size_is(ObjectTypeListLength)] OBJECT_TYPE_LIST* ObjectTypeList;
+
+     [size_is(ObjectTypeListLength)] OBJECT_TYPE_LIST* ObjectTypeList;
  } AUTHZR_ACCESS_REQUEST;
 
 DesiredAccess:  The type of access to test.
@@ -1152,7 +1072,8 @@ Remote Authorization API Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef struct _AUTHZR_SECURITY_ATTRIBUTE_STRING_VALUE {
+
+ typedef struct _AUTHZR_SECURITY_ATTRIBUTE_STRING_VALUE {
      [range(2, 32768)] ULONG Length;
      [string] [size_is(Length)] WCHAR* Value;
  } AUTHZR_SECURITY_ATTRIBUTE_STRING_VALUE;
@@ -1227,7 +1148,8 @@ Remote Authorization API Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef struct _AUTHZR_SECURITY_ATTRIBUTE_V1_VALUE {
+
+ typedef struct _AUTHZR_SECURITY_ATTRIBUTE_V1_VALUE {
      USHORT ValueType;
      [switch_is(ValueType)] union AUTHZR_SECURITY_ATTRIBUTE_UNION {
          [case(0x1)]
@@ -1301,7 +1223,8 @@ Remote Authorization API Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef struct _AUTHZR_SID_AND_ATTRIBUTES {
+
+ typedef struct _AUTHZR_SID_AND_ATTRIBUTES {
      RPC_SID* Sid;
      DWORD Attributes;
  } AUTHZR_SID_AND_ATTRIBUTES;
@@ -1365,7 +1288,8 @@ Remote Authorization API Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pSrSd: A pointer to a self-relative security descriptor.
+
+pSrSd: A pointer to a self-relative security descriptor.
 
 [MS-RAA] - v20240423
 Remote Authorization API Protocol
@@ -1374,7 +1298,8 @@ Release: April 23, 2024
 
 18 / 40
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Remote Authorization Protocol is used to approximate an access control decision that would be
 made when a given principal attempts to access a hypothetical resource on a remote service that is
@@ -1393,9 +1318,9 @@ other states required on the client side of this protocol. Calls made by the hig
 application are passed directly to the transport, and the results returned by the transport are passed
 directly back to the higher-layer protocol or application.
 
-3.1  authzr Server Details
+### 3.1 authzr Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -1419,11 +1344,11 @@ Additionally, the RAZA server MUST maintain the following data structure:
 
   ClientContextList: A list of ClientContext objects.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The authzr server registers an endpoint with RPC over TCP/IP. The authzr server MUST register the
 Negotiate security support provider authentication_type constant [0x09] as the security provider
@@ -1438,7 +1363,8 @@ Release: April 23, 2024
 
 19 / 40
 
-3.1.4  Message Processing Events and Sequencing Rules
+
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This interface includes the following methods.
 
@@ -1472,7 +1398,7 @@ Opnum: 6
 
 All methods MUST NOT throw exceptions.
 
-3.1.4.1  AuthzrFreeContext (Opnum 0)
+##### 3.1.4.1 AuthzrFreeContext (Opnum 0)
 
 The AuthzrFreeContext method (opnum 0) frees all remote structures and memory associated with the
 client context identified by the ContextHandle parameter.
@@ -1494,7 +1420,7 @@ When a remote authorization server receives this message, it MUST look up the Cl
 structure in the ClientContextTable ADM element and free all structures and memory associated
 with the ClientContext.
 
-3.1.4.2  AuthzrInitializeContextFromSid (Opnum 1)
+##### 3.1.4.2 AuthzrInitializeContextFromSid (Opnum 1)
 
 The AuthzrInitializeContextFromSid method (opnum 1) creates a client context from a given
 security identifier (SID). For domain SIDs, token group and claim attributes will be retrieved from
@@ -1515,7 +1441,8 @@ Release: April 23, 2024
 
 20 / 40
 
-Binding: A primitive RPC handle that identifies a particular client/server binding.
+
+Binding: A primitive RPC handle that identifies a particular client/server binding.
 
 Flags:  Indicates the type of logon behavior when initializing the client context. The following flags are
 
@@ -1598,7 +1525,8 @@ Release: April 23, 2024
 
 21 / 40
 
-2.  Find the ReferencedDomains list entry with an index that matches the DomainIndex
+
+2.  Find the ReferencedDomains list entry with an index that matches the DomainIndex
 from the structure in the preceding step. The domain name is found in the Name field of
 the Domains structure.
 
@@ -1639,7 +1567,7 @@ ImpersonationAccessToken initialized in step 5.
 
 8.  Append the ClientContext object created in step 7 to the ClientContextList.
 
-3.1.4.3  AuthzrInitializeCompoundContext (Opnum 2)
+##### 3.1.4.3 AuthzrInitializeCompoundContext (Opnum 2)
 
 The AuthzrInitializeCompoundContext method (opnum 2) creates a compound context from two
 specified context handles.
@@ -1677,7 +1605,8 @@ Release: April 23, 2024
 
 22 / 40
 
-2.  Copy the ImpersonationAccessToken.Sids array in the ImpersonationAccessToken of the
+
+2.  Copy the ImpersonationAccessToken.Sids array in the ImpersonationAccessToken of the
 
 UserContextHandle into the ImpersonationAccessToken.Sids array in the
 ImpersonationAccessToken created in step 1.
@@ -1714,7 +1643,7 @@ created in step 1.
 
 10. Add the new ClientContext object to the ClientContextList.
 
-3.1.4.4  AuthzrAccessCheck (Opnum 3)
+##### 3.1.4.4 AuthzrAccessCheck (Opnum 3)
 
 The AuthzrAccessCheck method (opnum 3) determines which access bits can be granted to a client for
 a given set of security descriptors. The AUTHZR_ACCESS_REPLY structure returns an array of
@@ -1749,7 +1678,8 @@ Release: April 23, 2024
 
 23 / 40
 
-pSecurityDescriptors: A pointer to an array of SR_SD structures, as defined in section 2.2.3.11. The
+
+pSecurityDescriptors: A pointer to an array of SR_SD structures, as defined in section 2.2.3.11. The
 
 first entry in this array is the primary security descriptor, and it will be used as the security
 descriptor for the AccessCheck evaluation.
@@ -1815,7 +1745,7 @@ GrantedAccess
 The memory location of the GrantedAccessMask member of the
 AUTHZR_ACCESS_REPLY structure pointed to by pRequest
 
-3.1.4.5  AuthzGetInformationFromContext (Opnum 4)
+##### 3.1.4.5 AuthzGetInformationFromContext (Opnum 4)
 
 The AuthzGetInformationFromContext method (opnum 4) returns information about the identified
 client context.
@@ -1832,7 +1762,8 @@ Release: April 23, 2024
 
 24 / 40
 
-ContextHandle: An AUTHZR_HANDLE structure, as defined in section 2.2.1.1. Represents the client
+
+ContextHandle: An AUTHZR_HANDLE structure, as defined in section 2.2.1.1. Represents the client
 
 context to retrieve information from.
 
@@ -1913,7 +1844,8 @@ Release: April 23, 2024
 
 25 / 40
 
-1.  Set the ValueType member in the new AUTHZR_CONTEXT_INFORMATION object to
+
+1.  Set the ValueType member in the new AUTHZR_CONTEXT_INFORMATION object to
 
 13.
 
@@ -1936,7 +1868,7 @@ to the value of the ImpersonationAccessToken.DeviceClaims member.
 If the InfoClass parameter is any other value, the requested information is not supported. The
 RAZA server MUST set ppContextInformation to NULL and return a nonzero error code value.
 
-3.1.4.6  AuthzrModifyClaims (Opnum 5)
+##### 3.1.4.6 AuthzrModifyClaims (Opnum 5)
 
 The AuthzrModifyClaims method (opnum 5) modifies information about the identified client context.
 
@@ -1988,7 +1920,8 @@ Release: April 23, 2024
 
 26 / 40
 
-
+
+
 
 
 
@@ -2068,7 +2001,8 @@ Release: April 23, 2024
 
 27 / 40
 
-3.1.4.7  AuthzrModifySids (Opnum 6)
+
+##### 3.1.4.7 AuthzrModifySids (Opnum 6)
 
 The AuthzrModifySids method (opnum 6) modifies the list of SIDs associated with the identified client
 context.
@@ -2142,7 +2076,8 @@ Release: April 23, 2024
 
 28 / 40
 
-1.  If the element is not the first element and the value is AUTHZ_SID_OPERATION_NONE or
+
+1.  If the element is not the first element and the value is AUTHZ_SID_OPERATION_NONE or
 
 AUTHZ_SID_OPERATION_REPLACE_ALL, the RAZA server MUST return a nonzero error code. The
 case in which the first element is one of these values is described earlier.
@@ -2190,11 +2125,11 @@ AuthzContextInfoDeviceSids
 
 ImpersonationAccessToken.DeviceSids
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -2205,7 +2140,8 @@ Release: April 23, 2024
 
 29 / 40
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following example shows a sample call sequence from a client to a server for a typical use of the
 RAZA protocol to query the permissions available to a given user with the SID S-1-5-21-3448151421-
@@ -2270,7 +2206,8 @@ Release: April 23, 2024
 
 30 / 40
 
-Parameter field
+
+Parameter field
 
 Parameter value
 
@@ -2339,7 +2276,8 @@ Release: April 23, 2024
 
 31 / 40
 
-Parameter field
+
+Parameter field
 
 Parameter value
 
@@ -2380,16 +2318,17 @@ Release: April 23, 2024
 
 32 / 40
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Use of the RAZA protocol requires the client user to have access to read the user and claim
 information of security principals that the client is preforming authorization queries on.<2> It is
 recommended that access to the RAZA interface be limited to a subset of the principals who have
 access to read account information.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2400,7 +2339,8 @@ Release: April 23, 2024
 
 33 / 40
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" refers to the IDL found
 in [MS-DTYP] Appendix A. The syntax uses the IDL syntax extensions defined in [MS-RPCE] sections
@@ -2475,7 +2415,8 @@ Remote Authorization API Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         [range(2,32768)] ULONG Length;
+
+         [range(2,32768)] ULONG Length;
          [string] [size_is(Length)] WCHAR * Value;
      } AUTHZR_SECURITY_ATTRIBUTE_STRING_VALUE;
 
@@ -2552,7 +2493,8 @@ Release: April 23, 2024
 
 35 / 40
 
-         [out] AUTHZR_HANDLE * ContextHandle);
+
+         [out] AUTHZR_HANDLE * ContextHandle);
      DWORD AuthzrInitializeCompoundContext(
          [in] AUTHZR_HANDLE UserContextHandle,
          [in] AUTHZR_HANDLE DeviceContextHandle,
@@ -2589,7 +2531,8 @@ Release: April 23, 2024
 
 36 / 40
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2649,7 +2592,8 @@ Release: April 23, 2024
 
 37 / 40
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2693,7 +2637,8 @@ Release: April 23, 2024
 
 38 / 40
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2841,7 +2786,8 @@ Release: April 23, 2024
 
 39 / 40
 
-Parameters - security index 33
+
+Parameters - security index 33
 Preconditions 8
 Prerequisites 8
 Product behavior 37

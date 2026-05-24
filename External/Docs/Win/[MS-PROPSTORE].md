@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 14
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -264,7 +265,8 @@ Release: April 23, 2024
 
 2 / 14
 
-Date
+
+Date
 
 Revision
 History
@@ -332,63 +334,32 @@ Release: April 23, 2024
 
 3 / 14
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Serialized Property Store](#21-serialized-property-store)
+  - [2.2 Serialized Property Storage](#22-serialized-property-storage)
+  - [2.3 Serialized Property Value](#23-serialized-property-value)
+    - [2.3.1 Serialized Property Value (String Name)](#231-serialized-property-value-string-name)
+    - [2.3.2 Serialized Property Value (Integer Name)](#232-serialized-property-value-integer-name)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 6
-Relationship to Protocols and Other Structures ...................................................... 6
-Applicability Statement ....................................................................................... 6
-Versioning and Localization ................................................................................. 6
-Vendor-Extensible Fields ..................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-2.2
-2.3
-
-2  Structures ............................................................................................................... 7
-Serialized Property Store ..................................................................................... 7
-Serialized Property Storage ................................................................................. 7
-Serialized Property Value .................................................................................... 8
-Serialized Property Value (String Name) .......................................................... 8
-Serialized Property Value (Integer Name) ........................................................ 9
-
-2.3.1
-2.3.2
-
-3  Structure Examples ............................................................................................... 10
-
-4  Security Considerations ......................................................................................... 11
-
-5  Appendix A: Product Behavior ............................................................................... 12
-
-6  Change Tracking .................................................................................................... 13
-
-7  Index ..................................................................................................................... 14
-
-[MS-PROPSTORE] - v20240423
-Property Store Binary File Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 14
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Microsoft Property Store Binary File Format. This file format is a
 persistence format for a set of properties.  Implementers can use this file format to store a set of
@@ -397,7 +368,7 @@ properties in a file or within another structure.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -422,14 +393,14 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -445,7 +416,7 @@ Structures".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -456,7 +427,8 @@ Release: April 23, 2024
 
 5 / 14
 
-1.3  Overview
+
+### 1.3 Overview
 
 This structure provides a compact way to serialize one or more property sets.  Each property set
 consists of a property set identifier and one or more property values.  Each property value consists of
@@ -468,11 +440,11 @@ identifiers or property names.
 
 Data in this file format is stored in little-endian format.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 This structure is used by the Shell Link (.LNK) Binary File Format, as specified in [MS-SHLLINK].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 This document specifies a persistence format for one or more sets of property identifiers and
 associated property values.  This persistence format is applicable when each property set can be
@@ -480,11 +452,11 @@ identified by a globally unique identifier (GUID), and when each property within
 be identified by an unsigned integer or a Unicode string name and can be persisted as a
 TypedPropertyValue structure, as specified in [MS-OLEPS] section 2.15.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 None.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 Implementers are free to define new Format IDs within the Serialized Property Storage structure, as
 defined in section 2.2, and to define new property identifiers within a Serialized Property Value
@@ -497,13 +469,14 @@ Release: April 23, 2024
 
 6 / 14
 
-2  Structures
+
+## 2 Structures
 
 This document references commonly used data types as defined in [MS-DTYP].
 
 Unless otherwise qualified, instances of GUID in this section refer to [MS-DTYP] section 2.3.4.
 
-2.1  Serialized Property Store
+### 2.1 Serialized Property Store
 
 The Property Store Binary File Format is a sequence of Serialized Property Storage structures. The
 sequence MUST be terminated by a Serialized Property Storage structure that specifies 0x00000000
@@ -553,7 +526,7 @@ Serialized Property Storage - N
 
 Serialized Property Storage with Storage Size value of 0x00000000
 
-2.2  Serialized Property Storage
+### 2.2 Serialized Property Storage
 
 The Serialized Property Storage structure is a sequence of Serialized Property Value structures.  The
 sequence MUST be terminated by a Serialized Property Value structure that specifies 0x00000000 for
@@ -581,7 +554,8 @@ Property Store Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Format ID
+
+Format ID
 
 ...
 
@@ -632,12 +606,12 @@ Serialized Property Value - N
 
 Serialized Property Value with Value Size of 0x00000000
 
-2.3  Serialized Property Value
+### 2.3 Serialized Property Value
 
 There are two types of Serialized Property Value structures: Serialized Property Value (String Name)
 structures and Serialized Property Value (Integer Name) structures.
 
-2.3.1  Serialized Property Value (String Name)
+#### 2.3.1 Serialized Property Value (String Name)
 
 The Serialized Property Value (String Name) structure specifies a single property within a Serialized
 Property Storage structure, where the property is identified by a unique Unicode string.
@@ -649,7 +623,8 @@ Release: April 23, 2024
 
 8 / 14
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -691,7 +666,7 @@ to be unique within the enclosing Serialized Property Storage structure.
 
 Value (variable): A TypedPropertyValue structure, as specified in [MS-OLEPS] section 2.15.
 
-2.3.2  Serialized Property Value (Integer Name)
+#### 2.3.2 Serialized Property Value (Integer Name)
 
 The Serialized Property Value (Integer Name) structure specifies a single property within a Serialized
 Property Storage structure, where the property is identified by a unique unsigned integer.
@@ -737,7 +712,8 @@ Property Store Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 None.
 
@@ -748,7 +724,8 @@ Release: April 23, 2024
 
 10 / 14
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 None.
 
@@ -759,7 +736,8 @@ Release: April 23, 2024
 
 11 / 14
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -811,7 +789,8 @@ Release: April 23, 2024
 
 12 / 14
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -855,7 +834,8 @@ Release: April 23, 2024
 
 13 / 14
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 6

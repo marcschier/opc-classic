@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -89,195 +90,83 @@ Release: April 23, 2024
 
 2 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Common Data Types](#222-common-data-types)
+      - [2.2.2.1 RDP_CORE_INPUT_HEADER](#2221-rdpcoreinputheader)
+      - [2.2.2.2 PACKED_EVENT_TYPE_AND_FLAGS](#2222-packedeventtypeandflags)
+      - [2.2.2.3 TS_KEYBOARD_EVENT](#2223-tskeyboardevent)
+      - [2.2.2.4 TS_UNICODE_KEYBOARD_EVENT](#2224-tsunicodekeyboardevent)
+      - [2.2.2.5 TS_POINTER_EVENT](#2225-tspointerevent)
+      - [2.2.2.6 TS_QOE_INPUT_TIMESTAMP_EVENT](#2226-tsqoeinputtimestampevent)
+      - [2.2.2.7 TS_RELPOINTER_EVENT](#2227-tsrelpointerevent)
+      - [2.2.2.8 RDP_CORE_INPUT_EVENT_CONTAINER](#2228-rdpcoreinputeventcontainer)
+    - [2.2.3 Core Input Messages](#223-core-input-messages)
+      - [2.2.3.1 RDP_CORE_INPUT_CS_INIT_REQUEST_PDU](#2231-rdpcoreinputcsinitrequestpdu)
+      - [2.2.3.2 RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU](#2232-rdpcoreinputscinitresponsepdu)
+      - [2.2.3.3 RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU](#2233-rdpcoreinputcskeyboardandmouseinputpdu)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing a Core Input Message](#3151-processing-a-core-input-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing an RDP_CORE_INPUT_CS_INIT_REQUEST_PDU Message](#3251-processing-an-rdpcoreinputcsinitrequestpdu-message)
+      - [3.2.5.2 Sending an RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU Message](#3252-sending-an-rdpcoreinputscinitresponsepdu-message)
+      - [3.2.5.3 Processing an RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU](#3253-processing-an-rdpcoreinputcskeyboardandmouseinputpdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Sending an RDP_CORE_INPUT_CS_INIT_REQUEST_PDU Message](#3351-sending-an-rdpcoreinputcsinitrequestpdu-message)
+      - [3.3.5.2 Processing an RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU Message](#3352-processing-an-rdpcoreinputscinitresponsepdu-message)
+      - [3.3.5.3 Sending an RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU](#3353-sending-an-rdpcoreinputcskeyboardandmouseinputpdu)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Version and Capabilities Exchange](#41-version-and-capabilities-exchange)
+    - [4.1.1 Init Request](#411-init-request)
+    - [4.1.2 Init Response](#412-init-response)
+  - [4.2 Keyboard and Mouse Input](#42-keyboard-and-mouse-input)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Namespaces ................................................................................................ 8
-Common Data Types ..................................................................................... 8
-RDP_CORE_INPUT_HEADER ..................................................................... 8
-PACKED_EVENT_TYPE_AND_FLAGS ........................................................... 9
-TS_KEYBOARD_EVENT .......................................................................... 10
-TS_UNICODE_KEYBOARD_EVENT ........................................................... 11
-TS_POINTER_EVENT ............................................................................. 11
-TS_QOE_INPUT_TIMESTAMP_EVENT ....................................................... 13
-TS_RELPOINTER_EVENT ........................................................................ 13
-RDP_CORE_INPUT_EVENT_CONTAINER ................................................... 15
-Core Input Messages ................................................................................... 15
-RDP_CORE_INPUT_CS_INIT_REQUEST_PDU ............................................ 15
-RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU .......................................... 16
-RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU .................... 17
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.2.3
-
-3.2
-
-3.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 18
-Common Details .............................................................................................. 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Processing a Core Input Message ............................................................ 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Server Details .................................................................................................. 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Processing an RDP_CORE_INPUT_CS_INIT_REQUEST_PDU Message ........... 19
-Sending an RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU Message ............. 19
-Processing an RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU
-Message .............................................................................................. 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-Client Details ................................................................................................... 20
-Abstract Data Model .................................................................................... 20
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3
-
-[MS-RDPECI] - v20240423
-Remote Desktop Protocol: Core Input Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 26
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-
-3.3.6
-3.3.7
-
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Sending an RDP_CORE_INPUT_CS_INIT_REQUEST_PDU Message ............... 20
-Processing an RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU Message ......... 20
-Sending an RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU
-Message .............................................................................................. 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 21
-
-4.1
-
-4  Protocol Examples ................................................................................................. 22
-Version and Capabilities Exchange ...................................................................... 22
-Init Request ............................................................................................... 22
-Init Response ............................................................................................. 22
-Keyboard and Mouse Input ................................................................................ 22
-
-4.1.1
-4.1.2
-
-4.2
-
-5  Security ................................................................................................................. 23
-Security Considerations for Implementers ........................................................... 23
-Index of Security Parameters ............................................................................ 23
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 24
-
-7  Change Tracking .................................................................................................... 25
-
-8  Index ..................................................................................................................... 26
-
-[MS-RDPECI] - v20240423
-Remote Desktop Protocol: Core Input Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 26
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: Core Input Virtual Channel Extension applies to the Remote Desktop
 Protocol: Basic Connectivity and Graphics Remoting. The core input protocol is used to remote
@@ -286,7 +175,7 @@ keyboard and mouse input from a terminal server client to a terminal server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -299,14 +188,14 @@ terminal server: A computer on which terminal services is running.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -321,11 +210,11 @@ Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Core Input Virtual Channel Extension is used to remote keyboard and
 mouse input from a terminal server client to a terminal server and replaces the Slow-Path and Fast-
@@ -341,7 +230,8 @@ Release: April 23, 2024
 
 5 / 26
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-RDPECI].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -371,7 +261,7 @@ keyboard and mouse events to the server encapsulated in the
 RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU (section 2.2.3.3) message. The server
 decodes these events and injects them into the user's session.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Core Input Virtual Channel Extension is embedded in a dynamic virtual
 channel transport, as specified in [MS-RDPEDYC] sections 1 to 3.
@@ -379,7 +269,7 @@ channel transport, as specified in [MS-RDPEDYC] sections 1 to 3.
 The Remote Desktop Protocol: Core Input Virtual Channel Extension replaces the TS_FP_INPUT_PDU
 specified in [MS-RDPBCGR] section 2.2.8.1.2.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Core Input Virtual Channel Extension operates only after the dynamic
 virtual channel transport is fully established. If the dynamic virtual channel transport is terminated,
@@ -394,13 +284,14 @@ Release: April 23, 2024
 
 6 / 26
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Core Input Virtual Channel Extension is applicable in scenarios where
 the transfer of keyboard and mouse events (generated by a physical or virtual keyboard and mouse)
 is required from a terminal server client to a terminal server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 During the Initialization phase, the server and client exchange the supported protocol version using
 the RDP_CORE_INPUT_CS_INIT_REQUEST_PDU (section 2.2.3.1) and
@@ -408,11 +299,11 @@ RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU (section 2.2.3.2) messages. The client initi
 exchange when the dynamic virtual channel (sections 1.4 and 2.1) over which the core input
 messages will flow has been opened.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -423,9 +314,10 @@ Release: April 23, 2024
 
 7 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Core Input Virtual Channel Extension is designed to operate over a
 dynamic virtual channel, as specified in [MS-RDPEDYC] sections 1 to 3. The dynamic virtual channel
@@ -433,17 +325,17 @@ name is the null-terminated ANSI character string "Microsoft::Windows::RDS::Core
 of channel names in the context of opening a dynamic virtual channel is specified in [MS-RDPEDYC]
 section 2.2.2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the Remote Desktop Protocol: Core Input Virtual Channel Extension
 message syntax. All multiple-byte fields within a message MUST be marshaled in little-endian byte
 order, unless otherwise specified.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
-2.2.2  Common Data Types
+#### 2.2.2 Common Data Types
 
-2.2.2.1  RDP_CORE_INPUT_HEADER
+##### 2.2.2.1 RDP_CORE_INPUT_HEADER
 
 The RDP_CORE_INPUT_HEADER structure is included in all core input PDUs and is used to identify
 the PDU type and to specify how many keyboard or mouse events are included in the
@@ -507,9 +399,10 @@ Remote Desktop Protocol: Core Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-padding (1 byte): An 8-bit, unsigned integer that SHOULD be set to zero.
 
-2.2.2.2  PACKED_EVENT_TYPE_AND_FLAGS
+padding (1 byte): An 8-bit, unsigned integer that SHOULD be set to zero.
+
+##### 2.2.2.2 PACKED_EVENT_TYPE_AND_FLAGS
 
 The PACKED_EVENT_TYPE_AND_FLAGS structure is a single byte that specifies the event type and
 associated flags for each event included in the
@@ -603,7 +496,8 @@ Release: April 23, 2024
 
 9 / 26
 
-Value
+
+Value
 
 Meaning
 
@@ -680,7 +574,7 @@ INPUT_EVENT_RELMOUSE
 Indicates a Relative Mouse Event. The event payload is a
 TS_RELPOINTER_EVENT (section 2.2.2.7) structure.
 
-2.2.2.3  TS_KEYBOARD_EVENT
+##### 2.2.2.3 TS_KEYBOARD_EVENT
 
 The TS_KEYBOARD_EVENT is used to transmit a scan code-based keyboard event. See section 2.2.2.2
 for flags associated with this event.
@@ -692,7 +586,8 @@ Release: April 23, 2024
 
 10 / 26
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -710,7 +605,7 @@ keyCode (1 byte): An 8-bit, unsigned integer. The scan code associated with the 
 server translates the scan code into an appropriate character depending on the language locale
 and keyboard layout used in the session.
 
-2.2.2.4  TS_UNICODE_KEYBOARD_EVENT
+##### 2.2.2.4 TS_UNICODE_KEYBOARD_EVENT
 
 The TS_UNICODE_KEYBOARD_EVENT is used to transmit a Unicode-based keyboard event. See
 section 2.2.2.2 for flags associated with this event.
@@ -730,7 +625,7 @@ unicodeCode
 
 unicodeCode (2 bytes): A 16-bit, unsigned integer. The Unicode character input code.
 
-2.2.2.5  TS_POINTER_EVENT
+##### 2.2.2.5 TS_POINTER_EVENT
 
 The TS_POINTER_EVENT is used to transmit a mouse wheel, move, or button event.
 
@@ -789,7 +684,8 @@ Release: April 23, 2024
 
 11 / 26
 
-Flag
+
+Flag
 
 0x0100
 
@@ -877,7 +773,8 @@ Remote Desktop Protocol: Core Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flag
+
+Flag
 
 0x0001
 
@@ -903,7 +800,7 @@ the top-left corner of the server's desktop. This field SHOULD be ignored by the
 PTRFLAGS_WHEEL (0x0200) or PTRFLAGS_HWHEEL (0x0400) flag is specified in the pointerFlags
 field.
 
-2.2.2.6  TS_QOE_INPUT_TIMESTAMP_EVENT
+##### 2.2.2.6 TS_QOE_INPUT_TIMESTAMP_EVENT
 
 The TS_QOE_INPUT_TIMESTAMP_EVENT is used to enable the calculation of Quality of Experience
 (QoE) metrics. This event is sent solely for informational and debugging purposes and MUST NOT be
@@ -928,7 +825,7 @@ indicates when the current input batch was encoded by the client. The value of t
 sent by the client implicitly defines the origin for all subsequent timestamps. The server is
 responsible for handling roll-over of the timestamp.
 
-2.2.2.7  TS_RELPOINTER_EVENT
+##### 2.2.2.7 TS_RELPOINTER_EVENT
 
 The TS_RELPOINTER_EVENT structure is used to specify relative mouse pointer movement (as
 opposed to absolute positioning).
@@ -961,7 +858,8 @@ Release: April 23, 2024
 
 13 / 26
 
-Flag
+
+Flag
 
 Meaning
 
@@ -1045,11 +943,12 @@ Release: April 23, 2024
 
 14 / 26
 
-yDelta (2 bytes): A 16-bit signed integer that specifies the distance the pointer has moved on the y-
+
+yDelta (2 bytes): A 16-bit signed integer that specifies the distance the pointer has moved on the y-
 axis since the previous position update was sent. Negative values indicate that the pointer is
 moving up.
 
-2.2.2.8  RDP_CORE_INPUT_EVENT_CONTAINER
+##### 2.2.2.8 RDP_CORE_INPUT_EVENT_CONTAINER
 
 The RDP_CORE_INPUT_EVENT_CONTAINER structure is used to wrap event-specific information.
 
@@ -1079,9 +978,9 @@ event (variable): A TS_KEYBOARD_EVENT (section 2.2.2.3), TS_UNICODE_KEYBOARD_EVE
 (section 2.2.2.4), TS_POINTER_EVENT (section 2.2.2.5), or TS_QOE_INPUT_TIMESTAMP_EVENT
 (section 2.2.2.6).
 
-2.2.3  Core Input Messages
+#### 2.2.3 Core Input Messages
 
-2.2.3.1  RDP_CORE_INPUT_CS_INIT_REQUEST_PDU
+##### 2.2.3.1 RDP_CORE_INPUT_CS_INIT_REQUEST_PDU
 
 The RDP_CORE_INPUT_CS_INIT_REQUEST_PDU message is sent by the client endpoint and is used to
 transport supported core input protocol versions to the server.
@@ -1131,7 +1030,8 @@ Release: April 23, 2024
 
 15 / 26
 
-protocolVersionMax (2 bytes): A 16-bit, unsigned integer that specifies the maximum core input
+
+protocolVersionMax (2 bytes): A 16-bit, unsigned integer that specifies the maximum core input
 
 protocol version supported by the client.
 
@@ -1146,7 +1046,7 @@ Version 1.0 of the RDP Core input remoting protocol.
 
 reserved (8 bytes): A 64-bit, unsigned integer that SHOULD be set to zero.
 
-2.2.3.2  RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU
+##### 2.2.3.2 RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU
 
 The RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU message is sent by the server endpoint and is used
 to transport the selected core input protocol version to the client.
@@ -1211,7 +1111,8 @@ Release: April 23, 2024
 
 16 / 26
 
-2.2.3.3  RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU
+
+##### 2.2.3.3 RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU
 
 The RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU message is sent by the client
 endpoint and is used to remote a collection of keyboard or mouse events to the server.
@@ -1250,29 +1151,30 @@ Release: April 23, 2024
 
 17 / 26
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
+
+None.
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are used.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Processing a Core Input Message
+##### 3.1.5.1 Processing a Core Input Message
 
 All core input messages are prefaced by the RDP_CORE_INPUT_HEADER (section 2.2.2.1)
 structure.
@@ -1281,21 +1183,21 @@ When a core input message is processed, the pduType field in the header MUST fir
 determine if the message is within the subset of expected messages as described in section 1.3. If the
 message is not expected, it SHOULD be ignored.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No additional events are used.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
@@ -1306,20 +1208,21 @@ Release: April 23, 2024
 
 18 / 26
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 Upon receiving the RDP_CORE_INPUT_CS_INIT_REQUEST_PDU (section 2.2.3.1) message, the server
 MUST send the RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU (section 2.2.3.2) message to the client,
 as specified in section 3.2.5.2, to signal that the Initialization Phase is complete and that it is ready to
 accept and process keyboard and mouse input.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Processing an RDP_CORE_INPUT_CS_INIT_REQUEST_PDU Message
+##### 3.2.5.1 Processing an RDP_CORE_INPUT_CS_INIT_REQUEST_PDU Message
 
 The structure and fields of the RDP_CORE_INPUT_CS_INIT_REQUEST_PDU message are specified in
 section 2.2.3.1.
@@ -1328,7 +1231,7 @@ The header field MUST be processed as specified in section 3.1.5.1. If the messa
 server SHOULD send an RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU (section 2.2.3.2) message to
 the client, as specified in section 3.2.5.2.
 
-3.2.5.2  Sending an RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU Message
+##### 3.2.5.2 Sending an RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU Message
 
 The structure and fields of the RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU message are specified in
 section 2.2.3.2. The message fields MUST be populated in accordance with this description. The server
@@ -1340,7 +1243,7 @@ server SHOULD be ready to accept and process keyboard and mouse input, as specif
 3.2.5.3, that will be sent by the client using the
 RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU (section 2.2.3.3) message.
 
-3.2.5.3  Processing an RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU
+##### 3.2.5.3 Processing an RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU
 
 Message
 
@@ -1351,11 +1254,11 @@ The header field MUST be processed as specified in section 3.1.5.1. If the messa
 server SHOULD extract the input event parameters and then inject an appropriate synthesized input
 event into the remote session.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1366,17 +1269,18 @@ Release: April 23, 2024
 
 19 / 26
 
-3.3  Client Details
 
-3.3.1  Abstract Data Model
+### 3.3 Client Details
 
-None.
-
-3.3.2  Timers
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.3  Initialization
+#### 3.3.2 Timers
+
+None.
+
+#### 3.3.3 Initialization
 
 The client MUST send the RDP_CORE_INPUT_CS_INIT_REQUEST_PDU (section 2.2.3.1) message to
 the server, as specified in section 3.3.5.1, once the dynamic virtual channel (section 2.1) is opened.
@@ -1384,19 +1288,19 @@ After the server responds with the RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU (section 
 Initialization Phase is complete, and the client SHOULD send keyboard and mouse input generated by
 the user to the server.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Sending an RDP_CORE_INPUT_CS_INIT_REQUEST_PDU Message
+##### 3.3.5.1 Sending an RDP_CORE_INPUT_CS_INIT_REQUEST_PDU Message
 
 The structure and fields of the RDP_CORE_INPUT_CS_INIT_REQUEST_PDU message are specified in
 section 2.2.3.1. The message fields MUST be populated in accordance with this description, and the
 client MUST specify the range of protocol versions that it supports.
 
-3.3.5.2  Processing an RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU Message
+##### 3.3.5.2 Processing an RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU Message
 
 The structure and fields of the RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU message are specified in
 section 2.2.3.2.
@@ -1406,7 +1310,7 @@ SHOULD hook the keyboard and mouse input subsystem, listen for changes to the cu
 position, and send updates using the RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU
 message, as specified in section 3.2.5.3.
 
-3.3.5.3  Sending an RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU
+##### 3.3.5.3 Sending an RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU
 
 Message
 
@@ -1415,7 +1319,7 @@ are specified in section 2.2.3.3. The message fields MUST be populated in accord
 description based on whether a keyboard scan code, Unicode character, synchronize, QOE timestamp,
 or mouse event is being sent.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
@@ -1426,7 +1330,8 @@ Release: April 23, 2024
 
 20 / 26
 
-3.3.7  Other Local Events
+
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1437,11 +1342,12 @@ Release: April 23, 2024
 
 21 / 26
 
-4  Protocol Examples
 
-4.1  Version and Capabilities Exchange
+## 4 Protocol Examples
 
-4.1.1  Init Request
+### 4.1 Version and Capabilities Exchange
+
+#### 4.1.1 Init Request
 
 The following are network captures of the RDP_CORE_INPUT_CS_INIT_REQUEST_PDU (section
 2.2.3.1).
@@ -1455,7 +1361,7 @@ The following are network captures of the RDP_CORE_INPUT_CS_INIT_REQUEST_PDU (se
 00 01 -> RDP_CORE_INPUT_INIT_REQUEST_PDU::protocolVersionMax 0x0100 (2 Bytes)
 00 00 00 00 00 00 00 00 -> RDP_CORE_INPUT_INIT_REQUEST_PDU::reserved (8 bytes)
 
-4.1.2  Init Response
+#### 4.1.2 Init Response
 
 The following are network captures of the RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU (section
 2.2.3.2).
@@ -1469,7 +1375,7 @@ The following are network captures of the RDP_CORE_INPUT_SC_INIT_RESPONSE_PDU (s
 00 01 -> RDP_CORE_INPUT_INIT_RESPONSE_PDU::protocolVersionMax 0x0100 (2 Bytes)
 00 00 00 00 00 00 00 00 -> RDP_CORE_INPUT_INIT_RESPONSE_PDU::reserved (8 bytes)
 
-4.2  Keyboard and Mouse Input
+### 4.2 Keyboard and Mouse Input
 
 The following are network captures of the
 RDP_CORE_INPUT_CS_KEYBOARD_AND_MOUSE_INPUT_PDU (section 2.2.3.3).
@@ -1498,13 +1404,14 @@ Release: April 23, 2024
 
 22 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1515,7 +1422,8 @@ Release: April 23, 2024
 
 23 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1543,7 +1451,8 @@ Release: April 23, 2024
 
 24 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1603,7 +1512,8 @@ Release: April 23, 2024
 
 25 / 26
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model

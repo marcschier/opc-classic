@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 103
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -304,7 +305,8 @@ Release: April 23, 2024
 
 2 / 103
 
-Date
+
+Date
 
 Revision
 History
@@ -482,330 +484,150 @@ Release: April 23, 2024
 
 3 / 103
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Constant Value Definitions](#22-constant-value-definitions)
+    - [2.2.1 Permitted Property Type Values](#221-permitted-property-type-values)
+    - [2.2.2 Permitted Error Code Values](#222-permitted-error-code-values)
+    - [2.2.3 Display Type Values](#223-display-type-values)
+    - [2.2.4 Default Language Code Identifier](#224-default-language-code-identifier)
+    - [2.2.5 Required Codepages](#225-required-codepages)
+    - [2.2.6 Unicode Comparison Flags](#226-unicode-comparison-flags)
+      - [2.2.6.1 Comparison Flags](#2261-comparison-flags)
+    - [2.2.7 Permanent Entry ID GUID](#227-permanent-entry-id-guid)
+    - [2.2.8 Positioning Minimal Entry IDs](#228-positioning-minimal-entry-ids)
+    - [2.2.9 Ambiguous Name Resolution Minimal Entry IDs](#229-ambiguous-name-resolution-minimal-entry-ids)
+    - [2.2.10 Table Sort Orders](#2210-table-sort-orders)
+    - [2.2.11 NspiBind Flags](#2211-nspibind-flags)
+    - [2.2.12 Retrieve Property Flags](#2212-retrieve-property-flags)
+    - [2.2.13 NspiGetSpecialTable Flags](#2213-nspigetspecialtable-flags)
+    - [2.2.14 NspiQueryColumns Flags](#2214-nspiquerycolumns-flags)
+    - [2.2.15 NspiGetIDsFromNames Flags](#2215-nspigetidsfromnames-flags)
+    - [2.2.16 NspiGetTemplateInfo Flags](#2216-nspigettemplateinfo-flags)
+    - [2.2.17 NspiModLinkAtt Flags](#2217-nspimodlinkatt-flags)
+  - [2.3 Common Data Types](#23-common-data-types)
+    - [2.3.1 Property Values](#231-property-values)
+      - [2.3.1.1 FlatUID_r](#2311-flatuidr)
+      - [2.3.1.2 PropertyTagArray_r](#2312-propertytagarrayr)
+      - [2.3.1.3 Binary_r](#2313-binaryr)
+      - [2.3.1.4 ShortArray_r](#2314-shortarrayr)
+      - [2.3.1.5 LongArray_r](#2315-longarrayr)
+      - [2.3.1.6 StringArray_r](#2316-stringarrayr)
+      - [2.3.1.7 BinaryArray_r](#2317-binaryarrayr)
+      - [2.3.1.8 FlatUIDArray_r](#2318-flatuidarrayr)
+      - [2.3.1.9 WStringArray_r](#2319-wstringarrayr)
+      - [2.3.1.10 DateTimeArray_r](#23110-datetimearrayr)
+      - [2.3.1.11 PROP_VAL_UNION](#23111-propvalunion)
+      - [2.3.1.12 PropertyValue_r](#23112-propertyvaluer)
+    - [2.3.2 PropertyRow_r](#232-propertyrowr)
+    - [2.3.3 PropertyRowSet_r](#233-propertyrowsetr)
+    - [2.3.4 Restrictions](#234-restrictions)
+      - [2.3.4.1 AndRestriction_r, OrRestriction_r](#2341-andrestrictionr-orrestrictionr)
+      - [2.3.4.2 NotRestriction_r](#2342-notrestrictionr)
+      - [2.3.4.3 ContentRestriction_r](#2343-contentrestrictionr)
+      - [2.3.4.4 BitMaskRestriction_r](#2344-bitmaskrestrictionr)
+      - [2.3.4.5 PropertyRestriction_r](#2345-propertyrestrictionr)
+      - [2.3.4.6 ComparePropsRestriction_r](#2346-comparepropsrestrictionr)
+      - [2.3.4.7 SubRestriction_r](#2347-subrestrictionr)
+      - [2.3.4.8 SizeRestriction_r](#2348-sizerestrictionr)
+      - [2.3.4.9 ExistRestriction_r](#2349-existrestrictionr)
+      - [2.3.4.10 RestrictionUnion_r](#23410-restrictionunionr)
+      - [2.3.4.11 Restriction_r](#23411-restrictionr)
+    - [2.3.5 Property Name/Property ID Structures](#235-property-nameproperty-id-structures)
+      - [2.3.5.1 PropertyName_r](#2351-propertynamer)
+      - [2.3.5.2 PropertyNameSet_r](#2352-propertynamesetr)
+    - [2.3.6 String Arrays](#236-string-arrays)
+      - [2.3.6.1 StringsArray_r](#2361-stringsarrayr)
+      - [2.3.6.2 WStringsArray_r](#2362-wstringsarrayr)
+    - [2.3.7 STAT](#237-stat)
+    - [2.3.8 Entry IDs](#238-entry-ids)
+      - [2.3.8.1 MinimalEntryID](#2381-minimalentryid)
+      - [2.3.8.2 EphemeralEntryID](#2382-ephemeralentryid)
+      - [2.3.8.3 PermanentEntryID](#2383-permanententryid)
+    - [2.3.9 NSPI_HANDLE](#239-nspihandle)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Required Properties](#3111-required-properties)
+      - [3.1.1.2 String Handling](#3112-string-handling)
+        - [3.1.1.2.1 Required Native Categorizations](#31121-required-native-categorizations)
+        - [3.1.1.2.2 Required Codepage Support](#31122-required-codepage-support)
+        - [3.1.1.2.3 Conversion Rules for String Values Specified by the Server to the Client](#31123-conversion-rules-for-string-values-specified-by-the-server-to-the-client)
+        - [3.1.1.2.4 Conversion Rules for String Values Specified by the Client to the Server](#31124-conversion-rules-for-string-values-specified-by-the-client-to-the-server)
+        - [3.1.1.2.5 String Comparison](#31125-string-comparison)
+          - [3.1.1.2.5.1 Unicode String Comparison](#311251-unicode-string-comparison)
+          - [3.1.1.2.5.2 8-Bit String Comparison](#311252-8-bit-string-comparison)
+        - [3.1.1.2.6 String Sorting](#31126-string-sorting)
+      - [3.1.1.3 Tables](#3113-tables)
+        - [3.1.1.3.1 Status-Based Tables](#31131-status-based-tables)
+        - [3.1.1.3.2 Explicit Tables](#31132-explicit-tables)
+          - [3.1.1.3.2.1 Restriction-Based Explicit Tables](#311321-restriction-based-explicit-tables)
+          - [3.1.1.3.2.2 Property Value-Based Explicit Tables](#311322-property-value-based-explicit-tables)
+        - [3.1.1.3.3 Specific Instantiations of Special Tables](#31133-specific-instantiations-of-special-tables)
+          - [3.1.1.3.3.1 Address Book Hierarchy Table](#311331-address-book-hierarchy-table)
+          - [3.1.1.3.3.2 Address Creation Table](#311332-address-creation-table)
+      - [3.1.1.4 Positioning in a Table](#3114-positioning-in-a-table)
+        - [3.1.1.4.1 Absolute Positioning](#31141-absolute-positioning)
+        - [3.1.1.4.2 Fractional Positioning](#31142-fractional-positioning)
+      - [3.1.1.5 Object Identity](#3115-object-identity)
+      - [3.1.1.6 Ambiguous Name Resolution](#3116-ambiguous-name-resolution)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 NspiBind (Opnum 0)](#3141-nspibind-opnum-0)
+      - [3.1.4.2 NspiUnbind (Opnum 1)](#3142-nspiunbind-opnum-1)
+      - [3.1.4.3 NspiGetSpecialTable (Opnum 12)](#3143-nspigetspecialtable-opnum-12)
+      - [3.1.4.4 NspiUpdateStat (Opnum 2)](#3144-nspiupdatestat-opnum-2)
+      - [3.1.4.5 NspiQueryColumns (Opnum 16)](#3145-nspiquerycolumns-opnum-16)
+      - [3.1.4.6 NspiGetPropList (Opnum 8)](#3146-nspigetproplist-opnum-8)
+      - [3.1.4.7 NspiGetProps (Opnum 9)](#3147-nspigetprops-opnum-9)
+      - [3.1.4.8 NspiQueryRows (Opnum 3)](#3148-nspiqueryrows-opnum-3)
+      - [3.1.4.9 NspiSeekEntries (Opnum 4)](#3149-nspiseekentries-opnum-4)
+      - [3.1.4.10 NspiGetMatches (Opnum 5)](#31410-nspigetmatches-opnum-5)
+      - [3.1.4.11 NspiResortRestriction (Opnum 6)](#31411-nspiresortrestriction-opnum-6)
+      - [3.1.4.12 NspiCompareMIds (Opnum 10)](#31412-nspicomparemids-opnum-10)
+      - [3.1.4.13 NspiDNToMId (Opnum 7)](#31413-nspidntomid-opnum-7)
+      - [3.1.4.14 NspiModProps (Opnum 11)](#31414-nspimodprops-opnum-11)
+      - [3.1.4.15 NspiModLinkAtt (Opnum 14)](#31415-nspimodlinkatt-opnum-14)
+      - [3.1.4.16 NspiGetNamesFromIDs (Opnum 17)](#31416-nspigetnamesfromids-opnum-17)
+      - [3.1.4.17 NspiGetIDsFromNames (Opnum 18)](#31417-nspigetidsfromnames-opnum-18)
+      - [3.1.4.18 NspiResolveNames (Opnum 19)](#31418-nspiresolvenames-opnum-19)
+      - [3.1.4.19 NspiResolveNamesW (Opnum 20)](#31419-nspiresolvenamesw-opnum-20)
+      - [3.1.4.20 NspiGetTemplateInfo (Opnum 13)](#31420-nspigettemplateinfo-opnum-13)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.6.1
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Constant Value Definitions ................................................................................ 13
-Permitted Property Type Values .................................................................... 13
-Permitted Error Code Values ........................................................................ 15
-Display Type Values .................................................................................... 15
-Default Language Code Identifier .................................................................. 16
-Required Codepages ................................................................................... 16
-Unicode Comparison Flags ........................................................................... 17
-Comparison Flags .................................................................................. 17
-Permanent Entry ID GUID ............................................................................ 19
-2.2.7
-Positioning Minimal Entry IDs ....................................................................... 19
-2.2.8
-Ambiguous Name Resolution Minimal Entry IDs .............................................. 20
-2.2.9
-Table Sort Orders ....................................................................................... 20
-2.2.10
-2.2.11  NspiBind Flags ............................................................................................ 21
-2.2.12
-Retrieve Property Flags ............................................................................... 21
-2.2.13  NspiGetSpecialTable Flags ........................................................................... 21
-2.2.14  NspiQueryColumns Flags ............................................................................. 21
-2.2.15  NspiGetIDsFromNames Flags ....................................................................... 22
-2.2.16  NspiGetTemplateInfo Flags .......................................................................... 22
-2.2.17  NspiModLinkAtt Flags .................................................................................. 22
-Common Data Types ........................................................................................ 22
-Property Values .......................................................................................... 24
-FlatUID_r ............................................................................................. 24
-2.3.1.1
-PropertyTagArray_r ............................................................................... 24
-2.3.1.2
-Binary_r .............................................................................................. 24
-2.3.1.3
-ShortArray_r ........................................................................................ 25
-2.3.1.4
-LongArray_r ......................................................................................... 25
-2.3.1.5
-StringArray_r ....................................................................................... 25
-2.3.1.6
-BinaryArray_r ....................................................................................... 26
-2.3.1.7
-FlatUIDArray_r ..................................................................................... 26
-2.3.1.8
-WStringArray_r ..................................................................................... 26
-2.3.1.9
-2.3.1.10  DateTimeArray_r .................................................................................. 26
-PROP_VAL_UNION ................................................................................ 27
-2.3.1.11
-PropertyValue_r .................................................................................... 28
-2.3.1.12
-PropertyRow_r ........................................................................................... 29
-PropertyRowSet_r ....................................................................................... 29
-Restrictions ................................................................................................ 29
-AndRestriction_r, OrRestriction_r ............................................................ 29
-NotRestriction_r .................................................................................... 30
-ContentRestriction_r.............................................................................. 30
-BitMaskRestriction_r .............................................................................. 31
-
-2.3.4.1
-2.3.4.2
-2.3.4.3
-2.3.4.4
-
-2.3.2
-2.3.3
-2.3.4
-
-2.3.1
-
-2.3
-
-[MS-NSPI] - v20240423
-Name Service Provider Interface (NSPI) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 103
-
-2.3.4.5
-2.3.4.6
-2.3.4.7
-2.3.4.8
-2.3.4.9
-2.3.4.10
-2.3.4.11
-
-2.3.5
-
-2.3.6
-
-2.3.5.1
-2.3.5.2
-
-2.3.6.1
-2.3.6.2
-
-2.3.7
-2.3.8
-
-2.3.8.1
-2.3.8.2
-2.3.8.3
-
-2.3.9
-
-PropertyRestriction_r ............................................................................. 31
-ComparePropsRestriction_r .................................................................... 31
-SubRestriction_r ................................................................................... 32
-SizeRestriction_r ................................................................................... 32
-ExistRestriction_r .................................................................................. 32
-RestrictionUnion_r................................................................................. 32
-Restriction_r......................................................................................... 33
-Property Name/Property ID Structures .......................................................... 34
-PropertyName_r ................................................................................... 34
-PropertyNameSet_r ............................................................................... 34
-String Arrays.............................................................................................. 34
-StringsArray_r ...................................................................................... 34
-WStringsArray_r ................................................................................... 35
-STAT ......................................................................................................... 35
-Entry IDs ................................................................................................... 36
-MinimalEntryID ..................................................................................... 36
-EphemeralEntryID ................................................................................. 37
-PermanentEntryID ................................................................................ 37
-NSPI_HANDLE ............................................................................................ 38
-
-3.1
-
-3.1.1
-
-3.1.1.3
-
-3.1.1.2.6
-
-3.1.1.1
-3.1.1.2
-
-3.1.1.3.1
-3.1.1.3.2
-
-3.1.1.3.2.1
-3.1.1.3.2.2
-
-3.1.1.2.5.1
-3.1.1.2.5.2
-
-3.1.1.2.1
-3.1.1.2.2
-3.1.1.2.3
-3.1.1.2.4
-3.1.1.2.5
-
-3  Protocol Details ..................................................................................................... 40
-Server Details .................................................................................................. 40
-Abstract Data Model .................................................................................... 40
-Required Properties ............................................................................... 40
-String Handling ..................................................................................... 41
-Required Native Categorizations ........................................................ 41
-Required Codepage Support ............................................................. 41
-Conversion Rules for String Values Specified by the Server to the Client  41
-Conversion Rules for String Values Specified by the Client to the Server  42
-String Comparison ........................................................................... 43
-Unicode String Comparison ......................................................... 43
-8-Bit String Comparison ............................................................. 43
-String Sorting ................................................................................. 44
-Tables ................................................................................................. 44
-Status-Based Tables ........................................................................ 44
-Explicit Tables ................................................................................. 44
-Restriction-Based Explicit Tables .................................................. 44
-Property Value-Based Explicit Tables ............................................ 44
-Specific Instantiations of Special Tables ............................................. 45
-Address Book Hierarchy Table ..................................................... 45
-Address Creation Table ............................................................... 45
-Positioning in a Table............................................................................. 45
-Absolute Positioning ......................................................................... 45
-Fractional Positioning ....................................................................... 46
-Object Identity ..................................................................................... 47
-Ambiguous Name Resolution .................................................................. 47
-Timers ...................................................................................................... 48
-Initialization ............................................................................................... 48
-Message Processing Events and Sequencing Rules .......................................... 48
-NspiBind (Opnum 0) .............................................................................. 50
-NspiUnbind (Opnum 1) .......................................................................... 51
-NspiGetSpecialTable (Opnum 12) ............................................................ 51
-NspiUpdateStat (Opnum 2) .................................................................... 53
-NspiQueryColumns (Opnum 16) .............................................................. 55
-NspiGetPropList (Opnum 8) .................................................................... 55
-NspiGetProps (Opnum 9) ....................................................................... 57
-NspiQueryRows (Opnum 3) .................................................................... 59
-NspiSeekEntries (Opnum 4) ................................................................... 61
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-
-3.1.1.3.3.1
-3.1.1.3.3.2
-
-3.1.1.4.1
-3.1.1.4.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.5
-3.1.1.6
-
-3.1.1.3.3
-
-3.1.1.4
-
-[MS-NSPI] - v20240423
-Name Service Provider Interface (NSPI) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 103
-
-3.1.4.10  NspiGetMatches (Opnum 5) .................................................................... 64
-3.1.4.11  NspiResortRestriction (Opnum 6) ............................................................ 67
-3.1.4.12  NspiCompareMIds (Opnum 10) ............................................................... 69
-3.1.4.13  NspiDNToMId (Opnum 7) ....................................................................... 70
-3.1.4.14  NspiModProps (Opnum 11) ..................................................................... 71
-3.1.4.15  NspiModLinkAtt (Opnum 14) ................................................................... 72
-3.1.4.16  NspiGetNamesFromIDs (Opnum 17) ........................................................ 73
-3.1.4.17  NspiGetIDsFromNames (Opnum 18) ........................................................ 75
-3.1.4.18  NspiResolveNames (Opnum 19) .............................................................. 76
-3.1.4.19  NspiResolveNamesW (Opnum 20) ........................................................... 78
-3.1.4.20  NspiGetTemplateInfo (Opnum 13) ........................................................... 80
-Timer Events .............................................................................................. 82
-Other Local Events ...................................................................................... 82
-Client Details ................................................................................................... 82
-Abstract Data Model .................................................................................... 82
-Timers ...................................................................................................... 82
-Initialization ............................................................................................... 82
-Message Processing Events and Sequencing Rules .......................................... 82
-Timer Events .............................................................................................. 82
-Other Local Events ...................................................................................... 82
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.2
-
-4  Protocol Examples ................................................................................................. 83
-
-5  Security ................................................................................................................. 88
-Security Considerations for Implementers ........................................................... 88
-Index of Security Parameters ............................................................................ 89
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 90
-
-7  Appendix B: Product Behavior ............................................................................... 97
-
-8  Change Tracking .................................................................................................. 101
-
-9  Index ................................................................................................................... 102
-
-[MS-NSPI] - v20240423
-Name Service Provider Interface (NSPI) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 103
-
-1  Introduction
+## 1 Introduction
 
 The Name Service Provider Interface (NSPI) Protocol provides messaging clients a way to access and
 manipulate addressing data stored by a server. This protocol consists of an abstract data model and a
@@ -814,7 +636,7 @@ single remote procedure call (RPC) interface to manipulate data in that model.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -881,7 +703,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
+
+Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
 information, see [C706].
 
 Ephemeral Entry ID: A property of an Address Book object that can be used to uniquely
@@ -961,7 +784,8 @@ Release: April 23, 2024
 
 8 / 103
 
-of request-and-response message exchanges between computers (the RPC exchange); and the
+
+of request-and-response message exchanges between computers (the RPC exchange); and the
 single message from an RPC exchange (the RPC message).  For more information, see [C706].
 
 RPC protocol sequence: A character string that represents a valid combination of a remote
@@ -1007,14 +831,14 @@ with the least-significant byte first.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1034,7 +858,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-NSPI].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -1061,11 +886,11 @@ September 1993, https://www.rfc-editor.org/info/rfc1510
 [RFC4120] Neuman, C., Yu, T., Hartman, S., and Raeburn, K., "The Kerberos Network Authentication
 Service (V5)", RFC 4120, July 2005, https://www.rfc-editor.org/rfc/rfc4120
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 Messaging clients that implement a browsable address book need a way to communicate with a data
 store that holds addressing data to access and manipulate that data. The NSPI Protocol enables
@@ -1087,7 +912,8 @@ Release: April 23, 2024
 
 10 / 103
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The NSPI protocol depends on the following protocols:
 
@@ -1125,7 +951,7 @@ The Data Structures Protocol [MS-OXCDATA] for common data structure definitions.
 
 The Master Property List [MS-OXPROPS] for property type and property ID definitions.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The NSPI client implementation is expected to possess the network address of the server. This
 network address satisfies the requirements of a network address for the underlying transport of
@@ -1148,12 +974,12 @@ minimal required string conversions and sort orders.
 
 The NSPI server is expected to be started and fully initialized before the protocol can start.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The NSPI Protocol is appropriate for messaging clients that implement online access to address books
 for browsing and viewing of Address Book objects stored in a data store.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1172,7 +998,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Security and Authentication Methods: This protocol supports the following authentication
+
+  Security and Authentication Methods: This protocol supports the following authentication
 
 methods: NTLM and Kerberos.
 
@@ -1184,11 +1011,11 @@ such strings are specified in String Handling (section 3.1.1.2).
 
 interface version.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol uses the following RPC UUID for the nspi interface.
 
@@ -1209,7 +1036,8 @@ Release: April 23, 2024
 
 12 / 103
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify transport methods of NSPI Protocol messages and common NSPI
 Protocol data types.
@@ -1218,7 +1046,7 @@ Unless otherwise specified, all numeric values in this protocol are in little-en
 
 Unless otherwise specified, all Unicode string representations are in UTF-16LE format.
 
-2.1  Transport
+### 2.1 Transport
 
 All remote procedure call (RPC) protocols use RPC dynamic endpoints as specified in Part 4 of
 [C706].
@@ -1256,12 +1084,12 @@ as specified in section 5 of this document.
 
 The server MAY<4> enforce limits on the maximum RPC packet size that it will accept.
 
-2.2  Constant Value Definitions
+### 2.2 Constant Value Definitions
 
 This section is used as a reference from one or more message syntax and message processing
 sections.
 
-2.2.1  Permitted Property Type Values
+#### 2.2.1 Permitted Property Type Values
 
 These values are used to specify Property Types. They appear in various places in the NSPI Protocol.
 All NSPI servers MUST recognize and be capable of accepting and returning these Property Types.
@@ -1274,7 +1102,8 @@ Release: April 23, 2024
 
 13 / 103
 
-The values specified in [MS-OXCDATA] are 16-bit integers. The NSPI Protocol uses the same numeric
+
+The values specified in [MS-OXCDATA] are 16-bit integers. The NSPI Protocol uses the same numeric
 values but expressed as 32-bit integers. The high-order 16 bits of the 32-bit representation used by
 the NSPI Protocol are always 0x0000. Permitted values for the NSPI Protocol listed in the following
 table.
@@ -1416,7 +1245,8 @@ Release: April 23, 2024
 
 14 / 103
 
-2.2.2  Permitted Error Code Values
+
+#### 2.2.2 Permitted Error Code Values
 
 These values are used to specify status from an Name Service Provider Interface (NSPI) method.
 They appear as return codes from NSPI methods and as values of properties with Property Type
@@ -1482,7 +1312,7 @@ InvalidParameter
 
 All NSPI clients and servers MUST NOT use any other error codes.
 
-2.2.3  Display Type Values
+#### 2.2.3 Display Type Values
 
 These values are used to specify display types. They appear in various places in the NSPI Protocol as
 object properties and as part of EntryIDs. Except where otherwise specified in the following table, all
@@ -1512,7 +1342,8 @@ Release: April 23, 2024
 
 15 / 103
 
- Name and value
+
+ Name and value
 
  Description
 
@@ -1576,7 +1407,7 @@ A Search Template. An NSPI server MUST NOT return this display type.
 
 All NSPI clients and servers MUST NOT use any other display types.
 
-2.2.4  Default Language Code Identifier
+#### 2.2.4 Default Language Code Identifier
 
 This value is the LCID associated with the minimal required sort order for Unicode strings. It appears
 in input parameters to NSPI Protocol methods. It affects NSPI server string handling, as detailed in
@@ -1592,7 +1423,7 @@ Represents the default LCID used for comparison of Unicode string representation
 
 0x00000409
 
-2.2.5  Required Codepages
+#### 2.2.5 Required Codepages
 
 These values are associated with the string handling in the NSPI Protocol, and they appear in input
 parameters to methods in the NSPI Protocol. They affect NSPI server string handling, as detailed in
@@ -1615,11 +1446,12 @@ Release: April 23, 2024
 
 16 / 103
 
-Name and value  Description
+
+Name and value  Description
 
 0x000004B0
 
-2.2.6  Unicode Comparison Flags
+#### 2.2.6 Unicode Comparison Flags
 
 These values are associated with string handling in the NSPI Protocol. These values are defined in
 terms of definitions from [MS-UCODEREF]. The server uses the constants
@@ -1663,7 +1495,7 @@ NSPI_DEFAULT_LOCALE.
 Flags used when comparing Unicode strings in any LCID
 except the LCID represented by NSPI_DEFAULT_LOCALE.
 
-2.2.6.1  Comparison Flags
+##### 2.2.6.1 Comparison Flags
 
 The following defines the comparison flags used by this protocol. The flags are presented in big-endian
 byte order.
@@ -1712,7 +1544,8 @@ Release: April 23, 2024
 
 17 / 103
 
-Value  Description
+
+Value  Description
 
 Unused
 
@@ -1836,7 +1669,8 @@ Release: April 23, 2024
 
 18 / 103
 
-Value  Description
+
+Value  Description
 
 Unused
 
@@ -1898,7 +1732,7 @@ V
 
 IC
 
-2.2.7  Permanent Entry ID GUID
+#### 2.2.7 Permanent Entry ID GUID
 
 This value is associated with the NSPI Protocol and appears in Permanent Entry IDs.
 
@@ -1914,7 +1748,7 @@ Description
 Represents the NSPI Protocol in
 Permanent Entry IDs.
 
-2.2.8  Positioning Minimal Entry IDs
+#### 2.2.8 Positioning Minimal Entry IDs
 
 These values are used to specify objects in the address book as a function of their positions in tables.
 They appear as Minimal Entry IDs (MIds) in the CurrentRec field of the STAT structure. Possible
@@ -1937,7 +1771,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name and value
+
+Name and value
 
 Description
 
@@ -1955,7 +1790,7 @@ Specifies the current position in a table. This MId is only valid in the method
 NspiUpdateStat. In all other cases, it is an invalid MId, guaranteed to not specify
 any object in the address book.
 
-2.2.9  Ambiguous Name Resolution Minimal Entry IDs
+#### 2.2.9 Ambiguous Name Resolution Minimal Entry IDs
 
 These values are used to specify the outcome of the ambiguous name resolution (ANR) process.
 They appear in return data from the methods NspiResolveNames and NspiResolveNamesW. Possible
@@ -1981,7 +1816,7 @@ The ANR process mapped a string to a single object in the address book.
 
 0x0000002
 
-2.2.10 Table Sort Orders
+#### 2.2.10 Table Sort Orders
 
 These values are used to specify specific sort orders for tables, and they appear in the SortType field
 of the STAT data structure.
@@ -2032,7 +1867,8 @@ Release: April 23, 2024
 
 20 / 103
 
-2.2.11 NspiBind Flags
+
+#### 2.2.11 NspiBind Flags
 
 This value is used to specify optional behavior to an NSPI server. It appears as a bit flag in the
 NspiBind method.
@@ -2045,7 +1881,7 @@ Client requests that the server allow an anonymous logon.
 
 0x00000020
 
-2.2.12 Retrieve Property Flags
+#### 2.2.12 Retrieve Property Flags
 
 These values are used to specify optional behavior to an NSPI server. They appear as bit flags in
 methods that return property values to the client (NspiGetPropList, NspiGetProps, and
@@ -2069,7 +1905,7 @@ Client requires that the server MUST return Entry ID values in Ephemeral Entry I
 
 0x00000002
 
-2.2.13 NspiGetSpecialTable Flags
+#### 2.2.13 NspiGetSpecialTable Flags
 
 These values are used to specify optional behavior to an NSPI server. They appear as bit flags in the
 NspiGetSpecialTable method. Possible values are given in the following table.
@@ -2093,7 +1929,7 @@ NspiUnicodeStrings
 Specifies that the NSPI server MUST return all strings as Unicode
 representations rather than as multibyte strings in the client's codepage.
 
-2.2.14 NspiQueryColumns Flags
+#### 2.2.14 NspiQueryColumns Flags
 
 This value is used to specify optional behavior to an NSPI server. It appears as a bit flag in the
 NspiQueryColumns method.
@@ -2118,7 +1954,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.15 NspiGetIDsFromNames Flags
+
+#### 2.2.15 NspiGetIDsFromNames Flags
 
 This value is used to specify optional behavior to an NSPI server. It appears as a flag in the
 NspiGetIDsFromNames method.
@@ -2135,7 +1972,7 @@ NspiVerifyNames
 Specifies that the NSPI server MUST verify that all client specified names are recognized by
 the server.
 
-2.2.16 NspiGetTemplateInfo Flags
+#### 2.2.16 NspiGetTemplateInfo Flags
 
 These values are used to specify optional behavior to an NSPI server. They appear as bit flags in the
 NspiGetTemplateInfo method. Possible values are as follows.
@@ -2177,7 +2014,7 @@ TI_HELPFILE_CONTENTS
 Specifies that the server is to return the contents of the help file associated with a
 template.
 
-2.2.17 NspiModLinkAtt Flags
+#### 2.2.17 NspiModLinkAtt Flags
 
 These values are used to specify optional behavior to an NSPI server. They appear as bit flags in the
 NspiModLinkAtt method. The following table lists the possible values of the flags.
@@ -2194,7 +2031,7 @@ Description
 Specifies that the server is to remove values when modifying. The default behavior is that the
 server adds values when modifying.
 
-2.3  Common Data Types
+### 2.3 Common Data Types
 
 This protocol enables the ms_union extension specified in [MS-RPCE] (section 2.2.4.5).
 
@@ -2205,7 +2042,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This protocol requests that the RPC runtime, via the strict_context_handle attribute, rejects the
+
+This protocol requests that the RPC runtime, via the strict_context_handle attribute, rejects the
 use of context handles created by a method of a different RPC interface than this one, as specified in
 [MS-RPCE] (section 3).
 
@@ -2331,7 +2169,8 @@ Release: April 23, 2024
 
 23 / 103
 
-Name
+
+Name
 
 Description
 
@@ -2367,11 +2206,11 @@ NSPI_HANDLE
 
 RPC context handle
 
-2.3.1  Property Values
+#### 2.3.1 Property Values
 
 The following structures are used to represent specific property values.
 
-2.3.1.1  FlatUID_r
+##### 2.3.1.1 FlatUID_r
 
 The FlatUID_r structure is an encoding of the FlatUID data structure defined in [MS-OXCDATA]. The
 semantic meaning is unchanged from the FlatUID data structure.
@@ -2382,7 +2221,7 @@ semantic meaning is unchanged from the FlatUID data structure.
 
 ab:  Encodes the ordered bytes of the FlatUID data structure.
 
-2.3.1.2  PropertyTagArray_r
+##### 2.3.1.2 PropertyTagArray_r
 
 The PropertyTagArray_r structure is an encoding of the PropTagArray data structure defined in [MS-
 OXCDATA]. The permissible number of proptag values in the PropertyTagArray_r structure exceeds
@@ -2399,7 +2238,7 @@ cValues:  Encodes the Count field of PropTagArray. This field MUST NOT exceed 10
 
 aulPropTag:  Encodes the PropertyTags field of PropTagArray.
 
-2.3.1.3  Binary_r
+##### 2.3.1.3 Binary_r
 
 The Binary_r structure encodes an array of uninterpreted bytes.
 
@@ -2410,7 +2249,8 @@ Release: April 23, 2024
 
 24 / 103
 
- typedef struct Binary_r {
+
+ typedef struct Binary_r {
    [range(0,2097152)] DWORD cb;
    [size_is(cb)] BYTE* lpb;
  } Binary_r;
@@ -2421,7 +2261,7 @@ cb:  The number of uninterpreted bytes represented in this structure. This value
 
 lpb:  The uninterpreted bytes.
 
-2.3.1.4  ShortArray_r
+##### 2.3.1.4 ShortArray_r
 
 The ShortArray_r structure encodes an array of 16-bit integers.
 
@@ -2436,7 +2276,7 @@ MUST NOT exceed 100,000.
 
 lpi:  The 16-bit integer values.
 
-2.3.1.5  LongArray_r
+##### 2.3.1.5 LongArray_r
 
 The LongArray_r structure encodes an array of 32-bit integers.
 
@@ -2451,7 +2291,7 @@ cValues:  The number of 32-bit integers represented in this structure. This valu
 
 lpl:  The 32-bit integer values.
 
-2.3.1.6  StringArray_r
+##### 2.3.1.6 StringArray_r
 
 The StringArray_r structure encodes an array of references to 8-bit character strings.
 
@@ -2473,7 +2313,8 @@ Release: April 23, 2024
 
 25 / 103
 
-2.3.1.7  BinaryArray_r
+
+##### 2.3.1.7 BinaryArray_r
 
 The BinaryArray_r structure is an array of Binary_r data structures.
 
@@ -2488,7 +2329,7 @@ value MUST NOT exceed 100,000.
 
 lpbin:  The Binary_r data structures.
 
-2.3.1.8  FlatUIDArray_r
+##### 2.3.1.8 FlatUIDArray_r
 
 The FlatUIDArray_r structure encodes an array of FlatUID_r data structures.
 
@@ -2503,7 +2344,7 @@ MUST NOT exceed 100,000.
 
 lpguid:   The FlatUID_r data structures.
 
-2.3.1.9  WStringArray_r
+##### 2.3.1.9 WStringArray_r
 
 The WStringArray_r structure encodes an array of references to Unicode strings.
 
@@ -2518,9 +2359,9 @@ structure. This value MUST NOT exceed 100,000.
 
 lppszW:  The Unicode character string references. The strings referred to are NULL-terminated.
 
-2.3.1.10
+##### 2.3.1.10 DateTimeArray_r
 
-DateTimeArray_r
+
 
 The DateTimeArray_r structure encodes an array of FILETIME structures.
 
@@ -2542,9 +2383,10 @@ Release: April 23, 2024
 
 26 / 103
 
-2.3.1.11
 
-PROP_VAL_UNION
+##### 2.3.1.11 PROP_VAL_UNION
+
+
 
 The PROP_VAL_UNION structure encodes a single instance of any type of property value. It is an
 aggregation data structure, allowing a single parameter to an NSPI method to contain any type of
@@ -2619,7 +2461,8 @@ Release: April 23, 2024
 
 27 / 103
 
-lpguid:  PROP_VAL_UNION contains an encoding of the value of a property that can contain a single
+
+lpguid:  PROP_VAL_UNION contains an encoding of the value of a property that can contain a single
 
 GUID value. The value is encoded as a FlatUID_r data structure.
 
@@ -2664,9 +2507,9 @@ can be encoded in this structure is 100,000.
 
 lReserved:  Reserved. All clients and servers MUST set this value to the constant 0x00000000.
 
-2.3.1.12
+##### 2.3.1.12 PropertyValue_r
 
-PropertyValue_r
+
 
 The PropertyValue_r structure is an encoding of the PropertyValue data structure defined in [MS-
 OXCDATA].
@@ -2697,10 +2540,11 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value:  Encodes the actual value of the property represented by the PropertyValue_r data structure.
+
+Value:  Encodes the actual value of the property represented by the PropertyValue_r data structure.
 The type value held is specified by the Property Type of the proptag in the field ulPropTag.
 
-2.3.2  PropertyRow_r
+#### 2.3.2 PropertyRow_r
 
 The PropertyRow_r structure is an encoding of the StandardPropertyRow data structure defined in
 [MS-OXCDATA]. The semantic meaning is unchanged from the StandardPropertyRow data
@@ -2720,7 +2564,7 @@ value MUST NOT exceed 100,000.
 
 lpProps:  Encodes the ValueArray field of the StandardPropertyRow data structure.
 
-2.3.3  PropertyRowSet_r
+#### 2.3.3 PropertyRowSet_r
 
 The PropertyRowSet_r structure is an encoding of the PropertyRowSet data structure defined in
 [MS-OXCDATA] section 2.19.2, PropertyRowSet.
@@ -2740,11 +2584,11 @@ NOT exceed 100,000.
 
 aRow:  Encodes the Rows field of the PropertyRowSet data structure.
 
-2.3.4  Restrictions
+#### 2.3.4 Restrictions
 
 The following structures are used to represent restrictions of a table, as defined in [MS-OXCDATA].
 
-2.3.4.1  AndRestriction_r, OrRestriction_r
+##### 2.3.4.1 AndRestriction_r, OrRestriction_r
 
 The AndRestriction_r, OrRestriction_r restriction types share a single RPC encoding. The
 AndOrRestriction_r structure is an encoding of the both the AndRestriction data structure and the
@@ -2763,7 +2607,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-NSPI].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2782,7 +2627,7 @@ This value MUST NOT exceed 100,000.
 
 lpRes:  Encodes the Restricts field of the AndRestriction and OrRestriction data structures.
 
-2.3.4.2  NotRestriction_r
+##### 2.3.4.2 NotRestriction_r
 
 The NotRestriction_r structure is an encoding of the NotRestriction data structure defined in [MS-
 OXCDATA]. The semantic meaning is unchanged from the NotRestriction data structure.
@@ -2793,7 +2638,7 @@ OXCDATA]. The semantic meaning is unchanged from the NotRestriction data structu
 
 lpRes:  Encodes the Restriction field of the NotRestriction data structure.
 
-2.3.4.3  ContentRestriction_r
+##### 2.3.4.3 ContentRestriction_r
 
 The ContentRestriction_r structure is an encoding of the ContentRestriction data structure defined in
 [MS-OXCDATA]. The semantic meaning is unchanged from the ContentRestriction data structure.
@@ -2825,7 +2670,8 @@ Release: April 23, 2024
 
 30 / 103
 
-2.3.4.4  BitMaskRestriction_r
+
+##### 2.3.4.4 BitMaskRestriction_r
 
 The BitMaskRestriction_r structure is an encoding of the BitMaskRestriction data structure defined in
 [MS-OXCDATA]. The semantic meaning is unchanged from the BitMaskRestriction data structure.
@@ -2842,7 +2688,7 @@ ulPropTag:  Encodes the PropTag field of the BitMaskRestriction data structure.
 
 ulMask:  Encodes the Mask field of the BitMaskRestriction data structure.
 
-2.3.4.5  PropertyRestriction_r
+##### 2.3.4.5 PropertyRestriction_r
 
 The PropertyRestriction_r structure is an encoding of the PropertyRestriction data structure defined
 in [MS-OXCDATA]. The semantic meaning is unchanged from the PropertyRestriction data
@@ -2860,7 +2706,7 @@ ulPropTag:  Encodes the PropTag field of the PropertyRestriction data structure.
 
 lpProp:  Encodes the TaggedValue field of the PropertyRestriction data structure.
 
-2.3.4.6  ComparePropsRestriction_r
+##### 2.3.4.6 ComparePropsRestriction_r
 
 The ComparePropsRestriction_r structure is an encoding of the ComparePropsRestriction data
 structure defined in [MS-OXCDATA]. The semantic meaning is unchanged from the
@@ -2885,7 +2731,8 @@ Release: April 23, 2024
 
 31 / 103
 
-2.3.4.7  SubRestriction_r
+
+##### 2.3.4.7 SubRestriction_r
 
 The SubRestriction_r structure is an encoding of the SubObjectRestriction data structure defined in
 [MS-OXCDATA]. The semantic meaning is unchanged from the SubObjectRestriction data structure.
@@ -2899,7 +2746,7 @@ ulSubObject:  Encodes the SubObject field of the SubObjectRestriction data struc
 
 lpRes:  Encodes the Restriction field of the SubObjectRestriction data structure.
 
-2.3.4.8  SizeRestriction_r
+##### 2.3.4.8 SizeRestriction_r
 
 The SizeRestriction_r structure is an encoding of the SizeRestriction data structure defined in [MS-
 OXCDATA]. The semantic meaning is unchanged from the SizeRestriction data structure.
@@ -2916,7 +2763,7 @@ ulPropTag:  Encodes the PropTag field of the SizeRestriction data structure.
 
 cb:  Encodes the Size field of the SizeRestriction data structure.
 
-2.3.4.9  ExistRestriction_r
+##### 2.3.4.9 ExistRestriction_r
 
 The ExistRestriction_r structure is an encoding of the ExistRestriction data structure defined in [MS-
 OXCDATA]. The semantic meaning is unchanged from the ExistRestriction data structure.
@@ -2933,9 +2780,9 @@ ulPropTag:  Encodes the PropTag field of the ExistRestriction data structure.
 
 ulReserved2:  Reserved. All clients and servers MUST set this value to the constant 0x00000000.
 
-2.3.4.10
+##### 2.3.4.10 RestrictionUnion_r
 
-RestrictionUnion_r
+
 
 The RestrictionUnion_r structure encodes a single instance of any type of restriction. It is an
 aggregation data structure, allowing a single parameter to a Name Service Provider Interface
@@ -2951,7 +2798,8 @@ Release: April 23, 2024
 
 32 / 103
 
- union _RestrictionUnion_r {
+
+ union _RestrictionUnion_r {
    [case(0x00000000)]
      AndRestriction_r resAnd;
    [case(0x00000001)] OrRestriction_r resOr;
@@ -2993,9 +2841,9 @@ resExist:  RestrictionUnion_r contains an encoding of an ExistRestriction.
 
 resSubRestriction:  RestrictionUnion_r contains an encoding of a SubRestriction.
 
-2.3.4.11
+##### 2.3.4.11 Restriction_r
 
-Restriction_r
+
 
 The Restriction_r structure is an encoding of the Restriction filters defined in [MS-OXCDATA].
 
@@ -3020,11 +2868,12 @@ Release: April 23, 2024
 
 33 / 103
 
-2.3.5  Property Name/Property ID Structures
+
+#### 2.3.5 Property Name/Property ID Structures
 
 The following structures are used to represent named properties, as specified in [MS-OXCDATA].
 
-2.3.5.1  PropertyName_r
+##### 2.3.5.1 PropertyName_r
 
 The PropertyName_r structure is an encoding of the PropertyName data structure defined in [MS-
 OXCDATA]. The semantic meaning is unchanged from the PropertyName data structure.
@@ -3044,7 +2893,7 @@ ulReserved:  Reserved. All clients and servers MUST set this value to the consta
 lID:  Encodes the lID field of the PropertyName data structure. In addition to the definition of the
 LID field, this field is always present in the PropertyName_r data structure; it is not optional.
 
-2.3.5.2  PropertyNameSet_r
+##### 2.3.5.2 PropertyNameSet_r
 
 The PropertyNameSet_r structure is used to aggregate a number of PropertyName_r structures into a
 single data structure.
@@ -3060,11 +2909,11 @@ cNames:  The number of PropertyName_r structures in this aggregation. The value 
 
 aNames:  The list of PropertyName_r structures in this aggregation.
 
-2.3.6  String Arrays
+#### 2.3.6 String Arrays
 
 The following structures are used to aggregate a number of strings into a single data structure.
 
-2.3.6.1  StringsArray_r
+##### 2.3.6.1 StringsArray_r
 
 The StringsArray_r structure is used to aggregate a number of character type strings into a single
 data structure.
@@ -3085,11 +2934,12 @@ Release: April 23, 2024
 
 34 / 103
 
-Strings:  The list of character type strings in this aggregation. The strings in this list are NULL-
+
+Strings:  The list of character type strings in this aggregation. The strings in this list are NULL-
 
 terminated.
 
-2.3.6.2  WStringsArray_r
+##### 2.3.6.2 WStringsArray_r
 
 The WStringsArray_r structure is used to aggregate a number of wchar_t type strings into a single
 data structure.
@@ -3107,7 +2957,7 @@ Strings:  The list of wchar_t type strings in this aggregation. The strings in t
 
 terminated.
 
-2.3.7  STAT
+#### 2.3.7 STAT
 
 The STAT structure is used to specify the state of a table and location information that applies to that
 table. It appears as both an input parameter and an output parameter in many Name Service
@@ -3157,7 +3007,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-numeric position 0. Although the protocol places no boundary or requirements on the accuracy of
+
+numeric position 0. Although the protocol places no boundary or requirements on the accuracy of
 the approximation the server reports, it is recommended that implementations maximize the
 accuracy of the approximation to improve usability of the NSPI server for clients.
 
@@ -3181,7 +3032,7 @@ SortLocale:  This field contains a DWORD value representing an LCID. The client 
 specify the LCID that it wishes the server to use when sorting any strings. The server MUST use
 this value during sorting (section 3.1.1.2). The server MUST NOT modify this field.
 
-2.3.8  Entry IDs
+#### 2.3.8 Entry IDs
 
 Each object in the address book is identified by one or more Entry IDs (section 3.1.1.5). There are
 three types of Entry IDs, as specified in the following table.
@@ -3198,7 +3049,7 @@ EphemeralEntryID  An ephemeral identifier
 
 PermanentEntryID  A permanent identifier
 
-2.3.8.1  MinimalEntryID
+##### 2.3.8.1 MinimalEntryID
 
 A Minimal Entry ID (MId) is a single DWORD value that identifies a specific object in the address
 book. MIds with values less than 0x00000010 are used by NSPI clients as signals to trigger specific
@@ -3222,7 +3073,8 @@ Release: April 23, 2024
 
 36 / 103
 
-2.3.8.2  EphemeralEntryID
+
+##### 2.3.8.2 EphemeralEntryID
 
 The EphemeralEntryID is a structure that identifies a specific object in the address book. Additionally,
 it encodes the NSPI server that issued the Ephemeral Entry ID and enough information for a client
@@ -3290,7 +3142,7 @@ MId (4 bytes): The MId of this object, as specified in section 2.3.8.1. This val
 
 little-endian format.
 
-2.3.8.3  PermanentEntryID
+##### 2.3.8.3 PermanentEntryID
 
 The PermanentEntryID is a structure that identifies a specific object in the address book. Additionally,
 it encodes the constant NSPI Protocol interface (via the ProviderUID field) and enough information
@@ -3303,7 +3155,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Permanent Entry IDs are transmitted in the protocol as values with the Property Type PtypBinary.
+
+Permanent Entry IDs are transmitted in the protocol as values with the Property Type PtypBinary.
 
 An NSPI server MAY allow an object's distinguished name (DN) to change. If this happens, the
 server SHOULD map a Permanent Entry ID containing the old DN to the object with the new DN. When
@@ -3371,7 +3224,7 @@ Distinguished Name (variable): The DN of the object specified by this Permanent 
 
 value is expressed as a DN, as specified in [MS-OXOABK].
 
-2.3.9  NSPI_HANDLE
+#### 2.3.9 NSPI_HANDLE
 
 The NSPI_HANDLE type is an RPC context handle that is used to share a session between method
 calls.
@@ -3383,7 +3236,8 @@ Release: April 23, 2024
 
 38 / 103
 
-The RPC context handle as specified in [C706], chapter 2.3.1, "Binding Handles".
+
+The RPC context handle as specified in [C706], chapter 2.3.1, "Binding Handles".
 
 This type is declared as follows:
 
@@ -3396,7 +3250,8 @@ Release: April 23, 2024
 
 39 / 103
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or application are
@@ -3408,7 +3263,7 @@ other NSPI methods. The NSPI method NspiUnbind destroys this context handle. The
 possible to call any methods other than NspiBind immediately after a call to NspiUnbind. The final
 method an NSPI client MUST call is NspiUnbind.
 
-3.1  Server Details
+### 3.1 Server Details
 
 This protocol enables address book access to a directory data store. This includes address book
 hierarchy table discovery, address creation template table discovery, address book container
@@ -3417,7 +3272,7 @@ abstract data model specified here, this specification uses the address book dat
 the entire document of [MS-OXOABK], for the server of this protocol. This specification uses the
 definitions of object properties from [MS-OXPROPS].
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3425,7 +3280,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.1.1  Required Properties
+##### 3.1.1.1 Required Properties
 
 For every object in the address book, the server MUST minimally maintain the following properties,
 which are defined in [MS-OXPROPS]:
@@ -3463,7 +3318,8 @@ Release: April 23, 2024
 
 40 / 103
 
-  PidTagDisplayName
+
+  PidTagDisplayName
 
   PidTagMappingSignature
 
@@ -3476,7 +3332,7 @@ object that has a PidTagObjectType with the value DISTLIST (defined in [MS-OXOAB
 
   PidTagContainerFlags
 
-3.1.1.2  String Handling
+##### 3.1.1.2 String Handling
 
 An NSPI server holds values of properties for objects. Some of these values are strings. The NSPI
 Protocol allows string values to be represented as 8-bit character strings or Unicode strings. All string
@@ -3484,7 +3340,7 @@ valued properties held by an NSPI server are categorized as either natively of P
 PtypString or natively of Property Type PtypString8. Those properties natively of Property Type
 PtypString8 are further categorized as either case-sensitive or case-insensitive.
 
-3.1.1.2.1 Required Native Categorizations
+###### 3.1.1.2.1 Required Native Categorizations
 
 Unless specified here, the NSPI Protocol does not constrain the categorization of properties, and
 clients and servers MUST NOT require specific categorizations. However, because the protocol intends
@@ -3510,7 +3366,7 @@ PidTag7BitDisplayName
 
 PtypString8, case sensitive
 
-3.1.1.2.2 Required Codepage Support
+###### 3.1.1.2.2 Required Codepage Support
 
 While processing an NSPI method, a server associates a codepage with all strings expressed as
 parameters in the method. The server MUST at a minimum be able to convert string representations
@@ -3521,7 +3377,7 @@ access data that has been so converted, once a server uses an algorithm, it MUST
 algorithm for converting between string representations in different codepages. Doing so would lead to
 inconsistent behavior of NSPI methods across multiple NSPI sessions.
 
-3.1.1.2.3 Conversion Rules for String Values Specified by the Server to the Client
+###### 3.1.1.2.3 Conversion Rules for String Values Specified by the Server to the Client
 
 When returning string values as output parameters for methods where the method allows for both
 Unicode and 8-bit character representations, the server MUST follow these conversion rules.
@@ -3533,7 +3389,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the native type of a property is PtypString and the client has requested that property with the type
+
+If the native type of a property is PtypString and the client has requested that property with the type
 PtypString8, the server MUST convert the Unicode representation to an 8-bit character representation
 in the codepage specified by the CodePage field of the pStat parameter prior to returning the value.
 
@@ -3586,7 +3443,7 @@ String values can be returned in the output parameter ppRows.
 
 NspiResolveNamesW  String values can be returned in the output parameter ppRows.
 
-3.1.1.2.4 Conversion Rules for String Values Specified by the Client to the Server
+###### 3.1.1.2.4 Conversion Rules for String Values Specified by the Client to the Server
 
 When accepting strings as input parameters for methods where the method allows for both Unicode
 and 8-bit character representations, the server MUST follow these conversion rules:
@@ -3612,7 +3469,8 @@ Release: April 23, 2024
 
 42 / 103
 
-If the native type of a property is PtypString and the client has specified a property value with the
+
+If the native type of a property is PtypString and the client has specified a property value with the
 type PtypString, the server MUST leave the Unicode representation unmodified while processing the
 method.
 
@@ -3642,12 +3500,12 @@ String values can be specified in the input parameter paStr.
 
 NspiResolveNamesW  String values can be specified in the input parameter paWStr.
 
-3.1.1.2.5 String Comparison
+###### 3.1.1.2.5 String Comparison
 
 NSPI servers MUST implement comparison between string values. This comparison yields the normal
 semantics of less than, equal to, and greater than.
 
-3.1.1.2.5.1  Unicode String Comparison
+###### 3.1.1.2.5.1 Unicode String Comparison
 
 NSPI servers MUST compare Unicode representations of strings according to [MS-UCODEREF]. All
 methods in which a server is required to perform such Unicode string comparison include LCID as part
@@ -3662,7 +3520,7 @@ the server uses LCID NSPI_DEFAULT_LOCALE, the server MUST also use the flag
 NSPI_DEFAULT_LOCALE_COMPARE_FLAGS for the comparison.  Otherwise, the server MUST use
 the flag NSPI_NON_DEFAULT_LOCALE_COMPARE_FLAGS.
 
-3.1.1.2.5.2  8-Bit String Comparison
+###### 3.1.1.2.5.2 8-Bit String Comparison
 
 When making comparisons of 8-bit character string values, the NSPI server MUST compare according
 to the following series of steps:
@@ -3687,7 +3545,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  If the buffers representing the two string values have equal lengths, the comparison function
+
+3.  If the buffers representing the two string values have equal lengths, the comparison function
 implemented by the server MUST determine that one buffer is less than the other, or that the
 buffers are equal.
 
@@ -3700,7 +3559,7 @@ represented by the greater buffer.  No further comparison steps are taken.
 
 considers the two string values to be equal.
 
-3.1.1.2.6 String Sorting
+###### 3.1.1.2.6 String Sorting
 
 Every NSPI server MUST support sorting on Unicode string representations for the property
 PidTagDisplayName. If the server supports the SortTypePhoneticDisplayName property, it MUST
@@ -3709,13 +3568,13 @@ PidTagAddressBookPhoneticDisplayName. The server MUST minimally support the LCID
 NSPI_DEFAULT_LOCALE flag. This sorting adheres to [MS-UCODEREF] and section 3.1.1.2.5 in this
 specification.
 
-3.1.1.3  Tables
+##### 3.1.1.3 Tables
 
 In order to achieve the primary goal of the NSPI Protocol (browsing address book containers), the
 protocol defines a data model based on tables. Two types of tables are used in the data model for the
 NSPI Protocol.
 
-3.1.1.3.1 Status-Based Tables
+###### 3.1.1.3.1 Status-Based Tables
 
 The first type of table specified by the NSPI Protocol is the Status-Based Table. This table directly
 represents an address book container. A Status-Based Table is specified in the protocol by the use
@@ -3727,14 +3586,14 @@ entirely specified by the fields of the STAT data structure, which is passed bac
 client and the server. Therefore, a single client can have multiple instances of an "open" address book
 container, each specified by a separate STAT structure.
 
-3.1.1.3.2 Explicit Tables
+###### 3.1.1.3.2 Explicit Tables
 
 The second type of table specified by the NSPI Protocol is the Explicit Table. This table is implemented
 as a list of MIds. The list is instantiated in the protocol either as an array of DWORDs or as a
 PropertyTagArray_r. This kind of table is used to implement Restriction-Based Explicit Tables and
 Property Value-Based Explicit Tables.
 
-3.1.1.3.2.1  Restriction-Based Explicit Tables
+###### 3.1.1.3.2.1 Restriction-Based Explicit Tables
 
 When a restriction on a table is specified to the NSPI server via the NspiGetMatches method, the
 server locates all the objects that meet the restriction criteria, and the list of the MIds of those
@@ -3742,7 +3601,7 @@ objects is constructed. This list is passed back to the client. Therefore, these
 "snapshots" of the base table. That is, if an object is placed in an Explicit Table, even if the object is
 deleted from the server, the MId that specifies that object will still be in the Explicit Table.
 
-3.1.1.3.2.2  Property Value-Based Explicit Tables
+###### 3.1.1.3.2.2 Property Value-Based Explicit Tables
 
 When a specific object in the address book and a property on that object is specified to the NSPI
 server via the NspiGetMatches method, the server reads the values of that property and constructs a
@@ -3755,27 +3614,28 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-possible on all properties, only on those properties for which the server can establish a reference
+
+possible on all properties, only on those properties for which the server can establish a reference
 between the value of the property and some object in the address book. The NSPI Protocol does not
 constrain how a server establishes this reference. Clients can identify the properties that the server
 can map by attempting to obtain such a table. The server MUST return an error when it cannot make
 such a mapping (3.1.4.10).
 
-3.1.1.3.3 Specific Instantiations of Special Tables
+###### 3.1.1.3.3 Specific Instantiations of Special Tables
 
 The NSPI Protocol requires servers to maintain two special tables, in addition to any tables they
 maintain for normal browsing. The two required special tables are described in the following two
 sections.
 
-3.1.1.3.3.1  Address Book Hierarchy Table
+###### 3.1.1.3.3.1 Address Book Hierarchy Table
 
 Each NSPI server MUST maintain an address book hierarchy table according to [MS-OXOABK].
 
-3.1.1.3.3.2  Address Creation Table
+###### 3.1.1.3.3.2 Address Creation Table
 
 Each NSPI server MUST maintain an address creation table to clients according to [MS-OXOABKT].
 
-3.1.1.4  Positioning in a Table
+##### 3.1.1.4 Positioning in a Table
 
 In order to achieve the primary goal of the NSPI Protocol (browsing address lists), in addition to the
 concept of tables, a server MUST support the concept of position in Status-Based and Explicit Tables.
@@ -3791,7 +3651,7 @@ NumPos, and TotalRecs fields to specify to the client the Current Position in th
 an NSPI method. There are two ways for the client to specify position in a STAT-based table in the
 NSPI Protocol: Absolute Positioning and Fractional Positioning.
 
-3.1.1.4.1 Absolute Positioning
+###### 3.1.1.4.1 Absolute Positioning
 
 The first form of specifying position in a STAT structure–based table is called Absolute Positioning.
 The client specifies this type of positioning by setting any value in the field CurrentRec field other
@@ -3822,7 +3682,8 @@ Release: April 23, 2024
 
 45 / 103
 
-5.  The server verifies that the object located in step 4 is in the container specified by the
+
+5.  The server verifies that the object located in step 4 is in the container specified by the
 
 ContainerID field. If the server cannot verify this, the Current Position in the table is
 undefined.
@@ -3853,7 +3714,7 @@ Position. Although the protocol places no boundary or requirements on the accura
 approximate value the server returns, it is recommended that implementations maximize the
 accuracy of the approximation to improve usability of the NSPI server for clients.
 
-3.1.1.4.2 Fractional Positioning
+###### 3.1.1.4.2 Fractional Positioning
 
 The second form of specifying position in a STAT structure–based table is called Fractional
 Positioning. The client specifies this type of positioning by setting the field CurrentRec to the value
@@ -3897,7 +3758,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-7.  The server moves the Current Position to the row chosen in step 6.
+
+7.  The server moves the Current Position to the row chosen in step 6.
 
 8.  The server moves the Current Position by the number of rows specified by the absolute value of
 the Delta field of the STAT structure. If the value of Delta is negative, the Current Position is
@@ -3924,7 +3786,7 @@ row is 0-based. That is, the first valid row in the table has the numeric positi
 Numeric Position of the Current Position of the table. The server reports this in the NumPos
 field of the STAT structure.
 
-3.1.1.5  Object Identity
+##### 3.1.1.5 Object Identity
 
 Objects maintained by the NSPI server need to be identified in the NSPI Protocol. The NSPI Protocol
 makes use of three kinds of identifiers, differentiated primarily by their intended lifespan.
@@ -3945,7 +3807,7 @@ server uses the same NSPI session GUID (that is, the GUID returned by the server
 pServerGuid output parameter of the NspiBind method) for multiple NSPI sessions, the server MUST
 use the same Minimal Identifier for the same specific object in all sessions.
 
-3.1.1.6  Ambiguous Name Resolution
+##### 3.1.1.6 Ambiguous Name Resolution
 
 Ambiguous Name Resolution (ANR) is a process by which a server maps a string to a specific object in
 a specific address book container. The string is provided by the client and is interpreted by the
@@ -3968,7 +3830,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  If the server is able to map the string to more than one object in the address book, the result of
+
+2.  If the server is able to map the string to more than one object in the address book, the result of
 
 the ANR process is the MId with the value MID_AMBIGUOUS.
 
@@ -3980,11 +3843,11 @@ The server MUST map the NULL string to the MId MID_UNRESOLVED.
 
 The server MUST map a zero-length string to the MId MID_UNRESOLVED.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 This protocol does not introduce any timers. For any transport-level timers, see [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Each NSPI server MUST have at least one unique GUID, used to identify an NSPI session (section
 3.1.4.1). The server MUST acquire this GUID before it is prepared to respond to NSPI Protocol
@@ -4001,7 +3864,7 @@ implementation-specific detail.
 When an NSPI server is prepared to respond to NSPI Protocol methods, it creates an RPC listening
 endpoint, according to section 2.1.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime via the strict_context_handle property that it is to
 reject use of context handles created by a method of a different RPC interface than this one, as
@@ -4050,7 +3913,8 @@ Release: April 23, 2024
 
 48 / 103
 
-Method
+
+Method
 
 Description
 
@@ -4167,7 +4031,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST return the value NotEnoughMemory if unable to complete processing a method due
+
+The server MUST return the value NotEnoughMemory if unable to complete processing a method due
 to errors allocating memory.
 
 The server MUST return the value OutOfResources if unable to complete processing a method due to
@@ -4182,7 +4047,7 @@ specified in the method details.
 Note  Gaps in the opnum numbering sequence represent opnums that are reserved for local use. The
 server behavior is undefined, because it does not affect interoperability.<10>
 
-3.1.4.1  NspiBind (Opnum 0)
+##### 3.1.4.1 NspiBind (Opnum 0)
 
 The NspiBind method initiates a session between a client and the NSPI server.
 
@@ -4239,7 +4104,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  The server MAY<11> make additional validations including but not limited to limiting the number
+
+3.  The server MAY<11> make additional validations including but not limited to limiting the number
 of concurrent connections to any specific client or checking the data access rights of the client. If
 these checks fail, the server MUST return LogonFailed.
 
@@ -4262,7 +4128,7 @@ GUID.
 
 8.  If no other return code has been set, the server MUST return the value Success.
 
-3.1.4.2  NspiUnbind (Opnum 1)
+##### 3.1.4.2 NspiUnbind (Opnum 1)
 
 The NspiUnbind method destroys the context handle. No other action is taken.
 
@@ -4295,7 +4161,7 @@ following constraints:
 
 4.  The server MUST set the output parameter contextHandle to NULL.
 
-3.1.4.3  NspiGetSpecialTable (Opnum 12)
+##### 3.1.4.3 NspiGetSpecialTable (Opnum 12)
 
 The NspiGetSpecialTable method returns the rows of a special table to the client. The special table can
 be an Address Book Hierarchy Table or an Address Creation Table.
@@ -4307,7 +4173,8 @@ Release: April 23, 2024
 
 51 / 103
 
- long NspiGetSpecialTable(
+
+ long NspiGetSpecialTable(
    [in] NSPI_HANDLE hRpc,
    [in] DWORD dwFlags,
    [in] STAT* pStat,
@@ -4379,7 +4246,8 @@ Release: April 23, 2024
 
 52 / 103
 
-7.  If the client is requesting the rows of the server's address book hierarchy table, the input
+
+7.  If the client is requesting the rows of the server's address book hierarchy table, the input
 
 parameter lpVersion contains a version number. If the version number of the address book
 hierarchy table the server is holding matches this version number, the server MUST proceed as if
@@ -4425,7 +4293,7 @@ the output parameter ppRows.
 
 value Success.
 
-3.1.4.4  NspiUpdateStat (Opnum 2)
+##### 3.1.4.4 NspiUpdateStat (Opnum 2)
 
 The NspiUpdateStat method updates the STAT block representing position in a table to reflect
 positioning changes requested by the client.
@@ -4457,7 +4325,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: The server returns a long value specifying the return status of the method.
+
+Return Values: The server returns a long value specifying the return status of the method.
 
 Exceptions Thrown
 
@@ -4537,7 +4406,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.5  NspiQueryColumns (Opnum 16)
+
+##### 3.1.4.5 NspiQueryColumns (Opnum 16)
 
 The NspiQueryColumns method returns a list of all the properties the NSPI server is aware of. It
 returns this list as an array of proptags.
@@ -4595,7 +4465,7 @@ not constrain the order of this list.
 
 value Success.
 
-3.1.4.6  NspiGetPropList (Opnum 8)
+##### 3.1.4.6 NspiGetPropList (Opnum 8)
 
 The NspiGetPropList method returns a list of all the properties that have values on a specified object.
 
@@ -4610,7 +4480,8 @@ Release: April 23, 2024
 
 55 / 103
 
-   [in] DWORD dwMId,
+
+   [in] DWORD dwMId,
    [in] DWORD CodePage,
    [out] PropertyTagArray_r** ppPropTags
  );
@@ -4681,7 +4552,8 @@ Release: April 23, 2024
 
 56 / 103
 
-3.1.4.7  NspiGetProps (Opnum 9)
+
+##### 3.1.4.7 NspiGetProps (Opnum 9)
 
 The NspiGetProps method returns an address book row containing a set of the properties and values
 that exist on an object.
@@ -4753,7 +4625,8 @@ Release: April 23, 2024
 
 57 / 103
 
-1.  If the input parameter pPropTags is not NULL, the client is requesting the server return only
+
+1.  If the input parameter pPropTags is not NULL, the client is requesting the server return only
 those properties and their values in the output parameter ppRows. The server MUST use this
 list.
 
@@ -4828,7 +4701,8 @@ Release: April 23, 2024
 
 58 / 103
 
-3.1.4.8  NspiQueryRows (Opnum 3)
+
+##### 3.1.4.8 NspiQueryRows (Opnum 3)
 
 The NspiQueryRows method returns to the client a number of rows from a specified table. The server
 MUST return no more rows than the number specified in the input parameter Count. Although the
@@ -4903,7 +4777,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  If the input parameter lpETable is NULL and the input parameter Count is 0, the server MUST
+
+2.  If the input parameter lpETable is NULL and the input parameter Count is 0, the server MUST
 
 return one of the return values documented in section 2.2.2.  No further constraints are applied to
 server processing of this method; in this case server behavior is undefined.  Note especially that
@@ -4979,7 +4854,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The NspiQueryRows parameter hRpc is used as the NspiGetProps parameter hRpc.
+
+1.  The NspiQueryRows parameter hRpc is used as the NspiGetProps parameter hRpc.
 
 2.  The NspiQueryRows parameter dwFlags is used as the NspiGetProps parameter dwFlags.
 
@@ -5021,7 +4897,7 @@ pPropTags.
 
 return value Success.
 
-3.1.4.9  NspiSeekEntries (Opnum 4)
+##### 3.1.4.9 NspiSeekEntries (Opnum 4)
 
 The NspiSeekEntries method searches for and sets the logical position in a specific table to the first
 entry greater than or equal to a specified value. Optionally, it might also return information about
@@ -5053,7 +4929,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pTarget: A PropertyValue_r value holding the value that is being sought.
+
+pTarget: A PropertyValue_r value holding the value that is being sought.
 
 lpETable: The value NULL or a PropertyTagArray_r value. It holds a list of Mids that comprises a
 
@@ -5129,7 +5006,8 @@ Release: April 23, 2024
 
 62 / 103
 
-9.  If the server does not support the SortTypePhoneticDisplayName and the SortType field of the
+
+9.  If the server does not support the SortTypePhoneticDisplayName and the SortType field of the
 input parameter pStat has the value SortTypePhoneticDisplayName, the server MUST return the
 value GeneralFailure.
 
@@ -5208,7 +5086,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NspiQueryRows parameter dwETableCount, and the new table is used as the NspiQueryRows
+
+NspiQueryRows parameter dwETableCount, and the new table is used as the NspiQueryRows
 lpETable parameter.
 
 6.  The list of MIds in the input parameter lpETable starting with the qualifying row is used as the
@@ -5237,9 +5116,9 @@ pStat in any way in the process of constructing the output PropertyRowSet_r.
 
 return value Success.
 
-3.1.4.10
+##### 3.1.4.10 NspiGetMatches (Opnum 5)
 
-NspiGetMatches (Opnum 5)
+
 
 The NspiGetMatches method returns an Explicit Table. The rows in the table are chosen based on a
 two possible criteria: a restriction applied to an address book container or the values of a property
@@ -5284,7 +5163,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ulRequested: A DWORD value. Contains the maximum number of rows to return in a restricted
+
+ulRequested: A DWORD value. Contains the maximum number of rows to return in a restricted
 
 address book container.
 
@@ -5361,7 +5241,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-specified by the ContainerID field in the input parameter pStat, the server MUST return the
+
+specified by the ContainerID field in the input parameter pStat, the server MUST return the
 return value InvalidBookmark.
 
 9.  If the input parameter Filter is not NULL, the server constructs an Explicit Table as follows:
@@ -5436,7 +5317,8 @@ Release: April 23, 2024
 
 66 / 103
 
-12. If the server will not support the call because the Explicit Table is larger than the server will allow,
+
+12. If the server will not support the call because the Explicit Table is larger than the server will allow,
 
 the server MUST return the value TableTooBig. The NSPI Protocol does not prescribe what
 constitutes a table that is too large.
@@ -5477,9 +5359,9 @@ return the constructed PropertyRowSet_r in the output parameter ppRows.
 
 return value Success.
 
-3.1.4.11
+##### 3.1.4.11 NspiResortRestriction (Opnum 6)
 
-NspiResortRestriction (Opnum 6)
+
 
 The NspiResortRestriction method applies a sort order to the objects in a restricted address book
 container.
@@ -5513,7 +5395,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: The server returns a long value specifying the return status of the method.
+
+Return Values: The server returns a long value specifying the return status of the method.
 
 Exceptions Thrown
 
@@ -5588,15 +5471,16 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  The server MUST NOT modify any other fields of the output parameter pStat.
+
+4.  The server MUST NOT modify any other fields of the output parameter pStat.
 
 9.  If no other return values have been specified by these constraints, the server MUST return the
 
 return value Success.
 
-3.1.4.12
+##### 3.1.4.12 NspiCompareMIds (Opnum 10)
 
-NspiCompareMIds (Opnum 10)
+
 
 The NspiCompareMIds method compares the position in an address book container of two objects
 identified by MId and returns the value of the comparison.
@@ -5664,7 +5548,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  If the server is unable to locate the objects specified by the input parameters MId1 or MId2 in the
+
+5.  If the server is unable to locate the objects specified by the input parameters MId1 or MId2 in the
 table specified by the ContainerID field of the input parameter pStat, the server MUST return the
 return value GeneralFailure.
 
@@ -5684,9 +5569,9 @@ specify the same object), the server MUST return a value of 0 in the output para
 
 return value Success.
 
-3.1.4.13
+##### 3.1.4.13 NspiDNToMId (Opnum 7)
 
-NspiDNToMId (Opnum 7)
+
 
 The NspiDNToMId method maps a set of DN to a set of MId.
 
@@ -5738,7 +5623,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  The server constructs a list of MIds to return to the client, encoding the mappings. The list is in a
+
+4.  The server constructs a list of MIds to return to the client, encoding the mappings. The list is in a
 one-to-one order preserving correspondence with the list of DNs in the input parameter pNames.
 The server MUST return the list in the output parameter ppOutMIds.
 
@@ -5746,9 +5632,9 @@ The server MUST return the list in the output parameter ppOutMIds.
 
 return value Success.
 
-3.1.4.14
+##### 3.1.4.14 NspiModProps (Opnum 11)
 
-NspiModProps (Opnum 11)
+
 
 The NspiModProps method is used to modify the properties of an object in the address book.
 
@@ -5814,7 +5700,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  If the input parameter pPropTags is NULL, the server MUST return the value InvalidParameter.
+
+5.  If the input parameter pPropTags is NULL, the server MUST return the value InvalidParameter.
 
 6.  If the server is unable to locate the object specified by the CurrentRec field of the input
 
@@ -5844,9 +5731,9 @@ return the value AccessDenied.
 
 return value Success.
 
-3.1.4.15
+##### 3.1.4.15 NspiModLinkAtt (Opnum 14)
 
-NspiModLinkAtt (Opnum 14)
+
 
 The NspiModLinkAtt method modifies the values of a specific property of a specific row in the address
 book.
@@ -5891,7 +5778,8 @@ Release: April 23, 2024
 
 72 / 103
 
-Upon receiving this message, the server MUST process the data from the message subject to the
+
+Upon receiving this message, the server MUST process the data from the message subject to the
 following constraints:
 
 1.  If the server returns any return value other than Success, the server MUST NOT modify any
@@ -5935,9 +5823,9 @@ AccessDenied.
 
 return value Success.
 
-3.1.4.16
+##### 3.1.4.16 NspiGetNamesFromIDs (Opnum 17)
 
-NspiGetNamesFromIDs (Opnum 17)
+
 
 The NspiGetNamesFromIDs method returns a list of property names for a set of proptags.
 
@@ -5969,7 +5857,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ppReturnedPropTags: Contains an SPropTagArray. On return, it contains a list of all the proptags in
+
+ppReturnedPropTags: Contains an SPropTagArray. On return, it contains a list of all the proptags in
 the property set specified in the input parameter lpguid. If lpguid is NULL, this value MUST be
 NULL.
 
@@ -6049,7 +5938,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lpGuid field set to the property set the proptag is a member of and the lID field set to the
+
+lpGuid field set to the property set the proptag is a member of and the lID field set to the
 value of the proptag.
 
 3.  If the server is otherwise unable to map a proptag to a PropertyName_r structure, the server
@@ -6075,9 +5965,9 @@ output parameter ppReturnedPropTags to NULL.
 
 return value Success.
 
-3.1.4.17
+##### 3.1.4.17 NspiGetIDsFromNames (Opnum 18)
 
-NspiGetIDsFromNames (Opnum 18)
+
 
 The NspiGetIDsFromNames method returns a list of proptags for a set of property names.
 
@@ -6124,7 +6014,8 @@ Release: April 23, 2024
 
 75 / 103
 
-Upon receiving this message, the server MUST process the data from the message subject to the
+
+Upon receiving this message, the server MUST process the data from the message subject to the
 following constraints:
 
 1.  If the server returns any return value other than Success or ErrorsReturned, the server MUST
@@ -6171,9 +6062,9 @@ output parameter ppPropTags.
 
 return value Success.
 
-3.1.4.18
+##### 3.1.4.18 NspiResolveNames (Opnum 19)
 
-NspiResolveNames (Opnum 19)
+
 
 The NspiResolveNames method takes a set of string values in an 8-bit character set and performs
 ANR (as specified in 3.1.1.6) on those strings. The server reports the MId that are the result of the
@@ -6200,7 +6091,8 @@ Release: April 23, 2024
 
 76 / 103
 
-pStat: A reference to a STAT block describing a logical position in a specific address book
+
+pStat: A reference to a STAT block describing a logical position in a specific address book
 
 container.
 
@@ -6278,7 +6170,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  The value 0 is used as the NspiQueryRows parameter dwFlag.
+
+2.  The value 0 is used as the NspiQueryRows parameter dwFlag.
 
 3.  The NspiResolveNames parameter pStat is used as the NspiQueryRows parameter pStat.
 
@@ -6316,9 +6209,9 @@ return the constructed PropertyRowSet_r in the output parameter ppRows.
 
 return value Success.
 
-3.1.4.19
+##### 3.1.4.19 NspiResolveNamesW (Opnum 20)
 
-NspiResolveNamesW (Opnum 20)
+
 
 The NspiResolveNamesW method takes a set of string values in the Unicode character set and
 performs ANR (as specified in 3.1.1.6) on those strings. The server reports the MId that are the
@@ -6354,7 +6247,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-paWStr: A WStringsArray_r value. Specifies the values on which the client is requesting that the
+
+paWStr: A WStringsArray_r value. Specifies the values on which the client is requesting that the
 
 server perform ANR. The server MUST apply any necessary character set conversion as specified
 in String Handling (section 3.1.1.2).
@@ -6432,7 +6326,8 @@ Release: April 23, 2024
 
 79 / 103
 
-4.  The number of valid MIds constructed for the NspiResolveNamesW output parameter ppMIds
+
+4.  The number of valid MIds constructed for the NspiResolveNamesW output parameter ppMIds
 
 (that is, all those MIds not equal to MID_AMBIGUOUS or MID_UNRESOLVED) is used as the
 NspiQueryRows parameter dwETableCount.
@@ -6468,9 +6363,9 @@ MUST return the constructed PropertyRowSet_r in the output parameter ppRows.
 
 return value Success.
 
-3.1.4.20
+##### 3.1.4.20 NspiGetTemplateInfo (Opnum 13)
 
-NspiGetTemplateInfo (Opnum 13)
+
 
 The NspiGetTemplateInfo method returns information about template objects in the address book.
 
@@ -6510,7 +6405,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: The server returns a long value specifying the return status of the method.
+
+Return Values: The server returns a long value specifying the return status of the method.
 
 Exceptions Thrown
 
@@ -6587,36 +6483,37 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-7.  The server MUST return the constructed PropertyRow_rin the output parameter ppData.
+
+7.  The server MUST return the constructed PropertyRow_rin the output parameter ppData.
 
 8.  If no other return values have been specified by these constraints, the server MUST return the
 
 return value Success.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No timer events. For any transport-level timers, see [MS-RPCE].
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 There is no normative data model for the client. The input data might come from any source, and the
 returned data can be processed by the client in any manner.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 In order to obtain any context handle to the server, the NspiBind method MUST be called initially. With
 the contextHandle parameter returned from this method, it is possible to call any associated methods
@@ -6630,11 +6527,11 @@ This protocol MUST indicate to the RPC runtime via the type_strict_context_handl
 to reject use of context handles created by a method that creates a different type of context handle,
 as specified in [MS-RPCE] section 3.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No timer events. For any transport-level timers, see [MS-RPCE].
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -6645,11 +6542,12 @@ Release: April 23, 2024
 
 82 / 103
 
-<!-- Extracted images from page 83 -->
+
+<!-- Extracted images from page 83 -->
 ![Extracted image 1 from page 83]([MS-NSPI].images/page083-img01.png)
 <!-- /Extracted images from page 83 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 This section illustrates the call sequence of obtaining the address book hierarchy table at the NSPI
 layer. It further illustrates how a messaging client can use this table to retrieve properties of the
@@ -6667,7 +6565,8 @@ Release: April 23, 2024
 
 83 / 103
 
-Figure 2: Example NSPI session message sequence
+
+Figure 2: Example NSPI session message sequence
 
 1.  Client initiates a session to the NSPI server by calling NspiBind. Messaging clients send the
 
@@ -6737,7 +6636,8 @@ Release: April 23, 2024
 
 84 / 103
 
-A typical table looks like this.
+
+A typical table looks like this.
 
  ppRows_PropertyRowSet_r * *
        {
@@ -6805,7 +6705,8 @@ Release: April 23, 2024
 
 85 / 103
 
-5.  Messaging clients call NspiQueryRows to retrieve various properties of Address Book objects.
+
+5.  Messaging clients call NspiQueryRows to retrieve various properties of Address Book objects.
 The following example illustrates the client requesting the server a total of two rows containing
 specific properties PidTagEntryId, PidTagDisplayName, PidTagSmtpAddress, and
 PidTagTitle. Also, the client is requesting the server to use the pStat structure for table
@@ -6876,7 +6777,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- aRow[0x0] ... [0x1]_PropertyRow_r  *
+
+ aRow[0x0] ... [0x1]_PropertyRow_r  *
  {
      Reserved=0x00000000
      cValues=0x00000004
@@ -6928,9 +6830,10 @@ Release: April 23, 2024
 
 87 / 103
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The NSPI Protocol is not suited for general administration of the data held by an NSPI server. It is
 suitable for client read access to data with limited modification of existing objects, not including
@@ -6996,13 +6899,14 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server can use this information to apply local security policy. How the server uses this information
+
+The server can use this information to apply local security policy. How the server uses this information
 is an implementation-specific detail and not constrained by the protocol.
 
 Note: For information about whether and how local security policies are applied in the Microsoft
 implementation, and the limitations that result, see the following product behavior note:<16>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -7017,7 +6921,8 @@ Release: April 23, 2024
 
 89 / 103
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the following full Interface Definition Language (IDL) is provided,
 where "ms-rpce.idl" is the IDL, as specified in [MS-RPCE] 6.
@@ -7091,7 +6996,8 @@ Release: April 23, 2024
 
 90 / 103
 
-   typedef struct _PropertyRow_r {
+
+   typedef struct _PropertyRow_r {
      DWORD Reserved;
      [range(0, 100000)] DWORD cValues;
      [size_is(cValues)] PropertyValue_r * lpProps;
@@ -7166,7 +7072,8 @@ Release: April 23, 2024
 
 91 / 103
 
-     [case (0x00000003)] ContentRestriction_r resContent;
+
+     [case (0x00000003)] ContentRestriction_r resContent;
      [case (0x00000004)] PropertyRestriction_r resProperty;
      [case (0x00000005)] ComparePropsRestriction_r resCompareProps;
      [case (0x00000006)] BitMaskRestriction_r resBitMask;
@@ -7240,7 +7147,8 @@ Release: April 23, 2024
 
 92 / 103
 
-   struct _PropertyValue_r {
+
+   struct _PropertyValue_r {
      DWORD ulPropTag;
      DWORD ulReserved;
      [switch_is ((long)(ulPropTag & 0x0000FFFF))]
@@ -7315,7 +7223,8 @@ Release: April 23, 2024
 
 93 / 103
 
-    [in] DWORD Reserved2,
+
+    [in] DWORD Reserved2,
     [in,unique] Restriction_r * Filter,
     [in,unique] PropertyName_r * lpPropName,
     [in] DWORD ulRequested,
@@ -7391,7 +7300,8 @@ Release: April 23, 2024
 
 94 / 103
 
-   //opnum 12
+
+   //opnum 12
    long
      NspiGetSpecialTable(
     [in] NSPI_HANDLE hRpc,
@@ -7468,7 +7378,8 @@ Release: April 23, 2024
 
 95 / 103
 
-    [out] PropertyTagArray_r ** ppPropTags
+
+    [out] PropertyTagArray_r ** ppPropTags
     );
 
    //opnum 19
@@ -7504,7 +7415,8 @@ Release: April 23, 2024
 
 96 / 103
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -7573,7 +7485,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
+
+Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
 using the terms "SHOULD" or "SHOULD NOT" implies product behavior in accordance with the
 SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
@@ -7644,7 +7557,8 @@ Release: April 23, 2024
 
 98 / 103
 
-2.  If step 1 did not yield a value, the server obtains the value of PidTag7BitDisplayName
+
+2.  If step 1 did not yield a value, the server obtains the value of PidTag7BitDisplayName
 
 and converts the 8-bit representation to a Unicode representation and uses the converted
 value.
@@ -7714,7 +7628,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<14> Section 3.1.4.1: The NSPI server uses a single GUID for multiple NSPI sessions for as long as
+
+<14> Section 3.1.4.1: The NSPI server uses a single GUID for multiple NSPI sessions for as long as
 the server can guarantee no object's Minimal Entry ID (MId) has changed. Modifications to the data
 stored in the NSPI server by mechanisms outside of the NSPI Protocol can result in the modification of
 an object's MId. These modifications can only take place while there are no active NSPI sessions.
@@ -7738,7 +7653,8 @@ Release: April 23, 2024
 
 100 / 103
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7782,7 +7698,8 @@ Release: April 23, 2024
 
 101 / 103
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -7914,7 +7831,8 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-W
+
+W
 
 WStringArray_r structure 26
 WStringsArray_r structure 35

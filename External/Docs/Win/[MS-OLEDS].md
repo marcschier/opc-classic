@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 50
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -299,7 +300,8 @@ Release: April 23, 2024
 
 2 / 50
 
-Date
+
+Date
 
 Revision
 History
@@ -490,172 +492,76 @@ Release: April 23, 2024
 
 3 / 50
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Embedded Objects](#131-embedded-objects)
+    - [1.3.2 Linked Objects](#132-linked-objects)
+    - [1.3.3 OLE1.0 and OLE2.0 Formats](#133-ole10-and-ole20-formats)
+    - [1.3.4 Miscellaneous OLE2.0 Streams](#134-miscellaneous-ole20-streams)
+    - [1.3.5 Clipboard Formats](#135-clipboard-formats)
+      - [1.3.5.1 Standard Clipboard Formats](#1351-standard-clipboard-formats)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+    - [1.7.1 Registered Clipboard Formats](#171-registered-clipboard-formats)
+- [2 Structures](#2-structures)
+  - [2.1 Common Data Types](#21-common-data-types)
+    - [2.1.1 Clipboard Formats](#211-clipboard-formats)
+    - [2.1.2 CLSID (Packet)](#212-clsid-packet)
+    - [2.1.3 FILETIME (Packet)](#213-filetime-packet)
+    - [2.1.4 LengthPrefixedAnsiString](#214-lengthprefixedansistring)
+    - [2.1.5 LengthPrefixedUnicodeString](#215-lengthprefixedunicodestring)
+    - [2.1.6 DEVMODEA](#216-devmodea)
+    - [2.1.7 DVTARGETDEVICE](#217-dvtargetdevice)
+    - [2.1.8 MetaFilePresentationDataWidth](#218-metafilepresentationdatawidth)
+    - [2.1.9 MetaFilePresentationDataHeight](#219-metafilepresentationdataheight)
+    - [2.1.10 EnhancedMetaFilePresentationDataWidth](#2110-enhancedmetafilepresentationdatawidth)
+    - [2.1.11 EnhancedMetaFilePresentationDataHeight](#2111-enhancedmetafilepresentationdataheight)
+    - [2.1.12 DIBPresentationDataWidth](#2112-dibpresentationdatawidth)
+    - [2.1.13 DIBPresentationDataHeight](#2113-dibpresentationdataheight)
+  - [2.2 OLE1.0 Format Structures](#22-ole10-format-structures)
+    - [2.2.1 PresentationObjectHeader](#221-presentationobjectheader)
+    - [2.2.2 StandardPresentationObject](#222-standardpresentationobject)
+      - [2.2.2.1 MetaFilePresentationObject](#2221-metafilepresentationobject)
+      - [2.2.2.2 BitmapPresentationObject](#2222-bitmappresentationobject)
+      - [2.2.2.3 DIBPresentationObject](#2223-dibpresentationobject)
+    - [2.2.3 GenericPresentationObject](#223-genericpresentationobject)
+      - [2.2.3.1 ClipboardFormatHeader](#2231-clipboardformatheader)
+      - [2.2.3.2 StandardClipboardFormatPresentationObject](#2232-standardclipboardformatpresentationobject)
+      - [2.2.3.3 RegisteredClipboardFormatPresentationObject](#2233-registeredclipboardformatpresentationobject)
+    - [2.2.4 ObjectHeader](#224-objectheader)
+    - [2.2.5 EmbeddedObject](#225-embeddedobject)
+    - [2.2.6 LinkedObject](#226-linkedobject)
+  - [2.3 OLE2.0 Format Structures](#23-ole20-format-structures)
+    - [2.3.1 ClipboardFormatOrAnsiString](#231-clipboardformatoransistring)
+    - [2.3.2 ClipboardFormatOrUnicodeString](#232-clipboardformatorunicodestring)
+    - [2.3.3 OLEStream](#233-olestream)
+      - [2.3.3.1 MONIKERSTREAM](#2331-monikerstream)
+    - [2.3.4 OLEPresentationStream](#234-olepresentationstream)
+    - [2.3.5 TOCENTRY](#235-tocentry)
+    - [2.3.6 OLENativeStream](#236-olenativestream)
+    - [2.3.7 CompObjHeader](#237-compobjheader)
+    - [2.3.8 CompObjStream](#238-compobjstream)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 OLEStream Structure - Embedded Object](#31-olestream-structure-embedded-object)
+  - [3.2 OLEStream Structure - Linked Object](#32-olestream-structure-linked-object)
+  - [3.3 OLEPresentationStream Structure](#33-olepresentationstream-structure)
+  - [3.4 TOCENTRY Structure](#34-tocentry-structure)
+  - [3.5 OLENativeStream Structure](#35-olenativestream-structure)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Embedded Objects ........................................................................................ 9
-Linked Objects ........................................................................................... 10
-OLE1.0 and OLE2.0 Formats ........................................................................ 11
-Miscellaneous OLE2.0 Streams ..................................................................... 11
-Clipboard Formats ...................................................................................... 11
-Standard Clipboard Formats ................................................................... 11
-Relationship to Protocols and Other Structures .................................................... 11
-Applicability Statement ..................................................................................... 12
-Versioning and Localization ............................................................................... 12
-Vendor-Extensible Fields ................................................................................... 12
-Registered Clipboard Formats ....................................................................... 12
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-
-1.4
-1.5
-1.6
-1.7
-
-1.3.5.1
-
-1.7.1
-
-2.1
-
-2.2
-
-2.2.1
-2.2.2
-
-2  Structures ............................................................................................................. 13
-Common Data Types ........................................................................................ 13
-Clipboard Formats ...................................................................................... 13
-2.1.1
-CLSID (Packet) ........................................................................................... 13
-2.1.2
-FILETIME (Packet) ...................................................................................... 14
-2.1.3
-LengthPrefixedAnsiString ............................................................................. 14
-2.1.4
-LengthPrefixedUnicodeString ........................................................................ 15
-2.1.5
-DEVMODEA ................................................................................................ 15
-2.1.6
-DVTARGETDEVICE ...................................................................................... 18
-2.1.7
-MetaFilePresentationDataWidth .................................................................... 19
-2.1.8
-MetaFilePresentationDataHeight ................................................................... 19
-2.1.9
-EnhancedMetaFilePresentationDataWidth ....................................................... 19
-2.1.10
-2.1.11
-EnhancedMetaFilePresentationDataHeight ...................................................... 20
-2.1.12  DIBPresentationDataWidth ........................................................................... 20
-2.1.13  DIBPresentationDataHeight .......................................................................... 20
-OLE1.0 Format Structures ................................................................................. 20
-PresentationObjectHeader ........................................................................... 20
-StandardPresentationObject ......................................................................... 21
-MetaFilePresentationObject .................................................................... 21
-BitmapPresentationObject ...................................................................... 22
-DIBPresentationObject ........................................................................... 23
-GenericPresentationObject ........................................................................... 23
-ClipboardFormatHeader ......................................................................... 23
-StandardClipboardFormatPresentationObject ............................................ 24
-RegisteredClipboardFormatPresentationObject .......................................... 24
-ObjectHeader ............................................................................................. 25
-EmbeddedObject ........................................................................................ 26
-LinkedObject .............................................................................................. 27
-OLE2.0 Format Structures ................................................................................. 28
-ClipboardFormatOrAnsiString ....................................................................... 28
-ClipboardFormatOrUnicodeString .................................................................. 28
-OLEStream ................................................................................................ 29
-MONIKERSTREAM ................................................................................. 31
-OLEPresentationStream ............................................................................... 32
-TOCENTRY ................................................................................................. 35
-OLENativeStream ....................................................................................... 36
-CompObjHeader ......................................................................................... 36
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.3.4
-2.3.5
-2.3.6
-2.3.7
-
-2.2.4
-2.2.5
-2.2.6
-
-2.3.1
-2.3.2
-2.3.3
-
-2.3.3.1
-
-2.2.3
-
-2.3
-
-[MS-OLEDS] - v20240423
-Object Linking and Embedding (OLE) Data Structures
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 50
-
-2.3.8
-
-CompObjStream ......................................................................................... 36
-
-3  Structure Examples ............................................................................................... 39
-OLEStream Structure - Embedded Object ............................................................ 39
-OLEStream Structure - Linked Object ................................................................. 39
-OLEPresentationStream Structure ...................................................................... 41
-TOCENTRY Structure ........................................................................................ 42
-OLENativeStream Structure ............................................................................... 43
-
-3.1
-3.2
-3.3
-3.4
-3.5
-
-4  Security Considerations ......................................................................................... 44
-
-5  Appendix A: Product Behavior ............................................................................... 45
-
-6  Change Tracking .................................................................................................... 48
-
-7  Index ..................................................................................................................... 49
-
-[MS-OLEDS] - v20240423
-Object Linking and Embedding (OLE) Data Structures
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 50
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Object Linking and Embedding (OLE) Data Structures:
 
@@ -682,7 +588,7 @@ display the spreadsheet data to the user.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -730,7 +636,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dithering: A form of digital halftoning.
+
+dithering: A form of digital halftoning.
 
 drive letter: One of the 26 alphabetical characters A-Z, in uppercase or lowercase, that is
 
@@ -803,14 +710,15 @@ Release: April 23, 2024
 
 7 / 50
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -831,7 +739,7 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-ADVF] Microsoft Corporation, "ADVF", http://msdn.microsoft.com/en-
 us/library/ms693742(VS.85).aspx
@@ -867,14 +775,15 @@ Release: April 23, 2024
 
 8 / 50
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-OLEDS].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 [MSDN-ProgID] Microsoft Corporation, "<ProgID> Key", http://msdn.microsoft.com/en-
 us/library/ms690196.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Object Linking and Embedding (OLE) Data Structures enable applications to create documents
 that contain linked or embedded objects. The file format of an embedded object is different from
@@ -884,7 +793,7 @@ reference to its data. Both embedded and linked objects are required to contain 
 
 The following sections describe the logical layout of the file formats of embedded and linked objects.
 
-1.3.1  Embedded Objects
+#### 1.3.1 Embedded Objects
 
 The logical layout of a container document that contains an embedded object is shown in the
 following figure.
@@ -937,7 +846,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-OLEDS].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -969,7 +879,7 @@ within the OLE Compound File Storage object. The names correspond to the linked 
 embedded object. Each of these streams contains an instance of the OLEPresentationStream
 structure (section 2.3.4).
 
-1.3.2  Linked Objects
+#### 1.3.2 Linked Objects
 
 The logical layout of a container document that contains a linked object is shown in the following
 figure:
@@ -1002,7 +912,8 @@ Release: April 23, 2024
 
 10 / 50
 
-  When using the OLE1.0 Format (section 1.3.3), the linked object presentation data is specified in
+
+  When using the OLE1.0 Format (section 1.3.3), the linked object presentation data is specified in
 
 the Presentation field of the LinkedObject structure (section 2.2.6).
 
@@ -1010,7 +921,7 @@ the Presentation field of the LinkedObject structure (section 2.2.6).
 
 the OLEPresentationStream structure (section 2.3.4).
 
-1.3.3  OLE1.0 and OLE2.0 Formats
+#### 1.3.3 OLE1.0 and OLE2.0 Formats
 
 There are two different formats for representing linked objects and embedded objects within
 container documents. The first format is the OLE1.0 Format. This format predates the OLE
@@ -1033,27 +944,27 @@ It is strongly advised that implementations of this specification use the OLE2.0
 container documents. The OLE1.0 Format is specified to allow only for backward-compatible
 implementations.
 
-1.3.4  Miscellaneous OLE2.0 Streams
+#### 1.3.4 Miscellaneous OLE2.0 Streams
 
 In addition to the OLE2.0 streams mentioned in sections 1.3.1 and 1.3.2, a container document can
 also include another OLE2.0 stream:
 
 CompObjStream (section 2.3.7).
 
-1.3.5  Clipboard Formats
+#### 1.3.5 Clipboard Formats
 
 The users of container applications and creating applications can use the system clipboard to
 transfer data between applications. All data copied to a system clipboard has to conform to a format
 specification, known as a Clipboard Format. Each Clipboard Format is identified by a unique numeric
 format ID.
 
-1.3.5.1  Standard Clipboard Formats
+##### 1.3.5.1 Standard Clipboard Formats
 
 This specification uses a number of Clipboard Formats called the Standard Clipboard Formats. These
 are specified in section 2.1.1. A standard Clipboard Format is identified by a numeric ID as specified in
 section 2.1.1.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The OLE2.0 Format uses the OLE Compound File Streams (as specified in [MS-CFB]) to store linked
 object and embedded object data in container documents.
@@ -1065,14 +976,15 @@ Release: April 23, 2024
 
 11 / 50
 
-1.5  Applicability Statement
+
+### 1.5 Applicability Statement
 
 The OLE File Format specification is appropriate when creating a single container document that
 contains data from multiple applications. It is applicable when one of the applications is the primary
 owner of the document and that application will always be asked to process the document first. It is
 not applicable if there are no applications with primary ownership of the document.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 There is only one version of the OLE File Format Data Structure. This data structure does not define
 locale-specific processes or data.
@@ -1080,14 +992,14 @@ locale-specific processes or data.
 This document specifies two types of OLE File Formats: the OLE1.0 Format and the OLE2.0 Format.
 These two formats are independent and are not differentiated using a versioning mechanism.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The Object Linking and Embedding Data Structures use HRESULT error codes.  These values are
 taken from the Windows error number space as specified in [MS-ERREF]. Vendors SHOULD<1> reuse
 those values with their indicated meaning. Choosing any other value runs the risk of a collision in the
 future.
 
-1.7.1  Registered Clipboard Formats
+#### 1.7.1 Registered Clipboard Formats
 
 Vendors can create their own Clipboard Formats, called Registered Clipboard Formats. A Registered
 Clipboard Format is identified by a string that contains the name of the Clipboard Format (as specified
@@ -1101,7 +1013,8 @@ Release: April 23, 2024
 
 12 / 50
 
-2  Structures
+
+## 2 Structures
 
 Field types in packet diagrams are defined by the packet diagram and the field descriptions. All of the
 fields in packet diagrams use little-endian byte ordering unless otherwise stated. There is no
@@ -1128,12 +1041,12 @@ FILETIME
 Data structures in this document make use of ANSI characters. This structure specification does not
 mandate the use of any particular ANSI code page.<2>
 
-2.1  Common Data Types
+### 2.1 Common Data Types
 
 This section describes the structures that are common to both the OLE1.0 Format and the OLE2.0
 Format.
 
-2.1.1  Clipboard Formats
+#### 2.1.1 Clipboard Formats
 
 Standard Clipboard Formats and Registered Clipboard Formats (see sections 1.3.5.1 and 1.7.1 for
 more details) are used to identify presentation data formats.
@@ -1171,7 +1084,7 @@ CF_ENHMETAFILE
 In addition, an application or higher level protocol MAY supply registered clipboard formats (section
 1.7.1) to identify custom presentation data formats.
 
-2.1.2  CLSID (Packet)
+#### 2.1.2 CLSID (Packet)
 
 The packet version of the CLSID structure represents a class identifier (CLSID) in a serialized manner.
 
@@ -1182,7 +1095,8 @@ Release: April 23, 2024
 
 13 / 50
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1219,7 +1133,7 @@ Data4 (8 bytes): This MUST be identical in meaning to the Data4 field specified 
 
 section 2.3.4.
 
-2.1.3  FILETIME (Packet)
+#### 2.1.3 FILETIME (Packet)
 
 The FILETIME (Packet) structure represents a FILETIME as specified in [MS-DTYP] section 2.3.3.
 
@@ -1246,7 +1160,7 @@ dwHighDateTime (4 bytes): This MUST be identical in meaning to the dwHighDateTim
 
 specified in [MS-DTYP] section 2.3.3.
 
-2.1.4  LengthPrefixedAnsiString
+#### 2.1.4 LengthPrefixedAnsiString
 
 This structure specifies a null-terminated American National Standards Institute (ANSI)
 character set string.
@@ -1275,13 +1189,14 @@ Release: April 23, 2024
 
 14 / 50
 
-Length (4 bytes): This MUST be set to the number of ANSI characters in the String field, including
+
+Length (4 bytes): This MUST be set to the number of ANSI characters in the String field, including
 
 the terminating null character. Length MUST be set to 0x00000000 to indicate an empty string.
 
 String (variable): This MUST be a null-terminated ANSI string.
 
-2.1.5  LengthPrefixedUnicodeString
+#### 2.1.5 LengthPrefixedUnicodeString
 
 This structure specifies a Unicode string.
 
@@ -1308,7 +1223,7 @@ terminating null character. Length MUST be set to 0x00000000 to indicate an empt
 
 String (variable): (Optional.) This MUST be a Unicode string.
 
-2.1.6  DEVMODEA
+#### 2.1.6 DEVMODEA
 
 This structure is identical to the DEVMODE structure specified in [MS-RPRN] section 2.2.1.1.1, except
 for the dmDeviceName and dmFormName fields:
@@ -1361,7 +1276,8 @@ Release: April 23, 2024
 
 15 / 50
 
-dmScale
+
+dmScale
 
 dmCopies
 
@@ -1435,7 +1351,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dmFields (4 bytes): A bitfield that specifies the fields of the DEVMODE structure that have been
+
+dmFields (4 bytes): A bitfield that specifies the fields of the DEVMODE structure that have been
 
 initialized. If a bit is set, the corresponding field MUST be initialized and MUST be processed on
 receipt. If a bit is not set, the value of the corresponding field SHOULD be set to zero and MUST
@@ -1515,7 +1432,8 @@ Release: April 23, 2024
 
 17 / 50
 
-reserved4 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
+
+reserved4 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
 
 dmICMMethod (4 bytes): If the DM_ICMMETHOD bit is set in the dmFields field, the value of this
 
@@ -1544,7 +1462,7 @@ reserved7 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
 
 reserved8 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
 
-2.1.7  DVTARGETDEVICE
+#### 2.1.7 DVTARGETDEVICE
 
 The DVTARGETDEVICE structure specifies information about a device (such as a display or printer
 device) that renders the presentation data.
@@ -1591,7 +1509,8 @@ Release: April 23, 2024
 
 18 / 50
 
-DriverNameOffSet (2 bytes): This MUST be set to the offset, in bytes, from the beginning of the
+
+DriverNameOffSet (2 bytes): This MUST be set to the offset, in bytes, from the beginning of the
 
 structure to the DriverName field. If this field is set to 0x0000, the DriverName field MUST NOT
 be present.
@@ -1631,19 +1550,19 @@ ExtDevMode (variable): This MUST contain a DEVMODEA structure (as specified in s
 
 This field is optional.
 
-2.1.8  MetaFilePresentationDataWidth
+#### 2.1.8 MetaFilePresentationDataWidth
 
 This MUST be a long value that contains the width of a metafile (as specified in [MS-WMF] section
 1.3.1) in logical units. The MM_ANISOTROPIC mapping mode (as specified in [MS-WMF] section
 2.1.1.16) MUST be used to convert the logical units to physical units.
 
-2.1.9  MetaFilePresentationDataHeight
+#### 2.1.9 MetaFilePresentationDataHeight
 
 This MUST be a long value that contains the height of a metafile (as specified in [MS-WMF] section
 1.3.1) in logical units. The MM_ANISOTROPIC mapping mode (as specified in [MS-WMF] section
 2.1.1.16) MUST be used to convert the logical units to physical units.
 
-2.1.10 EnhancedMetaFilePresentationDataWidth
+#### 2.1.10 EnhancedMetaFilePresentationDataWidth
 
 This MUST be a long value that contains the width of an Enhanced metafile (as specified in [MS-EMF]
 section 1.3.1) in logical units. The MM_HIMETRIC mapping mode (as specified in [MS-EMF] section
@@ -1656,29 +1575,30 @@ Release: April 23, 2024
 
 19 / 50
 
-2.1.11 EnhancedMetaFilePresentationDataHeight
+
+#### 2.1.11 EnhancedMetaFilePresentationDataHeight
 
 This MUST be a long value that contains the height of an enhanced metafile (as specified in [MS-EMF]
 section 1.3.1) in logical units. The MM_HIMETRIC mapping mode (as specified in [MS-EMF] section
 2.1.21) MUST be used to convert the logical units to physical units.
 
-2.1.12 DIBPresentationDataWidth
+#### 2.1.12 DIBPresentationDataWidth
 
 This MUST be a long value that contains the width of a Device Independent Bitmap object (as specified
 in [MS-WMF] section 2.2.2.9) in logical units. The MM_HIMETRIC mapping mode (as specified in [MS-
 WMF] section 2.1.1.16) MUST be used to convert the logical units to physical units.
 
-2.1.13 DIBPresentationDataHeight
+#### 2.1.13 DIBPresentationDataHeight
 
 This MUST be a long value that contains the height of a Device Independent Bitmap object (as
 specified in [MS-WMF] section 2.2.2.9) in logical units. The MM_HIMETRIC mapping mode (as
 specified in [MS-WMF] section 2.1.1.16) MUST be used to convert the logical units to physical units.
 
-2.2  OLE1.0 Format Structures
+### 2.2 OLE1.0 Format Structures
 
 This section specifies the data structures that constitute the OLE1.0 Format.
 
-2.2.1  PresentationObjectHeader
+#### 2.2.1 PresentationObjectHeader
 
 The PresentationObjectHeader structure specifies the header for different types of presentation data
 structures.
@@ -1730,7 +1650,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2  StandardPresentationObject
+
+#### 2.2.2 StandardPresentationObject
 
 A StandardPresentationObject structure contains a PresentationObjectHeader structure (section
 2.2.1). The ClassName field of the PresentationObjectHeader MUST be set to the case-sensitive
@@ -1776,7 +1697,7 @@ to the case-sensitive value "METAFILEPICT", this MUST be a MetaFilePresentationD
 
 There are three types of StandardPresentationObject. These are specified as follows.
 
-2.2.2.1  MetaFilePresentationObject
+##### 2.2.2.1 MetaFilePresentationObject
 
 The MetaFilePresentationObject structure specifies a presentation data type that is used to display
 linked objects or embedded objects in container applications. The presentation data is in the
@@ -1814,7 +1735,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PresentationData (variable)
+
+PresentationData (variable)
 
 ...
 
@@ -1847,7 +1769,7 @@ PresentationData (variable):  This MUST be an array of bytes that contain a meta
 
 in [MS-WMF] section 1.3.1).
 
-2.2.2.2  BitmapPresentationObject
+##### 2.2.2.2 BitmapPresentationObject
 
 The BitmapPresentationObject structure specifies a presentation data type that is used to display
 linked objects or embedded objects in container applications. The presentation data is in the
@@ -1894,7 +1816,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.3  DIBPresentationObject
+
+##### 2.2.2.3 DIBPresentationObject
 
 The DIBPresentationObject structure specifies a presentation data type that is used to display
 linked objects or embedded objects in container applications. The presentation data is in the
@@ -1934,7 +1857,7 @@ DIB (variable):  This MUST be a DeviceIndependentBitmap Object structure as spec
 
 WMF] section 2.2.2.9.
 
-2.2.3  GenericPresentationObject
+#### 2.2.3 GenericPresentationObject
 
 A GenericPresentationObject structure contains a PresentationObjectHeader structure (section 2.2.1).
 The ClassName field of the PresentationObjectHeader MUST NOT be set to "METAFILEPICT", "DIB", or
@@ -1943,7 +1866,7 @@ The ClassName field of the PresentationObjectHeader MUST NOT be set to "METAFILE
 There are two types of GenericPresentationObject: the StandardClipboardFormatPresentationObject
 (section 2.2.3.2) and the RegisteredClipboardFormatPresentationObject (section 2.2.3.3).
 
-2.2.3.1  ClipboardFormatHeader
+##### 2.2.3.1 ClipboardFormatHeader
 
 The ClipboardFormatHeader structure specifies the header for the two types of
 GenericPresentationObject described as follows:
@@ -1977,13 +1900,14 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ClipboardFormat (4 bytes):  If this is set to 0x0000000, the ClipboardFormatHeader structure
+
+ClipboardFormat (4 bytes):  If this is set to 0x0000000, the ClipboardFormatHeader structure
 MUST be contained by a RegisteredClipboardFormatPresentationObject (see section 2.2.3.3).
 Otherwise, the ClipboardFormatHeader structure MUST be contained by a
 StandardClipboardFormatPresentationObject (see section 2.2.3.2). A value other than
 0x00000000 MUST identify a standard clipboard format (section 1.3.5.1).
 
-2.2.3.2  StandardClipboardFormatPresentationObject
+##### 2.2.3.2 StandardClipboardFormatPresentationObject
 
 The StandardClipboardFormatPresentationObject structure specifies a presentation data type that is
 used to display linked objects or embedded objects in container applications. The presentation
@@ -2032,7 +1956,7 @@ end of the stream has not been reached, then the Reserved2 field MUST be present
 If the Clipboard Format contains CF_ENHMETAFILE (section 2.1.1), the Data field MUST contain
 an enhanced metafile (as specified in [MS-EMF] section 1.3.1).
 
-2.2.3.3  RegisteredClipboardFormatPresentationObject
+##### 2.2.3.3 RegisteredClipboardFormatPresentationObject
 
 The RegisteredClipboardFormatPresentationObject structure specifies a presentation data type that
 is used to display linked objects or embedded objects in container applications. The
@@ -2058,7 +1982,8 @@ Release: April 23, 2024
 
 24 / 50
 
-...
+
+...
 
 StringFormatDataSize (optional)
 
@@ -2093,7 +2018,7 @@ PresentationData (variable):  This MUST be an array of bytes that contains the p
 
 that is supplied by an application or a higher-level protocol.
 
-2.2.4  ObjectHeader
+#### 2.2.4 ObjectHeader
 
 The ObjectHeader structure specifies the headers for the LinkedObject (section 2.2.6) and
 EmbeddedObject (section 2.2.5) structures.
@@ -2130,7 +2055,8 @@ Release: April 23, 2024
 
 25 / 50
 
-...
+
+...
 
 OLEVersion (4 bytes): This can be set to any arbitrary value and MUST be ignored on receipt.
 
@@ -2176,7 +2102,7 @@ ItemName string is specific to the creating application and MUST be treated by o
 an opaque string when processing this data structure. An example of such an item is an individual
 cell within a spreadsheet application.
 
-2.2.5  EmbeddedObject
+#### 2.2.5 EmbeddedObject
 
 The EmbeddedObject structure specifies how an embedded object is laid out in a container
 document.
@@ -2205,7 +2131,8 @@ Release: April 23, 2024
 
 26 / 50
 
-NativeData (variable)
+
+NativeData (variable)
 
 ...
 
@@ -2227,7 +2154,7 @@ BitmapPresentationObject (section 2.2.2.2), a DIBPresentationObject (section 2.2
 StandardClipboardFormatPresentationObject (section 2.2.3.2), or a
 RegisteredClipboardFormatPresentationObject (section 2.2.3.3).
 
-2.2.6  LinkedObject
+#### 2.2.6 LinkedObject
 
 The LinkedObject structure specifies how a linked object is laid out in a container document.
 
@@ -2277,7 +2204,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-LinkUpdateOption (4 bytes): This field contains an implementation-specific hint supplied by the
+
+LinkUpdateOption (4 bytes): This field contains an implementation-specific hint supplied by the
 application or higher-level protocol responsible for creating the data structure. The hint MAY be
 ignored on processing of this data structure.<8>
 
@@ -2287,12 +2215,12 @@ BitmapPresentationObject (section 2.2.2.2), a DIBPresentationObject (section 2.2
 StandardClipboardFormatPresentationObject (section 2.2.3.2), or a
 RegisteredClipboardFormatPresentationObject (section 2.2.3.3).
 
-2.3  OLE2.0 Format Structures
+### 2.3 OLE2.0 Format Structures
 
 This section describes the data structures that constitute the OLE2.0 Format. The OLE2.0 Format is
 specified using Compound File Streams (as specified in [MS-CFB]).
 
-2.3.1  ClipboardFormatOrAnsiString
+#### 2.3.1 ClipboardFormatOrAnsiString
 
 The ClipboardFormatOrAnsiString structure specifies either a standard clipboard format (section
 1.3.5.1) or a registered clipboard format as an ANSI string.
@@ -2343,7 +2271,7 @@ FormatOrAnsiString (variable): This MUST be set to a value as specified by the M
 
 field.
 
-2.3.2  ClipboardFormatOrUnicodeString
+#### 2.3.2 ClipboardFormatOrUnicodeString
 
 The ClipboardFormatOrUnicodeString structure specifies either a standard clipboard format identifier
 (section 2.1.1) or a registered clipboard format as a Unicode string.
@@ -2355,7 +2283,8 @@ Release: April 23, 2024
 
 28 / 50
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2401,7 +2330,7 @@ FormatOrUnicodeString (variable): This MUST be set to a value as specified by th
 
 MarkerOrLength field.
 
-2.3.3  OLEStream
+#### 2.3.3 OLEStream
 
 The OLEStream structure is contained inside an OLE Compound File Stream object ([MS-CFB]
 section 1.3). The name of this Compound File Stream object is "\1Ole". The stream object is contained
@@ -2442,7 +2371,8 @@ Release: April 23, 2024
 
 29 / 50
 
-RelativeSourceMonikerStreamSize (optional)
+
+RelativeSourceMonikerStreamSize (optional)
 
 RelativeSourceMonikerStream (variable)
 
@@ -2505,7 +2435,8 @@ Release: April 23, 2024
 
 30 / 50
 
-LinkUpdateOption (4 bytes): This field contains an implementation-specific hint supplied by the
+
+LinkUpdateOption (4 bytes): This field contains an implementation-specific hint supplied by the
 
 application or by a higher-level protocol that creates the data structure. The hint MAY be ignored
 on processing of this data structure.<11>
@@ -2574,7 +2505,7 @@ RemoteUpdateTime (8 bytes): This MUST be a FILETIME (Packet) (section 2.1.3) tha
 
 time when the linked object was last updated.
 
-2.3.3.1  MONIKERSTREAM
+##### 2.3.3.1 MONIKERSTREAM
 
 The MONIKERSTREAM structure specifies the reference to the linked object.
 
@@ -2585,7 +2516,8 @@ Release: April 23, 2024
 
 31 / 50
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2614,7 +2546,7 @@ StreamData (variable):  This MUST be an array of bytes that specifies the refere
 
 object. The value of this array is interpreted in an implementation-specific manner.<14>
 
-2.3.4  OLEPresentationStream
+#### 2.3.4 OLEPresentationStream
 
 The OLEPresentationStream structure is contained inside an OLE Compound File Stream object ([MS-
 CFB] section 1.3) within the OLE Compound File Storage object ([MS-CFB] section 1.3) that
@@ -2663,7 +2595,8 @@ Release: April 23, 2024
 
 32 / 50
 
-Height
+
+Height
 
 Size
 
@@ -2739,7 +2672,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Advf (4 bytes): This field contains an implementation-specific hint on how to render the presentation
+
+Advf (4 bytes): This field contains an implementation-specific hint on how to render the presentation
 
 data on the screen. It MAY be ignored on processing.<20>
 
@@ -2812,7 +2746,8 @@ Release: April 23, 2024
 
 34 / 50
 
-2.3.5  TOCENTRY
+
+#### 2.3.5 TOCENTRY
 
 The TOCENTRY structure is used to specify the additional values of the attributes of the
 OLEPresentationStream structure.
@@ -2886,13 +2821,14 @@ Release: April 23, 2024
 
 35 / 50
 
-Reserved2 (4 bytes):  This can contain any arbitrary value and MUST be ignored on processing.
+
+Reserved2 (4 bytes):  This can contain any arbitrary value and MUST be ignored on processing.
 
 TargetDevice (variable): This field MUST contain a DVTARGETDEVICE structure (as specified in
 
 section 2.1.7).
 
-2.3.6  OLENativeStream
+#### 2.3.6 OLENativeStream
 
 The OLENativeStream structure is contained inside an OLE Compound File Stream object ([MS-CFB]
 section 1.3). The OLE Compound File Stream object is named "\1Ole10Native". The stream object is
@@ -2922,7 +2858,7 @@ NativeDataSize (4 bytes):  This MUST be set to the size, in bytes, of the Native
 
 NativeData (variable): This MUST be set to an array of bytes that contains the native data.
 
-2.3.7  CompObjHeader
+#### 2.3.7 CompObjHeader
 
 The CompObjHeader structure specifies the header of the CompObjStream structure (section 2.3.8).
 
@@ -2953,7 +2889,7 @@ Version (4 bytes): This can be set to any arbitrary value and MUST be ignored on
 
 Reserved2 (20 bytes): This can be set to any arbitrary value and MUST be ignored on processing.
 
-2.3.8  CompObjStream
+#### 2.3.8 CompObjStream
 
 The CompObjStream structure is contained inside of an OLE Compound File Stream (as specified in
 [MS-CFB]). The OLE Compound File Stream has the name "\1CompObj". The CompObjStream
@@ -2965,7 +2901,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-structure specifies the Clipboard Format and the display name of the linked object or embedded
+
+structure specifies the Clipboard Format and the display name of the linked object or embedded
 object.
 
 0  1  2  3  4  5  6  7  8  9
@@ -3036,7 +2973,8 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-than 0x00000028 , the remaining fields of the structure starting with the String field of the
+
+than 0x00000028 , the remaining fields of the structure starting with the String field of the
 LengthPrefixedAnsiString MUST be ignored on processing.
 
 If the String field of the LengthPrefixedAnsiString is not present, the remaining fields of the
@@ -3070,9 +3008,10 @@ Release: April 23, 2024
 
 38 / 50
 
-3  Structure Examples
 
-3.1  OLEStream Structure - Embedded Object
+## 3 Structure Examples
+
+### 3.1 OLEStream Structure - Embedded Object
 
 This section describes the binary layout of an OLEStream (section 2.3.3) structure that represents an
 embedded object.
@@ -3103,7 +3042,7 @@ LinkUpdateOption  0x00000000
 
 0x00000000
 
-3.2  OLEStream Structure - Linked Object
+### 3.2 OLEStream Structure - Linked Object
 
 This section describes the binary layout of an OLEStream (section 2.3.3) structure that represents a
 linked object.
@@ -3115,7 +3054,8 @@ Release: April 23, 2024
 
 39 / 50
 
- 00000000
+
+ 00000000
  00000010
  00000020
  00000030
@@ -3248,7 +3188,8 @@ Release: April 23, 2024
 
 40 / 50
 
-Byte offset
+
+Byte offset
 
 Field name
 
@@ -3326,7 +3267,7 @@ LocalCheckUpdateTime.dwHighDateTime
 
 0x01C8AFC8 (05/06/2008  15:25:55:039)
 
-3.3  OLEPresentationStream Structure
+### 3.3 OLEPresentationStream Structure
 
 This section describes the binary layout of the OLEPresentationStream (section 2.3.4)structure.
 
@@ -3367,7 +3308,8 @@ Release: April 23, 2024
 
 41 / 50
 
-Byte offset
+
+Byte offset
 
 Field name
 
@@ -3427,7 +3369,7 @@ Data
 
 0x00000001
 
-3.4  TOCENTRY Structure
+### 3.4 TOCENTRY Structure
 
 This section describes the binary layout of the TOCENTRY (section 2.3.5) structure.
 
@@ -3476,7 +3418,8 @@ Release: April 23, 2024
 
 42 / 50
 
-Byte offset
+
+Byte offset
 
 Field name
 
@@ -3502,7 +3445,7 @@ Field value
 
 0x00000018
 
-3.5  OLENativeStream Structure
+### 3.5 OLENativeStream Structure
 
 This section describes the binary layout of the OLENativeStream (section 2.3.6) structure.
 
@@ -3535,7 +3478,8 @@ Release: April 23, 2024
 
 43 / 50
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 None.
 
@@ -3546,7 +3490,8 @@ Release: April 23, 2024
 
 44 / 50
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3613,7 +3558,8 @@ Release: April 23, 2024
 
 45 / 50
 
-<6> Section 2.2.4:  Windows will fail to process an ObjectHeader structure with error
+
+<6> Section 2.2.4:  Windows will fail to process an ObjectHeader structure with error
 CONVERT10_E_OLESTREAM_FMT (as specified in [MS-ERREF]) if the FormatId field is a value other
 than 0x00000001 or 0x00000002.
 
@@ -3680,7 +3626,8 @@ Release: April 23, 2024
 
 46 / 50
 
-<24> Section 2.3.8: Windows will fail to process the structure with the error DV_E_CLIPFORMAT (as
+
+<24> Section 2.3.8: Windows will fail to process the structure with the error DV_E_CLIPFORMAT (as
 specified in [MS-ERREF]) if the MarkerOrLength field contains a value other than 0x00000000,
 0xffffffff, or 0xfffffffe and the value is greater than 0x00000190.
 
@@ -3696,7 +3643,8 @@ Release: April 23, 2024
 
 47 / 50
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3740,7 +3688,8 @@ Release: April 23, 2024
 
 48 / 50
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 12
@@ -3878,7 +3827,8 @@ Structures
 
 49 / 50
 
-T
+
+T
 
 TOCENTRY packet 35
 TOCENTRY Structure example 42

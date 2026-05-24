@@ -63,7 +63,8 @@ Release: June 25, 2021
 
 1 / 82
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: June 25, 2021
 
 2 / 82
 
-Date
+
+Date
 
 Revision
 History
@@ -538,7 +540,8 @@ Release: June 25, 2021
 
 3 / 82
 
-Date
+
+Date
 
 Revision
 History
@@ -579,359 +582,146 @@ Release: June 25, 2021
 
 4 / 82
 
-Table of Contents
 
-1.3
-
-1.3.1
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1.1
-1.3.1.2
-1.3.1.3
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Identifiers .................................................................................................. 11
-Peer Names .......................................................................................... 11
-PNRP IDs ............................................................................................. 12
-Certified Peer Addresses ........................................................................ 13
-Delegation ................................................................................................. 13
-Clouds ....................................................................................................... 14
-Discovering a Cloud ............................................................................... 15
-Joining a Cloud ..................................................................................... 16
-Active Participation in the Cloud .............................................................. 16
-Leaving a Cloud .................................................................................... 17
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 17
-Applicability Statement ..................................................................................... 17
-Versioning and Capability Negotiation ................................................................. 17
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 17
-
-1.3.3.1
-1.3.3.2
-1.3.3.3
-1.3.3.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.2
-1.3.3
-
-2.2.3
-
-2.1
-2.2
-
-2.2.3.1
-
-2.2.2.6.1
-
-2.2.1
-2.2.2
-
-2.2.2.7
-2.2.2.8
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Message Syntax ............................................................................................... 18
-PNRP Header .............................................................................................. 19
-PNRP Messages .......................................................................................... 20
-SOLICIT ............................................................................................... 20
-ADVERTISE .......................................................................................... 22
-REQUEST ............................................................................................. 23
-FLOOD ................................................................................................. 24
-INQUIRE .............................................................................................. 26
-AUTHORITY .......................................................................................... 27
-AUTHORITY_BUFFER ........................................................................ 27
-ACK..................................................................................................... 30
-LOOKUP ............................................................................................... 31
-Data Structures .......................................................................................... 33
-Encoded CPA ........................................................................................ 33
-Service Address List ......................................................................... 36
-PAYLOAD ........................................................................................ 36
-IPV6_APP_ENDPOINT ....................................................................... 36
-CPA Public Key ................................................................................ 37
-SIGNATURE .......................................................................................... 37
-EXTENDED_PAYLOAD ............................................................................ 38
-ROUTE_ENTRY ...................................................................................... 40
-Certificate Chain ................................................................................... 40
-Certificate Extensions....................................................................... 41
-PnrpCertificateType .................................................................... 41
-PnrpCertificateVersion ................................................................ 42
-PnrpPeerName ........................................................................... 42
-PnrpRole ................................................................................... 42
-PnrpClassifiersList ...................................................................... 43
-Classifier Delegation ............................................................. 43
-IPV6_ENDPOINT ................................................................................... 44
-
-2.2.3.5.1.1
-2.2.3.5.1.2
-2.2.3.5.1.3
-2.2.3.5.1.4
-2.2.3.5.1.5
-
-2.2.3.1.1
-2.2.3.1.2
-2.2.3.1.3
-2.2.3.1.4
-
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-
-2.2.3.5.1.5.1
-
-2.2.3.5.1
-
-2.2.3.6
-
-[MS-PNRP] - v20210625
-Peer Name Resolution Protocol (PNRP) Version 4.0
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-5 / 82
-
-2.2.4
-
-Peer Names ............................................................................................... 44
-
-3.1
-
-3.1.5
-
-3.1.4.5
-
-3.1.5.6.1
-
-3.1.4.3
-3.1.4.4
-
-3.1.4.1
-3.1.4.2
-
-3.1.4.4.1
-3.1.4.4.2
-
-3.1.4.2.1
-3.1.4.2.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.5.6.1.1
-3.1.5.6.1.2
-
-3.1.5.7
-3.1.5.8
-3.1.5.9
-3.1.5.10
-3.1.5.11
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-
-3  Protocol Details ..................................................................................................... 46
-Resolver Details ............................................................................................... 46
-Abstract Data Model .................................................................................... 46
-Timers ...................................................................................................... 48
-Initialization ............................................................................................... 48
-Higher-Layer Triggered Events ..................................................................... 48
-Opening a Cloud ................................................................................... 48
-Discovering Other Nodes in a Cloud ......................................................... 49
-Using Seed Servers ......................................................................... 49
-Multicast Cloud Discovery ................................................................. 49
-Initiating a PNRP Synchronization Conversation ........................................ 50
-Resolving a Peer Name .......................................................................... 50
-Constructing a PNRP ID .................................................................... 50
-Resolving a PNRP ID ........................................................................ 51
-Closing a Cloud ..................................................................................... 52
-Message Processing Events and Sequencing Rules .......................................... 52
-Receiving an SSDP Response .................................................................. 52
-Receiving a PNRP Message ..................................................................... 53
-Receiving an ADVERTISE Message .......................................................... 53
-Receiving an ACK Message ..................................................................... 53
-Receiving a FLOOD Message ................................................................... 54
-Receiving an AUTHORITY Message .......................................................... 54
-Receiving an AUTHORITY_BUFFER ..................................................... 54
-Receiving a Response to an INQUIRE Message ............................... 55
-Completing a Route Entry Cache Addition ..................................... 56
-Validating a CPA ................................................................................... 56
-Validating an Extended Payload .............................................................. 57
-Validating a SIGNATURE Structure .......................................................... 57
-Validating a Certificate Chain .................................................................. 57
-Receiving a New ROUTE_ENTRY Message ................................................. 58
-Timer Events .............................................................................................. 58
-Cloud Cleanup Timer Expiry ................................................................... 58
-Maintenance Timer Expiry ...................................................................... 58
-Message Retransmission Timer Expiry ..................................................... 59
-Other Local Events ...................................................................................... 59
-Processing Address Change Notifications .................................................. 59
-Publisher Details .............................................................................................. 59
-Abstract Data Model .................................................................................... 59
-Cache .................................................................................................. 60
-Timers ...................................................................................................... 60
-Initialization ............................................................................................... 60
-Higher-Layer Triggered Events ..................................................................... 60
-Registering a Peer Name ........................................................................ 60
-Unregistering a Peer Name ..................................................................... 61
-Message Processing Events and Sequencing Rules .......................................... 62
-Receiving a New ROUTE_ENTRY .............................................................. 62
-Receiving a LOOKUP Message ................................................................. 62
-Receiving a SOLICIT Message ................................................................. 63
-Receiving a REQUEST Message ............................................................... 63
-Receiving a FLOOD Message ................................................................... 64
-Receiving an INQUIRE Message .............................................................. 64
-Constructing a CPA ............................................................................... 64
-Constructing an Extended Payload .......................................................... 64
-Generating a Signature .......................................................................... 64
-Sending an AUTHORITY_BUFFER ............................................................. 65
-Receiving an AUTHORITY Message .......................................................... 65
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-3.2.5.10
-3.2.5.11
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-
-3.2.1.1
-
-3.1.7.1
-
-3.2.5
-
-3.1.7
-
-3.1.6
-
-3.2.1
-
-3.2
-
-[MS-PNRP] - v20210625
-Peer Name Resolution Protocol (PNRP) Version 4.0
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-6 / 82
-
-3.2.5.11.1
-
-3.2.6
-
-3.2.6.1
-3.2.6.2
-
-3.2.6.2.1
-
-3.2.6.2.1.1
-
-Receiving an AUTHORITY_BUFFER ..................................................... 65
-Timer Events .............................................................................................. 66
-Conversation Timer Expiry ..................................................................... 66
-Maintenance Timer Expiry ...................................................................... 66
-Detection of Cloud Splits .................................................................. 66
-Cloud Size Estimation ................................................................. 67
-Message Retransmission Timer Expiry ..................................................... 67
-Other Local Events ...................................................................................... 67
-Resolving a PNRP ID .............................................................................. 67
-Processing Address Change Notifications .................................................. 68
-
-3.2.6.3
-
-3.2.7
-
-3.2.7.1
-3.2.7.2
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ................................................................................................. 69
-Resolving a Peer Name ..................................................................................... 69
-Opening a Cloud ......................................................................................... 69
-Cache Synchronization ................................................................................ 69
-Peer Name Resolution ................................................................................. 71
-Registering a Name .......................................................................................... 73
-Unregistering a Name ....................................................................................... 74
-Flooding a New Leaf Set Member ....................................................................... 74
-
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 77
-Security Considerations for Implementers ........................................................... 77
-Index of Security Parameters ............................................................................ 77
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 78
-
-7  Change Tracking .................................................................................................... 80
-
-8  Index ..................................................................................................................... 81
-
-[MS-PNRP] - v20210625
-Peer Name Resolution Protocol (PNRP) Version 4.0
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-7 / 82
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Identifiers](#131-identifiers)
+      - [1.3.1.1 Peer Names](#1311-peer-names)
+      - [1.3.1.2 PNRP IDs](#1312-pnrp-ids)
+      - [1.3.1.3 Certified Peer Addresses](#1313-certified-peer-addresses)
+    - [1.3.2 Delegation](#132-delegation)
+    - [1.3.3 Clouds](#133-clouds)
+      - [1.3.3.1 Discovering a Cloud](#1331-discovering-a-cloud)
+      - [1.3.3.2 Joining a Cloud](#1332-joining-a-cloud)
+      - [1.3.3.3 Active Participation in the Cloud](#1333-active-participation-in-the-cloud)
+      - [1.3.3.4 Leaving a Cloud](#1334-leaving-a-cloud)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 PNRP Header](#221-pnrp-header)
+    - [2.2.2 PNRP Messages](#222-pnrp-messages)
+      - [2.2.2.1 SOLICIT](#2221-solicit)
+      - [2.2.2.2 ADVERTISE](#2222-advertise)
+      - [2.2.2.3 REQUEST](#2223-request)
+      - [2.2.2.4 FLOOD](#2224-flood)
+      - [2.2.2.5 INQUIRE](#2225-inquire)
+      - [2.2.2.6 AUTHORITY](#2226-authority)
+        - [2.2.2.6.1 AUTHORITY_BUFFER](#22261-authoritybuffer)
+      - [2.2.2.7 ACK](#2227-ack)
+      - [2.2.2.8 LOOKUP](#2228-lookup)
+    - [2.2.3 Data Structures](#223-data-structures)
+      - [2.2.3.1 Encoded CPA](#2231-encoded-cpa)
+        - [2.2.3.1.1 Service Address List](#22311-service-address-list)
+        - [2.2.3.1.2 PAYLOAD](#22312-payload)
+        - [2.2.3.1.3 IPV6_APP_ENDPOINT](#22313-ipv6appendpoint)
+        - [2.2.3.1.4 CPA Public Key](#22314-cpa-public-key)
+      - [2.2.3.2 SIGNATURE](#2232-signature)
+      - [2.2.3.3 EXTENDED_PAYLOAD](#2233-extendedpayload)
+      - [2.2.3.4 ROUTE_ENTRY](#2234-routeentry)
+      - [2.2.3.5 Certificate Chain](#2235-certificate-chain)
+        - [2.2.3.5.1 Certificate Extensions](#22351-certificate-extensions)
+          - [2.2.3.5.1.1 PnrpCertificateType](#223511-pnrpcertificatetype)
+          - [2.2.3.5.1.2 PnrpCertificateVersion](#223512-pnrpcertificateversion)
+          - [2.2.3.5.1.3 PnrpPeerName](#223513-pnrppeername)
+          - [2.2.3.5.1.4 PnrpRole](#223514-pnrprole)
+          - [2.2.3.5.1.5 PnrpClassifiersList](#223515-pnrpclassifierslist)
+            - [2.2.3.5.1.5.1 Classifier Delegation](#2235151-classifier-delegation)
+      - [2.2.3.6 IPV6_ENDPOINT](#2236-ipv6endpoint)
+    - [2.2.4 Peer Names](#224-peer-names)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Resolver Details](#31-resolver-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Opening a Cloud](#3141-opening-a-cloud)
+      - [3.1.4.2 Discovering Other Nodes in a Cloud](#3142-discovering-other-nodes-in-a-cloud)
+        - [3.1.4.2.1 to obtain a list of nodes acting as seed servers.](#31421-to-obtain-a-list-of-nodes-acting-as-seed-servers)
+        - [3.1.4.2.2 Multicast Cloud Discovery](#31422-multicast-cloud-discovery)
+      - [3.1.4.3 Initiating a PNRP Synchronization Conversation](#3143-initiating-a-pnrp-synchronization-conversation)
+      - [3.1.4.4 Resolving a Peer Name](#3144-resolving-a-peer-name)
+        - [3.1.4.4.1 Constructing a PNRP ID](#31441-constructing-a-pnrp-id)
+        - [3.1.4.4.2 Resolving a PNRP ID](#31442-resolving-a-pnrp-id)
+      - [3.1.4.5 Closing a Cloud](#3145-closing-a-cloud)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving an SSDP Response](#3151-receiving-an-ssdp-response)
+      - [3.1.5.2 Receiving a PNRP Message](#3152-receiving-a-pnrp-message)
+      - [3.1.5.3 Receiving an ADVERTISE Message](#3153-receiving-an-advertise-message)
+      - [3.1.5.4 Receiving an ACK Message](#3154-receiving-an-ack-message)
+      - [3.1.5.5 Receiving a FLOOD Message](#3155-receiving-a-flood-message)
+      - [3.1.5.6 Receiving an AUTHORITY Message](#3156-receiving-an-authority-message)
+        - [3.1.5.6.1 Receiving an AUTHORITY_BUFFER](#31561-receiving-an-authoritybuffer)
+          - [3.1.5.6.1.1 Receiving a Response to an INQUIRE Message](#315611-receiving-a-response-to-an-inquire-message)
+          - [3.1.5.6.1.2 Completing a Route Entry Cache Addition](#315612-completing-a-route-entry-cache-addition)
+      - [3.1.5.7 Validating a CPA](#3157-validating-a-cpa)
+      - [3.1.5.8 Validating an Extended Payload](#3158-validating-an-extended-payload)
+      - [3.1.5.9 Validating a SIGNATURE Structure](#3159-validating-a-signature-structure)
+      - [3.1.5.10 Validating a Certificate Chain](#31510-validating-a-certificate-chain)
+      - [3.1.5.11 Receiving a New ROUTE_ENTRY Message](#31511-receiving-a-new-routeentry-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Cloud Cleanup Timer Expiry](#3161-cloud-cleanup-timer-expiry)
+      - [3.1.6.2 Maintenance Timer Expiry](#3162-maintenance-timer-expiry)
+      - [3.1.6.3 Message Retransmission Timer Expiry](#3163-message-retransmission-timer-expiry)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Processing Address Change Notifications](#3171-processing-address-change-notifications)
+  - [3.2 Publisher Details](#32-publisher-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Cache](#3211-cache)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Registering a Peer Name](#3241-registering-a-peer-name)
+      - [3.2.4.2 Unregistering a Peer Name](#3242-unregistering-a-peer-name)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a New ROUTE_ENTRY](#3251-receiving-a-new-routeentry)
+      - [3.2.5.2 Receiving a LOOKUP Message](#3252-receiving-a-lookup-message)
+      - [3.2.5.3 Receiving a SOLICIT Message](#3253-receiving-a-solicit-message)
+      - [3.2.5.4 Receiving a REQUEST Message](#3254-receiving-a-request-message)
+      - [3.2.5.5 Receiving a FLOOD Message](#3255-receiving-a-flood-message)
+      - [3.2.5.6 Receiving an INQUIRE Message](#3256-receiving-an-inquire-message)
+      - [3.2.5.7 Constructing a CPA](#3257-constructing-a-cpa)
+      - [3.2.5.8 Constructing an Extended Payload](#3258-constructing-an-extended-payload)
+      - [3.2.5.9 Generating a Signature](#3259-generating-a-signature)
+      - [3.2.5.10 Sending an AUTHORITY_BUFFER](#32510-sending-an-authoritybuffer)
+      - [3.2.5.11 Receiving an AUTHORITY Message](#32511-receiving-an-authority-message)
+        - [3.2.5.11.1 Receiving an AUTHORITY_BUFFER](#325111-receiving-an-authoritybuffer)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Conversation Timer Expiry](#3261-conversation-timer-expiry)
+      - [3.2.6.2 Maintenance Timer Expiry](#3262-maintenance-timer-expiry)
+        - [3.2.6.2.1 Detection of Cloud Splits](#32621-detection-of-cloud-splits)
+          - [3.2.6.2.1.1 Cloud Size Estimation](#326211-cloud-size-estimation)
+      - [3.2.6.3 Message Retransmission Timer Expiry](#3263-message-retransmission-timer-expiry)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Resolving a PNRP ID](#3271-resolving-a-pnrp-id)
+      - [3.2.7.2 Processing Address Change Notifications](#3272-processing-address-change-notifications)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Resolving a Peer Name](#41-resolving-a-peer-name)
+    - [4.1.1 Opening a Cloud](#411-opening-a-cloud)
+    - [4.1.2 Cache Synchronization](#412-cache-synchronization)
+    - [4.1.3 Peer Name Resolution](#413-peer-name-resolution)
+  - [4.2 Registering a Name](#42-registering-a-name)
+  - [4.3 Unregistering a Name](#43-unregistering-a-name)
+  - [4.4 Flooding a New Leaf Set Member](#44-flooding-a-new-leaf-set-member)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Peer Name Resolution Protocol (PNRP) Version 4 is a protocol that is used for resolving a name to
 a set of information, such as IP addresses. This protocol is used to maintain a network of nodes
@@ -941,7 +731,7 @@ node within the cloud.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1003,7 +793,8 @@ Release: June 25, 2021
 
 8 / 82
 
-object identifier (OID): In the context of Abstract Syntax Notation One (ASN.1), an object
+
+object identifier (OID): In the context of Abstract Syntax Notation One (ASN.1), an object
 
 identifier, as specified in [ITUX680].
 
@@ -1036,14 +827,14 @@ Peer Identity. Any node can claim ownership of any Unsecured Peer Name.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1074,7 +865,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-[RFC2459] Housley, R., Ford, W., Polk, W., and Solo, D., "Internet X.509 Public Key Infrastructure
+
+[RFC2459] Housley, R., Ford, W., Polk, W., and Solo, D., "Internet X.509 Public Key Infrastructure
 Certificate and CRL Profile", RFC 2459, January 1999, https://www.rfc-editor.org/info/rfc2459
 
 [RFC2732] Hinden, R., Carpenter, B., and Masinter, L., "Format for Literal IPv6 Addresses in URL's",
@@ -1105,7 +897,7 @@ http://www.upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.0.pdf
 and Attribute Certificate Frameworks", Recommendation X.509, August 2005,
 http://www.itu.int/rec/T-REC-X.509/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [PAST] Castro, M., Druschel, P., Hu, Y.C., and Rowstron, A., "Proximity Neighbor Selection in Tree-
 based Structured Peer-to-Peer Overlays", 2003, http://research.microsoft.com/~antr/PAST/location-
@@ -1118,7 +910,7 @@ msrtr-2003-52.pdf
 Certificate and Certificate Revocation List (CRL) Profile", RFC 5280, May 2008, https://www.rfc-
 editor.org/info/rfc5280
 
-1.3  Overview
+### 1.3 Overview
 
 The Peer Name Resolution Protocol (PNRP) Version 4.0 uses messages to maintain a cloud of peer
 nodes, to maintain a distributed cache of network endpoint information, and to transfer requests
@@ -1141,7 +933,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-PNRP].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1155,14 +948,14 @@ during initialization. When a PNRP node is initialized, a discovery process loca
 nodes with which to exchange data. If no other way is available, a seed server is used to obtain a list
 of addresses of other nodes.
 
-1.3.1  Identifiers
+#### 1.3.1 Identifiers
 
 PNRP uses Peer Names and PNRP IDs to refer to resources within a cloud, as illustrated in the
 following diagram.
 
 Figure 1: PNRP resource dependencies
 
-1.3.1.1  Peer Names
+##### 1.3.1.1 Peer Names
 
 A Peer Name is composed of an authority and classifier, in the form "authority.classifier", and it is
 created by an application before publishing a name using the PNRP. After it is registered, the Peer
@@ -1188,7 +981,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-4.  Each hexadecimal digit is then converted into a Unicode character in the ranges ("0"-"9") and
+
+4.  Each hexadecimal digit is then converted into a Unicode character in the ranges ("0"-"9") and
 
 ("a"-"f"). (For example, the hex value 0x64 becomes the sequence of Unicode characters "6", "4",
 and the hex value 0x0c becomes the sequence "0", "c").
@@ -1204,7 +998,7 @@ claim ownership of it), and its Authority string is always set to "0". For examp
 The Classifier element for a Peer Name is specified by the application registering the resource, and can
 be any Unicode string up to 150 characters long (counting the terminating null character).
 
-1.3.1.2  PNRP IDs
+##### 1.3.1.2 PNRP IDs
 
 PNRP defines a numerical namespace for PNRP IDs. Each Peer Name is converted to a number, and
 the numbers are compared to determine proximity within the namespace.
@@ -1255,7 +1049,8 @@ Release: June 25, 2021
 
 12 / 82
 
-1.3.1.3  Certified Peer Addresses
+
+##### 1.3.1.3 Certified Peer Addresses
 
 For a Secure Peer Name, the certified peer address (CPA) is a self-signed certificate that
 provides authentication protection for a PNRP ID and contains application endpoint information such
@@ -1288,7 +1083,7 @@ Endpoints for reaching the PNRP service
 
   Signature of CPA based on Public/Private key pair
 
-1.3.2  Delegation
+#### 1.3.2 Delegation
 
 PNRP also allows one Peer Identity to delegate to another Peer Identity permission to advertise its
 Peer Names. The following figure shows the resulting relationship between concepts in this case.
@@ -1300,7 +1095,8 @@ Release: June 25, 2021
 
 13 / 82
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-PNRP].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1317,7 +1113,7 @@ authority. The certificate chain also indicates whether there is a restriction o
 used to construct delegated Peer Names, as well as (not shown) whether the delegate is granted
 permission to subdelegate.
 
-1.3.3  Clouds
+#### 1.3.3 Clouds
 
 A PNRP node can participate in one or more clouds. A cloud is a group of nodes that can
 communicate with each other to resolve names into addresses. Each node maintains a cache of PNRP
@@ -1329,7 +1125,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-PNRP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1359,7 +1156,7 @@ Joining the cloud
 
 Leaving a cloud
 
-1.3.3.1  Discovering a Cloud
+##### 1.3.3.1 Discovering a Cloud
 
 Cloud discovery is the process by which a node outside the cloud finds an existing node within the
 cloud.
@@ -1371,7 +1168,8 @@ Release: June 25, 2021
 
 15 / 82
 
-To discover nodes on the same link, a node uses the Simple Service Discovery Protocol (SSDP) (as
+
+To discover nodes on the same link, a node uses the Simple Service Discovery Protocol (SSDP) (as
 specified in [UPNPARCH1], section 1) to discover other nearby nodes that are already in the cloud. If
 there are no other nodes in the cloud of interest that exist on the node's link, then the discovering
 node uses a seed server to find some. To discover some nodes in the Global PNRP cloud, the
@@ -1380,14 +1178,14 @@ Domain Name System (DNS) lookup. To discover some nodes in a Site cloud, the dis
 obtains the name or address of a seed server via some other method (for example, manual
 configuration, or supplied by an application).
 
-1.3.3.2  Joining a Cloud
+##### 1.3.3.2 Joining a Cloud
 
 The joining node then engages in a "synchronization conversation" with the existing node to obtain an
 initial set of PNRP cache entries. The existing node provides the joining node with a selection of entries
 from its cache. On completing the synchronization, the joining node can access the cloud; the joining
 node now has enough information to perform resolves of PNRP IDs.
 
-1.3.3.3  Active Participation in the Cloud
+##### 1.3.3.3 Active Participation in the Cloud
 
 After a PNRP node is fully initialized, it has the ability to initiate PNRP ID resolution for remote
 nodes. An application can ask to resolve a Peer Name to an address in a given cloud. A P2P ID is
@@ -1436,7 +1234,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-
+
+
 
 Participate in PNRP ID resolutions by other nodes. A node will, upon request, compare a target
 PNRP ID with entries in its cache to find the entry that is numerically closer to the desired PNRP ID
@@ -1452,11 +1251,11 @@ nodes joining the cloud, as specified in section 1.3.3.2.
 Test for cloud splits. Each node occasionally tests for splits in the cloud to ensure that it has not
 become isolated from the cloud.
 
-1.3.3.4  Leaving a Cloud
+##### 1.3.3.4 Leaving a Cloud
 
 To leave the cloud, the PNRP node unregisters all registered PNRP IDs and then terminates.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 PNRP is used instead of the Domain Name System (DNS), as specified in [RFC1035], or the Link-
 Local Multicast Name Resolution [RFC4795].
@@ -1464,27 +1263,27 @@ Local Multicast Name Resolution [RFC4795].
 PNRP uses UDP [RFC768] as a transport, and it uses the SSDP (as specified in [UPNPARCH1], section
 1) and DNS [RFC1035] to initially locate some members of a cloud.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
  It is assumed that a PNRP node that wants to participate in a given Site Local cloud already knows
 the name or addresses of a seed server for that cloud.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The PNRP is suitable only for publishing a limited amount of information about a resource, and only
 when the information to be published is independent of which node requests the information.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 PNRP has no version-negotiation or capability-negotiation behavior, although it carries a protocol
 version number in its messages.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 PNRP defines a syntax for Peer Names that can be used by vendors to construct their own names. The
 legal syntax for a Peer Name is specified in section 2.2.4.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 PNRP uses the assignments shown in the following table.
 
@@ -1501,16 +1300,17 @@ Release: June 25, 2021
 
 17 / 82
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 PNRP messages MUST be transported over the User Datagram Protocol (UDP), as specified in
 [RFC768]. A node MUST use a UDP port of 1024 or greater, and SHOULD use port 3540. There is no
 requirement that two PNRP nodes use the same port number because the port number is discovered
 dynamically.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 PNRP messages were designed for future extensibility such that each "message element" (for
 example, field or set of fields) of each message is self-describing. As a result, the messages defined in
@@ -1608,7 +1408,8 @@ Release: June 25, 2021
 
 18 / 82
 
-Value
+
+Value
 
 0x005A
 
@@ -1697,7 +1498,7 @@ ensure this.
 Finally, unless specified otherwise, all 2-byte and 4-byte integer fields are defined in network byte
 order.
 
-2.2.1  PNRP Header
+#### 2.2.1 PNRP Header
 
 All PNRP Messages use the common header as follows.
 
@@ -1723,7 +1524,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Identifier
+
+Identifier
 
 VersionMajor
 
@@ -1787,9 +1589,9 @@ generated by the protocol; the algorithm used to generate the Message ID value M
 the probability of generating duplicate Message ID values within a window of time at least as large
 as the round-trip latency of a protocol message.
 
-2.2.2  PNRP Messages
+#### 2.2.2 PNRP Messages
 
-2.2.2.1  SOLICIT
+##### 2.2.2.1 SOLICIT
 
 The SOLICIT message is sent by a Resolver to a Publisher to request a list of PNRP IDs in a cloud.
 
@@ -1827,7 +1629,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-...
+
+...
 
 Padding2 (variable)
 
@@ -1908,9 +1711,10 @@ Release: June 25, 2021
 
 21 / 82
 
-HashedNonce (20 bytes): A 20-byte hash of the nonce value for the conversation.
 
-2.2.2.2  ADVERTISE
+HashedNonce (20 bytes): A 20-byte hash of the nonce value for the conversation.
+
+##### 2.2.2.2 ADVERTISE
 
 The ADVERTISE message is sent by a Publisher to a Resolver in response to a SOLICIT message, in
 order to provide a list of PNRP IDs in the cloud.
@@ -1993,7 +1797,8 @@ Release: June 25, 2021
 
 22 / 82
 
-IDList (variable): A set of 32-byte PNRP IDs.
+
+IDList (variable): A set of 32-byte PNRP IDs.
 
 FieldID3 (2 bytes): MUST be set to 0x0092 (HASHED_NONCE).
 
@@ -2003,7 +1808,7 @@ HashedNonce (20 bytes): The value of the HashedNonce field in the SOLICIT messag
 
 this is a response.
 
-2.2.2.3  REQUEST
+##### 2.2.2.3 REQUEST
 
 The REQUEST message is sent by a Resolver to a Publisher to request a route entry for a given PNRP
 ID in the Publisher's cache, as seen in an ADVERTISE message.
@@ -2078,9 +1883,10 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-IDList (variable): A set of 32-byte PNRP IDs.
 
-2.2.2.4  FLOOD
+IDList (variable): A set of 32-byte PNRP IDs.
+
+##### 2.2.2.4 FLOOD
 
 The FLOOD message is sent by a Publisher to a Resolver in response to a REQUEST message, in order
 to provide a route entry or to revoke a CPA.
@@ -2165,7 +1971,8 @@ Release: June 25, 2021
 
 24 / 82
 
-FieldID1 (2 bytes): MUST be set to 0x0043 (FLOOD_CONTROLS).
+
+FieldID1 (2 bytes): MUST be set to 0x0043 (FLOOD_CONTROLS).
 
 Length1 (2 bytes): MUST be set to 0x0007.
 
@@ -2239,7 +2046,8 @@ Release: June 25, 2021
 
 25 / 82
 
-2.2.2.5  INQUIRE
+
+##### 2.2.2.5 INQUIRE
 
 The INQUIRE message is sent by a Resolver to a Publisher to obtain a CPA, or sent from one Publisher
 to another to verify that the latter is still in the cloud.
@@ -2325,11 +2133,12 @@ Release: June 25, 2021
 
 26 / 82
 
-Nonce (16 bytes): A nonce value that the sender wants to be copied into a CPA before it is signed,
+
+Nonce (16 bytes): A nonce value that the sender wants to be copied into a CPA before it is signed,
 
 in order to prevent replay attacks. This field MUST be present if and only if FieldID3 is present.
 
-2.2.2.6  AUTHORITY
+##### 2.2.2.6 AUTHORITY
 
 The AUTHORITY message is sent by a Publisher to a Resolver in response to an INQUIRE or LOOKUP
 message.
@@ -2385,7 +2194,7 @@ message. It MUST be a multiple of 1,188.
 
 Buffer (variable): The portion of AUTHORITY_BUFFER starting at a byte offset specified in Offset.
 
-2.2.2.6.1 AUTHORITY_BUFFER
+###### 2.2.2.6.1 AUTHORITY_BUFFER
 
 The AUTHORITY_BUFFER structure is contained within a logical message containing the CPA and
 extended payload information associated with a Peer Name. Parts of this logical message appear in
@@ -2423,7 +2232,8 @@ Release: June 25, 2021
 
 27 / 82
 
-FieldID2 (optional)
+
+FieldID2 (optional)
 
 Length2 (optional)
 
@@ -2494,7 +2304,8 @@ Release: June 25, 2021
 
 28 / 82
 
-FieldID1 (2 bytes): MUST be set to 0x0040 (FLAGS_FIELD).
+
+FieldID1 (2 bytes): MUST be set to 0x0040 (FLAGS_FIELD).
 
 Length1 (2 bytes): MUST be set to 0x0006.
 
@@ -2575,7 +2386,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Extended Payload (variable): An EXTENDED_PAYLOAD structure. MUST be present if and only if
+
+Extended Payload (variable): An EXTENDED_PAYLOAD structure. MUST be present if and only if
 
 FieldID4 is present.
 
@@ -2610,7 +2422,7 @@ Length6 (2 bytes): MUST be present if and only if FieldID6 is present. If presen
 
 CPA (variable): An Encoded CPA structure.
 
-2.2.2.7  ACK
+##### 2.2.2.7 ACK
 
 The ACK message is sent from one node to another to acknowledge receipt of a REQUEST or FLOOD
 message.
@@ -2661,11 +2473,12 @@ Release: June 25, 2021
 
 30 / 82
 
-N (1 bit): Not Found. If present, indicates that there is no PNRP ID registered on the sender that
+
+N (1 bit): Not Found. If present, indicates that there is no PNRP ID registered on the sender that
 corresponds to the Validate PNRP ID field in the FLOOD message to which this ACK is a
 response.
 
-2.2.2.8  LOOKUP
+##### 2.2.2.8 LOOKUP
 
 The LOOKUP message is sent by a Resolver to a Publisher to resolve a PNRP ID.
 
@@ -2749,7 +2562,8 @@ Release: June 25, 2021
 
 31 / 82
 
-FieldID1 (2 bytes): MUST be set to 0x0045 (LOOKUP_CONTROLS).
+
+FieldID1 (2 bytes): MUST be set to 0x0045 (LOOKUP_CONTROLS).
 
 Length1 (2 bytes): MUST be set to 0x000C.
 
@@ -2855,7 +2669,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Length2 (2 bytes): MUST be set to 0x0024 (36 bytes).
+
+Length2 (2 bytes): MUST be set to 0x0024 (36 bytes).
 
 Target PNRP ID (32 bytes): The PNRP ID to look up.
 
@@ -2891,9 +2706,9 @@ Flagged Path (variable): A list of IPV6_ENDPOINT structures for PNRP node that h
 
 LOOKUP request so far.
 
-2.2.3  Data Structures
+#### 2.2.3 Data Structures
 
-2.2.3.1  Encoded CPA
+##### 2.2.3.1 Encoded CPA
 
 The Encoded CPA structure contains information about an endpoint.
 
@@ -2939,7 +2754,8 @@ Release: June 25, 2021
 
 33 / 82
 
-Nonce (16 bytes)
+
+Nonce (16 bytes)
 
 ...
 
@@ -3006,7 +2822,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-00 (2 bits): MUST be set to zero when sent and MUST be ignored on receipt
+
+00 (2 bits): MUST be set to zero when sent and MUST be ignored on receipt
 
 X (1 bit): If set, indicates the CPA has an associated Extended Payload.
 
@@ -3086,7 +2903,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-2.2.3.1.1 Service Address List
+
+###### 2.2.3.1.1 Service Address List
 
 The Service Address List is an encoding of the IPv6 Addresses and ports that are used by PNRP on a
 node publishing a PNRP ID.
@@ -3121,7 +2939,7 @@ MUST be set to 0x0012 (18 bytes).
 
 Service Addresses (variable): An array of IPV6_ENDPOINT (section 2.2.3.6) structures.
 
-2.2.3.1.2 PAYLOAD
+###### 2.2.3.1.2 PAYLOAD
 
 The PAYLOAD structure has the following format.
 
@@ -3156,7 +2974,7 @@ Data (variable): PAYLOAD data. This MUST be an array of IPV6_APP_ENDPOINT (secti
 
 structures.
 
-2.2.3.1.3 IPV6_APP_ENDPOINT
+###### 2.2.3.1.3 IPV6_APP_ENDPOINT
 
 The IPV6_APP_ENDPOINT structure holds application-supplied IPv6 endpoint information.
 
@@ -3182,7 +3000,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-...
+
+...
 
 sin6_port
 
@@ -3196,7 +3015,7 @@ Protocol (2 bytes): The Protocol Number [IANA-PROTO-NUM], in little-endian byte 
 
 by an application.
 
-2.2.3.1.4 CPA Public Key
+###### 2.2.3.1.4 CPA Public Key
 
 The CPA Public Key structure contains an encoding of the public key used to sign the certified peer
 address (CPA).
@@ -3252,7 +3071,7 @@ PublicKey Data (variable): An ASN.1-encoded 1024-bit RSA public key, as specifie
 
 section A.1.1.
 
-2.2.3.2  SIGNATURE
+##### 2.2.3.2 SIGNATURE
 
 The SIGNATURE structure carries the encoding of a signature for a CPA or an EXTENDED_PAYLOAD
 structure.
@@ -3264,7 +3083,8 @@ Release: June 25, 2021
 
 37 / 82
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3298,7 +3118,7 @@ ALG_ID (4 bytes): Hash algorithm identifier, in little-endian byte order. MUST b
 
 Signature Data (variable): Signature created when signing the CPA.
 
-2.2.3.3  EXTENDED_PAYLOAD
+##### 2.2.3.3 EXTENDED_PAYLOAD
 
 The EXTENDED_PAYLOAD structure holds arbitrary data supplied by the application for a Peer Name.
 
@@ -3352,7 +3172,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Payload Length
+
+Payload Length
 
 String Type (optional)
 
@@ -3427,7 +3248,8 @@ Release: June 25, 2021
 
 39 / 82
 
-Value  Meaning
+
+Value  Meaning
 
 0x0000  Unicode
 
@@ -3439,7 +3261,7 @@ PayloadType is 0x80000003) supplied by the application or higher-layer protocol.
 
 Signature (variable): A SIGNATURE structure.
 
-2.2.3.4  ROUTE_ENTRY
+##### 2.2.3.4 ROUTE_ENTRY
 
 The ROUTE_ENTRY represents the basic critical information about a node to the other members of the
 cloud. The key elements are a 32-byte PNRP ID and an array of IPv6 Addresses on which PNRP on
@@ -3494,7 +3316,7 @@ IPv6 Addresses (variable):  An array of IPv6 Addresses on which the PNRP node re
 
 this route entry is listening.
 
-2.2.3.5  Certificate Chain
+##### 2.2.3.5 Certificate Chain
 
 A Certificate Chain is a PKCS 7 Version 1.5 message of type SignedData as specified in [RFC2315]
 section 9.1. It consists of a list of [X509] version 3 certificates with delegation information stored in
@@ -3509,7 +3331,8 @@ Release: June 25, 2021
 
 40 / 82
 
-Each certificate in the chain MUST be an [X509] version 3 [RFC2459] format certificate, with the
+
+Each certificate in the chain MUST be an [X509] version 3 [RFC2459] format certificate, with the
 following constraints on the fields defined in [RFC2459]:
 
 1.  The version ([RFC2459] section 4.1.2.1) MUST be set to 2 (version 3).
@@ -3538,7 +3361,7 @@ NOT be longer than 255 characters.
 
 be longer than 255 characters.
 
-2.2.3.5.1 Certificate Extensions
+###### 2.2.3.5.1 Certificate Extensions
 
 As specified in [RFC2459] section 4.2, there is a mechanism for creating Certificate Extensions, where
 each extension includes an object identifier (OID) and an ASN.1 structure. As specified in [RFC2459],
@@ -3560,7 +3383,7 @@ PNRP specifies the following additional certificate extensions. All of the follo
 "critical" (as specified in [RFC2459] section 4.2), which means that if the receiver does not understand
 a critical property, it MUST reject that certificate.
 
-2.2.3.5.1.1  PnrpCertificateType
+###### 2.2.3.5.1.1 PnrpCertificateType
 
  pnrpCertificateType EXTENSION ::= {
            SYNTAX PnrpCertificateType
@@ -3581,7 +3404,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Value
+
+Value
 
 Meaning
 
@@ -3598,7 +3422,7 @@ The certificate is the first certificate of a chain.
 
 0x00000002
 
-2.2.3.5.1.2  PnrpCertificateVersion
+###### 2.2.3.5.1.2 PnrpCertificateVersion
 
  pnrpCertificateVersion EXTENSION ::= {
            SYNTAX PnrpCertificateVersion
@@ -3610,7 +3434,7 @@ The certificate is the first certificate of a chain.
 PnrpCertificateVersion: The PNRP Certificate version number. MUST be set to 0x01000200 (in network
 byte order), meaning version 1.2. Every certificate in the Certificate Chain MUST have this extension.
 
-2.2.3.5.1.3  PnrpPeerName
+###### 2.2.3.5.1.3 PnrpPeerName
 
  pnrpPeerName EXTENSION ::= {
            SYNTAX PnrpPeerName
@@ -3635,7 +3459,7 @@ verify that it exists in the last certificate in the chain and that the value is
 last certificates in the chain. The PnrpPeerNameString value MUST conform to the syntax of a
 Peer Name, as specified in section 2.2.4.
 
-2.2.3.5.1.4  PnrpRole
+###### 2.2.3.5.1.4 PnrpRole
 
  pnrpRole EXTENSION ::= {
            SYNTAX PnrpRole
@@ -3652,7 +3476,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-               roleMember         (f12dc4c708574ca093fcb1bb19a3d8c2),
+
+               roleMember         (f12dc4c708574ca093fcb1bb19a3d8c2),
                roleInvitingMember (dd15f41ffc4e4922b0354c06a754d01d) }
  PnrpRole ::=  SEQUENCE SIZE (1..MAX) OF RoleUuid
 
@@ -3677,7 +3502,7 @@ roleInvitingMember  Same as roleAdmin. An application or higher-layer protocol d
 
 value.
 
-2.2.3.5.1.5  PnrpClassifiersList
+###### 2.2.3.5.1.5 PnrpClassifiersList
 
  pnrpClassifiersList EXTENSION ::= {
            SYNTAX PnrpClassifiersList
@@ -3706,7 +3531,7 @@ chain. For every certificate in the chain other than the first certificate, each
 that is a legal delegate (as specified in section 2.2.3.5.1.5.1) based on the same certificate's role,
 and the previous certificate's classifier list.
 
-2.2.3.5.1.5.1  Classifier Delegation
+###### 2.2.3.5.1.5.1 Classifier Delegation
 
 The following rules MUST be used to determine whether a given classifier and role are legal based on
 a delegator's classifier list:
@@ -3722,7 +3547,8 @@ Release: June 25, 2021
 
 43 / 82
 
-  Otherwise, if the specified role is either roleAdmin or roleInvitingMember, the given classifier
+
+  Otherwise, if the specified role is either roleAdmin or roleInvitingMember, the given classifier
 MUST either match a classifier in the delegator's classifier list or begin with a classifier in the
 delegator's classifier list.
 
@@ -3786,7 +3612,7 @@ No
 <empty list>, "fish
 food", "cheese-like"
 
-2.2.3.6  IPV6_ENDPOINT
+##### 2.2.3.6 IPV6_ENDPOINT
 
 The IPV6_ENDPOINT structure contains information about an IPV6_ENDPOINT of a PNRP node.
 
@@ -3815,7 +3641,7 @@ Port (2 bytes): IPv6 port. MUST be greater than 1024.
 
 Address (16 bytes): IPv6 address.
 
-2.2.4  Peer Names
+#### 2.2.4 Peer Names
 
 Protocols and higher-layer applications use Peer Names for publishing endpoint information and to
 resolve them to endpoint information. A Peer Name MUST be a Unicode string conforming to the
@@ -3834,7 +3660,8 @@ Release: June 25, 2021
 
 44 / 82
 
- clchar = %x0001-FFFF ; any non-NULL Unicode character
+
+ clchar = %x0001-FFFF ; any non-NULL Unicode character
 
 [MS-PNRP] - v20210625
 Peer Name Resolution Protocol (PNRP) Version 4.0
@@ -3843,7 +3670,8 @@ Release: June 25, 2021
 
 45 / 82
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 PNRP nodes use eight specific message types. These messages can be split into two distinctive
 classes: request messages (SOLICIT, REQUEST, FLOOD, LOOKUP, and INQUIRE) and acknowledge
@@ -3878,9 +3706,9 @@ FLOOD with D flag clear
 
 ACK
 
-3.1  Resolver Details
+### 3.1 Resolver Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3923,7 +3751,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  ResolveReasonCode: The resolve reason code (as specified in section 2.2.2.8) for this
+
+  ResolveReasonCode: The resolve reason code (as specified in section 2.2.2.8) for this
 
 resolve.
 
@@ -4007,7 +3836,8 @@ Release: June 25, 2021
 
 47 / 82
 
-  Size: Expected size of the final buffer.
+
+  Size: Expected size of the final buffer.
 
   Buffer: A buffer into which fragments are placed.
 
@@ -4033,7 +3863,7 @@ requests. SSDP is specified in [UPNPARCH1], section 1.
 Note  The preceding conceptual data can be implemented by using a variety of techniques. An
 implementer is at liberty to implement such data in any manner as required.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Each entry in the Cloud Table has the following timers:
 
@@ -4049,16 +3879,16 @@ SHOULD<1> be 15 seconds to keep the cache functional.
 
 and is used for retransmission. The period SHOULD be one second.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 A Resolver MUST provide to higher-layer applications and protocols three logical operations that can
 be invoked: Opening a Cloud, Resolving a Peer Name, and Closing a Cloud.
 
-3.1.4.1  Opening a Cloud
+##### 3.1.4.1 Opening a Cloud
 
 When a higher-layer application or protocol asks PNRP to open a given cloud (optionally specifying
 one or more seed servers for the cloud), the node MUST first check whether the cloud already exists
@@ -4081,7 +3911,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Endpoint List of any other entry in the Cloud Table. If no addresses are available, the open
+
+Endpoint List of any other entry in the Cloud Table. If no addresses are available, the open
 attempt MUST report a failure. Otherwise, store the chosen addresses in the Local Endpoint List.
 
 2.  Begin listening for incoming messages on the UDP port and IPv6 Addresses chosen.
@@ -4092,7 +3923,7 @@ cloud discovery process as specified in section 3.1.4.2.
 
 4.  Start the Maintenance Timer for the cloud.
 
-3.1.4.2  Discovering Other Nodes in a Cloud
+##### 3.1.4.2 Discovering Other Nodes in a Cloud
 
 If CloudDiscoveryMode is LocalOOB, the node MAY<2> initiate the synchronization conversation
 against a list of endpoints provided via an implementation-specific means. If any such addresses are
@@ -4109,7 +3940,7 @@ period of time waiting for Simple Service Discovery Protocol responses, as speci
 section 1).
 
 If CloudDiscoveryMode is SeedServer, the node MUST carry out the process as specified in section
-3.1.4.2.1 to obtain a list of nodes acting as seed servers.
+###### 3.1.4.2.1 to obtain a list of nodes acting as seed servers.
 
 3.1.4.2.1 Using Seed Servers
 
@@ -4130,7 +3961,7 @@ the index equal to CurrentSeedServerAddressIndex, increment CurrentSeedServerAdd
 initiate a synchronization conversation (as specified in section 3.1.4.3) to the address selected by
 using UDP port 3540, and finally set CloudDiscoveryMode to LocalOOB.
 
-3.1.4.2.2 Multicast Cloud Discovery
+###### 3.1.4.2.2 Multicast Cloud Discovery
 
 To initiate multicast cloud discovery, PNRP MUST do the following:
 
@@ -4148,14 +3979,15 @@ Release: June 25, 2021
 
 49 / 82
 
- "urn:Microsoft Windows Peer Name Resolution Protocol: V4:IPV6:<Scope>"
+
+ "urn:Microsoft Windows Peer Name Resolution Protocol: V4:IPV6:<Scope>"
 
 <Scope> MUST be replaced by either "Global", "SiteLocal", or "LinkLocal" (without the quotation
 marks).
 
 3.  Set SSDPResponseRequestIdentifier to the search target string used in the M-SEARCH.
 
-3.1.4.3  Initiating a PNRP Synchronization Conversation
+##### 3.1.4.3 Initiating a PNRP Synchronization Conversation
 
 A synchronization conversation allows a node to exchange resource information in the form of
 ROUTE_ENTRY structures with another given node in a given cloud.
@@ -4169,7 +4001,7 @@ The node MUST save the Message ID of the SOLICIT message in the entry in the con
 The node MUST also put the SOLICIT message in the Pending List, set its Retry Count to 2, and start
 its Message Retransmission Timer.
 
-3.1.4.4  Resolving a Peer Name
+##### 3.1.4.4 Resolving a Peer Name
 
 In a resolution operation, five inputs are provided by the application or higher layer protocol:
 
@@ -4202,7 +4034,7 @@ ResolveReasonCode set to REASON_APP_REQUEST, InitialBestMatchRouteEntry and
 InitialNextHopRouteEntry set to empty, and PickBestMatchFromLocalIds set to true if the calling code
 requests locally registered IDs to be considered.
 
-3.1.4.4.1 Constructing a PNRP ID
+###### 3.1.4.4.1 Constructing a PNRP ID
 
 The Resolver MUST first separate the Peer Name into its authority and classifier parts. The
 authority MUST then be converted to the 160-bit binary number (which is called the BinaryAuthority)
@@ -4215,7 +4047,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-A ServiceLocation MUST then be constructed by concatenating the 64-bit ServiceLocationPrefix, and
+
+A ServiceLocation MUST then be constructed by concatenating the 64-bit ServiceLocationPrefix, and
 then the 64-bit ServiceLocationSuffix value.
 
 Finally, the BinaryAuthority, Classifier, and ServiceLocation MUST then be converted to a PNRP ID by
@@ -4229,7 +4062,7 @@ where SHA-1() indicates an SHA-1 hash as specified in [RFC3174], and "PNRP" is a
 string. (Note that SHA-1 provides a 20-byte value, from which the P2PID formula drops the final 4
 bytes to produce a result which is 128 bits in length.)
 
-3.1.4.4.2 Resolving a PNRP ID
+###### 3.1.4.4.2 Resolving a PNRP ID
 
 All nodes taking part in PNRP will carry out the resolve process from time to time. Resolve-only nodes
 use the resolve process to handle requests from higher-layer applications to resolve a Peer Name.
@@ -4291,7 +4124,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-6.  If an InitialBestMatchRouteEntry was supplied, push it onto the resolve entry's BestMatchStack.
+
+6.  If an InitialBestMatchRouteEntry was supplied, push it onto the resolve entry's BestMatchStack.
 
 7.  If the resolve entry's CurrentBestMatch is not empty and the PNRP ID of the most recently pushed
 entry in BestMatchStack is sufficiently close (per the ResolveCriteria) to the Target PNRP ID, then:
@@ -4336,16 +4170,16 @@ increment the UseCount in the CurrentNextHop state. Set LastSentMessageID to the
 of the LOOKUP message. Put the LOOKUP message in the Pending List, set the message Retry
 Count to 2, and start its Message Retransmission Timer.
 
-3.1.4.5  Closing a Cloud
+##### 3.1.4.5 Closing a Cloud
 
 When an application or higher-layer protocol closes a cloud, the PNRP node MUST verify that it has
 the cloud state for the cloud with a nonzero Open Count, and fail the request if not. Otherwise, the
 PNRP node MUST decrement the Open Count. If the Open Count is then zero, the PNRP node MUST
 start the Cloud Cleanup Timer.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving an SSDP Response
+##### 3.1.5.1 Receiving an SSDP Response
 
 When an SSDP response (as specified in [UPNPARCH1], section 1) is received, the PNRP node MUST
 handle it as follows:
@@ -4357,7 +4191,8 @@ Release: June 25, 2021
 
 52 / 82
 
-First, it finds the entry in the Cloud Table corresponding to the request (for example, based on the
+
+First, it finds the entry in the Cloud Table corresponding to the request (for example, based on the
 SSDPResponseRequestIdentifier URI in the cloud entry to the ST field of the response). If no match is
 found, the node MUST drop the SSDP response.
 
@@ -4371,7 +4206,7 @@ CloudDiscoverySSDPTargetCount MUST then be incremented.
 
 Otherwise, it discards the SSDP response.
 
-3.1.5.2  Receiving a PNRP Message
+##### 3.1.5.2 Receiving a PNRP Message
 
 When a node receives a PNRP Message, it MUST first check whether the message starts with a PNRP
 Header that conforms to the syntax as specified in section 2.2.1, and silently drop the message if not.
@@ -4385,7 +4220,7 @@ The node MUST then check the Message Type field, and handle additional type-spec
 accordance with its message type. Messages with types other than those specified in this document
 MUST be dropped.
 
-3.1.5.3  Receiving an ADVERTISE Message
+##### 3.1.5.3 Receiving an ADVERTISE Message
 
 When a Resolver receives an ADVERTISE message, it MUST perform the following steps:
 
@@ -4409,7 +4244,7 @@ array.
 MUST also add the REQUEST message to the Pending List, set its Retry Count to 2, and start its
 Message Retransmission Timer.
 
-3.1.5.4  Receiving an ACK Message
+##### 3.1.5.4 Receiving an ACK Message
 
 When an ACK message is received, the receiving node MUST attempt to match the Acked Message
 ID field with the Message ID of an entry in the Pending List. If a match is not found, the message
@@ -4427,7 +4262,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.1.5.5  Receiving a FLOOD Message
+
+##### 3.1.5.5 Receiving a FLOOD Message
 
 Upon receiving a FLOOD message, a PNRP node MUST perform the following steps:
 
@@ -4451,7 +4287,7 @@ section 3.1.4.4.1.
 
 6.  Remove the ROUTE_ENTRY (if any) for the PNRP ID of the Revoke CPA from the cache.
 
-3.1.5.6  Receiving an AUTHORITY Message
+##### 3.1.5.6 Receiving an AUTHORITY Message
 
 On receipt of an AUTHORITY message, the PNRP node MUST first check whether the AUTHORITY
 message conforms to the syntax as specified in section 2.2.2.6, and drop the message if not.
@@ -4483,7 +4319,7 @@ If the AUTHORITY_BUFFER message is still not completely reassembled, no further 
 necessary. After the last fragment is received, processing MUST be done on the reassembled
 AUTHORITY_BUFFER message.
 
-3.1.5.6.1 Receiving an AUTHORITY_BUFFER
+###### 3.1.5.6.1 Receiving an AUTHORITY_BUFFER
 
 When a PNRP node has a fully-formed AUTHORITY_BUFFER message, the PNRP node MUST first check
 whether the AUTHORITY_BUFFER message conforms to the syntax as specified in section 2.2.2.6.1,
@@ -4496,7 +4332,8 @@ Release: June 25, 2021
 
 54 / 82
 
-Otherwise, the PNRP node MUST remove the entry (as specified in section 3.1.5.6) from the Pending
+
+Otherwise, the PNRP node MUST remove the entry (as specified in section 3.1.5.6) from the Pending
 List.
 
 The Outstanding Resolves Table MUST then be checked to find an entry that sent a LOOKUP message
@@ -4552,7 +4389,7 @@ NewNextHop.
 
 11. Resume at step 7 in section 3.1.4.4.2.
 
-3.1.5.6.1.1  Receiving a Response to an INQUIRE Message
+###### 3.1.5.6.1.1 Receiving a Response to an INQUIRE Message
 
 The Outstanding Resolve table MUST be checked to find an entry that sent an INQUIRE message
 during a resolution. If one is not found, proceed to section 3.1.5.6.1.2. Otherwise, continue processing
@@ -4571,14 +4408,15 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-no new CurrentBestMatch, the node MUST return a failure to the higher-layer application or protocol;
+
+no new CurrentBestMatch, the node MUST return a failure to the higher-layer application or protocol;
 otherwise, the node MUST repeat the LOOKUP message procedure starting at step 7 of section
 3.1.4.4.2.
 
 If the resolve entry's ResolveReasonCode is equal to REASON_APP_REQUEST, the node MUST then
 return the endpoint information to the higher-layer application or protocol.
 
-3.1.5.6.1.2  Completing a Route Entry Cache Addition
+###### 3.1.5.6.1.2 Completing a Route Entry Cache Addition
 
 The following processing MUST be done when the AUTHORITY_BUFFER message is acknowledging an
 INQUIRE message sent while adding a route entry to the cache:
@@ -4612,7 +4450,7 @@ do not match, the Route Entry MUST be silently discarded.
 
 7.  Add the Route Entry to the Route Entry Cache.
 
-3.1.5.7  Validating a CPA
+##### 3.1.5.7 Validating a CPA
 
 To validate a CPA, a PNRP node MUST perform the following checks. If any assertion in the following
 is not true, the CPA MUST be rejected as invalid.
@@ -4643,10 +4481,11 @@ Release: June 25, 2021
 
 56 / 82
 
-Verify (using the rules in section 3.1.5.9) that the SIGNATURE structure contains the correct signature
+
+Verify (using the rules in section 3.1.5.9) that the SIGNATURE structure contains the correct signature
 of the Encoded CPA structure (minus the Signature field).
 
-3.1.5.8  Validating an Extended Payload
+##### 3.1.5.8 Validating an Extended Payload
 
 To validate an EXTENDED_PAYLOAD message, a PNRP node MUST perform the following checks. If any
 of the assertions that follow is not true, the EXTENDED_PAYLOAD message MUST be rejected as
@@ -4666,7 +4505,7 @@ the Nonce field in the original INQUIRE message.
 Verify (using the rules as specified in section 3.1.5.9) that the SIGNATURE structure contains the
 correct signature of the EXTENDED_PAYLOAD structure (minus the Signature field).
 
-3.1.5.9  Validating a SIGNATURE Structure
+##### 3.1.5.9 Validating a SIGNATURE Structure
 
 To validate that a SIGNATURE structure contains the correct signature of a given buffer, a PNRP node
 MUST perform the following checks. If any assertion is not true, the SIGNATURE structure MUST be
@@ -4679,9 +4518,9 @@ by using the algorithm as specified in ALG_ID. The node MUST decrypt the Signatu
 using the public key received as a part of the CPA. Finally, verify that the decrypted signature matches
 the previously mentioned hash.
 
-3.1.5.10
+##### 3.1.5.10 Validating a Certificate Chain
 
-Validating a Certificate Chain
+
 
 To validate a Certificate Chain, a node MUST perform the following checks. If any of the following
 assertions is not true, the Certificate Chain MUST be rejected as invalid.
@@ -4717,7 +4556,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-7.  Verify that the first certificate in the chain is a self-signed certificate (for more information, see
+
+7.  Verify that the first certificate in the chain is a self-signed certificate (for more information, see
 
 [RFC2459] section 6.1).
 
@@ -4741,9 +4581,9 @@ the PnrpPeerName extension of the first certificate in the chain.
 classifiers specified in the PnrpClassifiersList extension of the last certificate in the chain, as
 specified in section 2.2.3.5.1.5.
 
-3.1.5.11
+##### 3.1.5.11 Receiving a New ROUTE_ENTRY Message
 
-Receiving a New ROUTE_ENTRY Message
+
 
 After a ROUTE_ENTRY message has been extracted from a received message, the receiving node
 MUST follow these steps to submit it to the cache for inclusion. If the PortNumber field of the
@@ -4762,14 +4602,14 @@ port indicated in the ROUTE_ENTRY message.
 The node MUST then set InquireMessageId to the Message ID of the INQUIRE message sent, in the
 entry added to the Pending Route Entry Add List.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Cloud Cleanup Timer Expiry
+##### 3.1.6.1 Cloud Cleanup Timer Expiry
 
 When the Cloud Cleanup Timer expires for a given cloud, the PNRP node MUST delete all state for the
 cloud.
 
-3.1.6.2  Maintenance Timer Expiry
+##### 3.1.6.2 Maintenance Timer Expiry
 
 The node MUST check to see if it knows of any other members of the cloud. If it does not, it MUST
 invoke the process as specified in section 3.1.4.2 to attempt to discover the cloud.
@@ -4787,7 +4627,8 @@ Release: June 25, 2021
 
 58 / 82
 
-3.1.6.3  Message Retransmission Timer Expiry
+
+##### 3.1.6.3 Message Retransmission Timer Expiry
 
 When the Message Retransmission Timer expires for an entry in the Pending List, the PNRP node
 MUST decrement the entry's Retry Count. If the Retry Count is nonzero, the message MUST be resent
@@ -4801,9 +4642,9 @@ message, the PNRP node MUST cleanup any outstanding reassembly context that matc
 Message ID, source IP address, and port by removing the corresponding entry from the Reassembly
 List.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Processing Address Change Notifications
+##### 3.1.7.1 Processing Address Change Notifications
 
 The PNRP node MUST monitor changes in IPv6 Addresses field available on the host machine. If a
 change in the set of addresses is detected, then the node MUST construct a new list of addresses
@@ -4811,12 +4652,12 @@ following the restrictions as specified in step 1 of section 3.1.4.1. If this is
 list in the Local Endpoint List, then the node MUST replace the old list with the new one. If the new list
 is empty, the node indicates a failure to the application or higher-layer protocol.
 
-3.2  Publisher Details
+### 3.2 Publisher Details
 
 All Publishers MUST follow the rules for Resolvers as well. This section specifies additional rules
 beyond those in section 3.1.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4854,10 +4695,11 @@ Release: June 25, 2021
 
 59 / 82
 
-Note  The previously conceptual data can be implemented by using a variety of techniques. An
+
+Note  The previously conceptual data can be implemented by using a variety of techniques. An
 implementer is at liberty to implement such data in any way that it pleases.
 
-3.2.1.1  Cache
+##### 3.2.1.1 Cache
 
 To respond to LOOKUP messages when a neighbor is searching for a particular PNRP ID, a PNRP
 node is required to maintain a Route Entry Cache. A PNRP cloud has no scale limitation, and could
@@ -4888,18 +4730,18 @@ This constraint ensures that when a neighbor is performing a bootstrap operation
 entries (using SOLICIT messages) for this node's cache, it is possible to advertise (using
 ADVERTISE messages) an even distribution of candidates.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Conversation Timer: A one-shot timer per Conversation Table entry, which is used to expire the
 conversation entry. The time-out value SHOULD be 15 seconds.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The Publisher performs no initialization beyond that specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Registering a Peer Name
+##### 3.2.4.1 Registering a Peer Name
 
 To register a Peer Name, the application or higher-layer protocol MUST provide:
 
@@ -4928,7 +4770,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  Optionally, a ServiceLocationPrefix value
+
+  Optionally, a ServiceLocationPrefix value
 
   Optionally, a FriendlyName string
 
@@ -4971,7 +4814,7 @@ specified in [UPNPARCH1], section 1). The format of the text in the AL field MUS
 of an IPv6 Addresses and port in the format as specified in [RFC2732] (for example, the format
 of the hostname portion of a URL).
 
-3.2.4.2  Unregistering a Peer Name
+##### 3.2.4.2 Unregistering a Peer Name
 
 To unregister a Peer Name, a node MUST carry out the following steps:
 
@@ -4998,7 +4841,8 @@ Release: June 25, 2021
 
 61 / 82
 
-4.  In this manner, the Leaf Sets of the nodes at the edge of this node's Leaf Set will know fully about
+
+4.  In this manner, the Leaf Sets of the nodes at the edge of this node's Leaf Set will know fully about
 
 the existing neighbors.
 
@@ -5009,9 +4853,9 @@ node in SSDP (as specified in [UPNPARCH1], section 1).
 Whenever a FLOOD message with the D flag clear is sent, the node MUST also put the FLOOD
 message in the Pending List, set its Retry Count to 2, and start its Message Retransmission Timer.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a New ROUTE_ENTRY
+##### 3.2.5.1 Receiving a New ROUTE_ENTRY
 
 SOLICIT, LOOKUP, FLOOD and AUTHORITY messages contain route entries. The processing required
 when receiving a new ROUTE_ENTRY structure is specified in section 3.1.5.11. Publishers MUST follow
@@ -5021,7 +4865,7 @@ If the PNRP ID of the ROUTE_ENTRY message falls within one of the node's PNRP ID
 MUST set the A and C flags in the INQUIRE message to request a CPA and Certificate Chain, and
 NeedCpa MUST be set to true for the entry added to the Pending Route Entry Add List.
 
-3.2.5.2  Receiving a LOOKUP Message
+##### 3.2.5.2 Receiving a LOOKUP Message
 
 When a LOOKUP message is received, a node MUST take the following steps:
 
@@ -5067,7 +4911,8 @@ Release: June 25, 2021
 
 62 / 82
 
-7.  If both ClosestLocalMatch and ClosestRemoteMatch were found, the node MUST now prepare an
+
+7.  If both ClosestLocalMatch and ClosestRemoteMatch were found, the node MUST now prepare an
 AUTHORITY_BUFFER message to send back to the sender of the LOOKUP message. If both a
 ClosestLocalMatch and a ClosestRemoteMatch were found, the one closest to the Target PNRP ID
 MUST be placed in the ROUTE_ENTRY message in the AUTHORITY message. Otherwise, the match
@@ -5081,7 +4926,7 @@ that was found MUST be used.
 
 message, as specified in section 3.2.5.10.
 
-3.2.5.3  Receiving a SOLICIT Message
+##### 3.2.5.3 Receiving a SOLICIT Message
 
 Upon receiving a SOLICIT message for a given cloud, a PNRP node MUST take the following steps:
 
@@ -5110,7 +4955,7 @@ to the source of the SOLICIT message.
 
 in section 3.2.5.1.
 
-3.2.5.4  Receiving a REQUEST Message
+##### 3.2.5.4 Receiving a REQUEST Message
 
 When the REQUEST message is received for a given cloud, the receiving node MUST perform the
 following steps:
@@ -5142,14 +4987,15 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.2.5.5  Receiving a FLOOD Message
+
+##### 3.2.5.5 Receiving a FLOOD Message
 
 Section 3.1.5.5 specifies the rules for handling received FLOOD messages. In addition to those rules,
 when sending an ACK message in response to a FLOOD message with a nonzero Validate PNRP ID
 field, a Publisher MUST check its Locally Registered PNRP ID List. If the Validate PNRP ID is not in
 the list, the Publisher MUST set the N flag in the ACK message.
 
-3.2.5.6  Receiving an INQUIRE Message
+##### 3.2.5.6 Receiving an INQUIRE Message
 
 When a PNRP node receives an INQUIRE message, it MUST perform the following steps:
 
@@ -5183,19 +5029,19 @@ and insert it into the AUTHORITY_BUFFER message.
 
 section 3.2.5.10.
 
-3.2.5.7  Constructing a CPA
+##### 3.2.5.7 Constructing a CPA
 
 To construct a CPA, a PNRP node MUST compose an Encoded CPA structure as specified in section
 2.2.3.1, with the NONCE copied from the INQUIRE message received. The Service Address List
 structure MUST be filled with the endpoints in the Local Endpoint List. Finally, the PNRP node MUST fill
 in the Signature as specified in section 3.2.5.9.
 
-3.2.5.8  Constructing an Extended Payload
+##### 3.2.5.8 Constructing an Extended Payload
 
 To construct an EXTENDED PAYLOAD message, a PNRP node MUST compose an EXTENDED_PAYLOAD
 structure as specified in section 2.2.3.3, and fill in the Signature as specified in section 3.2.5.9.
 
-3.2.5.9  Generating a Signature
+##### 3.2.5.9 Generating a Signature
 
 To generate a signature over an Encoded CPA or EXTENDED_PAYLOAD structure (minus the
 Signature field), the PNRP node MUST first generate an SHA-1 hash of the structure (minus the
@@ -5210,9 +5056,10 @@ Release: June 25, 2021
 
 64 / 82
 
-3.2.5.10
 
-Sending an AUTHORITY_BUFFER
+##### 3.2.5.10 Sending an AUTHORITY_BUFFER
+
+
 
 To send an AUTHORITY_BUFFER message to a given node, a PNRP node MUST construct AUTHORITY
 messages as follows:
@@ -5228,9 +5075,9 @@ message MUST contain the same PNRP Header values.
 
 The PNRP node MUST then send the AUTHORITY message(s) to the specified node.
 
-3.2.5.11
+##### 3.2.5.11 Receiving an AUTHORITY Message
 
-Receiving an AUTHORITY Message
+
 
 Section 3.1.5.6.1 specifies the rules for handling received AUTHORITY messages. In addition to those
 rules, when a Route Entry completes validation and is added to the Route Entry Cache (as specified in
@@ -5265,7 +5112,7 @@ Entry was added.
 Whenever a FLOOD message with the D flag clear is sent, the node MUST also put the FLOOD
 message in the Pending List, set its Retry Count to 2, and start its Message Retransmission Timer.
 
-3.2.5.11.1  Receiving an AUTHORITY_BUFFER
+###### 3.2.5.11.1 Receiving an AUTHORITY_BUFFER
 
 The rules of the processing of an AUTHORITY_BUFFER message are as specified in section 3.1.5.6.1.1,
 with the following addition at the end. If the ResolveReasonCode value is
@@ -5283,7 +5130,8 @@ Release: June 25, 2021
 
 65 / 82
 
-The following are the three possibilities:
+
+The following are the three possibilities:
 
 
 
@@ -5311,14 +5159,14 @@ detection process, as specified in section 3.2.6.2.1, for each locally published
 Target PNRP ID (which it just completed). This will help to get as many parts of the number space
 merged as possible.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Conversation Timer Expiry
+##### 3.2.6.1 Conversation Timer Expiry
 
 When a Conversation Timer expires for a given Conversation Table entry, the PNRP node MUST delete
 the entry.
 
-3.2.6.2  Maintenance Timer Expiry
+##### 3.2.6.2 Maintenance Timer Expiry
 
 When the Maintenance Timer expires, the PNRP node MUST attempt to detect cloud splits (as specified
 in section 3.2.6.2.1).
@@ -5331,7 +5179,7 @@ The PNRP node MAY<6> also resolve any PNRP IDs that it wants in order to ensure 
 requirements, as specified in section 3.2.1.1, continue to be met. If it does resolve, then the
 ResolveReasonCode MUST be set to REASON_CACHE_MAINTENANCE.
 
-3.2.6.2.1 Detection of Cloud Splits
+###### 3.2.6.2.1 Detection of Cloud Splits
 
 PNRP nodes MUST periodically test to determine whether they have become isolated or split off from
 the main cloud. For performance reasons, the frequency of split detections SHOULD be roughly
@@ -5356,7 +5204,8 @@ Release: June 25, 2021
 
 66 / 82
 
-  PickBestMatchFromLocalIds: False.
+
+  PickBestMatchFromLocalIds: False.
 
   ResolveReasonCode: REASON_SPLIT_DETECTION.
 
@@ -5369,7 +5218,7 @@ InitialBestMatchRouteEntry: NULL.
 InitialNextHopRouteEntry: A Route Entry with PNRP ID set to zero and the first address set to
 the address of a seed server that was selected as specified in section 3.1.4.2.1.
 
-3.2.6.2.1.1  Cloud Size Estimation
+###### 3.2.6.2.1.1 Cloud Size Estimation
 
 To calculate the estimated cloud size, a PNRP node SHOULD repeat the following process for every
 locally registered PNRP ID.
@@ -5385,7 +5234,7 @@ in terms of the number of PNRP IDs in the cloud. To find the estimated cloud siz
 number of PNRP nodes, a PNRP node SHOULD divide the preceding estimated cloud size by the
 number of locally registered PNRP IDs.
 
-3.2.6.3  Message Retransmission Timer Expiry
+##### 3.2.6.3 Message Retransmission Timer Expiry
 
 When the Message Retransmission Timer expires, the PNRP node MUST follow the rules as specified in
 section 3.1.6.3. In addition to those rules, a Publisher MUST also take additional actions for specific
@@ -5403,9 +5252,9 @@ If the message stored was a FLOOD message, the Retry Count is decremented to 0, 
 Entry for the PNRP ID in the Validate PNRP ID field of the FLOOD message is in the route cache,
 the route MUST be removed to prevent future attempts to send messages to the unresponsive node.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  Resolving a PNRP ID
+##### 3.2.7.1 Resolving a PNRP ID
 
 The rules for resolving a PNRP ID are specified in section 3.1.4.4.2. In addition, whenever a Publisher
 resolves a PNRP ID and its Locally Registered PNRP ID List is not empty, it MUST do the following.
@@ -5424,7 +5273,8 @@ Release: June 25, 2021
 
 67 / 82
 
-3.2.7.2  Processing Address Change Notifications
+
+##### 3.2.7.2 Processing Address Change Notifications
 
 A Publisher MUST follow the same procedure as specified in section 3.1.7.1 for processing address
 changes. In addition, for every entry in its Locally Registered PNRP ID List, a Publisher MUST
@@ -5438,14 +5288,15 @@ Release: June 25, 2021
 
 68 / 82
 
-4  Protocol Examples
 
-4.1  Resolving a Peer Name
+## 4 Protocol Examples
+
+### 4.1 Resolving a Peer Name
 
 An application asks a PNRP node (hereafter, the Resolver) to resolve a Peer Name. The Resolver, in
 turn, takes the steps discussed in the following topics.
 
-4.1.1  Opening a Cloud
+#### 4.1.1 Opening a Cloud
 
 The Resolver, not yet a member of any clouds, first joins one by performing the following steps:
 
@@ -5468,7 +5319,7 @@ LocalOOB.
 
 CloudDiscoveryMode is set to "LocalOOB", and it now initiates a synchronization conversation.
 
-4.1.2  Cache Synchronization
+#### 4.1.2 Cache Synchronization
 
 Having successfully opened a cloud, the PNRP node first synchronizes its cache before initiating Peer
 Name resolution.
@@ -5488,7 +5339,8 @@ Release: June 25, 2021
 
 69 / 82
 
-<!-- Extracted images from page 70 -->
+
+<!-- Extracted images from page 70 -->
 ![Extracted image 1 from page 70]([MS-PNRP].images/page070-img01.png)
 <!-- /Extracted images from page 70 -->
 
@@ -5527,7 +5379,8 @@ Release: June 25, 2021
 
 70 / 82
 
-The Resolver then goes through the array of PNRP IDs in the ADVERTISE message and selects the
+
+The Resolver then goes through the array of PNRP IDs in the ADVERTISE message and selects the
 ones that it wants to include in its own cache. Say it selects all of them. Thus, it returns a
 REQUEST message to specify which PNRP IDs it would like to obtain.
 
@@ -5548,7 +5401,7 @@ FLOOD message for each PNRP ID that was listed in the REQUEST message.
 section 2.2.2.4), the Resolver returns an ACK message to indicate that it has received the FLOOD
 message. The Resolver then adds to its cache the Route Entry in the message.
 
-4.1.3  Peer Name Resolution
+#### 4.1.3 Peer Name Resolution
 
 The Resolver now attempts Peer Name resolution via the following steps.
 
@@ -5559,7 +5412,8 @@ Release: June 25, 2021
 
 71 / 82
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-PNRP].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -5585,7 +5439,8 @@ Release: June 25, 2021
 
 72 / 82
 
-3.  The Resolver extracts the PNRP ID (node 2) from the Route Entry field in the returned
+
+3.  The Resolver extracts the PNRP ID (node 2) from the Route Entry field in the returned
 
 AUTHORITY message, and creates a new LOOKUP message, adding Node 1 to the path. The
 Resolver sets the Validate PNRP ID field to the PNRP found in the Route Entry field of the
@@ -5636,7 +5491,7 @@ AUTHORITY messages, reassembling the AUTHORITY_BUFFER message, and validating th
 CPA corresponds to the Peer Name of interest, the Resolver reports the endpoint information back
 to the application.
 
-4.2  Registering a Name
+### 4.2 Registering a Name
 
 To register a Peer Name, a node performs the resolve operation as specified in section 4.1.3, with
 the Target ID set to the PNRP ID to be registered + 1. For example, if PNRP ID 6 were being
@@ -5653,11 +5508,12 @@ Release: June 25, 2021
 
 73 / 82
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-PNRP].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
-4.3  Unregistering a Name
+### 4.3 Unregistering a Name
 
 When a PNRP ID is unregistered, a Revoke CPA is sent to two entries from the Leaf Set of the ID
 being unregistered. One entry is the numerically closest ID greater than the local ID and the other
@@ -5696,7 +5552,7 @@ in its Leaf Set where the Node 6 PNRP ID used to reside.
 Node 11) of the node with the next lower PNRP ID than the unregistering node (for example, Node
 5), allowing Node 11 to repair its Leaf Set as well.
 
-4.4  Flooding a New Leaf Set Member
+### 4.4 Flooding a New Leaf Set Member
 
 Assume that there is a registered node with a Local ID of Y and that its Leaf Set consists of {B, C, D,
 E, F} on one side and {G, H, I ,J, K} on the other. Assume that Node Y learns about a new Route
@@ -5709,7 +5565,8 @@ Release: June 25, 2021
 
 74 / 82
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-PNRP].images/page075-img01.png)
 <!-- /Extracted images from page 75 -->
 
@@ -5767,7 +5624,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-12. The second wave of flooding for Node X begins.
+
+12. The second wave of flooding for Node X begins.
 
 13. Both Node E and Node H receive two copies of the FLOOD message of X, one forwarded from F
 
@@ -5833,9 +5691,10 @@ Release: June 25, 2021
 
 76 / 82
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Public/private key pairs are assumed to be generated in a way that can be trusted, and to be stored in
 a reliable way.
@@ -5861,7 +5720,7 @@ this by doing a return routability check to ensure that the PNRP node with the a
 Route Entry actually claims to be publishing the PNRP ID in each new Route Entry, before adding it to
 the cache.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -5878,7 +5737,8 @@ Release: June 25, 2021
 
 77 / 82
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5946,7 +5806,8 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-of the total key space. The lowest level of the cache (which is the Leaf Set) is the densest and it is
+
+of the total key space. The lowest level of the cache (which is the Leaf Set) is the densest and it is
 centered on a PNRP ID published by the local node.
 
 <6> Section 3.2.6.2: Windows attempts to "balance" its cache. Balancing the cache involves checking
@@ -5962,7 +5823,8 @@ Release: June 25, 2021
 
 79 / 82
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6015,7 +5877,8 @@ Release: June 25, 2021
 
 80 / 82
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6149,7 +6012,8 @@ Release: June 25, 2021
 
 81 / 82
 
-Unregistering names - example 74
+
+Unregistering names - example 74
 
 V
 

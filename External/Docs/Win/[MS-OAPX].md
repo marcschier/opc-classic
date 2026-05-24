@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 57
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -194,347 +195,145 @@ Release: April 23, 2024
 
 2 / 57
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Data Types ........................................................................................ 12
-HTTP Headers ............................................................................................ 12
-client-request-id ................................................................................... 12
-Common URI Parameters ............................................................................ 12
-resource .............................................................................................. 13
-2.2.2.1
-resource_params .................................................................................. 14
-2.2.2.2
-client-request-id ................................................................................... 15
-2.2.2.3
-login_hint OR username ......................................................................... 15
-2.2.2.4
-domain_hint ......................................................................................... 16
-2.2.2.5
-nonce .................................................................................................. 16
-2.2.2.6
-prompt ................................................................................................ 17
-2.2.2.7
-max_age ............................................................................................. 17
-2.2.2.8
-id_token_hint ....................................................................................... 17
-2.2.2.9
-2.2.2.10
-amr_values .......................................................................................... 18
-2.2.2.11  mfa_max_age ...................................................................................... 18
-Common Data Structures ............................................................................ 19
-requested_token_use ............................................................................ 20
-assertion .............................................................................................. 21
-resource .............................................................................................. 21
-resource request parameter .............................................................. 21
-resource response parameter ............................................................ 22
-use_windows_client_authentication ......................................................... 22
-csr ...................................................................................................... 23
-csr_type .............................................................................................. 23
-x5c ..................................................................................................... 24
-tbidv2 .................................................................................................. 24
-Error Codes................................................................................................ 24
-invalid_resource ................................................................................... 24
-server_error ......................................................................................... 25
-Directory Service Schema Elements ................................................................... 25
-
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.2.3.3.1
-2.2.3.3.2
-
-2.2.4.1
-2.2.4.2
-
-2.2.4
-
-2.2.3
-
-2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 26
-OAuthExtension Client Details ............................................................................ 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-Authorization endpoint (/authorize) ......................................................... 26
-GET ............................................................................................... 27
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1
-
-3.1.5.1
-
-[MS-OAPX] - v20240423
-OAuth 2.0 Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 57
-
-3.1.5.2
-
-3.1.5.2.1
-
-3.1.5.3
-
-3.1.5.3.1
-
-3.1.5.2.1.1
-3.1.5.2.1.2
-3.1.5.2.1.3
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3.1.5.3.1.1
-3.1.5.3.1.2
-3.1.5.3.1.3
-
-Request Body ............................................................................ 27
-Response Body .......................................................................... 27
-Processing Details ...................................................................... 27
-Token endpoint (/token) ........................................................................ 27
-POST ............................................................................................. 27
-Request Body ............................................................................ 27
-Response Body .......................................................................... 28
-Processing Details ...................................................................... 28
-Device authorization endpoint (/devicecode) ............................................ 28
-POST ............................................................................................. 28
-Request Body ............................................................................ 28
-Response Body .......................................................................... 28
-Processing Details ...................................................................... 29
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-OAuthExtension Server Details .......................................................................... 29
-Abstract Data Model .................................................................................... 29
-Global Server Settings ........................................................................... 29
-OAuth 2.0 client .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 31
-Authorization endpoint (/authorize) ......................................................... 31
-GET ............................................................................................... 31
-Request Body ............................................................................ 32
-Response Body .......................................................................... 32
-Processing Details ...................................................................... 33
-Token endpoint (/token) ........................................................................ 34
-POST ............................................................................................. 34
-Request Body ............................................................................ 35
-Response Body .......................................................................... 35
-Processing Details ...................................................................... 36
-Device authorization endpoint (/devicecode) ............................................ 38
-POST ............................................................................................. 39
-Request Body ............................................................................ 39
-Response Body .......................................................................... 39
-Processing Details ...................................................................... 40
-Timer Events .............................................................................................. 40
-Other Local Events ...................................................................................... 40
-
-3.2.5.2.1.1
-3.2.5.2.1.2
-3.2.5.2.1.3
-
-3.2.5.3.1.1
-3.2.5.3.1.2
-3.2.5.3.1.3
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2
-
-3.2.1.1
-3.2.1.2
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-3.2.5.1.1
-
-3.2.5.2
-
-3.2.5.2.1
-
-3.2.5.3
-
-3.2.5.3.1
-
-3.2.6
-3.2.7
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-
-4  Protocol Examples ................................................................................................. 41
-Authorization Code Request ............................................................................... 41
-Authorization Code Response ............................................................................. 41
-Access Token Request ...................................................................................... 41
-Access Token Response .................................................................................... 41
-Access Token Error Response – server_error ....................................................... 41
-Access Token Request and Response – Use of Multi-Resource Refresh Token ........... 42
-Authorization Code Request ......................................................................... 42
-Authorization Code Response ....................................................................... 42
-Access Token Request ................................................................................. 42
-Access Token Response ............................................................................... 42
-Access Token Request – Using Multi-Resource Refresh Token ........................... 43
-Access Token Response for Multi-Resource Refresh Token Request ................... 43
-Access Token Request and Response - OAuth on-behalf-of Requests ...................... 43
-Authorization Code Request ......................................................................... 43
-Authorization Code Response ....................................................................... 43
-Initial Access Token Request ........................................................................ 44
-
-4.6.1
-4.6.2
-4.6.3
-4.6.4
-4.6.5
-4.6.6
-
-4.7.1
-4.7.2
-4.7.3
-
-4.7
-
-[MS-OAPX] - v20240423
-OAuth 2.0 Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 57
-
-4.8
-4.9
-4.10
-4.11
-4.12
-4.13
-
-4.7.4
-4.7.5
-4.7.6
-
-Initial Access Token Response ...................................................................... 44
-OAuth on-behalf-of Request ......................................................................... 44
-OAuth on-behalf-of Response ....................................................................... 44
-Access Token Request using Windows Client Authentication .................................. 45
-Authorization Code Request with nonce Parameter ............................................... 45
-Authorization Code Request with prompt Parameter ............................................. 45
-Authorization Code Request with max_age Parameter .......................................... 45
-Authorization Code Request with id_token_hint Parameter .................................... 46
-Access Token Request and Response - OAuth logon certificate requests .................. 46
-Authorization Code Request ......................................................................... 46
-4.13.1
-Authorization Code Response ....................................................................... 46
-4.13.2
-Initial Access Token Request ........................................................................ 46
-4.13.3
-4.13.4
-Initial Access Token Response ...................................................................... 47
-4.13.5  OAuth logon certificate Request .................................................................... 47
-4.13.6  OAuth logon certificate Response .................................................................. 48
-Access Token Request and Response – OAuth device flow request.......................... 48
-4.14.1  Device Authorization Request ....................................................................... 48
-4.14.2  Device Authorization Response ..................................................................... 48
-4.14.3  Device Access Token Request ....................................................................... 48
-4.14.4  Device Access Token Response ..................................................................... 49
-
-4.14
-
-5  Security ................................................................................................................. 50
-Security Considerations for Implementers ........................................................... 50
-Index of Security Parameters ............................................................................ 50
-
-5.1
-5.2
-
-6  Appendix A: Full JSON Schema .............................................................................. 51
-
-7  Appendix B: Product Behavior ............................................................................... 52
-
-8  Change Tracking .................................................................................................... 55
-
-9  Index ..................................................................................................................... 56
-
-[MS-OAPX] - v20240423
-OAuth 2.0 Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 57
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HTTP Headers](#221-http-headers)
+      - [2.2.1.1 client-request-id](#2211-client-request-id)
+      - [2.2.2.3 are mutually exclusive. The client is expected to specify a request identifier by using either](#2223-are-mutually-exclusive-the-client-is-expected-to-specify-a-request-identifier-by-using-either)
+      - [2.2.2.4 login_hint OR username](#2224-loginhint-or-username)
+      - [2.2.2.5 domain_hint](#2225-domainhint)
+      - [2.2.2.6 nonce](#2226-nonce)
+      - [2.2.2.7 prompt](#2227-prompt)
+      - [2.2.2.8 max_age](#2228-maxage)
+      - [2.2.2.9 id_token_hint](#2229-idtokenhint)
+      - [2.2.2.10 amr_values](#22210-amrvalues)
+      - [2.2.2.11 mfa_max_age](#22211-mfamaxage)
+    - [2.2.3 Common Data Structures](#223-common-data-structures)
+      - [2.2.3.1 requested_token_use](#2231-requestedtokenuse)
+      - [2.2.3.2 assertion](#2232-assertion)
+      - [2.2.3.3 resource](#2233-resource)
+        - [2.2.3.3.1 resource request parameter](#22331-resource-request-parameter)
+        - [2.2.3.3.2 resource response parameter](#22332-resource-response-parameter)
+      - [2.2.3.4 use_windows_client_authentication](#2234-usewindowsclientauthentication)
+      - [2.2.3.5 csr](#2235-csr)
+      - [2.2.3.6 csr_type](#2236-csrtype)
+      - [2.2.3.7 x5c](#2237-x5c)
+      - [2.2.3.8 tbidv2](#2238-tbidv2)
+    - [2.2.4 Error Codes](#224-error-codes)
+      - [2.2.4.1 invalid_resource](#2241-invalidresource)
+      - [2.2.4.2 server_error](#2242-servererror)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 OAuthExtension Client Details](#31-oauthextension-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Authorization endpoint (/authorize)](#3151-authorization-endpoint-authorize)
+        - [3.1.5.1.1 GET](#31511-get)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+      - [3.1.5.2 Token endpoint (/token)](#3152-token-endpoint-token)
+        - [3.1.5.2.1 POST](#31521-post)
+          - [3.1.5.2.1.1 Request Body](#315211-request-body)
+          - [3.1.5.2.1.2 Response Body](#315212-response-body)
+          - [3.1.5.2.1.3 Processing Details](#315213-processing-details)
+      - [3.1.5.3 Device authorization endpoint (/devicecode)](#3153-device-authorization-endpoint-devicecode)
+        - [3.1.5.3.1 POST](#31531-post)
+          - [3.1.5.3.1.1 Request Body](#315311-request-body)
+          - [3.1.5.3.1.2 Response Body](#315312-response-body)
+          - [3.1.5.3.1.3 Processing Details](#315313-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 OAuthExtension Server Details](#32-oauthextension-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Global Server Settings](#3211-global-server-settings)
+      - [3.2.1.2 OAuth 2.0 client](#3212-oauth-20-client)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Authorization endpoint (/authorize)](#3251-authorization-endpoint-authorize)
+        - [3.2.5.1.1 GET](#32511-get)
+          - [3.2.5.1.1.1 Request Body](#325111-request-body)
+          - [3.2.5.1.1.2 Response Body](#325112-response-body)
+          - [3.2.5.1.1.3 Processing Details](#325113-processing-details)
+      - [3.2.5.2 Token endpoint (/token)](#3252-token-endpoint-token)
+        - [3.2.5.2.1 POST](#32521-post)
+          - [3.2.5.2.1.1 Request Body](#325211-request-body)
+          - [3.2.5.2.1.2 Response Body](#325212-response-body)
+          - [3.2.5.2.1.3 Processing Details](#325213-processing-details)
+      - [3.2.5.3 Device authorization endpoint (/devicecode)](#3253-device-authorization-endpoint-devicecode)
+        - [3.2.5.3.1 POST](#32531-post)
+          - [3.2.5.3.1.1 Request Body](#325311-request-body)
+          - [3.2.5.3.1.2 Response Body](#325312-response-body)
+          - [3.2.5.3.1.3 Processing Details](#325313-processing-details)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Authorization Code Request](#41-authorization-code-request)
+  - [4.2 Authorization Code Response](#42-authorization-code-response)
+  - [4.3 Access Token Request](#43-access-token-request)
+  - [4.4 Access Token Response](#44-access-token-response)
+  - [4.5 Access Token Error Response – server_error](#45-access-token-error-response-servererror)
+  - [4.6 Access Token Request and Response – Use of Multi-Resource Refresh Token](#46-access-token-request-and-response-use-of-multi-resource-refresh-token)
+    - [4.6.1 Authorization Code Request](#461-authorization-code-request)
+    - [4.6.2 Authorization Code Response](#462-authorization-code-response)
+    - [4.6.3 Access Token Request](#463-access-token-request)
+    - [4.6.4 Access Token Response](#464-access-token-response)
+    - [4.6.5 Access Token Request – Using Multi-Resource Refresh Token](#465-access-token-request-using-multi-resource-refresh-token)
+    - [4.6.6 Access Token Response for Multi-Resource Refresh Token Request](#466-access-token-response-for-multi-resource-refresh-token-request)
+  - [4.7 Access Token Request and Response - OAuth on-behalf-of Requests](#47-access-token-request-and-response-oauth-on-behalf-of-requests)
+    - [4.7.1 Authorization Code Request](#471-authorization-code-request)
+    - [4.7.2 Authorization Code Response](#472-authorization-code-response)
+    - [4.7.3 Initial Access Token Request](#473-initial-access-token-request)
+    - [4.7.4 Initial Access Token Response](#474-initial-access-token-response)
+    - [4.7.5 OAuth on-behalf-of Request](#475-oauth-on-behalf-of-request)
+    - [4.7.6 OAuth on-behalf-of Response](#476-oauth-on-behalf-of-response)
+  - [4.8 Access Token Request using Windows Client Authentication](#48-access-token-request-using-windows-client-authentication)
+  - [4.9 Authorization Code Request with nonce Parameter](#49-authorization-code-request-with-nonce-parameter)
+  - [4.10 Authorization Code Request with prompt Parameter](#410-authorization-code-request-with-prompt-parameter)
+  - [4.11 Authorization Code Request with max_age Parameter](#411-authorization-code-request-with-maxage-parameter)
+  - [4.12 Authorization Code Request with id_token_hint Parameter](#412-authorization-code-request-with-idtokenhint-parameter)
+  - [4.13 Access Token Request and Response - OAuth logon certificate requests](#413-access-token-request-and-response-oauth-logon-certificate-requests)
+    - [4.13.1 Authorization Code Request](#4131-authorization-code-request)
+    - [4.13.2 Authorization Code Response](#4132-authorization-code-response)
+    - [4.13.3 Initial Access Token Request](#4133-initial-access-token-request)
+    - [4.13.4 Initial Access Token Response](#4134-initial-access-token-response)
+    - [4.13.5 OAuth logon certificate Request](#4135-oauth-logon-certificate-request)
+    - [4.13.6 OAuth logon certificate Response](#4136-oauth-logon-certificate-response)
+  - [4.14 Access Token Request and Response – OAuth device flow request](#414-access-token-request-and-response-oauth-device-flow-request)
+    - [4.14.1 Device Authorization Request](#4141-device-authorization-request)
+    - [4.14.2 Device Authorization Response](#4142-device-authorization-response)
+    - [4.14.3 Device Access Token Request](#4143-device-access-token-request)
+    - [4.14.4 Device Access Token Response](#4144-device-access-token-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full JSON Schema](#6-appendix-a-full-json-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The OAuth 2.0 Protocol Extensions are extensions to the OAuth 2.0 Authorization Framework
 [RFC6749]. When an AD FS behavior level is not specified, the details in this document apply to all
@@ -543,7 +342,7 @@ AD FS behavior levels.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -604,7 +403,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-OAuth device flow request: An OAuth request in which the client is an input-constrained device
+
+OAuth device flow request: An OAuth request in which the client is an input-constrained device
 
 and follows the OAuth 2.0 Device Flow protocol [RFC8628] for authorization.
 
@@ -646,14 +446,14 @@ Authentication mechanism described in [RFC4599].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -674,7 +474,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-ADA2] Microsoft Corporation, "Active Directory Schema Attributes M".
+
+[MS-ADA2] Microsoft Corporation, "Active Directory Schema Attributes M".
 
 [MS-ADSC] Microsoft Corporation, "Active Directory Schema Classes".
 
@@ -742,20 +543,21 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC8471] Popov, A., Ed., Nystroem, M., Balfanz, D., and Hodges, J., "The Token Binding Protocol
+
+[RFC8471] Popov, A., Ed., Nystroem, M., Balfanz, D., and Hodges, J., "The Token Binding Protocol
 Version 1.0", RFC 8471, October 2018, https://www.rfc-editor.org/info/rfc8471
 
 [RFC8628] Denniss, W., Bradley, J., Jones, M., and Tschofenig, H., "OAuth 2.0 Device Authorization
 Grant", RFC 8628, August 2019, https://www.rfc-editor.org/info/rfc8628
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [C706] The Open Group, "DCE 1.1: Remote Procedure Call", C706, August 1997,
 https://publications.opengroup.org/c706
 
 Note Registration is required to download the document.
 
-1.3  Overview
+### 1.3 Overview
 
 Active Directory Federation Services (AD FS) implements parts of the OAuth 2.0 Authorization
 Framework [RFC6749] and extends it. Those extensions are the OAuth 2.0 Protocol Extensions and
@@ -823,7 +625,8 @@ Release: April 23, 2024
 
 9 / 57
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-OAPX].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -831,14 +634,14 @@ Release: April 23, 2024
 
   Verification URI
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The OAuth 2.0 Protocol Extensions are dependent on the OAuth 2.0 protocol and use HTTPS
 [RFC2818] as the underlying transport protocol. This is illustrated by the following diagram.
 
 Figure 1: Protocol dependency
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 A prerequisite to implementing the OAuth 2.0 Protocol Extensions is that the REQUIRED parts of AD
 FS as they apply to the Authorization Grant ([RFC6749] section 1.3) have been implemented on the
@@ -853,13 +656,13 @@ The OAuth 2.0 Protocol Extensions assume that they, the OAuth 2.0 Protocol Exten
 Clients [MS-OAPXBC], and the OpenID Connect 1.0 Protocol Extensions [MS-OIDCE], if being used,
 are all be running on the same AD FS server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The OAuth 2.0 Protocol Extensions are supported by all AD FS servers that support the OAuth 2.0
 protocol.<1> OAuth 2.0 clients that request authorization using the OAuth 2.0 protocol are required to
 implement the mandatory extensions defined in this protocol document.<2>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -877,13 +680,14 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Capability Negotiation: The OAuth 2.0 Protocol Extensions do not support capability negotiation.
 
-1.8  Vendor-Extensible Fields
+Capability Negotiation: The OAuth 2.0 Protocol Extensions do not support capability negotiation.
+
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -894,15 +698,16 @@ Release: April 23, 2024
 
 11 / 57
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The HTTPS [RFC2818] protocol MUST be used as the transport.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  HTTP Headers
+#### 2.2.1 HTTP Headers
 
 The messages exchanged in the OAuth 2.0 Protocol Extensions use the following HTTP headers in
 addition to the existing set of standard HTTP headers.
@@ -917,7 +722,7 @@ request-id
 This optional header is used to specify a request identifier, which is used when logging errors or
 failures that occur while processing the request.
 
-2.2.1.1  client-request-id
+##### 2.2.1.1 client-request-id
 
 The client-request-id header is optional and might be specified by the client role of the OAuth 2.0
 Protocol Extensions. This header is used to provide the server role a unique request ID which is then
@@ -927,7 +732,7 @@ globally unique identifier (GUID) in standard string representation (see [C706] 
 (String UUID) for the format).
 
 Note: The client-request-id header and the client-request-id query parameter defined in section
-2.2.2.3 are mutually exclusive. The client is expected to specify a request identifier by using either
+##### 2.2.2.3 are mutually exclusive. The client is expected to specify a request identifier by using either
 one of these mechanisms.
 
 The format for the client-request-id header is as follows.
@@ -966,7 +771,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-URI parameter
+
+URI parameter
 
 Description
 
@@ -1059,7 +865,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-resource query parameter corresponds to the identifier with which the resource, or relying party, is
+
+resource query parameter corresponds to the identifier with which the resource, or relying party, is
 registered with the AD FS server by an administrator.
 
 This parameter is REQUIRED when the AD FS server's ad_fs_behavior_level is
@@ -1126,7 +933,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For an example of the resource_params query parameter as it is being used, see section 4.1.
+
+For an example of the resource_params query parameter as it is being used, see section 4.1.
 
 The format for the resource_params query parameter is as follows.
 
@@ -1155,7 +963,7 @@ The format for the client-request-id query parameter is as follows.
  String = *(%x20-7E)
  client-request-id = String
 
-2.2.2.4  login_hint OR username
+##### 2.2.2.4 login_hint OR username
 
  GET
 /authorize?response_type={response_type}&client_id={client_id}&state={state}&resource={resour
@@ -1187,9 +995,10 @@ Release: April 23, 2024
 
 15 / 57
 
- login_hint OR username = String
 
-2.2.2.5  domain_hint
+ login_hint OR username = String
+
+##### 2.2.2.5 domain_hint
 
 GET
 /authorize?response_type={response_type}&client_id={client_id}&state={state}&resource={resour
@@ -1213,7 +1022,7 @@ The format for the domain_hint query parameter is as follows.
  String = *(%x20-7E)
  domain_hint = String
 
-2.2.2.6  nonce
+##### 2.2.2.6 nonce
 
  GET
 /authorize?response_type={response_type}&client_id={client_id}&state={state}&resource={resour
@@ -1243,7 +1052,8 @@ Release: April 23, 2024
 
 16 / 57
 
-2.2.2.7  prompt
+
+##### 2.2.2.7 prompt
 
  GET
 /authorize?response_type={response_type}&client_id={client_id}&state={state}&resource={resour
@@ -1263,7 +1073,7 @@ The format for the prompt query parameter is as follows.
  String = *(%x20-7E)
  prompt = String
 
-2.2.2.8  max_age
+##### 2.2.2.8 max_age
 
  GET
 /authorize?response_type={response_type}&client_id={client_id}&state={state}&resource={resour
@@ -1287,7 +1097,7 @@ The format for the max_age query parameter is as follows.
  String = *(%x20-7E)
  max_age = String
 
-2.2.2.9  id_token_hint
+##### 2.2.2.9 id_token_hint
 
  GET
 /authorize?response_type={response_type}&client_id={client_id}&state={state}&resource={resour
@@ -1306,7 +1116,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-defined in [OIDCCore] section 3.1.2.1, but can be specified regardless of whether the client role also
+
+defined in [OIDCCore] section 3.1.2.1, but can be specified regardless of whether the client role also
 requests the "openid" scope.
 
 The AD FS server ignores this parameter unless its ad_fs_behavior_level is
@@ -1319,9 +1130,9 @@ The format for the id_token_hint query parameter is as follows.
  String = *(%x20-7E)
  id_token_hint = String
 
-2.2.2.10
+##### 2.2.2.10 amr_values
 
-amr_values
+
 
  GET
 /authorize?response_type={response_type}&client_id={client_id}&state={state}&resource={resour
@@ -1356,9 +1167,9 @@ The format for the amr_values query parameter is as follows:
  String = *(%x20-7E)
  amr_values = String
 
-2.2.2.11
+##### 2.2.2.11 mfa_max_age
 
-mfa_max_age
+
 
  GET
 /authorize?response_type={response_type}&client_id={client_id}&state={state}&resource={resour
@@ -1378,7 +1189,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The AD FS server ignores this parameter unless its ad_fs_behavior_level is
+
+The AD FS server ignores this parameter unless its ad_fs_behavior_level is
 AD_FS_BEHAVIOR_LEVEL_3 or higher. See section 2.2.2 for additional support information.
 
 The format for the mfa_max_age query parameter is as follows.
@@ -1386,7 +1198,7 @@ The format for the mfa_max_age query parameter is as follows.
  String = *(%x20-7E)
  mfa_max_age = String
 
-2.2.3  Common Data Structures
+#### 2.2.3 Common Data Structures
 
 The following table summarizes the set of common message body parameters defined by this
 specification.
@@ -1461,7 +1273,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Message body parameter
+
+Message body parameter
 
 Description
 
@@ -1518,7 +1331,7 @@ details on referred token-bindings.
 The AD FS server ignores this parameter unless its
 ad_fs_behavior_level is AD_FS_BEHAVIOR_LEVEL_2 or higher.<6>
 
-2.2.3.1  requested_token_use
+##### 2.2.3.1 requested_token_use
 
  POST /token HTTP/1.1
  Host: server.example.com
@@ -1544,14 +1357,15 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For an example of the requested_token_use parameter being used, see section 4.7.
+
+For an example of the requested_token_use parameter being used, see section 4.7.
 
 The format for the requested_token_use parameter is as follows.
 
  String = *(%x20-7E)
  requested_token_use = String
 
-2.2.3.2  assertion
+##### 2.2.3.2 assertion
 
  POST /token HTTP/1.1
  Host: server.example.com
@@ -1576,12 +1390,12 @@ The format for the assertion parameter is as follows.
  String = *(%x20-7E)
  assertion = String
 
-2.2.3.3  resource
+##### 2.2.3.3 resource
 
 The resource parameter can be included in either a request to the AD FS server, or in a response from
 the AD FS server. The following sections describe each use.
 
-2.2.3.3.1 resource request parameter
+###### 2.2.3.3.1 resource request parameter
 
  POST /token HTTP/1.1
  Host: server.example.com
@@ -1608,7 +1422,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-refresh token was returned (see [RFC6749] section 6). The resource parameter can only be used with
+
+refresh token was returned (see [RFC6749] section 6). The resource parameter can only be used with
 a refresh token if it is a multi-resource refresh token.
 
 The value of the resource parameter corresponds to the identifier with which the resource, or relying
@@ -1624,7 +1439,7 @@ The format for the resource request parameter is as follows.
  String = *(%x20-7E)
  resource = String
 
-2.2.3.3.2 resource response parameter
+###### 2.2.3.3.2 resource response parameter
 
  HTTP/1.1 200 OK
  Content-Type: application/json;charset=UTF-8
@@ -1647,7 +1462,7 @@ The format for the resource response parameter is as follows.
  String = *(%x20-7E)
  resource = String
 
-2.2.3.4  use_windows_client_authentication
+##### 2.2.3.4 use_windows_client_authentication
 
  POST /token HTTP/1.1
  Host: server.example.com
@@ -1673,14 +1488,15 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For an example of the use_windows_client_authentication parameter being used, see section 4.8.
+
+For an example of the use_windows_client_authentication parameter being used, see section 4.8.
 
 The format for the use_windows_client_authentication parameter is as follows.
 
  String = *(%x20-7E)
  use_windows_client_authentication = String
 
-2.2.3.5  csr
+##### 2.2.3.5 csr
 
  POST /token HTTP/1.1
  Host: server.example.com
@@ -1705,7 +1521,7 @@ The format for the csr parameter is as follows.
  String = *(%x20-7E)
  csr = String
 
-2.2.3.6  csr_type
+##### 2.2.3.6 csr_type
 
  POST /token HTTP/1.1
  Host: server.example.com
@@ -1737,9 +1553,10 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- csr_type = String
 
-2.2.3.7  x5c
+ csr_type = String
+
+##### 2.2.3.7 x5c
 
  HTTP/1.1 200 OK
  Content-Type: application/json;charset=UTF-8
@@ -1762,7 +1579,7 @@ The format for the x5c response parameter is as follows.
  String = *(%x20-7E)
  x5c = String
 
-2.2.3.8  tbidv2
+##### 2.2.3.8 tbidv2
 
  POST /token HTTP/1.1
  Host: server.example.com
@@ -1780,12 +1597,12 @@ The format for the tbidv2 request parameter is as follows:
  String = *(%x20-7E)
  tbidv2 = String
 
-2.2.4  Error Codes
+#### 2.2.4 Error Codes
 
 This document defines an extension to the list of error codes defined in [RFC6749] and
 [RFC8628].<7>
 
-2.2.4.1  invalid_resource
+##### 2.2.4.1 invalid_resource
 
 [RFC6749] section 4.1.2.1 (Error Response) defines the error response and error codes sent by the
 authorization server to the OAuth 2.0 client if the authorization request fails. In addition to the error
@@ -1798,12 +1615,13 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-define the invalid_resource error code that can be returned by the authorization server when
+
+define the invalid_resource error code that can be returned by the authorization server when
 processing an authorization request. If the OAuth 2.0 client specified an invalid resource in its
 authorization request using the resource query parameter defined in section 2.2.2.1, the authorization
 server returns the invalid_resource error code in the authorization response.
 
-2.2.4.2  server_error
+##### 2.2.4.2 server_error
 
 As defined in [RFC6749] section 4.1, after successfully retrieving an authorization grant, the OAuth
 2.0 client subsequently requests an access token from the authorization server's token endpoint by
@@ -1820,7 +1638,7 @@ According to the requirement outlined in [RFC6749] section 6, this error code ca
 the authorization server if it encountered an error while processing a request to refresh an access
 token.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol accesses the Directory Service schema classes and attributes that are listed in the
 following table.
@@ -1844,9 +1662,10 @@ Release: April 23, 2024
 
 25 / 57
 
-3  Protocol Details
 
-3.1  OAuthExtension Client Details
+## 3 Protocol Details
+
+### 3.1 OAuthExtension Client Details
 
 The client role of the OAuth 2.0 Protocol Extensions corresponds to any OAuth 2.0 client that needs to
 request authorization to access a resource secured by an AD FS server using the Authorization Code
@@ -1856,7 +1675,7 @@ specified in [RFC8628].<8>
 
 The client role of this protocol uses the extensions defined in this document.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The client role is expected to be aware of the relying party or resource identifier of the resource
 server if it requests authorization for a particular resource. The client role sends this value to the AD
@@ -1865,19 +1684,19 @@ FS server using the resource query string parameter.
 The client role is also expected to be aware of its own client identifier and all relevant client
 authentication information if it is a confidential client.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The OAuth 2.0 Protocol Extensions do not define any special initialization requirements.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The resources accessed and manipulated by this protocol are the same as those defined in [RFC6749]
 and [IETFDRAFT-DEVICEFLOW-11]. They are also listed below for reference:
@@ -1900,7 +1719,7 @@ The HTTP responses to all the HTTP methods are defined in corresponding sections
 
 The response messages for these methods do not contain custom HTTP headers.
 
-3.1.5.1  Authorization endpoint (/authorize)
+##### 3.1.5.1 Authorization endpoint (/authorize)
 
 As defined in [RFC6749] section 3.1 (Authorization Endpoint), the authorization endpoint on the
 authorization server is used to interact with the resource owner and obtain an authorization grant. The
@@ -1913,25 +1732,26 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-HTTP method  Description
+
+HTTP method  Description
 
 GET
 
 For a description, see section 3.2.5.1.
 
-3.1.5.1.1 GET
+###### 3.1.5.1.1 GET
 
 For the syntax and semantics of the GET method, see section 3.2.5.1.1.
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 The format of the request is defined in [RFC6749] section 4.1.1 (Authorization Request).
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 The format of the response body is defined in [RFC6749] section 4.1.2 (Authorization Response).
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 The steps performed by the OAuth 2.0 client to request an authorization code grant are defined in
 [RFC6749] section 4.1.1 (Authorization Request).
@@ -1940,7 +1760,7 @@ If the client chooses to send the optional resource_params query parameter, it M
 base64 URL encoded JSON-formatted string. The resource_params query parameter MAY include the
 optional acr element that specifies the URI of the authentication method wanted.
 
-3.1.5.2  Token endpoint (/token)
+##### 3.1.5.2 Token endpoint (/token)
 
 The following HTTP methods are allowed to be performed on this resource.
 
@@ -1950,7 +1770,7 @@ POST
 
 For a description, see section 3.2.5.2.
 
-3.1.5.2.1 POST
+###### 3.1.5.2.1 POST
 
 For the syntax and semantics of the POST method, see section 3.2.5.2.1 with the following addition:
 
@@ -1959,7 +1779,7 @@ For the syntax and semantics of the POST method, see section 3.2.5.2.1 with the 
 In the usage of the client-request-id header, if the client chooses to use the client-request-id
 query parameter, it SHOULD NOT set this HTTP header.
 
-3.1.5.2.1.1  Request Body
+###### 3.1.5.2.1.1 Request Body
 
 The format of the request is defined in [RFC6749] sections 4.1.3 (Access Token Request) and 6
 (Refreshing an Access Token), and in [RFC8628] section 3.4 (Device Access Token Request).
@@ -1980,7 +1800,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-confidential clients, and the access token presented MUST have been originally issued with the scope
+
+confidential clients, and the access token presented MUST have been originally issued with the scope
 "user_impersonation".
 
 If making an OAuth logon certificate request, the client sends a request with the following: the
@@ -1993,14 +1814,14 @@ set to a base64-encoded PKCS#10 certificate request ([MS-WCCE] section 2.2.2.6.1
 certificate request is supported only for confidential clients, and the access token presented MUST
 have been originally issued with the scope "logon_cert".
 
-3.1.5.2.1.2  Response Body
+###### 3.1.5.2.1.2 Response Body
 
 The format of the response body is defined in [RFC6749] sections 4.1.4 (Access Token Response) and
 5 (Issuing an Access Token), and in [RFC8628] section 3.5 (Device Access Token Response).
 
 The server can also provide the additional response parameters listed in section 3.2.5.2.1.2.
 
-3.1.5.2.1.3  Processing Details
+###### 3.1.5.2.1.3 Processing Details
 
 The steps performed by the OAuth 2.0 client to request an access token are defined in [RFC6749]
 section 4.1.3 (Access Token Request).
@@ -2009,7 +1830,7 @@ Additionally, the OAuth 2.0 client MUST expect the AD FS server to respond with 
 according to the requirements of [RFC6749] section 5.2 (Error Response) with the error parameter of
 the response set to the server_error error code (defined in section 2.2.4.2).
 
-3.1.5.3  Device authorization endpoint (/devicecode)
+##### 3.1.5.3 Device authorization endpoint (/devicecode)
 
 The following HTTP methods are allowed to be performed on this resource.
 
@@ -2017,7 +1838,7 @@ HTTP method
 
 POST
 
-3.1.5.3.1 POST
+###### 3.1.5.3.1 POST
 
 Description
 
@@ -2030,13 +1851,13 @@ For the syntax and semantics of the POST method, see section 3.2.5.3.1 with the 
 In the usage of the client-request-id header, if the client chooses to use the client-request-id
 query parameter, it SHOULD NOT set this HTTP header.
 
-3.1.5.3.1.1  Request Body
+###### 3.1.5.3.1.1 Request Body
 
 The format of the request is defined in [RFC8628] section 3.1 (Device Authorization Request).
 
 The client can also provide the additional request parameters listed in section 3.2.5.3.1.1.
 
-3.1.5.3.1.2  Response Body
+###### 3.1.5.3.1.2 Response Body
 
 The format of the response body is defined in [RFC8628] section 3.2 (Device Authorization Response).
 
@@ -2049,7 +1870,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5.3.1.3  Processing Details
+
+###### 3.1.5.3.1.3 Processing Details
 
 The steps performed by the OAuth 2.0 client to request device verification code, user code, and
 verification URIs are defined in [RFC8628] section 3.1 (Device Authorization Request).
@@ -2058,15 +1880,15 @@ Additionally, the OAuth 2.0 client MUST expect the AD FS server to respond with 
 according to the requirements of [RFC6749] section 5.2 (Error Response) with the error parameter of
 the response set to the server_error error code (defined in section 2.2.4.2).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  OAuthExtension Server Details
+### 3.2 OAuthExtension Server Details
 
 The server role of the OAuth 2.0 Protocol Extensions corresponds to the notion of an authorization
 server as defined in [RFC6749] section 1.1 (Roles).
@@ -2074,7 +1896,7 @@ server as defined in [RFC6749] section 1.1 (Roles).
 The server role of this protocol implements support for the extensions defined in this document (the
 OAuth 2.0 Protocol Extensions).
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Proper operation of the protocol requires that the AD FS server maintains information about its
 current AD FS behavior level as well as configuration information about the OAuth 2.0 clients that
@@ -2092,7 +1914,7 @@ protocol.
 Note: The conceptual data model can be implemented using a variety of techniques. Windows
 behavior is described for each data item at the end of the appropriate subsection.
 
-3.2.1.1  Global Server Settings
+##### 3.2.1.1 Global Server Settings
 
 The AD FS server maintains the following global fields:
 
@@ -2117,13 +1939,14 @@ Release: April 23, 2024
 
 29 / 57
 
-Symbolic constant
+
+Symbolic constant
 
 Value
 
 AD_FS_BEHAVIOR_LEVEL_4  4
 
-3.2.1.2  OAuth 2.0 client
+##### 3.2.1.2 OAuth 2.0 client
 
 Before initiating any protocol requests to the AD FS server, a client must first be registered with the
 server as described in [RFC6749] section 2.
@@ -2179,15 +2002,15 @@ Field use, as described in [RFC7517], is either "sig" or is not present.
 Either fields x5t and x5c are present, as described in [RFC7517], or fields kid, n, and e are
 present, as described in [RFC7517].
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The OAuth 2.0 Protocol Extensions do not define any special initialization requirements.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
@@ -2198,7 +2021,8 @@ Release: April 23, 2024
 
 30 / 57
 
-3.2.5  Message Processing Events and Sequencing Rules
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The resources accessed and manipulated by this protocol are the same as those defined in [RFC6749]
 and [IETFDRAFT-DEVICEFLOW-11].<10> They are also listed below for reference:
@@ -2237,7 +2061,7 @@ The HTTP responses to all the HTTP methods are defined in corresponding sections
 
 The response messages for these methods do not contain custom HTTP headers.
 
-3.2.5.1  Authorization endpoint (/authorize)
+##### 3.2.5.1 Authorization endpoint (/authorize)
 
 As defined in [RFC6749] section 3.1 (Authorization Endpoint), the authorization endpoint on the
 authorization server is used to interact with the resource owner and obtain an authorization grant. The
@@ -2253,7 +2077,7 @@ Description
 An authorization request issued by the OAuth 2.0 client to the authorization endpoint of the AD FS
 server in accordance with the requirements of [RFC6749] section 4.1.1 (Authorization Request).
 
-3.2.5.1.1 GET
+###### 3.2.5.1.1 GET
 
 This method is transported by an HTTP GET.
 
@@ -2280,7 +2104,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-resource: OPTIONAL. The client MAY indicate the resource for which it requires authorization from the
+
+resource: OPTIONAL. The client MAY indicate the resource for which it requires authorization from the
 
 AD FS server using the resource parameter.
 
@@ -2356,11 +2181,11 @@ The response message for this method does not contain any custom HTTP headers.
 The response message for this method can result in the status codes defined in [RFC6749] section
 4.1.2.
 
-3.2.5.1.1.1  Request Body
+###### 3.2.5.1.1.1 Request Body
 
 The format of the request is defined in [RFC6749] section 4.1.1 (Authorization Request).
 
-3.2.5.1.1.2  Response Body
+###### 3.2.5.1.1.2 Response Body
 
 [MS-OAPX] - v20240423
 OAuth 2.0 Protocol Extensions
@@ -2369,9 +2194,10 @@ Release: April 23, 2024
 
 32 / 57
 
-The format of the response body is defined in [RFC6749] section 4.1.2 (Authorization Response).
 
-3.2.5.1.1.3  Processing Details
+The format of the response body is defined in [RFC6749] section 4.1.2 (Authorization Response).
+
+###### 3.2.5.1.1.3 Processing Details
 
 The steps performed by the AD FS server to respond to an authorization code request are defined in
 [RFC6749] section 4.1.2 (Authorization Response).
@@ -2461,7 +2287,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -2503,7 +2330,7 @@ the ID token. This claim represents the time when the end user last performed mu
 authentication. Its value is a JSON number representing the number of seconds from January 1,
 1970, 00:00:00 (UTC) until the current date/time.
 
-3.2.5.2  Token endpoint (/token)
+##### 3.2.5.2 Token endpoint (/token)
 
 As defined in [RFC6749] section 3.2 (Token Endpoint), [RFC8628] section 3.4 (Device Access Token
 Request), and [RFC8628] section 3.5 (Device Access Token Response), the token endpoint on the AD
@@ -2522,7 +2349,7 @@ An access token request issued by the OAuth 2.0 client to the token endpoint of 
 accordance with the requirements of [RFC6749] section 4.1.3 (Access Token Request) and
 [RFC8628] section 3.4 (Device Access Token Request).
 
-3.2.5.2.1 POST
+###### 3.2.5.2.1 POST
 
 This operation is transported by an HTTP POST
 
@@ -2537,7 +2364,8 @@ Release: April 23, 2024
 
 34 / 57
 
-The format of the access token request is specified in [RFC6749] section 4.1.3 (Access Token Request)
+
+The format of the access token request is specified in [RFC6749] section 4.1.3 (Access Token Request)
 and in [RFC8628] section 3.4 (Device Access Token Request). The OAuth 2.0 client MUST specify the
 query parameters marked as REQUIRED in [RFC6749] section 4.1.3.
 
@@ -2576,7 +2404,7 @@ The response message for this method can result in the status codes defined in [
 an error while processing the client's access token request, it can return the server_error error code
 defined in this document.
 
-3.2.5.2.1.1  Request Body
+###### 3.2.5.2.1.1 Request Body
 
 The format of the request is defined in [RFC6749] sections 4.1.3 (Access Token Request) and 6
 (Refreshing an Access Token), and in [RFC8628] section 3.4 (Device Access Token Request).
@@ -2611,7 +2439,7 @@ The AD FS server will accept the presence of either the device_code parameter or
 parameter (or both). The code parameter has the same semantic meaning as device_code. If both
 parameters are present, the values MUST be the same.
 
-3.2.5.2.1.2  Response Body
+###### 3.2.5.2.1.2 Response Body
 
 [MS-OAPX] - v20240423
 OAuth 2.0 Protocol Extensions
@@ -2620,7 +2448,8 @@ Release: April 23, 2024
 
 35 / 57
 
-The format of the response body is defined in [RFC6749] sections 4.1.4 (Access Token Response) and
+
+The format of the response body is defined in [RFC6749] sections 4.1.4 (Access Token Response) and
 5 (Issuing an Access Token), and in [RFC8628] section 3.5 (Device Access Token Response).
 
 In addition to the response parameters defined in [RFC6749] and [RFC8628], the server can also send
@@ -2630,7 +2459,7 @@ resource: OPTIONAL. See sections 2.2.3 and 2.2.3.3.2.
 
 x5c: OPTIONAL. See sections 2.2.3 and 2.2.3.7.
 
-3.2.5.2.1.3  Processing Details
+###### 3.2.5.2.1.3 Processing Details
 
 The steps performed by the AD FS server to process an OAuth 2.0 client's access token request are
 defined in [RFC6749] sections 4.1.3 (Access Token Response), 5 (Issuing an Access Token), and 6
@@ -2704,7 +2533,8 @@ Release: April 23, 2024
 
 36 / 57
 
-  Upon successful authentication using the HTTP Negotiate Authentication Scheme, the AD FS
+
+  Upon successful authentication using the HTTP Negotiate Authentication Scheme, the AD FS
 
 server verifies that the account used to authenticate is one that was previously associated
 with the client during client registration: if there is a client registration record with client_id
@@ -2795,7 +2625,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-OAuth 2.0 client according to the requirements of [RFC6749] section 5.2 (Error Response).
+
+OAuth 2.0 client according to the requirements of [RFC6749] section 5.2 (Error Response).
 The REQUIRED error parameter of the response MUST be set to invalid_grant.
 
 
@@ -2874,7 +2705,7 @@ parameter provided on the device authorization endpoint (/devicecode) request.
 
   Otherwise use the tbidv2 POST parameter on the current request.
 
-3.2.5.3  Device authorization endpoint (/devicecode)
+##### 3.2.5.3 Device authorization endpoint (/devicecode)
 
 As defined in [RFC8628] sections 3.1 (Device Authorization Request) and 3.2 (Device Authorization
 Response), the device authorization endpoint is used by an OAuth 2.0 client to obtain device
@@ -2886,7 +2717,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-verification codes, user codes, and verification URLs. The following HTTP methods are allowed to be
+
+verification codes, user codes, and verification URLs. The following HTTP methods are allowed to be
 performed on this endpoint.
 
 HTTP method
@@ -2900,7 +2732,7 @@ client to the device authorization endpoint of the AD FS
 server in accordance with the requirements of
 [RFC8628] section 3.1 (Device Authorization Request).
 
-3.2.5.3.1 POST
+###### 3.2.5.3.1 POST
 
 This operation is transported by an HTTP POST.
 
@@ -2943,7 +2775,7 @@ The response message for this method can result in the status codes defined in [
 (Error Response). Additionally, if the AD FS server encountered an error while processing the client's
 access token request, it can return the server_error error code defined in this document.
 
-3.2.5.3.1.1  Request Body
+###### 3.2.5.3.1.1 Request Body
 
 The format of the request is defined in [RFC8628] section 3.1 (Device Authorization Request).
 
@@ -2954,7 +2786,7 @@ resource: OPTIONAL. See sections 2.2.3 and 2.2.3.3.1.
 
 tbidv2: OPTIONAL. See [RFC8471].
 
-3.2.5.3.1.2  Response Body
+###### 3.2.5.3.1.2 Response Body
 
 [MS-OAPX] - v20240423
 OAuth 2.0 Protocol Extensions
@@ -2963,7 +2795,8 @@ Release: April 23, 2024
 
 39 / 57
 
-The format of the response body is defined in [RFC8628] section 3.2 (Device Authorization Response).
+
+The format of the response body is defined in [RFC8628] section 3.2 (Device Authorization Response).
 
 In addition to the response parameters defined in [RFC8628], the server can also send the following
 response parameters:
@@ -2976,7 +2809,7 @@ verification_url: OPTIONAL. This parameter has the same value as the response pa
 
 verification_uri which is described in [RFC8628] section 3.2 (Device Authorization Response).
 
-3.2.5.3.1.3  Processing Details
+###### 3.2.5.3.1.3 Processing Details
 
 The steps performed by the AD FS server to process an OAuth 2.0 client's device authorization
 request are defined in [RFC8628] section 3.2 (Device Authorization Response).
@@ -3018,11 +2851,11 @@ server must respond to the OAuth 2.0 client as per the requirements of [RFC6749]
 (Error Response). The REQUIRED error parameter of the response MUST be set to the
 invalid_request error code as defined in [RFC6749] section 4.1.2.1.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -3033,14 +2866,15 @@ Release: April 23, 2024
 
 40 / 57
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Note: Throughout these examples, the fictitious names "client.example.com" and
 "server.example.com" are used as they are used in [RFC6749].
 
 Note: Throughout these examples, the HTTP samples contain extra line breaks to enhance readability.
 
-4.1  Authorization Code Request
+### 4.1 Authorization Code Request
 
 Refer to [RFC6749] section 4.1.1 (Authorization Request).
 
@@ -3051,7 +2885,7 @@ Refer to [RFC6749] section 4.1.1 (Authorization Request).
   &redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb HTTP/1.1
  Host: server.example.com
 
-4.2  Authorization Code Response
+### 4.2 Authorization Code Response
 
 Refer to [RFC6749] section 4.1.2 (Authorization Response).
 
@@ -3059,7 +2893,7 @@ Refer to [RFC6749] section 4.1.2 (Authorization Response).
  Location: https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA
  &state=xyz
 
-4.3  Access Token Request
+### 4.3 Access Token Request
 
 Refer to [RFC6749] section 4.1.3 (Access Token Request).
 
@@ -3069,7 +2903,7 @@ Refer to [RFC6749] section 4.1.3 (Access Token Request).
  grant_type=authorization_code&client_id=s6BhdRkqt3&code=SplxlOBeZQQYbYS6WxSbIA&redirect_uri=h
 ttps%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
 
-4.4  Access Token Response
+### 4.4 Access Token Response
 
 Refer to [RFC6749] section 5.1 (Successful Response).
 
@@ -3084,7 +2918,7 @@ Refer to [RFC6749] section 5.1 (Successful Response).
    "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
  }
 
-4.5  Access Token Error Response – server_error
+### 4.5 Access Token Error Response – server_error
 
  HTTP/1.1 400 Bad Request
  Content-Type: application/json;charset=UTF-8
@@ -3096,18 +2930,19 @@ Release: April 23, 2024
 
 41 / 57
 
- Cache-Control: no-store
+
+ Cache-Control: no-store
  Pragma: no-cache
  {
    "error":"server_error"
  }
 
-4.6  Access Token Request and Response – Use of Multi-Resource Refresh Token
+### 4.6 Access Token Request and Response – Use of Multi-Resource Refresh Token
 
 This example shows the sequence of requests and responses involved in the use of a multi-resource
 refresh token.
 
-4.6.1  Authorization Code Request
+#### 4.6.1 Authorization Code Request
 
 Refer to [RFC6749] section 4.1.1 (Authorization Request).
 
@@ -3121,7 +2956,7 @@ GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz
  &redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb HTTP/1.1
 Host: server.example.com
 
-4.6.2  Authorization Code Response
+#### 4.6.2 Authorization Code Response
 
 Refer to [RFC6749] section 4.1.2 (Authorization Response).
 
@@ -3129,7 +2964,7 @@ HTTP/1.1 302 Found
 Location: https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA
 &state=xyz
 
-4.6.3  Access Token Request
+#### 4.6.3 Access Token Request
 
 Refer to [RFC6749] section 4.1.3 (Access Token Request).
 
@@ -3140,7 +2975,7 @@ grant_type=authorization_code&client_id=s6BhdRkqt3&code=SplxlOBeZQQYbYS6WxSbIA&r
 
 t_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
 
-4.6.4  Access Token Response
+#### 4.6.4 Access Token Response
 
 Refer to [RFC6749] section 5.1 (Successful Response).
 
@@ -3161,9 +2996,10 @@ Release: April 23, 2024
 
 42 / 57
 
-}
 
-4.6.5  Access Token Request – Using Multi-Resource Refresh Token
+}
+
+#### 4.6.5 Access Token Request – Using Multi-Resource Refresh Token
 
 Refer to [RFC6749] section 4.1.3 (Access Token Request).
 
@@ -3174,7 +3010,7 @@ Refer to [RFC6749] section 4.1.3 (Access Token Request).
 QQYbYS6WxSbIA&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb&resource=https:%2F%2Fres
 ource_server
 
-4.6.6  Access Token Response for Multi-Resource Refresh Token Request
+#### 4.6.6 Access Token Response for Multi-Resource Refresh Token Request
 
 Refer to [RFC6749] section 5.1 (Successful Response).
 
@@ -3189,12 +3025,12 @@ Pragma: no-cache
   "refresh_token":"U0lETkRKNDMyMzRORVVE"
 }
 
-4.7  Access Token Request and Response - OAuth on-behalf-of Requests
+### 4.7 Access Token Request and Response - OAuth on-behalf-of Requests
 
 This example shows the sequence of requests and responses involved in the use of the
 requested_token_use parameter.
 
-4.7.1  Authorization Code Request
+#### 4.7.1 Authorization Code Request
 
 Below is the initial authorization code request made by the client. Note that the client requests the
 "user_impersonation" scope, because only an access token that was granted with this scope can be
@@ -3206,7 +3042,7 @@ used later when making an OAuth on-behalf-of request.
    &scope=user_impersonation HTTP/1.1
  Host: server.example.com
 
-4.7.2  Authorization Code Response
+#### 4.7.2 Authorization Code Response
 
 In this example sequence of requests and responses, the AD FS server returns the message below in
 response to the request in section 4.7.1. Note that because the AD FS server has not rejected the
@@ -3223,7 +3059,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.7.3  Initial Access Token Request
+
+#### 4.7.3 Initial Access Token Request
 
 In this example sequence of requests and responses, the client redeems the authorization code
 received in section 4.7.2 by making the request below.
@@ -3234,7 +3071,7 @@ received in section 4.7.2 by making the request below.
  grant_type=authorization_code&client_id=s6BhdRkqt3&code=SplxlOBeZQQYbYS6WxSbIA&redirect_uri=h
 ttps%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
 
-4.7.4  Initial Access Token Response
+#### 4.7.4 Initial Access Token Response
 
 In this example sequence of requests and responses, the AD FS server returns the message below in
 response to the request in section 4.7.3. Note that because the AD FS server has not rejected the
@@ -3252,7 +3089,7 @@ with the "user_impersonation" scope originally requested in section 4.7.1.
    "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
  }
 
-4.7.5  OAuth on-behalf-of Request
+#### 4.7.5 OAuth on-behalf-of Request
 
 In this example sequence of requests and responses, the first resource, "https://resource_server1",
 having received the original access token shown in section 4.7.4, acts as a client and plays that access
@@ -3272,7 +3109,7 @@ bearer&requested_token_use=on_behalf_of&assertion=2YotnFZFEjr1zCsicMWpAA&client_
 F%2Fresource_server1&client_secret=7Fjfp0ZBr1KtDRbnfVdmIw&resource=https%3A%2F%2Fresource_ser
 ver2
 
-4.7.6  OAuth on-behalf-of Response
+#### 4.7.6 OAuth on-behalf-of Response
 
 In this example sequence of requests and responses, the AD FS server returns the below in response
 to the request in section 4.7.5. The new access token is now intended for resource
@@ -3288,7 +3125,8 @@ Release: April 23, 2024
 
 44 / 57
 
- Content-Type: application/json;charset=UTF-8
+
+ Content-Type: application/json;charset=UTF-8
  Cache-Control: no-store
  Pragma: no-cache
  {
@@ -3297,7 +3135,7 @@ Release: April 23, 2024
    "expires_in":3600,
  }
 
-4.8  Access Token Request using Windows Client Authentication
+### 4.8 Access Token Request using Windows Client Authentication
 
 Refer to [RFC6749] section 4.1.3 (Access Token Request).
 
@@ -3309,7 +3147,7 @@ Refer to [RFC6749] section 4.1.3 (Access Token Request).
 grant_type=authorization_code&client_id=s6BhdRkqt3&code=SplxlOBeZQQYbYS6WxSbIA&redirect_u
 ri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb&use_windows_client_authentication=true
 
-4.9  Authorization Code Request with nonce Parameter
+### 4.9 Authorization Code Request with nonce Parameter
 
 Refer to [RFC6749] section 4.1.1 (Authorization Request). For more information on the nonce
 parameter, see [OIDCCore] section 3.1.2.1.
@@ -3321,7 +3159,7 @@ parameter, see [OIDCCore] section 3.1.2.1.
    &redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb HTTP/1.1
  Host: server.example.com
 
-4.10  Authorization Code Request with prompt Parameter
+### 4.10 Authorization Code Request with prompt Parameter
 
 Refer to [RFC6749] section 4.1.1 (Authorization Request). For more information on the prompt
 parameter, see section 2.2.2 and [OIDCCore] section 3.1.2.1.
@@ -3333,7 +3171,7 @@ parameter, see section 2.2.2 and [OIDCCore] section 3.1.2.1.
    &redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb HTTP/1.1
  Host: server.example.com
 
-4.11  Authorization Code Request with max_age Parameter
+### 4.11 Authorization Code Request with max_age Parameter
 
 Refer to [RFC6749] section 4.1.1 (Authorization Request). For more information on the max_age
 parameter, see [OIDCCore] section 3.1.2.1.
@@ -3351,9 +3189,10 @@ Release: April 23, 2024
 
 45 / 57
 
- Host: server.example.com
 
-4.12  Authorization Code Request with id_token_hint Parameter
+ Host: server.example.com
+
+### 4.12 Authorization Code Request with id_token_hint Parameter
 
 Refer to [RFC6749] section 4.1.1 (Authorization Request). For more information on the id_token_hint
 parameter, see [OIDCCore] section 3.1.2.1.
@@ -3372,12 +3211,12 @@ WOLrLl0nx7RkKU8NXNHq-rvKMzqg
    &redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb HTTP/1.1
  Host: server.example.com
 
-4.13  Access Token Request and Response - OAuth logon certificate requests
+### 4.13 Access Token Request and Response - OAuth logon certificate requests
 
 This example shows the sequence of requests and responses involved in an OAuth logon certificate
 request.
 
-4.13.1 Authorization Code Request
+#### 4.13.1 Authorization Code Request
 
 The following message is the initial authorization code request made by the client. Note that the client
 requests the "logon_cert" scope, because only an access token that was granted with this scope can
@@ -3389,7 +3228,7 @@ be used later when making an OAuth logon certificate request.
    &scope=logon_cert HTTP/1.1
  Host: server.example.com
 
-4.13.2 Authorization Code Response
+#### 4.13.2 Authorization Code Response
 
 The following message is returned by the AD FS server in response to the request shown in section
 4.13.1. Note that because the AD FS server has not rejected the request or indicated a reduced scope
@@ -3399,7 +3238,7 @@ via the scope response parameter, this response was granted with the previously 
  HTTP/1.1 302 Found
  Location: https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA
 
-4.13.3 Initial Access Token Request
+#### 4.13.3 Initial Access Token Request
 
 The client redeems the authorization code that was received in the message shown in section 4.13.2
 by making the following request.
@@ -3413,12 +3252,13 @@ Release: April 23, 2024
 
 46 / 57
 
- Host: server.example.com
+
+ Host: server.example.com
  Content-Type: application/x-www-form-urlencoded
  grant_type=authorization_code&client_id=s6BhdRkqt3&code=SplxlOBeZQQYbYS6WxSbIA&redirect_uri=h
 ttps%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
 
-4.13.4 Initial Access Token Response
+#### 4.13.4 Initial Access Token Response
 
 This message is returned by the AD FS server in response to the request shown in section 4.13.3.
 Note that because the AD FS server has not rejected the request or indicated a reduced scope via the
@@ -3436,7 +3276,7 @@ in section 4.13.1.
    "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
  }
 
-4.13.5 OAuth logon certificate Request
+#### 4.13.5 OAuth logon certificate Request
 
 The first resource, "https://resource_server1", having received the original access token shown in
 section 4.13.4, acts as a client and sends that access token to the AD FS server in order to request a
@@ -3489,7 +3329,8 @@ Release: April 23, 2024
 
 47 / 57
 
-4.13.6 OAuth logon certificate Response
+
+#### 4.13.6 OAuth logon certificate Response
 
 This message is returned by the AD FS server in response to the request shown in section 4.13.5. The
 response contains the certificate response in the x5c parameter rather than an access token.
@@ -3504,9 +3345,9 @@ response contains the certificate response in the x5c parameter rather than an a
    "expires_in":3600
  }
 
-4.14  Access Token Request and Response – OAuth device flow request
+### 4.14 Access Token Request and Response – OAuth device flow request
 
-4.14.1 Device Authorization Request
+#### 4.14.1 Device Authorization Request
 
 Refer to [RFC8628] section 3.1 (Device Authorization Request).
 
@@ -3515,7 +3356,7 @@ Refer to [RFC8628] section 3.1 (Device Authorization Request).
  Host: server.example.com
  client_id=s6BhdRkqt3&resource= https:%2F%2Fresource_server
 
-4.14.2 Device Authorization Response
+#### 4.14.2 Device Authorization Response
 
 Refer to [RFC8628] section 3.2 (Device Authorization Response).
 
@@ -3536,7 +3377,7 @@ https:\/\/server.example.com\/deviceauth?user_code=JCFQCXCPL",
    "verification_url":"https:\/\/server.example.com\/deviceauth"
  }
 
-4.14.3 Device Access Token Request
+#### 4.14.3 Device Access Token Request
 
 Refer to [RFC8628] section 3.4 (Device Access Token Request).
 
@@ -3553,7 +3394,8 @@ Release: April 23, 2024
 
 48 / 57
 
-4.14.4 Device Access Token Response
+
+#### 4.14.4 Device Access Token Response
 
 Refer to [RFC8628] section 3.5 (Device Access Token Response).
 
@@ -3575,9 +3417,10 @@ Release: April 23, 2024
 
 49 / 57
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 When processing a request with the amr_values parameter set to a value of "ngcmfa", certificate or
 other asymmetric key-based authentication alone does not satisfy multiple factors if the key that is
@@ -3604,7 +3447,7 @@ could potentially use a previously received certificate with a hardware-bound pr
 access token and register a new key. The new key can then be roamed to an attacker's machine,
 where the attacker can exchange it for further certificates or use it directly to impersonate the user.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3615,7 +3458,8 @@ Release: April 23, 2024
 
 50 / 57
 
-6  Appendix A: Full JSON Schema
+
+## 6 Appendix A: Full JSON Schema
 
 resource_params= {
 
@@ -3630,7 +3474,8 @@ Release: April 23, 2024
 
 51 / 57
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3758,7 +3603,8 @@ OAuth 2.0 Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<2> Section 1.6:  OAuth 2.0 clients running on Windows 8.1 and later implement these mandatory
+
+<2> Section 1.6:  OAuth 2.0 clients running on Windows 8.1 and later implement these mandatory
 extensions by default.
 
 OAuth 2.0 clients running on Windows 7, Windows 8, Windows Server 2008, Windows Server 2008 R2,
@@ -3832,7 +3678,8 @@ Release: April 23, 2024
 
 53 / 57
 
-Operating System
+
+Operating System
 
 ad_fs_behavior_level values supported
 
@@ -3856,7 +3703,8 @@ Release: April 23, 2024
 
 54 / 57
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3900,7 +3748,8 @@ Release: April 23, 2024
 
 55 / 57
 
-9  Index
+
+## 9 Index
 A
 
 Applicability 10
@@ -4068,7 +3917,8 @@ Parameter 45
 
 56 / 57
 
-R
+
+R
 
 References
    informative 9

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 58
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 58
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: April 23, 2024
 
 3 / 58
 
-Date
+
+Date
 
 Revision
 History
@@ -571,177 +574,79 @@ Release: April 23, 2024
 
 4 / 58
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 RPC_HQUERY](#221-rpchquery)
+    - [2.2.2 PRPC_HQUERY](#222-prpchquery)
+    - [2.2.3 error_status_t](#223-errorstatust)
+    - [2.2.4 Structures](#224-structures)
+      - [2.2.4.1 _PERF_COUNTERSET_REG_INFO](#2241-perfcountersetreginfo)
+      - [2.2.4.2 _PERF_COUNTER_REG_INFO](#2242-perfcounterreginfo)
+      - [2.2.4.3 _STRING_BUFFER_HEADER](#2243-stringbufferheader)
+      - [2.2.4.4 _STRING_COUNTER_HEADER](#2244-stringcounterheader)
+      - [2.2.4.5 _PERF_INSTANCE_HEADER](#2245-perfinstanceheader)
+      - [2.2.4.6 _PERF_COUNTER_IDENTIFIER](#2246-perfcounteridentifier)
+      - [2.2.4.7 _PERF_DATA_HEADER](#2247-perfdataheader)
+      - [2.2.4.8 _PERF_COUNTER_HEADER](#2248-perfcounterheader)
+      - [2.2.4.9 _PERF_COUNTER_DATA](#2249-perfcounterdata)
+      - [2.2.4.10 _PERF_MULTI_INSTANCES](#22410-perfmultiinstances)
+      - [2.2.4.11 _PERF_MULTI_COUNTERS](#22411-perfmulticounters)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Countersets](#3111-countersets)
+      - [3.1.1.2 Counterset Instances](#3112-counterset-instances)
+      - [3.1.1.3 Counters](#3113-counters)
+      - [3.1.1.4 Providers](#3114-providers)
+      - [3.1.1.5 Query Handles](#3115-query-handles)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 PerflibV2 Interface](#3141-perflibv2-interface)
+        - [3.1.4.1.1 PerflibV2EnumerateCounterSet (Opnum 0)](#31411-perflibv2enumeratecounterset-opnum-0)
+        - [3.1.4.1.2 PerflibV2QueryCounterSetRegistrationInfo (Opnum 1)](#31412-perflibv2querycountersetregistrationinfo-opnum-1)
+        - [3.1.4.1.3 PerflibV2EnumerateCounterSetInstances (Opnum 2)](#31413-perflibv2enumeratecountersetinstances-opnum-2)
+        - [3.1.4.1.4 PerflibV2OpenQueryHandle (Opnum 3)](#31414-perflibv2openqueryhandle-opnum-3)
+        - [3.1.4.1.5 PerflibV2QueryCounterInfo (Opnum 5)](#31415-perflibv2querycounterinfo-opnum-5)
+        - [3.1.4.1.6 PerflibV2QueryCounterData (Opnum 6)](#31416-perflibv2querycounterdata-opnum-6)
+        - [3.1.4.1.7 PerflibV2ValidateCounters (Opnum 7)](#31417-perflibv2validatecounters-opnum-7)
+        - [3.1.4.1.8 PerflibV2CloseQueryHandle (Opnum 4)](#31418-perflibv2closequeryhandle-opnum-4)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Querying for Performance Counter Data](#41-querying-for-performance-counter-data)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Data Types ........................................................................................ 11
-RPC_HQUERY ............................................................................................. 11
-PRPC_HQUERY ........................................................................................... 11
-error_status_t ............................................................................................ 12
-Structures ................................................................................................. 12
-_PERF_COUNTERSET_REG_INFO ............................................................ 12
-_PERF_COUNTER_REG_INFO .................................................................. 13
-_STRING_BUFFER_HEADER .................................................................... 19
-_STRING_COUNTER_HEADER ................................................................. 19
-_PERF_INSTANCE_HEADER .................................................................... 20
-_PERF_COUNTER_IDENTIFIER ................................................................ 20
-_PERF_DATA_HEADER ........................................................................... 21
-_PERF_COUNTER_HEADER ..................................................................... 21
-_PERF_COUNTER_DATA ......................................................................... 22
-_PERF_MULTI_INSTANCES ..................................................................... 22
-_PERF_MULTI_COUNTERS ...................................................................... 22
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-2.2.4.8
-2.2.4.9
-2.2.4.10
-2.2.4.11
-
-3.1
-
-3.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3  Protocol Details ..................................................................................................... 24
-Server Details .................................................................................................. 24
-Abstract Data Model .................................................................................... 24
-Countersets .......................................................................................... 24
-Counterset Instances ............................................................................. 24
-Counters .............................................................................................. 24
-Providers ............................................................................................. 24
-Query Handles ...................................................................................... 25
-Timers ...................................................................................................... 25
-Initialization ............................................................................................... 25
-Message Processing Events and Sequencing Rules .......................................... 25
-PerflibV2 Interface ................................................................................ 26
-PerflibV2EnumerateCounterSet (Opnum 0) ......................................... 26
-PerflibV2QueryCounterSetRegistrationInfo (Opnum 1) ......................... 27
-PerflibV2EnumerateCounterSetInstances (Opnum 2) ............................ 33
-PerflibV2OpenQueryHandle (Opnum 3)............................................... 35
-PerflibV2QueryCounterInfo (Opnum 5) ............................................... 35
-PerflibV2QueryCounterData (Opnum 6) .............................................. 37
-PerflibV2ValidateCounters (Opnum 7) ................................................ 44
-PerflibV2CloseQueryHandle (Opnum 4) .............................................. 46
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-Client Details ................................................................................................... 47
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-3.1.4.1.6
-3.1.4.1.7
-3.1.4.1.8
-
-3.1.5
-3.1.6
-
-3.1.4.1
-
-3.2
-
-[MS-PCQ] - v20240423
-Performance Counter Query Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 58
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-Abstract Data Model .................................................................................... 47
-Timers ...................................................................................................... 47
-Initialization ............................................................................................... 47
-Message Processing Events and Sequencing Rules .......................................... 47
-Timer Events .............................................................................................. 48
-Other Local Events ...................................................................................... 48
-
-4  Protocol Examples ................................................................................................. 49
-Querying for Performance Counter Data .............................................................. 49
-
-4.1
-
-5  Security ................................................................................................................. 51
-Security Considerations for Implementers ........................................................... 51
-Index of Security Parameters ............................................................................ 51
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 52
-
-7  Appendix B: Product Behavior ............................................................................... 54
-
-8  Change Tracking .................................................................................................... 56
-
-9  Index ..................................................................................................................... 57
-
-[MS-PCQ] - v20240423
-Performance Counter Query Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 58
-
-1  Introduction
+## 1 Introduction
 
 The Performance Counter Query Protocol is a remote procedure call (RPC)–based protocol that is
 used for browsing performance counters and retrieving performance counter values from a server.
@@ -749,7 +654,7 @@ used for browsing performance counters and retrieving performance counter values
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -817,7 +722,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-system performance time: A timer that is updated at a hardware-dependent frequency. It has a
+
+system performance time: A timer that is updated at a hardware-dependent frequency. It has a
 
 higher-resolution (more accurate) than system time.
 
@@ -853,14 +759,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -886,10 +792,11 @@ Release: April 23, 2024
 
 8 / 58
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-AUTHLEV] Microsoft Corporation, "RPC_C_AUTHN_LEVEL_xxx", http://msdn.microsoft.com/en-
 us/library/ms678435.aspx
@@ -906,7 +813,7 @@ http://technet2.microsoft.com/WindowsServer/en/library/2c455a3c-6964-432b-9402-
 
 [PIPE] Microsoft Corporation, "Named Pipes", http://msdn.microsoft.com/en-us/library/aa365590.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 To effectively manage systems, administrators need the capability to query for performance counter
 data on the health or state of a particular application or system. Software components that are
@@ -923,12 +830,12 @@ can also use the protocol to establish a query on the server and add or remove p
 to it. The client can then repeatedly retrieve performance counter data that is associated with the
 query by using the protocol.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Performance Counter Query Protocol relies on RPC for its transport. The Performance Counter
 Query Protocol is not used by any other protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Performance Counter Query Protocol is implemented over RPC, and therefore has those
 prerequisites that are specified in [MS-RPCE] and that are common to RPC interfaces.
@@ -937,7 +844,7 @@ It is assumed that a client has obtained the name or IP address of the server th
 Performance Counter Query Protocol before invoking the Performance Counter Query Protocol. The
 protocol also assumes that the client has sufficient security privileges to access files on the server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Performance Counter Query Protocol is appropriate for querying performance library 2.0–based
 counter providers and their counter data on a server.
@@ -949,19 +856,20 @@ Release: April 23, 2024
 
 9 / 58
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This document addresses versioning issues in security and authentication methods (as specified in
 section 2.1 and [MS-RPCE]).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Performance Counter Query Protocol uses Win32 error codes. These values are taken from the
 Windows error number space that is specified in [MS-ERREF] section 2.2. Vendors SHOULD reuse
 those values with their indicated meaning because choosing any other value risks a collision in the
 future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -988,12 +896,13 @@ Release: April 23, 2024
 
 10 / 58
 
-2  Messages
+
+## 2 Messages
 
  This section specifies common data types and how Performance Counter Query Protocol messages are
 encapsulated on the wire.
 
-2.1  Transport
+### 2.1 Transport
 
 The Performance Counter Query Protocol uses the ncacn_np RPC protocol sequence.
 
@@ -1015,7 +924,7 @@ AS being used encrypts all data being transferred to and from the procedure call
 to perform on the client's behalf.<1> For more information on how the AS encrypts data, see [MSDN-
 AUTHLEV].
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 The Performance Counter Query Protocol MUST indicate to the RPC runtime that it is to support the
 Network Data Representation (NDR) transfer syntax only, as specified in [C706] part 4.
@@ -1023,7 +932,7 @@ Network Data Representation (NDR) transfer syntax only, as specified in [C706] p
 In addition to RPC base types and definitions, as specified in [C706] and [MS-RPCE], additional data
 types are defined in the following sections, 2.2.1 through 2.2.3.
 
-2.2.1  RPC_HQUERY
+#### 2.2.1 RPC_HQUERY
 
 This type is declared as follows:
 
@@ -1037,7 +946,7 @@ for the values of the performance counters, the server determines which performa
 query based on the handle the client passes to the query method. The client closes the handle upon
 completion of the performance counter query, allowing the server to free the appropriate resources.
 
-2.2.2  PRPC_HQUERY
+#### 2.2.2 PRPC_HQUERY
 
 This type is declared as follows:
 
@@ -1052,14 +961,15 @@ Release: April 23, 2024
 
 11 / 58
 
-2.2.3  error_status_t
+
+#### 2.2.3 error_status_t
 
 The type error_status_t is the return type from the interface methods; it is represented as an
 unsigned long. When the interface methods return successfully, the value is 0. Otherwise, it
 represents the failure that occurred, and its possible values are Win32 error codes, as specified in
 [MS-ERREF].
 
-2.2.4  Structures
+#### 2.2.4 Structures
 
 The following structures, sections 2.2.4.1 through 2.2.4.11, are not defined in the Interface
 Definition Language (IDL) file but are necessary to understand the information that is returned by
@@ -1069,7 +979,7 @@ All multibyte data fields in the Performance Counter Query Protocol are little-e
 MUST begin on 8-byte boundaries, although the data that is contained within the structure need not
 be aligned to 8-byte boundaries.
 
-2.2.4.1  _PERF_COUNTERSET_REG_INFO
+##### 2.2.4.1 _PERF_COUNTERSET_REG_INFO
 
 The _PERF_COUNTERSET_REG_INFO structure contains information about the counterset and is used
 when enumerating performance counter information about the server.
@@ -1126,7 +1036,8 @@ Release: April 23, 2024
 
 12 / 58
 
-Value
+
+Value
 
 Meaning
 
@@ -1158,7 +1069,7 @@ value of the counter that was obtained in the last query for the aggregation ope
 
 Instance aggregate. Not implemented.
 
-2.2.4.2  _PERF_COUNTER_REG_INFO
+##### 2.2.4.2 _PERF_COUNTER_REG_INFO
 
 The _PERF_COUNTER_REG_INFO structure contains information on the counter and is used when
 enumerating performance counter information on the server.
@@ -1208,7 +1119,8 @@ between the two query time stamps. The unit of time is
 
 13 / 58
 
-Value
+
+Value
 
 Meaning
 
@@ -1334,7 +1246,8 @@ performance time is used to calculate the sample interval
 
 14 / 58
 
-Value
+
+Value
 
 Meaning
 
@@ -1449,7 +1362,8 @@ difference in time. This difference is calculated by taking
 
 15 / 58
 
-Value
+
+Value
 
 Meaning
 
@@ -1554,7 +1468,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x40030403
 
@@ -1655,7 +1570,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For example, the difference in the value between queries of a counter are divided by the difference
+
+For example, the difference in the value between queries of a counter are divided by the difference
 in the value between queries of the counter whose CounterId is BaseCounterId.
 
 The following counter types require a BaseCounterId.
@@ -1756,7 +1672,8 @@ Release: April 23, 2024
 
 18 / 58
 
-In certain cases, such as when rate counters are scaled, it is necessary to divide the difference in
+
+In certain cases, such as when rate counters are scaled, it is necessary to divide the difference in
 this counter value between queries by an additional value on the client. The CounterId of the
 counter is specified by MultiId. It MUST be of type PERF_COUNTER_RAWCOUNT in the counterset
 that is used as a divisor to this counter value. The following counter types require a MultiId (for
@@ -1802,7 +1719,7 @@ Meaning
 
 Reserved:  This is a reserved field. It MUST be set to 0, and MUST be ignored on receipt.
 
-2.2.4.3  _STRING_BUFFER_HEADER
+##### 2.2.4.3 _STRING_BUFFER_HEADER
 
 The _STRING_BUFFER_HEADER structure is used at the beginning of a counter string header block
 that is returned when retrieving the names or description strings of performance counters. For
@@ -1818,7 +1735,7 @@ dwSize:  The total size, in bytes, of the data that is returned.
 
 dwCounters:  The total number of counters in the counterset.
 
-2.2.4.4  _STRING_COUNTER_HEADER
+##### 2.2.4.4 _STRING_COUNTER_HEADER
 
 The _STRING_COUNTER_HEADER structure is used in a counter string header block.
 
@@ -1834,7 +1751,8 @@ Release: April 23, 2024
 
 19 / 58
 
-  *PPERF_STRING_COUNTER_HEADER;
+
+  *PPERF_STRING_COUNTER_HEADER;
 
 dwCounterId:  The CounterId of the performance counter.
 
@@ -1843,7 +1761,7 @@ dwOffset:  The offset from the end of the set of _STRING_COUNTER_HEADER structur
 this structure belongs to its corresponding name or description. For more information, see figure 2
 in section 3.1.4.1.2.
 
-2.2.4.5  _PERF_INSTANCE_HEADER
+##### 2.2.4.5 _PERF_INSTANCE_HEADER
 
 The _PERF_INSTANCE_HEADER structure is used at the beginning of an instance block that is returned
 when enumerating counterset instances or when returning performance counter data from
@@ -1863,7 +1781,7 @@ by the combination of its instance name and instance identifier. Two active inst
 counterset SHOULD NOT have the same combination of instance name and instance identifier.
 <3>
 
-2.2.4.6  _PERF_COUNTER_IDENTIFIER
+##### 2.2.4.6 _PERF_COUNTER_IDENTIFIER
 
 The _PERF_COUNTER_IDENTIFIER structure is used to identify performance counters when adding
 or removing counters from a query or when enumerating performance counter metadata on the
@@ -1901,14 +1819,15 @@ Release: April 23, 2024
 
 20 / 58
 
-Index:  The position in which the corresponding counter data is returned from a
+
+Index:  The position in which the corresponding counter data is returned from a
 
 PerflibV2QueryCounterData (section 3.1.4.1.6) method call. For more information, see
 PerflibV2QueryCounterInfo (section 3.1.4.1.5).
 
 Reserved:  Clients MUST set this field to 0 and MUST ignore this field on receipt.
 
-2.2.4.7  _PERF_DATA_HEADER
+##### 2.2.4.7 _PERF_DATA_HEADER
 
 The _PERF_DATA_HEADER structure is used at the beginning of a sequence of counter header blocks
 that are returned when the client queries the server for performance counter values.
@@ -1939,7 +1858,7 @@ SystemTime:  The time at which data is collected on the provider side. The forma
 
 specified in [MS-DTYP].
 
-2.2.4.8  _PERF_COUNTER_HEADER
+##### 2.2.4.8 _PERF_COUNTER_HEADER
 
 The _PERF_COUNTER_HEADER structure is used at the beginning of a counter header block.
 
@@ -1978,7 +1897,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x00000001
 
@@ -2007,7 +1927,7 @@ dwSize:  The size, in bytes, of the structure and data.
 
 Reserved:  MUST be set to 0, and MUST be ignored on receipt.
 
-2.2.4.9  _PERF_COUNTER_DATA
+##### 2.2.4.9 _PERF_COUNTER_DATA
 
 The _PERF_COUNTER_DATA structure is used in the counter header block.
 
@@ -2021,9 +1941,9 @@ dwDataSize:  The size, in bytes, of the performance counter data.
 
 dwSize:  The size, in bytes, of the structure and performance counter data.
 
-2.2.4.10
+##### 2.2.4.10 _PERF_MULTI_INSTANCES
 
-_PERF_MULTI_INSTANCES
+
 
 The _PERF_MULTI_INSTANCES structure is used in the counter header block.
 
@@ -2037,9 +1957,9 @@ dwTotalSize:  The size, in bytes, of the header and data.
 
 dwInstances:  The number of instances from which data is collected.
 
-2.2.4.11
+##### 2.2.4.11 _PERF_MULTI_COUNTERS
 
-_PERF_MULTI_COUNTERS
+
 
 The _PERF_MULTI_COUNTERS structure is used in the counter header block.
 
@@ -2058,7 +1978,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwCounters:  The number of counters.
+
+dwCounters:  The number of counters.
 
 [MS-PCQ] - v20240423
 Performance Counter Query Protocol
@@ -2067,7 +1988,8 @@ Release: April 23, 2024
 
 23 / 58
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of the Performance Counter Query Protocol is simply a pass-through. Therefore, no
 additional timers or other states are required on the client side of the Performance Counter Query
@@ -2075,12 +1997,12 @@ Protocol. Calls made by the higher-layer protocol or application are passed dire
 and the results that are returned by the transport are passed directly back to the higher-layer protocol
 or application.
 
-3.1  Server Details
+### 3.1 Server Details
 
 The server handles client requests for any of the methods, as specified in section 3.1.4, and operates
 on the performance counters on the server.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in the Performance Counter Query Protocol. The described organization is
@@ -2088,7 +2010,7 @@ provided to facilitate the explanation of how the protocol behaves. This documen
 that implementations adhere to this model as long as their external behavior is consistent with what is
 described in this document.
 
-3.1.1.1  Countersets
+##### 3.1.1.1 Countersets
 
 Performance counters are organized into countersets. Each counterset is a logical grouping of one
 or more performance counters. A counterset is identified by a GUID and a name.
@@ -2096,7 +2018,7 @@ or more performance counters. A counterset is identified by a GUID and a name.
 For example, a processor counterset can contain performance counters related to the system
 processor (CPU).
 
-3.1.1.2  Counterset Instances
+##### 3.1.1.2 Counterset Instances
 
 Depending on the entity that is updating the performance counter value, multiple instances of a
 counterset can exist. For example, a single-processor machine has only one instance of a counterset
@@ -2105,7 +2027,7 @@ instances.
 
 Each instance of a counterset is identified by a numeric ID and name.
 
-3.1.1.3  Counters
+##### 3.1.1.3 Counters
 
 Each performance counter in a counterset is identified by a numeric ID; a counter can be uniquely
 identified on the system by using the counterset GUID, counterset instance name or ID, and counter
@@ -2113,7 +2035,7 @@ ID. Each performance counter can have a localized name and description, type, an
 other metadata fields. Depending on the type of performance counter, it can be necessary to use the
 value of other performance counters to calculate the value.
 
-3.1.1.4  Providers
+##### 3.1.1.4 Providers
 
 Performance counter values are updated by logical entities called providers. The providers are
 registered within the system, and they create the counterset instances using implementation-specific
@@ -2127,7 +2049,8 @@ Release: April 23, 2024
 
 24 / 58
 
-3.1.1.5  Query Handles
+
+##### 3.1.1.5 Query Handles
 
 Clients can perform two types of query operations on the server by using the Performance Counter
 Query Protocol: Browse the counterset and performance counter metadata on the server or query
@@ -2170,16 +2093,16 @@ When the client no longer needs to query the server for performance counter valu
 RPC_HQUERY handle; afterward, the server can free any resources that are associated with the
 handle.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required—other than the internal ones that are used in remote procedure
 calls to implement resiliency to network outages, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
  None.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The Performance Counter Query Protocol MUST indicate to the RPC runtime that it is to perform a
 strict NDR data consistency check at target level 6.0, as specified in [MS-RPCE] section 3.
@@ -2191,14 +2114,15 @@ Release: April 23, 2024
 
 25 / 58
 
-The Performance Counter Query Protocol MUST indicate to the RPC runtime that it is to reject a NULL
+
+The Performance Counter Query Protocol MUST indicate to the RPC runtime that it is to reject a NULL
 unique or full pointer with a nonzero conformant value, as specified in [MS-RPCE] section 3.
 
 The Performance Counter Query Protocol MUST indicate to the RPC runtime through the
 strict_context_handle attribute that it is to reject use of context handles that are created by a
 method of a different RPC interface than this one, as specified in [MS-RPCE] section 3.
 
-3.1.4.1  PerflibV2 Interface
+##### 3.1.4.1 PerflibV2 Interface
 
 The PerflibV2 interface is a set of methods that the client can use to enumerate performance
 counter metadata and query performance counter values on a server. The client can view all the
@@ -2271,7 +2195,7 @@ Many of these methods return data in buffers whose format is not specified in th
 structures that are returned in the data buffer MUST begin on 8-byte boundaries, and all multibyte
 data fields are little-endian.
 
-3.1.4.1.1 PerflibV2EnumerateCounterSet (Opnum 0)
+###### 3.1.4.1.1 PerflibV2EnumerateCounterSet (Opnum 0)
 
 [MS-PCQ] - v20240423
 Performance Counter Query Protocol
@@ -2280,7 +2204,8 @@ Release: April 23, 2024
 
 26 / 58
 
-The PerflibV2EnumerateCounterSet method allows a client to enumerate the available countersets on
+
+The PerflibV2EnumerateCounterSet method allows a client to enumerate the available countersets on
 a server.
 
  error_status_t PerflibV2EnumerateCounterSet(
@@ -2342,7 +2267,7 @@ This return value is used to indicate that the server, while attempting to
 return all of the appropriate GUIDs to the client, could not allocate
 memory.
 
-3.1.4.1.2 PerflibV2QueryCounterSetRegistrationInfo (Opnum 1)
+###### 3.1.4.1.2 PerflibV2QueryCounterSetRegistrationInfo (Opnum 1)
 
 The PerflibV2QueryCounterSetRegistrationInfo method allows a client to enumerate metadata about a
 counterset or performance counter on a server.
@@ -2365,7 +2290,8 @@ Release: April 23, 2024
 
 27 / 58
 
- );
+
+ );
 
 szMachine: A Unicode string specifying a server name, which is passed directly to the counter
 
@@ -2446,7 +2372,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-PCQ].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -2538,7 +2465,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-_PERF_COUNTERSET_REG_INFO (row 2, CounterSetGuid)
+
+_PERF_COUNTERSET_REG_INFO (row 2, CounterSetGuid)
 
 _PERF_COUNTERSET_REG_INFO (row 3, CounterSetGuid)
 
@@ -2605,7 +2533,8 @@ Release: April 23, 2024
 
 30 / 58
 
-_PERF_COUNTER_REG_INFO (row 3, Attrib)
+
+_PERF_COUNTER_REG_INFO (row 3, Attrib)
 
 _PERF_COUNTER_REG_INFO (row 4, Attrib)
 
@@ -2652,7 +2581,8 @@ Release: April 23, 2024
 
 31 / 58
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-PCQ].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2704,7 +2634,8 @@ Release: April 23, 2024
 
 32 / 58
 
-
+
+
 
 
 
@@ -2714,7 +2645,7 @@ The server MUST return a null-terminated Unicode string.
 If RequestCode = 0x00000008, the server returns the GUID of the performance counter provider.
 The server MUST return a GUID.
 
-3.1.4.1.3 PerflibV2EnumerateCounterSetInstances (Opnum 2)
+###### 3.1.4.1.3 PerflibV2EnumerateCounterSetInstances (Opnum 2)
 
 The PerflibV2EnumerateCounterSetInstances method retrieves all active instances of the client-
 specified counterset on the server.
@@ -2806,7 +2737,8 @@ Release: April 23, 2024
 
 33 / 58
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-PCQ].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -2871,7 +2803,8 @@ Release: April 23, 2024
 
 34 / 58
 
-3.1.4.1.4 PerflibV2OpenQueryHandle (Opnum 3)
+
+###### 3.1.4.1.4 PerflibV2OpenQueryHandle (Opnum 3)
 
 The PerflibV2OpenQueryHandle method returns a handle to the client that the client then uses to add,
 remove, and collect performance counters from the server.
@@ -2924,7 +2857,7 @@ The server returns this value if it cannot allocate other system
 resource to process the client request. This is not specifically memory
 about the client request or handle.
 
-3.1.4.1.5 PerflibV2QueryCounterInfo (Opnum 5)
+###### 3.1.4.1.5 PerflibV2QueryCounterInfo (Opnum 5)
 
 The PerflibV2QueryCounterInfo method returns information on the performance counters that
 belong to the performance counter query associated with the RPC_HQUERY; these performance
@@ -2954,7 +2887,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-PCQ].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -3034,7 +2968,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-_PERF_COUNTER_IDENTIFIER (row 3, CounterSetGuid)
+
+_PERF_COUNTER_IDENTIFIER (row 3, CounterSetGuid)
 
 _PERF_COUNTER_IDENTIFIER (row 4, CounterSetGuid)
 
@@ -3080,7 +3015,7 @@ Unicode string of Instance Name (row 1)
 
 Instance Name (row 2)
 
-3.1.4.1.6 PerflibV2QueryCounterData (Opnum 6)
+###### 3.1.4.1.6 PerflibV2QueryCounterData (Opnum 6)
 
 [MS-PCQ] - v20240423
 Performance Counter Query Protocol
@@ -3089,7 +3024,8 @@ Release: April 23, 2024
 
 37 / 58
 
-The PerflibV2QueryCounterData method retrieves data for the performance counters associated
+
+The PerflibV2QueryCounterData method retrieves data for the performance counters associated
 with the query. Performance counters can be added or removed from queries by calling
 PerflibV2ValidateCounters.
 
@@ -3155,7 +3091,8 @@ Release: April 23, 2024
 
 38 / 58
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-PCQ].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -3207,7 +3144,8 @@ Release: April 23, 2024
 
 39 / 58
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-PCQ].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -3275,7 +3213,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-PCQ].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -3332,7 +3271,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-PCQ].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
@@ -3379,7 +3319,8 @@ Release: April 23, 2024
 
 42 / 58
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-PCQ].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -3436,7 +3377,8 @@ Release: April 23, 2024
 
 43 / 58
 
-_PERF_COUNTER_HEADER (row 3, dwSize)
+
+_PERF_COUNTER_HEADER (row 3, dwSize)
 
 _PERF_COUNTER_HEADER (row 4, Reserved)
 
@@ -3460,7 +3402,7 @@ _PERF_COUNTER_DATA (row 2, dwSize)
 
 Counter value (Will be two rows if the counter value is 64-bits)
 
-3.1.4.1.7 PerflibV2ValidateCounters (Opnum 7)
+###### 3.1.4.1.7 PerflibV2ValidateCounters (Opnum 7)
 
 This PerflibV2ValidateCounters method either adds or removes performance counters from the
 query.
@@ -3499,7 +3441,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3616,7 +3559,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Return value/code
+
+ Return value/code
 
  Description
 
@@ -3636,7 +3580,7 @@ character. Setting the instance name string to "*" indicates a wildcard characte
 When the method returns, the Status field of each _PERF_COUNTER_IDENTIFIER structure in the
 array MUST specify if the operation succeeded for the counters that are referenced by that structure.
 
-3.1.4.1.8 PerflibV2CloseQueryHandle (Opnum 4)
+###### 3.1.4.1.8 PerflibV2CloseQueryHandle (Opnum 4)
 
 The PerflibV2CloseQueryHandle method closes the handle that is returned from the
 PerflibV2OpenQueryHandle method.
@@ -3672,12 +3616,12 @@ is less than RPC_C_AUTHN_LEVEL_PKT_PRIVACY. The opened handle, phQuery,
 remains in that state until the client calls PerflibV2CloseQueryHandle with
 authentication level RPC_C_AUTHN_LEVEL_PKT_PRIVACY.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No timer events are required except for the events that are maintained in the underlying RPC
 transport.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 There are no local events inherently associated with the Performance Counter Query Protocol.
 
@@ -3688,9 +3632,10 @@ Release: April 23, 2024
 
 46 / 58
 
-3.2  Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 Client Details
+
+#### 3.2.1 Abstract Data Model
 
 The state information that is required for successful operation of the Performance Counter Query
 Protocol is primarily stored on the server; other than the handle that is obtained from the
@@ -3726,16 +3671,16 @@ information it retained with respect to the client's query (such as the list of 
 were being queried). The client can also free the memory that is associated with the RPC_HQUERY
 handle.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required—other than those internal ones that are used in remote procedure
 calls to implement resiliency to network outages, as specified in [MS-RPCE].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 There is no client-side initialization.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The Performance Counter Query Protocol MUST indicate to the RPC runtime that it is to perform a
 strict NDR data consistency check at target level 6.0, as specified in [MS-RPCE] section 3.
@@ -3750,12 +3695,13 @@ Release: April 23, 2024
 
 47 / 58
 
-3.2.5  Timer Events
+
+#### 3.2.5 Timer Events
 
 No timer events are required except for the events that are maintained in the underlying RPC
 transport.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 There are no client-specific local events.
 
@@ -3766,17 +3712,18 @@ Release: April 23, 2024
 
 48 / 58
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-PCQ].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following example demonstrates the usage of the Performance Counter Query Protocol. The client
 queries the value of certain performance counters that are organized into one counterset that is
 found on the server.
 
-4.1  Querying for Performance Counter Data
+### 4.1 Querying for Performance Counter Data
 
 [MS-PCQ] - v20240423
 Performance Counter Query Protocol
@@ -3785,7 +3732,8 @@ Release: April 23, 2024
 
 49 / 58
 
-Figure 10: Querying for performance counter data
+
+Figure 10: Querying for performance counter data
 
 1.  The client calls PerflibV2EnumerateCounterSet on the server.
 
@@ -3843,18 +3791,19 @@ Release: April 23, 2024
 
 50 / 58
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Performance Counter
 Query Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 The Performance Counter Query Protocol introduces no security considerations except for those that
 are applicable to RPC. Specifically, the client is required to use the
 RPC_C_AUTHN_LEVEL_PKT_PRIVACY authentication level.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter   Section
 
@@ -3869,7 +3818,8 @@ Release: April 23, 2024
 
 51 / 58
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL found in
 [MS-DTYP] Appendix A.
@@ -3944,7 +3894,8 @@ Release: April 23, 2024
 
 52 / 58
 
-     [ in, range(0, 67108864) ] DWORD dwInSize,
+
+     [ in, range(0, 67108864) ] DWORD dwInSize,
      [ out ] DWORD *    pdwOutSize,
      [ out ] DWORD *    pdwRtnSize,
      [ out, size_is(dwInSize), length_is(* pdwOutSize) ] unsigned char *
@@ -3978,7 +3929,8 @@ Release: April 23, 2024
 
 53 / 58
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4047,7 +3999,8 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-must first create an active instance of that counterset; this in turn will create an active instance of the
+
+must first create an active instance of that counterset; this in turn will create an active instance of the
 performance counter that belongs to that counterset. The application can then update that instance of
 the performance counter with the appropriate values.
 
@@ -4087,7 +4040,8 @@ Release: April 23, 2024
 
 55 / 58
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4131,7 +4085,8 @@ Release: April 23, 2024
 
 56 / 58
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -4265,7 +4220,8 @@ PPERF_MULTI_COUNTERS 22
 
 57 / 58
 
-PPERF_MULTI_INSTANCES 22
+
+PPERF_MULTI_INSTANCES 22
 PPERF_STRING_BUFFER_HEADER 19
 PPERF_STRING_COUNTER_HEADER 19
 PPERFCOUNTERHEADER 21

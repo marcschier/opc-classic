@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 20
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -186,147 +187,63 @@ Release: April 23, 2024
 
 2 / 20
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Protocol Overview (Synopsis)](#13-protocol-overview-synopsis)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 DISPLAYCONTROL_HEADER](#2211-displaycontrolheader)
+    - [2.2.2 Display Control Messages](#222-display-control-messages)
+      - [2.2.2.1 DISPLAYCONTROL_CAPS_PDU](#2221-displaycontrolcapspdu)
+      - [2.2.2.2 DISPLAYCONTROL_MONITOR_LAYOUT_PDU](#2222-displaycontrolmonitorlayoutpdu)
+        - [2.2.2.2.1 DISPLAYCONTROL_MONITOR_LAYOUT](#22221-displaycontrolmonitorlayout)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending DISPLAYCONTROL_CAPS_PDU](#3151-sending-displaycontrolcapspdu)
+      - [3.1.5.2 Processing DISPLAYCONTROL_MONITOR_LAYOUT_PDU](#3152-processing-displaycontrolmonitorlayoutpdu)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Maximum Monitor Count](#3211-maximum-monitor-count)
+      - [3.2.1.2 Maximum Monitor Area Factor A](#3212-maximum-monitor-area-factor-a)
+      - [3.2.1.3 Maximum Monitor Area Factor B](#3213-maximum-monitor-area-factor-b)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing DISPLAYCONTROL_CAPS_PDU](#3251-processing-displaycontrolcapspdu)
+      - [3.2.5.2 Sending DISPLAYCONTROL_MONITOR_LAYOUT_PDU](#3252-sending-displaycontrolmonitorlayoutpdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Protocol Overview (Synopsis) .............................................................................. 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Common Data Types ..................................................................................... 8
-DISPLAYCONTROL_HEADER ..................................................................... 8
-Display Control Messages .............................................................................. 8
-DISPLAYCONTROL_CAPS_PDU .................................................................. 8
-DISPLAYCONTROL_MONITOR_LAYOUT_PDU ............................................... 9
-DISPLAYCONTROL_MONITOR_LAYOUT ............................................... 10
-
-2.2.2.1
-2.2.2.2
-
-2.2.2.2.1
-
-2.2.1.1
-
-2.2.2
-
-3.2
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 12
-Server Details .................................................................................................. 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Processing Events and Sequencing Rules ....................................................... 12
-Sending DISPLAYCONTROL_CAPS_PDU .................................................... 12
-Processing DISPLAYCONTROL_MONITOR_LAYOUT_PDU ............................. 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 13
-Client Details ................................................................................................... 13
-Abstract Data Model .................................................................................... 13
-Maximum Monitor Count ........................................................................ 13
-Maximum Monitor Area Factor A ............................................................. 13
-Maximum Monitor Area Factor B ............................................................. 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 13
-Processing Events and Sequencing Rules ....................................................... 13
-Processing DISPLAYCONTROL_CAPS_PDU ................................................ 13
-Sending DISPLAYCONTROL_MONITOR_LAYOUT_PDU ................................. 14
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-
-3.2.6
-3.2.7
-
-3.2.1
-
-4  Protocol Examples ................................................................................................. 15
-
-5  Security ................................................................................................................. 16
-Security Considerations for Implementers ........................................................... 16
-Index of Security Parameters ............................................................................ 16
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 17
-
-7  Change Tracking .................................................................................................... 18
-
-3 / 20
-
-[MS-RDPEDISP] - v20240423
-Remote Desktop Protocol: Display Update Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8  Index ..................................................................................................................... 19
-
-[MS-RDPEDISP] - v20240423
-Remote Desktop Protocol: Display Update Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 20
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Remote Desktop Protocol: Display Control Channel Extension to the
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting, as specified in [MS-RDPBCGR]
@@ -337,7 +254,7 @@ monitors, resolution updates, and orientation updates.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -363,14 +280,14 @@ running at the server and applications running on the TS client.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -396,15 +313,16 @@ Remote Desktop Protocol: Display Update Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-RDPEDISP].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Protocol Overview (Synopsis)
+### 1.3 Protocol Overview (Synopsis)
 
 The sequence of messages exchanged by the Remote Desktop Protocol: Display Control Virtual
 Channel Extension is described in the following figure. The messages exchanged in this diagram are
@@ -441,7 +359,7 @@ to remote session graphics.
 The DISPLAYCONTROL_MONITOR_LAYOUT_PDU message can be sent whenever a display
 configuration change is required.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Display Control Virtual Channel Extension is embedded in a dynamic
 virtual channel transport, as specified in [MS-RDPEDYC] sections 1 to 3.
@@ -453,7 +371,8 @@ Release: April 23, 2024
 
 6 / 20
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Display Control Virtual Channel Extension operates only after the
 dynamic virtual channel transport is fully established. If the dynamic virtual channel transport is
@@ -465,21 +384,21 @@ If the RemoteFX codec ([MS-RDPRFX] sections 2.2.2 and 3.1.8) is being used to en
 from a remote session, then the Remote Desktop Protocol: Display Control Virtual Channel Extension
 SHOULD NOT be used to request display configuration changes.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Display Control Virtual Channel Extension is applicable in scenarios
 where a mechanism to request display configuration changes in a remote session without
 disconnecting and reconnecting is required.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -490,9 +409,10 @@ Release: April 23, 2024
 
 7 / 20
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Display Control Virtual Channel Extension is designed to operate over a
 dynamic virtual channel, as specified in [MS-RDPEDYC] sections 1 to 3. The dynamic virtual channel
@@ -500,14 +420,14 @@ name is the null-terminated ANSI character string "Microsoft::Windows::RDS::Disp
 usage of channel names in the context of opening a dynamic virtual channel is specified in [MS-
 RDPEDYC] section 2.2.2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the Remote Desktop Protocol: Display Virtual Channel Extension
 message syntax.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  DISPLAYCONTROL_HEADER
+##### 2.2.1.1 DISPLAYCONTROL_HEADER
 
 The DISPLAYCONTROL_HEADER structure is included in all display control PDUs and specifies the
 PDU type and the length of the PDU.
@@ -550,9 +470,9 @@ Length (4 bytes): A 32-bit unsigned integer that specifies the length of the dis
 
 bytes. This value MUST include the length of the DISPLAYCONTROL_HEADER (8 bytes).
 
-2.2.2  Display Control Messages
+#### 2.2.2 Display Control Messages
 
-2.2.2.1  DISPLAYCONTROL_CAPS_PDU
+##### 2.2.2.1 DISPLAYCONTROL_CAPS_PDU
 
 The DISPLAYCONTROL_CAPS_PDU message is a server-to-client PDU that is used to specify a set of
 parameters which the client must adhere to when sending the
@@ -565,7 +485,8 @@ Release: April 23, 2024
 
 8 / 20
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -602,7 +523,7 @@ MaxMonitorAreaFactorB (4 bytes): A 32-bit unsigned integer that is used to speci
 monitor area supported by the server. The maximum supported monitor area (in square pixels) is
 given by MaxNumMonitors * MaxMonitorAreaFactorA * MaxMonitorAreaFactorB.
 
-2.2.2.2  DISPLAYCONTROL_MONITOR_LAYOUT_PDU
+##### 2.2.2.2 DISPLAYCONTROL_MONITOR_LAYOUT_PDU
 
 The DISPLAYCONTROL_MONITOR_LAYOUT_PDU message is a client-to-server PDU that is used
 to request a display configuration change on the server, such as the addition of a monitor or a new
@@ -643,7 +564,8 @@ Release: April 23, 2024
 
 9 / 20
 
-MonitorLayoutSize (4 bytes): A 32-bit unsigned integer that specifies the size, in bytes, of a single
+
+MonitorLayoutSize (4 bytes): A 32-bit unsigned integer that specifies the size, in bytes, of a single
 
 element in the Monitors field. This field MUST be set to 40 bytes, the size of the
 DISPLAYCONTROL_MONITOR_LAYOUT structure (section 2.2.2.2.1).
@@ -662,7 +584,7 @@ NumMonitors field. The area (in square pixels) of the layout specified by the
 DISPLAYCONTROL_MONITOR_LAYOUT structures MUST NOT exceed the maximum monitor
 area defined by the server in the DISPLAYCONTROL_CAPS_PDU message.
 
-2.2.2.2.1 DISPLAYCONTROL_MONITOR_LAYOUT
+###### 2.2.2.2.1 DISPLAYCONTROL_MONITOR_LAYOUT
 
 The DISPLAYCONTROL_MONITOR_LAYOUT structure is used to specify the characteristics of a
 monitor. The coordinates used to describe the monitor position MUST be relative to the upper-left
@@ -720,7 +642,8 @@ Release: April 23, 2024
 
 10 / 20
 
-Left (4 bytes): A 32-bit signed integer that specifies the x-coordinate of the upper-left corner of the
+
+Left (4 bytes): A 32-bit signed integer that specifies the x-coordinate of the upper-left corner of the
 
 display monitor.
 
@@ -793,11 +716,12 @@ Release: April 23, 2024
 
 11 / 20
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -809,26 +733,26 @@ Note  It is possible to implement the following conceptual data by using a varie
 long as the implementation produces external behavior that is consistent with that described in this
 document.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Sending DISPLAYCONTROL_CAPS_PDU
+##### 3.1.5.1 Sending DISPLAYCONTROL_CAPS_PDU
 
 The structure and fields of the DISPLAYCONTROL_CAPS_PDU message are specified in section
 2.2.2.1. The message fields MUST be populated in accordance with this description.
 
-3.1.5.2  Processing DISPLAYCONTROL_MONITOR_LAYOUT_PDU
+##### 3.1.5.2 Processing DISPLAYCONTROL_MONITOR_LAYOUT_PDU
 
 The structure and fields of the DISPLAYCONTROL_MONITOR_LAYOUT_PDU message are specified
 in section 2.2.2.2. The server SHOULD trigger a display configuration update in the remote session
@@ -847,7 +771,7 @@ valid, consistent and within range.
 
  Each monitor is adjacent to at least one other monitor (even if only at a single point).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
@@ -858,13 +782,14 @@ Release: April 23, 2024
 
 12 / 20
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -876,36 +801,36 @@ Note  It is possible to implement the following conceptual data by using a varie
 long as the implementation produces external behavior that is consistent with that described in this
 document.
 
-3.2.1.1  Maximum Monitor Count
+##### 3.2.1.1 Maximum Monitor Count
 
 The Maximum Monitor Count store contains the contents of the MaxNumMonitors field of the
 DISPLAYCONTROL_CAPS_PDU (section 2.2.2.1) message.
 
-3.2.1.2  Maximum Monitor Area Factor A
+##### 3.2.1.2 Maximum Monitor Area Factor A
 
 The Maximum Monitor Area Factor A store contains the contents of the MaxMonitorAreaFactorA
 field of the DISPLAYCONTROL_CAPS_PDU (section 2.2.2.1) message.
 
-3.2.1.3  Maximum Monitor Area Factor B
+##### 3.2.1.3 Maximum Monitor Area Factor B
 
 The Maximum Monitor Area Factor B store contains the contents of the MaxMonitorAreaFactorB
 field of the DISPLAYCONTROL_CAPS_PDU (section 2.2.2.1) message.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Processing DISPLAYCONTROL_CAPS_PDU
+##### 3.2.5.1 Processing DISPLAYCONTROL_CAPS_PDU
 
 The structure and fields of the DISPLAYCONTROL_CAPS_PDU message are specified in section
 2.2.2.1. Upon receiving the DISPLAYCONTROL_CAPS_PDU message, the client MUST store the
@@ -920,7 +845,8 @@ Remote Desktop Protocol: Display Update Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.2  Sending DISPLAYCONTROL_MONITOR_LAYOUT_PDU
+
+##### 3.2.5.2 Sending DISPLAYCONTROL_MONITOR_LAYOUT_PDU
 
 The structure and fields of the DISPLAYCONTROL_MONITOR_LAYOUT_PDU message are specified
 in section 2.2.2.2. The message fields MUST be populated in accordance with that description. The
@@ -928,11 +854,11 @@ maximum area of the monitor layout MUST NOT exceed product of the Maximum Monito
 (section 3.2.1.1), Maximum Monitor Area Factor A (section 3.2.1.2), and Maximum Monitor
 Area Factor B (section 3.2.1.3) ADM elements.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -943,7 +869,8 @@ Release: April 23, 2024
 
 14 / 20
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -954,13 +881,14 @@ Release: April 23, 2024
 
 15 / 20
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -971,7 +899,8 @@ Release: April 23, 2024
 
 16 / 20
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1013,7 +942,8 @@ Release: April 23, 2024
 
 17 / 20
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1057,7 +987,8 @@ Release: April 23, 2024
 
 18 / 20
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1188,7 +1119,8 @@ Release: April 23, 2024
 
 19 / 20
 
-Vendor-extensible fields 7
+
+Vendor-extensible fields 7
 Versioning 7
 
 [MS-RDPEDISP] - v20240423

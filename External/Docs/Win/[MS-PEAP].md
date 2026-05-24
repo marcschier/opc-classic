@@ -63,7 +63,8 @@ Release: September 29, 2025
 
 1 / 77
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Release: September 29, 2025
 
 2 / 77
 
-Date
+
+Date
 
 Revision
 History
@@ -551,7 +553,8 @@ Release: September 29, 2025
 
 3 / 77
 
-Date
+
+Date
 
 Revision
 History
@@ -602,388 +605,160 @@ Release: September 29, 2025
 
 4 / 77
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 16
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.6.1
-2.2.6.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-
-2  Messages ............................................................................................................... 17
-Transport ........................................................................................................ 17
-Message Syntax ............................................................................................... 17
-EAP Packet ................................................................................................ 17
-PEAP Packet ............................................................................................... 17
-PEAP Fragment Acknowledgement Packet ...................................................... 19
-TLV ........................................................................................................... 19
-Vendor-Specific TLV .................................................................................... 20
-Outer TLVs................................................................................................. 20
-Client Hello Packet With Outer TLVs ........................................................ 21
-PEAP Start Packet With Outer TLVs ......................................................... 21
-EAP Expanded Types ................................................................................... 21
-EAP Extensions Methods .............................................................................. 22
-EAP TLV Extensions Method .................................................................... 22
-Cryptobinding TLV ........................................................................... 22
-Result TLV ...................................................................................... 24
-SoH Response TLV ........................................................................... 25
-SoH EAP Extensions Method ................................................................... 25
-SoH Request TLV ............................................................................. 26
-SoH TLV ......................................................................................... 26
-Capabilities Negotiation Method .............................................................. 27
-Capabilities Method Request ............................................................. 27
-Capabilities Method Response ........................................................... 28
-
-2.2.8.1.1
-2.2.8.1.2
-2.2.8.1.3
-
-2.2.8.3.1
-2.2.8.3.2
-
-2.2.8.2.1
-2.2.8.2.2
-
-2.2.7
-2.2.8
-
-2.2.8.3
-
-2.2.8.1
-
-2.2.8.2
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 29
-Common Details .............................................................................................. 29
-Abstract Data Model .................................................................................... 29
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 30
-Status and Error Handling ...................................................................... 30
-PEAP Packet Processing ......................................................................... 31
-Received PEAP Packet with L and M Bit Set ......................................... 31
-Sending PEAP Packet with packet size more than MaxSendPacketSize .... 31
-Compress_Encrypt_Send Method....................................................... 31
-Version Negotiation ............................................................................... 31
-Phase 1 (TLS Tunnel Establishment) ........................................................ 32
-Cryptobinding ....................................................................................... 32
-Input Data Used in the Cryptobinding HMAC-SHA1-160 Operation ......... 32
-Key Used in the Cryptobinding HMAC-SHA1-160 Operation ................... 33
-PEAP Tunnel Key (TK) ................................................................ 33
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3.1.5.5.1
-3.1.5.5.2
-
-3.1.5.5.2.1
-
-[MS-PEAP] - v20250929
-Protected Extensible Authentication Protocol (PEAP)
-Copyright © 2025 Microsoft Corporation
-Release: September 29, 2025
-
-5 / 77
-
-3.1.5.6
-3.1.5.7
-
-3.1.6
-3.1.7
-
-3.1.7.1
-3.1.7.2
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.5.5
-
-3.2.6
-3.2.7
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-3.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-
-3.2.5.4.1
-3.2.5.4.2
-3.2.5.4.3
-3.2.5.4.4
-3.2.5.4.5
-3.2.5.4.6
-3.2.5.4.7
-3.2.5.4.8
-3.2.5.4.9
-
-3.1.5.5.2.2
-
-Intermediate PEAP MAC Key (IPMK) and Compound MAC Key (CMK)  33
-Phase 2 (EAP Encapsulation) .................................................................. 34
-Key Management .................................................................................. 35
-Timer Events .............................................................................................. 36
-Other Local Events ...................................................................................... 36
-Interface with TLS ................................................................................. 36
-Interface with EAP................................................................................. 36
-Peer Details ..................................................................................................... 37
-Abstract Data Model .................................................................................... 37
-Timers ...................................................................................................... 39
-Initialization ............................................................................................... 39
-Higher-Layer Triggered Events ..................................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Status and Error Handling ...................................................................... 40
-Phase 1 (TLS Tunnel Establishment) ........................................................ 40
-PEAP Peer Cryptobinding Validation ......................................................... 40
-Packet Processing ................................................................................. 41
-General Packet Validation ................................................................. 41
-Received PEAP Request .................................................................... 41
-Received PEAP Packet with S Bit Set .................................................. 42
-Received PEAP Packet With Inner EAP Type As Identity ........................ 43
-Received SoH Request TLV ............................................................... 43
-Received Capabilities Method Request ................................................ 43
-Received EAP TLV Extensions Method Packet ...................................... 44
-Received EAP Success ...................................................................... 45
-Received EAP Failure ........................................................................ 45
-Key Management .................................................................................. 46
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-TLS Session Established Successfully ....................................................... 46
-TLS Session Failed to Establish ............................................................... 47
-Interface with EAP................................................................................. 47
-Server Details .................................................................................................. 47
-Abstract Data Model .................................................................................... 47
-Timers ...................................................................................................... 49
-Initialization ............................................................................................... 49
-Higher-Layer Triggered Events ..................................................................... 49
-Message Processing Events and Sequencing Rules .......................................... 49
-Status and Error Handling ...................................................................... 49
-Phase 1 (TLS Tunnel Establishment) ........................................................ 49
-PEAP Server Cryptobinding Validation ...................................................... 50
-Packet Processing ................................................................................. 50
-General Packet Validation ................................................................. 50
-Received PEAP Response .................................................................. 50
-Received PEAP Packet with Inner EAP Type As Identity (Identity Received)
- ..................................................................................................... 51
-Received Capabilities Method Response .............................................. 52
-Received EAP NAK ........................................................................... 52
-Received SoH .................................................................................. 53
-Received EAP TLV Extensions Method Packet ...................................... 54
-Key Management .................................................................................. 55
-Timer Events .............................................................................................. 55
-Other Local Events ...................................................................................... 55
-TLS Session Established Successfully ....................................................... 55
-TLS Session Failed to Establish ............................................................... 56
-EAP Inner Method Authentication Success ................................................ 56
-EAP Inner Method Authentication Failed ................................................... 56
-
-3.3.5.4.1
-3.3.5.4.2
-3.3.5.4.3
-
-3.3.5.4.4
-3.3.5.4.5
-3.3.5.4.6
-3.3.5.4.7
-
-3.3.5.5
-
-3.3.6
-3.3.7
-
-3.3.7.1
-3.3.7.2
-3.3.7.3
-3.3.7.4
-
-[MS-PEAP] - v20250929
-Protected Extensible Authentication Protocol (PEAP)
-Copyright © 2025 Microsoft Corporation
-Release: September 29, 2025
-
-6 / 77
-
-4.1
-
-4.4
-
-4.3
-
-4.2
-
-4.2.1
-
-4.4.1
-
-4.3.1
-4.3.2
-4.3.3
-
-4.1.1
-4.1.2
-4.1.3
-
-4.4.1.1
-4.4.1.2
-4.4.1.3
-
-4  Protocol Examples ................................................................................................. 57
-Examples with No Support for Cryptobinding and SoH Processing........................... 57
-Successful PEAP Phase 1 and 2 Negotiation .................................................... 57
-Successful PEAP Phase 1 with Failed Phase 2 Negotiation ................................. 58
-Successful PEAP Phase 1 with Fast Reconnect ................................................ 59
-Cryptobinding and SoH Processing Supported on PEAP Server Only ........................ 60
-Successful PEAP Phase 1 and 2 Negotiation .................................................... 60
-Cryptobinding and SoH Processing on PEAP Server and PEAP Peer ......................... 61
-Successful PEAP Phase 1 and 2 Negotiation .................................................... 62
-Successful PEAP Phase 1 with Fast Reconnect ................................................ 63
-Fallback to Full Authentication upon a Fast Reconnect Failure ........................... 63
-Sample Cryptobinding TLV Data ......................................................................... 64
-Cryptobinding TLV Request from Server to Client ............................................ 65
-Header ................................................................................................ 65
-Nonce .................................................................................................. 65
-Compound MAC .................................................................................... 65
-Data for HMAC-SHA1-160 Operation .................................................. 65
-Key for HMAC-SHA1-160 Operation ................................................... 65
-Temp Key ................................................................................. 65
-IPMK Seed ................................................................................ 65
-IPMK and CMK ........................................................................... 66
-Cryptobinding TLV Response from Client to Server .......................................... 66
-Header ................................................................................................ 66
-Nonce .................................................................................................. 67
-Compound MAC .................................................................................... 67
-Data for HMAC-SHA1-160 Operation .................................................. 67
-Key for HMAC-SHA1-160 Operation ................................................... 67
-Temp Key ................................................................................. 67
-IPMK Seed ................................................................................ 67
-IPMK and CMK ........................................................................... 67
-MPPE Keys Generation................................................................................. 68
-
-4.4.2.3.2.1
-4.4.2.3.2.2
-4.4.2.3.2.3
-
-4.4.1.3.2.1
-4.4.1.3.2.2
-4.4.1.3.2.3
-
-4.4.2.1
-4.4.2.2
-4.4.2.3
-
-4.4.1.3.1
-4.4.1.3.2
-
-4.4.2.3.1
-4.4.2.3.2
-
-4.4.2
-
-4.4.3
-
-5.1
-
-5  Security ................................................................................................................. 69
-Security Considerations for Implementers ........................................................... 69
-Fast Reconnect ........................................................................................... 69
-Identity Verification .................................................................................... 69
-Authentication Outcomes ............................................................................. 69
-Index of Security Parameters ............................................................................ 69
-
-5.1.1
-5.1.2
-5.1.3
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 70
-
-7  Change Tracking .................................................................................................... 73
-
-8  Index ..................................................................................................................... 74
-
-[MS-PEAP] - v20250929
-Protected Extensible Authentication Protocol (PEAP)
-Copyright © 2025 Microsoft Corporation
-Release: September 29, 2025
-
-7 / 77
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 EAP Packet](#221-eap-packet)
+    - [2.2.2 PEAP Packet](#222-peap-packet)
+    - [2.2.3 PEAP Fragment Acknowledgement Packet](#223-peap-fragment-acknowledgement-packet)
+    - [2.2.4 TLV](#224-tlv)
+    - [2.2.5 Vendor-Specific TLV](#225-vendor-specific-tlv)
+    - [2.2.6 Outer TLVs](#226-outer-tlvs)
+      - [2.2.6.1 Client Hello Packet With Outer TLVs](#2261-client-hello-packet-with-outer-tlvs)
+      - [2.2.6.2 PEAP Start Packet With Outer TLVs](#2262-peap-start-packet-with-outer-tlvs)
+    - [2.2.7 EAP Expanded Types](#227-eap-expanded-types)
+    - [2.2.8 EAP Extensions Methods](#228-eap-extensions-methods)
+      - [2.2.8.1 EAP TLV Extensions Method](#2281-eap-tlv-extensions-method)
+        - [2.2.8.1.1 Cryptobinding TLV](#22811-cryptobinding-tlv)
+        - [2.2.8.1.2 Result TLV](#22812-result-tlv)
+        - [2.2.8.1.3 SoH Response TLV](#22813-soh-response-tlv)
+      - [2.2.8.2 SoH EAP Extensions Method](#2282-soh-eap-extensions-method)
+        - [2.2.8.2.1 SoH Request TLV](#22821-soh-request-tlv)
+        - [2.2.8.2.2 SoH TLV](#22822-soh-tlv)
+      - [2.2.8.3 Capabilities Negotiation Method](#2283-capabilities-negotiation-method)
+        - [2.2.8.3.1 Capabilities Method Request](#22831-capabilities-method-request)
+        - [2.2.8.3.2 Capabilities Method Response](#22832-capabilities-method-response)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Status and Error Handling](#3151-status-and-error-handling)
+      - [3.1.5.2 PEAP Packet Processing](#3152-peap-packet-processing)
+        - [3.1.5.2.1 Received PEAP Packet with L and M Bit Set](#31521-received-peap-packet-with-l-and-m-bit-set)
+        - [3.1.5.2.2 Sending PEAP Packet with packet size more than MaxSendPacketSize](#31522-sending-peap-packet-with-packet-size-more-than-maxsendpacketsize)
+        - [3.1.5.2.3 Compress_Encrypt_Send Method](#31523-compressencryptsend-method)
+      - [3.1.5.3 Version Negotiation](#3153-version-negotiation)
+      - [3.1.5.4 Phase 1 (TLS Tunnel Establishment)](#3154-phase-1-tls-tunnel-establishment)
+      - [3.1.5.5 Cryptobinding](#3155-cryptobinding)
+        - [3.1.5.5.1 Input Data Used in the Cryptobinding HMAC-SHA1-160 Operation](#31551-input-data-used-in-the-cryptobinding-hmac-sha1-160-operation)
+        - [3.1.5.5.2 Key Used in the Cryptobinding HMAC-SHA1-160 Operation](#31552-key-used-in-the-cryptobinding-hmac-sha1-160-operation)
+          - [3.1.5.5.2.1 PEAP Tunnel Key (TK)](#315521-peap-tunnel-key-tk)
+          - [3.1.5.5.2.2 Intermediate PEAP MAC Key (IPMK) and Compound MAC Key (CMK)](#315522-intermediate-peap-mac-key-ipmk-and-compound-mac-key-cmk)
+      - [3.1.5.6 Phase 2 (EAP Encapsulation)](#3156-phase-2-eap-encapsulation)
+      - [3.1.5.7 Key Management](#3157-key-management)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Interface with TLS](#3171-interface-with-tls)
+      - [3.1.7.2 Interface with EAP](#3172-interface-with-eap)
+  - [3.2 Peer Details](#32-peer-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Status and Error Handling](#3251-status-and-error-handling)
+      - [3.2.5.2 Phase 1 (TLS Tunnel Establishment)](#3252-phase-1-tls-tunnel-establishment)
+      - [3.2.5.3 PEAP Peer Cryptobinding Validation](#3253-peap-peer-cryptobinding-validation)
+      - [3.2.5.4 Packet Processing](#3254-packet-processing)
+        - [3.2.5.4.1 General Packet Validation](#32541-general-packet-validation)
+        - [3.2.5.4.2 Received PEAP Request](#32542-received-peap-request)
+        - [3.2.5.4.3 Received PEAP Packet with S Bit Set](#32543-received-peap-packet-with-s-bit-set)
+        - [3.2.5.4.4 Received PEAP Packet With Inner EAP Type As Identity](#32544-received-peap-packet-with-inner-eap-type-as-identity)
+        - [3.2.5.4.5 Received SoH Request TLV](#32545-received-soh-request-tlv)
+        - [3.2.5.4.6 Received Capabilities Method Request](#32546-received-capabilities-method-request)
+        - [3.2.5.4.7 Received EAP TLV Extensions Method Packet](#32547-received-eap-tlv-extensions-method-packet)
+        - [3.2.5.4.8 Received EAP Success](#32548-received-eap-success)
+        - [3.2.5.4.9 Received EAP Failure](#32549-received-eap-failure)
+      - [3.2.5.5 Key Management](#3255-key-management)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 TLS Session Established Successfully](#3271-tls-session-established-successfully)
+      - [3.2.7.2 TLS Session Failed to Establish](#3272-tls-session-failed-to-establish)
+      - [3.2.7.3 Interface with EAP](#3273-interface-with-eap)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Status and Error Handling](#3351-status-and-error-handling)
+      - [3.3.5.2 Phase 1 (TLS Tunnel Establishment)](#3352-phase-1-tls-tunnel-establishment)
+      - [3.3.5.3 PEAP Server Cryptobinding Validation](#3353-peap-server-cryptobinding-validation)
+      - [3.3.5.4 Packet Processing](#3354-packet-processing)
+        - [3.3.5.4.1 General Packet Validation](#33541-general-packet-validation)
+        - [3.3.5.4.2 Received PEAP Response](#33542-received-peap-response)
+        - [3.3.5.4.3 Received PEAP Packet with Inner EAP Type As Identity (Identity Received)](#33543-received-peap-packet-with-inner-eap-type-as-identity-identity-received)
+        - [3.3.5.4.4 Received Capabilities Method Response](#33544-received-capabilities-method-response)
+        - [3.3.5.4.5 Received EAP NAK](#33545-received-eap-nak)
+        - [3.3.5.4.6 Received SoH](#33546-received-soh)
+        - [3.3.5.4.7 Received EAP TLV Extensions Method Packet](#33547-received-eap-tlv-extensions-method-packet)
+      - [3.3.5.5 Key Management](#3355-key-management)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 TLS Session Established Successfully](#3371-tls-session-established-successfully)
+      - [3.3.7.2 TLS Session Failed to Establish](#3372-tls-session-failed-to-establish)
+      - [3.3.7.3 EAP Inner Method Authentication Success](#3373-eap-inner-method-authentication-success)
+      - [3.3.7.4 EAP Inner Method Authentication Failed](#3374-eap-inner-method-authentication-failed)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Examples with No Support for Cryptobinding and SoH Processing](#41-examples-with-no-support-for-cryptobinding-and-soh-processing)
+    - [4.1.1 Successful PEAP Phase 1 and 2 Negotiation](#411-successful-peap-phase-1-and-2-negotiation)
+    - [4.1.2 Successful PEAP Phase 1 with Failed Phase 2 Negotiation](#412-successful-peap-phase-1-with-failed-phase-2-negotiation)
+    - [4.1.3 Successful PEAP Phase 1 with Fast Reconnect](#413-successful-peap-phase-1-with-fast-reconnect)
+  - [4.2 Cryptobinding and SoH Processing Supported on PEAP Server Only](#42-cryptobinding-and-soh-processing-supported-on-peap-server-only)
+    - [4.2.1 Successful PEAP Phase 1 and 2 Negotiation](#421-successful-peap-phase-1-and-2-negotiation)
+  - [4.3 Cryptobinding and SoH Processing on PEAP Server and PEAP Peer](#43-cryptobinding-and-soh-processing-on-peap-server-and-peap-peer)
+    - [4.3.1 Successful PEAP Phase 1 and 2 Negotiation](#431-successful-peap-phase-1-and-2-negotiation)
+    - [4.3.2 Successful PEAP Phase 1 with Fast Reconnect](#432-successful-peap-phase-1-with-fast-reconnect)
+    - [4.3.3 Fallback to Full Authentication upon a Fast Reconnect Failure](#433-fallback-to-full-authentication-upon-a-fast-reconnect-failure)
+  - [4.4 Sample Cryptobinding TLV Data](#44-sample-cryptobinding-tlv-data)
+    - [4.4.1 Cryptobinding TLV Request from Server to Client](#441-cryptobinding-tlv-request-from-server-to-client)
+      - [4.4.1.1 Header](#4411-header)
+      - [4.4.1.2 Nonce](#4412-nonce)
+      - [4.4.1.3 Compound MAC](#4413-compound-mac)
+        - [4.4.1.3.1 Data for HMAC-SHA1-160 Operation](#44131-data-for-hmac-sha1-160-operation)
+        - [4.4.1.3.2 Key for HMAC-SHA1-160 Operation](#44132-key-for-hmac-sha1-160-operation)
+          - [4.4.1.3.2.1 Temp Key](#441321-temp-key)
+          - [4.4.1.3.2.2 IPMK Seed](#441322-ipmk-seed)
+          - [4.4.1.3.2.3 IPMK and CMK](#441323-ipmk-and-cmk)
+    - [4.4.2 Cryptobinding TLV Response from Client to Server](#442-cryptobinding-tlv-response-from-client-to-server)
+      - [4.4.2.1 Header](#4421-header)
+      - [4.4.2.2 Nonce](#4422-nonce)
+      - [4.4.2.3 Compound MAC](#4423-compound-mac)
+        - [4.4.2.3.1 Data for HMAC-SHA1-160 Operation](#44231-data-for-hmac-sha1-160-operation)
+        - [4.4.2.3.2 Key for HMAC-SHA1-160 Operation](#44232-key-for-hmac-sha1-160-operation)
+          - [4.4.2.3.2.1 Temp Key](#442321-temp-key)
+          - [4.4.2.3.2.2 IPMK Seed](#442322-ipmk-seed)
+          - [4.4.2.3.2.3 IPMK and CMK](#442323-ipmk-and-cmk)
+    - [4.4.3 MPPE Keys Generation](#443-mppe-keys-generation)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Fast Reconnect](#511-fast-reconnect)
+    - [5.1.2 Identity Verification](#512-identity-verification)
+    - [5.1.3 Authentication Outcomes](#513-authentication-outcomes)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Protected Extensible Authentication Protocol (PEAP) is an extension to the Extensible
 Authentication Protocol (EAP) [RFC3748].
@@ -994,7 +769,7 @@ security services to those EAP methods that EAP provides.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1056,7 +831,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-EAP peer: A network access client that is requesting access to a network using EAP as the
+
+EAP peer: A network access client that is requesting access to a network using EAP as the
 
 authentication method
 
@@ -1135,7 +911,8 @@ Release: September 29, 2025
 
 9 / 77
 
-PEAP Server: An implementation of a PEAP method on a EAP server that takes care of the PEAP
+
+PEAP Server: An implementation of a PEAP method on a EAP server that takes care of the PEAP
 
 method server-side requirements.
 
@@ -1186,14 +963,14 @@ specified in [RFC3280].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1206,7 +983,8 @@ Release: September 29, 2025
 
 10 / 77
 
-[IANA-EAP] IANA, "Extensible Authentication Protocol (EAP) Registry", October 2006,
+
+[IANA-EAP] IANA, "Extensible Authentication Protocol (EAP) Registry", October 2006,
 http://www.iana.org/assignments/eap-numbers
 
 [IANA-ENT] Internet Assigned Numbers Authority, "Private Enterprise Numbers", January 2007,
@@ -1248,7 +1026,7 @@ editor.org/info/rfc5280
 [TNC-IF-TNCCSPBSoH] TCG, "TNC IF-TNCCS: Protocol Bindings for SoH", version 1.0, May 2007,
 https://trustedcomputinggroup.org/tnc-if-tnccs-protocol-bindings-soh/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IEEE802.1X] Institute of Electrical and Electronics Engineers, "IEEE Standard for Local and
 Metropolitan Area Networks - Port-Based Network Access Control", IEEE Std 802.1X-2004,
@@ -1271,7 +1049,8 @@ Release: September 29, 2025
 
 11 / 77
 
-[RFC1750] Eastlake III, D., Crocker, S., and Schiller, J., "Randomness Recommendations for
+
+[RFC1750] Eastlake III, D., Crocker, S., and Schiller, J., "Randomness Recommendations for
 Security", RFC 1750, December 1994, http://www.ietf.org/rfc/rfc1750.txt
 
 [RFC4017] Stanley, D., Walker, J., and Aboba, B., "Extensible Authentication Protocol (EAP) Method
@@ -1280,7 +1059,7 @@ Requirements for Wireless LANs", RFC 4017, March 2005, http://www.ietf.org/rfc/r
 [RFC4306] Kaufman, C., "Internet Key Exchange (IKEv2) Protocol", RFC 4306, December 2005,
 https://www.rfc-editor.org/info/rfc4306
 
-1.3  Overview
+### 1.3 Overview
 
 Network administrators often require authentication and authorization of users or devices attaching
 to their networks. For example, a network administrator can require that only known users be allowed
@@ -1341,7 +1120,8 @@ Release: September 29, 2025
 
 12 / 77
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-PEAP].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1376,7 +1156,8 @@ Release: September 29, 2025
 
 13 / 77
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-PEAP].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1385,7 +1166,7 @@ in [RFC3748] section 2, while an overview of TLS is specified in [RFC2246] secti
 information on security requirements for EAP methods that are used with wireless local area networks
 (WLANs), see [RFC4017].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 PEAP is an EAP method that encapsulates another instance of EAP (with slightly modified messages)
 within a TLS tunnel. During phase 1 of PEAP, the PEAP client and PEAP server exchange TLS
@@ -1409,7 +1190,8 @@ Release: September 29, 2025
 
 14 / 77
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-PEAP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1433,7 +1215,8 @@ Release: September 29, 2025
 
 15 / 77
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 PEAP requires the inner EAP authentication method to be configured both on the PEAP peer and the
 server in an implementation-specific manner. EAP and TLS have their own prerequisites, as specified
@@ -1443,7 +1226,7 @@ For example, TLS server authentication, which PEAP uses, requires that the serve
 and that the client be configured to trust the issuer of the certificate. EAP requires that both EAP
 server and peer be configured with the methods which they support, in this case PEAP.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 PEAP was designed for use in network access authentication.
 
@@ -1451,7 +1234,7 @@ The use of PEAP is appropriate as the basis for any network authentication scena
 
 For more information on PEAP security issues, see section 5.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 PEAP supports the concept of version negotiation. The PEAP server proposes the highest version that it
 supports within the initial PEAP packet, and the PEAP peer replies with a PEAP response indicating
@@ -1468,12 +1251,12 @@ support the capability to negotiate the type of inner EAP method, as specified i
 
 For more information on PEAP versioning and capability negotiation, see section 3.1.5.3.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 PEAP defines Vendor-Specific TLV (section 2.2.5) and Outer TLVs (section 2.2.6) that can be used by
 vendors to exchange their own TLVs.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1507,12 +1290,13 @@ Release: September 29, 2025
 
 16 / 77
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how PEAP messages are encapsulated on the wire and EAP extensions
 methods.
 
-2.1  Transport
+### 2.1 Transport
 
 As an authentication method, PEAP MUST be transported by EAP. As a result, protocols that carry
 EAP (for example, PPP [RFC1661], IEEE802.1x [IEEE802.1X], and RADIUS [RFC2865]) ultimately
@@ -1520,9 +1304,9 @@ provide the transport of the associated messages, as specified in [RFC3748] sect
 
 As an EAP method, PEAP relies entirely on EAP for the reliable delivery of its messages.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  EAP Packet
+#### 2.2.1 EAP Packet
 
 The following shows an EAP packet (Code, Identifier, and Length), as specified in [RFC3748]
 section 4.1.
@@ -1564,7 +1348,7 @@ Type_Data (variable): A field that varies with the Type of Request and the assoc
 
 specified in [RFC3748] section 4.1.
 
-2.2.2  PEAP Packet
+#### 2.2.2 PEAP Packet
 
 The outer EAP packet (section 2.2.1) that contains a PEAP packet MUST have the Type field set to 25
 (see section 1.9).
@@ -1598,7 +1382,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-...
+
+...
 
 Flags (6 bits): A 6-bit field that is used to represent a set of flags. The value MUST be formatted as
 
@@ -1688,7 +1473,8 @@ Release: September 29, 2025
 
 18 / 77
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1714,7 +1500,7 @@ TLS_Data (variable): The encapsulated (complete or fragmented) TLS packet in TLS
 
 format (as specified in [RFC2246] section 6).
 
-2.2.3  PEAP Fragment Acknowledgement Packet
+#### 2.2.3 PEAP Fragment Acknowledgement Packet
 
 The PEAP Fragment Acknowledgement packet is an "empty" PEAP packet (section 2.2.2) that is used
 during packet fragmentation.
@@ -1733,7 +1519,7 @@ The Ver field is as specified in section 2.2.2.
 
 The Data field is not present.
 
-2.2.4  TLV
+#### 2.2.4 TLV
 
 The following diagram specifies the standard TLV structure that MUST be used by the result
 TLV (section 2.2.8.1.2).
@@ -1784,7 +1570,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-TLV Type (14 bits): A 14-bit unsigned integer in network byte order that indicates the type of data
+
+TLV Type (14 bits): A 14-bit unsigned integer in network byte order that indicates the type of data
 
 in the Value field. Allocated types include the following:
 
@@ -1818,7 +1605,7 @@ Value (variable): The value MUST be formatted in accordance with the type specif
 
 Type field.
 
-2.2.5  Vendor-Specific TLV
+#### 2.2.5 Vendor-Specific TLV
 
 A vendor-specific TLV is used to carry a set of TLVs specific to a vendor (indicated by the Vendor-Id
 field). The TLV Type field MUST be set to 7 (see section 2.2.4).
@@ -1852,7 +1639,7 @@ Vendor_TLVs (variable): One or more TLVs defined by the vendor, as indicated by 
 
 Vendor-Id field.
 
-2.2.6  Outer TLVs
+#### 2.2.6 Outer TLVs
 
 Outer TLVs contain optional data and are exchanged between the peer and the server during PEAP
 phase 1. Peers expect Outer TLVs in the PEAP Start Packet (sent from the server to the peer), and
@@ -1868,7 +1655,8 @@ Release: September 29, 2025
 
 20 / 77
 
-2.2.6.1  Client Hello Packet With Outer TLVs
+
+##### 2.2.6.1 Client Hello Packet With Outer TLVs
 
 The format of a Client Hello packet containing Outer TLVs is as follows.
 
@@ -1905,7 +1693,7 @@ Outer_TLV_Data (variable): The Outer TLVs. The length of Outer_TLV_data field is
 
 value of the Length field minus the value of the TLS_Message_Length field minus 10.
 
-2.2.6.2  PEAP Start Packet With Outer TLVs
+##### 2.2.6.2 PEAP Start Packet With Outer TLVs
 
 The Data present in the PEAP Start Packet is always treated as Outer TLV data. The Type_Data field
 of the EAP packet MUST be formatted as follows.
@@ -1937,7 +1725,7 @@ Outer_TLV_Data (variable): The Outer TLVs. The length of Outer_TLV_data field is
 
 value of the Length field minus the value of the TLS_Message_Length field minus 6.
 
-2.2.7  EAP Expanded Types
+#### 2.2.7 EAP Expanded Types
 
 The following diagram shows an EAP Expanded Type packet (EAP Type, Vendor-Id, Vendor-Type,
 and Vendor-Data), as specified in [RFC3748] section 5.7. The Type is 254 and the Vendor-Id,
@@ -1950,7 +1738,8 @@ Release: September 29, 2025
 
 21 / 77
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1981,7 +1770,7 @@ Vendor-Type (4 bytes): The vendor-specific method Type, as specified in [RFC3748
 
 Vendor-Data (variable): This field is defined by the vendor, as specified in [RFC3748] section 5.7.
 
-2.2.8  EAP Extensions Methods
+#### 2.2.8 EAP Extensions Methods
 
 PEAP introduces three new EAP methods: EAP TLV Extensions Method (section 2.2.8.1), SoH EAP
 Extensions Method (section 2.2.8.2), and Capabilities Negotiation Method (section 2.2.8.3). These
@@ -1992,7 +1781,7 @@ Given this special use of the EAP Extensions Method, these methods MUST be used 
 methods, so that the messages are protected by the secure tunnel established by the outer EAP
 method.
 
-2.2.8.1  EAP TLV Extensions Method
+##### 2.2.8.1 EAP TLV Extensions Method
 
 The EAP packet (section 2.2.1) for the inner EAP method MUST have the Type field set to 33,
 indicating that the EAP TLV Extensions Method is being used as the inner EAP method.
@@ -2025,7 +1814,7 @@ Cryptobinding TLV (section 2.2.8.1.1), Result TLV (section 2.2.8.1.2), and SoH R
 Within an EAP TLV Extensions Method, the Result TLV, Cryptobinding TLV, and SoH Response TLV
 can be sent in any order. The receiver MUST NOT assume any order of the TLVs.
 
-2.2.8.1.1 Cryptobinding TLV
+###### 2.2.8.1.1 Cryptobinding TLV
 
 [MS-PEAP] - v20250929
 Protected Extensible Authentication Protocol (PEAP)
@@ -2034,7 +1823,8 @@ Release: September 29, 2025
 
 22 / 77
 
-The cryptobinding TLV is a TLV, as specified in section 2.2.4. It is used to ensure that the EAP peer
+
+The cryptobinding TLV is a TLV, as specified in section 2.2.4. It is used to ensure that the EAP peer
 and the EAP server participated in both the inner and the outer EAP authentications of a PEAP
 authentication.
 
@@ -2125,7 +1915,8 @@ Release: September 29, 2025
 
 23 / 77
 
-RecvVersion (1 byte): An 8-bit unsigned integer field that MUST be set to 0.
+
+RecvVersion (1 byte): An 8-bit unsigned integer field that MUST be set to 0.
 
 SubType (1 byte): An 8-bit unsigned integer that indicates whether the cryptobinding TLV is a
 
@@ -2150,7 +1941,7 @@ Compound_MAC (20 bytes): A 160-bit unsigned integer containing the value used to
 cryptographically associate the phase 1 and phase 2 authentications of PEAP. For more
 information, see section 3.1.5.5.
 
-2.2.8.1.2 Result TLV
+###### 2.2.8.1.2 Result TLV
 
 The Result TLV is a TLV, as specified in 2.2.4. It is used to represent the status (success or failure) of
 the inner EAP method negotiation or to indicate the sender's consent (ability or inability) to
@@ -2216,7 +2007,8 @@ Release: September 29, 2025
 
 24 / 77
 
-Value
+
+Value
 
 Meaning
 
@@ -2234,7 +2026,7 @@ Failure
 
 3 — 65535  Reserved and MUST NOT be sent
 
-2.2.8.1.3 SoH Response TLV
+###### 2.2.8.1.3 SoH Response TLV
 
 The SoH Response TLV is a vendor TLV sent within a Microsoft vendor-specific TLV. Sent to the PEAP
 peer by the PEAP server, its ultimate recipient is the Statement of Health (SoH) entity, as specified
@@ -2278,7 +2070,7 @@ Value (variable): This MUST contain a Statement of Health Response (SoHR) messag
 
 [TNC-IF-TNCCSPBSoH] section 3.6.
 
-2.2.8.2  SoH EAP Extensions Method
+##### 2.2.8.2 SoH EAP Extensions Method
 
 This method is an Expanded EAP Type (as specified in section 2.2.7) with the following values for the
 fields.
@@ -2309,7 +2101,8 @@ Release: September 29, 2025
 
 25 / 77
 
-...
+
+...
 
 Type (1 byte): MUST be set to 254, as specified in [RFC3748] section 5.7.
 
@@ -2324,7 +2117,7 @@ an EAP response message. The Cryptobinding TLV (section 2.2.8.1.1), Result TLV (
 2.2.8.1.2), and SoH Response TLV (section 2.2.8.1.3) MUST be carried in the EAP TLV Extensions
 Method (section 2.2.8.1).
 
-2.2.8.2.1 SoH Request TLV
+###### 2.2.8.2.1 SoH Request TLV
 
 The SoH Request TLV is a vendor TLV sent within a Microsoft vendor-specific TLV (section 2.2.5) in a
 SoH EAP Extensions Method (section 2.2.8.2) request. Sent to the PEAP peer by the PEAP server,
@@ -2358,7 +2151,7 @@ Length (2 bytes): A 16-bit unsigned integer in network byte order that indicates
 
 bytes, of the Value field. This MUST be set to 0x00.
 
-2.2.8.2.2 SoH TLV
+###### 2.2.8.2.2 SoH TLV
 
 The SoH TLV is a vendor TLV sent within a Microsoft vendor-specific TLV in an SoH EAP Extensions
 Method response. Sent to the PEAP server by the PEAP peer, its ultimate recipient is the SoH entity
@@ -2398,7 +2191,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-Length (2 bytes): A 16-bit unsigned integer in network byte order that indicates the length, in
+
+Length (2 bytes): A 16-bit unsigned integer in network byte order that indicates the length, in
 
 bytes, of the Value field.
 
@@ -2406,7 +2200,7 @@ Value (variable): This MUST contain an SoH message, as defined in [TNC-IF-TNCCSP
 
 3.5.
 
-2.2.8.3  Capabilities Negotiation Method
+##### 2.2.8.3 Capabilities Negotiation Method
 
 The Capabilities Negotiation Method is an Expanded EAP Type (as specified in section 2.2.7) with the
 following values for the fields:
@@ -2461,7 +2255,7 @@ F
 
 Fragmentation Capability
 
-2.2.8.3.1 Capabilities Method Request
+###### 2.2.8.3.1 Capabilities Method Request
 
 The Capabilities Method Request packet is sent by the PEAP server after receiving the identity
 response and before SOH/Inner EAP negotiation.
@@ -2486,7 +2280,8 @@ Release: September 29, 2025
 
 27 / 77
 
-Vendor-Data (4 bytes): This contains 32 bits, and is used to denote various capabilities of the
+
+Vendor-Data (4 bytes): This contains 32 bits, and is used to denote various capabilities of the
 
 Server. Bits 0-30 are reserved for future use.
 
@@ -2512,7 +2307,7 @@ F
 PEAP Phase2 Fragmentation Capability. This flag is set to 1 if the PEAP server is PEAP Phase2
 Fragmentation Capable, and set to 0 otherwise.
 
-2.2.8.3.2 Capabilities Method Response
+###### 2.2.8.3.2 Capabilities Method Response
 
 The Capabilities Method Response packet is sent by the PEAP peer after receiving the capabilities
 method request packet.
@@ -2563,16 +2358,17 @@ Release: September 29, 2025
 
 28 / 77
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of PEAP, including abstract data models and message processing
 rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
 The following details are common between the PEAP peer and the server.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model that an implementation can maintain to participate in this
 protocol. The described organization is provided to facilitate the explanation of how the protocol
@@ -2638,7 +2434,8 @@ Release: September 29, 2025
 
 29 / 77
 
-InnerMPPESendKey: A variable-length string returned by the inner EAP method when the inner EAP
+
+InnerMPPESendKey: A variable-length string returned by the inner EAP method when the inner EAP
 authentication is successful. This variable is used while generating InnerSessionKey (ISK) as
 specified in section 3.1.5.5.2.2.
 
@@ -2664,22 +2461,22 @@ InnerIdentity: An LPWSTR string (as specified in [MS-DTYP] section 2.2.36) for s
 
 exchanged as part of inner EAP method authentication.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 PEAP relies on the EAP timers, as specified in [RFC3748] section 4.3. There are no PEAP
 fragmentation- or reassembly-specific timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Initialization is specified in sections 3.2.3 and 3.3.3.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Higher-layer triggered events are specified in sections 3.2.4 and 3.3.4.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Status and Error Handling
+##### 3.1.5.1 Status and Error Handling
 
 If a PEAP implementation receives a packet that does not satisfy the MUST clauses of this
 specification, the packet MUST be silently discarded.
@@ -2706,12 +2503,13 @@ Release: September 29, 2025
 
 30 / 77
 
-3.1.5.2  PEAP Packet Processing
+
+##### 3.1.5.2 PEAP Packet Processing
 
 This section describes the PEAP packet processing common to peer and server. In contrast, PEAP
 packet processing specific to peer and server is described in sections 3.2.5.4 and 3.3.5.4 respectively.
 
-3.1.5.2.1 Received PEAP Packet with L and M Bit Set
+###### 3.1.5.2.1 Received PEAP Packet with L and M Bit Set
 
 If isFragmentationAllowed is TRUE and the PEAP phase 2 is in progress, then store the first
 fragment and send a PEAP Fragment Acknowledgement packet (section 2.2.3) request (server) or
@@ -2723,7 +2521,7 @@ specified in sections 3.2.5.4 and 3.3.5.4.
 If isFragmentationAllowed is FALSE and the PEAP phase 2 is in progress, then the packet is
 ignored.
 
-3.1.5.2.2 Sending PEAP Packet with packet size more than MaxSendPacketSize
+###### 3.1.5.2.2 Sending PEAP Packet with packet size more than MaxSendPacketSize
 
 If isFragmentationAllowed is TRUE and the PEAP phase 2 is in progress, then fragment the packet
 and send the first fragment (L and M bit set). After receiving a PEAP Fragment Acknowledgement
@@ -2733,7 +2531,7 @@ not set). Continue sending the fragments until the last fragment (L and M bits n
 If isFragmentationAllowed is FALSE and the PEAP phase 2 is in progress, then the packet is
 ignored.
 
-3.1.5.2.3 Compress_Encrypt_Send Method
+###### 3.1.5.2.3 Compress_Encrypt_Send Method
 
 This method takes the inner authentication method or the EAP expanded type packets as input and
 processes it as follows:
@@ -2747,7 +2545,7 @@ the Data field of the PEAP packet and return the prepared PEAP packet as the Rec
 Request (section 3.2.5.4.2) or Received PEAP Response (section 3.3.5.4.2) higher-layer triggered
 event.
 
-3.1.5.3  Version Negotiation
+##### 3.1.5.3 Version Negotiation
 
 PEAP version negotiation MUST be done as follows:
 
@@ -2775,7 +2573,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-3.1.5.4  Phase 1 (TLS Tunnel Establishment)
+
+##### 3.1.5.4 Phase 1 (TLS Tunnel Establishment)
 
 Phase 1 of PEAP is a slightly modified implementation of EAP-TLS, as specified in [RFC5216], the
 only differences being:
@@ -2802,7 +2601,7 @@ not supported, TLS v1.2 or earlier SHOULD<9> be used.
 For more information on the semantics associated with phase 1 of PEAP, see sections 3.2.5.2 and
 3.3.5.2.
 
-3.1.5.5  Cryptobinding
+##### 3.1.5.5 Cryptobinding
 
 By deriving and exchanging values from the PEAP phase 1 key material (Tunnel Key) and from the
 PEAP phase 2 inner EAP method key material (Inner Session Key), it is possible to prove that the
@@ -2824,7 +2623,7 @@ more details on how an implementation generates the data used in the HMAC-SHA1-1
 the cryptobinding packet, see section 3.1.5.5.1. For more details on how an implementation generates
 the key used in the HMAC-SHA1-160 operation for the cryptobinding packet, see section 3.1.5.5.2.
 
-3.1.5.5.1 Input Data Used in the Cryptobinding HMAC-SHA1-160 Operation
+###### 3.1.5.5.1 Input Data Used in the Cryptobinding HMAC-SHA1-160 Operation
 
 The data used as the input to the HMAC-SHA1-160 operation used in the creation of the Compound
 MAC MUST be constructed, through concatenation, as follows:
@@ -2848,7 +2647,8 @@ Release: September 29, 2025
 
 32 / 77
 
-3.1.5.5.2 Key Used in the Cryptobinding HMAC-SHA1-160 Operation
+
+###### 3.1.5.5.2 Key Used in the Cryptobinding HMAC-SHA1-160 Operation
 
 The key used by the HMAC-SHA1-160 operation to create the Compound MAC field is called the
 Compound MAC Key (CMK). The CMK MUST be constructed by following the steps specified later in
@@ -2878,16 +2678,16 @@ MAC (as specified in section 3.1.5.5.2.2).
 IPMK Seed: The seed value used in the call to the PRF+ operation (for more information, see
 [RFC4306] section 2.13). For details, see section 3.1.5.5.2.2.
 
-3.1.5.5.2.1  PEAP Tunnel Key (TK)
+###### 3.1.5.5.2.1 PEAP Tunnel Key (TK)
 
 The PEAP Tunnel Key (TK) is calculated using the first 60 octets of the (secret) key material
 generated, as described in the EAP-TLS algorithm (see [RFC5216] section 2.3). More explicitly, the
 TK is the first 60 octets of the Key_Material, as specified in [RFC5216]: TLS-PRF-128 (master secret,
 "client EAP encryption", client.random || server.random).
 
-3.1.5.5.2.2
+###### 3.1.5.5.2.2 Intermediate PEAP MAC Key (IPMK) and Compound MAC Key (CMK)
 
-Intermediate PEAP MAC Key (IPMK) and Compound MAC Key (CMK)
+
 
 The Intermediate PEAP MAC key (IPMK) and Compound MAC Key (CMK) are constructed using the
 following steps:
@@ -2929,7 +2729,8 @@ Release: September 29, 2025
 
 33 / 77
 
-If the concatenated string length (obtained from InnerMPPESendKeyLength and
+
+If the concatenated string length (obtained from InnerMPPESendKeyLength and
 InnerMPPERecvKeyLength) is more than 32 octets, then the first 32 octets form the
 ISK. If the concatenated string length is less than 32 octets, then the string is appended
 with 0x00 at the end as padding to obtain a total length of 32 octets.
@@ -2980,7 +2781,7 @@ is 60 bytes (LEN=60). Because each HMAC-SHA1 operation generates 20 bytes, n=3 i
 
 The preceding PRF+ definition is valid only when LEN < 256 and n < 256.
 
-3.1.5.6  Phase 2 (EAP Encapsulation)
+##### 3.1.5.6 Phase 2 (EAP Encapsulation)
 
 Once phase 1 successfully completes, all subsequent EAP messages are exchanged inside the tunnel
 established in phase 1. The exceptions are the EAP success or the EAP failure packets (as specified in
@@ -2992,7 +2793,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-[RFC3748] section 4.2), which are never sent within the tunnel because result indications are handled
+
+[RFC3748] section 4.2), which are never sent within the tunnel because result indications are handled
 by the PEAP implementation itself instead of the inner EAP method (via the Result
 TLV (section 2.2.8.1.2)).
 
@@ -3014,7 +2816,7 @@ PEAP implementations MUST only support a single EAP authentication method per se
 type greater than or equal to 4, in addition to supporting EAP TLV Extensions Method (and optionally
 SoH EAP Extensions Method) in the same session.
 
-3.1.5.7  Key Management
+##### 3.1.5.7 Key Management
 
 PEAP methods MUST generate MPPE keys as follows.
 
@@ -3071,7 +2873,8 @@ Release: September 29, 2025
 
 35 / 77
 
- First 32 bytes of Key_Material
+
+ First 32 bytes of Key_Material
 
  Second 32 bytes of Key_Material
 
@@ -3079,18 +2882,18 @@ PEAP server  MS-MPPE-Recv-Key
 
 MS-MPPE-Send-Key
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 PEAP relies on the timer events in EAP, as specified in [RFC3748] section 4.3.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 This section describes local events common to peer and server.
 
 PEAP relies on the TLS Protocol, as specified in [RFC2246], for session disconnects and other
 conditions that occur during the course of a TLS session.
 
-3.1.7.1  Interface with TLS
+##### 3.1.7.1 Interface with TLS
 
 The PEAP layer interfaces with the TLS layer on both the client and server using the following abstract
 methods. If either of the abstract methods described below returns a failure error code, the
@@ -3111,7 +2914,7 @@ an error code.
 Phase 1 of PEAP is a slightly modified implementation of EAP-TLS, as defined in section 3.1.5.4.
 During this phase, PEAP interfaces with TLS through EAP-TLS as specified in [RFC5216].
 
-3.1.7.2  Interface with EAP
+##### 3.1.7.2 Interface with EAP
 
 The PEAP layer interfaces with the EAP layer on both the client and server using the following abstract
 methods. If the abstract methods noted in the following descriptions return a failure error code, the
@@ -3138,9 +2941,10 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-3.2  Peer Details
 
-3.2.1  Abstract Data Model
+### 3.2 Peer Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a model of possible data organization that a client-side implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3237,7 +3041,8 @@ Release: September 29, 2025
 
 37 / 77
 
-Abstract Data Model (ADM)
+
+Abstract Data Model (ADM)
 element
 
 BLOB element from [MS-GPWL]
@@ -3343,17 +3148,18 @@ Release: September 29, 2025
 
 38 / 77
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-PEAP].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
 Figure 4: PEAP Peer State Machine
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 See section 3.1.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 PEAP MUST be initialized on the peer when it is invoked by EAP as an authentication method. This
 occurs when EAP-Request/Identity packet is received, as specified in [RFC3748] section 5.1. The
@@ -3370,7 +3176,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-If isIdPrivacyEnabled is set to TRUE, then call EapSetIdentityPrivacyString with
+
+If isIdPrivacyEnabled is set to TRUE, then call EapSetIdentityPrivacyString with
 IdentityPrivacyString as the parameter.
 
 isCapabilitiesSupported MUST be initialized to TRUE, if the PEAP method implementation supports
@@ -3388,19 +3195,19 @@ the parameter.
 The PEAP peer obtains the maximum EAP packet size using the GetMaxSendPacketSize method,
 and assigns the size to the MaxSendPacketSize field.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Use of EAP is triggered by attempts to access the network. A transport (such as [IEEE802.1X]) is
 typically invoked, which in turn invokes EAP, which ultimately results in an EAP server proposing use
 of PEAP as part of the first message sent.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Status and Error Handling
+##### 3.2.5.1 Status and Error Handling
 
 Status and error handling are specified in section 3.1.5.1.
 
-3.2.5.2  Phase 1 (TLS Tunnel Establishment)
+##### 3.2.5.2 Phase 1 (TLS Tunnel Establishment)
 
 The first PEAP packet received from the PEAP server is the PEAP start packet. It specifies the version
 of the PEAP protocol and indicates that the PEAP server is prepared to begin the PEAP phase 1
@@ -3422,7 +3229,7 @@ Note that PEAP relies on the TLS Protocol [RFC2246] to manage the TLS session (i
 handling of any error or other conditions that occur within the TLS Protocol). The TLS packets are
 exchanged encapsulated in PEAP packets as explained in section 3.1.5.4.
 
-3.2.5.3  PEAP Peer Cryptobinding Validation
+##### 3.2.5.3 PEAP Peer Cryptobinding Validation
 
 Upon receipt of the cryptobinding request, the PEAP peer MUST validate the message using the
 following process.
@@ -3434,7 +3241,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-The cryptobinding TLV MUST specify the appropriate subtype (for example, a request must specify a
+
+The cryptobinding TLV MUST specify the appropriate subtype (for example, a request must specify a
 request and a response must specify a response); otherwise the validation is declared as failed.
 
 The PEAP peer MUST then construct the cryptobinding structure (see cryptobinding TLV), populating
@@ -3445,18 +3253,18 @@ A PEAP peer implementation MUST then compare the Compound MAC contained in the c
 request with the Compound MAC that the peer itself computed. If the Compound MACs do not match,
 then the validation is declared as failed; otherwise, the validation is declared as success.
 
-3.2.5.4  Packet Processing
+##### 3.2.5.4 Packet Processing
 
 If a packet is received with L and M bits set, then reassembly is done as specified in section 3.1.5.2.1.
 After reassembly, the packet is processed as specified in the following sections.
 
-3.2.5.4.1 General Packet Validation
+###### 3.2.5.4.1 General Packet Validation
 
 When receiving a packet, the PEAP peer MUST validate that the packet conforms to the syntax as
 specified in Message Syntax (section 2.2) and its subsections. If an invalid packet is received, the
 error is handled as specified in section 3.2.5.1.
 
-3.2.5.4.2 Received PEAP Request
+###### 3.2.5.4.2 Received PEAP Request
 
 If the currentState variable is set to PEAP_PHASE1_INPROGRESS, then:
 
@@ -3508,7 +3316,8 @@ Release: September 29, 2025
 
 41 / 77
 
-2.  If the decrypted data matches an SoH Request TLV, then process the data as specified in
+
+2.  If the decrypted data matches an SoH Request TLV, then process the data as specified in
 
 section 3.2.5.4.5.
 
@@ -3567,7 +3376,7 @@ returns an EAP Response packet, call Compress_Encrypt_Send (section 3.1.5.2.3).
 If currentState is not set to PEAP_PHASE1_INPROGRESS, TUNNEL_ESTABLISHED,
 INNER_IDENTITY_SENT, or PHASE2_EAP_INPROGRESS, then the packet is ignored.
 
-3.2.5.4.3 Received PEAP Packet with S Bit Set
+###### 3.2.5.4.3 Received PEAP Packet with S Bit Set
 
 If the currentState variable is set to PEAP_BEGIN, then:
 
@@ -3588,9 +3397,10 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-If currentState is not set to PEAP_BEGIN, then the packet is ignored.
 
-3.2.5.4.4 Received PEAP Packet With Inner EAP Type As Identity
+If currentState is not set to PEAP_BEGIN, then the packet is ignored.
+
+###### 3.2.5.4.4 Received PEAP Packet With Inner EAP Type As Identity
 
 If the currentState variable is set to TUNNEL_ESTABLISHED, then:
 
@@ -3616,7 +3426,7 @@ as the Data field of the PEAP packet. Then, send the PEAP packet to the server (
 
 If currentState is not set to TUNNEL_ESTABLISHED, then the packet is ignored.
 
-3.2.5.4.5 Received SoH Request TLV
+###### 3.2.5.4.5 Received SoH Request TLV
 
 If the currentState variable is set to TUNNEL_ESTABLISHED or INNER_IDENTITY_SENT, then:
 
@@ -3653,7 +3463,7 @@ section 3.1.5.2.2).
 If currentState is not set to TUNNEL_ESTABLISHED or INNER_IDENTITY_SENT, then the packet is
 ignored.
 
-3.2.5.4.6 Received Capabilities Method Request
+###### 3.2.5.4.6 Received Capabilities Method Request
 
 If the currentState variable is set to INNER_IDENTITY_SENT, then:
 
@@ -3668,7 +3478,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-2.  If isCapabilitiesSupported is set to TRUE, prepare a Capabilities Method
+
+2.  If isCapabilitiesSupported is set to TRUE, prepare a Capabilities Method
 
 Response (section 2.2.8.3.2) packet with the F flag set to one if PEAP peer supports phase 2
 fragmentation, otherwise set F flag to zero.<15> If the F flag of the received packet is set to one
@@ -3685,7 +3496,7 @@ as the Data field of the PEAP packet. Then, send the PEAP packet to the server (
 
 If currentState is not set to INNER_IDENTITY_SENT, then the packet is ignored.
 
-3.2.5.4.7 Received EAP TLV Extensions Method Packet
+###### 3.2.5.4.7 Received EAP TLV Extensions Method Packet
 
 If the currentState datum is set to TUNNEL_ESTABLISHED or PHASE2_EAP_INPROGRESS, then the
 following steps are applied in sequence:
@@ -3740,7 +3551,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-computed value). Change the currentState datum to SUCCESS_TLV_SENT and proceed to step
+
+computed value). Change the currentState datum to SUCCESS_TLV_SENT and proceed to step
 11.
 
 9.  If the received EAP TLV Extensions Method packet contains both a Cryptobinding TLV and a Result
@@ -3788,7 +3600,7 @@ the Data field. Then, send the PEAP packet to the server (see section 3.1.5.2.2)
 If the currentState datum is not set to TUNNEL_ESTABLISHED, PHASE2_EAP_INPROGRESS, or
 INNER_IDENTITY_SENT, then the packet is ignored.
 
-3.2.5.4.8 Received EAP Success
+###### 3.2.5.4.8 Received EAP Success
 
 If currentState is set to SUCCESS_TLV_SENT, then:
 
@@ -3804,7 +3616,7 @@ If currentState is set to FAILURE_TLV_SENT, then:
 
 If currentState is not set to SUCCESS_TLV_SENT or FAILURE_TLV_SENT, then the packet is ignored.
 
-3.2.5.4.9 Received EAP Failure
+###### 3.2.5.4.9 Received EAP Failure
 
 If currentState is set to SUCCESS_TLV_SENT, FAILURE_TLV_SENT, or PEAP_PHASE1_INPROGRESS,
 then:
@@ -3816,28 +3628,29 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-1.  Trigger the Transport Layer with the authentication result as Failed.
+
+1.  Trigger the Transport Layer with the authentication result as Failed.
 
 2.  Change currentState to PEAP_FAILED.
 
 If currentState is not set to SUCCESS_TLV_SENT, FAILURE_TLV_SENT, or
 PEAP_PHASE1_INPROGRESS, then the packet is ignored.
 
-3.2.5.5  Key Management
+##### 3.2.5.5 Key Management
 
 See section 3.1.5.7.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 For details on timer events, see section 3.1.6.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 Note that PEAP relies on the TLS Protocol [RFC2246] for session disconnects and other conditions
 that can occur during the course of a TLS session. The local events generated by EAP_TLS and
 consumed by the PEAP layer are described in the following sections.
 
-3.2.7.1  TLS Session Established Successfully
+##### 3.2.7.1 TLS Session Established Successfully
 
 If the TLS session established successfully:
 
@@ -3888,7 +3701,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-consent on whether the authentication succeeded. If the user has chosen to fail the
+
+consent on whether the authentication succeeded. If the user has chosen to fail the
 authentication, or if isPromptForValidationDisabled is set to TRUE and validations in either
 of the two preceding steps fail, prepare a TLS Alert message with AlertDescription set to
 access_denied (section 7.2 [RFC2246]). The currentState continues to be same. Go to Step
@@ -3906,7 +3720,7 @@ isFastReconnectAllowed to TRUE; otherwise set it to FALSE.
 
 6.  Change the packet Type field to PEAP [IANA-EAP], and then send the packet to the server.
 
-3.2.7.2  TLS Session Failed to Establish
+##### 3.2.7.2 TLS Session Failed to Establish
 
 If the TLS session failed to establish:
 
@@ -3918,16 +3732,16 @@ the PEAP layer MUST take the following action:
 
 1.  Change currentState to PEAP_FAILED.
 
-3.2.7.3  Interface with EAP
+##### 3.2.7.3 Interface with EAP
 
 EapSetIdentityPrivacyString: The PEAP layer on the client uses this method to set the username
 
 portion of NAI to be sent in EAP-Response/Identity packet for the identity protection ([RFC3748]
 section 7.3). This method takes Unicode string as a parameter.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a model of possible data organization that a server-side implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3960,7 +3774,8 @@ Release: September 29, 2025
 
 47 / 77
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-PEAP].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3997,11 +3812,12 @@ Release: September 29, 2025
 
 48 / 77
 
-3.3.2  Timers
+
+#### 3.3.2 Timers
 
 Timers are specified in section 3.1.2.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 PEAP MUST be initialized on the EAP server when it is invoked by EAP as an authentication
 method. This occurs when an EAP-enabled protocol (such as RADIUS [RFC2865]) invokes EAP, the
@@ -4029,18 +3845,18 @@ isFragmentationAllowed MUST be initialized to TRUE, if the PEAP method implement
 phase 2 fragmentation and BypassCapNegotiation and AssumePhase2Frag are set to TRUE.
 Otherwise initialize isFragmentationAllowed to FALSE.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are used. PEAP relies on the TLS Protocol [RFC2246] for session
 disconnects and other conditions that occur during the course of a TLS session.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Status and Error Handling
+##### 3.3.5.1 Status and Error Handling
 
 Status and error handling is specified in section 3.1.5.1.
 
-3.3.5.2  Phase 1 (TLS Tunnel Establishment)
+##### 3.3.5.2 Phase 1 (TLS Tunnel Establishment)
 
 When the EAP implementation negotiates PEAP as the method on the EAP server, PEAP phase 1
 begins.
@@ -4062,11 +3878,12 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-When the TLS tunnel is established successfully, implementations SHOULD skip phase 2 if the session
+
+When the TLS tunnel is established successfully, implementations SHOULD skip phase 2 if the session
 is a resumption of a previous session (as specified in [RFC2246] section F.1.4). This process is known
 as "fast reconnection".
 
-3.3.5.3  PEAP Server Cryptobinding Validation
+##### 3.3.5.3 PEAP Server Cryptobinding Validation
 
 Upon receipt of the cryptobinding response, the PEAP server MUST validate the message using the
 following process.
@@ -4080,18 +3897,18 @@ response with the Compound MAC that it computed. If the computed Compound MAC an
 Compound MAC reported within the cryptobinding response do not match, then the validation is
 declared as failed. Otherwise it is declared as success.
 
-3.3.5.4  Packet Processing
+##### 3.3.5.4 Packet Processing
 
 If a packet is received with L and M bits set, then reassembly is done as specified in section 3.1.5.2.1.
 After reassembly, the packet is processed as specified in the following sections.
 
-3.3.5.4.1 General Packet Validation
+###### 3.3.5.4.1 General Packet Validation
 
 When receiving a packet, the PEAP server MUST validate that the packet conforms to the syntax as
 specified in Message Syntax (section 3.3.5) and its subsections. If an invalid packet is received, the
 error is handled as specified in section 3.3.5.1.
 
-3.3.5.4.2 Received PEAP Response
+###### 3.3.5.4.2 Received PEAP Response
 
 If the currentState variable is set to PEAP_PHASE1_INPROGRESS, then:
 
@@ -4133,7 +3950,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-2.  If the decrypted data matches the EAP Nak packet, then process the data as specified in
+
+2.  If the decrypted data matches the EAP Nak packet, then process the data as specified in
 
 section 3.3.5.4.5.
 
@@ -4192,7 +4010,7 @@ If currentState is not set to PEAP_PHASE1_INPROGRESS, INNER_IDENTITY_REQ_SENT,
 WAIT_FOR_SOH_RESPONSE, WAIT_FOR_CAPABILITIES_RESPONSE, PHASE2_EAP_INPROGRESS,
 SUCCESS_TLV_SENT, or FAILURE_TLV_SENT, then the packet is ignored.
 
-3.3.5.4.3 Received PEAP Packet with Inner EAP Type As Identity (Identity Received)
+###### 3.3.5.4.3 Received PEAP Packet with Inner EAP Type As Identity (Identity Received)
 
 If the currentState variable is set to INNER_IDENTITY_REQ_SENT, then the following steps MUST be
 applied in sequence:
@@ -4212,7 +4030,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-3.  Validate the received Identity in an implementation-specific manner. If the Identity validation fails,
+
+3.  Validate the received Identity in an implementation-specific manner. If the Identity validation fails,
 
 then prepare an EAP TLV Extensions Method (section 2.2.8.1) packet with Result
 TLV (section 2.2.8.1.2) (the value field set to 2). Change the currentState datum to
@@ -4238,7 +4057,7 @@ as the Data field of the PEAP packet, and send it to the peer (see section 3.1.5
 
 If currentState is not set to INNER_IDENTITY_REQ_SENT, then the packet is ignored.
 
-3.3.5.4.4 Received Capabilities Method Response
+###### 3.3.5.4.4 Received Capabilities Method Response
 
 If the currentState variable is set to WAIT_FOR_CAPABILITIES_RESPONSE, then:
 
@@ -4272,7 +4091,7 @@ as the Data field of the PEAP packet. Then, send it to the peer (see section 3.1
 
 If currentState is not set to WAIT_FOR_CAPABILITIES_RESPONSE, then the packet is ignored.
 
-3.3.5.4.5 Received EAP NAK
+###### 3.3.5.4.5 Received EAP NAK
 
 If the currentState variable is set to WAIT_FOR_CAPABILITIES_RESPONSE, then:
 
@@ -4288,7 +4107,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-2.2.8.1.2) (with the value field set to 2). Change the currentState datum to FAILURE_TLV_SENT
+
+2.2.8.1.2) (with the value field set to 2). Change the currentState datum to FAILURE_TLV_SENT
 and proceed to step 5.
 
 3.  If the isSoHEnabled variable is set to TRUE, then prepare an SoH EAP Extensions Method packet
@@ -4342,7 +4162,7 @@ prepared packet.
 If currentState is not set to WAIT_FOR_CAPABILITIES_RESPONSE, PHASE2_EAP_INPROGRESS, or
 WAIT_FOR_SOH_RESPONSE, then the packet is ignored.
 
-3.3.5.4.6 Received SoH
+###### 3.3.5.4.6 Received SoH
 
 If the currentState variable is set to WAIT_FOR_SOH_RESPONSE, the following steps MUST be
 applied in sequence:
@@ -4365,7 +4185,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-3.  If isFastReconnectAllowed is set to TRUE, prepare an EAP TLV Extensions Method packet with
+
+3.  If isFastReconnectAllowed is set to TRUE, prepare an EAP TLV Extensions Method packet with
 
 Result TLV (the value field set to 1), SoH Response TLV (section 2.2.8.1.3) (the value field is set
 to the message received from NAP), and Cryptobinding TLV (section 2.2.8.1.1) (the value field set
@@ -4382,7 +4203,7 @@ as the Data field of the PEAP packet. Send the PEAP packet to the peer (see sect
 
 If currentState is not set to WAIT_FOR_SOH_RESPONSE, the packet is ignored.
 
-3.3.5.4.7 Received EAP TLV Extensions Method Packet
+###### 3.3.5.4.7 Received EAP TLV Extensions Method Packet
 
 If currentState is set to FAILURE_TLV_SENT, then:
 
@@ -4446,19 +4267,20 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-If currentState is not set to FAILURE_TLV_SENT or SUCCESS_TLV_SENT, then the packet is ignored.
 
-3.3.5.5  Key Management
+If currentState is not set to FAILURE_TLV_SENT or SUCCESS_TLV_SENT, then the packet is ignored.
+
+##### 3.3.5.5 Key Management
 
 See section 3.1.5.7.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 See section 3.1.6.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
-3.3.7.1  TLS Session Established Successfully
+##### 3.3.7.1 TLS Session Established Successfully
 
 If the TLS session established successfully:
 
@@ -4516,10 +4338,11 @@ Release: September 29, 2025
 
 55 / 77
 
-prepare a PEAP packet with the encrypted data as the Data field, and send it to the peer (see
+
+prepare a PEAP packet with the encrypted data as the Data field, and send it to the peer (see
 section 3.1.5.2.2). Change currentState to SUCCESS_TLV_SENT.
 
-3.3.7.2  TLS Session Failed to Establish
+##### 3.3.7.2 TLS Session Failed to Establish
 
 If the TLS session failed to establish:
 
@@ -4533,7 +4356,7 @@ the PEAP layer MUST do the following:
 
 2.  Change the currentState to PEAP_FAILED.
 
-3.3.7.3  EAP Inner Method Authentication Success
+##### 3.3.7.3 EAP Inner Method Authentication Success
 
 Input: EAP Packet
 
@@ -4565,7 +4388,7 @@ EncryptMessage method, and after receiving the encrypted data, prepare a PEAP pa
 encrypted data as the Data field and send it to the peer (see section 3.1.5.2.2). Change
 currentState to SUCCESS_TLV_SENT.
 
-3.3.7.4  EAP Inner Method Authentication Failed
+##### 3.3.7.4 EAP Inner Method Authentication Failed
 
 If EAP inner method authentication failed, then:
 
@@ -4592,16 +4415,17 @@ Release: September 29, 2025
 
 56 / 77
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections provide common scenarios that illustrate the function of PEAP.
 
-4.1  Examples with No Support for Cryptobinding and SoH Processing
+### 4.1 Examples with No Support for Cryptobinding and SoH Processing
 
 This section provides examples of PEAP interactions when cryptobinding and SoH processing are
 supported by neither PEAP peer implementation nor PEAP server implementation.
 
-4.1.1  Successful PEAP Phase 1 and 2 Negotiation
+#### 4.1.1 Successful PEAP Phase 1 and 2 Negotiation
 
 The following diagram depicts a complete PEAP authentication in which both phase 1 and phase 2
 negotiations take place successfully.
@@ -4624,13 +4448,14 @@ Release: September 29, 2025
 
 57 / 77
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MS-PEAP].images/page058-img01.png)
 <!-- /Extracted images from page 58 -->
 
 Figure 6: Successful PEAP phase 1 and 2 negotiation
 
-4.1.2  Successful PEAP Phase 1 with Failed Phase 2 Negotiation
+#### 4.1.2 Successful PEAP Phase 1 with Failed Phase 2 Negotiation
 
 The following diagram depicts a complete PEAP authentication in which phase 1 completes
 successfully and phase 2 fails on the PEAP server side, with both the PEAP server and the peer not
@@ -4647,13 +4472,14 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-<!-- Extracted images from page 59 -->
+
+<!-- Extracted images from page 59 -->
 ![Extracted image 1 from page 59]([MS-PEAP].images/page059-img01.png)
 <!-- /Extracted images from page 59 -->
 
 Figure 7: Successful PEAP phase 1 with failed phase 2 negotiation
 
-4.1.3  Successful PEAP Phase 1 with Fast Reconnect
+#### 4.1.3 Successful PEAP Phase 1 with Fast Reconnect
 
 The following diagram depicts a complete and successful PEAP authentication in which fast
 reconnect was used. Note that with fast reconnect, no inner EAP authentication or capabilities
@@ -4666,18 +4492,19 @@ Release: September 29, 2025
 
 59 / 77
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-PEAP].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
 Figure 8: Successful PEAP phase 1 with fast reconnect
 
-4.2  Cryptobinding and SoH Processing Supported on PEAP Server Only
+### 4.2 Cryptobinding and SoH Processing Supported on PEAP Server Only
 
 This section provides examples of PEAP interactions when cryptobinding and SoH processing [TNC-IF-
 TNCCSPBSoH] are supported by a PEAP server implementation.
 
-4.2.1  Successful PEAP Phase 1 and 2 Negotiation
+#### 4.2.1 Successful PEAP Phase 1 and 2 Negotiation
 
 This is similar to the example in section 4.1.1, except that, after phase 1, a Capabilities request and a
 SoH request are sent by the PEAP server and the peer responds with a NAK for both the requests. The
@@ -4693,13 +4520,14 @@ Release: September 29, 2025
 
 60 / 77
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MS-PEAP].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
 Figure 9: Successful PEAP phase 1 and 2 negotiation
 
-4.3  Cryptobinding and SoH Processing on PEAP Server and PEAP Peer
+### 4.3 Cryptobinding and SoH Processing on PEAP Server and PEAP Peer
 
 This section provides examples of PEAP interactions when cryptobinding and SoH processing are
 supported by a PEAP peer implementation, as well as a PEAP server implementation.
@@ -4714,11 +4542,12 @@ Release: September 29, 2025
 
 61 / 77
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MS-PEAP].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
-4.3.1  Successful PEAP Phase 1 and 2 Negotiation
+#### 4.3.1 Successful PEAP Phase 1 and 2 Negotiation
 
 This is similar to the example in section 4.1.1, except that after phase 1, an SoH request is sent by
 the PEAP server and is positively acknowledged by the peer, which sends an SoH
@@ -4734,11 +4563,12 @@ Release: September 29, 2025
 
 62 / 77
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MS-PEAP].images/page063-img01.png)
 <!-- /Extracted images from page 63 -->
 
-4.3.2  Successful PEAP Phase 1 with Fast Reconnect
+#### 4.3.2 Successful PEAP Phase 1 with Fast Reconnect
 
 The following diagram depicts a complete and successful PEAP authentication in which fast
 reconnect was used. Note that with fast reconnect, no inner EAP authenticationor capabilities
@@ -4746,7 +4576,7 @@ negotiation takes place.
 
 Figure 11: Successful PEAP phase 1 with fast reconnect
 
-4.3.3  Fallback to Full Authentication upon a Fast Reconnect Failure
+#### 4.3.3 Fallback to Full Authentication upon a Fast Reconnect Failure
 
 The following diagram depicts a complete and successful PEAP authentication in which fast
 reconnect was attempted but failed (because, for example, fast reconnect was disabled on the peer).
@@ -4760,13 +4590,14 @@ Release: September 29, 2025
 
 63 / 77
 
-<!-- Extracted images from page 64 -->
+
+<!-- Extracted images from page 64 -->
 ![Extracted image 1 from page 64]([MS-PEAP].images/page064-img01.png)
 <!-- /Extracted images from page 64 -->
 
 Figure 12: Fallback to full authentication upon a fast reconnect failure
 
-4.4  Sample Cryptobinding TLV Data
+### 4.4 Sample Cryptobinding TLV Data
 
 The format of the Cryptobinding TLV packet is shown in section 2.2.8.1.1.
 
@@ -4777,16 +4608,17 @@ Release: September 29, 2025
 
 64 / 77
 
-4.4.1  Cryptobinding TLV Request from Server to Client
 
-4.4.1.1  Header
+#### 4.4.1 Cryptobinding TLV Request from Server to Client
+
+##### 4.4.1.1 Header
 
 As per the description given in section 2.2.8.1.1, the first 8 octets of the cryptobinding TLV header
 appear as below:
 
  00  0C  00 38  00  00  00  00
 
-4.4.1.2  Nonce
+##### 4.4.1.2 Nonce
 
 The next field in the TLV is nonce, which is a 32 octet field generated by a random function. In our
 case let us assume that the following nonce is generated on server machine.
@@ -4794,12 +4626,12 @@ case let us assume that the following nonce is generated on server machine.
  BD  A7  A5  99  FA  81  65  21  AD  30  64  C2  BD  DB  D1  6E
  AA  94  9E  7D  98  A8  D7  94  31  47  CF   42  5D  85  DA  7B
 
-4.4.1.3  Compound MAC
+##### 4.4.1.3 Compound MAC
 
 The 20 octet Compound MAC is generated as described in section 3.1.5.5. This field is generated from
 an HMAC-SHA1-160 operation. This operation requires two fields: data and key.
 
-4.4.1.3.1 Data for HMAC-SHA1-160 Operation
+###### 4.4.1.3.1 Data for HMAC-SHA1-160 Operation
 
 The data required for HMAC-SHA1-160 operation is generated as per section 3.1.5.5.1. The generated
 data is as below:
@@ -4809,13 +4641,13 @@ data is as below:
  31   47  CF 42 5D   85  DA  7B  00   00   00   00  00  00   00  00
  00   00  00  00 00   00   00    00  00   00   00   00  19
 
-4.4.1.3.2 Key for HMAC-SHA1-160 Operation
+###### 4.4.1.3.2 Key for HMAC-SHA1-160 Operation
 
 The key required for HMAC-SHA1-160 operation is called the Compound MAC Key (CMK) and is
 generated by the formulae described in section 3.1.5.5.2. Inputs required for this operation are the
 TempKey(K) and IPMK Seed(S).
 
-4.4.1.3.2.1  Temp Key
+###### 4.4.1.3.2.1 Temp Key
 
 The most significant 40 octets of the Tunnel Key (TK) are considered as Temp Key (K). The TK is a 64-
 octet key generated in PEAP phase 1. Let us assume that the following TK is generated in the PEAP
@@ -4828,9 +4660,9 @@ phase 1:
 
 Only the most significant 40 octets of the above data are relevant here.
 
-4.4.1.3.2.2
+###### 4.4.1.3.2.2 IPMK Seed
 
-IPMK Seed
+
 
 [MS-PEAP] - v20250929
 Protected Extensible Authentication Protocol (PEAP)
@@ -4839,7 +4671,8 @@ Release: September 29, 2025
 
 65 / 77
 
-IPMK seed is defined as follows:
+
+IPMK seed is defined as follows:
 
  IPMK Seed = "Inner Methods Compound Keys" | ISK
 
@@ -4854,9 +4687,9 @@ described in section 3.1.5.5.2.2. Let us say that the generated ISK is as below:
  67  3E  96  14  01  BE  FB  A5  60  71  7B  3B  5D  DD  40  38
  65  67  F9  F4  16  FD  3E  9D  FC  71  16  3B  DF  F2  FA  95
 
-4.4.1.3.2.3
+###### 4.4.1.3.2.3 IPMK and CMK
 
-IPMK and CMK
+
 
 The PRF+ function generates 60 octet output out of which the most significant 40 octets denote the
 IPMK and the rest (20 octet) denote the CMK. With all the required information as described above for
@@ -4881,9 +4714,9 @@ After all the above computations the Cryptobinding TLV request from server appea
  31  47  CF  42  5D  85  DA  7B 0C  BF  10  5E   91  75  57  48
  22  4F  BB  83  00  06  26   91  1C  FB  1B  0F
 
-4.4.2  Cryptobinding TLV Response from Client to Server
+#### 4.4.2 Cryptobinding TLV Response from Client to Server
 
-4.4.2.1  Header
+##### 4.4.2.1 Header
 
 As per the description given in section 2.2.8.1.1, the first 8 octets of the cryptobinding TLV header
 appear as below:
@@ -4897,7 +4730,8 @@ Release: September 29, 2025
 
 66 / 77
 
-4.4.2.2  Nonce
+
+##### 4.4.2.2 Nonce
 
 The next field in the TLV is nonce, which is a 32 octet field generated by a random function. In our
 case let us assume that the following nonce is generated on client machine.
@@ -4905,12 +4739,12 @@ case let us assume that the following nonce is generated on client machine.
  6C  6B  A3  87  84  23  74  57  CC  C9  0B  1A  90  8C  BD  F4
  71  1B  69  99  4D  0C  FE  8D  3D  B4  4E  CB  CD  AD  37  E9
 
-4.4.2.3  Compound MAC
+##### 4.4.2.3 Compound MAC
 
 The 20 octet Compound MAC is generated as described in section 3.1.5.5.1. This field is generated
 from an HMAC-SHA1-160 operation. This operation requires two fields: data and key.
 
-4.4.2.3.1 Data for HMAC-SHA1-160 Operation
+###### 4.4.2.3.1 Data for HMAC-SHA1-160 Operation
 
 The data required for HMAC-SHA1-160 operation is generated as per section 3.1.5.5.1. The generated
 data is as below:
@@ -4920,25 +4754,25 @@ data is as below:
  3D  B4  4E  CB  CD  AD  37  E9  00  00  00  00  00  00  00  00
  00  00  00  00  00  00  00   00   00  00  00  00  19
 
-4.4.2.3.2 Key for HMAC-SHA1-160 Operation
+###### 4.4.2.3.2 Key for HMAC-SHA1-160 Operation
 
 The key required for HMAC-SHA1-160 operation is called the Compound MAC Key (CMK) and is
 generated by the formulae described in section 3.1.5.5.2. Inputs required for this operation are the
 TempKey(K) and IPMK Seed(S).
 
-4.4.2.3.2.1  Temp Key
+###### 4.4.2.3.2.1 Temp Key
 
 Because the Tunnel Key is same for both client and server, the TempKey remains the same as well.
 
-4.4.2.3.2.2
+###### 4.4.2.3.2.2 IPMK Seed
 
-IPMK Seed
+
 
 Because the ISK for both client and server are same, the IPMK seed remains the same as well.
 
-4.4.2.3.2.3
+###### 4.4.2.3.2.3 IPMK and CMK
 
-IPMK and CMK
+
 
 Because all the inputs to PRF+ function are same, it generates the same IPMK and CMK as the server.
 The generated CMK and the HMAC data are passed through the HMAC-SHA1-160 operation to
@@ -4962,7 +4796,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-4.4.3  MPPE Keys Generation
+
+#### 4.4.3 MPPE Keys Generation
 
 The MPPE keys generation is performed as per section 3.1.5.7. It requires both the IPMK and seed
 (S) as inputs. The IPMK generated by both client and server are as follows:
@@ -5012,13 +4847,14 @@ Release: September 29, 2025
 
 68 / 77
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of PEAP.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
-5.1.1  Fast Reconnect
+#### 5.1.1 Fast Reconnect
 
 PEAP fast reconnect is desirable in applications such as wireless roaming. This feature allows
 sessions to be resumed without completing a full authentication.
@@ -5039,7 +4875,7 @@ cannot do so, then it will not authorize access. The reason is that because no i
 authentication takes place during fast reconnect; proof of identity is based exclusively on the TLS
 session.
 
-5.1.2  Identity Verification
+#### 5.1.2 Identity Verification
 
 Because the TLS session has not yet been negotiated, the initial identity request/response occurs in
 the clear, without integrity protection or authentication. It is therefore vulnerable to snooping and
@@ -5059,13 +4895,13 @@ However, because the initial EAP-Response/Identity determines the EAP server han
 authentication, if this or any other identity is inappropriate for use with the destination EAP server,
 there is no alternative but to terminate the PEAP conversation.
 
-5.1.3  Authentication Outcomes
+#### 5.1.3 Authentication Outcomes
 
 Because the cleartext EAP success or failure messages can be tampered with, implementations need
 to rely only on the EAP Extensions method with Result TLV's status messages to determine the
 outcome of a session.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -5082,7 +4918,8 @@ Release: September 29, 2025
 
 69 / 77
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5150,7 +4987,8 @@ Release: September 29, 2025
 
 70 / 77
 
-<2> Section 2.2.6: Microsoft PEAP clients never exchange outer TLVs during PEAP authentication.
+
+<2> Section 2.2.6: Microsoft PEAP clients never exchange outer TLVs during PEAP authentication.
 However, if a PEAP server or client implementation sends outer TLVs during phase 1, PEAP clients will
 utilize them in computing the compound MAC of the Cryptobinding TLV. The Windows NT, Windows
 2000, Windows XP, and Windows Server 2003 PEAP clients prior will ignore the outer TLVs.
@@ -5218,7 +5056,8 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-". AssumePhase2Frag is initialized from
+
+". AssumePhase2Frag is initialized from
 "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\RasMan\PPP\EAP\25\AssumePhase2Frag
 mentation".
 
@@ -5250,7 +5089,8 @@ Release: September 29, 2025
 
 72 / 77
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5301,7 +5141,8 @@ Release: September 29, 2025
 
 73 / 77
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -5445,7 +5286,8 @@ Implementer - security considerations
 
 74 / 77
 
-   fast reconnect 69
+
+   fast reconnect 69
    identity verification 69
 Index of security parameters 69
 Informative references 11
@@ -5606,7 +5448,8 @@ Peer
 
 75 / 77
 
-      packet processing 41
+
+      packet processing 41
       PEAP packet processing 31
       PEAP peer cryptobinding validation 40
       phase 1 - TLS tunnel establishment (section
@@ -5767,7 +5610,8 @@ Transport 17
 
 76 / 77
 
-Triggered events - higher-layer
+
+Triggered events - higher-layer
    peer 40
       overview 30
    server 49

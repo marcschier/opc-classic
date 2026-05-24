@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -155,201 +156,85 @@ Release: April 23, 2024
 
 2 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Complex Types](#221-complex-types)
+      - [2.2.1.1 Client Token](#2211-client-token)
+      - [2.2.1.2 Client Token JWS Headers](#2212-client-token-jws-headers)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Initial Request](#3151-initial-request)
+        - [3.1.5.1.1 Request](#31511-request)
+        - [3.1.5.1.2 Response](#31512-response)
+        - [3.1.5.1.3 Processing Details](#31513-processing-details)
+      - [3.1.5.2 Issuer based certificate challenge response](#3152-issuer-based-certificate-challenge-response)
+        - [3.1.5.2.1 Request](#31521-request)
+        - [3.1.5.2.2 Response](#31522-response)
+        - [3.1.5.2.3 Processing Details](#31523-processing-details)
+      - [3.1.5.3 Thumbprint based certificate challenge response](#3153-thumbprint-based-certificate-challenge-response)
+        - [3.1.5.3.1 Request](#31531-request)
+        - [3.1.5.3.2 Response](#31532-response)
+        - [3.1.5.3.3 Processing Details](#31533-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Issuer based certificate challenge](#3251-issuer-based-certificate-challenge)
+        - [3.2.5.1.1 Request](#32511-request)
+        - [3.2.5.1.2 Response](#32512-response)
+        - [3.2.5.1.3 Processing Details](#32513-processing-details)
+      - [3.2.5.2 Thumbprint based certificate challenge](#3252-thumbprint-based-certificate-challenge)
+        - [3.2.5.2.1 Request](#32521-request)
+        - [3.2.5.2.2 Response](#32522-response)
+        - [3.2.5.2.3 Processing Details](#32523-processing-details)
+      - [3.2.5.3 Challenge response processing](#3253-challenge-response-processing)
+        - [3.2.5.3.1 Request](#32531-request)
+        - [3.2.5.3.2 Response](#32532-response)
+        - [3.2.5.3.3 Processing Details](#32533-processing-details)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Interactive Request](#41-interactive-request)
+    - [4.1.1 Client Request](#411-client-request)
+    - [4.1.2 Server Challenge Response](#412-server-challenge-response)
+    - [4.1.3 Client Response](#413-client-response)
+  - [4.2 OAuth Token Request](#42-oauth-token-request)
+    - [4.2.1 Client Refresh Token Request](#421-client-refresh-token-request)
+    - [4.2.2 Server Challenge Response](#422-server-challenge-response)
+    - [4.2.3 Client Response](#423-client-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Common Data Types .......................................................................................... 8
-Complex Types ............................................................................................. 8
-Client Token ........................................................................................... 8
-Client Token JWS Headers ........................................................................ 8
-
-2.2.1.1
-2.2.1.2
-
-2.2.1
-
-3.1
-
-3.1.5.3
-
-3.1.5.2
-
-3.1.5.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-
-3  Protocol Details ..................................................................................................... 10
-Client Details ................................................................................................... 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Message Processing Events and Sequencing Rules .......................................... 10
-Initial Request ...................................................................................... 10
-Request ......................................................................................... 10
-Response ....................................................................................... 11
-Processing Details ........................................................................... 11
-Issuer based certificate challenge response .............................................. 11
-Request ......................................................................................... 11
-Response ....................................................................................... 12
-Processing Details ........................................................................... 12
-Thumbprint based certificate challenge response ...................................... 13
-Request ......................................................................................... 13
-Response ....................................................................................... 13
-Processing Details ........................................................................... 13
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-Server Details .................................................................................................. 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Issuer based certificate challenge............................................................ 15
-Request ......................................................................................... 15
-Response ....................................................................................... 15
-Processing Details ........................................................................... 15
-Thumbprint based certificate challenge .................................................... 15
-Request ......................................................................................... 16
-Response ....................................................................................... 16
-Processing Details ........................................................................... 16
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-
-3.1.5.3.1
-3.1.5.3.2
-3.1.5.3.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2.5.2
-
-3.2.5.1
-
-3.2
-
-[MS-PKAP] - v20240423
-Public Key Authentication Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 26
-
-3.2.5.3
-
-3.2.5.3.1
-3.2.5.3.2
-3.2.5.3.3
-
-Challenge response processing ............................................................... 16
-Request ......................................................................................... 16
-Response ....................................................................................... 16
-Processing Details ........................................................................... 16
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-
-3.2.6
-3.2.7
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ................................................................................................. 18
-Interactive Request .......................................................................................... 18
-Client Request ............................................................................................ 18
-Server Challenge Response .......................................................................... 18
-Client Response .......................................................................................... 18
-OAuth Token Request ....................................................................................... 19
-Client Refresh Token Request ....................................................................... 19
-Server Challenge Response .......................................................................... 19
-Client Response .......................................................................................... 20
-
-4.2.1
-4.2.2
-4.2.3
-
-4.2
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-PKAP] - v20240423
-Public Key Authentication Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 26
-
-1  Introduction
+## 1 Introduction
 
 The Public Key Authentication Protocol (PKAP) provides a method for HTTP clients to prove possession
 of a private key to a web server without having to rely on client Transport Layer Security (TLS)
@@ -358,7 +243,7 @@ support [RFC4346] from the underlying platform.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -405,7 +290,7 @@ TLS is standardized in the IETF TLS working group.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -419,7 +304,8 @@ Release: April 23, 2024
 
 5 / 26
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -453,7 +339,7 @@ editor.org/info/rfc2818
 [RFC4158] Cooper, M., Dzambasow, Y., Hesse, P., et la., "Internet X.509 Public Key Infrastructure:
 Certification Path Building", RFC 4158, September 2005, https://www.rfc-editor.org/info/rfc4158
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ISO8601] ISO, "Data elements and interchange formats - Information interchange - Representation
 of dates and times", ISO 8601:2004, December 2004,
@@ -467,7 +353,7 @@ RFC 4346, April 2006, https://www.rfc-editor.org/info/rfc4346
 [RFC6265] Barth, A., "HTTP State Management Mechanism", RFC 6265, April 2011,
 https://tools.ietf.org/html/rfc6265
 
-1.3  Overview
+### 1.3 Overview
 
 One of the most common practices to validate the proof of possession of a secret on the client in an
 HTTP transaction is to use Secure Sockets Layer (SSL)/Transport Layer Security (TLS) client
@@ -484,7 +370,8 @@ Release: April 23, 2024
 
 6 / 26
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-PKAP].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -504,32 +391,32 @@ To participate in this protocol, the HTTP client application should enable HTTP 
 [RFC6265]. The server can use HTTP cookies (that the server can validate and use later) to save any
 state during the protocol interaction.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Public Key Authentication Protocol depends on HTTP [RFC2616].
 
 Figure 1: Protocol dependency
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 All exchanges in this protocol happen over an HTTPS channel [RFC2818].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Public Key Authentication Protocol was designed to provide an alternative means for clients to
 perform device authentication with Active Directory Federation Services (AD FS). Using this
 alternative means for device authentication is applicable when a client cannot rely on the client TLS
 mechanism offered by its underlying operating system platform.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Supported Transports: The Public Key Authentication Protocol (PKAP) supports only HTTP.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -540,15 +427,16 @@ Release: April 23, 2024
 
 7 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The HTTP protocol [RFC2616] MUST be used as the transport.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  Complex Types
+#### 2.2.1 Complex Types
 
 The following table summarizes the set of complex type definitions that are included in this
 specification.
@@ -559,7 +447,7 @@ Client Token
 
 Client Token JWS Headers
 
-2.2.1.1  Client Token
+##### 2.2.1.1 Client Token
 
 Section
 
@@ -594,7 +482,7 @@ Unix time [ISO8601] as a 64-bit signed integer.
 
 server-challenge-nonce: A nonce that is issued as part of the server challenge.
 
-2.2.1.2  Client Token JWS Headers
+##### 2.2.1.2 Client Token JWS Headers
 
 This type represents data that is included as part of the headers during JSON Web Signature (JWS)
 signing [IETFDRAFT-JWS].
@@ -612,7 +500,8 @@ Release: April 23, 2024
 
 8 / 26
 
-signing-algorithm: The algorithm that will be used for signing, as specified in the JWS specification
+
+signing-algorithm: The algorithm that will be used for signing, as specified in the JWS specification
 ([IETFDRAFT-JWS] section 4.1.1). It is a hint to the server regarding how the signature was
 generated. The appropriate value defined in the algorithm table of the JSON Web Algorithms
 specification ([IETFDRAFT-JWA-36] section 3.1) is used for this purpose.
@@ -632,29 +521,30 @@ Release: April 23, 2024
 
 9 / 26
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
+
+None.
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 A client that is capable of using the Public Key Authentication Protocol (PKAP) MUST always make
 requests to an HTTP server that conform to the "Initial Request" (section 3.1.5.1), regardless of proof
 of possession of keys that might be required by the server it is trying to access.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
  The behavior of the client can be divided into its actions on the following processing events.
 
@@ -682,13 +572,13 @@ key of any certificate issued by one of a given set of issuers.
 The client's response when the server challenges for proof of possession of the private
 key of a specific certificate.
 
-3.1.5.1  Initial Request
+##### 3.1.5.1 Initial Request
 
 When the client makes a request to the service's endpoint that might require verification of proof of
 possession of an X509 certificate [RFC4158], the request follows the rules defined in the following
 sections.
 
-3.1.5.1.1 Request
+###### 3.1.5.1.1 Request
 
 If the client is capable and prefers to add HTTP headers, it MUST insert an HTTP header into the HTTP
 request that it is sending to the server. This header indicates that the server should use PKAP for
@@ -703,7 +593,8 @@ Release: April 23, 2024
 
 10 / 26
 
-Header Name  Value
+
+Header Name  Value
 
 x-ms-PKeyAuth  1.0
 
@@ -716,12 +607,12 @@ semantically equivalent.
 All other parts of the HTTP request (HTTP method, contents of the body, and so on) are specific to the
 client and the service application.
 
-3.1.5.1.2 Response
+###### 3.1.5.1.2 Response
 
 The server that supports PKAP responds to this message as specified in section 3.2.5.1 or section
 3.2.5.2.
 
-3.1.5.1.3 Processing Details
+###### 3.1.5.1.3 Processing Details
 
 Upon receiving a response as specified in section 3.2.5.1, the client MUST respond to the challenge as
 detailed in section 3.1.5.2.
@@ -729,7 +620,7 @@ detailed in section 3.1.5.2.
 Upon receiving a response as specified in section 3.2.5.2, the client MUST respond to the challenge as
 detailed in section 3.1.5.3.
 
-3.1.5.2  Issuer based certificate challenge response
+##### 3.1.5.2 Issuer based certificate challenge response
 
 The server's response is a challenge for proof of possession of a private key for a certificate that is
 acceptable to the server, as described in section 3.2.5.1. The server's challenge from section 3.2.5.1
@@ -749,7 +640,7 @@ a tuple with the following definition.
    Nonce, string
  ]
 
-3.1.5.2.1 Request
+###### 3.1.5.2.1 Request
 
 In response to the server's challenge, which is specified in section 3.2.5.1, the client responds to the
 server by making an HTTP request to the server as follows.
@@ -777,7 +668,8 @@ Public Key Authentication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-HTTP Request parameter
+
+HTTP Request parameter
 
 Value
 
@@ -787,11 +679,11 @@ Signed-JWT: A Client Token (section 2.2.1.1) that was generated and signed using
 
 in the processing details (section 3.1.5.2.3).
 
-3.1.5.2.2 Response
+###### 3.1.5.2.2 Response
 
 See section 3.2.5.3.
 
-3.1.5.2.3 Processing Details
+###### 3.1.5.2.3 Processing Details
 
 The client processes the server's issuer based certificate challenge in the following manner.
 
@@ -854,7 +746,7 @@ specified in section 3.1.5.2.1.
 conditions in step 3, the client MUST omit the AuthToken parameter from the request that is
 defined in section 3.1.5.2.1.
 
-3.1.5.3  Thumbprint based certificate challenge response
+##### 3.1.5.3 Thumbprint based certificate challenge response
 
 The server's response is a challenge for proof of possession of a private key for a certificate that is
 specified by the server, as described in section 3.2.5.2. The server's challenge from section 3.2.5.2 is
@@ -866,7 +758,8 @@ Public Key Authentication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-converted into a [Thumbprint based certificate challenge], and a signed JWT token is created on the
+
+converted into a [Thumbprint based certificate challenge], and a signed JWT token is created on the
 client from the [Thumbprint based certificate challenge], as described in the processing details
 (section 3.1.5.3.3). The client then responds to the server with a challenge response as defined in
 section 3.1.5.3.1.
@@ -881,7 +774,7 @@ processing, is a tuple with the following definition.
    Nonce, string
  ]
 
-3.1.5.3.1 Request
+###### 3.1.5.3.1 Request
 
 In response to the server's challenge, as specified in section 3.2.5.2, the client responds to the server
 by making an HTTP request to the server as follows.
@@ -909,11 +802,11 @@ Signed-JWT: A Client Token (section 2.2.1.1) that was generated and signed using
 
 in the processing details (section 3.1.5.3.3).
 
-3.1.5.3.2 Response
+###### 3.1.5.3.2 Response
 
 See section 3.2.5.3.
 
-3.1.5.3.3 Processing Details
+###### 3.1.5.3.3 Processing Details
 
 The client processes the server's thumbprint based certificate challenge in the following manner.
 
@@ -955,7 +848,8 @@ Public Key Authentication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Client Token
+
+Client Token
 
 Value
 
@@ -985,33 +879,33 @@ defined in section 3.1.5.3.1.
 matches [Thumbprint based certificate challenge].CertThumbprint, the client MUST omit the
 AuthToken parameter from the request that is specified in section 3.1.5.3.1.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
-
-None.
-
-3.2.2  Timers
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.3  Initialization
+#### 3.2.2 Timers
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.3 Initialization
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.4 Higher-Layer Triggered Events
+
+None.
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The following processing events and rules apply when the service needs to verify proof of possession
 of the private key of an X509 certificate on the client, and the client indicated its ability to participate
@@ -1024,7 +918,8 @@ Release: April 23, 2024
 
 14 / 26
 
-Event
+
+Event
 
 Description
 
@@ -1047,16 +942,16 @@ Based on the context of the client or the resource being protected, the service 
 issuer based certificate challenge (section 3.2.5.1) or a thumbprint based certificate challenge (section
 3.2.5.2). This determination is implementation-specific.
 
-3.2.5.1  Issuer based certificate challenge
+##### 3.2.5.1 Issuer based certificate challenge
 
 The server issues this challenge if it must verify proof of the client's possession of the private key of
 any X509 certificate that was issued by a set of trusted issuers.
 
-3.2.5.1.1 Request
+###### 3.2.5.1.1 Request
 
 See section 3.1.5.1.
 
-3.2.5.1.2 Response
+###### 3.2.5.1.2 Response
 
 The server issues a challenge using an HTTP response with the following characteristics.
 
@@ -1090,13 +985,13 @@ Server-state: Context information that the client will play back to the server t
 protocol sequence. This information is in the form of opaque binary data that cannot be
 deciphered by the client.
 
-3.2.5.1.3 Processing Details
+###### 3.2.5.1.3 Processing Details
 
 None.
 
 See section 5.1 for security considerations.
 
-3.2.5.2  Thumbprint based certificate challenge
+##### 3.2.5.2 Thumbprint based certificate challenge
 
 The service issues this challenge if it must verify proof of the client's possession of the private key of a
 specific X509 certificate.
@@ -1108,11 +1003,12 @@ Public Key Authentication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.2.1 Request
+
+###### 3.2.5.2.1 Request
 
 See section 3.1.5.1.
 
-3.2.5.2.2 Response
+###### 3.2.5.2.2 Response
 
 The server issues a challenge using an HTTP response with the following characteristics.
 
@@ -1139,29 +1035,29 @@ Server-state: Context information that the client will play back to the server t
 protocol sequence. This information is in the form of opaque binary data that cannot be
 deciphered by the client.
 
-3.2.5.2.3 Processing Details
+###### 3.2.5.2.3 Processing Details
 
 None.
 
 See section 5.1 for security considerations.
 
-3.2.5.3  Challenge response processing
+##### 3.2.5.3 Challenge response processing
 
 When the server receives a challenge response from the client, it processes the responses as
 described in the following sections.
 
-3.2.5.3.1 Request
+###### 3.2.5.3.1 Request
 
 The request is a challenge response from the client, as defined in section 3.1.5.2.2 and section
 3.1.5.3.2.
 
-3.2.5.3.2 Response
+###### 3.2.5.3.2 Response
 
 After processing the challenge response, the server can determine whether the proof presented by the
 client meets its requirements. The response from the service, regardless of whether the challenge
 response met its criteria, is implementation-specific.
 
-3.2.5.3.3 Processing Details
+###### 3.2.5.3.3 Processing Details
 
 When the server receives the challenge response, the server SHOULD perform the same checks that it
 performed to determine whether to issue an issuer based or thumbprint based certificate challenge
@@ -1186,7 +1082,8 @@ Public Key Authentication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1206,11 +1103,11 @@ that the client does not have an X509 certificate that meets the server's criter
 If the request does not contain an Authorization header, the server MUST evaluate the client for a
 challenge as specified in section 3.2.5.1 or section 3.2.5.2.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1221,14 +1118,15 @@ Release: April 23, 2024
 
 17 / 26
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Note  Throughout these examples, the fictitious names "client.contoso.com" and
 "server.contoso.com" are used.
 
-4.1  Interactive Request
+### 4.1 Interactive Request
 
-4.1.1  Client Request
+#### 4.1.1 Client Request
 
 The following shows an example of a GET request from the client browser of the Public Key
 Authentication Protocol (PKAP).
@@ -1238,7 +1136,7 @@ https://client.contoso.com/ HTTP/1.1
 
 User-Agent: Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0);PKeyAuth/1.0
 
-4.1.2  Server Challenge Response
+#### 4.1.2 Server Challenge Response
 
 The following shows an example of a successful server response in PKAP.
 
@@ -1262,7 +1160,7 @@ A4pK5hrD2vyWwA&CertAuthorities= OU%253Df15cd533-92fa-4d96-8b69-
 aa2d0c2f17d7%252CCN%253DMS-Organization-
 Access%252CDC%253Dserver%252CDC%253Dcontoso%252CDC%253Dcom%2b
 
-4.1.3  Client Response
+#### 4.1.3 Client Response
 
 The following shows an example of a successful client response to the server challenge in PKAP.
 
@@ -1288,7 +1186,8 @@ Release: April 23, 2024
 
 18 / 26
 
-wdnozUjVNd3A5ejg4a083R3dxc0RzcVNHRGtkdjUyTXZPQ0VQZTdlanZIY0UxRXp1TuhvUzY5b3lIeXErOWNxRklJ
+
+wdnozUjVNd3A5ejg4a083R3dxc0RzcVNHRGtkdjUyTXZPQ0VQZTdlanZIY0UxRXp1TuhvUzY5b3lIeXErOWNxRklJ
 UkZsME5maTlqVHkxWUxDamhqS2lGR3Nkdk50cVFRRVpIWE9nYStJMkxjbXF6b0NDZE1VTVFrMGtIWUVYZTdQS1VHW
 XFVODNsWEdXNENXQzNjcnR2L0RhQ2dObE1DQXdFQUFhT0I3VENCNmpBTUJnTlZIUk1CQWY4RUFqQUFNQllHQTFVZE
 pRRUIvd1FNTUFvR0NDc0dBUVVGQndNQ01CMEdBMVVkRGdRV0JCVGRtNHNWRHFSamJySG1Ja2NiR3dvL0RzdXFzREF
@@ -1326,9 +1225,9 @@ A4pK5hrD2vyWwA"
 
 User-Agent: Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0);PkeyAuth/1.0
 
-4.2  OAuth Token Request
+### 4.2 OAuth Token Request
 
-4.2.1  Client Refresh Token Request
+#### 4.2.1 Client Refresh Token Request
 
 The following shows an example of a POST request from the OAuth client of PKAP as it redeems a
 refresh token. The full refresh token has been removed to improve the readability of the example.
@@ -1341,7 +1240,7 @@ User-Agent: Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)
 
 grant_type=refresh_token&refresh_token=7Cn3mdR
 
-4.2.2  Server Challenge Response
+#### 4.2.2 Server Challenge Response
 
 The following shows an example of the server response for an OAuth refresh-token redemption in
 PKAP.
@@ -1357,7 +1256,8 @@ Release: April 23, 2024
 
 19 / 26
 
-Server: Microsoft-HTTPAPI/2.0
+
+Server: Microsoft-HTTPAPI/2.0
 
 WWW-Authenticate: PKeyAuth
 
@@ -1375,7 +1275,7 @@ ojpXEI39ccsbR2ndtf5VqHzzSYAAAAHZS327bGuepWQA8jSmgrWIGsAMdNKd1SAdt-
 Vb7gvQNmw9ETFeAWCjndeiAnAK328_aYg2Xn7f_XFBd1iu5vMZ-XYPOT2sgLbW_Ykks-
 wascZ7iRn9IXufu8c7Ymi00uw",CertThumbprint="A74F3CE065D87A12149FB2C0DC492D0C99580BD3"
 
-4.2.3  Client Response
+#### 4.2.3 Client Response
 
 The following shows an example of a successful client response to the server challenge for an OAuth
 refresh-token redemption in PKAP.
@@ -1431,7 +1331,8 @@ Release: April 23, 2024
 
 20 / 26
 
-Q_bGNNfnOBUl4j4z5YirH0uuzoNDR8xFonoNaTRJpQSErsK7lM6TVqyHxtzjD7adw_XnPG-
+
+Q_bGNNfnOBUl4j4z5YirH0uuzoNDR8xFonoNaTRJpQSErsK7lM6TVqyHxtzjD7adw_XnPG-
 ojpXEI39ccsbR2ndtf5VqHzzSYAAAAHZS327bGuepWQA8jSmgrWIGsAMdNKd1SAdt-
 Vb7gvQNmw9ETFeAWCjndeiAnAK328_aYg2Xn7f_XFBd1iu5vMZ-XYPOT2sgLbW_Ykks-
 wascZ7iRn9IXufu8c7Ymi00uw"
@@ -1445,14 +1346,15 @@ Release: April 23, 2024
 
 21 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The server should ensure that the nonce that it generates is short-lived, and cannot be used by any
 client after a short period of time.<1>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1463,7 +1365,8 @@ Release: April 23, 2024
 
 22 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1536,7 +1439,8 @@ Release: April 23, 2024
 
 23 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1580,7 +1484,8 @@ Release: April 23, 2024
 
 24 / 26
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1714,7 +1619,8 @@ Sequencing rules
 
 25 / 26
 
-   server 14
+
+   server 14
 Server
    Abstract data model 14
    examples - challenge response

@@ -63,7 +63,8 @@ Release: May 30, 2019
 
 1 / 65
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -242,194 +243,85 @@ Release: May 30, 2019
 
 2 / 65
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 8
-Background Information ................................................................................... 11
+## Table of Contents
 
-1.1
-1.2
-1.3
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+  - [1.3 Background Information](#13-background-information)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 Windows Workflow Foundation (WF)](#211-windows-workflow-foundation-wf)
+    - [2.1.2 Windows Communication Foundation (WCF)](#212-windows-communication-foundation-wcf)
+    - [2.1.3 Identity and Directory Services](#213-identity-and-directory-services)
+    - [2.1.4 Data Access](#214-data-access)
+    - [2.1.5 ASP.NET](#215-aspnet)
+    - [2.1.6 .NET Remoting](#216-net-remoting)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Stakeholders](#251-stakeholders)
+    - [2.5.2 Actors](#252-actors)
+    - [2.5.3 WCF Use Cases](#253-wcf-use-cases)
+      - [2.5.3.1 Use Case Diagrams](#2531-use-case-diagrams)
+      - [2.5.3.2 Use Case Descriptions](#2532-use-case-descriptions)
+        - [2.5.3.2.1 Dynamically Discover a Web Service](#25321-dynamically-discover-a-web-service)
+        - [2.5.3.2.2 Consume a Web Service](#25322-consume-a-web-service)
+        - [2.5.3.2.3 Use a Web Service with Reliable Messaging](#25323-use-a-web-service-with-reliable-messaging)
+        - [2.5.3.2.4 Use a Web Service with Reliable Messaging and Flow Control](#25324-use-a-web-service-with-reliable-messaging-and-flow-control)
+        - [2.5.3.2.5 Use a Web Service with Reliable Messaging in the Request Reply](#25325-use-a-web-service-with-reliable-messaging-in-the-request-reply)
+    - [2.5.4 .NET Remoting Use Cases](#254-net-remoting-use-cases)
+      - [2.5.4.1 Use Case Diagrams](#2541-use-case-diagrams)
+      - [2.5.4.2 Use Case Descriptions](#2542-use-case-descriptions)
+        - [2.5.4.2.1 Invoke a Method on a Server-Activated Object](#25421-invoke-a-method-on-a-server-activated-object)
+        - [2.5.4.2.2 Activate a Client-Activated Object and Invoke a Method](#25422-activate-a-client-activated-object-and-invoke-a-method)
+        - [2.5.4.2.3 Manage Server-Object Lifetime by Using the Renew Method](#25423-manage-server-object-lifetime-by-using-the-renew-method)
+        - [2.5.4.2.4 Manage Server Object Lifetime by Using a Sponsor Object](#25424-manage-server-object-lifetime-by-using-a-sponsor-object)
+    - [2.5.5 Data Access Use Cases](#255-data-access-use-cases)
+      - [2.5.5.1 Use Case Diagrams](#2551-use-case-diagrams)
+      - [2.5.5.2 Use Case Descriptions](#2552-use-case-descriptions)
+        - [2.5.5.2.1 Accessing Data from a Data Service](#25521-accessing-data-from-a-data-service)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1 (.NET Remoting): Two-Way Method Invocation Using SOAP Over HTTP](#31-example-1-net-remoting-two-way-method-invocation-using-soap-over-http)
+    - [3.1.1 Initial System State](#311-initial-system-state)
+    - [3.1.2 Sequence of Events](#312-sequence-of-events)
+    - [3.1.3 Final System State](#313-final-system-state)
+  - [3.2 Example 2 (WCF): Hello World](#32-example-2-wcf-hello-world)
+    - [3.2.1 Initial System State](#321-initial-system-state)
+    - [3.2.2 Sequence of Events](#322-sequence-of-events)
+    - [3.2.3 Final System State](#323-final-system-state)
+  - [3.3 Example 3 (WCF): Reliable Messaging with TCP as Transport](#33-example-3-wcf-reliable-messaging-with-tcp-as-transport)
+    - [3.3.1 Initial System State](#331-initial-system-state)
+    - [3.3.2 Sequence of Events](#332-sequence-of-events)
+    - [3.3.3 Final System State](#333-final-system-state)
+  - [3.4 Example 4 (WCF): Reliable Messaging with Flow Control](#34-example-4-wcf-reliable-messaging-with-flow-control)
+    - [3.4.1 Initial System State](#341-initial-system-state)
+    - [3.4.2 Sequence of Events](#342-sequence-of-events)
+    - [3.4.3 Final System State](#343-final-system-state)
+  - [3.5 Example 5 (Data Access): Retrieve a Single Entity Using the JSON Format](#35-example-5-data-access-retrieve-a-single-entity-using-the-json-format)
+    - [3.5.1 Initial System State](#351-initial-system-state)
+    - [3.5.2 Sequence of Events](#352-sequence-of-events)
+    - [3.5.3 Final System State](#353-final-system-state)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.1
-
-2.4
-2.5
-
-2.2
-2.3
-
-2.3.1
-2.3.2
-
-2.5.3.1
-2.5.3.2
-
-2.5.1
-2.5.2
-2.5.3
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-2.1.5
-2.1.6
-
-2  Functional Architecture ......................................................................................... 14
-Overview ........................................................................................................ 14
-Windows Workflow Foundation (WF) ............................................................. 14
-Windows Communication Foundation (WCF) ................................................... 15
-Identity and Directory Services .................................................................... 25
-Data Access ............................................................................................... 27
-ASP.NET .................................................................................................... 28
-.NET Remoting ........................................................................................... 29
-Protocol Summary ............................................................................................ 32
-Environment .................................................................................................... 34
-Dependencies on This System ...................................................................... 34
-Dependencies on Other Systems/Components ................................................ 34
-Assumptions and Preconditions .......................................................................... 35
-Use Cases ....................................................................................................... 35
-Stakeholders .............................................................................................. 35
-Actors ....................................................................................................... 36
-WCF Use Cases .......................................................................................... 37
-Use Case Diagrams ............................................................................... 37
-Use Case Descriptions ........................................................................... 38
-Dynamically Discover a Web Service .................................................. 38
-Consume a Web Service ................................................................... 38
-Use a Web Service with Reliable Messaging ........................................ 39
-Use a Web Service with Reliable Messaging and Flow Control ................ 41
-Use a Web Service with Reliable Messaging in the Request Reply .......... 42
-.NET Remoting Use Cases ............................................................................ 43
-Use Case Diagrams ............................................................................... 43
-Use Case Descriptions ........................................................................... 43
-Invoke a Method on a Server-Activated Object .................................... 43
-Activate a Client-Activated Object and Invoke a Method ....................... 44
-Manage Server-Object Lifetime by Using the Renew Method ................. 44
-Manage Server Object Lifetime by Using a Sponsor Object ................... 45
-Data Access Use Cases ................................................................................ 46
-Use Case Diagrams ............................................................................... 46
-Use Case Descriptions ........................................................................... 46
-Accessing Data from a Data Service ................................................... 46
-Versioning, Capability Negotiation, and Extensibility ............................................. 47
-Error Handling ................................................................................................. 47
-Coherency Requirements .................................................................................. 47
-Security .......................................................................................................... 47
-Additional Considerations .................................................................................. 47
-
-2.5.3.2.1
-2.5.3.2.2
-2.5.3.2.3
-2.5.3.2.4
-2.5.3.2.5
-
-2.5.4.2.1
-2.5.4.2.2
-2.5.4.2.3
-2.5.4.2.4
-
-2.6
-2.7
-2.8
-2.9
-2.10
-
-2.5.4.1
-2.5.4.2
-
-2.5.5.1
-2.5.5.2
-
-2.5.5.2.1
-
-2.5.4
-
-2.5.5
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-
-3  Examples ............................................................................................................... 48
-Example 1 (.NET Remoting): Two-Way Method Invocation Using SOAP Over HTTP ... 48
-Initial System State .................................................................................... 48
-Sequence of Events .................................................................................... 48
-Final System State ...................................................................................... 48
-Example 2 (WCF): Hello World ........................................................................... 48
-Initial System State .................................................................................... 49
-Sequence of Events .................................................................................... 49
-Final System State ...................................................................................... 50
-
-3.2.1
-3.2.2
-3.2.3
-
-3.2
-
-[MS-NETOD] - v20190530
-Microsoft .NET Framework Protocols Overview
-Copyright © 2019 Microsoft Corporation
-Release: May 30, 2019
-
-3 / 65
-
-3.3
-
-3.3.1
-3.3.2
-3.3.3
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-
-3.5
-
-3.5.1
-3.5.2
-3.5.3
-
-Example 3 (WCF): Reliable Messaging with TCP as Transport ................................. 50
-Initial System State .................................................................................... 51
-Sequence of Events .................................................................................... 51
-Final System State ...................................................................................... 54
-Example 4 (WCF): Reliable Messaging with Flow Control ....................................... 54
-Initial System State .................................................................................... 55
-Sequence of Events .................................................................................... 55
-Final System State ...................................................................................... 59
-Example 5 (Data Access): Retrieve a Single Entity Using the JSON Format .............. 59
-Initial System State .................................................................................... 59
-Sequence of Events .................................................................................... 59
-Final System State ...................................................................................... 60
-
-4  Microsoft Implementations ................................................................................... 61
-Product Behavior .............................................................................................. 61
-
-4.1
-
-5  Change Tracking .................................................................................................... 62
-
-6  Index ..................................................................................................................... 63
-
-[MS-NETOD] - v20190530
-Microsoft .NET Framework Protocols Overview
-Copyright © 2019 Microsoft Corporation
-Release: May 30, 2019
-
-4 / 65
-
-1  Introduction
+## 1 Introduction
 
 This document provides an overview of the communication protocols that are implemented in the
 Microsoft .NET Framework.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -498,7 +390,8 @@ Release: May 30, 2019
 
 5 / 65
 
-directory service (DS): A service that stores and organizes information about a computer
+
+directory service (DS): A service that stores and organizes information about a computer
 
 network's users and network shares, and that allows network administrators to manage users'
 access to the shares. See also Active Directory.
@@ -574,7 +467,8 @@ Release: May 30, 2019
 
 6 / 65
 
-resource: Any component that a computer can access that can read, write, and process data. This
+
+resource: Any component that a computer can access that can read, write, and process data. This
 includes internal components (such as a disk drive), a service, or an application running on and
 managed by the cluster on a network that is used to access a file.
 
@@ -652,7 +546,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-Windows Communication Foundation (WCF): A framework for building connected service-
+
+Windows Communication Foundation (WCF): A framework for building connected service-
 
 oriented applications.
 
@@ -664,7 +559,7 @@ Windows Workflow Foundation (WF): A framework that provides a programming model,
 process workflow engine, and a workflow designer to implement long-running processes as
 workflows within .NET applications.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -721,7 +616,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-[MS-IOI] Microsoft Corporation, "IManagedObject Interface Protocol".
+
+[MS-IOI] Microsoft Corporation, "IManagedObject Interface Protocol".
 
 [MS-MQOD] Microsoft Corporation, "Message Queuing Protocols Overview".
 
@@ -786,7 +682,8 @@ Release: May 30, 2019
 
 9 / 65
 
-[MSFT-LifecyclePolicy] Microsoft Corporation, "Search Product LIfecycle: .NET Framework",
+
+[MSFT-LifecyclePolicy] Microsoft Corporation, "Search Product LIfecycle: .NET Framework",
 https://support.microsoft.com/en-
 us/lifecycle/search?sort=PN&alpha=.NET%20Framework&Filter=FilterNO
 
@@ -851,7 +748,8 @@ Release: May 30, 2019
 
 10 / 65
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-NETOD].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -859,7 +757,7 @@ Release: May 30, 2019
 2006, https://www.oasis-open.org/committees/download.php/16790/wss-v1.1-spec-os-
 SOAPMessageSecurity.pdf
 
-1.3  Background Information
+### 1.3 Background Information
 
 The .NET Framework is an application development platform. It includes a software component for
 running and loading applications that is called the common language runtime (CLR) and a set of
@@ -894,7 +792,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-Windows Communication Foundation (WCF) provides a programming model for building
+
+Windows Communication Foundation (WCF) provides a programming model for building
 connected, service-oriented applications. WCF is designed in accordance with service-oriented
 architecture principles to support distributed computing by using a variety of protocols including HTTP
 and Web services (WS-*) protocols.
@@ -964,7 +863,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-  ASP.NET health monitoring enables reporting of key events that provide information about the
+
+  ASP.NET health monitoring enables reporting of key events that provide information about the
 
 health of an application and about error conditions.
 
@@ -1015,7 +915,8 @@ Release: May 30, 2019
 
 13 / 65
 
-2  Functional Architecture
+
+## 2 Functional Architecture
 
 This section describes the basic structure of the system and the interrelationships among its parts,
 consumers, and dependencies.
@@ -1036,7 +937,7 @@ Section 2.4 describes assumptions and preconditions.
 Section 2.5 provides a set of use cases illustrating a variety of scenarios for how the protocols are
 used.
 
-2.1  Overview
+### 2.1 Overview
 
 Not all protocols included in this overview document are interrelated. The protocols provided by the
 Microsoft .NET Framework are built on Windows native protocols and other industry-standard
@@ -1060,7 +961,7 @@ Identity and directory services
 
 .NET remoting
 
-2.1.1  Windows Workflow Foundation (WF)
+#### 2.1.1 Windows Workflow Foundation (WF)
 
 The following diagram shows the protocol stack of the Workflow Instance Management Protocol [MS-
 WFIM].
@@ -1072,7 +973,8 @@ Release: May 30, 2019
 
 14 / 65
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-NETOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1082,7 +984,7 @@ The Workflow Instance Management Protocol [MS-WFIM] defines a set of SOAP messag
 management of durable program instances, such as suspending, resuming, or canceling an instance of
 an application-defined workflow.
 
-2.1.2  Windows Communication Foundation (WCF)
+#### 2.1.2 Windows Communication Foundation (WCF)
 
 Windows Communication Foundation (WCF) is the .NET Framework technology that is used to
 create independently versionable, secure, and reliable service-oriented applications. Applications that
@@ -1123,7 +1025,8 @@ Release: May 30, 2019
 
 15 / 65
 
-Applications, which are built on WCF, can communicate with other applications that can use WS-*,
+
+Applications, which are built on WCF, can communicate with other applications that can use WS-*,
 Basic Profile (BP), and XML messages over TCP, HTTP, named pipes, and Microsoft Message
 Queuing (MSMQ).
 
@@ -1186,7 +1089,8 @@ Release: May 30, 2019
 
 16 / 65
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-NETOD].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1210,7 +1114,8 @@ Release: May 30, 2019
 
 17 / 65
 
-The SOAP encoding defines a set of rules for mapping programmatic types to XML. XML allows very
+
+The SOAP encoding defines a set of rules for mapping programmatic types to XML. XML allows very
 flexible encoding of data, whereas SOAP defines a narrower set of rules for encoding the graphs in the
 SOAP Data Model specified in [SOAP1.1] section 2.
 
@@ -1233,7 +1138,8 @@ Release: May 30, 2019
 
 18 / 65
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-NETOD].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1258,7 +1164,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-The .NET Message Framing TCP Binding Protocol [MS-NMFTB] and the .NET Message Framing MSMQ
+
+The .NET Message Framing TCP Binding Protocol [MS-NMFTB] and the .NET Message Framing MSMQ
 Binding Protocol [MS-NMFMB] specify how the mechanism, described in [MC-NMF], for framing
 messages over any transport protocol can be applied over TCP and Message Queue (MSMQ)
 respectively.
@@ -1296,7 +1203,8 @@ Release: May 30, 2019
 
 20 / 65
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-NETOD].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1333,7 +1241,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-indication when selecting among different routing algorithms to apply to the message. The indication
+
+indication when selecting among different routing algorithms to apply to the message. The indication
 provided by the .NET Packet Routing Protocol conveys routing information that enables the router to
 select a more efficient routing algorithm.
 
@@ -1389,7 +1298,8 @@ Release: May 30, 2019
 
 22 / 65
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-NETOD].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1407,7 +1317,8 @@ Release: May 30, 2019
 
 23 / 65
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-NETOD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1446,7 +1357,8 @@ Release: May 30, 2019
 
 24 / 65
 
-2.1.3  Identity and Directory Services
+
+#### 2.1.3 Identity and Directory Services
 
 A security token is a set of bytes that expresses information about a digital identity. When
 transmitted on the network, every digital identity is represented by a security token. The identity
@@ -1488,7 +1400,8 @@ Release: May 30, 2019
 
 25 / 65
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-NETOD].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1513,7 +1426,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-clicks a particular card, CardSpace issues a request to the Identity Provider that is associated with
+
+clicks a particular card, CardSpace issues a request to the Identity Provider that is associated with
 that card.
 
 4.  The Identity Provider then returns a security token to CardSpace.
@@ -1532,7 +1446,7 @@ directory services through the Microsoft extensions to the directory services ma
 Services Markup Language (DSML) 2.0 Protocol. It provides for the creation of a session, association
 with a particular session, and a way to terminate the session.
 
-2.1.4  Data Access
+#### 2.1.4 Data Access
 
 The Conceptual Schema Definition File Format ([MC-CSDL]) describes the structure and semantics of
 the Conceptual Schema Definition Language (CSDL) for the Entity Data Model (EDM).
@@ -1554,13 +1468,14 @@ Release: May 30, 2019
 
 27 / 65
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-NETOD].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
 Figure 9: Data access protocol relationships
 
-2.1.5  ASP.NET
+#### 2.1.5 ASP.NET
 
 ASP.NET primarily relies on existing industry standard web protocols for data communication.
 Microsoft has implemented two protocols that are specific to ASP.NET for administrative
@@ -1580,11 +1495,12 @@ Release: May 30, 2019
 
 28 / 65
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-NETOD].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
-2.1.6  .NET Remoting
+#### 2.1.6 .NET Remoting
 
 The following diagram shows the typical architecture of a distributed application that is built by using
 the .NET remoting framework.
@@ -1636,7 +1552,8 @@ Release: May 30, 2019
 
 29 / 65
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-NETOD].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -1685,7 +1602,8 @@ Release: May 30, 2019
 
 30 / 65
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-NETOD].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -1730,7 +1648,8 @@ Release: May 30, 2019
 
 31 / 65
 
-2.2  Protocol Summary
+
+### 2.2 Protocol Summary
 
 The following tables provide a comprehensive list of the member protocols of the .NET Framework.
 The member protocols are grouped according to their primary purpose.
@@ -1878,7 +1797,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-Short
+
+Short
 name
 
 [MS-
@@ -2024,7 +1944,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -2092,17 +2013,17 @@ NNS]
 
 [MS-IOI]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. This includes the systems that
 use the interfaces that are provided by this system of protocols, other systems that depend on this
 system, and, as appropriate, how components of the system communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 None.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 The Microsoft .NET Framework relies on the following Windows and standard protocols:
 
@@ -2131,7 +2052,8 @@ Release: May 30, 2019
 
 34 / 65
 
-  SecureConversation
+
+  SecureConversation
 
   WS-Discovery
 
@@ -2167,13 +2089,13 @@ Release: May 30, 2019
 
 [MS-RPCE]
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 None.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
-2.5.1  Stakeholders
+#### 2.5.1 Stakeholders
 
 The stakeholders and their associated interests for the .NET Framework protocols are as follows.
 
@@ -2207,10 +2129,11 @@ Release: May 30, 2019
 
 35 / 65
 
-The entity (individual or corporate) that owns and operates the Web service. The service provider has
+
+The entity (individual or corporate) that owns and operates the Web service. The service provider has
 an interest (financial or otherwise) in the Web service operating reliably and correctly.
 
-2.5.2  Actors
+#### 2.5.2 Actors
 
 Web client
 
@@ -2275,24 +2198,25 @@ Release: May 30, 2019
 
 36 / 65
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-NETOD].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
 A sponsor object specifies whether the Server Object's Time-To-Live (TTL) has to be extended; it
 also specifies the duration of the extension.
 
-2.5.3  WCF Use Cases
+#### 2.5.3 WCF Use Cases
 
-2.5.3.1  Use Case Diagrams
+##### 2.5.3.1 Use Case Diagrams
 
 The following diagram shows the use cases for Windows Communication Foundation web services.
 
 Figure 13: Windows Communication Foundation use cases
 
-2.5.3.2  Use Case Descriptions
+##### 2.5.3.2 Use Case Descriptions
 
-2.5.3.2.1 Dynamically Discover a Web Service
+###### 2.5.3.2.1 Dynamically Discover a Web Service
 
 See the diagram named "WCF use cases" in section 2.5.3.1.
 
@@ -2303,7 +2227,8 @@ Release: May 30, 2019
 
 37 / 65
 
-Goal: The web client obtains the uniform resource identifier (URI) of the Web service.
+
+Goal: The web client obtains the uniform resource identifier (URI) of the Web service.
 
 Context of Use: A web client requires the use of a Web service, but the identifying address (URI) of
 the Web service is unknown. The web client dynamically seeks a suitable Web service (the target
@@ -2367,7 +2292,7 @@ The discovery service obtains the URI of the Web service.
 
 The web client receives the URI of the Web service.
 
-2.5.3.2.2 Consume a Web Service
+###### 2.5.3.2.2 Consume a Web Service
 
 See the diagram named WCF use cases in section 2.5.3.1.
 
@@ -2381,7 +2306,8 @@ Release: May 30, 2019
 
 38 / 65
 
-Context of Use: An end user performs a task on a web client that requires consumption of a Web
+
+Context of Use: An end user performs a task on a web client that requires consumption of a Web
 service.
 
 Primary Actor: The primary actor is a web client, an application that resides on the end user's
@@ -2422,7 +2348,7 @@ web client or the web server is changed.
 
 Success Guarantee: The web client consumes the Web service according to the service contract.
 
-2.5.3.2.3 Use a Web Service with Reliable Messaging
+###### 2.5.3.2.3 Use a Web Service with Reliable Messaging
 
 See the diagram named WCF use cases in section 2.5.3.1.
 
@@ -2452,7 +2378,8 @@ Release: May 30, 2019
 
 39 / 65
 
-Minimal Guarantees: The Web service receives the messages from the web client in the requested
+
+Minimal Guarantees: The Web service receives the messages from the web client in the requested
 order.
 
 Success Guarantee: The web client consumes all messages from the Web service in the requested
@@ -2528,12 +2455,13 @@ Release: May 30, 2019
 
 40 / 65
 
-9.  The RM Destination receives the <TerminateSequence> element message indicating that the RM
+
+9.  The RM Destination receives the <TerminateSequence> element message indicating that the RM
 
 Source does not send any more messages and reclaims any resources that are associated with the
 Sequence.
 
-2.5.3.2.4 Use a Web Service with Reliable Messaging and Flow Control
+###### 2.5.3.2.4 Use a Web Service with Reliable Messaging and Flow Control
 
 See the diagram titled "WCF use cases" in section 2.5.3.1.
 
@@ -2605,7 +2533,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-2.5.3.2.5 Use a Web Service with Reliable Messaging in the Request Reply
+
+###### 2.5.3.2.5 Use a Web Service with Reliable Messaging in the Request Reply
 
 See the diagram titled "WCF use cases" in section 2.5.3.1.
 
@@ -2679,21 +2608,22 @@ Release: May 30, 2019
 
 42 / 65
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-NETOD].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
-2.5.4  .NET Remoting Use Cases
+#### 2.5.4 .NET Remoting Use Cases
 
-2.5.4.1  Use Case Diagrams
+##### 2.5.4.1 Use Case Diagrams
 
 The following diagram shows the use case for .NET object remoting.
 
 Figure 14: .NET remoting use cases
 
-2.5.4.2  Use Case Descriptions
+##### 2.5.4.2 Use Case Descriptions
 
-2.5.4.2.1 Invoke a Method on a Server-Activated Object
+###### 2.5.4.2.1 Invoke a Method on a Server-Activated Object
 
 Goal: A client application performs an operation on a Server-Activated Object (SAO) on a remoting
 server.
@@ -2732,7 +2662,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-3.  The remoting server executes the method.
+
+3.  The remoting server executes the method.
 
 Variations:
 
@@ -2750,7 +2681,7 @@ Minimal Guarantees: The method invocation fails.
 Success Guarantee: The client application successfully invokes the remote object method on the
 remoting server.
 
-2.5.4.2.2 Activate a Client-Activated Object and Invoke a Method
+###### 2.5.4.2.2 Activate a Client-Activated Object and Invoke a Method
 
 Goal: A client application activates a Client-Activated Object (CAO) and invokes a method on the
 activated object.
@@ -2798,7 +2729,7 @@ Minimal Guarantees: The client application cannot activate the Client-Activated 
 Success Guarantee: The client application activates a Client-Activated Object and invokes a method
 on the activated object.
 
-2.5.4.2.3 Manage Server-Object Lifetime by Using the Renew Method
+###### 2.5.4.2.3 Manage Server-Object Lifetime by Using the Renew Method
 
 Goal: A client application extends the lifetime of a Server Object by using the Lease Object's
 Renew method.
@@ -2810,7 +2741,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-Context of Use: A client application extends the lifetime of a Client-Activated Object (CAO) to
+
+Context of Use: A client application extends the lifetime of a Client-Activated Object (CAO) to
 avoid the unmarshaling of the object so that it can invoke a method of the Server Object efficiently at
 later point.
 
@@ -2845,7 +2777,7 @@ Minimal Guarantees: The Client-Activated Object's Time-To-Live (TTL) is not exte
 
 Success Guarantee: The Time-To-Live (TTL) value of the Client-Activated Object is increased.
 
-2.5.4.2.4 Manage Server Object Lifetime by Using a Sponsor Object
+###### 2.5.4.2.4 Manage Server Object Lifetime by Using a Sponsor Object
 
 Goal: A client application extends the lifetime of a Server Object by using a Sponsor Object.
 
@@ -2888,7 +2820,8 @@ Release: May 30, 2019
 
 45 / 65
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-NETOD].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
@@ -2910,17 +2843,17 @@ Minimal Guarantees: The Client-Activated Object's Time-To-Live (TTL) is not exte
 
 Success Guarantee: The TTL value of the Client-Activated Object is increased.
 
-2.5.5  Data Access Use Cases
+#### 2.5.5 Data Access Use Cases
 
-2.5.5.1  Use Case Diagrams
+##### 2.5.5.1 Use Case Diagrams
 
 The following diagram shows the use case for accessing data from a data service.
 
 Figure 15: Accessing data from the data service use case
 
-2.5.5.2  Use Case Descriptions
+##### 2.5.5.2 Use Case Descriptions
 
-2.5.5.2.1 Accessing Data from a Data Service
+###### 2.5.5.2.1 Accessing Data from a Data Service
 
 Goal: A web client retrieves or updates data from a data service.
 
@@ -2948,7 +2881,8 @@ Release: May 30, 2019
 
 46 / 65
 
-Trigger: The client makes a request to access data from the data service.
+
+Trigger: The client makes a request to access data from the data service.
 
 Main Success Scenario:
 
@@ -2963,20 +2897,20 @@ store changes.
 
 Success Guarantee: The web client retrieves data from the data service and updates it.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 None.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 The system does not define any errors beyond those described in the specifications of the member
 protocols, as listed in section 2.2.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 This system has no special coherency requirements.
 
-2.9  Security
+### 2.9 Security
 
 Implementation of secure communication is up to the developer. The developer has to select security
 features that are based on the business value of the data. Because the security of Windows
@@ -2986,7 +2920,7 @@ features, such as authentication, encryption, signing and hashing methods, and t
 appropriate security methods to mitigate such known security risks in accord with the business
 requirements.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 The Microsoft .NET Framework is not a system but rather a platform for application developers to write
 distributed .NET applications. Use of the underlying protocols is entirely at the developer's discretion.
@@ -2998,13 +2932,14 @@ Release: May 30, 2019
 
 47 / 65
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-NETOD].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
-3  Examples
+## 3 Examples
 
-3.1  Example 1 (.NET Remoting): Two-Way Method Invocation Using SOAP Over HTTP
+### 3.1 Example 1 (.NET Remoting): Two-Way Method Invocation Using SOAP Over HTTP
 
 The .NET Remoting framework is one of the main categories of .NET protocols. This example
 illustrates the two-way method invocation that is mapped to the Invoke a Method on a Server-
@@ -3012,7 +2947,7 @@ Activated Object use case. In this example, the client invokes a method on the s
 responds with the result, which is an object of the address class. For the detailed example, see [MS-
 NRTP] section 4.2.
 
-3.1.1  Initial System State
+#### 3.1.1 Initial System State
 
   General requirements as set forth in [MS-NRTP] section 1.5.
 
@@ -3020,7 +2955,7 @@ NRTP] section 4.2.
 
 The server was previously configured to respond with the address.
 
-3.1.2  Sequence of Events
+#### 3.1.2 Sequence of Events
 
 The following diagram shows the sequence of events for two-way method invocation.
 
@@ -3030,12 +2965,12 @@ Figure 16: Sequence diagram for two-way method invocation
 
 2.  The server responds with the address.
 
-3.1.3  Final System State
+#### 3.1.3 Final System State
 
 The client receives the requested address. Client and server can communicate further by using the
 same or a different contract.
 
-3.2  Example 2 (WCF): Hello World
+### 3.2 Example 2 (WCF): Hello World
 
 This code example illustrates a simple request and response that is mapped to the Consume a Web
 Service use case. The service defines the following service contract.
@@ -3053,7 +2988,8 @@ Release: May 30, 2019
 
 48 / 65
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-NETOD].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3076,7 +3012,7 @@ This code example uses basicHttpbinding, which uses SOAP over HTTP.
                     bindingsSectionName="BasicHttpBinding"
                     contract="IHelloWorldService" />
 
-3.2.1  Initial System State
+#### 3.2.1 Initial System State
 
 1.  The client requires the request URI of the server, and both the client and server have the service
 
@@ -3084,7 +3020,7 @@ contract.
 
 2.  The client has the address and binding of the service.
 
-3.2.2  Sequence of Events
+#### 3.2.2 Sequence of Events
 
 The following diagram shows the sequence of events for a 'Hello World' application using Windows
 Communication Foundation (WCF).
@@ -3108,7 +3044,8 @@ Release: May 30, 2019
 
 49 / 65
 
- Expect: 100-continue..
+
+ Expect: 100-continue..
  Accept-Encoding: gzip, deflate..
  Connection: Keep-Alive....
 
@@ -3148,11 +3085,11 @@ The code example shows the SOAP response message.
 The SOAP response contains an entry for SayHelloResponse that contains the response string:
 "Hello World!!"
 
-3.2.3  Final System State
+#### 3.2.3 Final System State
 
 There is no change in state.
 
-3.3  Example 3 (WCF): Reliable Messaging with TCP as Transport
+### 3.3 Example 3 (WCF): Reliable Messaging with TCP as Transport
 
 This example illustrates how reliable messaging can be used in Windows Communication Foundation
 (WCF). This example describes the main scenario of the Use a Web Service with Reliable Messaging
@@ -3171,7 +3108,8 @@ Release: May 30, 2019
 
 50 / 65
 
-     [OperationContract]
+
+     [OperationContract]
      void Message1();
      [OperationContract]
      void Message2();
@@ -3221,11 +3159,11 @@ Receiver send and receive SOAP messages, as described in [MC-NMF] sections 3.2.4
 3.3.4.3, and 3.3.4.4. After the message exchange is complete, the Initiator and Receiver close the
 session by sending an End Record message, as described in [MC-NMF] section 3.2.4.5 and 3.3.4.5.
 
-3.3.1  Initial System State
+#### 3.3.1 Initial System State
 
 An implementation of WS-ReliableMessaging (WSRM) was previously made available.
 
-3.3.2  Sequence of Events
+#### 3.3.2 Sequence of Events
 
 The following diagram shows the sequence of events for reliable messaging with TCP as the transport.
 
@@ -3236,7 +3174,8 @@ Release: May 30, 2019
 
 51 / 65
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-NETOD].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
@@ -3284,7 +3223,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
- <r:AckRequested>
+
+ <r:AckRequested>
     <r:Identifier>urn:uuid:cd8ea5a2-4867-45ed-bb39-46c4cab2213f</r:Identifier>
  </r:AckRequested>
  <r:Sequence s:mustUnderstand="1">
@@ -3347,7 +3287,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
- <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
+
+ <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
              xmlns:a="http://www.w3.org/2005/08/addressing">
     <s:Header>
        <a:Action s:mustUnderstand="1">
@@ -3364,11 +3305,11 @@ Release: May 30, 2019
     </s:Body>
  </s:Envelope>
 
-3.3.3  Final System State
+#### 3.3.3 Final System State
 
 There is no change in the server state except for the operations that are performed by the server.
 
-3.4  Example 4 (WCF): Reliable Messaging with Flow Control
+### 3.4 Example 4 (WCF): Reliable Messaging with Flow Control
 
 This example is mapped to the Use a Web Service with Reliable Messaging and Flow Control use case.
 
@@ -3412,15 +3353,16 @@ Release: May 30, 2019
 
 54 / 65
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-NETOD].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
-3.4.1  Initial System State
+#### 3.4.1 Initial System State
 
 The general requirements, as specified in [MS-WSRVCRM] section 1.5.
 
-3.4.2  Sequence of Events
+#### 3.4.2 Sequence of Events
 
 The following diagram shows the sequence of events for reliable messaging with flow control.
 
@@ -3451,7 +3393,8 @@ Release: May 30, 2019
 
 55 / 65
 
-The RMS sends the first message to the RMD with a <MessageNumber> value of 1 and an
+
+The RMS sends the first message to the RMD with a <MessageNumber> value of 1 and an
 <AckRequested> header block in the header to signal to the RMD that the RMS is requesting a
 <SequenceAcknowledgement> to be returned as specified in [WSRM1-1] section 3.3.
 
@@ -3518,7 +3461,8 @@ Release: May 30, 2019
 
 56 / 65
 
-       <netrm:BufferRemaining
+
+       <netrm:BufferRemaining
 xmlns:netrm="http://schemas.microsoft.com/ws/2006/05/rm">1</netrm:BufferRemaining>
      </r:SequenceAcknowledgement>
      <a:Action
@@ -3584,7 +3528,8 @@ Release: May 30, 2019
 
 57 / 65
 
-8.  SequenceAcknowledgement (BufferRemaining = 1)
+
+8.  SequenceAcknowledgement (BufferRemaining = 1)
 
 After the AD finishes processing the first message and starts processing the second message,
 the RMD sends a <SequenceAcknowledgement> header block (as specified in [MS-WSRVCRM]
@@ -3652,7 +3597,8 @@ Microsoft .NET Framework Protocols Overview
 Copyright © 2019 Microsoft Corporation
 Release: May 30, 2019
 
-   <s:Header>
+
+   <s:Header>
      <r:SequenceAcknowledgement>
        <r:Identifier>urn:uuid:ed0fc900-3bef-43a6-a5a0-83ed5935e2de</r:Identifier>
        <r:AcknowledgementRange Lower="1" Upper="3"/>
@@ -3684,23 +3630,23 @@ s:mustUnderstand="1">http://schemas.xmlsoap.org/ws/2005/02/rm/TerminateSequence<
    </s:Body>
  </s:Envelope>
 
-3.4.3  Final System State
+#### 3.4.3 Final System State
 
 There is no change in state.
 
-3.5  Example 5 (Data Access): Retrieve a Single Entity Using the JSON Format
+### 3.5 Example 5 (Data Access): Retrieve a Single Entity Using the JSON Format
 
 This example is mapped to the Accessing Data from a Data Service use case.
 
 This example illustrates the retrieval of an entity from a data service. The EntityKey value "ALKFI" is
 used in the send request with the data-interchange format as JavaScript Object Notation (JSON).
 
-3.5.1  Initial System State
+#### 3.5.1 Initial System State
 
 The sample data model and instance data in this example are taken from "Appendix A: Sample Entity
 Data Model and CSDL Document" in [MS-ODATA] section 6.
 
-3.5.2  Sequence of Events
+#### 3.5.2 Sequence of Events
 
 The following diagram shows the sequence of events for single-entry retrieval using the JSON format.
 
@@ -3711,7 +3657,8 @@ Release: May 30, 2019
 
 59 / 65
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-NETOD].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
@@ -3719,7 +3666,7 @@ Figure 20: Retrieval of a single entity by using the JSON format
 
 The request and response messages are described in [MS-ODATA] section 4.2.3.
 
-3.5.3  Final System State
+#### 3.5.3 Final System State
 
 There is no change in state.
 
@@ -3730,7 +3677,8 @@ Release: May 30, 2019
 
 60 / 65
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this document is applicable to the following major versions of the Microsoft .NET
 Framework:
@@ -3763,7 +3711,7 @@ installation or installs separately as out-of-box supplemental software, see [MS
 For related information on Microsoft Lifecycle Policy for the .NET Framework versions (for example,
 extended support dates) see [MSFT-LifecyclePolicy].
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 There are no exceptions.
 
@@ -3774,7 +3722,8 @@ Release: May 30, 2019
 
 61 / 65
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -3786,7 +3735,8 @@ Release: May 30, 2019
 
 62 / 65
 
-6  Index
+
+## 6 Index
 A
 
 Actors
@@ -3920,7 +3870,8 @@ Microsoft implementations 61
 
 63 / 65
 
-N
+
+N
 
 NET Remoting use cases - diagrams - overview 43
 
@@ -4056,7 +4007,8 @@ Versioning
 
 64 / 65
 
-W
+
+W
 
 WCF use cases - diagrams - overview 37
 

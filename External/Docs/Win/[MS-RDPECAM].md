@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 54
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -109,417 +110,176 @@ Release: April 23, 2024
 
 2 / 54
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Version Negotiation sequence ......................................................................... 8
-New Device sequence .................................................................................... 8
-Device Removal sequence .............................................................................. 9
-Device Initialization sequence ........................................................................ 9
-Video Capture sequence .............................................................................. 10
-Device Control Initialization sequence ........................................................... 10
-Device Control sequence ............................................................................. 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-1.3.6
-1.3.7
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.3
-
-2.1
-2.2
-
-2.2.3.6.1
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Message Syntax ............................................................................................... 13
-Shared Message Header (SHARED_MSG_HEADER) ......................................... 13
-Messages Exchanged on the Device Enumeration Channel ............................... 15
-Select Version Request .......................................................................... 15
-Select Version Response ........................................................................ 15
-Device Added Notification....................................................................... 15
-Device Removed Notification .................................................................. 16
-Messages Exchanged on Device Channels ...................................................... 16
-Success Response ................................................................................. 16
-Error Response ..................................................................................... 17
-Activate Device Request......................................................................... 18
-Deactivate Device Request ..................................................................... 18
-Stream List Request .............................................................................. 18
-Stream List Response ............................................................................ 18
-STREAM_DESCRIPTION .................................................................... 19
-Media Type List Request ........................................................................ 20
-Media Type List Response ...................................................................... 20
-MEDIA_TYPE_DESCRIPTION ............................................................. 20
-Current Media Type Request ................................................................... 22
-Current Media Type Response ................................................................. 22
-Start Streams Request .......................................................................... 23
-START_STREAM_INFO ..................................................................... 23
-Stop Streams Request ........................................................................... 24
-Sample Request .................................................................................... 24
-Sample Response .................................................................................. 24
-Sample Error Response .......................................................................... 25
-Property List Request ............................................................................ 25
-Property List Response .......................................................................... 26
-PROPERTY_DESCRIPTION ................................................................. 26
-Property Value Request ......................................................................... 28
-Property Value Response ....................................................................... 28
-PROPERTY_VALUE ........................................................................... 28
-Set Property Value Request .................................................................... 29
-
-2.2.3.12
-2.2.3.13
-2.2.3.14
-2.2.3.15
-2.2.3.16
-2.2.3.17
-
-2.2.3.9
-2.2.3.10
-2.2.3.11
-
-2.2.3.18
-2.2.3.19
-
-2.2.3.7
-2.2.3.8
-
-2.2.3.19.1
-
-2.2.3.17.1
-
-2.2.3.11.1
-
-2.2.3.8.1
-
-2.2.3.20
-
-[MS-RDPECAM] - v20240423
-Remote Desktop Protocol: Video Capture Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 54
-
-2.3
-
-Directory Service Schema Elements ................................................................... 29
-
-3.2
-
-3.1
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-3.2.5.10
-3.2.5.11
-3.2.5.12
-3.2.5.13
-3.2.5.14
-3.2.5.15
-3.2.5.16
-3.2.5.17
-3.2.5.18
-3.2.5.19
-3.2.5.20
-3.2.5.21
-3.2.5.22
-3.2.5.23
-3.2.5.24
-
-3  Protocol Details ..................................................................................................... 30
-Common Details .............................................................................................. 30
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 31
-Higher-Layer Triggered Events ..................................................................... 31
-Message Processing Events and Sequencing Rules .......................................... 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-Client Details ................................................................................................... 31
-Abstract Data Model .................................................................................... 31
-Timers ...................................................................................................... 31
-Initialization ............................................................................................... 31
-Higher-Layer Triggered Events ..................................................................... 31
-Message Processing Events and Sequencing Rules .......................................... 31
-Sending a Select Version Request ........................................................... 32
-Processing a Select Version Response ...................................................... 32
-Sending a Device Added Notification ........................................................ 32
-Sending a Device Removed Notification ................................................... 32
-Processing an Activate Device Request .................................................... 32
-Processing a Stream List Request ............................................................ 32
-Sending a Stream List Response ............................................................. 33
-Processing a Media Type List Request ...................................................... 33
-Sending a Media Type List Response ....................................................... 33
-Processing a Current Media Type Request ................................................ 33
-Sending a Current Media Type Response .................................................. 33
-Processing a Start Streams Request ........................................................ 34
-Processing a Sample Request ................................................................. 34
-Sending a Sample Response ................................................................... 34
-Processing a Stop Streams Request ......................................................... 34
-Processing a Property List Request .......................................................... 35
-Sending a Property List Response ........................................................... 35
-Processing a Property Value Request ....................................................... 35
-Sending a Property Value Response......................................................... 35
-Processing a Set Property Value Request ................................................. 35
-Processing a Deactivate Device Request................................................... 36
-Sending a Success Response .................................................................. 36
-Sending an Error Response .................................................................... 36
-Sending a Sample Error Response ........................................................... 36
-Timer Events .............................................................................................. 36
-Other Local Events ...................................................................................... 36
-Server Details .................................................................................................. 37
-Abstract Data Model .................................................................................... 37
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Higher-Layer Triggered Events ..................................................................... 37
-Message Processing Events and Sequencing Rules .......................................... 37
-Processing a Select Version Request ........................................................ 37
-Sending a Select Version Response ......................................................... 37
-Processing a Device Added Notification .................................................... 37
-Processing a Device Removed Notification ................................................ 38
-Sending an Activate Device Request ........................................................ 38
-Sending a Stream List Request ............................................................... 38
-Processing a Stream List Response .......................................................... 38
-Sending a Media Type List Request ......................................................... 38
-Processing a Media Type List Response .................................................... 38
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-3.3.5.7
-3.3.5.8
-3.3.5.9
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.2.6
-3.2.7
-
-3.3
-
-[MS-RDPECAM] - v20240423
-Remote Desktop Protocol: Video Capture Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 54
-
-3.3.5.10
-3.3.5.11
-3.3.5.12
-3.3.5.13
-3.3.5.14
-3.3.5.15
-3.3.5.16
-3.3.5.17
-3.3.5.18
-3.3.5.19
-3.3.5.20
-3.3.5.21
-3.3.5.22
-3.3.5.23
-3.3.5.24
-
-Sending a Current Media Type Request .................................................... 39
-Processing a Current Media Type Response .............................................. 39
-Sending a Start Streams Request ............................................................ 39
-Sending a Sample Request ..................................................................... 39
-Processing a Sample Response ............................................................... 39
-Sending a Stop Streams Request ............................................................ 39
-Sending a Property List Request ............................................................. 39
-Processing a Property List Response ........................................................ 40
-Sending a Property Value Request ........................................................... 40
-Processing a Property Value Response ..................................................... 40
-Sending a Set Property Value Request ..................................................... 40
-Sending a Deactivate Device Request ...................................................... 40
-Processing a Success Response .............................................................. 40
-Processing an Error Response ................................................................. 41
-Processing a Sample Error Response ....................................................... 41
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-
-3.3.6
-3.3.7
-
-4.4
-
-4.3
-
-4.2
-
-4.1
-
-4.3.1
-
-4.2.1
-
-4.1.1
-4.1.2
-
-4.4.1
-4.4.2
-4.4.3
-4.4.4
-4.4.5
-4.4.6
-4.4.7
-4.4.8
-4.4.9
-
-4  Protocol Examples ................................................................................................. 42
-Annotated Version Negotiation sequence ............................................................. 42
-Select Version Request ................................................................................ 42
-Select Version Response .............................................................................. 42
-Annotated New Device sequence ........................................................................ 42
-Device Added Notification ............................................................................ 42
-Annotated Device Removal sequence .................................................................. 42
-Device Removed Notification ........................................................................ 42
-Annotated Device Initialization sequence ............................................................. 43
-Activate Device Request .............................................................................. 43
-Success Response ....................................................................................... 43
-Stream List Request .................................................................................... 43
-Stream List Response .................................................................................. 43
-Media Type List Request .............................................................................. 44
-Media Type List Response ............................................................................ 44
-Current Media Type Request ........................................................................ 44
-Current Media Type Response ...................................................................... 45
-Deactivate Device Request ........................................................................... 45
-Annotated Video Capture sequence .................................................................... 45
-Start Streams Request ................................................................................ 45
-Sample Request ......................................................................................... 45
-Sample Response ....................................................................................... 46
-Stop Streams Request ................................................................................. 46
-Annotated Device Control Initialization sequence ................................................. 46
-Property List Request .................................................................................. 46
-Property List Response ................................................................................ 47
-Property Value Request ............................................................................... 47
-Property Value Response ............................................................................. 47
-Annotated Device Control sequence .................................................................... 47
-Set Property Value Request ......................................................................... 47
-Annotated Error Response ................................................................................. 48
-
-4.5.1
-4.5.2
-4.5.3
-4.5.4
-
-4.6.1
-4.6.2
-4.6.3
-4.6.4
-
-4.7.1
-
-4.7
-
-4.8
-
-4.5
-
-4.6
-
-5  Security ................................................................................................................. 49
-Security Considerations for Implementers ........................................................... 49
-Index of Security Parameters ............................................................................ 49
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 50
-
-7  Change Tracking .................................................................................................... 51
-
-8  Index ..................................................................................................................... 52
-
-[MS-RDPECAM] - v20240423
-Remote Desktop Protocol: Video Capture Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 54
-
-[MS-RDPECAM] - v20240423
-Remote Desktop Protocol: Video Capture Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 54
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Version Negotiation sequence](#131-version-negotiation-sequence)
+    - [1.3.2 New Device sequence](#132-new-device-sequence)
+    - [1.3.3 Device Removal sequence](#133-device-removal-sequence)
+    - [1.3.4 Device Initialization sequence](#134-device-initialization-sequence)
+    - [1.3.5 Video Capture sequence](#135-video-capture-sequence)
+    - [1.3.6 Device Control Initialization sequence](#136-device-control-initialization-sequence)
+    - [1.3.7 Device Control sequence](#137-device-control-sequence)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Shared Message Header (SHARED_MSG_HEADER)](#221-shared-message-header-sharedmsgheader)
+    - [2.2.2 Messages Exchanged on the Device Enumeration Channel](#222-messages-exchanged-on-the-device-enumeration-channel)
+      - [2.2.2.1 Select Version Request](#2221-select-version-request)
+      - [2.2.2.2 Select Version Response](#2222-select-version-response)
+      - [2.2.2.3 Device Added Notification](#2223-device-added-notification)
+      - [2.2.2.4 Device Removed Notification](#2224-device-removed-notification)
+    - [2.2.3 Messages Exchanged on Device Channels](#223-messages-exchanged-on-device-channels)
+      - [2.2.3.1 Success Response](#2231-success-response)
+      - [2.2.3.2 Error Response](#2232-error-response)
+      - [2.2.3.3 Activate Device Request](#2233-activate-device-request)
+      - [2.2.3.4 Deactivate Device Request](#2234-deactivate-device-request)
+      - [2.2.3.5 Stream List Request](#2235-stream-list-request)
+      - [2.2.3.6 Stream List Response](#2236-stream-list-response)
+        - [2.2.3.6.1 STREAM_DESCRIPTION](#22361-streamdescription)
+      - [2.2.3.7 Media Type List Request](#2237-media-type-list-request)
+      - [2.2.3.8 Media Type List Response](#2238-media-type-list-response)
+        - [2.2.3.8.1 MEDIA_TYPE_DESCRIPTION](#22381-mediatypedescription)
+      - [2.2.3.9 Current Media Type Request](#2239-current-media-type-request)
+      - [2.2.3.10 Current Media Type Response](#22310-current-media-type-response)
+      - [2.2.3.11 Start Streams Request](#22311-start-streams-request)
+        - [2.2.3.11.1 START_STREAM_INFO](#223111-startstreaminfo)
+      - [2.2.3.12 Stop Streams Request](#22312-stop-streams-request)
+      - [2.2.3.13 Sample Request](#22313-sample-request)
+      - [2.2.3.14 Sample Response](#22314-sample-response)
+      - [2.2.3.15 Sample Error Response](#22315-sample-error-response)
+      - [2.2.3.16 Property List Request](#22316-property-list-request)
+      - [2.2.3.17 Property List Response](#22317-property-list-response)
+        - [2.2.3.17.1 PROPERTY_DESCRIPTION](#223171-propertydescription)
+      - [2.2.3.18 Property Value Request](#22318-property-value-request)
+      - [2.2.3.19 Property Value Response](#22319-property-value-response)
+        - [2.2.3.19.1 PROPERTY_VALUE](#223191-propertyvalue)
+      - [2.2.3.20 Set Property Value Request](#22320-set-property-value-request)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending a Select Version Request](#3251-sending-a-select-version-request)
+      - [3.2.5.2 Processing a Select Version Response](#3252-processing-a-select-version-response)
+      - [3.2.5.3 Sending a Device Added Notification](#3253-sending-a-device-added-notification)
+      - [3.2.5.4 Sending a Device Removed Notification](#3254-sending-a-device-removed-notification)
+      - [3.2.5.5 Processing an Activate Device Request](#3255-processing-an-activate-device-request)
+      - [3.2.5.6 Processing a Stream List Request](#3256-processing-a-stream-list-request)
+      - [3.2.5.7 Sending a Stream List Response](#3257-sending-a-stream-list-response)
+      - [3.2.5.8 Processing a Media Type List Request](#3258-processing-a-media-type-list-request)
+      - [3.2.5.9 Sending a Media Type List Response](#3259-sending-a-media-type-list-response)
+      - [3.2.5.10 Processing a Current Media Type Request](#32510-processing-a-current-media-type-request)
+      - [3.2.5.11 Sending a Current Media Type Response](#32511-sending-a-current-media-type-response)
+      - [3.2.5.12 Processing a Start Streams Request](#32512-processing-a-start-streams-request)
+      - [3.2.5.13 Processing a Sample Request](#32513-processing-a-sample-request)
+      - [3.2.5.14 Sending a Sample Response](#32514-sending-a-sample-response)
+      - [3.2.5.15 Processing a Stop Streams Request](#32515-processing-a-stop-streams-request)
+      - [3.2.5.16 Processing a Property List Request](#32516-processing-a-property-list-request)
+      - [3.2.5.17 Sending a Property List Response](#32517-sending-a-property-list-response)
+      - [3.2.5.18 Processing a Property Value Request](#32518-processing-a-property-value-request)
+      - [3.2.5.19 Sending a Property Value Response](#32519-sending-a-property-value-response)
+      - [3.2.5.20 Processing a Set Property Value Request](#32520-processing-a-set-property-value-request)
+      - [3.2.5.21 Processing a Deactivate Device Request](#32521-processing-a-deactivate-device-request)
+      - [3.2.5.22 Sending a Success Response](#32522-sending-a-success-response)
+      - [3.2.5.23 Sending an Error Response](#32523-sending-an-error-response)
+      - [3.2.5.24 Sending a Sample Error Response](#32524-sending-a-sample-error-response)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Processing a Select Version Request](#3351-processing-a-select-version-request)
+      - [3.3.5.2 Sending a Select Version Response](#3352-sending-a-select-version-response)
+      - [3.3.5.3 Processing a Device Added Notification](#3353-processing-a-device-added-notification)
+      - [3.3.5.4 Processing a Device Removed Notification](#3354-processing-a-device-removed-notification)
+      - [3.3.5.5 Sending an Activate Device Request](#3355-sending-an-activate-device-request)
+      - [3.3.5.6 Sending a Stream List Request](#3356-sending-a-stream-list-request)
+      - [3.3.5.7 Processing a Stream List Response](#3357-processing-a-stream-list-response)
+      - [3.3.5.8 Sending a Media Type List Request](#3358-sending-a-media-type-list-request)
+      - [3.3.5.9 Processing a Media Type List Response](#3359-processing-a-media-type-list-response)
+      - [3.3.5.10 Sending a Current Media Type Request](#33510-sending-a-current-media-type-request)
+      - [3.3.5.11 Processing a Current Media Type Response](#33511-processing-a-current-media-type-response)
+      - [3.3.5.12 Sending a Start Streams Request](#33512-sending-a-start-streams-request)
+      - [3.3.5.13 Sending a Sample Request](#33513-sending-a-sample-request)
+      - [3.3.5.14 Processing a Sample Response](#33514-processing-a-sample-response)
+      - [3.3.5.15 Sending a Stop Streams Request](#33515-sending-a-stop-streams-request)
+      - [3.3.5.16 Sending a Property List Request](#33516-sending-a-property-list-request)
+      - [3.3.5.17 Processing a Property List Response](#33517-processing-a-property-list-response)
+      - [3.3.5.18 Sending a Property Value Request](#33518-sending-a-property-value-request)
+      - [3.3.5.19 Processing a Property Value Response](#33519-processing-a-property-value-response)
+      - [3.3.5.20 Sending a Set Property Value Request](#33520-sending-a-set-property-value-request)
+      - [3.3.5.21 Sending a Deactivate Device Request](#33521-sending-a-deactivate-device-request)
+      - [3.3.5.22 Processing a Success Response](#33522-processing-a-success-response)
+      - [3.3.5.23 Processing an Error Response](#33523-processing-an-error-response)
+      - [3.3.5.24 Processing a Sample Error Response](#33524-processing-a-sample-error-response)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Annotated Version Negotiation sequence](#41-annotated-version-negotiation-sequence)
+    - [4.1.1 Select Version Request](#411-select-version-request)
+    - [4.1.2 Select Version Response](#412-select-version-response)
+  - [4.2 Annotated New Device sequence](#42-annotated-new-device-sequence)
+    - [4.2.1 Device Added Notification](#421-device-added-notification)
+  - [4.3 Annotated Device Removal sequence](#43-annotated-device-removal-sequence)
+    - [4.3.1 Device Removed Notification](#431-device-removed-notification)
+  - [4.4 Annotated Device Initialization sequence](#44-annotated-device-initialization-sequence)
+    - [4.4.1 Activate Device Request](#441-activate-device-request)
+    - [4.4.2 Success Response](#442-success-response)
+    - [4.4.3 Stream List Request](#443-stream-list-request)
+    - [4.4.4 Stream List Response](#444-stream-list-response)
+    - [4.4.5 Media Type List Request](#445-media-type-list-request)
+    - [4.4.6 Media Type List Response](#446-media-type-list-response)
+    - [4.4.7 Current Media Type Request](#447-current-media-type-request)
+    - [4.4.8 Current Media Type Response](#448-current-media-type-response)
+    - [4.4.9 Deactivate Device Request](#449-deactivate-device-request)
+  - [4.5 Annotated Video Capture sequence](#45-annotated-video-capture-sequence)
+    - [4.5.1 Start Streams Request](#451-start-streams-request)
+    - [4.5.2 Sample Request](#452-sample-request)
+    - [4.5.3 Sample Response](#453-sample-response)
+    - [4.5.4 Stop Streams Request](#454-stop-streams-request)
+  - [4.6 Annotated Device Control Initialization sequence](#46-annotated-device-control-initialization-sequence)
+    - [4.6.1 Property List Request](#461-property-list-request)
+    - [4.6.2 Property List Response](#462-property-list-response)
+    - [4.6.3 Property Value Request](#463-property-value-request)
+    - [4.6.4 Property Value Response](#464-property-value-response)
+  - [4.7 Annotated Device Control sequence](#47-annotated-device-control-sequence)
+    - [4.7.1 Set Property Value Request](#471-set-property-value-request)
+  - [4.8 Annotated Error Response](#48-annotated-error-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 Remote Desktop Protocol: Video Capture Virtual Channel Extension is used to transfer video capture
 data from a Remote Desktop Protocol client to a Remote Desktop Protocol server.
@@ -527,7 +287,7 @@ data from a Remote Desktop Protocol client to a Remote Desktop Protocol server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -573,7 +333,7 @@ video frame: A single still image that is shown as part of a quick succession of
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -587,7 +347,8 @@ Release: April 23, 2024
 
 7 / 54
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -608,11 +369,11 @@ https://msdn.microsoft.com/en-us/library/windows/desktop/dd206750(v=vs.85).aspx
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 This section provides a high-level overview of the operation of the Remote Desktop Protocol: Video
 Capture Virtual Channel Extension. The purpose of this protocol is to transfer video capture data from
@@ -653,7 +414,8 @@ Release: April 23, 2024
 
 8 / 54
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-RDPECAM].images/page009-img01.png)
 ![Extracted image 2 from page 9]([MS-RDPECAM].images/page009-img02.png)
 <!-- /Extracted images from page 9 -->
@@ -661,7 +423,7 @@ Release: April 23, 2024
 Device Control sequence: The server uses this sequence to control device properties of the video
 capture device.
 
-1.3.1  Version Negotiation sequence
+#### 1.3.1 Version Negotiation sequence
 
 This sequence occurs on the device enumeration channel. The client and the server negotiate the
 protocol version by exchanging the Select Version Request (section 2.2.2.1) and Select Version
@@ -673,7 +435,7 @@ less than the highest one it supports.<1>
 
 Figure 1: Version Negotiation sequence
 
-1.3.2  New Device sequence
+#### 1.3.2 New Device sequence
 
 This sequence occurs on the device enumeration channel. Immediately after the Version
 Negotiation sequence (section 1.3.1), the client enumerates all the video capture devices available for
@@ -691,12 +453,13 @@ Release: April 23, 2024
 
 9 / 54
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RDPECAM].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-RDPECAM].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
 
-1.3.3  Device Removal sequence
+#### 1.3.3 Device Removal sequence
 
 This sequence occurs on the device enumeration channel. If a redirected video capture device
 becomes unavailable on the client, the client sends a Device Removed Notification (section 2.2.2.4) to
@@ -705,7 +468,7 @@ corresponding device channel and notify applications that the device has been re
 
 Figure 3: Device Removal sequence
 
-1.3.4  Device Initialization sequence
+#### 1.3.4 Device Initialization sequence
 
 This sequence occurs on the device channel. The server uses this sequence to enumerate video
 streams and stream formats supported by the video capture device associated with this channel.
@@ -724,13 +487,14 @@ Release: April 23, 2024
 
 10 / 54
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RDPECAM].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 Figure 4: Device Initialization sequence
 
-1.3.5  Video Capture sequence
+#### 1.3.5 Video Capture sequence
 
 This sequence occurs on the device channel. The server uses this sequence to receive video data
 from the video capture device on the client associated with this channel. First, the server sends an
@@ -745,7 +509,7 @@ Request (section 2.2.3.12). At the end of the sequence, the server sends a Deact
 
 Figure 5: Video Capture sequence
 
-1.3.6  Device Control Initialization sequence
+#### 1.3.6 Device Control Initialization sequence
 
 This sequence occurs on the device channel. The server uses this sequence to discover which device
 properties (such as Brightness, Focus, and so on) the redirected video capture device supports, their
@@ -763,14 +527,15 @@ Release: April 23, 2024
 
 11 / 54
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RDPECAM].images/page012-img01.png)
 ![Extracted image 2 from page 12]([MS-RDPECAM].images/page012-img02.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 6: Device Control Initialization sequence
 
-1.3.7  Device Control sequence
+#### 1.3.7 Device Control sequence
 
 This sequence occurs on the device channel. The server uses this sequence to change the values of
 various device properties on the video capture device associated with this channel. First, the server
@@ -788,12 +553,13 @@ Release: April 23, 2024
 
 12 / 54
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Video Capture Virtual Channel Extension is embedded in a dynamic
 virtual channel transport, as specified in [MS-RDPEDYC] sections 1 to 3.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Video Capture Virtual Channel Extension operates only after the
 dynamic virtual channel transport is fully established. If the dynamic virtual channel transport is
@@ -801,7 +567,7 @@ terminated, the Remote Desktop Protocol: Video Capture Virtual Channel Extension
 The protocol is terminated by closing the underlying virtual channel. For details about closing the
 dynamic virtual channel, refer to [MS-RDPEDYC] section 3.2.5.2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Video Capture Virtual Channel Extension is designed to run within the
 context of a Remote Desktop Protocol (RDP) dynamic virtual channel established between a
@@ -809,16 +575,16 @@ Remote Desktop Protocol (RDP) client and Remote Desktop Protocol (RDP) server. T
 protocol is applicable when any local client video capture devices needs to be accessible (redirected) in
 the remote session hosted on the server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Remote Desktop Protocol: Video Capture Virtual Channel Extension performs explicit version
 negotiation as described in section 1.3.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -829,9 +595,10 @@ Release: April 23, 2024
 
 13 / 54
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol is designed to operate over dynamic virtual channels, as specified in [MS-RDPEDYC]
 sections 1 to 3. A single channel is used during the device enumeration phase of the protocol, and
@@ -842,12 +609,12 @@ encoded character string containing a maximum of 256 characters. The usage of a 
 when opening a dynamic virtual channel is specified in [MS-RDPEDYC] section 2.2.2.1. The RDP layer
 manages the creation, setup, and transmission of data over dynamic virtual channels.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections define the syntax for the various messages in the protocol. All multiple-byte
 fields within a message MUST be marshaled in little-endian byte order, unless otherwise specified.
 
-2.2.1  Shared Message Header (SHARED_MSG_HEADER)
+#### 2.2.1 Shared Message Header (SHARED_MSG_HEADER)
 
 The SHARED_MSG_HEADER structure is a common header included in every message of the protocol.
 
@@ -929,7 +696,8 @@ Remote Desktop Protocol: Video Capture Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1060,9 +828,10 @@ Release: April 23, 2024
 
 15 / 54
 
-2.2.2  Messages Exchanged on the Device Enumeration Channel
 
-2.2.2.1  Select Version Request
+#### 2.2.2 Messages Exchanged on the Device Enumeration Channel
+
+##### 2.2.2.1 Select Version Request
 
 The Select Version Request message is sent by the client over the device enumeration channel to
 allow the server to select the protocol version. The client MUST set the Version field to the maximum
@@ -1087,7 +856,7 @@ Header (2 bytes): A SHARED_MSG_HEADER (section 2.2.1) structure. The Version fie
 set to the maximum version number supported by the client. The MessageId field MUST be set to
 SelectVersionRequest (3).
 
-2.2.2.2  Select Version Response
+##### 2.2.2.2 Select Version Response
 
 The Select Version Response message is sent by the server over the device enumeration channel in
 response to the Select Version Request (section 2.2.2.1) message.
@@ -1111,7 +880,7 @@ set to the maximum version number supported by the server which is not greater t
 number received from the client in the Select Version Request message. The MessageId field
 MUST be set to SelectVersionResponse (4).
 
-2.2.2.3  Device Added Notification
+##### 2.2.2.3 Device Added Notification
 
 The Device Added Notification message is sent by the client over the device enumeration channel
 for each redirected video capture device.
@@ -1148,7 +917,8 @@ Release: April 23, 2024
 
 16 / 54
 
-...
+
+...
 
 ...
 
@@ -1164,7 +934,7 @@ the display name of the redirected device.
 VirtualChannelName (variable): A null-terminated, variable-length array of ANSI characters
 containing the name of the dynamic virtual channel associated with the redirected device.
 
-2.2.2.4  Device Removed Notification
+##### 2.2.2.4 Device Removed Notification
 
 The Device Removed Notification message is sent by the client over the device enumeration
 channel when redirection of a specific video capture device needs to be stopped (for example, when a
@@ -1199,9 +969,9 @@ MessageId field MUST be set to DeviceRemovedNotification (6).
 VirtualChannelName (variable): A null-terminated, variable-length array of ANSI characters
 containing the name of the dynamic virtual channel associated with the removed device.
 
-2.2.3  Messages Exchanged on Device Channels
+#### 2.2.3 Messages Exchanged on Device Channels
 
-2.2.3.1  Success Response
+##### 2.2.3.1 Success Response
 
 The Success Response message is sent by the client over a device channel to indicate that a request
 from the server succeeded.
@@ -1231,7 +1001,8 @@ Remote Desktop Protocol: Video Capture Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3.2  Error Response
+
+##### 2.2.3.2 Error Response
 
 The Error Response message is sent by the client over a device channel if an error occurs while
 processing a request from the server.
@@ -1342,7 +1113,8 @@ Release: April 23, 2024
 
 18 / 54
 
-2.2.3.3  Activate Device Request
+
+##### 2.2.3.3 Activate Device Request
 
 The Activate Device Request message is sent by the server over a device channel to activate the
 video capture device associated with the channel. In response the client MUST send either the Success
@@ -1366,7 +1138,7 @@ Header (2 bytes): A SHARED_MSG_HEADER (section 2.2.1) structure. The Version fie
 set to the same value as in the Select Version Response (section 2.2.2.2) message. The
 MessageId field MUST be set to ActivateDeviceRequest (7).
 
-2.2.3.4  Deactivate Device Request
+##### 2.2.3.4 Deactivate Device Request
 
 The Deactivate Device Request message is sent by the server over a device channel to deactivate
 the video capture device associated with the channel. In response the client MUST send either the
@@ -1390,7 +1162,7 @@ Header (2 bytes): A SHARED_MSG_HEADER (section 2.2.1) structure. The Version fie
 set to the same value as in the Select Version Response (section 2.2.2.2) message. The
 MessageId field MUST be set to DeactivateDeviceRequest (8).
 
-2.2.3.5  Stream List Request
+##### 2.2.3.5 Stream List Request
 
 The Stream List Request message is sent by the server over a device channel to retrieve the list of
 video streams supported by the video capture device associated with the channel. In response the
@@ -1415,7 +1187,7 @@ Header (2 bytes): A SHARED_MSG_HEADER (section 2.2.1) structure. The Version fie
 set to the same value as in the Select Version Response (section 2.2.2.2) message. The
 MessageId field MUST be set to StreamListRequest (9).
 
-2.2.3.6  Stream List Response
+##### 2.2.3.6 Stream List Response
 
 The Stream List Response message is sent by the client over a device channel in response to the
 Stream List Request (section 2.2.3.5) message. It contains the list of video streams supported by the
@@ -1428,7 +1200,8 @@ Release: April 23, 2024
 
 19 / 54
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1458,7 +1231,7 @@ StreamDescriptions (variable): An array of 1 to 255 STREAM_DESCRIPTION (section 
 
 structures.
 
-2.2.3.6.1 STREAM_DESCRIPTION
+###### 2.2.3.6.1 STREAM_DESCRIPTION
 
 The STREAM_DESCRIPTION structure contains properties of a video stream.
 
@@ -1527,7 +1300,8 @@ Release: April 23, 2024
 
 20 / 54
 
-Selected (1 byte): An 8-bit unsigned integer that MUST be set to 1 if the stream is currently selected
+
+Selected (1 byte): An 8-bit unsigned integer that MUST be set to 1 if the stream is currently selected
 
 to produce video data, otherwise it MUST be set to 0.
 
@@ -1535,7 +1309,7 @@ CanBeShared (1 byte): An 8-bit unsigned integer that MUST be set to 1 if the str
 
 between applications, otherwise it MUST be set to 0.
 
-2.2.3.7  Media Type List Request
+##### 2.2.3.7 Media Type List Request
 
 The Media Type List Request message is sent by the server over a device channel to retrieve the list
 of stream formats supported on the specified stream by the video capture device associated with the
@@ -1566,7 +1340,7 @@ StreamIndex (1 byte): An 8-bit unsigned integer that MUST be set to the index of
 queried. This index MUST match the index in the STREAM_DESCRIPTION array returned in the
 Stream List Response (section 2.2.3.6) message.
 
-2.2.3.8  Media Type List Response
+##### 2.2.3.8 Media Type List Response
 
 The Media Type List Response is sent by the client over a device channel in response to a Media
 Type List Request (section 2.2.3.7) message. It contains the list of stream formats supported by the
@@ -1602,7 +1376,7 @@ MediaTypeDescriptions (variable): An array of 1 or more MEDIA_TYPE_DESCRIPTION (
 
 2.2.3.8.1) structures.
 
-2.2.3.8.1 MEDIA_TYPE_DESCRIPTION
+###### 2.2.3.8.1 MEDIA_TYPE_DESCRIPTION
 
 The MEDIA_TYPE_DESCRIPTION structure specifies the properties of a stream format.
 
@@ -1613,7 +1387,8 @@ Release: April 23, 2024
 
 21 / 54
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1718,7 +1493,8 @@ Release: April 23, 2024
 
 22 / 54
 
-FrameRateNumerator (4 bytes): A 32-bit unsigned integer containing the numerator of the frame
+
+FrameRateNumerator (4 bytes): A 32-bit unsigned integer containing the numerator of the frame
 rate. The frame rate is expressed as a ratio. For example, if the frame rate is 30 frames per
 second (fps), the ratio is 30/1. If the frame rate is 29.97 fps, the ratio is 30,000/1001.
 
@@ -1754,7 +1530,7 @@ The images from the stream format are bottom-up.
 In a bottom-up image, the last row of pixels appears
 first in memory.
 
-2.2.3.9  Current Media Type Request
+##### 2.2.3.9 Current Media Type Request
 
 The Current Media Type Request message is sent by the server over a device channel to retrieve the
 stream format currently selected on the specified stream of the video capture device associated with
@@ -1785,9 +1561,9 @@ StreamIndex (1 byte): An 8-bit unsigned integer that MUST be set to the index of
 queried. This index MUST match the index in the STREAM_DESCRIPTION array returned in the
 Stream List Response (section 2.2.3.6) message.
 
-2.2.3.10
+##### 2.2.3.10 Current Media Type Response
 
-Current Media Type Response
+
 
 The Current Media Type Response message is sent by the client over a device channel in response to
 the Current Media Type Request (section 2.2.3.9) message. It contains the stream format currently
@@ -1815,7 +1591,8 @@ Remote Desktop Protocol: Video Capture Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -1831,9 +1608,9 @@ MediaTypeDescription (26 bytes): A MEDIA_TYPE_DESCRIPTION (section 2.2.3.8.1) st
 containing properties of the stream format currently selected on the specified stream of the video
 capture device associated with the channel.
 
-2.2.3.11
+##### 2.2.3.11 Start Streams Request
 
-Start Streams Request
+
 
 The Start Streams Request message is sent by the server over a device channel to start the
 specified streams on the video capture device associated with the channel. In response the client
@@ -1870,9 +1647,9 @@ StartStreamsInfo (variable): An array of 1 to 255 START_STREAM_INFO (section 2.2
 
 structures.
 
-2.2.3.11.1
+###### 2.2.3.11.1 START_STREAM_INFO
 
-START_STREAM_INFO
+
 
 The START_STREAM_INFO structure contains information required to start a stream.
 
@@ -1904,7 +1681,8 @@ Release: April 23, 2024
 
 24 / 54
 
-StreamIndex (1 byte): An 8-bit unsigned integer containing the index of the stream being started.
+
+StreamIndex (1 byte): An 8-bit unsigned integer containing the index of the stream being started.
 This index MUST match the index in the STREAM_DESCRIPTION array returned in the Stream List
 Response (section 2.2.3.6) message.
 
@@ -1912,9 +1690,9 @@ MediaTypeDescription (26 bytes): A MEDIA_TYPE_DESCRIPTION (section 2.2.3.8.1) st
 
 containing properties of the stream format that the stream MUST produce.
 
-2.2.3.12
+##### 2.2.3.12 Stop Streams Request
 
-Stop Streams Request
+
 
 The Stop Streams Request message is sent by the server over a device channel to stop all streams
 of the video capture device associated with the channel. In response the client MUST send either the
@@ -1938,9 +1716,9 @@ Header (2 bytes): A SHARED_MSG_HEADER (section 2.2.1) structure. The Version fie
 set to the same value as in the Select Version Response (section 2.2.2.2) message. The
 MessageId field MUST be set to StopStreamsRequest (16).
 
-2.2.3.13
+##### 2.2.3.13 Sample Request
 
-Sample Request
+
 
 The Sample Request message is sent by the server over a device channel to request a video sample
 from the specified stream on the video capture device associated with the channel. For each Sample
@@ -1972,9 +1750,9 @@ StreamIndex (1 byte): An 8-bit unsigned integer containing the index of the stre
 This index MUST match the index in the STREAM_DESCRIPTION array returned in the Stream List
 Response (section 2.2.3.6) message.
 
-2.2.3.14
+##### 2.2.3.14 Sample Response
 
-Sample Response
+
 
 The Sample Response message is sent by the client over a device channel when a new video
 sample is available and there are outstanding Sample Requests (section 2.2.3.13). It contains the
@@ -2006,7 +1784,8 @@ Remote Desktop Protocol: Video Capture Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -2023,9 +1802,9 @@ Sample (variable): A variable-length array of bytes containing the sample data. 
 depends on the stream format selected in the Start Streams Request (section 2.2.3.11)
 message.
 
-2.2.3.15
+##### 2.2.3.15 Sample Error Response
 
-Sample Error Response
+
 
 The Sample Error Response is sent by the client over a device channel if an error occurred while
 producing a video sample and there is at least one outstanding Sample Request (section 2.2.3.13)
@@ -2063,9 +1842,9 @@ ErrorCode (4 bytes): A 32-bit unsigned integer containing one of the error codes
 
 2.2.3.2.
 
-2.2.3.16
+##### 2.2.3.16 Property List Request
 
-Property List Request
+
 
 The Stream List Request message is sent by the server over a device channel to retrieve the list of
 device properties supported by the video capture device. In response the client MUST send either the
@@ -2096,9 +1875,10 @@ Release: April 23, 2024
 
 26 / 54
 
-2.2.3.17
 
-Property List Response
+##### 2.2.3.17 Property List Response
+
+
 
 The Property List Response message is sent by the client over a device channel in response to the
 Property List Request (section 2.2.3.16) message. It contains the list of device properties supported
@@ -2134,9 +1914,9 @@ Properties (variable): A variable-length array of zero or more PROPERTY_DESCRIPT
 
 2.2.3.17.1) structures.
 
-2.2.3.17.1
+###### 2.2.3.17.1 PROPERTY_DESCRIPTION
 
-PROPERTY_DESCRIPTION
+
 
 The PROPERTY_DESCRIPTION structure specifies a device property.
 
@@ -2204,7 +1984,8 @@ Remote Desktop Protocol: Video Capture Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Exposure
 0x01
@@ -2314,13 +2095,14 @@ Remote Desktop Protocol: Video Capture Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DefaultValue (4 bytes): A 32-bit signed integer containing the step value that SHOULD be used to
+
+DefaultValue (4 bytes): A 32-bit signed integer containing the step value that SHOULD be used to
 
 create values within the range defined by the MinValue and MaxValue fields.
 
-2.2.3.18
+##### 2.2.3.18 Property Value Request
 
-Property Value Request
+
 
 The Property Value Request message is sent by the server over a device channel to retrieve the
 current value of the specified device property of the video capture device. In response the client MUST
@@ -2358,9 +2140,9 @@ PropertyId (1 byte): An 8-bit unsigned integer that specifies the ID of the prop
 Valid IDs are defined in the description of the PropertyId field of the PROPERTY_DESCRIPTION
 structure.
 
-2.2.3.19
+##### 2.2.3.19 Property Value Response
 
-Property Value Response
+
 
 The Property Value Response message is sent by the client over a device channel in response to the
 Property Value Request (section 2.2.3.18) message. It contains the current value of the requested
@@ -2392,9 +2174,9 @@ PropertyValue (5 bytes): A PROPERTY_VALUE (section 2.2.3.19.1) structure contain
 value of the device property requested in the corresponding Property Value Request (section
 2.2.3.18) message.
 
-2.2.3.19.1
+###### 2.2.3.19.1 PROPERTY_VALUE
 
-PROPERTY_VALUE
+
 
 The PROPERTY_VALUE structure contains the current value of a video capture device property.
 
@@ -2405,7 +2187,8 @@ Release: April 23, 2024
 
 29 / 54
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2440,9 +2223,9 @@ The value was set automatically.
 
 Value (4 bytes): A 32-bit signed integer containing the current value of the property.
 
-2.2.3.20
+##### 2.2.3.20 Set Property Value Request
 
-Set Property Value Request
+
 
 The Set Property Value Request message is sent by the server over a device channel to set the
 current value of the specified device property of the video capture device or to switch the property
@@ -2488,7 +2271,7 @@ PropertyValue (5 bytes): A PROPERTY_VALUE (section 2.2.3.19.1) structure. If the
 
 set to Auto (2) the Value field MUST be ignored.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 None.
 
@@ -2499,11 +2282,12 @@ Release: April 23, 2024
 
 30 / 54
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2551,7 +2335,7 @@ been successfully processed. It remains in this state until the Stop Streams Req
 2.2.3.12) or Deactivate Device Request (section 2.2.3.4) message has been processed. In this
 state the device accepts any request including Sample Request (section 2.2.3.13) messages.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -2562,7 +2346,8 @@ Release: April 23, 2024
 
 31 / 54
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 Before camera redirection begins, the dynamic virtual channel transport MUST be established as
 specified in section 2.1. The client first creates a device enumeration channel to which the server
@@ -2570,42 +2355,42 @@ connects. The server and client negotiate the protocol version as described in s
 then enumerates all the redirected video capture devices, and for each of them creates a device
 channel and sends a Device Added Notification message to the server (section 1.3.2).
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Malformed and out-of-sequence messages that do not adhere to the rules described in sections 2 and
 3 MUST be discarded by the server and the client.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Malformed and out-of-sequence messages are processed as specified in section 3.1.5. In addition,
 when encountering a malformed or out-of-sequence request message on the Device channel, the
@@ -2620,7 +2405,8 @@ Release: April 23, 2024
 
 32 / 54
 
-3.2.5.1  Sending a Select Version Request
+
+##### 3.2.5.1 Sending a Select Version Request
 
 The structure and fields of the Select Version Request message are specified in section 2.2.2.1.
 
@@ -2630,7 +2416,7 @@ This message MUST be sent first in the protocol Version Negotiation sequence as 
 The Version field in the SHARED_MSG_HEADER (section 2.2.1) structure MUST be set to the highest
 protocol version supported by the client.
 
-3.2.5.2  Processing a Select Version Response
+##### 3.2.5.2 Processing a Select Version Response
 
 The structure and fields of the Select Version Response message are specified in section 2.2.2.2.
 
@@ -2640,21 +2426,21 @@ protocol.
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.3  Sending a Device Added Notification
+##### 3.2.5.3 Sending a Device Added Notification
 
 The structure and fields of the Device Added Notification message are specified in section 2.2.2.3.
 
 The client MUST send this message for each new video capture device available for redirection, as
 described in section 1.3.2.
 
-3.2.5.4  Sending a Device Removed Notification
+##### 3.2.5.4 Sending a Device Removed Notification
 
 The structure and fields of the Device Removed Notification message are specified in section 2.2.2.4.
 
 The client MUST send this message for each video capture device that becomes unavailable for
 redirection, as described in section 1.3.3.
 
-3.2.5.5  Processing an Activate Device Request
+##### 3.2.5.5 Processing an Activate Device Request
 
 The structure and fields of the Activate Device Request message are specified in section 2.2.3.3.
 
@@ -2670,7 +2456,7 @@ the ErrorCode field MUST be set to one of the error codes supported in the curre
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.6  Processing a Stream List Request
+##### 3.2.5.6 Processing a Stream List Request
 
 The structure and fields of the Stream List Request message are specified in section 2.2.3.5.
 
@@ -2685,13 +2471,14 @@ Release: April 23, 2024
 
 33 / 54
 
-Upon failure, the client MUST respond with an Error Response (section 2.2.3.2) message. The value of
+
+Upon failure, the client MUST respond with an Error Response (section 2.2.3.2) message. The value of
 the ErrorCode field MUST be set to one of the error codes supported in the current protocol version
 (section 2.2.3.2).
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.7  Sending a Stream List Response
+##### 3.2.5.7 Sending a Stream List Response
 
 The structure and fields of the Stream List Response message are specified in section 2.2.3.6.
 
@@ -2699,7 +2486,7 @@ The client MUST send this message after successfully processing a Stream List Re
 section 3.2.5.6. The message MUST contain information about the video streams supported by the
 video capture device.
 
-3.2.5.8  Processing a Media Type List Request
+##### 3.2.5.8 Processing a Media Type List Request
 
 The structure and fields of the Media Type List Request message are specified in section 2.2.3.7.
 
@@ -2714,7 +2501,7 @@ the ErrorCode field MUST be set to one of the error codes supported in the curre
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.9  Sending a Media Type List Response
+##### 3.2.5.9 Sending a Media Type List Response
 
 The structure and fields of the Media Type List Response message are specified in section 2.2.3.8.
 
@@ -2722,9 +2509,9 @@ The client MUST send this message after successfully processing a Media Type Lis
 specified in section 3.2.5.8. The message MUST contain information about the stream formats
 supported by the specified video stream.
 
-3.2.5.10
+##### 3.2.5.10 Processing a Current Media Type Request
 
-Processing a Current Media Type Request
+
 
 The structure and fields of the Current Media Type Request message are specified in section 2.2.3.9.
 
@@ -2740,9 +2527,9 @@ the ErrorCode field MUST be set to one of the error codes supported in the curre
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.11
+##### 3.2.5.11 Sending a Current Media Type Response
 
-Sending a Current Media Type Response
+
 
 The structure and fields of the Current Media Type Response message are specified in section
 2.2.3.10.
@@ -2754,13 +2541,14 @@ Release: April 23, 2024
 
 34 / 54
 
-The client MUST send this message after successfully processing a Current Media Type Request as
+
+The client MUST send this message after successfully processing a Current Media Type Request as
 specified in section 3.2.5.10. The message MUST contain information about the stream format
 currently selected on the specified video stream.
 
-3.2.5.12
+##### 3.2.5.12 Processing a Start Streams Request
 
-Processing a Start Streams Request
+
 
 The structure and fields of the Start Streams Request message are specified in section 2.2.3.11.
 
@@ -2779,9 +2567,9 @@ the ErrorCode field MUST be set to one of the error codes supported in the curre
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.13
+##### 3.2.5.13 Processing a Sample Request
 
-Processing a Sample Request
+
 
 The structure and fields of the Sample Request message are specified in section 2.2.3.13.
 
@@ -2796,18 +2584,18 @@ version (section 2.2.3.2).
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.14
+##### 3.2.5.14 Sending a Sample Response
 
-Sending a Sample Response
+
 
 The structure and fields of the Sample Response message are specified in section 2.2.3.14.
 
 The client MUST send this message after successfully processing a Sample Request as specified in
 section 3.2.5.13. The message MUST contain video sample data from the specified video stream.
 
-3.2.5.15
+##### 3.2.5.15 Processing a Stop Streams Request
 
-Processing a Stop Streams Request
+
 
 The structure and fields of the Stop Streams Request message are specified in section 2.2.3.12.
 
@@ -2828,11 +2616,12 @@ Remote Desktop Protocol: Video Capture Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.16
+Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-Processing a Property List Request
+##### 3.2.5.16 Processing a Property List Request
+
+
 
 The structure and fields of the Property List Request message are specified in section 2.2.3.16.
 
@@ -2847,9 +2636,9 @@ the ErrorCode field MUST be set to one of the error codes supported in the curre
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.17
+##### 3.2.5.17 Sending a Property List Response
 
-Sending a Property List Response
+
 
 The structure and fields of the Property List Response message are specified in section 2.2.3.17.
 
@@ -2857,9 +2646,9 @@ The client MUST send this message after successfully processing a Property List 
 in section 3.2.5.16. The message MUST contain the list of device properties supported by the video
 capture device.
 
-3.2.5.18
+##### 3.2.5.18 Processing a Property Value Request
 
-Processing a Property Value Request
+
 
 The structure and fields of the Property Value Request message are specified in section 2.2.3.18.
 
@@ -2875,9 +2664,9 @@ the ErrorCode field MUST be set to one of the error codes supported in the curre
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.19
+##### 3.2.5.19 Sending a Property Value Response
 
-Sending a Property Value Response
+
 
 The structure and fields of the Property Value Response message are specified in section 2.2.3.19.
 
@@ -2885,9 +2674,9 @@ The client MUST send this message after successfully processing a Property Value
 in section 3.2.5.18. The message MUST contain information about the current value of the specified
 device property.
 
-3.2.5.20
+##### 3.2.5.20 Processing a Set Property Value Request
 
-Processing a Set Property Value Request
+
 
 The structure and fields of the Set Property Value Request message are specified in section 2.2.3.20.
 
@@ -2903,7 +2692,8 @@ Release: April 23, 2024
 
 36 / 54
 
-Upon success the client MUST respond with a Success Response (section 2.2.3.1) message.
+
+Upon success the client MUST respond with a Success Response (section 2.2.3.1) message.
 
 Upon failure, the client MUST respond with an Error Response (section 2.2.3.2) message. The value of
 the ErrorCode field MUST be set to one of the error codes supported in the current protocol version
@@ -2911,9 +2701,9 @@ the ErrorCode field MUST be set to one of the error codes supported in the curre
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.21
+##### 3.2.5.21 Processing a Deactivate Device Request
 
-Processing a Deactivate Device Request
+
 
 The structure and fields of the Deactivate Device Request message are specified in section 2.2.3.4.
 
@@ -2929,9 +2719,9 @@ the ErrorCode field MUST be set to one of the error codes supported in the curre
 
 Malformed and out-of-sequence messages are handled as specified in section 3.2.5.
 
-3.2.5.22
+##### 3.2.5.22 Sending a Success Response
 
-Sending a Success Response
+
 
 The structure and fields of the Success Response message are specified in section 2.2.3.1.
 
@@ -2940,29 +2730,29 @@ on a device channel for which there is no specific response message. See section
 3.2.5.15, 3.2.5.20, and 3.2.5.21 for the information on specific request messages that require this
 response.
 
-3.2.5.23
+##### 3.2.5.23 Sending an Error Response
 
-Sending an Error Response
+
 
 The structure and fields of the Error Response message are specified in section 2.2.3.2.
 
 The client MUST send this message when it fails to process any request message from the server on a
 device channel, except for the Sample Request (section 3.2.5.13) message.
 
-3.2.5.24
+##### 3.2.5.24 Sending a Sample Error Response
 
-Sending a Sample Error Response
+
 
 The structure and fields of the Sample Error Response message are specified in section 2.2.3.15.
 
 The client MUST send this message when it fails to process a Sample Request (section 3.2.5.13)
 message.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 When a new video capture device is plugged in on the client side it SHOULD trigger the New Device
 sequence (section 1.3.2). When a redirected video capture device is removed the client MUST start
@@ -2975,31 +2765,32 @@ Release: April 23, 2024
 
 37 / 54
 
-3.3  Server Details
 
-3.3.1  Abstract Data Model
+### 3.3 Server Details
+
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The server SHOULD implement a timeout when waiting for a response to any request message sent to
 the client. If the response does not arrive in time the server SHOULD assume the request failed and
 convey this to user applications.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 Malformed and out-of-sequence messages are processed as specified in section 3.1.5.
 
-3.3.5.1  Processing a Select Version Request
+##### 3.3.5.1 Processing a Select Version Request
 
 The structure and fields of the Select Version Request message are specified in section 2.2.2.1.
 
@@ -3009,7 +2800,7 @@ smallest of the two to be sent back in the Select Version Response (section 2.2.
 
 Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.5.2  Sending a Select Version Response
+##### 3.3.5.2 Sending a Select Version Response
 
 The structure and fields of the Select Version Response message are specified in section 2.2.2.2.
 
@@ -3017,7 +2808,7 @@ The server sends this message in response to the Select Version Request (section
 The Version field MUST be set to the maximum version number supported by the server which is not
 greater than the version number received from the client in the Select Version Request message.
 
-3.3.5.3  Processing a Device Added Notification
+##### 3.3.5.3 Processing a Device Added Notification
 
 The structure and fields of the Device Added Notification message are specified in section 2.2.2.3.
 
@@ -3035,7 +2826,8 @@ Release: April 23, 2024
 
 38 / 54
 
-3.3.5.4  Processing a Device Removed Notification
+
+##### 3.3.5.4 Processing a Device Removed Notification
 
 The structure and fields of the Device Removed Notification message are specified in section 2.2.2.4.
 
@@ -3045,7 +2837,7 @@ has been removed.
 
 Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.5.5  Sending an Activate Device Request
+##### 3.3.5.5 Sending an Activate Device Request
 
 The structure and fields of the Activate Device Request message are specified in section 2.2.3.3.
 
@@ -3053,7 +2845,7 @@ The server sends this message to allow the client to initialize the device. It i
 Device Initialization (section 1.3.4), Video Capture (section 1.3.5), Device Control Initialization
 (section 1.3.6), and Device Control (section 1.3.7) sequences.
 
-3.3.5.6  Sending a Stream List Request
+##### 3.3.5.6 Sending a Stream List Request
 
 The structure and fields of the Stream List Request message are specified in section 2.2.3.5.
 
@@ -3061,7 +2853,7 @@ The server sends this message to obtain a list of video streams supported by the
 The server MUST send this message only after a successful Activate Device Request (section 3.3.5.5)
 message and before any Deactivate Device Request (section 3.3.5.21) message.
 
-3.3.5.7  Processing a Stream List Response
+##### 3.3.5.7 Processing a Stream List Response
 
 The structure and fields of the Stream List Response message are specified in section 2.2.3.6.
 
@@ -3073,7 +2865,7 @@ stores the information to be used by applications.
 
 Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.5.8  Sending a Media Type List Request
+##### 3.3.5.8 Sending a Media Type List Request
 
 The structure and fields of the Media Type List Request message are specified in section 2.2.3.7.
 
@@ -3081,7 +2873,7 @@ The server sends this message to obtain a list of stream formats supported by th
 stream. The server MUST send this message only after a successful Activate Device Request (section
 3.3.5.5) message and before any Deactivate Device Request (section 3.3.5.21) message.
 
-3.3.5.9  Processing a Media Type List Response
+##### 3.3.5.9 Processing a Media Type List Response
 
 The structure and fields of the Media Type List Response message are specified in section 2.2.3.8.
 
@@ -3100,9 +2892,10 @@ Remote Desktop Protocol: Video Capture Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.5.10
 
-Sending a Current Media Type Request
+##### 3.3.5.10 Sending a Current Media Type Request
+
+
 
 The structure and fields of the Current Media Type Request message are specified in section 2.2.3.9.
 
@@ -3110,9 +2903,9 @@ The server sends this message to obtain the stream format currently selected on 
 stream. The server MUST send this message only after a successful Activate Device Request (section
 3.3.5.5) message and before any Deactivate Device Request (section 3.3.5.21) message.
 
-3.3.5.11
+##### 3.3.5.11 Processing a Current Media Type Response
 
-Processing a Current Media Type Response
+
 
 The structure and fields of the Current Media Type Response message are specified in section
 2.2.3.10.
@@ -3122,9 +2915,9 @@ After receiving this message, the server parses the message to obtain the MEDIA_
 
 Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.5.12
+##### 3.3.5.12 Sending a Start Streams Request
 
-Sending a Start Streams Request
+
 
 The structure and fields of the Start Streams Request message are specified in section 2.2.3.11.
 
@@ -3132,9 +2925,9 @@ The server sends this message to start the specified streams on the video captur
 MUST send this message only after a successful Activate Device Request (section 3.3.5.5) message
 and before any Deactivate Device Request (section 3.3.5.21) message.
 
-3.3.5.13
+##### 3.3.5.13 Sending a Sample Request
 
-Sending a Sample Request
+
 
 The structure and fields of the Sample Request message are specified in section 2.2.3.13.
 
@@ -3142,9 +2935,9 @@ The server sends this message to obtain a video sample from the specified stream
 send this message only after a successful Start Streams Request (section 3.3.5.12) message and
 before any Stop Streams Request (section 3.3.5.15) message.
 
-3.3.5.14
+##### 3.3.5.14 Processing a Sample Response
 
-Processing a Sample Response
+
 
 The structure and fields of the Sample Response message are specified in section 2.2.3.14.
 
@@ -3155,9 +2948,9 @@ the server passes the sample data to applications.
 
 Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.5.15
+##### 3.3.5.15 Sending a Stop Streams Request
 
-Sending a Stop Streams Request
+
 
 The structure and fields of the Stop Streams Request message are specified in section 2.2.3.12.
 
@@ -3165,9 +2958,9 @@ The server sends this message to stop the specified streams on the video capture
 MUST send this message only after a successful Activate Device Request (section 3.3.5.5) message
 and before any Deactivate Device Request (section 3.3.5.21) message.
 
-3.3.5.16
+##### 3.3.5.16 Sending a Property List Request
 
-Sending a Property List Request
+
 
 The structure and fields of the Property List Request message are specified in section 2.2.3.16.
 
@@ -3178,13 +2971,14 @@ Release: April 23, 2024
 
 40 / 54
 
-The server sends this message to obtain a list of device properties supported by the video capture
+
+The server sends this message to obtain a list of device properties supported by the video capture
 device. The server MUST send this message only after a successful Activate Device Request (section
 3.3.5.5) message and before any Deactivate Device Request (section 3.3.5.21) message.
 
-3.3.5.17
+##### 3.3.5.17 Processing a Property List Response
 
-Processing a Property List Response
+
 
 The structure and fields of the Property List Response message are specified in section 2.2.3.17.
 
@@ -3196,9 +2990,9 @@ and stores the information to be used by applications.
 
 Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.5.18
+##### 3.3.5.18 Sending a Property Value Request
 
-Sending a Property Value Request
+
 
 The structure and fields of the Property Value Request message are specified in section 2.2.3.18.
 
@@ -3206,9 +3000,9 @@ The server sends this message to obtain the current value of the specified devic
 capture device. The server MUST send this message only after a successful Activate Device Request
 (section 3.3.5.5) message and before any Deactivate Device Request (section 3.3.5.21).
 
-3.3.5.19
+##### 3.3.5.19 Processing a Property Value Response
 
-Processing a Property Value Response
+
 
 The structure and fields of the Property Value Response message are specified in section 2.2.3.19.
 
@@ -3217,9 +3011,9 @@ structure. Next, it stores the property value information to be used by applicat
 
 Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.5.20
+##### 3.3.5.20 Sending a Set Property Value Request
 
-Sending a Set Property Value Request
+
 
 The structure and fields of the Set Property Value Request message are specified in section 2.2.3.20.
 
@@ -3228,9 +3022,9 @@ video capture device. The server MUST send this message only after a successful 
 Request (section 3.3.5.5) message and before any Deactivate Device Request (section 3.3.5.21)
 message.
 
-3.3.5.21
+##### 3.3.5.21 Sending a Deactivate Device Request
 
-Sending a Deactivate Device Request
+
 
 The structure and fields of the Deactivate Device Request message are specified in section 2.2.3.4.
 
@@ -3239,9 +3033,9 @@ The server sends this message at the end of the Device Initialization (section 1
 sequences. For each successful Activate Device Request (section 2.2.3.3) message the server MUST
 send one Deactivate Device Request message.
 
-3.3.5.22
+##### 3.3.5.22 Processing a Success Response
 
-Processing a Success Response
+
 
 The structure and fields of the Success Response message are specified in section 2.2.3.1.
 
@@ -3254,11 +3048,12 @@ Release: April 23, 2024
 
 41 / 54
 
-Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.5.23
+Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-Processing an Error Response
+##### 3.3.5.23 Processing an Error Response
+
+
 
 The structure and fields of the Error Response message are specified in section 2.2.3.2.
 
@@ -3267,9 +3062,9 @@ be used when notifying applications about the error.
 
 Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.5.24
+##### 3.3.5.24 Processing a Sample Error Response
 
-Processing a Sample Error Response
+
 
 The structure and fields of the Sample Error Response message are specified in section 2.2.3.15.
 
@@ -3278,11 +3073,11 @@ values. These values SHOULD be used when notifying applications about the error.
 
 Malformed and out-of-sequence messages are handled as specified in section 3.3.5.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -3293,14 +3088,15 @@ Release: April 23, 2024
 
 42 / 54
 
-4  Protocol Examples
 
-4.1  Annotated Version Negotiation sequence
+## 4 Protocol Examples
+
+### 4.1 Annotated Version Negotiation sequence
 
 The following is an annotated dump of the Version Negotiation sequence, as described in section
 1.3.1.
 
-4.1.1  Select Version Request
+#### 4.1.1 Select Version Request
 
 The following is an annotated dump of a Select Version Request (section 2.2.2.1).
 
@@ -3309,7 +3105,7 @@ The following is an annotated dump of a Select Version Request (section 2.2.2.1)
  02 -> SHARED_MSG_HEADER::Version = 2 (Maximum version supported by the client)
  03 -> SHARED_MSG_HEADER::MessageId = SelectVersionRequest(3)
 
-4.1.2  Select Version Response
+#### 4.1.2 Select Version Response
 
 The following is an annotated dump of a Select Version Response (section 2.2.2.2).
 
@@ -3318,11 +3114,11 @@ The following is an annotated dump of a Select Version Response (section 2.2.2.2
  02 -> SHARED_MSG_HEADER::Version = 2
  04 -> SHARED_MSG_HEADER::MessageId = SelectVersionResponse(4)
 
-4.2  Annotated New Device sequence
+### 4.2 Annotated New Device sequence
 
 The following is an annotated dump of the New Device sequence, as described in section 1.3.2.
 
-4.2.1  Device Added Notification
+#### 4.2.1 Device Added Notification
 
 The following is an annotated dump of a Device Added Notification (section 2.2.2.3).
 
@@ -3337,11 +3133,11 @@ The following is an annotated dump of a Device Added Notification (section 2.2.2
  52 44 43 61 6d 65 72 61 5f 44 65 76 69 63 65 5f
  30 00 -> VirtualChannelName = "Camera_Device_0"
 
-4.3  Annotated Device Removal sequence
+### 4.3 Annotated Device Removal sequence
 
 The following is an annotated dump of the Device Removal sequence, as described in section 1.3.3.
 
-4.3.1  Device Removed Notification
+#### 4.3.1 Device Removed Notification
 
 The following is an annotated dump of a Device Removed Notification (section 2.2.2.4).
 
@@ -3354,19 +3150,20 @@ Release: April 23, 2024
 
 43 / 54
 
- 00000010 65 5f 31 00                                     e_1.
+
+ 00000010 65 5f 31 00                                     e_1.
 
  02 -> SHARED_MSG_HEADER::Version = 2
  06 -> SHARED_MSG_HEADER::MessageId = DeviceRemovedNotification(6)
  52 44 43 61 6d 65 72 61 5f 44 65 76 69 63 65 5f
  31 00 -> VirtualChannelName = "Camera_Device_1"
 
-4.4  Annotated Device Initialization sequence
+### 4.4 Annotated Device Initialization sequence
 
 The following is an annotated dump of the Device Initialization sequence, as described in section
 1.3.4.
 
-4.4.1  Activate Device Request
+#### 4.4.1 Activate Device Request
 
 The following is an annotated dump of an Activate Device Request (section 2.2.3.3).
 
@@ -3375,7 +3172,7 @@ The following is an annotated dump of an Activate Device Request (section 2.2.3.
  02 -> SHARED_MSG_HEADER::Version = 2
  07 -> SHARED_MSG_HEADER::MessageId = ActivateDeviceRequest(7)
 
-4.4.2  Success Response
+#### 4.4.2 Success Response
 
 The following is an annotated dump of a Success Response (section 2.2.3.1).
 
@@ -3384,7 +3181,7 @@ The following is an annotated dump of a Success Response (section 2.2.3.1).
  02 -> SHARED_MSG_HEADER::Version = 2
  01 -> SHARED_MSG_HEADER::MessageId = SuccessResponse(1)
 
-4.4.3  Stream List Request
+#### 4.4.3 Stream List Request
 
 The following is an annotated dump of a Stream List Request (section 2.2.3.5).
 
@@ -3393,7 +3190,7 @@ The following is an annotated dump of a Stream List Request (section 2.2.3.5).
  02 -> SHARED_MSG_HEADER::Version = 2
  09 -> SHARED_MSG_HEADER::MessageId = StreamListRequest(9)
 
-4.4.4  Stream List Response
+#### 4.4.4 Stream List Response
 
 The following is an annotated dump of a Stream List Response (section 2.2.3.6).
 
@@ -3417,7 +3214,8 @@ Release: April 23, 2024
 
 44 / 54
 
-4.4.5  Media Type List Request
+
+#### 4.4.5 Media Type List Request
 
 The following is an annotated dump of a Media Type List Request (section 2.2.3.7).
 
@@ -3427,7 +3225,7 @@ The following is an annotated dump of a Media Type List Request (section 2.2.3.7
  0b -> SHARED_MSG_HEADER::MessageId = MediaTypeListRequest(11)
  00 -> StreamIndex = 0
 
-4.4.6  Media Type List Response
+#### 4.4.6 Media Type List Response
 
 The following is an annotated dump of a Media Type List Response (section 2.2.3.8).
 
@@ -3474,7 +3272,7 @@ The following is an annotated dump of a Media Type List Response (section 2.2.3.
  01 00 00 00 -> MediaTypeDescriptions[3]::PixelAspectRatioDenominator = 1
  01 -> MediaTypeDescriptions[3]::Flags = DecodingRequired(1)
 
-4.4.7  Current Media Type Request
+#### 4.4.7 Current Media Type Request
 
 The following is an annotated dump of a Current Media Type Request (section 2.2.3.9).
 
@@ -3487,11 +3285,12 @@ Release: April 23, 2024
 
 45 / 54
 
- 02 -> SHARED_MSG_HEADER::Version = 2
+
+ 02 -> SHARED_MSG_HEADER::Version = 2
  0d -> SHARED_MSG_HEADER::MessageId = CurrentMediaTypeRequest(13)
  00 -> StreamIndex = 0
 
-4.4.8  Current Media Type Response
+#### 4.4.8 Current Media Type Response
 
 The following is an annotated dump of a Current Media Type Response (section 2.2.3.10).
 
@@ -3509,7 +3308,7 @@ The following is an annotated dump of a Current Media Type Response (section 2.2
  01 00 00 00 -> MediaTypeDescription::PixelAspectRatioDenominator = 1
  01 -> MediaTypeDescription::Flags = DecodingRequired(1)
 
-4.4.9  Deactivate Device Request
+#### 4.4.9 Deactivate Device Request
 
 The following is an annotated dump of a Deactivate Device Request (section 2.2.3.4).
 
@@ -3518,11 +3317,11 @@ The following is an annotated dump of a Deactivate Device Request (section 2.2.3
  02 -> SHARED_MSG_HEADER::Version = 2
  08 -> SHARED_MSG_HEADER::MessageId = DeactivateDeviceRequest(8)
 
-4.5  Annotated Video Capture sequence
+### 4.5 Annotated Video Capture sequence
 
 The following is an annotated dump of the Video Capture sequence, as described in section 1.3.5.
 
-4.5.1  Start Streams Request
+#### 4.5.1 Start Streams Request
 
 The following is an annotated dump of a Start Streams Request (section 2.2.3.11).
 
@@ -3541,7 +3340,7 @@ The following is an annotated dump of a Start Streams Request (section 2.2.3.11)
  01 00 00 00 -> StartStreamsInfo[0]::MediaTypeDescription::PixelAspectRatioDenominator = 1
  01 -> StartStreamsInfo[0]::MediaTypeDescription::Flags = DecodingRequired(1)
 
-4.5.2  Sample Request
+#### 4.5.2 Sample Request
 
 The following is an annotated dump of a Sample Request (section 2.2.3.13).
 
@@ -3552,13 +3351,14 @@ Release: April 23, 2024
 
 46 / 54
 
- 00000000 02 11 00                                        ...
+
+ 00000000 02 11 00                                        ...
 
  02 -> SHARED_MSG_HEADER::Version = 2
  11 -> SHARED_MSG_HEADER::MessageId = SampleRequest(17)
  00 -> StreamIndex = 0
 
-4.5.3  Sample Response
+#### 4.5.3 Sample Response
 
 The following is an annotated dump of a Sample Response (section 2.2.3.14).
 
@@ -3585,7 +3385,7 @@ The following is an annotated dump of a Sample Response (section 2.2.3.14).
  00 -> StreamIndex = 0
  00 00 00 01 09 30 ... -> Video sample data.
 
-4.5.4  Stop Streams Request
+#### 4.5.4 Stop Streams Request
 
 The following is an annotated dump of a Stop Streams Request (section 2.2.3.12).
 
@@ -3594,12 +3394,12 @@ The following is an annotated dump of a Stop Streams Request (section 2.2.3.12).
  02 -> SHARED_MSG_HEADER::Version = 2
  10 -> SHARED_MSG_HEADER::MessageId = StopStreamsRequest(16)
 
-4.6  Annotated Device Control Initialization sequence
+### 4.6 Annotated Device Control Initialization sequence
 
 The following is an annotated dump of the Device Control Initialization sequence, as described in
 section 1.3.6.
 
-4.6.1  Property List Request
+#### 4.6.1 Property List Request
 
 The following is an annotated dump of a Property List Request (section 2.2.3.16).
 
@@ -3615,7 +3415,8 @@ Release: April 23, 2024
 
 47 / 54
 
-4.6.2  Property List Response
+
+#### 4.6.2 Property List Response
 
 The following is an annotated dump of a Property List Response (section 2.2.3.17).
 
@@ -3640,7 +3441,7 @@ The following is an annotated dump of a Property List Response (section 2.2.3.17
  01 00 00 00->PropertyDescription[1]::Step = 1
  80 00 00 00->PropertyDescription[1]::DefaultValue = 128
 
-4.6.3  Property Value Request
+#### 4.6.3 Property Value Request
 
 The following is an annotated dump of a Property Value Request (section 2.2.3.18).
 
@@ -3651,7 +3452,7 @@ The following is an annotated dump of a Property Value Request (section 2.2.3.18
  02 -> PropertySet = VideoProcAmp(2)
  02 -> PropertyId = Brightness(2)
 
-4.6.4  Property Value Response
+#### 4.6.4 Property Value Response
 
 The following is an annotated dump of a Property Value Response (section 2.2.3.19).
 
@@ -3662,11 +3463,11 @@ The following is an annotated dump of a Property Value Response (section 2.2.3.1
  01 -> PropertyValue::Mode = Manual(1)
  64 00 00 00 -> PropertyValue::Value = 100
 
-4.7  Annotated Device Control sequence
+### 4.7 Annotated Device Control sequence
 
 The following is an annotated dump of the Device Control sequence, as described in section 1.3.7.
 
-4.7.1  Set Property Value Request
+#### 4.7.1 Set Property Value Request
 
 The following is an annotated dump of a Set Property Value Request (section 2.2.3.20).
 
@@ -3681,13 +3482,14 @@ Release: April 23, 2024
 
 48 / 54
 
- 18 -> SHARED_MSG_HEADER::MessageId = SetPropertyValueRequest(24)
+
+ 18 -> SHARED_MSG_HEADER::MessageId = SetPropertyValueRequest(24)
  02 -> PropertySet = VideoProcAmp(2)
  02 -> PropertyId = Brightness(2)
  01 -> PropertyValue::Mode = Manual(1)
  64 00 00 00 -> PropertyValue::Value = 100
 
-4.8  Annotated Error Response
+### 4.8 Annotated Error Response
 
 The following is an annotated dump of an Error Response (section 2.2.3.2)
 
@@ -3704,14 +3506,15 @@ Release: April 23, 2024
 
 49 / 54
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 All dynamic virtual traffic is secured by the underlying core RDP. An overview of the implemented
 security-related mechanisms is provided in [MS-RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3722,7 +3525,8 @@ Release: April 23, 2024
 
 50 / 54
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3757,7 +3561,8 @@ Release: April 23, 2024
 
 51 / 54
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3808,7 +3613,8 @@ Release: April 23, 2024
 
 52 / 54
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3947,7 +3753,8 @@ Remote Desktop Protocol: Video Capture Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   client 31
+
+   client 31
    server 37
 Tracking changes 51
 Transport 13

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -233,155 +234,67 @@ Release: April 23, 2024
 
 2 / 32
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Message Flow](#131-message-flow)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Structures](#221-structures)
+      - [2.2.1.1 DHCPv6 Vendor Class Option Structure](#2211-dhcpv6-vendor-class-option-structure)
+      - [2.2.1.2 DHCPv6 Vendor Specific Information Option Structure](#2212-dhcpv6-vendor-specific-information-option-structure)
+      - [2.2.1.3 DHCPv4 Vendor-Identifying Vendor-Specific Information Option Structure](#2213-dhcpv4-vendor-identifying-vendor-specific-information-option-structure)
+      - [2.2.1.4 DHCPv4 Vendor Specific Information Option Structure](#2214-dhcpv4-vendor-specific-information-option-structure)
+      - [2.2.1.5 DHCPv4 Vendor Class Identifier Option Structure](#2215-dhcpv4-vendor-class-identifier-option-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending a DHCPv4 NKPU Request](#3151-sending-a-dhcpv4-nkpu-request)
+      - [3.1.5.2 Sending a DHCPv6 NKPU Request](#3152-sending-a-dhcpv6-nkpu-request)
+      - [3.1.5.3 Receiving a DHCPv4 BOOTREPLY for NKPU](#3153-receiving-a-dhcpv4-bootreply-for-nkpu)
+      - [3.1.5.4 Receiving a DHCPv6 Reply for NKPU](#3154-receiving-a-dhcpv6-reply-for-nkpu)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending a DHCPv4 BOOTREPLY for NKPU](#3251-sending-a-dhcpv4-bootreply-for-nkpu)
+      - [3.2.5.2 Sending a DHCPv6 Reply for NKPU](#3252-sending-a-dhcpv6-reply-for-nkpu)
+      - [3.2.5.3 Receiving a DHCPDISCOVER Message for NKPU](#3253-receiving-a-dhcpdiscover-message-for-nkpu)
+      - [3.2.5.4 Receiving a DHCPv6 Information-Request Message for NKPU](#3254-receiving-a-dhcpv6-information-request-message-for-nkpu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Client Requesting Unlock over DHCPv4](#41-client-requesting-unlock-over-dhcpv4)
+  - [4.2 Client Requesting Unlock Over DHCPv6](#42-client-requesting-unlock-over-dhcpv6)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Message Flow ............................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Structures ................................................................................................. 11
-DHCPv6 Vendor Class Option Structure .................................................... 11
-DHCPv6 Vendor Specific Information Option Structure ............................... 12
-DHCPv4 Vendor-Identifying Vendor-Specific Information Option Structure ... 13
-DHCPv4 Vendor Specific Information Option Structure ............................... 14
-DHCPv4 Vendor Class Identifier Option Structure ...................................... 15
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3  Protocol Details ..................................................................................................... 16
-Client Details ................................................................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Sending a DHCPv4 NKPU Request ........................................................... 18
-Sending a DHCPv6 NKPU Request ........................................................... 18
-Receiving a DHCPv4 BOOTREPLY for NKPU ............................................... 19
-Receiving a DHCPv6 Reply for NKPU ........................................................ 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-Server Details .................................................................................................. 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Sending a DHCPv4 BOOTREPLY for NKPU ................................................. 21
-Sending a DHCPv6 Reply for NKPU .......................................................... 21
-Receiving a DHCPDISCOVER Message for NKPU ........................................ 21
-Receiving a DHCPv6 Information-Request Message for NKPU ...................... 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 23
-Client Requesting Unlock over DHCPv4 ............................................................... 23
-Client Requesting Unlock Over DHCPv6 ............................................................... 25
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 28
-Security Considerations for Implementers ........................................................... 28
-
-5.1
-
-3 / 32
-
-[MS-NKPU] - v20240423
-Network Key Protector Unlock Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5.2
-
-Index of Security Parameters ............................................................................ 28
-
-6  Appendix A: Product Behavior ............................................................................... 29
-
-7  Change Tracking .................................................................................................... 30
-
-8  Index ..................................................................................................................... 31
-
-[MS-NKPU] - v20240423
-Network Key Protector Unlock Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 32
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Network Key Protector Unlock (NKPU) Protocol. NKPU enables a client to
 send key material along with a session key as an encrypted package to a remote server and to
@@ -394,7 +307,7 @@ section 1.7.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -452,7 +365,8 @@ Network Key Protector Unlock Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Internet Protocol version 4 (IPv4): An Internet protocol that has 32-bit source and destination
+
+Internet Protocol version 4 (IPv4): An Internet protocol that has 32-bit source and destination
 
 addresses. IPv4 is the predecessor of IPv6.
 
@@ -515,7 +429,7 @@ specified in [RFC3280].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -527,10 +441,11 @@ Network Key Protector Unlock Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -576,7 +491,7 @@ Version 4 (DHCPv4)", RFC 3925, October 2004, https://www.rfc-editor.org/info/rfc
 [RFC8017] Moriarty, K., Ed., Kaliski, B., Jonsson, J., and Rusch, A., "PKCS #1: RSA Cryptography
 Specifications Version 2.2", November 2016, https://www.rfc-editor.org/info/rfc8017
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IEEE802.11-2007] Institute of Electrical and Electronics Engineers, "Telecommunications and
 Information Exchange Between Systems - Local and Metropolitan Area Networks - Specific
@@ -592,7 +507,8 @@ Release: April 23, 2024
 
 7 / 32
 
-1.3  Overview
+
+### 1.3 Overview
 
 When a drive volume is protected with a full volume encryption solution and the data stored on the
 volume is encrypted with a full volume encryption key, this type of solution usually provides
@@ -624,7 +540,7 @@ material to the client that sent the request by using the session key sent by th
 Both the request and reply messages are sent in DHCP packets, with the key material and/or session
 key carried in the packet via DHCP options [RFC2132] [RFC3315].
 
-1.3.1  Message Flow
+#### 1.3.1 Message Flow
 
 The messages that are exchanged between the client and the server and the processing that occurs as
 part of a network key protector unlock attempt can be summarized as follows:
@@ -670,7 +586,8 @@ Release: April 23, 2024
 
 8 / 32
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-NKPU].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -683,13 +600,13 @@ network key protector unlock attempt.
 
 Figure 1: Network key protector unlock process
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The NKPU Protocol relies on and is transported within DHCPv4 vendor-specific options on Internet
 Protocol version 4 (IPv4) and uses DHCPv6 and vendor options on Internet Protocol version 6
 (IPv6).
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The behavior of the NKPU Protocol described in this specification assumes that the client and server
 ADM elements are all populated, as specified in sections 3.1.1 and 3.2.1. This means that the
@@ -727,12 +644,13 @@ Network Key Protector Unlock Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 This protocol is intended to secure access to an encrypted client resource based on physical
 attachment to a particular network.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -752,11 +670,11 @@ restricted to one or more specific subnets, to provide security and authenticati
 This protocol does no explicit version or capability negotiation and does not attempt to determine
 the version of the operating system or the NKPU Protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -767,9 +685,10 @@ Release: April 23, 2024
 
 10 / 32
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The messages of the NKPU Protocol are transported within DHCP. DHCPv4 and DHCPv6 use the User
 Datagram Protocol (UDP) as a transport, as specified in [RFC2131] section 4.1 and [RFC3315]
@@ -843,7 +762,7 @@ response over DHCPv6.
 NKPU servers MUST ignore non-NKPU DHCP requests and NKPU clients MUST ignore non-NKPU DHCP
 responses.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The messages of the NKPU Protocol on IPv4 are carried by DHCPv4 by using the message format for
 DHCPv4 vendor-specific options, as specified in [RFC2132] section 8.4 and in [RFC3925] section 3. On
@@ -853,9 +772,9 @@ options, as specified in [RFC3315].
 All option fields and values described in this specification are sent in network byte order unless
 indicated otherwise.
 
-2.2.1  Structures
+#### 2.2.1 Structures
 
-2.2.1.1  DHCPv6 Vendor Class Option Structure
+##### 2.2.1.1 DHCPv6 Vendor Class Option Structure
 
 An NKPU client on DHCPv6 can identify its traffic as specifically NKPU by using the vendor class
 option specified in [RFC3315] section 22.16 and by including the string value "BITLOCKER" in the
@@ -886,7 +805,8 @@ Network Key Protector Unlock Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A
+
+A
 
 B
 
@@ -912,7 +832,7 @@ B - Vendor Class Data String (variable): This field is a non-NULL terminated ASC
 
 MUST be set to the string value "BITLOCKER".
 
-2.2.1.2  DHCPv6 Vendor Specific Information Option Structure
+##### 2.2.1.2 DHCPv6 Vendor Specific Information Option Structure
 
 An NKPU client and server that are using DHCPv6 exchange information in the form of a vendor-
 specific information option, as specified in [RFC3315] section 22.17. The DHCPv6 Vendor Specific
@@ -966,7 +886,8 @@ Network Key Protector Unlock Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Option-Len (2 bytes): This field MUST be set to 20 (0x0014).
+
+Option-Len (2 bytes): This field MUST be set to 20 (0x0014).
 
 Option-Data: This field contains the SHA1 hash [FIPS180] of the encryption certificate that
 
@@ -987,7 +908,7 @@ response, this field contains the KPR ADM element.
 When both suboptions are present, the Certificate Thumbprint Suboption MUST come
 before the Encrypted Buffer Suboption.
 
-2.2.1.3  DHCPv4 Vendor-Identifying Vendor-Specific Information Option Structure
+##### 2.2.1.3 DHCPv4 Vendor-Identifying Vendor-Specific Information Option Structure
 
 DHCPv4 options are constrained to be of maximum size of 255 bytes due to the length of the 8-bit
 Option Length field that DHCP defines. The DHCPv4 Vendor-Identifying Vendor-Specific
@@ -1053,7 +974,8 @@ Release: April 23, 2024
 
 13 / 32
 
-2.2.1.4  DHCPv4 Vendor Specific Information Option Structure
+
+##### 2.2.1.4 DHCPv4 Vendor Specific Information Option Structure
 
 DHCPv4 options are constrained to be of maximum size of 255 bytes due to the length of the 8-bit
 Option Length field that the protocol defines. NKPU data is therefore split across Option 43 and
@@ -1131,7 +1053,8 @@ Release: April 23, 2024
 
 14 / 32
 
-2.2.1.5  DHCPv4 Vendor Class Identifier Option Structure
+
+##### 2.2.1.5 DHCPv4 Vendor Class Identifier Option Structure
 
 An NKPU client includes this vendor information in all DHCPv4 packets that it sends to the NKPU
 server to indicate that this protocol is being used. This information is sent as a Vendor Class
@@ -1184,14 +1107,15 @@ Release: April 23, 2024
 
 15 / 32
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 NKPU clients MUST have access to either DHCPv6 or DHCPv4 as a transport and SHOULD have the
 ability to use either.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1232,7 +1156,7 @@ Session Key (SK): A randomly generated 256-bit key for use in AES-CCM [FIPS197],
 Thumbprint: The SHA-1 hash [FIPS180] of the complete ASN.1 DER [ITUX690] encoded X.509
 certificate for the PK ADM element data, as contained in that certificate.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 This protocol requires no timers beyond those that are used by its DHCPv4 and DHCPv6 transports, as
 specified in [RFC2131] and [RFC3315], respectively. These timers and other parameters are
@@ -1250,7 +1174,8 @@ Network Key Protector Unlock Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RDT: The DHCPv4 retransmission delay timer (RDT) described in [RFC2131] section 4.1. It is the
+
+RDT: The DHCPv4 retransmission delay timer (RDT) described in [RFC2131] section 4.1. It is the
 maximum amount of time (in seconds) that the NKPU client waits for return packets from NKPU
 servers before retransmitting. Used only when NKPU packets are transported via DHCPv4.
 
@@ -1269,7 +1194,7 @@ only when NKPU packets are transported via DHCPv6.
 MRT: The DHCPv6 maximum retransmission time (MRT) described in [RFC3315] section 14. Used only
 when NKPU packets are transported via DHCPv6.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 NKPU clients rely on their transports to be properly initialized. DHCPv4 client and server initialization is
 specified in [RFC2131] and DHCPv6 client and server initialization is specified in [RFC3315].
@@ -1306,11 +1231,11 @@ The MRD SHOULD be set to 4.
 
 For other prerequisites and preconditions, see section 1.5.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The NKPU Protocol exchange consists of a client request followed by either a server reply or a time-out
 failure. In case of a failure on one transport, a client SHOULD retry the request on another supported
@@ -1329,7 +1254,8 @@ Network Key Protector Unlock Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-On DHCPv6, clients process DHCP messages as specified in [RFC3315], with additional behavior as
+
+On DHCPv6, clients process DHCP messages as specified in [RFC3315], with additional behavior as
 specified therein.
 
 If the data or the data length of the field for any of the options in a DHCP message received by clients
@@ -1351,7 +1277,7 @@ Class Identifier Option, as specified in section 2.2.1 of this specification.
 
 DHCPv6 Vendor Specific Information Option, as specified in section 2.2.1 of this specification.
 
-3.1.5.1  Sending a DHCPv4 NKPU Request
+##### 3.1.5.1 Sending a DHCPv4 NKPU Request
 
 Clients on DHCPv4 send an NKPU request via a DHCPDISCOVER message, as specified in [RFC2131]
 section 3.1. Clients implementing this protocol MUST perform the following when sending an NKPU
@@ -1373,7 +1299,7 @@ element value that was used to set the DHCPv4 Vendor Specific Information Option
 
 4.  In the KPL ADM element, mark the sent KP data item as used.
 
-3.1.5.2  Sending a DHCPv6 NKPU Request
+##### 3.1.5.2 Sending a DHCPv6 NKPU Request
 
 Clients on DHCPv6 send an NKPU request via an Information-Request message, as specified in
 [RFC3315] section 15.12. Clients implementing this protocol MUST perform the following when
@@ -1396,7 +1322,8 @@ Release: April 23, 2024
 
 18 / 32
 
-3.1.5.3  Receiving a DHCPv4 BOOTREPLY for NKPU
+
+##### 3.1.5.3 Receiving a DHCPv4 BOOTREPLY for NKPU
 
 When an NKPU client implementing this protocol receives a BOOTREPLY message that contains the
 DHCPv4 Vendor Specific Information Option and the Vendor Class Identifier Option, the client
@@ -1405,7 +1332,7 @@ If either of the options do not conform to the specified syntax, the client MUST
 and take no further action. Otherwise, the NKPU client uses the information in an implementation-
 specific manner.
 
-3.1.5.4  Receiving a DHCPv6 Reply for NKPU
+##### 3.1.5.4 Receiving a DHCPv6 Reply for NKPU
 
 When an NKPU client implementing this protocol receives a DHCPv6 Reply message that contains the
 DHCPv6 Vendor Class Option and the DHCPv6 Vendor Specific Information Option, it MUST
@@ -1414,7 +1341,7 @@ of the options do not conform to the specified syntax, the client MUST discard t
 no further action. Otherwise, the NKPU client uses the information in an implementation-specific
 manner.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 The NKPU Protocol relies on the underlying transport, either DHCPv4 or DHCPv6, to respond to its
 timer events while adhering to relevant RFC standards.
@@ -1427,16 +1354,16 @@ On DHCPv6, when the RT expires (section 3.1.2), the retransmission time-out logi
 [RFC3315] section 14 is executed. If the DHCPv6 MRC is reached, the NKPU Protocol has failed on this
 transport.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
 NKPU servers MUST have access to DHCPv6 or DHCPv4 as a transport and SHOULD have the ability to
 use either.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1461,7 +1388,8 @@ Network Key Protector Unlock Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-header and the CK ADM element (section 3.1.1) and to produce the MAC. When calling AES-CCM,
+
+header and the CK ADM element (section 3.1.1) and to produce the MAC. When calling AES-CCM,
 there is no authentication data and the nonce used is 12 bytes, all zeros, and is not transmitted. The
 KPR is the encrypted output prepended with the 16-byte MAC.
 
@@ -1482,12 +1410,12 @@ Note  A server implementation is permitted to have multiple configurations for N
 own IPv4 Allow List and IPv6 Allow List. However, each NKPU configuration in a server
 implementation MUST have its own unique Public Key and Private Key pair.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 This protocol requires no timers beyond those that are used by its transport, as specified in section
 3.1.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 NKPU servers rely on their transport(s) to be properly initialized. DHCPv4 client and server
 initializations are specified in [RFC2131]. DHCPv6 client and server initializations are specified in
@@ -1495,11 +1423,11 @@ initializations are specified in [RFC2131]. DHCPv6 client and server initializat
 
 For other prerequisites and preconditions, see section 1.5.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 With DHCPv4 as the transport, NKPU servers process DHCP messages as specified in [RFC2131]
 sections 3 and 4, with the additional behavior regarding message types, contents, and integrity
@@ -1526,7 +1454,8 @@ Release: April 23, 2024
 
 20 / 32
 
-  A DHCPv4 Vendor Specific Information Option structure, as specified in section 2.2.1.4.
+
+  A DHCPv4 Vendor Specific Information Option structure, as specified in section 2.2.1.4.
 
   A DHCPv4 Vendor-Identifying Vendor-Specific Information Option structure, as
 
@@ -1540,7 +1469,7 @@ specified in section 2.2.1.3.
 
   A DHCPv6 Vendor Specific Information Option structure, as specified in section 2.2.1.2.
 
-3.2.5.1  Sending a DHCPv4 BOOTREPLY for NKPU
+##### 3.2.5.1 Sending a DHCPv4 BOOTREPLY for NKPU
 
 Compose and send a DHCPv4 BOOTREPLY to the client, as specified in [RFC2131] section 2, with the
 following additions:
@@ -1559,7 +1488,7 @@ Information Option structure, as specified in section 2.2.1.4, for the server re
 
 Include the DHCPv4 Vendor Class Identifier Option, as specified in section 2.2.1.5.
 
-3.2.5.2  Sending a DHCPv6 Reply for NKPU
+##### 3.2.5.2 Sending a DHCPv6 Reply for NKPU
 
 Compose and send a DHCPv6 Reply to the client, as specified in [RFC3315] section 18.2.8, with the
 following additions:
@@ -1573,7 +1502,7 @@ Information Option structure, as specified in section 2.2.1.2, for the server re
 
 Include the DHCPv6 Vendor Class Option structure, as specified in section 2.2.1.1.
 
-3.2.5.3  Receiving a DHCPDISCOVER Message for NKPU
+##### 3.2.5.3 Receiving a DHCPDISCOVER Message for NKPU
 
 If the IPv4 Allow List ADM element (section 3.2.1) is implemented and the IPv4 address of the
 request is not from a listed subnet, the server MUST ignore the request and take no further action.
@@ -1603,7 +1532,8 @@ Release: April 23, 2024
 
 21 / 32
 
-3.2.5.4  Receiving a DHCPv6 Information-Request Message for NKPU
+
+##### 3.2.5.4 Receiving a DHCPv6 Information-Request Message for NKPU
 
 If the IPv6 Allow List ADM element (section 3.2.1) is implemented and the IPv6 address of the
 request is not from a listed subnet, the server MUST ignore the request and take no further action.
@@ -1626,12 +1556,12 @@ Extract the values of the CK and SK ADM elements (section 3.1.1).
 
   Reply to the client by sending the message specified in section 3.2.5.2.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 The NKPU Protocol relies on the underlying transport, either DHCPv4 or DHCPv6, to respond to its
 timer events while adhering to relevant RFC standards.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1642,7 +1572,8 @@ Release: April 23, 2024
 
 22 / 32
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section contains examples that utilize the DHCPv4 and DHCPv6 transports, as described below.
 The message exchanges for the DHCPv4 example are described in [RFC2131] section 3 and 4.1. The
@@ -1656,7 +1587,7 @@ The following examples are described in this section for the NKPU Protocol:
 
   Client requesting an unlock over DHCPv6.
 
-4.1  Client Requesting Unlock over DHCPv4
+### 4.1 Client Requesting Unlock over DHCPv4
 
 In this example, an NKPU client requests an unlock over DHCPv4 and successfully receives the server
 response. The following steps describe the message exchanges and processing:
@@ -1729,7 +1660,8 @@ Release: April 23, 2024
 
 23 / 32
 
-...
+
+...
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1833,9 +1765,10 @@ Network Key Protector Unlock Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
 
-4.2  Client Requesting Unlock Over DHCPv6
+...
+
+### 4.2 Client Requesting Unlock Over DHCPv6
 
 In this example, an NKPU client requests an unlock over DHCPv6 and successfully receives the server
 response. The following steps describe the message exchanges and processing:
@@ -1913,7 +1846,8 @@ Release: April 23, 2024
 
 25 / 32
 
-2.  The NKPU server receives the DHCPv6 Information-Request message that includes a Vendor
+
+2.  The NKPU server receives the DHCPv6 Information-Request message that includes a Vendor
 
 Class Identifier Option structure with the vendor class set to "BITLOCKER", and with other
 fields of the Information-Request message meeting the requirements specified in section 3.2.5.
@@ -2000,7 +1934,8 @@ Release: April 23, 2024
 
 26 / 32
 
-...
+
+...
 
 [MS-NKPU] - v20240423
 Network Key Protector Unlock Protocol
@@ -2009,9 +1944,10 @@ Release: April 23, 2024
 
 27 / 32
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The security of this protocol assumes that only a physical local area network (LAN) connection is
 available when executing this protocol, and that physical connectivity to the LAN is an implicit built-in
@@ -2035,7 +1971,7 @@ To resist two-touch replay attacks, where an attacker on the physical network fi
 exchange and then takes the client outside the physical network, it is recommended that session keys
 and key protectors be used only once and then discarded.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -2084,7 +2020,8 @@ Section
 
 28 / 32
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2140,7 +2077,8 @@ Release: April 23, 2024
 
 29 / 32
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2184,7 +2122,8 @@ Release: April 23, 2024
 
 30 / 32
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2315,7 +2254,8 @@ Timers
 
 31 / 32
 
-   client 16
+
+   client 16
    server 20
 Tracking changes 30
 Transport 11

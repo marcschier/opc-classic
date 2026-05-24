@@ -63,7 +63,8 @@ Release: June 25, 2021
 
 1 / 57
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -283,7 +284,8 @@ Release: June 25, 2021
 
 2 / 57
 
-Date
+
+Date
 
 Revision
 History
@@ -324,329 +326,133 @@ Release: June 25, 2021
 
 3 / 57
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-1.3.2.4
-1.3.2.5
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-P2P Graphing Constraints ............................................................................ 10
-Group Security ........................................................................................... 10
-Peer Names .......................................................................................... 10
-Certificates ........................................................................................... 10
-Roles ................................................................................................... 10
-PNRP Publication ................................................................................... 10
-Joining a Group .................................................................................... 11
-Group Connect Subprotocol ......................................................................... 11
-Record Subprotocol ..................................................................................... 11
-Receiving a Record ................................................................................ 11
-Publishing a Record ............................................................................... 11
-Security Records ................................................................................... 11
-OOB XML ................................................................................................... 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3.4.1
-1.3.4.2
-1.3.4.3
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3
-1.3.4
-
-1.3.5
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Common Syntax ......................................................................................... 14
-PNRP Cloud Name ................................................................................. 14
-Global Cloud ................................................................................... 14
-Non-global Public Cloud .................................................................... 14
-Private Cloud .................................................................................. 14
-Password Hash String ............................................................................ 15
-Group Connect ........................................................................................... 15
-Hello ................................................................................................... 15
-MyGMC ................................................................................................ 16
-YourGMC.............................................................................................. 16
-Password ............................................................................................. 17
-Records ..................................................................................................... 18
-Security Properties ................................................................................ 18
-Password ........................................................................................ 20
-Membership ......................................................................................... 21
-Record Security Data .................................................................................. 22
-Signature Hash ..................................................................................... 23
-X.509 Usage .............................................................................................. 25
-Enhanced Key Usage ............................................................................. 27
-Certificate and Certificate Chain Validation ............................................... 27
-Certificate Signature and Signature validation. .................................... 27
-Certificate Validity ........................................................................... 27
-Certificate Chain Validity .................................................................. 27
-Roles ................................................................................................... 28
-Out-of-band XML ........................................................................................ 28
-Invitation ............................................................................................. 28
-
-2.2.5.2.1
-2.2.5.2.2
-2.2.5.2.3
-
-2.2.5.1
-2.2.5.2
-
-2.2.3.1.1
-
-2.2.5.3
-
-2.2.6.1
-
-2.2.3.1
-
-2.2.3.2
-
-2.2.4.1
-
-2.2.6
-
-2.2.4
-
-2.2.5
-
-2.2.3
-
-[MS-PPSEC] - v20210625
-Peer-to-Peer Grouping Security Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-4 / 57
-
-2.2.6.2
-
-Identity ............................................................................................... 30
-
-3.2
-
-3.1
-
-3.2.5
-
-3.2.4.1
-
-3.1.5
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.7.1
-3.1.7.2
-3.1.7.3
-3.1.7.4
-3.1.7.5
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-
-3  Protocol Details ..................................................................................................... 31
-Peer Details ..................................................................................................... 31
-Abstract Data Model .................................................................................... 31
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Group Creation ..................................................................................... 32
-Opening the PNRP Cloud ........................................................................ 34
-Connecting to a Group ........................................................................... 34
-Begin Listening ..................................................................................... 35
-Publish New Credentials ......................................................................... 36
-Modify Security Properties ...................................................................... 37
-Record Publication ................................................................................. 37
-Processing Events and Sequencing Rules ....................................................... 37
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-Record Publication ................................................................................. 37
-Record Received ................................................................................... 38
-Database Synchronized.......................................................................... 40
-Long Term Partition Repair ..................................................................... 40
-GMC Chain Creation .............................................................................. 40
-Group Connect Requestor Details ....................................................................... 40
-Abstract Data Model .................................................................................... 41
-Timers ...................................................................................................... 41
-Initialization ............................................................................................... 41
-Higher-Layer Triggered Events ..................................................................... 41
-Connecting to a Group ........................................................................... 41
-Message Processing Events and Sequencing Rules .......................................... 41
-Receiving a Message During TLS Negotiation ............................................ 41
-Messages Received After TLS Negotiation Completion ................................ 42
-Receiving Data ................................................................................ 42
-Receiving a Hello Message ................................................................ 42
-Receiving a Hello + MyGMC Message ................................................. 42
-Receiving YourGMC Message ............................................................. 43
-Timer Events .............................................................................................. 43
-Other Local Events ...................................................................................... 43
-TLS Negotiation Complete ...................................................................... 43
-Encrypting a Message ............................................................................ 44
-Decrypting a Message ............................................................................ 44
-Group Connect Authenticator Details .................................................................. 44
-Abstract Data Model .................................................................................... 44
-Timers ...................................................................................................... 45
-Initialization ............................................................................................... 45
-Higher-Layer Triggered Events ..................................................................... 45
-Group Listening for Incoming Connect ..................................................... 45
-Message Processing Events and Sequencing Rules .......................................... 45
-Receiving a Message During TLS Negotiation ............................................ 45
-Receiving a Message After TLS Negotiation Has Completed ........................ 45
-Receiving Data ................................................................................ 45
-Receiving a Hello Message ................................................................ 45
-Receive Hello + MyGMC Message....................................................... 46
-Receive Hello + Password Message .................................................... 47
-Receive Password Message ............................................................... 47
-Timer Events .............................................................................................. 48
-Other Local Events ...................................................................................... 48
-Completing TLS Negotiation ................................................................... 48
-
-3.3.5.2.1
-3.3.5.2.2
-3.3.5.2.3
-3.3.5.2.4
-3.3.5.2.5
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-3.2.5.2.4
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.2.5.1
-3.2.5.2
-
-3.3.5.1
-3.3.5.2
-
-3.3.6
-3.3.7
-
-3.2.6
-3.2.7
-
-3.3.7.1
-
-3.3.4.1
-
-3.3.5
-
-3.3
-
-[MS-PPSEC] - v20210625
-Peer-to-Peer Grouping Security Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-5 / 57
-
-3.3.7.2
-3.3.7.3
-
-Encrypting a Message ............................................................................ 48
-Decrypting a Message ............................................................................ 49
-
-4  Protocol Examples ................................................................................................. 50
-Establishing a Connection Using GMC Authentication ............................................ 50
-Establishing a Connection Using Password Authentication ...................................... 50
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 52
-Security Considerations for Implementers ........................................................... 52
-Index of Security Parameters ............................................................................ 52
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 53
-
-7  Change Tracking .................................................................................................... 54
-
-8  Index ..................................................................................................................... 55
-
-[MS-PPSEC] - v20210625
-Peer-to-Peer Grouping Security Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-6 / 57
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 P2P Graphing Constraints](#131-p2p-graphing-constraints)
+    - [1.3.2 Group Security](#132-group-security)
+      - [1.3.2.1 Peer Names](#1321-peer-names)
+      - [1.3.2.2 Certificates](#1322-certificates)
+      - [1.3.2.3 Roles](#1323-roles)
+      - [1.3.2.4 PNRP Publication](#1324-pnrp-publication)
+      - [1.3.2.5 Joining a Group](#1325-joining-a-group)
+    - [1.3.3 Group Connect Subprotocol](#133-group-connect-subprotocol)
+    - [1.3.4 Record Subprotocol](#134-record-subprotocol)
+      - [1.3.4.1 Receiving a Record](#1341-receiving-a-record)
+      - [1.3.4.2 Publishing a Record](#1342-publishing-a-record)
+      - [1.3.4.3 Security Records](#1343-security-records)
+    - [1.3.5 OOB XML](#135-oob-xml)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Syntax](#221-common-syntax)
+      - [2.2.1.1 PNRP Cloud Name](#2211-pnrp-cloud-name)
+        - [2.2.1.1.1 Global Cloud](#22111-global-cloud)
+        - [2.2.1.1.2 Non-global Public Cloud](#22112-non-global-public-cloud)
+        - [2.2.1.1.3 Private Cloud](#22113-private-cloud)
+      - [2.2.1.2 Password Hash String](#2212-password-hash-string)
+    - [2.2.2 Group Connect](#222-group-connect)
+      - [2.2.2.1 Hello](#2221-hello)
+      - [2.2.2.2 MyGMC](#2222-mygmc)
+      - [2.2.2.3 YourGMC](#2223-yourgmc)
+      - [2.2.2.4 Password](#2224-password)
+    - [2.2.3 Records](#223-records)
+      - [2.2.3.1 Security Properties](#2231-security-properties)
+        - [2.2.3.1.1 Password](#22311-password)
+      - [2.2.3.2 Membership](#2232-membership)
+    - [2.2.4 Record Security Data](#224-record-security-data)
+      - [2.2.4.1 Signature Hash](#2241-signature-hash)
+    - [2.2.5 X.509 Usage](#225-x509-usage)
+      - [2.2.5.1 Enhanced Key Usage](#2251-enhanced-key-usage)
+      - [2.2.5.2 Certificate and Certificate Chain Validation](#2252-certificate-and-certificate-chain-validation)
+        - [2.2.5.2.1 Certificate Signature and Signature validation.](#22521-certificate-signature-and-signature-validation)
+        - [2.2.5.2.2 Certificate Validity](#22522-certificate-validity)
+        - [2.2.5.2.3 Certificate Chain Validity](#22523-certificate-chain-validity)
+      - [2.2.5.3 Roles](#2253-roles)
+    - [2.2.6 Out-of-band XML](#226-out-of-band-xml)
+      - [2.2.6.1 Invitation](#2261-invitation)
+      - [2.2.6.2 Identity](#2262-identity)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Peer Details](#31-peer-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Group Creation](#3141-group-creation)
+      - [3.1.4.2 Opening the PNRP Cloud](#3142-opening-the-pnrp-cloud)
+      - [3.1.4.3 Connecting to a Group](#3143-connecting-to-a-group)
+      - [3.1.4.4 Begin Listening](#3144-begin-listening)
+      - [3.1.4.5 Publish New Credentials](#3145-publish-new-credentials)
+      - [3.1.4.6 Modify Security Properties](#3146-modify-security-properties)
+      - [3.1.4.7 Record Publication](#3147-record-publication)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Record Publication](#3171-record-publication)
+      - [3.1.7.2 Record Received](#3172-record-received)
+      - [3.1.7.3 Database Synchronized](#3173-database-synchronized)
+      - [3.1.7.4 Long Term Partition Repair](#3174-long-term-partition-repair)
+      - [3.1.7.5 GMC Chain Creation](#3175-gmc-chain-creation)
+  - [3.2 Group Connect Requestor Details](#32-group-connect-requestor-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Connecting to a Group](#3241-connecting-to-a-group)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Message During TLS Negotiation](#3251-receiving-a-message-during-tls-negotiation)
+      - [3.2.5.2 Messages Received After TLS Negotiation Completion](#3252-messages-received-after-tls-negotiation-completion)
+        - [3.2.5.2.1 Receiving Data](#32521-receiving-data)
+        - [3.2.5.2.2 Receiving a Hello Message](#32522-receiving-a-hello-message)
+        - [3.2.5.2.3 Receiving a Hello + MyGMC Message](#32523-receiving-a-hello-mygmc-message)
+        - [3.2.5.2.4 Receiving YourGMC Message](#32524-receiving-yourgmc-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 TLS Negotiation Complete](#3271-tls-negotiation-complete)
+      - [3.2.7.2 Encrypting a Message](#3272-encrypting-a-message)
+      - [3.2.7.3 Decrypting a Message](#3273-decrypting-a-message)
+  - [3.3 Group Connect Authenticator Details](#33-group-connect-authenticator-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Group Listening for Incoming Connect](#3341-group-listening-for-incoming-connect)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving a Message During TLS Negotiation](#3351-receiving-a-message-during-tls-negotiation)
+      - [3.3.5.2 Receiving a Message After TLS Negotiation Has Completed](#3352-receiving-a-message-after-tls-negotiation-has-completed)
+        - [3.3.5.2.1 Receiving Data](#33521-receiving-data)
+        - [3.3.5.2.2 Receiving a Hello Message](#33522-receiving-a-hello-message)
+        - [3.3.5.2.3 Receive Hello + MyGMC Message](#33523-receive-hello-mygmc-message)
+        - [3.3.5.2.4 Receive Hello + Password Message](#33524-receive-hello-password-message)
+        - [3.3.5.2.5 Receive Password Message](#33525-receive-password-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Completing TLS Negotiation](#3371-completing-tls-negotiation)
+      - [3.3.7.2 Encrypting a Message](#3372-encrypting-a-message)
+      - [3.3.7.3 Decrypting a Message](#3373-decrypting-a-message)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Establishing a Connection Using GMC Authentication](#41-establishing-a-connection-using-gmc-authentication)
+  - [4.2 Establishing a Connection Using Password Authentication](#42-establishing-a-connection-using-password-authentication)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document specifies the Peer-to-Peer Grouping protocol (P2P Grouping), which layers on top of
 the Peer-to-Peer Graphing Protocol [MS-PPGRH] and adds security and discovery services. Security is
@@ -656,7 +462,7 @@ Discovery is provided by the Peer Name Resolution Protocol [MS-PNRP].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -717,7 +523,8 @@ Release: June 25, 2021
 
 7 / 57
 
-initialization vector: A data block that some modes of the AES cipher block operation require as
+
+initialization vector: A data block that some modes of the AES cipher block operation require as
 
 an additional initial data input. For more information, see [SP800-38A].
 
@@ -764,14 +571,14 @@ has to be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -787,7 +594,8 @@ Release: June 25, 2021
 
 8 / 57
 
-[IANAPORT] IANA, "Service Name and Transport Protocol Port Number Registry",
+
+[IANAPORT] IANA, "Service Name and Transport Protocol Port Number Registry",
 https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
 
 [MS-PNRP] Microsoft Corporation, "Peer Name Resolution Protocol (PNRP) Version 4.0".
@@ -830,11 +638,11 @@ Specifications Version 2.2", November 2016, https://www.rfc-editor.org/info/rfc8
 Recommendation for Block Cipher Modes of Operation: Methods and Techniques", December 2001,
 https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 P2P Grouping implements Group Security, which is a Graph Security Provider [MS-PPGRH]. Group
 Security provides two classes of security features: connection security and record security.
@@ -852,14 +660,15 @@ Release: June 25, 2021
 
 9 / 57
 
-P2P Grouping adds publication and discovery of nodes by way of Peer Name Resolution Protocol
+
+P2P Grouping adds publication and discovery of nodes by way of Peer Name Resolution Protocol
 (PNRP, as specified in [MS-PNRP]). When attempting to connect to a group, P2P Grouping uses Peer
 Name Resolution Protocol (PNRP) to find an existing group member. When a node begins listening
 for connections from other group members, it publishes itself using PNRP. PNRP is also queried
 periodically when P2P Graphing notifies P2P Grouping that a new connection is to be formed to
 repair undetected long-term partitions.
 
-1.3.1  P2P Graphing Constraints
+#### 1.3.1 P2P Graphing Constraints
 
 To support the security model, P2P Grouping adds the following constraints to P2P Graphing data.
 
@@ -872,11 +681,11 @@ merely length-constrained Unicode strings.
 
 by applications building on top of P2P Grouping.
 
-1.3.2  Group Security
+#### 1.3.2 Group Security
 
 Group security is based on public/private keys, certificates, and certificate chains.
 
-1.3.2.1  Peer Names
+##### 1.3.2.1 Peer Names
 
 The identifier of a group, as well as the identifier of individual members of a group, is based on a
 public/private key pair. Each group and group member is identified using a string called a Peer
@@ -885,7 +694,7 @@ is derived from a public key, ownership of the Peer Name can be proven by crypto
 a challenge is encrypted with the public key from which the Peer Name was derived, only the holder of
 the private key can give a valid response.
 
-1.3.2.2  Certificates
+##### 1.3.2.2 Certificates
 
 Group authentication is implemented using P2P Certificates (as specified in [MS-PNRP] section
 2.2.3.5.1) and certificate chains. Each group has a public/private key pair, which is used to create the
@@ -899,7 +708,7 @@ process to generate a Group Membership Certificate (GMC) chain.
 Membership in a group is proven with a GMC chain. A GMC chain is rooted at the GRC with the
 Identity's IDC public key in the leaf GMC.
 
-1.3.2.3  Roles
+##### 1.3.2.3 Roles
 
 Each member of a group has one or more roles. P2P Grouping defines three roles: Member, Inviting
 Member, and Administrator.
@@ -921,14 +730,15 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-1.3.2.4  PNRP Publication
+
+##### 1.3.2.4 PNRP Publication
 
 Publication and discovery of nodes uses PNRP. Specifically, a Grouping node publishes itself in PNRP
 when it starts listening for connections. Each node publishes the same Secure Peer Name, which is
 the Group Peer Name with the "participant" classifier. Because each node in a given group publishes
 the same Peer Name, any node within the group is discoverable using the Group Peer Name.
 
-1.3.2.5  Joining a Group
+##### 1.3.2.5 Joining a Group
 
 Joining is a multistep process that requires one or two out-of-band exchanges, depending on the type
 of authentication used. These out-of-band exchanges use an XML format specified in section 2.2.6.
@@ -943,20 +753,20 @@ member that can issue GMCs, and authenticates using the password. Upon successfu
 the node to which the invitee connected creates a GMC chain for the invitee and sends it over the
 authentication channel.
 
-1.3.3  Group Connect Subprotocol
+#### 1.3.3 Group Connect Subprotocol
 
 The Group Connect subprotocol is the protocol used for authenticating connections between nodes in a
 group. The Group Connect subprotocol sets up a TLS session and then exchanges messages to prove
 group membership. There are two types of exchanges, one for GMC authentication, and one for
 password authentication. See Sections 4.1 and 4.2 for an example of each.
 
-1.3.4  Record Subprotocol
+#### 1.3.4 Record Subprotocol
 
 The record subprotocol specifies what P2P Grouping does when a record is published or received.
 P2P Graphing [MS-PPGRH] specifies how a Graph Security Provider such as P2P Grouping is used
 during record publication or receipt.
 
-1.3.4.1  Receiving a Record
+##### 1.3.4.1 Receiving a Record
 
 When a record is received, P2P Grouping validates it from a security perspective:
 
@@ -981,7 +791,7 @@ required GMC chain is received, record validation is attempted again.
 
 The signature encoded in the record's security payload is validated.
 
-1.3.4.2  Publishing a Record
+##### 1.3.4.2 Publishing a Record
 
 When a record is published locally, P2P Grouping is required to secure the record by signing it using
 the local Identity private key. The local Identity is first checked to ensure it has the right to publish
@@ -993,19 +803,20 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-PPSEC].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 the record. If the local Identity's Membership record has not been published, it is published to the
 group before the record being secured.
 
-1.3.4.3  Security Records
+##### 1.3.4.3 Security Records
 
 P2P Grouping specifies two types of security records, a Security Properties record, and a Membership
 record. When a node receives a security record, the record's data is cached locally.
 
-1.3.5  OOB XML
+#### 1.3.5 OOB XML
 
 Inviting an Identity to a group requires the use of out-of-band XML files. There are two files used by
 P2P Grouping: identity files, and invitation files.
@@ -1018,7 +829,7 @@ Identity files contain the IDC of an Identity that is requesting to join the gro
 information for discovering existing nodes in the group. Password-based invitation files contain
 only information for discovering existing nodes in the group.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Figure 1: Protocol Relationship Diagram
 
@@ -1029,7 +840,7 @@ subprotocol also adds messages following the end of a TLS negotiation.
 
 P2P Grouping also uses PNRP for publication and discovery of nodes.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The P2P Grouping protocol depends on the P2P Graphing and PNRP protocols. P2P Graphing also
 requires the TLS protocol. All these protocol implementations are required to be present on the system
@@ -1046,21 +857,22 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-already a member of the P2P Group, as proven by possession of either a GMC or the group password,
+
+already a member of the P2P Group, as proven by possession of either a GMC or the group password,
 depending on the type of authentication required by the group. The GMC can either be obtained out-
 of-band, or through an XML GMC invitation, as specified in section 2.2.6.1.
 
 If a node is creating a new group rather than connecting to an existing group, it has a Peer Identity (a
 public/private key pair) specifically for the group.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 P2P Grouping is useful in cases where shared and replicated storage is required amongst nodes, and
 a P2P security model applies. The storage required is relatively small (for example, sharing file
 metadata rather than file contents), and each node is required to have symmetric connectivity. A
 Group exists only in a single PNRP Cloud, in which all nodes are required to participate. <1>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1082,14 +894,14 @@ Properties record, Membership record, or invitation that is marked for version 1
 Group Connect Subprotocol Version: The only version defined for the Group Connect sub-protocol
 is 1.0.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Because P2P Grouping layers on top of P2P Graphing, applications which utilize P2P Grouping can
 define their own Record Types. Each Record in a Group has a Record Type, which is expressed as a
 UUID. A vendor can use any UUID except those in the P2P Graphing reserved range (see [MS-PPGRH]
 section 2.2.1.9), or those reserved by P2P Grouping (see section 2.2.3).
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter  Value  Reference
 
@@ -1106,9 +918,10 @@ Release: June 25, 2021
 
 13 / 57
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 P2P Grouping relies upon P2P Graphing to send all messages over sockets that the latter creates.
 P2P Grouping assumes P2P Graphing to be listening on port 3587. Before sending a message, P2P
@@ -1116,23 +929,23 @@ Graphing MUST pass the message to P2P Grouping to secure it.
 
 P2P Grouping also utilizes PNRP as a transport to publish and discover Group Nodes.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The message syntax defined in the following section does not assume any particular field alignment
 for fields which follow a variable-length field.
 
-2.2.1  Common Syntax
+#### 2.2.1 Common Syntax
 
-2.2.1.1  PNRP Cloud Name
+##### 2.2.1.1 PNRP Cloud Name
 
 A PNRP Cloud Name is a string which identifies a PNRP Cloud. A PNRP Cloud Name can be in one of
 three formats as described in the following sections.
 
-2.2.1.1.1 Global Cloud
+###### 2.2.1.1.1 Global Cloud
 
 The global Cloud MUST be identified by the string "Global_".
 
-2.2.1.1.2 Non-global Public Cloud
+###### 2.2.1.1.2 Non-global Public Cloud
 
 A non-global public Cloud is a Cloud which exists on an interface that also has a global IPv6 address.
 In this case, the name of the Cloud MUST be identified by a string that is structured as follows.
@@ -1143,7 +956,7 @@ In this case, the name of the Cloud MUST be identified by a string that is struc
 
 where ipv6globalprefix is the prefix of a global IPv6 address, as specified in [RFC3513] section 2.3.
 
-2.2.1.1.3 Private Cloud
+###### 2.2.1.1.3 Private Cloud
 
 A private Cloud is a Cloud which exists on an interface that does not also have a global IPv6 address.
 In this case, the name of the Cloud MUST be a string that is structured as follows.
@@ -1165,7 +978,8 @@ Release: June 25, 2021
 
 14 / 57
 
-When values for a GUID are expressed, the first three elements are expressed as a sequence of
+
+When values for a GUID are expressed, the first three elements are expressed as a sequence of
 hexadecimal digits in normal network ordering (big-endian or most significant digit first) while the
 eight-octet element is broken up into two groups, the first having four hexadecimal digits, and the
 second having twelve digits, all expressed in network ordering. For example, if the octets in a GUID
@@ -1191,7 +1005,7 @@ For a site local Cloud:
 
 Zone index is defined in [RFC4007] section 6.
 
-2.2.1.2  Password Hash String
+##### 2.2.1.2 Password Hash String
 
 The password used for authentication into a group is not transmitted as plaintext. Rather it MUST be
 transmitted as a string-encoded hash of the original group password, in the format specified below.
@@ -1218,7 +1032,7 @@ character representing a nibble in the hash. The character used for each nibble 
 character 'a' plus the value of the nibble. For example, if the hash value is 0x01234567, the encoded
 string is "abcdefgh".
 
-2.2.2  Group Connect
+#### 2.2.2 Group Connect
 
 The Group Connect messages are sent following TLS negotiation, and are sent encapsulated with the
 TLS header and trailer. The messages can be combined into one packet, for instance by sending Hello
@@ -1232,7 +1046,8 @@ Release: June 25, 2021
 
 15 / 57
 
-2.2.2.1  Hello
+
+##### 2.2.2.1 Hello
 
 The Hello message is the first message sent by the Requestor after TLS negotiation is complete. It is
 either sent alone, or with the MyGMC or Password message following it.
@@ -1267,7 +1082,7 @@ Minor Version (1 byte): The Group Connect subprotocol minor version. The only de
 
 1.0, for which the Minor Version field MUST be set to 0x00.
 
-2.2.2.2  MyGMC
+##### 2.2.2.2 MyGMC
 
 The MyGMC message MUST be sent following a Hello message, in the same packet.
 
@@ -1302,7 +1117,7 @@ which follows, in little-endian byte order.
 
 GMC Data (variable): The PKCS7 ASN-encoded GMC chain, as specified in [RFC2315].
 
-2.2.2.3  YourGMC
+##### 2.2.2.3 YourGMC
 
 The YourGMC message is sent at the end of password-based authentication to deliver the generated
 GMC to the new group member.
@@ -1335,7 +1150,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Message Type (2 bytes): The type of message being sent, in big-endian byte order. For a
+
+Message Type (2 bytes): The type of message being sent, in big-endian byte order. For a
 
 YourGMC message, the type MUST be 0x0002.
 
@@ -1378,7 +1194,7 @@ f) Use the first n bytes of the result of step e as the derived key.
 CBC and empty initialization vector. Refer to [FIPS197] for the AES standard and [SP800-
 38A] for the supported block cipher mode.
 
-2.2.2.4  Password
+##### 2.2.2.4 Password
 
 The Password message is sent twice when a Requestor is attempting to authenticate by way of a
 password. It is first sent in the initial packet following the Hello message. In this case, the password
@@ -1418,7 +1234,8 @@ Release: June 25, 2021
 
 17 / 57
 
-Password Data Length (4 bytes): An unsigned binary integer containing the length of the Password
+
+Password Data Length (4 bytes): An unsigned binary integer containing the length of the Password
 Data which follows, in big-endian byte order. If the Password Data field is absent, then the value
 of the field MUST be 0x0000.
 
@@ -1427,7 +1244,7 @@ Password Data (variable): The SHA-1 hash of the Password Hash String defined in 
 (including NULL-terminator) in that order. This field MUST NOT be present if the Password Data
 Length is 0.
 
-2.2.3  Records
+#### 2.2.3 Records
 
 P2P Grouping defines two record types (see [MS-PPGRH] section 2.2.1.9). The syntax below defines
 the format of the Record payload data in the PEER_RECORD data structure used for Records in [MS-
@@ -1444,7 +1261,7 @@ Membership
 
 { 01000000-0000-0000-0000-000000000000 }
 
-2.2.3.1  Security Properties
+##### 2.2.3.1 Security Properties
 
 The Security Properties record describes the security configuration of the group. This record is
 published by the Group's creator, and can only be modified by the Group's creator. The Peer Name
@@ -1501,7 +1318,8 @@ Release: June 25, 2021
 
 18 / 57
 
-Classifier (variable)
+
+Classifier (variable)
 
 Group Peer Name Length
 
@@ -1575,7 +1393,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-value MUST be merely passed to P2P Graphing, as P2P Grouping does not directly implement the
+
+value MUST be merely passed to P2P Graphing, as P2P Grouping does not directly implement the
 presence record publication.
 
 This field is fixed at group creation time and MUST NOT be modified.
@@ -1633,7 +1452,7 @@ Friendly Name (variable): A null-terminated Unicode string representing the frie
 
 group. This is a user-displayable string that has no other effect on the protocol.
 
-2.2.3.1.1 Password
+###### 2.2.3.1.1 Password
 
 If the version of the Security Properties packet (section 2.2.3.1) is 1.1 the following MUST be
 appended to the end of the Security Properties record:
@@ -1658,7 +1477,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Number of Passwords
+
+Number of Passwords
 
 Password Hash Length
 
@@ -1713,7 +1533,7 @@ Password Role UUID (16 bytes): The role that a new member receives when joining 
 using this password, encoded as a little-endian UUID. The UUID MUST be one of the legal UUIDs
 listed in section 2.2.5.3.
 
-2.2.3.2  Membership
+##### 2.2.3.2 Membership
 
 The Membership record is published to allow each node to have access to the GMC of the given
 member. A node MUST have a member's GMC in order to authorize records that the member
@@ -1728,7 +1548,8 @@ Release: June 25, 2021
 
 21 / 57
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1765,7 +1586,7 @@ GMC Length (4 bytes): The length of the GMC Data field which follows, in little-
 
 GMC Data (variable): The PKCS7 ASN encoded GMC chain, as specified in [RFC2315].
 
-2.2.4  Record Security Data
+#### 2.2.4 Record Security Data
 
 The data that P2P Grouping stores in the Security Data field of each P2P Graphing record
 (specified in [MS-PPGRH] section 2.2.1.9) is as follows.
@@ -1814,12 +1635,13 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Signature (128 bytes): An RSA PKCS #1 signature with no hash algorithm OID [RFC8017] of the
+
+Signature (128 bytes): An RSA PKCS #1 signature with no hash algorithm OID [RFC8017] of the
 
 hash of the record data and properties using the asymmetric RSA key in the modifier's GMC. The
 syntax for the signature Hash is specified in section 2.2.4.1.
 
-2.2.4.1  Signature Hash
+##### 2.2.4.1 Signature Hash
 
 The hash that is used for the signature MUST be either an MD5 hash (for P2P Grouping v1.0 , as
 specified in [RFC1321]) or SHA1 (for P2P Grouping v1.1, as specified in [RFC3174]). The hash MUST
@@ -1881,7 +1703,8 @@ Release: June 25, 2021
 
 23 / 57
 
-Record Payload (variable)
+
+Record Payload (variable)
 
 Creator Serial Number (16 bytes)
 
@@ -1955,7 +1778,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-PPSEC].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1967,7 +1791,7 @@ Modifier Serial Number (16 bytes): The X.509 certificate serial number [RFC2459]
 
 the record modifier.
 
-2.2.5  X.509 Usage
+#### 2.2.5 X.509 Usage
 
 PNRP defines several X.509 certificate extensions (see [MS-PNRP] section 2.2.3.5), and also defines
 certificate chain validation rules (see [MS-PNRP] section 2.2.3.5). All certificates and certificate chains
@@ -1984,7 +1808,8 @@ Release: June 25, 2021
 
 25 / 57
 
-szOID_PEERNET_CERT_TYPE: P2P Grouping certificate types map to PnrpCertificateTypes ([MS-
+
+szOID_PEERNET_CERT_TYPE: P2P Grouping certificate types map to PnrpCertificateTypes ([MS-
 PNRP] section 2.2.3.5.1.1) as follows.
 
 Value
@@ -2088,7 +1913,8 @@ Release: June 25, 2021
 
 26 / 57
 
-2.2.5.1  Enhanced Key Usage
+
+##### 2.2.5.1 Enhanced Key Usage
 
 The enhanced key usage (EKU) extension MUST be used and MUST contain the following OIDs: PKI
 Peer Auth (defined below) and PKI Server Auth (1.3.6.1.5.5.7.3.1) [RFC2459].
@@ -2109,9 +1935,9 @@ The OID to specify that a certificate can be used for P2P authentication.
 An IDC MUST contain usage specifiers for both Peer Auth and PKI Server
 Auth (1.3.6.1.5.5.7.3.1) [RFC2459].
 
-2.2.5.2  Certificate and Certificate Chain Validation
+##### 2.2.5.2 Certificate and Certificate Chain Validation
 
-2.2.5.2.1 Certificate Signature and Signature validation.
+###### 2.2.5.2.1 Certificate Signature and Signature validation.
 
 Certificates of type GRC and IDC MUST be self-signed with the subject's private key. Validation of the
 signature MUST be performed by using the subject public key in the certificate itself.
@@ -2139,7 +1965,7 @@ It MUST be a GMC type certificate.
 
 The signature validation using the subject public key in the parent's certificate MUST succeed.
 
-2.2.5.2.2 Certificate Validity
+###### 2.2.5.2.2 Certificate Validity
 
 To be valid, a certificate MUST meet all constraints imposed by PNRP, see [MS-PNRP] section 2.2.3.5.
 It MUST also meet the following constraint:
@@ -2148,7 +1974,7 @@ It MUST also meet the following constraint:
 
 For certificates of type GMC and GRC, the PnrpPeerName field MUST be the Group Peer Name.
 
-2.2.5.2.3 Certificate Chain Validity
+###### 2.2.5.2.3 Certificate Chain Validity
 
 To be valid, a certificate chain MUST meet all constraints imposed by PNRP, see [MS-PNRP] section
 2.2.3.5. It MUST also meet the following constraints:
@@ -2178,7 +2004,8 @@ Release: June 25, 2021
 
 27 / 57
 
-
+
+
 
 For a GMC parent and GMC child, the Roles specified in the child certificate MUST be issuable by
 one or more Roles specified in the parent certificate. See section 2.2.5.3 below.
@@ -2187,7 +2014,7 @@ one or more Roles specified in the parent certificate. See section 2.2.5.3 below
 
 For a GRC parent and GMC child, any Role is valid.
 
-2.2.5.3  Roles
+##### 2.2.5.3 Roles
 
 The following Roles and their meanings are defined: test1
 
@@ -2293,12 +2120,12 @@ No
 the Creator ID field of the record, as specified in [MS-PPGRH] section 2.2.1.9, matches the Secure
 Peer Name of the node.
 
-2.2.6  Out-of-band XML
+#### 2.2.6 Out-of-band XML
 
 An application MUST have a means of transferring identity and invitation information between nodes.
 This information is sent out-of-band of the P2P Grouping protocols.
 
-2.2.6.1  Invitation
+##### 2.2.6.1 Invitation
 
 An invitation is a block of XML as described below. There are two invitation formats, one for inviting by
 way of a password, another for inviting by way of GMC.
@@ -2312,7 +2139,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
- <?xml version="1.0" encoding="utf-8"?>
+
+ <?xml version="1.0" encoding="utf-8"?>
  <xs:schema xmlns:dt="urn:schemas-microsoft-com:datatypes" attributeFormDefault="unqualified"
 elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
      <xs:import namespace="urn:schemas-microsoft-com:datatypes" />
@@ -2386,7 +2214,8 @@ Release: June 25, 2021
 
 29 / 57
 
-CLOUDNAME: The name of the PNRP Cloud in which the Group operates.
+
+CLOUDNAME: The name of the PNRP Cloud in which the Group operates.
 
 SCOPE: The scope zone of the PNRP Cloud in which the Group operates.
 
@@ -2400,7 +2229,7 @@ GMC: A Base-64 ([RFC4648]) encoded string representing the PKCS7 ASN-encoded GMC
 
 invitee ([RFC2315]).
 
-2.2.6.2  Identity
+##### 2.2.6.2 Identity
 
 A serialized identity suited for invitation creation is a block of XML as described below.
 
@@ -2437,18 +2266,19 @@ Release: June 25, 2021
 
 30 / 57
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 In a peer-to-peer network, all nodes are equal. None are specifically servers and none are specifically
 clients. The following sections divide the protocol details into "Peer", "Requestor", and "Authenticator"
 functionality. However, each node MUST implement all three categories of functionality simultaneously
 for a given Group.
 
-3.1  Peer Details
+### 3.1 Peer Details
 
 This section discusses the protocol details related to participation in a group after authentication.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2506,7 +2336,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-MemberDataOptional: A flag which, when set, indicates that the node does not publish a
+
+MemberDataOptional: A flag which, when set, indicates that the node does not publish a
 
 Membership Record until the Node publishes a Record or issues a GMC.
 
@@ -2537,12 +2368,12 @@ Comment: A comment to be provided along with the Group.
 Note that the above conceptual data can be implemented using a variety of techniques. An
 implementation is at liberty to implement such data in any way it pleases.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 UnvalidatedRecordList: A timer that fires after 30 seconds, triggering a scan of the Unvalidated
 Record List to remove expired records.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 If a node is connecting to an existing group, it MUST:
 
@@ -2566,9 +2397,9 @@ application-provided classifier. This will be the Group Peer Name.
 
   Create a GMC chain from the GRC and the Local IDC, as defined in section 3.1.7.5.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Group Creation
+##### 3.1.4.1 Group Creation
 
 This is triggered by a request from the higher layer application to create a new group. The following
 information MUST be provided by the application and stored by local Node:
@@ -2580,7 +2411,8 @@ Release: June 25, 2021
 
 32 / 57
 
-  MemberDataOptional: A Flag indicating whether publishing of membership MUST be delayed
+
+  MemberDataOptional: A Flag indicating whether publishing of membership MUST be delayed
 
 until the Node publishes a Record or generates a GMC for another Node.
 
@@ -2663,7 +2495,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.  Trigger P2P Graphing to create a new Graph as specified in [MS-PPGRH] section 3.1.4.1 with the
+
+3.  Trigger P2P Graphing to create a new Graph as specified in [MS-PPGRH] section 3.1.4.1 with the
 
 following parameters:
 
@@ -2714,7 +2547,7 @@ Node as Security Provider.
 If any one of the preceding steps fails, the group creation MUST be terminated, and it is recommended
 that the Grouping Security Protocol notifies the higher-layer application of the failure.
 
-3.1.4.2  Opening the PNRP Cloud
+##### 3.1.4.2 Opening the PNRP Cloud
 
 The operations to search and open a PNRP Cloud are defined in [MS-PNRP] section 3.1.4.1. The
 cloud MUST be determined based on the Cloud Scope and Cloud Name provided by the higher-layer
@@ -2734,7 +2567,7 @@ MUST be set to the Cloud name of the local private Cloud opened.
 
 Protocol notify the higher-layer application of the failure.
 
-3.1.4.3  Connecting to a Group
+##### 3.1.4.3 Connecting to a Group
 
 This section specifies the operations of connecting to an existing group. The following information
 MUST be provided by the higher-layer application in order to connect to an existing group:
@@ -2753,7 +2586,8 @@ Release: June 25, 2021
 
 34 / 57
 
-  Cloud Name
+
+  Cloud Name
 
 
 
@@ -2796,7 +2630,7 @@ record, the node MUST begin listening, as specified in section 3.1.4.4.
 
 MUST be terminated.
 
-3.1.4.4  Begin Listening
+##### 3.1.4.4 Begin Listening
 
 When the higher-layer application requests the node to start listening for incoming connections, the
 P2P Grouping Security Protocol MUST perform the following steps:
@@ -2844,7 +2678,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-After the node information is published in PNRP, the node MUST publish its Membership record as
+
+After the node information is published in PNRP, the node MUST publish its Membership record as
 specified in section 3.1.7.1 if:
 
 
@@ -2860,7 +2695,7 @@ The Securities Properties record does not contain the PEER_MEMBER_DATA_OPTIONAL 
 If any of the preceding steps fails, the listening operation MUST be terminated and the Grouping
 protocol MUST notify the higher-layer application of the failure.
 
-3.1.4.5  Publish New Credentials
+##### 3.1.4.5 Publish New Credentials
 
 An application MUST publish new credentials for a Peer Identity when inviting the Peer Identity to
 Join the Group or when a new GMC MUST be issued for a Peer Identity because the existing one's
@@ -2938,37 +2773,38 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-When the higher-layer application triggers publication of new credentials for an existing node, a new
+
+When the higher-layer application triggers publication of new credentials for an existing node, a new
 GMC chain MUST be created (based on section 2.2.5.3) for the Peer Identity specified. This GMC
 chain MUST then be PKCS#7-encoded as specified in section 2.2.3.2, and published in a Membership
 record, as specified in section 3.1.7.1, if the application so specifies. The GMC chain MUST then be
 returned to the application.
 
-3.1.4.6  Modify Security Properties
+##### 3.1.4.6 Modify Security Properties
 
 To modify the group's security properties, the higher-layer application on the group creator node
 MUST trigger the update and publishing of an updated Security Properties record. Certain properties
 MUST NOT be changed as a result of the update. See section 3.1.4.7 for details.
 
-3.1.4.7  Record Publication
+##### 3.1.4.7 Record Publication
 
 When a higher-layer application requests a record be published by P2P Grouping, the local node
 MUST follow the steps specified in section 3.1.7.1.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 None. Because P2P Graphing handles all messages, the record protocol is handled as a set of local
 events (notifications from P2P Graphing).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 UnvalidatedRecordList: This timer has a duration of 30 seconds. When it fires, it MUST immediately
 be reset, the list of Unvalidated Records MUST be scanned, and each Record in the list whose
 Expiration time is smaller than the current system time MUST be deleted from the list.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Record Publication
+##### 3.1.7.1 Record Publication
 
 When the local node attempts to publish a record, either at one requested by a higher-layer
 application or one of the reserved record types (Security Properties record and Membership record)
@@ -3009,7 +2845,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-If the record being published is a Security Properties record, steps 3-4 of the validation are slightly
+
+If the record being published is a Security Properties record, steps 3-4 of the validation are slightly
 different since the record is published using the Group Peer Name:
 
 
@@ -3055,7 +2892,7 @@ section 3.1.4.3.
 
 specified in [MS-PPGRH] section 3.1.4.3.
 
-3.1.7.2  Record Received
+##### 3.1.7.2 Record Received
 
 When a record is received by P2P Graphing, it passes the record in PEER_RECORD format (see [MS-
 PPGRH] section 2.2.1.9) to P2P Grouping implementation to be validated. To validate the security of
@@ -3102,7 +2939,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-
+
+
 
 
 
@@ -3213,25 +3051,26 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-MUST match the cached values for those fields that cannot be changed after group creation (see
+
+MUST match the cached values for those fields that cannot be changed after group creation (see
 section 2.2.3.1).
 
 If a record is found to be invalid in any way, this MUST be reported to the P2P Graphing
 implementation. Otherwise, P2P Graphing MUST be notified that the record is valid.
 
-3.1.7.3  Database Synchronized
+##### 3.1.7.3 Database Synchronized
 
 After P2P Graphing notifies P2P Grouping that the database has been synchronized, the node MUST
 begin listening, as specified in section 3.1.4.4.
 
-3.1.7.4  Long Term Partition Repair
+##### 3.1.7.4 Long Term Partition Repair
 
 When P2P Graphing requests that P2P Grouping form a new connection, P2P Grouping MUST use
 PNRP to discover another node and attempt a connection, as specified in section 3.1.4.3. This
 happens as part of the P2P Graphing Long Term Partition Repair, as specified in [MS-PPGRH] section
 1.3.2.5.
 
-3.1.7.5  GMC Chain Creation
+##### 3.1.7.5 GMC Chain Creation
 
 This section specifies the procedure of generating a GMC chain.
 
@@ -3264,7 +3103,7 @@ section 2.2.5.
 The GMC chain consists of the original GMC chain of the singing node plus the newly signed GMC for
 the joining node.
 
-3.2  Group Connect Requestor Details
+### 3.2 Group Connect Requestor Details
 
 This section covers details of the Group Connect subprotocol for a node that initiated a connection to a
 group member. The Requestor can, but does not have to be a group member when initiating the
@@ -3277,7 +3116,8 @@ Release: June 25, 2021
 
 40 / 57
 
-3.2.1  Abstract Data Model
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol, in addition to those listed in section 3.1.1. The described
@@ -3304,19 +3144,19 @@ model is for a single instance of the Group Connect sub-protocol. A node can ins
 one Group Connect sub-protocol instance and the same set of conceptual data can be maintained for
 each instance.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 In addition to the initialization specified in section 3.1.3, the TLS implementation MUST be initialized
 to use the Local IDC as the client certificate to establish the secure connection. The Group Connect
 State datum MUST be set to the "Initial" state.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Connecting to a Group
+##### 3.2.4.1 Connecting to a Group
 
 This event is triggered by a higher-layer application request to connect to an existing group, as
 specified in section 3.1.4.3. P2P Grouping implementation MUST have already discovered one or
@@ -3326,9 +3166,9 @@ chosen peer. If the TLS negotiation fails, this instance of the Group Connect su
 terminated. The Grouping protocol implementation MUST terminate the TLS connection and notify the
 higher-layer application of the failure.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a Message During TLS Negotiation
+##### 3.2.5.1 Receiving a Message During TLS Negotiation
 
 When a message is received from the P2P Graphing implementation before TLS Negotiation
 Complete is true, in other words, during the "Initial" state, the message MUST be passed to the TLS
@@ -3342,12 +3182,13 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-specified in section 3.2.7.1 MUST be performed. If an error is returned by the TLS layer, P2P Graphing
+
+specified in section 3.2.7.1 MUST be performed. If an error is returned by the TLS layer, P2P Graphing
 MUST be notified with a nonzero return value and requested to close the connection.
 
-3.2.5.2  Messages Received After TLS Negotiation Completion
+##### 3.2.5.2 Messages Received After TLS Negotiation Completion
 
-3.2.5.2.1 Receiving Data
+###### 3.2.5.2.1 Receiving Data
 
 When data is received from P2P Graphing while the Group Connect State datum is in a state other
 than "Initial" or "Authentication Complete", the data MUST be passed to the TLS layer for processing,
@@ -3357,7 +3198,7 @@ when processing an incoming message, the message MUST be silently discarded. If 
 Connect subprotocol message cannot be properly parsed according to the defined message syntax, the
 connection MUST be terminated.
 
-3.2.5.2.2 Receiving a Hello Message
+###### 3.2.5.2.2 Receiving a Hello Message
 
 
 
@@ -3386,7 +3227,7 @@ If a non-expired GMC is not found, the connection MUST be terminated.
 
 by way of the peer.
 
-3.2.5.2.3 Receiving a Hello + MyGMC Message
+###### 3.2.5.2.3 Receiving a Hello + MyGMC Message
 
 
 
@@ -3426,7 +3267,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  Otherwise, if the P2P Grouping Version is 1.1:
+
+  Otherwise, if the P2P Grouping Version is 1.1:
 
 
 
@@ -3451,7 +3293,7 @@ The Group Connect State datum MUST be set to "Password Sent".
 
 terminated.
 
-3.2.5.2.4 Receiving YourGMC Message
+###### 3.2.5.2.4 Receiving YourGMC Message
 
 If the Requestor is not in the "Password Sent" state, this message MUST be silently discarded and the
 connection MUST be terminated. Otherwise, the Requestor MUST:
@@ -3467,13 +3309,13 @@ Otherwise, the received GMC MUST henceforth be used as the Local GMC, Group Conn
 datum MUST be set to "Authentication Complete", and P2P Graphing MUST be notified that the local
 node is now connected to the group by way of the Authenticator.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  TLS Negotiation Complete
+##### 3.2.7.1 TLS Negotiation Complete
 
 After the TLS implementation reports that negotiation has completed, the TLS Negotiation
 Complete MUST be set to true. The Requestor MUST do the following:
@@ -3509,7 +3351,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-
+
+
 
 Pass the message returned by the TLS layer to P2P Graphing to be sent.
 
@@ -3533,14 +3376,14 @@ MyGMC, or Hello + Password) is sent.
 
 The compound message format is defined in section 2.2.2.
 
-3.2.7.2  Encrypting a Message
+##### 3.2.7.2 Encrypting a Message
 
 When P2P Graphing requests that a message be encrypted, the message MUST be passed to the TLS
 implementation for encryption. If the encryption is successful, the encrypted message MUST be
 returned to P2P Graphing; otherwise, the message MUST be silently discarded and P2P Graphing
 MUST be notified of the failure with a nonzero return value.
 
-3.2.7.3  Decrypting a Message
+##### 3.2.7.3 Decrypting a Message
 
 When P2P Graphing requests that a message be decrypted, the message MUST be passed to the TLS
 implementation for decryption. The TLS implementation MUST use only the message size specified in
@@ -3549,12 +3392,12 @@ from P2P Graphing. If the decryption is successful, the decrypted message MUST b
 Graphing; otherwise, the message MUST be silently discarded and P2P Graphing MUST be notified of
 the failure with a nonzero return value.
 
-3.3  Group Connect Authenticator Details
+### 3.3 Group Connect Authenticator Details
 
 This section covers details of the Group Connect subprotocol for a node that is already participating in
 a group, and has accepted a connection from another node.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol, in addition to those listed in section 3.1.1. The described
@@ -3581,7 +3424,8 @@ Release: June 25, 2021
 
 44 / 57
 
-Group Authenticate State: The state of current Group Connect sub-protocol with the following
+
+Group Authenticate State: The state of current Group Connect sub-protocol with the following
 states: Initial, TLS Connected, Hello Sent, Hello Received, Password Received, Authentication
 Complete.
 
@@ -3591,19 +3435,19 @@ model is for a single instance of the Group Connect subprotocol. A node can inst
 Group Connect subprotocol instance and the same set of conceptual data MUST be maintained for
 each instance.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 In addition to the initialization specified in section 3.1.3, the TLS implementation MUST be initialized
 to use the Local IDC as the server certificate to establish the secure connection. The Group
 Authenticate State datum MUST be set to "Initial" state.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  Group Listening for Incoming Connect
+##### 3.3.4.1 Group Listening for Incoming Connect
 
 When a higher-layer application requests that the Grouping Security Protocol start listening for and
 accepting incoming Group Connect requests, as specified in section 3.1.7.1, the local node MUST
@@ -3612,9 +3456,9 @@ implementation MUST use the Local IDC as the server certificate and listen for i
 connection requests [RFC4346]. If the binding of the Local IDC fails, this instance of the Group
 Connect subprotocol MUST be terminated.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Receiving a Message During TLS Negotiation
+##### 3.3.5.1 Receiving a Message During TLS Negotiation
 
 When a message is received from the P2P Graphing implementation before TLS Negotiation
 Complete is true, in other words, during the "Initial" state, the message MUST be passed to the TLS
@@ -3623,9 +3467,9 @@ Graphing. If the TLS layer indicates that authentication has successfully comple
 specified in Section 3.3.7.1 MUST be performed. If an error is returned by the TLS layer, P2P Graphing
 MUST be notified with a nonzero return value and requested to close the connection.
 
-3.3.5.2  Receiving a Message After TLS Negotiation Has Completed
+##### 3.3.5.2 Receiving a Message After TLS Negotiation Has Completed
 
-3.3.5.2.1 Receiving Data
+###### 3.3.5.2.1 Receiving Data
 
 When data is received from P2P Graphing while the Group Connect State datum is in a state other
 than "Initial" or "Authentication Complete", the data MUST be passed to the TLS layer for processing.
@@ -3633,7 +3477,7 @@ The data returned by the TLS layer MUST be reassembled into protocol messages an
 specified in the sections below. If an incoming message cannot be properly parsed according to the
 defined message syntax, the connection MUST be terminated.
 
-3.3.5.2.2 Receiving a Hello Message
+###### 3.3.5.2.2 Receiving a Hello Message
 
 [MS-PPSEC] - v20210625
 Peer-to-Peer Grouping Security Protocol
@@ -3642,7 +3486,8 @@ Release: June 25, 2021
 
 45 / 57
 
-If the Hello message is received when the Authenticator is not in the "TLS Connected" state, the
+
+If the Hello message is received when the Authenticator is not in the "TLS Connected" state, the
 message MUST be silently discarded and the connection MUST be terminated.
 
 If the Hello message is received when the Authenticator is in the "TLS Connected" state, the local
@@ -3689,7 +3534,7 @@ Pass the message returned by the TLS layer to P2P Graphing to be sent.
 "Authentication Complete ", and P2P Graphing MUST be notified that the Requestor is now
 connected to the group.
 
-3.3.5.2.3 Receive Hello + MyGMC Message
+###### 3.3.5.2.3 Receive Hello + MyGMC Message
 
 If the Hello + MyGMC message is received when the Authenticator is not in the "TLS Connected" state,
 the message MUST be silently discarded and the connection MUST be terminated.
@@ -3730,7 +3575,8 @@ Release: June 25, 2021
 
 46 / 57
 
-
+
+
 
 Pass the message returned by the TLS layer to P2P Graphing to be sent.
 
@@ -3754,7 +3600,7 @@ Pass the message returned by the TLS layer to P2P Graphing to be sent.
 
   Set the Group Connect State datum to "Authentication Complete".
 
-3.3.5.2.4 Receive Hello + Password Message
+###### 3.3.5.2.4 Receive Hello + Password Message
 
 If the Hello + Password message is received when the Authenticator is not in the "TLS Connected"
 state, the message MUST be silently discarded and the connection MUST be terminated.
@@ -3783,7 +3629,7 @@ Pass the message returned by the TLS layer to P2P Graphing to be sent.
 
   Otherwise, if the local GMC is expired, the connection MUST be terminated.
 
-3.3.5.2.5 Receive Password Message
+###### 3.3.5.2.5 Receive Password Message
 
 If the Password message is received when the local node is not in the "Hello Sent" state, the message
 MUST be silently discarded and the connection MUST be terminated.
@@ -3816,7 +3662,8 @@ Release: June 25, 2021
 
 47 / 57
 
-
+
+
 
 The Password Data is the SHA-1 hash of the null-terminated Password Hash String, as
 specified in section 2.2.1.2, concatenated with the null-terminated Remote Peer Name
@@ -3882,18 +3729,18 @@ group.
 
 The Group Connect State datum MUST be set to "Authentication Complete".
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
-3.3.7.1  Completing TLS Negotiation
+##### 3.3.7.1 Completing TLS Negotiation
 
 After the TLS implementation reports that an incoming TLS handshake has completed, the
 Authenticator MUST set the Group Authenticate State datum to TLS Connected.
 
-3.3.7.2  Encrypting a Message
+##### 3.3.7.2 Encrypting a Message
 
 When P2P Graphing requests that a message be encrypted, the message MUST be passed to the TLS
 implementation for encryption. If the encryption is successful, the encrypted message MUST be
@@ -3907,7 +3754,8 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.3.7.3  Decrypting a Message
+
+##### 3.3.7.3 Decrypting a Message
 
 When P2P Graphing requests that a message be decrypted, the message MUST be passed to the TLS
 implementation for decryption. If the decryption is successful, the decrypted message MUST be
@@ -3921,13 +3769,14 @@ Release: June 25, 2021
 
 49 / 57
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MS-PPSEC].images/page050-img01.png)
 <!-- /Extracted images from page 50 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Establishing a Connection Using GMC Authentication
+### 4.1 Establishing a Connection Using GMC Authentication
 
 Node 2 requests to connect to a Group created by Node 1. Node 1 is already listening for incoming
 connections. Node 2 already has a GMC.
@@ -3958,7 +3807,7 @@ message and the MyGMC message.
 
 7.  The connection is now authenticated, and the P2P Graphing protocol begins using the connection.
 
-4.2  Establishing a Connection Using Password Authentication
+### 4.2 Establishing a Connection Using Password Authentication
 
 Node 2 requests to connect to a Group created by Node 1. Node 1 is already listening for incoming
 connections. Node 2 does not have a GMC.
@@ -3970,7 +3819,8 @@ Release: June 25, 2021
 
 50 / 57
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-PPSEC].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
@@ -4019,9 +3869,10 @@ Release: June 25, 2021
 
 51 / 57
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 SHA-1 hashing is not deprecated due to the backward compatibility consideration.
 
@@ -4029,7 +3880,7 @@ Any form of password authentication can be vulnerable to dictionary or brute-for
 attacks. Proper throttling is to be considered by the implementers of the Peer-to-Peer Grouping
 Security Protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4040,7 +3891,8 @@ Release: June 25, 2021
 
 52 / 57
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4085,7 +3937,8 @@ Release: June 25, 2021
 
 53 / 57
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4128,7 +3981,8 @@ Release: June 25, 2021
 
 54 / 57
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -4273,7 +4127,8 @@ Initialization
 
 55 / 57
 
-   peer 32
+
+   peer 32
 Introduction 7
 
 J
@@ -4414,7 +4269,8 @@ Preconditions 12
 
 56 / 57
 
-Prerequisites 12
+
+Prerequisites 12
 Product behavior 53
 Protocol Details
    overview 31

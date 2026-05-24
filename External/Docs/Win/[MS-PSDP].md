@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 27
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 27
 
-Date
+
+Date
 
 Revision
 History
@@ -516,7 +518,8 @@ Release: April 23, 2024
 
 3 / 27
 
-Date
+
+Date
 
 Revision
 History
@@ -573,114 +576,54 @@ Release: April 23, 2024
 
 4 / 27
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Structure of the Discovery Information Element](#221-structure-of-the-discovery-information-element)
+    - [2.2.2 Calculation of the Format Identifier Hash](#222-calculation-of-the-format-identifier-hash)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher Layer-Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Configuration of a PSD Information Element](#3151-configuration-of-a-psd-information-element)
+      - [3.1.5.2 Cancellation of a PSD Information Element](#3152-cancellation-of-a-psd-information-element)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Structure of the Discovery Information Element ............................................. 11
-Calculation of the Format Identifier Hash ....................................................... 12
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 13
-Server Details .................................................................................................. 13
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher Layer-Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Configuration of a PSD Information Element ............................................. 15
-Cancellation of a PSD Information Element ............................................... 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-Client Details ................................................................................................... 17
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.1.6
-3.1.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 21
-
-5  Security ................................................................................................................. 23
-Security Considerations for Implementers ........................................................... 23
-Index of Security Parameters ............................................................................ 23
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 24
-
-7  Change Tracking .................................................................................................... 25
-
-8  Index ..................................................................................................................... 26
-
-[MS-PSDP] - v20240423
-Proximity Service Discovery Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 27
-
-1  Introduction
+## 1 Introduction
 
 This specification defines a protocol that is referred to as the Proximity Service Discovery Protocol. The
 Proximity Service Discovery Protocol allows a client to discover services in its physical proximity,
@@ -689,7 +632,7 @@ which is defined by the radio range.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -753,7 +696,8 @@ Proximity Service Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-namespace: An abstract container that provides context for the items (names, technical terms, or
+
+namespace: An abstract container that provides context for the items (names, technical terms, or
 words) that it holds and allows disambiguation of items that have the same name (residing in
 different namespaces).
 
@@ -796,14 +740,14 @@ Generic Syntax [RFC3986].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -824,7 +768,8 @@ Proximity Service Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note Subcription Login or purchase to download this document.
+
+Note Subcription Login or purchase to download this document.
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
@@ -838,7 +783,7 @@ Syntax", STD 66, RFC 3986, January 2005, https://www.rfc-editor.org/info/rfc3986
 [SHA256] National Institute of Standards and Technology, "FIPS 180-2, Secure Hash Standard
 (SHS)", August 2002, http://csrc.nist.gov/publications/fips/fips180-2/fips180-2withchangenotice.pdf
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [UPNPARCH1] UPnP Forum, "UPnP Device Architecture 1.0", October 2008,
 http://www.upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.0.pdf
@@ -846,7 +791,7 @@ http://www.upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.0.pdf
 [WS-Discovery] Beatty, J., Kakivaya, G., Kemp D., et al., "Web Services Dynamic Discovery (WS-
 Discovery)", April 2005, http://specs.xmlsoap.org/ws/2005/04/discovery/ws-discovery.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 The purpose of the Proximity Service Discovery Protocol is to convey service discovery information,
 such as service advertisements, as part of Beacon frames, as specified in [IEEE802.11-2007]. Beacon
@@ -874,7 +819,8 @@ Release: April 23, 2024
 
 8 / 27
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-PSDP].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -896,7 +842,7 @@ connection has been established.
 The inclusion of service discovery information in broadcast messages enables the discovery of services
 before connecting to the service-hosting device.<3>
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Proximity Service Discovery Protocol extends the IEEE802.11 standard, whose conventions are
 applied as specified in [IEEE802.11-2007]. The Proximity Service Discovery Protocol introduces a
@@ -904,7 +850,7 @@ specific use for one of that protocol's reserved information element types, and 
 MAC layer abstract service primitives for managing the configuration, transmission, and receipt of
 these new information elements.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 In the Proximity Service Discovery Protocol, the service-hosting device acts as an AP or ad hoc
 network station and includes an additional information element (discovery information element)
@@ -912,7 +858,7 @@ in its periodically transmitted beacon. The client acts as a station in infrastr
 mode and is able to extract the discovery information element, as specified in section 2.2, from the
 received beacon.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Proximity Service Discovery Protocol works with higher-layer discovery protocols, such as the
 Simple Service Discovery Protocol, as specified in [UPNPARCH1] and Web Services Dynamic Discovery
@@ -926,22 +872,23 @@ Proximity Service Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The discovery advertisements of these related protocols can be mapped into discovery information
+
+The discovery advertisements of these related protocols can be mapped into discovery information
 elements that are conveyed in IEEE802.11 beacons. A unique format identifier can be defined for
 each higher-layer protocol based on the URI namespace of the respective higher-layer discovery
 protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Vendors can use any combination of data for the content of the discovery information element.
 However, vendors SHOULD define a valid URI to identify a proprietary format. Vendors SHOULD NOT
 use URIs that represent well-known namespaces when they devise proprietary formats.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -964,12 +911,13 @@ Release: April 23, 2024
 
 10 / 27
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Proximity Service Discovery Protocol messages are transported and
 also specify Proximity Service Discovery Protocol message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 Single or multiple discovery information elements are transmitted as part of IEEE802.11 Beacon
 frames or Probe Response frames.<4> There are no requirements for the order of the information
@@ -986,11 +934,11 @@ the total size of the discovery information element is kept small.
 If multiple information elements are included in the Beacon or Probe Response frame, the maximum
 size of the Beacon frame, as specified in [IEEE802.11-2007], MUST NOT be exceeded.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify Proximity Service Discovery Protocol message syntax.
 
-2.2.1  Structure of the Discovery Information Element
+#### 2.2.1 Structure of the Discovery Information Element
 
 The structure of the discovery information element is shown in the following packet.
 
@@ -1050,7 +998,8 @@ Proximity Service Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Data (variable): Contains user-defined data for discovery.
+
+Data (variable): Contains user-defined data for discovery.
 
 The transmission order follows the conventions for transmission of MAC protocol data units
 (MPDUs), as specified in [IEEE802.11-2007] section 7.
@@ -1058,7 +1007,7 @@ The transmission order follows the conventions for transmission of MAC protocol 
 The message format of the Beacon frame is as specified in [IEEE802.11-2007] section 7.2.3.1. The
 message format of the Probe Response frame is as specified in [IEEE802.11-2007] section 7.2.3.9.
 
-2.2.2  Calculation of the Format Identifier Hash
+#### 2.2.2 Calculation of the Format Identifier Hash
 
 The format identifier hash is represented by the bits 0…31 of keyed-hash message
 authentication code (HMAC) (as specified in [RFC4634]) based on the SHA-256 algorithm, as
@@ -1083,11 +1032,12 @@ Release: April 23, 2024
 
 12 / 27
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-PSDP].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The following sections specify details of the Proximity Service Discovery Protocol, including semantics
 of the conceptual service primitives for the client and server.
@@ -1110,7 +1060,7 @@ The Server Details (section 3.1) and Client Details (section 3.2) sections of th
 conceptual MLME primitives that are exchanged with the station management entity (SME) in order for
 the server and client to configure and receive discovery information elements.
 
-3.1  Server Details
+### 3.1 Server Details
 
 The server function MUST be hosted by either an IEEE802.11 AP or an ad hoc network station.<5>
 
@@ -1124,7 +1074,8 @@ Proximity Service Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-PSDP].images/page014-img01.png)
 ![Extracted image 2 from page 14]([MS-PSDP].images/page014-img02.png)
 <!-- /Extracted images from page 14 -->
@@ -1140,7 +1091,7 @@ discovery data for a particular format identifier.
 
 Figure 4: State diagram for the configuration of a PSD information element at the server
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1152,7 +1103,8 @@ Proximity Service Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-explanation of how the protocol behaves. This document does not mandate that implementations
+
+explanation of how the protocol behaves. This document does not mandate that implementations
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
@@ -1182,15 +1134,15 @@ Configured: In this state, the server includes all the PSD IEs within the PSD IE
 
 Beacon frames and 802.11 Probe Responses.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher Layer-Triggered Events
+#### 3.1.4 Higher Layer-Triggered Events
 
 The MLME-PSD-Transmit.request primitive is generated by the SME as a result of a higher layer event
 in order to start transmitting the discovery information element as part of any Beacon and Probe
@@ -1205,9 +1157,9 @@ by using the MLME-PSD-Transmit.request primitive.
  (Discovery data,
  FormatIdentifier)
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Configuration of a PSD Information Element
+##### 3.1.5.1 Configuration of a PSD Information Element
 
 Upon receipt of the MLME-PSD-Transmit.request primitive including discovery data, the configuration
 process enters the Configuring state. If the primitive is successful, a proximity service discovery
@@ -1220,7 +1172,8 @@ Proximity Service Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The hash of the format identifier, in addition to the discovery data, is included in the information
+
+The hash of the format identifier, in addition to the discovery data, is included in the information
 element. The MLME issues an MLME-PSD-Transmit.confirm that reflects the result of the MLME-
 PSD.Transmit.request. If the result is not equal to success, the configuration process returns to the
 Not Configured state. If the result is equal to success, the configuration process enters the
@@ -1261,7 +1214,7 @@ information element will be included in subsequent Beacon and Probe Response tra
 Otherwise, the effect of the primitive is to notify the SME that the PSD IE was not configured correctly
 and will not be included in subsequent Beacon and Probe Response transmissions.
 
-3.1.5.2  Cancellation of a PSD Information Element
+##### 3.1.5.2 Cancellation of a PSD Information Element
 
 Upon receipt of the MLME-PSD-Transmit.request primitive specifying a format identifier present in the
 PSD IEs Table, but with no discovery data, the configuration process enters the Canceling state
@@ -1271,11 +1224,11 @@ Transmit.confirm is generated to indicate the result of the MLME-PSD.Transmit.re
 the result, the configuration process enters the Not Configured state. If no PSD information elements
 remain in the PSD IEs Table, the server enters the Disabled state.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1286,11 +1239,12 @@ Release: April 23, 2024
 
 16 / 27
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-PSDP].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
-3.2  Client Details
+### 3.2 Client Details
 
 The client SHOULD<6> regularly scan its radio spectrum for beacons. When a beacon is received, the
 client SHOULD examine it for the presence of discovery information elements, and if any are
@@ -1310,13 +1264,14 @@ Release: April 23, 2024
 
 17 / 27
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-PSDP].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
 Figure 6: State diagram for the registration of a format identifier at the client
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Format Identifiers Table: A table of format identifiers.
 
@@ -1340,7 +1295,7 @@ Responses for the presence of the discovery information elements with a format i
 hash that matches the registered identifier. Matches found are then delivered to the client
 discovery application.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
@@ -1351,11 +1306,12 @@ Release: April 23, 2024
 
 18 / 27
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 The Format Identifiers Table is initially empty.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The MLME-PSD-Config.request primitive is generated by the SME, to register the format identifier of a
 discovery information element to whose discovery will be communicated to the SME by means of an
@@ -1367,7 +1323,7 @@ The format identifier is passed to the MLME SAP by using the following primitive
  MLME-PSD-Config.request
  (FormatIdentifier)
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Upon receipt of the MLME-PSD-Config.request primitive, the registration process enters the
 Registering state. In this state, if the result of the MLME-PSD-Config.request is successful, the
@@ -1418,7 +1374,8 @@ Proximity Service Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-contained in the Beacon or Probe Response that matches a format identifier that was previously
+
+contained in the Beacon or Probe Response that matches a format identifier that was previously
 registered by using the MLME-PSD.Config.request primitive. If the Beacon or Probe Response contains
 more than one such information element, multiple MLME-PSD-Receive.indication primitives will be
 generated.
@@ -1430,11 +1387,11 @@ SME through the MLME SAP by using the following primitive:
  (Discovery data,
  Format Identifier)
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1445,7 +1402,8 @@ Release: April 23, 2024
 
 20 / 27
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section describes example operations that are used in common scenarios to illustrate the function
 of the Proximity Service Discovery Protocol.
@@ -1479,7 +1437,8 @@ Release: April 23, 2024
 
 21 / 27
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-PSDP].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1492,16 +1451,17 @@ Release: April 23, 2024
 
 22 / 27
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Proximity Service
 Discovery Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1512,7 +1472,8 @@ Release: April 23, 2024
 
 23 / 27
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1577,7 +1538,8 @@ Release: April 23, 2024
 
 24 / 27
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1621,7 +1583,8 @@ Release: April 23, 2024
 
 25 / 27
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1752,7 +1715,8 @@ Sequencing rules
 
 26 / 27
 
-         configuration 15
+
+         configuration 15
 Server
    abstract data model 14
    higher-layer triggered events 15

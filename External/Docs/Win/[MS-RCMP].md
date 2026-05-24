@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 24
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: April 23, 2024
 
 2 / 24
 
-Date
+
+Date
 
 Revision
 History
@@ -518,7 +520,8 @@ Release: April 23, 2024
 
 3 / 24
 
-Date
+
+Date
 
 Revision
 History
@@ -567,100 +570,48 @@ Release: April 23, 2024
 
 4 / 24
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 SSL_CERT_LOGON_REQ Message](#221-sslcertlogonreq-message)
+    - [2.2.2 SSL_CERT_LOGON_RESP Message](#222-sslcertlogonresp-message)
+  - [2.3 Constants](#23-constants)
+  - [2.4 Directory Service Schema Elements](#24-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Abstract Data Model](#31-abstract-data-model)
+  - [3.2 Timers](#32-timers)
+  - [3.3 Initialization](#33-initialization)
+  - [3.4 Higher-Layer Triggered Events](#34-higher-layer-triggered-events)
+  - [3.5 Processing Events and Sequencing Rules](#35-processing-events-and-sequencing-rules)
+    - [3.5.1 Client Generation of SSL_CERT_LOGON_REQ Message](#351-client-generation-of-sslcertlogonreq-message)
+    - [3.5.2 Server Processing of SSL_CERT_LOGON_REQ Message](#352-server-processing-of-sslcertlogonreq-message)
+    - [3.5.3 Server Generation of the SSL_CERT_LOGON_RESP Message](#353-server-generation-of-the-sslcertlogonresp-message)
+  - [3.6 Timer Events](#36-timer-events)
+  - [3.7 Other Local Events](#37-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-SSL_CERT_LOGON_REQ Message ................................................................. 11
-SSL_CERT_LOGON_RESP Message ................................................................ 13
-Constants........................................................................................................ 14
-Directory Service Schema Elements ................................................................... 14
-
-2.2.1
-2.2.2
-
-2.3
-2.4
-
-3.1
-3.2
-3.3
-3.4
-3.5
-
-3  Protocol Details ..................................................................................................... 15
-Abstract Data Model ......................................................................................... 15
-Timers ............................................................................................................ 15
-Initialization .................................................................................................... 15
-Higher-Layer Triggered Events ........................................................................... 15
-Processing Events and Sequencing Rules ............................................................ 15
-Client Generation of SSL_CERT_LOGON_REQ Message .................................... 16
-Server Processing of SSL_CERT_LOGON_REQ Message ................................... 16
-Server Generation of the SSL_CERT_LOGON_RESP Message ............................ 17
-Timer Events ................................................................................................... 18
-Other Local Events ........................................................................................... 18
-
-3.5.1
-3.5.2
-3.5.3
-
-3.6
-3.7
-
-4  Protocol Examples ................................................................................................. 19
-
-5  Security ................................................................................................................. 20
-Security Considerations for Implementers ........................................................... 20
-Index of Security Parameters ............................................................................ 20
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 21
-
-7  Change Tracking .................................................................................................... 23
-
-8  Index ..................................................................................................................... 24
-
-[MS-RCMP] - v20240423
-Remote Certificate Mapping Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 24
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Remote Certificate Mapping Protocol. The Remote Certificate Mapping
 Protocol is used by servers that authenticate users via X.509 certificates, as specified in [X509]. This
@@ -673,7 +624,7 @@ endian format applies unless otherwise stated.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -732,7 +683,8 @@ Remote Certificate Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-privilege attribute certificate (PAC): A Microsoft-specific authorization data present in the
+
+privilege attribute certificate (PAC): A Microsoft-specific authorization data present in the
 authorization data field of a ticket. The PAC contains several logical components, including
 group membership data for authorization, alternate credentials for non-Kerberos authentication
 protocols, and policy control information for supporting interactive logon.
@@ -777,14 +729,14 @@ userPrincipalName attribute of the account object, as described in [MS-ADTS].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -803,7 +755,8 @@ Remote Certificate Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-DTYP] Microsoft Corporation, "Windows Data Types".
+
+[MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
 [MS-ERREF] Microsoft Corporation, "Windows Error Codes".
 
@@ -833,7 +786,7 @@ http://www.itu.int/rec/T-REC-X.509/en
 (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)", Recommendation
 X.690, July 2002, http://www.itu.int/rec/T-REC-X.690/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [GUTMANN] Gutmann, P., "X.509 Style Guide", October 2000,
 http://www.cs.auckland.ac.nz/~pgut001/pubs/x509guide.txt
@@ -846,7 +799,7 @@ https://www.rfc-editor.org/info/rfc2246
 [RFC2716] Aboba, B. and Simon, D., "PPP EAP TLS Authentication Protocol", RFC 2716, October 1999,
 https://www.rfc-editor.org/info/rfc2716
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Certificate Mapping Protocol is used in deployments where users rely on [X509]
 certificates to gain access to resources. After a client authenticates itself to a server using an X.509
@@ -870,7 +823,8 @@ Remote Certificate Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-RCMP].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -899,7 +853,7 @@ Certificate Mapping Protocol has to be familiar with X.509 certificates, in part
 parsing of the certificate to extract the fields listed earlier. For more information about X.509, see
 [GUTMANN].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Any protocol that authenticates clients based on public key certificates can make use of the Remote
 Certificate Mapping Protocol to obtain authorization information about the client. The protocol
@@ -914,7 +868,7 @@ is chosen, the SSL/TLS client authenticates itself to the SSL/TLS server using a
 
 Figure 1: Protocol relationship diagram.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Certificate Mapping Protocol requires that users have X.509 certificates available to them
 for authentication. The Remote Certificate Mapping Protocol also requires that a means exists to
@@ -928,7 +882,8 @@ Release: April 23, 2024
 
 9 / 24
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Remote Certificate Mapping Protocol is applicable in deployments where users have been issued
 X.509 certificates, as specified in [X509], and a common database for user and machine authorization
@@ -937,15 +892,15 @@ authentication step and authorization step. It enables the server that uses an a
 using X.509 certificates to obtain a PAC, as specified in [MS-PAC], that represents the user's identity
 and group memberships, suitable for making authorization decisions.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Remote Certificate Mapping Protocol does not have any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments in the Remote Certificate Mapping Protocol beyond the standards
 assignments as specified in [MS-NRPC].
@@ -957,21 +912,22 @@ Release: April 23, 2024
 
 10 / 24
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Certificate Mapping Protocol messages are embedded in Netlogon Remote Protocol
 messages in the logon interface. As a result, the Remote Certificate Mapping Protocol uses the
 Netlogon RPC transport, as specified in [MS-NRPC] section 2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Remote Certificate Mapping Protocol messages are encoded as opaque Binary Large Objects (BLOB)
 and transported by the generic pass-through capability of the Netlogon Remote Protocol, as specified
 in [MS-NRPC] section 3.2.4.1.
 
-2.2.1  SSL_CERT_LOGON_REQ Message
+#### 2.2.1 SSL_CERT_LOGON_REQ Message
 
 The SSL_CERT_LOGON_REQ structure defines a request to map a client certificate to a security
 principal for the purpose of retrieving the authorization information. All member fields MUST be
@@ -1029,7 +985,8 @@ Remote Certificate Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CertLength (4 bytes): A 32-bit unsigned integer that defines the length, in bytes, of the X.509
+
+CertLength (4 bytes): A 32-bit unsigned integer that defines the length, in bytes, of the X.509
 
 certificate in the Payload member.
 
@@ -1131,7 +1088,8 @@ Release: April 23, 2024
 
 12 / 24
 
-IssuerOffset (4 bytes):  A 32-bit unsigned integer that defines the byte offset from the start of
+
+IssuerOffset (4 bytes):  A 32-bit unsigned integer that defines the byte offset from the start of
 
 the packet to an IssuerName in the Payload member.
 
@@ -1155,7 +1113,7 @@ IssuerName: The BER-encoded certificate issuer name referred to by an IssuerOffs
 IssuerName corresponds to the issuerName member of an X.509 certificate in the certificate
 chain, as specified in [X509]. Only the issuer name is present, not the complete issuer certificate.
 
-2.2.2  SSL_CERT_LOGON_RESP Message
+#### 2.2.2 SSL_CERT_LOGON_RESP Message
 
 The SSL_CERT_LOGON_RESP structure defines a successful response to an SSL_CERT_LOGON_REQ
 request. It contains the PAC that is returned to the caller. All member fields MUST be encoded in
@@ -1203,7 +1161,8 @@ Release: April 23, 2024
 
 13 / 24
 
-Length (4 bytes): A 32-bit unsigned integer that defines the length, in bytes, of the
+
+Length (4 bytes): A 32-bit unsigned integer that defines the length, in bytes, of the
 
 SSL_CERT_LOGON_RESP response structure, including the variable Payload section.
 
@@ -1236,7 +1195,7 @@ Align (4 bytes): A 32-bit unsigned integer used to maintain 64-bit alignment. Th
 Payload (variable):  This field contains the PAC, as specified in [MS-PAC], referred to by the
 OffsetAuthData field, and the domain name referred to by the OffsetDomain field.
 
-2.3  Constants
+### 2.3 Constants
 
 The following constants are used in this specification.
 
@@ -1248,7 +1207,7 @@ The following constants are used in this specification.
 
 STATUS_LOGON_FAILURE  0xC000006D  A logon failure occurred.
 
-2.4  Directory Service Schema Elements
+### 2.4 Directory Service Schema Elements
 
 The Remote Certificate Mapping Protocol (RCMP) accesses the Directory Service schema classes and
 attributes listed in the following table.
@@ -1281,7 +1240,8 @@ Release: April 23, 2024
 
 14 / 24
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Remote Certificate Mapping Protocol utilizes the generic pass-through mechanism, as specified in
 [MS-NRPC] section 3.2.4.1, using Microsoft Unified Security Protocol Provider. The exchanged
@@ -1290,7 +1250,7 @@ associated authorization data (for example, group memberships) is encoded as a P
 [MS-PAC], and sent back to the Remote Certificate Mapping Protocol client. If no matching account is
 found, an error is returned to the client, as specified in section 3.5.2.
 
-3.1  Abstract Data Model
+### 3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1309,15 +1269,15 @@ could have three levels of service (bronze, silver, and gold) managed by three c
 Remote Certificate Mapping Protocol server would then merely map the certificates based on the
 issuer to one of three possible authorization levels and dispense with a full database.
 
-3.2  Timers
+### 3.2 Timers
 
 There are no timers for the Remote Certificate Mapping Protocol.
 
-3.3  Initialization
+### 3.3 Initialization
 
 There is no initialization that is specific to the Remote Certificate Mapping Protocol.
 
-3.4  Higher-Layer Triggered Events
+### 3.4 Higher-Layer Triggered Events
 
 The Remote Certificate Mapping Protocol message exchange is triggered by a Remote Certificate
 Mapping Protocol client that requires user authentication via an X.509 certificate. After this
@@ -1325,7 +1285,7 @@ authentication takes place, the Remote Certificate Mapping Protocol client sends
 SSL_CERT_LOGON_REQ message to the Remote Certificate Mapping Protocol server to obtain
 authorization information.
 
-3.5  Processing Events and Sequencing Rules
+### 3.5 Processing Events and Sequencing Rules
 
 The Remote Certificate Mapping Protocol in itself is a stateless protocol with request/response
 semantics. The general model is:
@@ -1346,14 +1306,15 @@ Remote Certificate Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Upon receiving the SSL_CERT_LOGON_REQ message, if the Remote Certificate Mapping Protocol
+
+  Upon receiving the SSL_CERT_LOGON_REQ message, if the Remote Certificate Mapping Protocol
 
 server is able to map the user's X.509 certificate to a particular account and authorization
 information, it MUST send an SSL_CERT_LOGON_RESP message to the Remote Certificate
 Mapping Protocol client. Otherwise, it MUST return an error status in the Netlogon generic
 passthrough function, as specified in [MS-NRPC] section 3.2.4.1.
 
-3.5.1  Client Generation of SSL_CERT_LOGON_REQ Message
+#### 3.5.1 Client Generation of SSL_CERT_LOGON_REQ Message
 
 The client constructs the SSL_CERT_LOGON_REQ message by setting the user's X.509 certificate, the
 mapping method by which the server looks up the user's account (expressed via Flags as specified in
@@ -1371,7 +1332,7 @@ specified in [MS-NRPC] section 3.2.4.1. The PackageName field in the NETLOGON_GE
 structure, as specified in [MS-NRPC], MUST be a RPC_UNICODE_STRING structure with the string
 value being "Microsoft Unified Security Protocol Provider".
 
-3.5.2  Server Processing of SSL_CERT_LOGON_REQ Message
+#### 3.5.2 Server Processing of SSL_CERT_LOGON_REQ Message
 
 Upon receipt of the SSL_CERT_LOGON_REQ message at the server, the server decodes the request.
 The server MUST examine the requested flags from the client for the REQ_UPN_MAPPING,
@@ -1416,7 +1377,8 @@ Release: April 23, 2024
 
 16 / 24
 
-If successful, the Remote Certificate Mapping Protocol RCMP server constructs a PAC [MS-PAC],
+
+If successful, the Remote Certificate Mapping Protocol RCMP server constructs a PAC [MS-PAC],
 containing the authorization information. For more information about the initial population of the
 PAC structures, see the sections under [MS-KILE] section 3.3.5.6.4.
 
@@ -1461,7 +1423,7 @@ SSL_CERT_LOGON_RESP message, and instead only returns the error code STATUS_LOGO
 (0xC000006D) to the client via the return code of the Netlogon generic pass-through, as specified in
 [MS-NRPC] section 3.2.4.1.
 
-3.5.3  Server Generation of the SSL_CERT_LOGON_RESP Message
+#### 3.5.3 Server Generation of the SSL_CERT_LOGON_RESP Message
 
 The SSL_CERT_LOGON_RESP message is constructed by the server in the event that the certificate
 was associated successfully with an account, and authorization information can be retrieved. The
@@ -1483,13 +1445,14 @@ Release: April 23, 2024
 
 17 / 24
 
-3.6  Timer Events
+
+### 3.6 Timer Events
 
 There are no timer events for the Remote Certificate Mapping Protocol. All timer events are associated
 with the Netlogon Remote Protocol specified in [MS-NRPC], which serves as the transport for Remote
 Certificate Mapping Protocol messages.
 
-3.7  Other Local Events
+### 3.7 Other Local Events
 
 There are no other local events that affect the operation of this protocol.
 
@@ -1500,11 +1463,12 @@ Release: April 23, 2024
 
 18 / 24
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-RCMP].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 Figure 2: Obtaining a PAC that corresponds to an X.509 certificate
 
@@ -1531,9 +1495,10 @@ Release: April 23, 2024
 
 19 / 24
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Remote Certificate Mapping Protocol enables a user with an X.509 certificate and corresponding
 private key to gain access to resources based on group information associated with a given Active
@@ -1549,7 +1514,7 @@ security mechanisms, as specified in [MS-RPCE], used to protect Netlogon remote 
 (RPC), as specified in [MS-NRPC], that transport Remote Certificate Mapping Protocol
 request/response messages.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for the Remote Certificate Mapping Protocol. All associated security
 parameters are described in [MS-NRPC], which provides all security for Remote Certificate Mapping
@@ -1562,7 +1527,8 @@ Release: April 23, 2024
 
 20 / 24
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1631,7 +1597,8 @@ Remote Certificate Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NORM_IGNOREKANATYPE, NORM_IGNORENONSPACE and NORM_IGNOREWIDTH; then the
+
+NORM_IGNOREKANATYPE, NORM_IGNORENONSPACE and NORM_IGNOREWIDTH; then the
 CompareSortKey algorithm ([MS-UCODEREF] section 3.1.5.2.2) is used to compare strings.
 
 <3> Section 3.5.2: Except for Windows NT, Windows domain controllers extract the issuer DN and
@@ -1653,7 +1620,8 @@ Release: April 23, 2024
 
 22 / 24
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1697,7 +1665,8 @@ Release: April 23, 2024
 
 23 / 24
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 10

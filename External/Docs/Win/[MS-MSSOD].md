@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 54
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -208,133 +209,61 @@ Release: October 26, 2021
 
 2 / 54
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 4
-Conceptual Overview .......................................................................................... 4
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 10
+## Table of Contents
 
-1.1
-1.2
-1.3
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Purpose](#211-system-purpose)
+    - [2.1.2 System Components](#212-system-components)
+    - [2.1.3 Applicability](#213-applicability)
+    - [2.1.4 Relevant Standards](#214-relevant-standards)
+    - [2.1.5 Protocol Relationship](#215-protocol-relationship)
+      - [2.1.5.1 RTSP-WME: Logical Dependencies and Relationship to Other Protocols](#2151-rtsp-wme-logical-dependencies-and-relationship-to-other-protocols)
+      - [2.1.5.2 MMSP: Logical Dependencies and Relationship to Other Protocols](#2152-mmsp-logical-dependencies-and-relationship-to-other-protocols)
+      - [2.1.5.3 MSB: Relationship to Other Protocols](#2153-msb-relationship-to-other-protocols)
+      - [2.1.5.4 MSBD: Logical Dependencies and Relationship to Other Protocols](#2154-msbd-logical-dependencies-and-relationship-to-other-protocols)
+      - [2.1.5.5 WMSP: Logical Dependencies and Relationship to Other Protocols](#2155-wmsp-logical-dependencies-and-relationship-to-other-protocols)
+      - [2.1.5.6 WMHTTP: Logical Dependencies and Relationship to Other Protocols](#2156-wmhttp-logical-dependencies-and-relationship-to-other-protocols)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Authentication](#231-authentication)
+    - [2.3.2 Media Player Client](#232-media-player-client)
+    - [2.3.3 Encoder](#233-encoder)
+    - [2.3.4 Dependencies on This System](#234-dependencies-on-this-system)
+    - [2.3.5 Dependencies on Other Systems/Components](#235-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Publish Content to Media Server - Encoder](#251-publish-content-to-media-server-encoder)
+    - [2.5.2 Publish Secure Content to Media Server - Encoder](#252-publish-secure-content-to-media-server-encoder)
+    - [2.5.3 Stream Content from Media Server - Media Player Client](#253-stream-content-from-media-server-media-player-client)
+    - [2.5.4 Request License from License Server - Media Player Client](#254-request-license-from-license-server-media-player-client)
+    - [2.5.5 Log Statistics to Servers - Media Player Client](#255-log-statistics-to-servers-media-player-client)
+    - [2.5.6 Discover Media Server URLs - Media Player Client](#256-discover-media-server-urls-media-player-client)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Encoder Push Content to Media Server](#31-example-1-encoder-push-content-to-media-server)
+  - [3.2 Example 2: Media Server Pull Content from Encoder](#32-example-2-media-server-pull-content-from-encoder)
+  - [3.3 Example 3: Stream Content from Media Server to Media Player Client](#33-example-3-stream-content-from-media-server-to-media-player-client)
+    - [3.3.1 Stream Content Using RTSP-WME](#331-stream-content-using-rtsp-wme)
+    - [3.3.2 Stream Content Using WMSP](#332-stream-content-using-wmsp)
+    - [3.3.3 Estimation of Packet-Pair Bandwidth](#333-estimation-of-packet-pair-bandwidth)
+  - [3.4 Example 4: Publish Secure Content to Media Server](#34-example-4-publish-secure-content-to-media-server)
+  - [3.5 Example 5: Log Statistics to Server](#35-example-5-log-statistics-to-server)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.1
-
-2.2
-2.3
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-2.1.5
-
-2.1.5.1
-2.1.5.2
-2.1.5.3
-2.1.5.4
-2.1.5.5
-2.1.5.6
-
-2  Functional Architecture ......................................................................................... 12
-Overview ........................................................................................................ 12
-System Purpose ......................................................................................... 12
-System Components ................................................................................... 12
-Applicability ............................................................................................... 14
-Relevant Standards ..................................................................................... 14
-Protocol Relationship ................................................................................... 14
-RTSP-WME: Logical Dependencies and Relationship to Other Protocols ........ 16
-MMSP: Logical Dependencies and Relationship to Other Protocols ............... 17
-MSB: Relationship to Other Protocols ....................................................... 17
-MSBD: Logical Dependencies and Relationship to Other Protocols ............... 17
-WMSP: Logical Dependencies and Relationship to Other Protocols ............... 17
-WMHTTP: Logical Dependencies and Relationship to Other Protocols ........... 18
-Protocol Summary ............................................................................................ 18
-Environment .................................................................................................... 19
-Authentication ............................................................................................ 20
-Media Player Client ..................................................................................... 21
-Encoder ..................................................................................................... 21
-Dependencies on This System ...................................................................... 21
-Dependencies on Other Systems/Components ................................................ 21
-Assumptions and Preconditions .......................................................................... 22
-Use Cases ....................................................................................................... 23
-Publish Content to Media Server - Encoder ..................................................... 24
-Publish Secure Content to Media Server - Encoder .......................................... 26
-Stream Content from Media Server - Media Player Client ................................. 27
-Request License from License Server - Media Player Client ............................... 29
-Log Statistics to Servers - Media Player Client ................................................ 30
-Discover Media Server URLs - Media Player Client ........................................... 32
-Versioning, Capability Negotiation, and Extensibility ............................................. 34
-Error Handling ................................................................................................. 35
-Coherency Requirements .................................................................................. 35
-Security .......................................................................................................... 35
-Additional Considerations .................................................................................. 35
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-2.5.5
-2.5.6
-
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-2.3.5
-
-2.6
-2.7
-2.8
-2.9
-2.10
-
-2.4
-2.5
-
-3.1
-3.2
-3.3
-
-3  Examples ............................................................................................................... 36
-Example 1: Encoder Push Content to Media Server ............................................... 36
-Example 2: Media Server Pull Content from Encoder ............................................. 38
-Example 3: Stream Content from Media Server to Media Player Client .................... 39
-Stream Content Using RTSP-WME ................................................................. 40
-Stream Content Using WMSP ....................................................................... 42
-Estimation of Packet-Pair Bandwidth ............................................................. 44
-Example 4: Publish Secure Content to Media Server ............................................. 45
-Example 5: Log Statistics to Server .................................................................... 47
-
-3.3.1
-3.3.2
-3.3.3
-
-3.4
-3.5
-
-4  Microsoft Implementations ................................................................................... 50
-Product Behavior .............................................................................................. 50
-
-4.1
-
-5  Change Tracking .................................................................................................... 52
-
-6  Index ..................................................................................................................... 53
-
-[MS-MSSOD] - v20211026
-Media Streaming Server Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 54
-
-<!-- Extracted images from page 4 -->
-![Extracted image 1 from page 4]([MS-MSSOD].images/page004-img01.png)
-<!-- /Extracted images from page 4 -->
-
-1  Introduction
+## 1 Introduction
 
 The Media Streaming Server system is a platform for streaming audio and video content to clients
 over the Internet or an intranet. These clients can be other computers or devices that play back the
@@ -359,7 +288,7 @@ and download of content.
 Each of the components in the system uses the member protocols to enable scenarios that range from
 live broadcast playback to on-demand playback.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 The Media Streaming Server (MSS) system includes protocols to transmit data packets that originate
 from downloadable and streaming audio, video, and other multimedia data files.
@@ -391,7 +320,8 @@ Release: October 26, 2021
 
 4 / 54
 
-Encoders typically capture the video and audio streams from capture cards and recording devices. To
+
+Encoders typically capture the video and audio streams from capture cards and recording devices. To
 capture from an analog source, such as a video tape, the computer requires a capture card that
 recognizes the analog stream and converts it to digital media information. The encoder then converts
 the digital media information to encoded media that can be efficiently transported as streaming
@@ -477,7 +407,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-MSSOD].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -516,7 +447,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-MSSOD].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -584,7 +516,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-MSSOD].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -620,7 +553,8 @@ Release: October 26, 2021
 
 8 / 54
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-MSSOD].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -634,7 +568,7 @@ protocols, however, use Transmission Control Protocol (TCP), a reliable protocol
 that packets arrive in the order specified. Section 2.3 includes a table that indicates UDP and TCP
 support for the Media Streaming Server system protocols.
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -679,7 +613,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-single copy of the stream across the network to multicast-enabled routers, which replicate the
+
+single copy of the stream across the network to multicast-enabled routers, which replicate the
 data. Clients can then receive the stream by monitoring a specific multicast IP address and port.
 
 playlist: One or more content items that are streamed sequentially.
@@ -720,7 +655,7 @@ User Datagram Protocol (UDP): The connectionless protocol within TCP/IP that cor
 
 the transport layer in the ISO/OSI reference model.
 
-1.3  References
+### 1.3 References
 
 [ASF] Microsoft Corporation, "Advanced Systems Format Specification", December 2004,
 https://download.microsoft.com/download/7/9/0/790fecaa-f64a-4a5e-a430-
@@ -751,7 +686,8 @@ Release: October 26, 2021
 
 10 / 54
 
-[MSDN-ASX] Microsoft Corporation, "ASX Elements Reference", http://msdn.microsoft.com/en-
+
+[MSDN-ASX] Microsoft Corporation, "ASX Elements Reference", http://msdn.microsoft.com/en-
 us/library/ms910265.aspx
 
 [MSDN-LPS-WME] Microsoft Corporation, "Developing a License Provider Service for Windows Media
@@ -791,16 +727,17 @@ Release: October 26, 2021
 
 11 / 54
 
-2  Functional Architecture
+
+## 2 Functional Architecture
 
 This section provides an overview of the capabilities of the Media Streaming Server system, the
 relationship of the communication protocols that comprise the system, a summary of the Storage
 Services system protocols, system dependencies, use cases, versioning, capability negation, error
 handling, coherency requirements, and security considerations.
 
-2.1  Overview
+### 2.1 Overview
 
-2.1.1  System Purpose
+#### 2.1.1 System Purpose
 
 The Media Streaming Server system includes protocols to transmit data packets that originate from
 downloadable and streaming audio, visual, and other multimedia data files.
@@ -834,7 +771,7 @@ other instances of Windows Media Services.
 Transferring real-time multimedia data from a client to a server by using the Windows Media HTTP
 Push Distribution Protocol (WMHTTP).
 
-2.1.2  System Components
+#### 2.1.2 System Components
 
 The conceptual framework for the Media Streaming Server (MSS) system is defined in terms of three
 internal roles: client, server, and encoder.
@@ -850,7 +787,8 @@ Release: October 26, 2021
 
 12 / 54
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-MSSOD].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -890,7 +828,8 @@ Release: October 26, 2021
 
 13 / 54
 
-
+
+
 
 
 
@@ -919,7 +858,7 @@ Encoder application: An application that uses protocols other than the Media Str
 Note  Digital Rights Management (DRM) is an optional component. For relevant supported Windows
 versions, see [MS-DRM].
 
-2.1.3  Applicability
+#### 2.1.3 Applicability
 
 The MSS system is used to deliver real-time multimedia data by streaming it. The term streaming
 means that the data is transmitted at some fixed rate or at some rate that is related to the rate at
@@ -931,12 +870,12 @@ The applicability of each member protocol that is supported by the system, as de
 For individual protocol applicability, see the specifications of the protocols that are supported by the
 MSS system, as listed in section 2.2.
 
-2.1.4  Relevant Standards
+#### 2.1.4 Relevant Standards
 
 The system does not require any standards beyond those that are described in the specifications of
 the protocols supported by the system, as listed in section 2.2.
 
-2.1.5  Protocol Relationship
+#### 2.1.5 Protocol Relationship
 
 The following figure shows a high-level view of the integrated media streaming protocols.
 
@@ -947,7 +886,8 @@ Release: October 26, 2021
 
 14 / 54
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-MSSOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -975,7 +915,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.6. As part of the internal operation of these protocols, logging messages can be sent from the media
+
+2.6. As part of the internal operation of these protocols, logging messages can be sent from the media
 player client to the media server.
 
 Media server as distribution server: The distribution server plays two roles. It receives content
@@ -994,7 +935,7 @@ broadcast content, the server can create a split stream for the content.
 
 Web server: The web server can receive logging messages from the media player client.
 
-2.1.5.1  RTSP-WME: Logical Dependencies and Relationship to Other Protocols
+##### 2.1.5.1 RTSP-WME: Logical Dependencies and Relationship to Other Protocols
 
  Real-Time Streaming Protocol (RTSP) Windows Media Extensions (RTSP-WME) rely on TCP to control
 the streaming media session. RTSP uses the Session Description Protocol (SDP) syntax to describe
@@ -1050,7 +991,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.1.5.2  MMSP: Logical Dependencies and Relationship to Other Protocols
+
+##### 2.1.5.2 MMSP: Logical Dependencies and Relationship to Other Protocols
 
 The Windows Media HTTP Streaming Protocol (MMSP) relies on TCP for the connection that controls
 the streaming media session. Both the client and the server send MMSP protocol messages over the
@@ -1067,7 +1009,7 @@ Protocol (WMHTTP), and the Real-Time Streaming Protocol (RTSP) Windows Media Ext
 WME). When using MMSP, it is not possible to also use the preceding protocols. It is possible,
 however, to use the Windows Media Log Data Structure (WMLOG) concurrently with MMSP.
 
-2.1.5.3  MSB: Relationship to Other Protocols
+##### 2.1.5.3 MSB: Relationship to Other Protocols
 
 Media Stream Broadcast (MSB) Protocol packets are encapsulated in the User Datagram Protocol
 (UDP). The UDP packets can be transmitted over either IPv4 or IPv6. The MSB Protocol packets are
@@ -1081,7 +1023,7 @@ Protocol (RTSP) Windows Media Extensions (RTSP-WME). When using MSB, it is not p
 the preceding protocols. It is possible, however, to use the Windows Media Log Data Structure
 (WMLOG) concurrently with MSB.
 
-2.1.5.4  MSBD: Logical Dependencies and Relationship to Other Protocols
+##### 2.1.5.4 MSBD: Logical Dependencies and Relationship to Other Protocols
 
 Media Stream Broadcast Distribution (MSBD) Protocol packets are encapsulated in TCP. However, one
 MSBD Protocol packet type can also be encapsulated in UDP. The UDP encapsulation mode is used
@@ -1103,7 +1045,7 @@ MSBD allows the server to specify that the ASF header of the content was obtaine
 However, MSBD does not use the .nsc file because the ASF header is transmitted by using the MSBD
 Protocol itself.
 
-2.1.5.5  WMSP: Logical Dependencies and Relationship to Other Protocols
+##### 2.1.5.5 WMSP: Logical Dependencies and Relationship to Other Protocols
 
 The Windows Media HTTP Streaming Protocol (WMSP) depends on HTTP 1.0, as specified in
 [RFC1945]. The pipelined mode of the protocol can be used only if the client, the server, and any
@@ -1115,7 +1057,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-intermediate HTTP proxy servers support the pipelining feature of HTTP 1.1, as specified in
+
+intermediate HTTP proxy servers support the pipelining feature of HTTP 1.1, as specified in
 [RFC2616].
 
 This protocol can be used instead of the Microsoft Media Server (MMS) Protocol (MMSP), as specified
@@ -1132,7 +1075,7 @@ Windows Media Services (MSB, MSBD), and RTSP-WME. When WMSP is used, it is not p
 the preceding protocols. It is possible, however, to use Windows Media Log Data Structure (WMLOG)
 concurrently with WMSP.
 
-2.1.5.6  WMHTTP: Logical Dependencies and Relationship to Other Protocols
+##### 2.1.5.6 WMHTTP: Logical Dependencies and Relationship to Other Protocols
 
 The Windows Media HTPP Push Distribution Protocol (WMHTTP) depends on the Hypertext Transfer
 Protocol (HTTP/1.1), as specified in [RFC2616]. Either HTTP version 1.1 or HTTP version 1.0 can be
@@ -1148,7 +1091,7 @@ Media Stream Broadcast Distribution (MSBD) Protocol (MSBD), and the Real-Time St
 preceding protocols. It is possible, however, to use the Windows Media Log Data Structure (WMLOG)
 at the same time as WMHTTP.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table provides a comprehensive list of the member protocols of the Media Streaming
 Server system.
@@ -1210,7 +1153,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1271,7 +1215,7 @@ name
 [MS-
 WMLOG]
 
-2.3  Environment
+### 2.3 Environment
 
 The Media Streaming Server (MSS) system typically consists of a computer running an encoder, a
 media server, and a number of client computers running a media player. The encoder converts both
@@ -1311,7 +1255,8 @@ Release: October 26, 2021
 
 19 / 54
 
-If the system requires interactivity by the media player client, then the system provides a unicast
+
+If the system requires interactivity by the media player client, then the system provides a unicast
 transmission and subsequently a protocol that supports unicast delivery.
 
 Systems that broadcast media to a large audience and have limited network bandwidth and server
@@ -1425,7 +1370,7 @@ No
 
 Yes
 
-2.3.1  Authentication
+#### 2.3.1 Authentication
 
 The Media Streaming Server (MSS) system can optionally support authentication; however, this
 depends on the following limitations and dependencies.
@@ -1449,7 +1394,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 
 
@@ -1459,7 +1405,7 @@ The Microsoft Media Server (MMS) Protocol (MMSP) supports Basic authentication (
 The Media Stream Broadcast (MSB) Protocol and the Media Stream Broadcast Distribution (MSBD)
 Protocol do not support authentication natively.
 
-2.3.2  Media Player Client
+#### 2.3.2 Media Player Client
 
 For media player clients to stream content from the Media Streaming Server system, they are required
 to be able to stream content using the protocol that is provided by the server. Typically the players
@@ -1475,7 +1421,7 @@ support all protocols. The following protocols can be supported by the client so
 
   Media Stream Broadcast Distribution (MSBD) Protocol: [MS-MSBD]
 
-2.3.3  Encoder
+#### 2.3.3 Encoder
 
 The streaming media system depends on a source for content. This can be obtained by using an
 encoder. The encoding computer is typically networked to the media streaming server. The encoder
@@ -1490,7 +1436,7 @@ encoder-to-server protocols are as follows:
 
   Windows Media HTTP Streaming Protocol (WMSP): [MS-WMSP]
 
-2.3.4  Dependencies on This System
+#### 2.3.4 Dependencies on This System
 
 The Media Streaming Server (MSS system dependencies are as follows:
 
@@ -1504,7 +1450,7 @@ server might depend on the Media Streaming Server Protocols.
 Encoder applications: Encoder applications that are designed to push content to a media server
 might depend on the Media Streaming Server Protocols.
 
-2.3.5  Dependencies on Other Systems/Components
+#### 2.3.5 Dependencies on Other Systems/Components
 
 The Media Streaming Server (MSS) system has dependencies on physical devices, applications, and
 network configurations. The dependencies are determined by the requirements of the scenario.
@@ -1523,7 +1469,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-for a client to discover the URL, the MSS client depends on a redirector file to provide information. The
+
+for a client to discover the URL, the MSS client depends on a redirector file to provide information. The
 MSS system depends on the redirector file to provide that information.
 
 In addition, the MSS system during multicast streaming depends on the UDP network protocol to be
@@ -1549,7 +1496,7 @@ or pulled to the server. Therefore the MSS system depends on the encoder as a co
 MSS system protocols supported by the system, as listed in section 2.2, have additional dependencies
 when a particular protocol is being used. See the relevant member protocol specification for details.
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 For the environment as described in section 2.3, the system has the following assumptions and
 preconditions:
@@ -1605,7 +1552,8 @@ Release: October 26, 2021
 
 22 / 54
 
-  All players are required to be configured to support the server's specified protocol. Failure to
+
+  All players are required to be configured to support the server's specified protocol. Failure to
 
 confirm that all players support the protocol might result in some players' failure to play as
 described in section 2.3.
@@ -1653,7 +1601,7 @@ Multicast streaming is supported with the following protocols:
 
   Media Stream Broadcast Distribution Protocol (MSBD): [MS-MSBD]
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 The following table provides an overview for the groups of use cases that span the functionality of the
 Media Streaming Server system. The sections that follow provide detailed descriptions of the use
@@ -1688,7 +1636,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-MSSOD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1701,7 +1650,7 @@ Log Statistics to Servers - Media Player Client
 
 Discover Media Server URLs - Medial Player Client
 
-2.5.1  Publish Content to Media Server - Encoder
+#### 2.5.1 Publish Content to Media Server - Encoder
 
 In this use case, the encoder publishes content to a media server.
 
@@ -1749,7 +1698,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-ICPs often extend their activities beyond streaming and incorporate Digital Rights Management
+
+ICPs often extend their activities beyond streaming and incorporate Digital Rights Management
 (DRM) over the files or streams or create complex playlists in order to achieve their scenario
 goals.
 
@@ -1830,7 +1780,8 @@ Release: October 26, 2021
 
 25 / 54
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-MSSOD].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1838,7 +1789,7 @@ Release: October 26, 2021
 
 stream to the media server.
 
-2.5.2  Publish Secure Content to Media Server - Encoder
+#### 2.5.2 Publish Secure Content to Media Server - Encoder
 
 In this use case, the encoder encapsulates the media content by using a Digital Rights Management
 (DRM) packager to publish it to the media server.
@@ -1879,7 +1830,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-MSSOD].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -1917,7 +1869,7 @@ Extensions
 
 None.
 
-2.5.3  Stream Content from Media Server - Media Player Client
+#### 2.5.3 Stream Content from Media Server - Media Player Client
 
 In this use case, a media server streams content to a media player client.
 
@@ -1940,7 +1892,8 @@ Release: October 26, 2021
 
 27 / 54
 
-The media player client is the primary actor. It is the application that renders the media stream
+
+The media player client is the primary actor. It is the application that renders the media stream
 that is provided by the media server. This is the primary interface to the Media Streaming
 Server Protocols (MSS) system for the end user.
 
@@ -2022,7 +1975,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-MSSOD].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -2044,7 +1998,7 @@ Enabling the Digital Rights Management (DRM) server to issue licenses to the med
 to enable playback is an extension to the streaming content from the media server as described in
 section 2.5.4.
 
-2.5.4  Request License from License Server - Media Player Client
+#### 2.5.4 Request License from License Server - Media Player Client
 
 In this use case, a media player client obtains a license from a license server to stream Digital Rights
 Management (DRM)-protected media.
@@ -2076,7 +2030,8 @@ Release: October 26, 2021
 
 29 / 54
 
-The license server is the supporting actor that issues the licenses.
+
+The license server is the supporting actor that issues the licenses.
 
   DRM packager
 
@@ -2125,7 +2080,7 @@ Extensions
 
 None.
 
-2.5.5  Log Statistics to Servers - Media Player Client
+#### 2.5.5 Log Statistics to Servers - Media Player Client
 
 In this use case, a media player client provides statistics gathered during the playback experience to
 the media server.
@@ -2151,7 +2106,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-MSSOD].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2206,7 +2162,8 @@ Release: October 26, 2021
 
 31 / 54
 
-  Web server
+
+  Web server
 
 Preconditions
 
@@ -2247,7 +2204,7 @@ Variation – Logging to Web Server
 All details are identical to the use case that is described in this section, except that the media player
 submits the log to the web server while the playback experience is still happening.
 
-2.5.6  Discover Media Server URLs - Media Player Client
+#### 2.5.6 Discover Media Server URLs - Media Player Client
 
 In this use case, a web server is configured to host redirector files or webpages with URLs to the
 media server content.
@@ -2263,7 +2220,8 @@ Release: October 26, 2021
 
 32 / 54
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-MSSOD].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -2319,7 +2277,8 @@ Release: October 26, 2021
 
 33 / 54
 
-3.  The media player client discovers the media server URL. Failure to host valid redirection does not
+
+3.  The media player client discovers the media server URL. Failure to host valid redirection does not
 
 prevent the media server from streaming.
 
@@ -2331,7 +2290,7 @@ Extensions
 
 None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 No capability negotiation is associated with this system. Any deviations from a specific version's
 implementation of these protocol specifications are documented in the respective protocol documents.
@@ -2429,7 +2388,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocols implemented
+
+Protocols implemented
 
 [MS-MMSP]
 
@@ -2463,17 +2423,17 @@ Windows 2000 Professional
 
 Windows XP
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 The system failures are defined in the specifications of the protocols that are supported by the system,
 as listed in section 2.2.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 Each Media Streaming Server protocol provides its own coherency mechanisms. There are no
 established coherency mechanisms between protocols in the Media Streaming Server (MSS) system.
 
-2.9  Security
+### 2.9 Security
 
 This section documents system-wide security issues that are not otherwise described in the Technical
 Documents (TDs) for the member protocols. It does not duplicate what is already in the member
@@ -2483,7 +2443,7 @@ The system does not introduce any additional security requirements beyond those 
 in the specifications of the protocols supported by the system. The requirements are listed in section
 2.2.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 There are no additional considerations.
 
@@ -2494,12 +2454,13 @@ Release: October 26, 2021
 
 35 / 54
 
-3  Examples
+
+## 3 Examples
 
 This section contains a set of examples that describe common uses of the Media Streaming Server
 Protocols. These following examples provide more details of the use cases as described in section 2.5.
 
-3.1  Example 1: Encoder Push Content to Media Server
+### 3.1 Example 1: Encoder Push Content to Media Server
 
 A key scenario in the Media Streaming Server system is getting content to the media server. Push
 distribution is one way through which the media streaming server enables the encoder to push content
@@ -2535,7 +2496,8 @@ Release: October 26, 2021
 
 36 / 54
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-MSSOD].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
@@ -2579,11 +2541,12 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-MSSOD].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
-3.2  Example 2: Media Server Pull Content from Encoder
+### 3.2 Example 2: Media Server Pull Content from Encoder
 
 The Media Streaming Server system also supports pull distribution for getting content from an
 encoder. While push distribution only uses the Windows Media HTTP Push Distribution Protocol
@@ -2633,7 +2596,8 @@ Release: October 26, 2021
 
 38 / 54
 
-Figure 15: Pull distribution message sequence
+
+Figure 15: Pull distribution message sequence
 
 The following sequence occurs between a client and a server during a pull distribution.
 
@@ -2669,7 +2633,7 @@ the server in the client role that the capture is completed. For examples of the
 and format, see the individual member protocols [MS-MSBD] section 3.1.5.3 and [MS-WMSP] section
 3.1.5.13. The server can now close the connection.
 
-3.3  Example 3: Stream Content from Media Server to Media Player Client
+### 3.3 Example 3: Stream Content from Media Server to Media Player Client
 
 A key scenario for the media streaming server is the playback of multimedia content. Playback can
 use multicast or unicast streaming. The choice of which protocol to use depends on client and server
@@ -2706,7 +2670,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 The media streaming server has to meet all preconditions as described in section 2.5.3.
 
@@ -2726,7 +2691,7 @@ simplify the flow, the sequence diagrams do not show additional transport contro
 they show all possible messages. For the sequence flows over a UDP connection or the MMSP protocol,
 see the technical documents (TDs) of the individual member protocols.
 
-3.3.1  Stream Content Using RTSP-WME
+#### 3.3.1 Stream Content Using RTSP-WME
 
 The following diagram shows the communication flow between the media player application and the
 server during playback using Real-Time Streaming Protocol (RTSP) Windows Media Extensions (RTSP-
@@ -2739,7 +2704,8 @@ Release: October 26, 2021
 
 40 / 54
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-MSSOD].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2768,7 +2734,8 @@ Release: October 26, 2021
 
 41 / 54
 
-3.  After the client receives a response from the server, if the client is using the TCP transport, it can
+
+3.  After the client receives a response from the server, if the client is using the TCP transport, it can
 
 request packet-pair bandwidth estimation. See section 3.3.3 for more details.
 
@@ -2803,7 +2770,7 @@ WME, [MS-RTSP] section 3.2.4.1. After receiving the playback complete notificati
 media server, the client sends a playback complete notification to the media player client
 application.
 
-3.3.2  Stream Content Using WMSP
+#### 3.3.2 Stream Content Using WMSP
 
 The following diagram shows the communication flow between the media player application and the
 server during playback using the Windows Media HTTP Steaming Protocol (WMSP).
@@ -2815,7 +2782,8 @@ Release: October 26, 2021
 
 42 / 54
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-MSSOD].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -2852,7 +2820,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-MSSOD].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
@@ -2876,7 +2845,7 @@ that playback is completed. For examples of the exact message content and format
 [MS-WMSP] section 3.2.4.1. Following receiving the playback complete notification from the media
 server, the client sends a playback complete notification to the media player client application.
 
-3.3.3  Estimation of Packet-Pair Bandwidth
+#### 3.3.3 Estimation of Packet-Pair Bandwidth
 
 The following figure shows the packet-pair bandwidth estimation message sequence for Real-Time
 Streaming Protocol (RTSP) Windows Media Extension (RTSP-WME) and Microsoft Media Server (MMS)
@@ -2902,7 +2871,8 @@ Release: October 26, 2021
 
 44 / 54
 
-2-4. First, second, and third data packets: Each data packet contains packet-pair data that is sent
+
+2-4. First, second, and third data packets: Each data packet contains packet-pair data that is sent
 to the client. For examples of the exact message content and format for RTSP-WME, see [MS-
 RTSP] section 2.2.3.2. For examples of the exact message content and format for WMSP, see [MS-
 WMSP] section 2.2.3.7.
@@ -2912,7 +2882,7 @@ message body. For examples of the exact message content and format for RTSP-WME,
 RTSP] section 3.1.5.5. For examples of the exact message content and format for WMSP, see [MS-
 WMSP] section 3.1.5.5.
 
-3.4  Example 4: Publish Secure Content to Media Server
+### 3.4 Example 4: Publish Secure Content to Media Server
 
 Digital Right Management (DRM) integration occurs entirely outside the media streaming server. This
 section is intended to provide an overview of the integration of DRM with the media streaming server
@@ -2951,7 +2921,8 @@ Release: October 26, 2021
 
 45 / 54
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-MSSOD].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
@@ -2997,7 +2968,8 @@ Release: October 26, 2021
 
 46 / 54
 
-7.  Player application requests a DRM license: Using the file URL that was obtained in step 5, the
+
+7.  Player application requests a DRM license: Using the file URL that was obtained in step 5, the
 
 Player Application requests the license from the DRM server. The license acquisition process can
 be silent or require user input. For example, the server can require a credit card transaction before
@@ -3010,7 +2982,7 @@ license, the player application can decrypt the content for playback. For a deta
 media streaming, see section 3.3. For information on the Digital Rights Management License
 Acquisition Data Structure, see [MS-DRM].
 
-3.5  Example 5: Log Statistics to Server
+### 3.5 Example 5: Log Statistics to Server
 
 Logging is a process that allows the media player client to submit information and statistics to a media
 server or a web server. The trigger for acquiring logging information depends on the specific log being
@@ -3056,7 +3028,8 @@ Release: October 26, 2021
 
 47 / 54
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-MSSOD].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3085,7 +3058,8 @@ Release: October 26, 2021
 
 48 / 54
 
-6. Playback packets: As documented in section 3.3, the media server begins to stream packets to
+
+6. Playback packets: As documented in section 3.3, the media server begins to stream packets to
 the media player client.
 
 7. End of stream: When playback is completed, the media server sends the end of stream
@@ -3120,7 +3094,8 @@ Release: October 26, 2021
 
 49 / 54
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include released service packs:
@@ -3176,7 +3151,7 @@ with the product version, behavior changed in that service pack or QFE. The new 
 to subsequent service packs of the product unless otherwise specified. If a product edition appears
 with the product version, behavior is different in that product edition.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 2.1.5: The cache/proxy server role is supported only by Windows Server 2008 and
 Windows Server 2008 R2.
@@ -3188,7 +3163,8 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<2> Section 2.5.1: UDP encapsulation mode is used only for transmitting packets to an IPv4 multicast
+
+<2> Section 2.5.1: UDP encapsulation mode is used only for transmitting packets to an IPv4 multicast
 group. The IP multicast is supported only by Windows Media Services implementations in Windows NT
 4.0 operating system and Windows 2000 Server.
 
@@ -3203,7 +3179,8 @@ Release: October 26, 2021
 
 51 / 54
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3240,7 +3217,8 @@ Release: October 26, 2021
 
 52 / 54
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 35
@@ -3381,7 +3359,8 @@ System dependencies 19
 
 53 / 54
 
-System errors 35
+
+System errors 35
 System overview
    introduction 4
 System protocols 18

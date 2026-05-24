@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 29
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Remote Assistance Initiation over PNRP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -440,208 +442,86 @@ Release: April 23, 2024
 
 3 / 29
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Remote Assistance Connection String](#221-remote-assistance-connection-string)
+    - [2.2.2 Peer Name](#222-peer-name)
+    - [2.2.3 Payload](#223-payload)
+    - [2.2.4 FriendlyName](#224-friendlyname)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Unsecured Peer Name - Publisher Details](#31-unsecured-peer-name-publisher-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Expiration Timer](#3121-expiration-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Deriving a Password](#3151-deriving-a-password)
+      - [3.1.5.2 Encrypting the Connection String](#3152-encrypting-the-connection-string)
+      - [3.1.5.3 Creating the PNRP Node](#3153-creating-the-pnrp-node)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Expiration Timer event](#3161-expiration-timer-event)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Unsecured Peer Name Initiation - Consumer Details](#32-unsecured-peer-name-initiation-consumer-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Deriving an Unsecured Peer Name from a Password](#3251-deriving-an-unsecured-peer-name-from-a-password)
+      - [3.2.5.2 Resolving the Unsecure Peer Name](#3252-resolving-the-unsecure-peer-name)
+      - [3.2.5.3 Decrypting the Payload](#3253-decrypting-the-payload)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Secure Peer Name Initiation - Publisher Details](#33-secure-peer-name-initiation-publisher-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 Expiration Timer](#3321-expiration-timer)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Generating the Required PNRP Data](#3351-generating-the-required-pnrp-data)
+      - [3.3.5.2 Registering a Secure Peer Name](#3352-registering-a-secure-peer-name)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 Expiration Timer Event](#3361-expiration-timer-event)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Secure Peer Name Initiation - Consumer Details](#34-secure-peer-name-initiation-consumer-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Resolving a Secure Peer Name](#3451-resolving-a-secure-peer-name)
+      - [3.4.5.2 Decrypting the Connection String](#3452-decrypting-the-connection-string)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Deriving a Password and Encrypting a Connection String for Unsecured Peer](#41-deriving-a-password-and-encrypting-a-connection-string-for-unsecured-peer)
+  - [4.2 Creating an Unsecured Peer Name from a Password](#42-creating-an-unsecured-peer-name-from-a-password)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Remote Assistance Connection String ............................................................ 10
-Peer Name ................................................................................................. 10
-Payload ..................................................................................................... 10
-FriendlyName ............................................................................................. 10
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-3.2
-
-3.1
-
-3.1.7
-
-3.1.6
-
-3.1.6.1
-
-3.1.2.1
-
-3.1.1
-3.1.2
-
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3  Protocol Details ..................................................................................................... 11
-Unsecured Peer Name - Publisher Details ............................................................ 11
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Expiration Timer ................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Message Processing Events and Sequencing Rules .......................................... 12
-Deriving a Password .............................................................................. 12
-Encrypting the Connection String ............................................................ 13
-Creating the PNRP Node ......................................................................... 14
-Timer Events .............................................................................................. 15
-Expiration Timer event .......................................................................... 15
-Other Local Events ...................................................................................... 15
-Unsecured Peer Name Initiation - Consumer Details ............................................. 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Deriving an Unsecured Peer Name from a Password .................................. 16
-Resolving the Unsecure Peer Name ......................................................... 16
-Decrypting the Payload .......................................................................... 16
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-Secure Peer Name Initiation - Publisher Details .................................................... 17
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Expiration Timer ................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Generating the Required PNRP Data ........................................................ 18
-Registering a Secure Peer Name ............................................................. 19
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-
-3.3.1
-3.3.2
-
-3.2.6
-3.2.7
-
-3.3.2.1
-
-3.3
-
-[MS-RAIOP] - v20240423
-Remote Assistance Initiation over PNRP Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 29
-
-3.3.6
-
-3.3.7
-
-3.3.6.1
-
-3.4
-
-Timer Events .............................................................................................. 19
-Expiration Timer Event .......................................................................... 19
-Other Local Events ...................................................................................... 19
-Secure Peer Name Initiation - Consumer Details .................................................. 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Resolving a Secure Peer Name ............................................................... 20
-Decrypting the Connection String ............................................................ 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-
-3.4.6
-3.4.7
-
-3.4.5.1
-3.4.5.2
-
-4  Protocol Examples ................................................................................................. 21
-
-4.1
-
-4.2
-
-Deriving a Password and Encrypting a Connection String for Unsecured Peer Name
-Initiation ......................................................................................................... 21
-Creating an Unsecured Peer Name from a Password ............................................. 22
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 25
-
-7  Change Tracking .................................................................................................... 26
-
-8  Index ..................................................................................................................... 27
-
-[MS-RAIOP] - v20240423
-Remote Assistance Initiation over PNRP Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 29
-
-1  Introduction
+## 1 Introduction
 
 This document describes the Remote Assistance Initiation over PNRP Protocol, which is used to
 establish a Remote Assistance connection between two computers. This protocol uses the Peer
@@ -653,7 +533,7 @@ computers.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -712,7 +592,8 @@ Release: April 23, 2024
 
 6 / 29
 
-publisher: The side of a Remote Assistance connection that registers a Peer Name. It is the
+
+publisher: The side of a Remote Assistance connection that registers a Peer Name. It is the
 
 same as the novice role.
 
@@ -756,14 +637,14 @@ Identity. Any node can claim ownership of any Unsecured Peer Name.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -784,7 +665,8 @@ Remote Assistance Initiation over PNRP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-RAI] Microsoft Corporation, "Remote Assistance Initiation Protocol".
+
+[MS-RAI] Microsoft Corporation, "Remote Assistance Initiation Protocol".
 
 [MS-RA] Microsoft Corporation, "Remote Assistance Protocol".
 
@@ -794,11 +676,11 @@ Release: April 23, 2024
 [RFC4648] Josefsson, S., "The Base16, Base32, and Base64 Data Encodings", RFC 4648, October
 2006, https://www.rfc-editor.org/info/rfc4648
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol is used to transfer the Remote Assistance Connection String (section 2.2.1) from the
 novice to the expert. After the connection string, as defined in [MS-RAI] section 2.2.1, is transferred,
@@ -822,18 +704,18 @@ password. Using the Secure Peer Name, the expert can download the extended paylo
 the Remote Assistance Connection String. Using the connection string, the expert can make a Remote
 Assistance connection to the novice.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 RAIOP assumes that the Peer Name Resolution Protocol [MS-PNRP] is available to transport the
 Remote Assistance Connection String. After the Remote Assistance Connection String is transferred,
 the expert can connect to the novice and initiate a Remote Assistance session as specified in
 [MS-RA]. This protocol also uses Remote Assistance contacts as specified in [MS-RA].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol assumes that both computers do not have a UTC time offset that is greater than 1 hour.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol can only be used between two computers if the Global PNRP cloud is visible to both the
 novice and expert.
@@ -845,15 +727,16 @@ Release: April 23, 2024
 
 8 / 29
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
  This protocol does not provide for version or capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields in the Remote Assistance Initiation over PNRP Protocol.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Remote Assistance Initiation over PNRP Protocol does not use any standards assignments.
 
@@ -864,31 +747,32 @@ Release: April 23, 2024
 
 9 / 29
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses the Peer Name Resolution Protocol, as specified in [MS-PNRP], for message
 transport.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Remote Assistance Connection String
+#### 2.2.1 Remote Assistance Connection String
 
 The Remote Assistance Connection String referenced in this document is defined in [MS-RAI] as
 Remote Assistance Connection String 2.
 
-2.2.2  Peer Name
+#### 2.2.2 Peer Name
 
 The Peer Name that is referenced in this document is defined in [MS-PNRP] as a Peer Name.
 Unsecured Peer Names are Peer Names with an authority of "0".
 
-2.2.3  Payload
+#### 2.2.3 Payload
 
 The payload that is associated with a Peer Name and referenced in this document is defined in [MS-
 PNRP] section 2.2.3.3 as an EXTENDED_PAYLOAD message.
 
-2.2.4  FriendlyName
+#### 2.2.4 FriendlyName
 
 The FriendlyName that is associated with a Peer Name and referenced in this document is defined in
 [MS-PNRP] section 2.2.3.1 as a FriendlyName string.
@@ -900,13 +784,14 @@ Release: April 23, 2024
 
 10 / 29
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RAIOP].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Unsecured Peer Name - Publisher Details
+### 3.1 Unsecured Peer Name - Publisher Details
 
 The purpose of the Unsecured Peer Name Initiation is to allow a Remote Assistance Connection
 String (defined in [MS-RA]) to be passed from the publisher of the string to the consumer. After the
@@ -941,7 +826,8 @@ Release: April 23, 2024
 
 11 / 29
 
-3.1.1  Abstract Data Model
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -954,14 +840,14 @@ Assistance Connection String and to create an Unsecured Peer Name. The publisher
 Unsecured Peer Name, associating the encrypted payload, which will be resolved later by the
 consumer. The publisher conveys the password to the consumer through some external means.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Expiration Timer
+##### 3.1.2.1 Expiration Timer
 
 A 30-minute timer SHOULD be started after registration of the Unsecured Peer Name, as specified
 in section 3.1.5.3.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 To initialize this protocol, the following MUST be done:
 
@@ -969,11 +855,11 @@ To initialize this protocol, the following MUST be done:
 
 2.  A connection string as defined in [MS-RAI] section 2.2 MUST be created.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 After initialization, a password MUST be derived as defined in section 3.1.5.1 and the connection string
 MUST be encrypted as defined in section 3.1.5.2. Next, an Unsecured Peer Name MUST be
@@ -982,7 +868,7 @@ registered with the encrypted connection string as the payload as defined in sec
 After the Remote Assistance session is established, the Unsecured Peer Name SHOULD be
 unregistered, as defined in [MS-PNRP] section 3.2.4.2.
 
-3.1.5.1  Deriving a Password
+##### 3.1.5.1 Deriving a Password
 
 When a password is derived from the connection string, only certain characters from the English
 alphabet and digits are used. The string "BCDFGHJKLMNPQRSTVWXYZ23456789", which is referred to
@@ -1005,7 +891,8 @@ Release: April 23, 2024
 
 12 / 29
 
-used for the hash result in the following steps. For the initial hash input, the 20 bytes that are
+
+used for the hash result in the following steps. For the initial hash input, the 20 bytes that are
 used in subsequent steps for the hash result MUST be set to zero.
 
 2.  Use the SHA-1 hash algorithm, as specified in [FIPS180-2], to derive a value that is referred to
@@ -1034,7 +921,7 @@ the Allowed Characters string.
 
 7.  The password is a concatenation of these 6 letters.
 
-3.1.5.2  Encrypting the Connection String
+##### 3.1.5.2 Encrypting the Connection String
 
 To encrypt the connection string, a password MUST be derived as defined in section 3.1.5.1. To
 encrypt the connection string, the following algorithm MUST be followed:
@@ -1079,7 +966,8 @@ Remote Assistance Initiation over PNRP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-memory representation of {0x39, 0x00, 0x41, 0x00, 0x43, 0x00, 0x31, 0x00, 0x33, 0x00, 0x32,
+
+memory representation of {0x39, 0x00, 0x41, 0x00, 0x43, 0x00, 0x31, 0x00, 0x33, 0x00, 0x32,
 0x00, … 0x41, 0x00, 0x42, 0x00}.
 
 8.  Using the SHA-1 hash algorithm, hash the key string.
@@ -1092,7 +980,7 @@ key for encryption.
 
 algorithm.
 
-3.1.5.3  Creating the PNRP Node
+##### 3.1.5.3 Creating the PNRP Node
 
 To register an Unsecured Peer Name, a password MUST be derived as defined in section 3.1.5.1.
 Also, the connection string MUST be encrypted as defined in section 3.1.5.2. To register an Unsecured
@@ -1145,37 +1033,38 @@ Release: April 23, 2024
 
 14 / 29
 
-3.1.6  Timer Events
 
-3.1.6.1  Expiration Timer event
+#### 3.1.6 Timer Events
+
+##### 3.1.6.1 Expiration Timer event
 
 When the expiration timer elapses, the registered Unsecured Peer Name SHOULD be unregistered
 for security reasons. The timer MUST NOT be restarted.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 When a Remote Assistance session is established, the registered Unsecured Peer Name SHOULD
 be unregistered.
 
-3.2  Unsecured Peer Name Initiation - Consumer Details
+### 3.2 Unsecured Peer Name Initiation - Consumer Details
 
 The purpose of the Unsecured Peer Name initiation is to allow a Remote Assistance Connection
 String to pass from the publisher of the string to the consumer. After the string passes, the
 consumer can use the string to initialize a Remote Assistance connection and view and share the
 publisher’s screen.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 To retrieve the connection string from a remote machine, a password is conveyed from the publisher
 to the consumer by external means. This password is converted into an Unsecured Peer Name that
 was registered by the publisher, as well as the key that is used to decrypt the payload that is
 associated with this Peer Name.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no timers associated with this section.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The following steps initialize this protocol:
 
@@ -1187,11 +1076,11 @@ MUST be available to the application that is consuming the Unsecured Peer Name i
 Note  The protocol does not provide for the password to be transmitted from the publisher to the
 consumer.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 To consume the Unsecured Peer Name initiation, the application MUST derive the Unsecured Peer
 Name from the password that is provided by the publisher, as defined in section 3.2.5.1. After a Peer
@@ -1206,7 +1095,8 @@ Release: April 23, 2024
 
 15 / 29
 
-3.2.5.1  Deriving an Unsecured Peer Name from a Password
+
+##### 3.2.5.1 Deriving an Unsecured Peer Name from a Password
 
 To derive an Unsecured Peer Name from a password:
 
@@ -1250,7 +1140,7 @@ memory representation of {0x39, 0x00, 0x41, 0x00, 0x43, 0x00, 0x31, 0x00, 0x33, 
 
 "0", an Unsecured Peer Name.
 
-3.2.5.2  Resolving the Unsecure Peer Name
+##### 3.2.5.2 Resolving the Unsecure Peer Name
 
 The derived Unsecured Peer Name (as defined in section 3.2.5.1) MUST be resolved as specified in
 [MS-PNRP] section 3.1.4.4. If the consumer fails to resolve the address, the consumer repeats the
@@ -1261,7 +1151,7 @@ this value MUST be the number of hours elapsed since January 1st, 1970, plus 1 h
 associated with the Unsecured Peer Name is provided by the underlying Peer Name Resolution
 Protocol.
 
-3.2.5.3  Decrypting the Payload
+##### 3.2.5.3 Decrypting the Payload
 
 To decrypt the payload, the following steps MUST be taken:
 
@@ -1280,7 +1170,8 @@ Remote Assistance Initiation over PNRP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-RAIOP].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1288,15 +1179,15 @@ Release: April 23, 2024
 
 AES_128 algorithm to obtain the Unicode Remote Assistance Connection String.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no timer events associated with this section.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no local events that are necessary to process in this section.
 
-3.3  Secure Peer Name Initiation - Publisher Details
+### 3.3 Secure Peer Name Initiation - Publisher Details
 
 The purpose of the Secure Peer Name initiation is to allow a Remote Assistance Connection String,
 as defined in [MS-RA], to pass from the publisher of the string to the consumer. After the string is
@@ -1323,11 +1214,12 @@ Remote Assistance Initiation over PNRP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Secure Peer Name unregistered: After a Remote Assistance session has been initialized or the
+
+Secure Peer Name unregistered: After a Remote Assistance session has been initialized or the
 expiration time event occurred, the payload in the Secure Peer Name is no longer useful. The
 Secure Peer Name SHOULD be unregistered.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 To use this method of publication, the consumer MUST have provided the publisher with the
 consumer's public key. In addition, the publisher MUST have provided the consumer with a public
@@ -1337,14 +1229,14 @@ The publisher MUST register a Secure Peer Name with a payload containing an encr
 Assistance Connection String. The payload MUST contain Remote Assistance connection
 information, which the consumer MUST use to establish a Remote Assistance connection.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
-3.3.2.1  Expiration Timer
+##### 3.3.2.1 Expiration Timer
 
 A 30-minute timer SHOULD be started after the registration of the Secure Peer Name, as specified in
 section 3.3.5.2.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 To initialize this Secure Peer Name initiation, the Global PNRP cloud, MUST be discovered and
 joined as defined in [MS-PNRP] section 1.3.3. A Secure Peer Name MUST be created as specified in
@@ -1352,11 +1244,11 @@ joined as defined in [MS-PNRP] section 1.3.3. A Secure Peer Name MUST be created
 with the publisher. The publisher MUST have a public key that matches a private key that the
 consumer possesses.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 To publish the connection string by using Secure Peer Name initiation, the connection string MUST
 first be encrypted as defined in section 3.3.5.1. Next, a Secure Peer Name MUST be created as
@@ -1367,7 +1259,7 @@ Remote Assistance connection is made using an Unsecured Peer Name. The Remote As
 Contact Information message allows the publisher and consumer to exchange public keys and Secure
 Peer Names that match these public keys.
 
-3.3.5.1  Generating the Required PNRP Data
+##### 3.3.5.1 Generating the Required PNRP Data
 
 To generate the encrypted connection string payload, the following algorithm MUST be followed:
 
@@ -1386,7 +1278,8 @@ Release: April 23, 2024
 
 18 / 29
 
-3.  The publisher MUST obtain a public key that matches a private key that the consumer will use.
+
+3.  The publisher MUST obtain a public key that matches a private key that the consumer will use.
 
 Encrypt the cipher key that was generated in step 1 using the public key of the consumer and the
 Rivest-Shamir-Adleman (RSA) algorithm.
@@ -1400,7 +1293,7 @@ MUST be used when the peer name is registered as specified in section 3.3.5.2.
 
 from step 2 to the end of the exported AES key from step 4.
 
-3.3.5.2  Registering a Secure Peer Name
+##### 3.3.5.2 Registering a Secure Peer Name
 
 To register a Secure Peer Name, a public key from the public-private key pair that is known to the
 consumer MUST be used as an authority and the Unicode string "RAContact" MUST be used as a
@@ -1413,26 +1306,26 @@ The byte length is expressed as a Unicode string containing the decimal equivale
 byte length. For example, if the value of the byte length is 324, the comment section would contain
 the Unicode string "324".
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
-3.3.6.1  Expiration Timer Event
+##### 3.3.6.1 Expiration Timer Event
 
 When the expiration timer elapses, the registered Secure Peer Name SHOULD be unregistered for
 security reasons. The timer MUST NOT be restarted.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 When a Remote Assistance session is established, the registered Secure Peer Name SHOULD be
 unregistered.
 
-3.4  Secure Peer Name Initiation - Consumer Details
+### 3.4 Secure Peer Name Initiation - Consumer Details
 
 The purpose of the Secure Peer Name initiation is to allow a Remote Assistance Connection String
 (defined in [MS-RA]) to be passed from the publisher of the string to the consumer. After the string is
 passed, the consumer can use the string to initialize a Remote Assistance connection and view and
 share the publisher's screen.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 To use this method of initiation, the consumer MUST have provided the publisher with the public key
 of the consumer. In addition, the publisher MUST have provided the consumer with a public key to
@@ -1440,7 +1333,7 @@ allow for secure name resolution, as defined in [MS-PNRP]. The consumer MUST res
 Peer Name of the publisher and retrieve the payload that is associated with the name. Finally, the
 consumer MUST decrypt the connection information by using the associated private key.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 There are no timers associated with this section.
 
@@ -1451,17 +1344,18 @@ Release: April 23, 2024
 
 19 / 29
 
-3.4.3  Initialization
+
+#### 3.4.3 Initialization
 
 To initialize Secure Peer Name initiation, the Global PNRP cloud MUST be discovered and joined as
 defined in [MS-PNRP] section 1.3.3. The publisher MUST have a public key that matches a private
 key that the consumer possesses.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 None.
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
 To consume the connection string using Secure Peer Name initiation, the published Secure Peer
 Name MUST first be resolved as specified in section 3.4.5.1. Next, the connection string MUST be
@@ -1471,14 +1365,14 @@ The [MS-RA] protocol defines a Remote Assistance Contact Information message tha
 previous time to allow the publisher and consumer to exchange public keys and Secure Peer Names
 that match these public keys.
 
-3.4.5.1  Resolving a Secure Peer Name
+##### 3.4.5.1 Resolving a Secure Peer Name
 
 A Secure Peer Name MUST be generated using the public key of the public-private key pair as an
 authority and the Unicode string "RAContact" as a Peer identity. The public key is obtained as part of
 the Remote Assistance Contact information as specified in [MS-RA] section 2.2.5. Resolving the
 Secure Peer Name is defined in [MS-PNRP] section 3.1.4.4.
 
-3.4.5.2  Decrypting the Connection String
+##### 3.4.5.2 Decrypting the Connection String
 
 To decrypt the connection string, the consumer MUST use a private key that matches a public key
 that the publisher has. The following algorithm MUST be followed to decrypt the string:
@@ -1492,11 +1386,11 @@ exported key MUST be retrieved from the FriendlyName (as specified in [MS-PNRP],
 
 3.  Decrypt the connection string by using the symmetric key that was obtained in step 2.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 There are no timer events associated with this section.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 There are no local events that are necessary to process in this section.
 
@@ -1507,9 +1401,10 @@ Release: April 23, 2024
 
 20 / 29
 
-4  Protocol Examples
 
-4.1  Deriving a Password and Encrypting a Connection String for Unsecured Peer
+## 4 Protocol Examples
+
+### 4.1 Deriving a Password and Encrypting a Connection String for Unsecured Peer
 
 Name Initiation
 
@@ -1572,7 +1467,8 @@ Release: April 23, 2024
 
 21 / 29
 
-9.  The first hash result is the following value, expressed in hexadecimal.
+
+9.  The first hash result is the following value, expressed in hexadecimal.
 
  5f 3d 53 db 86 9a f1 ac 24 63 21 f4 c1 78 90 6d 91 a7 1a d5
 
@@ -1614,7 +1510,7 @@ encrypted value.
 
  7f d6 54 48 2f e0 92 73 d7 69 85 b0 1d 4b 7a 4b
 
-4.2  Creating an Unsecured Peer Name from a Password
+### 4.2 Creating an Unsecured Peer Name from a Password
 
 This example follows the steps that appear in sections 3.1.5.1, 3.1.5.2, and 3.1.5.3, which show how
 to derive a password from an Unsecured Peer Name, encrypt the connection string, and then
@@ -1644,7 +1540,8 @@ Remote Assistance Initiation over PNRP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 58 00 56 00 59 00 33 00 50 00 48 00 33 00 33 00 38 00 35 00
+
+ 58 00 56 00 59 00 33 00 50 00 48 00 33 00 33 00 38 00 35 00
  31 00 38 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00
 
@@ -1681,13 +1578,14 @@ Release: April 23, 2024
 
 23 / 29
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol uses SHA-1 hashing, which is less secure than other hashing methods.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1698,7 +1596,8 @@ Release: April 23, 2024
 
 24 / 29
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1744,7 +1643,8 @@ Release: April 23, 2024
 
 25 / 29
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1788,7 +1688,8 @@ Release: April 23, 2024
 
 26 / 29
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1922,7 +1823,8 @@ Peer Name message 10
 
 27 / 29
 
-Preconditions 8
+
+Preconditions 8
 Prerequisites 8
 Product behavior 25
 
@@ -2061,7 +1963,8 @@ V
 
 28 / 29
 
-Vendor-extensible fields 9
+
+Vendor-extensible fields 9
 Versioning 8
 
 [MS-RAIOP] - v20240423

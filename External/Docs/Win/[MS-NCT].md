@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 17
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -135,114 +136,54 @@ Release: April 23, 2024
 
 2 / 17
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Network Cost IE](#221-network-cost-ie)
+      - [2.2.1.1 Cost Flags](#2211-cost-flags)
+      - [2.2.1.2 Cost Level](#2212-cost-level)
+    - [2.2.2 Tethering Identifier IE](#222-tethering-identifier-ie)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 AP Role Details](#31-ap-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Role Details](#32-client-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 5
-Applicability Statement ....................................................................................... 5
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Message Syntax ................................................................................................. 7
-Network Cost IE ........................................................................................... 7
-Cost Flags .............................................................................................. 7
-Cost Level .............................................................................................. 8
-Tethering Identifier IE ................................................................................... 8
-
-2.2.1.1
-2.2.1.2
-
-2.2.1
-
-2.2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 10
-AP Role Details ................................................................................................ 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Message Processing Events and Sequencing Rules .......................................... 10
-Timer Events .............................................................................................. 10
-Other Local Events ...................................................................................... 10
-Client Role Details ............................................................................................ 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Message Processing Events and Sequencing Rules .......................................... 11
-Timer Events .............................................................................................. 11
-Other Local Events ...................................................................................... 11
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 12
-
-5  Security ................................................................................................................. 14
-Security Considerations for Implementers ........................................................... 14
-Index of Security Parameters ............................................................................ 14
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 15
-
-7  Change Tracking .................................................................................................... 16
-
-8  Index ..................................................................................................................... 17
-
-[MS-NCT] - v20240423
-Network Cost Transfer Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 17
-
-1  Introduction
+## 1 Introduction
 
 The Network Cost Transfer Protocol enables an IEEE 802.11 access point (AP) to communicate the
 network cost and tethering identification information about the AP type to wireless clients. It defines
@@ -252,7 +193,7 @@ information to the client.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -298,7 +239,7 @@ device that is connected to the Internet.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -312,7 +253,8 @@ Release: April 23, 2024
 
 4 / 17
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -331,11 +273,11 @@ Note Subcription Login or purchase to download this document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Network Cost Transfer Protocol enables an IEEE 802.11 access point (AP) to communicate the
 network cost and information about the AP type to clients. It defines two vendor-specific
@@ -349,7 +291,7 @@ metered (section 2.2.1). The Tethering Identifier IE is used to differentiate te
 networks from stand-alone APs (section 2.2.2). The difference can then be used to vary the
 experience in implementation-defined ways.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Network Cost Transfer Protocol extends the IEEE802.11 standard, whose conventions are applied
 as specified in [IEEE802.11-2007]. The Network Cost Transfer Protocol introduces a specific use for
@@ -357,13 +299,13 @@ one of that protocol's reserved information element types, and it defines additi
 Access Control (MAC) layer abstract service primitives for managing the configuration, transmission,
 and receipt of these new information elements.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Network Cost Transfer Protocol requires APs to adhere to 802.11 standard specifications. The AP
 SHOULD have knowledge about the metered state of its network connection. This state may be
 explicitly configured, inferred from media type, or obtained using any other relevant means.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is only applicable to APs that support tethering. The client is required to support
 connecting to Wi-Fi networks. Lastly, the Tethering Identifier information element (IE) only applies
@@ -376,15 +318,16 @@ Network Cost Transfer Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -403,9 +346,10 @@ Release: April 23, 2024
 
 6 / 17
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The two vendor-specific information elements in the Network Cost Transfer Protocol are transmitted
 as part of IEEE802.11 Beacons or Probe Responses. There are no requirements for the order of the
@@ -414,11 +358,11 @@ information elements and it is not necessary that both be used at the same time.
 The format of information elements is specified in [IEEE802.11-2007] section 7.3.2. The format and
 processing of Beacon or Probe Response frames are also specified in [IEEE802.11-2007].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify Network Cost Transfer Protocol Message syntax.
 
-2.2.1  Network Cost IE
+#### 2.2.1 Network Cost IE
 
 The Network Cost IE structure SHOULD<1> be used by clients to determine whether data
 transferred on that specific connection is metered. The structure of the Network Cost information
@@ -479,7 +423,7 @@ section 2.2.1.1.
 
 Reserved (1 byte): SHOULD be 0.
 
-2.2.1.1  Cost Flags
+##### 2.2.1.1 Cost Flags
 
 The following table shows the possible cost flags that can be represented in the IE:
 
@@ -490,7 +434,8 @@ Network Cost Transfer Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value  Name
+
+Value  Name
 
 Description
 
@@ -530,7 +475,7 @@ conditions might apply once the limit is reached.
 If the AP is aware that any of these states applies to its network connection, it SHOULD indicate the
 corresponding flag in all Beacons and Probe Responses.
 
-2.2.1.2  Cost Level
+##### 2.2.1.2 Cost Level
 
 The following table shows the possible cost levels that can be represented in the IE:
 
@@ -566,7 +511,7 @@ The connection cost is on a per-byte basis.
 The AP MUST indicate the cost level that most accurately describes the network's cost and metering
 type, based on configuration or other information sources.<2>
 
-2.2.2  Tethering Identifier IE
+#### 2.2.2 Tethering Identifier IE
 
 The Tethering Identifier information element (IE) SHOULD<3> be used to differentiate tethering
 (device-based) networks from stand-alone APs. The structure of the Tethering Identifier IE is shown in
@@ -613,7 +558,8 @@ Network Cost Transfer Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Length (1 byte): The length of the subsequent fields. This value MUST be 14 (0x0E).
+
+Length (1 byte): The length of the subsequent fields. This value MUST be 14 (0x0E).
 
 OUI (3 bytes): The IEEE-assigned organizationally unique identifier (OUI) for Microsoft.
 
@@ -640,56 +586,57 @@ Release: April 23, 2024
 
 9 / 17
 
-3  Protocol Details
 
-3.1  AP Role Details
+## 3 Protocol Details
+
+### 3.1 AP Role Details
 
 To compensate for an unreliable transmission over the wireless medium, the information elements
 SHOULD be contained in each Beacon frame and Probe Response.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The 802.11 Access Point (AP) MUST have initial information about the cost state of the upstream
 flow of data and convey the appropriate flag in the IE. This information may be administratively
 configured, inferred from media type, or acquired by other means.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 If the metering state of the network changes, the AP SHOULD immediately reflect the new value in all
 future Beacons and Probe Responses.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Role Details
+### 3.2 Client Role Details
 
 The client acquires information about the network during network discovery and connection. The client
 role is triggered when in range of an 802.11 Access Point (AP) and finding the relevant
 information element in the Beacon or Probe Response frame.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 For each AP to which the client is currently connected, the client SHOULD maintain the current
 estimated cost state and network type.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
@@ -700,28 +647,29 @@ Release: April 23, 2024
 
 10 / 17
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 When in range of an 802.11 Access Point (AP), the client SHOULD inspect the Beacon and Probe
 Response frames for the information elements defined by this protocol. If they are present, they
 SHOULD inform the client's data about the network. If not, the client may infer value using
 implementation-specific defaults.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 If these information elements are found, the local knowledge of the current network SHOULD be
 updated with the information they contain. Use of this information is implementation-dependent and
 handled by higher-layer protocols.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -732,7 +680,8 @@ Release: April 23, 2024
 
 11 / 17
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following table shows some sample cost attribute values:
 
@@ -873,7 +822,8 @@ Release: April 23, 2024
 
 12 / 17
 
-Offset
+
+Offset
 
 (hex)
 
@@ -970,14 +920,15 @@ Release: April 23, 2024
 
 13 / 17
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The information transferred by this protocol is transmitted unencrypted, even for a secured AP. Do not
 include sensitive information.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -988,7 +939,8 @@ Release: April 23, 2024
 
 14 / 17
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1038,7 +990,8 @@ Release: April 23, 2024
 
 15 / 17
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1082,7 +1035,8 @@ Release: April 23, 2024
 
 16 / 17
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 5

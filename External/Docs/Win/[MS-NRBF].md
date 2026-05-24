@@ -63,7 +63,8 @@ Release: November 19, 2024
 
 1 / 49
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: November 19, 2024
 
 2 / 49
 
-Date
+
+Date
 
 Revision
 History
@@ -505,207 +507,86 @@ Release: November 19, 2024
 
 3 / 49
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Common Definitions](#21-common-definitions)
+    - [2.1.1 Common Data Types](#211-common-data-types)
+      - [2.1.1.1 Char](#2111-char)
+      - [2.1.1.2 Double](#2112-double)
+      - [2.1.1.3 Single](#2113-single)
+      - [2.1.1.4 TimeSpan](#2114-timespan)
+      - [2.1.1.5 DateTime](#2115-datetime)
+      - [2.1.1.6 LengthPrefixedString](#2116-lengthprefixedstring)
+      - [2.1.1.7 Decimal](#2117-decimal)
+      - [2.1.1.8 ClassTypeInfo](#2118-classtypeinfo)
+    - [2.1.2 Enumerations](#212-enumerations)
+      - [2.1.2.1 RecordTypeEnumeration](#2121-recordtypeenumeration)
+      - [2.1.2.2 BinaryTypeEnumeration](#2122-binarytypeenumeration)
+      - [2.1.2.3 PrimitiveTypeEnumeration](#2123-primitivetypeenumeration)
+  - [2.2 Method Invocation Records](#22-method-invocation-records)
+    - [2.2.1 Enumerations](#221-enumerations)
+      - [2.2.1.1 MessageFlags](#2211-messageflags)
+    - [2.2.2 Common Structures](#222-common-structures)
+      - [2.2.2.1 ValueWithCode](#2221-valuewithcode)
+      - [2.2.2.2 StringValueWithCode](#2222-stringvaluewithcode)
+      - [2.2.2.3 ArrayOfValueWithCode](#2223-arrayofvaluewithcode)
+    - [2.2.3 Record Definitions](#223-record-definitions)
+      - [2.2.3.1 BinaryMethodCall](#2231-binarymethodcall)
+      - [2.2.3.2 MethodCallArray](#2232-methodcallarray)
+      - [2.2.3.3 BinaryMethodReturn](#2233-binarymethodreturn)
+      - [2.2.3.4 MethodReturnCallArray](#2234-methodreturncallarray)
+  - [2.3 Class Records](#23-class-records)
+    - [2.3.1 Common Structures](#231-common-structures)
+      - [2.3.1.1 ClassInfo](#2311-classinfo)
+      - [2.3.1.2 MemberTypeInfo](#2312-membertypeinfo)
+    - [2.3.2 Record Definitions](#232-record-definitions)
+      - [2.3.2.1 ClassWithMembersAndTypes](#2321-classwithmembersandtypes)
+      - [2.3.2.2 ClassWithMembers](#2322-classwithmembers)
+      - [2.3.2.3 SystemClassWithMembersAndTypes](#2323-systemclasswithmembersandtypes)
+      - [2.3.2.4 SystemClassWithMembers](#2324-systemclasswithmembers)
+      - [2.3.2.5 ClassWithId](#2325-classwithid)
+  - [2.4 Array Records](#24-array-records)
+    - [2.4.1 Enumerations](#241-enumerations)
+      - [2.4.1.1 BinaryArrayTypeEnumeration](#2411-binaryarraytypeenumeration)
+    - [2.4.2 Common Definitions](#242-common-definitions)
+      - [2.4.2.1 ArrayInfo](#2421-arrayinfo)
+    - [2.4.3 Record Definitions](#243-record-definitions)
+      - [2.4.3.1 BinaryArray](#2431-binaryarray)
+      - [2.4.3.2 ArraySingleObject](#2432-arraysingleobject)
+      - [2.4.3.3 ArraySinglePrimitive](#2433-arraysingleprimitive)
+      - [2.4.3.4 ArraySingleString](#2434-arraysinglestring)
+  - [2.5 Member Reference Records](#25-member-reference-records)
+    - [2.5.1 MemberPrimitiveTyped](#251-memberprimitivetyped)
+    - [2.5.2 MemberPrimitiveUnTyped](#252-memberprimitiveuntyped)
+    - [2.5.3 MemberReference](#253-memberreference)
+    - [2.5.4 ObjectNull](#254-objectnull)
+    - [2.5.5 ObjectNullMultiple](#255-objectnullmultiple)
+    - [2.5.6 ObjectNullMultiple256](#256-objectnullmultiple256)
+    - [2.5.7 BinaryObjectString](#257-binaryobjectstring)
+  - [2.6 Other Records](#26-other-records)
+    - [2.6.1 SerializationHeaderRecord](#261-serializationheaderrecord)
+    - [2.6.2 BinaryLibrary](#262-binarylibrary)
+    - [2.6.3 MessageEnd](#263-messageend)
+  - [2.7 Binary Record Grammar](#27-binary-record-grammar)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Protocols and Other Structures .................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Localization ............................................................................... 11
-Vendor-Extensible Fields ................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.2
-
-2.1
-
-2.2.2
-
-2.1.2
-
-2.2.1
-
-2.1.1
-
-2.2.1.1
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-
-2.1.1.1
-2.1.1.2
-2.1.1.3
-2.1.1.4
-2.1.1.5
-2.1.1.6
-2.1.1.7
-2.1.1.8
-
-2  Structures ............................................................................................................. 12
-Common Definitions ......................................................................................... 12
-Common Data Types ................................................................................... 12
-Char .................................................................................................... 12
-Double ................................................................................................. 12
-Single .................................................................................................. 13
-TimeSpan ............................................................................................ 13
-DateTime ............................................................................................. 13
-LengthPrefixedString ............................................................................. 14
-Decimal ............................................................................................... 16
-ClassTypeInfo ....................................................................................... 16
-Enumerations ............................................................................................. 17
-RecordTypeEnumeration ........................................................................ 17
-BinaryTypeEnumeration ......................................................................... 18
-PrimitiveTypeEnumeration...................................................................... 19
-Method Invocation Records ............................................................................... 20
-Enumerations ............................................................................................. 20
-MessageFlags ....................................................................................... 20
-Common Structures .................................................................................... 22
-ValueWithCode ..................................................................................... 22
-StringValueWithCode ............................................................................. 22
-ArrayOfValueWithCode .......................................................................... 22
-Record Definitions ....................................................................................... 23
-BinaryMethodCall .................................................................................. 23
-MethodCallArray ................................................................................... 24
-BinaryMethodReturn .............................................................................. 25
-MethodReturnCallArray .......................................................................... 25
-Class Records .................................................................................................. 26
-Common Structures .................................................................................... 26
-ClassInfo ............................................................................................. 26
-MemberTypeInfo ................................................................................... 27
-Record Definitions ....................................................................................... 28
-ClassWithMembersAndTypes .................................................................. 28
-ClassWithMembers ................................................................................ 29
-SystemClassWithMembersAndTypes ........................................................ 29
-SystemClassWithMembers...................................................................... 29
-ClassWithId .......................................................................................... 30
-Array Records .................................................................................................. 30
-Enumerations ............................................................................................. 31
-BinaryArrayTypeEnumeration ................................................................. 31
-Common Definitions .................................................................................... 31
-ArrayInfo ............................................................................................. 31
-Record Definitions ....................................................................................... 32
-BinaryArray .......................................................................................... 32
-
-2.3.2.1
-2.3.2.2
-2.3.2.3
-2.3.2.4
-2.3.2.5
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-
-2.3.1.1
-2.3.1.2
-
-2.4.2.1
-
-2.4.3.1
-
-2.4.1.1
-
-2.4.3
-
-2.4.1
-
-2.3.2
-
-2.4.2
-
-2.2.3
-
-2.3.1
-
-2.4
-
-2.3
-
-[MS-NRBF] - v20241119
-.NET Remoting: Binary Format Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-4 / 49
-
-2.4.3.2
-2.4.3.3
-2.4.3.4
-
-ArraySingleObject ................................................................................. 33
-ArraySinglePrimitive .............................................................................. 33
-ArraySingleString .................................................................................. 34
-Member Reference Records ............................................................................... 34
-MemberPrimitiveTyped ................................................................................ 34
-MemberPrimitiveUnTyped ............................................................................ 35
-MemberReference ....................................................................................... 35
-ObjectNull.................................................................................................. 36
-ObjectNullMultiple ....................................................................................... 36
-ObjectNullMultiple256 ................................................................................. 36
-BinaryObjectString ...................................................................................... 37
-Other Records ................................................................................................. 37
-SerializationHeaderRecord ........................................................................... 37
-BinaryLibrary ............................................................................................. 38
-MessageEnd ............................................................................................... 39
-Binary Record Grammar .................................................................................... 39
-
-2.5
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-2.5.5
-2.5.6
-2.5.7
-
-2.6.1
-2.6.2
-2.6.3
-
-2.6
-
-2.7
-
-3  Structure Examples ............................................................................................... 40
-
-4  Security Considerations ......................................................................................... 44
-
-5  Appendix A: Product Behavior ............................................................................... 45
-
-6  Change Tracking .................................................................................................... 47
-
-7  Index ..................................................................................................................... 48
-
-[MS-NRBF] - v20241119
-.NET Remoting: Binary Format Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-5 / 49
-
-1  Introduction
+## 1 Introduction
 
 The .NET Remoting: Binary Format Data Structure defines a set of structures that represent object
 graph or method invocation information as an octet stream. One possible application of the structure
@@ -714,7 +595,7 @@ is as the serialization format for the data model as specified in [MS-NRTP] sect
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -776,7 +657,8 @@ message that indicates what the error is, and can also have additional data to i
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-An Exception is part of the Remoting Data Model. For more information, see [MS-NRTP]
+
+An Exception is part of the Remoting Data Model. For more information, see [MS-NRTP]
 section 3.1.1.
 
 Generic Argument: A formal argument used in a Generic Type or a Generic Remote Method
@@ -852,7 +734,8 @@ section 3.1.1
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Primitive Value: Part of the Remoting Data Model. A Primitive Value is an instance of a
+
+Primitive Value: Part of the Remoting Data Model. A Primitive Value is an instance of a
 
 Primitive Type.
 
@@ -931,17 +814,18 @@ Release: November 19, 2024
 
 8 / 49
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -960,14 +844,14 @@ http://ieeexplore.ieee.org/servlet/opac?punumber=2355
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
 [MSDN-.NET-FRAMEWORK] Microsoft Corporation, "Overview of the .NET Framework",
 https://learn.microsoft.com/en-us/dotnet/framework/get-started/overview
 
-1.3  Overview
+### 1.3 Overview
 
 The .NET Remoting: Binary Format Data Structure defines a set of structures that represent object
 graph or method invocation information as an octet stream. One possible application of the structure
@@ -995,7 +879,8 @@ Release: November 19, 2024
 
 9 / 49
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-NRBF].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -1017,7 +902,7 @@ Arguments, Return Value, Exception, Message Properties, and Call Context.
 
   Other records include records that are used to mark the beginning and end of the format.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 This format is part of the .NET Remoting protocols. The .NET Remoting Protocol (as specified in [MS-
 NRTP]) uses this format to encode message content before transmission, as specified in [MS-NRTP]
@@ -1028,7 +913,7 @@ specified in [MS-NRTP] section 3. The following block diagram illustrates the re
 
 Figure 1: The .NET Remoting protocols
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The .NET Remoting: Binary Format Data Structure can be used as part of a Remote Method
 invocation protocol or to persist an object graph. It has a compact octet stream representation that
@@ -1043,7 +928,8 @@ Release: November 19, 2024
 
 10 / 49
 
-1.6  Versioning and Localization
+
+### 1.6 Versioning and Localization
 
 This document covers versioning issues in the following areas:
 
@@ -1064,7 +950,7 @@ and Microsoft .NET Framework 4.0. For more information, see [MSDN-.NET-FRAMEWORK
 
 There are no localization-dependent structures described in this document.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 This format allows implementation-specific name-value pairs called Message Properties to be added
 to the MethodCallArray (section 2.2.3.2) and MethodReturnCallArray (section 2.2.3.4) records.
@@ -1076,13 +962,14 @@ Release: November 19, 2024
 
 11 / 49
 
-2  Structures
 
-2.1  Common Definitions
+## 2 Structures
+
+### 2.1 Common Definitions
 
 The following sections specify the common structures and enumerations that are used by all records.
 
-2.1.1  Common Data Types
+#### 2.1.1 Common Data Types
 
 This section specifies the structures of the common Remoting Types that are supported by this
 format. The format supports the following Primitive Types as specified in [MS-DTYP].
@@ -1118,7 +1005,7 @@ complement to represent the negative numbers.
 
 In addition, this format defines the following common types.
 
-2.1.1.1  Char
+##### 2.1.1.1 Char
 
 The Char represents a Unicode character value.
 
@@ -1139,7 +1026,7 @@ Value (variable)
 
 Value (variable): UTF-8-encoded bytes.
 
-2.1.1.2  Double
+##### 2.1.1.2 Double
 
 The Double represents a 64-bit double-precision floating-point value.
 
@@ -1163,11 +1050,12 @@ Release: November 19, 2024
 
 12 / 49
 
-Value (8 bytes): A 64-bit double-precision floating-point value, as specified in [IEEE754].
+
+Value (8 bytes): A 64-bit double-precision floating-point value, as specified in [IEEE754].
 
 ...
 
-2.1.1.3  Single
+##### 2.1.1.3 Single
 
 The Single represents a 32-bit single-precision floating-point value.
 
@@ -1186,7 +1074,7 @@ Value
 
 Value (4 bytes): A 32-bit single-precision floating-point value, as specified in [IEEE754].
 
-2.1.1.4  TimeSpan
+##### 2.1.1.4 TimeSpan
 
 The TimeSpan represents time duration.
 
@@ -1210,7 +1098,7 @@ Value (8 bytes): A 64-bit signed-integer value that specifies duration as the nu
 nanoseconds. The values range from -10675199 days, 2 hours, 48 minutes, and 05.4775808
 seconds to 10675199 days, 2 hours, 48 minutes, and 05.4775807 seconds inclusive.
 
-2.1.1.5  DateTime
+##### 2.1.1.5 DateTime
 
 The DateTime represents an instant of time.
 
@@ -1256,13 +1144,14 @@ Release: November 19, 2024
 
 13 / 49
 
-Value  Meaning
+
+Value  Meaning
 
 2
 
 The time specified is in the local time zone.
 
-2.1.1.6  LengthPrefixedString
+##### 2.1.1.6 LengthPrefixedString
 
 The LengthPrefixedString represents a string value. The string is prefixed by the length of the UTF-8
 encoded string in bytes. The length is encoded in a variable-length field with a minimum of 1 byte and
@@ -1360,7 +1249,8 @@ Release: November 19, 2024
 
 14 / 49
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1490,7 +1380,8 @@ Release: November 19, 2024
 
 15 / 49
 
-D - Reserved_31 (1 bit): The value MUST be 1.
+
+D - Reserved_31 (1 bit): The value MUST be 1.
 
 Length_32-38 (7 bits): Length values range from 268435456 to 2147483647 (31 bits).
 
@@ -1500,7 +1391,7 @@ String (variable): A UTF-8 encoded string value. The number of bytes of the enco
 
 be equal to the value specified in the Length field.
 
-2.1.1.7  Decimal
+##### 2.1.1.7 Decimal
 
 The Decimal represents a decimal value. It has the following format.
 
@@ -1573,7 +1464,7 @@ The number of digits in the Integral part is less than or equal to 29.
 then the decimal value MUST be rounded to the nearest value such that the total number of digits is
 29.
 
-2.1.1.8  ClassTypeInfo
+##### 2.1.1.8 ClassTypeInfo
 
 The ClassTypeInfo identifies a Class (2) by its name and reference to BinaryLibrary record.
 
@@ -1597,7 +1488,8 @@ Release: November 19, 2024
 
 16 / 49
 
-...
+
+...
 
 LibraryId
 
@@ -1609,9 +1501,9 @@ LibraryId (4 bytes): An INT32 (as specified in [MS-DTYP] section 2.2.22) value t
 ID that identifies the Library name. The record that contains this field in a serialization stream
 MUST be preceded by a BinaryLibrary record that defines the Library name for the ID.
 
-2.1.2  Enumerations
+#### 2.1.2 Enumerations
 
-2.1.2.1  RecordTypeEnumeration
+##### 2.1.2.1 RecordTypeEnumeration
 
 This enumeration identifies the type of the record. Each record (except for MemberPrimitiveUnTyped)
 starts with a record type enumeration. The size of the enumeration is one BYTE.
@@ -1699,7 +1591,8 @@ Release: November 19, 2024
 
 17 / 49
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -1751,7 +1644,7 @@ Identifies a BinaryMethodCall record.
 
 Identifies a BinaryMethodReturn record.
 
-2.1.2.2  BinaryTypeEnumeration
+##### 2.1.2.2 BinaryTypeEnumeration
 
 The BinaryTypeEnumeration identifies the Remoting Type of a Class (2) Member or an Array item.
 The size of the enumeration is a BYTE.
@@ -1816,7 +1709,8 @@ The Remoting Type is a single-dimensional Array of System.Object with a lower bo
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Constant/value  Description
+
+Constant/value  Description
 
 StringArray
 
@@ -1830,7 +1724,7 @@ The Remoting Type is a single-dimensional Array of a Primitive Type with a lower
 
 7
 
-2.1.2.3  PrimitiveTypeEnumeration
+##### 2.1.2.3 PrimitiveTypeEnumeration
 
 The PrimitiveTypeEnumeration identifies a Primitive Type value. The size of the enumeration is a
 BYTE.
@@ -1926,7 +1820,8 @@ Release: November 19, 2024
 
 19 / 49
 
-Constant/value  Description
+
+Constant/value  Description
 
 UInt32
 
@@ -1952,15 +1847,15 @@ Identifies a Null Object.
 
 Identifies a LengthPrefixedString (section 2.1.1.6) value.
 
-2.2  Method Invocation Records
+### 2.2 Method Invocation Records
 
 This section specifies records that define the format for information required for a Remote Method
 invocation. [MS-NRTP] sections 3.1.5.1.1 and 3.1.5.1.2 describe the mechanism to map a method
 invocation to the records defined in this section.
 
-2.2.1  Enumerations
+#### 2.2.1 Enumerations
 
-2.2.1.1  MessageFlags
+##### 2.2.1.1 MessageFlags
 
 The MessageFlags enumeration is used by the BinaryMethodCall (section 2.2.3.1) or
 BinaryMethodReturn (section 2.2.3.3) records to provide information about the structure of the
@@ -2026,7 +1921,8 @@ It is in the Context category.
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -2198,7 +2094,8 @@ Valid
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- Arg
+
+ Arg
 
  Context
 
@@ -2255,9 +2152,9 @@ N/A
 The combination of Signature and Signature, Property and Property, Generic and Generic, or Exception
 and Exception is not applicable because there is only one bit in the Enum for each of these categories.
 
-2.2.2  Common Structures
+#### 2.2.2 Common Structures
 
-2.2.2.1  ValueWithCode
+##### 2.2.2.1 ValueWithCode
 
 The ValueWithCode structure is used to associate a Primitive Value with an Enum that identifies the
 Primitive Type of the Primitive Value.
@@ -2288,7 +2185,7 @@ value INT32, the Value field MUST contain a valid INT32 (as specified in [MS-DTY
 2.2.22) instance. The length of the field is determined by the Primitive Type of the Value. This
 field MUST NOT be present if the value of PrimitiveTypeEnum is Null (17).
 
-2.2.2.2  StringValueWithCode
+##### 2.2.2.2 StringValueWithCode
 
 The StringValueWithCode structure is a ValueWithCode where PrimitiveTypeEnumeration is String
 (18).
@@ -2316,7 +2213,7 @@ of the data. The value MUST be 18 (String).
 
 StringValue (variable): A LengthPrefixedString that contains the string value.
 
-2.2.2.3  ArrayOfValueWithCode
+##### 2.2.2.3 ArrayOfValueWithCode
 
 The ArrayOfValueWithCode structure contains a list of ValueWithCode records. The list is prefixed with
 the length of the Array.
@@ -2328,7 +2225,8 @@ the length of the Array.
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2352,9 +2250,9 @@ ListOfValueWithCode (variable): A sequence of ValueWithCode records. The number 
 
 the sequence MUST be equal to the value specified in the Length field.
 
-2.2.3  Record Definitions
+#### 2.2.3 Record Definitions
 
-2.2.3.1  BinaryMethodCall
+##### 2.2.3.1 BinaryMethodCall
 
 The BinaryMethodCall record contains information that is required to perform a Remote Method
 invocation.
@@ -2410,7 +2308,8 @@ Release: November 19, 2024
 
 23 / 49
 
-MethodName (variable): A StringValueWithCode that represents the Remote Method name. The
+
+MethodName (variable): A StringValueWithCode that represents the Remote Method name. The
 
 format of the string is as specified in [MS-NRTP] section 2.2.1.1.
 
@@ -2433,7 +2332,7 @@ argument of the method. The items of the Array MUST be in the same order as the 
 arguments. This field is conditional. If the MessageEnum field has the ArgsInline bit set, the field
 MUST be present; otherwise, the field MUST NOT be present.
 
-2.2.3.2  MethodCallArray
+##### 2.2.3.2 MethodCallArray
 
 The MethodCallArray is a special use of the ArraySingleObject record. The record represents a
 serialized Array that can contain instances of any Remoting Type. The items of the Array include
@@ -2479,7 +2378,8 @@ Release: November 19, 2024
 
 24 / 49
 
-2.2.3.3  BinaryMethodReturn
+
+##### 2.2.3.3 BinaryMethodReturn
 
 The BinaryMethodReturn record contains the information returned by a Remote Method.
 
@@ -2537,7 +2437,7 @@ Args (variable): An ArrayOfValueWithCode that contains the Output Arguments of t
 This field is conditional. If the MessageEnum field has the ArgsInline bit set, the field MUST be
 present; otherwise, the field MUST NOT be present.
 
-2.2.3.4  MethodReturnCallArray
+##### 2.2.3.4 MethodReturnCallArray
 
 The MethodReturnCallArray is a special use of the ArraySingleObject record. The record represents a
 serialized Array that can contain instances of any Remoting Type. The items of the Array include
@@ -2557,7 +2457,8 @@ Release: November 19, 2024
 
 25 / 49
 
-2.  Output Arguments: An Array that contains the Output Arguments for the method. This item is
+
+2.  Output Arguments: An Array that contains the Output Arguments for the method. This item is
 conditional. If the MessageEnum field of the preceding BinaryMethodReturn record has the
 ArgsInArray bit set, the item MUST be present; otherwise, the item MUST NOT be present.
 
@@ -2580,7 +2481,7 @@ a DictionaryEntry, as specified in [MS-NRTP] section 2.2.2.6. If the MessageEnum
 preceding BinaryMethodReturn record has the PropertiesInArray bit set, the field MUST be
 present; otherwise, the field MUST NOT be present.
 
-2.3  Class Records
+### 2.3 Class Records
 
 This section defines Class (1) records. A Class (1) record represents an instance of a Class (1). [MS-
 NRTP] section 3.1.5.1.6 describes the mechanism to map a Class (1) instance to a record defined in
@@ -2591,9 +2492,9 @@ The values of the Members of the Class (1) MUST be serialized as records that fo
 specified in section 2.7. The order of the records MUST match the order of MemberNames as specified
 in the ClassInfo (section 2.3.1.1) structure.
 
-2.3.1  Common Structures
+#### 2.3.1 Common Structures
 
-2.3.1.1  ClassInfo
+##### 2.3.1.1 ClassInfo
 
 ClassInfo is a common structure used by all the Class (2) records. It has the following structure.
 
@@ -2631,7 +2532,8 @@ identifies the object in the serialization stream. An implementation MAY use any
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-generate the unique IDs. If the ObjectId is referenced by a MemberReference record elsewhere in
+
+generate the unique IDs. If the ObjectId is referenced by a MemberReference record elsewhere in
 the serialization stream, the ObjectId MUST be positive. If the ObjectId is not referenced by any
 MemberReference in the serialization stream, then the ObjectId SHOULD be positive, but MAY be
 negative.<4>
@@ -2650,7 +2552,7 @@ specified in the MemberCount field.
 
 The MemberNames MAY be in any order.<5>
 
-2.3.1.2  MemberTypeInfo
+##### 2.3.1.2 MemberTypeInfo
 
 The MemberTypeInfo is a common structure that contains type information for Class (2) Members.
 It has the following structure.
@@ -2714,7 +2616,8 @@ Release: November 19, 2024
 
 27 / 49
 
- BinaryTypeEnum
+
+ BinaryTypeEnum
 
  AdditionalInfos
 
@@ -2756,9 +2659,9 @@ items in the BinaryTypeEnums field.
 
 AdditionalInfo MUST NOT be Null (17) or String (18).
 
-2.3.2  Record Definitions
+#### 2.3.2 Record Definitions
 
-2.3.2.1  ClassWithMembersAndTypes
+##### 2.3.2.1 ClassWithMembersAndTypes
 
 The ClassWithMembersAndTypes record is the most verbose of the Class records. It contains metadata
 about Members, including the names and Remoting Types of the Members. It also contains a
@@ -2811,7 +2714,8 @@ earlier in the serialization stream.
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-2.3.2.2  ClassWithMembers
+
+##### 2.3.2.2 ClassWithMembers
 
 The ClassWithMembers record is less verbose than ClassWithMembersAndTypes. It does not contain
 information about the Remoting Type information of the Members. This record can be used when
@@ -2850,7 +2754,7 @@ LibraryId (4 bytes): An INT32 value (as specified in [MS-DTYP] section 2.2.22) t
 BinaryLibrary record by its Library ID. The ID MUST be a positive integer. A BinaryLibrary record
 with the LibraryId MUST appear earlier in the serialization stream.
 
-2.3.2.3  SystemClassWithMembersAndTypes
+##### 2.3.2.3 SystemClassWithMembersAndTypes
 
 The SystemClassWithMembersAndTypes record is less verbose than ClassWithMembersAndTypes. It
 does not contain a LibraryId. This record implicitly specifies that the Class is in the System Library.
@@ -2888,7 +2792,7 @@ MemberTypeInfo (variable): A MemberTypeInfo structure that provides information 
 
 Remoting Type of the Members.
 
-2.3.2.4  SystemClassWithMembers
+##### 2.3.2.4 SystemClassWithMembers
 
 The SystemClassWithMembers record is less verbose than ClassWithMembersAndTypes. It does not
 contain a LibraryId or the information about the Remoting Types of the Members. This record
@@ -2900,7 +2804,8 @@ contain a LibraryId or the information about the Remoting Types of the Members. 
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-implicitly specifies that the Class is in the System Library. This record can be used when the
+
+implicitly specifies that the Class is in the System Library. This record can be used when the
 information is deemed unnecessary because it is known out of band or can be inferred from context.
 
 0  1  2  3  4  5  6  7  8  9
@@ -2928,7 +2833,7 @@ ClassInfo (variable): A ClassInfo structure that provides information about the 
 
 of the Class.
 
-2.3.2.5  ClassWithId
+##### 2.3.2.5 ClassWithId
 
 The ClassWithId record is the most compact. It has no metadata. It refers to metadata defined in
 SystemClassWithMembers, SystemClassWithMembersAndTypes, ClassWithMembers, or
@@ -2969,7 +2874,7 @@ one of the other Class records by its ObjectId. A SystemClassWithMembers,
 SystemClassWithMembersAndTypes, ClassWithMembers, or ClassWithMembersAndTypes record
 with the value of this field in its ObjectId field MUST appear earlier in the serialization stream.
 
-2.4  Array Records
+### 2.4 Array Records
 
 This section defines Array records that represent Array instances. [MS-NRTP] section 3.1.5.1.7,
 describes the mechanism to map an Array instance to a record defined in this section.
@@ -2991,13 +2896,14 @@ records contains a NullCount field that states how many ObjectNull records that 
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-represents. For the purpose of calculating the number of records, a single ObjectNullMultiple or
+
+represents. For the purpose of calculating the number of records, a single ObjectNullMultiple or
 ObjectNullMultiple256 record is counted as many times as the value specified in the NullCount
 field.<6>
 
-2.4.1  Enumerations
+#### 2.4.1 Enumerations
 
-2.4.1.1  BinaryArrayTypeEnumeration
+##### 2.4.1.1 BinaryArrayTypeEnumeration
 
 The BinaryArrayTypeEnumeration is used to denote the type of an Array. The size of the enumeration
 is 1 byte. It is used by the Array records.
@@ -3042,9 +2948,9 @@ RectangularOffset
 Multi-dimensional Arrays where the lower bound index of at least one of the dimensions is
 greater than 0.
 
-2.4.2  Common Definitions
+#### 2.4.2 Common Definitions
 
-2.4.2.1  ArrayInfo
+##### 2.4.2.1 ArrayInfo
 
 The ArrayInfo is a common structure that is used by Array records.
 
@@ -3079,9 +2985,10 @@ Release: November 19, 2024
 
 31 / 49
 
-2.4.3  Record Definitions
 
-2.4.3.1  BinaryArray
+#### 2.4.3 Record Definitions
+
+##### 2.4.3.1 BinaryArray
 
 BinaryArray is the most general form of Array records. The record is more verbose than the other
 Array records.
@@ -3166,7 +3073,8 @@ SystemClass, Class, or PrimitiveArray, this field contains additional informatio
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Remoting Type. For the BinaryTypeEnum value of Primitive and PrimitiveArray, this field specifies
+
+Remoting Type. For the BinaryTypeEnum value of Primitive and PrimitiveArray, this field specifies
 the actual Primitive Type that uses the PrimitiveTypeEnum. For the BinaryTypeEnum value of
 SystemClass, this field specifies the name of the Class. For the BinaryTypeEnum value of Class,
 this field specifies the name of the Class and the Library ID. The following table enumerates
@@ -3214,7 +3122,7 @@ StringArray, this field MUST NOT be present in the serialization stream.
 If the BinaryTypeEnum value is Primitive, the PrimitiveTypeEnumeration value in
 AdditionalTypeInfo MUST NOT be Null (17) or String (18).
 
-2.4.3.2  ArraySingleObject
+##### 2.4.3.2 ArraySingleObject
 
 The ArraySingleObject record contains a single-dimensional Array in which each Member record MAY
 contain any Data Value.
@@ -3246,7 +3154,7 @@ ArrayInfo (8 bytes): An ArrayInfo structure that specifies the ID and the length
 
 instance.
 
-2.4.3.3  ArraySinglePrimitive
+##### 2.4.3.3 ArraySinglePrimitive
 
 The ArraySinglePrimitive record contains a single-dimensional Array in which all Members are
 Primitive Value.
@@ -3258,7 +3166,8 @@ Release: November 19, 2024
 
 33 / 49
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3295,7 +3204,7 @@ This record MUST be followed by a sequence of MemberPrimitiveUnTyped records tha
 whose Primitive Type is specified by the PrimitiveTypeEnum field. The number of records in the
 sequence MUST match the value specified in the Length field of ArrayInfo.
 
-2.4.3.4  ArraySingleString
+##### 2.4.3.4 ArraySingleString
 
 The ArraySingleString record contains a single-dimensional Array whose items are String values.
 
@@ -3326,7 +3235,7 @@ ArrayInfo (8 bytes): An ArrayInfo structure that specifies the ID and the length
 
 instance.
 
-2.5  Member Reference Records
+### 2.5 Member Reference Records
 
 Arrays and classes are containers of Member values; that is, graph nodes that represent instances of
 Arrays and Classes that have outbound edges. The Member values are the graph nodes that are
@@ -3334,7 +3243,7 @@ destinations for the outbound edges. In the serialization stream, the Member val
 Array and the Class records. The Member values are serialized by using the Member Reference
 records.
 
-2.5.1  MemberPrimitiveTyped
+#### 2.5.1 MemberPrimitiveTyped
 
 The MemberPrimitiveTyped record contains a Primitive Type value other than String. The mechanism
 to serialize a Primitive Value is described in [MS-NRTP] section 3.1.5.1.8.
@@ -3346,7 +3255,8 @@ Release: November 19, 2024
 
 34 / 49
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3376,7 +3286,7 @@ Value (variable): The value whose type is inferred from the PrimitiveTypeEnum fi
 
 in the table in section 2.1.2.3.
 
-2.5.2  MemberPrimitiveUnTyped
+#### 2.5.2 MemberPrimitiveUnTyped
 
 The MemberPrimitiveUnTyped record is the most compact record to represent a Primitive Type
 value. This type of record does not have a RecordTypeEnum to indicate the record type. The record
@@ -3403,7 +3313,7 @@ Value (variable)
 
 Value (variable): A Primitive Type value other than String.
 
-2.5.3  MemberReference
+#### 2.5.3 MemberReference
 
 The MemberReference record contains a reference to another record that contains the actual value.
 The record is used to serialize values of a Class Member and Array items. The mechanism to
@@ -3442,7 +3352,8 @@ defined in another record.
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-
+
+
 
 The value MUST be a positive integer.
 
@@ -3451,7 +3362,7 @@ value as its ObjectId. Unlike other ID references, there is no restriction on wh
 that defines the ID appears in the serialization stream; that is, it MAY appear after the
 referencing record.<9>
 
-2.5.4  ObjectNull
+#### 2.5.4 ObjectNull
 
 The ObjectNull record contains a Null Object. The mechanism to serialize a Null Object is described
 in [MS-NRTP] section 3.1.5.1.12.
@@ -3473,7 +3384,7 @@ RecordTypeEnum (1 byte): A RecordTypeEnumeration value that identifies the recor
 
 value MUST be 10.
 
-2.5.5  ObjectNullMultiple
+#### 2.5.5 ObjectNullMultiple
 
 The ObjectNullMultiple record provides a more compact form for multiple consecutive Null records
 than using individual ObjectNull records. The mechanism to serialize a Null Object is described in
@@ -3504,7 +3415,7 @@ NullCount (4 bytes): An INT32 value (as specified in [MS-DTYP] section 2.2.22) t
 
 the number of consecutive Null Objects. The value MUST be a positive integer.
 
-2.5.6  ObjectNullMultiple256
+#### 2.5.6 ObjectNullMultiple256
 
 The ObjectNullMultiple256 record provides the most compact form for multiple, consecutive Null
 records when the count of Null records is less than 256. The mechanism to serialize a Null Object is
@@ -3540,7 +3451,8 @@ number of consecutive Null objects. The value MUST be in the range of 0 to 255, 
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-2.5.7  BinaryObjectString
+
+#### 2.5.7 BinaryObjectString
 
 The BinaryObjectString record identifies an object as a String object, and contains information about
 it. The mechanism to serialize a string is described in [MS-NRTP] section 3.1.5.1.11.
@@ -3577,11 +3489,11 @@ An implementation MAY use any algorithm to generate the unique IDs.<10>
 
 Value (variable): A LengthPrefixedString value.
 
-2.6  Other Records
+### 2.6 Other Records
 
 The following sections define the records that are not part of any of the previous categories.
 
-2.6.1  SerializationHeaderRecord
+#### 2.6.1 SerializationHeaderRecord
 
 The SerializationHeaderRecord record MUST be the first record in a binary serialization. This record
 has the major and minor version of the format and the IDs of the top object and the headers.
@@ -3637,7 +3549,8 @@ of the MethodCallArray.
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-
+
+
 
 
 
@@ -3683,7 +3596,7 @@ MinorVersion (4 bytes): An INT32 value (as specified in [MS-DTYP] section 2.2.22
 
 the minor version of the protocol. The value of this field MUST be 0.
 
-2.6.2  BinaryLibrary
+#### 2.6.2 BinaryLibrary
 
 The BinaryLibrary record associates an INT32 ID (as specified in [MS-DTYP] section 2.2.22) with a
 Library name. This allows other records to reference the Library name by using the ID. This approach
@@ -3730,7 +3643,8 @@ of the string is specified in [MS-NRTP] section 2.2.1.3.
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-2.6.3  MessageEnd
+
+#### 2.6.3 MessageEnd
 
 The MessageEnd record marks the end of the serialization stream.
 
@@ -3751,7 +3665,7 @@ RecordTypeEnum (1 byte): A RecordTypeEnumeration value that identifies the recor
 
 value MUST be 11.
 
-2.7  Binary Record Grammar
+### 2.7 Binary Record Grammar
 
 This section specifies the grammar using the Augmented Backus-Naur Form (ABNF) syntax specified in
 [RFC4234] that defines how the records can appear in the serialization stream.
@@ -3852,11 +3766,12 @@ Release: November 19, 2024
 
 39 / 49
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-NRBF].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
-3  Structure Examples
+## 3 Structure Examples
 
 This sample illustrates the message exchanged when a Remote Method is invoked as specified in
 [MS-NRTP] section 3.3.4.2. The data model is used to describe the information to perform the Remote
@@ -3908,7 +3823,8 @@ Release: November 19, 2024
 
 40 / 49
 
-Referencing section 2 for various message structures, the bytes listed in the preceding sample can be
+
+Referencing section 2 for various message structures, the bytes listed in the preceding sample can be
 mapped to the logical Request message structure that is used by .NET Remoting to service the
 request. The logical Request message for Microsoft .NET Framework 1.1 is as follows.
 
@@ -3979,7 +3895,8 @@ Release: November 19, 2024
 
 41 / 49
 
-                   MemberNames:
+
+                   MemberNames:
                          Data: Zip
              BinaryTypeEnumA:
                    String  (0x01)
@@ -4048,7 +3965,8 @@ Release: November 19, 2024
 
 42 / 49
 
-       RecordTypeEnum: BinaryMethodReturn (0x16)
+
+       RecordTypeEnum: BinaryMethodReturn (0x16)
        MessageEnum: 00000811
            NoArgs:                 (...............................1)
            ArgsInline:             (..............................0.)
@@ -4089,7 +4007,8 @@ Release: November 19, 2024
 
 43 / 49
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 Some of the structures contain fields that specify size information of the data in the serialization
 stream. The type of the size that specifies fields is INT32 (as specified in [MS-DTYP] section 2.2.22).
@@ -4157,7 +4076,8 @@ Release: November 19, 2024
 
 44 / 49
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4225,7 +4145,8 @@ record for a given class.
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-<7> Section 2.4.2.1: Windows uses a single counter that counts from 1 to generate the ObjectId in
+
+<7> Section 2.4.2.1: Windows uses a single counter that counts from 1 to generate the ObjectId in
 the ClassInfo, ArrayInfo, BinaryObjectString, and BinaryArray records, and the LibraryId in the
 BinaryLibrary record. The maximum value is 2,147,483,647.
 
@@ -4251,7 +4172,8 @@ Release: November 19, 2024
 
 46 / 49
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4296,7 +4218,8 @@ Release: November 19, 2024
 
 47 / 49
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 10
@@ -4427,7 +4350,8 @@ Method invocation records
 
 48 / 49
 
-   record definitions 23
+
+   record definitions 23
    structures 22
 MethodCall 17
 MethodReturn 17

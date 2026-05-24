@@ -64,7 +64,8 @@ Release: November 21, 2025
 
 1 / 96
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: November 21, 2025
 
 2 / 96
 
-Date
+
+Date
 
 Revision
 History
@@ -548,7 +550,8 @@ Release: November 21, 2025
 
 3 / 96
 
-Date
+
+Date
 
 Revision
 History
@@ -579,282 +582,118 @@ Release: November 21, 2025
 
 4 / 96
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Messages](#131-messages)
+    - [1.3.2 Queues](#132-queues)
+    - [1.3.3 Queue Operations](#133-queue-operations)
+    - [1.3.4 Access Patterns](#134-access-patterns)
+    - [1.3.5 Transactions](#135-transactions)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HRESULT](#221-hresult)
+    - [2.2.2 GUID](#222-guid)
+    - [2.2.3 QUEUE_FORMAT](#223-queueformat)
+    - [2.2.4 Queue Context Handles](#224-queue-context-handles)
+      - [2.2.4.1 QUEUE_CONTEXT_HANDLE_NOSERIALIZE](#2241-queuecontexthandlenoserialize)
+      - [2.2.4.2 QUEUE_CONTEXT_HANDLE_SERIALIZE](#2242-queuecontexthandleserialize)
+    - [2.2.5 Message Packet Structure](#225-message-packet-structure)
+      - [2.2.5.1 UserMessage](#2251-usermessage)
+        - [2.2.5.1.1 Binary Message](#22511-binary-message)
+        - [2.2.5.1.2 SRMP Message](#22512-srmp-message)
+          - [2.2.5.1.2.1 SRMPEnvelopeHeader](#225121-srmpenvelopeheader)
+          - [2.2.5.1.2.2 CompoundMessageHeader](#225122-compoundmessageheader)
+      - [2.2.5.2 ExtensionHeader](#2252-extensionheader)
+      - [2.2.5.3 SubqueueHeader](#2253-subqueueheader)
+      - [2.2.5.4 DeadLetterHeader](#2254-deadletterheader)
+      - [2.2.5.5 ExtendedAddressHeader](#2255-extendedaddressheader)
+    - [2.2.6 SectionBuffer](#226-sectionbuffer)
+    - [2.2.7 SectionType](#227-sectiontype)
+    - [2.2.8 XACTUOW](#228-xactuow)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 RemoteRead Server Details](#31-remoteread-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Shared Data Elements](#3111-shared-data-elements)
+      - [3.1.1.2 PendingRequestEntry](#3112-pendingrequestentry)
+      - [3.1.1.3 PendingRequestTable](#3113-pendingrequesttable)
+      - [3.1.1.4 Message](#3114-message)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 RPC Call Timeout Timer](#3121-rpc-call-timeout-timer)
+      - [3.1.2.2 Pending Request Cleanup Timer](#3122-pending-request-cleanup-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 R_GetServerPort (Opnum 0)](#3141-rgetserverport-opnum-0)
+      - [3.1.4.2 R_OpenQueue (Opnum 2)](#3142-ropenqueue-opnum-2)
+      - [3.1.4.3 R_CloseQueue (Opnum 3)](#3143-rclosequeue-opnum-3)
+      - [3.1.4.4 R_CreateCursor (Opnum 4)](#3144-rcreatecursor-opnum-4)
+      - [3.1.4.5 R_CloseCursor (Opnum 5)](#3145-rclosecursor-opnum-5)
+      - [3.1.4.6 R_PurgeQueue (Opnum 6)](#3146-rpurgequeue-opnum-6)
+      - [3.1.4.7 R_StartReceive (Opnum 7)](#3147-rstartreceive-opnum-7)
+      - [3.1.4.8 R_CancelReceive (Opnum 8)](#3148-rcancelreceive-opnum-8)
+      - [3.1.4.9 R_EndReceive (Opnum 9)](#3149-rendreceive-opnum-9)
+      - [3.1.4.10 R_MoveMessage (Opnum 10)](#31410-rmovemessage-opnum-10)
+      - [3.1.4.11 R_OpenQueueForMove (Opnum 11)](#31411-ropenqueueformove-opnum-11)
+      - [3.1.4.12 R_QMEnlistRemoteTransaction (Opnum 12)](#31412-rqmenlistremotetransaction-opnum-12)
+      - [3.1.4.13 R_StartTransactionalReceive (Opnum 13)](#31413-rstarttransactionalreceive-opnum-13)
+      - [3.1.4.14 R_SetUserAcknowledgementClass (Opnum 14)](#31414-rsetuseracknowledgementclass-opnum-14)
+      - [3.1.4.15 R_EndTransactionalReceive (Opnum 15)](#31415-rendtransactionalreceive-opnum-15)
+    - [3.1.5 Timer Events](#315-timer-events)
+      - [3.1.5.1 Pending Request Cleanup Timer Event](#3151-pending-request-cleanup-timer-event)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 RPC Failure Event](#3161-rpc-failure-event)
+      - [3.1.6.2 Queue Context Handles Rundown Routine](#3162-queue-context-handles-rundown-routine)
+  - [3.2 RemoteRead Client Details](#32-remoteread-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Opening a Queue](#3241-opening-a-queue)
+      - [3.2.4.2 Enlisting in a Transaction](#3242-enlisting-in-a-transaction)
+      - [3.2.4.3 Peek a Message](#3243-peek-a-message)
+      - [3.2.4.4 Receive a Message](#3244-receive-a-message)
+        - [3.2.4.4.1 Receive a Message Without a Transaction](#32441-receive-a-message-without-a-transaction)
+        - [3.2.4.4.2 Receive a Message with a Transaction](#32442-receive-a-message-with-a-transaction)
+      - [3.2.4.5 Reject a Message](#3245-reject-a-message)
+      - [3.2.4.6 Move a Message](#3246-move-a-message)
+      - [3.2.4.7 Purging a Queue](#3247-purging-a-queue)
+      - [3.2.4.8 Creating a Cursor](#3248-creating-a-cursor)
+      - [3.2.4.9 Peek a Message by Using a Cursor](#3249-peek-a-message-by-using-a-cursor)
+      - [3.2.4.10 Receive a Message by Using a Cursor](#32410-receive-a-message-by-using-a-cursor)
+        - [3.2.4.10.1 Receive a Message by Using a Cursor Without a Transaction](#324101-receive-a-message-by-using-a-cursor-without-a-transaction)
+        - [3.2.4.10.2 Receive a Message by Using a Cursor with a Transaction](#324102-receive-a-message-by-using-a-cursor-with-a-transaction)
+      - [3.2.4.11 Cancel a Pending Peek or Receive](#32411-cancel-a-pending-peek-or-receive)
+      - [3.2.4.12 Closing a Cursor](#32412-closing-a-cursor)
+      - [3.2.4.13 Closing a Queue](#32413-closing-a-queue)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Binding to a Server and Purging a Queue](#41-binding-to-a-server-and-purging-a-queue)
+  - [4.2 Receiving a Message](#42-receiving-a-message)
+  - [4.3 Receiving a Message in a Transaction](#43-receiving-a-message-in-a-transaction)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Messages ................................................................................................... 11
-Queues...................................................................................................... 11
-Queue Operations ....................................................................................... 11
-Access Patterns .......................................................................................... 12
-Transactions .............................................................................................. 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.5
-
-2.1
-2.2
-
-2.2.5.1
-
-2.2.4.1
-2.2.4.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Common Data Types ........................................................................................ 15
-HRESULT ................................................................................................... 15
-GUID ........................................................................................................ 15
-QUEUE_FORMAT ......................................................................................... 15
-Queue Context Handles ............................................................................... 16
-QUEUE_CONTEXT_HANDLE_NOSERIALIZE ............................................... 16
-QUEUE_CONTEXT_HANDLE_SERIALIZE ................................................... 16
-Message Packet Structure ............................................................................ 17
-UserMessage ........................................................................................ 18
-Binary Message ............................................................................... 21
-SRMP Message ................................................................................ 21
-SRMPEnvelopeHeader ................................................................. 21
-CompoundMessageHeader .......................................................... 21
-ExtensionHeader ................................................................................... 22
-SubqueueHeader .................................................................................. 23
-DeadLetterHeader ................................................................................. 24
-ExtendedAddressHeader ........................................................................ 25
-SectionBuffer ............................................................................................. 26
-SectionType ............................................................................................... 26
-XACTUOW .................................................................................................. 27
-Directory Service Schema Elements ................................................................... 27
-
-2.2.5.2
-2.2.5.3
-2.2.5.4
-2.2.5.5
-
-2.2.5.1.2.1
-2.2.5.1.2.2
-
-2.2.5.1.1
-2.2.5.1.2
-
-2.2.6
-2.2.7
-2.2.8
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3  Protocol Details ..................................................................................................... 28
-RemoteRead Server Details ............................................................................... 28
-Abstract Data Model .................................................................................... 28
-Shared Data Elements ........................................................................... 28
-PendingRequestEntry............................................................................. 28
-PendingRequestTable ............................................................................ 29
-Message .............................................................................................. 29
-Timers ...................................................................................................... 29
-RPC Call Timeout Timer ......................................................................... 29
-Pending Request Cleanup Timer .............................................................. 29
-Initialization ............................................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 30
-R_GetServerPort (Opnum 0) .................................................................. 31
-
-3.1.2.1
-3.1.2.2
-
-3.1.3
-3.1.4
-
-3.1.4.1
-
-3.1.2
-
-[MS-MQRR] - v20251121
-Message Queuing (MSMQ): Queue Manager Remote Read Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-5 / 96
-
-3.1.5
-
-3.1.6
-
-3.1.5.1
-
-3.1.6.1
-3.1.6.2
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-
-R_OpenQueue (Opnum 2) ...................................................................... 31
-R_CloseQueue (Opnum 3) ...................................................................... 34
-R_CreateCursor (Opnum 4) .................................................................... 35
-R_CloseCursor (Opnum 5)...................................................................... 36
-R_PurgeQueue (Opnum 6) ..................................................................... 36
-R_StartReceive (Opnum 7)..................................................................... 37
-R_CancelReceive (Opnum 8) .................................................................. 45
-R_EndReceive (Opnum 9) ...................................................................... 47
-R_MoveMessage (Opnum 10) ................................................................. 48
-R_OpenQueueForMove (Opnum 11) ........................................................ 50
-R_QMEnlistRemoteTransaction (Opnum 12) ............................................. 52
-R_StartTransactionalReceive (Opnum 13) ................................................ 53
-R_SetUserAcknowledgementClass (Opnum 14) ......................................... 62
-R_EndTransactionalReceive (Opnum 15) .................................................. 63
-Timer Events .............................................................................................. 65
-Pending Request Cleanup Timer Event ..................................................... 65
-Other Local Events ...................................................................................... 65
-RPC Failure Event.................................................................................. 65
-Queue Context Handles Rundown Routine ................................................ 66
-RemoteRead Client Details ................................................................................ 67
-Abstract Data Model .................................................................................... 67
-Timers ...................................................................................................... 67
-Initialization ............................................................................................... 67
-Message Processing Events and Sequencing Rules .......................................... 67
-Opening a Queue .................................................................................. 67
-Enlisting in a Transaction ....................................................................... 68
-Peek a Message .................................................................................... 68
-Receive a Message ................................................................................ 69
-Receive a Message Without a Transaction ........................................... 69
-Receive a Message with a Transaction ................................................ 70
-Reject a Message .................................................................................. 71
-Move a Message ................................................................................... 71
-Purging a Queue ................................................................................... 72
-Creating a Cursor .................................................................................. 72
-Peek a Message by Using a Cursor .......................................................... 72
-Receive a Message by Using a Cursor ...................................................... 73
-Receive a Message by Using a Cursor Without a Transaction ................. 73
-Receive a Message by Using a Cursor with a Transaction ...................... 74
-Cancel a Pending Peek or Receive ........................................................... 74
-Closing a Cursor ................................................................................... 75
-Closing a Queue .................................................................................... 75
-Timer Events .............................................................................................. 75
-Other Local Events ...................................................................................... 75
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-
-3.2.4.4.1
-3.2.4.4.2
-
-3.2.4.5
-3.2.4.6
-3.2.4.7
-3.2.4.8
-3.2.4.9
-3.2.4.10
-
-3.2.4.10.1
-3.2.4.10.2
-
-3.2.4.11
-3.2.4.12
-3.2.4.13
-
-3.2.5
-3.2.6
-
-4  Protocol Examples ................................................................................................. 76
-Binding to a Server and Purging a Queue ............................................................ 76
-Receiving a Message ........................................................................................ 77
-Receiving a Message in a Transaction ................................................................. 78
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 81
-Security Considerations for Implementers ........................................................... 81
-Index of Security Parameters ............................................................................ 81
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 82
-
-7  Appendix B: Product Behavior ............................................................................... 85
-
-8  Change Tracking .................................................................................................... 92
-
-9  Index ..................................................................................................................... 93
-
-[MS-MQRR] - v20251121
-Message Queuing (MSMQ): Queue Manager Remote Read Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-6 / 96
-
-[MS-MQRR] - v20251121
-Message Queuing (MSMQ): Queue Manager Remote Read Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-7 / 96
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Message Queuing (MSMQ): Queue Manager Remote Read Protocol, a
 remote procedure call (RPC)-based protocol that is used by Microsoft Message Queuing
@@ -864,7 +703,7 @@ and to purge all messages from a queue.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -924,7 +763,8 @@ Release: November 21, 2025
 
 8 / 96
 
-[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
+
+[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
 
 Interface Definition Language (IDL): The International Standards Organization (ISO) standard
@@ -1000,7 +840,8 @@ Release: November 21, 2025
 
 9 / 96
 
-queue: An object that holds messages passed between applications or messages passed
+
+queue: An object that holds messages passed between applications or messages passed
 
 between Message Queuing and applications. In general, applications can send messages to
 queues and read messages from queues.
@@ -1054,14 +895,14 @@ has to be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1074,7 +915,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-[C706] The Open Group, "DCE 1.1: Remote Procedure Call", C706, August 1997,
+
+[C706] The Open Group, "DCE 1.1: Remote Procedure Call", C706, August 1997,
 https://publications.opengroup.org/c706
 
 Note Registration is required to download the document.
@@ -1114,7 +956,7 @@ http://msdn.microsoft.com/en-us/library/ms700106.aspx
 [RFC2553] Gilligan, R., Thomson, S., Bound, J., and Stevens, W., "Basic Socket Interface Extensions
 for IPv6", RFC 2553, March 1999, https://www.rfc-editor.org/info/rfc2553
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-MQBR] Microsoft Corporation, "Message Queuing (MSMQ): Binary Reliable Message Routing
 Algorithm".
@@ -1127,7 +969,7 @@ Mapping".
 [MSDN-MMSCH] Microsoft Corporation, "Mixed Mode Serialization of Context Handles",
 http://msdn.microsoft.com/en-us/library/aa367098(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 Microsoft Message Queuing (MSMQ) is a communications service that provides asynchronous and
 reliable message passing between client applications running on different hosts. In MSMQ, clients
@@ -1141,7 +983,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-allowing the sending and receiving client applications to send and receive messages asynchronously
+
+allowing the sending and receiving client applications to send and receive messages asynchronously
 from each other.
 
 Queues are typically hosted by a communications service called a queue manager. By hosting the
@@ -1154,7 +997,7 @@ occurs, a protocol is required to insert messages into the queue, and another pr
 consume messages from the queue. The Message Queuing (MSMQ): Queue Manager Remote Read
 Protocol provides a protocol for consuming messages from a remote queue.
 
-1.3.1  Messages
+#### 1.3.1 Messages
 
 Each message exchanged in an MSMQ system typically has a set of message properties that
 contain metadata about the message and a distinguished property called a message body that
@@ -1172,7 +1015,7 @@ SectionBuffer (section 2.2.6) structure.
 The protocol also assumes that each message has a lookup identifier that is unique within the queue.
 This identifier is not part of the message but is instead assigned by the server.
 
-1.3.2  Queues
+#### 1.3.2 Queues
 
 A queue is a logical data structure that contains an ordered list of zero or more messages. Queues,
 like files, have names. This protocol uses the QUEUE_FORMAT (section 2.2.3) structure to identify
@@ -1190,7 +1033,7 @@ can specify a sharing mode that either allows other clients to concurrently acce
 ensures that the client has exclusive access to the queue. The latter can be used to avoid race
 conditions caused by other clients operating on the queue at the same time.
 
-1.3.3  Queue Operations
+#### 1.3.3 Queue Operations
 
 The protocol provides mechanisms for the following operations against an open queue.
 
@@ -1207,7 +1050,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-of positive acknowledgment from the client, the server can remove the message from the queue.
+
+of positive acknowledgment from the client, the server can remove the message from the queue.
 While the server is awaiting acknowledgment from the client, access to the message by other clients is
 prevented.
 
@@ -1228,7 +1072,7 @@ A client can inform the server that it has no need for a message via a Reject op
 can use this indication to inform the sender that the client did not consume the message. How a
 server does this task is not addressed in this specification.
 
-1.3.4  Access Patterns
+#### 1.3.4 Access Patterns
 
 Messages in a queue can be consumed in a first-in, first-out (FIFO) access pattern. Because
 messages in a queue are ordered, there is a head that represents the front of the queue and a tail
@@ -1254,7 +1098,7 @@ handle to the client, and to close a cursor. Because a cursor represents a posit
 protocol logically relates the cursor to the context handle associated with an open queue. The protocol
 places no limit on the number of concurrent cursors associated with a queue context handle.
 
-1.3.5  Transactions
+#### 1.3.5 Transactions
 
 The protocol allows the queue operations Receive or Move to be performed within the context of a
 distributed atomic transaction, as specified in [MS-DTCO]. When this is done, the state changes that
@@ -1274,10 +1118,11 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-does not provide any other mechanism for determining whether a queue supports transactional
+
+does not provide any other mechanism for determining whether a queue supports transactional
 behavior.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is dependent upon RPC for its transport, as specified in section 2.1.
 
@@ -1291,7 +1136,7 @@ scenarios.
 This protocol is capable of carrying the layout and internal structure of the message in the queue, as
 specified in [MS-MQQP].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Message Queuing (MSMQ): Queue Manager Remote Read Protocol is an RPC interface and, as a
 result, has prerequisites, as specified in [MS-RPCE], that are common to RPC interfaces.
@@ -1303,7 +1148,7 @@ This protocol uses authentication through RPC. The client has previously acquire
 recognized by the server. The server has to be started and fully initialized before the protocol can
 start.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol provides functionality related to consumption of messages from a queue hosted at a
 queue manager running on a remote computer. It does not provide functionality related to inserting
@@ -1321,7 +1166,7 @@ Message Queuing (MSMQ): Binary Reliable Messaging protocol described in [MS-MQBR
 protocol that provides message transfer functionality more efficiently and in a manner that provides
 end-to-end reliability through intermediate store-and-forward hops.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Supported transports: This protocol uses the RPC over TCP/IP protocol sequence. However, it
 supports a mechanism for explicitly negotiating the RPC endpoint to be used. Details are specified in
@@ -1339,7 +1184,8 @@ Release: November 21, 2025
 
 14 / 96
 
-  R_OpenQueueForMove (Opnum 11) (section 3.1.4.11)
+
+  R_OpenQueueForMove (Opnum 11) (section 3.1.4.11)
 
   R_QMEnlistRemoteTransaction (Opnum 12) (section 3.1.4.12)
 
@@ -1357,13 +1203,13 @@ supported by the remote queue manager.
 Security and authentication methods: This protocol supports the NT LAN Manager (NTLM)
 Authentication Protocol and Kerberos authentication methods.<3>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1. Vendors can define their
 own HRESULT values provided that they set the C bit (0x20000000) for each vendor-defined value,
 indicating that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol uses the standard interfaces that are listed in the following table.
 
@@ -1396,9 +1242,10 @@ Release: November 21, 2025
 
 15 / 96
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol MUST use the following RPC protocol sequence: RPC over TCP/IP (ncacn_ip_tcp), as
 specified in [MS-RPCE]. This protocol uses RPC dynamic endpoints as specified in [C706] section 4.
@@ -1409,7 +1256,7 @@ server uses the underlying RPC protocol to retrieve the identity of the invoking
 [MS-RPCE] section 3.3.3.4.3. The server SHOULD use this identity to perform method-specific access
 checks.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
@@ -1434,16 +1281,16 @@ specification supports the following data types:
 
   SectionType (section 2.2.7)
 
-2.2.1  HRESULT
+#### 2.2.1 HRESULT
 
 This specification uses the HRESULT ([MS-ERREF] section 2.1) type.
 
-2.2.2  GUID
+#### 2.2.2 GUID
 
 This specification uses a globally unique identifier (GUID). Unless otherwise qualified, instances of
 GUID in sections 2 and 3 refer to [MS-DTYP] section 2.3.4.
 
-2.2.3  QUEUE_FORMAT
+#### 2.2.3 QUEUE_FORMAT
 
 This structure is used to identify a queue. This structure is common to many Microsoft Message
 Queuing (MSMQ) protocols. For more details, see [MS-MQMQ] section 2.2.7. Only a subset of the
@@ -1461,7 +1308,8 @@ Release: November 21, 2025
 
 16 / 96
 
-  QUEUE_FORMAT_TYPE_PRIVATE
+
+  QUEUE_FORMAT_TYPE_PRIVATE
 
   QUEUE_FORMAT_TYPE_DIRECT
 
@@ -1479,7 +1327,7 @@ TCP
 
   OS
 
-2.2.4  Queue Context Handles
+#### 2.2.4 Queue Context Handles
 
 A queue context handle is an RPC context handle corresponding to an open queue. A client MUST call
 the R_OpenQueue (Opnum 2) (section 3.1.4.2) method or the R_OpenQueueForMove (Opnum
@@ -1492,7 +1340,7 @@ QUEUE_CONTEXT_HANDLE_SERIALIZE (section 2.2.4.2). These two types are identical 
 but are defined separately so as to allow the serialization mode to be configured. Refer to [MSDN-
 MMSCH] for details on modes of the context handles.
 
-2.2.4.1  QUEUE_CONTEXT_HANDLE_NOSERIALIZE
+##### 2.2.4.1 QUEUE_CONTEXT_HANDLE_NOSERIALIZE
 
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE is an RPC context handle representing an open queue.
 Refer to [MSDN-MMSCH] for details on modes of the context handles. For the
@@ -1508,7 +1356,7 @@ The context handle MUST NOT be type_strict, but it MUST be strict. More details 
 handles are specified in [C706] sections 4.2.16.6, 5.1.6, and 6.1 and [MS-RPCE] sections
 3.1.1.5.3.2.2.2 and 3.3.1.4.1.
 
-2.2.4.2  QUEUE_CONTEXT_HANDLE_SERIALIZE
+##### 2.2.4.2 QUEUE_CONTEXT_HANDLE_SERIALIZE
 
 QUEUE_CONTEXT_HANDLE_SERIALIZE is an RPC context handle representing an open queue. Refer
 to [MSDN-MMSCH] for details on modes of the context handles. For this context handle, there can be
@@ -1526,11 +1374,12 @@ Release: November 21, 2025
 
 17 / 96
 
-The context handle MUST NOT be type_strict, but it MUST be strict. More details on RPC context
+
+The context handle MUST NOT be type_strict, but it MUST be strict. More details on RPC context
 handles are specified in [C706] sections 4.2.16.6, 5.1.6, and 6.1 and [MS-RPCE] sections
 3.1.1.5.3.2.2.2 and 3.3.1.4.1.
 
-2.2.5  Message Packet Structure
+#### 2.2.5 Message Packet Structure
 
 The Message Packet Structure is the data structure that contains the UserMessage and other
 headers that represent the payload that is transferred across the wire as a result of a remote read
@@ -1591,7 +1440,8 @@ Release: November 21, 2025
 
 18 / 96
 
-2.2.5.1  UserMessage
+
+##### 2.2.5.1 UserMessage
 
 The UserMessage structure can be either a Binary Message (section 2.2.5.1.1) or an SRMP
 Message (section 2.2.5.1.2), depending on the transport over which the message was originally sent.
@@ -1658,7 +1508,8 @@ Release: November 21, 2025
 
 19 / 96
 
-...
+
+...
 
 SessionHeader (16 bytes, optional)
 
@@ -1737,7 +1588,8 @@ Release: November 21, 2025
 
 20 / 96
 
-Value
+
+Value
 
 0x0001
 
@@ -1817,12 +1669,13 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 In [MS-MQRR], this field indicates the absolute expiration time of the message defined as the
 number of seconds elapsed since midnight (00:00:00), January 1, 1970 UTC.
 
-2.2.5.1.1 Binary Message
+###### 2.2.5.1.1 Binary Message
 
 A binary message represents a message being received that was originally sent over the MSMQ:
 Binary Reliable Messaging Protocol [MS-MQQB]. The UserHeader.Flags.AH bit field MUST NOT be
@@ -1830,14 +1683,14 @@ set, and the SRMPEnvelopeHeader (section 2.2.5.1.2.1) and the
 CompoundMessageHeader (section 2.2.5.1.2.2) MUST NOT be present in the
 UserMessage (section 2.2.5.1).
 
-2.2.5.1.2 SRMP Message
+###### 2.2.5.1.2 SRMP Message
 
 An SRMP message represents a message being received that was originally sent over HTTP. The
 UserHeader.Flags.AH bit field MUST be set, and the SRMPEnvelopeHeader (section 2.2.5.1.2.1) and
 the CompoundMessageHeader (section 2.2.5.1.2.2) MUST be present in the
 UserMessage (section 2.2.5.1).
 
-2.2.5.1.2.1  SRMPEnvelopeHeader
+###### 2.2.5.1.2.1 SRMPEnvelopeHeader
 
 The SRMPEnvelopeHeader contains information about the SOAP envelope used to send the original
 message over HTTP. This header MUST be present only if the UserHeader.Flags.AH bit field is set.
@@ -1878,7 +1731,7 @@ Data (variable): Specifies the data in WCHAR ([MS-DTYP] section 2.2.60) format, 
 NULL terminator. The data is formatted as an SRMP Message Structure ([MC-MQSRM] section
 2.2.2).
 
-2.2.5.1.2.2  CompoundMessageHeader
+###### 2.2.5.1.2.2 CompoundMessageHeader
 
 The CompoundMessageHeader contains information about the SRMP compound message, as specified
 in [MC-MQSRM] section 2.2.2. This header MUST be present only if the UserHeader.Flags.AH bit
@@ -1906,7 +1759,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-HTTPBodySize
+
+HTTPBodySize
 
 MsgBodySize
 
@@ -1939,7 +1793,7 @@ Data (variable): Specifies an array of bytes that contains the SRMP message, inc
 POST message that carried the SRMP message. More details are specified in [MC-MQSRM] section
 4.1.
 
-2.2.5.2  ExtensionHeader
+##### 2.2.5.2 ExtensionHeader
 
 The ExtensionHeader contains information about the presence and size of other headers in the
 Message Packet Structure (section 2.2.5), such as DeadLetterHeader (section 2.2.5.4),
@@ -1983,7 +1837,8 @@ Release: November 21, 2025
 
 23 / 96
 
-0
+
+0
 
 1
 
@@ -2074,7 +1929,7 @@ Unused bit field. MUST be ignored.
 
 Reserved (3 bytes): MUST be ignored when reading the Message Packet Structure.
 
-2.2.5.3  SubqueueHeader
+##### 2.2.5.3 SubqueueHeader
 
 The SubqueueHeader encapsulates information about the message as specified following.<6> This
 header MUST be ignored if its SubqueueName field is an empty string.
@@ -2111,7 +1966,8 @@ Release: November 21, 2025
 
 24 / 96
 
-SubqueueName (64 bytes)
+
+SubqueueName (64 bytes)
 
 ...
 
@@ -2159,7 +2015,7 @@ that specifies the target subqueue name. If the subqueue name is shorter than th
 remaining bytes MUST be set to 0x00. If the message is not part of a transacted Move operation,
 all bytes MUST be set to 0x00.
 
-2.2.5.4  DeadLetterHeader
+##### 2.2.5.4 DeadLetterHeader
 
 The DeadLetterHeader specifies the path of an application-specified dead-letter queue.<7>
 
@@ -2187,7 +2043,8 @@ Release: November 21, 2025
 
 25 / 96
 
-HeaderSize (4 bytes): A ULONG ([MS-DTYP] section 2.2.51) that MUST be set to the total size in
+
+HeaderSize (4 bytes): A ULONG ([MS-DTYP] section 2.2.51) that MUST be set to the total size in
 
 bytes of the DeadLetterHeader.
 
@@ -2196,7 +2053,7 @@ DeadLetterPathName (variable): MUST contain a null-terminated Unicode string tha
 application-specified dead-letter queue. The array MUST be aligned up to the next 4-byte
 boundary by adding padding zeros if necessary.
 
-2.2.5.5  ExtendedAddressHeader
+##### 2.2.5.5 ExtendedAddressHeader
 
 The ExtendedAddressHeader specifies the host address from which a message was received.<8>
 This header MUST be ignored if the AddressType field is 0x0000.
@@ -2274,7 +2131,8 @@ Release: November 21, 2025
 
 26 / 96
 
-2.2.6  SectionBuffer
+
+#### 2.2.6 SectionBuffer
 
 A SectionBuffer represents a fragment or section of a Message Packet (section 2.2.5). Operations
 R_StartReceive (Opnum 7) (section 3.1.4.7) and R_StartTransactionalReceive (Opnum
@@ -2321,7 +2179,7 @@ pSectionBuffer:  MUST be a pointer to an array of bytes containing a section of 
 
 Packet.
 
-2.2.7  SectionType
+#### 2.2.7 SectionType
 
 The SectionType enumeration defines the available SectionBuffer (section 2.2.6) types.
 
@@ -2341,7 +2199,8 @@ Release: November 21, 2025
 
 27 / 96
 
-stFullPacket:  The pSectionBuffer member of the SectionBuffer structure contains a complete
+
+stFullPacket:  The pSectionBuffer member of the SectionBuffer structure contains a complete
 Message Packet Structure (section 2.2.5). The UserMessage (section 2.2.5.1) is either that
 specified in section 2.2.5.1.1 or in section 2.2.5.1.2.
 
@@ -2365,14 +2224,14 @@ stSrmpSecondSection:  The pSectionBuffer member of the SectionBuffer structure c
 second section of the SRMP Message packet from beyond the end of the
 CompoundMessageHeader in the UserMessage to the end of the packet.
 
-2.2.8  XACTUOW
+#### 2.2.8 XACTUOW
 
 The XACTUOW ([MS-MQMQ] section 2.2.18.1.8) structure uniquely identifies the unit of work (UOW)
 for a transactional operation. For an external transaction, this value MUST be acquired from the
 transaction coordinator. For an internal transaction, a client MUST create a unique random value for
 each transaction.<9>
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol uses ADM elements specified in section 3.1.1. A subset of these elements can be
 published in a directory. This protocol accesses the directory using the algorithm specified in [MS-
@@ -2386,11 +2245,12 @@ Release: November 21, 2025
 
 28 / 96
 
-3  Protocol Details
 
-3.1  RemoteRead Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 RemoteRead Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2408,7 +2268,7 @@ manager is described in [MS-MQOD].
 are manipulated by this protocol, and sections 3.1.1.2 through 3.1.1.4 specify the ADM elements that
 are private to this protocol.
 
-3.1.1.1  Shared Data Elements
+##### 3.1.1.1 Shared Data Elements
 
 This protocol manipulates the following ADM elements from the shared abstract data model.
 
@@ -2428,7 +2288,7 @@ QueueManager: [MS-MQDMPR] section 3.1.1.1.
 
 Transaction: [MS-MQDMPR] section 3.1.1.14.
 
-3.1.1.2  PendingRequestEntry
+##### 3.1.1.2 PendingRequestEntry
 
 The PendingRequestEntry ADM element encapsulates a pending request to peek or receive a
 message from an open queue and specifies the following ADM attributes:
@@ -2454,13 +2314,14 @@ Release: November 21, 2025
 
 29 / 96
 
-3.1.1.3  PendingRequestTable
+
+##### 3.1.1.3 PendingRequestTable
 
 The PendingRequestTable ADM element represents a hash table that contains references to
 PendingRequestEntry (section 3.1.1.2) ADM element instances keyed on
 {PendingRequestEntry.RequestId, PendingRequestEntry.QueueContextHandle}.
 
-3.1.1.4  Message
+##### 3.1.1.4 Message
 
 The local Message ADM element extends the base Message ([MS-MQDMPR] section 3.1.1.10) ADM
 element.
@@ -2475,7 +2336,7 @@ Offset: The offset and byte size of the message headers, message body, and messa
 
 trailers.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The Message Queuing (MSMQ): Queue Manager Remote Read protocol MUST maintain the following
 timers:
@@ -2486,7 +2347,7 @@ timers:
 
 Pending Request Cleanup Timer (section 3.1.2.2)
 
-3.1.2.1  RPC Call Timeout Timer
+##### 3.1.2.1 RPC Call Timeout Timer
 
 This protocol uses nondefault behavior for the RPC Call Timeout Timer, as specified in [MS-RPCE]
 section 3.3.2.2.2. This protocol uses a timer value of 300,000 milliseconds<10>, which applies to the
@@ -2503,7 +2364,7 @@ The server MUST maintain a per-call timer for each call to the R_StartReceive (O
 method in which the dwTimeout parameter is nonzero. The timer MUST be set to the dwTimeout
 parameter that is specified on the call.
 
-3.1.2.2  Pending Request Cleanup Timer
+##### 3.1.2.2 Pending Request Cleanup Timer
 
 This timer regulates the amount of time that the protocol waits before removing expired entries from
 the PendingRequestTable (section 3.1.1.3) ADM element. The server MUST maintain a per-call timer
@@ -2520,11 +2381,12 @@ Release: November 21, 2025
 
 30 / 96
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 The server MUST listen on the RPC protocols, as specified in section 2.1.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 6.0, as specified in [MS-RPCE] section 3.
@@ -2632,7 +2494,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Method
+
+Method
 
 13) (section 3.1.4.13)
 
@@ -2658,7 +2521,7 @@ Opnum: 15
 Note  In the preceding table, the term "Reserved for local use" means that the client MUST NOT send
 the opnum and the server behavior is undefined since it does not affect interoperability.<12>
 
-3.1.4.1  R_GetServerPort (Opnum 0)
+##### 3.1.4.1 R_GetServerPort (Opnum 0)
 
 The R_GetServerPort method returns the RPC endpoint port for the client to use in subsequent
 method calls on the RemoteRead interface.
@@ -2688,7 +2551,7 @@ RPCE].
 As specified in section 3.1.3, this protocol configures a fixed listening endpoint at an RPC port number
 that can vary. This method returns the RPC port number determined at server initialization time.
 
-3.1.4.2  R_OpenQueue (Opnum 2)
+##### 3.1.4.2 R_OpenQueue (Opnum 2)
 
 The R_OpenQueue method opens a queue in preparation for subsequent operations against it. This
 method MUST be called prior to calling any of the following operations:
@@ -2710,7 +2573,8 @@ Release: November 21, 2025
 
 32 / 96
 
-  R_EndReceive (Opnum 9) (section 3.1.4.9)
+
+  R_EndReceive (Opnum 9) (section 3.1.4.9)
 
   R_MoveMessage (Opnum 10) (section 3.1.4.10) for the source queue only.
 
@@ -2800,7 +2664,8 @@ Release: November 21, 2025
 
 33 / 96
 
-pClientId: MUST be set by the client to a pointer to a valid GUID that uniquely identifies the client.
+
+pClientId: MUST be set by the client to a pointer to a valid GUID that uniquely identifies the client.
 
 When the queue manager acts as the client, the queue manager sets this value to the
 Identifier ADM attribute of the local QueueManager ADM element instance. The server SHOULD
@@ -2887,7 +2752,8 @@ Release: November 21, 2025
 
 34 / 96
 
-
+
+
 
 
 
@@ -2903,7 +2769,7 @@ If rStatus is MQ_OK (0x00000000):
 
   Set the pphContext parameter to rOpenQueueDescriptor.Handle
 
-3.1.4.3  R_CloseQueue (Opnum 3)
+##### 3.1.4.3 R_CloseQueue (Opnum 3)
 
 The R_CloseQueue method closes a QUEUE_CONTEXT_HANDLE_SERIALIZE (section 2.2.4.2) handle
 that was previously opened by using a call to the R_OpenQueue (Opnum 2) (section 3.1.4.2) method
@@ -2966,7 +2832,8 @@ Release: November 21, 2025
 
 35 / 96
 
-3.1.4.4  R_CreateCursor (Opnum 4)
+
+##### 3.1.4.4 R_CreateCursor (Opnum 4)
 
 The R_CreateCursor method creates a cursor and returns a handle to it. The handle can be used in
 subsequent calls to the R_StartReceive (Opnum 7) (section 3.1.4.7) method or the
@@ -3025,7 +2892,7 @@ iQueueDesc := The found OpenQueueDescriptor ADM element instance.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.5  R_CloseCursor (Opnum 5)
+##### 3.1.4.5 R_CloseCursor (Opnum 5)
 
 The R_CloseCursor method closes the handle for a previously created cursor. The client MUST call
 this method to reclaim resources on the server allocated by the R_CreateCursor (Opnum
@@ -3040,7 +2907,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-   [in] handle_t hBind,
+
+   [in] handle_t hBind,
    [in] QUEUE_CONTEXT_HANDLE_NOSERIALIZE phContext,
    [in] DWORD hCursor
  );
@@ -3096,7 +2964,7 @@ iCursor :=  fCursor
 
   Return MQ_OK (0x00000000).
 
-3.1.4.6  R_PurgeQueue (Opnum 6)
+##### 3.1.4.6 R_PurgeQueue (Opnum 6)
 
 The R_PurgeQueue method removes all messages from the queue.
 
@@ -3114,7 +2982,8 @@ Release: November 21, 2025
 
 37 / 96
 
-phContext: MUST be set by the client to a
+
+phContext: MUST be set by the client to a
 
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle of the queue to be purged. The
 handle MUST have been returned by the server in the pphQueue output parameter of a prior call
@@ -3159,7 +3028,7 @@ iQueue := queueDesc.QueueReference
 
   Return STATUS_ACCESS_DENIED (0xC0000022).
 
-3.1.4.7  R_StartReceive (Opnum 7)
+##### 3.1.4.7 R_StartReceive (Opnum 7)
 
 The R_StartReceive method peeks or receives a message from an open queue.
 
@@ -3192,7 +3061,8 @@ Release: November 21, 2025
 
 38 / 96
 
-one identified by the LookupId parameter or the first unlocked message immediately preceding or
+
+one identified by the LookupId parameter or the first unlocked message immediately preceding or
 following it. For more details, see the description of the ulAction parameter.
 
   Cursor: A nonzero cursor handle specifies the cursor to be used to identify the message to be
@@ -3270,7 +3140,8 @@ Release: November 21, 2025
 
 39 / 96
 
-  MQ_LOOKUP_PEEK_CURRENT
+
+  MQ_LOOKUP_PEEK_CURRENT
 
   MQ_LOOKUP_PEEK_NEXT
 
@@ -3371,7 +3242,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Type / Value
+
+Type / Value
 
 0x40000010
 
@@ -3505,7 +3377,8 @@ Release: November 21, 2025
 
 41 / 96
 
-If the hCursor parameter is 0x00000000 and the LookupId parameter is 0x0000000000000000, the
+
+If the hCursor parameter is 0x00000000 and the LookupId parameter is 0x0000000000000000, the
 valid values for the ulAction parameter are as follows:
 
   MQ_ACTION_RECEIVE
@@ -3586,7 +3459,8 @@ Release: November 21, 2025
 
 42 / 96
 
-
+
+
 
 The SectionSize and SectionSizeAlloc elements MUST be set to the message packet
 size.
@@ -3687,7 +3561,8 @@ Release: November 21, 2025
 
 43 / 96
 
-Return value/code
+
+Return value/code
 
 0xC00E001D
 
@@ -3781,7 +3656,8 @@ Release: November 21, 2025
 
 44 / 96
 
-
+
+
 
 
 
@@ -3908,7 +3784,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 
 
@@ -3989,7 +3866,7 @@ the server MUST do the following:
 
 Return rStatus.
 
-3.1.4.8  R_CancelReceive (Opnum 8)
+##### 3.1.4.8 R_CancelReceive (Opnum 8)
 
 The R_CancelReceive method cancels a pending call to the R_StartReceive (Opnum
 7) (section 3.1.4.7) method or the R_StartTransactionalReceive (Opnum 13) (section 3.1.4.13)
@@ -4010,7 +3887,8 @@ Release: November 21, 2025
 
 46 / 96
 
-hBind: MUST be an RPC binding handle parameter as specified in [MS-RPCE] section 2.
+
+hBind: MUST be an RPC binding handle parameter as specified in [MS-RPCE] section 2.
 
 phContext: MUST be set by the client to the
 
@@ -4073,7 +3951,7 @@ element.
 
 MQ_ERROR_OPERATION_CANCELLED (0xC00E0008).
 
-3.1.4.9  R_EndReceive (Opnum 9)
+##### 3.1.4.9 R_EndReceive (Opnum 9)
 
 The client MUST invoke the R_EndReceive method to advise the server that the message packet
 returned by the R_StartReceive (Opnum 7) (section 3.1.4.7) method has been received.
@@ -4089,7 +3967,8 @@ Release: November 21, 2025
 
 47 / 96
 
-Note that a call to the R_StartTransactionalReceive (Opnum 13) (section 3.1.4.13) method is ended
+
+Note that a call to the R_StartTransactionalReceive (Opnum 13) (section 3.1.4.13) method is ended
 through a corresponding call to the R_EndTransactionalReceive (Opnum 15) (section 3.1.4.15)
 method, not through a call to this method.
 
@@ -4175,7 +4054,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 
 
@@ -4222,9 +4102,9 @@ parameter is equal to RR_NACK.
 
   Return rStatus.
 
-3.1.4.10
+##### 3.1.4.10 R_MoveMessage (Opnum 10)
 
-R_MoveMessage (Opnum 10)
+
 
 The R_MoveMessage method moves a message from one queue to another.<20> The source and
 destination queues MUST be related as follows:
@@ -4266,7 +4146,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-ullContextTo: MUST be set by the client to the value returned by the server in the pMoveContext
+
+ullContextTo: MUST be set by the client to the value returned by the server in the pMoveContext
 
 output parameter of a prior call to the R_OpenQueueForMove (Opnum 11) (section 3.1.4.11)
 method and MUST NOT have been closed through a prior call to the R_CloseQueue method. This
@@ -4351,7 +4232,8 @@ Release: November 21, 2025
 
 50 / 96
 
-
+
+
 
 
 
@@ -4402,9 +4284,9 @@ If there is a transaction, iTransaction := iFoundTransaction.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.11
+##### 3.1.4.11 R_OpenQueueForMove (Opnum 11)
 
-R_OpenQueueForMove (Opnum 11)
+
 
 The R_OpenQueueForMove method opens the queue and returns a
 QUEUE_CONTEXT_HANDLE_SERIALIZE (section 2.2.4.2) handle that can subsequently be used as the
@@ -4439,7 +4321,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-MUST be one of QUEUE_FORMAT_TYPE_PUBLIC, QUEUE_FORMAT_TYPE_PRIVATE,
+
+MUST be one of QUEUE_FORMAT_TYPE_PUBLIC, QUEUE_FORMAT_TYPE_PRIVATE,
 QUEUE_FORMAT_TYPE_DIRECT, QUEUE_FORMAT_TYPE_MACHINE, or
 QUEUE_FORMAT_TYPE_SUBQUEUE.
 
@@ -4519,7 +4402,8 @@ Release: November 21, 2025
 
 52 / 96
 
-In addition to the exceptions thrown by the underlying RPC protocol [MS-RPCE], the method throws
+
+In addition to the exceptions thrown by the underlying RPC protocol [MS-RPCE], the method throws
 HRESULT failure codes as RPC exceptions. The client MUST treat all thrown HRESULT codes
 identically.
 
@@ -4557,9 +4441,9 @@ If rStatus is MQ_OK (0x00000000) then
 
 returned in the pphContext parameter.
 
-3.1.4.12
+##### 3.1.4.12 R_QMEnlistRemoteTransaction (Opnum 12)
 
-R_QMEnlistRemoteTransaction (Opnum 12)
+
 
 The R_QMEnlistRemoteTransaction method propagates a distributed atomic transaction context to the
 server. The server MUST enlist in the transaction context. The client MUST call this method prior to
@@ -4603,7 +4487,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Return Values: On success, this method MUST return MQ_OK (0x00000000).
+
+Return Values: On success, this method MUST return MQ_OK (0x00000000).
 
 If an error occurs, the server MUST return a failure HRESULT, and the client MUST treat all failure
 HRESULTs identically.
@@ -4629,9 +4514,9 @@ iTransactionIdentifier := pTransactionId
 
   Return MQ_OK (0x00000000).
 
-3.1.4.13
+##### 3.1.4.13 R_StartTransactionalReceive (Opnum 13)
 
-R_StartTransactionalReceive (Opnum 13)
+
 
 The R_StartTransactionalReceive method peeks or receives a message from the opened
 queue.<29> If a transaction identifier is provided, a message is received inside the specified
@@ -4677,7 +4562,8 @@ Release: November 21, 2025
 
 54 / 96
 
-
+
+
 
 First: If the LookupId parameter is set to 0x0000000000000000 and hCursor is set to
 0x00000000, the first unlocked message in the queue can be returned. For more details, see the
@@ -4754,7 +4640,8 @@ Release: November 21, 2025
 
 55 / 96
 
-If the client sets the LookupId parameter to 0x0000000000000000, all of the preceding values
+
+If the client sets the LookupId parameter to 0x0000000000000000, all of the preceding values
 of the ulAction parameter are invalid.
 
 hCursor: If nonzero, specifies a handle to a cursor that MUST have been obtained from a prior call to
@@ -4858,7 +4745,8 @@ Release: November 21, 2025
 
 56 / 96
 
-Type / Value
+
+Type / Value
 
 Meaning
 
@@ -4990,7 +4878,8 @@ Release: November 21, 2025
 
 57 / 96
 
-Type / Value
+
+Type / Value
 
 Meaning
 
@@ -5074,7 +4963,8 @@ Release: November 21, 2025
 
 58 / 96
 
-If the message is an SRMP Message:
+
+If the message is an SRMP Message:
 
   maxMessageSize := dwMaxCompoundMessageSize
 
@@ -5174,7 +5064,8 @@ Release: November 21, 2025
 
 59 / 96
 
-Return value/code
+
+Return value/code
 
 0x00000000
 
@@ -5277,7 +5168,8 @@ Release: November 21, 2025
 
 60 / 96
 
-
+
+
 
 ppPacketSections := ppPacketSections
 
@@ -5378,7 +5270,8 @@ Release: November 21, 2025
 
 61 / 96
 
-
+
+
 
 
 
@@ -5503,7 +5396,8 @@ Release: November 21, 2025
 
 62 / 96
 
-  Use rMessage to fill the ppPacketSections parameter array as specified in the
+
+  Use rMessage to fill the ppPacketSections parameter array as specified in the
 
 ppPacketSections parameter description.
 
@@ -5511,9 +5405,9 @@ ppPacketSections parameter description.
 
   Return rStatus.
 
-3.1.4.14
+##### 3.1.4.14 R_SetUserAcknowledgementClass (Opnum 14)
 
-R_SetUserAcknowledgementClass (Opnum 14)
+
 
 The R_SetUserAcknowledgementClass method sets the acknowledgment class property of a
 message in the queue. This allows marking the message as rejected.<30> This method MUST be
@@ -5582,7 +5476,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-When processing this call, the server MUST do the following:
+
+When processing this call, the server MUST do the following:
 
 
 
@@ -5626,9 +5521,9 @@ as specified in [MS-MQDMPR] section 3.1.1.12.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.15
+##### 3.1.4.15 R_EndTransactionalReceive (Opnum 15)
 
-R_EndTransactionalReceive (Opnum 15)
+
 
 The client MUST invoke the R_EndTransactionalReceive method to advise the server that the
 message packet returned by the R_StartTransactionalReceive (Opnum 13) (section 3.1.4.13)
@@ -5667,7 +5562,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -5761,7 +5657,8 @@ Release: November 21, 2025
 
 65 / 96
 
-
+
+
 
 
 
@@ -5776,9 +5673,9 @@ iTransactional := True.
 
   Return rStatus.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
-3.1.5.1  Pending Request Cleanup Timer Event
+##### 3.1.5.1 Pending Request Cleanup Timer Event
 
 When the Pending Request Cleanup Timer (section 3.1.2.2) expires, for the
 PendingRequestEntry (section 3.1.1.2) ADM element instance iPendingRequestEntry associated with
@@ -5818,9 +5715,9 @@ iDeleteMessage := false.
 
 PendingRequestTable (section 3.1.1.3) ADM element, and cancel the timer.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
-3.1.6.1  RPC Failure Event
+##### 3.1.6.1 RPC Failure Event
 
 The event is received when RPC detects a connection failure with a client identified by a specific
 QUEUE_CONTEXT_HANDLE_SERIALIZE (section 2.2.4.2) handle.
@@ -5851,7 +5748,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 For each found Cursor ADM element instance fCursor:
 
@@ -5869,7 +5767,7 @@ iCursor :=fCursor.
 
 iQueueDesc := fOpenQueueDescriptor.
 
-3.1.6.2  Queue Context Handles Rundown Routine
+##### 3.1.6.2 Queue Context Handles Rundown Routine
 
 This event occurs on rundown of queue context handles of type
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) and
@@ -5940,9 +5838,10 @@ Release: November 21, 2025
 
 67 / 96
 
-3.2  RemoteRead Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 RemoteRead Client Details
+
+#### 3.2.1 Abstract Data Model
 
 Clients MUST maintain the following ADM elements:
 
@@ -5952,17 +5851,17 @@ Clients MUST maintain the following ADM elements:
 
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required except those that are used internally by RPC to implement resiliency
 to network outages, as specified in [MS-RPCE].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST create an RPC connection to the remote computer by using the details specified in
 section 2.1.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The operation of the protocol is initiated and subsequently driven by the following higher-layer
 triggered events.
@@ -6012,7 +5911,7 @@ between two subqueues of the same queue.
 
  The message queuing application closes the queue.
 
-3.2.4.1  Opening a Queue
+##### 3.2.4.1 Opening a Queue
 
 The client MUST supply a queue name, an access mode, and a share mode. Opening a queue consists
 of the following sequence of operations:
@@ -6028,7 +5927,8 @@ Release: November 21, 2025
 
 68 / 96
 
-
+
+
 
 
 
@@ -6074,7 +5974,7 @@ Protocol specified in [MS-MQQP].
 The client MUST record the returned QUEUE_CONTEXT_HANDLE_SERIALIZE (section 2.2.4.2)
 handle.
 
-3.2.4.2  Enlisting in a Transaction
+##### 3.2.4.2 Enlisting in a Transaction
 
 The message queuing application MUST generate an Enlisting in a Transaction event before
 generating a Receive a Message (section 3.2.4.4) event, Move a Message (section 3.2.4.6) event, or
@@ -6100,7 +6000,7 @@ The pQueueFormat parameter set to the queue format name.
 
   A transaction propagation token, obtained as specified in [MS-DTCO] section 3.3.4.3.
 
-3.2.4.3  Peek a Message
+##### 3.2.4.3 Peek a Message
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) RPC context handle of the queue from
@@ -6120,7 +6020,8 @@ Release: November 21, 2025
 
 69 / 96
 
-
+
+
 
 
 
@@ -6161,7 +6062,7 @@ received in the ppPacketSections parameter, as specified in section 3.1.4.7.
 
 The client MUST return the message to the message queuing application.
 
-3.2.4.4  Receive a Message
+##### 3.2.4.4 Receive a Message
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle of the queue from which to be
@@ -6179,7 +6080,7 @@ sequencing rules as specified in section 3.2.4.4.1.
 If the transaction identifier specified by the message queuing application is non-NULL, follow the
 sequencing rules as specified in section 3.2.4.4.2.
 
-3.2.4.4.1 Receive a Message Without a Transaction
+###### 3.2.4.4.1 Receive a Message Without a Transaction
 
 
 
@@ -6221,7 +6122,8 @@ Release: November 21, 2025
 
 70 / 96
 
-
+
+
 
 
 
@@ -6271,7 +6173,7 @@ Else if the return value is not MQ_OK
 
 The client MAY<34> return MQ_OK to the message queuing application.
 
-3.2.4.4.2 Receive a Message with a Transaction
+###### 3.2.4.4.2 Receive a Message with a Transaction
 
 
 
@@ -6333,7 +6235,8 @@ Release: November 21, 2025
 
 71 / 96
 
-
+
+
 
 
 
@@ -6376,7 +6279,7 @@ Else if the return value is not MQ_OK:
 
 The client MUST return the value to the message queuing application.
 
-3.2.4.5  Reject a Message
+##### 3.2.4.5 Reject a Message
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle and the LookupId of the message
@@ -6402,7 +6305,7 @@ LookupId set to the value passed by the client.
 
 ulClass set to MQMSG_CLASS_NACK_RECEIVE_REJECTED.
 
-3.2.4.6  Move a Message
+##### 3.2.4.6 Move a Message
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle of the source queue and the
@@ -6433,7 +6336,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-R_OpenQueue (Opnum 2) (section 3.1.4.2) method and that MUST NOT have been previously
+
+R_OpenQueue (Opnum 2) (section 3.1.4.2) method and that MUST NOT have been previously
 closed through a call to the R_CloseQueue (Opnum 3) (section 3.1.4.3) method. This value
 MUST NOT be NULL.
 
@@ -6454,7 +6358,7 @@ MQMQ] section 2.2.18.1.8) structure.
 
 LookupId set to the value specified by the message queuing application.
 
-3.2.4.7  Purging a Queue
+##### 3.2.4.7 Purging a Queue
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle of the queue. The client MUST call
@@ -6464,7 +6368,7 @@ pphQueue output parameter of a prior call to the R_OpenQueue (Opnum 2) (section 
 and that MUST NOT have been previously closed through a call to the R_CloseQueue (Opnum
 3) (section 3.1.4.3) method. This value MUST NOT be NULL.
 
-3.2.4.8  Creating a Cursor
+##### 3.2.4.8 Creating a Cursor
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle to associate with the created
@@ -6475,7 +6379,7 @@ returned by the server in the pphQueue output parameter of a prior call to the R
 R_CloseQueue (Opnum 3) (section 3.1.4.3) method. This value MUST NOT be NULL. The client MUST
 record the returned cursor handle and return it to the message queuing application.
 
-3.2.4.9  Peek a Message by Using a Cursor
+##### 3.2.4.9 Peek a Message by Using a Cursor
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) RPC context handle of the queue to be
@@ -6515,7 +6419,8 @@ Release: November 21, 2025
 
 73 / 96
 
-
+
+
 
 dwRequestId set to a value that uniquely identifies this call from all other pending calls to this
 protocol.
@@ -6529,9 +6434,9 @@ received in the ppPacketSections parameter, as specified in section 3.1.4.7.
 
 The client MUST return the message to the message queuing application.
 
-3.2.4.10
+##### 3.2.4.10 Receive a Message by Using a Cursor
 
-Receive a Message by Using a Cursor
+
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle of the queue to be read from, the
@@ -6545,7 +6450,7 @@ sequencing rules specified in section 3.2.4.10.1.
 If the transaction identifier specified by the message queuing application is non-NULL, follow the
 sequencing rules specified in section 3.2.4.10.2.
 
-3.2.4.10.1  Receive a Message by Using a Cursor Without a Transaction
+###### 3.2.4.10.1 Receive a Message by Using a Cursor Without a Transaction
 
 
 
@@ -6622,11 +6527,12 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 The client MAY<35> return MQ_OK to the message queuing application.
 
-3.2.4.10.2  Receive a Message by Using a Cursor with a Transaction
+###### 3.2.4.10.2 Receive a Message by Using a Cursor with a Transaction
 
 
 
@@ -6710,9 +6616,9 @@ Else if the return value is not MQ_OK:
 
 The client MUST return the value to the message queuing application.
 
-3.2.4.11
+##### 3.2.4.11 Cancel a Pending Peek or Receive
 
-Cancel a Pending Peek or Receive
+
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle and the dwRequestId parameter of
@@ -6730,7 +6636,8 @@ Release: November 21, 2025
 
 75 / 96
 
-
+
+
 
 The phContext parameter set to a QUEUE_CONTEXT_HANDLE_NOSERIALIZE handle that
 has been returned by the server in the pphQueue output parameter of a prior call to the
@@ -6743,9 +6650,9 @@ MUST NOT be NULL.
 The dwRequestId parameter set to the dwRequestId parameter passed by the message
 queuing application.
 
-3.2.4.12
+##### 3.2.4.12 Closing a Cursor
 
-Closing a Cursor
+
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle and the cursor handle to be closed.
@@ -6775,9 +6682,9 @@ The phCursor parameter set to the cursor handle.
 
 The client MUST remove the cursor handle from its state.
 
-3.2.4.13
+##### 3.2.4.13 Closing a Queue
 
-Closing a Queue
+
 
 The message queuing application MUST specify the
 QUEUE_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.4.1) handle that is to be closed, that has been
@@ -6791,11 +6698,11 @@ section 3.2.4.12. The client MUST call the R_CloseQueue method with the pphConte
 to the QUEUE_CONTEXT_HANDLE_SERIALIZE handle. The client MUST remove the
 QUEUE_CONTEXT_HANDLE_SERIALIZE handle from its state.<37>
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -6806,12 +6713,13 @@ Release: November 21, 2025
 
 76 / 96
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several operations that are used in common scenarios in order to
 illustrate the function of the Message Queuing (MSMQ): Queue Manager Remote Read Protocol.
 
-4.1  Binding to a Server and Purging a Queue
+### 4.1 Binding to a Server and Purging a Queue
 
 The sequence diagram that follows illustrates a scenario when the client purges a queue. In addition,
 it shows how the static RPC endpoint port is acquired by the client to create an RPC binding handle.
@@ -6844,13 +6752,14 @@ Release: November 21, 2025
 
 77 / 96
 
-<!-- Extracted images from page 78 -->
+
+<!-- Extracted images from page 78 -->
 ![Extracted image 1 from page 78]([MS-MQRR].images/page078-img01.png)
 <!-- /Extracted images from page 78 -->
 
 Figure 1: The client binds to a server and purges a queue.
 
-4.2  Receiving a Message
+### 4.2 Receiving a Message
 
 This sequence diagram illustrates a client receiving a message from a queue at the server. The call
 to the R_StartReceive (Opnum 7) (section 3.1.4.7) method includes a ulAction parameter value of
@@ -6871,7 +6780,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-MQRR].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
@@ -6880,7 +6790,7 @@ RR_ACK is specified, removes the message from the queue.
 
 Figure 2: The client receives a message.
 
-4.3  Receiving a Message in a Transaction
+### 4.3 Receiving a Message in a Transaction
 
 This sequence diagram demonstrates a scenario in which a client receives a message from a queue
 within the context of a transaction. Although four roles are used to illustrate the participants in this
@@ -6899,7 +6809,8 @@ Release: November 21, 2025
 
 79 / 96
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-MQRR].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
@@ -6932,7 +6843,8 @@ Release: November 21, 2025
 
 80 / 96
 
-associate the receive operation with the transaction enlisted in the prior steps. The server returns
+
+associate the receive operation with the transaction enlisted in the prior steps. The server returns
 a message in the SectionBuffer (section 2.2.6) array.
 
 6.  The client advises the server that the message was received correctly by calling the
@@ -6955,12 +6867,13 @@ Release: November 21, 2025
 
 81 / 96
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Message Queuing
 (MSMQ): Queue Manager Remote Read Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 In addition to imposing the minimum RPC authentication level on the RPC handle for incoming
 calls, the server might require a different minimum RPC authentication level from the client,
@@ -6968,7 +6881,7 @@ depending on whether the client is a member of a Windows domain, as specified by
 parameter in the R_OpenQueue (Opnum 2) (section 3.1.4.2) and the R_OpenQueueForMove (Opnum
 11) (section 3.1.4.11) methods.<38>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -6987,7 +6900,8 @@ Release: November 21, 2025
 
 82 / 96
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided in this section, where "ms-dtyp.idl" is the IDL as
 specified in [MS-DTYP] Appendix A, and "ms-mqmq.idl" is the IDL as specified in [MS-MQMQ]
@@ -7060,7 +6974,8 @@ Release: November 21, 2025
 
 83 / 96
 
-         [out] DWORD* phCursor
+
+         [out] DWORD* phCursor
          );
 
      HRESULT R_CloseCursor(
@@ -7137,7 +7052,8 @@ Release: November 21, 2025
 
 84 / 96
 
-         [in] XACTUOW* pTransactionId,
+
+         [in] XACTUOW* pTransactionId,
          [in, range(0, 131072)] DWORD cbPropagationToken,
          [in, size_is (cbPropagationToken)]
                unsigned char* pbPropagationToken,
@@ -7184,7 +7100,8 @@ Release: November 21, 2025
 
 85 / 96
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -7254,7 +7171,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 1.4: If the originating MSMQ application receives messages from a remote queue
@@ -7322,7 +7240,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-method with the initial RPC binding handle and uses the returned value to obtain a new RPC binding
+
+method with the initial RPC binding handle and uses the returned value to obtain a new RPC binding
 handle to be used for all subsequent RPC method calls on the protocol.
 
 When acting as protocol clients, Windows Vista and later client operating systems and Windows Server
@@ -7392,7 +7311,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 
 
@@ -7473,7 +7393,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<24> Section 3.1.4.11: The Windows Server 2003 protocol client sets the message queuing Minor
+
+<24> Section 3.1.4.11: The Windows Server 2003 protocol client sets the message queuing Minor
 Version to 2.
 
 The Windows Vista and Windows Server 2008 protocol clients set the message queuing Minor Version
@@ -7553,7 +7474,8 @@ Release: November 21, 2025
 
 90 / 96
 
-  RPC_C_AUTHN_LEVEL_PKT_INTEGRITY, if the registry key
+
+  RPC_C_AUTHN_LEVEL_PKT_INTEGRITY, if the registry key
 
 HKLM\Software\Microsoft\MSMQ\Parameters\security\DebugRpc exists and is set to any DWORD
 value other than 0x00000000.
@@ -7621,7 +7543,8 @@ Release: November 21, 2025
 
 91 / 96
 
-
+
+
 
 
 
@@ -7684,7 +7607,8 @@ Release: November 21, 2025
 
 92 / 96
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7750,7 +7674,8 @@ Release: November 21, 2025
 
 93 / 96
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -7882,7 +7807,8 @@ Release: November 21, 2025
 
 94 / 96
 
-   R_CloseCursor (Opnum 5) 36
+
+   R_CloseCursor (Opnum 5) 36
    R_CloseQueue (Opnum 3) 34
    R_CreateCursor (Opnum 4) 35
    R_EndReceive (Opnum 9) 47
@@ -8030,7 +7956,8 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-   R_StartTransactionalReceive (Opnum 13) method
+
+   R_StartTransactionalReceive (Opnum 13) method
 
 53
 

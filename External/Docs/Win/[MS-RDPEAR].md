@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 70
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -161,262 +162,118 @@ Release: April 23, 2024
 
 2 / 70
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Structures](#221-common-data-structures)
+      - [2.2.1.1 RemoteGuardCallId Enumeration](#2211-remoteguardcallid-enumeration)
+      - [2.2.1.2 Kerberos Data Structures](#2212-kerberos-data-structures)
+        - [2.2.1.2.1 KERB_ASN1_DATA](#22121-kerbasn1data)
+        - [2.2.1.2.2 KERB_RPC_OCTET_STRING](#22122-kerbrpcoctetstring)
+        - [2.2.1.2.3 KERB_RPC_INTERNAL_NAME](#22123-kerbrpcinternalname)
+        - [2.2.1.2.4 KERB_RPC_PA_DATA](#22124-kerbrpcpadata)
+        - [2.2.1.2.5 KERB_RPC_CRYPTO_API_BLOB](#22125-kerbrpccryptoapiblob)
+        - [2.2.1.2.6 SECPKG_SUPPLEMENTAL_CRED](#22126-secpkgsupplementalcred)
+        - [2.2.1.2.7 SECPKG_SUPPLEMENTAL_CRED_ARRAY](#22127-secpkgsupplementalcredarray)
+        - [2.2.1.2.8 KERB_RPC_ENCRYPTION_KEY](#22128-kerbrpcencryptionkey)
+        - [2.2.1.2.9 KerbCredIsoRemoteInput](#22129-kerbcredisoremoteinput)
+        - [2.2.1.2.10 KerbCredIsoRemoteOutput](#221210-kerbcredisoremoteoutput)
+      - [2.2.1.3 NTLM Data Structures](#2213-ntlm-data-structures)
+        - [2.2.1.3.1 NT_CHALLENGE](#22131-ntchallenge)
+        - [2.2.1.3.2 NT_RESPONSE](#22132-ntresponse)
+        - [2.2.1.3.3 MSV1_0_LM3_RESPONSE](#22133-msv10lm3response)
+        - [2.2.1.3.4 USER_SESSION_KEY](#22134-usersessionkey)
+        - [2.2.1.3.5 MSV1_0_CREDENTIAL_KEY](#22135-msv10credentialkey)
+        - [2.2.1.3.6 MSV1_0_REMOTE_ENCRYPTED_SECRETS](#22136-msv10remoteencryptedsecrets)
+        - [2.2.1.3.7 NtlmCredIsoRemoteInput](#22137-ntlmcredisoremoteinput)
+        - [2.2.1.3.8 NtlmCredIsoRemoteOutput](#22138-ntlmcredisoremoteoutput)
+    - [2.2.2 Package-Specific Messages](#222-package-specific-messages)
+      - [2.2.2.1 Kerberos Messages](#2221-kerberos-messages)
+        - [2.2.2.1.1 NegotiateVersion](#22211-negotiateversion)
+        - [2.2.2.1.2 BuildAsReqAuthenticator](#22212-buildasreqauthenticator)
+        - [2.2.2.1.3 VerifyServiceTicket](#22213-verifyserviceticket)
+        - [2.2.2.1.4 CreateApReqAuthenticator](#22214-createapreqauthenticator)
+        - [2.2.2.1.5 DecryptApReply](#22215-decryptapreply)
+        - [2.2.2.1.6 UnpackKdcReplyBody](#22216-unpackkdcreplybody)
+        - [2.2.2.1.7 ComputeTgsChecksum](#22217-computetgschecksum)
+        - [2.2.2.1.8 BuildEncryptedAuthData](#22218-buildencryptedauthdata)
+        - [2.2.2.1.9 PackApReply](#22219-packapreply)
+        - [2.2.2.1.10 HashS4UPreauth](#222110-hashs4upreauth)
+        - [2.2.2.1.11 SignS4UPreauthData](#222111-signs4upreauthdata)
+        - [2.2.2.1.12 VerifyChecksum](#222112-verifychecksum)
+        - [2.2.2.1.13 DecryptPacCredentials](#222113-decryptpaccredentials)
+        - [2.2.2.1.14 CreateECDHKeyAgreement](#222114-createecdhkeyagreement)
+        - [2.2.2.1.15 CreateDHKeyAgreement](#222115-createdhkeyagreement)
+        - [2.2.2.1.16 DestroyKeyAgreement](#222116-destroykeyagreement)
+        - [2.2.2.1.17 KeyAgreementGenerateNonce](#222117-keyagreementgeneratenonce)
+        - [2.2.2.1.18 FinalizeKeyAgreement](#222118-finalizekeyagreement)
+      - [2.2.2.2 NTLM Messages](#2222-ntlm-messages)
+        - [2.2.2.2.1 NegotiateVersion](#22221-negotiateversion)
+        - [2.2.2.2.2 Lm20GetNtlm3ChallengeResponse](#22222-lm20getntlm3challengeresponse)
+        - [2.2.2.2.3 CalculateNtResponse](#22223-calculatentresponse)
+        - [2.2.2.2.4 CalculateUserSessionKeyNt](#22224-calculateusersessionkeynt)
+        - [2.2.2.2.5 CompareCredentials](#22225-comparecredentials)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 RemoteCallKerbNegotiateVersion](#3151-remotecallkerbnegotiateversion)
+      - [3.1.5.2 RemoteCallKerbBuildAsReqAuthenticator](#3152-remotecallkerbbuildasreqauthenticator)
+      - [3.1.5.3 RemoteCallKerbVerifyServiceTicket](#3153-remotecallkerbverifyserviceticket)
+      - [3.1.5.4 RemoteCallKerbCreateApReqAuthenticator](#3154-remotecallkerbcreateapreqauthenticator)
+      - [3.1.5.5 RemoteCallKerbDecryptApReply](#3155-remotecallkerbdecryptapreply)
+      - [3.1.5.6 RemoteCallKerbUnpackKdcReplyBody](#3156-remotecallkerbunpackkdcreplybody)
+      - [3.1.5.7 RemoteCallKerbComputeTgsChecksum](#3157-remotecallkerbcomputetgschecksum)
+      - [3.1.5.8 RemoteCallKerbBuildEncryptedAuthData](#3158-remotecallkerbbuildencryptedauthdata)
+      - [3.1.5.9 RemoteCallKerbPackApReply](#3159-remotecallkerbpackapreply)
+      - [3.1.5.10 RemoteCallKerbHashS4UPreauth](#31510-remotecallkerbhashs4upreauth)
+      - [3.1.5.11 RemoteCallKerbSignS4UPreauthData](#31511-remotecallkerbsigns4upreauthdata)
+      - [3.1.5.12 RemoteCallKerbVerifyChecksum](#31512-remotecallkerbverifychecksum)
+      - [3.1.5.13 RemoteCallKerbDecryptPacCredentials](#31513-remotecallkerbdecryptpaccredentials)
+      - [3.1.5.14 RemoteCallKerbCreateECDHKeyAgreement](#31514-remotecallkerbcreateecdhkeyagreement)
+      - [3.1.5.15 RemoteCallKerbCreateDHKeyAgreement](#31515-remotecallkerbcreatedhkeyagreement)
+      - [3.1.5.16 RemoteCallKerbDestroyKeyAgreement](#31516-remotecallkerbdestroykeyagreement)
+      - [3.1.5.17 RemoteCallKerbKeyAgreementGenerateNonce](#31517-remotecallkerbkeyagreementgeneratenonce)
+      - [3.1.5.18 RemoteCallKerbFinalizeKeyAgreement](#31518-remotecallkerbfinalizekeyagreement)
+      - [3.1.5.19 RemoteCallNtlmNegotiateVersion](#31519-remotecallntlmnegotiateversion)
+      - [3.1.5.20 RemoteCallNtlmLm20GetNtlm3ChallengeResponse](#31520-remotecallntlmlm20getntlm3challengeresponse)
+      - [3.1.5.21 RemoteCallNtlmCalculateNtResponse](#31521-remotecallntlmcalculatentresponse)
+      - [3.1.5.22 RemoteCallNtlmCalculateUserSessionKeyNt](#31522-remotecallntlmcalculateusersessionkeynt)
+      - [3.1.5.23 RemoteCallNtlmCompareCredentials](#31523-remotecallntlmcomparecredentials)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Requesting a Service Ticket](#41-requesting-a-service-ticket)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+  - [6.1 Appendix A.1: RemoteGuardCallIds.H](#61-appendix-a1-remoteguardcallidsh)
+  - [6.2 Appendix A.2: Kerberos.IDL](#62-appendix-a2-kerberosidl)
+  - [6.3 Appendix A.3: NTLM.IDL](#63-appendix-a3-ntlmidl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.3
-
-2.2.1.1
-2.2.1.2
-
-2.2.1.2.1
-2.2.1.2.2
-2.2.1.2.3
-2.2.1.2.4
-2.2.1.2.5
-2.2.1.2.6
-2.2.1.2.7
-2.2.1.2.8
-2.2.1.2.9
-2.2.1.2.10
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Common Data Structures ............................................................................ 12
-RemoteGuardCallId Enumeration ............................................................ 12
-Kerberos Data Structures ....................................................................... 13
-KERB_ASN1_DATA .......................................................................... 13
-KERB_RPC_OCTET_STRING .............................................................. 14
-KERB_RPC_INTERNAL_NAME ............................................................ 14
-KERB_RPC_PA_DATA ....................................................................... 14
-KERB_RPC_CRYPTO_API_BLOB ......................................................... 14
-SECPKG_SUPPLEMENTAL_CRED ........................................................ 15
-SECPKG_SUPPLEMENTAL_CRED_ARRAY ............................................. 15
-KERB_RPC_ENCRYPTION_KEY ........................................................... 15
-KerbCredIsoRemoteInput ................................................................. 16
-KerbCredIsoRemoteOutput ............................................................... 20
-NTLM Data Structures ............................................................................ 23
-NT_CHALLENGE .............................................................................. 23
-NT_RESPONSE ................................................................................ 23
-MSV1_0_LM3_RESPONSE ................................................................. 23
-USER_SESSION_KEY ....................................................................... 23
-MSV1_0_CREDENTIAL_KEY .............................................................. 24
-MSV1_0_REMOTE_ENCRYPTED_SECRETS ........................................... 24
-NtlmCredIsoRemoteInput ................................................................. 25
-NtlmCredIsoRemoteOutput ............................................................... 26
-Package-Specific Messages .......................................................................... 27
-Kerberos Messages ............................................................................... 27
-NegotiateVersion ............................................................................. 28
-2.2.2.1.1
-BuildAsReqAuthenticator .................................................................. 28
-2.2.2.1.2
-VerifyServiceTicket .......................................................................... 29
-2.2.2.1.3
-CreateApReqAuthenticator ................................................................ 30
-2.2.2.1.4
-DecryptApReply .............................................................................. 31
-2.2.2.1.5
-UnpackKdcReplyBody ....................................................................... 31
-2.2.2.1.6
-ComputeTgsChecksum ..................................................................... 32
-2.2.2.1.7
-BuildEncryptedAuthData ................................................................... 33
-2.2.2.1.8
-2.2.2.1.9
-PackApReply ................................................................................... 34
-2.2.2.1.10  HashS4UPreauth ............................................................................. 34
-SignS4UPreauthData........................................................................ 35
-2.2.2.1.11
-2.2.2.1.12
-VerifyChecksum .............................................................................. 36
-2.2.2.1.13  DecryptPacCredentials ..................................................................... 37
-CreateECDHKeyAgreement ............................................................... 38
-2.2.2.1.14
-CreateDHKeyAgreement ................................................................... 38
-2.2.2.1.15
-
-2.2.1.3.1
-2.2.1.3.2
-2.2.1.3.3
-2.2.1.3.4
-2.2.1.3.5
-2.2.1.3.6
-2.2.1.3.7
-2.2.1.3.8
-
-2.2.2.1
-
-2.2.2
-
-[MS-RDPEAR] - v20240423
-Remote Desktop Protocol Authentication Redirection Virtual Channel
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 70
-
-2.2.2.2
-
-2.2.2.1.16  DestroyKeyAgreement ..................................................................... 39
-KeyAgreementGenerateNonce ........................................................... 40
-2.2.2.1.17
-FinalizeKeyAgreement ...................................................................... 40
-2.2.2.1.18
-NTLM Messages .................................................................................... 41
-NegotiateVersion ............................................................................. 41
-Lm20GetNtlm3ChallengeResponse ..................................................... 42
-CalculateNtResponse........................................................................ 43
-CalculateUserSessionKeyNt ............................................................... 43
-CompareCredentials......................................................................... 44
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-2.2.2.2.4
-2.2.2.2.5
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 46
-Common Details .............................................................................................. 46
-Abstract Data Model .................................................................................... 46
-Timers ...................................................................................................... 46
-Initialization ............................................................................................... 46
-Higher-Layer Triggered Events ..................................................................... 46
-Message Processing Events and Sequencing Rules .......................................... 46
-RemoteCallKerbNegotiateVersion ............................................................ 46
-RemoteCallKerbBuildAsReqAuthenticator.................................................. 46
-RemoteCallKerbVerifyServiceTicket ......................................................... 47
-RemoteCallKerbCreateApReqAuthenticator ............................................... 47
-RemoteCallKerbDecryptApReply .............................................................. 47
-RemoteCallKerbUnpackKdcReplyBody ...................................................... 47
-RemoteCallKerbComputeTgsChecksum .................................................... 48
-RemoteCallKerbBuildEncryptedAuthData .................................................. 48
-RemoteCallKerbPackApReply .................................................................. 48
-RemoteCallKerbHashS4UPreauth ............................................................ 48
-RemoteCallKerbSignS4UPreauthData ....................................................... 49
-RemoteCallKerbVerifyChecksum ............................................................. 49
-RemoteCallKerbDecryptPacCredentials ..................................................... 49
-RemoteCallKerbCreateECDHKeyAgreement .............................................. 50
-RemoteCallKerbCreateDHKeyAgreement .................................................. 50
-RemoteCallKerbDestroyKeyAgreement ..................................................... 50
-RemoteCallKerbKeyAgreementGenerateNonce .......................................... 51
-RemoteCallKerbFinalizeKeyAgreement ..................................................... 51
-RemoteCallNtlmNegotiateVersion ............................................................ 51
-RemoteCallNtlmLm20GetNtlm3ChallengeResponse .................................... 51
-RemoteCallNtlmCalculateNtResponse ....................................................... 52
-RemoteCallNtlmCalculateUserSessionKeyNt .............................................. 52
-RemoteCallNtlmCompareCredentials ........................................................ 52
-Timer Events .............................................................................................. 53
-Other Local Events ...................................................................................... 53
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-3.1.5.10
-3.1.5.11
-3.1.5.12
-3.1.5.13
-3.1.5.14
-3.1.5.15
-3.1.5.16
-3.1.5.17
-3.1.5.18
-3.1.5.19
-3.1.5.20
-3.1.5.21
-3.1.5.22
-3.1.5.23
-
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 54
-Requesting a Service Ticket ............................................................................... 54
-
-4.1
-
-5  Security ................................................................................................................. 56
-Security Considerations for Implementers ........................................................... 56
-Index of Security Parameters ............................................................................ 56
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 57
-Appendix A.1: RemoteGuardCallIds.H ................................................................. 57
-Appendix A.2: Kerberos.IDL .............................................................................. 57
-Appendix A.3: NTLM.IDL ................................................................................... 63
-
-6.1
-6.2
-6.3
-
-7  Appendix B: Product Behavior ............................................................................... 66
-
-8  Change Tracking .................................................................................................... 68
-
-9  Index ..................................................................................................................... 69
-
-[MS-RDPEAR] - v20240423
-Remote Desktop Protocol Authentication Redirection Virtual Channel
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 70
-
-[MS-RDPEAR] - v20240423
-Remote Desktop Protocol Authentication Redirection Virtual Channel
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 70
-
-1  Introduction
+## 1 Introduction
 
 Remote Desktop Protocol Authentication Redirection Virtual Channel is an extension to the Credential
 Security Support Provider [MS-CSSP] protocol which allows credentials to be used on a Remote
@@ -427,7 +284,7 @@ which may be on the target server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -486,7 +343,8 @@ Release: April 23, 2024
 
 6 / 70
 
-Hash-based Message Authentication Code (HMAC): A mechanism for message authentication
+
+Hash-based Message Authentication Code (HMAC): A mechanism for message authentication
 using cryptographic hash functions. HMAC can be used with any iterative cryptographic hash
 function (for example, MD5 and SHA-1) in combination with a secret shared key. The
 cryptographic strength of HMAC depends on the properties of the underlying hash function.
@@ -557,7 +415,8 @@ Release: April 23, 2024
 
 7 / 70
 
-remote procedure call (RPC): A communication protocol used primarily between client and
+
+remote procedure call (RPC): A communication protocol used primarily between client and
 
 server. The term has three definitions that are often used interchangeably: a runtime
 environment providing for communication facilities between computers (the RPC runtime); a set
@@ -588,14 +447,14 @@ running at the server and applications running on the TS client.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -628,7 +487,8 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-PAC] Microsoft Corporation, "Privilege Attribute Certificate Data Structure".
+
+[MS-PAC] Microsoft Corporation, "Privilege Attribute Certificate Data Structure".
 
 [MS-RDPEDYC] Microsoft Corporation, "Remote Desktop Protocol: Dynamic Channel Virtual Channel
 Extension".
@@ -668,7 +528,7 @@ Specifications Version 2.2", November 2016, https://www.rfc-editor.org/info/rfc8
 (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)", Recommendation
 X.690, July 2002, http://www.itu.int/rec/T-REC-X.690/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DUBUISSON] Dubuisson, O., "ASN.1 Communication between Heterogeneous Systems", Morgan
 Kaufmann, October 2000, ISBN: 0126333610.
@@ -695,7 +555,8 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.3  Overview
+
+### 1.3 Overview
 
 The Remote Desktop Protocol: Authentication Redirection Virtual Channel (RDPEAR) Protocol allows
 the use of credentials over a Remote Desktop Protocol (RDP) connection without revealing those
@@ -723,7 +584,7 @@ requests over a virtual channel and using network logon to log the user into the
 is a remote desktop protocol extension, where remote desktop client can remote into on-prem servers
 by enabling Remote Credential Guard.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The primary target transport for this protocol is the Remote Desktop Protocol: Dynamic Virtual
 Channel Extension [MS-RDPEDYC].
@@ -743,7 +604,7 @@ a CredSSP server by performing Kerberos credential proof operations on the CredS
 authentication on a CredSSP server by performing NTLM credential proof operations on the
 CredSSP client.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
   The RDPEAR Protocol does not define any transport mechanism. It is assumed that an
 
@@ -762,7 +623,8 @@ Release: April 23, 2024
 
 10 / 70
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The RDPEAR Protocol is intended to be applicable under any circumstance in which CredSSP [MS-
 CSSP] is used to establish a connection.
@@ -772,7 +634,7 @@ provides an advantage under circumstances when the security status of the server
 attacker has breached the system, the RDPEAR Protocol allows the user to use that system without
 exposing plaintext credentials to the attacker.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Each security package supporting this protocol implements versioning independently and negotiates
 version and capabilities as part of initialization. For Kerberos and NTLM, it is required that the
@@ -782,11 +644,11 @@ respectively, with the maximum protocol version it supports. The CredSSP client 
 matching message containing the protocol version that will be used for future communications. As the
 protocol currently has only one version; this maximum version is required to be zero.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -797,9 +659,10 @@ Release: April 23, 2024
 
 11 / 70
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 All messages are transported over an RDP dynamic virtual channel, as specified in [MS-RDPEDYC],
 with the name Microsoft::Windows::RDS::AuthRedirection. The CredSSP server MUST send all
@@ -807,7 +670,7 @@ requests over this channel using the formats specified in this specification, an
 MUST listen for incoming connections on this channel, accept them, process incoming messages, and
 send responses on the same channel.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Multiple underlying authentication protocols are supported by the RDPEAR Protocol. All messages
 share a standard format, regardless of protocol. There are two layers in each message:
@@ -866,7 +729,8 @@ Release: April 23, 2024
 
 12 / 70
 
-TsPkgContext (8 bytes): Used by the RDPEAR virtual channel ([MSDN-TSVC]) to maintain internal
+
+TsPkgContext (8 bytes): Used by the RDPEAR virtual channel ([MSDN-TSVC]) to maintain internal
 
 consistency across messages. This field MUST be zero in all network messages.
 
@@ -907,9 +771,9 @@ extension: An optional extension point for future versions. This is currently un
 
 omitted.
 
-2.2.1  Common Data Structures
+#### 2.2.1 Common Data Structures
 
-2.2.1.1  RemoteGuardCallId Enumeration
+##### 2.2.1.1 RemoteGuardCallId Enumeration
 
 The RemoteGuardCallId enumeration defines all possible input/output message pairs for all security
 packages with the value stored in the CallId field in the following structures:
@@ -939,7 +803,8 @@ Release: April 23, 2024
 
 13 / 70
 
-     // Start Kerberos remote calls
+
+     // Start Kerberos remote calls
      RemoteCallKerbMinimum = 0x100,
      RemoteCallKerbNegotiateVersion = 0x100,
      RemoteCallKerbBuildAsReqAuthenticator,
@@ -985,9 +850,9 @@ Release: April 23, 2024
      RemoteCallInvalid = 0xffff // This enumeration MUST fit in 16 bits
  } RemoteGuardCallId;
 
-2.2.1.2  Kerberos Data Structures
+##### 2.2.1.2 Kerberos Data Structures
 
-2.2.1.2.1 KERB_ASN1_DATA
+###### 2.2.1.2.1 KERB_ASN1_DATA
 
 The KERB_ASN1_DATA structure is used to pack standards-compliant, predefined Kerberos
 structures, avoiding additional overhead incurred by a custom data type in the Kerberos Interface
@@ -1010,13 +875,14 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Length: A ULONG32 ([MS-DTYP] section 2.2.53) that indicates the length of the Asn1Buffer field.
+
+Length: A ULONG32 ([MS-DTYP] section 2.2.53) that indicates the length of the Asn1Buffer field.
 
 Asn1Buffer: A pointer to a UCHAR ([MS-DTYP] section 2.2.45) that is an array of characters that
 
 contains the encoded data.
 
-2.2.1.2.2 KERB_RPC_OCTET_STRING
+###### 2.2.1.2.2 KERB_RPC_OCTET_STRING
 
 A KERB_RPC_OCTET_STRING structure is used to contain a padata-value. See [RFC4120] section
 5.2.7 for the PA-DATA sequence definition that contains a padata-type and a padata-value. This
@@ -1032,7 +898,7 @@ length: A ULONG ([MS-DTYP] section 2.2.51) that contains the length of the value
 
 value: A pointer to a UCHAR ([MS-DTYP] section 2.2.45), an array of 8-bit data items.
 
-2.2.1.2.3 KERB_RPC_INTERNAL_NAME
+###### 2.2.1.2.3 KERB_RPC_INTERNAL_NAME
 
 The KERB_RPC_INTERNAL_NAME structure is used to specify the ClientName field in the
 CreateApReqAuthenticator message (section 2.2.2.1.4).
@@ -1055,7 +921,7 @@ Names: A pointer to an RPC_UNICODE_STRING ([MS-DTYP] section 2.3.10) that contai
 
 names.
 
-2.2.1.2.4 KERB_RPC_PA_DATA
+###### 2.2.1.2.4 KERB_RPC_PA_DATA
 
 The KERB_RPC_PA_DATA structure is used to contain the pre-authorization data.
 
@@ -1072,7 +938,7 @@ preauth_data: A KERB_RPC_OCTET_STRING structure (section 2.2.1.2.2) that contain
 
 authorization data.
 
-2.2.1.2.5 KERB_RPC_CRYPTO_API_BLOB
+###### 2.2.1.2.5 KERB_RPC_CRYPTO_API_BLOB
 
 15 / 70
 
@@ -1081,7 +947,8 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The KERB_RPC_CRYPTO_API_BLOB structure is used to compute the public key in the
+
+The KERB_RPC_CRYPTO_API_BLOB structure is used to compute the public key in the
 CreateDHKeyAgreement message (section 2.2.2.1.15).
 
  typedef struct _KERB_RPC_CRYPTO_API_BLOB{
@@ -1095,7 +962,7 @@ pbData: A pointer to a BYTE ([MS-DTYP] section 2.2.6) array that contains the da
 
 computation of the public key.
 
-2.2.1.2.6 SECPKG_SUPPLEMENTAL_CRED
+###### 2.2.1.2.6 SECPKG_SUPPLEMENTAL_CRED
 
 The SECPKG_SUPPLEMENTAL_CRED structure is used in the
 SECPKG_SUPPLEMENTAL_CRED_ARRAY structure (section 2.2.1.2.7).
@@ -1118,7 +985,7 @@ Credentials: A pointer to a UCHAR ([MS-DTYP] section 2.2.45), an array that cont
 
 credentials.
 
-2.2.1.2.7 SECPKG_SUPPLEMENTAL_CRED_ARRAY
+###### 2.2.1.2.7 SECPKG_SUPPLEMENTAL_CRED_ARRAY
 
 The SECPKG_SUPPLEMENTAL_CRED_ARRAY structure is used in the DecryptPacCredentials
 message (section 2.2.2.1.13) to contain the decoded array of credentials.
@@ -1136,7 +1003,7 @@ Credentials: An array of SECPKG_SUPPLEMENTAL_CRED structures (section 2.2.1.2.6)
 
 contains the decoded credentials.
 
-2.2.1.2.8 KERB_RPC_ENCRYPTION_KEY
+###### 2.2.1.2.8 KERB_RPC_ENCRYPTION_KEY
 
 The KERB_RPC_ENCRYPTION_KEY structure is the opaque representation of any Kerberos
 EncryptionKey [RFC4120] section 5.2.9. This data structure is understood and consumed only by the
@@ -1152,7 +1019,8 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef struct _KERB_RPC_ENCRYPTION_KEY {
+
+ typedef struct _KERB_RPC_ENCRYPTION_KEY {
      void* reserved1;
      long reserved2;
      KERB_RPC_OCTET_STRING reserved3;
@@ -1166,7 +1034,7 @@ reserved2: A long ([MS-DTYP] section 2.2.27) that contains the encryption type.
 
 reserved3: A KERB_RPC_OCTET_STRING structure (section 2.2.1.2.2) that contains the key value.
 
-2.2.1.2.9 KerbCredIsoRemoteInput
+###### 2.2.1.2.9 KerbCredIsoRemoteInput
 
 The KerbCredIsoRemoteInput structure is used for a Kerberos call message. It is paired with a
 KerbCredIsoRemoteOutput structure (section 2.2.1.2.10) Kerberos reply message. The CallId field
@@ -1226,7 +1094,8 @@ Release: April 23, 2024
 
 17 / 70
 
-             ULONG KeyUsage;
+
+             ULONG KeyUsage;
          } CreateApReqAuthenticator;
 
          // Decrypt the encrypted part of an AP_REP.
@@ -1303,7 +1172,8 @@ Release: April 23, 2024
 
 18 / 70
 
-         // Calculate a MAC from the given data and compare it to the given expected
+
+         // Calculate a MAC from the given data and compare it to the given expected
          // value. Used to detect mismatches which may indicate tampering with the
          // PAC which is sent by the KDC to the client inside a KRB_KDC_REP.
          [case(RemoteCallKerbVerifyChecksum)] struct
@@ -1375,7 +1245,8 @@ Release: April 23, 2024
 
 19 / 70
 
-CallId: An ID from the RemoteGuardCallId enumeration (section 2.2.1.1) that determines which of
+
+CallId: An ID from the RemoteGuardCallId enumeration (section 2.2.1.1) that determines which of
 
 the following union members is associated with the current message.
 
@@ -1458,11 +1329,12 @@ Release: April 23, 2024
 
 20 / 70
 
-FinalizeKeyAgreement: A structure (section 2.2.2.1.18) used to finish a Kerberos PKINIT
+
+FinalizeKeyAgreement: A structure (section 2.2.2.1.18) used to finish a Kerberos PKINIT
 
 ([RFC4556]) key agreement with an X509 server public key ([RFC3280]).
 
-2.2.1.2.10  KerbCredIsoRemoteOutput
+###### 2.2.1.2.10 KerbCredIsoRemoteOutput
 
 The KerbCredIsoRemoteOutput structure is used for a Kerberos reply message. It is paired with a
 KerbCredIsoRemoteInput structure (section 2.2.1.2.9) Kerberos call message. The CallId field
@@ -1533,7 +1405,8 @@ Release: April 23, 2024
 
 21 / 70
 
-         [case(RemoteCallKerbHashS4UPreauth)] struct
+
+         [case(RemoteCallKerbHashS4UPreauth)] struct
          {
              PULONG ChecksumSize;
              [size_is(, *ChecksumSize)] PUCHAR* ChecksumValue;
@@ -1607,7 +1480,8 @@ Release: April 23, 2024
 
 22 / 70
 
-NegotiateVersion: A structure (section 2.2.2.1.1) that contains the VersionToUse agreed between
+
+NegotiateVersion: A structure (section 2.2.2.1.1) that contains the VersionToUse agreed between
 
 the server and the client. Used to negotiate the protocol version that will be used. Server sends
 the maximum version it supports; client replies with the version that will be used for future
@@ -1688,7 +1562,8 @@ Release: April 23, 2024
 
 23 / 70
 
-KeyAgreementGenerateNonce: A structure (section 2.2.2.1.17) used to generate a nonce for use
+
+KeyAgreementGenerateNonce: A structure (section 2.2.2.1.17) used to generate a nonce for use
 with the given key agreement. This nonce is part of the Diffie-Hellman agreement that is part of
 Kerberos PKINIT ([RFC4556]). Contains the nonce length and the Nonce for use in a key
 agreement operation.
@@ -1698,9 +1573,9 @@ FinalizeKeyAgreement: A structure (section 2.2.2.1.18) used to finish a Kerberos
 ([RFC4556]) key agreement. Contains the SharedKey that is the resulting key from the
 agreement.
 
-2.2.1.3  NTLM Data Structures
+##### 2.2.1.3 NTLM Data Structures
 
-2.2.1.3.1 NT_CHALLENGE
+###### 2.2.1.3.1 NT_CHALLENGE
 
 The NT_CHALLENGE structure is used in the NtChallenge field in the CalculateNtResponse message
 (section 2.2.2.2.3).
@@ -1713,7 +1588,7 @@ Data: A UCHAR ([MS-DTYP] section 2.2.45) that is an array of 8-bit data items wi
 
 by MSV1_0_CHALLENGE_LENGTH (8) that specifies the number bytes in the string.
 
-2.2.1.3.2 NT_RESPONSE
+###### 2.2.1.3.2 NT_RESPONSE
 
 The NT_RESPONSE structure is used in the NtResponse field in the CalculateNtResponse message
 (section 2.2.2.2.3) and in the CalculateUserSessionKeyNt message (section 2.2.2.2.4).
@@ -1726,7 +1601,7 @@ Data: A UCHAR ([MS-DTYP] section 2.2.45) that is an array of 8-bit data items wi
 
 by MSV1_0_RESPONSE_LENGTH (24) that specifies the number bytes in the string.
 
-2.2.1.3.3 MSV1_0_LM3_RESPONSE
+###### 2.2.1.3.3 MSV1_0_LM3_RESPONSE
 
 The MSV1_0_LM3_RESPONSE structure is used in the Lm3Response field in the
 Lm20GetNtlm3ChallengeResponse message (section 2.2.2.2.2).
@@ -1745,7 +1620,7 @@ ChallengeFromClient: A UCHAR type that is an array of 8-bit data items with a le
 
 MSV1_0_CHALLENGE_LENGTH (8) that specifies the number bytes in the string.
 
-2.2.1.3.4 USER_SESSION_KEY
+###### 2.2.1.3.4 USER_SESSION_KEY
 
 [MS-RDPEAR] - v20240423
 Remote Desktop Protocol Authentication Redirection Virtual Channel
@@ -1754,7 +1629,8 @@ Release: April 23, 2024
 
 24 / 70
 
-The USER_SESSION_KEY structure is used in the UserSessionKey field in the
+
+The USER_SESSION_KEY structure is used in the UserSessionKey field in the
 Lm20GetNtlm3ChallengeResponse message (section 2.2.2.2.3) and the CalculateUserSessionKeyNt
 message (section 2.2.2.2.4).
 
@@ -1767,7 +1643,7 @@ Data: A UCHAR type ([MS-DTYP] section 2.2.45) that is an array of 8-bit data ite
 specified by MSV1_0_USER_SESSION_KEY_LENGTH (16) that specifies the number bytes in
 the string.
 
-2.2.1.3.5 MSV1_0_CREDENTIAL_KEY
+###### 2.2.1.3.5 MSV1_0_CREDENTIAL_KEY
 
 The MSV1_0_CREDENTIAL_KEY structure is used in the
 MSV1_0_REMOTE_ENCRYPTED_SECRETS structure (section 2.2.1.3.10).
@@ -1779,7 +1655,7 @@ MSV1_0_REMOTE_ENCRYPTED_SECRETS structure (section 2.2.1.3.10).
 Data: A UCHAR ([MS-DTYP] section 2.2.45) that is an array of 8-bit data items with a length specified
 by MSV1_0_CREDENTIAL_KEY_LENGTH (20) that specifies the number bytes in the string.
 
-2.2.1.3.6 MSV1_0_REMOTE_ENCRYPTED_SECRETS
+###### 2.2.1.3.6 MSV1_0_REMOTE_ENCRYPTED_SECRETS
 
 The MSV1_0_REMOTE_ENCRYPTED_SECRETS structure is the opaque representation of NLTM
 secrets.<2> This data structure is understood and consumed only by the CredSSP client; therefore,
@@ -1821,7 +1697,8 @@ Release: April 23, 2024
 
 25 / 70
 
-     LocalUserCredKey,      // For internal use only - should never be present in
+
+     LocalUserCredKey,      // For internal use only - should never be present in
                             // MSV1_0_REMOTE_ENCRYPTED_SECRETS
      ExternallySuppliedCredKey // reserved
  } MSV1_0_CREDENTIAL_KEY_TYPE;
@@ -1836,7 +1713,7 @@ reserved6: A pointer to a UCHAR ([MS-DTYP] section 2.2.45), an array of characte
 
 the credential.
 
-2.2.1.3.7 NtlmCredIsoRemoteInput
+###### 2.2.1.3.7 NtlmCredIsoRemoteInput
 
 The NtlmCredIsoRemoteInput structure is used for an NTLM call message. It is paired with an
 NtlmCredIsoRemoteOutput structure (section 2.2.1.3.8) NTLM reply message. The CallId
@@ -1894,7 +1771,8 @@ Release: April 23, 2024
 
 26 / 70
 
-            // Compare the provided credentials to determine whether
+
+            // Compare the provided credentials to determine whether
             // they're identical.
             [case(RemoteCallNtlmCompareCredentials)] struct
             {
@@ -1929,7 +1807,7 @@ CompareCredentials: A structure (section 2.2.2.2.5) that contains the first and 
 
 credential to be compared.
 
-2.2.1.3.8 NtlmCredIsoRemoteOutput
+###### 2.2.1.3.8 NtlmCredIsoRemoteOutput
 
 The NtlmCredIsoRemoteOutput structure is used for an NTLM reply message. It is paired with an
 NtlmCredIsoRemoteInput structure (section 2.2.1.3.7) NTLM call message. The CallId determines
@@ -1971,7 +1849,8 @@ Release: April 23, 2024
 
 27 / 70
 
-                USER_SESSION_KEY UserSessionKey;
+
+                USER_SESSION_KEY UserSessionKey;
             } CalculateUserSessionKeyNt;
 
             [case(RemoteCallNtlmCompareCredentials)] struct
@@ -2009,7 +1888,7 @@ CompareCredentials: A structure (section 2.2.2.2.5) that contains three BOOL val
 
 whether the values in the credentials matched.
 
-2.2.2  Package-Specific Messages
+#### 2.2.2 Package-Specific Messages
 
 All package-specific messages are formatted by using the Distributed Computing Environment (DCE)
 data representation as specified in [C706], and as exposed by the type marshaling support in Remote
@@ -2030,7 +1909,7 @@ RemoteGuardCallId enumeration that is held within the outer structure determines
 member is associated with the current message. In this way, the message encoding is known in
 advance by both ends of the connection, simplifying message processing.
 
-2.2.2.1  Kerberos Messages
+##### 2.2.2.1 Kerberos Messages
 
 Kerberos calls are formatted as KerbCredIsoRemoteInput objects (section 2.2.1.3.7), and
 responses are formatted as KerbCredIsoRemoteOutput objects (section 2.2.1.2.10). The
@@ -2043,7 +1922,8 @@ Release: April 23, 2024
 
 28 / 70
 
-KerbCredIsoRemoteInput and KerbCredIsoRemoteOutput structure types can represent multiple
+
+KerbCredIsoRemoteInput and KerbCredIsoRemoteOutput structure types can represent multiple
 Input and Output message pairs as documented in the following sections.
 
 Some Kerberos messages make use of Abstract Syntax Notation One (ASN.1) structures, as
@@ -2054,7 +1934,7 @@ When such structure packing is used, the data type of the message field is KERB_
 structures, avoiding additional overhead incurred by a custom data type in the Kerberos Interface
 Definition Language (IDL) file.
 
-2.2.2.1.1 NegotiateVersion
+###### 2.2.2.1.1 NegotiateVersion
 
 The NegotiateVersion structure is used to negotiate the protocol version that the Kerberos packages
 on the CredSSP server and CredSSP client will use to communicate. The server sends the
@@ -2085,7 +1965,7 @@ VersionToUse: A ULONG type that contains the protocol version that will be used 
 
 exchanges. Note that this currently MUST be zero.
 
-2.2.2.1.2 BuildAsReqAuthenticator
+###### 2.2.2.1.2 BuildAsReqAuthenticator
 
 The BuildAsReqAuthenticator structure is used to create an AS_REQ message authenticator for
 inclusion in a KRB_AS_REQ message to the KDC [RFC4120].
@@ -2111,7 +1991,8 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ArmorKey: Optional. A KERB_RPC_ENCRYPTION_KEY structure (section 2.2.1.2.8) that contains
+
+ArmorKey: Optional. A KERB_RPC_ENCRYPTION_KEY structure (section 2.2.1.2.8) that contains
 the FAST armor key. Specify only when an EncryptedChallenge padata-value ([RFC4120]) is
 needed in the request. When specified, the ArmorKey is combined with the EncryptionKey to
 derive a FAST challenge key. See [RFC6113] section 5.4.6.
@@ -2136,7 +2017,7 @@ PreauthData: A KERB_RPC_OCTET_STRING structure (section 2.2.1.2.2) that contains
 
 padata-value to be included in the KRB_AS_REQ message ([RFC4120]).
 
-2.2.2.1.3 VerifyServiceTicket
+###### 2.2.2.1.3 VerifyServiceTicket
 
 The VerifyServiceTicket structure is used to decrypt and validate a service ticket reply from the KDC
 ([RFC4120] section 5.3). It is used to verify that the given service ticket is valid within the given
@@ -2180,7 +2061,8 @@ Release: April 23, 2024
 
 30 / 70
 
-DecryptedTicket: A KERB_ASN1_DATA structure that contains the decrypted EncTicketPart of the
+
+DecryptedTicket: A KERB_ASN1_DATA structure that contains the decrypted EncTicketPart of the
 
 input Kerberos ticket.
 
@@ -2188,7 +2070,7 @@ KerbProtocolError: A LONG type that contains the validation result, as expressed
 
 codes defined by [RFC4120] section 7.5.9.
 
-2.2.2.1.4 CreateApReqAuthenticator
+###### 2.2.2.1.4 CreateApReqAuthenticator
 
 The CreateApReqAuthenticator structure is used to create an authenticator for inclusion in a
 KRB_AP_REQ message ([RFC4120] section 5.5.1).
@@ -2262,7 +2144,8 @@ Release: April 23, 2024
 
 31 / 70
 
-When populating this field of the KerbCredIsoRemoteOutput structure, the CallId field MUST be
+
+When populating this field of the KerbCredIsoRemoteOutput structure, the CallId field MUST be
 set to RemoteCallKerbCreateApReqAuthenticator.
 
  struct
@@ -2281,7 +2164,7 @@ section 5.5.1).
 KerbProtocolError: A LONG that contains any protocol-level errors that occur while building the
 authenticator, as expressed by one of the error codes defined in [RFC4120] section 7.5.9
 
-2.2.2.1.5 DecryptApReply
+###### 2.2.2.1.5 DecryptApReply
 
 The DecryptApReply structure is used to decrypt the encrypted part of a KRB_AP_REP message
 ([RFC4120] section 5.5.2).
@@ -2317,7 +2200,7 @@ ApReply: A KERB_ASN1_DATA structure that contains the decrypted EncAPRepPart ([R
 
 section 5.5.2) in DER-encoded form.
 
-2.2.2.1.6 UnpackKdcReplyBody
+###### 2.2.2.1.6 UnpackKdcReplyBody
 
 The UnpackKdcReplyBody structure is used to decrypt the encrypted part of a KRB_KDC_REP
 message ([RFC4120] section 5.4.2) from the KDC. The type of reply is indicated by the PDU, either
@@ -2329,7 +2212,8 @@ Release: April 23, 2024
 
 32 / 70
 
-encrypted AS_REP PDU or encrypted TGS_REP PDU. The KeyUsage field allows the caller to specify
+
+encrypted AS_REP PDU or encrypted TGS_REP PDU. The KeyUsage field allows the caller to specify
 either the TGS or AS key derivation types.<3>
 
 When populating this field of the KerbCredIsoRemoteInput structure, the CallId field MUST be set
@@ -2388,7 +2272,7 @@ KerbProtocolError: A LONG that contains any protocol-level errors that have occu
 
 ReplyBody: A KERB_ASN1_DATA structure that contains the decrypted reply.
 
-2.2.2.1.7 ComputeTgsChecksum
+###### 2.2.2.1.7 ComputeTgsChecksum
 
 The ComputeTgsChecksum structure is used to calculate the MAC and create a keyed checksum
 over a KRB_KDC_REQ message, which is required for proving authenticity of client requests for a
@@ -2401,7 +2285,8 @@ Release: April 23, 2024
 
 33 / 70
 
-When populating this field of the KerbCredIsoRemoteInput structure, the CallId field MUST be set
+
+When populating this field of the KerbCredIsoRemoteInput structure, the CallId field MUST be set
 to RemoteCallKerbComputeTgsChecksum.
 
  struct
@@ -2435,7 +2320,7 @@ Checksum: A KERB_ASN1_DATA structure that contains the DER-encoded Kerberos Chec
 
 structure, as defined in [RFC4120] Appendix A.
 
-2.2.2.1.8 BuildEncryptedAuthData
+###### 2.2.2.1.8 BuildEncryptedAuthData
 
 The BuildEncryptedAuthData structure is used to encrypt the given authorization PA-DATA
 sequence, using a shared key, to be included within the request body of a message to be sent to the
@@ -2476,7 +2361,8 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PlainAuthData: A pointer to a KERB_ASN1_DATA structure that contains the DER-encoded PA-
+
+PlainAuthData: A pointer to a KERB_ASN1_DATA structure that contains the DER-encoded PA-
 
 DATA to be encrypted ([RFC4120] section 5.2.7).
 
@@ -2492,7 +2378,7 @@ EncryptedAuthData: A KERB_ASN1_DATA structure that is the DER-encoded Kerberos
 
 EncryptedData structure containing the encrypted PA-DATA ([RFC4120] section 5.5.1).
 
-2.2.2.1.9 PackApReply
+###### 2.2.2.1.9 PackApReply
 
 The PackApReply structure is used to pack up and encrypt a KRB_AP_REP message using the given
 session key. The ReplyBody is encrypted using the SessionKey, then added to the KRB_AP_REP.
@@ -2539,7 +2425,7 @@ PackedReply: A pointer to a CHAR array that contains the DER-encoded KRB_AP_REP,
 contains the encrypted EncAPRepPart ([RFC4120] section 5.5.2) from the PackApReply input
 message.
 
-2.2.2.1.10  HashS4UPreauth
+###### 2.2.2.1.10 HashS4UPreauth
 
 35 / 70
 
@@ -2548,7 +2434,8 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The HashS4UPreauth structure is used to create a MAC for S4U pre-authentication data to be
+
+The HashS4UPreauth structure is used to create a MAC for S4U pre-authentication data to be
 included in a KRB_TGS_REQ when requesting a S4U service ticket for another principal. A keyed hash
 of the S4U pre-authentication data of the type PA-FOR-USER ([KERB-PARAM]) is created to process
 the result that is used for integrity checks on the ticket request by the KDC.
@@ -2592,9 +2479,9 @@ ChecksumValue: A pointer to a CHAR array that contains the resulting hash of the
 
 authentication data.
 
-2.2.2.1.11
+###### 2.2.2.1.11 SignS4UPreauthData
 
-SignS4UPreauthData
+
 
 The SignS4UPreauthData structure is used to create a MAC for S4U pre-authentication data that is
 for certificate-based users. This pa-data is added to KRB_TGS_REQ when requesting an S4U service
@@ -2620,7 +2507,8 @@ Release: April 23, 2024
 
 36 / 70
 
-Key: A pointer to a KERB_RPC_ENCRYPTION_KEY structure that contains the authentication key
+
+Key: A pointer to a KERB_RPC_ENCRYPTION_KEY structure that contains the authentication key
 
 used in the secure hash.
 
@@ -2652,7 +2540,7 @@ ChecksumSize: A pointer to a LONG that indicates the size of the output hash siz
 
 ChecksumValue: A CHAR array that contains the resulting hash of the input pre-authentication data.
 
-2.2.2.1.12  VerifyChecksum
+###### 2.2.2.1.12 VerifyChecksum
 
 The VerifyChecksum structure is used to calculate a MAC from the given data and compare it to the
 given expected value. This structure is used to detect mismatches which may indicate tampering with
@@ -2694,7 +2582,8 @@ Release: April 23, 2024
 
 37 / 70
 
-DataToCheckSize: A ULONG that indicates the size of the DataToCheck array field that contains the
+
+DataToCheckSize: A ULONG that indicates the size of the DataToCheck array field that contains the
 
 input data to check.
 
@@ -2710,7 +2599,7 @@ set to RemoteCallKerbVerifyChecksum.
 
 IsValid: A BOOL. If TRUE, indicates that the calculated checksum matches.
 
-2.2.2.1.13  DecryptPacCredentials
+###### 2.2.2.1.13 DecryptPacCredentials
 
 The DecryptPacCredentials structure is used to decrypt the supplemental credentials that are
 returned in the PAC ([MS-PAC]) by the KDC in a reply message. For more details see section
@@ -2764,9 +2653,10 @@ Release: April 23, 2024
 
 38 / 70
 
-2.2.2.1.14
 
-CreateECDHKeyAgreement
+###### 2.2.2.1.14 CreateECDHKeyAgreement
+
+
 
 The CreateECDHKeyAgreement structure is used to create a new ECDH key agreement handle with
 the given ECC key bit length to be used in Kerberos PKINIT ([RFC4556]). The key agreement will use
@@ -2825,9 +2715,9 @@ EncodedPubKey: A byte array that contains the encoded subjectPublicKey value, su
 
 populating a SubjectPublicKeyInfo structure [RFC3280].
 
-2.2.2.1.15
+###### 2.2.2.1.15 CreateDHKeyAgreement
 
-CreateDHKeyAgreement
+
 
 The CreateDHKeyAgreement structure is used to create a key handle to be used in Kerberos
 PKINIT. The key agreement will use Diffie-Hellman, as specified in [RFC4556]. The outputs of this
@@ -2844,7 +2734,8 @@ Release: April 23, 2024
 
 39 / 70
 
- struct
+
+ struct
  {
      // This [case(RemoteCallKerb)] struct has no input parameters, but for
      // simplicity and consistency with the other parameters, let's define
@@ -2896,7 +2787,7 @@ LittleEndianPublicKey: A byte array that contains the little-endian representati
 
 key value suitable for use with the CryptoAPI as a public key blob.
 
-2.2.2.1.16  DestroyKeyAgreement
+###### 2.2.2.1.16 DestroyKeyAgreement
 
 The DestroyKeyAgreement structure is used to destroy a key agreement handle which was
 previously constructed with either a CreateECDHKeyAgreement structure (section 2.2.2.1.14) or a
@@ -2918,7 +2809,8 @@ Release: April 23, 2024
 
 40 / 70
 
- } DestroyKeyAgreement;
+
+ } DestroyKeyAgreement;
 
 KeyAgreementHandle: A KEY_AGREEMENT_HANDLE type that indicates the key agreement to be
 
@@ -2934,7 +2826,7 @@ set to RemoteCallKerbDestroyKeyAgreement.
 
 Ignored: A UCHAR. The value of this field is undefined. Implementers SHOULD ignore it.
 
-2.2.2.1.17  KeyAgreementGenerateNonce
+###### 2.2.2.1.17 KeyAgreementGenerateNonce
 
 The KeyAgreementGenerateNonce structure is used to generates a nonce value for inclusion in the
 DHNonce in a Kerberos PKINIT message exchange ([RFC4556] Section 3.2.1). This nonce is part of
@@ -2965,9 +2857,9 @@ NonceLen: A pointer to a ULONG that indicates the byte length of the Nonce field
 
 Nonce: A byte array that contains the nonce for use in a key agreement operation.
 
-2.2.2.1.18
+###### 2.2.2.1.18 FinalizeKeyAgreement
 
-FinalizeKeyAgreement
+
 
 The FinalizeKeyAgreement structure is used to perform the final step in a Kerberos PKINIT
 ([RFC4556]) key agreement operation, resulting in a shared secret between the Kerberos client and
@@ -2984,7 +2876,8 @@ Release: April 23, 2024
 
 41 / 70
 
- struct
+
+ struct
  {
      KEY_AGREEMENT_HANDLE* KeyAgreementHandle;
      ULONG KerbEType;
@@ -3024,7 +2917,7 @@ SharedKey: A pointer to a KERB_RPC_ENCRYPTION_KEY structure that contains the re
 
 from the agreement.
 
-2.2.2.2  NTLM Messages
+##### 2.2.2.2 NTLM Messages
 
 NTLM calls are formatted as NtlmCredIsoRemoteInput objects, and responses are formatted as
 NtlmCredIsoRemoteOutput objects (section 2.2.1.3.8). The structures, as defined in the IDL, are
@@ -3032,7 +2925,7 @@ made primarily of unions. In this way, the single NtlmCredIsoRemoteInput and
 NtlmCredIsoRemoteOutput structure types represent multiple Input and Output message pairs as
 documented in the following sections.
 
-2.2.2.2.1 NegotiateVersion
+###### 2.2.2.2.1 NegotiateVersion
 
 The NegotiateVersion structure is used to negotiate the protocol version that the NTLM packages on
 the CredSSP server and CredSSP client will use to communicate. The server sends the maximum
@@ -3054,7 +2947,8 @@ Release: April 23, 2024
 
 42 / 70
 
- } NegotiateVersion;
+
+ } NegotiateVersion;
 
 MaxSupportedVersion: A ULONG that indicates the highest protocol version the CredSSP server
 
@@ -3072,7 +2966,7 @@ VersionToUse: A ULONG that indicates the protocol version that will be used for 
 
 Note that this currently MUST be zero.
 
-2.2.2.2.2 Lm20GetNtlm3ChallengeResponse
+###### 2.2.2.2.2 Lm20GetNtlm3ChallengeResponse
 
 The Lm20GetNtlm3ChallengeResponse structure is used to calculate the responses and session
 keys to generate the NT and LM response for use in the NTLM v2 protocol as specified in [MS-NLMP]
@@ -3127,7 +3021,8 @@ Release: April 23, 2024
 
 43 / 70
 
-     USER_SESSION_KEY UserSessionKey;
+
+     USER_SESSION_KEY UserSessionKey;
      LM_SESSION_KEY LmSessionKey;
  } Lm20GetNtlm3ChallengeResponse;
 
@@ -3147,7 +3042,7 @@ NTv2 session key.
 
 LmSessionKey: An LM_SESSION_KEY type that indicates the generated LMv2 session key.
 
-2.2.2.2.3 CalculateNtResponse
+###### 2.2.2.2.3 CalculateNtResponse
 
 The CalculateNtResponse structure is used to calculate the NT Response to this challenge using the
 provided challenge and credentials for use in the NTLM v1 protocol as specified in [MS-NLMP] section
@@ -3182,7 +3077,7 @@ NtResponse: An NT_RESPONSE structure that contains The NTLMv1 response, generate
 
 specified in [MS-NLMP] section 3.3.1.
 
-2.2.2.2.4 CalculateUserSessionKeyNt
+###### 2.2.2.2.4 CalculateUserSessionKeyNt
 
 The CalculateUserSessionKeyNt structure is used to calculate a session key using the provided
 response and credentials for use in the NTLM v1 protocol as specified in [MS-NLMP] section 3.3.1.
@@ -3197,7 +3092,8 @@ Release: April 23, 2024
 
 44 / 70
 
- struct
+
+ struct
  {
      PNT_RESPONSE NtResponse;
      PMSV1_0_REMOTE_ENCRYPTED_SECRETS Credential;
@@ -3223,7 +3119,7 @@ UserSessionKey: A USER_SESSION_KEY structure that contains the session key, calc
 
 specified in [MS-NLMP] section 3.3.1.
 
-2.2.2.2.5 CompareCredentials
+###### 2.2.2.2.5 CompareCredentials
 
 The CompareCredentials structure is used to decrypt and compare the provided credentials to
 determine which fields match and if the credentials are identical.
@@ -3266,7 +3162,8 @@ Release: April 23, 2024
 
 45 / 70
 
-AreShaOwfsEqual: A BOOL. If TRUE, indicates that the SHAOWF values in the credentials matched.
+
+AreShaOwfsEqual: A BOOL. If TRUE, indicates that the SHAOWF values in the credentials matched.
 
 [MS-RDPEAR] - v20240423
 Remote Desktop Protocol Authentication Redirection Virtual Channel
@@ -3275,29 +3172,30 @@ Release: April 23, 2024
 
 46 / 70
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.5.1  RemoteCallKerbNegotiateVersion
+None.
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
+
+##### 3.1.5.1 RemoteCallKerbNegotiateVersion
 
 The RemoteCallKerbNegotiateVersion call uses the Kerberos NegotiateVersion message (section
 2.2.2.1.1) to negotiate the protocol version that the Kerberos packages on the CredSSP server and
@@ -3312,7 +3210,7 @@ To reply to the preceding input message, the CredSSP client MUST respond with a
 KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbNegotiateVersion, and the VersionToUse member of the union MUST be populated.
 
-3.1.5.2  RemoteCallKerbBuildAsReqAuthenticator
+##### 3.1.5.2 RemoteCallKerbBuildAsReqAuthenticator
 
 The RemoteCallKerbBuildAsReqAuthenticator call uses the Kerberos BuildAsReqAuthenticator
 message (section 2.2.2.1.2) to create an authenticator for inclusion in a KRB_AS_REQ message to the
@@ -3335,7 +3233,8 @@ Release: April 23, 2024
 
 47 / 70
 
-3.1.5.3  RemoteCallKerbVerifyServiceTicket
+
+##### 3.1.5.3 RemoteCallKerbVerifyServiceTicket
 
 The RemoteCallKerbVerifyServiceTicket call uses the Kerberos VerifyServiceTicket message
 (section 2.2.2.1.3) to decrypt and validate a service ticket reply from the KDC. See [RFC4120] section
@@ -3350,7 +3249,7 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbVerifyServiceTicket, and the VerifyServiceTicket member of the union MUST be
 populated.
 
-3.1.5.4  RemoteCallKerbCreateApReqAuthenticator
+##### 3.1.5.4 RemoteCallKerbCreateApReqAuthenticator
 
 The RemoteCallKerbCreateApReqAuthenticator call uses the Kerberos CreateApReqAuthenticator
 message (section 2.2.2.1.4) to process a message exchange that creates an authenticator for
@@ -3366,7 +3265,7 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbCreateApReqAuthenticator, and the CreateApReqAuthenticator member of the
 union MUST be populated.
 
-3.1.5.5  RemoteCallKerbDecryptApReply
+##### 3.1.5.5 RemoteCallKerbDecryptApReply
 
 The RemoteCallKerbDecryptApReply call uses the Kerberos DecryptApReply message (section
 2.2.2.1.5) to decrypt the encrypted part of a KRB_AP_REP message ([RFC4120] section 5.5.2).
@@ -3379,7 +3278,7 @@ To reply to the preceding input message, the CredSSP client MUST respond with a
 KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbDecryptApReply, and the DecryptApReply member of the union MUST be populated.
 
-3.1.5.6  RemoteCallKerbUnpackKdcReplyBody
+##### 3.1.5.6 RemoteCallKerbUnpackKdcReplyBody
 
 The RemoteCallKerbUnpackKdcReplyBody call uses the Kerberos UnpackKdcReplyBody message
 (section 2.2.2.1.6) to decrypt the encrypted part of a KRB_KDC_REP message ([RFC4120] section
@@ -3400,10 +3299,11 @@ Release: April 23, 2024
 
 48 / 70
 
-RemoteCallKerbUnpackKdcReplyBody, and the UnpackKdcReplyBody member of the union MUST be
+
+RemoteCallKerbUnpackKdcReplyBody, and the UnpackKdcReplyBody member of the union MUST be
 populated.
 
-3.1.5.7  RemoteCallKerbComputeTgsChecksum
+##### 3.1.5.7 RemoteCallKerbComputeTgsChecksum
 
 The RemoteCallKerbComputeTgsChecksum call uses the Kerberos ComputeTgsChecksum message
 (section 2.2.2.1.7) to create a keyed checksum over a KRB_KDC_REQ message, which is required for
@@ -3418,7 +3318,7 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbComputeTgsChecksum, and the ComputeTgsChecksum member of the union MUST
 be populated.
 
-3.1.5.8  RemoteCallKerbBuildEncryptedAuthData
+##### 3.1.5.8 RemoteCallKerbBuildEncryptedAuthData
 
 The RemoteCallKerbBuildEncryptedAuthData call uses the Kerberos BuildEncryptedAuthData
 message (section 2.2.2.1.8) to take a PA-DATA sequence ([RFC4120] section 5.2.7) and encrypt it
@@ -3434,7 +3334,7 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbBuildEncryptedAuthData, and the BuildEncryptedAuthData member of the union
 MUST be populated.
 
-3.1.5.9  RemoteCallKerbPackApReply
+##### 3.1.5.9 RemoteCallKerbPackApReply
 
 The RemoteCallKerbPackApReply call uses the Kerberos PackApReply message (section 2.2.2.1.9)
 to take a KRB_AP_REP, EncAPRepPart, and key. The EncAPRepPart is encrypted using the key, then
@@ -3449,9 +3349,9 @@ To reply to the preceding input message, the CredSSP client MUST respond with a
 KerbCredIsoRemoteOutput object. The CallId field MUST be set to RemoteCallKerbPackApReply,
 and the PackApReply member of the union MUST be populated.
 
-3.1.5.10
+##### 3.1.5.10 RemoteCallKerbHashS4UPreauth
 
-RemoteCallKerbHashS4UPreauth
+
 
 The RemoteCallKerbHashS4UPreauth call uses the Kerberos HashS4UPreauth message (section
 2.2.2.1.10) to perform a keyed hash of the S4U pre-authentication data of the type PA-FOR_USER
@@ -3464,7 +3364,8 @@ Release: April 23, 2024
 
 49 / 70
 
-To perform this message exchange, the CredSSP server MUST send a KerbCredIsoRemoteInput
+
+To perform this message exchange, the CredSSP server MUST send a KerbCredIsoRemoteInput
 object to the CredSSP client. The CallId field MUST be set to RemoteCallKerbHashS4UPreauth, and
 the HashS4UPreauth member of the union MUST be populated.
 
@@ -3473,9 +3374,9 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbHashS4UPreauth, and the HashS4UPreauth member of the union MUST be
 populated.
 
-3.1.5.11
+##### 3.1.5.11 RemoteCallKerbSignS4UPreauthData
 
-RemoteCallKerbSignS4UPreauthData
+
 
 The RemoteCallKerbSignS4UPreauthData call uses the Kerberos SignS4UPreauthData message
 (section 2.2.2.1.11) to perform a keyed hash of the S4U pre-authentication data of the type PA-FOR-
@@ -3490,9 +3391,9 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbSignS4UPreauthData, and the SignS4UPreauthData member of the union MUST be
 populated.
 
-3.1.5.12
+##### 3.1.5.12 RemoteCallKerbVerifyChecksum
 
-RemoteCallKerbVerifyChecksum
+
 
 The RemoteCallKerbVerifyChecksum call uses the Kerberos VerifyChecksum message (section
 2.2.2.1.12) to take input data, a key, and an expected checksum as inputs. The checksum operation is
@@ -3507,9 +3408,9 @@ To reply to the preceding input message, the CredSSP client MUST respond with a
 KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbVerifyChecksum, and the VerifyChecksum member of the union MUST be populated.
 
-3.1.5.13
+##### 3.1.5.13 RemoteCallKerbDecryptPacCredentials
 
-RemoteCallKerbDecryptPacCredentials
+
 
 The RemoteCallKerbDecryptPacCredentials call uses the Kerberos DecryptPacCredentials message
 (section 2.2.2.1.13) to decrypt the supplemental credentials that are returned in the PAC [MS-PAC] by
@@ -3533,9 +3434,10 @@ Release: April 23, 2024
 
 50 / 70
 
-3.1.5.14
 
-RemoteCallKerbCreateECDHKeyAgreement
+##### 3.1.5.14 RemoteCallKerbCreateECDHKeyAgreement
+
+
 
 The RemoteCallKerbCreateECDHKeyAgreement call uses the Kerberos CreateECDHKeyAgreement
 message (section 2.2.2.1.14) to create a key handle to be used in Kerberos PKINIT [RFC4556]. The
@@ -3555,9 +3457,9 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbCreateECDHKeyAgreement, and the CreateECDHKeyAgreement member of the
 union MUST be populated.
 
-3.1.5.15
+##### 3.1.5.15 RemoteCallKerbCreateDHKeyAgreement
 
-RemoteCallKerbCreateDHKeyAgreement
+
 
 The RemoteCallKerbCreateDHKeyAgreement call uses the Kerberos CreateDHKeyAgreement
 message (section 2.2.2.1.15) to create a key handle to be used in Kerberos PKINIT. The key
@@ -3579,9 +3481,9 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbCreateDHKeyAgreement, and the CreateDHKeyAgreement member of the union
 MUST be populated.
 
-3.1.5.16
+##### 3.1.5.16 RemoteCallKerbDestroyKeyAgreement
 
-RemoteCallKerbDestroyKeyAgreement
+
 
 The RemoteCallKerbDestroyKeyAgreement call uses the Kerberos DestroyKeyAgreement message
 (section 2.2.2.1.16) to clean up system resources associated with a previously created DH key
@@ -3605,12 +3507,13 @@ Release: April 23, 2024
 
 51 / 70
 
-RemoteCallKerbDestroyKeyAgreement, and the DestroyKeyAgreement member of the union MUST
+
+RemoteCallKerbDestroyKeyAgreement, and the DestroyKeyAgreement member of the union MUST
 be populated.
 
-3.1.5.17
+##### 3.1.5.17 RemoteCallKerbKeyAgreementGenerateNonce
 
-RemoteCallKerbKeyAgreementGenerateNonce
+
 
 The RemoteCallKerbKeyAgreementGenerateNonce call uses the Kerberos
 KeyAgreementGenerateNonce message (section 2.2.2.1.17) to generate a nonce value for inclusion in
@@ -3626,9 +3529,9 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbKeyAgreementGenerateNonce, and the KeyAgreementGenerateNonce member of
 the union MUST be populated.
 
-3.1.5.18
+##### 3.1.5.18 RemoteCallKerbFinalizeKeyAgreement
 
-RemoteCallKerbFinalizeKeyAgreement
+
 
 The RemoteCallKerbFinalizeKeyAgreement call uses the Kerberos FinalizeKeyAgreement message
 (section 2.2.2.1.18) to perform the final step in a key agreement operation, resulting in a shared
@@ -3647,9 +3550,9 @@ KerbCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallKerbFinalizeKeyAgreement, and the FinalizeKeyAgreement member of the union MUST
 be populated.
 
-3.1.5.19
+##### 3.1.5.19 RemoteCallNtlmNegotiateVersion
 
-RemoteCallNtlmNegotiateVersion
+
 
 The RemoteCallNtlmNegotiateVersion call uses the NTLM NegotiateVersion message (section
 2.2.2.2.1) to negotiate the protocol version that the NTLM packages on the CredSSP server and
@@ -3664,9 +3567,9 @@ To reply to the preceding input message, the CredSSP client MUST respond with a
 NtlmCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallNtlmNegotiateVersion, and the VersionToUse member of the union MUST be populated.
 
-3.1.5.20
+##### 3.1.5.20 RemoteCallNtlmLm20GetNtlm3ChallengeResponse
 
-RemoteCallNtlmLm20GetNtlm3ChallengeResponse
+
 
 The RemoteCallNtlmLm20GetNtlm3ChallengeResponse call uses the NTLM
 Lm20GetNtlm3ChallengeResponse message (section 2.2.2.2.2) to perform the NTLM v2 calculations as
@@ -3678,7 +3581,8 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-defined in [MS-NLMP] section 3.3.2. It uses the provided credentials, challenge, and information about
+
+defined in [MS-NLMP] section 3.3.2. It uses the provided credentials, challenge, and information about
 the user and server involved to calculate the responses and session keys for use in the NTLM v2
 protocol.
 
@@ -3692,9 +3596,9 @@ NtlmCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallNtlmLm20GetNtlm3ChallengeResponse, and the
 NtlmLm20GetNtlm3ChallengeResponse member of the union MUST be populated.
 
-3.1.5.21
+##### 3.1.5.21 RemoteCallNtlmCalculateNtResponse
 
-RemoteCallNtlmCalculateNtResponse
+
 
 The RemoteCallNtlmCalculateNtResponse call uses the NTLM CalculateNtResponse message
 (section 2.2.2.2.3) to calculate the NT Response for use in the NTLM v1 protocol as defined in [MS-
@@ -3709,9 +3613,9 @@ NtlmCredIsoRemoteOutput object. The CallId MUST be set to
 RemoteCallNtlmCalculateNtResponse, and the NtlmCalculateNtResponse member of the union
 MUST be populated.
 
-3.1.5.22
+##### 3.1.5.22 RemoteCallNtlmCalculateUserSessionKeyNt
 
-RemoteCallNtlmCalculateUserSessionKeyNt
+
 
 The RemoteCallNtlmCalculateUserSessionKeyNt call uses the NTLM CalculateUserSessionKeyNt
 message (section 2.2.2.2.4) to calculate the session key for use in the NTLM v1 protocol as defined in
@@ -3727,9 +3631,9 @@ NtlmCredIsoRemoteOutput object. The CallId field MUST be set to
 RemoteCallNtlmCalculateUserSessionKeyNt, and the NtlmCalculateUserSessionKeyNt member of
 the union MUST be populated.
 
-3.1.5.23
+##### 3.1.5.23 RemoteCallNtlmCompareCredentials
 
-RemoteCallNtlmCompareCredentials
+
 
 The RemoteCallNtlmCompareCredentials call uses the NTLM CompareCredentials message
 (section 2.2.2.2.5) to decrypt and compare the provided credentials to determine which fields match.
@@ -3750,11 +3654,12 @@ Remote Desktop Protocol Authentication Redirection Virtual Channel
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -3765,13 +3670,14 @@ Release: April 23, 2024
 
 54 / 70
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-RDPEAR].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Requesting a Service Ticket
+### 4.1 Requesting a Service Ticket
 
 The following diagram demonstrates use of the RDPEAR protocol in requesting a service ticket over
 RDP.
@@ -3835,7 +3741,8 @@ Release: April 23, 2024
 
 55 / 70
 
-1.  A CredSSP client connects to a RDP server.
+
+1.  A CredSSP client connects to a RDP server.
 
 2.  The TGT for the authenticated user is sent to the server along with an encrypted TGT session
 
@@ -3872,13 +3779,14 @@ Release: April 23, 2024
 
 56 / 70
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3889,9 +3797,10 @@ Release: April 23, 2024
 
 57 / 70
 
-6  Appendix A: Full IDL
 
-6.1  Appendix A.1: RemoteGuardCallIds.H
+## 6 Appendix A: Full IDL
+
+### 6.1 Appendix A.1: RemoteGuardCallIds.H
 
 The header file containing the RemoteGuardCallId enumeration is as follows:
 
@@ -3958,7 +3867,8 @@ Release: April 23, 2024
 
 58 / 70
 
-6.2  Appendix A.2: Kerberos.IDL
+
+### 6.2 Appendix A.2: Kerberos.IDL
 
 The full syntax of the Kerberos message types IDL is as follows:
 
@@ -4034,7 +3944,8 @@ Release: April 23, 2024
 
 59 / 70
 
-     // Input paramters are held in a union so that each call can be sent
+
+     // Input paramters are held in a union so that each call can be sent
      // over the wire in the same type of KerbCredIsoRemoteInput structure.
      [switch_type(RemoteGuardCallId), switch_is(CallId)] union
      {
@@ -4111,7 +4022,8 @@ Release: April 23, 2024
 
 60 / 70
 
-         // Encrypt the given authorization data which is to be included
+
+         // Encrypt the given authorization data which is to be included
          // within the request body of a message to be sent to the KDC.
          [case(RemoteCallKerbBuildEncryptedAuthData)] struct
          {
@@ -4187,7 +4099,8 @@ Release: April 23, 2024
 
 61 / 70
 
-         {
+
+         {
              // This [case(RemoteCallKerb)] struct has no input parameters, but for
              // simplicity and consistency with the other parameters, let's define
              // this as a [case(RemoteCallKerb)] struct with a single ignored value.
@@ -4264,7 +4177,8 @@ Release: April 23, 2024
 
 62 / 70
 
-             KERB_ASN1_DATA ApReply;
+
+             KERB_ASN1_DATA ApReply;
          } DecryptApReply;
 
          [case(RemoteCallKerbUnpackKdcReplyBody)] struct
@@ -4341,7 +4255,8 @@ Release: April 23, 2024
 
 63 / 70
 
-             // This [case(RemoteCallKerb)] struct has no output, but for
+
+             // This [case(RemoteCallKerb)] struct has no output, but for
              // simplicity and consistency define as a
              // [case(RemoteCallKerb)] struct with a single ignored value.
              UCHAR Ignored;
@@ -4360,7 +4275,7 @@ Release: April 23, 2024
      };
  } KerbCredIsoRemoteOutput, *PKerbCredIsoRemoteOutput;
 
-6.3  Appendix A.3: NTLM.IDL
+### 6.3 Appendix A.3: NTLM.IDL
 
 The full syntax of the NTLM message types IDL is as follows:
 
@@ -4415,7 +4330,8 @@ Release: April 23, 2024
 
 64 / 70
 
-     BOOLEAN reserved1;
+
+     BOOLEAN reserved1;
      BOOLEAN reserved2;
      BOOLEAN reserved3;
      MSV1_0_CREDENTIAL_KEY_TYPE reserved4;
@@ -4492,7 +4408,8 @@ Release: April 23, 2024
 
 65 / 70
 
-         [case(RemoteCallNtlmNegotiateVersion)] struct
+
+         [case(RemoteCallNtlmNegotiateVersion)] struct
          {
              ULONG VersionToUse;
          } NegotiateVersion;
@@ -4532,7 +4449,8 @@ Release: April 23, 2024
 
 66 / 70
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4615,7 +4533,8 @@ Release: April 23, 2024
 
 67 / 70
 
-Operating system
+
+Operating system
 
 KRB_AS_REP PDUs
 
@@ -4656,7 +4575,8 @@ Release: April 23, 2024
 
 68 / 70
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4700,7 +4620,8 @@ Release: April 23, 2024
 
 69 / 70
 
-T
+
+T
 
 Tracking changes 68
 Transport 11
@@ -4710,7 +4631,7 @@ V
 Vendor-extensible fields 10
 Versioning 10
 
-9  Index
+## 9 Index
 A
 
 Applicability 10

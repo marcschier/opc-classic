@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 62
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -192,202 +193,88 @@ Release: April 23, 2024
 
 2 / 62
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Session Factory Service Activation](#131-session-factory-service-activation)
+    - [1.3.2 OOB Connector Service Activation](#132-oob-connector-service-activation)
+    - [1.3.3 Session Activation](#133-session-activation)
+    - [1.3.4 Connection Validation](#134-connection-validation)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+    - [1.8.1 Service Descriptor Entries](#181-service-descriptor-entries)
+    - [1.8.2 AppInfo Platform Qualifiers](#182-appinfo-platform-qualifiers)
+    - [1.8.3 Session Activation and Acknowledgment Extensions](#183-session-activation-and-acknowledgment-extensions)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Accept Header](#221-accept-header)
+    - [2.2.2 AppInfo Structure](#222-appinfo-structure)
+    - [2.2.3 Extension Structure](#223-extension-structure)
+    - [2.2.4 OOB Connector Service ACK Message](#224-oob-connector-service-ack-message)
+      - [2.2.4.1 OOB Attribute Header](#2241-oob-attribute-header)
+      - [2.2.4.2 OOB Attribute Type Constants](#2242-oob-attribute-type-constants)
+      - [2.2.4.3 OOB Provisioning Settings Constants](#2243-oob-provisioning-settings-constants)
+      - [2.2.4.4 OOB Device Info Attribute Format](#2244-oob-device-info-attribute-format)
+      - [2.2.4.5 OOB Provisioning Info Attribute Format](#2245-oob-provisioning-info-attribute-format)
+      - [2.2.4.6 OOB Configuration Timeout Attribute Format](#2246-oob-configuration-timeout-attribute-format)
+    - [2.2.5 OOB Connector Service Activation Message](#225-oob-connector-service-activation-message)
+    - [2.2.6 Role Compatibility Constants](#226-role-compatibility-constants)
+    - [2.2.7 Service Activation Header](#227-service-activation-header)
+    - [2.2.8 Service Descriptor Message](#228-service-descriptor-message)
+    - [2.2.9 Service Descriptor Structure](#229-service-descriptor-structure)
+    - [2.2.10 Session ACK Message](#2210-session-ack-message)
+    - [2.2.11 Session Activation Message](#2211-session-activation-message)
+    - [2.2.12 Session Factory Service Activation Message](#2212-session-factory-service-activation-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Peer Details](#31-peer-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 NfpService](#3111-nfpservice)
+      - [3.1.1.2 OOB Connector Object](#3112-oob-connector-object)
+      - [3.1.1.3 Session Factory Object](#3113-session-factory-object)
+      - [3.1.1.4 Session Object](#3114-session-object)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Service Descriptor Sequence](#3151-service-descriptor-sequence)
+      - [3.1.5.2 OOB Connector Exchange](#3152-oob-connector-exchange)
+      - [3.1.5.3 Handling OOB Connector Service Activation Messages](#3153-handling-oob-connector-service-activation-messages)
+      - [3.1.5.4 Handling OOB Connector Service ACK Messages](#3154-handling-oob-connector-service-ack-messages)
+      - [3.1.5.5 Session Factory Exchange](#3155-session-factory-exchange)
+      - [3.1.5.6 Handling Session Factory Service Activation](#3156-handling-session-factory-service-activation)
+      - [3.1.5.7 Handling Session Activation](#3157-handling-session-activation)
+      - [3.1.5.8 Handling Session ACK Messages](#3158-handling-session-ack-messages)
+      - [3.1.5.9 Handling the Accept Header](#3159-handling-the-accept-header)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Transport Activation and Initial Service Descriptor](#41-transport-activation-and-initial-service-descriptor)
+  - [4.2 Peer A Service Descriptor Received by Peer B](#42-peer-a-service-descriptor-received-by-peer-b)
+  - [4.3 Peer B Service Descriptor Received by Peer A](#43-peer-b-service-descriptor-received-by-peer-a)
+  - [4.4 Peer A Receives OOB Connector Service Activation Message, Responds with OOB](#44-peer-a-receives-oob-connector-service-activation-message-responds-with-oob)
+  - [4.5 Peer A Session Factory Service Activation Received by Peer B, Responds with](#45-peer-a-session-factory-service-activation-received-by-peer-b-responds-with)
+  - [4.6 Peer B Session Activation Received by Peer A, Responds with Session ACK](#46-peer-b-session-activation-received-by-peer-a-responds-with-session-ack)
+  - [4.7 Peer A Session ACK Received by Peer B, Begins Connection Validation](#47-peer-a-session-ack-received-by-peer-b-begins-connection-validation)
+  - [4.8 Peer B Accept Header Received by Peer A, Completes Connection Validation](#48-peer-b-accept-header-received-by-peer-a-completes-connection-validation)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Session Factory Service Activation .................................................................. 9
-OOB Connector Service Activation .................................................................. 9
-Session Activation......................................................................................... 9
-Connection Validation .................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 12
-Service Descriptor Entries ............................................................................ 12
-AppInfo Platform Qualifiers .......................................................................... 12
-Session Activation and Acknowledgment Extensions ........................................ 12
-Standards Assignments ..................................................................................... 12
-
-1.4
-1.5
-1.6
-1.7
-1.8
-
-1.8.1
-1.8.2
-1.8.3
-
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Message Syntax ............................................................................................... 13
-Accept Header ............................................................................................ 13
-AppInfo Structure ....................................................................................... 14
-Extension Structure .................................................................................... 15
-OOB Connector Service ACK Message ............................................................ 15
-OOB Attribute Header ............................................................................ 18
-OOB Attribute Type Constants ................................................................ 18
-OOB Provisioning Settings Constants ....................................................... 19
-OOB Device Info Attribute Format ........................................................... 19
-OOB Provisioning Info Attribute Format ................................................... 21
-OOB Configuration Timeout Attribute Format ............................................ 22
-OOB Connector Service Activation Message .................................................... 22
-Role Compatibility Constants ........................................................................ 25
-Service Activation Header ............................................................................ 25
-Service Descriptor Message ......................................................................... 26
-Service Descriptor Structure ........................................................................ 27
-Session ACK Message .................................................................................. 28
-Session Activation Message .......................................................................... 29
-Session Factory Service Activation Message ................................................... 31
-
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3  Protocol Details ..................................................................................................... 34
-Peer Details ..................................................................................................... 34
-Abstract Data Model .................................................................................... 34
-NfpService ........................................................................................... 35
-OOB Connector Object ........................................................................... 35
-Session Factory Object .......................................................................... 37
-Session Object ...................................................................................... 38
-Timers ...................................................................................................... 39
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Service Descriptor Sequence .................................................................. 40
-OOB Connector Exchange ...................................................................... 41
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-
-[MS-NFPB] - v20240423
-Near Field Proximity: Bidirectional Services Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 62
-
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-
-3.1.6
-3.1.7
-
-Handling OOB Connector Service Activation Messages ............................... 42
-Handling OOB Connector Service ACK Messages ....................................... 43
-Session Factory Exchange ...................................................................... 43
-Handling Session Factory Service Activation ............................................. 44
-Handling Session Activation .................................................................... 45
-Handling Session ACK Messages ............................................................. 46
-Handling the Accept Header ................................................................... 46
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 47
-
-4.1
-4.2
-4.3
-4.4
-
-4  Protocol Examples ................................................................................................. 48
-Transport Activation and Initial Service Descriptor................................................ 48
-Peer A Service Descriptor Received by Peer B ...................................................... 49
-Peer B Service Descriptor Received by Peer A ...................................................... 53
-Peer A Receives OOB Connector Service Activation Message, Responds with OOB
-Connector Service ACK ..................................................................................... 55
-Peer A Session Factory Service Activation Received by Peer B, Responds with Session
-Activation ....................................................................................................... 56
-Peer B Session Activation Received by Peer A, Responds with Session ACK ............. 57
-Peer A Session ACK Received by Peer B, Begins Connection Validation .................... 57
-Peer B Accept Header Received by Peer A, Completes Connection Validation ........... 58
-
-4.6
-4.7
-4.8
-
-4.5
-
-5  Security ................................................................................................................. 59
-Security Considerations for Implementers ........................................................... 59
-Index of Security Parameters ............................................................................ 59
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 60
-
-7  Change Tracking .................................................................................................... 61
-
-8  Index ..................................................................................................................... 62
-
-[MS-NFPB] - v20240423
-Near Field Proximity: Bidirectional Services Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 62
-
-1  Introduction
+## 1 Introduction
 
 The Near Field Proximity: Bidirectional Services Protocol provides a way for devices such as
 smartphones to discover services and version information on other devices. It provides a transport-
@@ -398,7 +285,7 @@ types. A prototypical transport is Near Field Communication (NFC) [ECMA-340].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -462,7 +349,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-key: In cryptography, a generic term used to refer to cryptographic data that is used to initialize a
+
+key: In cryptography, a generic term used to refer to cryptographic data that is used to initialize a
 
 cryptographic algorithm. Keys are also sometimes referred to as keying material.
 
@@ -537,7 +425,8 @@ Release: April 23, 2024
 
 6 / 62
 
-radio frequency communications (RFCOMM): A protocol that provides serial port emulation of
+
+radio frequency communications (RFCOMM): A protocol that provides serial port emulation of
 EIA-232 (formerly RS-232) control signals over the Bluetooth baseband layer. RFCOMM is used
 to create a virtual serial data stream to enable binary data transport.
 
@@ -582,14 +471,14 @@ term applies to the relevant message exchange between the two peers.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -609,7 +498,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[WF-P2P1.2] Wi-Fi Alliance, "Wi-Fi Peer-to-Peer (P2P) Technical Specification v1.2", https://www.wi-
+
+[WF-P2P1.2] Wi-Fi Alliance, "Wi-Fi Peer-to-Peer (P2P) Technical Specification v1.2", https://www.wi-
 fi.org/wi-fi-peer-to-peer-p2p-technical-specification-v12
 
 Note There is a charge to download the specification.
@@ -619,7 +509,7 @@ Note There is a charge to download the specification.
 
 Note There is a charge to download the specification.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ECMA-340] ECMA International, "Near Field Communication Interface and Protocol (NFCIP-1)", 2nd
 edition, ECMA-340, December 2004, http://www.ecma-international.org/publications/files/ECMA-
@@ -636,7 +526,7 @@ Authority Public Listing", http://standards-oui.ieee.org/oui/oui.txt
 [RFC4380] Huitema, C., "Teredo: Tunneling IPv6 over UDP through Network Address Translations
 (NATs)", RFC 4380, February 2006, https://www.rfc-editor.org/info/rfc4380
 
-1.3  Overview
+### 1.3 Overview
 
 Although the underlying transport for the Near Field Proximity: Bidirectional Services Protocol is
 undefined, the protocol models the transport as a publication/subscription system to exchange
@@ -671,11 +561,12 @@ Release: April 23, 2024
 
 8 / 62
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-NFPB].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
-1.3.1  Session Factory Service Activation
+#### 1.3.1 Session Factory Service Activation
 
 Either peer can choose to activate the remote peer's Session Factory service in order to establish a
 single-instanced session between an application running locally and another instance of the same
@@ -683,19 +574,19 @@ application running on the remote peer. Optionally, a peer can support launching
 application in addition to, or instead of, establishing the single-instanced session between two
 instances of the application.
 
-1.3.2  OOB Connector Service Activation
+#### 1.3.2 OOB Connector Service Activation
 
 A winning peer can activate the remote peer's OOB Connector service in order to provide out-of-
 band (OOB) transport options for the peers to connect. These connection options allow the Session
 Factory service a simple means of address resolution.
 
-1.3.3  Session Activation
+#### 1.3.3 Session Activation
 
 The following diagram shows a generic sequence of session activation.
 
 Figure 1: Session activation sequence
 
-1.3.4  Connection Validation
+#### 1.3.4 Connection Validation
 
 After session activation (section 1.3.3) and subsequent L3 establishment, the client validates the
 connection by exchanging handshake data with the server, as shown in the following diagram. The
@@ -708,14 +599,15 @@ Release: April 23, 2024
 
 9 / 62
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-NFPB].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-NFPB].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 2: Connection validation
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following diagram shows the relationship of the Near Field Proximity: Bidirectional Services
 Protocol with other protocols.
@@ -729,7 +621,8 @@ Release: April 23, 2024
 
 10 / 62
 
-The Service Descriptor does not depend on any specific transport, and as such, does not technically
+
+The Service Descriptor does not depend on any specific transport, and as such, does not technically
 depend on any other protocol.
 
 The OOB Connector service depends only on the Service Descriptor for service discovery,
@@ -752,21 +645,21 @@ use to establish the session's connection.
 
 The Near Field Proximity: Sharing Protocol [MS-NFPS] is an example of a higher-level protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Peers communicate by using compatible networking technologies such as TCP/IP over wireless
 networks. There are no other preconditions or prerequisites for this protocol to function between
 peers. There are no presupposed security associations or connections required between peers except
 those that are required by the unspecified pub/sub transport link layer.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Near Field Proximity: Bidirectional Services Protocol is well-suited to function on top of transports
 such as Near Field Communication (NFC) [ECMA-340]. This protocol has been designed for linking
 two applications for the purposes of simple real-time sharing of files. This protocol is designed to
 function in cross-platform, cross-domain, and non-domain configurations.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -788,15 +681,16 @@ Release: April 23, 2024
 
 11 / 62
 
-1.8  Vendor-Extensible Fields
 
-1.8.1  Service Descriptor Entries
+### 1.8 Vendor-Extensible Fields
+
+#### 1.8.1 Service Descriptor Entries
 
 Each entry within a Service Descriptor message (section 2.2.8) is a Service Descriptor structure
 (section 2.2.9), which contains a service activation UUID that uniquely identifies each service.
 Vendors that wish to define a new service MUST generate a new UUID for the service.
 
-1.8.2  AppInfo Platform Qualifiers
+#### 1.8.2 AppInfo Platform Qualifiers
 
 AppInfo platform qualifiers SHOULD be defined by each vendor that implements any of the following
 protocols:
@@ -817,14 +711,14 @@ A vendor SHOULD define its qualifier based on a domain name, like "fabrikam.com"
 by the vendor, to ensure that no other vendor uses the same value. The platform qualifier is specified
 by an AppInfo structure (section 2.2.2).
 
-1.8.3  Session Activation and Acknowledgment Extensions
+#### 1.8.3 Session Activation and Acknowledgment Extensions
 
 The Session Factory protocol has an extension pattern that can be used by implementations of this
 protocol. If an implementation defines an extension, a random 8-byte value SHOULD be used to
 ensure that no other implementation uses the same value. 8 bytes is enough to make collisions
 unlikely.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -835,9 +729,10 @@ Release: April 23, 2024
 
 12 / 62
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 As stated earlier in this document, a specific transport is not defined. However, the general
 requirements for a transport are as follows:
@@ -864,7 +759,7 @@ characters that are allowed in a URI. When that is the case, the channel MUST be
 base64 [RFC2045], with the exception that padding characters MUST be omitted. ChannelIDs that are
 8 bytes therefore result in channels that are exactly 11 characters long.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 None of the messages in this protocol has alignment requirements; that is, there are no padding bytes
 for forcing specific alignment. Additionally, fields are made as small as possible to optimize for fast
@@ -874,7 +769,7 @@ endian encoding.
 There is no single common header for all messages in this protocol; however, there are some common
 structures within messages, which are described in the sections that follow.
 
-2.2.1  Accept Header
+#### 2.2.1 Accept Header
 
 The Accept header is sent by a client application to the server after a session is activated over an L3
 connection. The server MUST validate the handshake data and return the same Accept header to the
@@ -904,7 +799,8 @@ Release: April 23, 2024
 
 13 / 62
 
-SessionID (8 bytes): This MUST be the same value that the client generated and sent in the
+
+SessionID (8 bytes): This MUST be the same value that the client generated and sent in the
 
 ReplyChannelID field of the preceding Session Activation message (section 2.2.11). The
 SessionID verification ensures that the applications that tapped are the ones that are connected
@@ -926,7 +822,7 @@ Connection Type
 
 0x00000004  Bluetooth
 
-2.2.2  AppInfo Structure
+#### 2.2.2 AppInfo Structure
 
 The AppInfo structure is used by platforms implementing the Session Factory protocol, the Launch
 App protocol, or the Launch Compatible App protocol. The AppInfo structure format is specified as
@@ -985,7 +881,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3  Extension Structure
+
+#### 2.2.3 Extension Structure
 
 The Extension structure can be used by platforms implementing the Session Factory protocol. The
 Extension structure format is specified as follows.
@@ -1027,7 +924,7 @@ ExtensionData (variable): A platform-dependent BLOB of data for a specific exten
 SHOULD use the smallest data size that is practical in order to produce compact designs. This field
 contains arbitrary binary data up to the length specified in the ExtensionDataSize field.
 
-2.2.4  OOB Connector Service ACK Message
+#### 2.2.4 OOB Connector Service ACK Message
 
 The OOB Connector Service ACK message is the acknowledgment reply to the OOB Connector
 Service Activation message (section 2.2.5). The OOB Connector Service ACK message format is
@@ -1067,7 +964,8 @@ Release: April 23, 2024
 
 15 / 62
 
-IPv4LinkLocalAddress (16 bytes)
+
+IPv4LinkLocalAddress (16 bytes)
 
 ...
 
@@ -1129,7 +1027,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-transmit bit rate, receive bit rate, and non-tunnel links. If no link-local address is suitable, the
+
+transmit bit rate, receive bit rate, and non-tunnel links. If no link-local address is suitable, the
 value of this field SHOULD be zero.
 
 IPv4LinkLocalAddress (16 bytes): The best IPv4 link-local address assigned to the publisher in
@@ -1207,7 +1106,8 @@ Release: April 23, 2024
 
 17 / 62
 
-OOBConfigurationTimeoutAttribute
+
+OOBConfigurationTimeoutAttribute
 
 OOBAttributeHeader (6 bytes):  The OOB Attribute header (section 2.2.4.1).
 
@@ -1223,7 +1123,7 @@ OOBConfigurationTimeoutAttribute (4 bytes):  OOB data in Configuration Timeout A
 
 format (section 2.2.4.6).
 
-2.2.4.1  OOB Attribute Header
+##### 2.2.4.1 OOB Attribute Header
 
 The OOB Attribute header defines the version and size of either the WiFiDirectListenBlob in an
 OOB Connector Service ACK message (section 2.2.4) or the WiFiDirectConnectBlob in an OOB
@@ -1271,7 +1171,7 @@ OOB provisioning listener data
 
 OOB provisioning connector data
 
-2.2.4.2  OOB Attribute Type Constants
+##### 2.2.4.2 OOB Attribute Type Constants
 
 The OOB Attribute Type constants specify the identifiers of possible formats of OOB attribute data.
 
@@ -1296,7 +1196,8 @@ Release: April 23, 2024
 
 18 / 62
 
-Attribute ID  Attribute type
+
+Attribute ID  Attribute type
 
 3
 
@@ -1314,7 +1215,7 @@ OOB configuration timeout
 
 Reserved
 
-2.2.4.3  OOB Provisioning Settings Constants
+##### 2.2.4.3 OOB Provisioning Settings Constants
 
 The OOB Provisioning Settings constants specify the bit settings of possible provisioning options for
 the OOB Provisioning Info Attribute format (section 2.2.4.5).
@@ -1348,7 +1249,7 @@ Bit 2: This bit is set to 0 if the desired group type is transient and set to 1 
 
 persistent.
 
-2.2.4.4  OOB Device Info Attribute Format
+##### 2.2.4.4 OOB Device Info Attribute Format
 
 The OOB Device Info Attribute format defines device information in either the WiFiDirectListenBlob
 in an OOB Connector Service ACK message (section 2.2.4) or the WiFiDirectConnectBlob in an OOB
@@ -1393,7 +1294,8 @@ Release: April 23, 2024
 
 19 / 62
 
-DeviceName (variable)
+
+DeviceName (variable)
 
 ...
 
@@ -1526,7 +1428,8 @@ Release: April 23, 2024
 
 20 / 62
 
-Main device category
+
+Main device category
 
 CategoryID   Device subcategory
 
@@ -1596,7 +1499,7 @@ DeviceName (variable): A UTF-8 string that specifies the friendly name of the pe
 
 Byte ordering within the DeviceName field is big-endian.
 
-2.2.4.5  OOB Provisioning Info Attribute Format
+##### 2.2.4.5 OOB Provisioning Info Attribute Format
 
 The OOB Provisioning Info Attribute format defines provisioning settings in the
 WiFiDirectListenBlob in an OOB Connector Service ACK message (section 2.2.4). The OOB
@@ -1648,7 +1551,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PINLength (1 byte): The length, in bytes, of the following PINData field. This field contains a value
+
+PINLength (1 byte): The length, in bytes, of the following PINData field. This field contains a value
 
 from 0 to 8 bytes. If it is zero, the PINData field is not present.
 
@@ -1656,7 +1560,7 @@ A - PINData (variable, optional):  An array of bytes that represent a PIN to be 
 
 provisioning.
 
-2.2.4.6  OOB Configuration Timeout Attribute Format
+##### 2.2.4.6 OOB Configuration Timeout Attribute Format
 
 The OOB Configuration Timeout Attribute format defines the listener timeout in the
 WiFiDirectListenBlob in an OOB Connector Service ACK message (section 2.2.4). The OOB
@@ -1692,7 +1596,7 @@ ListenerConfigTimeout (1 byte): The amount of time, in units of 100 milliseconds
 peer device will spend waiting for WFD communication after an OOB data transfer. Valid timeout
 values range from zero to 255.
 
-2.2.5  OOB Connector Service Activation Message
+#### 2.2.5 OOB Connector Service Activation Message
 
 The OOB Connector Service Activation message is a reply to the Service Descriptor message
 (section 2.2.8). It is used to establish a paired set of OOB Connector objects (section 3.1.1.2)
@@ -1735,7 +1639,8 @@ Release: April 23, 2024
 
 22 / 62
 
-...
+
+...
 
 ...
 
@@ -1792,7 +1697,8 @@ Release: April 23, 2024
 
 23 / 62
 
-WiFiDirectConnectBlobLength
+
+WiFiDirectConnectBlobLength
 
 ...
 
@@ -1863,7 +1769,8 @@ Release: April 23, 2024
 
 24 / 62
 
-only allow zero or one Bluetooth adapter. If no Bluetooth adapter is available, the value of this
+
+only allow zero or one Bluetooth adapter. If no Bluetooth adapter is available, the value of this
 field SHOULD be zero.
 
 WiFiDirectConnectBlobLength (2 bytes): The length, in bytes, of the WiFiDirectConnectBlob
@@ -1899,7 +1806,7 @@ OOBDeviceInfoAttribute (variable):  OOB data in Device Info Attribute format (se
 
 2.2.4.4).
 
-2.2.6  Role Compatibility Constants
+#### 2.2.6 Role Compatibility Constants
 
 The Role Compatibility constants SHOULD<1> be used to check the value of the Role field in a
 Session Factory Service Activation message (section 2.2.12) for compatibility with the role of the
@@ -1919,7 +1826,7 @@ Value in Role field  Compatible role value
 
 0x02 (host role)
 
-2.2.7  Service Activation Header
+#### 2.2.7 Service Activation Header
 
 The Service Activation header is common to all service activation messages. The Service
 Activation header format is specified as follows.
@@ -1950,7 +1857,8 @@ Release: April 23, 2024
 
 25 / 62
 
-...
+
+...
 
 ...
 
@@ -1979,7 +1887,7 @@ activated. The value MUST be nonzero; service activations containing a zero serv
 be ignored. The first version of all service protocols MUST be 1. A peer that supports version X of
 a given service MUST support activations with versions 1 through X.
 
-2.2.8  Service Descriptor Message
+#### 2.2.8 Service Descriptor Message
 
 The Service Descriptor message MUST be published and subscribed at the following well-known
 channel: "Windows.windows.com/SD".
@@ -2024,11 +1932,12 @@ Release: April 23, 2024
 
 26 / 62
 
-ServiceDescriptorArray (variable): Some number of SD structures. The SD structure format is
+
+ServiceDescriptorArray (variable): Some number of SD structures. The SD structure format is
 
 specified in section 2.2.9.
 
-2.2.9  Service Descriptor Structure
+#### 2.2.9 Service Descriptor Structure
 
 The Service Descriptor (SD) structure specifies a service to be activated and provides for explicit
 capability negotiation. An array of SD structures is specified in a Service Descriptor message
@@ -2104,10 +2013,11 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-service. A Service Activation header (section 2.2.7) contains the UUID of the service to activate
+
+service. A Service Activation header (section 2.2.7) contains the UUID of the service to activate
 and the service version number.
 
-2.2.10 Session ACK Message
+#### 2.2.10 Session ACK Message
 
 The Session ACK message is the acknowledgment/reply to the Session Activation message (section
 2.2.11). The transport-provided length of this message MUST be used by the receiver in order to
@@ -2181,7 +2091,8 @@ Release: April 23, 2024
 
 28 / 62
 
-RFCOMMPort (1 byte): The RFCOMM port that the publisher's session is listening on.
+
+RFCOMMPort (1 byte): The RFCOMM port that the publisher's session is listening on.
 
 Reserved1 (1 byte, optional): If present, this field MUST be set to zero when sent and MUST be
 
@@ -2210,7 +2121,7 @@ ExtensionStructures (variable, optional): Zero or more Extension structures. Any
 
 formatted Extension structures MUST be ignored by the subscriber.
 
-2.2.11 Session Activation Message
+#### 2.2.11 Session Activation Message
 
 The Session Activation message is a reply to the Session Factory Service Activation message
 (section 2.2.12). It is used to establish a paired set of Session objects (section 3.1.1.4) between two
@@ -2258,7 +2169,8 @@ Release: April 23, 2024
 
 29 / 62
 
-ECDHPublicKeyLength
+
+ECDHPublicKeyLength
 
 ECDHXParam
 
@@ -2329,7 +2241,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If this message is between 96 and 107 bytes long (inclusive), the value of this field is treated as
+
+If this message is between 96 and 107 bytes long (inclusive), the value of this field is treated as
 zero.
 
 ExtensionStructures (variable, optional): Zero or more Extension structures. Any incorrectly
@@ -2377,7 +2290,7 @@ ExtensionData (1 byte): The compatible role value according to the Role Compatib
 
 constants (section 2.2.6).
 
-2.2.12 Session Factory Service Activation Message
+#### 2.2.12 Session Factory Service Activation Message
 
 The Session Factory Service Activation message is a reply to the Service Descriptor message
 (section 2.2.8). It is used to establish a paired set of Session objects (section 3.1.1.4) between two
@@ -2417,7 +2330,8 @@ Release: April 23, 2024
 
 31 / 62
 
-ClientPreference
+
+ClientPreference
 
 Reserved1
 
@@ -2498,16 +2412,18 @@ Release: April 23, 2024
 
 32 / 62
 
-[MS-NFPB] - v20240423
+
+[MS-NFPB] - v20240423
 Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
 33 / 62
 
-3  Protocol Details
 
-3.1  Peer Details
+## 3 Protocol Details
+
+### 3.1 Peer Details
 
 This section defines peer roles in the Near Field Proximity: Bidirectional Services Protocol.
 
@@ -2542,7 +2458,7 @@ sends the OOB Connector Service ACK message.
 Possible states and state transitions of the connector and listener roles are described in section
 3.1.1.2.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2576,7 +2492,8 @@ Release: April 23, 2024
 
 34 / 62
 
-3.1.1.1  NfpService
+
+##### 3.1.1.1 NfpService
 
 The Near Field Proximity service NfpService encapsulates the entire state for the protocols described
 by this document.
@@ -2591,7 +2508,7 @@ HandshakeData:  The SessionID and ConnectionType handshake data from the Accept 
 
 (section 2.2.1) that was used to confirm the connection.
 
-3.1.1.2  OOB Connector Object
+##### 3.1.1.2 OOB Connector Object
 
 An OOB Connector object encapsulates the state for an OOB connection between two peers.
 
@@ -2642,7 +2559,8 @@ Release: April 23, 2024
 
 35 / 62
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-NFPB].images/page036-img01.png)
 ![Extracted image 2 from page 36]([MS-NFPB].images/page036-img02.png)
 <!-- /Extracted images from page 36 -->
@@ -2686,7 +2604,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-NFPB].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
@@ -2717,7 +2636,7 @@ ReferenceCount:  A count of references to the OOB Connector object by either Ses
 
 or KeepAlive timers.
 
-3.1.1.3  Session Factory Object
+##### 3.1.1.3 Session Factory Object
 
 A Session Factory object encapsulates a factory for socket-based connections between set(s) of peer
 applications.
@@ -2760,7 +2679,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-NFPB].images/page038-img01.png)
 ![Extracted image 2 from page 38]([MS-NFPB].images/page038-img02.png)
 <!-- /Extracted images from page 38 -->
@@ -2769,7 +2689,7 @@ ReferenceCount (Public Write):  A count of references to the Session Factory obj
 
 the client application or KeepAlive timers.
 
-3.1.1.4  Session Object
+##### 3.1.1.4 Session Object
 
 A Session object encapsulates the state for a socket-based connection between two peer applications.
 
@@ -2828,7 +2748,8 @@ Release: April 23, 2024
 
 38 / 62
 
-SessionID:  For the client, this is randomly generated and used in the Session Activation message.
+
+SessionID:  For the client, this is randomly generated and used in the Session Activation message.
 For the server, this is copied from the ReplyChannelID field of the received Session Activation
 message. The server uses this ID to publish the Session ACK message.
 
@@ -2868,7 +2789,7 @@ ReferencedOOBConnector:  A link to the OOB Connector object that holds OOB conne
 information for the two peers linked by the Session object. When present, this represents a
 reference count on the OOB Connector object.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The following timers are used by this protocol.
 
@@ -2905,7 +2826,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 The NfpService MUST be initialized prior to being useful to any higher-level protocol; initializing at
 system startup is sufficient. On initialization:
@@ -2958,7 +2880,7 @@ Activation with the following values:
 
   ExtendedPayloadLength: Zero
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Higher-layer protocols use this protocol by creating Session Factory objects. When an active
 Session Factory object is created, the NfpService MUST ensure that its local Service Descriptor
@@ -2966,9 +2888,9 @@ Session Factory object is created, the NfpService MUST ensure that its local Ser
 Sharing Protocol [MS-NFPS] can also register to handle launching of applications that can use the
 created socket connection. The implementation for this is not specified.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Service Descriptor Sequence
+##### 3.1.5.1 Service Descriptor Sequence
 
 The following list defines the required actions of the NfpService if an incoming Service Descriptor
 message (section 2.2.8) is received on a transport link:
@@ -2980,7 +2902,8 @@ Release: April 23, 2024
 
 40 / 62
 
-
+
+
 
 
 
@@ -3001,7 +2924,7 @@ If the incoming message contains an SD structure with a Session Factory service 
 OOB Connector service UUID as specified in section 2.2.9, the Session Factory exchange MUST
 be followed as specified in section 3.1.5.5.
 
-3.1.5.2  OOB Connector Exchange
+##### 3.1.5.2 OOB Connector Exchange
 
 The following sequence defines the required actions of the NfpService if a Service Descriptor
 message (section 2.2.8) received on the transport link contains an SD structure with a valid OOB
@@ -3064,7 +2987,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  Use the OOB Connector object's LocalAddresses element to set the various Address fields.
+
+3.  Use the OOB Connector object's LocalAddresses element to set the various Address fields.
 
 9.  Publish the OOB Connector Service Activation message on the received
 
@@ -3079,7 +3003,7 @@ object, stop the timer and decrement the OOB Connector object's ReferenceCount e
 
 12. Increment the OOB Connector object's ReferenceCount element by 1.
 
-3.1.5.3  Handling OOB Connector Service Activation Messages
+##### 3.1.5.3 Handling OOB Connector Service Activation Messages
 
 The following sequence defines the required actions of the NfpService if an OOB Connector Service
 Activation message (section 2.2.5) is received on the transport link on the SourceID of the
@@ -3139,7 +3063,8 @@ Release: April 23, 2024
 
 42 / 62
 
-If the transport link indicates that this message is transmitted prior to the
+
+If the transport link indicates that this message is transmitted prior to the
 OOBConnectorProtocolTimer expiring for this OOB Connector object, then the OOB Connector
 object's State moves to Ready.
 
@@ -3151,7 +3076,7 @@ timer and decrement the OOB Connector ReferenceCount by 1.
 
 3.  Increment the OOB Connector ReferenceCount by 1.
 
-3.1.5.4  Handling OOB Connector Service ACK Messages
+##### 3.1.5.4 Handling OOB Connector Service ACK Messages
 
 The following sequence defines the required actions of the NfpService if an OOB Connector Service
 ACK message (section 2.2.4) is received on the transport link on the OOBConnectorID ChannelID
@@ -3173,7 +3098,7 @@ message.
 attempt to use the received WFD listen BLOB and the previously sent WFD connector BLOB to
 initiate a WFD OOB pairing connection.
 
-3.1.5.5  Session Factory Exchange
+##### 3.1.5.5 Session Factory Exchange
 
 The following sequence defines the required actions of the NfpService if a Service Descriptor
 message (section 2.2.8) is received on the transport link with both a valid OOB Connector service
@@ -3214,7 +3139,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5.6  Handling Session Factory Service Activation
+
+##### 3.1.5.6 Handling Session Factory Service Activation
 
 The following sequence defines the required actions of the NfpService if a Session Factory Service
 Activation message (section 2.2.12) is received on the transport link on the SourceID of the
@@ -3289,7 +3215,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  Use the Session Factory object's SessionFactoryID to set the ActivatedSession
+
+3.  Use the Session Factory object's SessionFactoryID to set the ActivatedSession
 
 FactoryID field.
 
@@ -3306,7 +3233,7 @@ the ChannelID.
 When the transport indicates that this message has been transmitted, the Session object's State
 moves to Ready.
 
-3.1.5.7  Handling Session Activation
+##### 3.1.5.7 Handling Session Activation
 
 The following sequence defines the required actions of the NfpService if a Session Activation
 message (section 2.2.11) is received on the transport link on the ReplyChannelID of a specific
@@ -3365,7 +3292,8 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5.8  Handling Session ACK Messages
+
+##### 3.1.5.8 Handling Session ACK Messages
 
 The following sequence defines the required actions of the NfpService if a Session ACK message
 (section 2.2.10) is received on the transport link on the SessionID ChannelID of a specific Session
@@ -3386,7 +3314,7 @@ ECDHPublicKeyMagicNumber field of the received message.
 
 6.  The Session object can be used by higher-level protocols to create connections to the peer.
 
-3.1.5.9  Handling the Accept Header
+##### 3.1.5.9 Handling the Accept Header
 
 The following sequence defines the required actions following the activation of the session:
 
@@ -3417,7 +3345,7 @@ match, the server MUST abort the connection.
 Accept Header it sent before. If the Accept Headers match, the negotiation is complete;
 otherwise, the client MUST abort the connection.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 The following timer events are associated with the timers defined by this protocol (section 3.1.2).
 
@@ -3439,7 +3367,8 @@ Release: April 23, 2024
 
 46 / 62
 
-OOBConnectorKeepAliveTimer:  If this timer fires before the associated OOB Connector object
+
+OOBConnectorKeepAliveTimer:  If this timer fires before the associated OOB Connector object
 State transitions out of Incomplete, the reference logged at initialization SHOULD be released.
 If there are no other references to the object, the object SHOULD be destroyed.
 
@@ -3448,7 +3377,7 @@ SessionFactoryKeepAliveTimer:  An independent timer for each Session Factory obj
 (section 3.1.1.3), which is started when a Session Factory object is created. If it fires before a
 client takes ownership of the object, the Session Factory object SHOULD be deleted.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -3459,7 +3388,8 @@ Release: April 23, 2024
 
 47 / 62
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following scenario shows a successful real-time connection established between two peers, Peer A
 and Peer B. The example demonstrates this through a hypothetical application called Adventure
@@ -3512,7 +3442,7 @@ RfcommPort:  5.
 
 ReferenceCount:  1 (referenced by the running Adventure Works app).
 
-4.1  Transport Activation and Initial Service Descriptor
+### 4.1 Transport Activation and Initial Service Descriptor
 
 When the underlying transport is activated, the protocol begins transmitting. Peer A begins by
 publishing its pre-initialized Service Descriptor message (section 2.2.8) on the well-known channel:
@@ -3552,7 +3482,8 @@ Release: April 23, 2024
 
 48 / 62
 
-...
+
+...
 
 OOB Connector ServiceActivationUUID = {E46EDA50-9B5D-41F1-B89E-327B5EA38B16}
 
@@ -3598,7 +3529,7 @@ ExtendedInfo2 = 0x00, 0x00
 
 ExtendedPayloadLength = 0x00, 0x00
 
-4.2  Peer A Service Descriptor Received by Peer B
+### 4.2 Peer A Service Descriptor Received by Peer B
 
 When a valid Service Descriptor (SD) structure (section 2.2.9) is received by Peer B, it will
 immediately respond with its own Service Descriptor message (section 2.2.8) on the same well-
@@ -3611,7 +3542,8 @@ Release: April 23, 2024
 
 49 / 62
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0
@@ -3691,7 +3623,8 @@ Release: April 23, 2024
 
 50 / 62
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0
@@ -3769,7 +3702,8 @@ Release: April 23, 2024
 
 51 / 62
 
-IPv4LinkLocalAddress = 172.31.233.146 (::ffff:ac1f:e992)
+
+IPv4LinkLocalAddress = 172.31.233.146 (::ffff:ac1f:e992)
 
 0x00, 0x00, 0x00, 0x00
 
@@ -3826,7 +3760,8 @@ Release: April 23, 2024
 
 52 / 62
 
-WiFiDirectConnectBlob (continued) =
+
+WiFiDirectConnectBlob (continued) =
 
 0x02, 0x00, 0x10, 0x02
 
@@ -3850,7 +3785,7 @@ Release: April 23, 2024
 
 ...
 
-4.3  Peer B Service Descriptor Received by Peer A
+### 4.3 Peer B Service Descriptor Received by Peer A
 
 When Peer B's valid Service Descriptor (SD) structure (section 2.2.9) is received by Peer A, it
 responds with a Session Factory Service Activation message (section 2.2.12) on Peer B's Service
@@ -3898,7 +3833,8 @@ Release: April 23, 2024
 
 53 / 62
 
-ReplyChannelID (the SessionFactoryID of the Adventure Works App's Session Factory) = "bDMWicFcpEs"
+
+ReplyChannelID (the SessionFactoryID of the Adventure Works App's Session Factory) = "bDMWicFcpEs"
 
 0x6C, 0x33, 0x16, 0x89
 
@@ -3969,7 +3905,8 @@ Release: April 23, 2024
 
 54 / 62
 
-4.4  Peer A Receives OOB Connector Service Activation Message, Responds with OOB
+
+### 4.4 Peer A Receives OOB Connector Service Activation Message, Responds with OOB
 
 Connector Service ACK
 
@@ -4040,7 +3977,8 @@ Release: April 23, 2024
 
 55 / 62
 
-...
+
+...
 
 ...
 
@@ -4054,7 +3992,7 @@ BluetoothMACAddress = (00:19:0e:08:6f:8f)
 
 WiFiDirectListenBlobLength = 0x0000
 
-4.5  Peer A Session Factory Service Activation Received by Peer B, Responds with
+### 4.5 Peer A Session Factory Service Activation Received by Peer B, Responds with
 
 Session Activation
 
@@ -4115,13 +4053,14 @@ Release: April 23, 2024
 
 56 / 62
 
-ECDHPublicKeyLength (little-endian) = 0x20, 0x00, 0x00, 0x00
+
+ECDHPublicKeyLength (little-endian) = 0x20, 0x00, 0x00, 0x00
 
 ECDHXParam
 
 ECDHYParam
 
-4.6  Peer B Session Activation Received by Peer A, Responds with Session ACK
+### 4.6 Peer B Session Activation Received by Peer A, Responds with Session ACK
 
 When Peer B's valid Session Activation message (section 2.2.11) is received by Peer A, it responds
 with a Session ACK message (section 2.2.10) on the received ReplyChannelID, which is the
@@ -4161,7 +4100,7 @@ RFCOMMPort = 0x01
 
 Reserved1 = 0x00
 
-4.7  Peer A Session ACK Received by Peer B, Begins Connection Validation
+### 4.7 Peer A Session ACK Received by Peer B, Begins Connection Validation
 
 When Peer A's valid Session ACK message (section 2.2.10) is received by Peer B, it responds with an
 Accept Header (section 2.2.1) on the SessionID of its Session object (section 3.1.1.4):
@@ -4200,13 +4139,14 @@ Release: April 23, 2024
 
 57 / 62
 
-ConnectionType = Link Local (IPv4)
+
+ConnectionType = Link Local (IPv4)
 
 0x00, 0x00, 0x00, 0x00
 
 0x00, 0x00, 0x00, 0x02
 
-4.8  Peer B Accept Header Received by Peer A, Completes Connection Validation
+### 4.8 Peer B Accept Header Received by Peer A, Completes Connection Validation
 
 When Peer B's valid Accept Header (section 2.2.1) is received by Peer A, it responds by saving the
 structure in its NfpService state element HandshakeData and returning the identical Accept
@@ -4219,13 +4159,14 @@ Release: April 23, 2024
 
 58 / 62
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4236,7 +4177,8 @@ Release: April 23, 2024
 
 59 / 62
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4300,7 +4242,8 @@ Release: April 23, 2024
 
 60 / 62
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4344,7 +4287,8 @@ Release: April 23, 2024
 
 61 / 62
 
-8  Index
+
+## 8 Index
 A
 
 Accept Header message 13

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 30
 
-Date
+
+Date
 
 Revision
 History
@@ -441,108 +443,50 @@ Release: April 23, 2024
 
 3 / 30
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Content, Segments, and Blocks](#21-content-segments-and-blocks)
+  - [2.2 Segment Identifiers (HoHoDk) and Keys](#22-segment-identifiers-hohodk-and-keys)
+  - [2.3 Content Information Data Structure Version 1.0](#23-content-information-data-structure-version-10)
+    - [2.3.1 Fields](#231-fields)
+      - [2.3.1.1 SegmentDescription](#2311-segmentdescription)
+      - [2.3.1.2 SegmentContentBlocks](#2312-segmentcontentblocks)
+  - [2.4 Content Information Data Structure Version 2.0](#24-content-information-data-structure-version-20)
+    - [2.4.1 Fields](#241-fields)
+      - [2.4.1.1 ChunkDescription](#2411-chunkdescription)
+      - [2.4.1.2 SegmentDescription](#2412-segmentdescription)
+  - [2.5 Server Secret Key](#25-server-secret-key)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 125 KB Content](#31-125-kb-content)
+  - [3.2 Version 1.0 Content Information, 125 KB Content](#32-version-10-content-information-125-kb-content)
+  - [3.3 Version 1.0 Content Information, 125 KB Content Range Request](#33-version-10-content-information-125-kb-content-range-request)
+  - [3.4 Version 1.0 Content Information, 125 MB Content](#34-version-10-content-information-125-mb-content)
+  - [3.5 Version 1.0 Content Information, 125 MB Content Range Request](#35-version-10-content-information-125-mb-content-range-request)
+  - [3.6 Version 2.0 Content Information, 189 KB Content](#36-version-20-content-information-189-kb-content)
+  - [3.7 Version 2.0 Content Information, 189 KB Content Range Request](#37-version-20-content-information-189-kb-content-range-request)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+    - [4.1.1 Download Confidentiality](#411-download-confidentiality)
+    - [4.1.2 Content Block Validation](#412-content-block-validation)
+    - [4.1.3 Content Chunk Validation](#413-content-chunk-validation)
+  - [4.2 Index of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Protocols and Other Structures ...................................................... 8
-Applicability Statement ....................................................................................... 8
-Versioning and Localization ................................................................................. 9
-Vendor-Extensible Fields ..................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.3.1
-
-2.1
-2.2
-2.3
-
-2  Structures ............................................................................................................. 10
-Content, Segments, and Blocks ......................................................................... 10
-Segment Identifiers (HoHoDk) and Keys ............................................................. 10
-Content Information Data Structure Version 1.0................................................... 12
-Fields ........................................................................................................ 14
-SegmentDescription .............................................................................. 14
-SegmentContentBlocks .......................................................................... 15
-Content Information Data Structure Version 2.0................................................... 15
-Fields ........................................................................................................ 16
-ChunkDescription .................................................................................. 16
-SegmentDescription .............................................................................. 17
-Server Secret Key ............................................................................................ 17
-
-2.3.1.1
-2.3.1.2
-
-2.4.1.1
-2.4.1.2
-
-2.4.1
-
-2.5
-
-2.4
-
-3  Structure Examples ............................................................................................... 18
-125 KB Content ............................................................................................... 18
-Version 1.0 Content Information, 125 KB Content ................................................ 18
-Version 1.0 Content Information, 125 KB Content Range Request .......................... 19
-Version 1.0 Content Information, 125 MB Content ................................................ 20
-Version 1.0 Content Information, 125 MB Content Range Request .......................... 21
-Version 2.0 Content Information, 189 KB Content ................................................ 23
-Version 2.0 Content Information, 189 KB Content Range Request .......................... 24
-
-3.1
-3.2
-3.3
-3.4
-3.5
-3.6
-3.7
-
-4.1
-
-4  Security ................................................................................................................. 26
-Security Considerations for Implementers ........................................................... 26
-Download Confidentiality ............................................................................. 26
-Content Block Validation .............................................................................. 26
-Content Chunk Validation ............................................................................ 26
-Index of Security Fields .................................................................................... 26
-
-4.1.1
-4.1.2
-4.1.3
-
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 27
-
-6  Change Tracking .................................................................................................... 28
-
-7  Index ..................................................................................................................... 29
-
-[MS-PCCRC] - v20240423
-Peer Content Caching and Retrieval: Content Identification
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 30
-
-1  Introduction
+## 1 Introduction
 
 The Peer Content Caching and Retrieval: Content Identification data structure specifies the Content
 Information Data Structure format used to uniquely identify content for discovery and retrieval
@@ -564,7 +508,7 @@ hosted caches in place of peer-based caching.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -612,7 +556,8 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-content range: The starting offset and length for the content desired. Multipart ranges (that is,
+
+content range: The starting offset and length for the content desired. Multipart ranges (that is,
 
 non-contiguous) are not supported.
 
@@ -687,7 +632,8 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Information, segments are not divided into blocks, and the HoD is the hash of the content
+
+Information, segments are not divided into blocks, and the HoD is the hash of the content
 segment.
 
 segment ID (HoHoDk): A hash that represents the content-specific label or public identifier that
@@ -712,14 +658,14 @@ section 3.9.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -755,14 +701,15 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MC-BUP] Microsoft Corporation, "Background Intelligent Transfer Service (BITS) Upload Protocol".
 
 [MSDN-BITS] Microsoft Corporation, "Background Intelligent Transfer Service",
 http://msdn.microsoft.com/en-us/library/bb968799(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Content Information Data Structure is generated by a content server and supplied to clients
 requesting the content to allow them to take advantage of other peer's or a hosted cache's cached
@@ -785,7 +732,7 @@ arbitrary length. This secret is used as a key to derive secret keys to be used 
 communications between the peers or between peers and a hosted cache. If the secret value is not
 configured, it is automatically generated.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 Content Information specifies a binary data structure that is used in the Peer Content Caching and
 Retrieval service framework. For the detailed protocol operations, see the following specifications:
@@ -812,7 +759,7 @@ of downloaded content blocks. This includes several hashes generated using a has
 is, SHA-256, SHA-384, or SHA-512 as specified in [FIPS180-2]). Content Information can be
 transmitted in any way an application developer wishes.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The Content Information Data Structure is applicable in a context where both content servers
 and peers support the protocols in the Peer Content Caching and Retrieval Framework.<1>
@@ -829,7 +776,8 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A requesting peer contacts the content server to obtain the Content Information for the specific
+
+A requesting peer contacts the content server to obtain the Content Information for the specific
 document it wishes to download. The peer then embeds identifiers from the Content Information in
 the Peer Content Caching and Retrieval: Discovery Protocol probe message that it sends out to the
 peer caches, as specified in [MS-PCCRD] section 2.2.2.1. A peer cache receiving the probe message
@@ -837,7 +785,7 @@ takes these identifiers and replies to the requesting peer if they match the Con
 cached locally. The actual content retrieval thus uses primarily the higher-bandwidth, lower-latency
 links.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This protocol covers versioning issues in the following areas:
 
@@ -846,7 +794,7 @@ This protocol covers versioning issues in the following areas:
  Structure Versions: The Content Information Data Structure supports two versions, 1.0 and
 2.0. These versions are defined in section 2.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 There are no vendor-extensible fields in the Content Information Data Structure.
 
@@ -857,14 +805,15 @@ Release: April 23, 2024
 
 9 / 30
 
-2  Structures
+
+## 2 Structures
 
 This section describes the Content Information Data Structure. Before defining the structure
 layout, the first two subsections describe the relationship between content, segments, and blocks,
 and also explain the procedures for generating various cryptographic hashes used to identify
 segments and blocks.
 
-2.1  Content, Segments, and Blocks
+### 2.1 Content, Segments, and Blocks
 
 For the purposes of the Peer Content Caching and Retrieval Framework, content is divided into one or
 more segments. Each segment is a binary string of a standard size (32 megabytes), except the last
@@ -888,7 +837,7 @@ sequence of HoHoDk values for the successive segments in a content item, and a s
 matching associated HoHoDk values, one can reconstruct the original content simply by concatenating
 the segments in order based on HoHoDk values.
 
-2.2  Segment Identifiers (HoHoDk) and Keys
+### 2.2 Segment Identifiers (HoHoDk) and Keys
 
 Cryptographic hashes are used to identify segments and blocks. The following describes the
 procedures to generate a segment secret, a segment hash of data, and a segment identifier
@@ -914,7 +863,8 @@ Release: April 23, 2024
 
 10 / 30
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-PCCRC].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -971,7 +921,8 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  BlockHashi = Hash (dataBlocki) 1<= I <=n
+
+  BlockHashi = Hash (dataBlocki) 1<= I <=n
 
   BlockHashList = BlockHash1 + BlockHash2 + … + BlockHashN
 
@@ -1003,7 +954,7 @@ For Content Information version 2.0, Kp, Ke, and HoHoDk are calculated in the sa
 Content Information version 1.0. However, there are no blocks or block hashes in Content
 Information version 2.0. The segment HoD is calculated as the hash of the content segment.
 
-2.3  Content Information Data Structure Version 1.0
+### 2.3 Content Information Data Structure Version 1.0
 
 Content Information is a variable-size data structure. Content Information size is proportional to
 the length of the content it represents.
@@ -1060,7 +1011,8 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwHashAlgo (4 bytes): Hash algorithm to use.<2> MUST be one of the following values:
+
+dwHashAlgo (4 bytes): Hash algorithm to use.<2> MUST be one of the following values:
 
 Value
 
@@ -1137,9 +1089,10 @@ Release: April 23, 2024
 
 13 / 30
 
-2.3.1  Fields
 
-2.3.1.1  SegmentDescription
+#### 2.3.1 Fields
+
+##### 2.3.1.1 SegmentDescription
 
 The segments field is composed of a number cSegments of SegmentDescription fields. Each
 SegmentDescription field corresponds to a content segment in the order in which they appear in
@@ -1211,7 +1164,8 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-length 32 if dwHashAlgo at the start of the Content Information was 0x800C = SHA-256, 48 if
+
+length 32 if dwHashAlgo at the start of the Content Information was 0x800C = SHA-256, 48 if
 dwHashAlgo = 0x800D = SHA-384, or 64 if dwHashAlgo = 0x800E = SHA-512.
 
 SegmentSecret (variable): Kp (section 2.2), computed as Hash (SegmentHashofData +
@@ -1221,7 +1175,7 @@ Data Structure. The hash is of length 32 if dwHashAlgo at the start of the Conte
 Information was 0x800C = SHA-256, 48 if dwHashAlgo = 0x800D = SHA-384 or 64 if
 dwHashAlgo = 0x800E = SHA-512.
 
-2.3.1.2  SegmentContentBlocks
+##### 2.3.1.2 SegmentContentBlocks
 
 The blocks field contains a number cSegments of SegmentContentBlocks fields. The Nth
 SegmentContentBlocks field corresponds to the Nth SegmentDescription (section 2.3.1.1) and
@@ -1253,7 +1207,7 @@ BlockHashes (variable): SHA-256, SHA-384 or SHA-512 hash of each content block i
 which the blocks appear in the segment. The size of this field is cBlocks * (32, 48 or 64,
 depending on which hash was used).
 
-2.4  Content Information Data Structure Version 2.0
+### 2.4 Content Information Data Structure Version 2.0
 
 Version 2.0 of the Content Information data structure MUST be formatted as follows.<3> All fields
 are in big-endian byte order.
@@ -1303,7 +1257,8 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -1344,9 +1299,9 @@ chunks (variable): Chunk type, chunk data length, and chunk data for each chunk 
 
 Information. Each Content Information chunk is as specified in 2.4.1.1.
 
-2.4.1  Fields
+#### 2.4.1 Fields
 
-2.4.1.1  ChunkDescription
+##### 2.4.1.1 ChunkDescription
 
 The chunks field is composed of the chunk type, the chunk data length and the chunk data that
 contains segment description.
@@ -1387,7 +1342,8 @@ Release: April 23, 2024
 
 16 / 30
 
-2.4.1.2  SegmentDescription
+
+##### 2.4.1.2 SegmentDescription
 
 Each SegmentDescription describes a single segment. Each segment's description chunk MUST
 contain at least one segment description. A segment description chunk can contain multiple segment
@@ -1436,7 +1392,7 @@ Data Structure. The hash is of length 32 bytes if the value of bHashAlgo field (
 the start of the Content Information was 0x04 = truncated SHA-512. Truncated SHA-512 is the
 only supported hash algorithm.
 
-2.5  Server Secret Key
+### 2.5 Server Secret Key
 
 The server secret Ks is obtained by hashing an arbitrary binary string known as the server secret
 key. To obtain the secret key, it SHOULD be exported to a file.<4> A passphrase MUST be provided
@@ -1454,11 +1410,12 @@ Release: April 23, 2024
 
 17 / 30
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-3.1  125 KB Content
+### 3.1 125 KB Content
 
 Scenario: A server S requires its clients to use the Content Caching and Retrieval Framework to
 accelerate content distribution for a 125-kilobyte (KB) file. The server is configured to use SHA-256 as
@@ -1601,7 +1558,7 @@ content.
 SHA-256 hash of the last 62,464 bytes of the
 content.
 
-3.2  Version 1.0 Content Information, 125 KB Content
+### 3.2 Version 1.0 Content Information, 125 KB Content
 
 Scenario: A server S wants clients to use the Content Caching and Retrieval Framework to accelerate
 content distribution for a 125-kilobyte (KB) file. The server is configured to use SHA-256 as the hash
@@ -1642,7 +1599,8 @@ Release: April 23, 2024
 
 18 / 30
 
-Offset  Size  Type
+
+Offset  Size  Type
 
 Name
 
@@ -1757,7 +1715,7 @@ the content.
 SHA-256 hash of the last 62,464 bytes of the
 content).
 
-3.3  Version 1.0 Content Information, 125 KB Content Range Request
+### 3.3 Version 1.0 Content Information, 125 KB Content Range Request
 
 Scenario: A server S wants clients to use the Content Caching and Retrieval Framework to accelerate
 content distribution for a 125-kilobyte (KB) file. The server is configured to use SHA-256 as the hash
@@ -1886,7 +1844,8 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Offset  Size  Type
+
+Offset  Size  Type
 
 Name
 
@@ -1914,7 +1873,7 @@ the content.
 SHA-256 hash of the last 62,464 bytes of the
 content.
 
-3.4  Version 1.0 Content Information, 125 MB Content
+### 3.4 Version 1.0 Content Information, 125 MB Content
 
 Scenario: The same server S now receives a client request for a 125-megabyte file. The server
 responds with Content Information of the following form.
@@ -2130,7 +2089,8 @@ Release: April 23, 2024
 
 20 / 30
 
-Offset  Size  Type
+
+Offset  Size  Type
 
 Name
 
@@ -2322,7 +2282,7 @@ block hash
 SHA-256 hash of bytes 0x7CF0000 through
 0x7D00000 of the content.
 
-3.5  Version 1.0 Content Information, 125 MB Content Range Request
+### 3.5 Version 1.0 Content Information, 125 MB Content Range Request
 
 Scenario: The same server S now receives a client request for a content range in a 125-megabyte
 (MB) file. The content range starts at an offset that is 100 KB into the file and ends at an offset that is
@@ -2336,7 +2296,8 @@ Release: April 23, 2024
 
 21 / 30
 
-Offset  Size  Type
+
+Offset  Size  Type
 
 Name
 
@@ -2618,7 +2579,8 @@ Release: April 23, 2024
 
 22 / 30
 
-Offset  Size  Type
+
+Offset  Size  Type
 
 Name
 
@@ -2739,7 +2701,7 @@ block hash
 SHA-256 hash of bytes 0x7BF0000 through
 0x7C00000 of the content.
 
-3.6  Version 2.0 Content Information, 189 KB Content
+### 3.6 Version 2.0 Content Information, 189 KB Content
 
 Scenario: A server S wants clients to use the Content Caching and Retrieval Framework to accelerate
 content distribution for a 189 kilobyte (KB) file. The server is configured to use SHA-256 as the hash
@@ -2815,7 +2777,8 @@ Release: April 23, 2024
 
 23 / 30
 
-Offset  Size  Type
+
+Offset  Size  Type
 
 Name
 
@@ -2945,7 +2908,7 @@ SegmentSecret
 Truncated SHA-512 hash of segment hash of data and
 "no more secrets"
 
-3.7  Version 2.0 Content Information, 189 KB Content Range Request
+### 3.7 Version 2.0 Content Information, 189 KB Content Range Request
 
 Scenario: A server S wants clients to use the Content Caching and Retrieval Framework to accelerate
 content distribution for a 189 kilobyte (KB) file. The server is configured to use SHA-256 as the hash
@@ -3049,7 +3012,8 @@ Release: April 23, 2024
 
 24 / 30
 
-Offset  Size  Type
+
+Offset  Size  Type
 
 Name
 
@@ -3094,11 +3058,12 @@ Release: April 23, 2024
 
 25 / 30
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
 
-4.1.1  Download Confidentiality
+### 4.1 Security Considerations for Implementers
+
+#### 4.1.1 Download Confidentiality
 
 The protocol download transport is built upon HTTP, a stateless protocol. Therefore, to secure
 communications between peers or between peers and a hosted cache any content sent in messages is
@@ -3115,7 +3080,7 @@ data to a brute-force guessing attack. Knowledge of Ks exposes all cipher text i
 Information generated by a specific server to a brute-force attack; therefore, Ks is just as sensitive,
 if not more so, than Kp.
 
-4.1.2  Content Block Validation
+#### 4.1.2 Content Block Validation
 
 Peers have to validate that content blocks downloaded from other peers or a hosted cache contain the
 same data as the original content that was available from the server which supplied the Content
@@ -3124,7 +3089,7 @@ hash algorithm specified in the Content Information and comparing the hash with 
 hash specified for that specific content block in the Content Information. If the hashes match, then
 the peer can be confident that the data matches the content available from the server.
 
-4.1.3  Content Chunk Validation
+#### 4.1.3 Content Chunk Validation
 
 Peers have to validate that content chunks downloaded from other peers or a hosted cache contain
 the same data as the original content that was available from the server which supplied the Content
@@ -3133,7 +3098,7 @@ specified in the Content Information and comparing the hash with the hash specif
 specific content chunk or segment in the Content Information. If the hashes match, then the peer
 can be confident that the data matches the content available from the server.
 
-4.2  Index of Security Fields
+### 4.2 Index of Security Fields
 
 None.
 
@@ -3144,7 +3109,8 @@ Release: April 23, 2024
 
 26 / 30
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3212,7 +3178,8 @@ Peer Content Caching and Retrieval: Content Identification
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3256,7 +3223,8 @@ Release: April 23, 2024
 
 28 / 30
 
-7  Index
+
+## 7 Index
 1
 
 125 KB Content example 18
@@ -3407,7 +3375,8 @@ section 2.4.1.2 17)
 
 29 / 30
 
-Segments 10
+
+Segments 10
 Structures
    overview 10
 Structures - overview 10

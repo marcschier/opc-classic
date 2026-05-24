@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 80
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -295,7 +296,8 @@ Release: April 23, 2024
 
 2 / 80
 
-Date
+
+Date
 
 Revision
 History
@@ -377,238 +379,109 @@ Release: April 23, 2024
 
 3 / 80
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Server Security Settings](#211-server-security-settings)
+    - [2.1.2 Client Security Settings](#212-client-security-settings)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Datatypes, Enumerations, and Constants](#221-datatypes-enumerations-and-constants)
+      - [2.2.1.1 WINSIF_HANDLE](#2211-winsifhandle)
+      - [2.2.1.2 WINSINTF_VERS_NO_T](#2212-winsintfversnot)
+      - [2.2.1.3 WINSINTF_MAX_NO_RPL_PNRS](#2213-winsintfmaxnorplpnrs)
+      - [2.2.1.4 WINSINTF_ACT_E](#2214-winsintfacte)
+      - [2.2.1.5 WINSINTF_CMD_E](#2215-winsintfcmde)
+      - [2.2.1.6 WINSINTF_TRIG_TYPE_E](#2216-winsintftrigtypee)
+      - [2.2.1.7 WINSINTF_PRIORITY_CLASS_E](#2217-winsintfpriorityclasse)
+      - [2.2.1.8 WINSINTF_SCV_OPC_E](#2218-winsintfscvopce)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.1 WINSINTF_ADD_T](#2221-winsintfaddt)
+      - [2.2.2.2 WINSINTF_BIND_DATA_T](#2222-winsintfbinddatat)
+      - [2.2.2.3 WINSINTF_RECORD_ACTION_T](#2223-winsintfrecordactiont)
+      - [2.2.2.4 WINSINTF_ADD_VERS_MAP_T](#2224-winsintfaddversmapt)
+      - [2.2.2.5 WINSINTF_RPL_COUNTERS_T](#2225-winsintfrplcounterst)
+      - [2.2.2.6 WINSINTF_STAT_T](#2226-winsintfstatt)
+      - [2.2.2.7 WINSINTF_RESULTS_T](#2227-winsintfresultst)
+      - [2.2.2.8 WINSINTF_RECS_T](#2228-winsintfrecst)
+      - [2.2.2.9 WINSINTF_BROWSER_INFO_T](#2229-winsintfbrowserinfot)
+      - [2.2.2.10 WINSINTF_BROWSER_NAMES_T](#22210-winsintfbrowsernamest)
+      - [2.2.2.11 WINSINTF_RESULTS_NEW_T](#22211-winsintfresultsnewt)
+      - [2.2.2.12 WINSINTF_SCV_REQ_T](#22212-winsintfscvreqt)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 winsif Server Details](#31-winsif-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 R_WinsRecordAction (Opnum 0)](#3141-rwinsrecordaction-opnum-0)
+      - [3.1.4.2 R_WinsStatus (Opnum 1)](#3142-rwinsstatus-opnum-1)
+      - [3.1.4.3 R_WinsTrigger (Opnum 2)](#3143-rwinstrigger-opnum-2)
+      - [3.1.4.4 R_WinsDoStaticInit (Opnum 3)](#3144-rwinsdostaticinit-opnum-3)
+      - [3.1.4.5 R_WinsDoScavenging (Opnum 4)](#3145-rwinsdoscavenging-opnum-4)
+      - [3.1.4.6 R_WinsGetDbRecs (Opnum 5)](#3146-rwinsgetdbrecs-opnum-5)
+      - [3.1.4.7 R_WinsTerm (Opnum 6)](#3147-rwinsterm-opnum-6)
+      - [3.1.4.8 R_WinsBackup (Opnum 7)](#3148-rwinsbackup-opnum-7)
+      - [3.1.4.9 R_WinsDelDbRecs (Opnum 8)](#3149-rwinsdeldbrecs-opnum-8)
+      - [3.1.4.10 R_WinsPullRange (Opnum 9)](#31410-rwinspullrange-opnum-9)
+      - [3.1.4.11 R_WinsSetPriorityClass (Opnum 10)](#31411-rwinssetpriorityclass-opnum-10)
+      - [3.1.4.12 R_WinsResetCounters (Opnum 11)](#31412-rwinsresetcounters-opnum-11)
+      - [3.1.4.13 R_WinsWorkerThdUpd (Opnum 12)](#31413-rwinsworkerthdupd-opnum-12)
+      - [3.1.4.14 R_WinsGetNameAndAdd (Opnum 13)](#31414-rwinsgetnameandadd-opnum-13)
+      - [3.1.4.15 R_WinsGetBrowserNames_Old (Opnum 14)](#31415-rwinsgetbrowsernamesold-opnum-14)
+      - [3.1.4.16 R_WinsDeleteWins (Opnum 15)](#31416-rwinsdeletewins-opnum-15)
+      - [3.1.4.17 R_WinsSetFlags (Opnum 16)](#31417-rwinssetflags-opnum-16)
+      - [3.1.4.18 R_WinsGetBrowserNames (Opnum 17)](#31418-rwinsgetbrowsernames-opnum-17)
+      - [3.1.4.19 R_WinsGetDbRecsByName (Opnum 18)](#31419-rwinsgetdbrecsbyname-opnum-18)
+      - [3.1.4.20 R_WinsStatusNew (Opnum 19)](#31420-rwinsstatusnew-opnum-19)
+      - [3.1.4.21 R_WinsStatusWHdl (Opnum 20)](#31421-rwinsstatuswhdl-opnum-20)
+      - [3.1.4.22 R_WinsDoScavengingNew (Opnum 21)](#31422-rwinsdoscavengingnew-opnum-21)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 winsi2 Server Details](#32-winsi2-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 R_WinsTombstoneDbRecs (Opnum 0)](#3241-rwinstombstonedbrecs-opnum-0)
+      - [3.2.4.2 R_WinsCheckAccess (Opnum 1)](#3242-rwinscheckaccess-opnum-1)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Inserting a Record into a WINS Database](#41-inserting-a-record-into-a-wins-database)
+  - [4.2 Releasing a Record from a WINS Database](#42-releasing-a-record-from-a-wins-database)
+  - [4.3 Deleting a Record from a WINS Database](#43-deleting-a-record-from-a-wins-database)
+  - [4.4 Modifying a Record from a WINS Database](#44-modifying-a-record-from-a-wins-database)
+  - [4.5 Querying a Record from a WINS Database](#45-querying-a-record-from-a-wins-database)
+  - [4.6 Retrieving All of the Records of a WINS Database](#46-retrieving-all-of-the-records-of-a-wins-database)
+  - [4.7 Deleting All the Records of an Owner from a Particular WINS Server](#47-deleting-all-the-records-of-an-owner-from-a-particular-wins-server)
+  - [4.8 Deleting All the Records from a Particular WINS Server](#48-deleting-all-the-records-from-a-particular-wins-server)
+  - [4.9 Triggering a Pull Replication Between Two WINS Servers](#49-triggering-a-pull-replication-between-two-wins-servers)
+  - [4.10 Backing Up a WINS Server Database](#410-backing-up-a-wins-server-database)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+  - [6.1 Appendix A.1: winsif.idl](#61-appendix-a1-winsifidl)
+  - [6.2 Appendix A.2: winsif2.idl](#62-appendix-a2-winsif2idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 9
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.2.1
-
-2.1.1
-2.1.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Server Security Settings .............................................................................. 13
-Client Security Settings ............................................................................... 13
-Common Data Types ........................................................................................ 13
-Datatypes, Enumerations, and Constants ....................................................... 14
-WINSIF_HANDLE .................................................................................. 14
-WINSINTF_VERS_NO_T ......................................................................... 14
-WINSINTF_MAX_NO_RPL_PNRS .............................................................. 14
-WINSINTF_ACT_E ................................................................................. 14
-WINSINTF_CMD_E ................................................................................ 15
-WINSINTF_TRIG_TYPE_E ....................................................................... 15
-WINSINTF_PRIORITY_CLASS_E .............................................................. 15
-WINSINTF_SCV_OPC_E ......................................................................... 16
-Structures ................................................................................................. 16
-WINSINTF_ADD_T ................................................................................ 16
-2.2.2.1
-WINSINTF_BIND_DATA_T ...................................................................... 16
-2.2.2.2
-WINSINTF_RECORD_ACTION_T .............................................................. 17
-2.2.2.3
-WINSINTF_ADD_VERS_MAP_T ............................................................... 19
-2.2.2.4
-WINSINTF_RPL_COUNTERS_T ................................................................ 19
-2.2.2.5
-WINSINTF_STAT_T ............................................................................... 19
-2.2.2.6
-WINSINTF_RESULTS_T .......................................................................... 21
-2.2.2.7
-WINSINTF_RECS_T ............................................................................... 22
-2.2.2.8
-2.2.2.9
-WINSINTF_BROWSER_INFO_T ............................................................... 23
-2.2.2.10  WINSINTF_BROWSER_NAMES_T............................................................. 23
-2.2.2.11  WINSINTF_RESULTS_NEW_T ................................................................. 23
-2.2.2.12  WINSINTF_SCV_REQ_T ......................................................................... 24
-
-2.2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 25
-winsif Server Details ......................................................................................... 25
-Abstract Data Model .................................................................................... 25
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-R_WinsRecordAction (Opnum 0) ............................................................. 28
-R_WinsStatus (Opnum 1) ....................................................................... 31
-R_WinsTrigger (Opnum 2) ...................................................................... 33
-R_WinsDoStaticInit (Opnum 3) ............................................................... 38
-R_WinsDoScavenging (Opnum 4) ............................................................ 39
-R_WinsGetDbRecs (Opnum 5) ................................................................ 42
-R_WinsTerm (Opnum 6) ........................................................................ 43
-R_WinsBackup (Opnum 7) ..................................................................... 44
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-
-[MS-RAIW] - v20240423
-Remote Administrative Interface: WINS
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 80
-
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-3.1.4.22
-
-R_WinsDelDbRecs (Opnum 8) ................................................................. 45
-R_WinsPullRange (Opnum 9) .................................................................. 46
-R_WinsSetPriorityClass (Opnum 10) ........................................................ 48
-R_WinsResetCounters (Opnum 11) ......................................................... 49
-R_WinsWorkerThdUpd (Opnum 12) ......................................................... 50
-R_WinsGetNameAndAdd (Opnum 13) ...................................................... 51
-R_WinsGetBrowserNames_Old (Opnum 14).............................................. 52
-R_WinsDeleteWins (Opnum 15) .............................................................. 52
-R_WinsSetFlags (Opnum 16) .................................................................. 53
-R_WinsGetBrowserNames (Opnum 17) .................................................... 54
-R_WinsGetDbRecsByName (Opnum 18) ................................................... 55
-R_WinsStatusNew (Opnum 19) ............................................................... 56
-R_WinsStatusWHdl (Opnum 20) ............................................................. 57
-R_WinsDoScavengingNew (Opnum 21) .................................................... 58
-Timer Events .............................................................................................. 60
-Other Local Events ...................................................................................... 60
-winsi2 Server Details ........................................................................................ 60
-Abstract Data Model .................................................................................... 60
-Timers ...................................................................................................... 61
-Initialization ............................................................................................... 61
-Message Processing Events and Sequencing Rules .......................................... 61
-R_WinsTombstoneDbRecs (Opnum 0) ...................................................... 61
-R_WinsCheckAccess (Opnum 1) .............................................................. 63
-Timer Events .............................................................................................. 63
-Other Local Events ...................................................................................... 63
-
-3.2.4.1
-3.2.4.2
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-
-4  Protocol Examples ................................................................................................. 64
-Inserting a Record into a WINS Database ............................................................ 64
-Releasing a Record from a WINS Database .......................................................... 64
-Deleting a Record from a WINS Database............................................................ 65
-Modifying a Record from a WINS Database .......................................................... 65
-Querying a Record from a WINS Database .......................................................... 65
-Retrieving All of the Records of a WINS Database ................................................ 66
-Deleting All the Records of an Owner from a Particular WINS Server ...................... 66
-Deleting All the Records from a Particular WINS Server ........................................ 67
-Triggering a Pull Replication Between Two WINS Servers ...................................... 67
-Backing Up a WINS Server Database .................................................................. 67
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-4.8
-4.9
-4.10
-
-5  Security ................................................................................................................. 68
-Security Considerations for Implementers ........................................................... 68
-Index of Security Parameters ............................................................................ 68
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 69
-Appendix A.1: winsif.idl .................................................................................... 69
-Appendix A.2: winsif2.idl ................................................................................... 73
-
-6.1
-6.2
-
-7  Appendix B: Product Behavior ............................................................................... 75
-
-8  Change Tracking .................................................................................................... 77
-
-9  Index ..................................................................................................................... 78
-
-[MS-RAIW] - v20240423
-Remote Administrative Interface: WINS
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 80
-
-1  Introduction
+## 1 Introduction
 
 This is a specification of the Remote Administrative Interface: WINS protocol. This protocol defines
 remote procedure call (RPC) interfaces that provide methods for remotely accessing and
@@ -623,7 +496,7 @@ scavenging, and replicating the database records with other WINS servers.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -678,7 +551,8 @@ Release: April 23, 2024
 
 6 / 80
 
-Internet Protocol version 4 (IPv4): An Internet protocol that has 32-bit source and destination
+
+Internet Protocol version 4 (IPv4): An Internet protocol that has 32-bit source and destination
 
 addresses. IPv4 is the predecessor of IPv6.
 
@@ -758,7 +632,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NetBT node type: The transport mechanism used to resolve NetBIOS names that are broadcast,
+
+NetBT node type: The transport mechanism used to resolve NetBIOS names that are broadcast,
 
 multicast, or unicast.
 
@@ -835,7 +710,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-calls and an actual security model's functions. Security packages support security protocols such
+
+calls and an actual security model's functions. Security packages support security protocols such
 as Kerberos authentication and NTLM.
 
 special group: A group of hosts that have a single name. When a name registration is received for
@@ -906,14 +782,15 @@ Release: April 23, 2024
 
 9 / 80
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -949,7 +826,7 @@ editor.org/info/rfc1002
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [LMHOSTS] Microsoft Corporation, "LMHOSTS File Information and Predefined Keywords", February
 2007, https://www.betaarchive.com/wiki/index.php?title=Microsoft_KB_Archive/102725
@@ -960,7 +837,7 @@ us/library/aa373932(VS.85).aspx
 [MSFT-ResourceKits] Microsoft Corporation, "Resource Kits", http://technet.microsoft.com/en-
 us/library/cc875849.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Administrative Interface: WINS protocol is a client/server protocol that is used to
 remotely configure, manage, and monitor the WINS server. This protocol allows a client to view and
@@ -972,7 +849,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-update the server configuration settings as well as to create, modify, and delete WINS database
+
+update the server configuration settings as well as to create, modify, and delete WINS database
 records. It also allows clients to trigger scavenging and replicating operations and to query the
 database.
 
@@ -994,13 +872,13 @@ Named Pipes
 
 Figure 1: Relationship of Remote Administrative Interface: WINS to RPC
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Administrative Interface: WINS protocol relies on RPC [MS-RPCE] as a transport. It is
 used to manage the WINS service on servers that implement the Windows Internet Naming Service
 (WINS) Replication and Autodiscovery Protocol [MS-WINSRA].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Administrative Interface: WINS protocol is implemented on top of RPC and, as a result,
 has the prerequisites identified in [MS-RPCE].
@@ -1009,7 +887,7 @@ The Remote Administrative Interface: WINS protocol assumes that before this prot
 client has obtained the name or the IP address of the WINS server that implements this protocol
 suite.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Administrative Interface: WINS protocol is applicable when an application needs to
 remotely configure, manage, or monitor a WINS server.
@@ -1018,7 +896,7 @@ Because the NetBIOS protocol [RFC1002] does not support the mapping between NetB
 and IPv6 addresses, the Remote Administrative Interface: WINS protocol applies only to IPv4
 addresses. It does not apply to IPv6 addresses.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1042,7 +920,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Localization: This protocol passes text strings in various methods. Localization considerations for
+
+  Localization: This protocol passes text strings in various methods. Localization considerations for
 
 such strings are specified in sections 2.2 and 3.1.4.
 
@@ -1051,13 +930,13 @@ such strings are specified in sections 2.2 and 3.1.4.
 interface version negotiation. Instead, this protocol uses the interface version number specified in
 the interface definition language (IDL) for versioning and capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Remote Administrative Interface: WINS protocol uses Win32 error codes as defined in [MS-
 ERREF] (section 2.2). Vendors SHOULD reuse those values with their indicated meanings. Choosing
 any other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Remote Administrative Interface: WINS protocol uses the following private assignments.
 
@@ -1101,9 +980,10 @@ Release: April 23, 2024
 
 12 / 80
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 For the Remote Administrative Interface: WINS protocol, the WINSserver MUST support the following
 RPC transports:
@@ -1112,7 +992,7 @@ RPC transports:
 
   RPC over named pipes, with the endpoint name "\pipe\WinsPipe".
 
-2.1.1  Server Security Settings
+#### 2.1.1 Server Security Settings
 
 The Remote Administrative Interface: WINS protocol uses security support provider (SSP) security
 provided by RPC as specified in [MS-RPCE]. The WINS RPC server uses the principal name "Wins"
@@ -1141,14 +1021,14 @@ call methods that require only query-level access. The WINS server MUST limit ac
 clients that negotiate an authentication level equal to or higher than
 RPC_C_AUTHN_LEVEL_CONNECT.
 
-2.1.2  Client Security Settings
+#### 2.1.2 Client Security Settings
 
 The RPC client SHOULD use security support provider (SSP) security provided by RPC as specified
 in [MS-RPCE]. The clients SHOULD use the server principal name "Wins", authentication service
 RPC_C_AUTHN_WINNT, and authentication level RPC_C_AUTHN_LEVEL_CONNECT while creating
 the binding handle.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to the RPC base types and definitions specified in [C706] and [MS-RPCE], additional data
 types are defined in this section. The following statements apply to those data types unless indicated
@@ -1165,9 +1045,10 @@ Release: April 23, 2024
 
 13 / 80
 
-2.2.1  Datatypes, Enumerations, and Constants
 
-2.2.1.1  WINSIF_HANDLE
+#### 2.2.1 Datatypes, Enumerations, and Constants
+
+##### 2.2.1.1 WINSIF_HANDLE
 
 The WINSIF_HANDLE data type is defined as a pointer to the WINSINTF_BIND_DATA_T structure. It is
 used by the RPC methods R_WinsGetBrowserNames and R_WinsStatusWHdl.
@@ -1176,7 +1057,7 @@ This type is declared as follows:
 
  typedef [handle] PWINSINTF_BIND_DATA_T WINSIF_HANDLE;
 
-2.2.1.2  WINSINTF_VERS_NO_T
+##### 2.2.1.2 WINSINTF_VERS_NO_T
 
 The WINSINTF_VERS_NO_T data type indicates the version number of a WINS database record. It is
 used by several RPC methods like R_WinsGetDbRecs and R_WinsDelDbRecs.
@@ -1185,7 +1066,7 @@ This type is declared as follows:
 
  typedef LARGE_INTEGER WINSINTF_VERS_NO_T;
 
-2.2.1.3  WINSINTF_MAX_NO_RPL_PNRS
+##### 2.2.1.3 WINSINTF_MAX_NO_RPL_PNRS
 
 The WINSINTF_MAX_NO_RPL_PNRS constant defines the maximum number of pull replication
 partners. It is used by the structure WINSINTF_RESULTS_T (section 2.2.2.7).
@@ -1200,7 +1081,7 @@ The maximum number of pull replication partners.
 
 25
 
-2.2.1.4  WINSINTF_ACT_E
+##### 2.2.1.4 WINSINTF_ACT_E
 
  The WINSINTF_ACT_E enumeration indicates an action type requested by the RPC method
 R_WinsRecordAction for a record contained in the WINSINTF_RECORD_ACTION_T structure.
@@ -1230,9 +1111,10 @@ Release: April 23, 2024
 
 14 / 80
 
-WINSINTF_E_QUERY:  Query the database for a given name.
 
-2.2.1.5  WINSINTF_CMD_E
+WINSINTF_E_QUERY:  Query the database for a given name.
+
+##### 2.2.1.5 WINSINTF_CMD_E
 
 The WINSINTF_CMD_E enumeration is used by the RPC methods to retrieve the configuration of a
 particular WINS server. This enumeration is used in conjunction with the WINSINTF_RESULTS_T and
@@ -1259,7 +1141,7 @@ WINSINTF_E_CONFIG_ALL_MAPS:  Get all owner version map entries from the target W
 
 server.
 
-2.2.1.6  WINSINTF_TRIG_TYPE_E
+##### 2.2.1.6 WINSINTF_TRIG_TYPE_E
 
 The WINSINTF_TRIG_TYPE_E enumeration defines the type of replication to be done. It is used by
 the RPC method R_WinsTrigger.
@@ -1284,7 +1166,7 @@ WINSINTF_E_PUSH_PROP:  The target WINS server performs propagating push replicat
 
 the specified WINS server.
 
-2.2.1.7  WINSINTF_PRIORITY_CLASS_E
+##### 2.2.1.7 WINSINTF_PRIORITY_CLASS_E
 
 The WINSINTF_PRIORITY_CLASS_E enumeration defines the priority class of a WINS process. It is
 used by the RPC method R_WinsSetPriorityClass.
@@ -1301,14 +1183,15 @@ Release: April 23, 2024
 
 15 / 80
 
- } WINSINTF_PRIORITY_CLASS_E,
+
+ } WINSINTF_PRIORITY_CLASS_E,
   *PWINSINTF_PRIORITY_CLASS_E;
 
 WINSINTF_E_NORMAL:  WINS process is assigned normal priority class.
 
 WINSINTF_E_HIGH:  WINS process is assigned high priority class.
 
-2.2.1.8  WINSINTF_SCV_OPC_E
+##### 2.2.1.8 WINSINTF_SCV_OPC_E
 
 The WINSINTF_SCV_OPC_E enumeration specifies the type of scavenging to be done on the target
 WINS server. This enumeration is used in the structure WINSINTF_SCV_REQ_T.
@@ -1326,9 +1209,9 @@ WINSINTF_E_SCV_VERIFY:  Verifies only the replicated active records with their o
 
 servers for their validity.
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
-2.2.2.1  WINSINTF_ADD_T
+##### 2.2.2.1 WINSINTF_ADD_T
 
 The WINSINTF_ADD_T structure defines the IP address information of a WINS server. It is used by
 several data structures including WINSINTF_RECORD_ACTION_T and WINSINTF_ADD_VERS_MAP_T
@@ -1349,7 +1232,7 @@ IPAdd:  Stores an IP address in little-endian format. For example, the IP addres
 
 stored as 0xAC16202A.
 
-2.2.2.2  WINSINTF_BIND_DATA_T
+##### 2.2.2.2 WINSINTF_BIND_DATA_T
 
 The WINSINTF_BIND_DATA_T structure defines the binding information of the WINS server to which
 the client connects.
@@ -1366,7 +1249,8 @@ Release: April 23, 2024
 
 16 / 80
 
- } WINSINTF_BIND_DATA_T,
+
+ } WINSINTF_BIND_DATA_T,
   *PWINSINTF_BIND_DATA_T;
 
 fTcpIp:  The transport mechanism to be used. If this value is 0x00000001, then TCP/IP is selected;
@@ -1379,7 +1263,7 @@ pPipeName:  A NULL-terminated string that specifies the pipe name. This value MU
 
 fTcpIP is 0x00000001.
 
-2.2.2.3  WINSINTF_RECORD_ACTION_T
+##### 2.2.2.3 WINSINTF_RECORD_ACTION_T
 
 The WINSINTF_RECORD_ACTION_T structure defines a WINS database record and the action to be
 performed on it. The structure WINSINTF_RECS_T (section 2.2.2.8) and the RPC method
@@ -1443,7 +1327,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 0
 
@@ -1537,7 +1422,8 @@ Release: April 23, 2024
 
 18 / 80
 
-2.2.2.4  WINSINTF_ADD_VERS_MAP_T
+
+##### 2.2.2.4 WINSINTF_ADD_VERS_MAP_T
 
 The WINSINTF_ADD_VERS_MAP_T structure defines an address version map pair. This data
 structure is generally used by other data structures, such as WINSINTF_RESULTS_T and
@@ -1556,7 +1442,7 @@ VersNo:  The highest version number from all of the records owned by a WINS serv
 WINS server database. Each record in the database has a version number and owner Id
 associated with it.
 
-2.2.2.5  WINSINTF_RPL_COUNTERS_T
+##### 2.2.2.5 WINSINTF_RPL_COUNTERS_T
 
 The WINSINTF_RPL_COUNTERS_T structure defines counters that contain the number of successful
 pull replications and the number of communication failures for a given replication partner. It is
@@ -1577,7 +1463,7 @@ partner. The target WINS server stores the replication partner's IP address in t
 NoOfCommFails:  The number of communication failures that have occurred in pull replications
 between the WINS server whose IP address is given in Add and the target WINS server.
 
-2.2.2.6  WINSINTF_STAT_T
+##### 2.2.2.6 WINSINTF_STAT_T
 
 The WINSINTF_STAT_T structure defines counters, configured timestamps, the pull replication
 statistics for a given WINS server. This structure is used by the structure
@@ -1605,7 +1491,8 @@ Release: April 23, 2024
 
 19 / 80
 
-   } Counters;
+
+   } Counters;
    struct {
      SYSTEMTIME WINSStartTime;
      SYSTEMTIME LastPScvTime;
@@ -1691,7 +1578,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1749,7 +1637,7 @@ counters of configured pull partners at the target WINS server, since the time s
 or, the time at which the last reset happened by a call to the method
 R_WinsResetCounters (section 3.1.4.12). The number of structures is specified by NoOfPnrs.
 
-2.2.2.7  WINSINTF_RESULTS_T
+##### 2.2.2.7 WINSINTF_RESULTS_T
 
 The WINSINTF_RESULTS_T structure defines information related to the configuration and statistics of
 a target WINS server. This is used by RPC method R_WinsStatus.
@@ -1774,7 +1662,8 @@ Release: April 23, 2024
 
 21 / 80
 
-  *PWINSINTF_RESULTS_T;
+
+  *PWINSINTF_RESULTS_T;
 
 NoOfOwners:  The number of owners whose records are part of the target WINS server database.
 
@@ -1824,7 +1713,7 @@ WINSStat:  A WINSINTF_STAT_T structure (section 2.2.2.6) containing timing param
 
 on the target WINS server and the pull replication statistics of partner WINS servers.
 
-2.2.2.8  WINSINTF_RECS_T
+##### 2.2.2.8 WINSINTF_RECS_T
 
 The structure WINSINTF_RECS_T defines an array of WINSINTF_RECORD_ACTION_T (section 2.2.2.3)
 elements. The R_WinsGetDbRecs (section 3.1.4.6) and R_WinsGetDbRecsByName (section 3.1.4.19)
@@ -1853,7 +1742,8 @@ Release: April 23, 2024
 
 22 / 80
 
-2.2.2.9  WINSINTF_BROWSER_INFO_T
+
+##### 2.2.2.9 WINSINTF_BROWSER_INFO_T
 
 The WINSINTF_BROWSER_INFO_T structure defines information about browser names. It is used by
 the structure WINSINTF_BROWSER_NAMES_T.
@@ -1870,9 +1760,9 @@ terminating NULL character.
 
 pName:  A pointer to a NULL-terminated string that contains the browser name.
 
-2.2.2.10
+##### 2.2.2.10 WINSINTF_BROWSER_NAMES_T
 
-WINSINTF_BROWSER_NAMES_T
+
 
 The WINSINTF_BROWSER_NAMES_T structure defines an array of browser names. This structure is
 used by the RPC method R_WinsGetBrowserNames.
@@ -1887,9 +1777,9 @@ EntriesRead:  The number of entries in the array that pInfo points to.
 
 pInfo:  A pointer to an array of browser names. EntriesRead contains the length of this array.
 
-2.2.2.11
+##### 2.2.2.11 WINSINTF_RESULTS_NEW_T
 
-WINSINTF_RESULTS_NEW_T
+
 
 The WINSINTF_RESULTS_NEW_T structure defines configuration information and statistics for a
 target WINS server. This structure is used by the RPC method
@@ -1924,7 +1814,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RefreshInterval:  The refresh time interval configured on the target WINS server, in seconds.
+
+RefreshInterval:  The refresh time interval configured on the target WINS server, in seconds.
 
 TombstoneInterval:  The tombstone time interval configured on the target WINS server, in
 
@@ -1964,9 +1855,9 @@ WINSStat:  A WINSINTF_STAT_T structure (section 2.2.2.6) containing timing param
 
 on the target WINS server and pull replication statistics of partner WINS servers.
 
-2.2.2.12
+##### 2.2.2.12 WINSINTF_SCV_REQ_T
 
-WINSINTF_SCV_REQ_T
+
 
 The WINSINTF_SCV_REQ_T structure defines the type of scavenging that needs to be done on the
 target WINS server. This is used by the RPC method R_WinsDoScavengingNew (section 3.1.4.22).
@@ -2006,7 +1897,8 @@ Release: April 23, 2024
 
 24 / 80
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of The Remote Administrative Interface: WINS protocol is simply a pass-through. This
 means that no additional timers or state are required on the client side of this protocol. Calls made by
@@ -2032,12 +1924,12 @@ memory by calling midl_user_free. Similarly, when the client RPC stub receives a
 server, it SHOULD call midl_user_allocate to allocate memory for all output pointer arguments.
 Client applications SHOULD free this memory by calling midl_user_free.
 
-3.1  winsif Server Details
+### 3.1 winsif Server Details
 
 The methods supported by the winsif interface are specified in Message Processing Events and
 Sequencing Rules (section 3.1.4).
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model that an implementation can maintain to participate in this
 protocol. The described organization is provided to facilitate the explanation of protocol behavior. This
@@ -2077,7 +1969,8 @@ Release: April 23, 2024
 
 25 / 80
 
-  Verify interval
+
+  Verify interval
 
 
 
@@ -2095,19 +1988,19 @@ return the contents of the cache. If 3 minutes or more has elapsed from the time
 name cache is refreshed, the WINS service SHOULD get the name records from the target WINS
 server database and update the cache.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are required beyond those used internally by RPC to implement resiliency to network
 outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The winsif server for the Remote Administrative Interface: WINS MUST be initialized by registering
 the RPC interface and listening on the dynamically allocated port assigned by RPC, as specified in
 section 2.1. The client MUST contact the well-known RPC port on the WINS server to find the
 endpoint of winsif.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The winsif interface provides methods that remotely configure, manage and monitor the WINS server.
 
@@ -2168,7 +2061,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -2278,7 +2172,8 @@ Release: April 23, 2024
 
 27 / 80
 
-3.1.4.1  R_WinsRecordAction (Opnum 0)
+
+##### 3.1.4.1 R_WinsRecordAction (Opnum 0)
 
 The R_WinsRecordAction method inserts, modifies, deletes, releases, or queries a name record from
 the WINS database.
@@ -2355,7 +2250,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  NameLen contains the length of the string specified by pName.
+
+  NameLen contains the length of the string specified by pName.
 
   State_e is set to 0x00000003.
 
@@ -2434,7 +2330,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  All other members act as output, which are filled by the server if a matching entry is found in
+
+  All other members act as output, which are filled by the server if a matching entry is found in
 
 the database.
 
@@ -2524,7 +2421,8 @@ Release: April 23, 2024
 
 30 / 80
 
-
+
+
 
 
 
@@ -2570,7 +2468,7 @@ ERROR_SUCCESS status code is returned. If any error occurs during the database o
 ERROR_WINS_INTERNAL is returned. The RPC method caller MUST set state_e to DELETED for
 this action to succeed.
 
-3.1.4.2  R_WinsStatus (Opnum 1)
+##### 3.1.4.2 R_WinsStatus (Opnum 1)
 
 The R_WinsStatus method retrieves configuration settings and statistics from a WINS server.
 
@@ -2603,7 +2501,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-this return value is a Win32 error code, as specified in [MS-ERREF]. The following Win32 error
+
+this return value is a Win32 error code, as specified in [MS-ERREF]. The following Win32 error
 codes can be returned.
 
 Return value/code
@@ -2683,7 +2582,8 @@ Release: April 23, 2024
 
 32 / 80
 
-3.1.4.3  R_WinsTrigger (Opnum 2)
+
+##### 3.1.4.3 R_WinsTrigger (Opnum 2)
 
 The R_WinsTrigger method triggers a replication operation between a target WINS server and
 another WINS server.
@@ -2773,7 +2673,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Event
+
+Event
 ID
 
 Event Name
@@ -2861,7 +2762,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Event
+
+Event
 ID
 
 Event Name
@@ -2951,7 +2853,8 @@ database from the backup.
 
 35 / 80
 
-Event
+
+Event
 ID
 
 Event Name
@@ -3045,7 +2948,8 @@ WINS database. The replica was rejected.
 
 36 / 80
 
-Event
+
+Event
 ID
 
 Event Name
@@ -3136,7 +3040,8 @@ direct WINS to use another port. If you choose the
 
 37 / 80
 
-Event
+
+Event
 ID
 
 Event Name
@@ -3186,7 +3091,7 @@ server's list of pull replication partners, the server SHOULD return
 WINSINTF_RPL_NOT_ALLOWED. Also, the server SHOULD return ERROR_WINS_INTERNAL for any
 other errors that occur while it processes the request.
 
-3.1.4.4  R_WinsDoStaticInit (Opnum 3)
+##### 3.1.4.4 R_WinsDoStaticInit (Opnum 3)
 
 The R_WinsDoStaticInit method performs static initialization of a WINS database by registering the
 names specified in a data file.
@@ -3214,7 +3119,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <IPv4 address 2> <one or more spaces> <NetBIOS name 2>
+
+ <IPv4 address 2> <one or more spaces> <NetBIOS name 2>
  ...
  <IPv4 address N> <one or more spaces> <NetBIOS name N>
 
@@ -3282,7 +3188,7 @@ into the WINS database.
 The WINS server SHOULD return ERROR_STATIC_INIT_FAILED if any error occurs while the server
 is reading the file or registering the names in the database.
 
-3.1.4.5  R_WinsDoScavenging (Opnum 4)
+##### 3.1.4.5 R_WinsDoScavenging (Opnum 4)
 
 The R_WinsDoScavenging method queues a scavenging request on the target WINS server.
 
@@ -3297,7 +3203,8 @@ Release: April 23, 2024
 
 39 / 80
 
-ServerHdl: An RPC binding over IP address/HostName to the WINS server. RPC uses this binding
+
+ServerHdl: An RPC binding over IP address/HostName to the WINS server. RPC uses this binding
 
 internally to determine which WINS server the call is directed to.
 
@@ -3396,7 +3303,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Event
+
+Event
 ID
 
 Event Name
@@ -3482,12 +3390,13 @@ Release: April 23, 2024
 
 41 / 80
 
-
+
+
 
 The WINS server queues a request on the target WINS server for the scavenging operation, and
 the method returns immediately with ERROR_SUCCESS as the status code.
 
-3.1.4.6  R_WinsGetDbRecs (Opnum 5)
+##### 3.1.4.6 R_WinsGetDbRecs (Opnum 5)
 
 The R_WinsGetDbRecs method returns the records whose version numbers are within a specified
 range and that are owned by a specified WINS server.
@@ -3570,7 +3479,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -3585,7 +3495,7 @@ The R_WinsGetDbRecs caller is responsible for freeing the memory pointed to by p
 >pName and pRecs->pRow->pAdd for each record, then using the midl_user_free function (section
 3) to free the pRecs->pRow and pRecs pointers themselves.
 
-3.1.4.7  R_WinsTerm (Opnum 6)
+##### 3.1.4.7 R_WinsTerm (Opnum 6)
 
 The R_WinsTerm method sends a termination signal to the WINS process on a target WINS server.
 
@@ -3652,7 +3562,8 @@ Release: April 23, 2024
 
 43 / 80
 
-3.1.4.8  R_WinsBackup (Opnum 7)
+
+##### 3.1.4.8 R_WinsBackup (Opnum 7)
 
 The R_WinsBackup method backs up the WINS database to a specified directory.
 
@@ -3738,7 +3649,8 @@ Release: April 23, 2024
 
 44 / 80
 
-3.1.4.9  R_WinsDelDbRecs (Opnum 8)
+
+##### 3.1.4.9 R_WinsDelDbRecs (Opnum 8)
 
 The R_WinsDelDbRecs method deletes the records whose version numbers are within a specified
 range and that are owned by a specified WINS server.
@@ -3825,9 +3737,10 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.10
 
-R_WinsPullRange (Opnum 9)
+##### 3.1.4.10 R_WinsPullRange (Opnum 9)
+
+
 
 The R_WinsPullRange method pulls a range of records owned by a WINS server from another WINS
 server, and replicates them within the target WINS server database.<8>
@@ -3912,7 +3825,8 @@ Release: April 23, 2024
 
 46 / 80
 
-Event
+
+Event
 ID
 
 Event Name
@@ -4006,7 +3920,8 @@ section.
 
 47 / 80
 
-Event
+
+Event
 ID
 
 Event Name
@@ -4073,9 +3988,9 @@ WINS server. Otherwise, the server SHOULD return ERROR_WINS_INTERNAL.
 in pOwnerAdd from the WINS server whose address is given in pWinsAdd, the RPC call SHOULD
 return immediately without waiting for the replication operation to complete.
 
-3.1.4.11
+##### 3.1.4.11 R_WinsSetPriorityClass (Opnum 10)
 
-R_WinsSetPriorityClass (Opnum 10)
+
 
  The R_WinsSetPriorityClass method sets the priority class for the WINS process running on the
 target WINS server.
@@ -4092,7 +4007,8 @@ Release: April 23, 2024
 
 48 / 80
 
-ServerHdl: An RPC binding over IP address/HostName to the WINS server. RPC uses this binding
+
+ServerHdl: An RPC binding over IP address/HostName to the WINS server. RPC uses this binding
 
 internally to determine which WINS server the call is directed to.
 
@@ -4148,9 +4064,9 @@ SHOULD return ERROR_WINS_INTERNAL.
 
 The server sets the priority class of the WINS process to the one specified by PrsCls_e.
 
-3.1.4.12
+##### 3.1.4.12 R_WinsResetCounters (Opnum 11)
 
-R_WinsResetCounters (Opnum 11)
+
 
 The R_WinsResetCounters method resets the pull replication counters for all partners of the target
 WINS server.
@@ -4184,7 +4100,8 @@ Release: April 23, 2024
 
 49 / 80
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4221,9 +4138,9 @@ the configured pull partners of the target WINS server.
 
 This method MUST return ERROR_SUCCESS if the client has sufficient access level permissions.
 
-3.1.4.13
+##### 3.1.4.13 R_WinsWorkerThdUpd (Opnum 12)
 
-R_WinsWorkerThdUpd (Opnum 12)
+
 
 The R_WinsWorkerThdUpd method updates the number of threads that have been created to serve
 NetBIOS requests.
@@ -4276,7 +4193,8 @@ Release: April 23, 2024
 
 50 / 80
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
 Processing and Response Requirements:
@@ -4306,9 +4224,9 @@ the new number given in NewNoOfNbtThds. If the existing number of NetBIOS thread
 the requested number, the RPC call SHOULD return immediately. Otherwise, NetBIOS threads are
 created or deleted to adjust the total number of threads to the requested number.
 
-3.1.4.14
+##### 3.1.4.14 R_WinsGetNameAndAdd (Opnum 13)
 
-R_WinsGetNameAndAdd (Opnum 13)
+
 
 The R_WinsGetNameAndAdd method retrieves the NetBIOS name and the corresponding IP address
 of the target WINS server.
@@ -4363,7 +4281,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following requirements and recommendations apply to a WINS server that processes a call to
+
+The following requirements and recommendations apply to a WINS server that processes a call to
 R_WinsGetNameAndAdd:
 
 
@@ -4382,9 +4301,9 @@ The server retrieves the NetBIOS name by calling a standard Windows function, wh
 status code directly to the caller without any modification. Hence, any Win32 error code can be
 returned, as specified in [MS-ERREF].
 
-3.1.4.15
+##### 3.1.4.15 R_WinsGetBrowserNames_Old (Opnum 14)
 
-R_WinsGetBrowserNames_Old (Opnum 14)
+
 
  The R_WinsGetBrowserNames_Old method always returns an ERROR_WINS_INTERNAL error code.
 
@@ -4419,9 +4338,9 @@ Processing and Response Requirements:
 
 Clients with any access level can call this method.
 
-3.1.4.16
+##### 3.1.4.16 R_WinsDeleteWins (Opnum 15)
 
-R_WinsDeleteWins (Opnum 15)
+
 
 The R_WinsDeleteWins method deletes all the records owned by a particular WINS server from the
 target WINS server database.
@@ -4446,7 +4365,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: A 32 bit unsigned integer that indicates the return status. A return value of
+
+Return Values: A 32 bit unsigned integer that indicates the return status. A return value of
 
 ERROR_SUCCESS (0x00000000) indicates that operation completed successfully. A nonzero return
 value is a Win32 error code, as specified in [MS-ERREF]. The following Win32 error codes can be
@@ -4500,9 +4420,9 @@ If pWinsAdd contains an IP address different from the target WINS server address
 queued at the target WINS server, and the RPC call returns immediately with ERROR_SUCCESS
 status.
 
-3.1.4.17
+##### 3.1.4.17 R_WinsSetFlags (Opnum 16)
 
-R_WinsSetFlags (Opnum 16)
+
 
 The R_WinsSetFlags method always returns ERROR_SUCCESS.
 
@@ -4536,15 +4456,16 @@ Release: April 23, 2024
 
 53 / 80
 
-Exceptions Thrown: No exceptions are thrown.
+
+Exceptions Thrown: No exceptions are thrown.
 
 Processing and Response Requirements:
 
 Clients with any access level can call this method.
 
-3.1.4.18
+##### 3.1.4.18 R_WinsGetBrowserNames (Opnum 17)
 
-R_WinsGetBrowserNames (Opnum 17)
+
 
 The R_WinsGetBrowserNames method retrieves browser name records from the target WINS
 server database.
@@ -4619,7 +4540,8 @@ Release: April 23, 2024
 
 54 / 80
 
-
+
+
 
 If any error occurs while retrieving the records, the service SHOULD return an
 ERROR_WINS_INTERNAL error code.
@@ -4628,9 +4550,9 @@ The R_WinsGetBrowserNames caller is responsible for freeing the memory pointed t
 >pRow->pName and pRecs->pRow->pAdd for each record, then using the midl_user_free function
 (section 3) to free the pRecs->pRow and pRecs pointers themselves.
 
-3.1.4.19
+##### 3.1.4.19 R_WinsGetDbRecsByName (Opnum 18)
 
-R_WinsGetDbRecsByName (Opnum 18)
+
 
 The R_WinsGetDbRecsByName method retrieves records matching an owner address from a target
 WINS server database starting at a specified cursor.
@@ -4702,7 +4624,8 @@ Release: April 23, 2024
 
 55 / 80
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4758,9 +4681,9 @@ The R_WinsGetDbRecsByName caller is responsible for freeing the memory pointed t
 >pRow->pName and pRecs->pRow->pAdd for each record, then using the midl_user_free function
 (section 3) to free the pRecs->pRow and pRecs pointers themselves.
 
-3.1.4.20
+##### 3.1.4.20 R_WinsStatusNew (Opnum 19)
 
-R_WinsStatusNew (Opnum 19)
+
 
 The R_WinsStatusNew method retrieves configuration settings and statistics from a WINS server.
 
@@ -4789,7 +4712,8 @@ Release: April 23, 2024
 
 56 / 80
 
-Return Values: A 32-bit unsigned integer that indicates the return status. A return value of
+
+Return Values: A 32-bit unsigned integer that indicates the return status. A return value of
 
 ERROR_SUCCESS (0x00000000) indicates that operation completed successfully. A nonzero return
 value is a Win32 error code, as specified in [MS-ERREF]. The following Win32 error codes can be
@@ -4839,9 +4763,9 @@ the server returns an ERROR_WINS_INTERNAL error.
 
 method.
 
-3.1.4.21
+##### 3.1.4.21 R_WinsStatusWHdl (Opnum 20)
 
-R_WinsStatusWHdl (Opnum 20)
+
 
 The R_WinsStatusWHdl method retrieves various configuration settings and the statistics of a WINS
 server.
@@ -4878,7 +4802,8 @@ Release: April 23, 2024
 
 57 / 80
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4903,9 +4828,9 @@ ERROR_ACCESS_DENIED
 The behavior of this method is the same as that of the R_WinsStatusNew method (section
 3.1.4.20).
 
-3.1.4.22
+##### 3.1.4.22 R_WinsDoScavengingNew (Opnum 21)
 
-R_WinsDoScavengingNew (Opnum 21)
+
 
 The R_WinsDoScavengingNew method requests a specific scavenging operation on the target WINS
 server.
@@ -4966,7 +4891,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Event
+
+Event
 ID
 
 Event Name
@@ -5069,7 +4995,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Event
+
+Event
 ID
 
 Event Name
@@ -5113,20 +5040,20 @@ ERROR_ACCESS_DENIED.
 The WINS server queues a request on the target WINS server for the scavenging operation, and
 the method returns immediately with ERROR_SUCCESS as the status code.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No protocol timer events are required other than those in the underlying RPC protocol.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No local events are maintained other than those in the underlying RPC protocol.
 
-3.2  winsi2 Server Details
+### 3.2 winsi2 Server Details
 
 The methods supported by the winsi2 interface are specified in Message Processing Events and
 Sequencing Rules (section 3.2.4).
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation can
 maintain to participate in this protocol. The described organization is provided to facilitate the
@@ -5145,7 +5072,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name records collection: A collection of all name records that are either registered by this NBNS
+
+Name records collection: A collection of all name records that are either registered by this NBNS
 
 server or obtained by replication.
 
@@ -5171,12 +5099,12 @@ Process priority class
 
   Number of worker threads
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are required beyond those used internally by RPC to implement resiliency to network
 outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 A WINS winsi2 remote protocol server MUST be initialized by registering the RPC interface and
 listening on the dynamically allocated port assigned by RPC, as specified in section 2.1. The client
@@ -5184,7 +5112,7 @@ MUST connect to a well-known RPC port on the WINS server to determine the endpoi
 Before any client connection, the WINS server MUST wait for WINS winsi2 to register with RPC before
 any clients can establish a connection.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The winsi2 interface provides methods that remotely configure, manage, and monitor a WINS server.
 
@@ -5204,7 +5132,7 @@ Checks the granted level of access for the RPC caller.
 
 Opnum: 1
 
-3.2.4.1  R_WinsTombstoneDbRecs (Opnum 0)
+##### 3.2.4.1 R_WinsTombstoneDbRecs (Opnum 0)
 
 The R_WinsTombstoneDbRecs method tombstones records whose version numbers fall within a
 range of version numbers and are owned by a server with a specified address.
@@ -5220,7 +5148,8 @@ Release: April 23, 2024
 
 61 / 80
 
-   [in] WINSINTF_VERS_NO_T MinVersNo,
+
+   [in] WINSINTF_VERS_NO_T MinVersNo,
    [in] WINSINTF_VERS_NO_T MaxVersNo
  );
 
@@ -5310,12 +5239,13 @@ Release: April 23, 2024
 
 62 / 80
 
-
+
+
 
 If both MinVersNo and MaxVersNo are zero, all records matching the given owner address are
 tombstoned.
 
-3.2.4.2  R_WinsCheckAccess (Opnum 1)
+##### 3.2.4.2 R_WinsCheckAccess (Opnum 1)
 
 The R_ WinsCheckAccess method retrieves the level of access the client is granted.<12>
 
@@ -5367,11 +5297,11 @@ Processing and Response Requirements:
 
 Clients with any access level can call this method.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No protocol timer events are required other than those in the underlying RPC protocol.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 No local events are maintained other than those in the underlying RPC protocol.
 
@@ -5382,9 +5312,10 @@ Release: April 23, 2024
 
 63 / 80
 
-4  Protocol Examples
 
-4.1  Inserting a Record into a WINS Database
+## 4 Protocol Examples
+
+### 4.1 Inserting a Record into a WINS Database
 
 The following example illustrates the use of the RPC methods defined in this specification to insert a
 record into the database of a WINS server. If the WINS database on the specified server does not
@@ -5418,7 +5349,7 @@ members set as follows:
 
 fStatic to 0, indicating a dynamic record.
 
-4.2  Releasing a Record from a WINS Database
+### 4.2 Releasing a Record from a WINS Database
 
 The following example illustrates the use of the RPC methods defined in this specification to release a
 record from the database of a WINS server. If the WINS database on the specified server has a
@@ -5453,7 +5384,8 @@ Release: April 23, 2024
 
 64 / 80
 
-4.3  Deleting a Record from a WINS Database
+
+### 4.3 Deleting a Record from a WINS Database
 
 The following example illustrates the use of the RPC methods defined in this specification to delete a
 record from the database of a WINS server. If the WINS database on the specified server has a
@@ -5477,7 +5409,7 @@ members set as follows:
 
   State_e to 3 (DELETED).
 
-4.4  Modifying a Record from a WINS Database
+### 4.4 Modifying a Record from a WINS Database
 
 The following example illustrates the use of the RPC methods defined in this specification to modify a
 WINS server database record. If the WINS database on the specified server has a multihomed (1)
@@ -5512,7 +5444,7 @@ fStatic to zero.
 After executing the call to R_WinsRecordAction, the node type and the state of the existing record are
 modified to h-node and RELEASED, respectively.
 
-4.5  Querying a Record from a WINS Database
+### 4.5 Querying a Record from a WINS Database
 
 The following example illustrates the use of the RPC methods defined in this specification to query a
 record from the database of a WINS server. This example assumes that the WINS database contained
@@ -5529,7 +5461,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  ServerHdl set to the endpoint of the WINS server on which the R_WinsRecordAction method is
+
+  ServerHdl set to the endpoint of the WINS server on which the R_WinsRecordAction method is
 
 executed.
 
@@ -5566,7 +5499,7 @@ fStatic contains zero.
 
   TimeStamp contains 0x101E.
 
-4.6  Retrieving All of the Records of a WINS Database
+### 4.6 Retrieving All of the Records of a WINS Database
 
 This example illustrates the use of the RPC methods defined in this specification to retrieve all the
 records from the database of a WINS server.
@@ -5594,7 +5527,7 @@ desired number of records.
 
   Repeated this procedure until the value of NoOfRecs is less than the value of NoOfRecsDesired.
 
-4.7  Deleting All the Records of an Owner from a Particular WINS Server
+### 4.7 Deleting All the Records of an Owner from a Particular WINS Server
 
 This example illustrates the use of the RPC methods defined in this specification to delete all the
 records of an owner from the target WINS server.
@@ -5608,7 +5541,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The endpoint of the WINS server on which R_WinsDelDbRecs is executed (or from which the
 records are deleted as ServerHdl.
@@ -5622,7 +5556,7 @@ IP address of the WINS server whose records are to be deleted.
 The successful completion of the R_WinsDelDbRecs call deletes all the records for an owner from
 the target WINS server database.
 
-4.8  Deleting All the Records from a Particular WINS Server
+### 4.8 Deleting All the Records from a Particular WINS Server
 
 This example illustrates the use of the RPC methods defined in this specification to delete all records
 from the target WINS server.
@@ -5648,7 +5582,7 @@ RPC method R_WinsDelDbRecs (section 3.1.4.9) by setting the parameters as follow
 
   Set pAdd->IPAdd to pResults->pAddVersMaps[i]->Add, where i  denotes the ith iteration.
 
-4.9  Triggering a Pull Replication Between Two WINS Servers
+### 4.9 Triggering a Pull Replication Between Two WINS Servers
 
 This example illustrates the use of the RPC methods defined in this specification to trigger a pull
 replication from one WINS server to another.
@@ -5665,7 +5599,7 @@ WINS server that serves as the partner for the pull replication.
 
   A return value of ERROR_SUCCESS means that the pull request has been queued successfully.
 
-4.10  Backing Up a WINS Server Database
+### 4.10 Backing Up a WINS Server Database
 
 To back up the WINS server database, the client calls the RPC method R_WinsBackup with the
 following parameters:
@@ -5683,9 +5617,10 @@ Release: April 23, 2024
 
 67 / 80
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 RAIW allows any user to establish a connection to the RPC server. The protocol uses the underlying
 RPC protocol to retrieve the identity of the method caller as specified in [MS-RPCE]. Clients create an
@@ -5703,7 +5638,7 @@ vulnerable to man-in-the-middle attacks. RPC over TCP/IP is used instead.
 Servers that implement this protocol require clients to request RPC_C_AUTHN_WINNT, and servers
 enforce this requirement in order to protect the privacy of the communication with clients.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -5718,9 +5653,10 @@ Release: April 23, 2024
 
 68 / 80
 
-6  Appendix A: Full IDL
 
-6.1  Appendix A.1: winsif.idl
+## 6 Appendix A: Full IDL
+
+### 6.1 Appendix A.1: winsif.idl
 
 For ease of implementation, the full stand-alone Interface Definition Language (IDL) file for the
 winsif interface (section 3.1) is provided. Some of the data types and structures used by this protocol
@@ -5792,7 +5728,8 @@ Release: April 23, 2024
 
 69 / 80
 
-       DWORD NoOfQueries;
+
+       DWORD NoOfQueries;
        DWORD NoOfSuccQueries;
        DWORD NoOfFailQueries;
        DWORD NoOfUniqueRef;
@@ -5869,7 +5806,8 @@ Release: April 23, 2024
 
 70 / 80
 
-    [unique,size_is(NoOfRecs)] PWINSINTF_RECORD_ACTION_T pRow;
+
+    [unique,size_is(NoOfRecs)] PWINSINTF_RECORD_ACTION_T pRow;
     DWORD NoOfRecs;
     DWORD TotalNoOfRecs;
  } WINSINTF_RECS_T, *PWINSINTF_RECS_T;
@@ -5946,7 +5884,8 @@ Release: April 23, 2024
 
 71 / 80
 
-     [in]   WINSINTF_TRIG_TYPE_E  TrigType_e
+
+     [in]   WINSINTF_TRIG_TYPE_E  TrigType_e
  );
 
  DWORD R_WinsDoStaticInit(
@@ -6023,7 +5962,8 @@ Release: April 23, 2024
 
 72 / 80
 
-     [out] PWINSINTF_BROWSER_NAMES_T pNames
+
+     [out] PWINSINTF_BROWSER_NAMES_T pNames
  );
 
  DWORD R_WinsDeleteWins(
@@ -6070,7 +6010,7 @@ Release: April 23, 2024
  );
  }
 
-6.2  Appendix A.2: winsif2.idl
+### 6.2 Appendix A.2: winsif2.idl
 
 For ease of implementation, the full stand-alone Interface Definition Language (IDL) file for the
 winsi2 interface (section 3.1) is provided. Some of the data types and structures used by this protocol
@@ -6094,7 +6034,8 @@ Release: April 23, 2024
 
 73 / 80
 
- #define MIDL_PASS
+
+ #define MIDL_PASS
 
  typedef handle_t WINSIF2_HANDLE;
 
@@ -6120,7 +6061,8 @@ Release: April 23, 2024
 
 74 / 80
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6186,7 +6128,8 @@ Release: April 23, 2024
 
 75 / 80
 
-<2> Section 2.2.2.7: In Windows 2000 Server operating system and later if the value of the
+
+<2> Section 2.2.2.7: In Windows 2000 Server operating system and later if the value of the
 WINSPriorityClass member is other than NORMAL_PRIORITY_CLASS or HIGH_PRIORITY_CLASS, the
 system assumes the latter.
 
@@ -6228,7 +6171,8 @@ Release: April 23, 2024
 
 76 / 80
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6272,7 +6216,8 @@ Release: April 23, 2024
 
 77 / 80
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -6414,7 +6359,8 @@ Methods
 
 78 / 80
 
-   R_WinsDelDbRecs (Opnum 8) 45
+
+   R_WinsDelDbRecs (Opnum 8) 45
    R_WinsDeleteWins (Opnum 15) 52
    R_WinsDoScavenging (Opnum 4) 39
    R_WinsDoScavengingNew (Opnum 21) 58
@@ -6556,7 +6502,8 @@ Remote Administrative Interface: WINS
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Server
+
+Server
    abstract data model (section 3.1.1 25, section
 
 Vendor-extensible fields 12

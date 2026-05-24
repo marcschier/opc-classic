@@ -64,7 +64,8 @@ Release: June 25, 2021
 
 1 / 41
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -271,7 +272,8 @@ Release: June 25, 2021
 
 2 / 41
 
-Date
+
+Date
 
 Revision
 History
@@ -305,204 +307,86 @@ Release: June 25, 2021
 
 3 / 41
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Message Header Syntax](#221-message-header-syntax)
+      - [2.2.1.1 Handshake Header](#2211-handshake-header)
+      - [2.2.1.2 Common Message Header](#2212-common-message-header)
+    - [2.2.2 Message-Specific Syntax](#222-message-specific-syntax)
+      - [2.2.2.1 Connect Message](#2221-connect-message)
+      - [2.2.2.2 Connect Response Message](#2222-connect-response-message)
+      - [2.2.2.3 Collect Data Message](#2223-collect-data-message)
+      - [2.2.2.4 Collect Data Response Message](#2224-collect-data-response-message)
+        - [2.2.2.4.1 RssiSampleDesc Item](#22241-rssisampledesc-item)
+        - [2.2.2.4.2 LinkSpeedSampleDesc Item](#22242-linkspeedsampledesc-item)
+        - [2.2.2.4.3 RetrySampleDesc Item](#22243-retrysampledesc-item)
+        - [2.2.2.4.4 XmittedFragSampleDesc Item](#22244-xmittedfragsampledesc-item)
+        - [2.2.2.4.5 FcsErrorSampleDesc Item](#22245-fcserrorsampledesc-item)
+        - [2.2.2.4.6 RecvdFragSampleDesc Item](#22246-recvdfragsampledesc-item)
+      - [2.2.2.5 Force BSS List Scan Message](#2225-force-bss-list-scan-message)
+      - [2.2.2.6 Force BSS List Scan Response Message](#2226-force-bss-list-scan-response-message)
+      - [2.2.2.7 Get BSS List Message](#2227-get-bss-list-message)
+      - [2.2.2.8 Get BSS List Response Message](#2228-get-bss-list-response-message)
+        - [2.2.2.8.1 BssDesc Item](#22281-bssdesc-item)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Initiator Details](#31-initiator-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Requesting Diagnostics Data](#3141-requesting-diagnostics-data)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a Handshake Header](#3151-receiving-a-handshake-header)
+      - [3.1.5.2 Receiving a Connect Response Message](#3152-receiving-a-connect-response-message)
+      - [3.1.5.3 Receiving a Collect Data Response Message](#3153-receiving-a-collect-data-response-message)
+      - [3.1.5.4 Receiving a Force BSS List Scan Response Message](#3154-receiving-a-force-bss-list-scan-response-message)
+      - [3.1.5.5 Receiving a Get BSS List Response Message](#3155-receiving-a-get-bss-list-response-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Per-Session Response Timer Expiry](#3161-per-session-response-timer-expiry)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Sink Details](#32-sink-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Startup Trigger](#3241-startup-trigger)
+      - [3.2.4.2 Incoming TCP Connection Accepted](#3242-incoming-tcp-connection-accepted)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Handshake Header](#3251-receiving-a-handshake-header)
+      - [3.2.5.2 Receiving a Connect Message](#3252-receiving-a-connect-message)
+      - [3.2.5.3 Receiving a Collect Data Message](#3253-receiving-a-collect-data-message)
+      - [3.2.5.4 Receiving a Force BSS List Scan Message](#3254-receiving-a-force-bss-list-scan-message)
+      - [3.2.5.5 Receiving a Get BSS List Message](#3255-receiving-a-get-bss-list-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Per-Network Interface Object Wireless Statistics Monitor Timer Expiry](#3261-per-network-interface-object-wireless-statistics-monitor-timer-expiry)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example 1: Querying a Wireless Sink Supporting Runtime Diagnostics](#41-example-1-querying-a-wireless-sink-supporting-runtime-diagnostics)
+  - [4.2 Example 2: Querying a Wired Sink](#42-example-2-querying-a-wired-sink)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Message Header Syntax .............................................................................. 10
-Handshake Header ................................................................................ 10
-Common Message Header ...................................................................... 10
-Message-Specific Syntax ............................................................................. 11
-Connect Message .................................................................................. 11
-Connect Response Message .................................................................... 12
-Collect Data Message ............................................................................ 13
-Collect Data Response Message .............................................................. 13
-RssiSampleDesc Item ...................................................................... 15
-LinkSpeedSampleDesc Item .............................................................. 15
-RetrySampleDesc Item..................................................................... 16
-XmittedFragSampleDesc Item ........................................................... 16
-FcsErrorSampleDesc Item ................................................................. 16
-RecvdFragSampleDesc Item ............................................................. 16
-Force BSS List Scan Message .................................................................. 17
-Force BSS List Scan Response Message ................................................... 17
-Get BSS List Message ............................................................................ 17
-Get BSS List Response Message .............................................................. 17
-BssDesc Item .................................................................................. 17
-
-2.2.2.4.1
-2.2.2.4.2
-2.2.2.4.3
-2.2.2.4.4
-2.2.2.4.5
-2.2.2.4.6
-
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-
-2.2.2.8.1
-
-3.1
-
-3.1.5
-
-3.1.4.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 20
-Initiator Details ................................................................................................ 20
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Requesting Diagnostics Data .................................................................. 22
-Message Processing Events and Sequencing Rules .......................................... 22
-Receiving a Handshake Header ............................................................... 22
-Receiving a Connect Response Message ................................................... 23
-Receiving a Collect Data Response Message ............................................. 23
-Receiving a Force BSS List Scan Response Message .................................. 23
-Receiving a Get BSS List Response Message ............................................. 24
-Timer Events .............................................................................................. 24
-Per-Session Response Timer Expiry ......................................................... 24
-Other Local Events ...................................................................................... 24
-Sink Details ..................................................................................................... 24
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 27
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3.2.1
-3.2.2
-
-3.1.6.1
-
-3.1.6
-
-3.1.7
-
-3.2
-
-[MS-QDP] - v20210625
-Quality Windows Audio/Video Experience (qWave): Wireless Diagnostics Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-4 / 41
-
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.2.6
-
-3.2.6.1
-
-3.2.7
-
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 28
-Startup Trigger ..................................................................................... 28
-Incoming TCP Connection Accepted ......................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-Receiving a Handshake Header ............................................................... 28
-Receiving a Connect Message ................................................................. 28
-Receiving a Collect Data Message............................................................ 29
-Receiving a Force BSS List Scan Message ................................................. 29
-Receiving a Get BSS List Message ........................................................... 30
-Timer Events .............................................................................................. 30
-Per-Network Interface Object Wireless Statistics Monitor Timer Expiry ......... 30
-Other Local Events ...................................................................................... 31
-
-4  Protocol Examples ................................................................................................. 32
-Example 1: Querying a Wireless Sink Supporting Runtime Diagnostics .................... 32
-Example 2: Querying a Wired Sink ..................................................................... 34
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 37
-Security Considerations for Implementers ........................................................... 37
-Index of Security Parameters ............................................................................ 37
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 38
-
-7  Change Tracking .................................................................................................... 39
-
-8  Index ..................................................................................................................... 40
-
-[MS-QDP] - v20210625
-Quality Windows Audio/Video Experience (qWave): Wireless Diagnostics Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-5 / 41
-
-1  Introduction
+## 1 Introduction
 
 This is a specification of the Quality Windows Audio/Video Experience (qWave): Wireless Diagnostics
 Protocol.
@@ -514,7 +398,7 @@ device, including the channel it is on and whether it registers interference.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -575,7 +459,8 @@ Release: June 25, 2021
 
 6 / 41
 
-MAC Service Data Unit (MSDU): A term used in the context of IEEE 802.11 [IEEE802.11-2007]
+
+MAC Service Data Unit (MSDU): A term used in the context of IEEE 802.11 [IEEE802.11-2007]
 
 technologies to identify a unit of data that is received from the LLC sub-layer.
 
@@ -636,7 +521,7 @@ wireless radio: The method for transmitting and receiving data over the air.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -650,7 +535,8 @@ Release: June 25, 2021
 
 7 / 41
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -678,12 +564,12 @@ September 1981, https://www.rfc-editor.org/info/rfc791
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-QWAVE] Microsoft Corporation, "Quality Windows Audio/Video Experience (qWAVE)",
 http://msdn.microsoft.com/en-us/library/aa374110(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies the Quality Windows Audio/Video Experience (qWave): Wireless Diagnostics
 Protocol (qWave-WD), which operates above the TCP/IP protocol. As the name suggests, the core
@@ -717,25 +603,26 @@ Quality Windows Audio/Video Experience (qWave): Wireless Diagnostics Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  Runtime diagnostics: This involves the collection of statistical data over a period of time, usually
+
+  Runtime diagnostics: This involves the collection of statistical data over a period of time, usually
 
 over the lifetime of a network connection, and problems are identified as they happen. Sink
 devices that support runtime diagnostics are required to maintain a rolling history of statistical
 counters over the lifetime of its wireless network connection. Due to the potential resource cost of
 implementing this, support for runtime diagnostics is optional.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The qWave-WD protocol operates directly over the TCP/IP protocol, and is a stand-alone protocol. It
 is designed to complement services like Quality of Service (QoS), revolving around the streaming of
 multimedia and real-time content over variable bandwidth networks. For additional information see
 [MSDN-QWAVE].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The qWave-WD protocol operates in the session layer of the ISO/OSI reference model. This
 protocol is relevant only if it is operated between devices connected through the 802.11 [IEEE802.11-
@@ -743,7 +630,7 @@ protocol is relevant only if it is operated between devices connected through th
 
 The actual process of discovering eligible participants is not specified by this protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -759,11 +646,11 @@ The current version is 3.
 
   Capability Negotiation: This protocol does not support capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following standards are applied to the qWave-WD protocol.
 
@@ -782,18 +669,19 @@ Release: June 25, 2021
 
 9 / 41
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 qWave-WD messages MUST be transported over TCP [RFC793] port 2177 over either IPv4
 [RFC791] or IPv6 [RFC2460].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Unless otherwise specified, all multi-byte integer fields are in network byte order.
 
-2.2.1  Message Header Syntax
+#### 2.2.1 Message Header Syntax
 
 All messages of the qWave-WD protocol MUST use and accept one of the following message header
 formats:
@@ -802,7 +690,7 @@ formats:
 
   Message Header (section 2.2.1.2)
 
-2.2.1.1  Handshake Header
+##### 2.2.1.1 Handshake Header
 
 Handshake headers MUST be exchanged between the initiator and sink devices as part of
 establishing a qWave-WD session.
@@ -834,7 +722,7 @@ Reserved_2 (1 byte): A value that MUST be zero and MUST be ignored on receipt.
 
 Version (1 byte): An 8-bit unsigned integer that identifies the protocol version. It MUST be 0x03.
 
-2.2.1.2  Common Message Header
+##### 2.2.1.2 Common Message Header
 
 A common message header MUST be present in every message after a qWave-WD session has
 been established. Each message header contains a common header optionally followed by a
@@ -868,7 +756,8 @@ Release: June 25, 2021
 
 10 / 41
 
-...
+
+...
 
 Message_Size (2 bytes): A 16-bit unsigned integer that specifies the size of the message. This
 
@@ -906,7 +795,7 @@ Message_Specific_Header (variable): An optional message-specific header that cor
 message type identified in the Message_ID field. The formats for message-specific headers for all
 message types are defined in Message-Specific Syntax (section 2.2.2).
 
-2.2.2  Message-Specific Syntax
+#### 2.2.2 Message-Specific Syntax
 
 All messages of the qWave-WD protocol MUST conform to the following message-specific formats:
 
@@ -930,7 +819,7 @@ Force BSS List Scan Response Message (section 2.2.2.6)
 
   Get BSS List Response Message (section 2.2.2.8)
 
-2.2.2.1  Connect Message
+##### 2.2.2.1 Connect Message
 
 An initiator device MUST send a connect message to request the profile of a target sink device.
 This message MUST follow a successful session handshake.
@@ -942,10 +831,11 @@ Release: June 25, 2021
 
 11 / 41
 
-The connect message has no message-specific header following the Common Message
+
+The connect message has no message-specific header following the Common Message
 Header (section 2.2.1.2).
 
-2.2.2.2  Connect Response Message
+##### 2.2.2.2 Connect Response Message
 
 A sink device MUST send a connect response message in reply to a Connect
 Message (section 2.2.2.1).
@@ -1021,7 +911,8 @@ Release: June 25, 2021
 
 12 / 41
 
-SSID_Length (4 bytes): A 32-bit unsigned integer that specifies the length in octets of the SSID
+
+SSID_Length (4 bytes): A 32-bit unsigned integer that specifies the length in octets of the SSID
 
 field. If the device is not connected wirelessly, this value MUST be zero. Otherwise, this value
 MUST be greater than zero and less than or equal to 0x00000020.
@@ -1065,7 +956,7 @@ connected to the access point. If the device is not connected wirelessly, this v
 
 Reserved_3 (3 bytes): A value that MUST be zero and MUST be ignored on receipt.
 
-2.2.2.3  Collect Data Message
+##### 2.2.2.3 Collect Data Message
 
 An initiator device sends a collect data message to request diagnostic data pertaining to the
 wireless network to which the sink device is connected. The initiator device MAY<1> send this
@@ -1075,7 +966,7 @@ Diag_Support_Level field in section 2.2.2.2.
 The collect data message has no message-specific header following the Common Message
 Header (section 2.2.1.2).
 
-2.2.2.4  Collect Data Response Message
+##### 2.2.2.4 Collect Data Response Message
 
 A sink device sends a collect data response message in reply to a Collect Data
 Message (section 2.2.2.3). The sink device SHOULD send the response even if it is not connected to a
@@ -1091,7 +982,8 @@ Release: June 25, 2021
 
 13 / 41
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1165,7 +1057,8 @@ Release: June 25, 2021
 
 14 / 41
 
-Recv_Error_Average (4 bytes): A 32-bit unsigned integer that identifies the average of the most
+
+Recv_Error_Average (4 bytes): A 32-bit unsigned integer that identifies the average of the most
 recent 100 samples of Retry_Delta_Value (section 2.2.2.4.3) / Xmitted_Frag_Delta_Value
 (section 2.2.2.4.4), expressed as 0.000001 units. More information is available in section 3.2.
 
@@ -1218,7 +1111,7 @@ ordering of RecvdFragSampleDesc items in this message MUST represent the actual 
 time order, going from oldest to latest. The count of RecvdFragSampleDesc items is equal to the
 value of History_Length.
 
-2.2.2.4.1 RssiSampleDesc Item
+###### 2.2.2.4.1 RssiSampleDesc Item
 
 Each RssiSampleDesc item MUST have the following 4-octet structure.
 
@@ -1247,7 +1140,8 @@ Release: June 25, 2021
 
 15 / 41
 
-2.2.2.4.2 LinkSpeedSampleDesc Item
+
+###### 2.2.2.4.2 LinkSpeedSampleDesc Item
 
 Each LinkSpeedSampleDesc item MUST have the following 4-octet structure.
 
@@ -1268,7 +1162,7 @@ Link_Speed_Value (4 bytes): A 32-bit unsigned integer that identifies the record
 
 the network interface at a specific point in time. This is measured in bits per second.
 
-2.2.2.4.3 RetrySampleDesc Item
+###### 2.2.2.4.3 RetrySampleDesc Item
 
  Each RetrySampleDesc item MUST have the following 4-octet structure.
 
@@ -1291,7 +1185,7 @@ between two successive samples in the number of MSDU/MMPDUs successfully transmi
 one or more retransmissions for the IEEE 802.11 [IEEE802.11-2007] network interface at a
 specific point in time.
 
-2.2.2.4.4 XmittedFragSampleDesc Item
+###### 2.2.2.4.4 XmittedFragSampleDesc Item
 
 Each XmittedFragSampleDesc item MUST have the following 4-octet structure.
 
@@ -1314,7 +1208,7 @@ change (between two successive samples) in the "number of MPDUs with an individu
 the address 1 field and MPDUs that have a multicast address with types Data or Management" for
 the IEEE 802.11 [IEEE802.11-2007] network interface at a specific point in time.
 
-2.2.2.4.5 FcsErrorSampleDesc Item
+###### 2.2.2.4.5 FcsErrorSampleDesc Item
 
 Each FcsErrorSampleDesc item MUST have the following 4-octet structure.
 
@@ -1337,7 +1231,7 @@ Fcs_Error_Delta_Value (4 bytes): A 32-bit unsigned integer that identifies the r
 has been detected in a received MPDU" for the IEEE 802.11 [IEEE802.11-2007] network interface
 at a specific point in time.
 
-2.2.2.4.6 RecvdFragSampleDesc Item
+###### 2.2.2.4.6 RecvdFragSampleDesc Item
 
 [MS-QDP] - v20210625
 Quality Windows Audio/Video Experience (qWave): Wireless Diagnostics Protocol
@@ -1346,7 +1240,8 @@ Release: June 25, 2021
 
 16 / 41
 
-Each RecvdFragSampleDesc item MUST have the following 4-octet structure.
+
+Each RecvdFragSampleDesc item MUST have the following 4-octet structure.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1366,7 +1261,7 @@ Recvd_Frag_Delta_Value (4 bytes): A 32-bit unsigned integer that identifies the 
 (between two successive samples) in the "number of successfully received Data or Management
 MPDUs" for the IEEE 802.11 [IEEE802.11-2007] network interface at a specific point in time.
 
-2.2.2.5  Force BSS List Scan Message
+##### 2.2.2.5 Force BSS List Scan Message
 
 An initiator device MUST send a force BSS list scan message to request that the sink update its list
 of BSS entries.
@@ -1374,7 +1269,7 @@ of BSS entries.
 The force BSS list scan message has no message-specific header following the Common Message
 Header (section 2.2.1.2).
 
-2.2.2.6  Force BSS List Scan Response Message
+##### 2.2.2.6 Force BSS List Scan Response Message
 
 A sink device sends a force BSS list scan response message in reply to a Force BSS List Scan
 Message (section 2.2.2.5). The sink device SHOULD send the response even if it is not connected to a
@@ -1383,7 +1278,7 @@ wireless network.
 The Force BSS List Scan message has no message-specific header following the Common Message
 Header (section 2.2.1.2).
 
-2.2.2.7  Get BSS List Message
+##### 2.2.2.7 Get BSS List Message
 
 An initiator device MUST send a get BSS list message to request a list of BSS information from a
 sink device. The sink device SHOULD send the response even if it is not connected to a wireless
@@ -1392,7 +1287,7 @@ network.
 The Get BSS List message has no message-specific header following the Common Message
 Header (section 2.2.1.2).
 
-2.2.2.8  Get BSS List Response Message
+##### 2.2.2.8 Get BSS List Response Message
 
 A sink device sends a get BSS list response message in reply to a Get BSS List
 Message (section 2.2.2.7).
@@ -1417,7 +1312,7 @@ BssDescs (variable): A list of BssDesc (section 2.2.2.8.1) items. Each BssDesc i
 characteristics of a BSS that are visible at the sink device. Note that any two BssDesc items do
 not have to be of the same size.
 
-2.2.2.8.1 BssDesc Item
+###### 2.2.2.8.1 BssDesc Item
 
 [MS-QDP] - v20210625
 Quality Windows Audio/Video Experience (qWave): Wireless Diagnostics Protocol
@@ -1426,7 +1321,8 @@ Release: June 25, 2021
 
 17 / 41
 
-Each BssDesc item has the following packet format.
+
+Each BssDesc item has the following packet format.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1508,7 +1404,8 @@ Release: June 25, 2021
 
 18 / 41
 
-Value
+
+Value
 
 Meaning
 
@@ -1553,11 +1450,12 @@ Release: June 25, 2021
 
 19 / 41
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-QDP].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 In qWave-WD, a device MAY<2> take on the role of the initiator or the sink. An application that is
 interested in enlisting the services of the qWave-WD Protocol invokes the role of the initiator. The
@@ -1565,7 +1463,7 @@ initiator needs to know the target device (the sink) that it needs to query. The
 discovering the appropriate sink device is beyond the scope of the protocol and is left up to the
 application.
 
-3.1  Initiator Details
+### 3.1 Initiator Details
 
 The following figure represents the state machine for the initiator role.
 
@@ -1578,7 +1476,8 @@ Release: June 25, 2021
 
 20 / 41
 
-Applicable message request/response pairs for this role are defined as follows:
+
+Applicable message request/response pairs for this role are defined as follows:
 
  Sent by initiator
 
@@ -1605,7 +1504,7 @@ Get BSS List Response Message (section 2.2.2.8)
 If the Connect Response, Force BSS List Scan Response, or Get BSS List Response messages are
 directed at a sink that is not connected to a wireless network, the sink SHOULD still send a response.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1650,7 +1549,7 @@ Response Message (section 2.2.2.8).
 Note  The previous conceptual data can be implemented by using a variety of techniques. An
 implementation is at liberty to implement such data in any way.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The initiator role has one timer:
 
@@ -1661,19 +1560,20 @@ Release: June 25, 2021
 
 21 / 41
 
-Per-Session Response timer: This one-shot timer, per Diagnostic Session entry, is used to
+
+Per-Session Response timer: This one-shot timer, per Diagnostic Session entry, is used to
 ensure timely response to a Handshake Header (section 2.2.1.1), Connect Message (section 2.2.2.1),
 Collect Data Message (section 2.2.2.3), Force BSS List Scan Message (section 2.2.2.5), or Get BSS
 List Message (section 2.2.2.7). This process works because only one such request can be pended per
 session.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Requesting Diagnostics Data
+##### 3.1.4.1 Requesting Diagnostics Data
 
 When a higher-layer application or protocol requests diagnostics information from a sink identified by
 name or IP address, the initiator MUST use the following procedure:
@@ -1702,9 +1602,9 @@ timer has timed out.
 Note  When this request is completed successfully, the contents of the Connect Response Cache,
 Collect Data Response Cache, and BSS List Response Cache fields are also returned to the caller.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving a Handshake Header
+##### 3.1.5.1 Receiving a Handshake Header
 
 1.  When a Handshake Header (section 2.2.1.1) arrives through a per-session Socket, the initiator
 checks the Handshaking field. If it is not set, the initiator MUST tear down the Diagnostic
@@ -1727,7 +1627,8 @@ Release: June 25, 2021
 
 22 / 41
 
-3.1.5.2  Receiving a Connect Response Message
+
+##### 3.1.5.2 Receiving a Connect Response Message
 
 1.  When a Connect Response Message (section 2.2.2.2) arrives through a per-session Socket, the
 initiator checks if the Common Message Header (section 2.2.1.2) is valid. If not, the initiator
@@ -1757,7 +1658,7 @@ the sink. The Per-Session Response timer MUST be enabled and set to expire after
 
 7.  The initiator then waits for a message to arrive in order to continue processing.
 
-3.1.5.3  Receiving a Collect Data Response Message
+##### 3.1.5.3 Receiving a Collect Data Response Message
 
 1.  When a Collect Data Response Message (section 2.2.2.4) arrives through a per-session Socket,
 
@@ -1784,7 +1685,7 @@ Response timer MUST be enabled and set to expire after 5 seconds.
 
 6.  The initiator now waits for a message to arrive in order to continue processing.
 
-3.1.5.4  Receiving a Force BSS List Scan Response Message
+##### 3.1.5.4 Receiving a Force BSS List Scan Response Message
 
 1.  When a Force BSS List Scan Response Message (section 2.2.2.6) arrives through a per-session
 Socket, the initiator checks if the Common Message Header (section 2.2.1.2) is valid. If not,
@@ -1798,7 +1699,8 @@ Release: June 25, 2021
 
 23 / 41
 
-2.  The initiator checks the state of the Handshaking field. If it is set, the initiator MUST tear down
+
+2.  The initiator checks the state of the Handshaking field. If it is set, the initiator MUST tear down
 
 the Diagnostic Session and return failure of the request to the calling layer.
 
@@ -1813,7 +1715,7 @@ calling layer.
 timer MUST not be reset. The initiator now waits for the Get BSS List Response
 Message (section 2.2.2.8) to arrive before it can continue processing.
 
-3.1.5.5  Receiving a Get BSS List Response Message
+##### 3.1.5.5 Receiving a Get BSS List Response Message
 
 1.  When a Get BSS List Response Message (section 2.2.2.8) arrives through a per-session Socket,
 the initiator checks whether the Common Message Header (section 2.2.1.2) is valid. If not, the
@@ -1834,18 +1736,18 @@ returned in the Get BSS List Response Message-specific header MUST be copied int
 session BSS List Response Cache. The initiator MUST tear down the Diagnostic Session and
 return success of the request to the calling layer.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Per-Session Response Timer Expiry
+##### 3.1.6.1 Per-Session Response Timer Expiry
 
 When this timer starts, the initiator MUST tear down the Diagnostic Session and return failure of
 the request to the calling layer.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Sink Details
+### 3.2 Sink Details
 
 The following figure represents the state machine for the sink role.
 
@@ -1856,7 +1758,8 @@ Release: June 25, 2021
 
 24 / 41
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-QDP].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1896,7 +1799,8 @@ Release: June 25, 2021
 
 25 / 41
 
-3.2.1  Abstract Data Model
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1972,7 +1876,8 @@ Release: June 25, 2021
 
 26 / 41
 
-could be considered the "normal" wireless condition. This history buffer is normally
+
+could be considered the "normal" wireless condition. This history buffer is normally
 implemented as a circular-buffer.
 
 Devices MUST maintain at least 8 seconds worth of history, which equates to 32 rows.
@@ -2035,7 +1940,7 @@ Session using this object.
 Note  The previous conceptual data can be implemented by using a variety of techniques. An
 implementation can implement such data in any way.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The sink role has one timer:
 
@@ -2049,7 +1954,8 @@ Release: June 25, 2021
 
 27 / 41
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 During initialization, the following condition MUST be met:
 
@@ -2060,23 +1966,23 @@ a Connect Response Message (section 2.2.2.2)-specific header. Typical implementa
 set this field with the value 0x00000002 to indicate support for runtime as well as static
 diagnostics (section 1.3).
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Startup Trigger
+##### 3.2.4.1 Startup Trigger
 
 Once the device is ready to perform the sink role, it MUST begin accepting TCP connections on port
 2177.
 
-3.2.4.2  Incoming TCP Connection Accepted
+##### 3.2.4.2 Incoming TCP Connection Accepted
 
 When a new TCP connection is accepted, the sink MUST instantiate a Diagnostic Session. The per-
 session Handshaking field is set. The per-session Socket field is the typical network socket that is
 returned on an accepted TCP connection. The sink then waits for a message to arrive for this new
 session. This wait is usually done asynchronously.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a Handshake Header
+##### 3.2.5.1 Receiving a Handshake Header
 
 1.  When a Handshake Header (section 2.2.1.1) arrives through a per-session Socket, the sink
 checks the Handshaking field. If it is not set, the sink MUST destroy the corresponding
@@ -2093,7 +1999,7 @@ header back to the initiator.
 
  The sink then waits for a message to arrive in order to continue processing.
 
-3.2.5.2  Receiving a Connect Message
+##### 3.2.5.2 Receiving a Connect Message
 
 1.  When a Connect Message (section 2.2.2.1) arrives through a per-session Socket, the sink checks
 
@@ -2119,7 +2025,8 @@ Release: June 25, 2021
 
 28 / 41
 
-4.  The sink MUST then reply to the initiator with a Connect Response Message (section 2.2.2.2).
+
+4.  The sink MUST then reply to the initiator with a Connect Response Message (section 2.2.2.2).
 The Diag_Support_Level field in the Connect Response Message-specific header MUST be
 populated with the value of the Support Level. If the per-network interface object Wireless
 Connected field is set, the W bit MUST be set in the Connect Response Message-specific header
@@ -2134,7 +2041,7 @@ every 250 milliseconds, if it has not already been started.
 
 6.  The sink then waits for the next message to arrive in order to continue processing.
 
-3.2.5.3  Receiving a Collect Data Message
+##### 3.2.5.3 Receiving a Collect Data Message
 
 1.  When a Collect Data Message (section 2.2.2.3) arrives through a per-session Socket, the sink
 
@@ -2176,7 +2083,7 @@ header is set to zero.
 
 order to continue processing.
 
-3.2.5.4  Receiving a Force BSS List Scan Message
+##### 3.2.5.4 Receiving a Force BSS List Scan Message
 
 1.  When a Force BSS List Scan Message (section 2.2.2.5) arrives through a per-session Socket, the
 sink checks if the Common Message Header (section 2.2.1.2) is valid. If not, the sink MUST
@@ -2193,7 +2100,8 @@ Release: June 25, 2021
 
 29 / 41
 
-3.  If the per-network interface object BSS List Updated value for the network interface on which
+
+3.  If the per-network interface object BSS List Updated value for the network interface on which
 
 the message is received is cleared, or if the current time minus the value of per-network interface
 object Last BSS Scan Time is greater than or equal to 60 seconds, then the sink MUST call its
@@ -2207,7 +2115,7 @@ current time.
 
 arrive in order to continue processing.
 
-3.2.5.5  Receiving a Get BSS List Message
+##### 3.2.5.5 Receiving a Get BSS List Message
 
 1.  When a Get BSS List Message (section 2.2.2.7) arrives through a per-session Socket, the sink
 
@@ -2229,9 +2137,9 @@ header will be empty.
 
 order to continue processing.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Per-Network Interface Object Wireless Statistics Monitor Timer Expiry
+##### 3.2.6.1 Per-Network Interface Object Wireless Statistics Monitor Timer Expiry
 
 When this timer starts, the sink MUST take a snapshot of the counters returned by the wireless
 network interface associated with a Network Interface Object and it MUST add a new row to the
@@ -2263,7 +2171,8 @@ Release: June 25, 2021
 
 30 / 41
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2274,16 +2183,17 @@ Release: June 25, 2021
 
 31 / 41
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-QDP].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe several operations used in common scenarios to illustrate the
 functioning of the qWave-WD protocol.
 
-4.1  Example 1: Querying a Wireless Sink Supporting Runtime Diagnostics
+### 4.1 Example 1: Querying a Wireless Sink Supporting Runtime Diagnostics
 
 The following figure shows the layout of an example network that interconnects a media server and a
 TV with an integrated media player.
@@ -2304,7 +2214,8 @@ Release: June 25, 2021
 
 32 / 41
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-QDP].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -2325,7 +2236,8 @@ Release: June 25, 2021
 
 33 / 41
 
-4.  The initiator constructs a Common Message Header (section 2.2.1.2) with the Message_ID field
+
+4.  The initiator constructs a Common Message Header (section 2.2.1.2) with the Message_ID field
 
 set to 0x0009 (Connect) followed by the Connect Message (section 2.2.2.1)-specific header and
 sends it to the sink device.
@@ -2384,7 +2296,7 @@ sink.
 
 17. The sink acknowledges the TCP connection close.
 
-4.2  Example 2: Querying a Wired Sink
+### 4.2 Example 2: Querying a Wired Sink
 
 The following figure shows the layout of an example network that interconnects a media server and a
 TV with an integrated media player.
@@ -2396,7 +2308,8 @@ Release: June 25, 2021
 
 34 / 41
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-QDP].images/page035-img01.png)
 ![Extracted image 2 from page 35]([MS-QDP].images/page035-img02.png)
 <!-- /Extracted images from page 35 -->
@@ -2416,7 +2329,8 @@ Release: June 25, 2021
 
 35 / 41
 
-The following list describes each step in the protocol exchange:
+
+The following list describes each step in the protocol exchange:
 
 1.  The initiator initiates a TCP connection with the sink device at destination port 2177.
 
@@ -2454,13 +2368,14 @@ Release: June 25, 2021
 
 36 / 41
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2471,7 +2386,8 @@ Release: June 25, 2021
 
 37 / 41
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2521,7 +2437,8 @@ Release: June 25, 2021
 
 38 / 41
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2558,7 +2475,8 @@ Release: June 25, 2021
 
 39 / 41
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2699,7 +2617,8 @@ Quality Windows Audio/Video Experience (qWave): Wireless Diagnostics Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-   message processing
+
+   message processing
       Collect Data Message - receiving 29
       Connect Message - receiving 28
       Force BSS List Scan Message - receiving 29

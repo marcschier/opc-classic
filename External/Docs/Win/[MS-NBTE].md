@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 31
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -294,7 +295,8 @@ Release: April 23, 2024
 
 2 / 31
 
-Date
+
+Date
 
 Revision
 History
@@ -409,157 +411,67 @@ Release: April 23, 2024
 
 3 / 31
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 NetBIOS Name Syntax](#221-netbios-name-syntax)
+    - [2.2.2 MULTIHOMED NAME REGISTRATION REQUEST](#222-multihomed-name-registration-request)
+    - [2.2.3 LMHOSTS File Syntax](#223-lmhosts-file-syntax)
+      - [2.2.3.1 Predefined Keywords in LMHOSTS File](#2231-predefined-keywords-in-lmhosts-file)
+      - [2.2.3.2 Creating Lmhosts Entries for Specific NetBIOS Names](#2232-creating-lmhosts-entries-for-specific-netbios-names)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 NetBIOS End Node Details](#31-netbios-end-node-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Registering a NetBIOS Name](#3141-registering-a-netbios-name)
+      - [3.1.4.2 Resolving a NetBIOS Name](#3142-resolving-a-netbios-name)
+        - [3.1.4.2.1 NBNS Selection](#31421-nbns-selection)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Handling a NAME REGISTRATION REQUEST](#3151-handling-a-name-registration-request)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+    - [3.1.8 Using the LMHOSTS File to Resolve a Name Query](#318-using-the-lmhosts-file-to-resolve-a-name-query)
+      - [3.1.8.1 Using a #INCLUDE LMHOSTS File](#3181-using-a-include-lmhosts-file)
+      - [3.1.8.2 Alternate Block Processing](#3182-alternate-block-processing)
+  - [3.2 NBNS Details](#32-nbns-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Handling a NAME REGISTRATION REQUEST (GROUP)](#3251-handling-a-name-registration-request-group)
+      - [3.2.5.2 Handling a MULTIHOMED NAME REGISTRATION REQUEST (GROUP)](#3252-handling-a-multihomed-name-registration-request-group)
+      - [3.2.5.3 Handling a MULTIHOMED NAME REGISTRATION REQUEST (UNIQUE)](#3253-handling-a-multihomed-name-registration-request-unique)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 NetBIOS Registration Example](#41-netbios-registration-example)
+  - [4.2 LMHOSTS File Example](#42-lmhosts-file-example)
+- [5 Security Considerations](#5-security-considerations)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-NetBIOS Name Syntax ................................................................................ 10
-MULTIHOMED NAME REGISTRATION REQUEST ............................................... 10
-LMHOSTS File Syntax .................................................................................. 10
-Predefined Keywords in LMHOSTS File ..................................................... 11
-Creating Lmhosts Entries for Specific NetBIOS Names ............................... 11
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-2.2.3.2
-
-3.1
-
-3.1.5
-
-3.1.5.1
-
-3.1.4.2.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.6
-3.1.7
-3.1.8
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 13
-NetBIOS End Node Details ................................................................................. 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 14
-Registering a NetBIOS Name .................................................................. 14
-Resolving a NetBIOS Name .................................................................... 15
-NBNS Selection ............................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Handling a NAME REGISTRATION REQUEST.............................................. 15
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-Using the LMHOSTS File to Resolve a Name Query .......................................... 16
-Using a #INCLUDE LMHOSTS File ............................................................ 17
-Alternate Block Processing ..................................................................... 17
-NBNS Details ................................................................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Handling a NAME REGISTRATION REQUEST (GROUP) ................................ 18
-Handling a MULTIHOMED NAME REGISTRATION REQUEST (GROUP) ............ 18
-Handling a MULTIHOMED NAME REGISTRATION REQUEST (UNIQUE) .......... 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.1.8.1
-3.1.8.2
-
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 19
-NetBIOS Registration Example ........................................................................... 19
-LMHOSTS File Example ..................................................................................... 21
-
-4.1
-4.2
-
-5  Security Considerations ......................................................................................... 22
-Security Considerations for Implementers ........................................................... 22
-
-5.1
-
-4 / 31
-
-[MS-NBTE] - v20240423
-NetBIOS over TCP (NBT) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5.2
-
-Index of Security Parameters ............................................................................ 22
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 29
-
-8  Index ..................................................................................................................... 30
-
-[MS-NBTE] - v20240423
-NetBIOS over TCP (NBT) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 31
-
-1  Introduction
+## 1 Introduction
 
 The NetBIOS over TCP (NBT) Extensions (NetBT) specify the extensions to the NetBIOS over TCP
 (NBT) protocol, as specified in [RFC1001] and [RFC1002]. These extensions modify the syntax of
@@ -568,7 +480,7 @@ allowable NetBIOS names, the behavior of timers, and add support for multihomed 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -632,7 +544,8 @@ Release: April 23, 2024
 
 6 / 31
 
-unique name: A 16-byte, formatted NetBIOS computer name that can have only one IP address
+
+unique name: A 16-byte, formatted NetBIOS computer name that can have only one IP address
 
 assigned to it; that is, only a single NetBIOS node (or processing location) can use this name to
 register for services, as specified in [RFC1001] and [RFC1002].
@@ -649,14 +562,14 @@ NBNS server.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -680,7 +593,7 @@ editor.org/info/rfc1002
 [RFC2132] Alexander, S., and Droms, R., "DHCP Options and BOOTP Vendor Extensions", RFC 2132,
 March 1997, https://www.rfc-editor.org/info/rfc2132
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RAIW] Microsoft Corporation, "Remote Administrative Interface: WINS".
 
@@ -701,10 +614,11 @@ NetBIOS over TCP (NBT) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC4795] Aboba, B., Thaler, D., and Esibov, L., "Link-Local Multicast Name Resolution (LLMNR)", RFC
+
+[RFC4795] Aboba, B., Thaler, D., and Esibov, L., "Link-Local Multicast Name Resolution (LLMNR)", RFC
 4795, January 2007, https://www.rfc-editor.org/info/rfc4795
 
-1.3  Overview
+### 1.3 Overview
 
 NetBIOS resources are referenced by NetBIOS names. An application, representing a resource,
 registers one or more NetBIOS names that it uses to communicate with other hosts on the network.
@@ -727,7 +641,7 @@ name cannot be resolved from the local name cache or by using the normal NetBIOS
 name resolutions, then the NetBIOS name resolution process system can be configured to scan
 the LMHOSTS file on a per-query basis, looking for entries that resolve the query.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 A NetBIOS name might or might not be derived from an Internet host name. The syntax for an
 Internet host name is much more constrained than the syntax for an arbitrary NetBIOS name.
@@ -739,19 +653,19 @@ names within a larger network using an NBNS. However, it is only defined for IPv
 for name resolution has largely been superseded by newer protocols, such as the Link-Local Multicast
 Name Resolution (LLMNR) Protocol [RFC4795] and the Domain Name System (DNS) [RFC1035].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites and preconditions are unchanged from [RFC1001] and [RFC1002].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This extension is applicable for discovering the IPv4 addresses of resources.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There is no versioning or localization support in this extension.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 It is important to understand that the choice of name used by a higher-layer protocol or application is
 up to that protocol or application and not NetBIOS over TCP/IP (NBT). As such, this section
@@ -765,7 +679,8 @@ Release: April 23, 2024
 
 8 / 31
 
-The recommended convention is for higher-layer protocols and applications to use the first 15 bytes of
+
+The recommended convention is for higher-layer protocols and applications to use the first 15 bytes of
 the Internet host name of the machine (padded with spaces if shorter than 15 bytes) followed by a 1-
 byte NetBIOS suffix chosen by the higher-layer protocol or application.<1><2><3>
 
@@ -775,7 +690,7 @@ multiple vendors define the same NetBIOS suffix values. It is up to each higher-
 application to specify what NetBIOS suffix it uses, or how the NetBIOS name is constructed if it does
 not use this recommended convention.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None beyond what is in [RFC1001], [RFC1002], and [RFC2132] section 8.7.
 
@@ -786,17 +701,18 @@ Release: April 23, 2024
 
 9 / 31
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The transport is unchanged from [RFC1002] except that name resolution is supported only over UDP
 and not TCP. The term "NetBIOS over TCP" refers to the standard protocol in the same way as
 [RFC1001] and [RFC1002] do; that is, "TCP" refers to "TCP/IP".
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  NetBIOS Name Syntax
+#### 2.2.1 NetBIOS Name Syntax
 
 [RFC1001] and [RFC1002] are confusing with respect to the definition of the name syntax. [RFC1001]
 section 5.2 states: "The name space is flat and uses sixteen alphanumeric characters. Names may not
@@ -819,13 +735,13 @@ names are inherently case-sensitive.
 It is important to understand that the choice of name used by a higher-layer protocol or application is
 up to that protocol or application and not NetBIOS.
 
-2.2.2  MULTIHOMED NAME REGISTRATION REQUEST
+#### 2.2.2 MULTIHOMED NAME REGISTRATION REQUEST
 
 [RFC1002] section 4.2.2 defines the format of a NAME REGISTRATION REQUEST. This extension adds
 a MULTIHOMED NAME REGISTRATION REQUEST with an identical format except that the OPCODE field
 MUST be set to 0xF (15).
 
-2.2.3  LMHOSTS File Syntax
+#### 2.2.3 LMHOSTS File Syntax
 
 The LMHOSTS file is a static text file of NetBIOS name and IPv4 addresses along with additional
 directives for processing, including a #INCLUDE <filename> mechanism that includes the following:
@@ -855,7 +771,8 @@ NetBIOS over TCP (NBT) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IP address, or 2) resolve a NetBIOS service name to an address. Example: "131.107.7.29
+
+IP address, or 2) resolve a NetBIOS service name to an address. Example: "131.107.7.29
 emailsrv1".
 
   ServiceName entries consist of an IPv4 address and a NetBIOS service name that specifies a 16-
@@ -873,7 +790,7 @@ Entry Names are not case-sensitive.
 
 The LMHOSTS file has an implementation-specific file location.<5>
 
-2.2.3.1  Predefined Keywords in LMHOSTS File
+##### 2.2.3.1 Predefined Keywords in LMHOSTS File
 
 The LMHOSTS file can contain predefined keywords that are prefixed with the pound sign (#)
 character. The following LMHOSTS keywords table lists possible LMHOSTS keywords.
@@ -914,7 +831,7 @@ A tag that can follow the name of an entry. If present, that name can have multi
 IP addresses reflected in multiple entries with the same IP address. This allows the
 reading of an LMHOSTS file to continue after a successful match of an entry.
 
-2.2.3.2  Creating Lmhosts Entries for Specific NetBIOS Names
+##### 2.2.3.2 Creating Lmhosts Entries for Specific NetBIOS Names
 
 A ComputerName in the LMHOSTS file can be up to 15 bytes in length. Names shorter than 15 bytes
 are padded with spaces.
@@ -940,7 +857,8 @@ NetBIOS over TCP (NBT) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  <SpacePadding> is needed to ensure that the full NetBIOS name is 16 bytes. If the Name portion
+
+  <SpacePadding> is needed to ensure that the full NetBIOS name is 16 bytes. If the Name portion
 
 has fewer than 15 bytes, it MUST be padded with spaces up to 15 bytes.
 
@@ -957,11 +875,12 @@ Release: April 23, 2024
 
 12 / 31
 
-3  Protocol Details
 
-3.1  NetBIOS End Node Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 NetBIOS End Node Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1016,7 +935,7 @@ file will be read if the LMHOSTS file exists.
 
   LMHostsFileLocation: The location of the LMHOSTS file.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There is an lmhost_include timer used to determine whether an LMHOSTS file can be read (see
 section 3.1.6).
@@ -1034,11 +953,12 @@ Release: April 23, 2024
 
 13 / 31
 
-[RFC1002] specifies the use of a periodic REFRESH_TIMER for each entry in the Local Name Table,
+
+[RFC1002] specifies the use of a periodic REFRESH_TIMER for each entry in the Local Name Table,
 with a period of Refresh Timeout. This extension clarifies that the REFRESH_TIMER for each name is
 kept globally, not per-interface.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The rules for initialization are specified in [RFC1002] and [HYBRID]. However, they are ambiguous as
 to how an end node chooses a node type.  This document clarifies the rules as follows.
@@ -1062,14 +982,14 @@ LMHostsFileLocation, the lmhost_include timer MUST be initialized to 6 seconds.
 The NBT system MAY read the centralized LMHOSTS file before a user logs on to the computer as part
 of NBT initialization.<9><10>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Except as specified in the following sections, the rules for handling higher-layer triggered events are
 as specified in [RFC1002] section 5.1, and [HYBRID]. This document clarifies that whenever
 [RFC1002] or [HYBRID] specify that a packet is to be broadcast, the end node MUST broadcast the
 packet on all interfaces in its Interface List unless otherwise specified.
 
-3.1.4.1  Registering a NetBIOS Name
+##### 3.1.4.1 Registering a NetBIOS Name
 
 When a higher-layer protocol or application requests that a NetBIOS name be registered on a given
 interface, processing MUST be done as specified in [RFC1002] section 5.1 and [HYBRID] according to
@@ -1099,7 +1019,8 @@ Release: April 23, 2024
 
 14 / 31
 
-If the registration completes successfully and an entry already exists in the Local Name Table, then
+
+If the registration completes successfully and an entry already exists in the Local Name Table, then
 the given interface MUST be added to the entry's Interface List, with its Conflict Detected Flag
 cleared. The Refresh Timeout MUST then be set, unless its value would increase by doing so, to the
 TTL in the POSITIVE NAME REGISTRATION RESPONSE, or to 5 minutes if the TTL is less than 5
@@ -1108,7 +1029,7 @@ minutes.
 If the registration fails and an entry already exists in the Local Name Table, then the given interface
 MUST be added to the entry's Interface List, with its Conflict Detected Flag set.
 
-3.1.4.2  Resolving a NetBIOS Name
+##### 3.1.4.2 Resolving a NetBIOS Name
 
 The rules for resolving a NetBIOS name are unchanged from [RFC1002] section 5.1 and [HYBRID]
 except as follows.
@@ -1126,7 +1047,7 @@ consulted in turn until one responds or the end of the list is reached.
 If the end of the list of NBNS is reached, the Name Query will be processed against a local file
 LMHOSTS (see section 3.1.8) if ReadLMHostsFile is TRUE.
 
-3.1.4.2.1 NBNS Selection
+###### 3.1.4.2.1 NBNS Selection
 
 If the application or higher-layer protocol specified a specific interface, then the NBNS list MUST be
 the NBNS Address List for that interface.
@@ -1135,7 +1056,7 @@ If the application or higher-layer protocol did not specify a specific interface
 be formed by concatenating the NBNS Address List for each interface in the Interface List, in the
 order the interfaces appear in the Interface List.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The rules for processing NetBIOS messages are unchanged from [RFC1002] section 5.1 and
 [HYBRID]. This document clarifies that whenever [RFC1002] or [HYBRID] specify that a packet is to
@@ -1144,7 +1065,7 @@ otherwise specified. In addition, whenever [RFC1002] or [HYBRID] state that the 
 Flag is set, this refers to the Conflict Detected Flag for the interface over which the relevant
 message was received, unless otherwise specified.
 
-3.1.5.1  Handling a NAME REGISTRATION REQUEST
+##### 3.1.5.1 Handling a NAME REGISTRATION REQUEST
 
 [RFC1002] section 5.1 and [HYBRID] are somewhat confusing as to how a node is to respond to a
 NAME REGISTRATION REQUEST when the name matches an entry in the local name table with the
@@ -1164,15 +1085,16 @@ NetBIOS over TCP (NBT) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In addition, the node MUST NOT send a NEGATIVE NAME REGISTRATION RESPONSE if the name
+
+In addition, the node MUST NOT send a NEGATIVE NAME REGISTRATION RESPONSE if the name
 begins with an asterisk (*).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 If the lmhost_include timer expires, the file MUST be closed, and the query completed with an error.
 See Alternate Block Processing (section 3.1.8.2).
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 When an address change occurs on an interface, then the node MUST do the following.
 
@@ -1185,7 +1107,7 @@ release procedure specified in [RFC1001] section 15.4.2 MUST be performed first.
 Node release responds with a NEGATIVE NAME RELEASE RESPONSE or does not respond at all, then it
 MUST be followed by the B-Node release procedure specified in [RFC1001] section 15.4.1.
 
-3.1.8  Using the LMHOSTS File to Resolve a Name Query
+#### 3.1.8 Using the LMHOSTS File to Resolve a Name Query
 
 When NetBIOS name resolution, which uses NetBIOS protocols, does not result in successful name
 resolution, and if ReadLMHostsFile is TRUE and the LMHOSTS file exists, the ComputersQuery
@@ -1232,11 +1154,12 @@ NetBIOS over TCP (NBT) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name resolution returns the list of matching IP addresses.
+
+Name resolution returns the list of matching IP addresses.
 
 The #INCLUDE facility in LMHOSTS can result in reading additional files.
 
-3.1.8.1  Using a #INCLUDE LMHOSTS File
+##### 3.1.8.1 Using a #INCLUDE LMHOSTS File
 
 NBT can read LMHOSTS files that are located on other computers. This allows the use of a
 centralized LMHOSTS file that can be accessed through a computer's local LMHOSTS file. Using a
@@ -1251,33 +1174,33 @@ In this example, NBT includes the LMHOSTS file on the public shared folder of th
 implementation MUST detect circular #INCLUDE directives and stop any further processing of the file
 and of the query.
 
-3.1.8.2  Alternate Block Processing
+##### 3.1.8.2 Alternate Block Processing
 
 The #BEGIN_ALTERNATE and #END_ALTERNATE tags allow a block of remote LMHOSTS file locations
 in the reading of the LMHOSTS file. This technique is known as block inclusion.
 
 The files inside an ALTERNATE block MUST be opened and read one at a time and in order.
 
-3.2  NBNS Details
+### 3.2 NBNS Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The data model is unchanged from [RFC1002] and [HYBRID]. This document clarifies that an NBNS
 MUST support storing at least 25 addresses per NetBIOS name.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None beyond what is specified in [RFC1002] and [HYBRID].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The rules for initialization are unchanged from [RFC1002] and [HYBRID].
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Except as specified in the following sections, the rules for processing NetBIOS messages are
 unchanged from [RFC1002] section 5.1.4.
@@ -1289,7 +1212,8 @@ Release: April 23, 2024
 
 17 / 31
 
-3.2.5.1  Handling a NAME REGISTRATION REQUEST (GROUP)
+
+##### 3.2.5.1 Handling a NAME REGISTRATION REQUEST (GROUP)
 
 When an NBNS receives a NAME REGISTRATION REQUEST for a group name, the server MUST
 handle it as specified in [RFC1002] section 5.1.4.1, except as follows.
@@ -1304,12 +1228,12 @@ address and then append the new address. (This is consistent with the [RFC1002] 
 that an implementation of [RFC1002] without these extensions only supports a maximum of a single
 address.)
 
-3.2.5.2  Handling a MULTIHOMED NAME REGISTRATION REQUEST (GROUP)
+##### 3.2.5.2 Handling a MULTIHOMED NAME REGISTRATION REQUEST (GROUP)
 
 When an NBNS receives a MULTIHOMED NAME REGISTRATION REQUEST for a group name, the
 server MUST handle it the same as a NAME REGISTRATION REQUEST for a group name.
 
-3.2.5.3  Handling a MULTIHOMED NAME REGISTRATION REQUEST (UNIQUE)
+##### 3.2.5.3 Handling a MULTIHOMED NAME REGISTRATION REQUEST (UNIQUE)
 
 When an NBNS receives a MULTIHOMED NAME REGISTRATION REQUEST for a unique name, the
 server MUST handle it the same as a NAME REGISTRATION REQUEST for a unique name as specified
@@ -1319,11 +1243,11 @@ Instead of removing an address when one is already stored, the oldest address MU
 when the maximum number of addresses per name (which is implementation-specific) would be
 exceeded.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None beyond what is specified in [RFC1002] and [HYBRID].
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None beyond what is specified in [RFC1002] and [HYBRID].
 
@@ -1334,13 +1258,14 @@ Release: April 23, 2024
 
 18 / 31
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-NBTE].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  NetBIOS Registration Example
+### 4.1 NetBIOS Registration Example
 
 Consider a multihomed node A with an Internet host name of "EXAMPLE" supporting the extensions
 defined herein.
@@ -1382,7 +1307,8 @@ NetBIOS over TCP (NBT) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  Later, another application tries to register the NetBIOS name EXAMPLE on interface 2. The name
+
+4.  Later, another application tries to register the NetBIOS name EXAMPLE on interface 2. The name
 is already registered on that interface, so a success is immediately returned to the application.
 
 5.  Later, another application tries to register EXAMPLE on interface 1.
@@ -1453,10 +1379,11 @@ NetBIOS over TCP (NBT) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The node replies with a NEGATIVE NAME REGISTRATION RESPONSE because the name is in the
+
+The node replies with a NEGATIVE NAME REGISTRATION RESPONSE because the name is in the
 Local Name Table and no Conflict Detected Flag is set.
 
-4.2  LMHOSTS File Example
+### 4.2 LMHOSTS File Example
 
 The following is an example of an alternate block that might appear in the LMHOSTS file.
 
@@ -1473,13 +1400,14 @@ Release: April 23, 2024
 
 21 / 31
 
-5  Security Considerations
 
-5.1  Security Considerations for Implementers
+## 5 Security Considerations
+
+### 5.1 Security Considerations for Implementers
 
 The security considerations are unchanged from [RFC1001] and [RFC1002].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1490,7 +1418,8 @@ Release: April 23, 2024
 
 22 / 31
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1558,7 +1487,8 @@ NetBIOS over TCP (NBT) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-All NetBIOS names are 16 characters in length. A NetBIOS suffix is the 16th character of the 16-
+
+All NetBIOS names are 16 characters in length. A NetBIOS suffix is the 16th character of the 16-
 character NetBIOS name. The NetBIOS suffix is used by Microsoft Networking software to identify
 functionality installed on the registered device.
 
@@ -1800,7 +1730,8 @@ Domain Controllers
 
 24 / 31
 
-Name
+
+Name
 
 Number  Type  Usage
 
@@ -1916,7 +1847,8 @@ Release: April 23, 2024
 
 25 / 31
 
-The following are the most common types of NetBIOS names that can be used in the WINS database.
+
+The following are the most common types of NetBIOS names that can be used in the WINS database.
 When creating static mappings, these general types are available for selected use.
 
 Type
@@ -2009,7 +1941,8 @@ Release: April 23, 2024
 
 26 / 31
 
-Format
+
+Format
 
 Description
 
@@ -2093,7 +2026,8 @@ Release: April 23, 2024
 
 27 / 31
 
-<9> Section 3.1.3: In Windows because no user name is associated with the computer during startup,
+
+<9> Section 3.1.3: In Windows because no user name is associated with the computer during startup,
 NBT uses a null user name for its credentials when accessing the shared folder where the central
 LMHOSTS file is located.
 
@@ -2114,7 +2048,8 @@ Release: April 23, 2024
 
 28 / 31
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2158,7 +2093,8 @@ Release: April 23, 2024
 
 29 / 31
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2308,7 +2244,8 @@ REQUEST (UNIQUE) 18
 
 30 / 31
 
-   timers 17
+
+   timers 17
 NetBIOS name syntax 10
 NetBIOS Name Syntax message 10
 Normative references 7

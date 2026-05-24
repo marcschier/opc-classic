@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 139
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Release: April 23, 2024
 
 2 / 139
 
-Date
+
+Date
 
 Revision
 History
@@ -522,503 +524,209 @@ Release: April 23, 2024
 
 3 / 139
 
-Table of Contents
 
-1.3
-
-1.3.3
-
-1.1
-1.2
-
-1.3.2.1
-
-1.3.2.2
-
-1.3.3.1
-
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-
-1.3.2.1.1
-1.3.2.1.2
-1.3.2.1.3
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Message Queuing ....................................................................................... 12
-User Messages ........................................................................................... 13
-User Message Types .............................................................................. 13
-Express Message ............................................................................. 13
-Recoverable Message ....................................................................... 13
-Transactional Message ..................................................................... 13
-Message Security .................................................................................. 14
-Queues...................................................................................................... 14
-System Queues .................................................................................... 14
-Source Journaling ....................................................................................... 15
-Positive Source Journaling ...................................................................... 15
-Negative Source Journaling .................................................................... 15
-Acknowledgments ....................................................................................... 15
-Internal Acknowledgments ..................................................................... 15
-Administration Acknowledgments ............................................................ 16
-Message Tracing ......................................................................................... 16
-Message Routing ........................................................................................ 16
-Typical Scenario ......................................................................................... 17
-Relationship to Other Protocols .......................................................................... 18
-Prerequisites/Preconditions ............................................................................... 19
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 19
-Vendor-Extensible Fields ................................................................................... 20
-Standards Assignments ..................................................................................... 20
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.6
-1.3.7
-1.3.8
-
-1.3.5.1
-1.3.5.2
-
-1.3.4.1
-1.3.4.2
-
-1.3.5
-
-1.3.4
-
-2.2
-
-2.1
-
-2.2.3
-
-2.2.3.1
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2.1.1
-2.1.2
-
-2  Messages ............................................................................................................... 21
-Transport ........................................................................................................ 21
-Protocol Session ......................................................................................... 21
-Ping Message ............................................................................................. 21
-Message Syntax ............................................................................................... 21
-InternalHeader ........................................................................................... 22
-ConnectionParameters Packet ...................................................................... 23
-ConnectionParametersHeader ................................................................. 24
-EstablishConnection Packet .......................................................................... 24
-EstablishConnectionHeader .................................................................... 25
-OrderAck Packet ......................................................................................... 27
-OrderAck Body ..................................................................................... 28
-FinalAck Packet .......................................................................................... 29
-FinalAck Body ....................................................................................... 30
-SessionAck Packet ...................................................................................... 31
-Ping Packet ................................................................................................ 32
-Directory Service Schema Elements ................................................................... 33
-Cryptographic Data Structures ........................................................................... 34
-PUBLICKEYBLOB ......................................................................................... 34
-SIMPLEBLOB .............................................................................................. 34
-
-2.2.6
-2.2.7
-
-2.4.1
-2.4.2
-
-2.2.5.1
-
-2.2.4.1
-
-2.3
-2.4
-
-2.2.5
-
-2.2.4
-
-3  Protocol Details ..................................................................................................... 36
-Common Details .............................................................................................. 36
-Abstract Data Model .................................................................................... 36
-
-3.1.1
-
-3.1
-
-[MS-MQQB] - v20240423
-Message Queuing (MSMQ): Message Queuing Binary Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 139
-
-3.1.1.1
-
-3.1.1.7
-
-3.1.1.3.1
-
-3.1.1.1.1
-
-3.1.1.2
-3.1.1.3
-
-3.1.1.6.1
-3.1.1.6.2
-
-3.1.1.4
-3.1.1.5
-3.1.1.6
-
-3.1.1.3.2
-3.1.1.3.3
-3.1.1.3.4
-
-3.1.1.7.1
-3.1.1.7.2
-3.1.1.7.3
-
-3.1.1.3.1.1
-3.1.1.3.1.2
-3.1.1.3.1.3
-
-3.1.1.1.1.1
-3.1.1.1.1.2
-3.1.1.1.1.3
-3.1.1.1.1.4
-3.1.1.1.1.5
-3.1.1.1.1.6
-3.1.1.1.1.7
-3.1.1.1.1.8
-3.1.1.1.1.9
-
-Protocol State ....................................................................................... 36
-State Diagrams ............................................................................... 36
-Session State - Initiator .............................................................. 36
-Session State - Acceptor ............................................................. 37
-Express Message State - Sender .................................................. 38
-Express Message State - Receiver ................................................ 39
-Recoverable Message State - Sender ............................................ 40
-Recoverable Message State - Receiver .......................................... 41
-Transactional Message State - Sender .......................................... 42
-Transactional Message State - Receiver ........................................ 43
-Ping Mechanism State - Initiator .................................................. 44
-Shared Data Elements ........................................................................... 45
-Queue Manager State ............................................................................ 45
-Session State .................................................................................. 47
-OutgoingTransferSequence ......................................................... 50
-OutgoingMessagePosition ............................................................ 51
-NextHop ................................................................................... 51
-Persistent State Storage ................................................................... 51
-CachedSymmetricKey ...................................................................... 52
-CachedUserCert .............................................................................. 52
-Session Message Sequence .................................................................... 52
-Transactional Message Sequence ............................................................ 53
-Acknowledgments ................................................................................. 54
-Session Acknowledgment ................................................................. 54
-Transactional Acknowledgment ......................................................... 55
-Sequence Diagrams .............................................................................. 55
-Session Initialization ........................................................................ 56
-Session with Express Messages Sent .................................................. 56
-Session with Transactional Messages Sent .......................................... 57
-Timers ...................................................................................................... 58
-Session Initialization Timer..................................................................... 59
-3.1.2.1
-Session Cleanup Timer .......................................................................... 59
-3.1.2.2
-Session Retry Connect Timer .................................................................. 59
-3.1.2.3
-Session Ack Wait Timer ......................................................................... 59
-3.1.2.4
-Session Ack Send Timer ......................................................................... 59
-3.1.2.5
-Transactional Ack Wait Timer ................................................................. 60
-3.1.2.6
-Order Ack Send Timer ........................................................................... 60
-3.1.2.7
-MessageIDHistory Cleanup Timer ............................................................ 60
-3.1.2.8
-Ping Response Timer ............................................................................. 60
-3.1.2.9
-ReceiveSymmetricKeyCache Cleanup Timer.............................................. 60
-3.1.2.10
-SendSymmetricKeyCache Cleanup Timer ................................................. 60
-3.1.2.11
-3.1.2.12
-SendBaseSymmetricKeyCache Cleanup Timer ........................................... 61
-3.1.2.13  UserCertCache Cleanup Timer ................................................................ 61
-Initialization ............................................................................................... 61
-Global Initialization ............................................................................... 61
-Session Initialization ............................................................................. 62
-Higher-Layer Triggered Events ..................................................................... 63
-Queue Manager Started Event ................................................................ 63
-Queue Manager Stopped Event ............................................................... 63
-Processing Events and Sequencing Rules ....................................................... 64
-Receiving Any Packet............................................................................. 64
-Identifying Packet Type .................................................................... 64
-Verifying the Signature .................................................................... 64
-Handling Incorrectly Formatted Messages ........................................... 65
-Establish a Protocol Session ................................................................... 65
-Resolve Host Address ....................................................................... 65
-Ping Mechanism .............................................................................. 67
-Sending an EstablishConnection Request Packet .................................. 67
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-
-3.1.4.1
-3.1.4.2
-
-3.1.3.1
-3.1.3.2
-
-3.1.5.2
-
-3.1.5.1
-
-3.1.2
-
-3.1.3
-
-3.1.4
-
-3.1.5
-
-[MS-MQQB] - v20240423
-Message Queuing (MSMQ): Message Queuing Binary Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 139
-
-3.1.5.5
-
-3.1.5.4
-
-3.1.5.3
-
-3.1.5.4.1
-3.1.5.4.2
-
-3.1.5.3.1
-3.1.5.3.2
-
-3.1.5.6
-3.1.5.7
-3.1.5.8
-
-3.1.5.5.1
-3.1.5.5.2
-3.1.5.5.3
-3.1.5.5.4
-3.1.5.5.5
-
-3.1.5.8.1
-3.1.5.8.2
-3.1.5.8.3
-3.1.5.8.4
-3.1.5.8.5
-3.1.5.8.6
-3.1.5.8.7
-3.1.5.8.8
-3.1.5.8.9
-3.1.5.8.10
-
-Receiving an EstablishConnection Packet ................................................. 68
-Request Packet ............................................................................... 68
-Response Packet ............................................................................. 69
-Receiving a ConnectionParameters Packet ................................................ 69
-Request Packet ............................................................................... 70
-Response Packet ............................................................................. 70
-Receiving a SessionAck Packet................................................................ 71
-Mark Acknowledged Messages ........................................................... 71
-Delete Acknowledged Express Messages ............................................. 71
-Delete Acknowledged Recoverable Messages ...................................... 72
-Source Journaling ............................................................................ 72
-Validate Message Counts .................................................................. 72
-Receiving an OrderAck Packet ................................................................ 72
-Receiving a FinalAck Packet .................................................................... 74
-Receiving a UserMessage Packet ............................................................. 75
-Duplicate Detection ......................................................................... 75
-General Processing .......................................................................... 75
-Security ......................................................................................... 78
-SessionHeader Processing ................................................................ 84
-Determining Message Destination ...................................................... 84
-Transactional Message Processing ..................................................... 84
-Recoverable Message Processing ....................................................... 85
-Inserting a Message into a Local Queue .............................................. 86
-Sending a Trace Message ................................................................. 88
-Sending Administration Acknowledgments .......................................... 89
-Closing a Session .................................................................................. 89
-3.1.5.9
-3.1.5.10  Handling an Incoming Transport Connection ............................................. 90
-Receiving Administration Acknowledgments ............................................. 90
-3.1.5.11
-Timer Events .............................................................................................. 90
-Session Retry Connect Timer Event ......................................................... 90
-3.1.6.1
-Session Cleanup Timer Event.................................................................. 91
-3.1.6.2
-Session Ack Wait Timer Event................................................................. 91
-3.1.6.3
-Session Ack Send Timer Event ................................................................ 91
-3.1.6.4
-Transactional Ack Wait Timer Event ......................................................... 92
-3.1.6.5
-Session Initialization Timer Event ............................................................ 92
-3.1.6.6
-MessageIDHistory Cleanup Timer Event ................................................... 92
-3.1.6.7
-Ping Response Timer Event .................................................................... 93
-3.1.6.8
-Order Ack Send Timer Event .................................................................. 93
-3.1.6.9
-ReceiveSymmetricKeyCache Cleanup Timer Event ..................................... 93
-3.1.6.10
-SendSymmetricKeyCache Cleanup Timer Event ........................................ 93
-3.1.6.11
-3.1.6.12
-SendBaseSymmetricKeyCache Cleanup Timer Event .................................. 94
-3.1.6.13  UserCertCache Cleanup Timer Event ....................................................... 94
-Other Local Events ...................................................................................... 94
-Send User Message Event ...................................................................... 94
-General Processing .......................................................................... 95
-Checking for Message Expiration ....................................................... 95
-Updating the UserMessage Packet ..................................................... 96
-Signing the Packet ........................................................................... 97
-Encrypting the Message Body............................................................ 98
-Handling Encryption Errors ......................................................... 100
-Converting MQDSPUBLICKEY to PUBLICKEYBLOB .......................... 101
-Sending the Packet ......................................................................... 101
-Sending Trace Message ................................................................... 101
-Message Position Deleted ...................................................................... 102
-Administration Acknowledgment ....................................................... 102
-Final Acknowledgment .................................................................... 103
-Handling a Network Disconnect .............................................................. 103
-Get Destination Info ............................................................................. 103
-
-3.1.7.1.1
-3.1.7.1.2
-3.1.7.1.3
-3.1.7.1.4
-3.1.7.1.5
-
-3.1.7.1.5.1
-3.1.7.1.5.2
-
-3.1.7.1.6
-3.1.7.1.7
-
-3.1.7.2.1
-3.1.7.2.2
-
-3.1.7.3
-3.1.7.4
-
-3.1.7.2
-
-3.1.7.1
-
-3.1.6
-
-3.1.7
-
-[MS-MQQB] - v20240423
-Message Queuing (MSMQ): Message Queuing Binary Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 139
-
-Get Next Hops ..................................................................................... 104
-3.1.7.5
-Send Ping Request ............................................................................... 105
-3.1.7.6
-Receive Ping Request ........................................................................... 105
-3.1.7.7
-Receive Ping Response ......................................................................... 106
-3.1.7.8
-3.1.7.9
-Ping Response Processed ...................................................................... 106
-3.1.7.10  Get Message Data Element From Buffer .................................................. 106
-Construction of a UserMessage Packet .................................................... 107
-3.1.7.11
-3.1.7.12  Message Position Available Event ........................................................... 107
-Pause Queue Event .............................................................................. 108
-3.1.7.13
-Resume Queue Event ........................................................................... 109
-3.1.7.14
-Send Administration Acknowledgment .................................................... 109
-3.1.7.15
-Send User Message Wrapper ................................................................. 113
-3.1.7.16
-Send Transactional Acknowledgment ...................................................... 113
-3.1.7.17
-
-4.1
-
-4  Protocol Examples ............................................................................................... 117
-Session Initialization and Express Message Example ............................................ 117
-FRAME 1: Ping Request .............................................................................. 117
-FRAME 2: Ping Response ............................................................................ 118
-FRAME 3: Establish Connection Request ....................................................... 118
-FRAME 4: Establish Connection Response ..................................................... 119
-FRAME 5: Connection Parameters Request .................................................... 121
-FRAME 6: Connection Parameters Response .................................................. 121
-FRAME 7: User Message ............................................................................. 122
-FRAME 8: Session Acknowledgment ............................................................. 125
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-4.1.6
-4.1.7
-4.1.8
-
-5  Security ............................................................................................................... 126
-Security Considerations for Implementers .......................................................... 126
-Index of Security Parameters ........................................................................... 126
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 127
-
-7  Change Tracking .................................................................................................. 135
-
-8  Index ................................................................................................................... 136
-
-[MS-MQQB] - v20240423
-Message Queuing (MSMQ): Message Queuing Binary Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 139
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Message Queuing](#131-message-queuing)
+    - [1.3.2 User Messages](#132-user-messages)
+      - [1.3.2.1 User Message Types](#1321-user-message-types)
+        - [1.3.2.1.1 Express Message](#13211-express-message)
+        - [1.3.2.1.2 Recoverable Message](#13212-recoverable-message)
+        - [1.3.2.1.3 Transactional Message](#13213-transactional-message)
+      - [1.3.2.2 Message Security](#1322-message-security)
+    - [1.3.3 Queues](#133-queues)
+      - [1.3.3.1 System Queues](#1331-system-queues)
+    - [1.3.4 Source Journaling](#134-source-journaling)
+      - [1.3.4.1 Positive Source Journaling](#1341-positive-source-journaling)
+      - [1.3.4.2 Negative Source Journaling](#1342-negative-source-journaling)
+    - [1.3.5 Acknowledgments](#135-acknowledgments)
+      - [1.3.5.1 Internal Acknowledgments](#1351-internal-acknowledgments)
+      - [1.3.5.2 Administration Acknowledgments](#1352-administration-acknowledgments)
+    - [1.3.6 Message Tracing](#136-message-tracing)
+    - [1.3.7 Message Routing](#137-message-routing)
+    - [1.3.8 Typical Scenario](#138-typical-scenario)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Protocol Session](#211-protocol-session)
+    - [2.1.2 Ping Message](#212-ping-message)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 InternalHeader](#221-internalheader)
+    - [2.2.2 ConnectionParameters Packet](#222-connectionparameters-packet)
+      - [2.2.2.1 ConnectionParametersHeader](#2221-connectionparametersheader)
+    - [2.2.3 EstablishConnection Packet](#223-establishconnection-packet)
+      - [2.2.3.1 EstablishConnectionHeader](#2231-establishconnectionheader)
+    - [2.2.4 OrderAck Packet](#224-orderack-packet)
+      - [2.2.4.1 OrderAck Body](#2241-orderack-body)
+    - [2.2.5 FinalAck Packet](#225-finalack-packet)
+      - [2.2.5.1 FinalAck Body](#2251-finalack-body)
+    - [2.2.6 SessionAck Packet](#226-sessionack-packet)
+    - [2.2.7 Ping Packet](#227-ping-packet)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+  - [2.4 Cryptographic Data Structures](#24-cryptographic-data-structures)
+    - [2.4.1 PUBLICKEYBLOB](#241-publickeyblob)
+    - [2.4.2 SIMPLEBLOB](#242-simpleblob)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Protocol State](#3111-protocol-state)
+        - [3.1.1.1.1 State Diagrams](#31111-state-diagrams)
+          - [3.1.1.1.1.1 Session State - Initiator](#311111-session-state-initiator)
+          - [3.1.1.1.1.2 Session State - Acceptor](#311112-session-state-acceptor)
+          - [3.1.1.1.1.3 Express Message State - Sender](#311113-express-message-state-sender)
+          - [3.1.1.1.1.4 Express Message State - Receiver](#311114-express-message-state-receiver)
+          - [3.1.1.1.1.5 Recoverable Message State - Sender](#311115-recoverable-message-state-sender)
+          - [3.1.1.1.1.6 Recoverable Message State - Receiver](#311116-recoverable-message-state-receiver)
+          - [3.1.1.1.1.7 Transactional Message State - Sender](#311117-transactional-message-state-sender)
+          - [3.1.1.1.1.8 Transactional Message State - Receiver](#311118-transactional-message-state-receiver)
+          - [3.1.1.1.1.9 Ping Mechanism State - Initiator](#311119-ping-mechanism-state-initiator)
+      - [3.1.1.2 Shared Data Elements](#3112-shared-data-elements)
+      - [3.1.1.3 Queue Manager State](#3113-queue-manager-state)
+        - [3.1.1.3.1 Session State](#31131-session-state)
+          - [3.1.1.3.1.1 OutgoingTransferSequence](#311311-outgoingtransfersequence)
+          - [3.1.1.3.1.2 OutgoingMessagePosition](#311312-outgoingmessageposition)
+          - [3.1.1.3.1.3 NextHop](#311313-nexthop)
+        - [3.1.1.3.2 Persistent State Storage](#31132-persistent-state-storage)
+        - [3.1.1.3.3 CachedSymmetricKey](#31133-cachedsymmetrickey)
+        - [3.1.1.3.4 CachedUserCert](#31134-cachedusercert)
+      - [3.1.1.4 Session Message Sequence](#3114-session-message-sequence)
+      - [3.1.1.5 Transactional Message Sequence](#3115-transactional-message-sequence)
+      - [3.1.1.6 Acknowledgments](#3116-acknowledgments)
+        - [3.1.1.6.1 Session Acknowledgment](#31161-session-acknowledgment)
+        - [3.1.1.6.2 Transactional Acknowledgment](#31162-transactional-acknowledgment)
+      - [3.1.1.7 Sequence Diagrams](#3117-sequence-diagrams)
+        - [3.1.1.7.1 Session Initialization](#31171-session-initialization)
+        - [3.1.1.7.2 Session with Express Messages Sent](#31172-session-with-express-messages-sent)
+        - [3.1.1.7.3 Session with Transactional Messages Sent](#31173-session-with-transactional-messages-sent)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Session Initialization Timer](#3121-session-initialization-timer)
+      - [3.1.2.2 Session Cleanup Timer](#3122-session-cleanup-timer)
+      - [3.1.2.3 Session Retry Connect Timer](#3123-session-retry-connect-timer)
+      - [3.1.2.4 Session Ack Wait Timer](#3124-session-ack-wait-timer)
+      - [3.1.2.5 Session Ack Send Timer](#3125-session-ack-send-timer)
+      - [3.1.2.6 Transactional Ack Wait Timer](#3126-transactional-ack-wait-timer)
+      - [3.1.2.7 Order Ack Send Timer](#3127-order-ack-send-timer)
+      - [3.1.2.8 MessageIDHistory Cleanup Timer](#3128-messageidhistory-cleanup-timer)
+      - [3.1.2.9 Ping Response Timer](#3129-ping-response-timer)
+      - [3.1.2.10 ReceiveSymmetricKeyCache Cleanup Timer](#31210-receivesymmetrickeycache-cleanup-timer)
+      - [3.1.2.11 SendSymmetricKeyCache Cleanup Timer](#31211-sendsymmetrickeycache-cleanup-timer)
+      - [3.1.2.12 SendBaseSymmetricKeyCache Cleanup Timer](#31212-sendbasesymmetrickeycache-cleanup-timer)
+      - [3.1.2.13 UserCertCache Cleanup Timer](#31213-usercertcache-cleanup-timer)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Global Initialization](#3131-global-initialization)
+      - [3.1.3.2 Session Initialization](#3132-session-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Queue Manager Started Event](#3141-queue-manager-started-event)
+      - [3.1.4.2 Queue Manager Stopped Event](#3142-queue-manager-stopped-event)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving Any Packet](#3151-receiving-any-packet)
+        - [3.1.5.1.1 Identifying Packet Type](#31511-identifying-packet-type)
+        - [3.1.5.1.2 Verifying the Signature](#31512-verifying-the-signature)
+        - [3.1.5.1.3 Handling Incorrectly Formatted Messages](#31513-handling-incorrectly-formatted-messages)
+      - [3.1.5.2 Establish a Protocol Session](#3152-establish-a-protocol-session)
+        - [3.1.5.2.1 Resolve Host Address](#31521-resolve-host-address)
+        - [3.1.5.2.2 Ping Mechanism](#31522-ping-mechanism)
+        - [3.1.5.2.3 Sending an EstablishConnection Request Packet](#31523-sending-an-establishconnection-request-packet)
+      - [3.1.5.3 Receiving an EstablishConnection Packet](#3153-receiving-an-establishconnection-packet)
+        - [3.1.5.3.1 Request Packet](#31531-request-packet)
+        - [3.1.5.3.2 Response Packet](#31532-response-packet)
+      - [3.1.5.4 Receiving a ConnectionParameters Packet](#3154-receiving-a-connectionparameters-packet)
+        - [3.1.5.4.1 Request Packet](#31541-request-packet)
+        - [3.1.5.4.2 Response Packet](#31542-response-packet)
+      - [3.1.5.5 Receiving a SessionAck Packet](#3155-receiving-a-sessionack-packet)
+        - [3.1.5.5.1 Mark Acknowledged Messages](#31551-mark-acknowledged-messages)
+        - [3.1.5.5.2 Delete Acknowledged Express Messages](#31552-delete-acknowledged-express-messages)
+        - [3.1.5.5.3 Delete Acknowledged Recoverable Messages](#31553-delete-acknowledged-recoverable-messages)
+        - [3.1.5.5.4 Source Journaling](#31554-source-journaling)
+        - [3.1.5.5.5 Validate Message Counts](#31555-validate-message-counts)
+      - [3.1.5.6 Receiving an OrderAck Packet](#3156-receiving-an-orderack-packet)
+      - [3.1.5.7 Receiving a FinalAck Packet](#3157-receiving-a-finalack-packet)
+      - [3.1.5.8 Receiving a UserMessage Packet](#3158-receiving-a-usermessage-packet)
+        - [3.1.5.8.1 Duplicate Detection](#31581-duplicate-detection)
+        - [3.1.5.8.2 General Processing](#31582-general-processing)
+        - [3.1.5.8.3 Security](#31583-security)
+        - [3.1.5.8.4 SessionHeader Processing](#31584-sessionheader-processing)
+        - [3.1.5.8.5 Determining Message Destination](#31585-determining-message-destination)
+        - [3.1.5.8.6 Transactional Message Processing](#31586-transactional-message-processing)
+        - [3.1.5.8.7 Recoverable Message Processing](#31587-recoverable-message-processing)
+        - [3.1.5.8.8 Inserting a Message into a Local Queue](#31588-inserting-a-message-into-a-local-queue)
+        - [3.1.5.8.9 Sending a Trace Message](#31589-sending-a-trace-message)
+        - [3.1.5.8.10 Sending Administration Acknowledgments](#315810-sending-administration-acknowledgments)
+      - [3.1.5.9 Closing a Session](#3159-closing-a-session)
+      - [3.1.5.10 Handling an Incoming Transport Connection](#31510-handling-an-incoming-transport-connection)
+      - [3.1.5.11 Receiving Administration Acknowledgments](#31511-receiving-administration-acknowledgments)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Session Retry Connect Timer Event](#3161-session-retry-connect-timer-event)
+      - [3.1.6.2 Session Cleanup Timer Event](#3162-session-cleanup-timer-event)
+      - [3.1.6.3 Session Ack Wait Timer Event](#3163-session-ack-wait-timer-event)
+      - [3.1.6.4 Session Ack Send Timer Event](#3164-session-ack-send-timer-event)
+      - [3.1.6.5 Transactional Ack Wait Timer Event](#3165-transactional-ack-wait-timer-event)
+      - [3.1.6.6 Session Initialization Timer Event](#3166-session-initialization-timer-event)
+      - [3.1.6.7 MessageIDHistory Cleanup Timer Event](#3167-messageidhistory-cleanup-timer-event)
+      - [3.1.6.8 Ping Response Timer Event](#3168-ping-response-timer-event)
+      - [3.1.6.9 Order Ack Send Timer Event](#3169-order-ack-send-timer-event)
+      - [3.1.6.10 ReceiveSymmetricKeyCache Cleanup Timer Event](#31610-receivesymmetrickeycache-cleanup-timer-event)
+      - [3.1.6.11 SendSymmetricKeyCache Cleanup Timer Event](#31611-sendsymmetrickeycache-cleanup-timer-event)
+      - [3.1.6.12 SendBaseSymmetricKeyCache Cleanup Timer Event](#31612-sendbasesymmetrickeycache-cleanup-timer-event)
+      - [3.1.6.13 UserCertCache Cleanup Timer Event](#31613-usercertcache-cleanup-timer-event)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Send User Message Event](#3171-send-user-message-event)
+        - [3.1.7.1.1 General Processing](#31711-general-processing)
+        - [3.1.7.1.2 Checking for Message Expiration](#31712-checking-for-message-expiration)
+        - [3.1.7.1.3 Updating the UserMessage Packet](#31713-updating-the-usermessage-packet)
+        - [3.1.7.1.4 Signing the Packet](#31714-signing-the-packet)
+        - [3.1.7.1.5 Encrypting the Message Body](#31715-encrypting-the-message-body)
+          - [3.1.7.1.5.1 Handling Encryption Errors](#317151-handling-encryption-errors)
+          - [3.1.7.1.5.2 Converting MQDSPUBLICKEY to PUBLICKEYBLOB](#317152-converting-mqdspublickey-to-publickeyblob)
+        - [3.1.7.1.6 Sending the Packet](#31716-sending-the-packet)
+        - [3.1.7.1.7 Sending Trace Message](#31717-sending-trace-message)
+      - [3.1.7.2 Message Position Deleted](#3172-message-position-deleted)
+        - [3.1.7.2.1 Administration Acknowledgment](#31721-administration-acknowledgment)
+        - [3.1.7.2.2 Final Acknowledgment](#31722-final-acknowledgment)
+      - [3.1.7.3 Handling a Network Disconnect](#3173-handling-a-network-disconnect)
+      - [3.1.7.4 Get Destination Info](#3174-get-destination-info)
+      - [3.1.7.5 Get Next Hops](#3175-get-next-hops)
+      - [3.1.7.6 Send Ping Request](#3176-send-ping-request)
+      - [3.1.7.7 Receive Ping Request](#3177-receive-ping-request)
+      - [3.1.7.8 Receive Ping Response](#3178-receive-ping-response)
+      - [3.1.7.9 Ping Response Processed](#3179-ping-response-processed)
+      - [3.1.7.10 Get Message Data Element From Buffer](#31710-get-message-data-element-from-buffer)
+      - [3.1.7.11 Construction of a UserMessage Packet](#31711-construction-of-a-usermessage-packet)
+      - [3.1.7.12 Message Position Available Event](#31712-message-position-available-event)
+      - [3.1.7.13 Pause Queue Event](#31713-pause-queue-event)
+      - [3.1.7.14 Resume Queue Event](#31714-resume-queue-event)
+      - [3.1.7.15 Send Administration Acknowledgment](#31715-send-administration-acknowledgment)
+      - [3.1.7.16 Send User Message Wrapper](#31716-send-user-message-wrapper)
+      - [3.1.7.17 Send Transactional Acknowledgment](#31717-send-transactional-acknowledgment)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Session Initialization and Express Message Example](#41-session-initialization-and-express-message-example)
+    - [4.1.1 FRAME 1: Ping Request](#411-frame-1-ping-request)
+    - [4.1.2 FRAME 2: Ping Response](#412-frame-2-ping-response)
+    - [4.1.3 FRAME 3: Establish Connection Request](#413-frame-3-establish-connection-request)
+    - [4.1.4 FRAME 4: Establish Connection Response](#414-frame-4-establish-connection-response)
+    - [4.1.5 FRAME 5: Connection Parameters Request](#415-frame-5-connection-parameters-request)
+    - [4.1.6 FRAME 6: Connection Parameters Response](#416-frame-6-connection-parameters-response)
+    - [4.1.7 FRAME 7: User Message](#417-frame-7-user-message)
+    - [4.1.8 FRAME 8: Session Acknowledgment](#418-frame-8-session-acknowledgment)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document specifies the Message Queuing (MSMQ): Message Queuing Binary Protocol, which
 defines a mechanism for reliably transferring messages between two message queues located on two
@@ -1035,7 +743,7 @@ understanding of the protocol and its usage.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1089,7 +797,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-initiator: A queue manager that establishes a protocol session to a remote queue manager.
+
+initiator: A queue manager that establishes a protocol session to a remote queue manager.
 
 little-endian: Multiple-byte values that are byte-ordered with the least significant byte stored in
 
@@ -1163,7 +872,8 @@ Release: April 23, 2024
 
 9 / 139
 
-private key: One of a pair of keys used in public-key cryptography. The private key is kept secret
+
+private key: One of a pair of keys used in public-key cryptography. The private key is kept secret
 and is used to decrypt data that has been encrypted with the corresponding public key. For an
 introduction to this concept, see [CRYPTO] section 1.8 and [IEEE1363] section 3.1.
 
@@ -1225,7 +935,7 @@ specified in [RFC3280].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1239,7 +949,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1306,7 +1017,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC3986] Berners-Lee, T., Fielding, R., and Masinter, L., "Uniform Resource Identifier (URI): Generic
+
+[RFC3986] Berners-Lee, T., Fielding, R., and Masinter, L., "Uniform Resource Identifier (URI): Generic
 Syntax", STD 66, RFC 3986, January 2005, https://www.rfc-editor.org/info/rfc3986
 
 [RFC4757] Jaganathan, K., Zhu, L., and Brezak, J., "The RC4-HMAC Kerberos Encryption Types Used
@@ -1323,14 +1035,14 @@ https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf
 and Attribute Certificate Frameworks", Recommendation X.509, August 2005,
 http://www.itu.int/rec/T-REC-X.509/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [LDAP] Microsoft Corporation, "About Lightweight Directory Access Protocol",
 http://msdn.microsoft.com/en-us/library/aa366075.aspx
 
 [MS-MQOD] Microsoft Corporation, "Message Queuing Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 The Message Queuing (MSMQ): Message Queuing Binary Protocol is used by a client to reliably
 transfer a message to a server. The protocol is stateful wherein the client establishes a connection to
@@ -1340,7 +1052,7 @@ uses UDP or SPX to determine server availability and TCP or SPX to transport the
 with additional levels of acknowledgment that ensure that the messages are reliably transferred
 regardless of TCP or SPX connection failures, application failures, or node failures.
 
-1.3.1  Message Queuing
+#### 1.3.1 Message Queuing
 
 Message Queuing is a communications service that provides asynchronous and reliable message
 passing between client applications running on different hosts. In Message Queuing, clients send
@@ -1372,7 +1084,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-message does not reach its destination queue or if the message is discarded before being retrieved by
+
+message does not reach its destination queue or if the message is discarded before being retrieved by
 a receiving application. Applications can obtain information from acknowledgment messages sent back
 from the destination host and can also examine the dead letter and journal queues for information on
 messages sent.
@@ -1381,7 +1094,7 @@ The Message Queuing (MSMQ): Message Queuing Binary Protocol defines a mechanism 
 transferring messages between queue managers that are located on two different hosts. The protocol
 does not define the queue manager or its interface to client applications.
 
-1.3.2  User Messages
+#### 1.3.2 User Messages
 
 A typical message exchanged in a message queuing system has a set of message properties that
 contain metadata about the message and a distinguished property, called a message body, that
@@ -1391,14 +1104,14 @@ The protocol does not place restrictions on the contents of the message body. Ap
 arbitrary data in the message body, and application frameworks layered above the protocol can
 provide object serialization to allow objects to be exchanged using this protocol.
 
-1.3.2.1  User Message Types
+##### 1.3.2.1 User Message Types
 
 Messages sent using the Message Queuing (MSMQ): Message Queuing Binary Protocol are either
 express or recoverable. The choice between the two delivery options is essentially a choice between
 better performance with minimal resource use (express messaging) and reliability and recovery after a
 failure (recoverable messaging).
 
-1.3.2.1.1 Express Message
+###### 1.3.2.1.1 Express Message
 
 When express messaging is used to send messages, the messages are stored in RAM during transfer
 and after delivery to the destination queue until they are received. This provides fast performance,
@@ -1412,7 +1125,7 @@ queue manager continues to store the messages in its memory and will retry the c
 However, if the client process fails before the link is restored, the undelivered express messages are
 lost. Likewise, express messages on a server will be lost in the event of a process failure.
 
-1.3.2.1.2 Recoverable Message
+###### 1.3.2.1.2 Recoverable Message
 
 When recoverable messaging is used to send messages, they are written to disk on both the sending
 and receiving computer. After delivery to the destination queue, recoverable messages are stored on
@@ -1423,7 +1136,7 @@ computer is restarted and the queue manager service restarts, the sending proces
 resumed. Recoverable messages are not guaranteed to be delivered only once or in order except when
 they are transactional messages.
 
-1.3.2.1.3 Transactional Message
+###### 1.3.2.1.3 Transactional Message
 
 A transactional message is a recoverable message that has exactly once and in order (EOIO)
 delivery guarantees. When delivering transactional messages, the protocol utilizes an additional level
@@ -1436,7 +1149,8 @@ Release: April 23, 2024
 
 13 / 139
 
-Transactional messaging is intended to be used in situations where the queue manager has captured
+
+Transactional messaging is intended to be used in situations where the queue manager has captured
 one or more messages under a transaction and subsequently delivers the messages to a queue
 manager on a remote host with EOIO delivery guarantees. This protocol is not a participant in the
 transaction under which the messages are captured; instead, it is used to transfer the messages after
@@ -1446,7 +1160,7 @@ This protocol does not mandate the implementation details of the transactional c
 as long as the external behavior of a queue manager is consistent with that specified in this
 document.
 
-1.3.2.2  Message Security
+##### 1.3.2.2 Message Security
 
 Messages sent using the Message Queuing (MSMQ): Binary Messaging Protocol can be digitally signed
 and/or encrypted using a variety of technologies. The MD2 [RFC1319], MD4 [RFC1320], MD5
@@ -1457,7 +1171,7 @@ are supported<1> for generating digital signatures, and the RC2 [RFC2268], RC4 [
 Sender identity can be specified by including an X.509 digital certificate in a message. A receiver can
 authenticate a message by validating the digital signature by using the sender public key.
 
-1.3.3  Queues
+#### 1.3.3 Queues
 
 A queue is a logical data structure containing an ordered list of zero or more messages. A queue
 manager maintains a set of queues that hold messages. The queue manager requires a set of
@@ -1476,7 +1190,7 @@ messages. A transactional queue requires persistent storage of messages and guar
 through process or node failure, while a non-transactional queue requires persistent storage of
 messages but does not require guaranteed consistency through process or node failures.
 
-1.3.3.1  System Queues
+##### 1.3.3.1 System Queues
 
 A queue manager has a set of built-in queues called system queues. System queues include the
 following types of queues:
@@ -1502,11 +1216,12 @@ Release: April 23, 2024
 
 14 / 139
 
-OrderAck Queue: An order queue that is used by the message transfer protocols to implement
+
+OrderAck Queue: An order queue that is used by the message transfer protocols to implement
 
 exactly-once delivery assurance.
 
-1.3.4  Source Journaling
+#### 1.3.4 Source Journaling
 
 Source journaling is the process of storing copies of outgoing messages on a source computer. It is
 configured on a per-message basis and is implemented as a property set programmatically by a
@@ -1515,12 +1230,12 @@ successfully, that could not be delivered, or both. Source journaling is disable
 
 There are two types of source journaling: positive source journaling and negative source journaling.
 
-1.3.4.1  Positive Source Journaling
+##### 1.3.4.1 Positive Source Journaling
 
 Positive source journaling tracks successfully sent messages by placing message copies in the local
 host journal queue.
 
-1.3.4.2  Negative Source Journaling
+##### 1.3.4.2 Negative Source Journaling
 
 Negative source journaling tracks unsuccessfully sent messages by placing message copies in the
 local host dead-letter queue. When a message queuing application requests negative source
@@ -1534,9 +1249,9 @@ For transactional messages, a copy of the message is placed in the transactional
 the local host only if Message Queuing does not confirm that the message was retrieved from its
 destination queue.
 
-1.3.5  Acknowledgments
+#### 1.3.5 Acknowledgments
 
-1.3.5.1  Internal Acknowledgments
+##### 1.3.5.1 Internal Acknowledgments
 
 Internal acknowledgments are system-generated protocol packets sent from a receiving queue
 manager to a sending queue manager to acknowledge receipt (or other processing) of a user
@@ -1567,7 +1282,8 @@ Release: April 23, 2024
 
 15 / 139
 
-Final Acknowledgment: This packet acknowledges that a transactional message has been
+
+Final Acknowledgment: This packet acknowledges that a transactional message has been
 
 rejected by the receiver or that a delivered transactional message has been removed from the
 destination queue. Removal from the destination queue could be the result of a user-level
@@ -1575,7 +1291,7 @@ application reading the message from the queue or of an administrative action su
 the message or queue. The packet can represent a positive or negative acknowledgment. This
 acknowledgment is sent from the final destination queue manager to the original sender.
 
-1.3.5.2  Administration Acknowledgments
+##### 1.3.5.2 Administration Acknowledgments
 
 Administration acknowledgment messages are system-generated messages that are sent to
 administration queues specified in a packet. These messages are express or recoverable depending on
@@ -1594,7 +1310,7 @@ message has been retrieved. Additionally, these messages can indicate the reason
 rejected message. Administration acknowledgment messages are used by application logic to identify
 the status of sent messages.
 
-1.3.6  Message Tracing
+#### 1.3.6 Message Tracing
 
 Message tracing is the process of generating report messages when a user message leaves or arrives
 at a queue manager. Message tracing is an option that can be specified by the original sender of a
@@ -1615,7 +1331,7 @@ Target queue name
 
   Message identifier
 
-1.3.7  Message Routing
+#### 1.3.7 Message Routing
 
 Message Queuing always attempts to establish a direct connection, or session, with the destination
 queue manager using the underlying TCP or SPX network protocol. If a direct connection is not
@@ -1634,7 +1350,8 @@ Release: April 23, 2024
 
 16 / 139
 
-1.3.8  Typical Scenario
+
+#### 1.3.8 Typical Scenario
 
 A typical scenario for Message Queuing is to achieve reliable, asynchronous messaging between a
 client computer and server application. The client application might be an order application used for
@@ -1657,7 +1374,8 @@ Release: April 23, 2024
 
 17 / 139
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-MQQB].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1667,7 +1385,7 @@ The preceding diagram shows the relationship between the branch office laptop an
 server. Messages containing orders are transferred from the outgoing queue on the laptop to the
 destination queue on the server.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Message Queuing (MSMQ): Message Queuing Binary Protocol depends upon direct TCP/IP or
 IPX/SPX to provide a reliable stream-oriented transport for messages. The protocol uses UDP or SPX
@@ -1680,7 +1398,8 @@ Release: April 23, 2024
 
 18 / 139
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-MQQB].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1694,7 +1413,7 @@ The protocol relationships are described in the following diagram.
 
 Figure 2: Relationships between MSMQ binary and transport protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 It is assumed that the protocol client has obtained the name of a server computer that supports this
 protocol and the name of a queue hosted on the server before this protocol is invoked. This
@@ -1703,7 +1422,7 @@ specification does not mandate how a client acquires this information.
 It is assumed that the protocol client has access to a private encryption key used to decrypt
 messages. A private key typically is stored in a secure location on the local host.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The server side of this protocol is applicable for implementation by a queue manager providing
 message queuing communication services to clients. The client side of this protocol is applicable for
@@ -1713,7 +1432,7 @@ manager delegating requests on behalf of a client.
 The protocol is not applicable for distributed applications that require message delivery within a
 predefined amount of time and not for scenarios that require message data greater than 4 MB in size.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1730,12 +1449,13 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 The Message Queuing (MSMQ): Message Queuing Binary Protocol does not define any vendor-
 extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol uses the following assignments.
 
@@ -1754,18 +1474,19 @@ Release: April 23, 2024
 
 20 / 139
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify the message transport and the common data types of the Message
 Queuing (MSMQ): Message Queuing Binary Protocol.
 
-2.1  Transport
+### 2.1 Transport
 
 A client exchanges messages with a server over a protocol session to perform actions such as session
 establishment, user message transfer, and message acknowledgment. A client MAY<3> use a Ping
 Message (section 2.1.2) to determine if a server is available.
 
-2.1.1  Protocol Session
+#### 2.1.1 Protocol Session
 
 A protocol session is a TCP or an SPX connection used to send UserMessage Packets ([MS-MQMQ]
 section 2.2.20), which contain application-defined messages and internal packets between a local and
@@ -1786,7 +1507,7 @@ establish a connection to TCP port 1801 or SPX port 876 on the acceptor. The TCP
 used by the initiator MAY<5> be any TCP or SPX port value. The protocol acceptor MUST listen for
 connections on TCP port 1801 or SPX port 876.<6>
 
-2.1.2  Ping Message
+#### 2.1.2 Ping Message
 
 A Ping Message can be a Ping Request or a Ping Response. A Ping Request MAY<7> be sent from
 an initiator to an acceptor to determine whether the acceptor is available and can accept a binary
@@ -1803,7 +1524,7 @@ The acceptor MAY<10> listen for Ping Requests. If an acceptor listens for Ping R
 MAY<11> do so on UDP or SPX port 3527. A Ping Response MUST be sent to the UDP or SPX source
 address and port from which the corresponding Ping Request was sent.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Message Queuing (MSMQ): Message Queuing Binary Protocol uses little-endian byte order.
 
@@ -1818,7 +1539,8 @@ Release: April 23, 2024
 
 21 / 139
 
-2.  TxSequenceID ([MS-MQMQ] section 2.2.18.1.2)
+
+2.  TxSequenceID ([MS-MQMQ] section 2.2.18.1.2)
 
 3.  MessageIdentifier ([MS-MQMQ] section 2.2.18.1.3)
 
@@ -1848,7 +1570,7 @@ This protocol uses the following headers:
 
 This protocol uses the UserMessage Packet ([MS-MQMQ] section 2.2.20).
 
-2.2.1  InternalHeader
+#### 2.2.1 InternalHeader
 
 The InternalHeader contains packet type and state information for the session. This header is used by
 internal packets.
@@ -1904,7 +1626,8 @@ Release: April 23, 2024
 
 22 / 139
 
-Value  Meaning
+
+Value  Meaning
 
 0x1
 
@@ -1952,7 +1675,7 @@ K - X14 (1 bit): Reserved. SHOULD NOT be set when sent and MUST be ignored on re
 
 L - X15 (1 bit): Reserved. SHOULD NOT be set when sent and MUST be ignored on receipt.
 
-2.2.2  ConnectionParameters Packet
+#### 2.2.2 ConnectionParameters Packet
 
 The ConnectionParameters Packet is used to communicate connection parameters between an
 initiator and an acceptor during session initialization.
@@ -1985,7 +1708,8 @@ Release: April 23, 2024
 
 23 / 139
 
-...
+
+...
 
 ...
 
@@ -2001,7 +1725,7 @@ ConnectionParametersHeader (12 bytes): A ConnectionParametersHeader (section 2.2
 
 contains parameters for the acknowledgment timeout and sliding window size.
 
-2.2.2.1  ConnectionParametersHeader
+##### 2.2.2.1 ConnectionParametersHeader
 
 The ConnectionParametersHeader contains parameters for acknowledgment timeout and sliding
 window size.
@@ -2044,7 +1768,7 @@ WindowSize (2 bytes): A 16-bit unsigned integer containing a sliding window size
 number of unacknowledged packets received, for sending session acknowledgments. This field has
 a valid range from 0x0000 to 0xFFFF.
 
-2.2.3  EstablishConnection Packet
+#### 2.2.3 EstablishConnection Packet
 
 The initiator sends an EstablishConnection Packet to an  acceptor to initiate a protocol session. The
 acceptor sends an EstablishConnection Packet back to the sender in response to indicate acceptance
@@ -2070,7 +1794,8 @@ Release: April 23, 2024
 
 24 / 139
 
-...
+
+...
 
 ...
 
@@ -2095,7 +1820,7 @@ EstablishConnectionHeader (552 bytes): An EstablishConnectionHeader (section 2.2
 contains information to identify the initiator and acceptor, a time stamp set by the initiator, and a
 flags field.
 
-2.2.3.1  EstablishConnectionHeader
+##### 2.2.3.1 EstablishConnectionHeader
 
 The EstablishConnectionHeader contains queue manager GUIDs ([MS-DTYP] section 2.3.4.1) that
 identify the initiator and acceptor, a time stamp set by the initiator, and flags.
@@ -2142,7 +1867,8 @@ Release: April 23, 2024
 
 25 / 139
 
-ClientGuid (16 bytes): The GUID for the queue manager of the initiator that is requesting the
+
+ClientGuid (16 bytes): The GUID for the queue manager of the initiator that is requesting the
 
 connection. In a connection request, the initiator sets this field. In a connection response, the
 acceptor sets this field to the queue manager GUID provided in the connection request.
@@ -2236,7 +1962,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-E - X12 (1 bit): Unused bit field. SHOULD NOT be set when sent and MUST be ignored on receipt.
+
+E - X12 (1 bit): Unused bit field. SHOULD NOT be set when sent and MUST be ignored on receipt.
 
 F - X13 (1 bit): Unused bit field. SHOULD NOT be set when sent and MUST be ignored on receipt.
 
@@ -2259,7 +1986,7 @@ packet from a server, each byte of this array MUST be filled with the value 0x5A
 EstablishConnectionHeader is not part of a response packet from a server, each byte in this field
 contains an uninitialized value.
 
-2.2.4  OrderAck Packet
+#### 2.2.4 OrderAck Packet
 
 The OrderAck Packet (section 2.2.4) contains a stand-alone transactional acknowledgment message.
 The packet acknowledges the transactional messages that have been received (accepted or rejected)
@@ -2312,7 +2039,8 @@ Release: April 23, 2024
 
 27 / 139
 
- orderQueueName = ("TCP:" ip-address / "SPX:" ipx-address )
+
+ orderQueueName = ("TCP:" ip-address / "SPX:" ipx-address )
                             "\PRIVATE$\order_queue$"
  ip-address=(IPv6address / IPv4address)
  ipx-address= 8HEXDIG "." 12HEXDIG ; network.node
@@ -2332,7 +2060,7 @@ For more details about message class identifiers, see [MS-MQMQ] section 2.2.18.1
 The BodyType field MUST be set to the value VT_EMPTY ([MS-MQMQ] section 2.2.12). The
 MessageBody field MUST be in the OrderAck Body (section 2.2.4.1) format.
 
-2.2.4.1  OrderAck Body
+##### 2.2.4.1 OrderAck Body
 
 The OrderAck Body is used to acknowledge transactional messages as part of an OrderAck
 Packet (section 2.2.4).
@@ -2385,11 +2113,12 @@ Release: April 23, 2024
 
 28 / 139
 
-Reserved (20 bytes): This field SHOULD<17> be set to hexadecimal zeros (0x00) when sent and
+
+Reserved (20 bytes): This field SHOULD<17> be set to hexadecimal zeros (0x00) when sent and
 
 MUST be ignored on receipt.
 
-2.2.5  FinalAck Packet
+#### 2.2.5 FinalAck Packet
 
 The FinalAck Packet contains a stand-alone transactional acknowledgment message that is sent to
 the original sender in one of two situations: either when a transactional message is rejected by the
@@ -2457,7 +2186,8 @@ Release: April 23, 2024
 
 29 / 139
 
-MessagePropertiesHeader (variable): A MessagePropertiesHeader. The Label field MUST be set to
+
+MessagePropertiesHeader (variable): A MessagePropertiesHeader. The Label field MUST be set to
 "QM Ordering Ack". The MessageSize field MUST be set to 0x00000024. The Flags field MUST
 have all bits set to 0.
 
@@ -2490,7 +2220,7 @@ For more details on message class identifiers, see [MS-MQMQ] section 2.2.18.1.6.
 The BodyType field MUST be set to the value VT_EMPTY ([MS-MQMQ] section 2.2.12). The
 MessageBody field MUST be in the FinalAck Body (section 2.2.5.1) format.
 
-2.2.5.1  FinalAck Body
+##### 2.2.5.1 FinalAck Body
 
 The FinalAck Body is used to acknowledge transactional messages as part of a FinalAck
 Packet (section 2.2.5).
@@ -2529,7 +2259,8 @@ Release: April 23, 2024
 
 30 / 139
 
-TxSequenceID (8 bytes): A TxSequenceID specifying a transactional sequence identifier. This
+
+TxSequenceID (8 bytes): A TxSequenceID specifying a transactional sequence identifier. This
 
 value MUST be the transactional sequence identifier of the message being acknowledged. For
 more details, see the definition of TxSequenceID in [MS-MQMQ] section 2.2.18.1.2.
@@ -2550,7 +2281,7 @@ SourceGUID (16 bytes):  The GUID for the source queue manager GUID.
 
 MessageID (4 bytes): A 32-bit unsigned integer specifying a message identifier.
 
-2.2.6  SessionAck Packet
+#### 2.2.6 SessionAck Packet
 
 The SessionAck Packet contains a session acknowledgment. This packet acknowledges express and
 recoverable UserMessage Packets ([MS-MQMQ] section 2.2.20) that have been received on the
@@ -2603,7 +2334,8 @@ Release: April 23, 2024
 
 31 / 139
 
-2.2.7  Ping Packet
+
+#### 2.2.7 Ping Packet
 
 The Ping Packet is used by Ping Messages (section 2.1.2) to allow an initiator to determine whether
 an acceptor is available and can accept a binary protocol sequence connection.
@@ -2726,7 +2458,8 @@ Release: April 23, 2024
 
 32 / 139
 
-Value  Description
+
+Value  Description
 
 X
 
@@ -2785,7 +2518,7 @@ QMGuid (16 bytes): The GUID ([MS-DTYP] section 2.3.4.1) that identifies the queu
 where this packet was created, which is the initiator for Ping Requests and the acceptor for Ping
 Responses.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol uses ADM elements specified in section 3.1.1. A subset of these elements can be
 published in a directory. This protocol SHOULD<20> access the directory using the algorithm specified
@@ -2800,9 +2533,10 @@ Release: April 23, 2024
 
 33 / 139
 
-2.4  Cryptographic Data Structures
 
-2.4.1  PUBLICKEYBLOB
+### 2.4 Cryptographic Data Structures
+
+#### 2.4.1 PUBLICKEYBLOB
 
 The PUBLICKEYBLOB type is used to export public keys for use with the RSA key exchange algorithm
 ([RFC8017]) from a receiver to senders for use in sending encrypted messages to that receiver.
@@ -2861,7 +2595,7 @@ the key pair, referred to as e in [RFC8017] section 2.
 modulus (variable): The RSA modulus, referred to as n in [RFC8017] section 2. This field MUST be
 encoded in little-endian format. Its length in bits MUST be equal to the value in the bitLen field.
 
-2.4.2  SIMPLEBLOB
+#### 2.4.2 SIMPLEBLOB
 
 The SIMPLEBLOB type is used for transferring cryptographic session keys from a sender to a receiver
 in a secure manner.
@@ -2908,7 +2642,8 @@ Release: April 23, 2024
 
 34 / 139
 
-sessionKeyAlgorithm (4 bytes): A 32-bit integer in little-endian format that identifies the algorithm
+
+sessionKeyAlgorithm (4 bytes): A 32-bit integer in little-endian format that identifies the algorithm
 with which the session key is associated. This field MUST be assigned according to the following
 table.
 
@@ -2946,7 +2681,8 @@ Release: April 23, 2024
 
 35 / 139
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Message Queuing (MSMQ): Message Queuing Binary Protocol is often described as a
 communication between a "client" and "server"; however, for the purpose of this section the terms
@@ -2957,9 +2693,9 @@ peer-to-peer mode where either participant sends and receives messages over the 
 protocol session. The participant sending a message is termed the "sender", while the participant
 receiving a message is termed the "receiver".
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2999,11 +2735,11 @@ element".
 
 arbitrary depth within a non-scalar ADM element.
 
-3.1.1.1  Protocol State
+##### 3.1.1.1 Protocol State
 
-3.1.1.1.1 State Diagrams
+###### 3.1.1.1.1 State Diagrams
 
-3.1.1.1.1.1  Session State - Initiator
+###### 3.1.1.1.1.1 Session State - Initiator
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3012,13 +2748,14 @@ Release: April 23, 2024
 
 36 / 139
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-MQQB].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
 Figure 3: Initiator session state
 
-3.1.1.1.1.2  Session State - Acceptor
+###### 3.1.1.1.1.2 Session State - Acceptor
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3027,13 +2764,14 @@ Release: April 23, 2024
 
 37 / 139
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-MQQB].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
 Figure 4: Acceptor session state
 
-3.1.1.1.1.3  Express Message State - Sender
+###### 3.1.1.1.1.3 Express Message State - Sender
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3042,13 +2780,14 @@ Release: April 23, 2024
 
 38 / 139
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-MQQB].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
 Figure 5: Sender express message state
 
-3.1.1.1.1.4  Express Message State - Receiver
+###### 3.1.1.1.1.4 Express Message State - Receiver
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3057,13 +2796,14 @@ Release: April 23, 2024
 
 39 / 139
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-MQQB].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
 Figure 6: Receiver express message state
 
-3.1.1.1.1.5  Recoverable Message State - Sender
+###### 3.1.1.1.1.5 Recoverable Message State - Sender
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3072,13 +2812,14 @@ Release: April 23, 2024
 
 40 / 139
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-MQQB].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
 Figure 7: Sender recoverable message state
 
-3.1.1.1.1.6  Recoverable Message State - Receiver
+###### 3.1.1.1.1.6 Recoverable Message State - Receiver
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3087,13 +2828,14 @@ Release: April 23, 2024
 
 41 / 139
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-MQQB].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
 Figure 8: Receiver recoverable message state
 
-3.1.1.1.1.7  Transactional Message State - Sender
+###### 3.1.1.1.1.7 Transactional Message State - Sender
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3102,13 +2844,14 @@ Release: April 23, 2024
 
 42 / 139
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-MQQB].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
 Figure 9: Sender transactional message state
 
-3.1.1.1.1.8  Transactional Message State - Receiver
+###### 3.1.1.1.1.8 Transactional Message State - Receiver
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3117,13 +2860,14 @@ Release: April 23, 2024
 
 43 / 139
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-MQQB].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
 Figure 10: Receiver transactional message state
 
-3.1.1.1.1.9  Ping Mechanism State - Initiator
+###### 3.1.1.1.1.9 Ping Mechanism State - Initiator
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3132,13 +2876,14 @@ Release: April 23, 2024
 
 44 / 139
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-MQQB].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
 Figure 11: Initiator ping mechanism state
 
-3.1.1.2  Shared Data Elements
+##### 3.1.1.2 Shared Data Elements
 
 This protocol manipulates the following ADM elements and ADM attributes from the shared abstract
 data model defined in [MS-MQDMPR] section 3.1.1.
@@ -3151,7 +2896,7 @@ The OutgoingTransferInfo ([MS-MQDMPR] section 3.1.1.4) ADM element.
 
 The IncomingTransactionalTransferInfo ([MS-MQDMPR] section 3.1.1.5) ADM element.
 
-3.1.1.3  Queue Manager State
+##### 3.1.1.3 Queue Manager State
 
 The protocol MUST maintain these global ADM elements:
 
@@ -3182,7 +2927,8 @@ Release: April 23, 2024
 
 45 / 139
 
-ReceiveSymmetricKeyCacheSize: An integer indicating the maximum number of entries in the
+
+ReceiveSymmetricKeyCacheSize: An integer indicating the maximum number of entries in the
 ReceiveSymmetricKeyCache ADM element and in the ReceiveBaseSymmetricKeyCache
 ADM element.
 
@@ -3271,7 +3017,8 @@ Release: April 23, 2024
 
 46 / 139
 
-ResendTimerTable: A table that contains the duration of the resend times for transactional
+
+ResendTimerTable: A table that contains the duration of the resend times for transactional
 
 messages.<24>
 
@@ -3332,7 +3079,7 @@ ResendTimeoutsFinal: A DWORD that indicates the number of seconds used to set up
 ResendTimerTable ADM element in section 3.1.3.1. The value SHOULD<33> be 21,600
 seconds (6 hours) and MUST survive process and node failures.
 
-3.1.1.3.1 Session State
+###### 3.1.1.3.1 Session State
 
 The sender and receiver MUST independently maintain the following ADM elements for each session.
 
@@ -3347,7 +3094,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NextHopCollection: A list of the possible next hops that can be used to create a session to the
+
+NextHopCollection: A list of the possible next hops that can be used to create a session to the
 
 destination queue manager.
 
@@ -3429,7 +3177,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IncomingTxSequenceNumber: A 32-bit unsigned integer that identifies the sequence number of
+
+IncomingTxSequenceNumber: A 32-bit unsigned integer that identifies the sequence number of
 
 the last transactional UserMessage Packet received on a session. This value MUST be
 initialized to 0x00000000 and MUST survive process and node failures.
@@ -3520,7 +3269,8 @@ Release: April 23, 2024
 
 49 / 139
 
-OutgoingMessageTable: An ordered list of OutgoingMessagePosition ADM element instances.
+
+OutgoingMessageTable: An ordered list of OutgoingMessagePosition ADM element instances.
 This table contains unsent messages and/or messages awaiting acknowledgment. The messages
 are listed in the order in which they are added to the list. This table MUST be initialized to an
 empty table and MUST survive process and node failures by saving each
@@ -3560,7 +3310,7 @@ as part of the incoming or outgoing transactional sequence.
 
 The preceding conceptual data can be implemented by using a variety of techniques.
 
-3.1.1.3.1.1  OutgoingTransferSequence
+###### 3.1.1.3.1.1 OutgoingTransferSequence
 
 OutgoingTransferSequence: This ADM element contains the following ADM attributes:
 
@@ -3590,11 +3340,12 @@ Release: April 23, 2024
 
 50 / 139
 
-UnackedSequence: A list of SEQUENCE_INFO structures sorted by the SeqNo field. This list
+
+UnackedSequence: A list of SEQUENCE_INFO structures sorted by the SeqNo field. This list
 contains sequence information about messages sent from the local queue manager to the
 destination queue manager for which an order acknowledgment has not been received.
 
-3.1.1.3.1.2  OutgoingMessagePosition
+###### 3.1.1.3.1.2 OutgoingMessagePosition
 
 OutgoingMessagePosition: This ADM element contains the following ADM attributes:
 
@@ -3636,7 +3387,7 @@ transactional messages that originate from this host or are addressed to a final
 on this host. Transactional messages that are forwarded through this host are not processed as part of
 the incoming or outgoing transactional sequence.
 
-3.1.1.3.1.3  NextHop
+###### 3.1.1.3.1.3 NextHop
 
 NextHop: This ADM element contains the following ADM attributes:
 
@@ -3653,7 +3404,7 @@ fully qualified DNS name of the computer.
 
 address.
 
-3.1.1.3.2 Persistent State Storage
+###### 3.1.1.3.2 Persistent State Storage
 
 [MS-MQQB] - v20240423
 Message Queuing (MSMQ): Message Queuing Binary Protocol
@@ -3662,11 +3413,12 @@ Release: April 23, 2024
 
 51 / 139
 
-Some protocol ADM elements MUST be saved in a persistent location that will survive process and
+
+Some protocol ADM elements MUST be saved in a persistent location that will survive process and
 node failure. A persistent storage requirement is indicated with a "This value MUST survive process
 and node failures" note in the ADM element description.
 
-3.1.1.3.3 CachedSymmetricKey
+###### 3.1.1.3.3 CachedSymmetricKey
 
 Used by senders and receivers, this ADM element stores information about symmetric encryption keys
 and contains the following ADM attributes:
@@ -3693,7 +3445,7 @@ CachedTime: A datetime value that contains the date and time that this ADM eleme
 
 was created.
 
-3.1.1.3.4 CachedUserCert
+###### 3.1.1.3.4 CachedUserCert
 
 This ADM element stores information about a user certificate and contains the following ADM
 attributes:
@@ -3708,7 +3460,7 @@ CachedTime: A datetime value that contains the date and time that this ADM eleme
 
 was created.
 
-3.1.1.4  Session Message Sequence
+##### 3.1.1.4 Session Message Sequence
 
 The set of UserMessage Packets ([MS-MQMQ] section 2.2.20) sent over a session represents a
 message sequence. There is a local-to-remote and remote-to-local sequence. These bidirectional
@@ -3736,7 +3488,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RecoverableMessageSentCount: A count of recoverable UserMessage Packets sent.
+
+RecoverableMessageSentCount: A count of recoverable UserMessage Packets sent.
 
 MessageReceivedCount: A count of all UserMessage Packets received.
 
@@ -3759,7 +3512,7 @@ The receiver utilizes session sequence numbers when acknowledging receipt of exp
 recoverable messages. Sequence numbers are specified in the SessionHeader, which can appear in a
 stand-alone SessionAck Packet (section 2.2.6) or as part of a UserMessage Packet.
 
-3.1.1.5  Transactional Message Sequence
+##### 3.1.1.5 Transactional Message Sequence
 
 To provide EOIO guarantees for transactional messages, the protocol organizes transactional
 UserMessage Packets ([MS-MQMQ] section 2.2.20) into transactional sequences. A transactional
@@ -3810,7 +3563,8 @@ Release: April 23, 2024
 
 53 / 139
 
-Whenever a transactional message is sent for the first time, the protocol MUST create a new
+
+Whenever a transactional message is sent for the first time, the protocol MUST create a new
 SEQUENCE_INFO ([MS-MQMQ] section 2.2.5) structure instance and set its values as follows:
 
 SeqID to OutgoingTxSequenceID
@@ -3840,7 +3594,7 @@ manager identifier in the UserMessage Packet. An intermediate queue manager that
 transactional message MUST pass the TransactionHeader to the next destination but perform no
 processing related to the transactional sequence.
 
-3.1.1.6  Acknowledgments
+##### 3.1.1.6 Acknowledgments
 
 The Message Queuing (MSMQ): Message Queuing Binary Protocol augments the underlying transport
 with additional levels of acknowledgment that ensure that messages are reliably transferred
@@ -3855,7 +3609,7 @@ The sender retransmits unacknowledged messages if it does not receive an acknowl
 time-out. This protocol implements message acknowledgments at both the session sequence and
 transactional sequence layers.
 
-3.1.1.6.1 Session Acknowledgment
+###### 3.1.1.6.1 Session Acknowledgment
 
 Session acknowledgments related to the session message sequence are specified in Session
 Message Sequence (section 3.1.1.7).
@@ -3877,7 +3631,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The SessionHeader.RecoverableMsgAckSeqNumber and
+
+The SessionHeader.RecoverableMsgAckSeqNumber and
 SessionHeader.RecoverableMsgAckFlags fields specify the recoverable messages that the receiver
 has successfully saved to disk since the last session acknowledgment. The sender SHOULD<39>
 discard its local copy of the specified recoverable messages if they are not transactional. The sender
@@ -3887,7 +3642,7 @@ SessionHeader.RecoverableMsgAckFlags to 0x00000000.
 The receiver sends session acknowledgments to the sender at intervals defined by an acknowledgment
 timer or based on message count and session window size.
 
-3.1.1.6.2 Transactional Acknowledgment
+###### 3.1.1.6.2 Transactional Acknowledgment
 
 Transactional acknowledgments related to the Transactional Message Sequence are specified in
 Transactional Message Sequence (section 3.1.1.5).
@@ -3933,7 +3688,7 @@ messages MUST be retained by the sender at least until the sender receives a mat
 OrderAck Packet. If the sender requests a final acknowledgment, the sender MUST retain the message
 until it receives the FinalAck Packet (section 2.2.5).
 
-3.1.1.7  Sequence Diagrams
+##### 3.1.1.7 Sequence Diagrams
 
 This section contains sequence diagrams that illustrate several common scenarios.
 
@@ -3944,11 +3699,12 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 56 -->
+
+<!-- Extracted images from page 56 -->
 ![Extracted image 1 from page 56]([MS-MQQB].images/page056-img01.png)
 <!-- /Extracted images from page 56 -->
 
-3.1.1.7.1 Session Initialization
+###### 3.1.1.7.1 Session Initialization
 
 The following sequence diagram demonstrates session initialization.
 
@@ -3965,7 +3721,7 @@ Packet. The initiator sends a ConnectionParameters Packet (section 2.2.2) to the
 communicate session parameters such as timeouts and window size. The acceptor confirms the
 session parameters by responding with a ConnectionParameters Packet response packet.
 
-3.1.1.7.2 Session with Express Messages Sent
+###### 3.1.1.7.2 Session with Express Messages Sent
 
 The following sequence diagram demonstrates the sending of express messages between two
 queue managers after a session has been established.
@@ -3977,7 +3733,8 @@ Release: April 23, 2024
 
 56 / 139
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-MQQB].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
@@ -3990,7 +3747,7 @@ Packet (section 2.2.6) after a delay to allow batching of the session acknowledg
 After an inactivity time-out, the session is closed by either side by performing the steps listed in
 section 3.1.5.9. The protocol does not exchange packets as part of session closure.
 
-3.1.1.7.3 Session with Transactional Messages Sent
+###### 3.1.1.7.3 Session with Transactional Messages Sent
 
 The following sequence diagram demonstrates the sending of a transactional message between
 two queue managers with positive source journaling enabled after a session has been established.
@@ -4002,7 +3759,8 @@ Release: April 23, 2024
 
 57 / 139
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MS-MQQB].images/page058-img01.png)
 <!-- /Extracted images from page 58 -->
 
@@ -4028,7 +3786,7 @@ Packets.
 After an inactivity time-out, the session is closed by either side by performing the steps listed in
 section 3.1.5.9. The protocol does not exchange packets as part of session closure.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The Message Queuing (MSMQ): Message Queuing Binary Protocol MUST maintain the following timers,
 described in the following sections:
@@ -4042,7 +3800,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Session Cleanup Timer (section 3.1.2.2)
+
+  Session Cleanup Timer (section 3.1.2.2)
 
   Session Retry Connect Timer (section 3.1.2.3)
 
@@ -4062,7 +3821,7 @@ Transactional Ack Wait Timer (section 3.1.2.6)
 
 Ping Response Timer (section 3.1.2.9)
 
-3.1.2.1  Session Initialization Timer
+##### 3.1.2.1 Session Initialization Timer
 
 This timer regulates the amount of time that both the initiator and the acceptor wait for each other
 to respond to session initialization messages. A queue manager employs a single instance of this
@@ -4072,7 +3831,7 @@ the acceptor, this timer is started after the EstablishConnection Packet respons
 after the ConnectionParameters Packet is received. The duration of this timer MUST be set based on
 the system configuration, which is implementation-dependent.<43>
 
-3.1.2.2  Session Cleanup Timer
+##### 3.1.2.2 Session Cleanup Timer
 
 This session-specific timer regulates the amount of time that the protocol waits before closing an idle
 protocol session. If the value of the SessionActive ADM element is FALSE when the timer expires,
@@ -4080,14 +3839,14 @@ the session is closed. The SessionActive ADM element is set to TRUE when a UserM
 ([MS-MQMQ] section 2.2.20) is sent or received by the protocol. The duration of this timer MUST be
 set based on the system configuration, which is implementation-dependent.<44>
 
-3.1.2.3  Session Retry Connect Timer
+##### 3.1.2.3 Session Retry Connect Timer
 
 This session-specific timer regulates the amount of time that the protocol waits until it tries to re-
 establish a connection to a remote host. The duration of this timer MAY be set based on system
 configuration, which is implementation-dependent.<45> The protocol MAY implement an adaptive
 mechanism for reconnection time-outs.
 
-3.1.2.4  Session Ack Wait Timer
+##### 3.1.2.4 Session Ack Wait Timer
 
 This session-specific timer regulates the amount of time that the protocol waits for a session
 acknowledgment before closing the session. The session is closed if the timer elapses while at least
@@ -4097,7 +3856,7 @@ retransmit the unacknowledged messages. This timer is started when updating a Us
 ([MS-MQMQ] section 2.2.20). See section 3.1.7.1.3. The duration of this timer MUST be set to a
 multiple<46> of the AckWaitTimeout ADM element.
 
-3.1.2.5  Session Ack Send Timer
+##### 3.1.2.5 Session Ack Send Timer
 
 This session-specific timer regulates the amount of time that the protocol waits before sending a
 session acknowledgment to the remote host. This timer is started when the queue manager receives
@@ -4111,11 +3870,12 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-expiration of this timer, the protocol triggers a Session Ack Send Timer Event (section 3.1.6.4). During
+
+expiration of this timer, the protocol triggers a Session Ack Send Timer Event (section 3.1.6.4). During
 the processing of this event, this timer is started if the UnackedReceivedMsgCount ADM element
 does not equal 0x0000.
 
-3.1.2.6  Transactional Ack Wait Timer
+##### 3.1.2.6 Transactional Ack Wait Timer
 
 This session-specific timer regulates the amount of time that the protocol waits for an OrderAck
 Packet before resending transactional messages to the receiver. This timer is started after sending a
@@ -4124,7 +3884,7 @@ TxOutgoingSequence.ResendInterval. When this timer is set, the value of the sche
 the next resend, which is the current time plus TxOutgoingSequence.ResendInterval, is stored in
 TxOutgoingSequence.ResendTime.
 
-3.1.2.7  Order Ack Send Timer
+##### 3.1.2.7 Order Ack Send Timer
 
 This session-specific timer regulates the amount of time that the protocol waits before sending an
 Order acknowledgment to the sender. This timer is started when a UserMessage Packet ([MS-MQMQ]
@@ -4135,7 +3895,7 @@ MaximumOrderAckDelay ADM element.
 
 The duration of this timer MUST be set to OrderAckTimeout.
 
-3.1.2.8  MessageIDHistory Cleanup Timer
+##### 3.1.2.8 MessageIDHistory Cleanup Timer
 
 This timer regulates the amount of time that the protocol waits before removing expired entries from
 the MessageIDHistoryTable ADM element. This timer is set during Global
@@ -4146,16 +3906,16 @@ MessageIDHistoryTable ADM element is nonempty even after stale entries have been
 specified in section 3.1.6.7. The duration of this timer MUST be set based on the system configuration,
 which is implementation-dependent.<47>
 
-3.1.2.9  Ping Response Timer
+##### 3.1.2.9 Ping Response Timer
 
 Instances of this timer regulate the amount of time that the protocol waits for a Ping Response, as
 defined in Ping Message (section 2.1.2), to arrive after sending a Ping Request, as specified in Ping
 Message (section 2.1.2). A new instance of this timer is started when a Send Ping
 Request (section 3.1.7.6) event occurs. The duration of the timer is always one second.
 
-3.1.2.10
+##### 3.1.2.10 ReceiveSymmetricKeyCache Cleanup Timer
 
-ReceiveSymmetricKeyCache Cleanup Timer
+
 
 This timer regulates the amount of time that the protocol waits before removing expired entries from
 the ReceiveSymmetricKeyCache ADM element. This timer is set either when a
@@ -4163,9 +3923,9 @@ CachedSymmetricKey (section 3.1.1.3.3) ADM element instance is added to the
 ReceiveSymmetricKeyCache ADM element, as specified in section 3.1.5.8.3, or when the
 ReceiveSymmetricKeyCache Cleanup Timer Event (section 3.1.6.10) is processed.
 
-3.1.2.11
+##### 3.1.2.11 SendSymmetricKeyCache Cleanup Timer
 
-SendSymmetricKeyCache Cleanup Timer
+
 
 This timer regulates the amount of time that the protocol waits before removing expired entries from
 the SendSymmetricKeyCache ADM element. This timer is set either when a
@@ -4178,12 +3938,13 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SendSymmetricKeyCache ADM element, as specified in section 3.1.7.1.5, or by the
+
+SendSymmetricKeyCache ADM element, as specified in section 3.1.7.1.5, or by the
 SendSymmetricKeyCache Cleanup Timer Event (section 3.1.6.11).
 
-3.1.2.12
+##### 3.1.2.12 SendBaseSymmetricKeyCache Cleanup Timer
 
-SendBaseSymmetricKeyCache Cleanup Timer
+
 
 This timer regulates the amount of time that the protocol waits before removing expired entries from
 the SendBaseSymmetricKeyCache ADM element. This timer is set either when a
@@ -4191,9 +3952,9 @@ CachedSymmetricKey (section 3.1.1.3.3) ADM element instance is added to the
 SendBaseSymmetricKeyCache ADM element, as specified in section 3.1.7.1.5, or when the
 SendBaseSymmetricKeyCache Cleanup Timer Event (section 3.1.6.12) is processed.
 
-3.1.2.13
+##### 3.1.2.13 UserCertCache Cleanup Timer
 
-UserCertCache Cleanup Timer
+
 
 This timer regulates the amount of time that the protocol waits before removing expired
 CachedUserCert (section 3.1.1.3.4) ADM element instances from the UserCertCache ADM element.
@@ -4201,9 +3962,9 @@ This timer is set either when a CachedUserCert ADM element instance is added to 
 UserCertCache ADM element, as specified in section 3.1.5.8.3, or when the UserCertCache Cleanup
 Timer Event (section 3.1.6.13) is processed.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
-3.1.3.1  Global Initialization
+##### 3.1.3.1 Global Initialization
 
 The processing rules described in this section are executed when the queue manager starts.
 
@@ -4254,7 +4015,8 @@ Release: April 23, 2024
 
 61 / 139
 
-The PreferredAdvancedAlgorithm ADM element SHOULD be set to 0x00006610, indicating the AES
+
+The PreferredAdvancedAlgorithm ADM element SHOULD be set to 0x00006610, indicating the AES
 256 algorithm as specified in [FIPS197]. The PreferredEnhancedAlgorithm ADM element SHOULD
 be set to 0x00006801, indicating the RC4 algorithm as specified in [RFC4757]. The
 PreferredBaseAlgorithm ADM element SHOULD be set to 0x00006801, indicating the RC4
@@ -4264,7 +4026,7 @@ The SendEnhancedRC2Using40BitKeys ADM element SHOULD be set to FALSE.<48>
 
 The RejectEnhancedRC2Using40BitKeys ADM element SHOULD<49> be set to FALSE.
 
-3.1.3.2  Session Initialization
+##### 3.1.3.2 Session Initialization
 
 The following values MUST be initialized for each session:
 
@@ -4363,7 +4125,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -4426,7 +4189,7 @@ The value of the PingCookie ADM element SHOULD<54> be set to 0x00000000.
 
 The value of the SessionState ADM element MUST be set to WAITING_EC_MSG.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 In addition to the local events listed in section 3.1.7, the operation of the Message Queuing (MSMQ):
 Message Queuing Binary Protocol is initiated and subsequently driven by the following higher-layer
@@ -4436,14 +4199,14 @@ triggered events:
 
   Queue Manager Stopped ([MS-MQDMPR] section 3.1.4.2).
 
-3.1.4.1  Queue Manager Started Event
+##### 3.1.4.1 Queue Manager Started Event
 
 The queue manager service on startup MUST perform protocol initialization as specified in section
 3.1.3. For each session, if the OutgoingMessageTable ADM element is not empty, the protocol
 MUST establish a connection to the remote queue manager. Protocol session establishment is specified
 in Establish a Protocol Session (section 3.1.5.2).
 
-3.1.4.2  Queue Manager Stopped Event
+##### 3.1.4.2 Queue Manager Stopped Event
 
 When the queue manager service is stopped, the protocol MUST be closed as specified in Closing a
 Session (section 3.1.5.9).
@@ -4455,9 +4218,10 @@ Release: April 23, 2024
 
 63 / 139
 
-3.1.5  Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving Any Packet
+#### 3.1.5 Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Receiving Any Packet
 
 The ReceivedAck session state ADM element MUST be set to TRUE on receipt of any packet. Unless
 specifically noted in a subsequent section, the following actions MUST be applied to any session
@@ -4471,7 +4235,7 @@ Identifying Packet Type (section 3.1.5.1.1)
 
   Handling Incorrectly Formatted Messages (section 3.1.5.1.3)
 
-3.1.5.1.1 Identifying Packet Type
+###### 3.1.5.1.1 Identifying Packet Type
 
 A packet is identified by inspecting the BaseHeader ([MS-MQMQ] section 2.2.19.1) and possibly
 subsequent packet headers. The following list describes how to identify each packet type.
@@ -4513,7 +4277,7 @@ Ping Messages (section 2.1.2) are generated and handled separately from other pa
 to different ports from other packets, as described in section 2.1.2. Only Ping Packets (section 2.2.7)
 can be received on these ports.
 
-3.1.5.1.2 Verifying the Signature
+###### 3.1.5.1.2 Verifying the Signature
 
 A packet signature is validated by evaluating the BaseHeader.VersionNumber and
 BaseHeader.Signature fields. A packet is valid when the BaseHeader.VersionNumber field is set
@@ -4527,18 +4291,19 @@ Release: April 23, 2024
 
 64 / 139
 
-If signature validation fails, the protocol MUST discard the received packet, perform no further
+
+If signature validation fails, the protocol MUST discard the received packet, perform no further
 processing for it, and then close the session as specified in Closing a Session (section 3.1.5.9). If
 signature verification succeeds, the protocol continues processing on the packet as specified in
 subsequent sections.
 
-3.1.5.1.3 Handling Incorrectly Formatted Messages
+###### 3.1.5.1.3 Handling Incorrectly Formatted Messages
 
 If the protocol receives a request that does not conform to the structures specified in
 Messages (section 2), the protocol MUST discard the received packet, perform no further processing
 for it, and then close the session as specified in Closing a Session (section 3.1.5.9).
 
-3.1.5.2  Establish a Protocol Session
+##### 3.1.5.2 Establish a Protocol Session
 
 The queue manager establishes a session to a remote queue manager to transfer messages. This
 action could be the result of the queue manager receiving a message from a higher-layer application
@@ -4564,7 +4329,7 @@ attribute of the array entry MUST be set to the current time; the Error ADM attr
 entry MUST be set to an HRESULT value indicating the error; and the AddressList ADM attribute of
 the array entry MUST be set to the RemoteQMAddress ADM element.
 
-3.1.5.2.1 Resolve Host Address
+###### 3.1.5.2.1 Resolve Host Address
 
 The queue manager MUST provide a queue format name that specifies the destination queue
 manager and queue.
@@ -4601,7 +4366,8 @@ Release: April 23, 2024
 
 65 / 139
 
-
+
+
 
 If the OutgoingMessageTable ADM element is not empty and the
 OutgoingQueueReference.State is not OnHold:
@@ -4693,13 +4459,14 @@ Release: April 23, 2024
 
 66 / 139
 
-  Set the RemoteQMAddress ADM element to NextHop.Address.
+
+  Set the RemoteQMAddress ADM element to NextHop.Address.
 
   Set the RemoteQMHostName ADM element to NextHop.HostName.
 
   Set the RemoteQMGuid ADM element to NextHop.QMGuid.
 
-3.1.5.2.2 Ping Mechanism
+###### 3.1.5.2.2 Ping Mechanism
 
 If the session is not being created in response to a Session Retry Connect Timer
 Event (section 3.1.6.1), the initiator MAY send a Ping Request, as specified in Ping
@@ -4736,7 +4503,7 @@ ADM attribute of the array entry MUST be set to the RemoteQMAddress ADM element.
 
 element is not empty, and take no further action.
 
-3.1.5.2.3 Sending an EstablishConnection Request Packet
+###### 3.1.5.2.3 Sending an EstablishConnection Request Packet
 
 If the Session Initialization Timer (section 3.1.2.1) is running, the protocol MUST stop the timer before
 sending an EstablishConnection Packet (section 2.2.3).
@@ -4773,7 +4540,8 @@ Release: April 23, 2024
 
 67 / 139
 
-  EstablishConnectionHeader.OperatingSystem.SE MUST be set to 0 if a Ping Request (section
+
+  EstablishConnectionHeader.OperatingSystem.SE MUST be set to 0 if a Ping Request (section
 
 2.1.2) was sent, as described in section 3.1.5.2.2; otherwise, it MUST be set to 1.
 
@@ -4796,7 +4564,7 @@ initialization.
 If the OutgoingQueueReference.State is not OnHold, OutgoingQueueReference.State MUST be
 set to Waiting.
 
-3.1.5.3  Receiving an EstablishConnection Packet
+##### 3.1.5.3 Receiving an EstablishConnection Packet
 
 If the SessionState ADM element is not set to WAITING_EC_MSG or WAITING_ECR_MSG, the
 protocol MUST close the session as specified in Closing a Session (section 3.1.5.9).
@@ -4805,7 +4573,7 @@ An EstablishConnection Packet (section 2.2.3) is a connection request from the i
 to an EstablishConnection Packet sent from this protocol, as specified in Sending an
 EstablishConnection Request Packet (section 3.1.5.2.3).
 
-3.1.5.3.1 Request Packet
+###### 3.1.5.3.1 Request Packet
 
 The packet is processed as a connection request if SessionState is WAITING_EC_MSG.
 
@@ -4856,7 +4624,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -4868,7 +4637,7 @@ section 2.2.3.1.
 
 The SessionState ADM element value MUST be set to WAITING_CP_MSG.
 
-3.1.5.3.2 Response Packet
+###### 3.1.5.3.2 Response Packet
 
 The packet is processed as a connection response if SessionState is WAITING_ECR_MSG.
 
@@ -4930,7 +4699,7 @@ RemoteQMAddress ADM element.
 See Receiving a ConnectionParameters Packet (section 3.1.5.4) for the next step in session
 initialization.
 
-3.1.5.4  Receiving a ConnectionParameters Packet
+##### 3.1.5.4 Receiving a ConnectionParameters Packet
 
 If SessionState is not set to WAITING_CP_MSG or WAITING_CPR_MSG, the protocol MUST close the
 session as specified in Closing a Session (section 3.1.5.9).
@@ -4942,11 +4711,12 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A ConnectionParameters Packet (section 2.2.2) is either a request from an initiator to an acceptor or a
+
+A ConnectionParameters Packet (section 2.2.2) is either a request from an initiator to an acceptor or a
 response from an acceptor to an initiator for a ConnectionParameters Packet received during protocol
 session initialization.
 
-3.1.5.4.1 Request Packet
+###### 3.1.5.4.1 Request Packet
 
 The packet is processed as a request if the SessionState ADM element is WAITING_CP_MSG.
 
@@ -5003,7 +4773,7 @@ The Session Initialization Timer MUST be stopped. The value of the SessionState 
 be set to OPEN. The session is now initialized and is ready to send or receive UserMessage Packets
 ([MS-MQMQ] section 2.2.20).
 
-3.1.5.4.2 Response Packet
+###### 3.1.5.4.2 Response Packet
 
 The packet is processed as a response if the value of the SessionState ADM element is
 WAITING_CPR_MSG.
@@ -5034,7 +4804,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-element MUST be set to the current time; the Error ADM attribute of the array element MUST be set
+
+element MUST be set to the current time; the Error ADM attribute of the array element MUST be set
 to zero; and the AddressList ADM attribute of the array element MUST be set to the
 RemoteQMAddress ADM element. The session is now initialized and is ready to send or receive
 UserMessage Packets ([MS-MQMQ] section 2.2.20).
@@ -5042,7 +4813,7 @@ UserMessage Packets ([MS-MQMQ] section 2.2.20).
 If the OutgoingQueueReference.State is not OnHold, the OutgoingQueueReference.State
 MUST be set to Connected.
 
-3.1.5.5  Receiving a SessionAck Packet
+##### 3.1.5.5 Receiving a SessionAck Packet
 
 If the SessionState ADM element is not set to the value OPEN, the protocol MUST close the session
 as specified in Closing a Session (section 3.1.5.9).
@@ -5065,7 +4836,7 @@ The protocol MUST perform the following steps to process a SessionHeader:
 
   Validate Message Counts
 
-3.1.5.5.1 Mark Acknowledged Messages
+###### 3.1.5.5.1 Mark Acknowledged Messages
 
 The protocol MUST set the ReceivedSessionAck ADM attribute to TRUE for each
 OutgoingMessagePosition (section 3.1.1.3.1.2) ADM element instance rOutgoingMessagePosition in the
@@ -5093,7 +4864,7 @@ The order in which each OutgoingMessagePosition ADM element instance
 sOutgoingMessagePosition is passed to the Add Message To Dispatch Collection event MUST match the
 order in which the instance is listed in the OutgoingMessageTable ADM element.
 
-3.1.5.5.2 Delete Acknowledged Express Messages
+###### 3.1.5.5.2 Delete Acknowledged Express Messages
 
 The protocol MUST delete each OutgoingMessagePosition (section 3.1.1.3.1.2) ADM element instance
 rOutgoingMessagePosition from the OutgoingMessageTable ADM element where
@@ -5106,10 +4877,11 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SessionHeader.AckSequenceNumber field and
+
+SessionHeader.AckSequenceNumber field and
 rOutgoingMessagePosition.RecoverableSequenceNumber is set to 0x0000.
 
-3.1.5.5.3 Delete Acknowledged Recoverable Messages
+###### 3.1.5.5.3 Delete Acknowledged Recoverable Messages
 
 The protocol MUST delete each OutgoingMessagePosition (section 3.1.1.3.1.2) ADM element instance
 rOutgoingMessagePosition from the OutgoingMessageTable ADM element where
@@ -5133,7 +4905,7 @@ tOutgoingMessagePosition.ReceivedOrderAck is TRUE. Details of the
 SessionHeader.RecoverableMsgAckFlags field bit representation are specified in [MS-MQMQ]
 section 2.2.20.4.
 
-3.1.5.5.4 Source Journaling
+###### 3.1.5.5.4 Source Journaling
 
 An acknowledged message that is deleted from the OutgoingMessageTable ADM element and that
 has the UserMessage.UserHeader.Flags.JP field set MUST be logged locally by generating a Move
@@ -5150,7 +4922,7 @@ OutgoingMessageTable ADM element.
 
 iTargetQueue: A QueueManager.SystemJournalQueue ([MS-MQDMPR] section 3.1.1.1).
 
-3.1.5.5.5 Validate Message Counts
+###### 3.1.5.5.5 Validate Message Counts
 
 If the SessionHeader.UserMsgSequenceNumber field is not equal to the
 MessageReceivedCount ADM element or the SessionHeader.RecoverableMsgSeqNumber field is
@@ -5164,7 +4936,7 @@ true, the Session Ack Wait Timer (section 3.1.2.4) MUST be restarted.
 Each recoverable transactional message MUST be retained until receipt of the corresponding
 OrderAck Packet (section 2.2.4).
 
-3.1.5.6  Receiving an OrderAck Packet
+##### 3.1.5.6 Receiving an OrderAck Packet
 
 If the SessionState ADM element is not set to the value OPEN, the protocol MUST close the session
 as specified in Closing a Session (section 3.1.5.9).
@@ -5176,7 +4948,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The ADM elements and ADM attributes defined in Session State (section 3.1.1.3.1) MUST be updated
+
+The ADM elements and ADM attributes defined in Session State (section 3.1.1.3.1) MUST be updated
 as follows:
 
   TxOutgoingSequence.TimeOfLastAck MUST be set to the local system time.
@@ -5255,7 +5028,8 @@ Release: April 23, 2024
 
 73 / 139
 
-  EodFirstNonAck: This ADM attribute value MUST be set to the value of the first entry in the
+
+  EodFirstNonAck: This ADM attribute value MUST be set to the value of the first entry in the
 
 TxOutgoingSequence.UnackedSequence list.
 
@@ -5281,7 +5055,7 @@ TxOutgoingSequence.ResendIntervalIndex.
 
 TxOutgoingSequence.ResendTime.
 
-3.1.5.7  Receiving a FinalAck Packet
+##### 3.1.5.7 Receiving a FinalAck Packet
 
 If the SessionState ADM element is not set to the value OPEN, the protocol MUST close the session
 as specified in Closing a Session (section 3.1.5.9).
@@ -5327,12 +5101,13 @@ Release: April 23, 2024
 
 74 / 139
 
-iTargetQueue: The target Queue ADM element instance MUST be set to the
+
+iTargetQueue: The target Queue ADM element instance MUST be set to the
 QueueManager.SystemTransactionalDeadletterQueue or to
 iMessagePos.MessageReference.ApplicationDeadletterQueue ([MS-MQDMPR] section 3.1.1.12) if
 it is specified.
 
-3.1.5.8  Receiving a UserMessage Packet
+##### 3.1.5.8 Receiving a UserMessage Packet
 
 A UserMessage Packet ([MS-MQMQ] section 2.2.20) contains an application-defined or system-
 generated message sent from the sender. A received message can be addressed to a queue on the
@@ -5368,7 +5143,7 @@ Inserting a Message into a Local Queue
 
   Sending Administration Acknowledgments
 
-3.1.5.8.1 Duplicate Detection
+###### 3.1.5.8.1 Duplicate Detection
 
 If the UserMessage Packet ([MS-MQMQ] section 2.2.20) contains a TransactionHeader ([MS-MQMQ]
 section 2.2.20.5), the message is transactional, and duplicate detection is done using the sequence
@@ -5389,7 +5164,7 @@ system time. This value is the number of seconds elapsed since midnight (00:00:0
 
 The protocol MUST discard this message and perform no further processing.
 
-3.1.5.8.2 General Processing
+###### 3.1.5.8.2 General Processing
 
 If the value of the UserMessage.UserHeader.QueueManagerAddress field is not equal to the
 Identifier ADM attribute of the local QueueManager ADM element instance and is not filled with the
@@ -5403,7 +5178,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The value of the MessageReceivedCount ADM element MUST be incremented by 1.
+
+The value of the MessageReceivedCount ADM element MUST be incremented by 1.
 
 The value of the UnackedReceivedMsgCount ADM element MUST be incremented by 1.
 
@@ -5490,7 +5266,8 @@ Release: April 23, 2024
 
 76 / 139
 
-QueueManager.QueueCollection, the protocol MUST reject the message using the following
+
+QueueManager.QueueCollection, the protocol MUST reject the message using the following
 logic:
 
 
@@ -5590,7 +5367,8 @@ Release: April 23, 2024
 
 77 / 139
 
-
+
+
 
 iMessageClass: MQMSG_CLASS_NACK_HOP_COUNT_EXCEEDED ([MS-MQMQ] section
 2.2.18.1.6)
@@ -5606,7 +5384,7 @@ The protocol MUST disregard the message and perform no further processing.
 If the UserMessage.UserHeader.Flags.DM field is set to 0x1, the protocol MUST perform additional
 actions as specified in section 3.1.5.8.7.
 
-3.1.5.8.3 Security
+###### 3.1.5.8.3 Security
 
 If UserMessage.UserHeader.QueueManagerAddress is equal to QueueManager.Identifier and
 a SecurityHeader is present in the UserMessage Packet ([MS-MQMQ] section 2.2.20), the following
@@ -5687,7 +5465,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5785,7 +5564,8 @@ Release: April 23, 2024
 
 79 / 139
 
-  Start the UserCertCache Cleanup Timer (section 3.1.2.13) with a duration of
+
+  Start the UserCertCache Cleanup Timer (section 3.1.2.13) with a duration of
 
 UserCertLifetime milliseconds if it is not already running.
 
@@ -5892,7 +5672,8 @@ Release: April 23, 2024
 
 80 / 139
 
-
+
+
 
 The protocol SHOULD<59> search the ReceiveSymmetricKeyCache ADM element for a
 CachedSymmetricKey (section 3.1.1.3.3) ADM element instance where
@@ -5984,7 +5765,8 @@ Release: April 23, 2024
 
 81 / 139
 
-
+
+
 
 iMessageClass: MQMSG_CLASS_NACK_BAD_ENCRYPTION
 
@@ -6091,7 +5873,8 @@ Release: April 23, 2024
 
 82 / 139
 
-
+
+
 
 If UserMessage.SecurityHeader.Flags.ST is set to 0x2, indicating that
 UserMessage.SecurityHeader.SecurityID contains the queue manager GUID, userSID
@@ -6187,7 +5970,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -6219,7 +6003,7 @@ iUserMessagePacket: UserMessage
 
 The protocol MUST disregard the message and perform no further processing.
 
-3.1.5.8.4 SessionHeader Processing
+###### 3.1.5.8.4 SessionHeader Processing
 
 The remote host can include a SessionHeader ([MS-MQMQ] section 2.2.20.4) in the UserMessage
 Packet ([MS-MQMQ] section 2.2.20) message. A SessionHeader does not contain information about
@@ -6229,7 +6013,7 @@ express and recoverable messages.
 If a UserMessage Packet contains a SessionHeader, it MUST be processed as specified in Receiving a
 SessionAck Packet (section 3.1.5.5).
 
-3.1.5.8.5 Determining Message Destination
+###### 3.1.5.8.5 Determining Message Destination
 
 
 
@@ -6268,7 +6052,7 @@ iSharedMode := QueueShareMode.DenyNone.
 
   Set iTargetQueue to rOpenQueueDescriptor.QueueReference.
 
-3.1.5.8.6 Transactional Message Processing
+###### 3.1.5.8.6 Transactional Message Processing
 
 If the UserMessage Packet ([MS-MQMQ] section 2.2.20) contains a TransactionHeader ([MS-MQMQ]
 section 2.2.20.5) and the value of the UserMesage.UserHeader.QueueManagerAddress field is
@@ -6281,7 +6065,8 @@ Release: April 23, 2024
 
 84 / 139
 
-The receiver MUST schedule sending an OrderAck Packet (section 2.2.4) based on the state of the
+
+The receiver MUST schedule sending an OrderAck Packet (section 2.2.4) based on the state of the
 Order Ack Send Timer (section 3.1.2.7) and the values of the LastOrderAckSendTime ADM element
 and the MaximumOrderAckDelay ADM element. If the timer is active and the time elapsed from the
 LastOrderAckSendTime ADM element is less than the MaximumOrderAckDelay ADM element, the
@@ -6321,7 +6106,7 @@ UserMessage.TransactionHeader.TxSequenceID field and MUST set the
 IncomingTxSequenceNumber ADM element to the
 UserMessage.TransactionHeader.TxSequenceNumber field.
 
-3.1.5.8.7 Recoverable Message Processing
+###### 3.1.5.8.7 Recoverable Message Processing
 
 If the UserMessage.UserHeader.Flags.DM field is set to 0x1, the protocol MUST perform the
 following actions.
@@ -6362,7 +6147,8 @@ Release: April 23, 2024
 
 85 / 139
 
-
+
+
 
 
 
@@ -6390,7 +6176,7 @@ restart it with the duration set to the RecoverableAckSendTimeout ADM element.
 The bit in the RecoverableMsgAckFlags ADM element corresponding to
 RecoverableMessageReceivedCount - LastAckedRecoverableMsgSeqNumber - 1 MUST be set.
 
-3.1.5.8.8 Inserting a Message into a Local Queue
+###### 3.1.5.8.8 Inserting a Message into a Local Queue
 
 The UserMessage Packet ([MS-MQMQ] section 2.2.20) MUST be deserialized to a Message ([MS-
 MQDMPR] section 3.1.1.12) ADM element instance by generating the Get Message Data Element From
@@ -6459,7 +6245,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 iUserMessagePacket: UserMessage
 
@@ -6547,7 +6334,8 @@ Release: April 23, 2024
 
 87 / 139
 
-  EodResendInterval: This ADM attribute value MUST be set to the value of
+
+  EodResendInterval: This ADM attribute value MUST be set to the value of
 
 TxOutgoingSequence.ResendInterval.
 
@@ -6592,7 +6380,7 @@ TxOutgoingSequence.ResendIntervalIndex.
 
 TxOutgoingSequence.ResendTime.
 
-3.1.5.8.9 Sending a Trace Message
+###### 3.1.5.8.9 Sending a Trace Message
 
 If the UserMessage.BaseHeader.Flags.TR bit field is set, the protocol MUST send a report message
 to the queue specified by the UserMessage.DebugHeader.QueueIdentifier field. Report
@@ -6639,7 +6427,8 @@ Release: April 23, 2024
 
 88 / 139
 
-          / "Jul" / "Aug" / "Sep" / "Oct" / "Nov" / "Dec"
+
+          / "Jul" / "Aug" / "Sep" / "Oct" / "Nov" / "Dec"
  day = "Mon" / "Tue" / "Wed" / "Thu" / "Fri" / "Sat" / "Sun"
  year = 2DIGIT
  GUID =  8HEXDIG "-" 4HEXDIG "-" 4HEXDIG "-" 4HEXDIG "-" 12HEXDIG
@@ -6684,9 +6473,9 @@ iOpenQueueDescriptor := the rOpenQueueDescriptor returned by the Open Queue even
 
 iMessage := TraceMessage
 
-3.1.5.8.10
+###### 3.1.5.8.10 Sending Administration Acknowledgments
 
-Sending Administration Acknowledgments
+
 
 This section specifies the sending of an administration acknowledgment when a message has reached
 its destination queue. Section 3.1.7.2.1 specifies the sending of an administration acknowledgment
@@ -6709,7 +6498,7 @@ iReceivedUserMessagePacket: UserMessage
 
 iMessageClass: MQMSG_CLASS_ACK_REACH_QUEUE ([MS-MQMQ] section 2.2.18.1.6)
 
-3.1.5.9  Closing a Session
+##### 3.1.5.9 Closing a Session
 
 A protocol session is closed by executing the following steps. The protocol does not send a packet to
 indicate session closure; instead, the underlying transport connection is simply closed.
@@ -6721,7 +6510,8 @@ Release: April 23, 2024
 
 89 / 139
 
-
+
+
 
 If the initiator is closing the session and the OutgoingQueueReference.State is not OnHold:
 
@@ -6751,9 +6541,9 @@ If the OutgoingMessageTable ADM element is not empty, the protocol MUST start th
 Session Retry Connect Timer (section 3.1.2.3) and set the SessionState ADM element to
 WAITING_RECONNECT.
 
-3.1.5.10
+##### 3.1.5.10 Handling an Incoming Transport Connection
 
-Handling an Incoming Transport Connection
+
 
 When an acceptor accepts an incoming transport connection from a remote initiator according to the
 transport settings specified in Protocol Session (section 2.1.1), it MUST initialize a session as specified
@@ -6763,9 +6553,9 @@ WAITING_EC_MSG.
 If the Session Initialization Timer (section 3.1.2.1) is running, it MUST be stopped and then restarted;
 otherwise, the protocol MUST start the Session Initialization Timer.
 
-3.1.5.11
+##### 3.1.5.11 Receiving Administration Acknowledgments
 
-Receiving Administration Acknowledgments
+
 
 Administration acknowledgment messages are system-generated UserMessage Packets ([MS-
 MQMQ] section 2.2.20) that indicate that a sent message has reached its destination queue or that
@@ -6777,9 +6567,9 @@ arrival acknowledgment classes specified in [MS-MQMQ] section 2.2.18.1.6.
 
 Administration acknowledgment messages MUST be processed as specified in section 3.1.5.8.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Session Retry Connect Timer Event
+##### 3.1.6.1 Session Retry Connect Timer Event
 
 When the Session Retry Connect Timer (section 3.1.2.3) expires, the protocol MUST perform the
 following steps if the OutgoingMessageTable ADM element is non-empty:
@@ -6804,7 +6594,8 @@ Release: April 23, 2024
 
 90 / 139
 
-  Get the reference rNextHop to the NextHop (section 3.1.1.3.1.3) ADM element instance
+
+  Get the reference rNextHop to the NextHop (section 3.1.1.3.1.3) ADM element instance
 
 referenced by the NextHopIndexer ADM element in the NextHopCollection ADM element
 and perform the following:
@@ -6835,7 +6626,7 @@ iData := A reference to iOutgoingMessagePosition.
 
 Initializing the session results in message retransmission, as specified in section 3.1.7.
 
-3.1.6.2  Session Cleanup Timer Event
+##### 3.1.6.2 Session Cleanup Timer Event
 
 When the Session Cleanup Timer (section 3.1.2.2) expires, the protocol SHOULD apply the following
 logic to close an idle session:
@@ -6850,7 +6641,7 @@ in Closing a Session (section 3.1.5.9).
 If the SessionActive ADM element is TRUE, the protocol SHOULD restart the Session Cleanup
 Timer and set the SessionActive ADM element to FALSE.
 
-3.1.6.3  Session Ack Wait Timer Event
+##### 3.1.6.3 Session Ack Wait Timer Event
 
 The Session Ack Wait Timer event indicates a timeout while waiting for a session acknowledgment
 from the remote host. When the Session Ack Wait Timer (section 3.1.2.4) expires, the protocol
@@ -6865,7 +6656,7 @@ section 3.1.5.9.
 Else if the ReceivedAck ADM element is TRUE, the protocol MUST restart the Session Ack Wait Timer
 and set the ReceivedAck ADM element to FALSE.
 
-3.1.6.4  Session Ack Send Timer Event
+##### 3.1.6.4 Session Ack Send Timer Event
 
 When the Session Ack Send Timer (section 3.1.2.5) expires, if and only if the
 UnackedReceivedMsgCount ADM element does not equal 0x0000, a SessionAck
@@ -6886,7 +6677,8 @@ Release: April 23, 2024
 
 91 / 139
 
-
+
+
 
 
 
@@ -6923,7 +6715,7 @@ RecoverableMessageReceivedCount ADM element.
 
 The Session Ack Send Timer MUST be restarted.
 
-3.1.6.5  Transactional Ack Wait Timer Event
+##### 3.1.6.5 Transactional Ack Wait Timer Event
 
 The Transactional Ack Wait Timer Event indicates a time-out while waiting for a transactional OrderAck
 Packet (section 2.2.4) from the receiver. When the Transactional Ack Wait Timer (section 3.1.2.6)
@@ -6938,7 +6730,7 @@ FALSE.
 The preceding step causes all unacknowledged transactional messages to be resent to the remote
 queue manager.
 
-3.1.6.6  Session Initialization Timer Event
+##### 3.1.6.6 Session Initialization Timer Event
 
 For the initiator, the Session Initialization Timer Event indicates a time-out while contacting the
 acceptor during session initialization. For the acceptor, the Session Initialization Timer Event
@@ -6946,7 +6738,7 @@ indicates a time-out while responding to the initiator during session initializa
 Initialization Timer (section 3.1.2.1) expires, the protocol MUST close the session as specified in
 section 3.1.5.9.
 
-3.1.6.7  MessageIDHistory Cleanup Timer Event
+##### 3.1.6.7 MessageIDHistory Cleanup Timer Event
 
 When the MessageIDHistory Cleanup Timer (section 3.1.2.8) expires, the protocol MUST apply the
 following logic, where CURRENT_TIME represents the current system time. This value is the number of
@@ -6965,7 +6757,8 @@ Release: April 23, 2024
 
 92 / 139
 
-MessageIDHistoryEntry ADM element instance referenced by rMessageIDHistoryEntry MUST be
+
+MessageIDHistoryEntry ADM element instance referenced by rMessageIDHistoryEntry MUST be
 deleted from the MessageIDHistoryTable ADM element.
 
 
@@ -6973,12 +6766,12 @@ deleted from the MessageIDHistoryTable ADM element.
 If the MessageIDHistoryTable ADM element is not empty, the MessageIDHistory Cleanup Timer
 MUST be restarted.
 
-3.1.6.8  Ping Response Timer Event
+##### 3.1.6.8 Ping Response Timer Event
 
 When the Ping Response Timer (section 3.1.2.9) expires, the protocol MUST take the actions
 described in step 9 of the Send Ping Request (section 3.1.7.6) event.
 
-3.1.6.9  Order Ack Send Timer Event
+##### 3.1.6.9 Order Ack Send Timer Event
 
 When the Order Ack Send Timer (section 3.1.2.7) expires, if the session from which the timer was
 started is not closed, the protocol MUST send an OrderAck Packet (section 2.2.4) to the sender by
@@ -6990,9 +6783,9 @@ iMessageClass: MQMSG_CLASS_ORDER_ACK ([MS-MQMQ] section 2.2.18.1.6)
 
 The LastOrderAckSendTime ADM element MUST be set to current system time.
 
-3.1.6.10
+##### 3.1.6.10 ReceiveSymmetricKeyCache Cleanup Timer Event
 
-ReceiveSymmetricKeyCache Cleanup Timer Event
+
 
 When the ReceiveSymmetricKeyCache Cleanup Timer (section 3.1.2.10) expires, the protocol MUST
 apply the following logic, where CURRENT_TIME represents the current system time. This value is the
@@ -7015,9 +6808,9 @@ ReceiveSymmetricKeyCache Cleanup Timer (section 3.1.2.10) MUST be restarted with
 of the value of the SymmetricKeyShortLifetime ADM element plus one minute minus the
 difference between CURRENT_TIME and the oldest CachedTime ADM attribute value.
 
-3.1.6.11
+##### 3.1.6.11 SendSymmetricKeyCache Cleanup Timer Event
 
-SendSymmetricKeyCache Cleanup Timer Event
+
 
 When the SendSymmetricKeyCache Cleanup Timer (section 3.1.2.11) expires, the protocol MUST
 apply the following logic, where CURRENT_TIME represents the current system time. This value is the
@@ -7045,12 +6838,13 @@ Release: April 23, 2024
 
 93 / 139
 
-SymmetricKeyShortLifetime ADM element plus one minute minus the difference between
+
+SymmetricKeyShortLifetime ADM element plus one minute minus the difference between
 CURRENT_TIME and the oldest CachedTime ADM attribute value.<64>
 
-3.1.6.12
+##### 3.1.6.12 SendBaseSymmetricKeyCache Cleanup Timer Event
 
-SendBaseSymmetricKeyCache Cleanup Timer Event
+
 
 When the SendBaseSymmetricKeyCache Cleanup Timer (section 3.1.2.12) expires, the protocol MUST
 apply the following logic, where CURRENT_TIME represents the current system time. This value is the
@@ -7073,9 +6867,9 @@ SendBaseSymmetricKeyCache Cleanup Timer MUST be restarted with a duration of the
 the SymmetricKeyShortLifetime ADM element plus one minute minus the difference between
 CURRENT_TIME and the oldest CachedTime ADM attribute value.
 
-3.1.6.13
+##### 3.1.6.13 UserCertCache Cleanup Timer Event
 
-UserCertCache Cleanup Timer Event
+
 
 When the UserCertCache Cleanup Timer (section 3.1.2.13) expires, the protocol MUST apply the
 following logic, where CURRENT_TIME represents the current system time. This value is the number of
@@ -7096,7 +6890,7 @@ Timer MUST be restarted with a duration of the value of the UserCertLifetime ADM
 one minute minus the difference between CURRENT_TIME and the oldest CachedTime ADM
 attribute value.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 In addition to the higher-layer triggered events listed in section 3.1.4, the operation of the Message
 Queuing (MSMQ): Message Queuing Binary Protocol is initiated and subsequently driven by the
@@ -7112,7 +6906,7 @@ Pause Queue ([MS-MQDMPR] section 3.1.7.2.3).
 
   Resume Queue ([MS-MQDMPR] section 3.1.7.2.4).
 
-3.1.7.1  Send User Message Event
+##### 3.1.7.1 Send User Message Event
 
 The Send User Message Event indicates that there exists in the OutgoingMessageTable ADM
 element an OutgoingMessagePosition ADM element instance with a UserMessage ADM attribute
@@ -7125,7 +6919,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-queue manager. The event provides a reference to the corresponding OutgoingMessagePosition
+
+queue manager. The event provides a reference to the corresponding OutgoingMessagePosition
 ADM element.
 
 The following arguments are passed when the Send User Message Event is raised:
@@ -7172,7 +6967,7 @@ Encrypting the Message Body (section 3.1.7.1.5).
 Unless specifically noted in a subsequent section, this logic MUST be applied to any UserMessage
 Packet ([MS-MQMQ] section 2.2.20) sent.
 
-3.1.7.1.1 General Processing
+###### 3.1.7.1.1 General Processing
 
 The protocol MUST serialize the message to be sent by performing the following actions:
 
@@ -7197,7 +6992,7 @@ by iPosition.MessagePosition.MessageReference.
 iBuffer: the UserMessage Packet ([MS-MQMQ] section 2.2.20) referenced by
 iPosition.UserMessage.
 
-3.1.7.1.2 Checking for Message Expiration
+###### 3.1.7.1.2 Checking for Message Expiration
 
 The value of the UserMessage.BaseHeader.TimeToReachQueue field controls the message
 lifetime. The protocol MUST check the message for expiration before sending.
@@ -7212,7 +7007,8 @@ Release: April 23, 2024
 
 95 / 139
 
-If CURRENT_TIME minus the UserMessage.UserHeader.SentTime field value is greater than the
+
+If CURRENT_TIME minus the UserMessage.UserHeader.SentTime field value is greater than the
 UserMessage.BaseHeader.TimeToReachQueue field value, the message has expired. An expired
 message MUST be deleted from the OutgoingMessageTable ADM element and MUST NOT be sent to
 the remote queue manager.
@@ -7248,7 +7044,7 @@ iMessagePos.MessageReference.ApplicationDeadletterQueue ([MS-MQDMPR] section
 3.1.1.12) if it is specified; otherwise, this argument is set to
 QueueManager.SystemDeadletterQueue ([MS-MQDMPR] section 3.1.1.1).
 
-3.1.7.1.3 Updating the UserMessage Packet
+###### 3.1.7.1.3 Updating the UserMessage Packet
 
 If the UserMessage Packet ([MS-MQMQ] section 2.2.20) contains a TransactionHeader ([MS-
 MQMQ] section 2.2.20.5) and the UserMessage.UserHeader.SourceQueueManager field is equal
@@ -7300,7 +7096,8 @@ Release: April 23, 2024
 
 96 / 139
 
-The value of the MessageSentCount ADM element MUST be incremented by 1.
+
+The value of the MessageSentCount ADM element MUST be incremented by 1.
 
 iPosition.SequenceNumber MUST be set to the MessageSentCount ADM element.
 
@@ -7363,7 +7160,7 @@ The protocol MUST start the Session Ack Wait Timer (section 3.1.2.4) if it is in
 
 The value of the SessionActive ADM element MUST be set to TRUE.
 
-3.1.7.1.4 Signing the Packet
+###### 3.1.7.1.4 Signing the Packet
 
 If Message.AuthenticationLevel is not None, the packet MUST be signed. The following steps MUST
 be performed to sign the packet:
@@ -7390,7 +7187,8 @@ Release: April 23, 2024
 
 97 / 139
 
-  Otherwise:
+
+  Otherwise:
 
 
 
@@ -7404,7 +7202,7 @@ specified by the UserMessage.MessagePropertiesHeader.HashAlgorithm field.
 The UserMessage.SecurityHeader.SecurityData.Signature field MUST be set to the value
 of the hash encrypted using RSA and the sender private key.
 
-3.1.7.1.5 Encrypting the Message Body
+###### 3.1.7.1.5 Encrypting the Message Body
 
 If the PrivacyLevel ADM attribute of the Message ([MS-MQDMPR] section 3.1.1.12) ADM element is
 not None, the message body MUST be encrypted. To encrypt the message, the protocol MUST
@@ -7481,7 +7279,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PreferredAdvancedAlgorithm  UseSymmKeyLength
+
+PreferredAdvancedAlgorithm  UseSymmKeyLength
 
 0x00006610
 
@@ -7574,7 +7373,8 @@ Release: April 23, 2024
 
 99 / 139
 
-UseAlgorithm value
+
+UseAlgorithm value
 
 Algorithm
 
@@ -7640,7 +7440,7 @@ MUST be set to the size, in bytes, of UseCachedKey.EncryptedSymmetricKey.
 
 
 
-3.1.7.1.5.1  Handling Encryption Errors
+###### 3.1.7.1.5.1 Handling Encryption Errors
 
 If an error occurs while encrypting a message, the message MUST be deleted from the
 OutgoingMessageTable ADM element and MUST NOT be sent to the remote queue manager. If the
@@ -7666,13 +7466,14 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-An entry MUST be appended to the OutgoingQueueReference.ConnectionHistory array; the
+
+An entry MUST be appended to the OutgoingQueueReference.ConnectionHistory array; the
 Status ADM attribute of the array entry MUST be set to CertificateValidationFailure; the
 ConnectionHistoryTime ADM attribute of the array entry MUST be set to the current time; the Error
 ADM attribute of the array entry MUST be set to an HRESULT value indicating the error; and the
 AddressList ADM attribute of the array entry MUST be set to the RemoteQMAddress ADM element.
 
-3.1.7.1.5.2  Converting MQDSPUBLICKEY to PUBLICKEYBLOB
+###### 3.1.7.1.5.2 Converting MQDSPUBLICKEY to PUBLICKEYBLOB
 
 Let source be the MQDSPUBLICKEY ([MS-MQMQ] section 2.2.1) structure to be converted. Let
 result be the PUBLICKEYBLOB (section 2.4.1) that is being constructed. The following steps MUST be
@@ -7688,7 +7489,7 @@ Initialize the constant fields of result as shown in section 2.4.1.
 
   Set the result.modulus field to the source.abuf.modulus field.
 
-3.1.7.1.6 Sending the Packet
+###### 3.1.7.1.6 Sending the Packet
 
 The UserMessage Packet ([MS-MQMQ] section 2.2.20) MUST be sent to the remote queue manager
 using the TCP or SPX connection associated with the protocol session.
@@ -7709,7 +7510,7 @@ iOutgoingQueue := iQueue
 
 Perform the steps in Closing a Session (section 3.1.5.9), and then take no further action.
 
-3.1.7.1.7 Sending Trace Message
+###### 3.1.7.1.7 Sending Trace Message
 
 If the Flags.TR field of the BaseHeader ([MS-MQMQ] section 2.2.19.1) is set, the protocol MUST
 send a report message to the queue specified by the QueueIdentifier field of the DebugHeader
@@ -7742,7 +7543,8 @@ Release: April 23, 2024
 
 101 / 139
 
- time-date = hour SP ("AM" / "PM") SP date
+
+ time-date = hour SP ("AM" / "PM") SP date
  hour  =  2DIGIT ":" 2DIGIT [":" 2DIGIT] ; ANSI and Military
  date =  day "," month SP 2DIGIT SP year; day, month day year
  month  = "Jan" / "Feb" / "Mar" / "Apr" / "May" / "Jun"
@@ -7769,7 +7571,7 @@ specified by the following ABNF rule.
 
 The ABNF rule queue-format is as specified in [MS-MQMQ] section 2.1.
 
-3.1.7.2  Message Position Deleted
+##### 3.1.7.2 Message Position Deleted
 
 This event is triggered when the Message Position Deleted ([MS-MQDMPR] section 3.1.7.2.1) event is
 raised.
@@ -7782,7 +7584,7 @@ layer application or the queue being deleted. Operations that occur on messages 
 queue are outside the definition of this protocol; however, the protocol must ensure that messages
 are tracked and that the following acknowledgment logic is applied.
 
-3.1.7.2.1 Administration Acknowledgment
+###### 3.1.7.2.1 Administration Acknowledgment
 
 If administration acknowledgments are requested, a message is sent to the administration queue
 specified in the message when it is removed from a destination queue. Administration
@@ -7805,7 +7607,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-iPosition.MessageReference.AcknowledgementsRequested is one of AckNegReceive,
+
+iPosition.MessageReference.AcknowledgementsRequested is one of AckNegReceive,
 AckNackReceive, or AckFullReceive and iMessageClass is not AckReceive, the protocol MUST
 send an administrative acknowledgment by raising a Send Administration
 Acknowledgment (section 3.1.7.15) event with the following arguments:
@@ -7842,7 +7645,7 @@ NackReceiveTimeout  MQMSG_CLASS_NACK_RECEIVE_TIMEOUT ([MS-MQMQ] section 2.2.18.1
 
 NackReceiveRejected  MQMSG_CLASS_NACK_RECEIVE_REJECTED ([MS-MQMQ] section 2.2.18.1.6)
 
-3.1.7.2.2 Final Acknowledgment
+###### 3.1.7.2.2 Final Acknowledgment
 
 If iPosition.MessageReference.PositiveJournalingRequested is TRUE, or
 iPosition.MessageReference.NegativeJournalingRequested is TRUE, or
@@ -7858,12 +7661,12 @@ iMessageClass: the iReason column value in the table in section 3.1.7.2.1
 
 iUserMessage: iPosition.MessageReference
 
-3.1.7.3  Handling a Network Disconnect
+##### 3.1.7.3 Handling a Network Disconnect
 
 When the underlying transport indicates a disconnect, the protocol MUST close the session as specified
 in Closing a Session (section 3.1.5.9).
 
-3.1.7.4  Get Destination Info
+##### 3.1.7.4 Get Destination Info
 
 The Get Destination Info event MUST be generated with the following argument:
 
@@ -7895,7 +7698,8 @@ Release: April 23, 2024
 
 103 / 139
 
-
+
+
 
 If a direct format name ([MS-MQMQ] section 2.1.2) is specified, the protocol MUST perform the
 following steps:
@@ -7953,7 +7757,7 @@ component of the direct format name.
 
   Set the rStatus variable of this event to TRUE.
 
-3.1.7.5  Get Next Hops
+##### 3.1.7.5 Get Next Hops
 
 The Get Next Hops event MUST be generated with the following arguments:
 
@@ -7990,7 +7794,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 For each GUID, referred to as rNextHopGuid:
 
@@ -8016,7 +7821,7 @@ rQueueManagers.
 
 If the rQueueManagers collection is empty, set rStatus equal to FALSE and take no further action.
 
-3.1.7.6  Send Ping Request
+##### 3.1.7.6 Send Ping Request
 
 The Send Ping Request event MUST be generated with the following argument:
 
@@ -8061,7 +7866,7 @@ the Response processed by the Receive Ping Response (section 3.1.7.8) event. If 
 Response.Flags.RF field is 0x0, rStatus MUST be set to TRUE; otherwise, rStatus MUST be set to
 FALSE. The instance of the Ping Response Timer is canceled.
 
-3.1.7.7  Receive Ping Request
+##### 3.1.7.7 Receive Ping Request
 
 The Receive Ping Request event is triggered when a packet is received on the UDP or SPX port on
 which the acceptor is listening, as described in section 2.1.2. When this occurs, the protocol MUST
@@ -8079,7 +7884,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -8112,7 +7918,7 @@ The Response.Signature field MUST be set to 0x5548, as specified in section 2.2.
 
   Response MUST be sent as a Ping Response, as defined in Ping Message (section 2.1.2).
 
-3.1.7.8  Receive Ping Response
+##### 3.1.7.8 Receive Ping Response
 
 The Receive Ping Response event is triggered when a packet is received on the UDP or SPX port on
 which the initiator is listening, as described in section 2.1.2. When this occurs, the protocol MUST
@@ -8140,14 +7946,14 @@ Event (section 3.1.6.8) as specified in step 8 of section 3.1.7.6, the protocol 
 Response Processed (section 3.1.7.9) event. Otherwise, the protocol MUST ignore the packet and
 take no further action.
 
-3.1.7.9  Ping Response Processed
+##### 3.1.7.9 Ping Response Processed
 
 When this event is raised, the protocol MUST take the actions specified in step 10 of the Send Ping
 Request (section 3.1.7.6) event.
 
-3.1.7.10
+##### 3.1.7.10 Get Message Data Element From Buffer
 
-Get Message Data Element From Buffer
+
 
 The Get Message Data Element From Buffer event MUST be generated with the following input
 argument:
@@ -8173,16 +7979,17 @@ Release: April 23, 2024
 
 106 / 139
 
-
+
+
 
 iBuffer := iBuffer of this event
 
 The protocol MUST set rMessage to the rMessage returned by the Deserialize Message From Buffer
 event.
 
-3.1.7.11
+##### 3.1.7.11 Construction of a UserMessage Packet
 
-Construction of a UserMessage Packet
+
 
 The Queue Manager MUST generate a Construct a UserMessage Packet ([MS-MQDMPR] section
 3.1.7.1.30) event with the following argument:
@@ -8254,9 +8061,9 @@ RecoverableMessageReceivedCount ADM element.
 
 The Session Ack Send Timer MUST be restarted.
 
-3.1.7.12
+##### 3.1.7.12 Message Position Available Event
 
-Message Position Available Event
+
 
 This event is triggered when the Message Position Available ([MS-MQDMPR] section 3.1.7.2.2) event is
 raised and processes the same arguments as that event:
@@ -8274,7 +8081,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 iPosition: A reference to the MessagePosition ADM element instance that has become available.
 
@@ -8353,9 +8161,9 @@ iPosition := A reference to OutgoingMessagePosition.MessagePosition.
 
 iData := A reference to OutgoingMessagePosition.
 
-3.1.7.13
+##### 3.1.7.13 Pause Queue Event
 
-Pause Queue Event
+
 
 This event is triggered when the Pause Queue ([MS-MQDMPR] section 3.1.7.2.3) event is raised. Upon
 this event, the Session Ack Send Timer (section 3.1.2.5) MUST be stopped. A SessionAck
@@ -8379,7 +8187,8 @@ Release: April 23, 2024
 
 108 / 139
 
-
+
+
 
 
 
@@ -8421,9 +8230,9 @@ Queue ([MS-MQDMPR] section 3.1.7.1.34) event MUST be raised with the following a
 
 iOutgoingQueue := iQueue
 
-3.1.7.14
+##### 3.1.7.14 Resume Queue Event
 
-Resume Queue Event
+
 
 This event is triggered when the Resume Queue ([MS-MQDMPR] section 3.1.7.2.4) event is raised.
 The queue manager MUST establish a protocol session to the remote queue manager if there are
@@ -8456,9 +8265,9 @@ iData := A reference to iOutgoingMessagePosition.
 
 The SessionActive ADM element of the session MUST be set to TRUE.
 
-3.1.7.15
+##### 3.1.7.15 Send Administration Acknowledgment
 
-Send Administration Acknowledgment
+
 
 Administration acknowledgment messages are system-generated UserMessage Packets ([MS-MQMQ]
 section 2.2.20) that are sent to administration queues specified in the packets. An administration
@@ -8475,7 +8284,8 @@ Release: April 23, 2024
 
 109 / 139
 
-
+
+
 
 
 
@@ -8582,7 +8392,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-iMessageClass
+
+iMessageClass
 
 section 2.2.18.1.6)
 
@@ -8671,7 +8482,8 @@ Release: April 23, 2024
 
 111 / 139
 
-value of the iReceivedUserMessagePacket.UserHeader.SourceQueueManager field. Set the
+
+value of the iReceivedUserMessagePacket.UserHeader.SourceQueueManager field. Set the
 adminAcknowledgment.CorrelationIdentifier ADM attribute to the constructed OBJECTID.
 
 
@@ -8766,7 +8578,8 @@ Release: April 23, 2024
 
 112 / 139
 
-
+
+
 
 If iReceivedMessage is not provided and the
 iReceivedUserMessagePacket.SecurityHeader.Flags.EB bit field is not set, set the
@@ -8804,9 +8617,9 @@ iOpenQueueDescriptor := the rOpenQueueDescriptor returned by the Open Queue even
 
 iMessage := adminAcknowledgment
 
-3.1.7.16
+##### 3.1.7.16 Send User Message Wrapper
 
-Send User Message Wrapper
+
 
 This event MUST be generated with the following arguments:
 
@@ -8843,9 +8656,9 @@ the following argument:
 
 iPosition := iMessagePosition.
 
-3.1.7.17
+##### 3.1.7.17 Send Transactional Acknowledgment
 
-Send Transactional Acknowledgment
+
 
 The details of transactional acknowledgments are specified in section 3.1.1.6.2.
 
@@ -8869,7 +8682,8 @@ Release: April 23, 2024
 
 113 / 139
 
-
+
+
 
 iUserMessage: Optional. The Message ([MS-MQDMPR] section 3.1.1.12) ADM element instance to
 acknowledge.
@@ -8976,7 +8790,8 @@ Release: April 23, 2024
 
 114 / 139
 
-  Set additional ADM attributes of transAcknowledgment as shown in the following table.
+
+  Set additional ADM attributes of transAcknowledgment as shown in the following table.
 
 ADM Attribute
 
@@ -9095,7 +8910,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-FinalAck Body field
+
+FinalAck Body field
 
 Value
 
@@ -9183,16 +8999,17 @@ Release: April 23, 2024
 
 116 / 139
 
-<!-- Extracted images from page 117 -->
+
+<!-- Extracted images from page 117 -->
 ![Extracted image 1 from page 117]([MS-MQQB].images/page117-img01.png)
 <!-- /Extracted images from page 117 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Message Queuing (MSMQ): Message Queuing Binary Protocol.
 
-4.1  Session Initialization and Express Message Example
+### 4.1 Session Initialization and Express Message Example
 
 The following Message Queuing (MSMQ): Message Queuing Binary Protocol packet sequence
 demonstrates session initialization and transfer of an express message between two queue
@@ -9206,7 +9023,7 @@ The messages follow the sequence shown.
 
 Figure 15: Session with Express Messages Sent scenario
 
-4.1.1  FRAME 1: Ping Request
+#### 4.1.1 FRAME 1: Ping Request
 
 From client UDP port 4057 to server UDP port 3527:
 
@@ -9222,7 +9039,8 @@ Release: April 23, 2024
 
 117 / 139
 
-       Reserved: (01111101000000..) - Reserved
+
+       Reserved: (01111101000000..) - Reserved
       Signature: 21832 (0x5548)
       Cookie: 4 (0x4)
       QMGUID: {C626EA11-E6B6-9749-9595-9150557358D1}
@@ -9232,7 +9050,7 @@ Release: April 23, 2024
  01 7D 48 55 04 00 00 00 D1 58 73 55 50 91 95 95
  49 97 B6 E6 11 EA 26 C6
 
-4.1.2  FRAME 2: Ping Response
+#### 4.1.2 FRAME 2: Ping Response
 
 From server port 3527 to client UDP port 4057:
 
@@ -9250,7 +9068,7 @@ From server port 3527 to client UDP port 4057:
  95 B2 48 55 04 00 00 00 07 89 CD 43 4C 39 11 8F
  44 45 90 78 90 9E A0 FC
 
-4.1.3  FRAME 3: Establish Connection Request
+#### 4.1.3 FRAME 3: Establish Connection Request
 
 From client TCP port 49759 to TCP port 1801:
 
@@ -9292,7 +9110,8 @@ Release: April 23, 2024
 
 118 / 139
 
-                                                                not a server
+
+                                                                not a server
       QualityOfService: ( .....................0.......... ) - Quality of
                                                                 transport service
                                                                 not supported
@@ -9338,7 +9157,7 @@ Release: April 23, 2024
  5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A
  5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A
 
-4.1.4  FRAME 4: Establish Connection Response
+#### 4.1.4 FRAME 4: Establish Connection Response
 
 From server TCP port 1801 to client TCP port 49759:
 
@@ -9363,7 +9182,8 @@ Release: April 23, 2024
 
 119 / 139
 
-    PacketSize: 572 (0x23C)
+
+    PacketSize: 572 (0x23C)
     MessageLife: 4294967295 (0xFFFFFFFF)
   - MSMQInternalHeader:
      Reserved: 0 (0x0)
@@ -9433,7 +9253,8 @@ Release: April 23, 2024
 
 120 / 139
 
-4.1.5  FRAME 5: Connection Parameters Request
+
+#### 4.1.5 FRAME 5: Connection Parameters Request
 
 From client TCP port 49759 to server TCP port 1801:
 
@@ -9473,7 +9294,7 @@ Destination port: 1801
  10 C0 0B 00 4C 49 4F 52 20 00 00 00 FF FF FF FF
  00 00 03 00 D8 05 00 00 C0 D4 01 00 00 00 40 00
 
-4.1.6  FRAME 6: Connection Parameters Response
+#### 4.1.6 FRAME 6: Connection Parameters Response
 
 From server TCP port 1801 to client TCP port 49759:
 
@@ -9501,7 +9322,8 @@ Release: April 23, 2024
 
 121 / 139
 
-      Reserved: 0 (0x0)
+
+      Reserved: 0 (0x0)
       - FlagsInternalHeader: 3 (0x3)
         PacketType: (............0011) -
         Session: (...........0....) - Session valid
@@ -9521,7 +9343,7 @@ Destination port: 49759
  10 C0 0B 00 4C 49 4F 52 20 00 00 00 FF FF FF FF
  00 00 03 00 D8 05 00 00 C0 D4 01 00 00 00 40 00
 
-4.1.7  FRAME 7: User Message
+#### 4.1.7 FRAME 7: User Message
 
 From client TCP port 49759 to server TCP port 1801:
 
@@ -9570,7 +9392,8 @@ Release: April 23, 2024
 
 122 / 139
 
-     Connector: (.........0......................)
+
+     Connector: (.........0......................)
        - No ConnectorType field
      MultiQueueFormatHdr: (........0.......................)
       - MultiQueueFormatHeader not included
@@ -9646,7 +9469,8 @@ Release: April 23, 2024
 
 123 / 139
 
- 20 00 6C 00 61 00 62 00 65 00 6C 00 00 00 61 00
+
+ 20 00 6C 00 61 00 62 00 65 00 6C 00 00 00 61 00
  61 00 61 00 61 00 61 00 61 00 61 00 61 00 61 00
  61 00 61 00 61 00 61 00 61 00 61 00 61 00 61 00
  61 00 61 00 61 00 61 00 61 00 61 00 61 00 61 00
@@ -9723,7 +9547,8 @@ Release: April 23, 2024
 
 124 / 139
 
- 61 00 61 00 61 00 61 00 61 00 61 00 61 00 61 00
+
+ 61 00 61 00 61 00 61 00 61 00 61 00 61 00 61 00
  61 00 61 00 61 00 61 00 61 00 61 00 61 00 61 00
  61 00 61 00 61 00 61 00 61 00 61 00 61 00 61 00
  61 00 61 00 61 00 61 00 61 00 61 00 61 00 61 00
@@ -9746,7 +9571,7 @@ Release: April 23, 2024
  61 00 61 00 61 00 61 00 61 00 61 00 61 00 61 00
  61 00
 
-4.1.8  FRAME 8: Session Acknowledgment
+#### 4.1.8 FRAME 8: Session Acknowledgment
 
 From server TCP port 1801 to client TCP port 49759:
 
@@ -9793,12 +9618,13 @@ Release: April 23, 2024
 
 125 / 139
 
-5  Security
+
+## 5 Security
 
 The following sections describe security considerations for implementers of the Message Queuing
 (MSMQ): Message Queuing Binary Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 A sender can include a digital certificate and request authentication when sending a UserMessage
 Packet ([MS-MQMQ] section 2.2.20). A sender can request encryption of the message body to
@@ -9820,7 +9646,7 @@ MQMSG_CLASS_NACK_UNSUPPORTED_CRYPTO_PROVIDER present potential security vulnerab
 The receiving queue manager disables generation of these Nacks by default. The ability to
 temporarily enable them when required to diagnose a configuration or application issue is useful.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 No security parameters are defined for this protocol.
 
@@ -9831,7 +9657,8 @@ Release: April 23, 2024
 
 126 / 139
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -9901,7 +9728,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 1.3.2.2: Windows support for generating and accepting message hashes is as follows.
@@ -10001,7 +9829,8 @@ Release: April 23, 2024
 
 128 / 139
 
-<11> Section 2.1.2: The port on which an acceptor listens for Ping Requests is controlled by the
+
+<11> Section 2.1.2: The port on which an acceptor listens for Ping Requests is controlled by the
 registry key HKEY_LOCAL_MACHINE\software\microsoft\msmq\parameters\MsmqIpPingPort for Ping
 Requests sent using UDP or the registry key
 HKEY_LOCAL_MACHINE\software\microsoft\msmq\parameters\MsmqIpxPingPort for Ping Requests
@@ -10069,7 +9898,8 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the client to specify different resend times in seconds beyond the default values for the first, second,
+
+the client to specify different resend times in seconds beyond the default values for the first, second,
 and third time-outs.
 
 Windows provides a registry key at
@@ -10134,7 +9964,8 @@ Release: April 23, 2024
 
 130 / 139
 
-<31> Section 3.1.1.3: Windows provides a registry key at
+
+<31> Section 3.1.1.3: Windows provides a registry key at
 HKEY_LOCAL_MACHINE\software\microsoft\msmq\parameters\SeqResend46Time that can be used by
 the client to specify a different value in seconds.
 
@@ -10201,7 +10032,8 @@ Release: April 23, 2024
 
 131 / 139
 
-<45> Section 3.1.2.3: The Windows default reconnection time-out is 5,000 milliseconds unless
+
+<45> Section 3.1.2.3: The Windows default reconnection time-out is 5,000 milliseconds unless
 otherwise specified in milliseconds in the registry key
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSMQ\Parameters\TryConnectInterval. Additionally, the
 value in milliseconds, if any, in the registry key
@@ -10267,7 +10099,8 @@ Release: April 23, 2024
 
 132 / 139
 
-The Windows implementation of this protocol uses the Winsock APIs to obtain a list of addresses
+
+The Windows implementation of this protocol uses the Winsock APIs to obtain a list of addresses
 corresponding to the destination host name.
 
 <56> Section 3.1.5.2.2: The Ping Packet (section 2.2.7) mechanism is utilized by Windows NT,
@@ -10340,7 +10173,8 @@ Release: April 23, 2024
 
 133 / 139
 
-Message.EncryptionAlgorithm  UseAlgorithm Value
+
+Message.EncryptionAlgorithm  UseAlgorithm Value
 
 RC2
 
@@ -10394,7 +10228,8 @@ Release: April 23, 2024
 
 134 / 139
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -10438,7 +10273,8 @@ Release: April 23, 2024
 
 135 / 139
 
-8  Index
+
+## 8 Index
 _
 
 __packet__ packet 30
@@ -10572,7 +10408,8 @@ Message Position Available event
 
 136 / 139
 
-   updating UserMessage packet 96
+
+   updating UserMessage packet 96
 Message processing
    accepting incoming connection 90
    closing session 89
@@ -10711,7 +10548,8 @@ Release: April 23, 2024
 
 137 / 139
 
-R
+
+R
 
 Recoverable messages 13
 References 10
@@ -10849,7 +10687,8 @@ Release: April 23, 2024
 
 138 / 139
 
-Transactional ack wait timer 60
+
+Transactional ack wait timer 60
 Transactional ack wait timer event 92
 Transactional acknowledgments 55
 Transactional message sequence 53

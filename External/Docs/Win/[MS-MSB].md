@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 30
 
-Date
+
+Date
 
 Revision
 History
@@ -521,7 +523,8 @@ Release: April 23, 2024
 
 3 / 30
 
-Date
+
+Date
 
 Revision
 History
@@ -602,180 +605,76 @@ Release: April 23, 2024
 
 4 / 30
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 NSC File Format](#221-nsc-file-format)
+      - [2.2.1.1 ABNF Syntax for NSC Files](#2211-abnf-syntax-for-nsc-files)
+      - [2.2.1.2 Representation of the String Data Type](#2212-representation-of-the-string-data-type)
+      - [2.2.1.3 "Encoded-Block" Syntax Element](#2213-encoded-block-syntax-element)
+        - [2.2.1.3.1 EncodedDataHeader Structure](#22131-encodeddataheader-structure)
+        - [2.2.1.3.2 Encoding of Binary Data](#22132-encoding-of-binary-data)
+      - [2.2.1.4 Defined Properties](#2214-defined-properties)
+    - [2.2.2 ASF Packet Error Correction Data](#222-asf-packet-error-correction-data)
+    - [2.2.3 Beacon Packet](#223-beacon-packet)
+    - [2.2.4 MSB Packet](#224-msb-packet)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Creating an NSC File](#3131-creating-an-nsc-file)
+      - [3.1.3.2 Transmitting Beacon Packets](#3132-transmitting-beacon-packets)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Transmitting the First MSB Packet in a Stream](#3151-transmitting-the-first-msb-packet-in-a-stream)
+      - [3.1.5.2 Transmitting the Last Packet in an Error Correction Cycle](#3152-transmitting-the-last-packet-in-an-error-correction-cycle)
+      - [3.1.5.3 Transmitting the Last MSB Packet](#3153-transmitting-the-last-msb-packet)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Beacon Timer Expires](#3161-beacon-timer-expires)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Beacon Packet](#3251-receiving-a-beacon-packet)
+      - [3.2.5.2 Receiving an MSB Packet](#3252-receiving-an-msb-packet)
+      - [3.2.5.3 Recovering Lost ASF Packets](#3253-recovering-lost-asf-packets)
+      - [3.2.5.4 Receiving the Last ASF Packet](#3254-receiving-the-last-asf-packet)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Open Timer Expires](#3261-open-timer-expires)
+      - [3.2.6.2 End of Stream Timer Expires](#3262-end-of-stream-timer-expires)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 User Request for Playback Stop](#3271-user-request-for-playback-stop)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 General MSB Sequence](#41-general-msb-sequence)
+  - [4.2 Server-Side Playlist Streaming by Using MSB](#42-server-side-playlist-streaming-by-using-msb)
+  - [4.3 NSC File Encoding](#43-nsc-file-encoding)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-NSC File Format ......................................................................................... 10
-ABNF Syntax for NSC Files ..................................................................... 10
-Representation of the String Data Type ................................................... 11
-"Encoded-Block" Syntax Element ............................................................ 11
-EncodedDataHeader Structure .......................................................... 11
-Encoding of Binary Data ................................................................... 11
-Defined Properties ................................................................................. 12
-ASF Packet Error Correction Data.................................................................. 13
-Beacon Packet ............................................................................................ 14
-MSB Packet ................................................................................................ 15
-
-2.2.1.3.1
-2.2.1.3.2
-
-2.2.2
-2.2.3
-2.2.4
-
-2.2.1.4
-
-3.1
-
-3.1.6
-
-3.1.6.1
-
-3.1.4
-3.1.5
-
-3.1.3.1
-3.1.3.2
-
-3.1.1
-3.1.2
-3.1.3
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3  Protocol Details ..................................................................................................... 16
-Server Details .................................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Creating an NSC File ............................................................................. 16
-Transmitting Beacon Packets .................................................................. 16
-Higher-Layer Triggered Events ..................................................................... 16
-Processing Events and Sequencing Rules ....................................................... 16
-Transmitting the First MSB Packet in a Stream ......................................... 16
-Transmitting the Last Packet in an Error Correction Cycle ........................... 17
-Transmitting the Last MSB Packet ........................................................... 17
-Timer Events .............................................................................................. 17
-Beacon Timer Expires ............................................................................ 17
-Other Local Events ...................................................................................... 17
-Client Details ................................................................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 18
-Processing Events and Sequencing Rules ....................................................... 18
-Receiving a Beacon Packet ..................................................................... 18
-Receiving an MSB Packet ....................................................................... 18
-Recovering Lost ASF Packets .................................................................. 18
-Receiving the Last ASF Packet ................................................................ 18
-Timer Events .............................................................................................. 19
-Open Timer Expires ............................................................................... 19
-End of Stream Timer Expires .................................................................. 19
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6.1
-3.2.6.2
-
-3.2.6
-
-3.1.7
-
-3.2
-
-[MS-MSB] - v20240423
-Media Stream Broadcast (MSB) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 30
-
-3.2.7
-
-3.2.7.1
-
-Other Local Events ...................................................................................... 19
-User Request for Playback Stop .............................................................. 19
-
-4  Protocol Examples ................................................................................................. 20
-General MSB Sequence ..................................................................................... 20
-Server-Side Playlist Streaming by Using MSB ...................................................... 20
-NSC File Encoding ............................................................................................ 22
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 25
-Security Considerations for Implementers ........................................................... 25
-Index of Security Parameters ............................................................................ 25
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 26
-
-7  Change Tracking .................................................................................................... 28
-
-8  Index ..................................................................................................................... 29
-
-[MS-MSB] - v20240423
-Media Stream Broadcast (MSB) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 30
-
-1  Introduction
+## 1 Introduction
 
 The Media Stream Broadcast (MSB) Protocol allows distribution of Advanced Systems Format (ASF)
 packets over a network for which Internet Protocol (IP) multicast is enabled.
@@ -783,7 +682,7 @@ packets over a network for which Internet Protocol (IP) multicast is enabled.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -831,7 +730,7 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -845,7 +744,8 @@ Release: April 23, 2024
 
 7 / 30
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -868,11 +768,11 @@ RFC 3452, December 2002, https://www.rfc-editor.org/info/rfc3452
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The MSB Protocol allows the multicast distribution of Advanced Systems Format (ASF) packets
 over a network for which IP multicasting is enabled. MSB allows clients to tune in to a broadcast on a
@@ -883,14 +783,14 @@ Datagram Protocol (UDP) port. The specific IP multicast address and UDP port is 
 an .nsc file. The .nsc file is delivered to the clients by some other means, such as by hosting it at a
 URL for retrieval by means of HTTP, or sending it as an email attachment.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 MSB packets are encapsulated in UDP. The UDP packets can be transmitted over either IP version 4
 (IPv4) or IP version 6 (IPv6). The MSB packets are used to transport ASF packets. In addition, the
 MSB Protocol uses the forward error correction (FEC) algorithm, as specified in [RFC3452], for error
 detection.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The client needs to know the IP multicast address and UDP port that the MSB packets will be
 transmitted to. Additionally, the client need to have a way to associate the ASF packets that are
@@ -906,20 +806,21 @@ Release: April 23, 2024
 
 8 / 30
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The MSB Protocol is used to distribute ASF packets over a network for which IP multicasting is
 enabled.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The MSB Protocol does not contain the ability to negotiate protocol versioning or capabilities.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The MSB Protocol does not contain any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The MSB Protocol has no standards assignments.
 
@@ -930,22 +831,23 @@ Release: April 23, 2024
 
 9 / 30
 
-2  Messages
+
+## 2 Messages
 
 Note  Unless otherwise specified, all message fields are transmitted in little-endian byte order.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The MSB Protocol MUST be transported over the Internet Protocol (IP). The client MAY obtain the IP
 multicast address and UDP port on which it listens by means of an .nsc file. The .nsc file is delivered
 to the client by some other means, such as hosting it at a URL for retrieval by means of HTTP, or
 sending it as an email attachment.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  NSC File Format
+#### 2.2.1 NSC File Format
 
 The .nsc file MUST only contain characters from the ASCII character set. Lines MUST be separated
 by a carriage-return character followed by a line-feed character.
@@ -959,7 +861,7 @@ exist.
 The syntax of .nsc files is defined by using augmented Backus-Naur Form (BNF) grammar and is as
 specified in section 2.2.1.1.
 
-2.2.1.1  ABNF Syntax for NSC Files
+##### 2.2.1.1 ABNF Syntax for NSC Files
 
 The syntax of the .nsc file is defined by using augmented BNF (ABNF) grammar [RFC4234] as
 follows:
@@ -998,7 +900,8 @@ Release: April 23, 2024
 
 10 / 30
 
- string = ( *VCHAR ) / binary
+
+ string = ( *VCHAR ) / binary
  binary = "02" encoded-block
  encoded-block = 12*encoded-char
  encoded-char = ALPHA / DIGIT / "{" / "}"
@@ -1007,7 +910,7 @@ Additional rules for the "string" syntax element are as specified in section 2.2
 
 Additional rules for the "encoded-block" syntax element are as specified in section 2.2.1.3.
 
-2.2.1.2  Representation of the String Data Type
+##### 2.2.1.2 Representation of the String Data Type
 
 If a string can be represented exclusively by using printable characters from the ASCII character set,
 the string can be included in the .nsc file without being transformed. Otherwise, the string MUST be
@@ -1015,7 +918,7 @@ converted to the 16-bit Unicode character set (UTF-16). Each 16-bit symbol is en
 endian byte order; and the UTF-16 string, including the null character that terminates the string,
 MUST be encoded as specified in section 2.2.1.3.
 
-2.2.1.3  "Encoded-Block" Syntax Element
+##### 2.2.1.3 "Encoded-Block" Syntax Element
 
  Because the .nsc file format only allows ASCII characters, binary data and Unicode character strings
 MUST be encoded by using characters from the ASCII character set. This is accomplished by using a
@@ -1033,7 +936,7 @@ single block of binary data.
 The resulting ASCII character string MUST be written to the .nsc file according to the ABNF syntax for
 the "encoded-block" element, which is as specified in ABNF Syntax for NSC Files (section 2.2.1.1).
 
-2.2.1.3.1 EncodedDataHeader Structure
+###### 2.2.1.3.1 EncodedDataHeader Structure
 
 The EncodedDataHeader structure is defined as follows:
 
@@ -1058,7 +961,7 @@ Length:  This field MUST be set to the size, in bytes, of the binary data. If th
 Unicode string, the null character that terminates the string MUST be included in the count. The
 Length value does not include the size of the EncodedDataHeader.
 
-2.2.1.3.2 Encoding of Binary Data
+###### 2.2.1.3.2 Encoding of Binary Data
 
 [MS-MSB] - v20240423
 Media Stream Broadcast (MSB) Protocol
@@ -1067,7 +970,8 @@ Release: April 23, 2024
 
 11 / 30
 
-During encoding, the EncodedDataHeader (section 2.2.1.3.1) structure and the binary data or
+
+During encoding, the EncodedDataHeader (section 2.2.1.3.1) structure and the binary data or
 Unicode string that follows are treated as a simple array of bits, with the bits of each byte arranged
 in most significant bit first order. The Key and Length fields of the EncodedDataHeader structure MUST
 be encoded in big-endian byte order, that is, the most significant byte of each field is encoded first.
@@ -1109,7 +1013,7 @@ maps it to the value 0xff. Valid characters map to a value in the range 0x00 to 
      0x3b, 0x3c, 0x3d, 0x3e, 0xff, 0x3f, 0xff, 0xff
  };
 
-2.2.1.4  Defined Properties
+##### 2.2.1.4 Defined Properties
 
 This section defines the possible properties. Some of the properties are optional, as indicated by the
 ABNF grammar. Properties that are included in the .nsc file MUST appear in the file in the order that
@@ -1136,7 +1040,8 @@ Media Stream Broadcast (MSB) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Time To Live: Optional. If specified, the server MUST set the IPv4 TTL field or IPv6 Hop Count field to
+
+Time To Live: Optional. If specified, the server MUST set the IPv4 TTL field or IPv6 Hop Count field to
 
 this value when transmitting the MSB packets.<1>
 
@@ -1190,7 +1095,7 @@ Description<x>: Optional. A human-readable string that describes the content tha
 
 with the ASF header.
 
-2.2.2  ASF Packet Error Correction Data
+#### 2.2.2 ASF Packet Error Correction Data
 
 ASF packets that are transmitted by using the MSB Protocol SHOULD use error correction.<3> If error
 correction is used, it MUST be done as follows: A parity packet is computed by performing a byte-
@@ -1208,7 +1113,8 @@ Media Stream Broadcast (MSB) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The XOR operation that forms the parity packet is computed on the entire ASF packet, except the
+
+The XOR operation that forms the parity packet is computed on the entire ASF packet, except the
 Error Correction Flags field and the Error Correction Data field of the ASF packet header. These
 two fields usually occupy the first three bytes of the ASF packet header. For more information about
 the ASF packet header, see [ASF] section 5.2.1.
@@ -1253,7 +1159,7 @@ cycle SHOULD be number 0, but MAY be chosen randomly. For example, if the span i
 that the first 11 ASF packets have the Cycle field set to 0. The next 11 packets have the Cycle field
 set to 1, and so on.
 
-2.2.3  Beacon Packet
+#### 2.2.3 Beacon Packet
 
 The Beacon packet is sent by the server to inform the client that the server is active.
 
@@ -1281,7 +1187,8 @@ Media Stream Broadcast (MSB) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1292,7 +1199,7 @@ Broadcast (MSB) Protocol.
 
 0x2042534D  A value that is used to indicate that the 4-byte message field is treated as a 32-bit integer.
 
-2.2.4  MSB Packet
+#### 2.2.4 MSB Packet
 
 Each MSB packet consists of a header, followed by a variable-size ASF packet. The following figure
 defines the fields in the MSB packet.
@@ -1358,22 +1265,23 @@ Release: April 23, 2024
 
 15 / 30
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
+
+#### 3.1.1 Abstract Data Model
 
 Not applicable for this protocol specification.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Beacon: This timer controls how often Beacon packets are sent. The time-out interval for this timer
 MUST be in the range of 1 to 10 seconds, inclusive.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
-3.1.3.1  Creating an NSC File
+##### 3.1.3.1 Creating an NSC File
 
 The server MUST create an .nsc file at least once. The file MUST specify the IP multicast group and
 UDP port number to which the MSB packets are addressed. It also MUST specify all ASF headers that
@@ -1383,7 +1291,7 @@ ASF headers in the .nsc file MUST have a different Format ID.<4><5>
 A previously created .nsc file can be used instead of creating a new .nsc file, if the contents of the
 existing file are equivalent to the new .nsc file that would otherwise be created.
 
-3.1.3.2  Transmitting Beacon Packets
+##### 3.1.3.2 Transmitting Beacon Packets
 
 If the server does not have any MSB packets to send (for example, if a live event has not yet started),
 but clients have already received an .nsc file, the server SHOULD start the Beacon timer. Starting the
@@ -1396,13 +1304,13 @@ packets.<6>
 The Beacon timer MUST be configured to expire in 10 seconds or less, but not more often than once
 every second.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Not applicable for this protocol specification.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Transmitting the First MSB Packet in a Stream
+##### 3.1.5.1 Transmitting the First MSB Packet in a Stream
 
 When the server is about to transmit the first MSB packet for a stream, it MUST ensure that the value
 of the wStreamID field in MSB packet is different from the wStreamID value that is used in the
@@ -1416,20 +1324,21 @@ Release: April 23, 2024
 
 16 / 30
 
-If the new stream uses the same ASF header as the previous stream, the most significant bit in the
+
+If the new stream uses the same ASF header as the previous stream, the most significant bit in the
 wStreamID field MUST be set to the opposite value of that bit in the wStreamID field that is used
 for the previous stream.
 
 If the Beacon timer is running, it SHOULD be stopped (to preserve network bandwidth). However, the
 server MAY choose to leave the Beacon timer running.<7>
 
-3.1.5.2  Transmitting the Last Packet in an Error Correction Cycle
+##### 3.1.5.2 Transmitting the Last Packet in an Error Correction Cycle
 
 If error correction is used with the ASF packets, the last MSB packet in every error correction cycle
 MUST be an ASF parity packet. For more information about error correction, cycles, and parity
 packets, see ASF Packet Error Correction Data (section 2.2.2).
 
-3.1.5.3  Transmitting the Last MSB Packet
+##### 3.1.5.3 Transmitting the Last MSB Packet
 
 If error correction is used with the ASF packets, the last MSB packet that is transmitted SHOULD also
 be the last packet in the last error correction cycle.<8>
@@ -1438,24 +1347,24 @@ After the last MSB packet has transmitted, if the server intends to continue tra
 later and it wants the clients to remain ready to receive future MSB packets, it MUST start the Beacon
 timer as specified in section 3.1.3.2.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Beacon Timer Expires
+##### 3.1.6.1 Beacon Timer Expires
 
 When the timer that is used for scheduling the transmission of Beacon packets expires, the server
 MUST send a new Beacon packet. The Beacon timer MUST then be restarted.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 Not applicable for this protocol specification.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Not applicable for this protocol specification.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Open: (Optional) This timer is stopped when MSB packets or Beacon packets are received. The time-
 out interval for this timer MUST be in the range of 10 to 30 seconds, inclusive.
@@ -1463,7 +1372,7 @@ out interval for this timer MUST be in the range of 10 to 30 seconds, inclusive.
 End of Stream: (Optional) This timer expires if no MSB packets have been received for a certain
 period of time. For more information about expiration of the End of Stream timer, see section 3.2.5.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The MSB Protocol initializes when the client receives an .nsc file. When that file is received, the client
 MUST begin listening on the UDP port that is specified by the .nsc file and join the IP multicast group
@@ -1479,14 +1388,15 @@ Media Stream Broadcast (MSB) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NOT expire in less than 10 seconds. It is recommended that the Open timer expires if no such packets
+
+NOT expire in less than 10 seconds. It is recommended that the Open timer expires if no such packets
 are received for 20 seconds.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Not applicable for this protocol specification.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 The client MUST first perform the initialization step as specified in section 3.2.3.
 
@@ -1494,11 +1404,11 @@ Subsequently, the client MUST be prepared to receive Beacon packets and MSB pack
 Details that describe how to process a Beacon packet are as specified in section 3.2.5.1. Details that
 describe how to process an MSB packet are as specified in section 3.2.5.2.
 
-3.2.5.1  Receiving a Beacon Packet
+##### 3.2.5.1 Receiving a Beacon Packet
 
 If the Open timer is running, it MUST be stopped.
 
-3.2.5.2  Receiving an MSB Packet
+##### 3.2.5.2 Receiving an MSB Packet
 
 The client MUST validate the wStreamID field in the MSB Packet to verify that the Format ID that is
 indicated by the wStreamID field corresponds to a known ASF header (that is, an ASF header that is
@@ -1517,7 +1427,7 @@ the same wStreamID value. How the client handles this error condition is impleme
 The client can report an error to the user, or it can wait and see if the problem is transient in nature.
 For example, the client could leave the Open timer running (if it was running).
 
-3.2.5.3  Recovering Lost ASF Packets
+##### 3.2.5.3 Recovering Lost ASF Packets
 
 If the ASF packets use error correction as specified in ASF Packet Error Correction
 Data (section 2.2.2), the client MAY recover one lost packet per span if the parity packet has not
@@ -1526,7 +1436,7 @@ the packets that belong to the same cycle, including the parity packet. This is 
 is performed by the server in order to compute the parity packet, except that now it is used to
 reconstruct the lost packet.
 
-3.2.5.4  Receiving the Last ASF Packet
+##### 3.2.5.4 Receiving the Last ASF Packet
 
 If the End of Stream timer is used and it expires, the client MUST assume that the last ASF packet has
 been received and that the stream has ended. Alternatively, the client MAY use the value of the Play
@@ -1541,7 +1451,8 @@ Release: April 23, 2024
 
 18 / 30
 
-The client SHOULD use at least one of the two optional methods that are described above to
+
+The client SHOULD use at least one of the two optional methods that are described above to
 determine that the stream has ended.
 
 When the stream has ended and if the .nsc file specifies an HTTP URL in the Logging URL property,
@@ -1549,24 +1460,24 @@ the client SHOULD submit a logging message by using an HTTP POST request to that
 message MUST use the "Logging Messages Sent to Web Servers" syntax that is as specified in[MS-
 WMLOG] section 2.3.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Open Timer Expires
+##### 3.2.6.1 Open Timer Expires
 
 If the Open timer expires, it means that no MSB packets or Beacon packets were received for at least
 10 seconds. In this case, the client SHOULD attempt to open the failover URL that is specified in the
 "Unicast URL" property in the .nsc file. If the "Unicast URL" property is not present or is an empty
 string, the client SHOULD report a network time-out error to the higher layer.
 
-3.2.6.2  End of Stream Timer Expires
+##### 3.2.6.2 End of Stream Timer Expires
 
 If the End of Stream timer expires, the client MUST assume that the last ASF packet has been
 received and that the stream has ended. Therefore, the rules, as specified in section 3.2.5.4, MUST
 then be followed.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  User Request for Playback Stop
+##### 3.2.7.1 User Request for Playback Stop
 
 This local event can occur after playback has started; that is, at least one ASF packet MUST have
 been received and played back (rendered). If the user has previously requested playback to stop, then
@@ -1585,13 +1496,14 @@ Release: April 23, 2024
 
 19 / 30
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-MSB].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  General MSB Sequence
+### 4.1 General MSB Sequence
 
  The following diagram shows a typical communication sequence between a client and server.
 
@@ -1613,7 +1525,7 @@ end of the stream. (For more information, see sections 3.2.5.4 and 3.2.7.1).
 
 the client to remain ready to receive the MSB packets.
 
-4.2  Server-Side Playlist Streaming by Using MSB
+### 4.2 Server-Side Playlist Streaming by Using MSB
 
 The following diagram shows a typical communication sequence between a client and server when
 streaming content from a server-side playlist.
@@ -1628,7 +1540,8 @@ Release: April 23, 2024
 
 20 / 30
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-MSB].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1663,7 +1576,8 @@ Media Stream Broadcast (MSB) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-7.  If the Log URL property is specified in the .nsc file, the client submits a logging message at the
+
+7.  If the Log URL property is specified in the .nsc file, the client submits a logging message at the
 
 end of the stream. (For more information, see sections 3.2.5.4 and 3.2.7.1.)
 
@@ -1671,7 +1585,7 @@ end of the stream. (For more information, see sections 3.2.5.4 and 3.2.7.1.)
 
 the client to remain ready to receive the MSB packets.
 
-4.3  NSC File Encoding
+### 4.3 NSC File Encoding
 
  The following represents the content of an .nsc file in which all strings use ASCII characters, and
 thus are not encoded:
@@ -1729,7 +1643,8 @@ Release: April 23, 2024
 
 22 / 30
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-MSB].images/page023-img01.png)
 ![Extracted image 2 from page 23]([MS-MSB].images/page023-img02.png)
 <!-- /Extracted images from page 23 -->
@@ -1758,7 +1673,8 @@ Release: April 23, 2024
 
 23 / 30
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-MSB].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1775,9 +1691,10 @@ Release: April 23, 2024
 
 24 / 30
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 For any packet that contains fields that specify other field lengths, such as an MSB
 packet (section 2.2.4) or an ASF packet, implementers validate that the length values do not exceed
@@ -1802,7 +1719,7 @@ Multicast Adapter field or specifies the post-NAT address in the Multicast Adapt
 by which a server can determine the translated address is implementation-specific and beyond the
 scope of this document.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The MSB Protocol has no security parameters.
 
@@ -1813,7 +1730,8 @@ Release: April 23, 2024
 
 25 / 30
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1881,7 +1799,8 @@ Release: April 23, 2024
 
 26 / 30
 
-<3> Section 2.2.2: Error correction is always used with the MSB Protocol on Windows Media Services
+
+<3> Section 2.2.2: Error correction is always used with the MSB Protocol on Windows Media Services
 and cannot be disabled.
 
 <4> Section 3.1.3.1: The following optional .nsc file properties are included in .nsc files that are
@@ -1932,7 +1851,8 @@ Release: April 23, 2024
 
 27 / 30
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1976,7 +1896,8 @@ Release: April 23, 2024
 
 28 / 30
 
-8  Index
+
+## 8 Index
 A
 
 ABNF syntax 10
@@ -2107,7 +2028,8 @@ Parameters – security 25
 
 29 / 30
 
-Parameters - security index 25
+
+Parameters - security index 25
 Playback - stopping 19
 Preconditions 8
 Prerequisites 8

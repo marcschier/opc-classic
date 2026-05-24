@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 91
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 91
 
-Date
+
+Date
 
 Revision
 History
@@ -538,7 +540,8 @@ Release: April 23, 2024
 
 3 / 91
 
-Date
+
+Date
 
 Revision
 History
@@ -597,398 +600,165 @@ Release: April 23, 2024
 
 4 / 91
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 13
-Overview ........................................................................................................ 13
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 17
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.7.3
-
-2.2.7.2
-
-2.2.7.1
-
-2.2.7.2.1
-2.2.7.2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-2.2.7.1.1
-2.2.7.1.2
-2.2.7.1.3
-2.2.7.1.4
-2.2.7.1.5
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Common Data Types ........................................................................................ 18
-PrintAsyncNotificationType ........................................................................... 18
-PrintAsyncNotifyUserFilter ............................................................................ 19
-PrintAsyncNotifyConversationStyle ................................................................ 19
-PRPCREMOTEOBJECT .................................................................................. 19
-PNOTIFYOBJECT ......................................................................................... 20
-AsyncUI Default Resource File String Resources ............................................. 20
-AsyncUI XML Notification and Response Formats ............................................ 24
-Common AsyncUI Elements .................................................................... 25
-asyncPrintUIRequest Element ........................................................... 25
-asyncPrintUIResponse Element ......................................................... 26
-title Element ................................................................................... 27
-body Element .................................................................................. 28
-parameter Element .......................................................................... 29
-AsyncUIBalloon ..................................................................................... 30
-action Element ................................................................................ 30
-balloonUI Element ........................................................................... 31
-AsyncUIMessageBox .............................................................................. 32
-button Element ............................................................................... 32
-buttons Element .............................................................................. 33
-bitmap Element ............................................................................... 34
-messageBoxUI Element .................................................................... 34
-AsyncUIMessageBoxUIReply ................................................................... 35
-buttonID Element ............................................................................ 35
-messageBoxUI Element .................................................................... 35
-AsyncUICustomUI ................................................................................. 36
-customUI Element ........................................................................... 36
-AsyncUICustomUIReply ......................................................................... 37
-CustomUI Element ........................................................................... 37
-AsyncUICustomData .............................................................................. 38
-customData Element ........................................................................ 38
-Printer Configuration Notification Formats ...................................................... 39
-Printer Configuration Notification ............................................................ 40
-Notification Element ......................................................................... 41
-Schema Element ............................................................................. 41
-BIDI_STRING Element ..................................................................... 41
-BIDI_TEXT Element ......................................................................... 41
-BIDI_ENUM Element ........................................................................ 41
-BIDI_INT Element ........................................................................... 41
-BIDI_FLOAT Element ....................................................................... 42
-
-2.2.8.1.1
-2.2.8.1.2
-2.2.8.1.3
-2.2.8.1.4
-2.2.8.1.5
-2.2.8.1.6
-2.2.8.1.7
-
-2.2.7.3.1
-2.2.7.3.2
-2.2.7.3.3
-2.2.7.3.4
-
-2.2.7.4.1
-2.2.7.4.2
-
-2.2.7.5.1
-
-2.2.7.6.1
-
-2.2.7.7.1
-
-2.2.7.6
-
-2.2.7.7
-
-2.2.8.1
-
-2.2.7.4
-
-2.2.7.5
-
-2.2.8
-
-[MS-PAN] - v20240423
-Print System Asynchronous Notification Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 91
-
-2.2.8.1.8
-2.2.8.1.9
-2.2.8.1.10
-
-BIDI_BOOL Element ........................................................................ 42
-BIDI_BLOB Element ......................................................................... 42
-ReducedSchema Element ................................................................. 42
-
-3.1
-
-3.1.2
-
-3.1.1
-
-3.1.1.5
-3.1.1.6
-
-3.1.2.4.1
-3.1.2.4.2
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-3.1.2.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3.1.1.6.1
-3.1.1.6.2
-3.1.1.6.3
-3.1.1.6.4
-3.1.1.6.5
-
-3.1.1.4.1
-3.1.1.4.2
-3.1.1.4.3
-3.1.1.4.4
-3.1.1.4.5
-3.1.1.4.6
-
-3  Protocol Details ..................................................................................................... 43
-Server Details .................................................................................................. 43
-IRPCAsyncNotify Server Details .................................................................... 43
-Abstract Data Model .............................................................................. 45
-Timers ................................................................................................. 46
-Initialization ......................................................................................... 46
-Message Processing Events and Sequencing Rules .................................... 47
-IRPCAsyncNotify_RegisterClient (Opnum 0) ........................................ 47
-IRPCAsyncNotify_UnregisterClient (Opnum 1) ..................................... 50
-IRPCAsyncNotify_GetNewChannel (Opnum 3) ..................................... 50
-IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4) .................. 52
-IRPCAsyncNotify_GetNotification (Opnum 5) ....................................... 54
-IRPCAsyncNotify_CloseChannel (Opnum 6) ......................................... 56
-Timer Events ........................................................................................ 57
-Other Local Events ................................................................................ 57
-Unidirectional Notification Generated ................................................. 57
-Bidirectional Notification Channel Opened ........................................... 57
-Bidirectional Notification Generated ................................................... 58
-Bidirectional Notification Channel Closed ............................................ 58
-Impersonate Client .......................................................................... 58
-IRPCRemoteObject Server Details ................................................................. 58
-Abstract Data Model .............................................................................. 59
-Timers ................................................................................................. 59
-Initialization ......................................................................................... 59
-Message Processing Events and Sequencing Rules .................................... 59
-IRPCRemoteObject_Create (Opnum 0) ............................................... 59
-IRPCRemoteObject_Delete (Opnum 1) ............................................... 60
-Timer Events ........................................................................................ 60
-Other Local Events ................................................................................ 60
-AsyncUI Server Details ................................................................................ 60
-Abstract Data Model .............................................................................. 60
-Timers ................................................................................................. 60
-Initialization ......................................................................................... 61
-Message Processing Events and Sequencing Rules .................................... 61
-IRPCAsyncNotify_RegisterClient (Opnum 0) ........................................ 61
-IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4) .................. 61
-IRPCAsyncNotify_GetNotification (Opnum 5) ....................................... 62
-IRPCAsyncNotify_CloseChannel (Opnum 6) ......................................... 62
-Timer Events ........................................................................................ 62
-Other Local Events ................................................................................ 62
-Printer Configuration Server Details .............................................................. 63
-Abstract Data Model .............................................................................. 63
-Timers ................................................................................................. 63
-Initialization ......................................................................................... 63
-Message Processing Events and Sequencing Rules .................................... 63
-IRPCAsyncNotify_RegisterClient (Opnum 0) ........................................ 64
-IRPCAsyncNotify_GetNotification (Opnum 5) ....................................... 64
-Timer Events ........................................................................................ 64
-Other Local Events ................................................................................ 64
-Client Details ................................................................................................... 64
-IRPCRemoteObject Client Details .................................................................. 64
-Abstract Data Model .............................................................................. 64
-Timers ................................................................................................. 65
-Initialization ......................................................................................... 65
-
-3.1.3.4.1
-3.1.3.4.2
-3.1.3.4.3
-3.1.3.4.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3.1.3.1
-3.1.3.2
-3.1.3.3
-3.1.3.4
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-
-3.1.4.4.1
-3.1.4.4.2
-
-3.1.2.5
-3.1.2.6
-
-3.1.4.5
-3.1.4.6
-
-3.1.3.5
-3.1.3.6
-
-3.1.4
-
-3.2.1
-
-3.1.3
-
-3.2
-
-[MS-PAN] - v20240423
-Print System Asynchronous Notification Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 91
-
-3.2.1.4
-3.2.1.5
-3.2.1.6
-
-3.2.2
-
-3.2.2.1
-3.2.2.2
-3.2.2.3
-3.2.2.4
-3.2.2.5
-3.2.2.6
-
-3.2.3
-
-3.2.3.1
-3.2.3.2
-3.2.3.3
-3.2.3.4
-
-3.2.3.4.1
-3.2.3.4.2
-3.2.3.4.3
-3.2.3.4.4
-
-3.2.4
-
-3.2.3.5
-3.2.3.6
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-
-3.2.4.5
-3.2.4.6
-
-3.2.4.4.1
-
-Message Processing Events and Sequencing Rules .................................... 65
-Timer Events ........................................................................................ 65
-Other Local Events ................................................................................ 65
-IRPCAsyncNotify Client Details ..................................................................... 65
-Abstract Data Model .............................................................................. 68
-Timers ................................................................................................. 68
-Initialization ......................................................................................... 69
-Message Processing Events and Sequencing Rules .................................... 69
-Timer Events ........................................................................................ 69
-Other Local Events ................................................................................ 69
-AsyncUI Client Details ................................................................................. 69
-Abstract Data Model .............................................................................. 70
-Timers ................................................................................................. 70
-Initialization ......................................................................................... 71
-Message Processing Events and Sequencing Rules .................................... 71
-AsyncUIBalloon Notification .............................................................. 71
-AsyncUIMessageBox Notification ....................................................... 72
-AsyncUICustomUI Notification ........................................................... 72
-AsyncUICustomData Notification ....................................................... 73
-Timer Events ........................................................................................ 74
-Other Local Events ................................................................................ 74
-Printer Configuration Client Details ............................................................... 74
-Abstract Data Model .............................................................................. 74
-Timers ................................................................................................. 74
-Initialization ......................................................................................... 74
-Message Processing Events and Sequencing Rules .................................... 75
-Printer Configuration Notification ....................................................... 75
-Timer Events ........................................................................................ 75
-Other Local Events ................................................................................ 75
-
-4  Protocol Examples ................................................................................................. 76
-Unidirectional Communication Mode ................................................................... 76
-AsyncUI Notification in Unidirectional Communication Mode ................................... 77
-Bidirectional Communication Mode ..................................................................... 78
-AsyncUI Notification in Bidirectional Communication Mode..................................... 79
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 81
-Security Considerations for Implementers ........................................................... 81
-Index of Security Parameters ............................................................................ 81
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 82
-Appendix A.1: IRPCAsyncNotify.IDL .................................................................... 82
-Appendix A.2: IRPCRemoteObject.IDL ................................................................ 83
-
-6.1
-6.2
-
-7  Appendix B: Product Behavior ............................................................................... 84
-
-8  Change Tracking .................................................................................................... 87
-
-9  Index ..................................................................................................................... 88
-
-[MS-PAN] - v20240423
-Print System Asynchronous Notification Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 91
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 PrintAsyncNotificationType](#221-printasyncnotificationtype)
+    - [2.2.2 PrintAsyncNotifyUserFilter](#222-printasyncnotifyuserfilter)
+    - [2.2.3 PrintAsyncNotifyConversationStyle](#223-printasyncnotifyconversationstyle)
+    - [2.2.4 PRPCREMOTEOBJECT](#224-prpcremoteobject)
+    - [2.2.5 PNOTIFYOBJECT](#225-pnotifyobject)
+    - [2.2.6 AsyncUI Default Resource File String Resources](#226-asyncui-default-resource-file-string-resources)
+    - [2.2.7 AsyncUI XML Notification and Response Formats](#227-asyncui-xml-notification-and-response-formats)
+      - [2.2.7.1 Common AsyncUI Elements](#2271-common-asyncui-elements)
+        - [2.2.7.1.1 asyncPrintUIRequest Element](#22711-asyncprintuirequest-element)
+        - [2.2.7.1.2 asyncPrintUIResponse Element](#22712-asyncprintuiresponse-element)
+        - [2.2.7.1.3 title Element](#22713-title-element)
+        - [2.2.7.1.4 body Element](#22714-body-element)
+        - [2.2.7.1.5 parameter Element](#22715-parameter-element)
+      - [2.2.7.2 AsyncUIBalloon](#2272-asyncuiballoon)
+        - [2.2.7.2.1 action Element](#22721-action-element)
+        - [2.2.7.2.2 balloonUI Element](#22722-balloonui-element)
+      - [2.2.7.3 AsyncUIMessageBox](#2273-asyncuimessagebox)
+        - [2.2.7.3.1 button Element](#22731-button-element)
+        - [2.2.7.3.2 buttons Element](#22732-buttons-element)
+        - [2.2.7.3.3 bitmap Element](#22733-bitmap-element)
+        - [2.2.7.3.4 messageBoxUI Element](#22734-messageboxui-element)
+      - [2.2.7.4 AsyncUIMessageBoxUIReply](#2274-asyncuimessageboxuireply)
+        - [2.2.7.4.1 buttonID Element](#22741-buttonid-element)
+        - [2.2.7.4.2 messageBoxUI Element](#22742-messageboxui-element)
+      - [2.2.7.5 AsyncUICustomUI](#2275-asyncuicustomui)
+        - [2.2.7.5.1 customUI Element](#22751-customui-element)
+      - [2.2.7.6 AsyncUICustomUIReply](#2276-asyncuicustomuireply)
+        - [2.2.7.6.1 CustomUI Element](#22761-customui-element)
+      - [2.2.7.7 AsyncUICustomData](#2277-asyncuicustomdata)
+        - [2.2.7.7.1 customData Element](#22771-customdata-element)
+    - [2.2.8 Printer Configuration Notification Formats](#228-printer-configuration-notification-formats)
+      - [2.2.8.1 Printer Configuration Notification](#2281-printer-configuration-notification)
+        - [2.2.8.1.1 Notification Element](#22811-notification-element)
+        - [2.2.8.1.2 Schema Element](#22812-schema-element)
+        - [2.2.8.1.3 BIDI_STRING Element](#22813-bidistring-element)
+        - [2.2.8.1.4 BIDI_TEXT Element](#22814-biditext-element)
+        - [2.2.8.1.5 BIDI_ENUM Element](#22815-bidienum-element)
+        - [2.2.8.1.6 BIDI_INT Element](#22816-bidiint-element)
+        - [2.2.8.1.7 BIDI_FLOAT Element](#22817-bidifloat-element)
+        - [2.2.8.1.8 BIDI_BOOL Element](#22818-bidibool-element)
+        - [2.2.8.1.9 BIDI_BLOB Element](#22819-bidiblob-element)
+        - [2.2.8.1.10 ReducedSchema Element](#228110-reducedschema-element)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 IRPCAsyncNotify Server Details](#311-irpcasyncnotify-server-details)
+      - [3.1.1.1 Abstract Data Model](#3111-abstract-data-model)
+      - [3.1.1.2 Timers](#3112-timers)
+      - [3.1.1.3 Initialization](#3113-initialization)
+      - [3.1.1.4 Message Processing Events and Sequencing Rules](#3114-message-processing-events-and-sequencing-rules)
+        - [3.1.1.4.1 IRPCAsyncNotify_RegisterClient (Opnum 0)](#31141-irpcasyncnotifyregisterclient-opnum-0)
+        - [3.1.1.4.2 IRPCAsyncNotify_UnregisterClient (Opnum 1)](#31142-irpcasyncnotifyunregisterclient-opnum-1)
+        - [3.1.1.4.3 IRPCAsyncNotify_GetNewChannel (Opnum 3)](#31143-irpcasyncnotifygetnewchannel-opnum-3)
+        - [3.1.1.4.4 IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4)](#31144-irpcasyncnotifygetnotificationsendresponse-opnum-4)
+        - [3.1.1.4.5 IRPCAsyncNotify_GetNotification (Opnum 5)](#31145-irpcasyncnotifygetnotification-opnum-5)
+        - [3.1.1.4.6 IRPCAsyncNotify_CloseChannel (Opnum 6)](#31146-irpcasyncnotifyclosechannel-opnum-6)
+      - [3.1.1.5 Timer Events](#3115-timer-events)
+      - [3.1.1.6 Other Local Events](#3116-other-local-events)
+        - [3.1.1.6.1 Unidirectional Notification Generated](#31161-unidirectional-notification-generated)
+        - [3.1.1.6.2 Bidirectional Notification Channel Opened](#31162-bidirectional-notification-channel-opened)
+        - [3.1.1.6.3 Bidirectional Notification Generated](#31163-bidirectional-notification-generated)
+        - [3.1.1.6.4 Bidirectional Notification Channel Closed](#31164-bidirectional-notification-channel-closed)
+        - [3.1.1.6.5 Impersonate Client](#31165-impersonate-client)
+    - [3.1.2 IRPCRemoteObject Server Details](#312-irpcremoteobject-server-details)
+      - [3.1.2.1 Abstract Data Model](#3121-abstract-data-model)
+      - [3.1.2.2 Timers](#3122-timers)
+      - [3.1.2.3 Initialization](#3123-initialization)
+      - [3.1.2.4 Message Processing Events and Sequencing Rules](#3124-message-processing-events-and-sequencing-rules)
+        - [3.1.2.4.1 IRPCRemoteObject_Create (Opnum 0)](#31241-irpcremoteobjectcreate-opnum-0)
+        - [3.1.2.4.2 IRPCRemoteObject_Delete (Opnum 1)](#31242-irpcremoteobjectdelete-opnum-1)
+      - [3.1.2.5 Timer Events](#3125-timer-events)
+      - [3.1.2.6 Other Local Events](#3126-other-local-events)
+    - [3.1.3 AsyncUI Server Details](#313-asyncui-server-details)
+      - [3.1.3.1 Abstract Data Model](#3131-abstract-data-model)
+      - [3.1.3.2 Timers](#3132-timers)
+      - [3.1.3.3 Initialization](#3133-initialization)
+      - [3.1.3.4 Message Processing Events and Sequencing Rules](#3134-message-processing-events-and-sequencing-rules)
+        - [3.1.3.4.1 IRPCAsyncNotify_RegisterClient (Opnum 0)](#31341-irpcasyncnotifyregisterclient-opnum-0)
+        - [3.1.3.4.2 IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4)](#31342-irpcasyncnotifygetnotificationsendresponse-opnum-4)
+        - [3.1.3.4.3 IRPCAsyncNotify_GetNotification (Opnum 5)](#31343-irpcasyncnotifygetnotification-opnum-5)
+        - [3.1.3.4.4 IRPCAsyncNotify_CloseChannel (Opnum 6)](#31344-irpcasyncnotifyclosechannel-opnum-6)
+      - [3.1.3.5 Timer Events](#3135-timer-events)
+      - [3.1.3.6 Other Local Events](#3136-other-local-events)
+    - [3.1.4 Printer Configuration Server Details](#314-printer-configuration-server-details)
+      - [3.1.4.1 Abstract Data Model](#3141-abstract-data-model)
+      - [3.1.4.2 Timers](#3142-timers)
+      - [3.1.4.3 Initialization](#3143-initialization)
+      - [3.1.4.4 Message Processing Events and Sequencing Rules](#3144-message-processing-events-and-sequencing-rules)
+        - [3.1.4.4.1 IRPCAsyncNotify_RegisterClient (Opnum 0)](#31441-irpcasyncnotifyregisterclient-opnum-0)
+        - [3.1.4.4.2 IRPCAsyncNotify_GetNotification (Opnum 5)](#31442-irpcasyncnotifygetnotification-opnum-5)
+      - [3.1.4.5 Timer Events](#3145-timer-events)
+      - [3.1.4.6 Other Local Events](#3146-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 IRPCRemoteObject Client Details](#321-irpcremoteobject-client-details)
+      - [3.2.1.1 Abstract Data Model](#3211-abstract-data-model)
+      - [3.2.1.2 Timers](#3212-timers)
+      - [3.2.1.3 Initialization](#3213-initialization)
+      - [3.2.1.4 Message Processing Events and Sequencing Rules](#3214-message-processing-events-and-sequencing-rules)
+      - [3.2.1.5 Timer Events](#3215-timer-events)
+      - [3.2.1.6 Other Local Events](#3216-other-local-events)
+    - [3.2.2 IRPCAsyncNotify Client Details](#322-irpcasyncnotify-client-details)
+      - [3.2.2.1 Abstract Data Model](#3221-abstract-data-model)
+      - [3.2.2.2 Timers](#3222-timers)
+      - [3.2.2.3 Initialization](#3223-initialization)
+      - [3.2.2.4 Message Processing Events and Sequencing Rules](#3224-message-processing-events-and-sequencing-rules)
+      - [3.2.2.5 Timer Events](#3225-timer-events)
+      - [3.2.2.6 Other Local Events](#3226-other-local-events)
+    - [3.2.3 AsyncUI Client Details](#323-asyncui-client-details)
+      - [3.2.3.1 Abstract Data Model](#3231-abstract-data-model)
+      - [3.2.3.2 Timers](#3232-timers)
+      - [3.2.3.3 Initialization](#3233-initialization)
+      - [3.2.3.4 Message Processing Events and Sequencing Rules](#3234-message-processing-events-and-sequencing-rules)
+        - [3.2.3.4.1 AsyncUIBalloon Notification](#32341-asyncuiballoon-notification)
+        - [3.2.3.4.2 AsyncUIMessageBox Notification](#32342-asyncuimessagebox-notification)
+        - [3.2.3.4.3 AsyncUICustomUI Notification](#32343-asyncuicustomui-notification)
+        - [3.2.3.4.4 AsyncUICustomData Notification](#32344-asyncuicustomdata-notification)
+      - [3.2.3.5 Timer Events](#3235-timer-events)
+      - [3.2.3.6 Other Local Events](#3236-other-local-events)
+    - [3.2.4 Printer Configuration Client Details](#324-printer-configuration-client-details)
+      - [3.2.4.1 Abstract Data Model](#3241-abstract-data-model)
+      - [3.2.4.2 Timers](#3242-timers)
+      - [3.2.4.3 Initialization](#3243-initialization)
+      - [3.2.4.4 Message Processing Events and Sequencing Rules](#3244-message-processing-events-and-sequencing-rules)
+        - [3.2.4.4.1 Printer Configuration Notification](#32441-printer-configuration-notification)
+      - [3.2.4.5 Timer Events](#3245-timer-events)
+      - [3.2.4.6 Other Local Events](#3246-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Unidirectional Communication Mode](#41-unidirectional-communication-mode)
+  - [4.2 AsyncUI Notification in Unidirectional Communication Mode](#42-asyncui-notification-in-unidirectional-communication-mode)
+  - [4.3 Bidirectional Communication Mode](#43-bidirectional-communication-mode)
+  - [4.4 AsyncUI Notification in Bidirectional Communication Mode](#44-asyncui-notification-in-bidirectional-communication-mode)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+  - [6.1 Appendix A.1: IRPCAsyncNotify.IDL](#61-appendix-a1-irpcasyncnotifyidl)
+  - [6.2 Appendix A.2: IRPCRemoteObject.IDL](#62-appendix-a2-irpcremoteobjectidl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Print System Asynchronous Notification Protocol is used asynchronously by clients to receive print
 status notifications from a server and to send back responses to those notifications. A set of
@@ -1005,7 +775,7 @@ notification source to request the execution of code that is resident on the cli
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1057,7 +827,8 @@ Release: April 23, 2024
 
 8 / 91
 
-discretionary access control list (DACL): An access control list (ACL) that is controlled by the
+
+discretionary access control list (DACL): An access control list (ACL) that is controlled by the
 owner of an object and that specifies the access particular users or groups can have to the
 object.
 
@@ -1133,7 +904,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Although defined in Interface Definition Language (IDL) as a GUID, a notification type
+
+Although defined in Interface Definition Language (IDL) as a GUID, a notification type
 identifier is considered to be an opaque 128-bit value. This protocol makes no assumptions
 about the format of those 128 bits or about the mechanism used by the creator of a
 notification type to assure uniqueness of its notification type identifier.
@@ -1207,7 +979,8 @@ Release: April 23, 2024
 
 10 / 91
 
-security identifier (SID): An identifier for security principals that is used to identify an account
+
+security identifier (SID): An identifier for security principals that is used to identify an account
 or a group. Conceptually, the SID is composed of an account authority portion (typically a
 domain) and a smaller integer representing an identity relative to the account authority, termed
 the relative identifier (RID). The SID format is specified in [MS-DTYP] section 2.4.2; a string
@@ -1283,14 +1056,15 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1349,7 +1123,8 @@ Release: April 23, 2024
 
 12 / 91
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MS-AZOD] Microsoft Corporation, "Authorization Protocols Overview".
 
@@ -1371,7 +1146,7 @@ us/library/ff556565.aspx
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.3  Overview
+### 1.3 Overview
 
 The Print System Asynchronous Notification Protocol serves two primary functions:
 
@@ -1408,7 +1183,8 @@ Release: April 23, 2024
 
 13 / 91
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-PAN].images/page014-img01.png)
 ![Extracted image 2 from page 14]([MS-PAN].images/page014-img02.png)
 <!-- /Extracted images from page 14 -->
@@ -1462,7 +1238,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-PAN].images/page015-img01.png)
 ![Extracted image 2 from page 15]([MS-PAN].images/page015-img02.png)
 <!-- /Extracted images from page 15 -->
@@ -1473,7 +1250,7 @@ and an AsyncUI client.
 
 Figure 3: Relationship between a notification source and an AsyncUI client
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Print System Asynchronous Notification protocol is dependent on RPC [MS-RPCE] running on
 TCP/IP. These protocol relationships are shown in the following figure:
@@ -1482,7 +1259,7 @@ Figure 4: Protocol Relationships
 
 No protocols are dependent on the Print System Asynchronous Notification protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Print System Asynchronous Notification Protocol has the prerequisites common to RPC interfaces
 ([MS-RPCE] section 1.5). It is a precondition of invoking this protocol that a client obtains the name of
@@ -1495,11 +1272,12 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This specification assumes that a server that generates AsyncUI notifications and the clients that
+
+This specification assumes that a server that generates AsyncUI notifications and the clients that
 receive them both agree on resource files, resource keys within those files, and positional
 parameters within string resources that are referenced in those notifications.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Print System Asynchronous Notification Protocol is applicable only for printing operations between
 a machine functioning as a client and a machine functioning as a print server. The protocol is
@@ -1512,7 +1290,7 @@ provides printing services for many computers.
 
 The protocol is not applicable outside client/server printing and monitoring print operations.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -1534,7 +1312,7 @@ Capability Negotiation: There is no capability negotiation mechanism built into 
 vendor can, however, define a new notification type identifier and associate it with a set of
 notification and response data formats and sequencing rules (section 2.2.1).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Print System Asynchronous Notification Protocol uses HRESULT method return values [MS-
 ERREF]. In addition to the values defined in this specification and those defined in [MS-ERREF],
@@ -1556,7 +1334,8 @@ Release: April 23, 2024
 
 16 / 91
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1589,9 +1368,10 @@ Release: April 23, 2024
 
 17 / 91
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Print System Asynchronous Notification Protocol MUST use:
 
@@ -1627,7 +1407,7 @@ SPNG]).
 
 Packet authentication level ([MS-RPCE] section 3).
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST indicate to the RPC runtime that it is to support both the Network Data
 Representation (NDR) and NDR64 transfer syntaxes, and provide a negotiation mechanism for
@@ -1636,7 +1416,7 @@ determining which transfer syntax will be used ([MS-RPCE] section 3).
 In addition to RPC base types and definitions ([C706] section 4.2.9 and [MS-RPCE] section 2.2.1),
 additional data types are defined in the following sections.
 
-2.2.1  PrintAsyncNotificationType
+#### 2.2.1 PrintAsyncNotificationType
 
 The PrintAsyncNotificationType data type supports the definition of unique functional categories of
 notifications for the Print System Asynchronous Notification Protocol. This type is used for matching
@@ -1661,7 +1441,8 @@ Release: April 23, 2024
 
 18 / 91
 
-This protocol also defines the notification and response data formats for the AsyncUI notification
+
+This protocol also defines the notification and response data formats for the AsyncUI notification
 type. Associated with the AsyncUI notification type is its notification type identifier. The value
 AsyncPrintNotificationType_AsyncUI (f6853f92-eb31-4e23-b6e7-fd69056153f0) indicates that the
 notification data byte arrays contain AsyncUI data formats. For details, see sections 2.2.7, 3.1.3, and
@@ -1672,7 +1453,7 @@ notification type. The value AsyncPrintNotificationType_PrinterConfiguration (2a
 4aca-82fd4571b1b585ac) indicates that the notification data byte arrays contain printer configuration
 data formats. For details, see sections 2.2.8, 3.1.4, and 3.2.4.
 
-2.2.2  PrintAsyncNotifyUserFilter
+#### 2.2.2 PrintAsyncNotifyUserFilter
 
 The PrintAsyncNotifyUserFilter enumeration is used by clients when they register to receive
 notifications from server-resident notification sources. The following types of notifications can be
@@ -1696,7 +1477,7 @@ kAllUsers:  Indicates that the client is requesting every notification, whether 
 
 user identity or for all registered user identities.
 
-2.2.3  PrintAsyncNotifyConversationStyle
+#### 2.2.3 PrintAsyncNotifyConversationStyle
 
 The PrintAsyncNotifyConversationStyle enumeration MUST specify the communication mode expected
 between the sender and a registered client.
@@ -1715,7 +1496,7 @@ kUniDirectional:  Unidirectional communication mode is specified. The sender doe
 
 the client to respond to notifications.
 
-2.2.4  PRPCREMOTEOBJECT
+#### 2.2.4 PRPCREMOTEOBJECT
 
 The PRPCREMOTEOBJECT data type defines an RPC context handle, which corresponds to the server
 remote object representing a client registration. A client MUST call IRPCRemoteObject_Create to
@@ -1729,11 +1510,12 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This type is declared as follows:
+
+This type is declared as follows:
 
  typedef [context_handle] void* PRPCREMOTEOBJECT;
 
-2.2.5  PNOTIFYOBJECT
+#### 2.2.5 PNOTIFYOBJECT
 
 The PNOTIFYOBJECT data type defines an RPC context handle, which corresponds to the server
 object representing a notification channel. This handle is used in bidirectional communication
@@ -1743,7 +1525,7 @@ This type is declared as follows:
 
  typedef [context_handle] void* PNOTIFYOBJECT;
 
-2.2.6  AsyncUI Default Resource File String Resources
+#### 2.2.6 AsyncUI Default Resource File String Resources
 
 AsyncUI default resource file string resources are used to specify localizable text for the user interface
 of the Print System Asynchronous Notification protocol. Each string resource defines a unique key
@@ -1816,7 +1598,8 @@ Release: April 23, 2024
 
 20 / 91
 
-String resource
+
+String resource
 key
 
 String resource localizable text
@@ -1952,7 +1735,8 @@ Release: April 23, 2024
 
 21 / 91
 
-String resource
+
+String resource
 key
 
 String resource localizable text
@@ -2085,7 +1869,8 @@ Release: April 23, 2024
 
 22 / 91
 
-String resource
+
+String resource
 key
 
 String resource localizable text
@@ -2221,7 +2006,8 @@ Release: April 23, 2024
 
 23 / 91
 
-String resource
+
+String resource
 key
 
 String resource localizable text
@@ -2332,7 +2118,7 @@ is open."
 
 "<unknown>"
 
-2.2.7  AsyncUI XML Notification and Response Formats
+#### 2.2.7 AsyncUI XML Notification and Response Formats
 
 This section specifies the data formats for notifications and responses associated with the notification
 type identifier value AsyncPrintNotificationType_AsyncUI (section 2.2.1). The data formats are
@@ -2345,7 +2131,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The XML schema fragments contained in this section are drawn from two separate XML schema
+
+The XML schema fragments contained in this section are drawn from two separate XML schema
 documents, one for AsyncUI notifications and one for AsyncUI responses. Both schema documents
 specify a value of "qualified" for the elementFormDefault attribute of the root "schema" element.
 
@@ -2371,12 +2158,12 @@ of escaping when encoded in XML. Implementations MUST use an XML-defined mechani
 CDATA ([XML1.0] sections 2.4 and 2.7) or numeric character references ([XML1.0] section 4.1), to
 encode such characters within XML documents.
 
-2.2.7.1  Common AsyncUI Elements
+##### 2.2.7.1 Common AsyncUI Elements
 
 The following sections define XML elements common to some of the AsyncUI notification data
 formats.
 
-2.2.7.1.1 asyncPrintUIRequest Element
+###### 2.2.7.1.1 asyncPrintUIRequest Element
 
 The asyncPrintUIRequest XML element MUST be the root element of XML documents used in the
 AsyncUIBalloon (section 2.2.7.2), AsyncUIMessageBox (section 2.2.7.3), AsyncUICustomUI
@@ -2414,7 +2201,8 @@ Release: April 23, 2024
 
 25 / 91
 
-                     ref="customData"
+
+                     ref="customData"
                     />
                  </xs:choice>
                </xs:complexType>
@@ -2470,7 +2258,7 @@ customData
 
  See section 2.2.7.7.1.
 
-2.2.7.1.2 asyncPrintUIResponse Element
+###### 2.2.7.1.2 asyncPrintUIResponse Element
 
 The asyncPrintUIResponse XML element MUST be the root element of the XML documents used in the
 AsyncUIMessageBoxReply (section 2.2.7.4) and AsyncUICustomUIReply (section 2.2.7.6) client-
@@ -2509,7 +2297,8 @@ Release: April 23, 2024
 
 26 / 91
 
-       </xs:element>
+
+       </xs:element>
      </xs:sequence>
    </xs:complexType>
  </xs:element>
@@ -2546,7 +2335,7 @@ messageBoxUI  messageBoxUI
 
  See section 2.2.7.3.4.
 
-2.2.7.1.3 title Element
+###### 2.2.7.1.3 title Element
 
 The title XML element specifies a string using attributes or nested text, optionally combined with
 nested parameter elements, that SHOULD be used by the AsyncUI client as the displayable title of a
@@ -2599,7 +2388,8 @@ Release: April 23, 2024
 
 27 / 91
 
-Name
+
+Name
 
 Type
 
@@ -2630,7 +2420,7 @@ MUST treat the presence of such text as an error.
 
 Nested text MUST NOT follow a parameter element.
 
-2.2.7.1.4 body Element
+###### 2.2.7.1.4 body Element
 
 The body XML element specifies a string using attributes or nested text, optionally combined with
 nested parameter elements that SHOULD be used by the AsyncUI client as the displayable
@@ -2676,7 +2466,8 @@ Release: April 23, 2024
 
 28 / 91
 
-Element
+
+Element
 
 Type
 
@@ -2718,7 +2509,7 @@ client MUST treat the presence of such text as an error.
 
 Nested text MUST NOT follow a parameter element.
 
-2.2.7.1.5 parameter Element
+###### 2.2.7.1.5 parameter Element
 
 The parameter XML element specifies a string using attributes or nested text that provides parameter
 substitution information for a string specified by a body or title element.
@@ -2768,7 +2559,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Type
 
@@ -2803,7 +2595,7 @@ If the type attribute is specified, then the parameter element SHOULD NOT contai
 the client SHOULD treat the presence of such text as an error. If stringID is present but the client is
 unable to load a corresponding string resource, the client SHOULD use the nested text.
 
-2.2.7.2  AsyncUIBalloon
+##### 2.2.7.2 AsyncUIBalloon
 
 AsyncUIBalloon is a string that contains a well-formed XML document ([XML1.0] section 2.1). The
 root element of the document MUST be the asyncPrintUIRequest element (section 2.2.7.1.1). A
@@ -2814,7 +2606,7 @@ AsyncUIBalloon SHOULD be used by a printer driver on a server to deliver to a cl
 of an event or a change in device status. Print servers SHOULD also use AsyncUIBalloon to send
 details about printer configuration changes, when available, to a client UI.<1>
 
-2.2.7.2.1 action Element
+###### 2.2.7.2.1 action Element
 
 The action XML element directs the client to execute a method at a specific entry point in a specific
 file on the client computer.
@@ -2847,7 +2639,8 @@ Release: April 23, 2024
 
 30 / 91
 
-     </xs:simpleContent>
+
+     </xs:simpleContent>
    </xs:complexType>
  </xs:element>
 
@@ -2888,7 +2681,7 @@ entrypoint  xs:string  The value of this attribute is a string that specifies a 
 
 by the dll attribute.
 
-2.2.7.2.2 balloonUI Element
+###### 2.2.7.2.2 balloonUI Element
 
 The balloonUI XML element contains information on a printer event that can be displayed on the client
 computer. The notification MUST contain references to string resources that pertain to printer
@@ -2929,7 +2722,8 @@ Release: April 23, 2024
 
 31 / 91
 
- </xs:element>
+
+ </xs:element>
 
 Child Elements
 
@@ -2974,7 +2768,7 @@ The value of this optional attribute, if present, is the driver-file name of a r
 file on the client system that contains the icon resource specified by the iconID
 attribute. If this attribute is not specified, a generic icon SHOULD be used.
 
-2.2.7.3  AsyncUIMessageBox
+##### 2.2.7.3 AsyncUIMessageBox
 
 AsyncUIMessageBox is a string that contains a well-formed XML document ([XML1.0] section 2.1).
 
@@ -2986,7 +2780,7 @@ AsyncUIMessageBox SHOULD be used by a printer driver on a server to deliver to a
 details of an event or a change in device status and to request input from the user to guide its
 handling of the event or change in status.
 
-2.2.7.3.1 button Element
+###### 2.2.7.3.1 button Element
 
 The button XML element contains information on a button control in the UI that SHOULD be displayed
 on the client computer.
@@ -3016,7 +2810,8 @@ Release: April 23, 2024
 
 32 / 91
 
-         >
+
+         >
            <xs:pattern
              value="IDOK|IDCANCEL|\s*(\-|\+)?[0-9]+\s*"
             />
@@ -3066,7 +2861,7 @@ following case-sensitive strings:
 If the attribute value is "IDOK" or "IDCANCEL", the stringID and resourceDll values
 MUST be ignored.
 
-2.2.7.3.2 buttons Element
+###### 2.2.7.3.2 buttons Element
 
 The buttons XML element contains a collection of button elements. The client can display these
 buttons to present the user with a choice of actions.
@@ -3101,7 +2896,8 @@ Release: April 23, 2024
 
 33 / 91
 
-2.2.7.3.3 bitmap Element
+
+###### 2.2.7.3.3 bitmap Element
 
 The bitmap XML element, if present, specifies a bitmap that can be displayed on the client computer
 to describe a printer event.
@@ -3143,7 +2939,7 @@ resourceDll  xs:string
 The value of this optional attribute is the driver-file name of a resource file on the
 client system that contain the bitmap resource used in this message.
 
-2.2.7.3.4 messageBoxUI Element
+###### 2.2.7.3.4 messageBoxUI Element
 
 The messageBoxUI XML element specifies elements that compose a message box for display in a
 client UI.
@@ -3176,7 +2972,8 @@ Release: April 23, 2024
 
 34 / 91
 
-Child Elements
+
+Child Elements
 
 Element  Type
 
@@ -3206,7 +3003,7 @@ buttons
 
  See section 2.2.7.3.2.
 
-2.2.7.4  AsyncUIMessageBoxUIReply
+##### 2.2.7.4 AsyncUIMessageBoxUIReply
 
 AsyncUIMessageBoxUIReply is a string that contains a well-formed XML document ([XML1.0] section
 2.1).
@@ -3218,7 +3015,7 @@ in the XML schema.
 The AsyncUIMessageBoxUIReply carries the response from a client to an AsyncUIMessageBoxUIReply
 notification.
 
-2.2.7.4.1 buttonID Element
+###### 2.2.7.4.1 buttonID Element
 
 The buttonID XML element specifies the button element from an AsyncUIMessageBox string that was
 selected by the user.
@@ -3232,7 +3029,7 @@ the buttonID element MUST contain that value.
    type="xs:integer"
   />
 
-2.2.7.4.2 messageBoxUI Element
+###### 2.2.7.4.2 messageBoxUI Element
 
 The messageBoxUI XML element contains a buttonID element that identifies the button that was
 selected by the user.
@@ -3256,7 +3053,8 @@ Release: April 23, 2024
 
 35 / 91
 
-Element  Type
+
+Element  Type
 
 Description
 
@@ -3264,7 +3062,7 @@ buttonID  buttonID
 
  See section 2.2.7.4.1 .
 
-2.2.7.5  AsyncUICustomUI
+##### 2.2.7.5 AsyncUICustomUI
 
 AsyncUICustomUI is a string that contains a well-formed XML document ([XML1.0] section 2.1).
 
@@ -3278,7 +3076,7 @@ expressed by using an AsyncUIMessageBox or AsyncUIBalloon notification. The Asyn
 notification calls for the execution of client-resident code that is associated with the server-resident
 printer driver.
 
-2.2.7.5.1 customUI Element
+###### 2.2.7.5.1 customUI Element
 
 The customUI XML element directs the client to execute a method at a specific entry point in a specific
 file on the client computer. This element can also direct the client to respond with the result of the
@@ -3328,7 +3126,8 @@ Release: April 23, 2024
 
 36 / 91
 
-             </xs:restriction>
+
+             </xs:restriction>
            </xs:simpleType>
          </xs:attribute>
        </xs:extension>
@@ -3398,7 +3197,7 @@ Indicates that the notification containing the customUI element MUST
 NOT have been sent over a bidirectional notification channel, and the
 client MUST NOT send a response back to the print server.
 
-2.2.7.6  AsyncUICustomUIReply
+##### 2.2.7.6 AsyncUICustomUIReply
 
 AsyncUICustomUIReply is a string that contains a well-formed XML document ([XML1.0] section 2.1).
 
@@ -3409,7 +3208,7 @@ XML schema.
 AsyncUICustomUIReply MUST carry the response from a client to an AsyncUICustomUI or
 AsyncUICustomData notification.
 
-2.2.7.6.1 CustomUI Element
+###### 2.2.7.6.1 CustomUI Element
 
 [MS-PAN] - v20240423
 Print System Asynchronous Notification Protocol
@@ -3418,7 +3217,8 @@ Release: April 23, 2024
 
 37 / 91
 
-The CustomUI XML element contains text that encodes the value returned by the call to the
+
+The CustomUI XML element contains text that encodes the value returned by the call to the
 entrypoint method, which is identified in the customUI element of an AsyncUICustomUI notification
 or in the customData element of an AsyncUICustomData notification.
 
@@ -3426,7 +3226,7 @@ or in the customData element of an AsyncUICustomData notification.
    type="xs:string"
   />
 
-2.2.7.7  AsyncUICustomData
+##### 2.2.7.7 AsyncUICustomData
 
 AsyncUICustomData is a null-terminated string containing a well-formed XML document ([XML1.0]
 section 2.1) followed by binary data.
@@ -3443,7 +3243,7 @@ AsyncUICustomUI. However, because AsyncUICustomData encodes the data passed to t
 entry point in binary form, the AsyncUICustomData notification can transport argument values that
 cannot be expressed in legal XML within an AsyncUICustomUI notification.
 
-2.2.7.7.1 customData Element
+###### 2.2.7.7.1 customData Element
 
 The customData XML element directs the client to execute a method at a specific entry point in a
 specific file on the client computer. This element can also direct the client to respond with the result of
@@ -3487,7 +3287,8 @@ Release: April 23, 2024
 
 38 / 91
 
-             value="false"
+
+             value="false"
             />
          </xs:restriction>
        </xs:simpleType>
@@ -3557,7 +3358,7 @@ Indicates that the notification containing the customData element MUST
 NOT have been sent over a bidirectional notification channel and the
 client MUST NOT send a response back to the print server.
 
-2.2.8  Printer Configuration Notification Formats
+#### 2.2.8 Printer Configuration Notification Formats
 
 This section specifies the data formats for notifications associated with the notification type identifier
 value AsyncPrintNotificationType_PrinterConfiguration (see section 2.2.1). The data formats are
@@ -3574,7 +3375,8 @@ Release: April 23, 2024
 
 39 / 91
 
-Print servers can use the printer configuration notification type to update clients when the printer
+
+Print servers can use the printer configuration notification type to update clients when the printer
 configuration changes. Clients MUST use the unidirectional communication mode for this
 notification type.
 
@@ -3589,7 +3391,7 @@ of escaping when encoded in XML. Implementations MUST use an XML-defined mechani
 CDATA ([XML1.0] sections 2.4 and 2.7) or numeric character references ([XML1.0] section 4.1), to
 encode such characters within XML documents.
 
-2.2.8.1  Printer Configuration Notification
+##### 2.2.8.1 Printer Configuration Notification
 
 Printer Configuration Notification is a string that contains a well-formed XML document ([XML1.0]
 section 2.1). The root element of the document MUST be the Notification element (section 2.2.8.1.1).
@@ -3645,14 +3447,15 @@ Release: April 23, 2024
 
 40 / 91
 
-         </xs:complexType>
+
+         </xs:complexType>
        </xs:element>
      </xs:choice>
      <xs:attribute name='printerName' type='string' use='required'/>
    </xs:complexType>
  </xs:element>
 
-2.2.8.1.1 Notification Element
+###### 2.2.8.1.1 Notification Element
 
 The Notification element represents changes in the configuration of a printer and contains a list of
 Schema elements (section 2.2.8.1.2) and ReducedSchema elements (section 2.2.8.1.10) representing
@@ -3668,7 +3471,7 @@ printerName  xs:string  The value of this attribute is a string that contains th
 
 configuration has changed.
 
-2.2.8.1.2 Schema Element
+###### 2.2.8.1.2 Schema Element
 
 The Schema XML element represents a configuration setting for a printer. It contains exactly one
 BIDI_STRING (section 2.2.8.1.3), BIDI_TEXT (section 2.2.8.1.4), BIDI_ENUM (section 2.2.8.1.5),
@@ -3685,25 +3488,25 @@ xs:string  The name of the configuration attribute that has changed, correspondi
 
 implementation-specific list of printer configuration attributes.<5>
 
-2.2.8.1.3 BIDI_STRING Element
+###### 2.2.8.1.3 BIDI_STRING Element
 
 The BIDI_STRING XML element represents a configuration attribute of a printer. It contains a string
 that is the value of the configuration setting represented by the Schema element (section 2.2.8.1.2)
 containing the BIDI_STRING element.
 
-2.2.8.1.4 BIDI_TEXT Element
+###### 2.2.8.1.4 BIDI_TEXT Element
 
 The BIDI_TEXT XML element represents a configuration attribute of a printer. It contains a string that
 is the value for the configuration setting represented by the Schema element (section 2.2.8.1.2)
 containing the BIDI_TEXT element.
 
-2.2.8.1.5 BIDI_ENUM Element
+###### 2.2.8.1.5 BIDI_ENUM Element
 
 The BIDI_ENUM XML element represents a configuration attribute for a printer. It contains a string
 that is the value of the configuration setting represented by the Schema element (section 2.2.8.1.2)
 containing the BIDI_ENUM element.
 
-2.2.8.1.6 BIDI_INT Element
+###### 2.2.8.1.6 BIDI_INT Element
 
 [MS-PAN] - v20240423
 Print System Asynchronous Notification Protocol
@@ -3712,30 +3515,31 @@ Release: April 23, 2024
 
 41 / 91
 
-The BIDI_INT XML element represents a configuration attribute for a printer. It contains an integer
+
+The BIDI_INT XML element represents a configuration attribute for a printer. It contains an integer
 that is the value of the configuration setting represented by the Schema element (section 2.2.8.1.2)
 containing the BIDI_INT element.
 
-2.2.8.1.7 BIDI_FLOAT Element
+###### 2.2.8.1.7 BIDI_FLOAT Element
 
 The BIDI_FLOAT XML element represents a configuration attribute of a printer. It contains a value of
 the float datatype, as defined in [W3C-XSD] section 3.2.4, which is the value of the configuration
 setting represented by the Schema element (section 2.2.8.1.2) containing the BIDI_FLOAT element.
 
-2.2.8.1.8 BIDI_BOOL Element
+###### 2.2.8.1.8 BIDI_BOOL Element
 
 The BIDI_BOOL XML element represents a configuration attribute for a printer. It contains a value of
 the Boolean datatype, as defined in [W3C-XSD] section 3.2.2, which is the value of the configuration
 setting represented by the Schema element (section 2.2.8.1.2) containing the BIDI_BOOL element.
 
-2.2.8.1.9 BIDI_BLOB Element
+###### 2.2.8.1.9 BIDI_BLOB Element
 
 The BIDI_BLOB XML element represents a configuration attribute for a printer. It contains a value of
 the base64Binary datatype, as defined in [W3C-XSD] section 3.2.16, which is the value of the
 configuration setting represented by the Schema element (section 2.2.8.1.2) containing the
 BIDI_BLOB element.
 
-2.2.8.1.10  ReducedSchema Element
+###### 2.2.8.1.10 ReducedSchema Element
 
 The ReducedSchema XML element represents only the name of a configuration setting for a printer.
 Print servers SHOULD use it only when using the Schema element (section 2.2.8.1.2), which includes
@@ -3759,19 +3563,20 @@ Release: April 23, 2024
 
 42 / 91
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-PAN].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The IRPCAsyncNotify interface is identified by UUID 0b6edbfa-4a24-4fc6-8a23-942b1eca65d1.
 
 The IRPCRemoteObject interface is identified by UUID ae33069b-a2a8-46ee-a235-ddfd339be281.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  IRPCAsyncNotify Server Details
+#### 3.1.1 IRPCAsyncNotify Server Details
 
 Unidirectional message passing mode in the IRPCAsyncNotify interface is illustrated by the following
 server state diagram.
@@ -3788,7 +3593,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-PAN].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
@@ -3806,13 +3612,14 @@ Release: April 23, 2024
 
 44 / 91
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-PAN].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
 Figure 7: Processing a single open channel
 
-3.1.1.1  Abstract Data Model
+##### 3.1.1.1 Abstract Data Model
 
 This section describes a conceptual model of the possible data organization that an implementation
 SHOULD maintain to participate in this protocol. The organization that is described in this section is
@@ -3827,7 +3634,8 @@ Release: April 23, 2024
 
 45 / 91
 
-This section describes the Print System Asynchronous Notification Protocol in terms of an abstract data
+
+This section describes the Print System Asynchronous Notification Protocol in terms of an abstract data
 model that represents physical devices as objects and provides interfaces for communication and
 configuration management.
 
@@ -3876,12 +3684,12 @@ IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4) (section 3.1.1.4.4).
 
 Note  The preceding conceptual data can be implemented using a variety of techniques.
 
-3.1.1.2  Timers
+##### 3.1.1.2 Timers
 
 No timer events are required on the client outside of the timers required in the underlying RPC ([MS-
 RPCE] section 3).
 
-3.1.1.3  Initialization
+##### 3.1.1.3 Initialization
 
 The server MUST listen on dynamically assigned endpoints ([C706] section 6.2.2).
 
@@ -3892,7 +3700,8 @@ Release: April 23, 2024
 
 46 / 91
 
-3.1.1.4  Message Processing Events and Sequencing Rules
+
+##### 3.1.1.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST direct the RPC runtime ([MS-RPCE] section 3) to do the following:
 
@@ -3960,7 +3769,7 @@ Opnum: 6
 In the preceding table, the term "Reserved for local use" means that the client MUST NOT send the
 opnum, and the server behavior is undefined<7> because it does not affect interoperability.
 
-3.1.1.4.1 IRPCAsyncNotify_RegisterClient (Opnum 0)
+###### 3.1.1.4.1 IRPCAsyncNotify_RegisterClient (Opnum 0)
 
 The IRPCAsyncNotify_RegisterClient method is called by clients to register to receive notifications and
 to associate the parameters describing the set of notifications they are registering to receive with a
@@ -3982,7 +3791,8 @@ Release: April 23, 2024
 
 47 / 91
 
-pRegistrationObj: MUST be the remote object context handle that was returned by the server in the
+
+pRegistrationObj: MUST be the remote object context handle that was returned by the server in the
 ppRemoteObject output parameter of a prior call to IRPCRemoteObject_Create (section 3.1.2.4.1).
 This value MUST NOT be NULL.
 
@@ -4066,7 +3876,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Unless specified otherwise, if a failure is indicated by an error return or an exception, the client
+
+Unless specified otherwise, if a failure is indicated by an error return or an exception, the client
 SHOULD retry this method call by performing the following steps:
 
 1.  Call IRPCRemoteObject_Create to generate a new PRPCREMOTEOBJECT (section 2.2.4).
@@ -4151,11 +3962,12 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-call if the calling principal lacks any of the print queue access rights specified by
+
+call if the calling principal lacks any of the print queue access rights specified by
 PRINTER_ALL_ACCESS. For additional information concerning access rights, see [MS-AZOD] section
 1.1.1.5.
 
-3.1.1.4.2 IRPCAsyncNotify_UnregisterClient (Opnum 1)
+###### 3.1.1.4.2 IRPCAsyncNotify_UnregisterClient (Opnum 1)
 
 The IRPCAsyncNotify_UnregisterClient method is called by registered clients to unregister previously-
 registered remote objects. For this call to succeed, the remote object MUST have already
@@ -4204,7 +4016,7 @@ succeeded by using the same PRPCREMOTEOBJECT value.
 
 by using the same PRPCREMOTEOBJECT value.
 
-3.1.1.4.3 IRPCAsyncNotify_GetNewChannel (Opnum 3)
+###### 3.1.1.4.3 IRPCAsyncNotify_GetNewChannel (Opnum 3)
 
 The IRPCAsyncNotify_GetNewChannel method returns an array of pointers to print notification
 channels. This method MUST only be used with bidirectional communication mode.
@@ -4227,7 +4039,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-bidirectional communication mode by a prior successful call to
+
+bidirectional communication mode by a prior successful call to
 IRPCAsyncNotify_RegisterClient (section 3.1.1.4.1).
 
 pNoOfChannels: MUST specify the number of notification channels returned. The array of notification
@@ -4309,7 +4122,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Indicate success to a client call of IRPCAsyncNotify_GetNewChannel following a prior successful
 call to IRPCAsyncNotify_UnregisterClient using the same PRPCREMOTEOBJECT value.
@@ -4340,7 +4154,7 @@ succeeded by using the same PRPCREMOTEOBJECT value.<8>
 
 using the same PRPCREMOTEOBJECT value.<9>
 
-3.1.1.4.4 IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4)
+###### 3.1.1.4.4 IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4)
 
 The IRPCAsyncNotify_GetNotificationSendResponse method sends a client response to the server and
 returns the next notification sent by way of the same channel when it becomes available. This
@@ -4384,7 +4198,8 @@ Release: April 23, 2024
 
 52 / 91
 
-pInNotificationData: A pointer to input data holding the client's response to the previous notification
+
+pInNotificationData: A pointer to input data holding the client's response to the previous notification
 
 that was received on the same bidirectional notification channel.
 
@@ -4471,7 +4286,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  An abnormal condition occurs, such as an initiated server shutdown sequence.
+
+  An abnormal condition occurs, such as an initiated server shutdown sequence.
 
 
 
@@ -4510,7 +4326,7 @@ A client SHOULD call IRPCAsyncNotify_GetNotificationSendResponse or IRPCAsyncNot
 following a prior successful return from IRPCAsyncNotify_GetNotificationSendResponse with a non-
 NULL output value of the pChannel parameter.
 
-3.1.1.4.5 IRPCAsyncNotify_GetNotification (Opnum 5)
+###### 3.1.1.4.5 IRPCAsyncNotify_GetNotification (Opnum 5)
 
 The IRPCAsyncNotify_GetNotification method returns notification data from the print server. This
 method MUST NOT be used with bidirectional communication mode.
@@ -4547,7 +4363,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: This method MUST return zero to indicate success, or an HRESULT error value ([MS-
+
+Return Values: This method MUST return zero to indicate success, or an HRESULT error value ([MS-
 ERREF] section 2.1.1) to indicate failure. Protocol-specific error values are defined in the following
 table. The client SHOULD treat all error return values the same, except where noted.
 
@@ -4629,7 +4446,8 @@ Release: April 23, 2024
 
 55 / 91
 
-  Buffer unidirectional notifications, up to some implementation-defined limit,<10> for each
+
+  Buffer unidirectional notifications, up to some implementation-defined limit,<10> for each
 
 registered client that does not have pending IRPCAsyncNotify_GetNotification calls.
 
@@ -4649,7 +4467,7 @@ succeeded, using the same PRPCREMOTEOBJECT value.
 
 using the same PRPCREMOTEOBJECT value.
 
-3.1.1.4.6 IRPCAsyncNotify_CloseChannel (Opnum 6)
+###### 3.1.1.4.6 IRPCAsyncNotify_CloseChannel (Opnum 6)
 
 The IRPCAsyncNotify_CloseChannel method sends a final response on the notification channel and
 closes it. This method MUST NOT be used with unidirectional communication mode.
@@ -4703,7 +4521,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value  Description
+
+Return value  Description
 
 0x00040010
 
@@ -4738,12 +4557,12 @@ A client MUST NOT call IRPCAsyncNotify_CloseChannel following a prior successful
 IRPCAsyncNotify_GetNotificationSendResponse with a NULL value of pChannel parameter or following
 a prior successful return from IRPCAsyncNotify_CloseChannel.<11>
 
-3.1.1.5  Timer Events
+##### 3.1.1.5 Timer Events
 
 No timer events are required on the server outside of the timers required in the underlying RPC
 Protocol ([MS-RPCE] section 3).
 
-3.1.1.6  Other Local Events
+##### 3.1.1.6 Other Local Events
 
 This protocol does not define the set of printing events that cause notification sources to trigger
 notifications.
@@ -4758,7 +4577,7 @@ request the authenticated user identity of the user who is the intended target f
 notifications. The rules for interpreting PrintAsyncNotifyUserFilter values to apply a user identity filter
 are specified in section 2.2.2.
 
-3.1.1.6.1 Unidirectional Notification Generated
+###### 3.1.1.6.1 Unidirectional Notification Generated
 
 A notification source that provides unidirectional notifications to a print client MUST provide the
 following with each notification:
@@ -4769,7 +4588,7 @@ following with each notification:
 
   An authenticated user identity.
 
-3.1.1.6.2 Bidirectional Notification Channel Opened
+###### 3.1.1.6.2 Bidirectional Notification Channel Opened
 
 [MS-PAN] - v20240423
 Print System Asynchronous Notification Protocol
@@ -4778,7 +4597,8 @@ Release: April 23, 2024
 
 57 / 91
 
-A notification source that initiates the exchange of a sequence of one or more notifications and
+
+A notification source that initiates the exchange of a sequence of one or more notifications and
 responses with a print client MUST open a Bidirectional Notification Channel (section 3.1.1.1) to
 do so. When opening a Bidirectional Notification Channel, the notification source MUST provide the
 following:
@@ -4789,7 +4609,7 @@ following:
 
   An authenticated user identity.
 
-3.1.1.6.3 Bidirectional Notification Generated
+###### 3.1.1.6.3 Bidirectional Notification Generated
 
 When generating a bidirectional notification, a notification source MUST identify an opened
 Bidirectional Notification Channel (section 3.1.1.1). In order to successfully generate a
@@ -4815,13 +4635,13 @@ channel, the server MUST immediately send it to the client as an output paramete
 IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4) call that was used by the client to send its
 response to the preceding notification.
 
-3.1.1.6.4 Bidirectional Notification Channel Closed
+###### 3.1.1.6.4 Bidirectional Notification Channel Closed
 
 A notification source that terminates the exchange of a sequence of notifications and responses with
 a print client MUST close the Bidirectional Notification Channel (section 3.1.1.1). Such a closure
 can be due to normal processing or a critical failure in the notification source.
 
-3.1.1.6.5 Impersonate Client
+###### 3.1.1.6.5 Impersonate Client
 
 This protocol uses local interfaces provided by the server implementation of [MS-RPCE] to
 impersonate the user associated to the security context defined in [MS-RPCE] sections 3.1.1.1.1 and
@@ -4830,7 +4650,7 @@ implementation-specific identifier for the authenticated user identity for the d
 the message reflected in the abstract data model as Current Authenticated User. This local event
 occurs for the processing of all messages in section 3.1.1.4.
 
-3.1.2  IRPCRemoteObject Server Details
+#### 3.1.2 IRPCRemoteObject Server Details
 
 The IRPCRemoteObject server interface provides methods that allow a client to define a generic
 remote object on a server. The version for this interface is 1.0. To receive incoming remote calls for
@@ -4844,20 +4664,21 @@ Release: April 23, 2024
 
 58 / 91
 
-3.1.2.1  Abstract Data Model
+
+##### 3.1.2.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.1.2.2  Timers
+##### 3.1.2.2 Timers
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol ([MS-RPCE] section 3).
 
-3.1.2.3  Initialization
+##### 3.1.2.3 Initialization
 
 The server MUST listen on dynamically assigned endpoints (see [C706] section 6.2.2).
 
-3.1.2.4  Message Processing Events and Sequencing Rules
+##### 3.1.2.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST direct the RPC protocol ([MS-RPCE] section 3) runtime to the following:
 
@@ -4883,7 +4704,7 @@ IRPCRemoteObject_Delete  The method destroys the specified remote object.
 
 Opnum: 1
 
-3.1.2.4.1 IRPCRemoteObject_Create (Opnum 0)
+###### 3.1.2.4.1 IRPCRemoteObject_Create (Opnum 0)
 
 The IRPCRemoteObject_Create method creates a remote object on a server and returns it to the
 client.
@@ -4912,11 +4733,12 @@ Release: April 23, 2024
 
 59 / 91
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 
 [MS-RPCE].
 
-3.1.2.4.2 IRPCRemoteObject_Delete (Opnum 1)
+###### 3.1.2.4.2 IRPCRemoteObject_Delete (Opnum 1)
 
 The IRPCRemoteObject_Delete method destroys the specified remote object.
 
@@ -4938,16 +4760,16 @@ Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlyin
 
 [MS-RPCE].
 
-3.1.2.5  Timer Events
+##### 3.1.2.5 Timer Events
 
 No protocol timer events are required on the server outside of the timers required in the underlying
 RPC protocol ([MS-RPCE] section 3).
 
-3.1.2.6  Other Local Events
+##### 3.1.2.6 Other Local Events
 
 No higher-level triggered events are processed.
 
-3.1.3  AsyncUI Server Details
+#### 3.1.3 AsyncUI Server Details
 
 The AsyncUI notification type allows for a print-server-resident notification source to request the
 following:
@@ -4967,11 +4789,11 @@ The client executes code that is resident on the client machine.
 The AsyncUI notification type MUST use the notification type identifier value
 AsyncPrintNotificationType_AsyncUI (section 2.2.1).
 
-3.1.3.1  Abstract Data Model
+##### 3.1.3.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.1.3.2  Timers
+##### 3.1.3.2 Timers
 
 No timer events are required on the client besides those required in the underlying RPC protocol
 ([MS-RPCE] section 3).
@@ -4983,12 +4805,13 @@ Release: April 23, 2024
 
 60 / 91
 
-3.1.3.3  Initialization
+
+##### 3.1.3.3 Initialization
 
 A remote object server (section 3.1.2) and an asynchronous notification server (section 3.1.1)
 MUST be fully initialized on the server.
 
-3.1.3.4  Message Processing Events and Sequencing Rules
+##### 3.1.3.4 Message Processing Events and Sequencing Rules
 
 The Print System Asynchronous Notification Protocol MUST specify the notification type identifier
 AsyncPrintNotificationType_AsyncUI when registering for notifications or when requesting or returning
@@ -5052,7 +4875,7 @@ of methods reserved for local use is specified in section 3.1.1.4.
 There is no AsyncUI server syntax or behavior for methods of the IRPCRemoteObject
 interface (section 3.2).
 
-3.1.3.4.1 IRPCAsyncNotify_RegisterClient (Opnum 0)
+###### 3.1.3.4.1 IRPCAsyncNotify_RegisterClient (Opnum 0)
 
 The IRPCAsyncNotify_RegisterClient method is specified in section 3.1.1.4.1. Additional AsyncUI-
 specific server parameter details are defined here.
@@ -5060,7 +4883,7 @@ specific server parameter details are defined here.
 pInNotificationType: MUST hold the notification type identifier value.
 AsyncPrintNotificationType_AsyncUI (section 2.2.1).
 
-3.1.3.4.2 IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4)
+###### 3.1.3.4.2 IRPCAsyncNotify_GetNotificationSendResponse (Opnum 4)
 
 The IRPCAsyncNotify_GetNotificationSendResponse method is specified in section 3.1.1.4.4. Additional
 AsyncUI-specific server parameter details are defined here.
@@ -5072,7 +4895,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pInNotificationType: MUST hold the notification type identifier value
+
+pInNotificationType: MUST hold the notification type identifier value
 AsyncPrintNotificationType_AsyncUI (section 2.2.1).
 
 InSize: SHOULD be 0 (section 3.1.1.4.4) on the first IRPCAsyncNotify_GetNotificationSendResponse
@@ -5092,7 +4916,7 @@ AsyncUICustomData (section 2.2.7.7). If the notification is of format AsyncUICus
 contained "customUI" or "customData" element, specified in sections and respectively, MUST be
 "true".
 
-3.1.3.4.3 IRPCAsyncNotify_GetNotification (Opnum 5)
+###### 3.1.3.4.3 IRPCAsyncNotify_GetNotification (Opnum 5)
 
 The IRPCAsyncNotify_GetNotification method is specified in section 3.1.1.4.5. Additional AsyncUI-
 specific server parameter details are defined here.
@@ -5106,7 +4930,7 @@ AsyncUICustomData (section 2.2.7.7). If the notification is of format AsyncUICus
 2.2.7.5.1) or AsyncUICustomData (section 2.2.7.7.1), the value of the bidi attribute of the
 contained "customUI" or "customData" element, MUST be "false".
 
-3.1.3.4.4 IRPCAsyncNotify_CloseChannel (Opnum 6)
+###### 3.1.3.4.4 IRPCAsyncNotify_CloseChannel (Opnum 6)
 
 The IRPCAsyncNotify_CloseChannel method is specified in section 3.1.1.4.6. Additional AsyncUI-
 specific server parameter details are defined here.
@@ -5119,12 +4943,12 @@ client-to-server response data conforming to the data format for AsyncUIMessageB
 (section 2.2.7.4) or AsyncUICustomUIReply (section 2.2.7.6). The client sequencing rules defining
 the conditions under which each response format is sent can be found in section 3.2.3.4.
 
-3.1.3.5  Timer Events
+##### 3.1.3.5 Timer Events
 
 No timer events are required on the server beyond the timers required in the underlying RPC protocol
 ([MS-RPCE] section 3).
 
-3.1.3.6  Other Local Events
+##### 3.1.3.6 Other Local Events
 
 This protocol does not define the set of printing events that cause notification sources to trigger
 notifications.
@@ -5136,7 +4960,8 @@ Release: April 23, 2024
 
 62 / 91
 
-3.1.4  Printer Configuration Server Details
+
+#### 3.1.4 Printer Configuration Server Details
 
 The printer configuration notification type allows for a print server-resident notification source to
 notify a print client of a change in the configuration of a printer on the print server.
@@ -5144,21 +4969,21 @@ notify a print client of a change in the configuration of a printer on the print
 The printer configuration notification type MUST use the notification type identifier value
 AsyncPrintNotificationType_PrinterConfiguration (section 2.2.1).
 
-3.1.4.1  Abstract Data Model
+##### 3.1.4.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.1.4.2  Timers
+##### 3.1.4.2 Timers
 
 No timer events are required on the client beyond those required in the underlying RPC protocol (see
 [MS-RPCE] section 3).
 
-3.1.4.3  Initialization
+##### 3.1.4.3 Initialization
 
 A remote object server (section 3.1.2) and an asynchronous notification server (section 3.1.1) MUST
 be fully initialized on the server.
 
-3.1.4.4  Message Processing Events and Sequencing Rules
+##### 3.1.4.4 Message Processing Events and Sequencing Rules
 
 The Print System Asynchronous Notification Protocol MUST specify the notification type identifier
 AsyncPrintNotificationType_PrinterConfiguration when registering for notifications or returning
@@ -5218,7 +5043,8 @@ Release: April 23, 2024
 
 63 / 91
 
-Method
+
+Method
 
 Description
 
@@ -5235,7 +5061,7 @@ methods reserved for local use is specified in section 3.1.1.4.
 There is no printer configuration server syntax or behavior for methods of the IRPCRemoteObject
 interface (section 3.2).
 
-3.1.4.4.1 IRPCAsyncNotify_RegisterClient (Opnum 0)
+###### 3.1.4.4.1 IRPCAsyncNotify_RegisterClient (Opnum 0)
 
 The IRPCAsyncNotify_RegisterClient method is specified in section 3.1.1.4.1. Additional printer
 configuration-specific server parameter details are defined here.
@@ -5246,7 +5072,7 @@ AsyncPrintNotificationType_PrinterConfiguration as specified in section 2.2.1).
 
 conversationStyle: MUST be the conversation style value kUniDirectional (see section 2.2.3).
 
-3.1.4.4.2 IRPCAsyncNotify_GetNotification (Opnum 5)
+###### 3.1.4.4.2 IRPCAsyncNotify_GetNotification (Opnum 5)
 
 The IRPCAsyncNotify_GetNotification method is specified in section 3.1.1.4.5. Additional printer
 configuration-specific server parameter details are defined here.
@@ -5260,21 +5086,21 @@ ppOutNotificationData: MUST hold server-to-client notification data that conform
 
 format for a Printer Configuration Notification (section 2.2.8.1).
 
-3.1.4.5  Timer Events
+##### 3.1.4.5 Timer Events
 
 No timer events are required on the server beyond the timers required in the underlying RPC protocol
 (see [MS-RPCE] section 3).
 
-3.1.4.6  Other Local Events
+##### 3.1.4.6 Other Local Events
 
 This protocol does not define the set of printing events that cause notification sources to trigger
 notifications.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  IRPCRemoteObject Client Details
+#### 3.2.1 IRPCRemoteObject Client Details
 
-3.2.1.1  Abstract Data Model
+##### 3.2.1.1 Abstract Data Model
 
 No abstract data model is required.
 
@@ -5285,17 +5111,18 @@ Release: April 23, 2024
 
 64 / 91
 
-3.2.1.2  Timers
+
+##### 3.2.1.2 Timers
 
 No timers are required beyond those used internally by the RPC Protocol ([MS-RPCE] section 3) to
 implement resiliency to network outages.
 
-3.2.1.3  Initialization
+##### 3.2.1.3 Initialization
 
 The client creates an RPC binding handle ([C706] section 2.3), to the server RPC dynamic endpoint
 when an RPC method is called.
 
-3.2.1.4  Message Processing Events and Sequencing Rules
+##### 3.2.1.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST direct the RPC Protocol ([MS-RPCE] section 3) runtime to do the following:
 
@@ -5309,17 +5136,17 @@ Remote object clients MUST manage the lifetime of the remote objects. Specifical
 call IRPCRemoteObject_Delete (section 3.1.2.4) for each successful call to IRPCRemoteObject_Create
 (section 3.1.2.4). These methods are specified in section 3.1.2.4.
 
-3.2.1.5  Timer Events
+##### 3.2.1.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 Protocol ([MS-RPCE] section 3).
 
-3.2.1.6  Other Local Events
+##### 3.2.1.6 Other Local Events
 
 A client's invocation of each method is typically the result of local application activity. No other higher-
 layer triggered events are processed.
 
-3.2.2  IRPCAsyncNotify Client Details
+#### 3.2.2 IRPCAsyncNotify Client Details
 
 Unidirectional message passing mode is illustrated by the following client state diagram. This diagram
 represents a client that is registering and receiving notifications of a predetermined notification type
@@ -5332,7 +5159,8 @@ Release: April 23, 2024
 
 65 / 91
 
-<!-- Extracted images from page 66 -->
+
+<!-- Extracted images from page 66 -->
 ![Extracted image 1 from page 66]([MS-PAN].images/page066-img01.png)
 <!-- /Extracted images from page 66 -->
 
@@ -5350,7 +5178,8 @@ Release: April 23, 2024
 
 66 / 91
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-PAN].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
@@ -5366,17 +5195,18 @@ Release: April 23, 2024
 
 67 / 91
 
-<!-- Extracted images from page 68 -->
+
+<!-- Extracted images from page 68 -->
 ![Extracted image 1 from page 68]([MS-PAN].images/page068-img01.png)
 <!-- /Extracted images from page 68 -->
 
 Figure 10: Processing a single open channel
 
-3.2.2.1  Abstract Data Model
+##### 3.2.2.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.2.2.2  Timers
+##### 3.2.2.2 Timers
 
 No timers are required outside of those used internally by the RPC Protocol ([MS-RPCE] section 3) to
 implement resiliency to network outages.
@@ -5391,16 +5221,17 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IRPCAsyncNotify_GetNewChannel (section 3.1.1.4.3) , and
+
+IRPCAsyncNotify_GetNewChannel (section 3.1.1.4.3) , and
 IRPCAsyncNotify_GetNotification (section 3.1.1.4.5) specify the use of a decaying time interval to
 separate retries until the connection is reestablished or the client unregisters the remote object.
 
-3.2.2.3  Initialization
+##### 3.2.2.3 Initialization
 
 The client MUST create a RPC binding handle to the server RPC dynamic endpoint when an RPC
 method is called ([C706] section 2.3).
 
-3.2.2.4  Message Processing Events and Sequencing Rules
+##### 3.2.2.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST direct the RPC ([MS-RPCE] section 3) runtime to do the following:
 
@@ -5420,16 +5251,16 @@ minimize the amount of buffering and risk of event loss on the server.
 The syntax and behavior for the methods of the IRPCAsyncNotify interface are fully specified in section
 3.1.1.4.
 
-3.2.2.5  Timer Events
+##### 3.2.2.5 Timer Events
 
 No timer events are required on the client except the timers that are required in the underlying RPC
 Protocol ([MS-RPCE] section 3).
 
-3.2.2.6  Other Local Events
+##### 3.2.2.6 Other Local Events
 
 A client's registration is typically the result of printing activity.
 
-3.2.3  AsyncUI Client Details
+#### 3.2.3 AsyncUI Client Details
 
 The AsyncUI notification type MUST use the notification type identifier value
 AsyncPrintNotificationType_AsyncUI (section 2.2.1).
@@ -5448,17 +5279,18 @@ Release: April 23, 2024
 
 69 / 91
 
-<!-- Extracted images from page 70 -->
+
+<!-- Extracted images from page 70 -->
 ![Extracted image 1 from page 70]([MS-PAN].images/page070-img01.png)
 <!-- /Extracted images from page 70 -->
 
 Figure 11: Client state diagram when dealing with a single communication channel
 
-3.2.3.1  Abstract Data Model
+##### 3.2.3.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.2.3.2  Timers
+##### 3.2.3.2 Timers
 
 No timer events are required on the client outside of the timers required in the underlying RPC
 protocol ([MS-RPCE] section 3).
@@ -5470,12 +5302,13 @@ Release: April 23, 2024
 
 70 / 91
 
-3.2.3.3  Initialization
+
+##### 3.2.3.3 Initialization
 
 A remote object client (section 3.2.1) and an asynchronous notification client (section 3.2.2) MUST
 be fully initialized on the client.
 
-3.2.3.4  Message Processing Events and Sequencing Rules
+##### 3.2.3.4 Message Processing Events and Sequencing Rules
 
 An AsyncUI client MUST specify a notification type identifier value
 AsyncPrintNotificationType_AsyncUI (section 2.2.1) when registering for, requesting, or
@@ -5490,7 +5323,7 @@ described in section 3.1.2.4.
 The sections that follow specify the processing of AsyncUI notifications that are delivered to a client
 from a printer driver using this protocol.
 
-3.2.3.4.1 AsyncUIBalloon Notification
+###### 3.2.3.4.1 AsyncUIBalloon Notification
 
 The AsyncUIBalloon notification MUST use unidirectional communication mode and MUST be
 delivered by way of an output parameter of an IRPCAsyncNotify_GetNotification call.
@@ -5547,7 +5380,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5560,7 +5394,7 @@ and dll attributes of that element (section 2.2.7.1). If the method entry point 
 successfully for any reason, the client MUST ignore the error and continue with a subsequent call
 to IRPCAsyncNotify_GetNotification.
 
-3.2.3.4.2 AsyncUIMessageBox Notification
+###### 3.2.3.4.2 AsyncUIMessageBox Notification
 
 The AsyncUIMessageBox notification MUST use bidirectional communication mode and MUST be
 delivered by way of an output parameter of an IRPCAsyncNotify_GetNotificationSendResponse call.
@@ -5599,7 +5433,7 @@ buttonID attribute of the button element that was selected (section 2.2.7.3).
 
 IRPCAsyncNotify_CloseChannel call.
 
-3.2.3.4.3 AsyncUICustomUI Notification
+###### 3.2.3.4.3 AsyncUICustomUI Notification
 
 The AsyncUICustomUI notification can be sent by using either unidirectional communication mode
 or bidirectional communication mode.
@@ -5625,7 +5459,8 @@ Release: April 23, 2024
 
 72 / 91
 
-If a compliance error is detected, the client MUST NOT take any further action based on the
+
+If a compliance error is detected, the client MUST NOT take any further action based on the
 notification data. If the invalid notification was sent in unidirectional communication mode, the client
 MUST continue with a subsequent call to IRPCAsyncNotify_GetNotification. If the invalid notification
 was sent in bidirectional communication mode, the client MUST NOT send any further response on the
@@ -5677,7 +5512,7 @@ contain a string that is returned by the called method.
 The client MUST send the AsyncUICustomUIReply to the server in the pReason parameter of
 an IRPCAsyncNotify_CloseChannel call.
 
-3.2.3.4.4 AsyncUICustomData Notification
+###### 3.2.3.4.4 AsyncUICustomData Notification
 
 The AsyncUICustomData notification can be sent using either unidirectional communication mode
 or bidirectional communication mode.
@@ -5712,7 +5547,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5758,16 +5594,16 @@ The client MUST construct an AsyncUICustomUIReply string. The CustomUI element (
 The client MUST send the AsyncUICustomUIReply string to the server in the pReason
 parameter of an IRPCAsyncNotify_CloseChannel call.
 
-3.2.3.5  Timer Events
+##### 3.2.3.5 Timer Events
 
 No timer events are required on the client beyond the timers required in the underlying RPC protocol
 ([MS-RPCE] section 3).
 
-3.2.3.6  Other Local Events
+##### 3.2.3.6 Other Local Events
 
 There are no AsyncUI-specific local events.
 
-3.2.4  Printer Configuration Client Details
+#### 3.2.4 Printer Configuration Client Details
 
 The printer configuration notification client MUST use the notification type identifier value
 AsyncPrintNotificationType_PrinterConfiguration as specified in section 2.2.1.
@@ -5775,16 +5611,16 @@ AsyncPrintNotificationType_PrinterConfiguration as specified in section 2.2.1.
 The printer configuration notification type includes only notifications that are sent in unidirectional
 communication mode.
 
-3.2.4.1  Abstract Data Model
+##### 3.2.4.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.2.4.2  Timers
+##### 3.2.4.2 Timers
 
 No timer events are required on the client beyond the timers required in the underlying RPC protocol
 ((see [MS-RPCE] section 3).
 
-3.2.4.3  Initialization
+##### 3.2.4.3 Initialization
 
 A remote object client (section 3.2.1) and an asynchronous notification client (section 3.2.2) MUST
 be fully initialized on the client.
@@ -5796,7 +5632,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.4.4  Message Processing Events and Sequencing Rules
+
+##### 3.2.4.4 Message Processing Events and Sequencing Rules
 
 An AsyncUI client MUST specify a notification type identifier value
 AsyncPrintNotificationType_PrinterConfiguration (section 2.2.1) when registering for,
@@ -5811,7 +5648,7 @@ methods described in section 3.1.2.4.
 The sections that follow specify the processing of printer configuration notifications that are delivered
 to a client from a print server using this protocol.
 
-3.2.4.4.1 Printer Configuration Notification
+###### 3.2.4.4.1 Printer Configuration Notification
 
 The printer configuration notification MUST use unidirectional communication mode and MUST be
 delivered by way of an output parameter of an IRPCAsyncNotify_GetNotification (section 3.1.4.4.2)
@@ -5823,12 +5660,12 @@ requirements for the printer configuration notification type.
 If a compliance error is detected, the client MUST NOT take any further action based on the
 notification data, but rather MUST continue with a subsequent call to IRPCAsyncNotify_GetNotification.
 
-3.2.4.5  Timer Events
+##### 3.2.4.5 Timer Events
 
 No timer events are required on the client beyond the timers required in the underlying RPC protocol
 (see [MS-RPCE] section 3).
 
-3.2.4.6  Other Local Events
+##### 3.2.4.6 Other Local Events
 
 There are no printer configuration-specific local events.
 
@@ -5839,13 +5676,14 @@ Release: April 23, 2024
 
 75 / 91
 
-<!-- Extracted images from page 76 -->
+
+<!-- Extracted images from page 76 -->
 ![Extracted image 1 from page 76]([MS-PAN].images/page076-img01.png)
 <!-- /Extracted images from page 76 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Unidirectional Communication Mode
+### 4.1 Unidirectional Communication Mode
 
 This section presents an example of unidirectional communication mode, which illustrates a
 single-server to single-client scenario. If multiple clients register with matching parameters, including
@@ -5861,11 +5699,12 @@ Release: April 23, 2024
 
 76 / 91
 
-<!-- Extracted images from page 77 -->
+
+<!-- Extracted images from page 77 -->
 ![Extracted image 1 from page 77]([MS-PAN].images/page077-img01.png)
 <!-- /Extracted images from page 77 -->
 
-4.2  AsyncUI Notification in Unidirectional Communication Mode
+### 4.2 AsyncUI Notification in Unidirectional Communication Mode
 
 The following diagram illustrates the processing of an AsyncUI notification in unidirectional
 communication mode. In this example, the printer driver uses the notification type identifier
@@ -5890,7 +5729,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 78 -->
+
+<!-- Extracted images from page 78 -->
 ![Extracted image 1 from page 78]([MS-PAN].images/page078-img01.png)
 <!-- /Extracted images from page 78 -->
 
@@ -5904,7 +5744,7 @@ Release: April 23, 2024
   </v1>
  </asyncPrintUIRequest>
 
-4.3  Bidirectional Communication Mode
+### 4.3 Bidirectional Communication Mode
 
 This section presents an example of bidirectional communication mode, in which only the first
 notification is sent to all clients registered with matching parameters, including notification type
@@ -5919,13 +5759,14 @@ Release: April 23, 2024
 
 78 / 91
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-PAN].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
 Figure 14: Bidirectional communication mode
 
-4.4  AsyncUI Notification in Bidirectional Communication Mode
+### 4.4 AsyncUI Notification in Bidirectional Communication Mode
 
 This section presents an example of processing an AsyncUI notification in bidirectional
 communication mode. In this example, a printer driver uses the notification type identifier value
@@ -5947,7 +5788,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <asyncPrintUIRequest xmlns=
+
+ <asyncPrintUIRequest xmlns=
  "http://schemas.microsoft.com/2003/print/asyncui/v1/request">
   <v1>
    <requestOpen>
@@ -5983,9 +5825,10 @@ Release: April 23, 2024
 
 80 / 91
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Print System Asynchronous Notification Protocol treats the print server and print queues as
 securable resources in its security model. See section 2.1 for relevant security specifications; basic
@@ -6013,7 +5856,7 @@ entrypoint attribute, the client can ensure that the driver-file name refers to 
 printer driver. An AsyncUI client can further reduce risk of execution of arbitrary code by minimizing
 the active permissions when calling an entrypoint.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  There are no security parameters associated with this protocol.
 
@@ -6024,7 +5867,8 @@ Release: April 23, 2024
 
 81 / 91
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the following sections provide the full IDL for this protocol.
 
@@ -6040,7 +5884,7 @@ Section
 
 6.2
 
-6.1  Appendix A.1: IRPCAsyncNotify.IDL
+### 6.1 Appendix A.1: IRPCAsyncNotify.IDL
 
 This IDL uses definitions from the IRPCRemoteObject interface (section 6.2) and RPC extensions
 defined in [MS-RPCE].
@@ -6100,7 +5944,8 @@ Release: April 23, 2024
 
 82 / 91
 
- );
+
+ );
 
  HRESULT
  IRPCAsyncNotify_GetNotificationSendResponse(
@@ -6130,7 +5975,7 @@ Release: April 23, 2024
  );
  }
 
-6.2  Appendix A.2: IRPCRemoteObject.IDL
+### 6.2 Appendix A.2: IRPCRemoteObject.IDL
 
 This IDL uses definitions from the full IDL in [MS-DTYP] and RPC extensions defined in [MS-RPCE].
 
@@ -6167,7 +6012,8 @@ Release: April 23, 2024
 
 83 / 91
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6235,7 +6081,8 @@ Release: April 23, 2024
 
 84 / 91
 
-The Envelope element contains the following attributes:
+
+The Envelope element contains the following attributes:
 
 printer: A string containing the name of the print queue whose configuration has changed.
 
@@ -6314,7 +6161,8 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<6> Section 2.2.8.1.10: In Windows, these attributes correspond to printer attributes in the
+
+<6> Section 2.2.8.1.10: In Windows, these attributes correspond to printer attributes in the
 bidirectional communications schema. This schema is a hierarchy of printer attributes, some of which
 are properties, and the rest are values or value entries. Bidirectional communications interfaces are
 implemented by printer-specific components. A detailed description of printer drivers and the
@@ -6364,7 +6212,8 @@ Release: April 23, 2024
 
 86 / 91
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6408,7 +6257,8 @@ Release: April 23, 2024
 
 87 / 91
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -6544,7 +6394,8 @@ Events
 
 88 / 91
 
-      client
+
+      client
          AsyncUI 74
          IRPCAsyncNotify 69
          IRPCRemoteObject 65
@@ -6697,7 +6548,8 @@ Messages
 
 89 / 91
 
-   AsyncUICustomUI string 36
+
+   AsyncUICustomUI string 36
    AsyncUICustomUIReply string 37
    AsyncUIMessageBox string 32
    AsyncUIMessageBoxUIReply string 35
@@ -6851,7 +6703,8 @@ method 50
 
 90 / 91
 
-      initialization 63
+
+      initialization 63
       interface 63
       local events 64
       message processing 63

@@ -64,7 +64,8 @@ Release: June 25, 2021
 
 1 / 47
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -278,7 +279,8 @@ Release: June 25, 2021
 
 2 / 47
 
-Date
+
+Date
 
 Revision
 History
@@ -353,208 +355,89 @@ Release: June 25, 2021
 
 3 / 47
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Base Specification](#221-base-specification)
+      - [2.2.1.1 Handshake Header Format](#2211-handshake-header-format)
+    - [2.2.2 Messages](#222-messages)
+      - [2.2.2.1 Discard Message](#2221-discard-message)
+      - [2.2.2.2 Packet Pair Connection Handshake Message](#2222-packet-pair-connection-handshake-message)
+      - [2.2.2.3 Packet Pair Probe Message](#2223-packet-pair-probe-message)
+      - [2.2.2.4 Route Check Connection Handshake Message](#2224-route-check-connection-handshake-message)
+      - [2.2.2.5 Route Check Probe Message](#2225-route-check-probe-message)
+      - [2.2.2.6 Probegap Probe Message](#2226-probegap-probe-message)
+      - [2.2.2.7 Packet Pair Summary Message](#2227-packet-pair-summary-message)
+      - [2.2.2.8 Route Check Summary Message](#2228-route-check-summary-message)
+      - [2.2.2.9 Connection Handshake Success Message](#2229-connection-handshake-success-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Initiator Details](#31-initiator-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Route Check Session](#3121-route-check-session)
+      - [3.1.2.2 Packet Pair Session](#3122-packet-pair-session)
+      - [3.1.2.3 Probegap Session](#3123-probegap-session)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Requesting Route Check Experiment](#3141-requesting-route-check-experiment)
+      - [3.1.4.2 Requesting Packet Pair Experiment](#3142-requesting-packet-pair-experiment)
+      - [3.1.4.3 Requesting Probegap Experiment](#3143-requesting-probegap-experiment)
+      - [3.1.4.4 Requesting Flood Session](#3144-requesting-flood-session)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a Connection Handshake Success message](#3151-receiving-a-connection-handshake-success-message)
+        - [3.1.5.1.1 Route Check Session](#31511-route-check-session)
+        - [3.1.5.1.2 Packet Pair Session](#31512-packet-pair-session)
+      - [3.1.5.2 Receiving a Route Check Summary message](#3152-receiving-a-route-check-summary-message)
+      - [3.1.5.3 Receiving a Packet Pair Summary message](#3153-receiving-a-packet-pair-summary-message)
+      - [3.1.5.4 Receiving a Probegap Probe message from sink device](#3154-receiving-a-probegap-probe-message-from-sink-device)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Per-Route Check Session Handshake Response Timer Expiry](#3161-per-route-check-session-handshake-response-timer-expiry)
+      - [3.1.6.2 Per-Route Check Session Resend Timer Expiry](#3162-per-route-check-session-resend-timer-expiry)
+      - [3.1.6.3 Per-Packet Pair Session Handshake Response Timer Expiry](#3163-per-packet-pair-session-handshake-response-timer-expiry)
+      - [3.1.6.4 Per-Packet Pair Session Resend Timer Expiry](#3164-per-packet-pair-session-resend-timer-expiry)
+      - [3.1.6.5 Per-Probegap Send Timer Expiry](#3165-per-probegap-send-timer-expiry)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Sink Details](#32-sink-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Startup Trigger](#3241-startup-trigger)
+      - [3.2.4.2 Incoming TCP Connection Accepted](#3242-incoming-tcp-connection-accepted)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Discard message](#3251-receiving-a-discard-message)
+      - [3.2.5.2 Receiving a Route Check Connection Handshake message](#3252-receiving-a-route-check-connection-handshake-message)
+      - [3.2.5.3 Receiving a Packet Pair Connection Handshake message](#3253-receiving-a-packet-pair-connection-handshake-message)
+      - [3.2.5.4 Receiving a Route Check Probe message](#3254-receiving-a-route-check-probe-message)
+      - [3.2.5.5 Receiving a Packet Pair Probe message](#3255-receiving-a-packet-pair-probe-message)
+      - [3.2.5.6 Receiving a Probegap Probe message](#3256-receiving-a-probegap-probe-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Typical qWave Usage Scenario in a Home Network](#41-typical-qwave-usage-scenario-in-a-home-network)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Base Specification ....................................................................................... 10
-Handshake Header Format ..................................................................... 10
-Messages ................................................................................................... 12
-Discard Message ................................................................................... 12
-Packet Pair Connection Handshake Message ............................................. 12
-Packet Pair Probe Message ..................................................................... 13
-Route Check Connection Handshake Message ........................................... 14
-Route Check Probe Message ................................................................... 14
-Probegap Probe Message ....................................................................... 15
-Packet Pair Summary Message ............................................................... 16
-Route Check Summary Message ............................................................. 17
-Connection Handshake Success Message ................................................. 17
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-
-3.1
-
-3.1.3
-3.1.4
-
-3.1.1
-3.1.2
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3  Protocol Details ..................................................................................................... 18
-Initiator Details ................................................................................................ 18
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 24
-Route Check Session ............................................................................. 24
-Packet Pair Session ............................................................................... 24
-Probegap Session .................................................................................. 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Requesting Route Check Experiment ....................................................... 24
-Requesting Packet Pair Experiment ......................................................... 25
-Requesting Probegap Experiment ............................................................ 25
-Requesting Flood Session ....................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-Receiving a Connection Handshake Success message ................................ 26
-Route Check Session ........................................................................ 27
-Packet Pair Session .......................................................................... 27
-Receiving a Route Check Summary message ............................................ 27
-Receiving a Packet Pair Summary message .............................................. 28
-Receiving a Probegap Probe message from sink device .............................. 28
-Timer Events .............................................................................................. 28
-Per-Route Check Session Handshake Response Timer Expiry ...................... 28
-Per-Route Check Session Resend Timer Expiry.......................................... 28
-Per-Packet Pair Session Handshake Response Timer Expiry ........................ 30
-Per-Packet Pair Session Resend Timer Expiry ............................................ 30
-Per-Probegap Send Timer Expiry ............................................................. 31
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-3.1.6.4
-3.1.6.5
-
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.5.1
-
-3.1.5
-
-3.1.6
-
-[MS-QLPB] - v20210625
-Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-4 / 47
-
-3.2
-
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-Other Local Events ...................................................................................... 31
-Sink Details ..................................................................................................... 31
-Abstract Data Model .................................................................................... 33
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 34
-Startup Trigger ..................................................................................... 34
-Incoming TCP Connection Accepted ......................................................... 34
-Message Processing Events and Sequencing Rules .......................................... 35
-Receiving a Discard message .................................................................. 35
-Receiving a Route Check Connection Handshake message .......................... 35
-Receiving a Packet Pair Connection Handshake message ............................ 35
-Receiving a Route Check Probe message .................................................. 35
-Receiving a Packet Pair Probe message .................................................... 37
-Receiving a Probegap Probe message ...................................................... 38
-Timer Events .............................................................................................. 38
-Other Local Events ...................................................................................... 38
-
-3.2.4.1
-3.2.4.2
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 39
-Typical qWave Usage Scenario in a Home Network ............................................... 39
-
-4.1
-
-5  Security ................................................................................................................. 42
-Security Considerations for Implementers ........................................................... 42
-Index of Security Parameters ............................................................................ 42
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 43
-
-7  Change Tracking .................................................................................................... 44
-
-8  Index ..................................................................................................................... 45
-
-[MS-QLPB] - v20210625
-Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-5 / 47
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Quality Windows Audio/Video Experience (qWave): Layer 3 Probing
 Protocol, which an application or higher-layer protocol can use to evaluate the link bandwidth and
@@ -563,7 +446,7 @@ quality.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -628,14 +511,15 @@ Release: June 25, 2021
 
 6 / 47
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -652,7 +536,7 @@ network is quality of service enabled", July 2008, https://patft.uspto.gov/netac
 Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f
 =G&l=50&s1=7397801.PN.&OS=PN/7397801&RS=PN/7397801
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IANAPORT] IANA, "Service Name and Transport Protocol Port Number Registry",
 https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
@@ -667,7 +551,7 @@ September 2002, http://www.cs.cmu.edu/~hnn/papers/igi-tr.pdf
 Broadband Access Networks", May 2004,
 http://research.microsoft.com/apps/pubs/default.aspx?id=70060
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies the Quality Windows Audio/Video Experience (qWave): Layer 3 Probing
 Protocol, which operates over the TCP/IP and UDP/IP protocols. qWave enables applications to
@@ -697,7 +581,8 @@ Release: June 25, 2021
 
 7 / 47
 
-  Route check
+
+  Route check
 
 Packet pair is a probing experiment that involves sending two or more consecutive probe packets of
 highly entropic data from the initiator to the sink. The probe packets are sent over UDP/IP but the sink
@@ -718,7 +603,7 @@ from the initiator to the sink. The probe packets are sent over UDP/IP. This tec
 the presence of IEEE 802.1p prioritization support on the path between the initiator and sink devices.
 For more information about this technique, see [USPATENT7397801].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The qWave Protocol is one in a suite of protocols specific to the Quality Windows Audio/Video
 Experience feature in Windows Vista operating system and Windows 7 operating system qWave
@@ -737,17 +622,17 @@ both of which will listen on the same TCP/IP port. In that case, the Proto_and_M
 Handshake Header has to be used to disambiguate the purpose of all TCP/IP connections accepted
 on the common port.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol operates at Layer 5 (the Session layer) in the OSI reference model.
 
 The actual process of discovering eligible participants is beyond the scope of this protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol has no capability negotiation or versioning aspects, except that messages include a
 version number for future extensibility.
@@ -759,11 +644,12 @@ Release: June 25, 2021
 
 8 / 47
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not define vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter  Value  Reference
 
@@ -786,11 +672,12 @@ Release: June 25, 2021
 
 9 / 47
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how qWave messages are encapsulated on the wire.
 
-2.1  Transport
+### 2.1 Transport
 
 All qWave messages, except for probe messages, are sent over TCP/IP.
 
@@ -804,7 +691,7 @@ A device implementing the qWave initiator role MUST listen to UDP port number 21
 implementing the qWave sink role MUST listen to TCP port number 2177, as well as UDP port number
 2177.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All qWave Protocol messages carry a common handshake header followed by an optional message-
 specific header. The syntax is as follows:
@@ -833,12 +720,12 @@ Optional_Message_Specific_Header (variable): Message-specific header correspondi
 Proto_and_Msg_ID field in Handshake_Header, as specified in section 2.2.1.1. Some
 messages contain a message-specific header while others do not.
 
-2.2.1  Base Specification
+#### 2.2.1 Base Specification
 
 All qWave Protocol implementations MUST use and accept the following base specification format as
 part of a message.
 
-2.2.1.1  Handshake Header Format
+##### 2.2.1.1 Handshake Header Format
 
 Both the initiator and sink devices transmit this header as part of all of its messages. The Handshake
 header format is defined as follows.
@@ -869,7 +756,8 @@ Release: June 25, 2021
 
 10 / 47
 
-Proto_and_Msg_ID (1 byte): This field distinguishes the qWave Protocol from other qWave
+
+Proto_and_Msg_ID (1 byte): This field distinguishes the qWave Protocol from other qWave
 
 protocols (see [MS-QDP]). It also identifies the type of message transmitted, and thus, the form of
 the message-specific header that immediately follows the Handshake header. This field MUST<2>
@@ -1010,7 +898,8 @@ Release: June 25, 2021
 
 11 / 47
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1074,9 +963,9 @@ Reserved  (1 byte): This field MUST be set to 0 and ignored on receipt.
 Version (1 byte): This field identifies the protocol version. If Proto_and_Msg_ID has the value
 0x05 or 0x06, this field MUST be set to 0x02. Otherwise, this field MUST be set to 0x01.
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
-2.2.2.1  Discard Message
+##### 2.2.2.1 Discard Message
 
 An initiator device sends this message to a sink device after it establishes a TCP/IP connection. When
 the sink receives this message, it MUST discard the message and prepare to receive subsequent
@@ -1088,7 +977,7 @@ bandwidth between itself and the sink through the inherent properties of TCP/IP 
 other words, an initiator can very roughly estimate the available bandwidth if it measures the rate that
 it can send TCP/IP messages.
 
-2.2.2.2  Packet Pair Connection Handshake Message
+##### 2.2.2.2 Packet Pair Connection Handshake Message
 
 An initiator device sends this handshake message to a sink device after it establishes a TCP/IP
 connection. This TCP/IP connection is used by the initiator device to receive the Packet Pair Summary
@@ -1102,13 +991,14 @@ Release: June 25, 2021
 
 12 / 47
 
-If the sink device does not accept the handshake, it can close the TCP connection or simply ignore this
+
+If the sink device does not accept the handshake, it can close the TCP connection or simply ignore this
 message.
 
 The Packet Pair Connection Handshake message has no message-specific header following the
 Handshake header.
 
-2.2.2.3  Packet Pair Probe Message
+##### 2.2.2.3 Packet Pair Probe Message
 
 An initiator device sends Packet Pair Probe messages to a sink device to perform the packet pair
 probing experiment. The sink device sends the Packet Pair Summary message to the initiator when
@@ -1178,7 +1068,8 @@ Release: June 25, 2021
 
 13 / 47
 
-2.2.2.4  Route Check Connection Handshake Message
+
+##### 2.2.2.4 Route Check Connection Handshake Message
 
 An initiator device sends this handshake message to a sink device immediately after it establishes a
 TCP/IP connection. This TCP/IP connection is used by the initiator device to receive the Route Check
@@ -1190,7 +1081,7 @@ simply ignore this message.
 The Route Check Connection Handshake message has no message-specific header following the
 Handshake header.
 
-2.2.2.5  Route Check Probe Message
+##### 2.2.2.5 Route Check Probe Message
 
 An initiator device sends Route Check Probe messages to a sink device to perform the route check
 probing experiment. The sink device sends the Route Check Summary message to the initiator when
@@ -1253,7 +1144,8 @@ Release: June 25, 2021
 
 14 / 47
 
-Optional_Data_Payload (variable): This optional field specifies an array of random byte values,
+
+Optional_Data_Payload (variable): This optional field specifies an array of random byte values,
 
 generated using any pseudo-random number generator, to pad the probe message to an arbitrary
 size. The size of this payload plus the size of all relevant qWave, TCP, IP, and Ethernet headers
@@ -1262,7 +1154,7 @@ size of the payload is carefully chosen by the initiator (see [USPATENT7397801])
 consists of random byte values only for the purpose of minimizing the effect of networks that
 employs packet compression; the sink does not validate the content of the payload itself.
 
-2.2.2.6  Probegap Probe Message
+##### 2.2.2.6 Probegap Probe Message
 
 An initiator device sends a train of Probegap Probe messages to a sink device if it wishes to perform
 the probegap probing experiment. For every Probegap Probe message that a sink device receives from
@@ -1327,7 +1219,8 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Optional_Data_Payload (variable): This optional field specifies an array of random byte values,
+
+Optional_Data_Payload (variable): This optional field specifies an array of random byte values,
 
 generated using any pseudo-random number generator, to pad the probe message to an arbitrary
 size. The size of this payload plus the size of all relevant qWave, TCP, IP, and Ethernet headers
@@ -1340,7 +1233,7 @@ only for the purpose of minimizing the effect of networks that employs packet co
 sink does not validate the content of the payload itself. On the other hand, the sink MUST send
 this exact payload back to the initiator.
 
-2.2.2.7  Packet Pair Summary Message
+##### 2.2.2.7 Packet Pair Summary Message
 
 A sink device automatically sends this message to the initiator device for the last Packet Pair Probe
 message in a train that it receives from the initiator. The Packet Pair Summary message summarizes
@@ -1407,7 +1300,8 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-MUST represent the actual receive order of the corresponding Packet Pair Probe messages, going
+
+MUST represent the actual receive order of the corresponding Packet Pair Probe messages, going
 from oldest to latest. Each Timestamp_Delta item MUST have the following 8-byte structure.
 
 0  1  2  3  4  5  6  7  8  9
@@ -1429,7 +1323,7 @@ Value (8 bytes): This field specifies an unsigned integer representing a timesta
 
 network byte order. The unit of measurement MUST be in 100 nanosecond units.
 
-2.2.2.8  Route Check Summary Message
+##### 2.2.2.8 Route Check Summary Message
 
 A sink device automatically sends this message to the initiator device as it receives a Route Check
 Probe message from the initiator. The Route Check Summary message uses the Obs field in the
@@ -1437,7 +1331,7 @@ Handshake header to describe the sink device's observation of the last Route Che
 
 The Route Check Summary message has no message-specific header following the Handshake header.
 
-2.2.2.9  Connection Handshake Success Message
+##### 2.2.2.9 Connection Handshake Success Message
 
 A sink device sends this message in response to Packet Pair Connection Handshake and Route Check
 Connection Handshake messages sent by an initiator device. The sink only sends this message if it
@@ -1453,13 +1347,14 @@ Release: June 25, 2021
 
 17 / 47
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-QLPB].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Initiator Details
+### 3.1 Initiator Details
 
 The following figures represent the state machines for the initiator role.
 
@@ -1472,7 +1367,8 @@ Release: June 25, 2021
 
 18 / 47
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-QLPB].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1485,7 +1381,8 @@ Release: June 25, 2021
 
 19 / 47
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-QLPB].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1521,7 +1418,7 @@ N/A
 
 The remainder of this section will discuss the state machine in depth.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1542,7 +1439,8 @@ Release: June 25, 2021
 
 20 / 47
 
-  Expected Message: This field identifies an 8-bit integer value that matches any of the legal
+
+  Expected Message: This field identifies an 8-bit integer value that matches any of the legal
 values defined by the Proto_and_Msg_ID field in the Handshake header defined in section
 2.2.1.1. It tells the initiator which incoming message to expect next. A special value of 0x00 is
 used to indicate that no message is currently expected.
@@ -1617,7 +1515,8 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-2.2.1.1. It tells the initiator which incoming message to expect next. A special value of 0x00 is
+
+2.2.1.1. It tells the initiator which incoming message to expect next. A special value of 0x00 is
 used to indicate that no message is currently expected.
 
   TCP Socket: This field identifies the network socket object used to connect to the sink device
@@ -1693,7 +1592,8 @@ Release: June 25, 2021
 
 22 / 47
 
-  UDP Socket: This field identifies the network socket object used to connect to the sink device
+
+  UDP Socket: This field identifies the network socket object used to connect to the sink device
 via the UDP/IP protocol. The source port number of the socket MUST be set to 2177. The
 socket SHOULD NOT apply checksum to outbound packets because in some cases the
 accuracy of the probegap calculation might be negatively impacted by the additional pre-
@@ -1765,7 +1665,8 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Result Index fields. Note that the fields defined in a Probe Description are generally regarded
+
+Result Index fields. Note that the fields defined in a Probe Description are generally regarded
 to be sufficient to make an available bandwidth estimation (see [ProbeGap]).
 
   Flood Session: Each session MUST have the following fields:
@@ -1776,9 +1677,9 @@ destination port number of the socket MUST be set to 2177.
 
 Note  The previous conceptual data can be implemented by using a variety of techniques as needed.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Route Check Session
+##### 3.1.2.1 Route Check Session
 
 Each Route Check Session has two timers:
 
@@ -1790,7 +1691,7 @@ ensure timely response to a Route Check Connection Handshake message.
 
 of Route Check Probe messages to the sink.
 
-3.1.2.2  Packet Pair Session
+##### 3.1.2.2 Packet Pair Session
 
 Each Packet Pair Session has two timers:
 
@@ -1802,7 +1703,7 @@ Packet Pair Connection Handshake message.
 
 of Packet Pair Probe messages to the sink.
 
-3.1.2.3  Probegap Session
+##### 3.1.2.3 Probegap Session
 
 Each Probegap Session has one timer:
 
@@ -1810,13 +1711,13 @@ Each Probegap Session has one timer:
 messages to the sink. The initiator device SHOULD try to schedule this timer with 1 millisecond
 resolution.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Requesting Route Check Experiment
+##### 3.1.4.1 Requesting Route Check Experiment
 
 A higher-layer application or protocol requests a route check experiment through the initiator. If the
 request succeeds, one of the following two results MUST be provided to the caller: Prioritization
@@ -1835,7 +1736,8 @@ Release: June 25, 2021
 
 24 / 47
 
-
+
+
 
 
 
@@ -1863,7 +1765,7 @@ MUST be enabled and set to expire after 250 milliseconds.
 The initiator now waits for a message to arrive in order to continue processing the request. The
 request can only be completed when processing a message that has arrived.
 
-3.1.4.2  Requesting Packet Pair Experiment
+##### 3.1.4.2 Requesting Packet Pair Experiment
 
 A higher-layer application or protocol requests a packet pair experiment through the initiator.
 
@@ -1912,7 +1814,7 @@ MUST be enabled and set to expire after 250 milliseconds.
 The initiator now waits for a message to arrive in order to continue processing the request. The
 request can only be completed when processing a message that has arrived.
 
-3.1.4.3  Requesting Probegap Experiment
+##### 3.1.4.3 Requesting Probegap Experiment
 
 A higher-layer application or protocol requests a probegap experiment through the initiator. Unlike
 route check or packet pair experiments, a probegap experiment request does not complete until an
@@ -1927,7 +1829,8 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-been made via a packet pair experiment can data be used from a probegap experiment to estimate
+
+been made via a packet pair experiment can data be used from a probegap experiment to estimate
 the instantaneous available bandwidth (see [ProbeGap]).
 
 The initiator MUST instantiate a Probegap Session.
@@ -1960,7 +1863,7 @@ immediately.
 The initiator now either waits for messages to arrive or for the timer to fire to continue processing the
 request. The request can only be completed when the application explicitly completes it.
 
-3.1.4.4  Requesting Flood Session
+##### 3.1.4.4 Requesting Flood Session
 
 A higher-layer application or protocol requests a flood session through the initiator to send arbitrary
 TCP/IP messages to the sink for the primary purpose of estimating the available bandwidth between
@@ -1977,9 +1880,9 @@ initiator SHOULD NOT read nor write to the object.
 The request is only completed, that is the session destroyed and the TCP connection closed, when the
 application explicitly requests it.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving a Connection Handshake Success message
+##### 3.1.5.1 Receiving a Connection Handshake Success message
 
 When a Connection Handshake Success message arrives through a TCP Socket, it is correlated back
 to one of Route Check Session or Packet Pair Session object.
@@ -2002,7 +1905,8 @@ Release: June 25, 2021
 
 26 / 47
 
-3.1.5.1.1 Route Check Session
+
+###### 3.1.5.1.1 Route Check Session
 
 At this point, the message received has been correlated back to a Route Check Session object.
 
@@ -2021,7 +1925,7 @@ The Next Send Time field MUST be set to 0.
 
 Finally, the Per-Route Check Session Resend timer MUST be enabled and set to fire immediately.
 
-3.1.5.1.2 Packet Pair Session
+###### 3.1.5.1.2 Packet Pair Session
 
 At this point, the message received has been correlated back to a Packet Pair Session object.
 
@@ -2039,7 +1943,7 @@ The Next Send Time field MUST be set to 0.
 
 Finally, the Per-Packet Pair Session Resend timer MUST be enabled and set to fire immediately.
 
-3.1.5.2  Receiving a Route Check Summary message
+##### 3.1.5.2 Receiving a Route Check Summary message
 
 When a Route Check Summary message arrives through a TCP Socket, it is correlated back to a
 Route Check Session object.
@@ -2080,7 +1984,8 @@ Release: June 25, 2021
 
 27 / 47
 
-3.1.5.3  Receiving a Packet Pair Summary message
+
+##### 3.1.5.3 Receiving a Packet Pair Summary message
 
 When a Packet Pair Summary message arrives through a TCP Socket, it is correlated back to a Packet
 Pair Session object.
@@ -2100,7 +2005,7 @@ Packet Pair Summary header. If the routine returns with a success error code, th
 succeed the Packet Pair Experiment request that instantiated the session and the associated session
 object is deleted.
 
-3.1.5.4  Receiving a Probegap Probe message from sink device
+##### 3.1.5.4 Receiving a Probegap Probe message from sink device
 
 When a Probegap Probe message arrives through a UDP Socket, it is correlated back to a Probegap
 Session object.
@@ -2125,14 +2030,14 @@ Timestamp MUST be set to the current timestamp of the initiator device. The per-
 Result Index MUST be incremented by 1. The initiator then invokes the routine identified by the per-
 session Estimation Callback field.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Per-Route Check Session Handshake Response Timer Expiry
+##### 3.1.6.1 Per-Route Check Session Handshake Response Timer Expiry
 
 When this timer fires, the initiator MUST fail the Route Check Experiment request that instantiated the
 session and the associated session object is deleted.
 
-3.1.6.2  Per-Route Check Session Resend Timer Expiry
+##### 3.1.6.2 Per-Route Check Session Resend Timer Expiry
 
 Session Time Complete - If the current system time is greater than the per-session End Time field
 value, then the initiator MUST succeed the request that instantiated the session with a Prioritization
@@ -2145,7 +2050,8 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-succeed with a Prioritization Not Supported status if the Previous Observation field is not set to
+
+succeed with a Prioritization Not Supported status if the Previous Observation field is not set to
 0x00 (issue detected), and in both cases the session object is deleted.
 
 Otherwise, if the per-session Send Attempt field is greater than or equal to 5 or the Next Send
@@ -2222,7 +2128,8 @@ Release: June 25, 2021
 
 29 / 47
 
-as quickly as possible. If the send operation fails, the initiator MUST fail the Route Check Experiment
+
+as quickly as possible. If the send operation fails, the initiator MUST fail the Route Check Experiment
 request that instantiated the session and the associated session object is deleted.
 
 If the send operation succeeds, the initiator MUST send the fifth Route Check Probe message in the
@@ -2241,12 +2148,12 @@ Time if Send Attempt is less than 5, otherwise it expires at End Time. If the ex
 Route Check Session Resend timer is less than the current system time, it MUST be adjusted to expire
 at the current system time.
 
-3.1.6.3  Per-Packet Pair Session Handshake Response Timer Expiry
+##### 3.1.6.3 Per-Packet Pair Session Handshake Response Timer Expiry
 
 When this timer fires, the initiator MUST fail the Packet Pair Experiment request that instantiated the
 session and the associated session object is deleted.
 
-3.1.6.4  Per-Packet Pair Session Resend Timer Expiry
+##### 3.1.6.4 Per-Packet Pair Session Resend Timer Expiry
 
 If the current system time is greater than the per-session End Time field value, then the initiator
 MUST fail the request that instantiated the session if the per-session Summaries Received field is
@@ -2295,13 +2202,14 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-The initiator MUST set the per-session Expected Message field to 0x0A (Packet Pair Summary). The
+
+The initiator MUST set the per-session Expected Message field to 0x0A (Packet Pair Summary). The
 initiator MUST enable the Per-Packet Pair Session Resend timer and set to expire at the earliest of
 Next Send Time or End Time if Send Attempt is less than 3, otherwise it expires at End Time. If
 the expiry time for the Per-Packet Pair Session Resend timer is less than the current system time, it
 MUST be adjusted to expire at the current system time.
 
-3.1.6.5  Per-Probegap Send Timer Expiry
+##### 3.1.6.5 Per-Probegap Send Timer Expiry
 
 A Probe Description entry is selected from the per-session Results data element using the index Next
 Send Index. All fields in this entry MUST be zeroed. The Sequence Number field is set to the value
@@ -2335,11 +2243,11 @@ session object is deleted.
 
 The Send timer expiry event is now complete.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Sink Details
+### 3.2 Sink Details
 
 The following figures represent the state machines for the sink role.
 
@@ -2350,7 +2258,8 @@ Release: June 25, 2021
 
 31 / 47
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-QLPB].images/page032-img01.png)
 ![Extracted image 2 from page 32]([MS-QLPB].images/page032-img02.png)
 <!-- /Extracted images from page 32 -->
@@ -2366,7 +2275,8 @@ Release: June 25, 2021
 
 32 / 47
 
-Applicable message request/response pairs for this role are defined as follows.
+
+Applicable message request/response pairs for this role are defined as follows.
 
 Sent by initiator
 
@@ -2396,7 +2306,7 @@ N/A
 
 The remainder of this section will discuss the state machine in depth.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2456,7 +2366,8 @@ Release: June 25, 2021
 
 33 / 47
 
-  Latest High Priority Sequence Number: This field identifies the sequence number of
+
+  Latest High Priority Sequence Number: This field identifies the sequence number of
 
 the last high-priority packet received.
 
@@ -2499,24 +2410,24 @@ Train Length.
 
 Note  The previous conceptual data can be implemented by using a variety of techniques as needed.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 During initialization, the following conditions MUST be met:
 
   Probe Session List is cleared.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Startup Trigger
+##### 3.2.4.1 Startup Trigger
 
 Once the device is ready to perform the sink role, it MUST begin accepting TCP connections on port
 2177. It MUST listen for UDP packets on port 2177 using the UDP Socket object.
 
-3.2.4.2  Incoming TCP Connection Accepted
+##### 3.2.4.2 Incoming TCP Connection Accepted
 
 When a new TCP connection is accepted, the sink MUST instantiate a Probe Session. The per-session
 Type field MUST be set to Unknown. The per-session Handshaking field MUST be set. The per-
@@ -2531,12 +2442,13 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-The sink now waits for a message to arrive for this new session. This wait is usually done
+
+The sink now waits for a message to arrive for this new session. This wait is usually done
 asynchronously.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a Discard message
+##### 3.2.5.1 Receiving a Discard message
 
 When a Discard message arrives through a per-session TCP Socket and if the per-session Type field
 is not set to Discard nor Unknown, the sink MUST destroy the corresponding session and ignore the
@@ -2544,7 +2456,7 @@ message.
 
 Otherwise, the sink MUST set the per-session Type field to Discard.
 
-3.2.5.2  Receiving a Route Check Connection Handshake message
+##### 3.2.5.2 Receiving a Route Check Connection Handshake message
 
 When a Route Check Connection Handshake message arrives through a per-session TCP Socket and
 if the per-session Type field is not set to Unknown or the Handshaking field is not set, the sink
@@ -2563,7 +2475,7 @@ The sink MUST then send a Connection Handshake Success message back to the initi
 now waits for a message to arrive in order to continue processing. At this point, the TCP Socket
 object is only used by the sink to send messages to the initiator.
 
-3.2.5.3  Receiving a Packet Pair Connection Handshake message
+##### 3.2.5.3 Receiving a Packet Pair Connection Handshake message
 
 When a Packet Pair Connection Handshake message arrives through a per-session TCP Socket and if
 the per-session Type field is not set to Unknown or the Handshaking field is not set, the sink MUST
@@ -2582,7 +2494,7 @@ The sink MUST then send a Connection Handshake Success message back to the initi
 now waits for a message to arrive in order to continue processing. At this point, the TCP Socket
 object is only used by the sink to send messages to the initiator.
 
-3.2.5.4  Receiving a Route Check Probe message
+##### 3.2.5.4 Receiving a Route Check Probe message
 
 When a Route Check Probe message arrives through UDP Socket, the sink validates the fields as per
 sections 2.2.1.1 and 2.2.2.5. If the header contains an invalid value, the sink MUST ignore the
@@ -2595,7 +2507,8 @@ Release: June 25, 2021
 
 35 / 47
 
-Otherwise, the sink MUST locate the relevant Probe Session by searching Probe Session List for an
+
+Otherwise, the sink MUST locate the relevant Probe Session by searching Probe Session List for an
 entry where the per-session Initiator Address matches the source IP address of the received
 message and the per-session Initiator Port matches the Initiator_Port field in the Route Check
 Probe message-specific header. If an entry cannot be located, the sink MUST ignore the message.
@@ -2669,10 +2582,11 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-the per-session Latest High Priority Train Size field to the value of the Train_Size field in the
+
+the per-session Latest High Priority Train Size field to the value of the Train_Size field in the
 message-specific header. Message processing is complete.
 
-3.2.5.5  Receiving a Packet Pair Probe message
+##### 3.2.5.5 Receiving a Packet Pair Probe message
 
 When a Packet Pair Probe message arrives through UDP Socket, the sink validates the fields as per
 sections 2.2.1.1 and 2.2.2.3. If the header contains an invalid value, the sink MUST ignore the
@@ -2741,7 +2655,8 @@ Release: June 25, 2021
 
 37 / 47
 
-3.2.5.6  Receiving a Probegap Probe message
+
+##### 3.2.5.6 Receiving a Probegap Probe message
 
 When a Packet Pair Probe message arrives through UDP Socket, the sink validates the fields as per
 sections 2.2.1.1 and 2.2.2.6. If the header contains an invalid value, the sink MUST ignore the
@@ -2763,11 +2678,11 @@ sink device after all the fields above have been initialized.
 
 The sink MUST send the new Probegap Probe message to the initiator using the UDP Socket object.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2778,16 +2693,17 @@ Release: June 25, 2021
 
 38 / 47
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-QLPB].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol.
 
-4.1  Typical qWave Usage Scenario in a Home Network
+### 4.1 Typical qWave Usage Scenario in a Home Network
 
 The following figure shows the layout of an example network that interconnects a media server and a
 TV with an integrated media player.
@@ -2811,7 +2727,8 @@ Release: June 25, 2021
 
 39 / 47
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-QLPB].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -2836,7 +2753,8 @@ Release: June 25, 2021
 
 40 / 47
 
-4.  The sink acknowledges the handshake message from step 3 and constructs its own Connection
+
+4.  The sink acknowledges the handshake message from step 3 and constructs its own Connection
 
 Handshake Success message and sends it to the initiator over the TCP connection.
 
@@ -2908,13 +2826,14 @@ Release: June 25, 2021
 
 41 / 47
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2925,7 +2844,8 @@ Release: June 25, 2021
 
 42 / 47
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2965,7 +2885,8 @@ Release: June 25, 2021
 
 43 / 47
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3002,7 +2923,8 @@ Release: June 25, 2021
 
 44 / 47
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3155,7 +3077,8 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-M
+
+M
 
 Message packet 10
 Message processing
@@ -3316,7 +3239,8 @@ Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Syntax 10
+
+Syntax 10
 
 T
 

@@ -63,7 +63,8 @@ Release: August 11, 2025
 
 1 / 40
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -305,7 +306,8 @@ Release: August 11, 2025
 
 2 / 40
 
-Date
+
+Date
 
 Revision
 History
@@ -488,179 +490,77 @@ Release: August 11, 2025
 
 3 / 40
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Common Structures and Data Types](#221-common-structures-and-data-types)
+      - [2.2.1.1 CERTTRANSBLOB](#2211-certtransblob)
+        - [2.2.1.1.1 CERTTRANSBLOB Marshaling](#22111-certtransblob-marshaling)
+      - [2.2.1.2 BSTR](#2212-bstr)
+      - [2.2.1.3 VARIANT](#2213-variant)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IOCSPAdminD Client Details](#31-iocspadmind-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 IOCSPAdminD Server Details](#32-iocspadmind-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 RevocationConfigurationList](#3211-revocationconfigurationlist)
+        - [3.2.1.1.1 RevocationProviderProperties](#32111-revocationproviderproperties)
+      - [3.2.1.2 ResponderProperties](#3212-responderproperties)
+      - [3.2.1.3 Online Responder Permissions](#3213-online-responder-permissions)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 IOCSPAdminD](#3241-iocspadmind)
+        - [3.2.4.1.1 GetOCSPProperty (Opnum 3)](#32411-getocspproperty-opnum-3)
+        - [3.2.4.1.2 SetOCSPProperty (Opnum 4)](#32412-setocspproperty-opnum-4)
+        - [3.2.4.1.3 GetCAConfigInformation (Opnum 5)](#32413-getcaconfiginformation-opnum-5)
+        - [3.2.4.1.4 SetCAConfigInformation (Opnum 6)](#32414-setcaconfiginformation-opnum-6)
+        - [3.2.4.1.5 GetSecurity (Opnum 7)](#32415-getsecurity-opnum-7)
+        - [3.2.4.1.6 SetSecurity (Opnum 8)](#32416-setsecurity-opnum-8)
+        - [3.2.4.1.7 GetSigningCertificates (Opnum 9)](#32417-getsigningcertificates-opnum-9)
+        - [3.2.4.1.8 GetHashAlgorithms (Opnum 10)](#32418-gethashalgorithms-opnum-10)
+        - [3.2.4.1.9 GetMyRoles (Opnum 11)](#32419-getmyroles-opnum-11)
+        - [3.2.4.1.10 Ping (Opnum 12)](#324110-ping-opnum-12)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Strong Administrator Authentication](#511-strong-administrator-authentication)
+    - [5.1.2 KDC Security](#512-kdc-security)
+    - [5.1.3 Administrator Console Security](#513-administrator-console-security)
+    - [5.1.4 Administrator Credential Issuance](#514-administrator-credential-issuance)
+    - [5.1.5 Practices when Using Cryptography](#515-practices-when-using-cryptography)
+      - [5.1.5.1 Keeping Information Secret](#5151-keeping-information-secret)
+      - [5.1.5.2 Coding Practices](#5152-coding-practices)
+      - [5.1.5.3 Security Consideration Citations](#5153-security-consideration-citations)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Data Types ........................................................................................ 12
-Common Structures and Data Types ............................................................. 12
-CERTTRANSBLOB .................................................................................. 12
-CERTTRANSBLOB Marshaling ............................................................ 12
-BSTR ................................................................................................... 12
-VARIANT .............................................................................................. 12
-
-2.2.1.2
-2.2.1.3
-
-2.2.1.1.1
-
-2.2.1.1
-
-3.2
-
-3.1
-
-3.2.1
-
-3.2.1.1
-
-3.2.1.1.1
-
-3.2.1.2
-3.2.1.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-
-3  Protocol Details ..................................................................................................... 13
-IOCSPAdminD Client Details .............................................................................. 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-IOCSPAdminD Server Details ............................................................................. 13
-Abstract Data Model .................................................................................... 13
-RevocationConfigurationList ................................................................... 13
-RevocationProviderProperties ............................................................ 14
-ResponderProperties ............................................................................. 15
-Online Responder Permissions ................................................................ 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-IOCSPAdminD ...................................................................................... 16
-GetOCSPProperty (Opnum 3) ............................................................ 17
-SetOCSPProperty (Opnum 4) ............................................................ 19
-GetCAConfigInformation (Opnum 5) .................................................. 20
-SetCAConfigInformation (Opnum 6) ................................................... 23
-GetSecurity (Opnum 7) .................................................................... 24
-SetSecurity (Opnum 8) .................................................................... 24
-GetSigningCertificates (Opnum 9) ..................................................... 24
-GetHashAlgorithms (Opnum 10) ........................................................ 25
-GetMyRoles (Opnum 11) .................................................................. 26
-Ping (Opnum 12) ............................................................................. 26
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 27
-
-3.2.4.1.1
-3.2.4.1.2
-3.2.4.1.3
-3.2.4.1.4
-3.2.4.1.5
-3.2.4.1.6
-3.2.4.1.7
-3.2.4.1.8
-3.2.4.1.9
-3.2.4.1.10
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-
-3.2.4.1
-
-4  Protocol Examples ................................................................................................. 28
-
-5  Security ................................................................................................................. 30
-
-4 / 40
-
-[MS-OCSPA] - v20250811
-Microsoft OCSP Administration Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-5.1
-
-5.1.1
-5.1.2
-5.1.3
-5.1.4
-5.1.5
-
-Security Considerations for Implementers ........................................................... 30
-Strong Administrator Authentication ............................................................. 30
-KDC Security.............................................................................................. 30
-Administrator Console Security ..................................................................... 30
-Administrator Credential Issuance ................................................................ 30
-Practices when Using Cryptography .............................................................. 30
-Keeping Information Secret .................................................................... 30
-Coding Practices ................................................................................... 31
-Security Consideration Citations .............................................................. 31
-Index of Security Parameters ............................................................................ 31
-
-5.1.5.1
-5.1.5.2
-5.1.5.3
-
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 32
-
-7  Appendix B: Product Behavior ............................................................................... 33
-
-8  Change Tracking .................................................................................................... 38
-
-9  Index ..................................................................................................................... 39
-
-[MS-OCSPA] - v20250811
-Microsoft OCSP Administration Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-5 / 40
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Microsoft OCSP Administration Protocol. The protocol consists of a set of
 Distributed Component Object Model (DCOM) interfaces that allow administrative tools to
@@ -669,7 +569,7 @@ configure the properties of the Online Responder.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -726,7 +626,8 @@ Release: August 11, 2025
 
 6 / 40
 
-cryptographic service provider (CSP): A software module that implements cryptographic
+
+cryptographic service provider (CSP): A software module that implements cryptographic
 
 functions for calling applications that generates digital signatures. Multiple CSPs can be installed.
 A CSP is identified by a name represented by a NULL-terminated Unicode string.
@@ -802,7 +703,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-signing certificates: The certificate that represents the identity of an entity (for example, a
+
+signing certificates: The certificate that represents the identity of an entity (for example, a
 
 certification authority (CA), a web server or an S/MIME mail author) and is used to verify
 signatures made by the private key of that entity. For more information, see [RFC3280].
@@ -810,14 +712,14 @@ signatures made by the private key of that entity. For more information, see [RF
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -868,7 +770,8 @@ Release: August 11, 2025
 
 8 / 40
 
-[RFC2478] Baize, E. and Pinkas, D., "The Simple and Protected GSS-API Negotiation Mechanism", RFC
+
+[RFC2478] Baize, E. and Pinkas, D., "The Simple and Protected GSS-API Negotiation Mechanism", RFC
 2478, December 1998, https://www.rfc-editor.org/info/rfc2478
 
 [RFC2560] Myers, M., Ankney, R., Malpani, A., Glaperin, S., and Adams, C., "X.509 Internet Public
@@ -895,14 +798,14 @@ Service (V5)", RFC 4120, July 2005, https://www.rfc-editor.org/rfc/rfc4120
 Certificate and Certificate Revocation List (CRL) Profile", RFC 5280, May 2008, https://www.rfc-
 editor.org/info/rfc5280
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [CRYPTO] Menezes, A., Vanstone, S., and Oorschot, P., "Handbook of Applied Cryptography", 1997,
 https://cacr.uwaterloo.ca/hac/
 
 [HOWARD] Howard, M., "Writing Secure Code", Microsoft Press, 2002, ISBN: 0735617228.
 
-1.3  Overview
+### 1.3 Overview
 
 The Microsoft OCSP Administration Protocol consists of a set of DCOM interfaces [MS-DCOM] that
 allows administrative tools to configure the properties of a responder.
@@ -936,7 +839,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The Microsoft OCSP Administration Protocol depends on the DCOM Remote Protocol [MS-DCOM].
 Microsoft DCOM negotiates its authentication method using the Generic Security Services (GSS) API
@@ -946,27 +850,27 @@ selected as the authentication method.
 No other Microsoft Windows protocol directly depends on the Microsoft OCSP Administration Protocol.
 This protocol is designed to manage a responder that implements the OCSP [RFC2560].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 An Online Responder requires at least one CA certificate or delegated certificate, as defined in
 [RFC2560], to sign responses to certificate status requests from clients.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 No higher-level protocol would benefit from using this protocol as a component. This protocol is
 designed to be used directly by applications and tools that require the capability to administer a
 responder.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses responder properties as defined in section 3.2.1.2. Vendors can define their own
 custom responder properties using the SetOCSPProperty method as defined in section 3.2.4.1.2.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 No standard assignments have been received for the Microsoft OCSP Administration Protocol described
 in this protocol specification.
@@ -986,12 +890,13 @@ Release: August 11, 2025
 
 10 / 40
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Microsoft OCSP Administration Protocol messages are transported
 and Microsoft OCSP Administration Protocol message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 The Distributed Component Object Model (DCOM) Remote Protocol [MS-DCOM] is used as the
 transport protocol.
@@ -1062,36 +967,37 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Default values, as specified in [MS-DCOM], are used for all DCOM inputs not specified above, such as
+
+Default values, as specified in [MS-DCOM], are used for all DCOM inputs not specified above, such as
 security principal name (SPN), client and prototype context property buffers and their context
 property identifiers.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types and definitions specified in [C706] and [MS-RPCE], additional data types
 are defined in this section.
 
-2.2.1  Common Structures and Data Types
+#### 2.2.1 Common Structures and Data Types
 
 This section defines the structures used by the Microsoft OCSP Administration Protocol. These
 structures are used when using interface methods to perform various operations on the server and as
 part of the server's response.
 
-2.2.1.1  CERTTRANSBLOB
+##### 2.2.1.1 CERTTRANSBLOB
 
 The CERTTRANSBLOB type is implemented as specified in [MS-WCCE] section 2.2.2.2.
 
-2.2.1.1.1 CERTTRANSBLOB Marshaling
+###### 2.2.1.1.1 CERTTRANSBLOB Marshaling
 
 Within the Microsoft OCSP Administration Protocol, the CERTTRANSBLOB is used to send a security
 descriptor from the client to the responder and to retrieve same. The marshaling of security
 descriptors into a CERTTRANSBLOB is documented in [MS-DTYP] section 2.4.6.
 
-2.2.1.2  BSTR
+##### 2.2.1.2 BSTR
 
 The BSTR type is implemented as specified in [MS-OAUT] section 2.2.23.2.
 
-2.2.1.3  VARIANT
+##### 2.2.1.3 VARIANT
 
 The VARIANT type is implemented as specified in [MS-OAUT] section 2.2.29.2.
 
@@ -1102,28 +1008,29 @@ Release: August 11, 2025
 
 12 / 40
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Microsoft OCSP Administration Protocol is a request-response protocol. The client performs a
 server method invocation, and the server responds with the requested data or a detailed disposition
 code. The primary usage of this protocol is Online Responder management. Except where specified
 in the following section, the protocol is a single message followed by a single reply.
 
-3.1  IOCSPAdminD Client Details
+### 3.1 IOCSPAdminD Client Details
 
-3.1.1  Abstract Data Model
-
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
+
+None.
+
+#### 3.1.3 Initialization
 
 Microsoft OCSP Administration Protocol is initialized by instantiation of DCOM objects.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 Upon receiving a reply from the server in response to a method call, the client MUST validate the
 return code. Return codes from all method calls are of type HRESULT. If the HRESULT indicates
@@ -1131,19 +1038,19 @@ success (0), the client can assume that any output parameters are present and va
 return code (HRESULT is nonzero), the client MUST assume the method call failed. Return codes are
 documented in [MS-ERREF].
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  IOCSPAdminD Server Details
+### 3.2 IOCSPAdminD Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
-3.2.1.1  RevocationConfigurationList
+##### 3.2.1.1 RevocationConfigurationList
 
 The server implementing the Microsoft OCSP Administration Protocol must maintain a list of
 revocation configurations, each of which represents a CA certificate for which the server can
@@ -1162,7 +1069,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Unless a property is otherwise specified as optional in the table below, it is a required property.
+
+Unless a property is otherwise specified as optional in the table below, it is a required property.
 
 Property name
 
@@ -1245,7 +1153,7 @@ validity period and defines the time at which the responder will notify the
 administrator that the signing certificate is nearing the end of its lifetime. The
 default value is 90, but this value can be modified. (Optional)
 
-3.2.1.1.1 RevocationProviderProperties
+###### 3.2.1.1.1 RevocationProviderProperties
 
 The following table describes the properties for the revocation provider referenced as "provider" in
 the following list and their meanings.
@@ -1277,7 +1185,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- Property name
+
+ Property name
 
  Meaning
 
@@ -1312,7 +1221,7 @@ An optional value that indicates whether the revocation provider must accept
 or reject CRLs that have the onlyContainsCACerts bit set in the IDP extension,
 as defined in section 5.2.5 of [RFC5280].<2>
 
-3.2.1.2  ResponderProperties
+##### 3.2.1.2 ResponderProperties
 
 Apart from revocation configuration properties, the server must also maintain a list of properties
 pertaining to service operation. This list is called ResponderProperties. Each property is described in
@@ -1390,7 +1299,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- Property name
+
+ Property name
 
  Meaning
 
@@ -1412,7 +1322,7 @@ An optional value that specifies the maximum number of requests that can be
 included in the requestList field of the OCSPRequest structure ([RFC2560] section
 4.1.1). The default value of MaxNumOfRequestEntries is 1.
 
-3.2.1.3  Online Responder Permissions
+##### 3.2.1.3 Online Responder Permissions
 
 The responder SHOULD store a list of permissions or access rights. The possible permissions values
 include Read and Administer. Read is defined as providing the caller with read access to the
@@ -1426,11 +1336,11 @@ GetSecurity method.
 The responder SHOULD enforce that the caller of any method specified in section 3.2.4 possesses
 specific permissions.<6>
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Interface initialization: On startup, the responder MUST ensure that remote clients have permissions
 to activate and call DCOM objects. Subsequently, DCOM object and interface initialization is
@@ -1445,9 +1355,9 @@ initialization on the server, in response to client activation requests and ORPC
 Cryptographic initialization: The responder MUST have access to the signing certificate private
 keys for each revocation configuration.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
-3.2.4.1  IOCSPAdminD
+##### 3.2.4.1 IOCSPAdminD
 
 The IOCSPAdminD interface provides an RPC interface for a client to manage an Online Responder.
 
@@ -1463,7 +1373,8 @@ Release: August 11, 2025
 
 16 / 40
 
-represent the IUnknown methods: QueryInterface, AddRef, and Release methods inherited from [MS-
+
+represent the IUnknown methods: QueryInterface, AddRef, and Release methods inherited from [MS-
 DCOM].
 
 Each method MUST NOT throw exceptions.
@@ -1510,7 +1421,7 @@ Opnum: 11
 
 Opnum: 12
 
-3.2.4.1.1 GetOCSPProperty (Opnum 3)
+###### 3.2.4.1.1 GetOCSPProperty (Opnum 3)
 
 This method retrieves the value of a responder property from the Online Responder Service.
 
@@ -1570,7 +1481,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Property name
+
+Property name
 
  Processing rule for data returned
 
@@ -1679,7 +1591,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Property name
+
+Property name
 
  Processing rule for data returned
 
@@ -1726,7 +1639,7 @@ the value as a VARIANT containing data of the type integer, string, date, or bin
 Otherwise, for bstrEntryName values that do not correspond to the previous list, the server
 responds as if the property were not yet configured on the responder.<14>
 
-3.2.4.1.2 SetOCSPProperty (Opnum 4)
+###### 3.2.4.1.2 SetOCSPProperty (Opnum 4)
 
 This method configures the value of a responder property on the server.
 
@@ -1764,7 +1677,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-4.  If bstrEntryName matches one of the properties specified in section 3.2.1.2:
+
+4.  If bstrEntryName matches one of the properties specified in section 3.2.1.2:
 
 1.  If the server has a property configured with the same name, the server MUST replace the
 existing value with the value specified in the VARIANT data referenced by pEntryValue.
@@ -1784,7 +1698,7 @@ referenced by pEntryValue in its configuration. The values "CAEntries" and "AllE
 NOT be used for bstrEntryName because of their special treatment by the GetOCSPProperty
 method.
 
-3.2.4.1.3 GetCAConfigInformation (Opnum 5)
+###### 3.2.4.1.3 GetCAConfigInformation (Opnum 5)
 
 The GetCAConfigInformation method retrieves all the properties associated with a particular
 revocation configuration.
@@ -1841,7 +1755,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- Property name
+
+ Property name
 
  Processing rule
 
@@ -1935,7 +1850,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- Property name
+
+ Property name
 
  Processing rule
 
@@ -2032,7 +1948,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- Property name
+
+ Property name
 
  Processing rules
 
@@ -2094,7 +2011,7 @@ revocation provider MUST reject the CRL when both
 onlyContainsUserCerts and onlyContainsCACerts bits are set in the
 IDP extension, regardless of the value of this setting.<20>
 
-3.2.4.1.4 SetCAConfigInformation (Opnum 6)
+###### 3.2.4.1.4 SetCAConfigInformation (Opnum 6)
 
 This method sets all the properties for a particular revocation configuration.
 
@@ -2122,7 +2039,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-2.  The type of the variant as identified by pEntryValue MUST be either VT_EMPTY or
+
+2.  The type of the variant as identified by pEntryValue MUST be either VT_EMPTY or
 
 VT_ARRAY|VT_VARIANT. If pEntryValue is a variant of type VT_ARRAY|VT_VARIANT, each
 element in this variant array SHOULD be a property identified in section 3.2.1.1, with the
@@ -2157,7 +2075,7 @@ responder MUST successfully process the request.
 
 SHOULD be 0x800710d8.
 
-3.2.4.1.5 GetSecurity (Opnum 7)
+###### 3.2.4.1.5 GetSecurity (Opnum 7)
 
 The GetSecurity method is used to retrieve the security descriptor associated with the responder.
 
@@ -2169,7 +2087,7 @@ pctbSD: This is a pointer to a CERTTRANSBLOB structure that contains the marshal
 
 Descriptor. Information on Security Descriptors is documented in [MS-DTYP] section 2.4.6.<21>
 
-3.2.4.1.6 SetSecurity (Opnum 8)
+###### 3.2.4.1.6 SetSecurity (Opnum 8)
 
 The SetSecurity method is used to set the Online Responder Security, as defined in the Abstract
 Data Model.
@@ -2185,7 +2103,7 @@ descriptor. Information on security descriptors is documented in [MS-DTYP] secti
 The responder SHOULD use the permissions set in pctbSD to deny and allow operations on the
 responder.
 
-3.2.4.1.7 GetSigningCertificates (Opnum 9)
+###### 3.2.4.1.7 GetSigningCertificates (Opnum 9)
 
 [MS-OCSPA] - v20250811
 Microsoft OCSP Administration Protocol
@@ -2194,7 +2112,8 @@ Release: August 11, 2025
 
 24 / 40
 
-The GetSigningCertficates method retrieves a list of certificates available at the responder machine
+
+The GetSigningCertficates method retrieves a list of certificates available at the responder machine
 that can be used to sign responses to OCSP requests regarding certificates issued by the CA
 certificate specified.
 
@@ -2250,7 +2169,7 @@ certificate.
 the server SHOULD return an empty list of signing certificates as an ASN.1 DER encoded
 degenerate PKCS#7 [RFC2315] containing no certificates.
 
-3.2.4.1.8 GetHashAlgorithms (Opnum 10)
+###### 3.2.4.1.8 GetHashAlgorithms (Opnum 10)
 
 The GetHashAlgorithms method retrieves the list of hash algorithms available at the responder that
 could be used along with the signing certificate associated with a revocation configuration to sign
@@ -2270,7 +2189,8 @@ Release: August 11, 2025
 
 25 / 40
 
-pHashAlgorithms:  A pointer to a VARIANT that is of type VT_ARRAY | VT_BSTR. Each element in
+
+pHashAlgorithms:  A pointer to a VARIANT that is of type VT_ARRAY | VT_BSTR. Each element in
 
 the array is the name of a hash algorithm that could be used along with the signing certificate
 associated with a revocation configuration identified by bstrCAId to sign OCSP responses.
@@ -2293,7 +2213,7 @@ associated with the signing certificate to sign OCSP responses.
 
 server SHOULD return a default list of hash algorithms.<22>
 
-3.2.4.1.9 GetMyRoles (Opnum 11)
+###### 3.2.4.1.9 GetMyRoles (Opnum 11)
 
 The GetMyRoles method retrieves the Online Responder Roles [CIMC-PP] assigned to the user that
 calls the method.
@@ -2330,9 +2250,9 @@ The caller can update the configuration information at the responder.
 
 The caller has no roles.
 
-3.2.4.1.10
+###### 3.2.4.1.10 Ping (Opnum 12)
 
-Ping (Opnum 12)
+
 
 This method queries the Online Responder Service to find out whether it is running.
 
@@ -2350,11 +2270,12 @@ Release: August 11, 2025
 
 26 / 40
 
-3.2.5  Timer Events
+
+#### 3.2.5 Timer Events
 
  None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
  None.
 
@@ -2365,7 +2286,8 @@ Release: August 11, 2025
 
 27 / 40
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 An administrator needs to enable the responder to create OCSP responses for clients requesting
 revocation status for certificates issued by a CA called "CA1", which runs on a machine called
@@ -2442,7 +2364,8 @@ Release: August 11, 2025
 
 28 / 40
 
-3.  ProviderCLSID property:
+
+3.  ProviderCLSID property:
 
 1.  vt member is VT_BSTR.
 
@@ -2498,11 +2421,12 @@ Release: August 11, 2025
 
 29 / 40
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
 
-5.1.1  Strong Administrator Authentication
+### 5.1 Security Considerations for Implementers
+
+#### 5.1.1 Strong Administrator Authentication
 
 An administrator of the responder must authenticate strongly. This could be via a high-entropy
 password or some multiple-factor authentication method (such as a smart card). It is recommended
@@ -2510,19 +2434,19 @@ that the administrator use a login account that functions only for responder adm
 any other function. Use of the same credentials on a vulnerable computer while performing some
 other task exposes the credentials to capture and misuse.
 
-5.1.2  KDC Security
+#### 5.1.2 KDC Security
 
 Because authentication of the administrator is by Kerberos, in this protocol, the key distribution center
 (KDC) is itself to be kept secure—free from tampering and free from vulnerabilities that would allow
 privilege-elevation penetrations.
 
-5.1.3  Administrator Console Security
+#### 5.1.3 Administrator Console Security
 
 The administrator's console (the applications used by the administrator to run the client side of this
 protocol and the operating system in which that functionality runs) is to be kept secure from
 penetration that would allow an attacker to act as the administrator.
 
-5.1.4  Administrator Credential Issuance
+#### 5.1.4 Administrator Credential Issuance
 
 Because the administrator is identified as some name in a Kerberos domain, for the purpose of access
 control by the responder, the human procedures for assigning a name to the administrator, adding
@@ -2530,7 +2454,7 @@ that name to some named group of administrators and adding that group name to th
 list (ACL) used by the responder, is to be kept free from either penetration (for example, social
 engineering) or human mistake via common misspelling or unwarranted assumptions.
 
-5.1.5  Practices when Using Cryptography
+#### 5.1.5 Practices when Using Cryptography
 
 Any cryptographic protocol has security considerations dealing with key handling during cryptographic
 operations and key distribution. Although a public-key certificate is not a protocol by itself, it has
@@ -2546,7 +2470,7 @@ there are security considerations around the use and provisioning of those names
 forms, there are attributes bound to either a name or a key, and there are security considerations
 around the use and provisioning of those attributes.
 
-5.1.5.1  Keeping Information Secret
+##### 5.1.5.1 Keeping Information Secret
 
 Any cryptographic key has to be kept secret. One also keeps secret any function of a secret (such as a
 key schedule), because knowing such functions would reduce an attacker's work in cryptanalyzing the
@@ -2559,7 +2483,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-When a secret has to be in the normal memory of a general purpose computer in order to be used,
+
+When a secret has to be in the normal memory of a general purpose computer in order to be used,
 that secret should be erased (for example, replaced with a constant value, such as 0) as soon as
 possible after use.
 
@@ -2568,14 +2493,14 @@ Typically, one finds such memory in a Hardware Security Module (HSM). If an HSM 
 be compliant with [FIPS140], or the equivalent at a level consistent with the security requirements of
 the customer deploying the cryptographic protocol or the CA that uses the HSM.
 
-5.1.5.2  Coding Practices
+##### 5.1.5.2 Coding Practices
 
 Any implementation of a protocol exposes code to inputs from attackers. Such code has to be
 developed according to secure coding and development practices in order to avoid buffer overflows,
 denial of service attacks, escalation of privilege, and disclosure of information. For an introduction to
 these concepts, as well as secure development best practices and common errors, see [HOWARD].
 
-5.1.5.3  Security Consideration Citations
+##### 5.1.5.3 Security Consideration Citations
 
 Implementers of this protocol are advised to consider the following security precautions:
 
@@ -2606,7 +2531,7 @@ section 9 of [RFC3280] for more information on the requirement for revocation fr
 mitigate denial of service attacks. For more information on generic denial-of-service (DoS)
 mitigation techniques, see [HOWARD].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2617,7 +2542,8 @@ Release: August 11, 2025
 
 31 / 40
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full Interface Definition Language (IDL) is provided, where "ms-
 oaut.idl" is the IDL found in [MS-OAUT] Appendix A.<23>
@@ -2686,7 +2612,8 @@ Release: August 11, 2025
 
 32 / 40
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2762,7 +2689,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-The responder can enforce Online Responder security for each of the following methods by checking
+
+The responder can enforce Online Responder security for each of the following methods by checking
 for the permissions identified in the following table.
 
 Method name
@@ -2856,7 +2784,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Method name
+
+Method name
 
 Acceptable permissions
 
@@ -2954,7 +2883,8 @@ Release: August 11, 2025
 
 35 / 40
 
-<9> Section 3.2.4.1.1: The Microsoft responder uses a value of 0xffffffe3 to indicate that debug
+
+<9> Section 3.2.4.1.1: The Microsoft responder uses a value of 0xffffffe3 to indicate that debug
 tracing is enabled and 0 to indicate that it is not.
 
 <10> Section 3.2.4.1.1: The Microsoft responder uses values between 1 and 24.
@@ -3034,7 +2964,8 @@ Microsoft OCSP Administration Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-<22> Section 3.2.4.1.8: The Microsoft Online Responder returns the hash algorithms supported by
+
+<22> Section 3.2.4.1.8: The Microsoft Online Responder returns the hash algorithms supported by
 the "Microsoft Strong Cryptographic Provider" CSP in the default list of hash algorithms.
 
 <23> Section 6: The Microsoft implementation of the OCSP admin interface has a CLSID whose value
@@ -3047,7 +2978,8 @@ Release: August 11, 2025
 
 37 / 40
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3099,7 +3031,8 @@ Release: August 11, 2025
 
 38 / 40
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3231,7 +3164,8 @@ Server
 
 39 / 40
 
-   IOCSPAdminD method 16
+
+   IOCSPAdminD method 16
    local events 27
    message processing 16
    sequencing rules 16

@@ -63,7 +63,8 @@ Release: June 25, 2021
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -309,7 +310,8 @@ Release: June 25, 2021
 
 2 / 26
 
-Date
+
+Date
 
 Revision
 History
@@ -499,174 +501,76 @@ Release: June 25, 2021
 
 3 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 IrDial Message Formats](#221-irdial-message-formats)
+      - [2.2.1.1 General Formatting Rules](#2211-general-formatting-rules)
+      - [2.2.1.2 Dial Message](#2212-dial-message)
+      - [2.2.1.3 Dial Response Message](#2213-dial-response-message)
+      - [2.2.1.4 Hook Message](#2214-hook-message)
+      - [2.2.1.5 Hook Response Message](#2215-hook-response-message)
+    - [2.2.2 Data Message](#222-data-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server-Specific Details](#32-server-specific-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Dial Message](#3251-receiving-a-dial-message)
+      - [3.2.5.2 Receiving a Hook Message](#3252-receiving-a-hook-message)
+      - [3.2.5.3 Receiving a Data Message](#3253-receiving-a-data-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client-Specific Details](#33-client-specific-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Sending a Dial Message](#3351-sending-a-dial-message)
+      - [3.3.5.2 Receiving a Dial Response Message](#3352-receiving-a-dial-response-message)
+      - [3.3.5.3 Sending a Hook Message](#3353-sending-a-hook-message)
+      - [3.3.5.4 Receiving a Hook Response Message](#3354-receiving-a-hook-response-message)
+      - [3.3.5.5 Receiving an Echo Message](#3355-receiving-an-echo-message)
+      - [3.3.5.6 Sending a Data Message](#3356-sending-a-data-message)
+      - [3.3.5.7 Receiving a Data Message](#3357-receiving-a-data-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Connection Setup and Data Exchange](#41-connection-setup-and-data-exchange)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-IrDial Message Formats ............................................................................... 11
-General Formatting Rules ....................................................................... 11
-Dial Message ........................................................................................ 11
-Dial Response Message .......................................................................... 12
-Hook Message ...................................................................................... 13
-Hook Response Message ........................................................................ 13
-Data Message ............................................................................................ 14
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2.2.2
-
-3.2
-
-3.1
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 15
-Common Details .............................................................................................. 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Processing Events and Sequencing Rules ....................................................... 15
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-Server-Specific Details ...................................................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Processing Events and Sequencing Rules ....................................................... 16
-Receiving a Dial Message ....................................................................... 16
-Receiving a Hook Message ..................................................................... 17
-Receiving a Data Message ...................................................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-Client-Specific Details ....................................................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 18
-Processing Events and Sequencing Rules ....................................................... 18
-Sending a Dial Message ......................................................................... 18
-Receiving a Dial Response Message ......................................................... 18
-Sending a Hook Message ....................................................................... 18
-Receiving a Hook Response Message ....................................................... 18
-Receiving an Echo Message .................................................................... 18
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.6
-3.2.7
-
-3.3
-
-[MS-PPPI] - v20210625
-PPP Over IrDA Dialup Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-4 / 26
-
-3.3.5.6
-3.3.5.7
-
-3.3.6
-3.3.7
-
-Sending a Data Message ........................................................................ 18
-Receiving a Data Message ...................................................................... 18
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-
-4  Protocol Examples ................................................................................................. 20
-Connection Setup and Data Exchange ................................................................. 20
-
-4.1
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-PPPI] - v20210625
-PPP Over IrDA Dialup Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-5 / 26
-
-1  Introduction
+## 1 Introduction
 
 The Point to Point Protocol (PPP) over Infrared Data Association (IrDA) Dialup (IrDial) Protocol (PPP
 Over IrDA Dialup Protocol) is a deprecated protocol that specifies how to initialize and use a modem
@@ -679,7 +583,7 @@ stream) can be successfully reassembled on the receiving end's IrDial layer.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -735,7 +639,8 @@ Release: June 25, 2021
 
 6 / 26
 
-service access point (SAP): An identifying label for network endpoints that are used in Open
+
+service access point (SAP): An identifying label for network endpoints that are used in Open
 
 Systems Interconnection (OSI) networking. The SAP is a conceptual location at which one OSI
 layer can request the services of another OSI layer.
@@ -750,14 +655,14 @@ section 2.3.1 for more details.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -802,7 +707,8 @@ Release: June 25, 2021
 
 7 / 26
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [IRCOM] Infrared Data Association, "'IrCOMM': Serial and Parallel Port Emulation over IR (Wire
 Replacement) v.1.0", November 1995, http://irdajp.info/specifications.html
@@ -817,7 +723,7 @@ Note There is a charge to download the specification.
 [MSDN-IRNET] Microsoft Corporation, "Infrared Network (IrNET)", http://msdn.microsoft.com/en-
 us/library/ms817914.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Point-to-Point Protocol (PPP) over Infrared Data Association IrDA Dialup (IrDial) Protocol
 enables two key scenarios, a "direct connect" scenario which was a point-to-point IP connection
@@ -882,11 +788,12 @@ PPP Over IrDA Dialup Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-PPPI].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 A preferred alternative to the PPP Over IrDA Dialup Protocol is the IrDA Infrared Communications
 Protocol [IRCOM], which provides emulation of serial and parallel ports over the IrDA TinyTP v1.1
@@ -912,31 +819,32 @@ Release: June 25, 2021
 
 9 / 26
 
-The PPP Over IrDA Dialup Protocol consists of the IrDial and IrNet components and their relationship
+
+The PPP Over IrDA Dialup Protocol consists of the IrDial and IrNet components and their relationship
 to other protocols. Both IrDial and IrNet use TinyTP as their transport protocol.
 
 Note  The PPP component includes both [RFC1661] and [RFC1662] encapsulations.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Prior to using the PPP Over IrDA Dialup Protocol, the client and the server need to establish a TinyTP
 connection. See sections 3.2.3 and 3.3.3 for further details.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The PPP Over IrDA Dialup Protocol is deprecated and therefore its use is discouraged. Instead, the
 IrDA Infrared Communications Protocol (IrCOMM), as defined in [IRCOM], can be used for modem
 initialization and data transfer over an infrared link.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
  None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
  None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  None.
 
@@ -947,17 +855,18 @@ Release: June 25, 2021
 
 10 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The PPP Over IrDA Dialup Protocol uses IrDA TinyTP, as specified in [IRTTP], as a transport protocol
 for initialization and data exchange with the modem. Note that for data exchange with the modem,
 [RFC1662] frames are transported directly via IrDA TinyTP, as specified in [IRTTP].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  IrDial Message Formats
+#### 2.2.1 IrDial Message Formats
 
 As specified in [IRTTP] section 2.2.1, the maximum size of a single Data-Carrying TinyTP PDUs
 packet for a given connection is negotiated by the IrDA Link Access Protocol, as specified in [IRLAP].
@@ -995,7 +904,7 @@ Command Sets. The IrDial message MUST NOT exceed the maximum size of a TinyTP PD
 which is negotiated by the IrDA Link Access Protocol, as specified in [IRLAP]. For further details,
 see [IRTTP] section 2.2.1.
 
-2.2.1.1  General Formatting Rules
+##### 2.2.1.1 General Formatting Rules
 
 Message formatting rules are as follows:
 
@@ -1012,7 +921,7 @@ Each IrDial message that is a response to a previous IrDial message MUST be in t
 
   <LF>: ASCII character "Line feed" (decimal symbol # 10), as specified in [RFC1345].
 
-2.2.1.2  Dial Message
+##### 2.2.1.2 Dial Message
 
 The Dial Message is sent by the client as a request to begin initialization to the server that echoes it
 back as an acknowledgment. This message has 4 ASCII fields that are specified in [RFC1345].
@@ -1024,7 +933,8 @@ Release: June 25, 2021
 
 11 / 26
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1059,7 +969,7 @@ that the modem will dial.
 
 ASCII - CR (1 byte): The ASCII encoding for the carriage return character, 0x0D.
 
-2.2.1.3  Dial Response Message
+##### 2.2.1.3 Dial Response Message
 
 The Dial Response Message is sent by the server to send connection information to the client. This
 message has 4 ASCII fields specified in [RFC1345].
@@ -1130,9 +1040,10 @@ PPP Over IrDA Dialup Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-ASCII - LF (1 byte): The ASCII encoding for the line feed character, 0x0A.
 
-2.2.1.4  Hook Message
+ASCII - LF (1 byte): The ASCII encoding for the line feed character, 0x0A.
+
+##### 2.2.1.4 Hook Message
 
 The Hook Message is sent by the client to signal ending the connection. It is echoed back by the
 server as an acknowledgment. This message has 7 ASCII fields specified in [RFC1345].
@@ -1174,7 +1085,7 @@ ASCII - H (1 byte): The ASCII encoding for the 'H' character, 0x48.
 
 ASCII - CR (1 byte): The ASCII encoding for the carriage return character, 0x0D.
 
-2.2.1.5  Hook Response Message
+##### 2.2.1.5 Hook Response Message
 
 The Hook Response Message is sent by the server to signal closing the connection. This message
 has 4 ASCII fields specified in [RFC1345].
@@ -1233,9 +1144,10 @@ PPP Over IrDA Dialup Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-ASCII - LF (1 byte): The ASCII encoding for the line feed character, 0x0A.
 
-2.2.2  Data Message
+ASCII - LF (1 byte): The ASCII encoding for the line feed character, 0x0A.
+
+#### 2.2.2 Data Message
 
 The Data Message is exchanged between client and server to send segments of data. The PPP Over
 IrDA Dialup Protocol relies on the Infrared Network (IrNET) Protocol [MSDN-IRNET] for the pass-
@@ -1288,11 +1200,12 @@ Release: June 25, 2021
 
 14 / 26
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1318,7 +1231,7 @@ connection that is used for PPP Over IrDA Dialup Protocol communication. The ser
 client can be either in an IrDial-TTP connection established state or in an IrDial-TTP connection
 not-established state.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 This protocol includes the following timer:
 
@@ -1328,7 +1241,7 @@ Besides the IdleTimer, the IrDA TinyTP Protocol [IRTTP] by which PPP Over IrDA D
 messages are conveyed MAY have timers associated with it to achieve guaranteed and in-order
 delivery.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The initially assumed values for the data elements defined in section 3.1.1 are as follows:
 
@@ -1340,11 +1253,11 @@ IrDial-TTP connection state: IrDial-TTP connection not-established.
 
 For more information, see sections 3.2.3 and 3.3.3.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 For more information, see sections 3.2.4 and 3.3.4.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 For more information, see sections 3.2.5 and 3.3.5.
 
@@ -1355,7 +1268,8 @@ Release: June 25, 2021
 
 15 / 26
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 After the PPP Over IrDA Dialup Protocol is initialized as specified in sections 3.2.3 and 3.3.3, both the
 client and the server set the IdleTimer. The timer MUST be reset by the client and the server any
@@ -1363,24 +1277,24 @@ time they send or receive a message.
 
 When the timer fires, the PPP Over IrDA Dialup Protocol MUST be moved to the uninitialized state.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server-Specific Details
+### 3.2 Server-Specific Details
 
 The modem that implements the PPP Over IrDA Dialup Protocol on an infrared device MAY assume the
 server role.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 There is no additional server-specific data model. The data model in section 3.1.1 is assumed.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers, beyond that defined in section 3.1.2, are defined for the server role.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The initialization of the server is a two-step sequence:
 
@@ -1392,14 +1306,14 @@ Over IrDA Dialup Protocol service on the server.
 
 2.  The modem device on the server is put in the offline command mode state.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 A user can configure the device to become a PPP Over IrDA Dialup Protocol server. In the case of this
 event, the sequence described in section 3.2.3 is initiated.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a Dial Message
+##### 3.2.5.1 Receiving a Dial Message
 
 When a Dial Message arrives, the server can be in one of two modes: offline command mode or online
 data mode.
@@ -1418,11 +1332,12 @@ PPP Over IrDA Dialup Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-If the server is in online data mode when a Dial Message is received, the server treats it as a regular
+
+If the server is in online data mode when a Dial Message is received, the server treats it as a regular
 Data Message. That is, it does not execute the AT Dial command sequence and therefore takes no
 action.
 
-3.2.5.2  Receiving a Hook Message
+##### 3.2.5.2 Receiving a Hook Message
 
 When a Hook Message arrives, the server can be in one of two modes: offline command mode or
 online data mode.
@@ -1436,23 +1351,23 @@ sends a Hook Response Message with the Response field set to "NO CARRIER". As a 
 message being sent, the server moves from the online data mode state to offline command mode
 state.
 
-3.2.5.3  Receiving a Data Message
+##### 3.2.5.3 Receiving a Data Message
 
 When a Data Message arrives from the client, the server transmits the data toward the network as
 specified in [RFC1662] and section 2.2.2. When data arrives from the network, the server transmits a
 Data Message to the client as specified in [IRTTP] and section 2.2.2.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no timer-triggered events beyond those described in section 3.1.6.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client-Specific Details
+### 3.3 Client-Specific Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 In addition to the data model specified in section 3.1.1, the client has the following data element:
 
@@ -1460,11 +1375,11 @@ Phone number for modem to dial: A data element that contains the phone number th
 
 sends in the Dial Message, section 2.2.1.2.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No timers are defined for the client role, beyond the definitions provided in section 3.1.2.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 A client that wants to establish a TinyTP connection to be used by the PPP Over IrDA Dialup Protocol
 MUST perform an IAS GetValueByClass on the class name IrModem, attribute
@@ -1479,20 +1394,21 @@ Release: June 25, 2021
 
 17 / 26
 
-3.3.4  Higher-Layer Triggered Events
+
+#### 3.3.4 Higher-Layer Triggered Events
 
 The user initializes the PPP Over IrDA Dialup Protocol as specified in section 3.3.3.
 
 The user initiates a dialing sequence by passing the phone number for the modem to dial to the PPP
 Over IrDA Dialup Protocol.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1  Sending a Dial Message
+##### 3.3.5.1 Sending a Dial Message
 
 The Dial Message is sent to the server as specified in section 2.2.1.2.
 
-3.3.5.2  Receiving a Dial Response Message
+##### 3.3.5.2 Receiving a Dial Response Message
 
 If the client is in online data mode when the Dial Response Message arrives, the client treats it as a
 regular Data Message (that is, it does not parse the dial response message Response field and does
@@ -1509,27 +1425,27 @@ protocol, which results in the client starting to send data messages to the serv
 If the Response field is "NO CARRIER", "ERROR", "NO DIALTONE", or "BUSY", the client modem state
 remains in offline command mode and it passes the Response field to the higher-layer protocol.
 
-3.3.5.3  Sending a Hook Message
+##### 3.3.5.3 Sending a Hook Message
 
 The client Hook Message is sent to the server as specified in section 2.2.1.4.
 
-3.3.5.4  Receiving a Hook Response Message
+##### 3.3.5.4 Receiving a Hook Response Message
 
 When the Hook Response Message arrives, the client extracts the Response field and passes it to a
 higher-layer protocol.
 
-3.3.5.5  Receiving an Echo Message
+##### 3.3.5.5 Receiving an Echo Message
 
 When the client receives the echo of its own message from the server, the client discards it and waits
 for the response message. For example, when the client sends a Dial Message, it receives an echo of
 the Dial Message, which it discards, and continues to wait for the arrival of a Dial Response Message.
 
-3.3.5.6  Sending a Data Message
+##### 3.3.5.6 Sending a Data Message
 
 A client sends a data message, as specified in [RFC1662] section 4, encapsulated in one or more
 TinyTP [IRTTP] SDUs.
 
-3.3.5.7  Receiving a Data Message
+##### 3.3.5.7 Receiving a Data Message
 
 When a client receives a Data Message, it is processed as specified in [RFC1662] section 4.
 
@@ -1540,11 +1456,12 @@ Release: June 25, 2021
 
 18 / 26
 
-3.3.6  Timer Events
+
+#### 3.3.6 Timer Events
 
 There are no timer-triggered events beyond those discussed in section 3.1.6.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 Upon a successful Dial/Dial Response Message exchange from the TinyTP [IRTTP] layer and a dial
 Response message that has a "Connect" response, the PPP Over IrDA Dialup Protocol indicates that
@@ -1558,9 +1475,10 @@ Release: June 25, 2021
 
 19 / 26
 
-4  Protocol Examples
 
-4.1  Connection Setup and Data Exchange
+## 4 Protocol Examples
+
+### 4.1 Connection Setup and Data Exchange
 
 In the example illustrated in the following figure, the user initiates the PPP Over IrDA Dialup Protocol
 connection by initializing the client-side protocol as specified in section 3.3.3. The user then passes
@@ -1606,7 +1524,8 @@ Release: June 25, 2021
 
 20 / 26
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-PPPI].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1620,13 +1539,14 @@ Release: June 25, 2021
 
 21 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1637,7 +1557,8 @@ Release: June 25, 2021
 
 22 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1673,7 +1594,8 @@ Release: June 25, 2021
 
 23 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1710,7 +1632,8 @@ Release: June 25, 2021
 
 24 / 26
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1849,7 +1772,8 @@ Relationship to other protocols 9
 
 25 / 26
 
-S
+
+S
 
 Security
    implementer considerations 22

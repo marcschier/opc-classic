@@ -63,7 +63,8 @@ Release: July 29, 2024
 
 1 / 104
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -254,235 +255,93 @@ Release: July 29, 2024
 
 2 / 104
 
-Table of Contents
 
-1.1
-1.2
-1.3
+## Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 9
-Overview ........................................................................................................ 11
-Print Spoolers ............................................................................................ 11
-Print Spooler Service ................................................................................... 12
-Print Queues .............................................................................................. 12
-Printers and Print Data Formats .................................................................... 12
-Printer Drivers and Print Processors .............................................................. 13
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Print Spoolers](#131-print-spoolers)
+    - [1.3.2 Print Spooler Service](#132-print-spooler-service)
+    - [1.3.3 Print Queues](#133-print-queues)
+    - [1.3.4 Printers and Print Data Formats](#134-printers-and-print-data-formats)
+    - [1.3.5 Printer Drivers and Print Processors](#135-printer-drivers-and-print-processors)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Purpose](#211-system-purpose)
+    - [2.1.2 Functional Overview](#212-functional-overview)
+      - [2.1.2.1 Print Services System Components](#2121-print-services-system-components)
+      - [2.1.2.2 Relationship of the Components within Print and Administrative Clients and](#2122-relationship-of-the-components-within-print-and-administrative-clients-and)
+        - [2.1.2.2.1 Print and Administrative Clients](#21221-print-and-administrative-clients)
+        - [2.1.2.2.2 Print Server](#21222-print-server)
+      - [2.1.2.3 Member Protocol Functional Relationships](#2123-member-protocol-functional-relationships)
+      - [2.1.2.4 System Internal Architecture](#2124-system-internal-architecture)
+      - [2.1.2.5 Windows Printing Architecture](#2125-windows-printing-architecture)
+        - [2.1.2.5.1 Print Client Communication with Print Server](#21251-print-client-communication-with-print-server)
+        - [2.1.2.5.2 Protocols Supporting Different Print Clients](#21252-protocols-supporting-different-print-clients)
+        - [2.1.2.5.3 Protocol Redirectors on Print Servers](#21253-protocol-redirectors-on-print-servers)
+        - [2.1.2.5.4 Enabling Print Queues to Be Discoverable](#21254-enabling-print-queues-to-be-discoverable)
+      - [2.1.2.6 Translating Application Content to a Print Data Format](#2126-translating-application-content-to-a-print-data-format)
+      - [2.1.2.7 Supporting Client-Side Rendering and Server-Side Rendering](#2127-supporting-client-side-rendering-and-server-side-rendering)
+      - [2.1.2.8 Sending Print Data to a Printer via a Port Monitor](#2128-sending-print-data-to-a-printer-via-a-port-monitor)
+      - [2.1.2.9 Branch Office Print Mode](#2129-branch-office-print-mode)
+    - [2.1.3 Applicability](#213-applicability)
+    - [2.1.4 Relevant Standards](#214-relevant-standards)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Actors](#251-actors)
+    - [2.5.2 Use Case Summary Diagrams](#252-use-case-summary-diagrams)
+    - [2.5.3 Use Case Descriptions](#253-use-case-descriptions)
+      - [2.5.3.1 Provision a Print Queue -- Administrative Client](#2531-provision-a-print-queue-administrative-client)
+      - [2.5.3.2 Delete a Print Queue -- Administrative Client](#2532-delete-a-print-queue-administrative-client)
+      - [2.5.3.3 Locate and Establish a Connection to a Print Queue in a Domain Environment -](#2533-locate-and-establish-a-connection-to-a-print-queue-in-a-domain-environment-)
+      - [2.5.3.4 Locate and Establish a Connection to a Print Queue in a Workgroup](#2534-locate-and-establish-a-connection-to-a-print-queue-in-a-workgroup)
+      - [2.5.3.5 Locating and Connecting to a Shared Print Queue from an Internet Client --](#2535-locating-and-connecting-to-a-shared-print-queue-from-an-internet-client-)
+      - [2.5.3.6 Setting Permissions for a Print Queue -- Administrative Client](#2536-setting-permissions-for-a-print-queue-administrative-client)
+      - [2.5.3.7 Submitting a Print Job -- Print Client](#2537-submitting-a-print-job-print-client)
+        - [2.5.3.7.1 Submitting a Print Job Using the Protocols Defined in [MS-RPRN] (or [MS-](#25371-submitting-a-print-job-using-the-protocols-defined-in-ms-rprn-or-ms-)
+        - [2.5.3.7.2 Submitting a Print Job by Using the IPP Internet Printing Protocol](#25372-submitting-a-print-job-by-using-the-ipp-internet-printing-protocol)
+        - [2.5.3.7.3 Submitting a Print Job Using the SMB Protocol Family](#25373-submitting-a-print-job-using-the-smb-protocol-family)
+        - [2.5.3.7.4 Submitting a Print Job Using Branch Office Print Mode](#25374-submitting-a-print-job-using-branch-office-print-mode)
+      - [2.5.3.8 Managing Print Jobs — Print Client](#2538-managing-print-jobs-print-client)
+        - [2.5.3.8.1 Managing Print Jobs Submitted by Self Using the Protocols Described in MS-](#25381-managing-print-jobs-submitted-by-self-using-the-protocols-described-in-ms-)
+        - [2.5.3.8.2 Managing Print Jobs Submitted by All Users Using the Protocols Described in](#25382-managing-print-jobs-submitted-by-all-users-using-the-protocols-described-in)
+        - [2.5.3.8.3 Managing Print Jobs from a Command Line Using the Protocol Described in](#25383-managing-print-jobs-from-a-command-line-using-the-protocol-described-in)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+    - [2.7.1 Failure Scenarios](#271-failure-scenarios)
+      - [2.7.1.1 Abnormal Termination of the Print Spooler Service](#2711-abnormal-termination-of-the-print-spooler-service)
+      - [2.7.1.2 Loss of Network Connectivity](#2712-loss-of-network-connectivity)
+      - [2.7.1.3 Loss of System Disk Storage](#2713-loss-of-system-disk-storage)
+      - [2.7.1.4 Print Spooler Service Out of System Resources](#2714-print-spooler-service-out-of-system-resources)
+      - [2.7.1.5 Authentication Issues](#2715-authentication-issues)
+      - [2.7.1.6 Expected Failures](#2716-expected-failures)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+    - [2.8.1 Timers](#281-timers)
+    - [2.8.2 Non-Timer Events](#282-non-timer-events)
+    - [2.8.3 Initialization and Reinitialization Procedures](#283-initialization-and-reinitialization-procedures)
+  - [2.9 Security](#29-security)
+    - [2.9.1 Security and Authentication Methods](#291-security-and-authentication-methods)
+    - [2.9.2 Securable Objects](#292-securable-objects)
+    - [2.9.3 Internal Security](#293-internal-security)
+    - [2.9.4 External Security](#294-external-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Discovering and Utilizing a Print Queue in a Domain](#31-example-1-discovering-and-utilizing-a-print-queue-in-a-domain)
+  - [3.2 Example 2: Discovering and Utilizing a Print Queue in a Workgroup](#32-example-2-discovering-and-utilizing-a-print-queue-in-a-workgroup)
+  - [3.5 Getting printer](#35-getting-printer)
+  - [3.6 Example 6: Sending a Print Job to an SMB Share](#36-example-6-sending-a-print-job-to-an-smb-share)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-
-2.1
-
-2.1.1
-2.1.2
-
-2.1.3
-2.1.4
-
-2.1.2.1
-2.1.2.2
-
-2.1.2.2.1
-2.1.2.2.2
-
-2.1.2.3
-2.1.2.4
-2.1.2.5
-
-2.1.2.6
-2.1.2.7
-2.1.2.8
-2.1.2.9
-
-2.1.2.5.1
-2.1.2.5.2
-2.1.2.5.3
-2.1.2.5.4
-
-2  Functional Architecture ......................................................................................... 14
-Overview ........................................................................................................ 14
-System Purpose ......................................................................................... 14
-Functional Overview .................................................................................... 14
-Print Services System Components ......................................................... 14
-Relationship of the Components within Print and Administrative Clients and
-Print Server.......................................................................................... 15
-Print and Administrative Clients ......................................................... 15
-Print Server .................................................................................... 16
-Member Protocol Functional Relationships ................................................ 17
-System Internal Architecture .................................................................. 22
-Windows Printing Architecture ................................................................ 24
-Print Client Communication with Print Server ...................................... 24
-Protocols Supporting Different Print Clients ......................................... 25
-Protocol Redirectors on Print Servers ................................................. 25
-Enabling Print Queues to Be Discoverable ........................................... 26
-Translating Application Content to a Print Data Format .............................. 27
-Supporting Client-Side Rendering and Server-Side Rendering ..................... 27
-Sending Print Data to a Printer via a Port Monitor...................................... 28
-Branch Office Print Mode ........................................................................ 28
-Applicability ............................................................................................... 28
-Relevant Standards ..................................................................................... 28
-Protocol Summary ............................................................................................ 29
-Environment .................................................................................................... 32
-Dependencies on This System ...................................................................... 32
-Dependencies on Other Systems/Components ................................................ 32
-Assumptions and Preconditions .......................................................................... 34
-Use Cases ....................................................................................................... 35
-Actors ....................................................................................................... 36
-Use Case Summary Diagrams ...................................................................... 37
-Use Case Descriptions ................................................................................. 40
-Provision a Print Queue -- Administrative Client ........................................ 40
-Delete a Print Queue -- Administrative Client ............................................ 42
-Locate and Establish a Connection to a Print Queue in a Domain Environment --
-Print Client ........................................................................................... 43
-Locate and Establish a Connection to a Print Queue in a Workgroup
-Environment -- Print Client..................................................................... 45
-Locating and Connecting to a Shared Print Queue from an Internet Client --
-Print Client ........................................................................................... 47
-Setting Permissions for a Print Queue -- Administrative Client .................... 48
-Submitting a Print Job -- Print Client ....................................................... 49
-Submitting a Print Job Using the Protocols Defined in [MS-RPRN] (or [MS-
-PAR]) ............................................................................................. 49
-Submitting a Print Job by Using the IPP Internet Printing Protocol ......... 50
-Submitting a Print Job Using the SMB Protocol Family .......................... 51
-
-2.5.3.1
-2.5.3.2
-2.5.3.3
-
-2.5.3.7.2
-2.5.3.7.3
-
-2.5.1
-2.5.2
-2.5.3
-
-2.5.3.6
-2.5.3.7
-
-2.3.1
-2.3.2
-
-2.5.3.7.1
-
-2.5.3.4
-
-2.5.3.5
-
-2.2
-2.3
-
-2.4
-2.5
-
-[MS-PRSOD] - v20240729
-Print Services Protocols Overview
-Copyright © 2024 Microsoft Corporation
-Release: July 29, 2024
-
-3 / 104
-
-2.6
-2.7
-
-2.7.1
-
-2.5.3.7.4
-
-2.5.3.8
-
-2.5.3.8.1
-
-2.5.3.8.2
-
-2.5.3.8.3
-
-Submitting a Print Job Using Branch Office Print Mode ......................... 52
-Managing Print Jobs — Print Client .......................................................... 54
-Managing Print Jobs Submitted by Self Using the Protocols Described in MS-
-RPRN or MS-PAR ............................................................................. 54
-Managing Print Jobs Submitted by All Users Using the Protocols Described in
-MS-RPRN or MS-PAR ........................................................................ 55
-Managing Print Jobs from a Command Line Using the Protocol Described in
-MS-RAP .......................................................................................... 56
-Versioning, Capability Negotiation, and Extensibility ............................................. 57
-Error Handling ................................................................................................. 60
-Failure Scenarios ........................................................................................ 60
-Abnormal Termination of the Print Spooler Service .................................... 61
-Loss of Network Connectivity .................................................................. 61
-Loss of System Disk Storage .................................................................. 61
-Print Spooler Service Out of System Resources ......................................... 61
-Authentication Issues ............................................................................ 61
-Expected Failures .................................................................................. 62
-Coherency Requirements .................................................................................. 62
-Timers ...................................................................................................... 62
-Non-Timer Events ....................................................................................... 62
-Initialization and Reinitialization Procedures ................................................... 62
-Security .......................................................................................................... 63
-Security and Authentication Methods............................................................. 64
-Securable Objects ....................................................................................... 64
-Internal Security ........................................................................................ 64
-External Security ........................................................................................ 64
-Additional Considerations .................................................................................. 65
-
-2.7.1.1
-2.7.1.2
-2.7.1.3
-2.7.1.4
-2.7.1.5
-2.7.1.6
-
-2.8
-
-2.9
-
-2.8.1
-2.8.2
-2.8.3
-
-2.9.1
-2.9.2
-2.9.3
-2.9.4
-
-2.10
-
-3  Examples ............................................................................................................... 66
-Example 1: Discovering and Utilizing a Print Queue in a Domain ............................ 66
-Example 2: Discovering and Utilizing a Print Queue in a Workgroup........................ 73
-Example 3: Receiving Unidirectional IHV-Defined Notifications ............................... 81
-Example 4: Enumerating Print Jobs from All Users, Then Canceling Several Print Jobs83
-Example 5: Provisioning a Print Queue By Using the Protocol Defined in [MS-RPRN] . 85
-Example 6: Sending a Print Job to an SMB Share ................................................. 92
-
-3.1
-3.2
-3.3
-3.4
-3.5
-3.6
-
-4  Microsoft Implementations ................................................................................... 95
-Product Behavior .............................................................................................. 96
-
-4.1
-
-5  Change Tracking .................................................................................................. 102
-
-6  Index ................................................................................................................... 103
-
-[MS-PRSOD] - v20240729
-Print Services Protocols Overview
-Copyright © 2024 Microsoft Corporation
-Release: July 29, 2024
-
-4 / 104
-
-1  Introduction
+## 1 Introduction
 
 This document describes the Print Services system (PSS), which supports the use and management of
 a distributed print infrastructure. It describes how the Print Services system can be used in
@@ -494,7 +353,7 @@ and domain-based networks, where there can be multiple print servers that are de
 configuration, with the print client configuration managed through the Active Directory system. The
 differences between these scenarios are described in the protocols in this document.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -554,7 +413,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Domain Name System (DNS): A hierarchical, distributed database that contains mappings of
+
+Domain Name System (DNS): A hierarchical, distributed database that contains mappings of
 domain names to various types of data, such as IP addresses. DNS enables the location of
 computers and services by user-friendly names, and it also enables the discovery of other
 information stored in the database.
@@ -629,7 +489,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Internet Printing Protocol (IPP): A standard protocol for printing and for the management of
+
+Internet Printing Protocol (IPP): A standard protocol for printing and for the management of
 
 print jobs and printer settings over the Internet. It is built on the Hypertext Transfer Protocol
 (HTTP).
@@ -708,7 +569,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-print server: A machine that hosts the print system and all its different components.
+
+print server: A machine that hosts the print system and all its different components.
 
 print spooler: The component is a service that implements the Print Services system on Windows-
 based print clients and print servers. The spooler buffers and orders print jobs and converts
@@ -780,7 +642,8 @@ Release: July 29, 2024
 
 8 / 104
 
-Simple and Protected GSS-API Negotiation Mechanism (SPNEGO): An authentication
+
+Simple and Protected GSS-API Negotiation Mechanism (SPNEGO): An authentication
 mechanism that allows Generic Security Services (GSS) peers to determine whether their
 credentials support a common set of GSS-API security mechanisms, to negotiate different
 options within a given security mechanism or different options from several security
@@ -816,7 +679,7 @@ XML Paper Specification (XPS): An XML-based document format. XML Paper Specifica
 technologies to describe the content and appearance of paginated documents. For more
 information, see [MSFT-XMLPAPER].
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -850,7 +713,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-[MS-CIFS] Microsoft Corporation, "Common Internet File System (CIFS) Protocol".
+
+[MS-CIFS] Microsoft Corporation, "Common Internet File System (CIFS) Protocol".
 
 [MS-DRSR] Microsoft Corporation, "Directory Replication Service (DRS) Remote Protocol".
 
@@ -916,7 +780,8 @@ Release: July 29, 2024
 
 10 / 104
 
-[RFC1179] McLaughlin III, L., "Line Printer Daemon Protocol", RFC 1179, August 1990,
+
+[RFC1179] McLaughlin III, L., "Line Printer Daemon Protocol", RFC 1179, August 1990,
 https://www.rfc-editor.org/info/rfc1179
 
 [RFC1831] Srinivasan, R., "RPC: Remote Procedure Call Protocol Specification Version 2", RFC 1831,
@@ -940,7 +805,7 @@ and Content", RFC7231, June 2014, https://www.rfc-editor.org/info/rfc7231
 [RFC8011] Sweet, M. and McDonald, I., "Internet Printing Protocol/1.1: Model and Semantics", RFC
 8011, January 2017, https://www.rfc-editor.org/info/rfc8011
 
-1.3  Overview
+### 1.3 Overview
 
 This section provides an overview of the concepts needed for understanding this technology:
 
@@ -961,7 +826,7 @@ Printers and print data formats
 Familiarity with the Windows Graphics Device Interface (GDI) [MSDN-WindowsGDI] and GDI
 Extended (GDI+) [MSDN-GDI+] is also an advantage for understanding this technology.
 
-1.3.1  Print Spoolers
+#### 1.3.1 Print Spoolers
 
 A print spooler that is running on a print client exposes local printing APIs to applications, receives
 the print output of an application, and sends it to a shared print queue on a print server. The print
@@ -987,7 +852,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-1.3.2  Print Spooler Service
+
+#### 1.3.2 Print Spooler Service
 
 The print spooler service is a service that is running on each computer that participates in the Print
 Services system. The print spooler service implements the print client and print server roles, by
@@ -1013,14 +879,14 @@ The Windows behavior is to use polling in such scenarios. Additionally, the prin
 exposes local interfaces that are used by client applications to print, obtain print queue status,
 administer print queues, or perform other print-specific actions.
 
-1.3.3  Print Queues
+#### 1.3.3 Print Queues
 
 A print queue is an abstract component residing on a print server to which print jobs are submitted.
 In some component protocol documents, the phrase "print queue" is used interchangeably with the
 word "printer". However, in this system overview, "print queue" always refers to the abstract
 component, and "printer" refers to the printers.
 
-1.3.4  Printers and Print Data Formats
+#### 1.3.4 Printers and Print Data Formats
 
 A printer is a physical device that is provided by an Independent Hardware Vendor (IHV). It
 prints content on a variety of mediums and includes both traditional 2D printers and 3D printers,
@@ -1053,7 +919,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-1.3.5  Printer Drivers and Print Processors
+
+#### 1.3.5 Printer Drivers and Print Processors
 
 Printer drivers and print processors are printer-specific and implement a set of functions that
 Windows calls to perform the following tasks:
@@ -1080,9 +947,10 @@ Release: July 29, 2024
 
 13 / 104
 
-2  Functional Architecture
 
-2.1  Overview
+## 2 Functional Architecture
+
+### 2.1 Overview
 
 In addition to protocols supporting communication between print clients and print servers, the Print
 Services system also supports externally defined system protocols for the Group Policy and Active
@@ -1101,7 +969,7 @@ Print clients submit print jobs to the print queues. The print queues are manage
 component running on the print server that buffers and orders print jobs arriving from many print
 clients simultaneously, or jobs arriving at a higher speed than the printers are capable of handling.
 
-2.1.1  System Purpose
+#### 2.1.1 System Purpose
 
 Printers are often acquired and deployed in an organization over time, resulting in a mixed
 infrastructure that is comprised of many different printers with varying capabilities, such as color
@@ -1113,9 +981,9 @@ The Print Services system standardizes access and maintenance of multiple printe
 workgroup, or home environment so administrators can more easily deploy and maintain printers,
 and so users can choose the best printer for a given job from among a pool of shared printers.
 
-2.1.2  Functional Overview
+#### 2.1.2 Functional Overview
 
-2.1.2.1  Print Services System Components
+##### 2.1.2.1 Print Services System Components
 
 The following diagram shows the components of the Print Services system.
 
@@ -1126,13 +994,14 @@ Release: July 29, 2024
 
 14 / 104
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-PRSOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 Figure 1: Components of printing services
 
-2.1.2.2  Relationship of the Components within Print and Administrative Clients and
+##### 2.1.2.2 Relationship of the Components within Print and Administrative Clients and
 
 Print Server
 
@@ -1140,7 +1009,7 @@ The diagrams in this section show the relationship of the components within prin
 clients, and the relationship of the components within print servers in the Print Services system.
 Additional details are available in System Internal Architecture (section 2.1.2.4).
 
-2.1.2.2.1 Print and Administrative Clients
+###### 2.1.2.2.1 Print and Administrative Clients
 
 The following diagram shows the components in print and administrative clients.
 
@@ -1151,13 +1020,14 @@ Release: July 29, 2024
 
 15 / 104
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-PRSOD].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
 Figure 2: Components in print and administrative clients
 
-2.1.2.2.2 Print Server
+###### 2.1.2.2.2 Print Server
 
 The following diagram shows the components within the print server. The Server Service implements
 Server Message Block (SMB) [MS-SMB] and Remote Administration Protocol (RAP) [MS-RAP]
@@ -1170,13 +1040,14 @@ Release: July 29, 2024
 
 16 / 104
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-PRSOD].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
 Figure 3: Components within the print server
 
-2.1.2.3  Member Protocol Functional Relationships
+##### 2.1.2.3 Member Protocol Functional Relationships
 
 The following diagrams show the protocol relationships in the Print Services system.
 
@@ -1187,7 +1058,8 @@ Release: July 29, 2024
 
 17 / 104
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-PRSOD].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1201,7 +1073,8 @@ Release: July 29, 2024
 
 18 / 104
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-PRSOD].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1215,7 +1088,8 @@ Release: July 29, 2024
 
 19 / 104
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-PRSOD].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1228,7 +1102,8 @@ Release: July 29, 2024
 
 20 / 104
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-PRSOD].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1242,13 +1117,14 @@ Release: July 29, 2024
 
 21 / 104
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-PRSOD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
 Figure 8: Protocol extensions used by a print server to communicate with printers
 
-2.1.2.4  System Internal Architecture
+##### 2.1.2.4 System Internal Architecture
 
 The following diagram shows the internal system architecture of the Print Services system.
 
@@ -1259,7 +1135,8 @@ Release: July 29, 2024
 
 22 / 104
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-PRSOD].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1288,7 +1165,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-The core protocols of the Print Services system are the Print System Remote Protocol [MS-RPRN],
+
+The core protocols of the Print Services system are the Print System Remote Protocol [MS-RPRN],
 Print System Asynchronous Remote Protocol [MS-PAR], and Print System Asynchronous Notification
 Protocol [MS-PAN]. The print server contains a print spooler that receives communications from the
 print client's print spooler by using these protocols.
@@ -1323,7 +1201,7 @@ The print server's print spooler persists system data in a registry component. T
 print driver, port monitor, print processor, and language monitor modules by using the local file
 system. The print spooler also uses the local file system of the print server to buffer print jobs.
 
-2.1.2.5  Windows Printing Architecture
+##### 2.1.2.5 Windows Printing Architecture
 
 Applications that are built by using Windows interfaces can use device-independent functions for
 creating print jobs and sending them to many types of printers. This device independence is based
@@ -1332,7 +1210,7 @@ spoolers and printer drivers. Print spoolers and printer drivers are replaceable
 target-specific client and printer hardware, while enabling applications to continue to use stable
 interfaces.
 
-2.1.2.5.1 Print Client Communication with Print Server
+###### 2.1.2.5.1 Print Client Communication with Print Server
 
 Applications that are written by using the Windows Print API that are running on print clients access
 the local print spooler, which then redirects the application requests to the print services that are
@@ -1351,14 +1229,15 @@ Release: July 29, 2024
 
 24 / 104
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-PRSOD].images/page025-img01.png)
 ![Extracted image 2 from page 25]([MS-PRSOD].images/page025-img02.png)
 <!-- /Extracted images from page 25 -->
 
 Figure 10: Print clients communicating with print server
 
-2.1.2.5.2 Protocols Supporting Different Print Clients
+###### 2.1.2.5.2 Protocols Supporting Different Print Clients
 
 Different Print Services system protocols and other protocols are used to enable a variety of print
 clients to communicate with a print server. For more information about the versions, capabilities, and
@@ -1369,7 +1248,7 @@ server.
 
 Figure 11: Protocols used by different print clients
 
-2.1.2.5.3 Protocol Redirectors on Print Servers
+###### 2.1.2.5.3 Protocol Redirectors on Print Servers
 
 Simultaneous server-side support for printing services and file access services by way of the SMB
 Access Protocols [MS-SMB] [MS-SMB2] and RAP [MS-RAP] require that redirector components be
@@ -1384,7 +1263,8 @@ Release: July 29, 2024
 
 25 / 104
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-PRSOD].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1397,7 +1277,7 @@ The following diagram shows redirectors routing data from a print client to a pr
 
 Figure 12: Redirectors routing data from a print client to the print spooler
 
-2.1.2.5.4 Enabling Print Queues to Be Discoverable
+###### 2.1.2.5.4 Enabling Print Queues to Be Discoverable
 
 To enable print queues to be discoverable by print clients, the Print Services system uses the
 Active Directory system [MS-ADOD] to store and provide information about shared queues.
@@ -1422,13 +1302,14 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-PRSOD].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
 Figure 13: Obtaining information about print queues from an LDAP server
 
-2.1.2.6  Translating Application Content to a Print Data Format
+##### 2.1.2.6 Translating Application Content to a Print Data Format
 
 Windows works with the print spooler to manage the translation of application content to printer-
 specific data formats by using two configurations, as shown in the following sections. The print spooler
@@ -1450,7 +1331,7 @@ which is usually part of the printer driver, to assist in the translation of the
 specific data stream. A print processor loads the metafile and replays the contained commands to the
 printer driver, which then performs the actual translation process to the printer-specific data stream.
 
-2.1.2.7  Supporting Client-Side Rendering and Server-Side Rendering
+##### 2.1.2.7 Supporting Client-Side Rendering and Server-Side Rendering
 
 Client-side rendering is one configuration of a client-server printing model. In this configuration, the
 print spooler service on the print client translates the metafile to the printer-specific raw format
@@ -1471,17 +1352,18 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-a printer driver directly from a print server, and a Package Point-and-Print mechanism that allows a
+
+a printer driver directly from a print server, and a Package Point-and-Print mechanism that allows a
 print client to download a printer support package that includes the print processor [MS-WPRN].
 
-2.1.2.8  Sending Print Data to a Printer via a Port Monitor
+##### 2.1.2.8 Sending Print Data to a Printer via a Port Monitor
 
 In order to send print data to a printer, a print server uses a port monitor module. Port monitors
 implement an abstraction API that allows the print spooler service to send and receive data through
 a printer port, such as USB or parallel ports on the computer acting as the print server and
 connected to a printer, or through a network connection to a printer, such as TCP/IP.
 
-2.1.2.9  Branch Office Print Mode
+##### 2.1.2.9 Branch Office Print Mode
 
 An operating mode in which a print client is able to print directly to a print device instead of a print
 queue on a print server. It can reduce network costs in environments with centralized print servers.
@@ -1490,7 +1372,7 @@ via the TCPMON monitor module ([MS-RPRN] section 3.1.4.11.3), the WSDMON monitor
 ([MS-RPRN] section 3.1.4.11.4), or the APMON monitor module ([MS-RPRN] section 3.1.4.11.5) are
 eligible to operate in branch office print mode.
 
-2.1.3  Applicability
+#### 2.1.3 Applicability
 
 The Print Services system supports the use and management of a distributed print infrastructure. By
 using print servers and print clients that implement the member protocols that are described in this
@@ -1515,7 +1397,7 @@ to learn about printer capabilities, such as paper formats, color capabilities, 
 associated printer driver is also responsible for conversion of application commands into the vendor-
 defined page description language (PDL) that is used to print a job on a printer.
 
-2.1.4  Relevant Standards
+#### 2.1.4 Relevant Standards
 
 The Print Services system uses the following standards:
 
@@ -1534,7 +1416,8 @@ Release: July 29, 2024
 
 28 / 104
 
-LDAP: Lightweight Directory Access Protocol [RFC4511]. Used by the print server role to publish
+
+LDAP: Lightweight Directory Access Protocol [RFC4511]. Used by the print server role to publish
 shared printer information to the directory. Used by the print client role to discover available shared
 printers in the domain.
 
@@ -1546,7 +1429,7 @@ Print System Remote Protocol using RPC over SMB, in the Print System Asynchronou
 Protocol using RPC over TCP/IP, and in the Print System Asynchronous Notification Protocol [MS-
 PAN] using RPC over TCP/IP.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The member protocols of the Print Services system include the protocols that are described in this
 section, IPP [RFC8011] [RFC8010], and the Line Printer Daemon Protocol [RFC1179]. The Print
@@ -1635,7 +1518,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1732,7 +1616,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Protocols in this table enable print queue connection and printing from Internet clients.
+
+Protocols in this table enable print queue connection and printing from Internet clients.
 
 Protocol
 name
@@ -1859,7 +1744,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1870,17 +1756,17 @@ those print clients and print servers that do not support the Print
 System protocols. This group of protocols is used by command-line
 copy to printer share operations.
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. This includes the systems that
 use the interfaces provided by this system of protocols, other systems that depend on this system,
 and, as appropriate, how components of the system communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 None.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 The Print Services system member protocols require the following protocols:
 
@@ -1930,7 +1816,8 @@ Release: July 29, 2024
 
 32 / 104
 
-  Used for publishing and query of shared print queues.
+
+  Used for publishing and query of shared print queues.
 
   Used by the Group Policy: Deployed Printer Connections Extension.
 
@@ -2002,7 +1889,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-The Print Services system uses the Active Directory system in domain-based networks. The LDAP
+
+The Print Services system uses the Active Directory system in domain-based networks. The LDAP
 protocol is used between the print server and the Active Directory system and between the print client
 and the Active Directory system. In workgroup environments, the CIFS Browser Protocol [MS-BRWS]
 is used for communication between print clients and print servers, and between print servers.
@@ -2058,7 +1946,7 @@ are considered trusted for printer driver download in Point-and-Print scenarios.
 The Group Policy: Deployed Printer Connection Extension [MS-GPDPC] influences the Print
 Services system in regard to deployed printer connections.
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions are necessary for the Print Services system to operate
 successfully:
@@ -2093,7 +1981,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+
+
 
 
 
@@ -2181,7 +2070,7 @@ Various protocols can be used, including the Active Directory Lightweight Direct
 Schema [MS-ADLS], Active Directory Schema Classes [MS-ADSC], and the CIFS Browser Protocol
 [MS-BRWS].
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 The Print Services system is designed to support scenarios that allow users shared access to printers
 that are connected to print servers or to computers that are used by other users. When a user wants
@@ -2198,7 +2087,8 @@ Release: July 29, 2024
 
 35 / 104
 
-  Connecting the user to the print queue that is associated with the requested printer and enabling
+
+  Connecting the user to the print queue that is associated with the requested printer and enabling
 
 the user to install the appropriate printer driver
 
@@ -2231,7 +2121,7 @@ an administrator performing administrative operations.
 
 Section 2.5.2 provides a table that summarizes the use cases that are described in section 2.5.3.
 
-2.5.1  Actors
+#### 2.5.1 Actors
 
 Print client: The print client connects to a print queue on a print server, sends print data to the print
 queue, displays notifications about the printer or print job, and disconnects from the print queue. The
@@ -2270,7 +2160,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Administrator: The individual who is responsible for installing and configuring printers within a
+
+Administrator: The individual who is responsible for installing and configuring printers within a
 deployed Print Services system, and for monitoring, managing, and troubleshooting printing functions.
 The administrator uses an administrative client.
 
@@ -2285,7 +2176,7 @@ to restrict print clients from accessing specified print servers and to remotely
 queue connections to print clients. The Print Services system uses a Group Policy Services Extension
 [MS-GPDPC] to distribute these preconfigured print queue connections to print clients.
 
-2.5.2  Use Case Summary Diagrams
+#### 2.5.2 Use Case Summary Diagrams
 
 The following table provides an overview of use cases which span the functionality of the Print
 Services System. Use case extensions are noted within each use case. Detailed descriptions for these
@@ -2353,7 +2244,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Use case group
+
+Use case group
 
 Use cases
 
@@ -2429,7 +2321,8 @@ Release: July 29, 2024
 
 38 / 104
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-PRSOD].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -2442,15 +2335,16 @@ Release: July 29, 2024
 
 39 / 104
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-PRSOD].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
 Figure 15: Printing services use cases initiated by a print client
 
-2.5.3  Use Case Descriptions
+#### 2.5.3 Use Case Descriptions
 
-2.5.3.1  Provision a Print Queue -- Administrative Client
+##### 2.5.3.1 Provision a Print Queue -- Administrative Client
 
 Goal: To make a print queue available on a print server, subsequently allowing a user to select the
 print queue, establishing all attributes and components necessary to make the print queue
@@ -2474,7 +2368,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Primary Actor: The primary actor is an administrator.
+
+Primary Actor: The primary actor is an administrator.
 
 Supporting Actors: The supporting actors are the print server and the Active Directory system.
 
@@ -2548,7 +2443,8 @@ Release: July 29, 2024
 
 41 / 104
 
-6.  The administrative client uses the Print System Remote Protocol to create a print queue on the
+
+6.  The administrative client uses the Print System Remote Protocol to create a print queue on the
 
 print server. The administrator uses the administrative client to assign a printer driver, a printer
 port, and a print processor to the print queue during this step, and also sets access permissions,
@@ -2574,7 +2470,7 @@ Variation (a) - Performing the use case using the protocol described in [MS-PAR]
 are identical to the use case described in this section except that the Print System Asynchronous
 Remote Protocol [MS-PAR] is used to locate and establish the connection to the print queue.
 
-2.5.3.2  Delete a Print Queue -- Administrative Client
+##### 2.5.3.2 Delete a Print Queue -- Administrative Client
 
 Goal: To delete a previously provisioned print queue that is available on a print server, which
 subsequently no longer enables a user to select the print queue, removing all attributes and
@@ -2622,7 +2518,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-print server and administrative client. The Active Directory system is available and operational. The
+
+print server and administrative client. The Active Directory system is available and operational. The
 print queue exists.
 
 Minimal Guarantee: The administrative client is denied access, and no delete operations occur.
@@ -2653,7 +2550,7 @@ Variation (a) - Performing the use case by using the protocol described in [MS-P
 details are identical to the use case that is described in this section except that the Print System
 Asynchronous Remote Protocol [MS-PAR] is used to delete the print queue.
 
-2.5.3.3  Locate and Establish a Connection to a Print Queue in a Domain Environment -
+##### 2.5.3.3 Locate and Establish a Connection to a Print Queue in a Domain Environment -
 
 - Print Client
 
@@ -2696,7 +2593,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-  Group Policy system: The Group Policy Deployed Printer Connections Extension [MS-GPDPC] is a
+
+  Group Policy system: The Group Policy Deployed Printer Connections Extension [MS-GPDPC] is a
 supporting actor in Extension (b). The Group Policy system is used to push a list of shared print
 queues to the print client so that the print client has pre-established connections to specified print
 queues. Additionally, Group Policy settings are inspected by the print client to restrict access to
@@ -2775,7 +2673,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-1.  An administrator defines one or more deployed printer connection Group Policy settings for
+
+1.  An administrator defines one or more deployed printer connection Group Policy settings for
 one or more domain users or user groups. Each Group Policy setting includes details of one or
 more print queues that are shared by the print server.
 
@@ -2813,7 +2712,7 @@ All details are identical to the use case that is described in this section, exc
 System Asynchronous Remote Protocol [MS-PAR] is used instead of the Print System Remote
 Protocol.
 
-2.5.3.4  Locate and Establish a Connection to a Print Queue in a Workgroup
+##### 2.5.3.4 Locate and Establish a Connection to a Print Queue in a Workgroup
 
 Environment -- Print Client
 
@@ -2845,7 +2744,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+
+
 
 Print clients that perform a print server role: In this use case, the print server role is performed by
 print clients that have shared print queues. After a user shares a print queue on the computer, the
@@ -2919,7 +2819,8 @@ Release: July 29, 2024
 
 46 / 104
 
-The print client updates the local print queue object with changes to the server print queue, including
+
+The print client updates the local print queue object with changes to the server print queue, including
 error state, online/offline state, and the list of queued jobs; changes in an associated printer driver
 when a different or updated driver is retrieved and installed; and changes in printer state, such as
 when a printer paused. The print client unregisters for notifications when it no longer has to issue
@@ -2929,7 +2830,7 @@ Variation (a) - Performing the use case by using the protocol as described in [M
 details are identical to the use case that is described in this section except that the Print System
 Asynchronous Remote Protocol [MS-PAR], is used instead of the Print System Remote Protocol.
 
-2.5.3.5  Locating and Connecting to a Shared Print Queue from an Internet Client --
+##### 2.5.3.5 Locating and Connecting to a Shared Print Queue from an Internet Client --
 
 Print Client
 
@@ -2994,7 +2895,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Main Success Scenario:
+
+Main Success Scenario:
 
 1.  The user of an Internet browser browses to the "http://<HOST>/printers" URL of the print server
 
@@ -3016,7 +2918,7 @@ print queue on the print server.
 
 Extensions: None.
 
-2.5.3.6  Setting Permissions for a Print Queue -- Administrative Client
+##### 2.5.3.6 Setting Permissions for a Print Queue -- Administrative Client
 
 Goal: To set permissions for a print queue, such as the priority of the print queue and the times that
 it is available for shared use, and who can access it.
@@ -3071,7 +2973,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-2.  The administrator selects one of the enumerated print queues.
+
+2.  The administrator selects one of the enumerated print queues.
 
 3.  The administrative client uses the Print System Remote Protocol to open a handle to an existing
 
@@ -3105,9 +3008,9 @@ Variation (a) - Performing the use case by using the protocol as described in [M
 details are identical to the use case as described in this section except that the Print System
 Asynchronous Remote Protocol is used instead of the Print System Remote Protocol.
 
-2.5.3.7  Submitting a Print Job -- Print Client
+##### 2.5.3.7 Submitting a Print Job -- Print Client
 
-2.5.3.7.1 Submitting a Print Job Using the Protocols Defined in [MS-RPRN] (or [MS-
+###### 2.5.3.7.1 Submitting a Print Job Using the Protocols Defined in [MS-RPRN] (or [MS-
 
 PAR])
 
@@ -3150,7 +3053,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Minimal Guarantee: The print job was submitted to the print server, but no job status feedback
+
+Minimal Guarantee: The print job was submitted to the print server, but no job status feedback
 could be initiated; therefore, the print job might print, but the print client cannot show feedback.
 
 Success Guarantee: The job is submitted, and job progress status was received and displayed to the
@@ -3209,7 +3113,7 @@ Variation (a) - Performing the use case by using the protocol as described in [M
 details are identical to the use case described in this section except that the Print System
 Asynchronous Remote Protocol [MS-PAR] is used instead of the Print System Remote Protocol.
 
-2.5.3.7.2 Submitting a Print Job by Using the IPP Internet Printing Protocol
+###### 2.5.3.7.2 Submitting a Print Job by Using the IPP Internet Printing Protocol
 
 Goal: To print a document.
 
@@ -3220,7 +3124,8 @@ Release: July 29, 2024
 
 50 / 104
 
-Context of Use: The user using an application capable of printing a document wants to print. A
+
+Context of Use: The user using an application capable of printing a document wants to print. A
 connection to a shared print queue has been previously established. The user initiates the Print
 command from the application.
 
@@ -3279,7 +3184,7 @@ using the Print System Remote Protocol.
 
 Extensions: None.
 
-2.5.3.7.3 Submitting a Print Job Using the SMB Protocol Family
+###### 2.5.3.7.3 Submitting a Print Job Using the SMB Protocol Family
 
 Goal: To print a document.
 
@@ -3296,7 +3201,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Primary Actor: The primary actor is the user.
+
+Primary Actor: The primary actor is the user.
 
 Supporting Actors: The supporting actor is the print server.
 
@@ -3350,7 +3256,7 @@ using the Print System Remote Protocol.
 
 5.  The print client closes the printer handle by using the Print System Remote Protocol.
 
-2.5.3.7.4 Submitting a Print Job Using Branch Office Print Mode
+###### 2.5.3.7.4 Submitting a Print Job Using Branch Office Print Mode
 
 Goal: To print a document.
 
@@ -3372,7 +3278,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Supporting Actors: The supporting actor is the print server.
+
+Supporting Actors: The supporting actor is the print server.
 
 Stakeholders and Interests:
 
@@ -3446,16 +3353,17 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-6. If the print server is not available, the print client creates the branch office print remote logging
+
+6. If the print server is not available, the print client creates the branch office print remote logging
 entries in the branch office print offline archive.
 
 Variation (a) - Performing the use case by using an asynchronous printing: All details are
 identical to the use case described in this section, except that the Print System Asynchronous Remote
 Protocol [MS-PAR] is used instead of the Print System Remote Protocol.
 
-2.5.3.8  Managing Print Jobs — Print Client
+##### 2.5.3.8 Managing Print Jobs — Print Client
 
-2.5.3.8.1 Managing Print Jobs Submitted by Self Using the Protocols Described in MS-
+###### 2.5.3.8.1 Managing Print Jobs Submitted by Self Using the Protocols Described in MS-
 
 RPRN or MS-PAR
 
@@ -3518,7 +3426,8 @@ Release: July 29, 2024
 
 54 / 104
 
-3.  The print client opens a handle to a specific job. The print server denies this request for any job
+
+3.  The print client opens a handle to a specific job. The print server denies this request for any job
 
 that is not submitted by the user of the print client.
 
@@ -3530,7 +3439,7 @@ Variation (a) - Performing the use case by using the protocol described in [MS-P
 details identical to the use case described in this section except that the Print System Asynchronous
 Remote Protocol [MS-PAR] is used instead of the Print System Remote Protocol.
 
-2.5.3.8.2 Managing Print Jobs Submitted by All Users Using the Protocols Described in
+###### 2.5.3.8.2 Managing Print Jobs Submitted by All Users Using the Protocols Described in
 
 MS-RPRN or MS-PAR
 
@@ -3592,7 +3501,8 @@ Release: July 29, 2024
 
 55 / 104
 
-Success Guarantee: The user or administrator attempting to perform management functions on a
+
+Success Guarantee: The user or administrator attempting to perform management functions on a
 print job will successfully be able to pause a job, resume a job, cancel a job, or perform other
 functions.
 
@@ -3620,7 +3530,7 @@ Variation (a) - Performing the use case by using the protocol as described in [M
 details are identical to the use case described in this section except that the Print System
 Asynchronous Remote Protocol [MS-PAR] is used instead of the Print System Remote Protocol.
 
-2.5.3.8.3 Managing Print Jobs from a Command Line Using the Protocol Described in
+###### 2.5.3.8.3 Managing Print Jobs from a Command Line Using the Protocol Described in
 
 MS-RAP
 
@@ -3667,7 +3577,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Success Guarantee: The user or administrator attempting to perform management functions on a
+
+Success Guarantee: The user or administrator attempting to perform management functions on a
 print job can successfully pause a job, resume a job, cancel a job, or perform other functions.
 
 Trigger: The user opens the print queue user interface and reviews queued jobs before modifying
@@ -3685,7 +3596,7 @@ queue.<7>
 
 4.  The print client uses RAP to pause, resume, or cancel a print job.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 The Print Services system (PSS) evolved over multiple releases of Windows client and server products
 (Microsoft Implementations section 4). Each version of the Print Services system provides additional
@@ -3737,7 +3648,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-PSS 1.0
+
+PSS 1.0
 
 Protocols
 supported by
@@ -3935,7 +3847,8 @@ through Internet Printing Protocol. Print clients
 
 58 / 104
 
-Print
+
+Print
 Payloads
 supported
 by the
@@ -4129,7 +4042,8 @@ XML Paper Specification (support optional): Print
 
 59 / 104
 
-Print
+
+Print
 payloads
 Supported
 by the
@@ -4215,13 +4129,13 @@ s method.
 Vendor-specific extensions are supported as noted in section 1.8 of the member protocol specification
 Technical Documents (TDs).
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 Status and error returns are defined by member protocols of the Print Services system. The Print
 Services system does not define status codes or error codes in addition to those described in the
 technical documents relating to the member protocols.
 
-2.7.1  Failure Scenarios
+#### 2.7.1 Failure Scenarios
 
 The following failure scenarios are discussed in this section:
 
@@ -4252,7 +4166,8 @@ Release: July 29, 2024
 
 60 / 104
 
-2.7.1.1  Abnormal Termination of the Print Spooler Service
+
+##### 2.7.1.1 Abnormal Termination of the Print Spooler Service
 
 This problem is typically caused by a malfunctioning plug-in module, such as an IHV-supplied printer
 driver. Other causes include internal malfunction of the print spooler service and sudden loss of
@@ -4283,24 +4198,24 @@ process for a malfunctioning printer driver two times before giving up. In this 
 system that experiences the failure, administrative intervention is required to diagnose the problem
 and to take corrective action.
 
-2.7.1.2  Loss of Network Connectivity
+##### 2.7.1.2 Loss of Network Connectivity
 
 In case of connectivity loss, the protocol handler for each member protocol tries independently to
 reconnect. There is no system-wide detection of connectivity loss.
 
-2.7.1.3  Loss of System Disk Storage
+##### 2.7.1.3 Loss of System Disk Storage
 
 Loss of system disk storage is a fatal, non-recoverable event. The behavior of the system in this case
 is undefined and unpredictable. The print spooler service of the affected system is restarted
 manually when system storage comes back online.
 
-2.7.1.4  Print Spooler Service Out of System Resources
+##### 2.7.1.4 Print Spooler Service Out of System Resources
 
 Method calls to member protocols return a nonzero error code if the server cannot process the request
 due to lack of system resources (such as memory, handles, or disk space). There is no system-wide
 mechanism for dealing with a server that is out of system resources.
 
-2.7.1.5  Authentication Issues
+##### 2.7.1.5 Authentication Issues
 
 Authentication is handled independently for each component protocol. Credential storage on
 Windows makes a distinction between session-based transports, such as RPC over SMB, and non-
@@ -4316,14 +4231,15 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Specifically, that means that requests over the Print System Asynchronous protocols [MS-PAR] [MS-
+
+Specifically, that means that requests over the Print System Asynchronous protocols [MS-PAR] [MS-
 PAN] can fail due to failed authentication, even if requests over the Print System Remote Protocol
 [MS-RPRN] operate correctly. Print client architecture is designed to handle these failures gracefully
 and to fall back to using the Print System Remote Protocol if the Print System Asynchronous protocols
 fail due to authentication issues. Therefore, functionality that is specific to the Print System
 Asynchronous protocols can be unavailable in such a fallback scenario.
 
-2.7.1.6  Expected Failures
+##### 2.7.1.6 Expected Failures
 
 A group of failures that are caused by malfunctioning printers are considered expected failures. The
 member protocols contain facilities to report the type of failure to the print client. The print client
@@ -4335,9 +4251,9 @@ up to the printer and fixing a paper jam.
 Another kind of expected failure is that a buffer proves too small to receive data that is returned by an
 RPC call.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
-2.8.1  Timers
+#### 2.8.1 Timers
 
 If the print server is configured and Active Directory is available, the print server performs the
 following operations:
@@ -4352,7 +4268,7 @@ RPRN] section 2.3.3.4).
 Periodically search for the print queues in Active Directory ([MS-RPRN] section 2.3.3.3) and delete
 all print queues that are not present in the current List of Printers ([MS-RPRN] (section 2.3.3.2).
 
-2.8.2  Non-Timer Events
+#### 2.8.2 Non-Timer Events
 
 When a system shutdown event occurs:
 
@@ -4371,7 +4287,7 @@ Print Services system automatically locates a matching driver for the detected p
 a print queue. The created print queue can optionally be set up as a shared print queue depending
 on policy setting.
 
-2.8.3  Initialization and Reinitialization Procedures
+#### 2.8.3 Initialization and Reinitialization Procedures
 
 Initialization occurs at system startup, which starts the print spooler service.
 
@@ -4389,7 +4305,8 @@ Release: July 29, 2024
 
 62 / 104
 
-  At any time: Starts listening to Web Point-and-Print Protocol [MS-WPRN] and the Internet Printing
+
+  At any time: Starts listening to Web Point-and-Print Protocol [MS-WPRN] and the Internet Printing
 Protocol [RFC8011] [RFC8010] simultaneously, or in the listed order. In Windows, IIS performs
 this process.
 
@@ -4409,7 +4326,7 @@ On initialization, print services instantiate in-memory objects according to per
 instantiation does not occur until after conditions are met that show the machine to be fully ready to
 use, such as after a user logs on or after a significant time has elapsed after startup.<12>
 
-2.9  Security
+### 2.9 Security
 
 This section documents system-wide security issues that are not otherwise described in the Technical
 Documents (TDs) for the member protocols. It does not duplicate what is already in the member
@@ -4456,13 +4373,14 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-RPC_C_AUTHN_LEVEL_PKT_INTEGRITY or RPC_C_AUTHN_LEVEL_PKT_PRIVACY authentication-level
+
+RPC_C_AUTHN_LEVEL_PKT_INTEGRITY or RPC_C_AUTHN_LEVEL_PKT_PRIVACY authentication-level
 constants. Consequently print job data and other data that are transmitted by using member protocols
 cannot be relied upon to be secure. Such data can potentially be intercepted or tampered with. A
 secure print environment is achieved by employing the underlying transport security mechanisms,
 such as Internet Protocol security (IPsec) [RFC4301].
 
-2.9.1  Security and Authentication Methods
+#### 2.9.1 Security and Authentication Methods
 
 Versioning of security is handled by the underlying RPC transport ([MS-RPCE] section 3.3.3.3).
 
@@ -4474,7 +4392,7 @@ enables the following settings:
 
   Sandbox grouping settings
 
-2.9.2  Securable Objects
+#### 2.9.2 Securable Objects
 
 The securable objects in the Print Services system are the print job object, the print queue object,
 and the print server object. Security for these objects is discussed in [MS-RPRN], [MS-PAR], and [MS-
@@ -4485,13 +4403,13 @@ network, default ACLs allow users the Use access right for all elements accessib
 protocols, and allow administrators unrestricted access for all elements accessible through the
 member protocols.
 
-2.9.3  Internal Security
+#### 2.9.3 Internal Security
 
 The Print Services system applies ACLs to elements in its ADM. When processing calls, the system
 impersonates the calling user and verifies access to a secured element through the authenticated
 user identity ([MS-PAN] section 3.1.1.6.5).
 
-2.9.4  External Security
+#### 2.9.4 External Security
 
 The Print Services system impersonates the user when it processes calls. The permissions in the user's
 token determine the type of access this system has to external resources while it processes calls.
@@ -4523,7 +4441,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-2.10  Additional Considerations
+
+### 2.10 Additional Considerations
 
 None.
 
@@ -4534,7 +4453,8 @@ Release: July 29, 2024
 
 65 / 104
 
-3  Examples
+
+## 3 Examples
 
 The following examples illustrate the protocols that are used by the Print Services system to perform
 the following:
@@ -4578,7 +4498,7 @@ Because handles are not generally portable between threads, and are never portab
 processes, the print client could also use different handles to the same print queue for different
 functions, such as listening for notifications and submitting a print job.
 
-3.1  Example 1: Discovering and Utilizing a Print Queue in a Domain
+### 3.1 Example 1: Discovering and Utilizing a Print Queue in a Domain
 
 This example demonstrates the use cases described in section 2.5.3.3 with extensions (a) and (c), and
 section 2.5.3.7.1 with extension (a).
@@ -4609,7 +4529,8 @@ Release: July 29, 2024
 
 66 / 104
 
-
+
+
 
 
 
@@ -4687,7 +4608,8 @@ Release: July 29, 2024
 
 67 / 104
 
-<!-- Extracted images from page 68 -->
+
+<!-- Extracted images from page 68 -->
 ![Extracted image 1 from page 68]([MS-PRSOD].images/page068-img01.png)
 <!-- /Extracted images from page 68 -->
 
@@ -4720,7 +4642,8 @@ Release: July 29, 2024
 
 68 / 104
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-PRSOD].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
@@ -4767,7 +4690,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Message group
+
+Message group
 
 Description
 
@@ -4866,7 +4790,8 @@ Release: July 29, 2024
 
 70 / 104
 
-18. The print client calls the RpcEnumForms (*) method on the print server for the designated
+
+18. The print client calls the RpcEnumForms (*) method on the print server for the designated
 
 print queue handle.
 
@@ -4912,7 +4837,8 @@ Release: July 29, 2024
 
 71 / 104
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-PRSOD].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -4957,7 +4883,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MS-PRSOD].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
@@ -5021,7 +4948,7 @@ It is common for clients to listen for notifications from more than one thread. 
 of steps for registration for notifications, from task 2, and unregistration, from task 3, can be observed
 on the network multiple times.
 
-3.2  Example 2: Discovering and Utilizing a Print Queue in a Workgroup
+### 3.2 Example 2: Discovering and Utilizing a Print Queue in a Workgroup
 
 This example demonstrates the use cases described in section 2.5.3.4 and section 2.5.3.7.1.
 
@@ -5032,7 +4959,8 @@ Release: July 29, 2024
 
 73 / 104
 
-In this example, a computer in a workgroup locates a shared print queue on another computer in the
+
+In this example, a computer in a workgroup locates a shared print queue on another computer in the
 workgroup and sends a print job to the shared print queue.
 
 In this example, there is no dedicated print server, no domain has been established, and no directory
@@ -5120,7 +5048,8 @@ Release: July 29, 2024
 
 74 / 104
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-PRSOD].images/page075-img01.png)
 <!-- /Extracted images from page 75 -->
 
@@ -5182,7 +5111,8 @@ Release: July 29, 2024
 
 75 / 104
 
-1.  The print client calls the RpcEnumPrinters method on the print browser server by using the
+
+1.  The print client calls the RpcEnumPrinters method on the print browser server by using the
 Print System Asynchronous Remote Protocol. It requests whatever level of printer information
 structure the client requires ([MS-RPRN] section 3.1.4.2.1).
 
@@ -5216,7 +5146,8 @@ Release: July 29, 2024
 
 76 / 104
 
-<!-- Extracted images from page 77 -->
+
+<!-- Extracted images from page 77 -->
 ![Extracted image 1 from page 77]([MS-PRSOD].images/page077-img01.png)
 <!-- /Extracted images from page 77 -->
 
@@ -5255,9 +5186,9 @@ protocol.
 
 [MS-SMB] section 2.2
 and [MS-FASOD] section
-3.5
+### 3.5 Getting printer
 
-Getting printer
+
 
 The client obtains configuration data and form information
 
@@ -5270,7 +5201,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Message group  Description
+
+Message group  Description
 
 data
 
@@ -5364,7 +5296,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-19. The print server returns the requested printer data key/value pairs and a success code.
+
+19. The print server returns the requested printer data key/value pairs and a success code.
 
 20. The print client calls the RpcEnumForms (*) method on the print server for the designated
 
@@ -5419,7 +5352,8 @@ Release: July 29, 2024
 
 79 / 104
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-PRSOD].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
@@ -5466,7 +5400,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MS-PRSOD].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
@@ -5540,7 +5475,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Remote Protocol [MS-PAR], and unidirectional IHV-defined communication has been established
+
+Remote Protocol [MS-PAR], and unidirectional IHV-defined communication has been established
 between the print client and print server by using the Print System Asynchronous Notification Protocol.
 
 Prerequisites
@@ -5604,7 +5540,8 @@ Release: July 29, 2024
 
 82 / 104
 
-<!-- Extracted images from page 83 -->
+
+<!-- Extracted images from page 83 -->
 ![Extracted image 1 from page 83]([MS-PRSOD].images/page083-img01.png)
 <!-- /Extracted images from page 83 -->
 
@@ -5645,7 +5582,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-<!-- Extracted images from page 84 -->
+
+<!-- Extracted images from page 84 -->
 ![Extracted image 1 from page 84]([MS-PRSOD].images/page084-img01.png)
 <!-- /Extracted images from page 84 -->
 
@@ -5716,7 +5654,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Message group
+
+Message group
 
 Description
 
@@ -5793,7 +5732,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+
+
 
 
 
@@ -5852,7 +5792,8 @@ Release: July 29, 2024
 
 86 / 104
 
-<!-- Extracted images from page 87 -->
+
+<!-- Extracted images from page 87 -->
 ![Extracted image 1 from page 87]([MS-PRSOD].images/page087-img01.png)
 <!-- /Extracted images from page 87 -->
 
@@ -5900,7 +5841,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Message group
+
+Message group
 
 Description
 
@@ -5983,7 +5925,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-<!-- Extracted images from page 89 -->
+
+<!-- Extracted images from page 89 -->
 ![Extracted image 1 from page 89]([MS-PRSOD].images/page089-img01.png)
 <!-- /Extracted images from page 89 -->
 
@@ -6014,7 +5957,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-The following table shows the message groups from the preceding diagram and their purpose.
+
+The following table shows the message groups from the preceding diagram and their purpose.
 
 Message
 group
@@ -6108,7 +6052,8 @@ Release: July 29, 2024
 
 90 / 104
 
-41. Following the previous step, on a separate thread of execution, the print server does the
+
+41. Following the previous step, on a separate thread of execution, the print server does the
 
 following:
 
@@ -6124,7 +6069,7 @@ RpcAsyncClosePrinter method on the print server for the print queue handle.
 
 43. The print server returns a success code.
 
-3.6  Example 6: Sending a Print Job to an SMB Share
+### 3.6 Example 6: Sending a Print Job to an SMB Share
 
 This example demonstrates the use cases described in sections 2.5.3.7.3 and 2.5.3.8.3.
 
@@ -6178,7 +6123,8 @@ Release: July 29, 2024
 
 91 / 104
 
-<!-- Extracted images from page 92 -->
+
+<!-- Extracted images from page 92 -->
 ![Extracted image 1 from page 92]([MS-PRSOD].images/page092-img01.png)
 <!-- /Extracted images from page 92 -->
 
@@ -6222,7 +6168,8 @@ Release: July 29, 2024
 
 92 / 104
 
-2.  The SMB Server Service on the print server redirects the call to a local API of the print
+
+2.  The SMB Server Service on the print server redirects the call to a local API of the print
 
 spooler to open a handle to the print queue, and the local print spooler API returns the print
 queue handle and a success code to the SMB Server Service.
@@ -6288,7 +6235,8 @@ Release: July 29, 2024
 
 93 / 104
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this overview is applicable to the following versions of Windows:
 
@@ -6352,7 +6300,8 @@ Release: July 29, 2024
 
 94 / 104
 
-4.1  Product Behavior
+
+### 4.1 Product Behavior
 
 <1> Section 1.3.1:  Print server implementation is not supported in Windows 95, Windows 98, and
 Windows Millennium Edition.
@@ -6475,7 +6424,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Print Services
+
+Print Services
 system version
 
 Print server
@@ -6655,7 +6605,8 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Print Services
+
+Print Services
 system version
 
 Print server
@@ -6835,7 +6786,8 @@ Release: July 29, 2024
 
 97 / 104
 
-Print Services
+
+Print Services
 system version
 
 Print server
@@ -6937,7 +6889,8 @@ Release: July 29, 2024
 
 98 / 104
 
-Windows uses the Environment name strings "Windows NT x86", "Windows IA64", "Windows x64",
+
+Windows uses the Environment name strings "Windows NT x86", "Windows IA64", "Windows x64",
 and "Windows 4.0".
 
 <16> Section 3.1: Print server support for the Print System Asynchronous Remote Protocol [MS-PAR]
@@ -7004,7 +6957,8 @@ Release: July 29, 2024
 
 99 / 104
 
-<28> Section 3.6: The example also applies to print clients running on Windows 95, Windows 98, and
+
+<28> Section 3.6: The example also applies to print clients running on Windows 95, Windows 98, and
 Windows Millennium Edition, and when a user sends a print job to a print queue by using the
 command to copy a file to a printer share.
 
@@ -7019,7 +6973,8 @@ Release: July 29, 2024
 
 100 / 104
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7063,7 +7018,8 @@ Release: July 29, 2024
 
 101 / 104
 
-6  Index
+
+## 6 Index
 A
 
 Actors
@@ -7201,7 +7157,8 @@ Informative references 9
 
 102 / 104
 
-Initial state 34
+
+Initial state 34
 Introduction 5
 
 L
@@ -7342,7 +7299,8 @@ System
 
 103 / 104
 
-      overview 35
+
+      overview 35
       provisioning print queue - administrative client
 
 40

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 29
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -195,189 +196,84 @@ Release: April 23, 2024
 
 2 / 29
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Socket Connect Header](#221-socket-connect-header)
+    - [2.2.2 Share Header](#222-share-header)
+    - [2.2.3 Reply Header](#223-reply-header)
+    - [2.2.4 Share Protocol Footer](#224-share-protocol-footer)
+    - [2.2.5 Connection Type Enumeration](#225-connection-type-enumeration)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Setting Up a Socket: When the Session is a Client](#3171-setting-up-a-socket-when-the-session-is-a-client)
+      - [3.1.7.2 Setting Up a Socket: When the Session is a Server](#3172-setting-up-a-socket-when-the-session-is-a-server)
+  - [3.2 Share Sender Details](#32-share-sender-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Session Provided](#3271-session-provided)
+      - [3.2.7.2 Session Socket Successfully Set Up](#3272-session-socket-successfully-set-up)
+  - [3.3 Share Receiver Details](#33-share-receiver-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 TapAndSendFiles Activation Event](#3371-tapandsendfiles-activation-event)
+      - [3.3.7.2 Session Socket Successfully Set Up Event](#3372-session-socket-successfully-set-up-event)
+      - [3.3.7.3 Socket Closed Due to Fault Event](#3373-socket-closed-due-to-fault-event)
+      - [3.3.7.4 Socket Gracefully Closed Event](#3374-socket-gracefully-closed-event)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Success Scenario](#41-success-scenario)
+    - [4.1.1 Connect](#411-connect)
+    - [4.1.2 Accept](#412-accept)
+    - [4.1.3 Share Header](#413-share-header)
+    - [4.1.4 Reply Header](#414-reply-header)
+    - [4.1.5 Share Data](#415-share-data)
+      - [4.1.5.1 Base Case](#4151-base-case)
+      - [4.1.5.2 511-Byte OPC Package](#4152-511-byte-opc-package)
+      - [4.1.5.3 512-Byte OPC Package](#4153-512-byte-opc-package)
+  - [4.2 Abort Scenario](#42-abort-scenario)
+    - [4.2.1 Connect](#421-connect)
+    - [4.2.2 Accept](#422-accept)
+    - [4.2.3 Abort Received](#423-abort-received)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Socket Connect Header ............................................................................... 10
-Share Header ............................................................................................. 10
-Reply Header ............................................................................................. 11
-Share Protocol Footer .................................................................................. 11
-Connection Type Enumeration ...................................................................... 12
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-
-3.1
-
-3.2
-
-3.1.7.1
-3.1.7.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 13
-Common Details .............................................................................................. 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-Setting Up a Socket: When the Session is a Client .................................... 13
-Setting Up a Socket: When the Session is a Server ................................... 14
-Share Sender Details ........................................................................................ 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-Session Provided ................................................................................... 17
-Session Socket Successfully Set Up ......................................................... 17
-Share Receiver Details ...................................................................................... 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-TapAndSendFiles Activation Event ........................................................... 19
-Session Socket Successfully Set Up Event ................................................ 20
-Socket Closed Due to Fault Event ............................................................ 20
-Socket Gracefully Closed Event ............................................................... 20
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-3.3.7.1
-3.3.7.2
-3.3.7.3
-3.3.7.4
-
-3.2.7.1
-3.2.7.2
-
-3.3
-
-[MS-NFPS] - v20240423
-Near Field Proximity: Sharing Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 29
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-
-4  Protocol Examples ................................................................................................. 21
-Success Scenario ............................................................................................. 21
-Connect ..................................................................................................... 21
-Accept ....................................................................................................... 22
-Share Header ............................................................................................. 22
-Reply Header ............................................................................................. 22
-Share Data ................................................................................................ 23
-Base Case ............................................................................................ 23
-511-Byte OPC Package .......................................................................... 23
-512-Byte OPC Package .......................................................................... 24
-Abort Scenario ................................................................................................. 25
-Connect ..................................................................................................... 25
-Accept ....................................................................................................... 25
-Abort Received ........................................................................................... 25
-
-4.1.5.1
-4.1.5.2
-4.1.5.3
-
-4.2.1
-4.2.2
-4.2.3
-
-4.2
-
-5  Security ................................................................................................................. 26
-Security Considerations for Implementers ........................................................... 26
-Index of Security Parameters ............................................................................ 26
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 27
-
-7  Change Tracking .................................................................................................... 28
-
-8  Index ..................................................................................................................... 29
-
-[MS-NFPS] - v20240423
-Near Field Proximity: Sharing Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 29
-
-1  Introduction
+## 1 Introduction
 
 The Near Field Proximity: Sharing Protocol primarily relies on the Near Field Proximity: Bidirectional
 Services Protocol [MS-NFPB] as a trigger for completing the message exchange specified in this
@@ -387,7 +283,7 @@ for creating an OPC package, and then TCP/IP and/or Bluetooth/RFCOMM for data tr
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -450,7 +346,8 @@ Near Field Proximity: Sharing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-track of the individual units of data (called packets) that a message is divided into for efficient
+
+track of the individual units of data (called packets) that a message is divided into for efficient
 routing through the Internet.
 
 UTF-8: A byte-oriented standard for encoding Unicode characters, defined in the Unicode standard.
@@ -461,14 +358,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -479,12 +376,12 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ECMA-376] ECMA International, "Office Open XML File Formats", https://www.ecma-
 international.org/publications-and-standards/standards/ecma-376/
 
-1.3  Overview
+### 1.3 Overview
 
 The Near Field Proximity: Sharing Protocol provides real-time sharing of an Open Packaging
 Conventions (OPC) [ECMA-376] package from one peer to another.
@@ -508,13 +405,14 @@ Release: April 23, 2024
 
 6 / 29
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-NFPS].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
 Figure 1: Data sharing sequence
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following diagram shows the relationship of the Near Field Proximity: Sharing Protocol with other
 protocols.
@@ -526,7 +424,8 @@ Release: April 23, 2024
 
 7 / 29
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-NFPS].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -537,21 +436,21 @@ Protocol [MS-NFPB] to establish a session between a share source and share targe
 then used to establish a connection between the source and the target. That connection can be used
 by the source to send an OPC package to the target.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Peers are required to be able to communicate via compatible networking technologies; for example,
 TCP/IP over wireless networks. There are no other preconditions or prerequisites for these protocols
 to function between peers. There are no assumed security associations or connections required
 between peers except those that are required by the pub/sub transport link layer.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Near Field Proximity: Sharing Protocol is well-suited to function on top of transports such as Near
 Field Communication (NFC). This protocol has been designed for linking two applications for the
 purposes of simple, real-time sharing of files. This protocol is designed to function in a cross-platform,
 cross-domain, or non-domain environment.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -569,15 +468,16 @@ Release: April 23, 2024
 
 8 / 29
 
-  Capability Negotiation: This protocol relies on the underlying NFPB protocol for explicit
+
+  Capability Negotiation: This protocol relies on the underlying NFPB protocol for explicit
 
 capability negotiation as specified in section 3.2.3.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -588,14 +488,15 @@ Release: April 23, 2024
 
 9 / 29
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The transport for the Near Field Proximity: Sharing Protocol is either TCP/IP or Bluetooth/RFCOMM.
 Each of those is a reliable connection-oriented socket.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 None of the messages in this protocol has alignment requirements; that is, there are no padding bytes
 to force a specific alignment. Unless explicitly specified otherwise, all fields use big-endian encoding.
@@ -604,7 +505,7 @@ Most of this protocol consists of a stream of bytes that contain the OPC file be
 however, there are well-defined header and footer messages, which are described in the following
 sections.
 
-2.2.1  Socket Connect Header
+#### 2.2.1 Socket Connect Header
 
 The Socket Connect header specifies the connection type of a socket connection to be established. It
 has the following structure.
@@ -649,7 +550,7 @@ decided not to accept a socket or share connection.
 
 Reserved2 (7 bits): This field MUST be set to zero when sent and MUST be ignored when received.
 
-2.2.2  Share Header
+#### 2.2.2 Share Header
 
 The Share header specifies an estimated size of an OPC package.
 
@@ -675,7 +576,8 @@ Release: April 23, 2024
 
 10 / 29
 
-...
+
+...
 
 ...
 
@@ -689,7 +591,7 @@ endian encoding. When this field is set to zero, the sender indicates that the s
 unknown, which can happen when the package is being streamed. This value is used only for
 providing an estimate to the user of how long the transfer will take.
 
-2.2.3  Reply Header
+#### 2.2.3 Reply Header
 
 The Reply header specifies how many bytes to read from the socket for the rest of the header.
 
@@ -712,7 +614,7 @@ HeaderSize (2 bytes): The value 2 in little-endian encoding (0x02, 0x00). Future
 protocol might specify a larger size, and implementations MUST accept any value greater than or
 equal to 2 and MUST ignore fields that are not defined in this specification.
 
-2.2.4  Share Protocol Footer
+#### 2.2.4 Share Protocol Footer
 
 The Share Protocol footer specifies the last piece of the OPC package, up to 15 bytes. The total size
 of this message MUST be 48 bytes.
@@ -753,7 +655,8 @@ Release: April 23, 2024
 
 11 / 29
 
-Reserved (variable): This field MUST be set to zero when sent and MUST be ignored when received.
+
+Reserved (variable): This field MUST be set to zero when sent and MUST be ignored when received.
 
 The size of this field is a function of the RemainderLength field value, as follows:
 
@@ -763,7 +666,7 @@ RemainderLength (1 byte): The length of the Remainder field, in bytes. This valu
 
 zero to 15, inclusive.
 
-2.2.5  Connection Type Enumeration
+#### 2.2.5 Connection Type Enumeration
 
 The Connection Type enumeration is used to specify the type of source and destination address used
 by the Near Field Proximity: Sharing Protocol. These values are based on the same addresses
@@ -834,9 +737,10 @@ Release: April 23, 2024
 
 12 / 29
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 There are some aspects of the Near Field Proximity: Sharing Protocol that are common to both the
 Share Sender and Share Receiver roles. Conceptually, these requirements reside in a layer between
@@ -850,35 +754,35 @@ Sender MUST always produce Session objects with the server role, and the Share R
 always produce Session objects with the client role. This is a direct result of the fact that the Share
 Sender always creates a SessionFactory object with the Launch flag set.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 This section specifies actions taken by either a Share Sender or Share Receiver for setting up a socket.
 
-3.1.7.1  Setting Up a Socket: When the Session is a Client
+##### 3.1.7.1 Setting Up a Socket: When the Session is a Client
 
 When a Session object with the client role transitions to the Ready state, and its
 ReferencedOOBConnector object has also transitioned to the Ready state, the Share Sender or
@@ -897,7 +801,8 @@ Near Field Proximity: Sharing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Use the Session object's RemoteRfcommPort element as the destination RFCOMM port for all
+
+  Use the Session object's RemoteRfcommPort element as the destination RFCOMM port for all
 
 Bluetooth socket connects.
 
@@ -938,7 +843,7 @@ object within the appropriate Share Sender or Receiver.
 
   All the other parallel connection attempts MUST be stopped and abandoned.
 
-3.1.7.2  Setting Up a Socket: When the Session is a Server
+##### 3.1.7.2 Setting Up a Socket: When the Session is a Server
 
 When a Session object with the server role transitions to the Ready state, and its
 ReferencedOOBConnector object has also transitioned to the Ready state, the Share Sender or
@@ -973,15 +878,16 @@ Near Field Proximity: Sharing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  If the A (Abort) flag is not set, the Session socket MUST be considered successfully set up and
+
+2.  If the A (Abort) flag is not set, the Session socket MUST be considered successfully set up and
 
 MUST be set as the Socket object within the Share Sender or Share Receiver.
 
-3.2  Share Sender Details
+### 3.2 Share Sender Details
 
 The Share Sender corresponds to the server role in the Near Field Proximity: Sharing Protocol.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that a Share Sender
 implementation maintains to participate in this protocol. The described organization is provided to
@@ -1042,7 +948,8 @@ Release: April 23, 2024
 
 15 / 29
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-NFPS].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1052,11 +959,11 @@ SymmetricKey:  A 128-bit Advanced Encryption Standard (AES) key derived by takin
 
 SHA256 hash of the Session object's SharedSecretKey field.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When the user indicates an intention to share an OPC package, a ShareSender object SHOULD be
 created with elements initialized as follows:
@@ -1077,19 +984,19 @@ IV: A 16-byte cryptographically-random initialization vector.
 
 State: WaitingForSession.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The only higher-layer triggered event is the user creating a new instance of a ShareSender object.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 The following local events change the Share Sender's State, as shown in the diagram in section 3.2.1.
 
@@ -1104,9 +1011,10 @@ Release: April 23, 2024
 
 16 / 29
 
-The actions required by these events are specified in the sections that follow.
 
-3.2.7.1  Session Provided
+The actions required by these events are specified in the sections that follow.
+
+##### 3.2.7.1 Session Provided
 
 This event is triggered when the Share Sender's SessionFactory object provides a Session object. If
 the Share Sender's State is WaitingForSession, this MUST be set as the object's Session element, the
@@ -1115,7 +1023,7 @@ or destroyed.
 
 The behavior for the SetupSocket state is specified in section 3.1.7.
 
-3.2.7.2  Session Socket Successfully Set Up
+##### 3.2.7.2 Session Socket Successfully Set Up
 
 When a Share Sender's Socket object has been successfully set up (section 3.1.7), the Share Sender
 state MUST transition to SendingBody, and the following actions MUST be performed:
@@ -1178,17 +1086,18 @@ Near Field Proximity: Sharing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-NFPS].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
 6.  Gracefully close the Socket.
 
-3.3  Share Receiver Details
+### 3.3 Share Receiver Details
 
 The Share Receiver corresponds to the client role in the Near Field Proximity: Sharing Protocol.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that a Share Receiver
 implementation maintains to participate in this protocol. The described organization is provided to
@@ -1252,15 +1161,16 @@ Release: April 23, 2024
 
 18 / 29
 
-SymmetricKey:  A 128-bit AES key derived by taking the SHA256 hash of the Session object's
+
+SymmetricKey:  A 128-bit AES key derived by taking the SHA256 hash of the Session object's
 
 SharedSecretKey field.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Inbound activations of the Share Receiver can arrive without any explicit user context. In order to
 support this role, the NFPB protocol and its services MUST be initialized as specified in [MS-NFPB]
@@ -1276,21 +1186,21 @@ AppID field containing the "TapAndSendFiles" UTF-8 string.
 
 The L (Launch) flag set.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The only higher-layer triggered event is the user creating a new instance of a ShareReceiver object.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 When the Share Receiver is in the ReceivingPackage state, all received data MUST be interpreted as
 16-byte blocks of encrypted OPC package. Each block MUST be decrypted by using a standard AES
 128 block cipher with the IV and SymmetricKey objects as input.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 The following local events change the Share Receiver's State, as shown in the diagram in section
 3.3.1.
@@ -1307,7 +1217,7 @@ TapAndSendFiles activation
 
 The actions required by these events are specified in the sections that follow.
 
-3.3.7.1  TapAndSendFiles Activation Event
+##### 3.3.7.1 TapAndSendFiles Activation Event
 
 When the underlying NFPB protocol indicates that a TapAndSendFiles Activation has occurred, a new
 ShareReceiver object (section 3.3.1) MUST be created with the following elements:
@@ -1323,7 +1233,8 @@ Near Field Proximity: Sharing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1333,7 +1244,7 @@ The State set to SetupSocket.
 
 The behavior for the SetupSocket state is specified in section 3.1.7.
 
-3.3.7.2  Session Socket Successfully Set Up Event
+##### 3.3.7.2 Session Socket Successfully Set Up Event
 
 When a Share Receiver's Socket has been successfully set up (section 3.1.7), the Share Receiver
 state MUST transition to ReplyHeaderAndReceivingIV (section 3.3.1), and the following actions MUST
@@ -1374,11 +1285,11 @@ hash of the Session object's SharedSecretKey element.
 
 have been received, the state MUST transition to ReceivingPackage.
 
-3.3.7.3  Socket Closed Due to Fault Event
+##### 3.3.7.3 Socket Closed Due to Fault Event
 
 The ShareReceiver object (section 3.3.1) MUST be abandoned.
 
-3.3.7.4  Socket Gracefully Closed Event
+##### 3.3.7.4 Socket Gracefully Closed Event
 
 If the Share Receiver state is not ReceivingPackage, the ShareReceiver object MUST be abandoned.
 
@@ -1397,7 +1308,8 @@ Release: April 23, 2024
 
 20 / 29
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section describes the following scenarios as examples of the Near Field Proximity: Sharing
 Protocol:
@@ -1406,7 +1318,7 @@ Protocol:
 
   Abort scenario: The protocol running to failure.
 
-4.1  Success Scenario
+### 4.1 Success Scenario
 
 This scenario describes an example of the protocol running successfully to completion. It is assumed
 that the NFPB protocol is triggered by the underlying transport and runs to completion, producing a
@@ -1415,7 +1327,7 @@ running this protocol.
 
 This example demonstrates the Share Sender sharing an OPC file with a known size of 500 bytes.
 
-4.1.1  Connect
+#### 4.1.1 Connect
 
 The Share Sender begins accepting socket connections (section 3.1.7.2).
 
@@ -1484,7 +1396,8 @@ Release: April 23, 2024
 
 21 / 29
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1507,7 +1420,7 @@ SessionID
 
 0x05
 
-4.1.2  Accept
+#### 4.1.2 Accept
 
 The Share Receiver receives the Socket Connect header (section 2.2.1) for the two successful
 connections. After an implementation-defined delay, the Share Receiver selects one of the socket
@@ -1518,7 +1431,7 @@ The third connection, which would have been successful given enough time, did no
 the Share Receiver made its selection. It is not possible to determine which connection types will be
 successful prior to their actually connecting.
 
-4.1.3  Share Header
+#### 4.1.3 Share Header
 
 Upon receipt of the reply Socket Connect header (section 2.2.1), the Share Sender sends the Share
 header (section 2.2.2). The Share Sender has the size of the OPC package to be sent, so it sets the
@@ -1545,7 +1458,7 @@ contains the following values in byte order: 0x0A, 0x00, 0xF4, 0x01, 0x00, 0x00,
 
 0x00000000
 
-4.1.4  Reply Header
+#### 4.1.4 Reply Header
 
 Upon receipt of the complete Share header (section 2.2.2), the Share Receiver responds with a Reply
 header (section 2.2.3). The Reply header contains no useful information in this version of the protocol
@@ -1574,7 +1487,8 @@ Release: April 23, 2024
 
 22 / 29
 
-4.1.5  Share Data
+
+#### 4.1.5 Share Data
 
 Upon receipt of the Reply header (section 2.2.3), the Share Receiver starts streaming the IV ()
 followed by the encrypted blocks of OPC data (except any remainder bytes that do not fill a full 16-
@@ -1582,7 +1496,7 @@ byte block; these are included instead within the Share Protocol footer). Once i
 main OPC data, it constructs the Share Protocol footer (section 2.2.4) and sends it on the socket,
 and then gracefully closes the socket.
 
-4.1.5.1  Base Case
+##### 4.1.5.1 Base Case
 
 With the above base-case assumptions, the following OPC data is sent:
 
@@ -1625,7 +1539,7 @@ Remainder
 
 0x04
 
-4.1.5.2  511-Byte OPC Package
+##### 4.1.5.2 511-Byte OPC Package
 
 In order to illustrate a corner block-size case, instead assume that the OPC package is 511 bytes:
 
@@ -1648,7 +1562,8 @@ Release: April 23, 2024
 
 23 / 29
 
-RemainderLength: 0x0F (1 byte)
+
+RemainderLength: 0x0F (1 byte)
 
 The following packet diagram shows the Share Protocol footer with these values.
 
@@ -1683,7 +1598,7 @@ Remainder
 
 RemainderLength
 
-4.1.5.3  512-Byte OPC Package
+##### 4.1.5.3 512-Byte OPC Package
 
 In order to illustrate a case with even divisibility by the block size, instead assume that the OPC
 package is 512 bytes:
@@ -1728,7 +1643,8 @@ Release: April 23, 2024
 
 24 / 29
 
-4.2  Abort Scenario
+
+### 4.2 Abort Scenario
 
 This scenario describes an example of the protocol running to failure due to the user on the Share
 Receiver declining a message to receive the OPC package. This makes the assumption that the NFPB
@@ -1739,7 +1655,7 @@ objects are created, the user on the Share Receiver is given the opportunity to 
 In this example, the Share Sender is prepared to share an OPC file, but because it is declined, its
 length is ignored.
 
-4.2.1  Connect
+#### 4.2.1 Connect
 
 The Share Receiver begins accepting socket connections. See section 3.1.7.2.
 
@@ -1748,14 +1664,14 @@ The Share Sender begins socket connection attempts to the Share Receiver. See se
 The Share Sender sends the Socket Connect header (section 2.2.1) on each of the successful socket
 connections.
 
-4.2.2  Accept
+#### 4.2.2 Accept
 
 The Share Receiver receives the Socket Connect header (section 2.2.1) for the first successful
 connection. The Share Receiver sends the Socket Connect header reply on the first successful
 connection, but because the user has declined, the Abort flag is set. The Share Receiver then closes
 the socket gracefully, and the ShareReceiver object (section 3.3.1) is abandoned.
 
-4.2.3  Abort Received
+#### 4.2.3 Abort Received
 
 The Share Sender receives the Socket Connect header (section 2.2.1) reply with the Abort flag set,
 and so it closes all its sockets and abandons the Session object.
@@ -1767,13 +1683,14 @@ Release: April 23, 2024
 
 25 / 29
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1784,7 +1701,8 @@ Release: April 23, 2024
 
 26 / 29
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1826,7 +1744,8 @@ Release: April 23, 2024
 
 27 / 29
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1870,7 +1789,8 @@ Release: April 23, 2024
 
 28 / 29
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 8

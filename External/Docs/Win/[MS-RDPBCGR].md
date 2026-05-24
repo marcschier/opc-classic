@@ -64,7 +64,8 @@ Release: March 9, 2026
 
 1 / 444
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: March 9, 2026
 
 2 / 444
 
-Date
+
+Date
 
 Revision History  Revision Class  Comments
 
@@ -572,7 +574,8 @@ Release: March 9, 2026
 
 3 / 444
 
-Date
+
+Date
 
 Revision History  Revision Class  Comments
 
@@ -653,1684 +656,561 @@ Release: March 9, 2026
 
 4 / 444
 
-Table of Contents
 
-1.3
-
-1.3.1
-
-1.1
-1.2
-
-1.3.1.5
-
-1.2.1
-1.2.2
-
-1.3.1.4.1
-1.3.1.4.2
-1.3.1.4.3
-
-1.3.1.1
-1.3.1.2
-1.3.1.3
-1.3.1.4
-
-1  Introduction .......................................................................................................... 17
-Glossary ......................................................................................................... 17
-References ...................................................................................................... 19
-Normative References ................................................................................. 20
-Informative References ............................................................................... 22
-Overview ........................................................................................................ 23
-Message Flows ........................................................................................... 23
-Connection Sequence ............................................................................ 23
-Security-Enhanced Connection Sequence ................................................. 28
-Deactivation-Reactivation Sequence ........................................................ 28
-Disconnection Sequences ....................................................................... 28
-User-Initiated on Client .................................................................... 28
-User-Initiated on Server ................................................................... 29
-Administrator-Initiated on Server ...................................................... 29
-Automatic Reconnection ......................................................................... 29
-Server Error Reporting and Status Updates .................................................... 30
-Static Virtual Channels ................................................................................ 30
-Data Compression ...................................................................................... 31
-Keyboard and Mouse Input .......................................................................... 31
-Basic Server Output .................................................................................... 31
-Controlling Server Graphics Output ............................................................... 31
-Server Redirection ...................................................................................... 32
-RDSTLS ............................................................................................... 33
-Connect-Time and Continuous Network Characteristics Detection ..................... 33
-Connection Health Monitoring ....................................................................... 34
-Relationship to Other Protocols .......................................................................... 34
-Prerequisites/Preconditions ............................................................................... 36
-Applicability Statement ..................................................................................... 36
-Versioning and Capability Negotiation ................................................................. 36
-Vendor-Extensible Fields ................................................................................... 37
-Standards Assignments ..................................................................................... 37
-
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-1.3.6
-1.3.7
-1.3.8
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.9
-1.3.10
-
-1.3.8.1
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.3
-
-2.2.1.2.1
-2.2.1.2.2
-
-2.2.1.1.1
-2.2.1.1.2
-
-2  Messages ............................................................................................................... 38
-Transport ........................................................................................................ 38
-Message Syntax ............................................................................................... 38
-Connection Sequence .................................................................................. 38
-Client X.224 Connection Request PDU ...................................................... 38
-RDP Negotiation Request (RDP_NEG_REQ) ......................................... 39
-RDP Correlation Info (RDP_NEG_CORRELATION_INFO) ........................ 40
-Server X.224 Connection Confirm PDU ..................................................... 41
-RDP Negotiation Response (RDP_NEG_RSP) ....................................... 41
-RDP Negotiation Failure (RDP_NEG_FAILURE) ..................................... 43
-Client MCS Connect Initial PDU with GCC Conference Create Request .......... 44
-User Data Header (TS_UD_HEADER).................................................. 46
-Client Core Data (TS_UD_CS_CORE) .................................................. 47
-Client Security Data (TS_UD_CS_SEC) ............................................... 54
-Client Network Data (TS_UD_CS_NET) ............................................... 55
-Channel Definition Structure (CHANNEL_DEF) ............................... 55
-Client Cluster Data (TS_UD_CS_CLUSTER) ......................................... 56
-Client Monitor Data (TS_UD_CS_MONITOR) ........................................ 58
-Monitor Definition (TS_MONITOR_DEF) ......................................... 58
-Client Message Channel Data (TS_UD_CS_MCS_MSGCHANNEL) ............ 59
-Client Multitransport Channel Data (TS_UD_CS_MULTITRANSPORT) ...... 59
-Client Unused1 Data (TS_UD_CS_UNUSED1) ...................................... 60
-Client Monitor Extended Data (TS_UD_CS_MONITOR_EX) .................... 60
-
-2.2.1.3.7
-2.2.1.3.8
-2.2.1.3.9
-2.2.1.3.10
-
-2.2.1.3.1
-2.2.1.3.2
-2.2.1.3.3
-2.2.1.3.4
-
-2.2.1.3.5
-2.2.1.3.6
-
-2.2.1.3.6.1
-
-2.2.1.3.4.1
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-5 / 444
-
-2.2.1.4
-
-2.2.1.4.1
-2.2.1.4.2
-2.2.1.4.3
-
-2.2.1.3.10.1  Monitor Attributes (TS_MONITOR_ATTRIBUTES) ............................ 61
-Server MCS Connect Response PDU with GCC Conference Create Response . 62
-User Data Header (TS_UD_HEADER).................................................. 63
-Server Core Data (TS_UD_SC_CORE) ................................................ 64
-Server Security Data (TS_UD_SC_SEC1) ............................................ 65
-Server Certificate (SERVER_CERTIFICATE) .................................... 67
-Server Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)
- 68
-
-2.2.1.4.3.1.1
-
-2.2.1.4.3.1
-
-2.2.1.11
-
-2.2.1.10.1
-
-2.2.1.11.1
-
-2.2.1.11.1.1
-
-2.2.1.11.1.1.1
-
-2.2.1.4.3.1.1.1
-
-2.2.1.11.1.1.1.1
-
-2.2.1.4.4
-2.2.1.4.5
-2.2.1.4.6
-
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-2.2.1.10
-
-RSA Public Key (RSA_PUBLIC_KEY) ................................... 69
-Server Network Data (TS_UD_SC_NET) ............................................. 70
-Server Message Channel Data (TS_UD_SC_MCS_MSGCHANNEL) ........... 70
-Server Multitransport Channel Data (TS_UD_SC_MULTITRANSPORT) ..... 71
-Client MCS Erect Domain Request PDU .................................................... 71
-Client MCS Attach User Request PDU ....................................................... 72
-Server MCS Attach User Confirm PDU ...................................................... 72
-Client MCS Channel Join Request PDU ..................................................... 73
-Server MCS Channel Join Confirm PDU .................................................... 73
-Client Security Exchange PDU ................................................................. 74
-Security Exchange PDU Data (TS_SECURITY_PACKET) ......................... 74
-Client Info PDU ..................................................................................... 75
-Client Info PDU Data (CLIENT_INFO_PDU) .......................................... 75
-Info Packet (TS_INFO_PACKET) ................................................... 76
-Extended Info Packet (TS_EXTENDED_INFO_PACKET) .............. 80
-Time Zone Information (TS_TIME_ZONE_INFORMATION) .... 83
-System Time (TS_SYSTEMTIME) ................................. 84
-Server License Error PDU - Valid Client .................................................... 86
-Valid Client License Data (LICENSE_VALID_CLIENT_DATA) ................... 87
-Licensing Preamble (LICENSE_PREAMBLE) .................................... 87
-Licensing Binary Blob (LICENSE_BINARY_BLOB) ............................ 89
-Licensing Error Message (LICENSE_ERROR_MESSAGE) ................... 90
-2.2.1.13  Mandatory Capability Exchange .............................................................. 91
-Server Demand Active PDU ............................................................... 91
-2.2.1.13.1.1  Demand Active PDU Data (TS_DEMAND_ACTIVE_PDU) ................... 92
-Capability Set (TS_CAPS_SET) ............................................... 93
-Client Confirm Active PDU ................................................................ 95
-Confirm Active PDU Data (TS_CONFIRM_ACTIVE_PDU) .................. 96
-Client Synchronize PDU.......................................................................... 97
-Synchronize PDU Data (TS_SYNCHRONIZE_PDU) ................................ 98
-Client Control PDU - Cooperate ............................................................... 98
-Control PDU Data (TS_CONTROL_PDU) .............................................. 99
-Client Control PDU - Request Control ...................................................... 100
-Client Persistent Key List PDU ................................................................ 101
-
-2.2.1.12.1.1
-2.2.1.12.1.2
-2.2.1.12.1.3
-
-2.2.1.11.1.1.1.1.1
-
-2.2.1.16
-2.2.1.17
-
-2.2.1.13.1.1.1
-
-2.2.1.13.2.1
-
-2.2.1.12.1
-
-2.2.1.13.2
-
-2.2.1.13.1
-
-2.2.1.14.1
-
-2.2.1.15.1
-
-2.2.1.15
-
-2.2.1.12
-
-2.2.1.14
-
-2.2.1.17.1
-
-2.2.1.17.1.1
-
-2.2.1.18
-
-2.2.1.18.1
-
-Persistent Key List PDU Data (TS_BITMAPCACHE_PERSISTENT_LIST_PDU)
- .................................................................................................... 102
-Persistent List Entry (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY)104
-Client Font List PDU .............................................................................. 105
-Font List PDU Data (TS_FONT_LIST_PDU) ......................................... 106
-Server Synchronize PDU ....................................................................... 106
-Server Control PDU - Cooperate ............................................................. 107
-Server Control PDU - Granted Control ..................................................... 109
-Server Font Map PDU ........................................................................... 110
-Font Map PDU Data (TS_FONT_MAP_PDU) ......................................... 111
-Disconnection Sequences ............................................................................ 112
-Client Shutdown Request PDU ............................................................... 112
-Shutdown Request PDU Data (TS_SHUTDOWN_REQ_PDU) .................. 113
-Server Shutdown Request Denied PDU ................................................... 113
-Shutdown Request Denied PDU Data (TS_SHUTDOWN_DENIED_PDU) .. 114
-MCS Disconnect Provider Ultimatum PDU ................................................ 114
-
-2.2.1.19
-2.2.1.20
-2.2.1.21
-2.2.1.22
-
-2.2.1.22.1
-
-2.2.2
-
-2.2.2.1
-
-2.2.2.1.1
-
-2.2.2.2
-
-2.2.2.2.1
-
-2.2.2.3
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-6 / 444
-
-2.2.3
-
-2.2.4
-
-2.2.3.1
-
-2.2.3.1.1
-
-2.2.4.1
-
-2.2.4.1.1
-
-2.2.4.2
-2.2.4.3
-
-2.2.5
-
-2.2.5.1
-
-2.2.5.1.1
-
-2.2.5.2
-
-2.2.6
-
-2.2.6.1
-
-2.2.6.1.1
-
-2.2.7
-
-2.2.7.1
-
-2.2.7.1.1
-2.2.7.1.2
-2.2.7.1.3
-2.2.7.1.4
-
-Deactivation-Reactivation Sequence ............................................................. 115
-Server Deactivate All PDU ..................................................................... 115
-Deactivate All PDU Data (TS_DEACTIVATE_ALL_PDU) ......................... 116
-Auto-Reconnect Sequence .......................................................................... 117
-Server Auto-Reconnect Status PDU ........................................................ 117
-Auto-Reconnect Status PDU Data (TS_AUTORECONNECT_STATUS_PDU)118
-Server Auto-Reconnect Packet (ARC_SC_PRIVATE_PACKET) ..................... 118
-Client Auto-Reconnect Packet (ARC_CS_PRIVATE_PACKET) ....................... 119
-Server Error Reporting and Status Updates ................................................... 120
-Server Set Error Info PDU ..................................................................... 120
-Set Error Info PDU Data (TS_SET_ERROR_INFO_PDU) ........................ 121
-Server Status Info PDU ......................................................................... 130
-Static Virtual Channels ............................................................................... 132
-Virtual Channel PDU ............................................................................. 132
-Channel PDU Header (CHANNEL_PDU_HEADER) ................................. 133
-Capability Sets .......................................................................................... 135
-Mandatory Capability Sets ..................................................................... 135
-General Capability Set (TS_GENERAL_CAPABILITYSET) ....................... 135
-Bitmap Capability Set (TS_BITMAP_CAPABILITYSET) .......................... 138
-Order Capability Set (TS_ORDER_CAPABILITYSET) ............................. 140
-Bitmap Cache Capability Set ............................................................ 144
-Revision 1 (TS_BITMAPCACHE_CAPABILITYSET) ........................... 144
-Revision 2 (TS_BITMAPCACHE_CAPABILITYSET_REV2) .................. 145
-Bitmap Cache Cell Info (TS_BITMAPCACHE_CELL_CACHE_INFO)146
-Pointer Capability Set (TS_POINTER_CAPABILITYSET) ........................ 147
-Input Capability Set (TS_INPUT_CAPABILITYSET) ............................... 148
-Brush Capability Set (TS_BRUSH_CAPABILITYSET) ............................. 150
-Glyph Cache Capability Set (TS_GLYPHCACHE_CAPABILITYSET) .......... 150
-Cache Definition (TS_CACHE_DEFINITION) .................................. 151
-
-2.2.7.1.4.1
-2.2.7.1.4.2
-
-2.2.7.1.4.2.1
-
-2.2.7.1.5
-2.2.7.1.6
-2.2.7.1.7
-2.2.7.1.8
-
-2.2.7.1.8.1
-
-2.2.7.1.9
-
-2.2.7.1.10
-2.2.7.1.11
-
-2.2.7.2
-
-2.2.7.2.1
-
-Offscreen Bitmap Cache Capability Set (TS_OFFSCREEN_CAPABILITYSET)
- .................................................................................................... 152
-Virtual Channel Capability Set (TS_VIRTUALCHANNEL_CAPABILITYSET) 152
-Sound Capability Set (TS_SOUND_CAPABILITYSET) ............................ 153
-Optional Capability Sets ........................................................................ 154
-
-2.2.7.2.7
-2.2.7.2.8
-2.2.7.2.9
-2.2.7.2.10
-
-2.2.7.2.2
-2.2.7.2.3
-
-2.2.7.2.4
-2.2.7.2.5
-2.2.7.2.6
-
-Bitmap Cache Host Support Capability Set
-(TS_BITMAPCACHE_HOSTSUPPORT_CAPABILITYSET) ......................... 154
-Control Capability Set (TS_CONTROL_CAPABILITYSET) ....................... 154
-Window Activation Capability Set
-(TS_WINDOWACTIVATION_CAPABILITYSET) ..................................... 155
-Share Capability Set (TS_SHARE_CAPABILITYSET) ............................. 155
-Font Capability Set (TS_FONT_CAPABILITYSET) ................................. 156
-Multifragment Update Capability Set
-(TS_MULTIFRAGMENTUPDATE_CAPABILITYSET)................................. 156
-Large Pointer Capability Set (TS_LARGE_POINTER_CAPABILITYSET) ..... 156
-Desktop Composition Capability Set (TS_COMPDESK_CAPABILITYSET) . 157
-Surface Commands Capability Set (TS_SURFCMDS_CAPABILITYSET) .... 158
-Bitmap Codecs Capability Set (TS_BITMAPCODECS_CAPABILITYSET) ... 159
-Bitmap Codecs (TS_BITMAPCODECS) .......................................... 159
-Bitmap Codec (TS_BITMAPCODEC) ........................................ 159
-2.2.7.2.10.1.1.1  Globally Unique Identifier (GUID)..................................... 160
-Keyboard and Mouse Input ......................................................................... 161
-Input PDU Packaging ............................................................................ 161
-Slow-Path (T.128) Formats .............................................................. 161
-Share Headers .......................................................................... 161
-Share Control Header (TS_SHARECONTROLHEADER) ............... 161
-Share Data Header (TS_SHAREDATAHEADER) ........................ 162
-Security Headers ...................................................................... 165
-Basic (TS_SECURITY_HEADER) ............................................. 165
-
-2.2.8.1.1.1
-
-2.2.8.1.1.1.1
-2.2.8.1.1.1.2
-
-2.2.8.1.1.2
-
-2.2.8.1.1.2.1
-
-2.2.7.2.10.1
-
-2.2.7.2.10.1.1
-
-2.2.8
-
-2.2.8.1
-
-2.2.8.1.1
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-7 / 444
-
-2.2.8.1.1.2.2
-2.2.8.1.1.2.3
-
-2.2.8.1.1.3
-
-2.2.8.1.1.3.1
-
-2.2.8.1.1.3.1.1
-
-2.2.8.1.1.3.1.1.1
-2.2.8.1.1.3.1.1.2
-
-2.2.8.1.1.3.1.1.3
-2.2.8.1.1.3.1.1.4
-2.2.8.1.1.3.1.1.5
-2.2.8.1.1.3.1.1.6
-2.2.8.1.1.3.1.1.7
-
-Non-FIPS (TS_SECURITY_HEADER1) ..................................... 167
-FIPS (TS_SECURITY_HEADER2) ............................................ 167
-Client Input Event PDU (TS_INPUT_PDU) ..................................... 168
-Client Input Event PDU Data (TS_INPUT_PDU_DATA) .............. 169
-Slow-Path Input Event (TS_INPUT_EVENT) ....................... 170
-Keyboard Event (TS_KEYBOARD_EVENT) .................... 170
-Unicode Keyboard Event (TS_UNICODE_KEYBOARD_EVENT)
- ............................................................................. 171
-Mouse Event (TS_POINTER_EVENT) ........................... 172
-Extended Mouse Event (TS_POINTERX_EVENT) ........... 173
-Synchronize Event (TS_SYNC_EVENT) ........................ 174
-Unused Event (TS_UNUSED_EVENT) .......................... 174
-Relative Mouse Event (TS_RELPOINTER_EVENT) .......... 175
-Client Fast-Path Input Event PDU (TS_FP_INPUT_PDU) ....................... 176
-Fast-Path FIPS Information (TS_FP_FIPS_INFO) ........................... 177
-Fast-Path Input Event (TS_FP_INPUT_EVENT) .............................. 178
-Fast-Path Keyboard Event (TS_FP_KEYBOARD_EVENT) ............ 179
-Fast-Path Unicode Keyboard Event
-(TS_FP_UNICODE_KEYBOARD_EVENT) .................................. 180
-Fast-Path Mouse Event (TS_FP_POINTER_EVENT) ................... 180
-Fast-Path Extended Mouse Event (TS_FP_POINTERX_EVENT) ... 181
-Fast-Path Synchronize Event (TS_FP_SYNC_EVENT) ................ 181
-Fast-Path Quality of Experience (QoE) Timestamp Event
-(TS_FP_QOETIMESTAMP_EVENT) .......................................... 182
-Fast-Path Relative Mouse Event (TS_FP_RELPOINTER_EVENT) .. 182
-Keyboard Status PDUs .......................................................................... 182
-Server Set Keyboard Indicators PDU ................................................. 182
-
-2.2.8.1.2.2.1
-2.2.8.1.2.2.2
-
-2.2.8.1.2.2.3
-2.2.8.1.2.2.4
-2.2.8.1.2.2.5
-2.2.8.1.2.2.6
-
-2.2.8.1.2.2.7
-
-2.2.8.1.2
-
-2.2.8.1.2.1
-2.2.8.1.2.2
-
-Set Keyboard Indicators PDU Data
-(TS_SET_KEYBOARD_INDICATORS_PDU) .................................... 184
-Server Set Keyboard IME Status PDU ................................................ 184
-
-2.2.9.1.1.1
-2.2.9.1.1.2
-2.2.9.1.1.3
-
-2.2.9.1.1.3.1
-
-2.2.9.1.1.3.1.1
-
-2.2.9.1.1.3.1.2
-
-2.2.9.1.1.3.1.1.1
-2.2.9.1.1.3.1.1.2
-
-Set Keyboard IME Status PDU Data
-(TS_SET_KEYBOARD_IME_STATUS_PDU) .................................... 185
-Basic Output ............................................................................................. 187
-Output PDU Packaging .......................................................................... 187
-Slow-Path (T.128) Format ............................................................... 187
-Share Headers .......................................................................... 187
-Security Headers ...................................................................... 187
-Server Graphics Update PDU (TS_GRAPHICS_PDU) ....................... 187
-Slow-Path Graphics Update (TS_GRAPHICS_UPDATE) .............. 188
-Palette Update (TS_UPDATE_PALETTE) ............................. 189
-Palette Update Data (TS_UPDATE_PALETTE_DATA) ...... 189
-RGB Palette Entry (TS_PALETTE_ENTRY) ..................... 190
-Bitmap Update (TS_UPDATE_BITMAP) .............................. 190
-Bitmap Update Data (TS_UPDATE_BITMAP_DATA) ....... 191
-Bitmap Data (TS_BITMAP_DATA) ............................... 191
-Compressed Data Header (TS_CD_HEADER)................ 192
-RLE Compressed Bitmap Stream (RLE_BITMAP_STREAM)
- ............................................................................. 193
-Synchronize Update (TS_UPDATE_SYNC) .......................... 197
-Server Pointer Update PDU (TS_POINTER_PDU) ........................... 197
-Point (TS_POINT16)............................................................. 199
-Pointer Position Update (TS_POINTERPOSATTRIBUTE) ............. 199
-System Pointer Update (TS_SYSTEMPOINTERATTRIBUTE) ........ 200
-Color Pointer Update (TS_COLORPOINTERATTRIBUTE) ............. 200
-New Pointer Update (TS_POINTERATTRIBUTE) ........................ 201
-Cached Pointer Update (TS_CACHEDPOINTERATTRIBUTE) ........ 201
-Server Play Sound PDU .............................................................. 202
-Play Sound PDU Data (TS_PLAY_SOUND_PDU_DATA) .............. 203
-
-2.2.9.1.1.3.1.2.1
-2.2.9.1.1.3.1.2.2
-2.2.9.1.1.3.1.2.3
-2.2.9.1.1.3.1.2.4
-
-2.2.9.1.1.4.1
-2.2.9.1.1.4.2
-2.2.9.1.1.4.3
-2.2.9.1.1.4.4
-2.2.9.1.1.4.5
-2.2.9.1.1.4.6
-
-2.2.9.1.1.3.1.3
-
-2.2.9.1.1.5.1
-
-2.2.9.1.1.5
-
-2.2.9.1.1.4
-
-2.2.8.2
-
-2.2.8.2.1
-
-2.2.8.2.1.1
-
-2.2.8.2.2
-
-2.2.8.2.2.1
-
-2.2.9
-
-2.2.9.1
-
-2.2.9.1.1
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-8 / 444
-
-2.2.9.1.2
-
-2.2.9.1.2.1
-
-2.2.9.1.2.1.1
-2.2.9.1.2.1.2
-2.2.9.1.2.1.3
-2.2.9.1.2.1.4
-
-2.2.9.1.2.1.5
-
-2.2.9.1.2.1.6
-
-2.2.9.1.2.1.7
-
-2.2.9.1.2.1.8
-2.2.9.1.2.1.9
-
-Server Fast-Path Update PDU (TS_FP_UPDATE_PDU) .......................... 203
-Fast-Path Update (TS_FP_UPDATE) ............................................. 205
-Fast-Path Palette Update (TS_FP_UPDATE_PALETTE) ............... 207
-Fast-Path Bitmap Update (TS_FP_UPDATE_BITMAP) ................ 208
-Fast-Path Synchronize Update (TS_FP_UPDATE_SYNCHRONIZE)208
-Fast-Path Pointer Position Update (TS_FP_POINTERPOSATTRIBUTE)
- 208
-Fast-Path System Pointer Hidden Update
-(TS_FP_SYSTEMPOINTERHIDDENATTRIBUTE) ......................... 209
-Fast-Path System Pointer Default Update
-(TS_FP_SYSTEMPOINTERDEFAULTATTRIBUTE) ....................... 209
-Fast-Path Color Pointer Update (TS_FP_COLORPOINTERATTRIBUTE)
- 210
-Fast-Path New Pointer Update (TS_FP_POINTERATTRIBUTE)..... 210
-Fast-Path Cached Pointer Update
-(TS_FP_CACHEDPOINTERATTRIBUTE) .................................... 211
-Fast-Path Surface Commands Update (TS_FP_SURFCMDS) ....... 211
-Surface Command (TS_SURFCMD) ................................... 212
-Fast-Path Large Pointer Update (TS_FP_LARGEPOINTERATTRIBUTE)
- 212
-
-2.2.9.1.2.1.10
-
-2.2.9.1.2.1.10.1
-
-2.2.9.1.2.1.11
-
-2.2.9.2
-
-2.2.9.2.1
-
-Surface Commands .............................................................................. 214
-Set Surface Bits Command (TS_SURFCMD_SET_SURF_BITS) ............... 214
-Extended Bitmap Data (TS_BITMAP_DATA_EX) ............................ 214
-
-2.2.9.2.1.1
-
-2.2.9.2.1.1.1
-
-2.2.10
-
-2.2.11
-
-2.2.10.1
-
-2.2.10.2
-
-2.2.10.1.1
-
-2.2.10.1.1.4.1
-
-2.2.10.1.1.4.1.1
-
-2.2.9.2.2
-2.2.9.2.3
-
-2.2.10.1.1.1
-2.2.10.1.1.2
-2.2.10.1.1.3
-2.2.10.1.1.4
-
-Extended Compressed Bitmap Header
-(TS_COMPRESSED_BITMAP_HEADER_EX) .............................. 215
-Stream Surface Bits Command (TS_SURFCMD_STREAM_SURF_BITS) ... 216
-Frame Marker Command (TS_FRAME_MARKER) ................................. 217
-Logon and Authorization Notifications ........................................................... 217
-Server Save Session Info PDU ............................................................... 217
-Save Session Info PDU Data (TS_SAVE_SESSION_INFO_PDU_DATA) ... 218
-Logon Info Version 1 (TS_LOGON_INFO) ..................................... 219
-Logon Info Version 2 (TS_LOGON_INFO_VERSION_2) ................... 220
-Plain Notify (TS_PLAIN_NOTIFY) ................................................. 221
-Logon Info Extended (TS_LOGON_INFO_EXTENDED) .................... 221
-Logon Info Field (TS_LOGON_INFO_FIELD) ............................ 222
-Logon Errors Info (TS_LOGON_ERRORS_INFO) ................. 223
-Early User Authorization Result PDU ....................................................... 224
-Controlling Server Graphics Output .............................................................. 224
-Inclusive Rectangle (TS_RECTANGLE16) ................................................. 224
-Client Refresh Rect PDU ........................................................................ 225
-Refresh Rect PDU Data (TS_REFRESH_RECT_PDU) ............................. 226
-Client Suppress Output PDU .................................................................. 226
-Suppress Output PDU Data (TS_SUPPRESS_OUTPUT_PDU) .................. 227
-2.2.12  Display Update Notifications ........................................................................ 228
-2.2.12.1  Monitor Layout PDU .............................................................................. 228
-Server Redirection ..................................................................................... 230
-Server Redirection Packet (RDP_SERVER_REDIRECTION_PACKET) ............. 230
-Target Net Addresses (TARGET_NET_ADDRESSES) ............................. 234
-Target Net Address (TARGET_NET_ADDRESS) .............................. 234
-Target Certificate Container (TARGET_CERTIFICATE_CONTAINER) ....... 235
-Certificate Meta Element (CERTIFICATE_META_ELEMENT) .............. 235
-Standard RDP Security ......................................................................... 236
-
-2.2.11.1
-2.2.11.2
-
-2.2.13.1.2.1
-
-2.2.13.1.1.1
-
-2.2.13.1.1
-
-2.2.13.1.2
-
-2.2.11.3.1
-
-2.2.11.2.1
-
-2.2.13.2
-
-2.2.13.1
-
-2.2.11.3
-
-2.2.13
-
-2.2.13.2.1
-
-2.2.13.3
-
-Standard Security Server Redirection PDU
-(TS_STANDARD_SECURITY_SERVER_REDIRECTION) .......................... 236
-Enhanced RDP Security ......................................................................... 237
-
-2.2.13.3.1
-
-Enhanced Security Server Redirection PDU
-(TS_ENHANCED_SECURITY_SERVER_REDIRECTION) .......................... 237
-2.2.14  Network Characteristics Detection ................................................................ 238
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-9 / 444
-
-2.2.14.2
-
-2.2.14.1
-
-2.2.14.3
-2.2.14.4
-
-Server-to-Client Request Messages ........................................................ 238
-RTT Measure Request (RDP_RTT_REQUEST) ...................................... 238
-2.2.14.1.1
-Bandwidth Measure Start (RDP_BW_START) ...................................... 238
-2.2.14.1.2
-Bandwidth Measure Payload (RDP_BW_PAYLOAD) .............................. 239
-2.2.14.1.3
-2.2.14.1.4
-Bandwidth Measure Stop (RDP_BW_STOP) ........................................ 240
-2.2.14.1.5  Network Characteristics Result (RDP_NETCHAR_RESULTS) .................. 241
-Client-to-Server Response Messages ...................................................... 242
-RTT Measure Response (RDP_RTT_RESPONSE) .................................. 242
-2.2.14.2.1
-2.2.14.2.2
-Bandwidth Measure Results (RDP_BW_RESULTS) ............................... 242
-2.2.14.2.3  Network Characteristics Sync (RDP_NETCHAR_SYNC) ......................... 243
-Server Auto-Detect Request PDU ........................................................... 244
-Client Auto-Detect Response PDU .......................................................... 245
-2.2.15  Multitransport Bootstrapping ....................................................................... 246
-Server Initiate Multitransport Request PDU.............................................. 246
-Client Initiate Multitransport Response PDU ............................................. 248
-Connection Health Monitoring ...................................................................... 249
-Server Heartbeat PDU .......................................................................... 249
-RDSTLS PDUs ............................................................................................ 250
-RDSTLS Capabilities PDU ...................................................................... 250
-RDSTLS Authentication Request PDU with Password Credentials ................ 251
-RDSTLS Authentication Request PDU with Auto-Reconnect Cookie .............. 252
-RDSTLS Authentication Response PDU .................................................... 253
-RDS AAD Auth PDUs .................................................................................. 254
-Server Nonce PDU ................................................................................ 254
-Authentication Request PDU .................................................................. 254
-RDP Assertion ................................................................................ 254
-Authentication Result PDU ..................................................................... 255
-
-2.2.17.1
-2.2.17.2
-2.2.17.3
-2.2.17.4
-
-2.2.18.1
-2.2.18.2
-
-2.2.15.1
-2.2.15.2
-
-2.2.18.2.1
-
-2.2.18.3
-
-2.2.16.1
-
-2.2.18
-
-2.2.16
-
-2.2.17
-
-3.1
-
-3.1.5.1
-
-3.1.5.2
-
-3.1.5.2.2.1
-
-3.1.5.2.1
-3.1.5.2.2
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ................................................................................................... 257
-Common Details ............................................................................................. 257
-Abstract Data Model ................................................................................... 257
-Timers ..................................................................................................... 257
-Initialization .............................................................................................. 257
-Higher-Layer Triggered Events .................................................................... 257
-Message Processing Events and Sequencing Rules ......................................... 257
-Disconnection Sequences ...................................................................... 257
-Sending of MCS Disconnect Provider Ultimatum PDU ........................... 257
-Processing of MCS Disconnect Provider Ultimatum PDU ....................... 257
-Static Virtual Channels ......................................................................... 258
-Sending of Virtual Channel PDU ........................................................ 258
-Processing of Virtual Channel PDU .................................................... 259
-Reassembly of Chunked Virtual Channel Data ............................... 260
-Timer Events ............................................................................................. 260
-Other Local Events ..................................................................................... 260
-MPPC-Based Bulk Data Compression ............................................................ 261
-Abstract Data Model ............................................................................. 261
-Compressing Data ................................................................................ 261
-Setting the Compression Flags ......................................................... 262
-Operation of the Bulk Compressor .................................................... 263
-Data Compression Example ............................................................. 264
-Decompressing Data ............................................................................ 267
-Compression Types .............................................................................. 268
-RDP 4.0 ........................................................................................ 268
-Literal Encoding ........................................................................ 268
-Copy-Tuple Encoding ................................................................. 268
-Copy-Offset Encoding........................................................... 268
-Length-of-Match Encoding .................................................... 268
-RDP 5.0 ........................................................................................ 269
-
-3.1.8.2.1
-3.1.8.2.2
-3.1.8.2.3
-
-3.1.8.4.1.2.1
-3.1.8.4.1.2.2
-
-3.1.8.4.1.1
-3.1.8.4.1.2
-
-3.1.6
-3.1.7
-3.1.8
-
-3.1.8.3
-3.1.8.4
-
-3.1.8.1
-3.1.8.2
-
-3.1.8.4.2
-
-3.1.8.4.1
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-10 / 444
-
-3.2
-
-3.1.9
-
-3.2.1
-
-3.2.2
-
-3.2.3
-3.2.4
-3.2.5
-
-3.2.2.1
-3.2.2.2
-
-3.1.8.4.2.1
-3.1.8.4.2.2
-
-3.1.8.4.2.2.1
-3.1.8.4.2.2.2
-
-Literal Encoding ........................................................................ 269
-Copy-Tuple Encoding ................................................................. 269
-Copy-Offset Encoding........................................................... 269
-Length-of-Match Encoding .................................................... 270
-Interleaved RLE-Based Bitmap Compression ................................................. 270
-Client Details .................................................................................................. 285
-Abstract Data Model ................................................................................... 285
-Received Server Data ........................................................................... 285
-3.2.1.1
-Static Virtual Channel IDs ..................................................................... 285
-3.2.1.2
-I/O Channel ID .................................................................................... 285
-3.2.1.3
-Message Channel ID ............................................................................. 285
-3.2.1.4
-User Channel ID .................................................................................. 285
-3.2.1.5
-Server Channel ID................................................................................ 285
-3.2.1.6
-Server Capabilities ............................................................................... 285
-3.2.1.7
-Share ID ............................................................................................. 286
-3.2.1.8
-Automatic Reconnection Cookie ............................................................. 286
-3.2.1.9
-Server Licensing Encryption Ability ......................................................... 286
-3.2.1.10
-Pointer Image Cache ............................................................................ 286
-3.2.1.11
-Session Keys ....................................................................................... 286
-3.2.1.12
-Bitmap Caches ..................................................................................... 286
-3.2.1.13
-Persistent Bitmap Caches ...................................................................... 286
-3.2.1.14
-Persisted Bitmap Keys .......................................................................... 286
-3.2.1.15
-3.2.1.16
-Connection Start Time .......................................................................... 287
-3.2.1.17  Network Characteristics Byte Count ........................................................ 287
-3.2.1.18  Network Characteristics Sequence Number.............................................. 287
-Timers ..................................................................................................... 287
-Connection Sequence Timeout Timer ...................................................... 287
-Network Characteristics Timer ............................................................... 287
-Initialization .............................................................................................. 287
-Higher-Layer Triggered Events .................................................................... 287
-Message Processing Events and Sequencing Rules ......................................... 287
-Constructing a Client-to-Server Slow-Path PDU ........................................ 287
-Processing a Server-to-Client Slow-Path PDU........................................... 288
-Connection Sequence ........................................................................... 289
-Sending X.224 Connection Request PDU ............................................ 289
-Processing X.224 Connection Confirm PDU ........................................ 289
-Sending MCS Connect Initial PDU with GCC Conference Create Request 290
-Processing MCS Connect Response PDU with GCC Conference Create
-Response ...................................................................................... 292
-Sending MCS Erect Domain Request PDU .......................................... 293
-3.2.5.3.5
-Sending MCS Attach User Request PDU ............................................. 293
-3.2.5.3.6
-Processing MCS Attach User Confirm PDU .......................................... 293
-3.2.5.3.7
-Sending MCS Channel Join Request PDU(s)........................................ 294
-3.2.5.3.8
-Processing MCS Channel Join Confirm PDU(s) .................................... 294
-3.2.5.3.9
-Sending Security Exchange PDU ....................................................... 295
-3.2.5.3.10
-Sending Client Info PDU .................................................................. 296
-3.2.5.3.11
-3.2.5.3.12
-Processing License Error PDU - Valid Client ........................................ 296
-3.2.5.3.13  Mandatory Capability Exchange ........................................................ 297
-Processing Demand Active PDU .................................................. 297
-Sending Confirm Active PDU ....................................................... 297
-Sending Synchronize PDU ................................................................ 298
-Sending Control PDU - Cooperate ..................................................... 298
-Sending Control PDU - Request Control ............................................. 298
-Sending Persistent Key List PDU(s) ................................................... 299
-Sending Font List PDU ..................................................................... 299
-Processing Synchronize PDU ............................................................ 299
-Processing Control PDU - Cooperate.................................................. 299
-Processing Control PDU - Granted Control ......................................... 299
-
-3.2.5.3.14
-3.2.5.3.15
-3.2.5.3.16
-3.2.5.3.17
-3.2.5.3.18
-3.2.5.3.19
-3.2.5.3.20
-3.2.5.3.21
-
-3.2.5.3.1
-3.2.5.3.2
-3.2.5.3.3
-3.2.5.3.4
-
-3.2.5.3.13.1
-3.2.5.3.13.2
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-11 / 444
-
-3.2.5.6
-
-3.2.5.5
-
-3.2.5.4
-
-3.2.5.8
-
-3.2.5.7
-
-3.2.5.9
-
-3.2.5.11
-
-3.2.5.10
-
-3.2.5.5.1
-
-3.2.5.9.4
-
-3.2.5.8.2
-
-3.2.5.6.1
-
-3.2.5.8.1
-
-3.2.5.3.22
-
-3.2.5.9.3.1
-
-3.2.5.9.4.1
-
-3.2.5.4.1
-3.2.5.4.2
-
-3.2.5.7.1
-3.2.5.7.2
-
-3.2.5.10.1
-3.2.5.10.2
-
-3.2.5.8.1.1
-3.2.5.8.1.2
-
-3.2.5.8.2.1
-3.2.5.8.2.2
-
-3.2.5.9.1
-3.2.5.9.2
-3.2.5.9.3
-
-Processing Font Map PDU ................................................................ 299
-Disconnection Sequences ...................................................................... 299
-Sending Shutdown Request PDU ...................................................... 299
-Processing Shutdown Request Denied PDU ........................................ 299
-Deactivation-Reconnection Sequence ..................................................... 300
-Processing Deactivate All PDU .......................................................... 300
-Auto-Reconnect Sequence ..................................................................... 300
-Processing Auto-Reconnect Status PDU ............................................. 300
-Server Error Reporting and Status Updates ............................................. 300
-Processing Set Error Info PDU .......................................................... 300
-Processing Status Info PDU .............................................................. 300
-Keyboard and Mouse Input .................................................................... 300
-Input Event Notifications ................................................................. 300
-Sending Input Event PDU ........................................................... 301
-Sending Fast-Path Input Event PDU ............................................ 301
-Keyboard Status PDUs .................................................................... 302
-Processing Set Keyboard Indicators PDU ...................................... 302
-Processing Set Keyboard IME Status PDU ..................................... 302
-Basic Output ....................................................................................... 302
-Processing Slow-Path Graphics Update PDU ....................................... 302
-Processing Slow-Path Pointer Update PDU ......................................... 303
-Processing Fast-Path Update PDU ..................................................... 303
-Processing Fast-Path Update Fragments ...................................... 304
-Sound ........................................................................................... 305
-Processing Play Sound PDU ........................................................ 305
-Logon and Authorization Notifications ..................................................... 305
-Processing Save Session Info PDU .................................................... 305
-Processing Early User Authorization Result PDU .................................. 305
-Controlling Server Graphics Output ........................................................ 306
-Sending Refresh Rect PDU ............................................................... 306
-Sending Suppress Output PDU ......................................................... 306
-3.2.5.12  Display Update Notifications .................................................................. 306
-Processing Monitor Layout PDU ........................................................ 306
-Server Redirection ............................................................................... 306
-Processing of the Server Redirection PDUs ......................................... 306
-3.2.5.14  Network Characteristics Detection .......................................................... 306
-3.2.5.15  Multitransport Bootstrapping ................................................................. 308
-Processing the Initiate Multitransport Request PDU ............................. 308
-Sending the Initiate Multitransport Response PDU .............................. 309
-Timer Events ............................................................................................. 309
-Client-Side Connection Sequence Timeout ............................................... 309
-Other Local Events ..................................................................................... 309
-Disconnection Due to Network Error ....................................................... 309
-Server Details ................................................................................................. 309
-Abstract Data Model ................................................................................... 309
-Received Client Data ............................................................................ 309
-User Channel ID .................................................................................. 310
-I/O Channel ID .................................................................................... 310
-Message Channel ID ............................................................................. 310
-Server Channel ID................................................................................ 310
-Client Licensing Encryption Ability .......................................................... 310
-Client Capabilities ................................................................................ 310
-Cached Bitmap Keys ............................................................................. 310
-Pointer Image Cache ............................................................................ 310
-Session Keys ....................................................................................... 310
-Automatic Reconnection Cookie ............................................................. 311
-Connection Start Time .......................................................................... 311
-RTT Measure Request Data ................................................................... 311
-
-3.3.1.1
-3.3.1.2
-3.3.1.3
-3.3.1.4
-3.3.1.5
-3.3.1.6
-3.3.1.7
-3.3.1.8
-3.3.1.9
-3.3.1.10
-3.3.1.11
-3.3.1.12
-3.3.1.13
-
-3.2.5.11.1
-3.2.5.11.2
-
-3.2.5.15.1
-3.2.5.15.2
-
-3.2.5.12.1
-
-3.2.5.13.1
-
-3.2.5.13
-
-3.2.7.1
-
-3.2.6.1
-
-3.2.6
-
-3.2.7
-
-3.3
-
-3.3.1
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-12 / 444
-
-3.3.2
-
-3.3.3
-3.3.4
-3.3.5
-
-3.3.2.1
-
-3.3.5.3.4
-
-3.3.5.3.3.1
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-
-3.3.5.3.13.1
-3.3.5.3.13.2
-
-3.3.5.3.1
-3.3.5.3.2
-3.3.5.3.3
-
-3.3.1.14  Multitransport Request Data .................................................................. 311
-Timers ..................................................................................................... 311
-Connection Sequence Timeout Timer ...................................................... 311
-Initialization .............................................................................................. 311
-Higher-Layer Triggered Events .................................................................... 311
-Message Processing Events and Sequencing Rules ......................................... 311
-Constructing a Server-to-Client Slow-Path PDU ........................................ 311
-Processing a Client-to-Server Slow-Path PDU .......................................... 312
-Connection Sequence ........................................................................... 313
-Processing X.224 Connection Request PDU ........................................ 313
-Sending X.224 Connection Confirm PDU ............................................ 314
-Processing MCS Connect Initial PDU with GCC Conference Create Request
- .................................................................................................... 314
-Handling Errors in the GCC Conference Create Request Data .......... 317
-Sending MCS Connect Response PDU with GCC Conference Create Response
- .................................................................................................... 318
-Processing MCS Erect Domain Request PDU ....................................... 318
-3.3.5.3.5
-Processing MCS Attach User Request PDU ......................................... 319
-3.3.5.3.6
-Sending MCS Attach User Confirm PDU ............................................. 319
-3.3.5.3.7
-Processing MCS Channel Join Request PDU(s) .................................... 319
-3.3.5.3.8
-Sending MCS Channel Join Confirm PDU(s) ........................................ 320
-3.3.5.3.9
-Processing Security Exchange PDU ................................................... 320
-3.3.5.3.10
-Processing Client Info PDU ............................................................... 321
-3.3.5.3.11
-3.3.5.3.12
-Sending License Error PDU - Valid Client ........................................... 322
-3.3.5.3.13  Mandatory Capability Exchange ........................................................ 322
-Sending Demand Active PDU ...................................................... 322
-Processing Confirm Active PDU ................................................... 323
-Processing Synchronize PDU ............................................................ 323
-Processing Control PDU - Cooperate.................................................. 324
-Processing Control PDU - Request Control ......................................... 324
-Processing Persistent Key List PDU(s) ............................................... 324
-Processing Font List PDU ................................................................. 324
-Sending Synchronize PDU ................................................................ 324
-Sending Control PDU - Cooperate ..................................................... 324
-Sending Control PDU - Granted Control ............................................. 325
-Sending Font Map PDU .................................................................... 325
-Disconnection Sequences ...................................................................... 325
-Processing Shutdown Request PDU ................................................... 325
-Sending Shutdown Request Denied PDU ............................................ 325
-Deactivation-Reconnection Sequence ..................................................... 325
-Sending Deactivate All PDU ............................................................. 325
-Auto-Reconnect Sequence ..................................................................... 326
-Sending Auto-Reconnect Status PDU ................................................. 326
-Server Error Reporting and Status Updates ............................................. 326
-Sending Set Error Info PDU ............................................................. 326
-User Authorization Failures......................................................... 326
-Sending Status Info PDU ................................................................. 326
-Keyboard and Mouse Input .................................................................... 326
-Input Event Notifications ................................................................. 326
-Processing Input Event PDU ....................................................... 326
-Processing Fast-Path Input Event PDU ......................................... 327
-Keyboard Status PDUs .................................................................... 328
-Sending Set Keyboard Indicators PDU ......................................... 328
-Sending Set Keyboard IME Status PDU ........................................ 328
-Basic Output ....................................................................................... 328
-Sending Slow-Path Graphics Update PDU ........................................... 328
-Sending Slow-Path Pointer Update PDU ............................................. 328
-Sending Fast-Path Update PDU ........................................................ 329
-
-3.3.5.3.14
-3.3.5.3.15
-3.3.5.3.16
-3.3.5.3.17
-3.3.5.3.18
-3.3.5.3.19
-3.3.5.3.20
-3.3.5.3.21
-3.3.5.3.22
-
-3.3.5.9.1
-3.3.5.9.2
-3.3.5.9.3
-
-3.3.5.8.1.1
-3.3.5.8.1.2
-
-3.3.5.8.2.1
-3.3.5.8.2.2
-
-3.3.5.4.1
-3.3.5.4.2
-
-3.3.5.7.1.1
-
-3.3.5.7.1
-
-3.3.5.7.2
-
-3.3.5.8.2
-
-3.3.5.8.1
-
-3.3.5.5.1
-
-3.3.5.6.1
-
-3.3.5.8
-
-3.3.5.9
-
-3.3.5.6
-
-3.3.5.7
-
-3.3.5.5
-
-3.3.5.4
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-13 / 444
-
-3.3.5.10
-
-3.3.5.11
-
-3.3.5.9.4
-
-3.3.5.12.1
-
-3.3.5.9.4.1
-
-3.3.5.11.1
-3.3.5.11.2
-
-3.3.5.10.1
-3.3.5.10.2
-
-Sound ........................................................................................... 330
-Sending Play Sound PDU............................................................ 330
-Logon and Authorization Notifications ..................................................... 330
-Sending Save Session Info PDU ........................................................ 330
-Sending Early User Authorization Result PDU ..................................... 331
-Controlling Server Graphics Output ........................................................ 331
-Processing Refresh Rect PDU ........................................................... 331
-Processing Suppress Output PDU ...................................................... 331
-3.3.5.12  Display Update Notifications .................................................................. 331
-Sending Monitor Layout PDU ............................................................ 331
-Server Redirection ............................................................................... 331
-Sending of the Server Redirection PDUs ............................................ 331
-3.3.5.14  Network Characteristics Detection .......................................................... 332
-3.3.5.15  Multitransport Bootstrapping ................................................................. 332
-Sending the Initiate Multitransport Request PDU ................................ 332
-Processing the Initiate Multitransport Response PDU ........................... 333
-Timer Events ............................................................................................. 333
-Server-Side Connection Sequence Timeout ............................................. 333
-Auto-Reconnect Cookie Update .............................................................. 333
-Other Local Events ..................................................................................... 333
-
-3.3.5.15.1
-3.3.5.15.2
-
-3.3.6.1
-3.3.6.2
-
-3.3.5.13.1
-
-3.3.5.13
-
-3.3.6
-
-3.3.7
-
-4.1
-
-4.1.8.3
-
-4.1.8.1
-
-4.1.8.2
-
-4.1.8.2.1
-4.1.8.2.2
-
-4.1.8.1.1
-4.1.8.1.2
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-4.1.6
-4.1.7
-4.1.8
-
-4  Protocol Examples ............................................................................................... 334
-Annotated Connection Sequence ....................................................................... 334
-Client X.224 Connection Request PDU .......................................................... 334
-Server X.224 Connection Confirm PDU ......................................................... 334
-Client MCS Connect Initial PDU with GCC Conference Create Request ............... 334
-Server MCS Connect Response PDU with GCC Conference Create Response ...... 339
-Client MCS Erect Domain Request PDU ......................................................... 343
-Client MCS Attach User Request PDU............................................................ 344
-Server MCS Attach-User Confirm PDU .......................................................... 344
-MCS Channel Join Request and Confirm PDUs ............................................... 345
-Channel 1007 ...................................................................................... 345
-Client Join Request PDU for Channel 1007 (User Channel) ................... 345
-Server Join Confirm PDU for Channel 1007 (User Channel) .................. 346
-Channel 1003 ...................................................................................... 347
-Client Join Request PDU for Channel 1003 (I/O Channel) ..................... 347
-Server Join Confirm PDU for Channel 1003 (I/O Channel) .................... 348
-Channel 1004 ...................................................................................... 348
-Client Join Request PDU for Channel 1004 (rdpdr Channel) .................. 348
-Server Join Confirm PDU for Channel 1004 (rdpdr Channel) ................. 348
-Channel 1005 ...................................................................................... 348
-Client Join Request PDU for Channel 1005 (cliprdr Channel)................. 348
-Server Join Confirm PDU for Channel 1005 (cliprdr Channel)................ 348
-Channel 1006 ...................................................................................... 349
-Client Join Request PDU for Channel 1006 (rdpsnd Channel) ................ 349
-Server Join Confirm PDU for Channel 1006 (rdpsnd Channel) ............... 349
-Client Security Exchange PDU ..................................................................... 349
-Client Info PDU .......................................................................................... 351
-Server License Error PDU - Valid Client ......................................................... 354
-Server Demand Active PDU ......................................................................... 355
-Client Confirm Active PDU ........................................................................... 361
-Client Synchronize PDU .............................................................................. 369
-Client Control PDU - Cooperate .................................................................... 370
-Client Control PDU - Request Control............................................................ 371
-Client Persistent Key List PDU ..................................................................... 371
-Client Font List PDU ................................................................................... 374
-Server Synchronize PDU ............................................................................. 375
-Server Control PDU - Cooperate .................................................................. 375
-
-4.1.9
-4.1.10
-4.1.11
-4.1.12
-4.1.13
-4.1.14
-4.1.15
-4.1.16
-4.1.17
-4.1.18
-4.1.19
-4.1.20
-
-4.1.8.5.1
-4.1.8.5.2
-
-4.1.8.3.1
-4.1.8.3.2
-
-4.1.8.4.1
-4.1.8.4.2
-
-4.1.8.5
-
-4.1.8.4
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-14 / 444
-
-4.2
-
-4.3
-
-4.1.21
-4.1.22
-
-4.3.1
-4.3.2
-4.3.3
-
-4.2.1
-4.2.2
-4.2.3
-
-Server Control PDU - Granted Control .......................................................... 376
-Server Font Map PDU ................................................................................. 377
-Annotated User-Initiated (on Client) Disconnection Sequence ............................... 378
-Client Shutdown Request PDU ..................................................................... 378
-Server Shutdown Request Denied PDU ......................................................... 379
-MCS Disconnect Provider Ultimatum PDU ...................................................... 379
-Annotated Save Session Info PDU ..................................................................... 380
-Logon Info Version 2 .................................................................................. 380
-Plain Notify ............................................................................................... 383
-Logon Info Extended .................................................................................. 386
-Annotated Server-to-Client Virtual Channel PDU ................................................. 389
-Annotated Standard Security Server Redirection PDU .......................................... 390
-Annotated Enhanced Security Server Redirection PDU ......................................... 393
-Annotated Fast-Path Input Event PDU ................................................................ 395
-Java Code to Encrypt and Decrypt a Sample Client Random ................................. 396
-Java Code to Sign a Sample Proprietary Certificate Hash ...................................... 400
-Specifying the Active Keyboard Layout and Language .......................................... 404
-RDS AAD Auth and CloudAP ............................................................................. 405
-4.11.1  Generating a Server Nonce ......................................................................... 407
-Validating an Authentication Request ........................................................... 407
-4.11.2
-Acquiring an AAD Nonce ............................................................................. 407
-4.11.3
-Acquiring an RDP Access Token ................................................................... 408
-4.11.4
-
-4.4
-4.5
-4.6
-4.7
-4.8
-4.9
-4.10
-4.11
-
-5.3.5
-
-5.3.4
-
-5.3.3
-
-5.3.2.1
-
-5.3.3.1
-
-5.3.3.2
-
-5.1
-5.2
-5.3
-
-5.3.1
-5.3.2
-
-5.3.4.1
-5.3.4.2
-
-5.3.3.1.1
-5.3.3.1.2
-5.3.3.1.3
-
-5  Security ............................................................................................................... 410
-Security Considerations for Implementers .......................................................... 410
-Index of Security Parameters ........................................................................... 410
-Standard RDP Security..................................................................................... 410
-Encryption Levels ...................................................................................... 410
-Negotiating the Cryptographic Configuration ................................................. 410
-Cryptographic Negotiation Failures ......................................................... 411
-Server Certificates ..................................................................................... 411
-Proprietary Certificates ......................................................................... 411
-Terminal Services Signing Key ......................................................... 411
-Signing a Proprietary Certificate ....................................................... 412
-Validating a Proprietary Certificate .................................................... 414
-X.509 Certificate Chains ........................................................................ 414
-Client and Server Random Values ................................................................ 415
-Encrypting Client Random ..................................................................... 415
-Decrypting Client Random ..................................................................... 416
-Initial Session Key Generation ..................................................................... 416
-Non-FIPS ............................................................................................ 416
-FIPS ................................................................................................... 418
-Encrypting and Decrypting the I/O Data Stream ............................................ 420
-Non-FIPS ............................................................................................ 420
-Salted MAC Generation ................................................................... 421
-FIPS ................................................................................................... 421
-Session Key Updates .................................................................................. 422
-Non-FIPS ............................................................................................ 422
-FIPS ................................................................................................... 423
-Packet Layout in the I/O Data Stream .......................................................... 423
-Enhanced RDP Security .................................................................................... 424
-Encryption Levels ...................................................................................... 425
-Security-Enhanced Connection Sequence ...................................................... 425
-Negotiation-Based Approach .................................................................. 425
-Direct Approach ................................................................................... 426
-Changes to the Security Commencement Phase ....................................... 427
-Disabling Forced Encryption of Licensing Packets ..................................... 427
-Encrypting and Decrypting the I/O Data Stream ............................................ 428
-
-5.4.2.1
-5.4.2.2
-5.4.2.3
-5.4.2.4
-
-5.3.7.1
-5.3.7.2
-
-5.3.5.1
-5.3.5.2
-
-5.4.1
-5.4.2
-
-5.3.6.1.1
-
-5.3.6.2
-
-5.3.6.1
-
-5.4.3
-
-5.3.8
-
-5.3.7
-
-5.3.6
-
-5.4
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-15 / 444
-
-5.4.4
-5.4.5
-
-5.4.5.1
-5.4.5.2
-
-5.4.5.2.1
-5.4.5.2.2
-
-Packet Layout in the I/O Data Stream .......................................................... 428
-External Security Protocols Used By RDP ...................................................... 428
-Transport Layer Security (TLS) .............................................................. 428
-CredSSP ............................................................................................. 428
-User Authorization Failures .............................................................. 429
-TLS Fatal Alerts .............................................................................. 429
-RDSTLS Security .................................................................................. 429
-RDSTLS Connection Sequence .......................................................... 430
-RDS AAD Auth Security......................................................................... 431
-RDS AAD Auth Connection Sequence ................................................ 431
-Automatic Reconnection ................................................................................... 433
-
-5.4.5.4.1
-
-5.4.5.3.1
-
-5.4.5.3
-
-5.4.5.4
-
-5.5
-
-6  Appendix A: Product Behavior ............................................................................. 435
-
-7  Change Tracking .................................................................................................. 440
-
-8  Index ................................................................................................................... 441
-
-[MS-RDPBCGR] - v20260309
-Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-16 / 444
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Message Flows](#131-message-flows)
+      - [1.3.1.1 Connection Sequence](#1311-connection-sequence)
+      - [1.3.1.2 Security-Enhanced Connection Sequence](#1312-security-enhanced-connection-sequence)
+      - [1.3.1.3 Deactivation-Reactivation Sequence](#1313-deactivation-reactivation-sequence)
+      - [1.3.1.4 Disconnection Sequences](#1314-disconnection-sequences)
+        - [1.3.1.4.1 User-Initiated on Client](#13141-user-initiated-on-client)
+        - [1.3.1.4.2 User-Initiated on Server](#13142-user-initiated-on-server)
+        - [1.3.1.4.3 Administrator-Initiated on Server](#13143-administrator-initiated-on-server)
+      - [1.3.1.5 Automatic Reconnection](#1315-automatic-reconnection)
+    - [1.3.2 Server Error Reporting and Status Updates](#132-server-error-reporting-and-status-updates)
+    - [1.3.3 Static Virtual Channels](#133-static-virtual-channels)
+    - [1.3.4 Data Compression](#134-data-compression)
+    - [1.3.5 Keyboard and Mouse Input](#135-keyboard-and-mouse-input)
+    - [1.3.6 Basic Server Output](#136-basic-server-output)
+    - [1.3.7 Controlling Server Graphics Output](#137-controlling-server-graphics-output)
+    - [1.3.8 Server Redirection](#138-server-redirection)
+      - [1.3.8.1 RDSTLS](#1381-rdstls)
+    - [1.3.9 Connect-Time and Continuous Network Characteristics Detection](#139-connect-time-and-continuous-network-characteristics-detection)
+    - [1.3.10 Connection Health Monitoring](#1310-connection-health-monitoring)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Connection Sequence](#221-connection-sequence)
+      - [2.2.1.1 Client X.224 Connection Request PDU](#2211-client-x224-connection-request-pdu)
+        - [2.2.1.1.1 RDP Negotiation Request (RDP_NEG_REQ)](#22111-rdp-negotiation-request-rdpnegreq)
+        - [2.2.1.1.2 RDP Correlation Info (RDP_NEG_CORRELATION_INFO)](#22112-rdp-correlation-info-rdpnegcorrelationinfo)
+      - [2.2.1.2 Server X.224 Connection Confirm PDU](#2212-server-x224-connection-confirm-pdu)
+        - [2.2.1.2.1 RDP Negotiation Response (RDP_NEG_RSP)](#22121-rdp-negotiation-response-rdpnegrsp)
+        - [2.2.1.2.2 RDP Negotiation Failure (RDP_NEG_FAILURE)](#22122-rdp-negotiation-failure-rdpnegfailure)
+      - [2.2.1.3 Client MCS Connect Initial PDU with GCC Conference Create Request](#2213-client-mcs-connect-initial-pdu-with-gcc-conference-create-request)
+        - [2.2.1.3.1 User Data Header (TS_UD_HEADER)](#22131-user-data-header-tsudheader)
+        - [2.2.1.3.2 Client Core Data (TS_UD_CS_CORE)](#22132-client-core-data-tsudcscore)
+        - [2.2.1.3.3 Client Security Data (TS_UD_CS_SEC)](#22133-client-security-data-tsudcssec)
+        - [2.2.1.3.4 Client Network Data (TS_UD_CS_NET)](#22134-client-network-data-tsudcsnet)
+          - [2.2.1.3.4.1 Channel Definition Structure (CHANNEL_DEF)](#221341-channel-definition-structure-channeldef)
+        - [2.2.1.3.5 Client Cluster Data (TS_UD_CS_CLUSTER)](#22135-client-cluster-data-tsudcscluster)
+        - [2.2.1.3.6 Client Monitor Data (TS_UD_CS_MONITOR)](#22136-client-monitor-data-tsudcsmonitor)
+          - [2.2.1.3.6.1 Monitor Definition (TS_MONITOR_DEF)](#221361-monitor-definition-tsmonitordef)
+        - [2.2.1.3.7 Client Message Channel Data (TS_UD_CS_MCS_MSGCHANNEL)](#22137-client-message-channel-data-tsudcsmcsmsgchannel)
+        - [2.2.1.3.8 Client Multitransport Channel Data (TS_UD_CS_MULTITRANSPORT)](#22138-client-multitransport-channel-data-tsudcsmultitransport)
+        - [2.2.1.3.9 Client Unused1 Data (TS_UD_CS_UNUSED1)](#22139-client-unused1-data-tsudcsunused1)
+        - [2.2.1.3.10 Client Monitor Extended Data (TS_UD_CS_MONITOR_EX)](#221310-client-monitor-extended-data-tsudcsmonitorex)
+          - [2.2.1.3.10.1 Monitor Attributes (TS_MONITOR_ATTRIBUTES)](#2213101-monitor-attributes-tsmonitorattributes)
+      - [2.2.1.4 Server MCS Connect Response PDU with GCC Conference Create Response](#2214-server-mcs-connect-response-pdu-with-gcc-conference-create-response)
+        - [2.2.1.4.1 User Data Header (TS_UD_HEADER)](#22141-user-data-header-tsudheader)
+        - [2.2.1.4.2 Server Core Data (TS_UD_SC_CORE)](#22142-server-core-data-tsudsccore)
+        - [2.2.1.4.3 Server Security Data (TS_UD_SC_SEC1)](#22143-server-security-data-tsudscsec1)
+          - [2.2.1.4.3.1 Server Certificate (SERVER_CERTIFICATE)](#221431-server-certificate-servercertificate)
+            - [2.2.1.4.3.1.1 Server Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)](#2214311-server-proprietary-certificate-proprietaryservercertificate)
+              - [2.2.1.4.3.1.1.1 RSA Public Key (RSA_PUBLIC_KEY)](#22143111-rsa-public-key-rsapublickey)
+        - [2.2.1.4.4 Server Network Data (TS_UD_SC_NET)](#22144-server-network-data-tsudscnet)
+        - [2.2.1.4.5 Server Message Channel Data (TS_UD_SC_MCS_MSGCHANNEL)](#22145-server-message-channel-data-tsudscmcsmsgchannel)
+        - [2.2.1.4.6 Server Multitransport Channel Data (TS_UD_SC_MULTITRANSPORT)](#22146-server-multitransport-channel-data-tsudscmultitransport)
+      - [2.2.1.5 Client MCS Erect Domain Request PDU](#2215-client-mcs-erect-domain-request-pdu)
+      - [2.2.1.6 Client MCS Attach User Request PDU](#2216-client-mcs-attach-user-request-pdu)
+      - [2.2.1.7 Server MCS Attach User Confirm PDU](#2217-server-mcs-attach-user-confirm-pdu)
+      - [2.2.1.8 Client MCS Channel Join Request PDU](#2218-client-mcs-channel-join-request-pdu)
+      - [2.2.1.9 Server MCS Channel Join Confirm PDU](#2219-server-mcs-channel-join-confirm-pdu)
+      - [2.2.1.10 Client Security Exchange PDU](#22110-client-security-exchange-pdu)
+        - [2.2.1.10.1 Security Exchange PDU Data (TS_SECURITY_PACKET)](#221101-security-exchange-pdu-data-tssecuritypacket)
+      - [2.2.1.11 Client Info PDU](#22111-client-info-pdu)
+        - [2.2.1.11.1 Client Info PDU Data (CLIENT_INFO_PDU)](#221111-client-info-pdu-data-clientinfopdu)
+          - [2.2.1.11.1.1 Info Packet (TS_INFO_PACKET)](#2211111-info-packet-tsinfopacket)
+            - [2.2.1.11.1.1.1 Extended Info Packet (TS_EXTENDED_INFO_PACKET)](#22111111-extended-info-packet-tsextendedinfopacket)
+              - [2.2.1.11.1.1.1.1 Time Zone Information (TS_TIME_ZONE_INFORMATION)](#221111111-time-zone-information-tstimezoneinformation)
+                - [2.2.1.11.1.1.1.1.1 System Time (TS_SYSTEMTIME)](#2211111111-system-time-tssystemtime)
+      - [2.2.1.12 Server License Error PDU - Valid Client](#22112-server-license-error-pdu-valid-client)
+        - [2.2.1.12.1 Valid Client License Data (LICENSE_VALID_CLIENT_DATA)](#221121-valid-client-license-data-licensevalidclientdata)
+          - [2.2.1.12.1.1 Licensing Preamble (LICENSE_PREAMBLE)](#2211211-licensing-preamble-licensepreamble)
+          - [2.2.1.12.1.2 Licensing Binary Blob (LICENSE_BINARY_BLOB)](#2211212-licensing-binary-blob-licensebinaryblob)
+          - [2.2.1.12.1.3 Licensing Error Message (LICENSE_ERROR_MESSAGE)](#2211213-licensing-error-message-licenseerrormessage)
+      - [2.2.1.13 Mandatory Capability Exchange](#22113-mandatory-capability-exchange)
+        - [2.2.1.13.1 Server Demand Active PDU](#221131-server-demand-active-pdu)
+          - [2.2.1.13.1.1 Demand Active PDU Data (TS_DEMAND_ACTIVE_PDU)](#2211311-demand-active-pdu-data-tsdemandactivepdu)
+            - [2.2.1.13.1.1.1 Capability Set (TS_CAPS_SET)](#22113111-capability-set-tscapsset)
+        - [2.2.1.13.2 Client Confirm Active PDU](#221132-client-confirm-active-pdu)
+          - [2.2.1.13.2.1 Confirm Active PDU Data (TS_CONFIRM_ACTIVE_PDU)](#2211321-confirm-active-pdu-data-tsconfirmactivepdu)
+      - [2.2.1.14 Client Synchronize PDU](#22114-client-synchronize-pdu)
+        - [2.2.1.14.1 Synchronize PDU Data (TS_SYNCHRONIZE_PDU)](#221141-synchronize-pdu-data-tssynchronizepdu)
+      - [2.2.1.15 Client Control PDU - Cooperate](#22115-client-control-pdu-cooperate)
+        - [2.2.1.15.1 Control PDU Data (TS_CONTROL_PDU)](#221151-control-pdu-data-tscontrolpdu)
+      - [2.2.1.16 Client Control PDU - Request Control](#22116-client-control-pdu-request-control)
+      - [2.2.1.17 Client Persistent Key List PDU](#22117-client-persistent-key-list-pdu)
+        - [2.2.1.17.1 Persistent Key List PDU Data](#221171-persistent-key-list-pdu-data)
+          - [2.2.1.17.1.1 Persistent List Entry (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY)](#2211711-persistent-list-entry-tsbitmapcachepersistentlistentry)
+      - [2.2.1.18 Client Font List PDU](#22118-client-font-list-pdu)
+        - [2.2.1.18.1 Font List PDU Data (TS_FONT_LIST_PDU)](#221181-font-list-pdu-data-tsfontlistpdu)
+      - [2.2.1.19 Server Synchronize PDU](#22119-server-synchronize-pdu)
+      - [2.2.1.20 Server Control PDU - Cooperate](#22120-server-control-pdu-cooperate)
+      - [2.2.1.21 Server Control PDU - Granted Control](#22121-server-control-pdu-granted-control)
+      - [2.2.1.22 Server Font Map PDU](#22122-server-font-map-pdu)
+        - [2.2.1.22.1 Font Map PDU Data (TS_FONT_MAP_PDU)](#221221-font-map-pdu-data-tsfontmappdu)
+    - [2.2.2 Disconnection Sequences](#222-disconnection-sequences)
+      - [2.2.2.1 Client Shutdown Request PDU](#2221-client-shutdown-request-pdu)
+        - [2.2.2.1.1 Shutdown Request PDU Data (TS_SHUTDOWN_REQ_PDU)](#22211-shutdown-request-pdu-data-tsshutdownreqpdu)
+      - [2.2.2.2 Server Shutdown Request Denied PDU](#2222-server-shutdown-request-denied-pdu)
+        - [2.2.2.2.1 Shutdown Request Denied PDU Data (TS_SHUTDOWN_DENIED_PDU)](#22221-shutdown-request-denied-pdu-data-tsshutdowndeniedpdu)
+      - [2.2.2.3 MCS Disconnect Provider Ultimatum PDU](#2223-mcs-disconnect-provider-ultimatum-pdu)
+    - [2.2.3 Deactivation-Reactivation Sequence](#223-deactivation-reactivation-sequence)
+      - [2.2.3.1 Server Deactivate All PDU](#2231-server-deactivate-all-pdu)
+        - [2.2.3.1.1 Deactivate All PDU Data (TS_DEACTIVATE_ALL_PDU)](#22311-deactivate-all-pdu-data-tsdeactivateallpdu)
+    - [2.2.4 Auto-Reconnect Sequence](#224-auto-reconnect-sequence)
+      - [2.2.4.1 Server Auto-Reconnect Status PDU](#2241-server-auto-reconnect-status-pdu)
+        - [2.2.4.1.1 Auto-Reconnect Status PDU Data (TS_AUTORECONNECT_STATUS_PDU)](#22411-auto-reconnect-status-pdu-data-tsautoreconnectstatuspdu)
+      - [2.2.4.2 Server Auto-Reconnect Packet (ARC_SC_PRIVATE_PACKET)](#2242-server-auto-reconnect-packet-arcscprivatepacket)
+      - [2.2.4.3 Client Auto-Reconnect Packet (ARC_CS_PRIVATE_PACKET)](#2243-client-auto-reconnect-packet-arccsprivatepacket)
+    - [2.2.5 Server Error Reporting and Status Updates](#225-server-error-reporting-and-status-updates)
+      - [2.2.5.1 Server Set Error Info PDU](#2251-server-set-error-info-pdu)
+        - [2.2.5.1.1 Set Error Info PDU Data (TS_SET_ERROR_INFO_PDU)](#22511-set-error-info-pdu-data-tsseterrorinfopdu)
+      - [2.2.5.2 Server Status Info PDU](#2252-server-status-info-pdu)
+    - [2.2.6 Static Virtual Channels](#226-static-virtual-channels)
+      - [2.2.6.1 Virtual Channel PDU](#2261-virtual-channel-pdu)
+        - [2.2.6.1.1 Channel PDU Header (CHANNEL_PDU_HEADER)](#22611-channel-pdu-header-channelpduheader)
+    - [2.2.7 Capability Sets](#227-capability-sets)
+      - [2.2.7.1 Mandatory Capability Sets](#2271-mandatory-capability-sets)
+        - [2.2.7.1.1 General Capability Set (TS_GENERAL_CAPABILITYSET)](#22711-general-capability-set-tsgeneralcapabilityset)
+        - [2.2.7.1.2 Bitmap Capability Set (TS_BITMAP_CAPABILITYSET)](#22712-bitmap-capability-set-tsbitmapcapabilityset)
+        - [2.2.7.1.3 Order Capability Set (TS_ORDER_CAPABILITYSET)](#22713-order-capability-set-tsordercapabilityset)
+              - [2.2.9.1.1.3.1.2 and 2.2.9.1.2.1.2). If no primary drawing orders are supported, this array MUST](#22911312-and-2291212-if-no-primary-drawing-orders-are-supported-this-array-must)
+                - [2.2.9.1.1.3.1.2.1 Bitmap Update Data (TS_UPDATE_BITMAP_DATA)](#229113121-bitmap-update-data-tsupdatebitmapdata)
+                - [2.2.9.1.1.3.1.2.2 Bitmap Data (TS_BITMAP_DATA)](#229113122-bitmap-data-tsbitmapdata)
+                - [2.2.9.1.1.3.1.2.3 Compressed Data Header (TS_CD_HEADER)](#229113123-compressed-data-header-tscdheader)
+                - [2.2.9.1.1.3.1.2.4 RLE Compressed Bitmap Stream (RLE_BITMAP_STREAM)](#229113124-rle-compressed-bitmap-stream-rlebitmapstream)
+              - [2.2.9.1.1.3.1.3 Synchronize Update (TS_UPDATE_SYNC)](#22911313-synchronize-update-tsupdatesync)
+          - [2.2.9.1.1.4 Server Pointer Update PDU (TS_POINTER_PDU)](#229114-server-pointer-update-pdu-tspointerpdu)
+            - [2.2.9.1.1.4.1 Point (TS_POINT16)](#2291141-point-tspoint16)
+            - [2.2.9.1.1.4.2 Pointer Position Update (TS_POINTERPOSATTRIBUTE)](#2291142-pointer-position-update-tspointerposattribute)
+            - [2.2.9.1.1.4.3 System Pointer Update (TS_SYSTEMPOINTERATTRIBUTE)](#2291143-system-pointer-update-tssystempointerattribute)
+            - [2.2.9.1.1.4.4 Color Pointer Update (TS_COLORPOINTERATTRIBUTE)](#2291144-color-pointer-update-tscolorpointerattribute)
+            - [2.2.9.1.1.4.5 New Pointer Update (TS_POINTERATTRIBUTE)](#2291145-new-pointer-update-tspointerattribute)
+            - [2.2.9.1.1.4.6 Cached Pointer Update (TS_CACHEDPOINTERATTRIBUTE)](#2291146-cached-pointer-update-tscachedpointerattribute)
+          - [2.2.9.1.1.5 Server Play Sound PDU](#229115-server-play-sound-pdu)
+            - [2.2.9.1.1.5.1 Play Sound PDU Data (TS_PLAY_SOUND_PDU_DATA)](#2291151-play-sound-pdu-data-tsplaysoundpdudata)
+        - [2.2.9.1.2 Server Fast-Path Update PDU (TS_FP_UPDATE_PDU)](#22912-server-fast-path-update-pdu-tsfpupdatepdu)
+          - [2.2.9.1.2.1 Fast-Path Update (TS_FP_UPDATE)](#229121-fast-path-update-tsfpupdate)
+            - [2.2.9.1.2.1.1 Fast-Path Palette Update (TS_FP_UPDATE_PALETTE)](#2291211-fast-path-palette-update-tsfpupdatepalette)
+            - [2.2.9.1.2.1.2 Fast-Path Bitmap Update (TS_FP_UPDATE_BITMAP)](#2291212-fast-path-bitmap-update-tsfpupdatebitmap)
+            - [2.2.9.1.2.1.3 Fast-Path Synchronize Update (TS_FP_UPDATE_SYNCHRONIZE)](#2291213-fast-path-synchronize-update-tsfpupdatesynchronize)
+            - [2.2.9.1.2.1.4 Fast-Path Pointer Position Update (TS_FP_POINTERPOSATTRIBUTE)](#2291214-fast-path-pointer-position-update-tsfppointerposattribute)
+            - [2.2.9.1.2.1.5 Fast-Path System Pointer Hidden Update](#2291215-fast-path-system-pointer-hidden-update)
+            - [2.2.9.1.2.1.6 Fast-Path System Pointer Default Update](#2291216-fast-path-system-pointer-default-update)
+            - [2.2.9.1.2.1.7 Fast-Path Color Pointer Update (TS_FP_COLORPOINTERATTRIBUTE)](#2291217-fast-path-color-pointer-update-tsfpcolorpointerattribute)
+            - [2.2.9.1.2.1.8 Fast-Path New Pointer Update (TS_FP_POINTERATTRIBUTE)](#2291218-fast-path-new-pointer-update-tsfppointerattribute)
+            - [2.2.9.1.2.1.9 Fast-Path Cached Pointer Update (TS_FP_CACHEDPOINTERATTRIBUTE)](#2291219-fast-path-cached-pointer-update-tsfpcachedpointerattribute)
+            - [2.2.9.1.2.1.10 Fast-Path Surface Commands Update (TS_FP_SURFCMDS)](#22912110-fast-path-surface-commands-update-tsfpsurfcmds)
+              - [2.2.9.1.2.1.10.1 Surface Command (TS_SURFCMD)](#229121101-surface-command-tssurfcmd)
+            - [2.2.9.1.2.1.11 Fast-Path Large Pointer Update](#22912111-fast-path-large-pointer-update)
+      - [2.2.9.2 Surface Commands](#2292-surface-commands)
+        - [2.2.9.2.1 Set Surface Bits Command (TS_SURFCMD_SET_SURF_BITS)](#22921-set-surface-bits-command-tssurfcmdsetsurfbits)
+          - [2.2.9.2.1.1 Extended Bitmap Data (TS_BITMAP_DATA_EX)](#229211-extended-bitmap-data-tsbitmapdataex)
+            - [2.2.9.2.1.1.1 Extended Compressed Bitmap Header](#2292111-extended-compressed-bitmap-header)
+        - [2.2.9.2.2 Stream Surface Bits Command (TS_SURFCMD_STREAM_SURF_BITS)](#22922-stream-surface-bits-command-tssurfcmdstreamsurfbits)
+        - [2.2.9.2.3 Frame Marker Command (TS_FRAME_MARKER)](#22923-frame-marker-command-tsframemarker)
+    - [2.2.10 Logon and Authorization Notifications](#2210-logon-and-authorization-notifications)
+      - [2.2.10.1 Server Save Session Info PDU](#22101-server-save-session-info-pdu)
+        - [2.2.10.1.1 Save Session Info PDU Data (TS_SAVE_SESSION_INFO_PDU_DATA)](#221011-save-session-info-pdu-data-tssavesessioninfopdudata)
+          - [2.2.10.1.1.1 Logon Info Version 1 (TS_LOGON_INFO)](#2210111-logon-info-version-1-tslogoninfo)
+          - [2.2.10.1.1.2 Logon Info Version 2 (TS_LOGON_INFO_VERSION_2)](#2210112-logon-info-version-2-tslogoninfoversion2)
+          - [2.2.10.1.1.3 Plain Notify (TS_PLAIN_NOTIFY)](#2210113-plain-notify-tsplainnotify)
+          - [2.2.10.1.1.4 Logon Info Extended (TS_LOGON_INFO_EXTENDED)](#2210114-logon-info-extended-tslogoninfoextended)
+            - [2.2.10.1.1.4.1 Logon Info Field (TS_LOGON_INFO_FIELD)](#22101141-logon-info-field-tslogoninfofield)
+              - [2.2.10.1.1.4.1.1 Logon Errors Info (TS_LOGON_ERRORS_INFO)](#221011411-logon-errors-info-tslogonerrorsinfo)
+      - [2.2.10.2 Early User Authorization Result PDU](#22102-early-user-authorization-result-pdu)
+    - [2.2.11 Controlling Server Graphics Output](#2211-controlling-server-graphics-output)
+      - [2.2.11.1 Inclusive Rectangle (TS_RECTANGLE16)](#22111-inclusive-rectangle-tsrectangle16)
+      - [2.2.11.2 Client Refresh Rect PDU](#22112-client-refresh-rect-pdu)
+        - [2.2.11.2.1 Refresh Rect PDU Data (TS_REFRESH_RECT_PDU)](#221121-refresh-rect-pdu-data-tsrefreshrectpdu)
+      - [2.2.11.3 Client Suppress Output PDU](#22113-client-suppress-output-pdu)
+        - [2.2.11.3.1 Suppress Output PDU Data (TS_SUPPRESS_OUTPUT_PDU)](#221131-suppress-output-pdu-data-tssuppressoutputpdu)
+    - [2.2.12 Display Update Notifications](#2212-display-update-notifications)
+      - [2.2.12.1 Monitor Layout PDU](#22121-monitor-layout-pdu)
+    - [2.2.13 Server Redirection](#2213-server-redirection)
+      - [2.2.13.1 Server Redirection Packet (RDP_SERVER_REDIRECTION_PACKET)](#22131-server-redirection-packet-rdpserverredirectionpacket)
+        - [2.2.13.1.1 Target Net Addresses (TARGET_NET_ADDRESSES)](#221311-target-net-addresses-targetnetaddresses)
+          - [2.2.13.1.1.1 Target Net Address (TARGET_NET_ADDRESS)](#2213111-target-net-address-targetnetaddress)
+        - [2.2.13.1.2 Target Certificate Container (TARGET_CERTIFICATE_CONTAINER)](#221312-target-certificate-container-targetcertificatecontainer)
+          - [2.2.13.1.2.1 Certificate Meta Element (CERTIFICATE_META_ELEMENT)](#2213121-certificate-meta-element-certificatemetaelement)
+      - [2.2.13.2 Standard RDP Security](#22132-standard-rdp-security)
+        - [2.2.13.2.1 Standard Security Server Redirection PDU](#221321-standard-security-server-redirection-pdu)
+      - [2.2.13.3 Enhanced RDP Security](#22133-enhanced-rdp-security)
+        - [2.2.13.3.1 Enhanced Security Server Redirection PDU](#221331-enhanced-security-server-redirection-pdu)
+    - [2.2.14 Network Characteristics Detection](#2214-network-characteristics-detection)
+      - [2.2.14.1 Server-to-Client Request Messages](#22141-server-to-client-request-messages)
+        - [2.2.14.1.1 RTT Measure Request (RDP_RTT_REQUEST)](#221411-rtt-measure-request-rdprttrequest)
+        - [2.2.14.1.2 Bandwidth Measure Start (RDP_BW_START)](#221412-bandwidth-measure-start-rdpbwstart)
+        - [2.2.14.1.3 Bandwidth Measure Payload (RDP_BW_PAYLOAD)](#221413-bandwidth-measure-payload-rdpbwpayload)
+        - [2.2.14.1.4 Bandwidth Measure Stop (RDP_BW_STOP)](#221414-bandwidth-measure-stop-rdpbwstop)
+        - [2.2.14.1.5 Network Characteristics Result (RDP_NETCHAR_RESULTS)](#221415-network-characteristics-result-rdpnetcharresults)
+      - [2.2.14.2 Client-to-Server Response Messages](#22142-client-to-server-response-messages)
+        - [2.2.14.2.1 RTT Measure Response (RDP_RTT_RESPONSE)](#221421-rtt-measure-response-rdprttresponse)
+        - [2.2.14.2.2 Bandwidth Measure Results (RDP_BW_RESULTS)](#221422-bandwidth-measure-results-rdpbwresults)
+        - [2.2.14.2.3 Network Characteristics Sync (RDP_NETCHAR_SYNC)](#221423-network-characteristics-sync-rdpnetcharsync)
+      - [2.2.14.3 Server Auto-Detect Request PDU](#22143-server-auto-detect-request-pdu)
+      - [2.2.14.4 Client Auto-Detect Response PDU](#22144-client-auto-detect-response-pdu)
+    - [2.2.15 Multitransport Bootstrapping](#2215-multitransport-bootstrapping)
+      - [2.2.15.1 Server Initiate Multitransport Request PDU](#22151-server-initiate-multitransport-request-pdu)
+      - [2.2.15.2 Client Initiate Multitransport Response PDU](#22152-client-initiate-multitransport-response-pdu)
+    - [2.2.16 Connection Health Monitoring](#2216-connection-health-monitoring)
+      - [2.2.16.1 Server Heartbeat PDU](#22161-server-heartbeat-pdu)
+    - [2.2.17 RDSTLS PDUs](#2217-rdstls-pdus)
+      - [2.2.17.1 RDSTLS Capabilities PDU](#22171-rdstls-capabilities-pdu)
+      - [2.2.17.2 RDSTLS Authentication Request PDU with Password Credentials](#22172-rdstls-authentication-request-pdu-with-password-credentials)
+      - [2.2.17.3 RDSTLS Authentication Request PDU with Auto-Reconnect Cookie](#22173-rdstls-authentication-request-pdu-with-auto-reconnect-cookie)
+      - [2.2.17.4 RDSTLS Authentication Response PDU](#22174-rdstls-authentication-response-pdu)
+    - [2.2.18 RDS AAD Auth PDUs](#2218-rds-aad-auth-pdus)
+      - [2.2.18.1 Server Nonce PDU](#22181-server-nonce-pdu)
+      - [2.2.18.2 Authentication Request PDU](#22182-authentication-request-pdu)
+        - [2.2.18.2.1 RDP Assertion](#221821-rdp-assertion)
+      - [2.2.18.3 Authentication Result PDU](#22183-authentication-result-pdu)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Disconnection Sequences](#3151-disconnection-sequences)
+        - [3.1.5.1.1 Sending of MCS Disconnect Provider Ultimatum PDU](#31511-sending-of-mcs-disconnect-provider-ultimatum-pdu)
+        - [3.1.5.1.2 Processing of MCS Disconnect Provider Ultimatum PDU](#31512-processing-of-mcs-disconnect-provider-ultimatum-pdu)
+      - [3.1.5.2 Static Virtual Channels](#3152-static-virtual-channels)
+        - [3.1.5.2.1 Sending of Virtual Channel PDU](#31521-sending-of-virtual-channel-pdu)
+        - [3.1.5.2.2 Processing of Virtual Channel PDU](#31522-processing-of-virtual-channel-pdu)
+          - [3.1.5.2.2.1 Reassembly of Chunked Virtual Channel Data](#315221-reassembly-of-chunked-virtual-channel-data)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+    - [3.1.8 MPPC-Based Bulk Data Compression](#318-mppc-based-bulk-data-compression)
+      - [3.1.8.1 Abstract Data Model](#3181-abstract-data-model)
+      - [3.1.8.2 Compressing Data](#3182-compressing-data)
+        - [3.1.8.2.1 Setting the Compression Flags](#31821-setting-the-compression-flags)
+        - [3.1.8.2.2 Operation of the Bulk Compressor](#31822-operation-of-the-bulk-compressor)
+        - [3.1.8.2.3 Data Compression Example](#31823-data-compression-example)
+      - [3.1.8.3 Decompressing Data](#3183-decompressing-data)
+      - [3.1.8.4 Compression Types](#3184-compression-types)
+        - [3.1.8.4.1 RDP 4.0](#31841-rdp-40)
+          - [3.1.8.4.1.1 Literal Encoding](#318411-literal-encoding)
+          - [3.1.8.4.1.2 Copy-Tuple Encoding](#318412-copy-tuple-encoding)
+            - [3.1.8.4.1.2.1 Copy-Offset Encoding](#3184121-copy-offset-encoding)
+            - [3.1.8.4.1.2.2 Length-of-Match Encoding](#3184122-length-of-match-encoding)
+        - [3.1.8.4.2 RDP 5.0](#31842-rdp-50)
+          - [3.1.8.4.2.1 Literal Encoding](#318421-literal-encoding)
+          - [3.1.8.4.2.2 Copy-Tuple Encoding](#318422-copy-tuple-encoding)
+            - [3.1.8.4.2.2.1 Copy-Offset Encoding](#3184221-copy-offset-encoding)
+            - [3.1.8.4.2.2.2 Length-of-Match Encoding](#3184222-length-of-match-encoding)
+    - [3.1.9 Interleaved RLE-Based Bitmap Compression](#319-interleaved-rle-based-bitmap-compression)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Received Server Data](#3211-received-server-data)
+      - [3.2.1.2 Static Virtual Channel IDs](#3212-static-virtual-channel-ids)
+      - [3.2.1.3 I/O Channel ID](#3213-io-channel-id)
+      - [3.2.1.4 Message Channel ID](#3214-message-channel-id)
+      - [3.2.1.5 User Channel ID](#3215-user-channel-id)
+      - [3.2.1.6 Server Channel ID](#3216-server-channel-id)
+      - [3.2.1.7 Server Capabilities](#3217-server-capabilities)
+      - [3.2.1.8 Share ID](#3218-share-id)
+      - [3.2.1.9 Automatic Reconnection Cookie](#3219-automatic-reconnection-cookie)
+      - [3.2.1.10 Server Licensing Encryption Ability](#32110-server-licensing-encryption-ability)
+      - [3.2.1.11 Pointer Image Cache](#32111-pointer-image-cache)
+      - [3.2.1.12 Session Keys](#32112-session-keys)
+      - [3.2.1.13 Bitmap Caches](#32113-bitmap-caches)
+      - [3.2.1.14 Persistent Bitmap Caches](#32114-persistent-bitmap-caches)
+      - [3.2.1.15 Persisted Bitmap Keys](#32115-persisted-bitmap-keys)
+      - [3.2.1.16 Connection Start Time](#32116-connection-start-time)
+      - [3.2.1.17 Network Characteristics Byte Count](#32117-network-characteristics-byte-count)
+      - [3.2.1.18 Network Characteristics Sequence Number](#32118-network-characteristics-sequence-number)
+    - [3.2.2 Timers](#322-timers)
+      - [3.2.2.1 Connection Sequence Timeout Timer](#3221-connection-sequence-timeout-timer)
+      - [3.2.2.2 Network Characteristics Timer](#3222-network-characteristics-timer)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Constructing a Client-to-Server Slow-Path PDU](#3251-constructing-a-client-to-server-slow-path-pdu)
+      - [3.2.5.2 Processing a Server-to-Client Slow-Path PDU](#3252-processing-a-server-to-client-slow-path-pdu)
+      - [3.2.5.3 Connection Sequence](#3253-connection-sequence)
+        - [3.2.5.3.1 Sending X.224 Connection Request PDU](#32531-sending-x224-connection-request-pdu)
+        - [3.2.5.3.2 Processing X.224 Connection Confirm PDU](#32532-processing-x224-connection-confirm-pdu)
+        - [3.2.5.3.3 Sending MCS Connect Initial PDU with GCC Conference Create Request](#32533-sending-mcs-connect-initial-pdu-with-gcc-conference-create-request)
+        - [3.2.5.3.4 Processing MCS Connect Response PDU with GCC Conference Create](#32534-processing-mcs-connect-response-pdu-with-gcc-conference-create)
+        - [3.2.5.3.5 Sending MCS Erect Domain Request PDU](#32535-sending-mcs-erect-domain-request-pdu)
+        - [3.2.5.3.6 Sending MCS Attach User Request PDU](#32536-sending-mcs-attach-user-request-pdu)
+        - [3.2.5.3.7 Processing MCS Attach User Confirm PDU](#32537-processing-mcs-attach-user-confirm-pdu)
+        - [3.2.5.3.8 Sending MCS Channel Join Request PDU(s)](#32538-sending-mcs-channel-join-request-pdus)
+        - [3.2.5.3.9 Processing MCS Channel Join Confirm PDU(s)](#32539-processing-mcs-channel-join-confirm-pdus)
+        - [3.2.5.3.10 Sending Security Exchange PDU](#325310-sending-security-exchange-pdu)
+        - [3.2.5.3.11 Sending Client Info PDU](#325311-sending-client-info-pdu)
+        - [3.2.5.3.12 Processing License Error PDU - Valid Client](#325312-processing-license-error-pdu-valid-client)
+        - [3.2.5.3.13 Mandatory Capability Exchange](#325313-mandatory-capability-exchange)
+          - [3.2.5.3.13.1 Processing Demand Active PDU](#3253131-processing-demand-active-pdu)
+          - [3.2.5.3.13.2 Sending Confirm Active PDU](#3253132-sending-confirm-active-pdu)
+        - [3.2.5.3.14 Sending Synchronize PDU](#325314-sending-synchronize-pdu)
+        - [3.2.5.3.15 Sending Control PDU - Cooperate](#325315-sending-control-pdu-cooperate)
+        - [3.2.5.3.16 Sending Control PDU - Request Control](#325316-sending-control-pdu-request-control)
+        - [3.2.5.3.17 Sending Persistent Key List PDU(s)](#325317-sending-persistent-key-list-pdus)
+        - [3.2.5.3.18 Sending Font List PDU](#325318-sending-font-list-pdu)
+        - [3.2.5.3.19 Processing Synchronize PDU](#325319-processing-synchronize-pdu)
+        - [3.2.5.3.20 Processing Control PDU - Cooperate](#325320-processing-control-pdu-cooperate)
+        - [3.2.5.3.21 Processing Control PDU - Granted Control](#325321-processing-control-pdu-granted-control)
+        - [3.2.5.3.22 Processing Font Map PDU](#325322-processing-font-map-pdu)
+      - [3.2.5.4 Disconnection Sequences](#3254-disconnection-sequences)
+        - [3.2.5.4.1 Sending Shutdown Request PDU](#32541-sending-shutdown-request-pdu)
+        - [3.2.5.4.2 Processing Shutdown Request Denied PDU](#32542-processing-shutdown-request-denied-pdu)
+      - [3.2.5.5 Deactivation-Reconnection Sequence](#3255-deactivation-reconnection-sequence)
+        - [3.2.5.5.1 Processing Deactivate All PDU](#32551-processing-deactivate-all-pdu)
+      - [3.2.5.6 Auto-Reconnect Sequence](#3256-auto-reconnect-sequence)
+        - [3.2.5.6.1 Processing Auto-Reconnect Status PDU](#32561-processing-auto-reconnect-status-pdu)
+      - [3.2.5.7 Server Error Reporting and Status Updates](#3257-server-error-reporting-and-status-updates)
+        - [3.2.5.7.1 Processing Set Error Info PDU](#32571-processing-set-error-info-pdu)
+        - [3.2.5.7.2 Processing Status Info PDU](#32572-processing-status-info-pdu)
+      - [3.2.5.8 Keyboard and Mouse Input](#3258-keyboard-and-mouse-input)
+        - [3.2.5.8.1 Input Event Notifications](#32581-input-event-notifications)
+          - [3.2.5.8.1.1 Sending Input Event PDU](#325811-sending-input-event-pdu)
+          - [3.2.5.8.1.2 Sending Fast-Path Input Event PDU](#325812-sending-fast-path-input-event-pdu)
+        - [3.2.5.8.2 Keyboard Status PDUs](#32582-keyboard-status-pdus)
+          - [3.2.5.8.2.1 Processing Set Keyboard Indicators PDU](#325821-processing-set-keyboard-indicators-pdu)
+          - [3.2.5.8.2.2 Processing Set Keyboard IME Status PDU](#325822-processing-set-keyboard-ime-status-pdu)
+      - [3.2.5.9 Basic Output](#3259-basic-output)
+        - [3.2.5.9.1 Processing Slow-Path Graphics Update PDU](#32591-processing-slow-path-graphics-update-pdu)
+        - [3.2.5.9.2 Processing Slow-Path Pointer Update PDU](#32592-processing-slow-path-pointer-update-pdu)
+        - [3.2.5.9.3 Processing Fast-Path Update PDU](#32593-processing-fast-path-update-pdu)
+          - [3.2.5.9.3.1 Processing Fast-Path Update Fragments](#325931-processing-fast-path-update-fragments)
+        - [3.2.5.9.4 Sound](#32594-sound)
+          - [3.2.5.9.4.1 Processing Play Sound PDU](#325941-processing-play-sound-pdu)
+      - [3.2.5.10 Logon and Authorization Notifications](#32510-logon-and-authorization-notifications)
+        - [3.2.5.10.1 Processing Save Session Info PDU](#325101-processing-save-session-info-pdu)
+        - [3.2.5.10.2 Processing Early User Authorization Result PDU](#325102-processing-early-user-authorization-result-pdu)
+      - [3.2.5.11 Controlling Server Graphics Output](#32511-controlling-server-graphics-output)
+        - [3.2.5.11.1 Sending Refresh Rect PDU](#325111-sending-refresh-rect-pdu)
+        - [3.2.5.11.2 Sending Suppress Output PDU](#325112-sending-suppress-output-pdu)
+      - [3.2.5.12 Display Update Notifications](#32512-display-update-notifications)
+        - [3.2.5.12.1 Processing Monitor Layout PDU](#325121-processing-monitor-layout-pdu)
+      - [3.2.5.13 Server Redirection](#32513-server-redirection)
+        - [3.2.5.13.1 Processing of the Server Redirection PDUs](#325131-processing-of-the-server-redirection-pdus)
+      - [3.2.5.14 Network Characteristics Detection](#32514-network-characteristics-detection)
+      - [3.2.5.15 Multitransport Bootstrapping](#32515-multitransport-bootstrapping)
+        - [3.2.5.15.1 Processing the Initiate Multitransport Request PDU](#325151-processing-the-initiate-multitransport-request-pdu)
+        - [3.2.5.15.2 Sending the Initiate Multitransport Response PDU](#325152-sending-the-initiate-multitransport-response-pdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Client-Side Connection Sequence Timeout](#3261-client-side-connection-sequence-timeout)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Disconnection Due to Network Error](#3271-disconnection-due-to-network-error)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Received Client Data](#3311-received-client-data)
+      - [3.3.1.2 User Channel ID](#3312-user-channel-id)
+      - [3.3.1.3 I/O Channel ID](#3313-io-channel-id)
+      - [3.3.1.4 Message Channel ID](#3314-message-channel-id)
+      - [3.3.1.5 Server Channel ID](#3315-server-channel-id)
+      - [3.3.1.6 Client Licensing Encryption Ability](#3316-client-licensing-encryption-ability)
+      - [3.3.1.7 Client Capabilities](#3317-client-capabilities)
+      - [3.3.1.8 Cached Bitmap Keys](#3318-cached-bitmap-keys)
+      - [3.3.1.9 Pointer Image Cache](#3319-pointer-image-cache)
+      - [3.3.1.10 Session Keys](#33110-session-keys)
+      - [3.3.1.11 Automatic Reconnection Cookie](#33111-automatic-reconnection-cookie)
+      - [3.3.1.12 Connection Start Time](#33112-connection-start-time)
+      - [3.3.1.13 RTT Measure Request Data](#33113-rtt-measure-request-data)
+      - [3.3.1.14 Multitransport Request Data](#33114-multitransport-request-data)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 Connection Sequence Timeout Timer](#3321-connection-sequence-timeout-timer)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Constructing a Server-to-Client Slow-Path PDU](#3351-constructing-a-server-to-client-slow-path-pdu)
+      - [3.3.5.2 Processing a Client-to-Server Slow-Path PDU](#3352-processing-a-client-to-server-slow-path-pdu)
+      - [3.3.5.3 Connection Sequence](#3353-connection-sequence)
+        - [3.3.5.3.1 Processing X.224 Connection Request PDU](#33531-processing-x224-connection-request-pdu)
+        - [3.3.5.3.2 Sending X.224 Connection Confirm PDU](#33532-sending-x224-connection-confirm-pdu)
+        - [3.3.5.3.3 Processing MCS Connect Initial PDU with GCC Conference Create Request](#33533-processing-mcs-connect-initial-pdu-with-gcc-conference-create-request)
+          - [3.3.5.3.3.1 Handling Errors in the GCC Conference Create Request Data](#335331-handling-errors-in-the-gcc-conference-create-request-data)
+        - [3.3.5.3.4 Sending MCS Connect Response PDU with GCC Conference Create Response](#33534-sending-mcs-connect-response-pdu-with-gcc-conference-create-response)
+        - [3.3.5.3.5 Processing MCS Erect Domain Request PDU](#33535-processing-mcs-erect-domain-request-pdu)
+        - [3.3.5.3.6 Processing MCS Attach User Request PDU](#33536-processing-mcs-attach-user-request-pdu)
+        - [3.3.5.3.7 Sending MCS Attach User Confirm PDU](#33537-sending-mcs-attach-user-confirm-pdu)
+        - [3.3.5.3.8 Processing MCS Channel Join Request PDU(s)](#33538-processing-mcs-channel-join-request-pdus)
+        - [3.3.5.3.9 Sending MCS Channel Join Confirm PDU(s)](#33539-sending-mcs-channel-join-confirm-pdus)
+        - [3.3.5.3.10 Processing Security Exchange PDU](#335310-processing-security-exchange-pdu)
+        - [3.3.5.3.11 Processing Client Info PDU](#335311-processing-client-info-pdu)
+        - [3.3.5.3.12 Sending License Error PDU - Valid Client](#335312-sending-license-error-pdu-valid-client)
+        - [3.3.5.3.13 Mandatory Capability Exchange](#335313-mandatory-capability-exchange)
+          - [3.3.5.3.13.1 Sending Demand Active PDU](#3353131-sending-demand-active-pdu)
+          - [3.3.5.3.13.2 Processing Confirm Active PDU](#3353132-processing-confirm-active-pdu)
+        - [3.3.5.3.14 Processing Synchronize PDU](#335314-processing-synchronize-pdu)
+        - [3.3.5.3.15 Processing Control PDU - Cooperate](#335315-processing-control-pdu-cooperate)
+        - [3.3.5.3.16 Processing Control PDU - Request Control](#335316-processing-control-pdu-request-control)
+        - [3.3.5.3.17 Processing Persistent Key List PDU(s)](#335317-processing-persistent-key-list-pdus)
+        - [3.3.5.3.18 Processing Font List PDU](#335318-processing-font-list-pdu)
+        - [3.3.5.3.19 Sending Synchronize PDU](#335319-sending-synchronize-pdu)
+        - [3.3.5.3.20 Sending Control PDU - Cooperate](#335320-sending-control-pdu-cooperate)
+        - [3.3.5.3.21 Sending Control PDU - Granted Control](#335321-sending-control-pdu-granted-control)
+        - [3.3.5.3.22 Sending Font Map PDU](#335322-sending-font-map-pdu)
+      - [3.3.5.4 Disconnection Sequences](#3354-disconnection-sequences)
+        - [3.3.5.4.1 Processing Shutdown Request PDU](#33541-processing-shutdown-request-pdu)
+        - [3.3.5.4.2 Sending Shutdown Request Denied PDU](#33542-sending-shutdown-request-denied-pdu)
+      - [3.3.5.5 Deactivation-Reconnection Sequence](#3355-deactivation-reconnection-sequence)
+        - [3.3.5.5.1 Sending Deactivate All PDU](#33551-sending-deactivate-all-pdu)
+      - [3.3.5.6 Auto-Reconnect Sequence](#3356-auto-reconnect-sequence)
+        - [3.3.5.6.1 Sending Auto-Reconnect Status PDU](#33561-sending-auto-reconnect-status-pdu)
+      - [3.3.5.7 Server Error Reporting and Status Updates](#3357-server-error-reporting-and-status-updates)
+        - [3.3.5.7.1 Sending Set Error Info PDU](#33571-sending-set-error-info-pdu)
+          - [3.3.5.7.1.1 User Authorization Failures](#335711-user-authorization-failures)
+        - [3.3.5.7.2 Sending Status Info PDU](#33572-sending-status-info-pdu)
+      - [3.3.5.8 Keyboard and Mouse Input](#3358-keyboard-and-mouse-input)
+        - [3.3.5.8.1 Input Event Notifications](#33581-input-event-notifications)
+          - [3.3.5.8.1.1 Processing Input Event PDU](#335811-processing-input-event-pdu)
+          - [3.3.5.8.1.2 Processing Fast-Path Input Event PDU](#335812-processing-fast-path-input-event-pdu)
+        - [3.3.5.8.2 Keyboard Status PDUs](#33582-keyboard-status-pdus)
+          - [3.3.5.8.2.1 Sending Set Keyboard Indicators PDU](#335821-sending-set-keyboard-indicators-pdu)
+          - [3.3.5.8.2.2 Sending Set Keyboard IME Status PDU](#335822-sending-set-keyboard-ime-status-pdu)
+      - [3.3.5.9 Basic Output](#3359-basic-output)
+        - [3.3.5.9.1 Sending Slow-Path Graphics Update PDU](#33591-sending-slow-path-graphics-update-pdu)
+        - [3.3.5.9.2 Sending Slow-Path Pointer Update PDU](#33592-sending-slow-path-pointer-update-pdu)
+        - [3.3.5.9.3 Sending Fast-Path Update PDU](#33593-sending-fast-path-update-pdu)
+        - [3.3.5.9.4 Sound](#33594-sound)
+          - [3.3.5.9.4.1 Sending Play Sound PDU](#335941-sending-play-sound-pdu)
+      - [3.3.5.10 Logon and Authorization Notifications](#33510-logon-and-authorization-notifications)
+        - [3.3.5.10.1 Sending Save Session Info PDU](#335101-sending-save-session-info-pdu)
+        - [3.3.5.10.2 Sending Early User Authorization Result PDU](#335102-sending-early-user-authorization-result-pdu)
+      - [3.3.5.11 Controlling Server Graphics Output](#33511-controlling-server-graphics-output)
+        - [3.3.5.11.1 Processing Refresh Rect PDU](#335111-processing-refresh-rect-pdu)
+        - [3.3.5.11.2 Processing Suppress Output PDU](#335112-processing-suppress-output-pdu)
+      - [3.3.5.12 Display Update Notifications](#33512-display-update-notifications)
+        - [3.3.5.12.1 Sending Monitor Layout PDU](#335121-sending-monitor-layout-pdu)
+      - [3.3.5.13 Server Redirection](#33513-server-redirection)
+        - [3.3.5.13.1 Sending of the Server Redirection PDUs](#335131-sending-of-the-server-redirection-pdus)
+      - [3.3.5.14 Network Characteristics Detection](#33514-network-characteristics-detection)
+      - [3.3.5.15 Multitransport Bootstrapping](#33515-multitransport-bootstrapping)
+        - [3.3.5.15.1 Sending the Initiate Multitransport Request PDU](#335151-sending-the-initiate-multitransport-request-pdu)
+        - [3.3.5.15.2 Processing the Initiate Multitransport Response PDU](#335152-processing-the-initiate-multitransport-response-pdu)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 Server-Side Connection Sequence Timeout](#3361-server-side-connection-sequence-timeout)
+      - [3.3.6.2 Auto-Reconnect Cookie Update](#3362-auto-reconnect-cookie-update)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Annotated Connection Sequence](#41-annotated-connection-sequence)
+    - [4.1.1 Client X.224 Connection Request PDU](#411-client-x224-connection-request-pdu)
+    - [4.1.2 Server X.224 Connection Confirm PDU](#412-server-x224-connection-confirm-pdu)
+    - [4.1.3 Client MCS Connect Initial PDU with GCC Conference Create Request](#413-client-mcs-connect-initial-pdu-with-gcc-conference-create-request)
+    - [4.1.4 Server MCS Connect Response PDU with GCC Conference Create Response](#414-server-mcs-connect-response-pdu-with-gcc-conference-create-response)
+    - [4.1.5 Client MCS Erect Domain Request PDU](#415-client-mcs-erect-domain-request-pdu)
+    - [4.1.6 Client MCS Attach User Request PDU](#416-client-mcs-attach-user-request-pdu)
+    - [4.1.7 Server MCS Attach-User Confirm PDU](#417-server-mcs-attach-user-confirm-pdu)
+    - [4.1.8 MCS Channel Join Request and Confirm PDUs](#418-mcs-channel-join-request-and-confirm-pdus)
+      - [4.1.8.1 Channel 1007](#4181-channel-1007)
+        - [4.1.8.1.1 Client Join Request PDU for Channel 1007 (User Channel)](#41811-client-join-request-pdu-for-channel-1007-user-channel)
+        - [4.1.8.1.2 Server Join Confirm PDU for Channel 1007 (User Channel)](#41812-server-join-confirm-pdu-for-channel-1007-user-channel)
+      - [4.1.8.2 Channel 1003](#4182-channel-1003)
+        - [4.1.8.2.1 Client Join Request PDU for Channel 1003 (I/O Channel)](#41821-client-join-request-pdu-for-channel-1003-io-channel)
+        - [4.1.8.2.2 Server Join Confirm PDU for Channel 1003 (I/O Channel)](#41822-server-join-confirm-pdu-for-channel-1003-io-channel)
+      - [4.1.8.3 Channel 1004](#4183-channel-1004)
+        - [4.1.8.3.1 Client Join Request PDU for Channel 1004 (rdpdr Channel)](#41831-client-join-request-pdu-for-channel-1004-rdpdr-channel)
+        - [4.1.8.3.2 Server Join Confirm PDU for Channel 1004 (rdpdr Channel)](#41832-server-join-confirm-pdu-for-channel-1004-rdpdr-channel)
+      - [4.1.8.4 Channel 1005](#4184-channel-1005)
+        - [4.1.8.4.1 Client Join Request PDU for Channel 1005 (cliprdr Channel)](#41841-client-join-request-pdu-for-channel-1005-cliprdr-channel)
+        - [4.1.8.4.2 Server Join Confirm PDU for Channel 1005 (cliprdr Channel)](#41842-server-join-confirm-pdu-for-channel-1005-cliprdr-channel)
+      - [4.1.8.5 Channel 1006](#4185-channel-1006)
+        - [4.1.8.5.1 Client Join Request PDU for Channel 1006 (rdpsnd Channel)](#41851-client-join-request-pdu-for-channel-1006-rdpsnd-channel)
+        - [4.1.8.5.2 Server Join Confirm PDU for Channel 1006 (rdpsnd Channel)](#41852-server-join-confirm-pdu-for-channel-1006-rdpsnd-channel)
+    - [4.1.9 Client Security Exchange PDU](#419-client-security-exchange-pdu)
+    - [4.1.10 Client Info PDU](#4110-client-info-pdu)
+    - [4.1.11 Server License Error PDU - Valid Client](#4111-server-license-error-pdu-valid-client)
+    - [4.1.12 Server Demand Active PDU](#4112-server-demand-active-pdu)
+    - [4.1.13 Client Confirm Active PDU](#4113-client-confirm-active-pdu)
+    - [4.1.14 Client Synchronize PDU](#4114-client-synchronize-pdu)
+    - [4.1.15 Client Control PDU - Cooperate](#4115-client-control-pdu-cooperate)
+    - [4.1.16 Client Control PDU - Request Control](#4116-client-control-pdu-request-control)
+    - [4.1.17 Client Persistent Key List PDU](#4117-client-persistent-key-list-pdu)
+    - [4.1.18 Client Font List PDU](#4118-client-font-list-pdu)
+    - [4.1.19 Server Synchronize PDU](#4119-server-synchronize-pdu)
+    - [4.1.20 Server Control PDU - Cooperate](#4120-server-control-pdu-cooperate)
+    - [4.1.21 Server Control PDU - Granted Control](#4121-server-control-pdu-granted-control)
+    - [4.1.22 Server Font Map PDU](#4122-server-font-map-pdu)
+  - [4.2 Annotated User-Initiated (on Client) Disconnection Sequence](#42-annotated-user-initiated-on-client-disconnection-sequence)
+    - [4.2.1 Client Shutdown Request PDU](#421-client-shutdown-request-pdu)
+    - [4.2.2 Server Shutdown Request Denied PDU](#422-server-shutdown-request-denied-pdu)
+    - [4.2.3 MCS Disconnect Provider Ultimatum PDU](#423-mcs-disconnect-provider-ultimatum-pdu)
+  - [4.3 Annotated Save Session Info PDU](#43-annotated-save-session-info-pdu)
+    - [4.3.1 Logon Info Version 2](#431-logon-info-version-2)
+    - [4.3.2 Plain Notify](#432-plain-notify)
+    - [4.3.3 Logon Info Extended](#433-logon-info-extended)
+  - [4.4 Annotated Server-to-Client Virtual Channel PDU](#44-annotated-server-to-client-virtual-channel-pdu)
+  - [4.5 Annotated Standard Security Server Redirection PDU](#45-annotated-standard-security-server-redirection-pdu)
+  - [4.6 Annotated Enhanced Security Server Redirection PDU](#46-annotated-enhanced-security-server-redirection-pdu)
+  - [4.7 Annotated Fast-Path Input Event PDU](#47-annotated-fast-path-input-event-pdu)
+  - [4.8 Java Code to Encrypt and Decrypt a Sample Client Random](#48-java-code-to-encrypt-and-decrypt-a-sample-client-random)
+  - [4.9 Java Code to Sign a Sample Proprietary Certificate Hash](#49-java-code-to-sign-a-sample-proprietary-certificate-hash)
+  - [4.10 Specifying the Active Keyboard Layout and Language](#410-specifying-the-active-keyboard-layout-and-language)
+  - [4.11 RDS AAD Auth and CloudAP](#411-rds-aad-auth-and-cloudap)
+    - [4.11.1 Generating a Server Nonce](#4111-generating-a-server-nonce)
+    - [4.11.2 Validating an Authentication Request](#4112-validating-an-authentication-request)
+    - [4.11.3 Acquiring an AAD Nonce](#4113-acquiring-an-aad-nonce)
+    - [4.11.4 Acquiring an RDP Access Token](#4114-acquiring-an-rdp-access-token)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+  - [5.3 Standard RDP Security](#53-standard-rdp-security)
+    - [5.3.1 Encryption Levels](#531-encryption-levels)
+    - [5.3.2 Negotiating the Cryptographic Configuration](#532-negotiating-the-cryptographic-configuration)
+      - [5.3.2.1 Cryptographic Negotiation Failures](#5321-cryptographic-negotiation-failures)
+    - [5.3.3 Server Certificates](#533-server-certificates)
+      - [5.3.3.1 Proprietary Certificates](#5331-proprietary-certificates)
+        - [5.3.3.1.1 Terminal Services Signing Key](#53311-terminal-services-signing-key)
+        - [5.3.3.1.2 Signing a Proprietary Certificate](#53312-signing-a-proprietary-certificate)
+        - [5.3.3.1.3 Validating a Proprietary Certificate](#53313-validating-a-proprietary-certificate)
+      - [5.3.3.2 X.509 Certificate Chains](#5332-x509-certificate-chains)
+    - [5.3.4 Client and Server Random Values](#534-client-and-server-random-values)
+      - [5.3.4.1 Encrypting Client Random](#5341-encrypting-client-random)
+      - [5.3.4.2 Decrypting Client Random](#5342-decrypting-client-random)
+    - [5.3.5 Initial Session Key Generation](#535-initial-session-key-generation)
+      - [5.3.5.1 Non-FIPS](#5351-non-fips)
+      - [5.3.5.2 FIPS](#5352-fips)
+    - [5.3.6 Encrypting and Decrypting the I/O Data Stream](#536-encrypting-and-decrypting-the-io-data-stream)
+      - [5.3.6.1 Non-FIPS](#5361-non-fips)
+        - [5.3.6.1.1 Salted MAC Generation](#53611-salted-mac-generation)
+      - [5.3.6.2 FIPS](#5362-fips)
+    - [5.3.7 Session Key Updates](#537-session-key-updates)
+      - [5.3.7.1 Non-FIPS](#5371-non-fips)
+      - [5.3.7.2 FIPS](#5372-fips)
+    - [5.3.8 Packet Layout in the I/O Data Stream](#538-packet-layout-in-the-io-data-stream)
+  - [5.4 Enhanced RDP Security](#54-enhanced-rdp-security)
+    - [5.4.1 Encryption Levels](#541-encryption-levels)
+    - [5.4.2 Security-Enhanced Connection Sequence](#542-security-enhanced-connection-sequence)
+      - [5.4.2.1 Negotiation-Based Approach](#5421-negotiation-based-approach)
+      - [5.4.2.2 Direct Approach](#5422-direct-approach)
+      - [5.4.2.3 Changes to the Security Commencement Phase](#5423-changes-to-the-security-commencement-phase)
+      - [5.4.2.4 Disabling Forced Encryption of Licensing Packets](#5424-disabling-forced-encryption-of-licensing-packets)
+    - [5.4.3 Encrypting and Decrypting the I/O Data Stream](#543-encrypting-and-decrypting-the-io-data-stream)
+    - [5.4.4 Packet Layout in the I/O Data Stream](#544-packet-layout-in-the-io-data-stream)
+    - [5.4.5 External Security Protocols Used By RDP](#545-external-security-protocols-used-by-rdp)
+      - [5.4.5.1 Transport Layer Security (TLS)](#5451-transport-layer-security-tls)
+      - [5.4.5.2 CredSSP](#5452-credssp)
+        - [5.4.5.2.1 User Authorization Failures](#54521-user-authorization-failures)
+        - [5.4.5.2.2 TLS Fatal Alerts](#54522-tls-fatal-alerts)
+      - [5.4.5.3 RDSTLS Security](#5453-rdstls-security)
+        - [5.4.5.3.1 RDSTLS Connection Sequence](#54531-rdstls-connection-sequence)
+      - [5.4.5.4 RDS AAD Auth Security](#5454-rds-aad-auth-security)
+        - [5.4.5.4.1 RDS AAD Auth Connection Sequence](#54541-rds-aad-auth-connection-sequence)
+  - [5.5 Automatic Reconnection](#55-automatic-reconnection)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Remote Desktop Protocol: Basic Connectivity and Graphics Remoting facilitates user interaction
 with a remote computer system by transferring graphics display data from the remote computer to the
@@ -2342,7 +1222,7 @@ computer and components running on the remote computer.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -2401,7 +1281,8 @@ Release: March 9, 2026
 
 17 / 444
 
-domain name: A domain name or a NetBIOS name that identifies a domain.
+
+domain name: A domain name or a NetBIOS name that identifies a domain.
 
 Dynamic DST: Dynamic daylight saving time (DST) provides support for time zones whose
 
@@ -2477,7 +1358,8 @@ Release: March 9, 2026
 
 18 / 444
 
-protocol data unit (PDU): Information that is delivered as a unit among peer entities of a
+
+protocol data unit (PDU): Information that is delivered as a unit among peer entities of a
 network and that can contain control information, address information, or data. For more
 information on remote procedure call (RPC)-specific PDUs, see [C706] section 12.
 
@@ -2537,7 +1419,7 @@ Unicode character: Unless otherwise specified, a 16-bit UTF-16 code unit.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -2549,10 +1431,11 @@ Release: March 9, 2026
 
 19 / 444
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -2616,7 +1499,8 @@ Release: March 9, 2026
 
 20 / 444
 
-[RFC4648] Josefsson, S., "The Base16, Base32, and Base64 Data Encodings", RFC 4648, October
+
+[RFC4648] Josefsson, S., "The Base16, Base32, and Base64 Data Encodings", RFC 4648, October
 2006, https://www.rfc-editor.org/info/rfc4648
 
 [RFC5246] Dierks, T., and Rescorla, E., "The Transport Layer Security (TLS) Protocol Version 1.2",
@@ -2683,13 +1567,14 @@ Release: March 9, 2026
 
 21 / 444
 
-[X224] ITU-T, "Information technology - Open Systems Interconnection - Protocol for Providing the
+
+[X224] ITU-T, "Information technology - Open Systems Interconnection - Protocol for Providing the
 Connection-Mode Transport Service", Recommendation X.224, November 1995,
 http://www.itu.int/rec/T-REC-X.224-199511-I/en
 
 Note There is a charge to download the specification.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RDPCR2] Microsoft Corporation, "Remote Desktop Protocol: Composited Remoting V2".
 
@@ -2749,7 +1634,8 @@ Release: March 9, 2026
 
 22 / 444
 
-[MS-RDPEV] Microsoft Corporation, "Remote Desktop Protocol: Video Redirection Virtual Channel
+
+[MS-RDPEV] Microsoft Corporation, "Remote Desktop Protocol: Video Redirection Virtual Channel
 Extension".
 
 [MS-RDPEXPS] Microsoft Corporation, "Remote Desktop Protocol: XML Paper Specification (XPS) Print
@@ -2791,7 +1677,7 @@ preview-62753265-68e9-45d2-adcb-f996bf3ad393
 [RFC2118] Pall, G., "Microsoft Point-To-Point Compression (MPPC) Protocol", RFC 2118, March 1997,
 http://www.ietf.org/rfc/rfc2118.txt
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol is designed to facilitate user interaction with a remote computer system by transferring
 graphics display information from the remote computer to the user and transporting input commands
@@ -2810,13 +1696,14 @@ Release: March 9, 2026
 
 23 / 444
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-RDPBCGR].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
-1.3.1  Message Flows
+#### 1.3.1 Message Flows
 
-1.3.1.1  Connection Sequence
+##### 1.3.1.1 Connection Sequence
 
 The goal of the RDP Connection Sequence is to exchange client and server settings and to specify
 common settings to use for the duration of the connection so that input, graphics, and other data can
@@ -2835,7 +1722,8 @@ Release: March 9, 2026
 
 24 / 444
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-RDPBCGR].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -2864,7 +1752,8 @@ Release: March 9, 2026
 
 25 / 444
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-RDPBCGR].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -2909,7 +1798,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-RDPELE] section 2.2.2) are an exception in that they always have a security header). The Security
+
+RDPELE] section 2.2.2) are an exception in that they always have a security header). The Security
 Header follows the X.224 and MCS Headers and indicates whether the attached data is encrypted.
 Even if encryption is in force, server-to-client traffic cannot always be encrypted, while client-to-
 server traffic will always be encrypted (encryption of licensing PDUs is optional, however).
@@ -2991,7 +1881,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-
+
+
 
 
 
@@ -3013,7 +1904,7 @@ Besides input and graphics data, other data that can be exchanged between client
 connection has been finalized includes connection management information and virtual channel
 messages (exchanged between client-side plug-ins and server-side applications).
 
-1.3.1.2  Security-Enhanced Connection Sequence
+##### 1.3.1.2 Security-Enhanced Connection Sequence
 
 The RDP Connection Sequence does not provide any mechanisms which ensure that the identity of the
 server is authenticated, and as a result it is vulnerable to man-in-the-middle attacks (these attacks
@@ -3041,7 +1932,7 @@ expect the connection sequence to be initiated by an X.224 Connection Request PD
 
 For more details about Enhanced RDP Security, see section 5.4.
 
-1.3.1.3  Deactivation-Reactivation Sequence
+##### 1.3.1.3 Deactivation-Reactivation Sequence
 
 After the connection sequence has run to completion, the server can determine that the client has to
 be connected to an existing session. To accomplish this task the server signals the client with a
@@ -3052,9 +1943,9 @@ and Connection Finalization phases of the connection sequence (section 1.3.1.1) 
 The sending and processing of the Deactivate All PDU is described in sections 3.3.5.5.1 and 3.2.5.5.1
 respectively.
 
-1.3.1.4  Disconnection Sequences
+##### 1.3.1.4 Disconnection Sequences
 
-1.3.1.4.1 User-Initiated on Client
+###### 1.3.1.4.1 User-Initiated on Client
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -3063,7 +1954,8 @@ Release: March 9, 2026
 
 28 / 444
 
-The user can initiate a client-side disconnect by closing the RDP client application. To implement this
+
+The user can initiate a client-side disconnect by closing the RDP client application. To implement this
 type of disconnection the client can initiate an immediate disconnect by sending the MCS Disconnect
 Provider Ultimatum PDU (with the reason code set to "user requested") and then closing the
 connection. Alternatively, the client can first notify the server of the intent to disconnect by sending
@@ -3088,7 +1980,7 @@ The sending and processing of the Shutdown Request PDU is described in sections 
 3.3.5.4.1 respectively. The sending and processing of the Shutdown Request Denied PDU is described
 in sections 3.3.5.4.2 and 3.2.5.4.2 respectively.
 
-1.3.1.4.2 User-Initiated on Server
+###### 1.3.1.4.2 User-Initiated on Server
 
 The user can initiate a server-side disconnect by ending the session hosted on the server. To
 implement this type of disconnection, the server sends the client the following sequence of PDUs:
@@ -3106,7 +1998,7 @@ The connection is then closed by the server.
 The sending of the Deactivate All and MCS Disconnect Provider Ultimatum PDUs is specified in section
 3.3.5.5.1, while the sending of the Set Error Info PDU is specified in section 3.3.5.7.1.
 
-1.3.1.4.3 Administrator-Initiated on Server
+###### 1.3.1.4.3 Administrator-Initiated on Server
 
 The administrator of a server can force a user to be logged off from a session or disconnect sessions
 outside of the user's control. To implement this type of disconnection, the server sends the client the
@@ -3125,7 +2017,7 @@ The connection is then closed by the server.
 The sending of the Deactivate All and MCS Disconnect Provider Ultimatum PDUs is specified in section
 3.3.5.5.1, while the sending of the Set Error Info PDU is specified in section 3.3.5.7.1.
 
-1.3.1.5  Automatic Reconnection
+##### 1.3.1.5 Automatic Reconnection
 
 The Automatic Reconnection feature allows a client to reconnect to an existing session (after a short-
 term network failure has occurred) without having to resend the user's credentials to the server.
@@ -3137,7 +2029,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-After a successful log on, the server sends the client an "auto-reconnect cookie" in the Save Session
+
+After a successful log on, the server sends the client an "auto-reconnect cookie" in the Save Session
 Info PDU. This cookie is bound to the current user's session and is stored by the client. In the case of
 a disconnection due to a network error, the client can try to automatically reconnect to the server. If it
 can connect, it sends a cryptographically modified version of the cookie to the server in the Client Info
@@ -3152,7 +2045,7 @@ the session, then any previous clients that were connected can no longer use the
 mechanism to connect. Furthermore, the server invalidates and updates the cookie at hourly intervals,
 sending the new cookie to the client in the Save Session Info PDU.
 
-1.3.2  Server Error Reporting and Status Updates
+#### 1.3.2 Server Error Reporting and Status Updates
 
 A server can send detailed error codes to a client by using the Set Error Info PDU (the client indicates
 during the Basic Settings Exchange phase of the connection sequence, as specified in section 1.3.1.1,
@@ -3171,7 +2064,7 @@ The sending and processing of the Set Error Info PDU is described in sections 3.
 respectively, while the sending and processing of the Status Info PDU is described in sections
 3.3.5.7.2 and 3.2.5.7.2 respectively.
 
-1.3.3  Static Virtual Channels
+#### 1.3.3 Static Virtual Channels
 
 Static Virtual Channels allow lossless communication between client and server components over the
 main RDP data connection. Virtual channel data is application-specific and opaque to RDP. A maximum
@@ -3198,7 +2091,8 @@ Release: March 9, 2026
 
 30 / 444
 
-1.3.4  Data Compression
+
+#### 1.3.4 Data Compression
 
 RDP uses a bulk compressor to compress virtual channel data and some data in PDUs sent from
 server to client. Capability advertising for various versions of the bulk compressor occurs in the Client
@@ -3214,7 +2108,7 @@ Besides employing bulk compression for generic data, RDP also uses variations of
 (RLE) rules to implement compression of bitmap data sent from server to client. All clients have to be
 capable of decompressing compressed bitmap data; this capability is not negotiable.
 
-1.3.5  Keyboard and Mouse Input
+#### 1.3.5 Keyboard and Mouse Input
 
 The client sends mouse and keyboard input PDUs in two types: slow-path and fast-path. Slow-path is
 similar to T.128 input formats for input PDUs, with some modifications for RDP input requirements.
@@ -3230,7 +2124,7 @@ input focus and then later gets the focus back (possibly with new toggle key sta
 the server can also force an update of the local keyboard toggle keys or the local input method
 editor (IME) being used to ensure that synchronization with the session is maintained.
 
-1.3.6  Basic Server Output
+#### 1.3.6 Basic Server Output
 
 In a similar style to input-related PDUs (as specified in section 1.3.5), server output-related PDUs
 come in two types: slow-path and fast-path. Slow-path output is similar to T.128 output and is not
@@ -3252,7 +2146,7 @@ Other basic output which a server sends to a connected client includes the Play 
 instructs a client to play rudimentary sounds (by specifying a frequency and its duration) and
 Connection Management PDUs, as specified in section 2.2.10.
 
-1.3.7  Controlling Server Graphics Output
+#### 1.3.7 Controlling Server Graphics Output
 
 A client connected to a server and displaying graphics data might need to request that the server
 resend the graphics data for a collection of rectangular regions of the session screen area, or stop
@@ -3264,7 +2158,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-RDPBCGR].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -3272,7 +2167,7 @@ sending graphics data for a period of time (perhaps when the client is minimized
 accomplished by having the client send the Refresh Rect PDU and Suppress Output PDUs,
 respectively.
 
-1.3.8  Server Redirection
+#### 1.3.8 Server Redirection
 
 A client connection can be redirected to a specific session on another server by using the Server
 Redirection PDU (section 2.2.13). This enables basic load-balancing scenarios, as shown in the
@@ -3315,7 +2210,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-5.  Server S1 validates the login credentials, and, if they are correct, connects Client C to Session #3.
+
+5.  Server S1 validates the login credentials, and, if they are correct, connects Client C to Session #3.
 
 If Client C cannot connect directly to Server S1, the Redirection PDU has to contain a variable-length
 routing token that contains the information required by Server S2 to redirect the client connection
@@ -3328,7 +2224,7 @@ For more information about load balancing of Remote Desktop sessions and the rou
 format, see [MSFT-SDLBTS] sections "Load-Balanced Configurations", "Revectoring Clients", and
 "Routing Token Format".
 
-1.3.8.1  RDSTLS
+##### 1.3.8.1 RDSTLS
 
 The RDSTLS Security Protocol (section 5.4.5.3) is primarily used in the context of server redirection
 scenarios. When the Redirection PDU is sent to the client (step 3 in section 1.3.8), RDSTLS should be
@@ -3344,7 +2240,7 @@ The authentication certificate of the target server.
 These two items are used in the context of RDSTLS to facilitate mutual authentication when
 reconnecting to the target server.
 
-1.3.9  Connect-Time and Continuous Network Characteristics Detection
+#### 1.3.9 Connect-Time and Continuous Network Characteristics Detection
 
 Connect-Time Auto-Detection occurs once during the RDP Connection Sequence (section 1.3.1.1), and
 is accomplished by sending request and response messages over the main RDP connection during the
@@ -3383,7 +2279,8 @@ Release: March 9, 2026
 
 33 / 444
 
-The following messages are encapsulated in the server-to-client Auto-Detect Request PDU and flow
+
+The following messages are encapsulated in the server-to-client Auto-Detect Request PDU and flow
 over the main RDP connection, implementing Continuous Auto-Detection:
 
   RTT Message Request (section 2.2.14.1.1)
@@ -3411,7 +2308,7 @@ that are in active use:
 
   Bandwidth Measure Results (section 2.2.14.2.2)
 
-1.3.10 Connection Health Monitoring
+#### 1.3.10 Connection Health Monitoring
 
 The Heartbeat PDU (section 2.2.16.1) allows a client to monitor the state of the connection to the
 server in real time. If the client and server both support connection health monitoring, then the server
@@ -3420,7 +2317,7 @@ been received over a predetermined number of heartbeat intervals by the client, 
 be down or the network link might be in a disconnected state. If this is the case, the client can
 respond by displaying a warning or initiating a reconnection attempt.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 [MS-RDPBCGR] is based on the ITU (International Telecommunication Union) T.120 series of
 protocols. The T.120 standard is composed of a suite of communication and application-layer protocols
@@ -3454,7 +2351,8 @@ Release: March 9, 2026
 
 34 / 444
 
-  Audio Output Virtual Channel Extension [MS-RDPEA]
+
+  Audio Output Virtual Channel Extension [MS-RDPEA]
 
   Remote Programs Virtual Channel Extension [MS-RDPERP]
 
@@ -3535,7 +2433,8 @@ Release: March 9, 2026
 
 35 / 444
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-RDPBCGR].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -3543,14 +2442,14 @@ The following protocol tunnels [MS-RDPBCGR]:
 
   Gateway Server Protocol [MS-TSGU]
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol assumes that the client and server systems both have an IP address and are able to
 communicate over a computer network. It also assumes that the initiator (or "client") has already
 obtained the IP address of the server, that the server has registered a port, and that the server is
 actively listening for client connections on that port.<1>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable in scenarios where interactions with a session or application hosted on a
 remote server are required. In this context, the graphical user interface of a session or application
@@ -3564,7 +2463,7 @@ more specialized communication include redirection of client-side devices (for e
 drives, smart card readers, or Plug and Play devices) and synchronization of the local and remote
 clipboards.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Capability negotiation for RDP is essentially the same as for T.128. The server advertises its
 capabilities in a Demand Active PDU sent to the client, and the client advertises its capabilities in the
@@ -3594,7 +2493,8 @@ Release: March 9, 2026
 
 36 / 444
 
-The client and server data exchanged during the Basic Settings Exchange phase in the RDP
+
+The client and server data exchanged during the Basic Settings Exchange phase in the RDP
 Connection Sequence (section 1.3.1.1) includes an RDP version number (consisting of a major and
 minor field). However, this version information does not accurately reflect the version of RDP being
 used by RDP 5.0, 5.1, 5.2, 6.0, 6.1, 7.0, 7.1, 8.0, and 8.1 clients because they all advertise a minor
@@ -3604,13 +2504,13 @@ The build number of the client is also available as part of the data the client 
 the Basic Settings Exchange phase. However, this value is implementation-dependent and is not
 necessarily consistent across the spectrum of RDP clients manufactured by different vendors.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses NTSTATUS values as defined in [MS-ERREF] section 2.3. Vendors are free to choose
 their own values for this field, as long as the C bit (0x20000000) is set, indicating it is a customer
 code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -3621,9 +2521,10 @@ Release: March 9, 2026
 
 37 / 444
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The [MS-RDPBCGR] packets are encapsulated in the Transmission Control Protocol (TCP). The
 TCP packets MUST be encapsulated in version 4 or 6 of the IP protocol.
@@ -3631,7 +2532,7 @@ TCP packets MUST be encapsulated in version 4 or 6 of the IP protocol.
 There is no officially assigned TCP port for [MS-RDPBCGR], but protocol servers listen by default on
 TCP port 3389 for client requests.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All multiple-byte fields within a message MUST be marshaled in little-endian byte order, unless
 otherwise specified. This protocol references commonly used data types as defined in [MS-DTYP].
@@ -3642,9 +2543,9 @@ defined in [T125]. The MCS Send Data Request ([T125] section 11.32) and MCS Send
 implementing ASN.1 Packed Encoding Rules (PER) extended size determinant encoding
 ([ITUX691] section 10.9.3, excluding 10.9.3.8).
 
-2.2.1  Connection Sequence
+#### 2.2.1 Connection Sequence
 
-2.2.1.1  Client X.224 Connection Request PDU
+##### 2.2.1.1 Client X.224 Connection Request PDU
 
 The X.224 Connection Request PDU is an RDP Connection Sequence PDU sent from client to server
 during the Connection Initiation phase of the RDP Connection Sequence (section 1.3.1.1 for an
@@ -3690,7 +2591,8 @@ Release: March 9, 2026
 
 38 / 444
 
-...
+
+...
 
 tpktHeader (4 bytes): A TPKT Header, as specified in [T123] section 8.
 
@@ -3720,7 +2622,7 @@ field MUST be present if the CORRELATION_INFO_PRESENT (0x08) flag is set in the 
 the RDP Negotiation Request structure, encapsulated within the optional rdpNegReq field. If
 the CORRELATION_INFO_PRESENT (0x08) flag is not set, then this field MUST NOT be present.
 
-2.2.1.1.1 RDP Negotiation Request (RDP_NEG_REQ)
+###### 2.2.1.1.1 RDP Negotiation Request (RDP_NEG_REQ)
 
 The RDP Negotiation Request structure is used by a client to advertise the security protocols which it
 supports.
@@ -3780,7 +2682,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Flag
+
+Flag
 
 Meaning
 
@@ -3849,7 +2752,7 @@ PROTOCOL_RDSAAD
 
 RDS-AAD-Auth Security (section 5.4.5.4).
 
-2.2.1.1.2 RDP Correlation Info (RDP_NEG_CORRELATION_INFO)
+###### 2.2.1.1.2 RDP Correlation Info (RDP_NEG_CORRELATION_INFO)
 
 The RDP Correlation Info structure is used by a client to propagate connection correlation information
 to the server. This information allows diagnostic tools on the server to track and monitor a specific
@@ -3885,7 +2788,8 @@ Release: March 9, 2026
 
 40 / 444
 
-reserved (16 bytes)
+
+reserved (16 bytes)
 
 ...
 
@@ -3912,7 +2816,7 @@ reserved (16 bytes): An array of sixteen 8-bit, unsigned integers reserved for f
 
 integers within this array MUST be set to zero.
 
-2.2.1.2  Server X.224 Connection Confirm PDU
+##### 2.2.1.2 Server X.224 Connection Confirm PDU
 
 The X.224 Connection Confirm PDU is an RDP Connection Sequence PDU sent from server to client
 during the Connection Initiation phase of the RDP Connection Sequence (see section 1.3.1.1 for an
@@ -3951,7 +2855,7 @@ rdpNegData (8 bytes): An optional RDP Negotiation Response (section 2.2.1.2.1) s
 optional RDP Negotiation Failure (section 2.2.1.2.2) structure. The length of this field is
 included in the X.224 Connection Confirm Length Indicator field.
 
-2.2.1.2.1 RDP Negotiation Response (RDP_NEG_RSP)
+###### 2.2.1.2.1 RDP Negotiation Response (RDP_NEG_RSP)
 
 The RDP Negotiation Response structure is used by a server to inform the client of the security
 protocol which it has selected to use for the connection.
@@ -3963,7 +2867,8 @@ Release: March 9, 2026
 
 41 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4079,7 +2984,8 @@ Release: March 9, 2026
 
 42 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -4092,7 +2998,7 @@ PROTOCOL_RDSAAD
 
 RDS-AAD-Auth Security (section 5.4.5.4).
 
-2.2.1.2.2 RDP Negotiation Failure (RDP_NEG_FAILURE)
+###### 2.2.1.2.2 RDP Negotiation Failure (RDP_NEG_FAILURE)
 
 The RDP Negotiation Failure structure is used by a server to inform the client of a failure that has
 occurred while preparing security for the connection.
@@ -4193,7 +3099,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -4208,7 +3115,7 @@ RDP Security (section 5.4) and authenticate through
 Entra ID, described in [MSFT-ENTRA], using RDS AAD
 Auth Security (section 5.4.5.4).
 
-2.2.1.3  Client MCS Connect Initial PDU with GCC Conference Create Request
+##### 2.2.1.3 Client MCS Connect Initial PDU with GCC Conference Create Request
 
 The MCS Connect Initial PDU is an RDP Connection Sequence PDU sent from client to server during the
 Basic Settings Exchange phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview
@@ -4268,7 +3175,8 @@ Release: March 9, 2026
 
 44 / 444
 
-...
+
+...
 
 clientMonitorData (variable)
 
@@ -4334,7 +3242,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-clientMultitransportChannelData (8 bytes): Optional Client Multitransport Channel Data structure
+
+clientMultitransportChannelData (8 bytes): Optional Client Multitransport Channel Data structure
 (section 2.2.1.3.8). This field MUST NOT be included if the server did not advertise support for
 Extended Client Data Blocks by using the EXTENDED_CLIENT_DATA_SUPPORTED flag
 (0x00000001) as described in section 2.2.1.2.1.
@@ -4345,7 +3254,7 @@ clientMonitorExtendedData (variable): Variable-length Client Monitor Extended Da
 Extended Client Data Blocks by using the EXTENDED_CLIENT_DATA_SUPPORTED flag
 (0x00000001) as described in 2.2.1.2.1.
 
-2.2.1.3.1 User Data Header (TS_UD_HEADER)
+###### 2.2.1.3.1 User Data Header (TS_UD_HEADER)
 
 The TS_UD_HEADER precedes all data blocks in the client and server GCC user data.
 
@@ -4452,7 +3361,8 @@ Release: March 9, 2026
 
 46 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -4474,7 +3384,7 @@ length (2 bytes): A 16-bit, unsigned integer. The size in bytes of the data bloc
 
 header.
 
-2.2.1.3.2 Client Core Data (TS_UD_CS_CORE)
+###### 2.2.1.3.2 Client Core Data (TS_UD_CS_CORE)
 
 The TS_UD_CS_CORE data block contains core client connection-related information.
 
@@ -4536,7 +3446,8 @@ Release: March 9, 2026
 
 47 / 444
 
-highColorDepth (optional)
+
+highColorDepth (optional)
 
 supportedColorDepths (optional)
 
@@ -4644,7 +3555,8 @@ Release: March 9, 2026
 
 48 / 444
 
-Value
+
+Value
 
 0x00080011
 
@@ -4747,7 +3659,8 @@ Release: March 9, 2026
 
 49 / 444
 
-keyboardFunctionKey (4 bytes): A 32-bit, unsigned integer. The number of function keys on the
+
+keyboardFunctionKey (4 bytes): A 32-bit, unsigned integer. The number of function keys on the
 
 keyboard.
 
@@ -4855,7 +3768,8 @@ Release: March 9, 2026
 
 50 / 444
 
-supportedColorDepths (2 bytes): A 16-bit, unsigned integer. Specifies the high color depths that
+
+supportedColorDepths (2 bytes): A 16-bit, unsigned integer. Specifies the high color depths that
 
 the client is capable of supporting.
 
@@ -4979,7 +3893,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Flag
+
+Flag
 
 0x0100
 
@@ -5083,7 +3998,8 @@ Release: March 9, 2026
 
 52 / 444
 
-Value
+
+Value
 
 0x06
 
@@ -5175,7 +4091,8 @@ Release: March 9, 2026
 
 53 / 444
 
-This value MUST be ignored if it is invalid. If this field is present, then the
+
+This value MUST be ignored if it is invalid. If this field is present, then the
 desktopPhysicalHeight field MUST also be present. If this field is not present, all of the
 subsequent fields MUST NOT be present.
 
@@ -5193,7 +4110,7 @@ value MUST be ignored if it is not set to 100%, 140%, or 180% or desktopScaleFac
 than 100% or greater than 500%. If this field is present, then the desktopScaleFactor field
 MUST also be present.<7>
 
-2.2.1.3.3 Client Security Data (TS_UD_CS_SEC)
+###### 2.2.1.3.3 Client Security Data (TS_UD_CS_SEC)
 
 The TS_UD_CS_SEC data block contains security-related information used to advertise client
 cryptographic support. This information is only relevant when Standard RDP Security mechanisms
@@ -5268,13 +4185,14 @@ Release: March 9, 2026
 
 54 / 444
 
-extEncryptionMethods (4 bytes): A 32-bit, unsigned integer. This field is used exclusively for the
+
+extEncryptionMethods (4 bytes): A 32-bit, unsigned integer. This field is used exclusively for the
 
 French locale. In French locale clients, encryptionMethods MUST be set to zero and
 extEncryptionMethods MUST be set to the value to which encryptionMethods would have
 been set. For non-French locale clients, this field MUST be set to zero.
 
-2.2.1.3.4 Client Network Data (TS_UD_CS_NET)
+###### 2.2.1.3.4 Client Network Data (TS_UD_CS_NET)
 
 The TS_UD_CS_NET packet contains a list of requested virtual channels.
 
@@ -5309,7 +4227,7 @@ channelDefArray (variable): A variable-length array containing the information f
 virtual channels encapsulated in CHANNEL_DEF structures (section 2.2.1.3.4.1). The number of
 CHANNEL_DEF structures which follows is given by the channelCount field.
 
-2.2.1.3.4.1  Channel Definition Structure (CHANNEL_DEF)
+###### 2.2.1.3.4.1 Channel Definition Structure (CHANNEL_DEF)
 
 The CHANNEL_DEF packet contains information for a particular static virtual channel.
 
@@ -5359,7 +4277,8 @@ Release: March 9, 2026
 
 55 / 444
 
-Flag
+
+Flag
 
 Meaning
 
@@ -5423,7 +4342,7 @@ Channel MUST be persistent across remote control transactions.
 
 0x00100000
 
-2.2.1.3.5 Client Cluster Data (TS_UD_CS_CLUSTER)
+###### 2.2.1.3.5 Client Cluster Data (TS_UD_CS_CLUSTER)
 
 The TS_UD_CS_CLUSTER data block is sent by the client to the server either to advertise that it can
 support the Server Redirection PDUs (sections 2.2.13.2 and 2.2.13.3) or to request a connection to a
@@ -5467,7 +4386,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Flag
+
+Flag
 
 0x00000001
 
@@ -5555,7 +4475,7 @@ REDIRECTED_SESSIONID_FIELD_VALID flag is set in the Flags field, then the
 RedirectedSessionID field contains a valid session identifier to which the client requests to
 connect.
 
-2.2.1.3.6 Client Monitor Data (TS_UD_CS_MONITOR)
+###### 2.2.1.3.6 Client Monitor Data (TS_UD_CS_MONITOR)
 
 The TS_UD_CS_MONITOR packet describes the client-side display monitor layout. This packet is an
 Extended Client Data Block and MUST NOT be sent to a server which does not advertise support for
@@ -5574,7 +4494,8 @@ Release: March 9, 2026
 
 57 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5610,7 +4531,7 @@ monitorDefArray (variable): A variable-length array containing a series of TS_MO
 structures (section 2.2.1.3.6.1) which describe the display monitor layout of the client. The
 number of TS_MONITOR_DEF structures is given by the monitorCount field.
 
-2.2.1.3.6.1  Monitor Definition (TS_MONITOR_DEF)
+###### 2.2.1.3.6.1 Monitor Definition (TS_MONITOR_DEF)
 
 The TS_MONITOR_DEF packet describes the configuration of a client-side display monitor. The x and y
 coordinates used to describe the monitor position MUST be relative to the upper-left corner of the
@@ -5657,7 +4578,8 @@ Release: March 9, 2026
 
 58 / 444
 
-bottom (4 bytes): A 32-bit, signed integer. Specifies the inclusive y-coordinate of the lower-right
+
+bottom (4 bytes): A 32-bit, signed integer. Specifies the inclusive y-coordinate of the lower-right
 
 corner of the display monitor.
 
@@ -5674,7 +4596,7 @@ TS_MONITOR_PRIMARY
 The top, left, right, and bottom fields describe the position of the primary
 monitor.
 
-2.2.1.3.7 Client Message Channel Data (TS_UD_CS_MCS_MSGCHANNEL)
+###### 2.2.1.3.7 Client Message Channel Data (TS_UD_CS_MCS_MSGCHANNEL)
 
 The TS_UD_CS_MCS_MSGCHANNEL packet indicates support for the message channel which is used
 to transport the Initiate Multitransport Request PDU (section 2.2.15.1). This packet is an Extended
@@ -5705,7 +4627,7 @@ flags (4 bytes): A 32-bit, unsigned integer. This field is unused and reserved f
 
 be set to zero.
 
-2.2.1.3.8 Client Multitransport Channel Data (TS_UD_CS_MULTITRANSPORT)
+###### 2.2.1.3.8 Client Multitransport Channel Data (TS_UD_CS_MULTITRANSPORT)
 
 The TS_UD_CS_MULTITRANSPORT packet is used to indicate support for the RDP Multitransport Layer
 ([MS-RDPEMT] section 1.3) and to specify multitransport characteristics. This packet is an Extended
@@ -5743,7 +4665,8 @@ Release: March 9, 2026
 
 59 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -5774,7 +4697,7 @@ SOFTSYNC_TCP_TO_UDP
 Indicates that switching dynamic virtual channels from the TCP to
 UDP transport is supported ([MS-RDPEDYC] section 3.1.5.3).
 
-2.2.1.3.9 Client Unused1 Data (TS_UD_CS_UNUSED1)
+###### 2.2.1.3.9 Client Unused1 Data (TS_UD_CS_UNUSED1)
 
 The TS_UD_CS_UNUSED1 packet SHOULD be ignored by the server if sent by the client.
 
@@ -5800,9 +4723,9 @@ pad2Octets (2 bytes): A 32-bit, unsigned integer. This field is for padding, and
 
 field MUST be ignored.
 
-2.2.1.3.10
+###### 2.2.1.3.10 Client Monitor Extended Data (TS_UD_CS_MONITOR_EX)
 
-Client Monitor Extended Data (TS_UD_CS_MONITOR_EX)
+
 
 The TS_UD_CS_MONITOR_EX packet describes extended attributes of the client-side display monitor
 layout defined by the Client Monitor Data block (section 2.2.1.3.6). This packet is an Extended Client
@@ -5838,7 +4761,8 @@ Release: March 9, 2026
 
 60 / 444
 
-...
+
+...
 
 header (4 bytes): A GCC user data block header, as specified in User Data Header (section
 2.2.1.3.1). The User Data Header type field MUST be set to CS_MONITOR_EX (0xC008).
@@ -5861,7 +4785,7 @@ structures (section 2.2.1.3.10.1) which describe extended attributes of each dis
 specified in the Client Monitor Data block. The number of Monitor Attribute structures is specified
 by the monitorCount field.
 
-2.2.1.3.10.1  Monitor Attributes (TS_MONITOR_ATTRIBUTES)
+###### 2.2.1.3.10.1 Monitor Attributes (TS_MONITOR_ATTRIBUTES)
 
 The TS_MONITOR_ATTRIBUTES packet describes extended attributes of a client-side display monitor.
 
@@ -5921,7 +4845,8 @@ Release: March 9, 2026
 
 61 / 444
 
-Value
+
+Value
 
 90
 
@@ -5948,7 +4873,7 @@ deviceScaleFactor (4 bytes): A 32-bit, unsigned integer. The device scale factor
 This value MUST be ignored if it is not set to 100%, 140%, or 180% or desktopScaleFactor is
 less than 100% or greater than 500%.<14>
 
-2.2.1.4  Server MCS Connect Response PDU with GCC Conference Create Response
+##### 2.2.1.4 Server MCS Connect Response PDU with GCC Conference Create Response
 
 The MCS Connect Response PDU is an RDP Connection Sequence PDU sent from server to client during
 the Basic Settings Exchange phase of the RDP Connection Sequence (see section 1.3.1.1 for an
@@ -6001,7 +4926,8 @@ Release: March 9, 2026
 
 62 / 444
 
-...
+
+...
 
 serverMessageChannelData (optional)
 
@@ -6047,11 +4973,11 @@ structure (section 2.2.1.4.6). This field MUST NOT be included if the client did
 optional clientMultitransportChannelData field in the MCS Connect Initial PDU (section
 2.2.1.3).
 
-2.2.1.4.1 User Data Header (TS_UD_HEADER)
+###### 2.2.1.4.1 User Data Header (TS_UD_HEADER)
 
 See section 2.2.1.3.1 for a description of the User Data Header.
 
-2.2.1.4.2 Server Core Data (TS_UD_SC_CORE)
+###### 2.2.1.4.2 Server Core Data (TS_UD_SC_CORE)
 
 The TS_UD_SC_CORE data block contains core server connection-related information.
 
@@ -6077,7 +5003,8 @@ Release: March 9, 2026
 
 63 / 444
 
-clientRequestedProtocols (optional)
+
+clientRequestedProtocols (optional)
 
 earlyCapabilityFlags (optional)
 
@@ -6184,7 +5111,8 @@ Release: March 9, 2026
 
 64 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -6246,7 +5174,7 @@ joined after the MCS Attach User Confirm PDU (section
 
 If this field is present, all of the preceding fields MUST also be present.
 
-2.2.1.4.3 Server Security Data (TS_UD_SC_SEC1)
+###### 2.2.1.4.3 Server Security Data (TS_UD_SC_SEC1)
 
 The TS_UD_SC_SEC1 data block returns negotiated security-related information to the client. See
 section 5.3.2 for a detailed discussion of how this information is used.
@@ -6275,7 +5203,8 @@ Release: March 9, 2026
 
 65 / 444
 
-serverRandomLen (optional)
+
+serverRandomLen (optional)
 
 serverCertLen (optional)
 
@@ -6368,7 +5297,8 @@ Release: March 9, 2026
 
 66 / 444
 
-serverRandomLen (4 bytes): An optional 32-bit, unsigned integer that specifies the size in bytes of
+
+serverRandomLen (4 bytes): An optional 32-bit, unsigned integer that specifies the size in bytes of
 
 the serverRandom field. If the encryptionMethod and encryptionLevel fields are both set to
 zero, then this field MUST NOT be present and the length of the serverRandom field MUST be
@@ -6390,7 +5320,7 @@ serverCertificate (variable): The variable-length certificate containing the ser
 information. The length in bytes is given by the serverCertLen field. If the encryptionMethod
 and encryptionLevel fields are both set to zero, then this field MUST NOT be present.
 
-2.2.1.4.3.1  Server Certificate (SERVER_CERTIFICATE)
+###### 2.2.1.4.3.1 Server Certificate (SERVER_CERTIFICATE)
 
 The SERVER_CERTIFICATE structure describes the generic server certificate structure to which all
 server certificates present in the Server Security Data (section 2.2.1.4.3) conform.
@@ -6462,7 +5392,8 @@ Release: March 9, 2026
 
 67 / 444
 
-Value (1 bit)  Meaning
+
+Value (1 bit)  Meaning
 
 0
 
@@ -6476,7 +5407,7 @@ certData (variable): Certificate data. The format of this certificate data is de
 
 dwVersion field.
 
-2.2.1.4.3.1.1  Server Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)
+###### 2.2.1.4.3.1.1 Server Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)
 
 The PROPRIETARYSERVERCERTIFICATE structure describes a signed certificate containing the server's
 public key and conforming to the structure of a Server Certificate (section 2.2.1.4.3.1). For a detailed
@@ -6547,7 +5478,8 @@ Release: March 9, 2026
 
 68 / 444
 
-wSignatureBlobType (2 bytes): A 16-bit, unsigned integer. The type of data in the SignatureBlob
+
+wSignatureBlobType (2 bytes): A 16-bit, unsigned integer. The type of data in the SignatureBlob
 
 field. This field is set to BB_RSA_SIGNATURE_BLOB (0x0008).
 
@@ -6559,9 +5491,9 @@ SignatureBlob (variable): Variable-length signature of the certificate created w
 Services Signing Key (sections 5.3.3.1.1 and 5.3.3.1.2). The length in bytes is given by the
 wSignatureBlobLen field.
 
-2.2.1.4.3.1.1.1
+###### 2.2.1.4.3.1.1.1 RSA Public Key (RSA_PUBLIC_KEY)
 
-RSA Public Key (RSA_PUBLIC_KEY)
+
 
 The structure used to describe a public key in a Proprietary Certificate (section 2.2.1.4.3.1.1).
 
@@ -6612,7 +5544,7 @@ in bytes of this field is given by the keylen field. The modulus field contains 
 of the public key modulus and 8 bytes of zero padding (which MUST follow after the modulus
 bytes).
 
-2.2.1.4.4 Server Network Data (TS_UD_SC_NET)
+###### 2.2.1.4.4 Server Network Data (TS_UD_SC_NET)
 
 The TS_UD_SC_NET data block is a reply to the static virtual channel list presented in the Client
 Network Data structure (section 2.2.1.3.4).
@@ -6624,7 +5556,8 @@ Release: March 9, 2026
 
 69 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6671,7 +5604,7 @@ the Pad field MUST be present and it is used to add an additional 2 bytes to the
 Network Data structure. If the channelCount field contains an even value, then the Pad field is
 not required and MUST NOT be present.
 
-2.2.1.4.5 Server Message Channel Data (TS_UD_SC_MCS_MSGCHANNEL)
+###### 2.2.1.4.5 Server Message Channel Data (TS_UD_SC_MCS_MSGCHANNEL)
 
 The TS_UD_SC_MCS_MSGCHANNEL packet is used to specify the ID of the MCS channel which
 transports the Multitransport Bootstrapping PDUs (sections 2.2.15.1 and 2.2.15.2) and Network
@@ -6701,7 +5634,7 @@ MCSChannelID (2 bytes): A 16-bit, unsigned integer that specifies the MCS channe
 MCS message channel. If this value is zero, then the channel MUST NOT be joined (section
 3.2.5.3.8), and the PDUs which are transported on this channel cannot be transmitted.
 
-2.2.1.4.6 Server Multitransport Channel Data (TS_UD_SC_MULTITRANSPORT)
+###### 2.2.1.4.6 Server Multitransport Channel Data (TS_UD_SC_MULTITRANSPORT)
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -6710,7 +5643,8 @@ Release: March 9, 2026
 
 70 / 444
 
-The TS_UD_CS_MULTITRANSPORT packet is used to indicate support for the RDP Multitransport
+
+The TS_UD_CS_MULTITRANSPORT packet is used to indicate support for the RDP Multitransport
 Layer ([MS-RDPEMT] section 1.3) and to specify multitransport characteristics.
 
 0  1  2  3  4  5  6  7  8  9
@@ -6771,7 +5705,7 @@ If the server advertises the SOFTSYNC_TCP_TO_UDP flag, then the
 server MUST support processing success responses in the Initiate
 Multitransport Response PDU (section 2.2.15.2).
 
-2.2.1.5  Client MCS Erect Domain Request PDU
+##### 2.2.1.5 Client MCS Erect Domain Request PDU
 
 The MCS Erect Domain Request PDU is an RDP Connection Sequence PDU sent from client to server
 during the Channel Connection phase of the RDP Connection Sequence (see section 1.3.1.1 for an
@@ -6808,12 +5742,13 @@ Release: March 9, 2026
 
 71 / 444
 
-mcsEDrq (5 bytes): PER-encoded MCS Domain PDU which encapsulates an MCS Erect Domain
+
+mcsEDrq (5 bytes): PER-encoded MCS Domain PDU which encapsulates an MCS Erect Domain
 
 Request structure, as specified in [T125] section 11.8 (the ASN.1 structure definitions are given
 in [T125] section 7, parts 3 and 10).
 
-2.2.1.6  Client MCS Attach User Request PDU
+##### 2.2.1.6 Client MCS Attach User Request PDU
 
 The MCS Attach User Request PDU is an RDP Connection Sequence PDU sent from client to server
 during the Channel Connection phase of the RDP Connection Sequence to request a User Channel ID
@@ -6845,7 +5780,7 @@ mcsAUrq (1 byte): PER-encoded MCS Domain PDU that encapsulates an MCS Attach Use
 structure, as specified in [T125] section 11.17 (the ASN.1 structure definitions are given in
 [T125] section 7, parts 5 and 10).
 
-2.2.1.7  Server MCS Attach User Confirm PDU
+##### 2.2.1.7 Server MCS Attach User Confirm PDU
 
 The MCS Attach User Confirm PDU is an RDP Connection Sequence PDU sent from server to client
 during the Channel Connection phase of the RDP Connection Sequence (see section 1.3.1.1 for an
@@ -6879,7 +5814,7 @@ mcsAUcf (4 bytes): PER-encoded MCS Domain PDU which encapsulates an MCS Attach U
 structure, as specified in [T125] sections 11.18 (the ASN.1 structure definitions are given in
 [T125] section 7, parts 5 and 10).
 
-2.2.1.8  Client MCS Channel Join Request PDU
+##### 2.2.1.8 Client MCS Channel Join Request PDU
 
 The MCS Channel Join Request PDU is an RDP Connection Sequence PDU sent from client to server
 during the Channel Connection phase of the RDP Connection Sequence (see section 1.3.1.1 for an
@@ -6892,7 +5827,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Confirm PDU (section 2.2.1.7). The client uses the MCS Channel Join Request PDU to join the user
+
+Confirm PDU (section 2.2.1.7). The client uses the MCS Channel Join Request PDU to join the user
 channel obtained from the Attach User Confirm PDU, the I/O channel (section 2.2.1.4.4), the message
 channel (section 2.2.1.4.5), and all of the static virtual channels obtained from the Server Network
 Data structure (section 2.2.1.4.4).
@@ -6925,7 +5861,7 @@ mcsCJrq (5 bytes): PER-encoded MCS Domain PDU which encapsulates an MCS Channel 
 Request structure as specified in [T125] section 11.21 (the ASN.1 structure definitions are given
 in [T125] section 7, parts 6 and 10).
 
-2.2.1.9  Server MCS Channel Join Confirm PDU
+##### 2.2.1.9 Server MCS Channel Join Confirm PDU
 
 The MCS Channel Join Confirm PDU is an RDP Connection Sequence PDU sent from server to client
 during the Channel Connection phase of the RDP Connection Sequence (see section 1.3.1.1 for an
@@ -6961,9 +5897,9 @@ mcsCJcf (8 bytes): PER-encoded MCS Domain PDU which encapsulates an MCS Channel 
 PDU structure, as specified in [T125] section 11.22 (the ASN.1 structure definitions are given in
 [T125] section 7, parts 6 and 10).
 
-2.2.1.10
+##### 2.2.1.10 Client Security Exchange PDU
 
-Client Security Exchange PDU
+
 
 The Security Exchange PDU is an optional RDP Connection Sequence PDU that is sent from client to
 server during the RDP Security Commencement phase of the RDP Connection Sequence (see section
@@ -6977,7 +5913,8 @@ Release: March 9, 2026
 
 73 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7015,9 +5952,9 @@ securityExchangePduData (variable): The actual contents of the Security Exchange
 
 specified in section 2.2.1.10.1.
 
-2.2.1.10.1
+###### 2.2.1.10.1 Security Exchange PDU Data (TS_SECURITY_PACKET)
 
-Security Exchange PDU Data (TS_SECURITY_PACKET)
+
 
  The TS_SECURITY_PACKET structure contains the encrypted client random value which is used
 together with the server random (section 2.2.1.4.3) to derive session keys to secure the connection
@@ -7061,9 +5998,10 @@ Release: March 9, 2026
 
 74 / 444
 
-2.2.1.11
 
-Client Info PDU
+##### 2.2.1.11 Client Info PDU
+
+
 
 The Client Info PDU is an RDP Connection Sequence PDU sent from client to server during the Secure
 Settings Exchange phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview of the
@@ -7109,9 +6047,9 @@ clientInfoPduData (variable): The contents of the Client Info PDU, as specified 
 
 2.2.1.11.1.
 
-2.2.1.11.1
+###### 2.2.1.11.1 Client Info PDU Data (CLIENT_INFO_PDU)
 
-Client Info PDU Data (CLIENT_INFO_PDU)
+
 
 The CLIENT_INFO_PDU structure serves as a wrapper for a Security Header (section 2.2.8.1.1.2) and
 the actual client information contained in a TS_INFO_PACKET structure (section 2.2.1.11.1.1).
@@ -7147,7 +6085,8 @@ Release: March 9, 2026
 
 75 / 444
 
-  Basic Security Header (section 2.2.8.1.1.2.1) if the Encryption Level selected by the server is
+
+  Basic Security Header (section 2.2.8.1.1.2.1) if the Encryption Level selected by the server is
 
 ENCRYPTION_LEVEL_NONE (0).
 
@@ -7165,7 +6104,7 @@ The flags field of the security header MUST contain the SEC_INFO_PKT flag (secti
 
 infoPacket (variable): Client information, as specified in TS_INFO_PACKET.
 
-2.2.1.11.1.1  Info Packet (TS_INFO_PACKET)
+###### 2.2.1.11.1.1 Info Packet (TS_INFO_PACKET)
 
 The TS_INFO_PACKET structure contains extra information not passed to the server during the Basic
 Settings Exchange phase (section 1.3.1.1) of the RDP Connection Sequence, primarily to ensure that it
@@ -7225,7 +6164,8 @@ Release: March 9, 2026
 
 76 / 444
 
-...
+
+...
 
 CodePage (4 bytes): A 32-bit, unsigned integer. If the flags field does not contain the
 
@@ -7341,7 +6281,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Flag
+
+Flag
 
 0x00008000
 
@@ -7463,7 +6404,8 @@ Release: March 9, 2026
 
 78 / 444
 
-Value
+
+Value
 
 0x1
 
@@ -7545,16 +6487,17 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-at least a null terminator character in Windows-1252 or Unicode format (depending on the
+
+at least a null terminator character in Windows-1252 or Unicode format (depending on the
 presence of the INFO_UNICODE flag).
 
 extraInfo (variable): Optional and variable-length extended information used in all RDP versions,
 
 except for RDP 4.0, and specified in section 2.2.1.11.1.1.1.
 
-2.2.1.11.1.1.1
+###### 2.2.1.11.1.1.1 Extended Info Packet (TS_EXTENDED_INFO_PACKET)
 
-Extended Info Packet (TS_EXTENDED_INFO_PACKET)
+
 
 The TS_EXTENDED_INFO_PACKET structure contains user information specific to all RDP versions,
 except for RDP 4.0.
@@ -7627,7 +6570,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 AF_INET
 
@@ -7729,7 +6673,8 @@ Release: March 9, 2026
 
 81 / 444
 
-Flag
+
+Flag
 
 0x00000040
 
@@ -7814,7 +6759,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-dynamicDaylightTimeDisabled (2 bytes): A 16-bit, unsigned integer that specifies whether
+
+dynamicDaylightTimeDisabled (2 bytes): A 16-bit, unsigned integer that specifies whether
 
 Dynamic DST MUST be disabled in the remote session. This field is not read by RDP 5.0, 5.1, 5.2,
 6.0, 6.1, 7.0, and 7.1 servers.
@@ -7839,9 +6785,9 @@ Dynamic DST MUST be disabled in the remote session.
 If this field is present, then the cbDynamicDSTTimeZoneKeyName field MUST also be present.
 If this field is not present, then all of the subsequent fields MUST NOT be present.<23>
 
-2.2.1.11.1.1.1.1
+###### 2.2.1.11.1.1.1.1 Time Zone Information (TS_TIME_ZONE_INFORMATION)
 
-Time Zone Information (TS_TIME_ZONE_INFORMATION)
+
 
 The TS_TIME_ZONE_INFORMATION structure contains client time zone information.
 
@@ -7893,7 +6839,8 @@ Release: March 9, 2026
 
 83 / 444
 
-Bias (4 bytes): A 32-bit, signed integer that contains the current bias for local time translation on
+
+Bias (4 bytes): A 32-bit, signed integer that contains the current bias for local time translation on
 
 the client. The bias is the difference, in minutes, between Coordinated Universal Time (UTC) and
 local time. All translations between UTC and local time are based on the following formula:
@@ -7936,7 +6883,7 @@ date and time is not specified in the DaylightDate field or the wYear, wMonth, w
 wDay, wHour, wMinute, wSecond, and wMilliseconds fields of the DaylightDate field are all
 set to zero.
 
-2.2.1.11.1.1.1.1.1  System Time (TS_SYSTEMTIME)
+###### 2.2.1.11.1.1.1.1.1 System Time (TS_SYSTEMTIME)
 
  The TS_SYSTEMTIME structure contains a date and local time when the transition occurs between
 daylight saving time to standard time occurs or standard time to daylight saving time.
@@ -7977,7 +6924,8 @@ Release: March 9, 2026
 
 84 / 444
 
-wMonth (2 bytes): A 16-bit, unsigned integer. The month when transition occurs.
+
+wMonth (2 bytes): A 16-bit, unsigned integer. The month when transition occurs.
 
 Value  Meaning
 
@@ -8096,7 +7044,8 @@ Release: March 9, 2026
 
 85 / 444
 
-wMinute (2 bytes): A 16-bit, unsigned integer. The minute when transition occurs (0 to 59).
+
+wMinute (2 bytes): A 16-bit, unsigned integer. The minute when transition occurs (0 to 59).
 
 wSecond (2 bytes): A 16-bit, unsigned integer. The second when transition occurs (0 to 59).
 
@@ -8104,9 +7053,9 @@ wMilliseconds (2 bytes): A 16-bit, unsigned integer. The millisecond when transi
 
 999).
 
-2.2.1.12
+##### 2.2.1.12 Server License Error PDU - Valid Client
 
-Server License Error PDU - Valid Client
+
 
 The License Error (Valid Client) PDU is an RDP Connection Sequence PDU sent from server to client
 during the Licensing phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview of
@@ -8175,7 +7124,8 @@ Release: March 9, 2026
 
 86 / 444
 
-
+
+
 
 FIPS Security Header (section 2.2.8.1.1.2.3) if the Encryption Method selected by the server is
 ENCRYPTION_METHOD_FIPS (0x00000010) and the embedded flags field contains the
@@ -8195,7 +7145,7 @@ validClientLicenseData (variable): The actual contents of the License Error (Val
 
 specified in section 2.2.1.12.1.
 
-2.2.1.12.1  Valid Client License Data (LICENSE_VALID_CLIENT_DATA)
+###### 2.2.1.12.1 Valid Client License Data (LICENSE_VALID_CLIENT_DATA)
 
 The LICENSE_VALID_CLIENT_DATA structure contains information which indicates that the server will
 not issue the client a license to store and that the Licensing Phase has ended successfully.
@@ -8226,7 +7176,7 @@ validClientMessage (variable):  A Licensing Error Message (section 2.2.1.12.1.3)
 dwStateTransition field MUST be set to ST_NO_TRANSITION (0x00000002). The bbErrorInfo
 field MUST contain an empty binary large object (BLOB) of type BB_ERROR_BLOB (0x0004).
 
-2.2.1.12.1.1  Licensing Preamble (LICENSE_PREAMBLE)
+###### 2.2.1.12.1.1 Licensing Preamble (LICENSE_PREAMBLE)
 
 The LICENSE_PREAMBLE structure precedes every licensing packet sent on the wire.
 
@@ -8270,7 +7220,8 @@ Release: March 9, 2026
 
 87 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -8374,7 +7325,7 @@ wMsgSize (2 bytes): An 16-bit, unsigned integer. The size in bytes of the licens
 
 the size of the preamble).
 
-2.2.1.12.1.2  Licensing Binary Blob (LICENSE_BINARY_BLOB)
+###### 2.2.1.12.1.2 Licensing Binary Blob (LICENSE_BINARY_BLOB)
 
 88 / 444
 
@@ -8383,7 +7334,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The LICENSE_BINARY_BLOB structure is used to encapsulate arbitrary length binary licensing data.
+
+The LICENSE_BINARY_BLOB structure is used to encapsulate arbitrary length binary licensing data.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -8481,7 +7433,7 @@ blobData (variable): Variable-length binary data. The size of this data in bytes
 wBlobLen field. If wBlobLen is set to 0, then this field is not included in the Licensing Binary
 BLOB structure.
 
-2.2.1.12.1.3  Licensing Error Message (LICENSE_ERROR_MESSAGE)
+###### 2.2.1.12.1.3 Licensing Error Message (LICENSE_ERROR_MESSAGE)
 
  The LICENSE_ERROR_MESSAGE structure is used to indicate that an error occurred during the
 licensing protocol. Alternatively, it is also used to notify the peer of important status information.
@@ -8493,7 +7445,8 @@ Release: March 9, 2026
 
 89 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -8591,18 +7544,19 @@ Release: March 9, 2026
 
 90 / 444
 
-bbErrorInfo (variable): A LICENSE_BINARY_BLOB (section 2.2.1.12.1.2) structure which MUST
+
+bbErrorInfo (variable): A LICENSE_BINARY_BLOB (section 2.2.1.12.1.2) structure which MUST
 
 contain a BLOB of type BB_ERROR_BLOB (0x0004) that includes information relevant to the error
 code specified in dwErrorCode.
 
-2.2.1.13
+##### 2.2.1.13 Mandatory Capability Exchange
 
-Mandatory Capability Exchange
 
-2.2.1.13.1
 
-Server Demand Active PDU
+###### 2.2.1.13.1 Server Demand Active PDU
+
+
 
 The Demand Active PDU is an RDP Connection Sequence PDU sent from server to client during the
 Capabilities Exchange phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview of
@@ -8674,7 +7628,8 @@ Release: March 9, 2026
 
 91 / 444
 
-If the Encryption Level selected by the server is ENCRYPTION_LEVEL_NONE (0) and the Encryption
+
+If the Encryption Level selected by the server is ENCRYPTION_LEVEL_NONE (0) and the Encryption
 Method selected by the server is ENCRYPTION_METHOD_NONE (0), then this header MUST NOT
 be included in the PDU.
 
@@ -8682,7 +7637,7 @@ demandActivePduData (variable):  The contents of the Demand Active PDU, as speci
 
 2.2.1.13.1.1.
 
-2.2.1.13.1.1  Demand Active PDU Data (TS_DEMAND_ACTIVE_PDU)
+###### 2.2.1.13.1.1 Demand Active PDU Data (TS_DEMAND_ACTIVE_PDU)
 
 The TS_DEMAND_ACTIVE_PDU structure is a standard T.128 Demand Active PDU ([T128] section
 8.4.1).
@@ -8758,7 +7713,8 @@ Release: March 9, 2026
 
 92 / 444
 
-capabilitySets (variable): An array of Capability Set (section 2.2.1.13.1.1.1) structures. The
+
+capabilitySets (variable): An array of Capability Set (section 2.2.1.13.1.1.1) structures. The
 
 number of capability sets is specified by the numberCapabilities field.
 
@@ -8766,9 +7722,9 @@ sessionId (4 bytes): A 32-bit, unsigned integer. The session identifier. This fi
 
 client.
 
-2.2.1.13.1.1.1
+###### 2.2.1.13.1.1.1 Capability Set (TS_CAPS_SET)
 
-Capability Set (TS_CAPS_SET)
+
 
  The TS_CAPS_SET structure is used to describe the type and size of a capability set exchanged
 between clients and servers. All capability sets conform to this basic structure (section 2.2.7).
@@ -8872,7 +7828,8 @@ Release: March 9, 2026
 
 93 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -8998,9 +7955,10 @@ Release: March 9, 2026
 
 94 / 444
 
-2.2.1.13.2
 
-Client Confirm Active PDU
+###### 2.2.1.13.2 Client Confirm Active PDU
+
+
 
 The Confirm Active PDU is an RDP Connection Sequence PDU sent from client to server during the
 Capabilities Exchange phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview of
@@ -9070,7 +8028,7 @@ confirmActivePduData (variable): The contents of the Confirm Active PDU, as spec
 
 2.2.1.13.2.1.
 
-2.2.1.13.2.1  Confirm Active PDU Data (TS_CONFIRM_ACTIVE_PDU)
+###### 2.2.1.13.2.1 Confirm Active PDU Data (TS_CONFIRM_ACTIVE_PDU)
 
 95 / 444
 
@@ -9079,7 +8037,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- The TS_CONFIRM_ACTIVE_PDU structure is a standard T.128 Confirm Active PDU ([T128] section
+
+ The TS_CONFIRM_ACTIVE_PDU structure is a standard T.128 Confirm Active PDU ([T128] section
 8.4.1).
 
 0  1  2  3  4  5  6  7  8  9
@@ -9154,9 +8113,9 @@ capabilitySets (variable): An array of Capability Set (section 2.2.1.13.1.1.1) s
 
 number of capability sets is specified by the numberCapabilities field.
 
-2.2.1.14
+##### 2.2.1.14 Client Synchronize PDU
 
-Client Synchronize PDU
+
 
 The Client Synchronize PDU is an RDP Connection Sequence PDU sent from client to server during the
 Connection Finalization phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview of
@@ -9168,7 +8127,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-the RDP Connection Sequence phases). It is sent after transmitting the Confirm Active
+
+the RDP Connection Sequence phases). It is sent after transmitting the Confirm Active
 PDU (section 2.2.1.13.2).
 
 0  1  2  3  4  5  6  7  8  9
@@ -9237,9 +8197,9 @@ synchronizePduData (22 bytes): The contents of the Synchronize PDU, as specified
 
 2.2.1.14.1.
 
-2.2.1.14.1
+###### 2.2.1.14.1 Synchronize PDU Data (TS_SYNCHRONIZE_PDU)
 
-Synchronize PDU Data (TS_SYNCHRONIZE_PDU)
+
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -9248,7 +8208,8 @@ Release: March 9, 2026
 
 97 / 444
 
-The TS_SYNCHRONIZE_PDU structure is a standard T.128 Synchronize PDU ([T128] section 8.6.1).
+
+The TS_SYNCHRONIZE_PDU structure is a standard T.128 Synchronize PDU ([T128] section 8.6.1).
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -9285,9 +8246,9 @@ SYNCMSGTYPE_SYNC (1).
 
 targetUser (2 bytes): A 16-bit, unsigned integer. The MCS channel ID of the target user.
 
-2.2.1.15
+##### 2.2.1.15 Client Control PDU - Cooperate
 
-Client Control PDU - Cooperate
+
 
 The Client Control (Cooperate) PDU is an RDP Connection Sequence PDU sent from client to server
 during the Connection Finalization phase of the RDP Connection Sequence (see section 1.3.1.1 for an
@@ -9332,7 +8293,8 @@ Release: March 9, 2026
 
 98 / 444
 
-tpktHeader (4 bytes): A TPKT Header, as specified in [T123] section 8.
+
+tpktHeader (4 bytes): A TPKT Header, as specified in [T123] section 8.
 
 x224Data (3 bytes): An X.224 Class 0 Data TPDU, as specified in [X224] section 13.7.
 
@@ -9368,9 +8330,9 @@ controlPduData (26 bytes): The actual contents of the Control PDU, as specified 
 2.2.1.15.1. The grantId and controlId fields of the Control PDU Data MUST both be set to zero,
 while the action field MUST be set to CTRLACTION_COOPERATE (0x0004).
 
-2.2.1.15.1
+###### 2.2.1.15.1 Control PDU Data (TS_CONTROL_PDU)
 
-Control PDU Data (TS_CONTROL_PDU)
+
 
  The TS_CONTROL_PDU structure is a standard T.128 Synchronize PDU ([T128] section 8.12).
 
@@ -9415,7 +8377,8 @@ Release: March 9, 2026
 
 99 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -9447,9 +8410,9 @@ grantId (2 bytes): A 16-bit, unsigned integer. The grant identifier.
 
 controlId (4 bytes): A 32-bit, unsigned integer. The control identifier.
 
-2.2.1.16
+##### 2.2.1.16 Client Control PDU - Request Control
 
-Client Control PDU - Request Control
+
 
 The Client Control (Request Control) PDU is an RDP Connection Sequence PDU sent from client to
 server during the Connection Finalization phase of the RDP Connection Sequence (see section 1.3.1.1
@@ -9505,7 +8468,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-securityHeader (variable):  Optional security header. The presence and format of the security
+
+securityHeader (variable):  Optional security header. The presence and format of the security
 
 header depends on the Encryption Level and Encryption Method selected by the server (sections
 5.3.2 and 2.2.1.4.3). If the Encryption Level selected by the server is greater than
@@ -9529,9 +8493,9 @@ controlPduData (26 bytes): The contents of the Control PDU, as specified in sect
 grantId and controlId fields of the Control PDU Data MUST both be set to zero, while the action
 field MUST be set to CTRLACTION_REQUEST_CONTROL (0x0001).
 
-2.2.1.17
+##### 2.2.1.17 Client Persistent Key List PDU
 
-Client Persistent Key List PDU
+
 
 The Persistent Key List PDU is an RDP Connection Sequence PDU sent from client to server during the
 Connection Finalization phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview of
@@ -9585,7 +8549,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-parts 7 and 10). The userData field of the MCS Send Data Request contains a Security Header
+
+parts 7 and 10). The userData field of the MCS Send Data Request contains a Security Header
 and a Persistent Key List PDU Data (section 2.2.1.17.1) structure.
 
 securityHeader (variable):  Optional security header. The presence and format of the security
@@ -9612,9 +8577,9 @@ persistentKeyListPduData (variable): The contents of the Persistent Key List PDU
 
 section 2.2.1.17.1.
 
-2.2.1.17.1
+###### 2.2.1.17.1 Persistent Key List PDU Data
 
-Persistent Key List PDU Data
+
 
 (TS_BITMAPCACHE_PERSISTENT_LIST_PDU)
 
@@ -9677,7 +8642,8 @@ Release: March 9, 2026
 
 102 / 444
 
-Pad3
+
+Pad3
 
 entries (variable)
 
@@ -9760,7 +8726,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Flag
+
+Flag
 
 Meaning
 
@@ -9786,7 +8753,7 @@ and numEntriesCache2, numEntriesCache3, and numEntriesCache4 will all be set to 
 The keys will be arranged in the following order: (Bitmap Cache 0, Key 1), (Bitmap Cache 1, Key
 1), (Bitmap Cache 1, Key 2).
 
-2.2.1.17.1.1  Persistent List Entry (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY)
+###### 2.2.1.17.1.1 Persistent List Entry (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY)
 
 The TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY structure contains a 64-bit bitmap key to be sent
 back to the server.
@@ -9810,9 +8777,9 @@ Key1 (4 bytes): Low 32 bits of the 64-bit persistent bitmap cache key.
 
 Key2 (4 bytes): A 32-bit, unsigned integer. High 32 bits of the 64-bit persistent bitmap cache key.
 
-2.2.1.18
+##### 2.2.1.18 Client Font List PDU
 
-Client Font List PDU
+
 
 The Font List PDU is an RDP Connection Sequence PDU sent from client to server during the
 Connection Finalization phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview of
@@ -9848,7 +8815,8 @@ Release: March 9, 2026
 
 104 / 444
 
-...
+
+...
 
 fontListPduData (26 bytes)
 
@@ -9891,9 +8859,9 @@ be included in the PDU.
 
 fontListPduData (26 bytes): The contents of the Font List PDU, as specified in section 2.2.1.18.1.
 
-2.2.1.18.1
+###### 2.2.1.18.1 Font List PDU Data (TS_FONT_LIST_PDU)
 
-Font List PDU Data (TS_FONT_LIST_PDU)
+
 
 The TS_FONT_LIST_PDU structure contains the contents of the Font List PDU, which is a Share Data
 Header (section 2.2.8.1.1.1.2) and four fields.
@@ -9926,7 +8894,8 @@ Release: March 9, 2026
 
 105 / 444
 
-totalNumFonts
+
+totalNumFonts
 
 entrySize
 
@@ -9953,9 +8922,9 @@ entrySize (2 bytes): A 16-bit, unsigned integer. The entry size. This field SHOU
 
 (50 bytes).
 
-2.2.1.19
+##### 2.2.1.19 Server Synchronize PDU
 
-Server Synchronize PDU
+
 
 The Server Synchronize PDU is an RDP Connection Sequence PDU sent from server to client during the
 Connection Finalization phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview of
@@ -10004,7 +8973,8 @@ Release: March 9, 2026
 
 106 / 444
 
-mcsSDin (variable): Variable-length PER-encoded MCS Domain PDU (DomainMCSPDU) which
+
+mcsSDin (variable): Variable-length PER-encoded MCS Domain PDU (DomainMCSPDU) which
 
 encapsulates an MCS Send Data Indication structure (SDin, choice 26 from DomainMCSPDU), as
 specified in [T125] section 11.33 (the ASN.1 structure definitions are given in section 7, parts 7
@@ -10039,9 +9009,9 @@ synchronizePduData (22 bytes): The contents of the Synchronize PDU as described 
 
 2.2.1.14.1.
 
-2.2.1.20
+##### 2.2.1.20 Server Control PDU - Cooperate
 
-Server Control PDU - Cooperate
+
 
  The Server Control (Cooperate) PDU is an RDP Connection Sequence PDU sent from server to client
 during the Connection Finalization phase of the RDP Connection Sequence (see section 1.3.1.1 for an
@@ -10084,7 +9054,8 @@ Release: March 9, 2026
 
 107 / 444
 
-...
+
+...
 
 tpktHeader (4 bytes): A TPKT Header, as specified in [T123] section 8.
 
@@ -10125,9 +9096,9 @@ controlPduData (26 bytes): The contents of the Control PDU as described in secti
 grantId and controlId fields of the Control PDU Data MUST both be set to zero, while the action
 field MUST be set to CTRLACTION_COOPERATE (0x0004).
 
-2.2.1.21
+##### 2.2.1.21 Server Control PDU - Granted Control
 
-Server Control PDU - Granted Control
+
 
 The Server Control (Granted Control) PDU is an RDP Connection Sequence PDU sent from server to
 client during the Connection Finalization phase of the RDP Connection Sequence (see section 1.3.1.1
@@ -10164,7 +9135,8 @@ Release: March 9, 2026
 
 108 / 444
 
-controlPduData (26 bytes)
+
+controlPduData (26 bytes)
 
 ...
 
@@ -10212,9 +9184,9 @@ action field MUST be set to CTRLACTION_GRANTED_CONTROL (0x0002). The grantId fie
 be set to the User Channel ID (sections 2.2.1.6 and 2.2.1.7), while the controlId field MUST be
 set to the server channel ID (0x03EA).
 
-2.2.1.22
+##### 2.2.1.22 Server Font Map PDU
 
-Server Font Map PDU
+
 
 The Font Map PDU is an RDP Connection Sequence PDU sent from server to client during the
 Connection Finalization phase of the RDP Connection Sequence (see section 1.3.1.1 for an overview of
@@ -10245,7 +9217,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-...
+
+...
 
 securityHeader (variable)
 
@@ -10296,9 +9269,9 @@ be included in the PDU.
 
 fontMapPduData (26 bytes): The contents of the Font Map PDU, as specified in section 2.2.1.22.1.
 
-2.2.1.22.1
+###### 2.2.1.22.1 Font Map PDU Data (TS_FONT_MAP_PDU)
 
-Font Map PDU Data (TS_FONT_MAP_PDU)
+
 
 The TS_FONT_MAP_PDU structure contains the contents of the Font Map PDU, which is a Share Data
 Header (section 2.2.8.1.1.1.2) and four fields.
@@ -10323,7 +9296,8 @@ Release: March 9, 2026
 
 110 / 444
 
-...
+
+...
 
 ...
 
@@ -10359,9 +9333,9 @@ entrySize (2 bytes): A 16-bit, unsigned integer. The entry size. This field SHOU
 
 (4 bytes).
 
-2.2.2  Disconnection Sequences
+#### 2.2.2 Disconnection Sequences
 
-2.2.2.1  Client Shutdown Request PDU
+##### 2.2.2.1 Client Shutdown Request PDU
 
  The Shutdown Request PDU is sent by the client as part of the User-Initiated on Client Disconnection
 Sequence (see section 1.3.1.4.1 for an overview of the User-Initiated on Client Disconnection
@@ -10401,7 +9375,8 @@ Release: March 9, 2026
 
 111 / 444
 
-...
+
+...
 
 ...
 
@@ -10440,7 +9415,7 @@ shutdownRequestPduData (18 bytes): The contents of the Shutdown Request PDU, as 
 
 section 2.2.2.1.1.
 
-2.2.2.1.1 Shutdown Request PDU Data (TS_SHUTDOWN_REQ_PDU)
+###### 2.2.2.1.1 Shutdown Request PDU Data (TS_SHUTDOWN_REQ_PDU)
 
 The TS_SHUTDOWN_REQ_PDU structure contains the contents of the Shutdown Request PDU (section
 2.2.2.1), which is a Share Data Header (section 2.2.8.1.1.1.2) with no PDU body.
@@ -10477,7 +9452,8 @@ Release: March 9, 2026
 
 112 / 444
 
-2.2.2.2  Server Shutdown Request Denied PDU
+
+##### 2.2.2.2 Server Shutdown Request Denied PDU
 
 The Shutdown Request Denied PDU is sent by the server as part of the User-Initiated on Client
 Disconnection Sequence (see section 1.3.1.4.1 for an overview of the User-Initiated on Client
@@ -10556,11 +9532,12 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-shutdownRequestDeniedPduData (18 bytes): The contents of the Shutdown Request Denied
+
+shutdownRequestDeniedPduData (18 bytes): The contents of the Shutdown Request Denied
 
 PDU, as specified in section 2.2.2.2.1.
 
-2.2.2.2.1 Shutdown Request Denied PDU Data (TS_SHUTDOWN_DENIED_PDU)
+###### 2.2.2.2.1 Shutdown Request Denied PDU Data (TS_SHUTDOWN_DENIED_PDU)
 
 The TS_SHUTDOWN_DENIED_PDU structure contains the contents of the Shutdown Request Denied
 PDU, which is a Share Data Header (section 2.2.8.1.1.1.2) with no PDU body.
@@ -10590,7 +9567,7 @@ type subfield of the pduType field of the Share Control Header (section 2.2.8.1.
 set to PDUTYPE_DATAPDU (7). The pduType2 field of the Share Data Header MUST be set to
 PDUTYPE2_SHUTDOWN_DENIED (37).
 
-2.2.2.3  MCS Disconnect Provider Ultimatum PDU
+##### 2.2.2.3 MCS Disconnect Provider Ultimatum PDU
 
 The MCS Disconnect Provider Ultimatum PDU is an MCS PDU sent as part of the Disconnection
 Sequences, described in section 1.3.1.4.
@@ -10624,9 +9601,9 @@ mcsDPum (8 bytes): PER-encoded MCS Disconnect Provider Ultimatum PDU, as specifi
 
 section 11.15 (the ASN.1 structure definition is given in [T125] section 7, part 4).
 
-2.2.3  Deactivation-Reactivation Sequence
+#### 2.2.3 Deactivation-Reactivation Sequence
 
-2.2.3.1  Server Deactivate All PDU
+##### 2.2.3.1 Server Deactivate All PDU
 
 The Deactivate All PDU is sent from server to client to indicate that the connection will be dropped or
 that a capability re-exchange using a Deactivation-Reactivation Sequence will occur (see section
@@ -10639,7 +9616,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10705,7 +9683,7 @@ deactivateAllPduData (variable): The contents of the Deactivate All PDU, as spec
 
 2.2.3.1.1.
 
-2.2.3.1.1 Deactivate All PDU Data (TS_DEACTIVATE_ALL_PDU)
+###### 2.2.3.1.1 Deactivate All PDU Data (TS_DEACTIVATE_ALL_PDU)
 
 The TS_DEACTIVATE_ALL_PDU structure is a standard T.128 Deactivate All PDU ([T128] section
 8.4.1).
@@ -10717,7 +9695,8 @@ Release: March 9, 2026
 
 115 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10759,9 +9738,9 @@ sourceDescriptor (variable): Variable number of bytes. The source descriptor. Th
 
 be set to 0x00.
 
-2.2.4  Auto-Reconnect Sequence
+#### 2.2.4 Auto-Reconnect Sequence
 
-2.2.4.1  Server Auto-Reconnect Status PDU
+##### 2.2.4.1 Server Auto-Reconnect Status PDU
 
 The Auto-Reconnect Status PDU is sent by the server to the client to indicate that automatic
 reconnection using the Client Auto-Reconnect Packet (section 2.2.4.3), sent as part of the extended
@@ -10801,7 +9780,8 @@ Release: March 9, 2026
 
 116 / 444
 
-...
+
+...
 
 ...
 
@@ -10844,7 +9824,7 @@ arcStatusPduData (22 bytes): The contents of the Auto-Reconnect Status PDU, as s
 
 section 2.2.4.1.1.
 
-2.2.4.1.1 Auto-Reconnect Status PDU Data (TS_AUTORECONNECT_STATUS_PDU)
+###### 2.2.4.1.1 Auto-Reconnect Status PDU Data (TS_AUTORECONNECT_STATUS_PDU)
 
 The TS_AUTORECONNECT_STATUS_PDU structure contains the contents of the Auto-Reconnect Status
 PDU, which is a Share Data Header (section 2.2.8.1.1.1.2) with a status field.
@@ -10879,7 +9859,8 @@ Release: March 9, 2026
 
 117 / 444
 
-shareDataHeader (18 bytes): Share Data Header containing information about the packet. The
+
+shareDataHeader (18 bytes): Share Data Header containing information about the packet. The
 
 type subfield of the pduType field of the Share Control Header (section 2.2.8.1.1.1.1) MUST be
 set to PDUTYPE_DATAPDU (7). The pduType2 field of the Share Data Header MUST be set to
@@ -10887,7 +9868,7 @@ PDUTYPE2_ARC_STATUS_PDU (50), and the pduSource field MUST be set to zero.
 
 arcStatus (4 bytes): A 32-bit, unsigned integer. This field MUST be set to zero.
 
-2.2.4.2  Server Auto-Reconnect Packet (ARC_SC_PRIVATE_PACKET)
+##### 2.2.4.2 Server Auto-Reconnect Packet (ARC_SC_PRIVATE_PACKET)
 
 The ARC_SC_PRIVATE_PACKET structure contains server-supplied information used to seamlessly re-
 establish a connection to a server after network interruption. It is sent as part of the Save Session
@@ -10938,7 +9919,7 @@ ArcRandomBits (16 bytes): Byte buffer containing a 16-byte, random number genera
 
 for secure reconnection (section 5.5).
 
-2.2.4.3  Client Auto-Reconnect Packet (ARC_CS_PRIVATE_PACKET)
+##### 2.2.4.3 Client Auto-Reconnect Packet (ARC_CS_PRIVATE_PACKET)
 
 The ARC_CS_PRIVATE_PACKET structure contains the client response cookie used to seamlessly re-
 establish a connection to a server after network interruption. It is sent as part of the extended
@@ -10964,7 +9945,8 @@ Release: March 9, 2026
 
 118 / 444
 
-Version
+
+Version
 
 LogonId
 
@@ -10997,9 +9979,9 @@ SecurityVerifier (16 bytes): Byte buffer containing a 16-byte verifier value der
 cryptographic methods (as specified in section 5.5) from the ArcRandomBits field of the Server
 Auto-Reconnect Packet (section 2.2.4.2).
 
-2.2.5  Server Error Reporting and Status Updates
+#### 2.2.5 Server Error Reporting and Status Updates
 
-2.2.5.1  Server Set Error Info PDU
+##### 2.2.5.1 Server Set Error Info PDU
 
 The Set Error Info PDU is sent by the server when there is a connection or disconnection failure. This
 PDU is only sent to clients which have indicated that they are capable of handling error reporting
@@ -11041,7 +10023,8 @@ Release: March 9, 2026
 
 119 / 444
 
-...
+
+...
 
 tpktHeader (4 bytes): A TPKT Header, as specified in [T123] section 8.
 
@@ -11082,7 +10065,7 @@ errorInfoPduData (22 bytes): The contents of the Set Error Info PDU, as specifie
 
 2.2.5.1.1.
 
-2.2.5.1.1 Set Error Info PDU Data (TS_SET_ERROR_INFO_PDU)
+###### 2.2.5.1.1 Set Error Info PDU Data (TS_SET_ERROR_INFO_PDU)
 
 The TS_SET_ERROR_INFO_PDU structure contains the contents of the Set Error Info PDU
 (section 2.2.5.1), which is a Share Data Header (section 2.2.8.1.1.1.2) with an error value field.
@@ -11121,7 +10104,8 @@ Release: March 9, 2026
 
 120 / 444
 
-set to PDUTYPE_DATAPDU (7). The pduType2 field of the Share Data Header MUST be set to
+
+set to PDUTYPE_DATAPDU (7). The pduType2 field of the Share Data Header MUST be set to
 PDUTYPE2_SET_ERROR_INFO_PDU (47), and the pduSource field MUST be set to zero.
 
 errorInfo (4 bytes): A 32-bit, unsigned integer. Error code.
@@ -11251,7 +10235,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 0x00000012
 
@@ -11381,7 +10366,8 @@ Release: March 9, 2026
 
 122 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -11514,7 +10500,8 @@ Release: March 9, 2026
 
 123 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -11638,7 +10625,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -11763,7 +10751,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -11887,7 +10876,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 0x000010F6
 
@@ -12021,7 +11011,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 0x0000111D
 
@@ -12152,7 +11143,8 @@ Release: March 9, 2026
 
 128 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -12276,7 +11268,8 @@ Release: March 9, 2026
 
 129 / 444
 
-2.2.5.2  Server Status Info PDU
+
+##### 2.2.5.2 Server Status Info PDU
 
 The Status Info PDU is sent by the server to update the client with status information. This PDU is only
 sent to clients that have indicated that they are capable of status updates using the
@@ -12355,7 +11348,8 @@ Release: March 9, 2026
 
 130 / 444
 
-If the Encryption Level selected by the server is ENCRYPTION_LEVEL_NONE (0) and the Encryption
+
+If the Encryption Level selected by the server is ENCRYPTION_LEVEL_NONE (0) and the Encryption
 Method selected by the server is ENCRYPTION_METHOD_NONE (0), then this header MUST NOT
 be included in the PDU.
 
@@ -12428,9 +11422,9 @@ TS_STATUS_VM_RETRYING_MONITORING
 Monitoring of the destination virtual machine is being
 reinitiated.
 
-2.2.6  Static Virtual Channels
+#### 2.2.6 Static Virtual Channels
 
-2.2.6.1  Virtual Channel PDU
+##### 2.2.6.1 Virtual Channel PDU
 
 The Virtual Channel PDU is sent from client to server or from server to client and is used to transport
 data between static virtual channel endpoints.
@@ -12459,7 +11453,8 @@ Release: March 9, 2026
 
 131 / 444
 
-...
+
+...
 
 securityHeader (variable)
 
@@ -12531,7 +11526,8 @@ Release: March 9, 2026
 
 132 / 444
 
-If the Encryption Level selected by the server is ENCRYPTION_LEVEL_NONE (0) and the Encryption
+
+If the Encryption Level selected by the server is ENCRYPTION_LEVEL_NONE (0) and the Encryption
 Method selected by the server is ENCRYPTION_METHOD_NONE (0), then this header MUST NOT
 be included in the PDU.
 
@@ -12544,7 +11540,7 @@ protocol handler. This field MUST NOT be larger than CHANNEL_CHUNK_LENGTH (1600)
 size unless the maximum virtual channel chunk size is specified in the optional VCChunkSize field
 of the Virtual Channel Capability Set (section 2.2.7.1.10).
 
-2.2.6.1.1 Channel PDU Header (CHANNEL_PDU_HEADER)
+###### 2.2.6.1.1 Channel PDU Header (CHANNEL_PDU_HEADER)
 
 The CHANNEL_PDU_HEADER MUST precede all opaque static virtual channel traffic chunks transmitted
 via RDP between a client and server.
@@ -12639,7 +11635,8 @@ Release: March 9, 2026
 
 133 / 444
 
-Flag
+
+Flag
 
 Meaning
 
@@ -12702,11 +11699,11 @@ RDP 6.1 bulk compression ([MS-RDPEGDI] section 3.1.8.2).
 Instructions detailing how to compress a data stream are listed in section 3.1.8.2, while
 decompression of a data stream is described in section 3.1.8.3.
 
-2.2.7  Capability Sets
+#### 2.2.7 Capability Sets
 
-2.2.7.1  Mandatory Capability Sets
+##### 2.2.7.1 Mandatory Capability Sets
 
-2.2.7.1.1 General Capability Set (TS_GENERAL_CAPABILITYSET)
+###### 2.2.7.1.1 General Capability Set (TS_GENERAL_CAPABILITYSET)
 
 The TS_GENERAL_CAPABILITYSET structure is used to advertise general characteristics and is
 based on the capability set specified in [T128] section 8.2.3. This capability is sent by both client and
@@ -12738,7 +11735,8 @@ Release: March 9, 2026
 
 134 / 444
 
-protocolVersion
+
+protocolVersion
 
 compressionTypes
 
@@ -12851,7 +11849,8 @@ Release: March 9, 2026
 
 135 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -12959,7 +11958,8 @@ Release: March 9, 2026
 
 136 / 444
 
-Flag
+
+Flag
 
 Meaning
 
@@ -13027,7 +12027,7 @@ Server does not support Suppress Output PDU.
 
 Server supports Suppress Output PDU.
 
-2.2.7.1.2 Bitmap Capability Set (TS_BITMAP_CAPABILITYSET)
+###### 2.2.7.1.2 Bitmap Capability Set (TS_BITMAP_CAPABILITYSET)
 
 The TS_BITMAP_CAPABILITYSET structure is used to advertise bitmap-orientated characteristics and is
 based on the capability set specified in [T128] section 8.2.4. This capability is sent by both client and
@@ -13063,7 +12063,8 @@ Release: March 9, 2026
 
 137 / 444
 
-desktopWidth
+
+desktopWidth
 
 pad2octets
 
@@ -13154,7 +12155,8 @@ Release: March 9, 2026
 
 138 / 444
 
-Flag
+
+Flag
 
 0x02
 
@@ -13197,7 +12199,7 @@ proceed.
 
 pad2octetsB (2 bytes): A 16-bit, unsigned integer. Padding. Values in this field MUST be ignored.
 
-2.2.7.1.3 Order Capability Set (TS_ORDER_CAPABILITYSET)
+###### 2.2.7.1.3 Order Capability Set (TS_ORDER_CAPABILITYSET)
 
 The TS_ORDER_CAPABILITYSET structure advertises support for primary drawing order-related
 capabilities and is based on the capability set specified in [T128] section 8.2.5 (for more information
@@ -13250,7 +12252,8 @@ Release: March 9, 2026
 
 139 / 444
 
-...
+
+...
 
 textFlags
 
@@ -13346,7 +12349,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Flag
+
+Flag
 
 0x0080
 
@@ -13475,7 +12479,8 @@ Release: March 9, 2026
 
 141 / 444
 
-Negotiation index
+
+Negotiation index
 
 Primary drawing order or orders
 
@@ -13593,7 +12598,7 @@ The contents of the byte at this index MUST be ignored.
 If an order is supported, the byte at the given index MUST contain the value 0x01. Any order not
 supported by the client causes the server to spend more time and bandwidth using workarounds,
 such as other primary orders or simply sending screen bitmap data in a Bitmap Update (sections
-2.2.9.1.1.3.1.2 and 2.2.9.1.2.1.2). If no primary drawing orders are supported, this array MUST
+###### 2.2.9.1.1.3.1.2 and 2.2.9.1.2.1.2). If no primary drawing orders are supported, this array MUST
 be initialized to all zeros.
 
 [MS-RDPBCGR] - v20260309
@@ -13603,7 +12608,8 @@ Release: March 9, 2026
 
 142 / 444
 
-textFlags (2 bytes): A 16-bit, unsigned integer. Values in this field MUST be ignored.
+
+textFlags (2 bytes): A 16-bit, unsigned integer. Values in this field MUST be ignored.
 
 orderSupportExFlags (2 bytes): A 16-bit, unsigned integer. Extended order support flags.
 
@@ -13688,7 +12694,8 @@ Release: March 9, 2026
 
 143 / 444
 
-pad6
+
+pad6
 
 Cache0Entries
 
@@ -13763,7 +12770,8 @@ Release: March 9, 2026
 
 144 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -13854,7 +12862,8 @@ Release: March 9, 2026
 
 145 / 444
 
-BitmapCache2CellInfo (4 bytes): A TS_BITMAPCACHE_CELL_CACHE_INFO structure. Contains
+
+BitmapCache2CellInfo (4 bytes): A TS_BITMAPCACHE_CELL_CACHE_INFO structure. Contains
 
 information about the structure of Bitmap Cache 2. The maximum number of entries allowed in
 this cache is 65536. This field is only valid if NumCellCaches is greater than or equal to 3.
@@ -13953,7 +12962,8 @@ Release: March 9, 2026
 
 146 / 444
 
-capabilitySetType (2 bytes): A 16-bit, unsigned integer. The type of the capability set. This field
+
+capabilitySetType (2 bytes): A 16-bit, unsigned integer. The type of the capability set. This field
 
 MUST be set to CAPSTYPE_POINTER (8).
 
@@ -14036,7 +13046,8 @@ Release: March 9, 2026
 
 147 / 444
 
-...
+
+...
 
 ...
 
@@ -14143,7 +13154,8 @@ Release: March 9, 2026
 
 148 / 444
 
-input locale identifier is only specified in the client Input Capability Set and SHOULD be the
+
+input locale identifier is only specified in the client Input Capability Set and SHOULD be the
 same as the keyboard layout specified in the Client Core Data (section 2.2.1.3.2).<30>
 
 keyboardType (4 bytes): A 32-bit, unsigned integer. Keyboard type.
@@ -14238,7 +13250,8 @@ Release: March 9, 2026
 
 149 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -14339,7 +13352,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 0x0001
 
@@ -14442,7 +13456,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -14544,7 +13559,8 @@ Release: March 9, 2026
 
 152 / 444
 
-The TS_SOUND_CAPABILITYSET structure advertises the ability to play a "beep" sound. This capability
+
+The TS_SOUND_CAPABILITYSET structure advertises the ability to play a "beep" sound. This capability
 is sent only from client to server.
 
 0  1  2  3  4  5  6  7  8  9
@@ -14644,7 +13660,8 @@ Release: March 9, 2026
 
 153 / 444
 
-pad2 (2 bytes): A 16-bit, unsigned integer. Padding. Values in this field MUST be ignored.
+
+pad2 (2 bytes): A 16-bit, unsigned integer. Padding. Values in this field MUST be ignored.
 
 2.2.7.2.2 Control Capability Set (TS_CONTROL_CAPABILITYSET)
 
@@ -14743,7 +13760,8 @@ Release: March 9, 2026
 
 154 / 444
 
-helpKeyFlag (2 bytes): A 16-bit, unsigned integer. This field SHOULD be set to FALSE (0x0000).
+
+helpKeyFlag (2 bytes): A 16-bit, unsigned integer. This field SHOULD be set to FALSE (0x0000).
 
 helpKeyIndexFlag (2 bytes): A 16-bit, unsigned integer. This field SHOULD be set to FALSE
 
@@ -14840,7 +13858,8 @@ Release: March 9, 2026
 
 155 / 444
 
-2.2.7.2.6 Multifragment Update Capability Set
+
+2.2.7.2.6 Multifragment Update Capability Set
 
 (TS_MULTIFRAGMENTUPDATE_CAPABILITYSET)
 
@@ -14927,7 +13946,8 @@ Release: March 9, 2026
 
 156 / 444
 
-Flag
+
+Flag
 
 Meaning
 
@@ -15025,7 +14045,8 @@ Release: March 9, 2026
 
 157 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15124,7 +14145,8 @@ Release: March 9, 2026
 
 158 / 444
 
-supportedBitmapCodecs (variable): A variable-length field containing a TS_BITMAPCODECS
+
+supportedBitmapCodecs (variable): A variable-length field containing a TS_BITMAPCODECS
 
 structure (section 2.2.7.2.10.1).
 
@@ -15232,7 +14254,8 @@ Release: March 9, 2026
 
 159 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -15333,7 +14356,8 @@ Release: March 9, 2026
 
 160 / 444
 
-codecGUID5 (1 byte): An 8-bit, unsigned integer. The fifth GUID component.
+
+codecGUID5 (1 byte): An 8-bit, unsigned integer. The fifth GUID component.
 
 codecGUID6 (1 byte): An 8-bit, unsigned integer. The sixth GUID component.
 
@@ -15410,7 +14434,8 @@ Release: March 9, 2026
 
 161 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15521,7 +14546,8 @@ Release: March 9, 2026
 
 162 / 444
 
-streamID (1 byte): An 8-bit, unsigned integer. The stream identifier for the packet.
+
+streamID (1 byte): An 8-bit, unsigned integer. The stream identifier for the packet.
 
 Value
 
@@ -15642,7 +14668,8 @@ Release: March 9, 2026
 
 163 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -15767,7 +14794,8 @@ Release: March 9, 2026
 
 164 / 444
 
-Instructions specifying how to set the compression flags can be found in section 3.1.8.2.1.
+
+Instructions specifying how to set the compression flags can be found in section 3.1.8.2.1.
 
 Possible compression types are as follows.
 
@@ -15873,7 +14901,8 @@ Release: March 9, 2026
 
 165 / 444
 
-Flag
+
+Flag
 
 Meaning
 
@@ -15994,7 +15023,8 @@ Release: March 9, 2026
 
 166 / 444
 
-2.2.8.1.1.2.2  Non-FIPS (TS_SECURITY_HEADER1)
+
+2.2.8.1.1.2.2  Non-FIPS (TS_SECURITY_HEADER1)
 
 The TS_SECURITY_HEADER1 structure extends the Basic Security Header (section 2.2.8.1.1.2.1) and
 is used to store a 64-bit Message Authentication Code.
@@ -16087,7 +15117,8 @@ Release: March 9, 2026
 
 167 / 444
 
-padlen (1 byte): An 8-bit, unsigned integer. The number of padding bytes of padding appended to
+
+padlen (1 byte): An 8-bit, unsigned integer. The number of padding bytes of padding appended to
 
 the end of the packet prior to encryption to make sure that the data to be encrypted is a multiple
 of the 3DES block size (that is, a multiple of 8 because the block size is 64 bits).
@@ -16169,7 +15200,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-2.2.8.1.1.3.1  Client Input Event PDU Data (TS_INPUT_PDU_DATA)
+
+2.2.8.1.1.3.1  Client Input Event PDU Data (TS_INPUT_PDU_DATA)
 
 The TS_INPUT_PDU_DATA structure contains a collection of Slow-Path Input Events (section
 2.2.8.1.1.3.1.1) generated by the client and intended to be processed by the server.
@@ -16263,7 +15295,8 @@ Release: March 9, 2026
 
 169 / 444
 
-Value
+
+Value
 
 0x0000
 
@@ -16374,7 +15407,8 @@ Release: March 9, 2026
 
 170 / 444
 
-Flag
+
+Flag
 
 Meaning
 
@@ -16483,7 +15517,8 @@ Release: March 9, 2026
 
 171 / 444
 
-pointerFlags (2 bytes): A 16-bit, unsigned integer. Contains flags that describe the pointer event.
+
+pointerFlags (2 bytes): A 16-bit, unsigned integer. Contains flags that describe the pointer event.
 
 Mouse wheel event.
 
@@ -16595,7 +15630,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-2.2.8.1.1.3.1.1.4
+
+2.2.8.1.1.3.1.1.4
 
 Extended Mouse Event (TS_POINTERX_EVENT)
 
@@ -16697,7 +15733,8 @@ Release: March 9, 2026
 
 173 / 444
 
-Flag
+
+Flag
 
 Meaning
 
@@ -16801,7 +15838,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Flag
+
+Flag
 
 0x0800
 
@@ -16912,7 +15950,8 @@ Release: March 9, 2026
 
 175 / 444
 
-...
+
+...
 
 numEvents (optional)
 
@@ -17011,7 +16050,8 @@ Release: March 9, 2026
 
 176 / 444
 
-length1 (1 byte): An 8-bit, unsigned integer. If the most significant bit of the length1 field is not
+
+length1 (1 byte): An 8-bit, unsigned integer. If the most significant bit of the length1 field is not
 
 set, then the size of the PDU is in the range 1 to 127 bytes and the length1 field contains the
 overall PDU length (the length2 field is not present in this case). However, if the most significant
@@ -17093,7 +16133,8 @@ Release: March 9, 2026
 
 177 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17211,7 +16252,8 @@ Release: March 9, 2026
 
 178 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17321,7 +16363,8 @@ Release: March 9, 2026
 
 179 / 444
 
-5-Bit Codes
+
+5-Bit Codes
 
 Meaning
 
@@ -17423,7 +16466,8 @@ Release: March 9, 2026
 
 180 / 444
 
-pointerFlags (2 bytes): A 16-bit, unsigned integer. Contains flags that describe the pointer event.
+
+pointerFlags (2 bytes): A 16-bit, unsigned integer. Contains flags that describe the pointer event.
 
 The possible flags are identical to those found in the pointerFlags field of the
 TS_POINTERX_EVENT structure.
@@ -17521,7 +16565,8 @@ Release: March 9, 2026
 
 181 / 444
 
-MUST be set to FASTPATH_INPUT_EVENT_QOE_TIMESTAMP (6). The eventFlags bitfield (5 bits in
+
+MUST be set to FASTPATH_INPUT_EVENT_QOE_TIMESTAMP (6). The eventFlags bitfield (5 bits in
 size) MUST be zeroed out.
 
 timestamp (4 bytes): A 32-bit, unsigned integer. A client-generated timestamp, in milliseconds,
@@ -17611,7 +16656,8 @@ Release: March 9, 2026
 
 182 / 444
 
-...
+
+...
 
 setKeyBdIndicatorsPduData (22 bytes)
 
@@ -17690,7 +16736,8 @@ Release: March 9, 2026
 
 183 / 444
 
-...
+
+...
 
 UnitId
 
@@ -17777,7 +16824,8 @@ Release: March 9, 2026
 
 184 / 444
 
-...
+
+...
 
 ...
 
@@ -17855,7 +16903,8 @@ Release: March 9, 2026
 
 185 / 444
 
-...
+
+...
 
 UnitId
 
@@ -17958,7 +17007,8 @@ Release: March 9, 2026
 
 186 / 444
 
-Flag
+
+Flag
 
 Meaning
 
@@ -18037,7 +17087,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-parts 7 and 10). The userData field of the MCS Send Data Indication contains a Security Header
+
+parts 7 and 10). The userData field of the MCS Send Data Indication contains a Security Header
 and a Slow-Path Graphics Update (section 2.2.9.1.1.3.1) structure.
 
 securityHeader (variable):  Optional security header. The presence and format of the security
@@ -18121,7 +17172,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 0x0000
 
@@ -18218,7 +17270,8 @@ Release: March 9, 2026
 
 189 / 444
 
-...
+
+...
 
 updateType (2 bytes): A 16-bit, unsigned integer. The update type. This field MUST be set to
 
@@ -18309,9 +17362,10 @@ Release: March 9, 2026
 
 190 / 444
 
-2.2.9.1.1.3.1.2.1
 
-Bitmap Update Data (TS_UPDATE_BITMAP_DATA)
+###### 2.2.9.1.1.3.1.2.1 Bitmap Update Data (TS_UPDATE_BITMAP_DATA)
+
+
 
 The TS_UPDATE_BITMAP_DATA structure encapsulates the bitmap data that defines a Bitmap
 Update (section 2.2.9.1.1.3.1.2).
@@ -18348,9 +17402,9 @@ rectangles (variable): Variable-length array of TS_BITMAP_DATA (section 2.2.9.1.
 structures, each of which contains a rectangular clipping taken from the server-side screen frame
 buffer. The number of screen clippings in the array is specified by the numberRectangles field.
 
-2.2.9.1.1.3.1.2.2
+###### 2.2.9.1.1.3.1.2.2 Bitmap Data (TS_BITMAP_DATA)
 
-Bitmap Data (TS_BITMAP_DATA)
+
 
 The TS_BITMAP_DATA structure wraps the bitmap data for a screen area rectangle containing a
 clipping taken from the server-side screen frame buffer.
@@ -18409,7 +17463,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-width (2 bytes): A 16-bit, unsigned integer. The width of the rectangle.
+
+width (2 bytes): A 16-bit, unsigned integer. The width of the rectangle.
 
 height (2 bytes): A 16-bit, unsigned integer. The height of the rectangle.
 
@@ -18461,9 +17516,9 @@ Stream structure (section 2.2.9.1.1.3.1.2.4), while compressed bitmaps at a colo
 are compressed using RDP 6.0 Bitmap Compression and stored inside an RDP 6.0 Bitmap
 Compressed Stream structure ([MS-RDPEGDI] section 2.2.2.5.1).
 
-2.2.9.1.1.3.1.2.3
+###### 2.2.9.1.1.3.1.2.3 Compressed Data Header (TS_CD_HEADER)
 
-Compressed Data Header (TS_CD_HEADER)
+
 
 The TS_CD_HEADER structure is used to describe compressed bitmap data.
 
@@ -18507,9 +17562,10 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-2.2.9.1.1.3.1.2.4
 
-RLE Compressed Bitmap Stream (RLE_BITMAP_STREAM)
+###### 2.2.9.1.1.3.1.2.4 RLE Compressed Bitmap Stream (RLE_BITMAP_STREAM)
+
+
 
 The RLE_BITMAP_STREAM structure contains a stream of bitmap data compressed using Interleaved
 Run-Length Encoding (RLE). Bitmap data compressed by the server MUST follow a Compressed Data
@@ -18592,7 +17648,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-When encountering back-to-back background runs, the decompressor MUST write a one-pixel
+
+When encountering back-to-back background runs, the decompressor MUST write a one-pixel
 foreground run to the destination buffer before processing the second background run if both runs
 occur on the first scanline or after the first scanline (if the first run is on the first scanline, and the
 second run is on the second scanline, then a one-pixel foreground run MUST NOT be written to the
@@ -18686,7 +17743,8 @@ Release: March 9, 2026
 
 194 / 444
 
-Code Identifier
+
+Code Identifier
 
 Meaning
 
@@ -18771,7 +17829,8 @@ Release: March 9, 2026
 
 195 / 444
 
-Code Identifier
+
+Code Identifier
 
 Meaning
 
@@ -18870,9 +17929,9 @@ The compression order encodes a single white pixel.
 
 The compression order encodes a single black pixel.
 
-2.2.9.1.1.3.1.3
+###### 2.2.9.1.1.3.1.3 Synchronize Update (TS_UPDATE_SYNC)
 
-Synchronize Update (TS_UPDATE_SYNC)
+
 
 196 / 444
 
@@ -18881,7 +17940,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The TS_UPDATE_SYNC structure is an artifact of the T.128 protocol ([T128] section 8.6.2) and
+
+The TS_UPDATE_SYNC structure is an artifact of the T.128 protocol ([T128] section 8.6.2) and
 SHOULD be ignored.
 
 0  1  2  3  4  5  6  7  8  9
@@ -18918,7 +17978,7 @@ UPDATETYPE_SYNCHRONIZE (0x0003).
 
 pad2Octets (2 bytes): A 16-bit, unsigned integer. Padding. Values in this field MUST be ignored.
 
-2.2.9.1.1.4  Server Pointer Update PDU (TS_POINTER_PDU)
+###### 2.2.9.1.1.4 Server Pointer Update PDU (TS_POINTER_PDU)
 
 The Pointer Update PDU is sent from server to client and is used to convey pointer information,
 including pointers' bitmap images, use of system or hidden pointers, use of cached cursors and
@@ -18964,7 +18024,8 @@ Release: March 9, 2026
 
 197 / 444
 
-pad2Octets
+
+pad2Octets
 
 pointerAttributeData (variable)
 
@@ -19053,7 +18114,8 @@ Release: March 9, 2026
 
 198 / 444
 
-T.128 Monochrome Pointer updates ([T128] section 8.14.2) are not used in RDP and are not
+
+T.128 Monochrome Pointer updates ([T128] section 8.14.2) are not used in RDP and are not
 planned for a future version. Monochrome pointers are translated into 24 bpp cursors using the
 Color Pointer Update (section 2.2.9.1.1.4.4) when the New Pointer Update (section 2.2.9.1.1.4.5)
 is not supported, or sent as 1 bpp using the New Pointer Update.
@@ -19065,7 +18127,7 @@ Update (section 2.2.9.1.1.4.3), Color Pointer Update (section 2.2.9.1.1.4.4), Ne
 (section 2.2.9.1.1.4.5), or Cached Pointer Update (section 2.2.9.1.1.4.6). The actual contents of
 the slow-path pointer update.
 
-2.2.9.1.1.4.1  Point (TS_POINT16)
+###### 2.2.9.1.1.4.1 Point (TS_POINT16)
 
 The TS_POINT16 structure specifies a point relative to the top-left corner of the server's desktop.
 
@@ -19092,7 +18154,7 @@ yPos (2 bytes): A 16-bit, unsigned integer. The y-coordinate relative to the top
 
 server's desktop.
 
-2.2.9.1.1.4.2  Pointer Position Update (TS_POINTERPOSATTRIBUTE)
+###### 2.2.9.1.1.4.2 Pointer Position Update (TS_POINTERPOSATTRIBUTE)
 
 The TS_POINTERPOSATTRIBUTE structure is used to indicate that the client pointer MUST be moved to
 the specified position relative to the top-left corner of the server's desktop ([T128] section 8.14.4).
@@ -19114,7 +18176,7 @@ position (4 bytes): A Point (section 2.2.9.1.1.4.1) structure containing the new
 
 coordinates of the pointer.
 
-2.2.9.1.1.4.3  System Pointer Update (TS_SYSTEMPOINTERATTRIBUTE)
+###### 2.2.9.1.1.4.3 System Pointer Update (TS_SYSTEMPOINTERATTRIBUTE)
 
 The TS_SYSTEMPOINTERATTRIBUTE structure is used to hide the pointer or to set its shape to the
 operating system default ([T128] section 8.14.1).
@@ -19151,7 +18213,8 @@ Release: March 9, 2026
 
 199 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -19161,7 +18224,7 @@ The default system pointer.
 
 0x00007F00
 
-2.2.9.1.1.4.4  Color Pointer Update (TS_COLORPOINTERATTRIBUTE)
+###### 2.2.9.1.1.4.4 Color Pointer Update (TS_COLORPOINTERATTRIBUTE)
 
 The TS_COLORPOINTERATTRIBUTE structure represents a regular T.128 24 bpp color pointer, as
 specified in [T128] section 8.14.3. This pointer update is used for both monochrome and color pointers
@@ -19237,7 +18300,8 @@ Release: March 9, 2026
 
 200 / 444
 
-For example, if a 3x3 pixel cursor is being sent, then each scan-line will consume 10 bytes (3
+
+For example, if a 3x3 pixel cursor is being sent, then each scan-line will consume 10 bytes (3
 pixels per scan-line multiplied by 3 bytes per pixel, rounded up to the next even number of bytes).
 
 andMaskData (variable): A variable-length array of bytes. Contains the 1-bpp, bottom-up AND
@@ -19248,7 +18312,7 @@ per scan-line multiplied by 1 bpp, rounded up to the next even number of bytes).
 
 pad (1 byte): An optional 8-bit, unsigned integer. Padding. Values in this field MUST be ignored.
 
-2.2.9.1.1.4.5  New Pointer Update (TS_POINTERATTRIBUTE)
+###### 2.2.9.1.1.4.5 New Pointer Update (TS_POINTERATTRIBUTE)
 
 The TS_POINTERATTRIBUTE structure is used to send pointer data at an arbitrary color depth.
 Support for the New Pointer Update is advertised in the Pointer Capability Set (section 2.2.7.1.5).
@@ -19281,7 +18345,7 @@ section 2.2.9.1.1.4.4; however color XOR data is presented in the color depth de
 xorBpp field (for 8 bpp, each byte contains one palette index; for 4 bpp, there are two palette
 indices per byte).
 
-2.2.9.1.1.4.6  Cached Pointer Update (TS_CACHEDPOINTERATTRIBUTE)
+###### 2.2.9.1.1.4.6 Cached Pointer Update (TS_CACHEDPOINTERATTRIBUTE)
 
 The TS_CACHEDPOINTERATTRIBUTE structure is used to instruct the client to change the current
 pointer shape to one already present in the pointer cache.
@@ -19305,7 +18369,7 @@ index of the cached pointer to which the client's pointer MUST be changed. The p
 have already been cached using either the Color Pointer Update (section 2.2.9.1.1.4.4) or New
 Pointer Update (section 2.2.9.1.1.4.5).
 
-2.2.9.1.1.5  Server Play Sound PDU
+###### 2.2.9.1.1.5 Server Play Sound PDU
 
 The Play Sound PDU instructs the client to play a "beep" sound.
 
@@ -19333,7 +18397,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-...
+
+...
 
 securityHeader (variable)
 
@@ -19386,7 +18451,7 @@ playSoundPduData (26 bytes):  The actual contents of the Play Sound PDU, as spec
 
 2.2.9.1.1.5.1.
 
-2.2.9.1.1.5.1  Play Sound PDU Data (TS_PLAY_SOUND_PDU_DATA)
+###### 2.2.9.1.1.5.1 Play Sound PDU Data (TS_PLAY_SOUND_PDU_DATA)
 
 The TS_PLAY_SOUND_PDU_DATA structure contains the contents of the Play Sound PDU, which is a
 Share Data Header (section 2.2.8.1.1.1.2) and two fields.
@@ -19398,7 +18463,8 @@ Release: March 9, 2026
 
 202 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -19435,7 +18501,7 @@ duration (4 bytes): A 32-bit, unsigned integer. Duration of the beep the client 
 
 frequency (4 bytes): A 32-bit, unsigned integer. Frequency of the beep the client MUST play.
 
-2.2.9.1.2 Server Fast-Path Update PDU (TS_FP_UPDATE_PDU)
+###### 2.2.9.1.2 Server Fast-Path Update PDU (TS_FP_UPDATE_PDU)
 
 Fast-path revises server output packets from the first byte with the goal of improving bandwidth. The
 TPKT Header ([T123] section 8), X.224 Class 0 Data TPDU ([X224] section 13.7), and MCS Send Data
@@ -19493,7 +18559,8 @@ Release: March 9, 2026
 
 203 / 444
 
-The format of the fpOutputHeader byte is described by the following bitmask diagram.
+
+The format of the fpOutputHeader byte is described by the following bitmask diagram.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -19593,7 +18660,8 @@ Release: March 9, 2026
 
 204 / 444
 
-dataSignature (8 bytes): MAC generated over the packet using one of the techniques specified in
+
+dataSignature (8 bytes): MAC generated over the packet using one of the techniques specified in
 
 section 5.3.6 (the FASTPATH_OUTPUT_SECURE_CHECKSUM flag, which is set in the
 fpOutputHeader field, describes the method used to generate the signature). This field MUST be
@@ -19603,7 +18671,7 @@ fpOutputUpdates (variable): An array of Fast-Path Update (section 2.2.9.1.2.1) s
 
 processed by the client.
 
-2.2.9.1.2.1  Fast-Path Update (TS_FP_UPDATE)
+###### 2.2.9.1.2.1 Fast-Path Update (TS_FP_UPDATE)
 
 The TS_FP_UPDATE structure is used to describe and encapsulate the data for a fast-path update sent
 from server to client. All fast-path updates conform to this basic structure (sections 2.2.9.1.2.1.1 to
@@ -19708,7 +18776,8 @@ Release: March 9, 2026
 
 205 / 444
 
-Value (4 bits)
+
+Value (4 bits)
 
 Meaning
 
@@ -19832,7 +18901,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-2.2.9.1.2.1.1  Fast-Path Palette Update (TS_FP_UPDATE_PALETTE)
+
+###### 2.2.9.1.2.1.1 Fast-Path Palette Update (TS_FP_UPDATE_PALETTE)
 
 The TS_FP_UPDATE_PALETTE structure is the fast-path variant of the
 TS_UPDATE_PALETTE (section 2.2.9.1.1.3.1.1) structure.
@@ -19876,7 +18946,7 @@ paletteUpdateData (variable): Variable-length palette data. Both slow-path and f
 the same data format, a Palette Update Data (section 2.2.9.1.1.3.1.1.1) structure, to represent
 this information.
 
-2.2.9.1.2.1.2  Fast-Path Bitmap Update (TS_FP_UPDATE_BITMAP)
+###### 2.2.9.1.2.1.2 Fast-Path Bitmap Update (TS_FP_UPDATE_BITMAP)
 
 The TS_FP_UPDATE_BITMAP structure is the fast-path variant of the
 TS_UPDATE_BITMAP (section 2.2.9.1.1.3.1.2) structure.
@@ -19923,11 +18993,12 @@ Release: March 9, 2026
 
 207 / 444
 
-bitmapUpdateData (variable):  Variable-length bitmap data. Both slow-path and fast-path utilize
+
+bitmapUpdateData (variable):  Variable-length bitmap data. Both slow-path and fast-path utilize
 the same data format, a Bitmap Update Data (section 2.2.9.1.1.3.1.2.1) structure, to represent
 this information.
 
-2.2.9.1.2.1.3  Fast-Path Synchronize Update (TS_FP_UPDATE_SYNCHRONIZE)
+###### 2.2.9.1.2.1.3 Fast-Path Synchronize Update (TS_FP_UPDATE_SYNCHRONIZE)
 
 The TS_FP_UPDATE_SYNCHRONIZE structure is the fast-path variant of the
 TS_UPDATE_SYNC (section 2.2.9.1.1.3.1.3) structure.
@@ -19961,7 +19032,7 @@ structure.
 
 size (2 bytes): A 16-bit, unsigned integer. This field MUST be set to zero.
 
-2.2.9.1.2.1.4  Fast-Path Pointer Position Update (TS_FP_POINTERPOSATTRIBUTE)
+###### 2.2.9.1.2.1.4 Fast-Path Pointer Position Update (TS_FP_POINTERPOSATTRIBUTE)
 
 The TS_FP_POINTERPOSATTRIBUTE structure is the fast-path variant of the
 TS_POINTERPOSATTRIBUTE structure (section 2.2.9.1.1.4.2).
@@ -20003,7 +19074,7 @@ pointerPositionUpdateData (4 bytes): Pointer coordinates. Both slow-path and fas
 same data format, a Pointer Position Update (section 2.2.9.1.1.4.2) structure, to represent this
 information.
 
-2.2.9.1.2.1.5  Fast-Path System Pointer Hidden Update
+###### 2.2.9.1.2.1.5 Fast-Path System Pointer Hidden Update
 
 (TS_FP_SYSTEMPOINTERHIDDENATTRIBUTE)
 
@@ -20016,7 +19087,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -20045,7 +19117,7 @@ structure.
 
 size (2 bytes): A 16-bit, unsigned integer. This field MUST be set to zero.
 
-2.2.9.1.2.1.6  Fast-Path System Pointer Default Update
+###### 2.2.9.1.2.1.6 Fast-Path System Pointer Default Update
 
 (TS_FP_SYSTEMPOINTERDEFAULTATTRIBUTE)
 
@@ -20081,7 +19153,7 @@ structure.
 
 size (2 bytes): A 16-bit, unsigned integer. This field MUST be set to zero.
 
-2.2.9.1.2.1.7  Fast-Path Color Pointer Update (TS_FP_COLORPOINTERATTRIBUTE)
+###### 2.2.9.1.2.1.7 Fast-Path Color Pointer Update (TS_FP_COLORPOINTERATTRIBUTE)
 
 The TS_FP_COLORPOINTERATTRIBUTE structure is the fast-path variant of the
 TS_COLORPOINTERATTRIBUTE (section 2.2.9.1.1.4.4) structure.
@@ -20120,7 +19192,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-compressionFlags (1 byte): An 8-bit, unsigned integer. The format of this optional field (as well as
+
+compressionFlags (1 byte): An 8-bit, unsigned integer. The format of this optional field (as well as
 the possible values) is the same as the compressionFlags field specified in the Fast-Path Update
 structure.
 
@@ -20132,7 +19205,7 @@ colorPointerUpdateData (variable): Color pointer data. Both slow-path and fast-p
 same data format, a Color Pointer Update (section 2.2.9.1.1.4.4) structure, to represent this
 information.
 
-2.2.9.1.2.1.8  Fast-Path New Pointer Update (TS_FP_POINTERATTRIBUTE)
+###### 2.2.9.1.2.1.8 Fast-Path New Pointer Update (TS_FP_POINTERATTRIBUTE)
 
 The TS_FP_POINTERATTRIBUTE structure is the fast-path variant of the
 TS_POINTERATTRIBUTE (section 2.2.9.1.1.4.5) structure.
@@ -20176,7 +19249,7 @@ newPointerUpdateData (variable): Color pointer data at arbitrary color depth. Bo
 fast-path utilize the same data format, a New Pointer Update (section 2.2.9.1.1.4.5) structure, to
 represent this information.
 
-2.2.9.1.2.1.9  Fast-Path Cached Pointer Update (TS_FP_CACHEDPOINTERATTRIBUTE)
+###### 2.2.9.1.2.1.9 Fast-Path Cached Pointer Update (TS_FP_CACHEDPOINTERATTRIBUTE)
 
 The TS_FP_CACHEDPOINTERATTRIBUTE structure is the fast-path variant of the
 TS_CACHEDPOINTERATTRIBUTE (section 2.2.9.1.1.4.6) structure.
@@ -20213,7 +19286,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-compressionFlags (1 byte): An 8-bit, unsigned integer. The format of this optional field (as well as
+
+compressionFlags (1 byte): An 8-bit, unsigned integer. The format of this optional field (as well as
 the possible values) is the same as the compressionFlags field specified in the Fast-Path Update
 structure.
 
@@ -20226,9 +19300,9 @@ cachedPointerUpdateData (2 bytes):  Cached pointer data. Both slow-path and fast
 the same data format, a Cached Pointer Update (section 2.2.9.1.1.4.6) structure, to represent this
 information.
 
-2.2.9.1.2.1.10
+###### 2.2.9.1.2.1.10 Fast-Path Surface Commands Update (TS_FP_SURFCMDS)
 
-Fast-Path Surface Commands Update (TS_FP_SURFCMDS)
+
 
 The TS_FP_SURFCMDS structure encapsulates one or more Surface Command (section
 2.2.9.1.2.1.10.1) structures.
@@ -20272,9 +19346,9 @@ surfaceCommands (variable): An array of Surface Command (section 2.2.9.1.2.1.10.
 
 containing a collection of commands to be processed by the client.
 
-2.2.9.1.2.1.10.1
+###### 2.2.9.1.2.1.10.1 Surface Command (TS_SURFCMD)
 
-Surface Command (TS_SURFCMD)
+
 
 The TS_SURFCMD structure is used to specify the Surface Command type and to encapsulate the data
 for a Surface Command sent from a server to a client. All Surface Commands in section 2.2.9.2
@@ -20306,7 +19380,8 @@ Release: March 9, 2026
 
 211 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -20330,9 +19405,9 @@ Indicates a Stream Surface Bits Command (section 2.2.9.2.2).<37>
 
 cmdData (variable): Variable-length data specific to the Surface Command.
 
-2.2.9.1.2.1.11
+###### 2.2.9.1.2.1.11 Fast-Path Large Pointer Update
 
-Fast-Path Large Pointer Update
+
 
 (TS_FP_LARGEPOINTERATTRIBUTE)
 
@@ -20398,7 +19473,8 @@ Release: March 9, 2026
 
 212 / 444
 
-size (2 bytes): A 16-bit, unsigned integer. The format of this field (as well as the possible values) is
+
+size (2 bytes): A 16-bit, unsigned integer. The format of this field (as well as the possible values) is
 
 the same as the size field specified in the Fast-Path Update structure.
 
@@ -20442,12 +19518,12 @@ pad (1 byte): An optional 8-bit, unsigned integer used for padding. Values in th
 
 ignored.
 
-2.2.9.2  Surface Commands
+##### 2.2.9.2 Surface Commands
 
 Surface Commands all conform to the layout of the Surface Command (section 2.2.9.1.2.1.10.1)
 structure and MUST be wrapped in a Fast-Path Surface Commands Update (section 2.2.9.1.2.1.10).
 
-2.2.9.2.1 Set Surface Bits Command (TS_SURFCMD_SET_SURF_BITS)
+###### 2.2.9.2.1 Set Surface Bits Command (TS_SURFCMD_SET_SURF_BITS)
 
 The Set Surface Bits Command is used to transport encoded bitmap data destined for a rectangular
 region of the primary drawing surface from an RDP server to an RDP client.
@@ -20484,7 +19560,8 @@ Release: March 9, 2026
 
 213 / 444
 
-cmdType (2 bytes): A 16-bit, unsigned integer. Surface Command type. This field MUST be set to
+
+cmdType (2 bytes): A 16-bit, unsigned integer. Surface Command type. This field MUST be set to
 
 CMDTYPE_SET_SURFACE_BITS (0x0001).
 
@@ -20509,7 +19586,7 @@ length bitmapData field.
 
 bitmapData (variable): An Extended Bitmap Data structure that contains an encoded bitmap image.
 
-2.2.9.2.1.1  Extended Bitmap Data (TS_BITMAP_DATA_EX)
+###### 2.2.9.2.1.1 Extended Bitmap Data (TS_BITMAP_DATA_EX)
 
 The TS_BITMAP_DATA_EX structure is used to encapsulate encoded bitmap data.
 
@@ -20572,7 +19649,8 @@ Release: March 9, 2026
 
 214 / 444
 
-codecID (1 byte): An 8-bit, unsigned integer. The client-assigned ID that identifies the bitmap codec
+
+codecID (1 byte): An 8-bit, unsigned integer. The client-assigned ID that identifies the bitmap codec
 
 that was used to encode the bitmap data. Bitmap codec parameters are exchanged in the Bitmap
 Codecs Capability Set (section 2.2.7.2.10). If this field is 0, then the bitmap data is not encoded
@@ -20596,7 +19674,7 @@ bitmapData (variable): A variable-length array of bytes containing bitmap data e
 
 codec identified by the ID in the codecID field.
 
-2.2.9.2.1.1.1  Extended Compressed Bitmap Header
+###### 2.2.9.2.1.1.1 Extended Compressed Bitmap Header
 
 (TS_COMPRESSED_BITMAP_HEADER_EX)
 
@@ -20654,7 +19732,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-2.2.9.2.2 Stream Surface Bits Command (TS_SURFCMD_STREAM_SURF_BITS)
+
+###### 2.2.9.2.2 Stream Surface Bits Command (TS_SURFCMD_STREAM_SURF_BITS)
 
 The Stream Surface Bits Command is used to transport encoded bitmap data destined for a
 rectangular region of the primary drawing surface from an RDP server to an RDP client.
@@ -20708,7 +19787,7 @@ bitmapData (variable): An Extended Bitmap Data (section 2.2.9.2.1.1) structure t
 
 encoded bitmap image.
 
-2.2.9.2.3 Frame Marker Command (TS_FRAME_MARKER)
+###### 2.2.9.2.3 Frame Marker Command (TS_FRAME_MARKER)
 
 The Frame Marker Command is used to group multiple surface commands so that these commands
 can be processed and presented to the user as a single entity, a frame.
@@ -20753,7 +19832,8 @@ Release: March 9, 2026
 
 216 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -20765,11 +19845,11 @@ Indicates the end of the current frame.
 
 frameId (4 bytes): A 32-bit, unsigned integer. The ID identifying the frame.
 
-2.2.10 Logon and Authorization Notifications
+#### 2.2.10 Logon and Authorization Notifications
 
-2.2.10.1
+##### 2.2.10.1 Server Save Session Info PDU
 
-Server Save Session Info PDU
+
 
 The Save Session Info PDU is used by the server to transmit session and user logon information back
 to the client after the user has logged on.
@@ -20834,7 +19914,8 @@ Release: March 9, 2026
 
 217 / 444
 
-
+
+
 
 FIPS Security Header (section 2.2.8.1.1.2.3) if the Encryption Method selected by the server is
 ENCRYPTION_METHOD_FIPS (0x00000010).
@@ -20847,9 +19928,9 @@ saveSessionInfoPduData (variable): The actual contents of the Save Session Info 
 
 specified in section 2.2.10.1.1.
 
-2.2.10.1.1
+###### 2.2.10.1.1 Save Session Info PDU Data (TS_SAVE_SESSION_INFO_PDU_DATA)
 
-Save Session Info PDU Data (TS_SAVE_SESSION_INFO_PDU_DATA)
+
 
 The TS_SAVE_SESSION_INFO_PDU_DATA structure is a wrapper around different classes of user
 logon information.
@@ -20935,12 +20016,13 @@ Release: March 9, 2026
 
 218 / 444
 
-infoData (variable): A Logon Info Version 1 (section 2.2.10.1.1.1), Logon Info Version 2
+
+infoData (variable): A Logon Info Version 1 (section 2.2.10.1.1.1), Logon Info Version 2
 
 (section 2.2.10.1.1.2), Plain Notify (section 2.2.10.1.1.3), or Logon Info Extended (section
 2.2.10.1.1.4) structure. The type of data that follows depends on the value of the infoType field.
 
-2.2.10.1.1.1  Logon Info Version 1 (TS_LOGON_INFO)
+###### 2.2.10.1.1.1 Logon Info Version 1 (TS_LOGON_INFO)
 
 The TS_LOGON_INFO structure is a fixed-length structure that contains logon information intended
 for the client.
@@ -20996,7 +20078,7 @@ SessionId (4 bytes): A 32-bit, unsigned integer. Optional ID of the session on t
 
 according to the server. Sent by all RDP servers, except for RDP 4.0 servers.
 
-2.2.10.1.1.2  Logon Info Version 2 (TS_LOGON_INFO_VERSION_2)
+###### 2.2.10.1.1.2 Logon Info Version 2 (TS_LOGON_INFO_VERSION_2)
 
 TS_LOGON_INFO_VERSION_2 is a variable-length structure that contains logon information intended
 for the client.
@@ -21008,7 +20090,8 @@ Release: March 9, 2026
 
 219 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -21089,7 +20172,7 @@ field.
 UserName (variable): Variable-length null-terminated Unicode string containing the user name
 which was used to log on. The size of this field in bytes is given by the cbUserName field.
 
-2.2.10.1.1.3  Plain Notify (TS_PLAIN_NOTIFY)
+###### 2.2.10.1.1.3 Plain Notify (TS_PLAIN_NOTIFY)
 
 220 / 444
 
@@ -21098,7 +20181,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-TS_PLAIN_NOTIFY is a fixed-length structure that contains 576 bytes of padding.
+
+TS_PLAIN_NOTIFY is a fixed-length structure that contains 576 bytes of padding.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -21119,7 +20203,7 @@ Pad (576 bytes)
 
 Pad (576 bytes): 576 bytes. Padding. Values in this field MUST be ignored.
 
-2.2.10.1.1.4  Logon Info Extended (TS_LOGON_INFO_EXTENDED)
+###### 2.2.10.1.1.4 Logon Info Extended (TS_LOGON_INFO_EXTENDED)
 
 The TS_LOGON_INFO_EXTENDED structure contains extended logon information and is supported
 by all RDP versions, except for RDP 4.0, 5.0, and 5.1.
@@ -21193,7 +20277,8 @@ Release: March 9, 2026
 
 221 / 444
 
-within the FieldsPresent field of the Logon Info Extended structure. The ordering of the fields
+
+within the FieldsPresent field of the Logon Info Extended structure. The ordering of the fields
 is implicit and is as follows:
 
 1.  Auto-reconnect cookie data
@@ -21204,9 +20289,9 @@ If a field is not present, the next field which is present is read.
 
 Pad (570 bytes): 570 bytes. Padding. Values in this field MUST be ignored.
 
-2.2.10.1.1.4.1
+###### 2.2.10.1.1.4.1 Logon Info Field (TS_LOGON_INFO_FIELD)
 
-Logon Info Field (TS_LOGON_INFO_FIELD)
+
 
 The TS_LOGON_INFO_FIELD structure is used to encapsulate extended logon information field data
 of variable length.
@@ -21236,9 +20321,9 @@ FieldData (variable): Variable-length data conforming to the structure for the t
 
 FieldsPresent field of the Logon Info Extended (section 2.2.10.1.1.4) structure.
 
-2.2.10.1.1.4.1.1
+###### 2.2.10.1.1.4.1.1 Logon Errors Info (TS_LOGON_ERRORS_INFO)
 
-Logon Errors Info (TS_LOGON_ERRORS_INFO)
+
 
 The TS_LOGON_ERRORS_INFO structure contains information that describes a logon error
 notification.
@@ -21290,7 +20375,8 @@ Release: March 9, 2026
 
 222 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -21377,9 +20463,9 @@ the WinLogon screen.
 The logon process has displayed a warning. The user's focus
 SHOULD be directed to the WinLogon screen.
 
-2.2.10.2
+##### 2.2.10.2 Early User Authorization Result PDU
 
-Early User Authorization Result PDU
+
 
 The Early User Authorization Result PDU is sent from server to client and is used to convey
 authorization information to the client. This PDU is only sent by the server if the client advertised
@@ -21409,7 +20495,8 @@ Release: March 9, 2026
 
 223 / 444
 
-Value
+
+Value
 
 Meaning
 
@@ -21425,11 +20512,11 @@ The user does not have permission to access the server.
 
 0x00000005
 
-2.2.11 Controlling Server Graphics Output
+#### 2.2.11 Controlling Server Graphics Output
 
-2.2.11.1
+##### 2.2.11.1 Inclusive Rectangle (TS_RECTANGLE16)
 
-Inclusive Rectangle (TS_RECTANGLE16)
+
 
 The TS_RECTANGLE16 structure describes a rectangle expressed in inclusive coordinates (the right
 and bottom coordinates are included in the rectangle bounds).
@@ -21461,9 +20548,9 @@ right (2 bytes): A 16-bit, unsigned integer. The rightmost bound of the rectangl
 
 bottom (2 bytes): A 16-bit, unsigned integer. The lower bound of the rectangle.
 
-2.2.11.2
+##### 2.2.11.2 Client Refresh Rect PDU
 
-Client Refresh Rect PDU
+
 
 The Refresh Rect PDU allows the client to request that the server redraw one or more rectangles of
 the session screen area. The client can use it to repaint sections of the client window that were
@@ -21502,7 +20589,8 @@ Release: March 9, 2026
 
 224 / 444
 
-...
+
+...
 
 tpktHeader (4 bytes): A TPKT Header, as specified in [T123] section 8.
 
@@ -21539,7 +20627,7 @@ refreshRectPduData (variable): The actual contents of the Refresh Rect PDU, as s
 
 section 2.2.11.2.1.
 
-2.2.11.2.1  Refresh Rect PDU Data (TS_REFRESH_RECT_PDU)
+###### 2.2.11.2.1 Refresh Rect PDU Data (TS_REFRESH_RECT_PDU)
 
 The TS_REFRESH_RECT_PDU structure contains the contents of the Refresh Rect PDU, which is a
 Share Data Header (section 2.2.8.1.1.1.2) and two fields.
@@ -21585,7 +20673,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-numberOfAreas (1 byte): An 8-bit, unsigned integer. The number of Inclusive Rectangle (section
+
+numberOfAreas (1 byte): An 8-bit, unsigned integer. The number of Inclusive Rectangle (section
 
 2.2.11.1) structures in the areasToRefresh field.
 
@@ -21598,9 +20687,9 @@ areasToRefresh (variable): An array of TS_RECTANGLE16 structures (variable numbe
 Array of screen area Inclusive Rectangles to redraw. The number of rectangles is given by the
 numberOfAreas field.
 
-2.2.11.3
+##### 2.2.11.3 Client Suppress Output PDU
 
-Client Suppress Output PDU
+
 
 The Suppress Output PDU is sent by the client to toggle all display updates from the server. This
 packet does not end the session or socket connection. Typically, a client sends this packet when its
@@ -21668,7 +20757,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-If the Encryption Level selected by the server is ENCRYPTION_LEVEL_NONE (0) and the Encryption
+
+If the Encryption Level selected by the server is ENCRYPTION_LEVEL_NONE (0) and the Encryption
 Method selected by the server is ENCRYPTION_METHOD_NONE (0), then this header MUST NOT
 be included in the PDU.
 
@@ -21676,9 +20766,9 @@ suppressOutputPduData (variable): TS_SUPPRESS_OUTPUT_PDU (variable number of byt
 
 The actual contents of the Suppress Output PDU, as specified in section 2.2.11.3.1.
 
-2.2.11.3.1
+###### 2.2.11.3.1 Suppress Output PDU Data (TS_SUPPRESS_OUTPUT_PDU)
 
-Suppress Output PDU Data (TS_SUPPRESS_OUTPUT_PDU)
+
 
 The TS_SUPPRESS_OUTPUT_PDU structure contains the contents of the Suppress Output PDU, which
 is a Share Data Header (section 2.2.8.1.1.1.2) and two fields.
@@ -21755,11 +20845,12 @@ Release: March 9, 2026
 
 227 / 444
 
-2.2.12 Display Update Notifications
 
-2.2.12.1
+#### 2.2.12 Display Update Notifications
 
-Monitor Layout PDU
+##### 2.2.12.1 Monitor Layout PDU
+
+
 
 The Monitor Layout PDU is used by the server to notify the client of the monitor layout in the session
 on the remote server.
@@ -21836,7 +20927,8 @@ Release: March 9, 2026
 
 228 / 444
 
-
+
+
 
 FIPS Security Header (section 2.2.8.1.1.2.3) if the Encryption Method selected by the server is
 ENCRYPTION_METHOD_FIPS (0x00000010).
@@ -21860,11 +20952,11 @@ structures (section 2.2.1.3.6.1), which describe the display monitor layout of t
 remote server. The number of TS_MONITOR_DEF structures that follows is given by the
 monitorCount field.
 
-2.2.13 Server Redirection
+#### 2.2.13 Server Redirection
 
-2.2.13.1
+##### 2.2.13.1 Server Redirection Packet (RDP_SERVER_REDIRECTION_PACKET)
 
-Server Redirection Packet (RDP_SERVER_REDIRECTION_PACKET)
+
 
 The RDP_SERVER_REDIRECTION_PACKET structure contains information to enable a client to
 reconnect to a session on a specified server. This data is sent to a client in a Redirection PDU to
@@ -21914,7 +21006,8 @@ Release: March 9, 2026
 
 229 / 444
 
-...
+
+...
 
 DomainLength (optional)
 
@@ -21971,7 +21064,8 @@ Release: March 9, 2026
 
 230 / 444
 
-Pad (optional)
+
+Pad (optional)
 
 ...
 
@@ -22089,7 +21183,8 @@ Release: March 9, 2026
 
 231 / 444
 
-Flag
+
+Flag
 
 0x00002000
 
@@ -22183,7 +21278,8 @@ Release: March 9, 2026
 
 232 / 444
 
-TargetNetBiosName (variable): A variable-length array of bytes containing the NETBIOS name of
+
+TargetNetBiosName (variable): A variable-length array of bytes containing the NETBIOS name of
 
 the target machine, including a null-terminator.
 
@@ -22226,9 +21322,9 @@ Pad (8 bytes): An optional 8-element array of 8-bit unsigned integers. Padding. 
 
 MUST be ignored.
 
-2.2.13.1.1
+###### 2.2.13.1.1 Target Net Addresses (TARGET_NET_ADDRESSES)
 
-Target Net Addresses (TARGET_NET_ADDRESSES)
+
 
 The TARGET_NET_ADDRESSES structure is used to hold a collection of IP addresses in Unicode
 format.
@@ -22258,7 +21354,7 @@ addresses (variable): An array of Target Net Address (section 2.2.13.1.1.1) stru
 
 containing an IP address.
 
-2.2.13.1.1.1  Target Net Address (TARGET_NET_ADDRESS)
+###### 2.2.13.1.1.1 Target Net Address (TARGET_NET_ADDRESS)
 
 The TARGET_NET_ADDRESS structure holds a Unicode text representation of an IP address.
 
@@ -22269,7 +21365,8 @@ Release: March 9, 2026
 
 233 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -22292,9 +21389,9 @@ address (variable): A variable-length array of bytes containing an IP address in
 
 including a null-terminator.
 
-2.2.13.1.2
+###### 2.2.13.1.2 Target Certificate Container (TARGET_CERTIFICATE_CONTAINER)
 
-Target Certificate Container (TARGET_CERTIFICATE_CONTAINER)
+
 
 The TARGET_CERTIFICATE_CONTAINER structure is used to wrap an X.509 certificate. It contains
 an array of Certificate Meta Element (section 2.2.13.1.2.1) structures. The element of type
@@ -22324,7 +21421,7 @@ elements (variable): An array of Certificate Meta Element structures. All elemen
 SHOULD be ignored, except for the element of type ELEMENT_TYPE_CERTIFICATE (32) and
 encoding ENCODING_TYPE_ASN1_DER (1).
 
-2.2.13.1.2.1  Certificate Meta Element (CERTIFICATE_META_ELEMENT)
+###### 2.2.13.1.2.1 Certificate Meta Element (CERTIFICATE_META_ELEMENT)
 
 The CERTIFICATE_META_ELEMENT structure specifies an element contained within a Target
 Certificate Container (section 2.2.13.1.2) structure.
@@ -22357,7 +21454,8 @@ Release: March 9, 2026
 
 234 / 444
 
-...
+
+...
 
 ...
 
@@ -22377,13 +21475,13 @@ elementData (variable): A variable-length array of bytes containing the certific
 
 data.
 
-2.2.13.2
+##### 2.2.13.2 Standard RDP Security
 
-Standard RDP Security
 
-2.2.13.2.1
 
-Standard Security Server Redirection PDU
+###### 2.2.13.2.1 Standard Security Server Redirection PDU
+
+
 
 (TS_STANDARD_SECURITY_SERVER_REDIRECTION)
 
@@ -22437,7 +21535,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-specified in [T125] section 11.33 (the ASN.1 structure definitions are specified in [T125] section 7,
+
+specified in [T125] section 11.33 (the ASN.1 structure definitions are specified in [T125] section 7,
 parts 7 and 10). The userData field of the MCS Send Data Indication contains a Security Header
 and the Server Redirection PDU data.
 
@@ -22462,13 +21561,13 @@ serverRedirectionPDU (variable): Information required by the client to initiate 
 given session on a target server encapsulated in a Server Redirection Packet (section 2.2.13.1)
 structure.
 
-2.2.13.3
+##### 2.2.13.3 Enhanced RDP Security
 
-Enhanced RDP Security
 
-2.2.13.3.1
 
-Enhanced Security Server Redirection PDU
+###### 2.2.13.3.1 Enhanced Security Server Redirection PDU
+
+
 
 (TS_ENHANCED_SECURITY_SERVER_REDIRECTION)
 
@@ -22519,7 +21618,8 @@ Release: March 9, 2026
 
 236 / 444
 
-x224Data (3 bytes): An X.224 Class 0 Data TPDU, as specified in [X224] section 13.7.
+
+x224Data (3 bytes): An X.224 Class 0 Data TPDU, as specified in [X224] section 13.7.
 
 mcsSDin (variable): Variable-length PER-encoded MCS Domain PDU (DomainMCSPDU) which
 
@@ -22544,13 +21644,13 @@ pad1Octet (1 byte): An optional 8-bit, unsigned integer. Padding. Values in this
 
 ignored.
 
-2.2.14 Network Characteristics Detection
+#### 2.2.14 Network Characteristics Detection
 
-2.2.14.1
+##### 2.2.14.1 Server-to-Client Request Messages
 
-Server-to-Client Request Messages
 
-2.2.14.1.1  RTT Measure Request (RDP_RTT_REQUEST)
+
+###### 2.2.14.1.1 RTT Measure Request (RDP_RTT_REQUEST)
 
 The RDP_RTT_REQUEST structure is used to initiate a round-trip time measurement operation.
 
@@ -22607,11 +21707,12 @@ Release: March 9, 2026
 
 237 / 444
 
-Value  Meaning
+
+Value  Meaning
 
 RDP Connection Sequence.
 
-2.2.14.1.2  Bandwidth Measure Start (RDP_BW_START)
+###### 2.2.14.1.2 Bandwidth Measure Start (RDP_BW_START)
 
 The RDP_BW_START structure is used to start a bandwidth measurement operation.
 
@@ -22675,7 +21776,7 @@ a lossy UDP multitransport connection ([MS-RDPEMT] sections 1.3 and 2.1).
 Auto-Detect Request PDU sent during the Optional Connect-Time Auto-Detection phase of the RDP
 Connection Sequence.
 
-2.2.14.1.3  Bandwidth Measure Payload (RDP_BW_PAYLOAD)
+###### 2.2.14.1.3 Bandwidth Measure Payload (RDP_BW_PAYLOAD)
 
 The RDP_BW_PAYLOAD structure is used to transfer data associated with a bandwidth measurement
 operation that occurs during the Optional Connect-Time Auto-Detection phase of the RDP Connection
@@ -22688,7 +21789,8 @@ Release: March 9, 2026
 
 238 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -22737,7 +21839,7 @@ payload (variable): A variable-length array of bytes that contains random data. 
 
 bytes in this array is specified by the payloadLength field.
 
-2.2.14.1.4  Bandwidth Measure Stop (RDP_BW_STOP)
+###### 2.2.14.1.4 Bandwidth Measure Stop (RDP_BW_STOP)
 
 The RDP_BW_STOP structure is used to stop a bandwidth measurement operation.
 
@@ -22790,7 +21892,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value  Meaning
+
+Value  Meaning
 
 0x002B  The Bandwidth Measure Stop message is encapsulated in the autoDetectReqPduData field of
 
@@ -22827,7 +21930,7 @@ payload (variable): A variable-length array of bytes that contains random data. 
 
 bytes in this array is specified by the payloadLength field.
 
-2.2.14.1.5  Network Characteristics Result (RDP_NETCHAR_RESULTS)
+###### 2.2.14.1.5 Network Characteristics Result (RDP_NETCHAR_RESULTS)
 
 The RDP_NETCHAR_RESULTS structure is used by the server to send detected network characteristics
 to the client.
@@ -22883,7 +21986,8 @@ Release: March 9, 2026
 
 240 / 444
 
-requestType (2 bytes): A 16-bit unsigned integer that specifies a request type code. This field MUST
+
+requestType (2 bytes): A 16-bit unsigned integer that specifies a request type code. This field MUST
 
 be set to one of the following values.
 
@@ -22913,11 +22017,11 @@ averageRTT (4 bytes): An optional 32-bit unsigned integer that specifies the cur
 
 trip time in milliseconds.
 
-2.2.14.2
+##### 2.2.14.2 Client-to-Server Response Messages
 
-Client-to-Server Response Messages
 
-2.2.14.2.1  RTT Measure Response (RDP_RTT_RESPONSE)
+
+###### 2.2.14.2.1 RTT Measure Response (RDP_RTT_RESPONSE)
 
 The RDP_RTT_RESPONSE structure is used to respond to round-trip time measurement operations
 initiated by the RTT Measure Request (section 2.2.14.1.1) message.
@@ -22958,7 +22062,7 @@ responseType (2 bytes): A 16-bit unsigned integer that specifies a response type
 
 MUST be set to 0x0000.
 
-2.2.14.2.2  Bandwidth Measure Results (RDP_BW_RESULTS)
+###### 2.2.14.2.2 Bandwidth Measure Results (RDP_BW_RESULTS)
 
 The RDP_BW_RESULTS structure is used to send the results of a bandwidth measurement operation to
 the initiating end-point. Bandwidth measurement is started by the initiating end-point using the
@@ -22974,7 +22078,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-messages). After the RDP Connection Sequence, the PDUs sent from server to client (between start
+
+messages). After the RDP Connection Sequence, the PDUs sent from server to client (between start
 and stop messages) replace the payload messages.
 
 0  1  2  3  4  5  6  7  8  9
@@ -23050,7 +22155,7 @@ byteCount (4 bytes): A 32-bit unsigned integer that specifies the total data rec
 
 Bandwidth Measure Payload messages.
 
-2.2.14.2.3  Network Characteristics Sync (RDP_NETCHAR_SYNC)
+###### 2.2.14.2.3 Network Characteristics Sync (RDP_NETCHAR_SYNC)
 
 The RDP_NETCHAR_SYNC structure is sent in response to the RTT Measure Request (section
 2.2.14.1.1) message or Bandwidth Measure Start (section 2.2.14.1.2) message and is used to short-
@@ -23064,7 +22169,8 @@ Release: March 9, 2026
 
 242 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -23117,9 +22223,9 @@ rtt (4 bytes): A 32-bit unsigned integer that specifies the previously detected 
 
 milliseconds.
 
-2.2.14.3
+##### 2.2.14.3 Server Auto-Detect Request PDU
 
-Server Auto-Detect Request PDU
+
 
 The Auto-Detect Request PDU is sent by server to the client and is used to detect network
 characteristics such as bandwidth and round-trip time.
@@ -23159,7 +22265,8 @@ Release: March 9, 2026
 
 243 / 444
 
-...
+
+...
 
 tpktHeader (4 bytes): A TPKT Header, as specified in [T123] section 8.
 
@@ -23203,9 +22310,9 @@ autoDetectReqPduData (variable): A variable-length field that contains auto-dete
 specifically one of the five messages described in sections 2.2.14.1.1, 2.2.14.1.2, 2.2.14.1.3,
 2.2.14.1.4 and 2.2.14.1.5.
 
-2.2.14.4
+##### 2.2.14.4 Client Auto-Detect Response PDU
 
-Client Auto-Detect Response PDU
+
 
 The Auto-Detect Response PDU is sent by the client to the server and is used to detect network
 characteristics such as bandwidth and round-trip time.
@@ -23239,7 +22346,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-securityHeader (variable)
+
+securityHeader (variable)
 
 ...
 
@@ -23284,11 +22392,11 @@ The flags field of the security header MUST contain the SEC_AUTODETECT_RSP (0x20
 autoDetectRspPduData (variable): A variable-length field that contains auto-detect response data,
 specifically one of the three messages described in sections 2.2.14.2.1, 2.2.14.2.2 and 2.2.14.2.3.
 
-2.2.15 Multitransport Bootstrapping
+#### 2.2.15 Multitransport Bootstrapping
 
-2.2.15.1
+##### 2.2.15.1 Server Initiate Multitransport Request PDU
 
-Server Initiate Multitransport Request PDU
+
 
 The Initiate Multitransport Request PDU is sent by the server to the client and is used to bootstrap the
 creation of a sideband channel ([MS-RDPEMT] section 1.3). Upon receiving and successfully decoding
@@ -23308,7 +22416,8 @@ Release: March 9, 2026
 
 245 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -23387,7 +22496,8 @@ Release: March 9, 2026
 
 246 / 444
 
-The flags field of the security header MUST contain the SEC_TRANSPORT_REQ (0x0002) flag
+
+The flags field of the security header MUST contain the SEC_TRANSPORT_REQ (0x0002) flag
 (section 2.2.8.1.1.2.1).
 
 requestId (4 bytes): A 32-bit unsigned integer that specifies a unique ID that the server MUST use
@@ -23426,9 +22536,9 @@ generated data. This array MUST be retransmitted by the client in the Tunnel Cre
 ([MS-RDPEMT] section 2.2.2.1) after the channel has been created and is used by the server to
 validate the channel setup ([MS-RDPEMT] section 3.2.5.1).
 
-2.2.15.2
+##### 2.2.15.2 Client Initiate Multitransport Response PDU
 
-Client Initiate Multitransport Response PDU
+
 
 The Initiate Multitransport Response PDU is sent by the client to the server and is used to indicate to
 the server whether the client was able to complete the multitransport initiation request associated
@@ -23475,7 +22585,8 @@ Release: March 9, 2026
 
 247 / 444
 
-mcsSDrq (variable): A variable-length PER-encoded MCS Domain PDU (DomainMCSPDU) that
+
+mcsSDrq (variable): A variable-length PER-encoded MCS Domain PDU (DomainMCSPDU) that
 
 encapsulates an MCS Send Data Request structure (SDrq, choice 25 from DomainMCSPDU), as
 specified in [T125] section 11.32 (the ASN.1 structure definitions are given in [T125] section 7,
@@ -23529,11 +22640,11 @@ This response code MUST only be sent to a server that advertises the
 SOFTSYNC_TCP_TO_UDP (0x200) flag in the Server Multitransport Channel Data (section
 2.2.1.4.6).
 
-2.2.16 Connection Health Monitoring
+#### 2.2.16 Connection Health Monitoring
 
-2.2.16.1
+##### 2.2.16.1 Server Heartbeat PDU
 
-Server Heartbeat PDU
+
 
 The Heartbeat PDU is sent by the server to the client and allows the client to monitor the state of the
 connection to the server in real time.
@@ -23562,7 +22673,8 @@ Release: March 9, 2026
 
 248 / 444
 
-x224Data
+
+x224Data
 
 mcsSDin (variable)
 
@@ -23640,11 +22752,12 @@ Release: March 9, 2026
 
 249 / 444
 
-2.2.17 RDSTLS PDUs
 
-2.2.17.1
+#### 2.2.17 RDSTLS PDUs
 
-RDSTLS Capabilities PDU
+##### 2.2.17.1 RDSTLS Capabilities PDU
+
+
 
 The RDSTLS Capabilities PDU is sent by the server to the client and allows the server to advertise the
 supported RDSTLS versions.
@@ -23684,9 +22797,9 @@ SupportedVersions (2 bytes): A 16-bit unsigned integer that specifies the RDSTLS
 
 supported by the server. This field MUST be set to RDSTLS_VERSION_1 (0x0001).
 
-2.2.17.2
+##### 2.2.17.2 RDSTLS Authentication Request PDU with Password Credentials
 
-RDSTLS Authentication Request PDU with Password Credentials
+
 
 The RDSTLS Authentication Request PDU is sent by the client to the server and is used to request user
 authentication using data acquired from the Server Redirection Packet (section 2.2.13.1).
@@ -23739,7 +22852,8 @@ Release: March 9, 2026
 
 250 / 444
 
-Version (2 bytes): A 16-bit unsigned integer that specifies the RDSTLS version. This field MUST be
+
+Version (2 bytes): A 16-bit unsigned integer that specifies the RDSTLS version. This field MUST be
 
 set to RDSTLS_VERSION_1 (0x0001).
 
@@ -23787,9 +22901,9 @@ Password (variable): A variable-length array of bytes containing an encrypted pa
 value SHOULD be acquired from the Password field of the Server Redirection Packet (section
 2.2.13.1).
 
-2.2.17.3
+##### 2.2.17.3 RDSTLS Authentication Request PDU with Auto-Reconnect Cookie
 
-RDSTLS Authentication Request PDU with Auto-Reconnect Cookie
+
 
 The RDSTLS Authentication Request PDU is sent by the client to the server and is used to request user
 authentication using an auto-reconnect cookie that was generated as specified in section 5.5.
@@ -23828,7 +22942,8 @@ Release: March 9, 2026
 
 251 / 444
 
-Version (2 bytes): A 16-bit unsigned integer that specifies the RDSTLS version. This field MUST be
+
+Version (2 bytes): A 16-bit unsigned integer that specifies the RDSTLS version. This field MUST be
 
 set to RDSTLS_VERSION_1 (0x0001).
 
@@ -23852,9 +22967,9 @@ AutoReconnectCookie (variable): A variable-length array of bytes containing an a
 
 cookie that was generated as specified in section 5.5.
 
-2.2.17.4
+##### 2.2.17.4 RDSTLS Authentication Response PDU
 
-RDSTLS Authentication Response PDU
+
 
 The RDSTLS Authentication Response PDU is sent by the server to the client and is used to
 indicate the result of user authentication.
@@ -23936,7 +23051,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 0x00000532
 
@@ -23964,11 +23080,11 @@ RDSTLS_RESULT_ACCOUNT_LOCKED_OUT
 The user account is currently locked out and
 cannot be accessed.
 
-2.2.18 RDS AAD Auth PDUs
+#### 2.2.18 RDS AAD Auth PDUs
 
-2.2.18.1
+##### 2.2.18.1 Server Nonce PDU
 
-Server Nonce PDU
+
 
 The Server Nonce PDU is sent by the server to the client and contains an opaque UTF-8 encoded
 string.
@@ -23993,9 +23109,9 @@ the following format: "{"ts_nonce":"<nonce_value>"}", where nonce_value is an op
 encoded string. An example of using CloudAP to generate a server nonce is presented in section
 4.11.1.
 
-2.2.18.2
+##### 2.2.18.2 Authentication Request PDU
 
-Authentication Request PDU
+
 
 The Authentication Request PDU is sent by the client to the server and contains a UTF-8 encoded
 string specifying an RDP Assertion (section 2.2.18.2.1).
@@ -24031,7 +23147,8 @@ Release: March 9, 2026
 
 253 / 444
 
-2.2.18.2.1  RDP Assertion
+
+###### 2.2.18.2.1 RDP Assertion
 
 The RDP Assertion is embedded in the Authentication Request PDU (section 2.2.18.2) and
 effectively functions as a user credential.
@@ -24093,9 +23210,9 @@ and Base64URL encoded JWS Payload: "<Base64URL encoded JOSE Header>.<Base64URL
 encoded JWS Payload>". An example of creating such a signature is provided in [RFC7515]
 Appendix A.2.
 
-2.2.18.3
+##### 2.2.18.3 Authentication Result PDU
 
-Authentication Result PDU
+
 
 The Authentication Result PDU is sent by the server to the client and contains an authentication
 result.
@@ -24107,7 +23224,8 @@ Release: March 9, 2026
 
 254 / 444
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -24193,31 +23311,32 @@ Release: March 9, 2026
 
 255 / 444
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.5.1  Disconnection Sequences
+None.
 
-3.1.5.1.1 Sending of MCS Disconnect Provider Ultimatum PDU
+#### 3.1.5 Message Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Disconnection Sequences
+
+###### 3.1.5.1.1 Sending of MCS Disconnect Provider Ultimatum PDU
 
 The structure and fields of the MCS Disconnect Provider Ultimatum PDU are specified in section
 2.2.2.3.
@@ -24251,7 +23370,7 @@ over the wire.
 Once the MCS Disconnect Provider Ultimatum PDU has been sent, the network connection MUST be
 closed.
 
-3.1.5.1.2 Processing of MCS Disconnect Provider Ultimatum PDU
+###### 3.1.5.1.2 Processing of MCS Disconnect Provider Ultimatum PDU
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -24260,7 +23379,8 @@ Release: March 9, 2026
 
 256 / 444
 
-The structure and fields of the MCS Disconnect Provider Ultimatum PDU are specified in section
+
+The structure and fields of the MCS Disconnect Provider Ultimatum PDU are specified in section
 2.2.2.3.
 
 If Enhanced RDP Security (section 5.4) is in effect, the External Security Protocol MUST be used to
@@ -24282,9 +23402,9 @@ provider-initiated (1) or rn-user-requested (3), the client MUST ignore the reas
 After receiving an MCS Disconnect Provider Ultimatum PDU, the recipient MUST expect the network
 connection to be closed by the sender.
 
-3.1.5.2  Static Virtual Channels
+##### 3.1.5.2 Static Virtual Channels
 
-3.1.5.2.1 Sending of Virtual Channel PDU
+###### 3.1.5.2.1 Sending of Virtual Channel PDU
 
 The Virtual Channel PDU is transmitted by both the client and the server. Its structure and fields are
 specified in section 2.2.6.1.
@@ -24328,7 +23448,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-If compression is to be applied to client-to-server traffic, RDP 4.0 bulk compression (section 3.1.8.4.1)
+
+If compression is to be applied to client-to-server traffic, RDP 4.0 bulk compression (section 3.1.8.4.1)
 MUST be used, while the compression type to apply to server-to-client traffic MUST be the highest
 type advertised by the client  in the Client Info PDU (section 2.2.1.11.1.1) and supported by the
 server. Data compression is discussed in section 3.1.8.2 (the Virtual Channel PDU compression flags
@@ -24353,7 +23474,7 @@ be sent in order, because there is no way to specify the position of a chunk. Fu
 Channel PDUs that contain chunked data MUST specify the CHANNEL_FLAG_SHOW_PROTOCOL
 (0x00000010) flag so that the recipient can correctly reassemble the data.
 
-3.1.5.2.2 Processing of Virtual Channel PDU
+###### 3.1.5.2.2 Processing of Virtual Channel PDU
 
 The Virtual Channel PDU is received by both the client and the server. Its structure and fields are
 specified in section 2.2.6.1.
@@ -24395,7 +23516,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-start chunk has not been received), then the data in the virtualChannelData field can be dispatched
+
+start chunk has not been received), then the data in the virtualChannelData field can be dispatched
 to the appropriate virtual channel endpoint (no reassembly is required by the endpoint). If the
 CHANNEL_FLAG_SHOW_PROTOCOL (0x00000010) flag is specified in the Channel PDU Header, then
 the channelPduHeader field MUST also be dispatched to the virtual channel endpoint.
@@ -24403,7 +23525,7 @@ the channelPduHeader field MUST also be dispatched to the virtual channel endpoi
 If the virtual channel data is part of a sequence of chunks, then the instructions in section 3.1.5.2.2.1
 MUST be followed to reassemble the stream.
 
-3.1.5.2.2.1  Reassembly of Chunked Virtual Channel Data
+###### 3.1.5.2.2.1 Reassembly of Chunked Virtual Channel Data
 
 Virtual channel data can span multiple Virtual Channel PDUs (section 3.1.5.2.1). If this is the case, the
 embedded length field of the channelPduHeader field (the Channel PDU Header structure is
@@ -24447,11 +23569,11 @@ chunk MUST be copied into the front of the buffer. Subsequent chunks MUST then b
 reassembly buffer in the order in which they are received. Upon receiving the last chunk of virtual
 channel data, the reassembled data is processed by the virtual channel endpoint.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -24462,7 +23584,8 @@ Release: March 9, 2026
 
 259 / 444
 
-3.1.8  MPPC-Based Bulk Data Compression
+
+#### 3.1.8 MPPC-Based Bulk Data Compression
 
 RDP uses a modified form of the Microsoft Point-to-Point Compression (MPPC) Protocol to perform bulk
 compression of the PDU contents. This protocol is described in [RFC2118]. There are two forms of
@@ -24493,7 +23616,7 @@ maintain state synchronization. The header used to transmit the compression flag
 type of data payload, such as fast-path output data (section 2.2.9.1.2.1), virtual channel data (section
 2.2.6.1) or slow-path data (section 2.2.9.1.1).
 
-3.1.8.1  Abstract Data Model
+##### 3.1.8.1 Abstract Data Model
 
 The shared state necessary to support the transmission and reception of compressed data between a
 client and server requires a history buffer and a current offset into the history buffer (HistoryOffset).
@@ -24515,7 +23638,7 @@ the history buffer given by its local copy HistoryOffset. If a reset occurs, the
 notify the target receiver so it can reset its local state. In this way, the sender and receiver endpoints
 maintain an exact replica of the history buffer and HistoryOffset.
 
-3.1.8.2  Compressing Data
+##### 3.1.8.2 Compressing Data
 
 The uncompressed data is first inserted into the local history buffer at the position indicated by
 HistoryOffset by the sender. The compressor then runs through the length of newly added
@@ -24529,7 +23652,8 @@ Release: March 9, 2026
 
 260 / 444
 
-The copy-offset component of the copy-tuple is an index into HistoryBuffer (counting backwards from
+
+The copy-offset component of the copy-tuple is an index into HistoryBuffer (counting backwards from
 the current byte being compressed in the history buffer towards the start of the buffer) where there is
 a match to the data to be sent. The length-of-match component is the length of that match in bytes,
 and MUST be larger than 2 (section 3.1.8.4.1.2.2 and 3.1.8.4.2.2.2). If the resulting data is not
@@ -24576,7 +23700,7 @@ Using a replicating copy, this is correctly decompressed to
 Literals and copy-tuples are encoded using the scheme described in section 3.1.8.4.1 or 3.1.8.4.2 (the
 scheme used depends on whether RDP 4.0 or 5.0 bulk compression is being used).
 
-3.1.8.2.1 Setting the Compression Flags
+###### 3.1.8.2.1 Setting the Compression Flags
 
 The sender MUST always specify the compression flags associated with a compressed payload. These
 flags MUST be set in the header field appropriate to the type of data payload, such as fast-path output
@@ -24590,7 +23714,8 @@ Release: March 9, 2026
 
 261 / 444
 
-The compression flags are produced by performing a logical OR operation of the compression type
+
+The compression flags are produced by performing a logical OR operation of the compression type
 with one or more of the following flags.
 
 Compression flag
@@ -24637,7 +23762,7 @@ the same size as the original data, and still be regarded as compressed. In effe
 "data is compressed" simply implies that the data is encoded using a particular scheme, and that a
 decoder (or decompressor) is required to obtain the original data.
 
-3.1.8.2.2 Operation of the Bulk Compressor
+###### 3.1.8.2.2 Operation of the Bulk Compressor
 
 The flowchart in the following figure illustrates the general operation of the bulk compressor and the
 production of the compression flags described in section 3.1.8.2.1.
@@ -24663,13 +23788,14 @@ Release: March 9, 2026
 
 262 / 444
 
-<!-- Extracted images from page 263 -->
+
+<!-- Extracted images from page 263 -->
 ![Extracted image 1 from page 263]([MS-RDPBCGR].images/page263-img01.png)
 <!-- /Extracted images from page 263 -->
 
 Figure 6: Operation of the bulk compressor
 
-3.1.8.2.3 Data Compression Example
+###### 3.1.8.2.3 Data Compression Example
 
 This example is based on the flowchart in the preceding figure that describes the operation of the bulk
 compressor.
@@ -24686,7 +23812,8 @@ Release: March 9, 2026
 
 263 / 444
 
- HistoryOffset = 0
+
+ HistoryOffset = 0
 
 (1) Copy the source data to the history buffer.
 
@@ -24751,7 +23878,8 @@ Release: March 9, 2026
 
 264 / 444
 
- for.whom.the.bell.tolls,.the.bell.tolls.for.thee!
+
+ for.whom.the.bell.tolls,.the.bell.tolls.for.thee!
      ^ (HistoryPtr = 4)
 
  Output Buffer:
@@ -24817,7 +23945,8 @@ Release: March 9, 2026
 
 265 / 444
 
- for.whom.the.bell.tolls,<16,15>.<40,4>
+
+ for.whom.the.bell.tolls,<16,15>.<40,4>
 
 (10) We find a match in the history buffer at position 25 of length 3 characters ("the"). Encode the
 copy-tuple and add it to the output buffer and advance HistoryPtr by the size of the match.
@@ -24858,7 +23987,7 @@ HistoryPtr ('!') to the output buffer and advance HistoryPtr.
 (13) HistoryPtr (49) is not less than HistoryOffset (49), so we add the PACKET_COMPRESSED flag to
 the output packet and send the Output Buffer.
 
-3.1.8.3  Decompressing Data
+##### 3.1.8.3 Decompressing Data
 
 An endpoint which receives compressed data MUST decompress the data and store the resultant data
 at the end of the history buffer. The order of actions depends on the compression flags associated with
@@ -24891,7 +24020,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Compression flag
+
+Compression flag
 
 Meaning
 
@@ -24907,23 +24037,23 @@ If this flag is set, the decompressor MUST decompress the data, appending the
 decompressed data to the history buffer and advancing the HistoryOffset by the size of
 the resulting decompressed data.
 
-3.1.8.4  Compression Types
+##### 3.1.8.4 Compression Types
 
-3.1.8.4.1 RDP 4.0
+###### 3.1.8.4.1 RDP 4.0
 
-3.1.8.4.1.1  Literal Encoding
+###### 3.1.8.4.1.1 Literal Encoding
 
 Literals are bytes sent uncompressed. If the value of a literal is below 0x80, it is not encoded in any
 special manner. If the literal has a value greater than 0x7F it is sent as the bits 10 followed by the
 lower 7 bits of the literal. For example, 0x56 is transmitted as the binary value 01010110, while 0xE7
 is transmitted as the binary value 101100111.
 
-3.1.8.4.1.2  Copy-Tuple Encoding
+###### 3.1.8.4.1.2 Copy-Tuple Encoding
 
 Copy-tuples consist of a <copy-offset> and <length-of-match> pair (see section 3.1.8.2 for more
 details).
 
-3.1.8.4.1.2.1  Copy-Offset Encoding
+###### 3.1.8.4.1.2.1 Copy-Offset Encoding
 
 Encoding of the copy-offset value is performed according to the following table.
 
@@ -24951,7 +24081,7 @@ For example:
 
 A copy-offset value MUST be followed by a length-of-match (L-o-M) value.
 
-3.1.8.4.1.2.2  Length-of-Match Encoding
+###### 3.1.8.4.1.2.2 Length-of-Match Encoding
 
 Encoding of the length-of-match (L-o-M) value is performed according to the following table.
 
@@ -24976,7 +24106,8 @@ Release: March 9, 2026
 
 267 / 444
 
-L-o-M range  Encoding (binary header + L-o-M bits)
+
+L-o-M range  Encoding (binary header + L-o-M bits)
 
 16...31
 
@@ -25022,24 +24153,24 @@ For example:
 
   A length-of-match value of 4097 is encoded as the binary value 111111111110 000000000001.
 
-3.1.8.4.2 RDP 5.0
+###### 3.1.8.4.2 RDP 5.0
 
 The rules for RDP 5.0 are very similar to those of RDP 4.0 (section 3.1.8.4.1). RDP 5.0 has a history
 buffer size of 64 kilobytes, thus both endpoints MUST maintain a 64 kilobyte window.
 
-3.1.8.4.2.1  Literal Encoding
+###### 3.1.8.4.2.1 Literal Encoding
 
 Literals are bytes sent uncompressed. If the value of a literal is below 0x80, it is not encoded in any
 special manner. If the literal has a value greater than 0x7F it is sent as the bits 10 followed by the
 lower 7 bits of the literal. For example, 0x56 is transmitted as the binary value 01010110, while 0xE7
 is transmitted as the binary value 101100111.
 
-3.1.8.4.2.2  Copy-Tuple Encoding
+###### 3.1.8.4.2.2 Copy-Tuple Encoding
 
 Copy-tuples consist of a <copy-offset> and <length-of-match> pair (see section 3.1.8.2 for more
 details).
 
-3.1.8.4.2.2.1  Copy-Offset Encoding
+###### 3.1.8.4.2.2.1 Copy-Offset Encoding
 
 Encoding of the copy-offset value is performed according to the following table.
 
@@ -25070,7 +24201,8 @@ Release: March 9, 2026
 
 268 / 444
 
-3.1.8.4.2.2.2  Length-of-Match Encoding
+
+###### 3.1.8.4.2.2.2 Length-of-Match Encoding
 
 Encoding of the length-of-match (L-o-M) value is performed according to the following table.
 
@@ -25132,7 +24264,7 @@ L-o-M range  Encoding (binary header + L-o-M bits)
 
 32768..65535  111111111111110 + 15 lower bits of L-o-M
 
-3.1.9  Interleaved RLE-Based Bitmap Compression
+#### 3.1.9 Interleaved RLE-Based Bitmap Compression
 
 Bitmap data sent from server to client can be compressed using Interleaved RLE as described in
 section 2.2.9.1.1.3.1.2.4. The pseudo-code which follows shows how to decompress a compressed
@@ -25165,7 +24297,8 @@ Release: March 9, 2026
 
 269 / 444
 
- // Returns the color depth (in bytes per pixel) that was selected
+
+ // Returns the color depth (in bytes per pixel) that was selected
  // for the RDP connection.
  //
  UINT
@@ -25241,7 +24374,8 @@ Release: March 9, 2026
 
 270 / 444
 
- // order code ID.
+
+ // order code ID.
  //
  UINT
  ExtractCodeId(
@@ -25317,7 +24451,8 @@ Release: March 9, 2026
 
 271 / 444
 
-     else if (colorDepth == 24)
+
+     else if (colorDepth == 24)
      {
          return (PIXEL) 0x000000;
      }
@@ -25394,7 +24529,8 @@ Release: March 9, 2026
 
 272 / 444
 
- }
+
+ }
 
  //
  // Extract the run length of a Lite-Form Foreground/Background
@@ -25471,7 +24607,8 @@ Release: March 9, 2026
 
 273 / 444
 
- //
+
+ //
  // Extract the run length of a MEGA_MEGA-type compression order.
  //
  UINT
@@ -25547,7 +24684,8 @@ Release: March 9, 2026
 
 274 / 444
 
-     xorPixel = ReadPixel(pbDest - rowDelta);
+
+     xorPixel = ReadPixel(pbDest - rowDelta);
      if (bitmask AND g_MaskBit0)
      {
          WritePixel(pbDest, xorPixel XOR fgPel);
@@ -25622,7 +24760,8 @@ Release: March 9, 2026
 
 275 / 444
 
-                     if (cBits > 0)
+
+                     if (cBits > 0)
                      {
                          xorPixel = ReadPixel(pbDest - rowDelta);
                          if (bitmask AND g_MaskBit5)
@@ -25699,7 +24838,8 @@ Release: March 9, 2026
 
 276 / 444
 
-         WritePixel(pbDest, GetColorBlack());
+
+         WritePixel(pbDest, GetColorBlack());
      }
      pbDest = NextPixel(pbDest);
      cBits = cBits - 1;
@@ -25776,7 +24916,8 @@ Release: March 9, 2026
 
 277 / 444
 
-                         if (cBits > 0)
+
+                         if (cBits > 0)
                          {
                              if (bitmask AND g_MaskBit6)
                              {
@@ -25852,7 +24993,8 @@ Release: March 9, 2026
 
 278 / 444
 
-             {
+
+             {
                  fFirstLine = FALSE;
                  fInsertFgPel = FALSE;
              }
@@ -25929,7 +25071,8 @@ Release: March 9, 2026
 
 279 / 444
 
-         //
+
+         //
          // Handle Foreground Run Orders.
          //
          if (code == REGULAR_FG_RUN OR
@@ -26005,7 +25148,8 @@ Release: March 9, 2026
 
 280 / 444
 
-         // Handle Color Run Orders.
+
+         // Handle Color Run Orders.
          //
          if (code == REGULAR_COLOR_RUN OR
              code == MEGA_MEGA_COLOR_RUN)
@@ -26082,7 +25226,8 @@ Release: March 9, 2026
 
 281 / 444
 
-             {
+
+             {
                  bitmask = *pbSrc;
                  pbSrc = pbSrc + 1;
 
@@ -26159,7 +25304,8 @@ Release: March 9, 2026
 
 282 / 444
 
-                 pbDest = WriteFgBgImage(
+
+                 pbDest = WriteFgBgImage(
                      pbDest,
                      rowDelta,
                      g_MaskSpecialFgBg1,
@@ -26230,9 +25376,10 @@ Release: March 9, 2026
 
 283 / 444
 
-3.2  Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 Client Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -26244,40 +25391,40 @@ Note  It is possible to implement the following conceptual data by using a varie
 long as the implementation produces external behavior that is consistent with that described in this
 document.
 
-3.2.1.1  Received Server Data
+##### 3.2.1.1 Received Server Data
 
 The Received Server Data store contains data received from the server during execution of the
 Remote Desktop Protocol. This store is initialized when processing the MCS Connect Response PDU
 with GCC Conference Create Response (sections 2.2.1.4 and 3.2.5.3.4).
 
-3.2.1.2  Static Virtual Channel IDs
+##### 3.2.1.2 Static Virtual Channel IDs
 
 The Static Virtual Channel IDs store contains the MCS channel identifiers of the static virtual channels.
 This data store is initialized when processing the Server Network Data (sections 2.2.1.4.4 and
 3.2.5.3.4).
 
-3.2.1.3  I/O Channel ID
+##### 3.2.1.3 I/O Channel ID
 
 The I/O Channel ID store contains the MCS channel identifier of the I/O channel. This data store is
 initialized when processing the Server Network Data (sections 2.2.1.4.4 and 3.2.5.3.4).
 
-3.2.1.4  Message Channel ID
+##### 3.2.1.4 Message Channel ID
 
 The Message Channel ID store contains the MCS channel identifier of the message channel. This data
 store is initialized when processing the Server Message Channel Data (sections 2.2.1.4.5 and
 3.2.5.3.4).
 
-3.2.1.5  User Channel ID
+##### 3.2.1.5 User Channel ID
 
 The User Channel ID store contains the MCS channel identifier of the user channel. This data store is
 initialized when processing the MCS Attach User Confirm PDU (sections 2.2.1.7 and 3.2.5.3.7).
 
-3.2.1.6  Server Channel ID
+##### 3.2.1.6 Server Channel ID
 
 The Server Channel ID store contains the MCS channel identifier of the server channel. This data store
 is initialized when processing the Demand Active PDU (sections 2.2.1.13.1.1 and 3.2.5.3.13.1).
 
-3.2.1.7  Server Capabilities
+##### 3.2.1.7 Server Capabilities
 
 The Server Capabilities store contains capability sets (section 1.7) received from the server in the
 Demand Active PDU (sections 2.2.1.13.1 and 3.2.5.3.13.1).
@@ -26289,14 +25436,15 @@ Release: March 9, 2026
 
 284 / 444
 
-3.2.1.8  Share ID
+
+##### 3.2.1.8 Share ID
 
 The Share ID store holds the share identifier selected by the server ([T128] section 8.4.2 for more
 information regarding share IDs). This data store is initialized when processing the Demand Active
 PDU (sections 2.2.1.13.1 and 3.2.5.3.13.1) and is used to initialize the shareID field of the Share
 Data Header when sending basic client-to-server slow-path PDUs (section 3.2.5.1).
 
-3.2.1.9  Automatic Reconnection Cookie
+##### 3.2.1.9 Automatic Reconnection Cookie
 
 The Automatic Reconnection Cookie store contains a cookie received from the server that enables
 seamless reconnections in cases where the connection has been broken due to short-term transient
@@ -26304,18 +25452,18 @@ network failure (section 5.5). The cookie is sent by the server to the client in
 PDU (sections 2.2.10.1 and 3.2.5.10.1), and sent by the client to the server in the Client Info PDU
 (sections 2.2.1.11.1.1.1 and 3.3.5.3.11).
 
-3.2.1.10
+##### 3.2.1.10 Server Licensing Encryption Ability
 
-Server Licensing Encryption Ability
+
 
 The Server Licensing Encryption Ability store determines whether the server has the ability to handle
 encrypted licensing packets when using Standard RDP Security mechanisms (see the discussion of the
 SEC_LICENSE_ENCRYPT_CS flag in section 2.2.8.1.1.2.1). This fact is communicated to the client by
 setting the SEC_LICENSE_ENCRYPT_CS (0x0200) flag in all licensing PDUs sent from the server.
 
-3.2.1.11
+##### 3.2.1.11 Pointer Image Cache
 
-Pointer Image Cache
+
 
 The Pointer Image Cache contains a collection of pointer images saved from Color Pointer Updates
 (sections 2.2.9.1.2.1.7, 3.2.5.9.2, and 3.2.5.9.3), New Pointer Updates (sections 2.2.9.1.2.1.8,
@@ -26324,23 +25472,23 @@ images stored in the cache are used to set the shape of the pointer when process
 Update (sections 2.2.9.1.1.4.6, 3.2.5.9.2, and 3.2.5.9.3). The size and color depth (either variable or
 fixed at 24 bpp) of the cache is specified in the Pointer Capability Set (section 2.2.7.1.5).
 
-3.2.1.12
+##### 3.2.1.12 Session Keys
 
-Session Keys
+
 
 The Session Keys store holds the symmetric keys (sections 5.3.5 to 5.3.7) used to encrypt, decrypt,
 and sign RDP packets.
 
-3.2.1.13
+##### 3.2.1.13 Bitmap Caches
 
-Bitmap Caches
+
 
 A Bitmap Cache is a store that contains bitmap images that were sent to the client using the Cache
 Bitmap (Revision 2) Secondary Drawing Order ([MS-RDPEGDI] section 2.2.2.2.1.2.3).
 
-3.2.1.14
+##### 3.2.1.14 Persistent Bitmap Caches
 
-Persistent Bitmap Caches
+
 
 A Persistent Bitmap Cache is a store that contains bitmap images that were sent to the client by using
 the Cache Bitmap (Revision 2) Secondary Drawing Order ([MS-RDPEGDI] section 2.2.2.2.1.2.3).
@@ -26348,9 +25496,9 @@ Unlike the Bitmap Caches described in section 3.2.1.13, Persistent Bitmap Caches
 the lifetime of a given RDP connection and their contents are persisted even after the RDP connection
 is closed.
 
-3.2.1.15
+##### 3.2.1.15 Persisted Bitmap Keys
 
-Persisted Bitmap Keys
+
 
 The Persisted Bitmap Keys store holds a collection of 64-bit bitmap keys, each of which uniquely
 identifies a bitmap image that is present in a Persistent Bitmap Cache (section 3.2.1.14). The lifetime
@@ -26363,52 +25511,53 @@ Release: March 9, 2026
 
 285 / 444
 
-3.2.1.16
 
-Connection Start Time
+##### 3.2.1.16 Connection Start Time
+
+
 
 The Connection Start Time store contains the time at which the client first sent network traffic to the
 server.
 
-3.2.1.17
+##### 3.2.1.17 Network Characteristics Byte Count
 
-Network Characteristics Byte Count
+
 
 The Network Characteristics Byte Count store is a byte counter that is used when determining the
 network characteristics by using the messages defined in section 2.2.14.1.
 
-3.2.1.18
+##### 3.2.1.18 Network Characteristics Sequence Number
 
-Network Characteristics Sequence Number
+
 
 The Network Characteristics Sequence Number store is used to correlate bandwidth measurement
 operations when determining network characteristics by using the bandwidth measurement messages
 defined in sections 2.2.14.2 and 2.2.14.4.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
-3.2.2.1  Connection Sequence Timeout Timer
+##### 3.2.2.1 Connection Sequence Timeout Timer
 
 The Connection Sequence Timeout Timer stores the amount of time that has elapsed since the client
 first sent network traffic to the server. The connection start time is stored in the Connection Start
 Time store (section 3.2.1.16).
 
-3.2.2.2  Network Characteristics Timer
+##### 3.2.2.2 Network Characteristics Timer
 
 The Network Characteristics Timer store is a millisecond-resolution timer that is used when
 determining the network characteristics using the messages defined in 2.2.14.1.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Constructing a Client-to-Server Slow-Path PDU
+##### 3.2.5.1 Constructing a Client-to-Server Slow-Path PDU
 
 The majority of client-to-server slow-path PDUs have the same basic structure (sections 5.3.8 and
 5.4.4):
@@ -26438,7 +25587,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The tpktHeader field is initialized as specified in [T123] section 8, while the x224Data field is
+
+The tpktHeader field is initialized as specified in [T123] section 8, while the x224Data field is
 initialized as specified in [X224] section 13.7.
 
 The mcsSDrq field is initialized as specified in [T125] section 11.32. The embedded initiator field
@@ -26470,7 +25620,7 @@ Header and Share Control Header fields MUST be populated as specified in section
 Any remaining fields are populated as specified in the section describing the PDU structure and fields
 in section 2.2.
 
-3.2.5.2  Processing a Server-to-Client Slow-Path PDU
+##### 3.2.5.2 Processing a Server-to-Client Slow-Path PDU
 
 The majority of server-to-client slow-path PDUs have the same basic structure (sections 5.3.8 and
 5.4.4):
@@ -26513,7 +25663,8 @@ Release: March 9, 2026
 
 287 / 444
 
-The conditions mandating the presence of the securityHeader field, as well as the type of Security
+
+The conditions mandating the presence of the securityHeader field, as well as the type of Security
 Header structure present in this field, are explained in the section describing the PDU structure and
 fields in section 2.2. If the securityHeader  field is present, the embedded flags field MUST be
 examined for the presence of the SEC_ENCRYPT (0x0008) flag (section 2.2.8.1.1.2.1), and, if it is
@@ -26535,9 +25686,9 @@ Control Header and Share Data Header fields MAY be ignored.
 Any remaining PDU fields MUST be interpreted and processed in accordance with the section
 describing the PDU structure and fields in section 2.2.
 
-3.2.5.3  Connection Sequence
+##### 3.2.5.3 Connection Sequence
 
-3.2.5.3.1 Sending X.224 Connection Request PDU
+###### 3.2.5.3.1 Sending X.224 Connection Request PDU
 
 The structure and fields of the X.224 Connection Request PDU are specified in section 2.2.1.1.
 
@@ -26565,7 +25716,7 @@ which the client supports (see section 5.4 for more details on Enhanced RDP Secu
 Upon successfully transmitting the X.224 Connection Request PDU, the client MUST update the
 Connection Start Time store (section 3.2.1.16).
 
-3.2.5.3.2 Processing X.224 Connection Confirm PDU
+###### 3.2.5.3.2 Processing X.224 Connection Confirm PDU
 
 The structure and fields of the X.224 Connection Confirm PDU are specified in section 2.2.1.2.
 
@@ -26579,7 +25730,8 @@ Release: March 9, 2026
 
 288 / 444
 
-The Destination reference, Source reference, and Class and options fields within the x224Ccf field
+
+The Destination reference, Source reference, and Class and options fields within the x224Ccf field
 MAY be ignored.
 
 If the rdpNegData field is not present, it is assumed that the server does not support Enhanced RDP
@@ -26617,7 +25769,7 @@ Both of these actions will result in a session that is secured using Standard RD
 However, the second option makes it possible for a client application to prompt the user and wait for a
 response before continuing with the connection.
 
-3.2.5.3.3 Sending MCS Connect Initial PDU with GCC Conference Create Request
+###### 3.2.5.3.3 Sending MCS Connect Initial PDU with GCC Conference Create Request
 
 The structure and fields of the MCS Connect Initial PDU with GCC Conference Create Request are
 specified in section 2.2.1.3. A basic high-level overview of the nested structure for the MCS Connect
@@ -26658,7 +25810,8 @@ Release: March 9, 2026
 
 289 / 444
 
- Connect initial field
+
+ Connect initial field
 
  Value
 
@@ -26814,7 +25967,8 @@ Release: March 9, 2026
 
 290 / 444
 
-The userData field of the GCC Conference Create Request MUST be initialized with basic client
+
+The userData field of the GCC Conference Create Request MUST be initialized with basic client
 settings data blocks (sections 2.2.1.3.2 through 2.2.1.3.5). The client-to-server H.221 nonstandard
 key which MUST be embedded at the start of the userData field ([T124] section 8.7 for a description
 of the structure of user data) MUST be the ANSI character string "Duca".
@@ -26823,7 +25977,7 @@ If Enhanced RDP Security (section 5.4) is in effect, the External Security Proto
 be used to encrypt the entire PDU and generate a verification digest before the PDU is transmitted
 over the wire.
 
-3.2.5.3.4 Processing MCS Connect Response PDU with GCC Conference Create
+###### 3.2.5.3.4 Processing MCS Connect Response PDU with GCC Conference Create
 
 Response
 
@@ -26880,7 +26034,8 @@ Release: March 9, 2026
 
 291 / 444
 
- Server security
+
+ Server security
 data field
 
 encryptionMethod
@@ -26918,7 +26073,7 @@ sending MCS Channel Join Request PDUs (sections 2.2.1.8 and 3.2.5.3.8).
 Once the basic server settings data blocks have been processed successfully, the client MUST send the
 MCS Attach User Request PDU (section 3.2.5.3.6) to the server.
 
-3.2.5.3.5 Sending MCS Erect Domain Request PDU
+###### 3.2.5.3.5 Sending MCS Erect Domain Request PDU
 
 The structure and fields of the MCS Erect Domain Request PDU are specified in section 2.2.1.5.
 
@@ -26933,7 +26088,7 @@ If Enhanced RDP Security (section 5.4) is in effect, the External Security Proto
 be used to encrypt the entire PDU and generate a verification digest before the PDU is transmitted
 over the wire.
 
-3.2.5.3.6 Sending MCS Attach User Request PDU
+###### 3.2.5.3.6 Sending MCS Attach User Request PDU
 
 The structure and fields of the MCS Attach User Request PDU are specified in section 2.2.1.6.
 
@@ -26947,7 +26102,7 @@ If Enhanced RDP Security (section 5.4) is in effect, the External Security Proto
 be used to encrypt the entire PDU and generate a verification digest before the PDU is transmitted
 over the wire.
 
-3.2.5.3.7 Processing MCS Attach User Confirm PDU
+###### 3.2.5.3.7 Processing MCS Attach User Confirm PDU
 
 The structure and fields of the MCS Attach User Confirm PDU are specified in section 2.2.1.7.
 
@@ -26958,7 +26113,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-If Enhanced RDP Security (section 5.4) is in effect, the External Security Protocol (section 5.4.5) MUST
+
+If Enhanced RDP Security (section 5.4) is in effect, the External Security Protocol (section 5.4.5) MUST
 be used to decrypt and verify the integrity of the entire PDU prior to any processing taking place.
 
 The embedded length fields within the tpktHeader field ([T123] section 8) MUST be examined for
@@ -26974,7 +26130,7 @@ Channel ID.
 Once the User Channel ID has been extracted, the client MUST send an MCS Channel Join Request
 PDU for the user channel (section 3.2.5.3.8).
 
-3.2.5.3.8 Sending MCS Channel Join Request PDU(s)
+###### 3.2.5.3.8 Sending MCS Channel Join Request PDU(s)
 
 The structure and fields of the MCS Channel Join Request PDU are specified in section 2.2.1.8.
 
@@ -27019,7 +26175,7 @@ channel, the I/O channel, the message channel, and all static virtual channels) 
 as fully joined by the client. The client SHOULD NOT send any MCS Channel Join Request PDUs to
 server and SHOULD proceed to the RDP Security Commencement phase (section 1.3.1.1).
 
-3.2.5.3.9 Processing MCS Channel Join Confirm PDU(s)
+###### 3.2.5.3.9 Processing MCS Channel Join Confirm PDU(s)
 
 293 / 444
 
@@ -27028,7 +26184,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The structure and fields of the MCS Channel Join Confirm PDU are specified in section 2.2.1.9.
+
+The structure and fields of the MCS Channel Join Confirm PDU are specified in section 2.2.1.9.
 
 If Enhanced RDP Security (section 5.4) is in effect, the External Security Protocol (section 5.4.5) MUST
 be used to decrypt and verify the integrity of the entire PDU prior to any processing taking place.
@@ -27060,9 +26217,9 @@ server in the Server Security Data (sections 2.2.1.4.2 and 3.2.5.3.4) are both g
 The Client Info PDU (section 2.2.1.11) if the Encryption Level and Encryption Method returned
 from the server are both zero.
 
-3.2.5.3.10
+###### 3.2.5.3.10 Sending Security Exchange PDU
 
-Sending Security Exchange PDU
+
 
 The structure and fields of the Security Exchange PDU are specified in section 2.2.1.10.
 
@@ -27102,12 +26259,13 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-the client MUST send the Client Info PDU to the server (section 3.2.5.3.11) and store the session keys
+
+the client MUST send the Client Info PDU to the server (section 3.2.5.3.11) and store the session keys
 in the Session Keys store (section 3.2.1.12).
 
-3.2.5.3.11
+###### 3.2.5.3.11 Sending Client Info PDU
 
-Sending Client Info PDU
+
 
 The structure and fields of the Client Info PDU are specified in section 2.2.1.11.
 
@@ -27140,9 +26298,9 @@ autoReconnectCookie field of the Extended Info Structure (section 2.2.1.11.1.1.1
 of the cookie. The remainder of the PDU MUST be populated with client settings according to the
 structure and type definition in section 2.2.1.11.1.1.
 
-3.2.5.3.12
+###### 3.2.5.3.12 Processing License Error PDU - Valid Client
 
-Processing License Error PDU - Valid Client
+
 
 The structure and fields of the License Error (Valid Client) PDU are specified in section 2.2.1.12.
 
@@ -27172,7 +26330,8 @@ Release: March 9, 2026
 
 295 / 444
 
-If the SEC_ENCRYPT (0x0008) flag is present, then the data following the securityHeader field is
+
+If the SEC_ENCRYPT (0x0008) flag is present, then the data following the securityHeader field is
 encrypted and it MUST be verified and decrypted using the methods and techniques described in
 section 5.3.6. If the MAC signature is incorrect or the data cannot be decrypted correctly, the
 connection SHOULD be dropped.
@@ -27186,9 +26345,9 @@ a License Error PDU, the client MUST examine the remaining fields and ensure tha
 the structure and values listed in section 2.2.1.12. If this is not the case, the client SHOULD drop the
 connection.
 
-3.2.5.3.13  Mandatory Capability Exchange
+###### 3.2.5.3.13 Mandatory Capability Exchange
 
-3.2.5.3.13.1  Processing Demand Active PDU
+###### 3.2.5.3.13.1 Processing Demand Active PDU
 
 The structure and fields of the Demand Active PDU are specified in section 2.2.1.13.1.
 
@@ -27228,7 +26387,7 @@ After successfully processing the Demand Active PDU, the client MUST send the Co
 (section 2.2.1.13.2) to the server. If processing of the Demand Active PDU was unsuccessful, the
 connection SHOULD be dropped.
 
-3.2.5.3.13.2  Sending Confirm Active PDU
+###### 3.2.5.3.13.2 Sending Confirm Active PDU
 
 The structure and fields of the Confirm Active PDU are specified in section 2.2.1.13.2.
 
@@ -27239,7 +26398,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The tpktHeader field is initialized as specified in [T123] section 8, while the x224Data field (which
+
+The tpktHeader field is initialized as specified in [T123] section 8, while the x224Data field (which
 contains an X.224 Class 0 Data TPDU) is initialized as specified in [X224] section 13.7.
 
 The mcsSDrq field is initialized as described in [T125] section 11.32. The embedded initiator field
@@ -27269,9 +26429,9 @@ to the server.
 Once the client has successfully transmitted this PDU, input PDUs (section 2.2.8) SHOULD be sent to
 the server (section 3.3.5.8).
 
-3.2.5.3.14
+###### 3.2.5.3.14 Sending Synchronize PDU
 
-Sending Synchronize PDU
+
 
 The structure and fields of the Synchronize PDU are specified in section 2.2.1.14 and the techniques
 specified in section 3.2.5.1 demonstrate how to initialize the contents of the PDU. The targetUser
@@ -27281,9 +26441,9 @@ field SHOULD be set to the MCS server channel ID that is held in the Server Chan
 After sending the Synchronize PDU, the client MUST send the Control (Cooperate) PDU (section
 3.2.5.3.15) to the server.
 
-3.2.5.3.15
+###### 3.2.5.3.15 Sending Control PDU - Cooperate
 
-Sending Control PDU - Cooperate
+
 
 The structure and fields of the Control (Cooperate) PDU are specified in section 2.2.1.15, and the
 techniques specified in section 3.2.5.1 demonstrate how to initialize the contents of the PDU. The
@@ -27293,9 +26453,9 @@ compressed.
 After sending the Control (Cooperate) PDU, the client MUST send the Control (Request Control) PDU
 (section 3.2.5.3.16) to the server.
 
-3.2.5.3.16
+###### 3.2.5.3.16 Sending Control PDU - Request Control
 
-Sending Control PDU - Request Control
+
 
 The structure and fields of the Control (Request Control) PDU are specified in section 2.2.1.16, and
 the techniques described in section 3.2.5.1 demonstrate how to initialize the contents of the PDU. The
@@ -27312,13 +26472,14 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-2.2.7.2.1 and [MS-RDPEGDI] section 3.1.1.1.1) and a Deactivation-Reactivation
+
+2.2.7.2.1 and [MS-RDPEGDI] section 3.1.1.1.1) and a Deactivation-Reactivation
 Sequence (section 1.3.1.3) is not in progress. If the server does not support the Revision 2 bitmap
 caches, the client MUST proceed to send the Font List PDU (section 3.2.5.3.18).
 
-3.2.5.3.17
+###### 3.2.5.3.17 Sending Persistent Key List PDU(s)
 
-Sending Persistent Key List PDU(s)
+
 
 The structure and fields of the Persistent Key List PDU are specified in section 2.2.1.17, and the
 techniques specified in section 3.2.5.1 demonstrate how to initialize the contents of the PDU. The
@@ -27330,55 +26491,55 @@ Each of the keys sent in a Persistent Key List PDU is encapsulated in a Persiste
 After sending a single Persistent Key List PDU or a sequence of Persistent Key List PDUs, the client
 MUST send the Font List PDU (section 3.2.5.3.18) to the server.
 
-3.2.5.3.18
+###### 3.2.5.3.18 Sending Font List PDU
 
-Sending Font List PDU
+
 
 The structure and fields of the Font List PDU are specified in section 2.2.1.18, and the techniques
 specified in section 3.2.5.1 demonstrate how to initialize the contents of the PDU. The contents of this
 PDU MUST NOT be compressed.
 
-3.2.5.3.19
+###### 3.2.5.3.19 Processing Synchronize PDU
 
-Processing Synchronize PDU
+
 
 The structure and fields of the Synchronize PDU are specified in section 2.2.1.19, and the techniques
 specified in section 3.2.5.2 demonstrate how to process the contents of the PDU. The contents of the
 targetUser field MUST be ignored.
 
-3.2.5.3.20
+###### 3.2.5.3.20 Processing Control PDU - Cooperate
 
-Processing Control PDU - Cooperate
+
 
 The structure and fields of the Control (Cooperate) PDU are specified in section 2.2.1.20, and the
 techniques specified in section 3.2.5.2 demonstrate how to process the contents of the PDU. The
 contents of the controlId and grantId fields MUST be ignored.
 
-3.2.5.3.21
+###### 3.2.5.3.21 Processing Control PDU - Granted Control
 
-Processing Control PDU - Granted Control
+
 
 The structure and fields of the Control (Granted Control) PDU are specified in section 2.2.1.21, and
 the techniques specified in section 3.2.5.2 demonstrate how to process the contents of the PDU. The
 contents of the controlId and grantId fields MUST be ignored.
 
-3.2.5.3.22
+###### 3.2.5.3.22 Processing Font Map PDU
 
-Processing Font Map PDU
+
 
 The structure and fields of the Font Map PDU are specified in section 2.2.1.22, and the techniques
 specified in section 3.2.5.2 demonstrate how to process the contents of the PDU. The contents of the
 numberEntries, totalNumEntries, mapFlags, and entrySize fields MUST be ignored.
 
-3.2.5.4  Disconnection Sequences
+##### 3.2.5.4 Disconnection Sequences
 
-3.2.5.4.1 Sending Shutdown Request PDU
+###### 3.2.5.4.1 Sending Shutdown Request PDU
 
 The structure and fields of the Shutdown Request PDU are specified in section 2.2.2.1, and the
 techniques specified in section 3.2.5.1 demonstrate how to initialize the contents of the PDU. The
 contents of this PDU MUST NOT be compressed.
 
-3.2.5.4.2 Processing Shutdown Request Denied PDU
+###### 3.2.5.4.2 Processing Shutdown Request Denied PDU
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -27387,7 +26548,8 @@ Release: March 9, 2026
 
 298 / 444
 
-The structure and fields of the Shutdown Request Denied PDU are specified in section 2.2.2.2, and the
+
+The structure and fields of the Shutdown Request Denied PDU are specified in section 2.2.2.2, and the
 techniques described in section 3.2.5.2 demonstrate how to process the contents of the PDU.
 
 After this PDU has been processed, the client MAY prompt the user to determine whether a
@@ -27395,9 +26557,9 @@ disconnection is required. If the user chooses to disconnect the client SHOULD s
 Disconnect Provider Ultimatum PDU (section 3.1.5.1.1) to the server and thereafter MUST drop the
 connection.
 
-3.2.5.5  Deactivation-Reconnection Sequence
+##### 3.2.5.5 Deactivation-Reconnection Sequence
 
-3.2.5.5.1 Processing Deactivate All PDU
+###### 3.2.5.5.1 Processing Deactivate All PDU
 
 The structure and fields of the Deactivate All PDU are specified in section 2.2.3.1, and the techniques
 specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
@@ -27408,9 +26570,9 @@ Sequence as described in section 1.3.1.3) or a disconnection (the client MUST be
 the optional MCS Disconnect Provider Ultimatum PDU (section 3.1.5.1.2) after receiving the
 Deactivate All PDU, but prior to the actual disconnection).
 
-3.2.5.6  Auto-Reconnect Sequence
+##### 3.2.5.6 Auto-Reconnect Sequence
 
-3.2.5.6.1 Processing Auto-Reconnect Status PDU
+###### 3.2.5.6.1 Processing Auto-Reconnect Status PDU
 
 The structure and fields of the Auto-Reconnect Status PDU are specified in section 2.2.4.1, and the
 techniques specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
@@ -27419,9 +26581,9 @@ Once this PDU has been processed, the client SHOULD discard the Automatic Reconn
 (section 3.2.1.9) and continue with the connection by prompting the user to manually enter
 credentials for the reconnection attempt.
 
-3.2.5.7  Server Error Reporting and Status Updates
+##### 3.2.5.7 Server Error Reporting and Status Updates
 
-3.2.5.7.1 Processing Set Error Info PDU
+###### 3.2.5.7.1 Processing Set Error Info PDU
 
 The structure and fields of the Set Error Info PDU are specified in section 2.2.5.1, and the techniques
 specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
@@ -27431,7 +26593,7 @@ reason for the disconnection which will follow. Once this PDU has been processed
 store the error code so that the reason for the server disconnect which will follow can be accurately
 reported to the user.
 
-3.2.5.7.2 Processing Status Info PDU
+###### 3.2.5.7.2 Processing Status Info PDU
 
 The structure and fields of the Status Info PDU are specified in section 2.2.5.2, and the techniques
 specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
@@ -27440,9 +26602,9 @@ Once this PDU has been processed, the client can use the status code to give fee
 ensure that it is evident that server-side processing is taking place and that the connection is
 progressing.
 
-3.2.5.8  Keyboard and Mouse Input
+##### 3.2.5.8 Keyboard and Mouse Input
 
-3.2.5.8.1 Input Event Notifications
+###### 3.2.5.8.1 Input Event Notifications
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -27451,7 +26613,8 @@ Release: March 9, 2026
 
 299 / 444
 
-3.2.5.8.1.1  Sending Input Event PDU
+
+###### 3.2.5.8.1.1 Sending Input Event PDU
 
 The structure and fields of the Input Event PDU are specified in sections 2.2.8.1.1.3 and 2.2.8.1.1.3.1,
 and the techniques specified in section 3.2.5.1 demonstrate how to initialize the contents of the PDU.
@@ -27480,7 +26643,7 @@ The contents of this PDU MUST NOT be compressed.
 If the client has sent a Synchronize Event, it SHOULD subsequently send key-down events for all of
 the keyboard and mouse keys that are down.
 
-3.2.5.8.1.2  Sending Fast-Path Input Event PDU
+###### 3.2.5.8.1.2 Sending Fast-Path Input Event PDU
 
 The Fast-Path Input Event PDU (section 2.2.8.1.2) has the following basic structure (sections 5.3.8
 and 5.4.4):
@@ -27530,7 +26693,8 @@ Release: March 9, 2026
 
 300 / 444
 
-If Enhanced RDP Security (section 5.4) is in effect, the External Security Protocol (section 5.4.5) MUST
+
+If Enhanced RDP Security (section 5.4) is in effect, the External Security Protocol (section 5.4.5) MUST
 be used to encrypt the entire PDU and generate a verification digest before the PDU is transmitted
 over the wire. Also, in this scenario the fipsInformation and dataSignature fields MUST NOT be
 present.
@@ -27545,16 +26709,16 @@ FASTPATH_INPUT_ENCRYPTED (2) flag.
 The actual PDU contents, which encapsulates a collection of input events, is populated with fast-path
 event data as described from 2.2.8.1.2.2.1 to 2.2.8.1.2.2.5.
 
-3.2.5.8.2 Keyboard Status PDUs
+###### 3.2.5.8.2 Keyboard Status PDUs
 
-3.2.5.8.2.1  Processing Set Keyboard Indicators PDU
+###### 3.2.5.8.2.1 Processing Set Keyboard Indicators PDU
 
 The structure and fields of the Set Keyboard Indicators PDU are specified in section 2.2.8.2.1 and the
 techniques specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
 
 Once this PDU has been processed, the client SHOULD update the local keyboard indictors.
 
-3.2.5.8.2.2  Processing Set Keyboard IME Status PDU
+###### 3.2.5.8.2.2 Processing Set Keyboard IME Status PDU
 
 The structure and fields of the Set Keyboard IME Status PDU are specified in section 2.2.8.2.2, and
 the techniques specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
@@ -27562,9 +26726,9 @@ the techniques specified in section 3.2.5.2 demonstrate how to process the conte
 Once this PDU has been processed, the client SHOULD update the state of the local input method
 editor (IME). Non-IME aware clients MAY ignore this PDU.
 
-3.2.5.9  Basic Output
+##### 3.2.5.9 Basic Output
 
-3.2.5.9.1 Processing Slow-Path Graphics Update PDU
+###### 3.2.5.9.1 Processing Slow-Path Graphics Update PDU
 
 The structure and fields of the Slow-Path Graphics Update PDU are specified in section 2.2.9.1.1.3,
 and the techniques specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
@@ -27599,7 +26763,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-3.2.5.9.2 Processing Slow-Path Pointer Update PDU
+
+###### 3.2.5.9.2 Processing Slow-Path Pointer Update PDU
 
 The structure and fields of the Slow-Path Pointer Update PDU are specified in section 2.2.9.1.1.4, and
 the techniques specified in section 3.2.5.9.2 demonstrate how to process the contents of the PDU.
@@ -27629,7 +26794,7 @@ the new pointer image MUST also be stored in the Pointer Image Cache (section 3.
 specified by the cacheIndex field. This necessary step ensures that the client is able to correctly
 process future Cached Pointer Updates.
 
-3.2.5.9.3 Processing Fast-Path Update PDU
+###### 3.2.5.9.3 Processing Fast-Path Update PDU
 
 The Fast-Path Update PDU has the following basic structure (sections 5.3.8 and 5.4.4):
 
@@ -27680,7 +26845,8 @@ Release: March 9, 2026
 
 302 / 444
 
-  Surface Commands Update (section 2.2.9.1.2.1.10)
+
+  Surface Commands Update (section 2.2.9.1.2.1.10)
 
 
 
@@ -27711,7 +26877,7 @@ initialized with the compression usage information. Once this PDU has been proce
 MUST carry out the operation appropriate to the update type, as specified in the slow-path versions of
 this PDU (sections 3.2.5.9.1 and 3.2.5.9.2).
 
-3.2.5.9.3.1  Processing Fast-Path Update Fragments
+###### 3.2.5.9.3.1 Processing Fast-Path Update Fragments
 
 A Fast-Path Update (section 2.2.9.1.2.1) structure contains fragmented data in the updateData field
 if the fragmentation subfield of the updateHeader field is non-zero:
@@ -27759,7 +26925,8 @@ Release: March 9, 2026
 
 303 / 444
 
-<!-- Extracted images from page 304 -->
+
+<!-- Extracted images from page 304 -->
 ![Extracted image 1 from page 304]([MS-RDPBCGR].images/page304-img01.png)
 <!-- /Extracted images from page 304 -->
 
@@ -27768,9 +26935,9 @@ update".
 
 Figure 7: Reassembly of a fragmented update
 
-3.2.5.9.4 Sound
+###### 3.2.5.9.4 Sound
 
-3.2.5.9.4.1  Processing Play Sound PDU
+###### 3.2.5.9.4.1 Processing Play Sound PDU
 
 The structure and fields of the Play Sound PDU are specified in section 2.2.9.1.1.5, and the techniques
 specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
@@ -27778,13 +26945,13 @@ specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
 Once this PDU has been processed, the client SHOULD play a sound using the frequency and duration
 specified by the PDU.<45>
 
-3.2.5.10
+##### 3.2.5.10 Logon and Authorization Notifications
 
-Logon and Authorization Notifications
 
-3.2.5.10.1
 
-Processing Save Session Info PDU
+###### 3.2.5.10.1 Processing Save Session Info PDU
+
+
 
 The structure and fields of the Save Session Info PDU are specified in section 2.2.10.1, and the
 techniques specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
@@ -27809,9 +26976,9 @@ automatic reconnection sequence.
 In the case of a logon error or warning notification being present in the PDU, the client SHOULD
 carry out some implementation-dependent action to respond to the notification.
 
-3.2.5.10.2
+###### 3.2.5.10.2 Processing Early User Authorization Result PDU
 
-Processing Early User Authorization Result PDU
+
 
 The structure and fields of the Early User Authorization Result PDU are specified in section 2.2.10.2. If
 the authorizationResult field is set to AUTHZ_ACCESS_DENIED (0x00000005), the client SHOULD
@@ -27825,33 +26992,34 @@ Release: March 9, 2026
 
 304 / 444
 
-3.2.5.11
 
-Controlling Server Graphics Output
+##### 3.2.5.11 Controlling Server Graphics Output
 
-3.2.5.11.1
 
-Sending Refresh Rect PDU
+
+###### 3.2.5.11.1 Sending Refresh Rect PDU
+
+
 
 The structure and fields of the Refresh Rect PDU are specified in section 2.2.11.2, and the techniques
 specified in section 3.2.5.1 demonstrate how to initialize the contents of the PDU. The contents of this
 PDU MUST NOT be compressed.
 
-3.2.5.11.2
+###### 3.2.5.11.2 Sending Suppress Output PDU
 
-Sending Suppress Output PDU
+
 
 The structure and fields of the Suppress Output PDU are specified in section 2.2.11.3, and the
 techniques specified in section 3.2.5.1 demonstrate how to initialize the contents of the PDU. The
 contents of this PDU MUST NOT be compressed.
 
-3.2.5.12
+##### 3.2.5.12 Display Update Notifications
 
-Display Update Notifications
 
-3.2.5.12.1
 
-Processing Monitor Layout PDU
+###### 3.2.5.12.1 Processing Monitor Layout PDU
+
+
 
 The structure and fields of the Monitor Layout PDU are specified in section 2.2.12.1, and the
 techniques specified in section 3.2.5.2 demonstrate how to process the contents of the PDU.
@@ -27861,13 +27029,13 @@ whether the local monitor configuration matches the remote configuration (as a p
 enabling full-screen viewing), or provide some form of high-level navigation among the remoted
 monitors.
 
-3.2.5.13
+##### 3.2.5.13 Server Redirection
 
-Server Redirection
 
-3.2.5.13.1
 
-Processing of the Server Redirection PDUs
+###### 3.2.5.13.1 Processing of the Server Redirection PDUs
+
+
 
 An overview of the principles behind server redirection and an example of how it operates within the
 
@@ -27891,9 +27059,9 @@ Once the client has completed processing the appropriate variant of this PDU, it
 current connection to the server that transmitted the PDU and initiate a new connection to the target
 server specified in the Server Redirection Packet.
 
-3.2.5.14
+##### 3.2.5.14 Network Characteristics Detection
 
-Network Characteristics Detection
+
 
 The steps that follow describe how a client SHOULD respond when receiving the server-to-client
 network characteristics request detection messages described in section 2.2.14.1.
@@ -27907,7 +27075,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Immediately send an RTT Measure Response (section 2.2.14.2.1), embedded in an Auto-Detect
+
+Immediately send an RTT Measure Response (section 2.2.14.2.1), embedded in an Auto-Detect
 Response PDU (section 2.2.14.4), to the server.
 
   When receiving a Bandwidth Measure Start (section 2.2.14.1.2):
@@ -27991,7 +27160,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-3.  Immediately send the contents of the Network Characteristics Timer and the Network
+
+3.  Immediately send the contents of the Network Characteristics Timer and the Network
 
 Characteristics Byte Count store (section 3.2.1.17) to the server in a Bandwidth Measure
 Results (section 2.2.14.2.2) with a responseType of 0x0003. The Bandwidth Measure
@@ -28048,13 +27218,13 @@ structure and be sent over the lossy UDP multitransport channel ([MS-RDPEMT] sec
 
 Extract the network metrics from the PDU.
 
-3.2.5.15
+##### 3.2.5.15 Multitransport Bootstrapping
 
-Multitransport Bootstrapping
 
-3.2.5.15.1
 
-Processing the Initiate Multitransport Request PDU
+###### 3.2.5.15.1 Processing the Initiate Multitransport Request PDU
+
+
 
 The structure and fields of the Initiate Multitransport Request PDU are described in section 2.2.14.1.
 Upon successfully decoding this PDU the client MUST attempt to establish a sideband channel ([MS-
@@ -28074,12 +27244,13 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-the sideband channel creation succeeded or failed. For more information on Soft-Sync see [MS-
+
+the sideband channel creation succeeded or failed. For more information on Soft-Sync see [MS-
 RDPEDYC] section 3.1.5.3.
 
-3.2.5.15.2
+###### 3.2.5.15.2 Sending the Initiate Multitransport Response PDU
 
-Sending the Initiate Multitransport Response PDU
+
 
 The structure and fields of the Initiate Multitransport Response PDU are described in section 2.2.15.2,
 and the PDU MUST be initialized according to this specification. The embedded initiator field of the
@@ -28092,28 +27263,28 @@ This Initiate Multitransport Response PDU indicates to the server that a sideban
 succeeded or failed. If the hrResponse field indicates a failure, the client MUST NOT attempt to
 create a sideband channel after sending this PDU.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Client-Side Connection Sequence Timeout
+##### 3.2.6.1 Client-Side Connection Sequence Timeout
 
 The Client-Side Connection Sequence Timeout fires if more than 300 seconds have elapsed on the
 client-side Connection Sequence Timeout Timer (section 3.2.2.1). In this event the client MAY
 terminate the connection to the server.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.2.7.1  Disconnection Due to Network Error
+##### 3.2.7.1 Disconnection Due to Network Error
 
 If the client detects that a disconnection which has taken place is due to a network error, it MAY
 attempt to automatically reconnect to the server using the technique specified in section 5.5.
 Automatic reconnection allows the client to seamlessly reconnect to an existing session (after a short-
 term network failure has occurred) without having to resend the user's credentials to the server.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -28125,7 +27296,7 @@ Note  It is possible to implement the following conceptual data by using a varie
 long as the implementation produces external behavior that is consistent with that described in this
 document.
 
-3.3.1.1  Received Client Data
+##### 3.3.1.1 Received Client Data
 
 The Received Client Data store contains data received from the client during execution of the Remote
 Desktop Protocol. This store is initialized when processing the X.224 Connection Request
@@ -28139,59 +27310,60 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-3.3.1.2  User Channel ID
+
+##### 3.3.1.2 User Channel ID
 
 The User Channel ID store contains the MCS channel identifier allocated by the server to identify the
 user channel. This value MUST be in the range 1001 to 65536, inclusive, as required by the T.125
 ASN.1 definitions of the UserId and DynamicChannelId types ([T125] section 7, part 1).
 
-3.3.1.3  I/O Channel ID
+##### 3.3.1.3 I/O Channel ID
 
 The I/O Channel ID store contains the MCS channel identifier selected by the server to identify the I/O
 channel. This ID is communicated to the client in the Server Network Data (sections 2.2.1.4.4 and
 3.2.5.3.4).
 
-3.3.1.4  Message Channel ID
+##### 3.3.1.4 Message Channel ID
 
 The Message Channel ID store contains the MCS channel identifier selected by the server to identify
 the message channel. This ID is communicated to the client in the Server Message Channel Data
 (sections 2.2.1.4.5 and 3.2.5.3.4).
 
-3.3.1.5  Server Channel ID
+##### 3.3.1.5 Server Channel ID
 
 The Server Channel ID store contains the MCS channel identifier of the server channel, which is
 defined as the arbitrarily chosen but fixed value 0x03EA (1002). This value is in the range 1001 to
 65536, inclusive, as required by the T.125 ASN.1 definitions of the UserId and DynamicChannelId
 types ([T125] section 7, part 1).
 
-3.3.1.6  Client Licensing Encryption Ability
+##### 3.3.1.6 Client Licensing Encryption Ability
 
 The Client Licensing Encryption Ability store determines whether the client has the ability to handle
 encrypted licensing packets when using RDP Security mechanisms (see section 5.3 and the discussion
 of the SEC_LICENSE_ENCRYPT_SC flag in section 2.2.8.1.1.2.1). This fact is communicated to the
 server as part of the Security Exchange PDU (sections 2.2.1.10 and 3.2.5.3.10).
 
-3.3.1.7  Client Capabilities
+##### 3.3.1.7 Client Capabilities
 
 The Client Capabilities store contains the capability sets (sections 1.4 and 2.2.6) received from the
 client in the Confirm Active PDU (sections 2.2.1.13.2 and 3.3.5.3.13.2).
 
-3.3.1.8  Cached Bitmap Keys
+##### 3.3.1.8 Cached Bitmap Keys
 
 The Cached Bitmap Keys store holds a collection of 64-bit bitmap keys, each of which uniquely
 identifies a bitmap image that was sent to the client by using a Cache Bitmap (Revision 2) Secondary
 Drawing Order ([MS-RDPEGDI] section 2.2.2.2.1.2.3).
 
-3.3.1.9  Pointer Image Cache
+##### 3.3.1.9 Pointer Image Cache
 
 The Pointer Image Cache contains a collection of pointer images sent to the client in Color Pointer
 Updates (sections 2.2.9.1.2.1.7, 3.3.5.9.2, and 3.3.5.9.3) and New Pointer Updates (sections
 2.2.9.1.2.1.8, 3.3.5.9.2, and 3.3.5.9.3). The size and color depth (either variable or fixed at 24 bpp)
 of the cache is specified in the Pointer Capability Set (section 2.2.7.1.5).
 
-3.3.1.10
+##### 3.3.1.10 Session Keys
 
-Session Keys
+
 
 The Session Keys store holds the symmetric keys (sections 5.3.5 to 5.3.7) used to encrypt, decrypt,
 and sign RDP packets.
@@ -28203,54 +27375,55 @@ Release: March 9, 2026
 
 309 / 444
 
-3.3.1.11
 
-Automatic Reconnection Cookie
+##### 3.3.1.11 Automatic Reconnection Cookie
+
+
 
 The Automatic Reconnection Cookie store holds the cookie received from the client in the Client Info
 PDU (sections 2.2.1.11.1.1.1 and 3.3.5.3.11).
 
-3.3.1.12
+##### 3.3.1.12 Connection Start Time
 
-Connection Start Time
+
 
 The Connection Start Time store holds the time at which the server first received network traffic from
 the client.
 
-3.3.1.13
+##### 3.3.1.13 RTT Measure Request Data
 
-RTT Measure Request Data
+
 
 The RTT Measure Request Data store contains the timestamp and sequence number associated with
 each RTT Measure Request (section 2.2.14.1.1) message that has been sent to the client.
 
-3.3.1.14
+##### 3.3.1.14 Multitransport Request Data
 
-Multitransport Request Data
+
 
 The Multitransport Request Data store contains the request ID, requested protocol, and 16-byte
 security cookie for each Initiate Multitransport Request PDU (section 2.2.15.1) that has been sent to
 the client.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
-3.3.2.1  Connection Sequence Timeout Timer
+##### 3.3.2.1 Connection Sequence Timeout Timer
 
 The Connection Sequence Timeout Timer stores the amount of time that has elapsed since the server
 first received network traffic from the client. The connection start time is stored in the Connection
 Start Time store (section 3.3.1.12).
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Constructing a Server-to-Client Slow-Path PDU
+##### 3.3.5.1 Constructing a Server-to-Client Slow-Path PDU
 
 The majority of server-to-client slow-path PDUs have the same basic structure (sections 5.3.7.2 and
 5.4.4):
@@ -28280,7 +27453,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The tpktHeader field is initialized as specified in [T123] section 8, while the x224Data field is
+
+The tpktHeader field is initialized as specified in [T123] section 8, while the x224Data field is
 initialized as specified in [X224] section 13.7.
 
 The mcsSDin field is initialized as specified in [T125] section 11.33. The embedded initiator field
@@ -28312,7 +27486,7 @@ Header and Share Control Header fields MUST be populated as specified in section
 Any remaining fields are populated as specified in the section describing the PDU structure and fields
 in section 2.2.
 
-3.3.5.2  Processing a Client-to-Server Slow-Path PDU
+##### 3.3.5.2 Processing a Client-to-Server Slow-Path PDU
 
 The majority of client-to-server slow-path PDUs have the same basic structure (sections 5.3.8 and
 5.4.4):
@@ -28353,7 +27527,8 @@ Release: March 9, 2026
 
 311 / 444
 
-The conditions mandating the presence of the securityHeader field, as well as the type of Security
+
+The conditions mandating the presence of the securityHeader field, as well as the type of Security
 Header structure present in this field, are explained in the section describing the PDU structure and
 fields in section 2.2. If the securityHeader field is present, the embedded flags field MUST be
 examined for the presence of the SEC_ENCRYPT (0x0008) flag (section 2.2.8.1.1.2.1), and, if it is
@@ -28375,9 +27550,9 @@ Control Header and Share Data Header fields MAY be ignored.
 Any remaining PDU fields MUST be interpreted and processed in accordance with the section
 describing the PDU structure and fields in section 2.2.
 
-3.3.5.3  Connection Sequence
+##### 3.3.5.3 Connection Sequence
 
-3.3.5.3.1 Processing X.224 Connection Request PDU
+###### 3.3.5.3.1 Processing X.224 Connection Request PDU
 
 The structure and fields of the X.224 Connection Request PDU are specified in section 2.2.1.1.
 
@@ -28424,11 +27599,12 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Once the X.224 Connection Request PDU has been processed successfully, the server MUST send the
+
+Once the X.224 Connection Request PDU has been processed successfully, the server MUST send the
 X.224 Connection Confirm PDU to the client (section 3.3.5.3.2) and update the Connection Start Time
 store (section 3.3.1.12).
 
-3.3.5.3.2 Sending X.224 Connection Confirm PDU
+###### 3.3.5.3.2 Sending X.224 Connection Confirm PDU
 
 The structure and fields of the X.224 Connection Confirm PDU are specified in section 2.2.1.2.
 
@@ -28459,7 +27635,7 @@ used for the duration of the connection, the server MUST prepare to execute the 
 calling into the relevant External Security Protocol Provider after the X.224 Connection Confirm PDU
 (with RDP Negotiation Response) has been sent to the client.
 
-3.3.5.3.3 Processing MCS Connect Initial PDU with GCC Conference Create Request
+###### 3.3.5.3.3 Processing MCS Connect Initial PDU with GCC Conference Create Request
 
 The structure and fields of the MCS Connect Initial PDU with GCC Conference Create Request
 are specified in section 2.2.1.3. A basic high-level overview of the nested structure for the MCS
@@ -28490,7 +27666,8 @@ Release: March 9, 2026
 
 313 / 444
 
- //
+
+ //
  // Merges the fields contained in the targetParameters, minimumParameters, and
  // maximumParameters fields. Returns TRUE if the domain parameters were successfully
  // merged, FALSE otherwise.
@@ -28566,7 +27743,8 @@ Release: March 9, 2026
 
 314 / 444
 
-     // maxHeight
+
+     // maxHeight
      //
      if ((targetParameters.maxHeight == 1) ||
          (minimumParameters.maxHeight <= 1))
@@ -28640,7 +27818,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-of the GCC Conference Create Request data is 1024 bytes. If Extended Client Data Blocks are
+
+of the GCC Conference Create Request data is 1024 bytes. If Extended Client Data Blocks are
 supported, then the maximum allowed size is 4096 bytes. If the size of the GCC Conference Create
 Request data is invalid, the server MUST close the connection as specified in section 3.3.5.3.3.1.
 
@@ -28714,7 +27893,7 @@ connection as specified in section 3.3.5.3.3.1.
 Once the basic client settings data blocks have been processed successfully, the server MUST send the
 MCS Connect Response PDU with GCC Conference Create Response (section 2.2.1.4) to the client.
 
-3.3.5.3.3.1  Handling Errors in the GCC Conference Create Request Data
+###### 3.3.5.3.3.1 Handling Errors in the GCC Conference Create Request Data
 
 316 / 444
 
@@ -28723,7 +27902,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-If there is invalid data in the GCC Conference Create Request data then the server MUST follow one of
+
+If there is invalid data in the GCC Conference Create Request data then the server MUST follow one of
 the following courses of action:
 
   Send an MCS Connect Response PDU (section 2.2.1.4) to the client containing only a result field
@@ -28735,7 +27915,7 @@ set to the value rt-unspecified-failure (14), and then close the connection.
 unspecified-failure (14) code (in this case the client will not be able to determine that the
 disconnection is due to invalid GCC Conference Create Request data).
 
-3.3.5.3.4 Sending MCS Connect Response PDU with GCC Conference Create Response
+###### 3.3.5.3.4 Sending MCS Connect Response PDU with GCC Conference Create Response
 
 The structure and fields of the MCS Connect Response PDU with GCC Conference Create Response are
 described in section 2.2.1.4. A basic high-level overview of the nested structure for the MCS Connect
@@ -28788,7 +27968,7 @@ If Enhanced RDP Security (section 5.4) is in effect, the External Security Proto
 be used to encrypt the entire PDU and generate a verification digest before the PDU is transmitted
 over the wire.
 
-3.3.5.3.5 Processing MCS Erect Domain Request PDU
+###### 3.3.5.3.5 Processing MCS Erect Domain Request PDU
 
 The structure and fields of the MCS Erect Domain Request PDU are described in section 2.2.1.5.
 
@@ -28799,7 +27979,8 @@ Release: March 9, 2026
 
 317 / 444
 
-If Enhanced RDP Security (section 5.4) is in effect, the External Security Protocol (section 5.4.5) MUST
+
+If Enhanced RDP Security (section 5.4) is in effect, the External Security Protocol (section 5.4.5) MUST
 be used to decrypt and verify the integrity of the entire PDU prior to any processing taking place.
 
 The embedded length fields within the tpktHeader field ([T123] section 8) MUST be examined for
@@ -28809,7 +27990,7 @@ The MCS Erect Domain Request PDU (embedded within the mcsEDrq field) is describe
 section 7, parts 3 and 10. The server MUST ensure that the subHeight and subinterval fields are
 contained within the PDU. If this is not the case, the connection SHOULD be dropped.
 
-3.3.5.3.6 Processing MCS Attach User Request PDU
+###### 3.3.5.3.6 Processing MCS Attach User Request PDU
 
 The structure and fields of the MCS Attach User Request PDU are described in section 2.2.1.6.
 
@@ -28825,7 +28006,7 @@ section 7, parts 5 and 10.
 Upon receiving the MCS Attach User Request PDU the server MUST send the MCS Attach User Confirm
 PDU (section 3.3.5.3.7) to the client.
 
-3.3.5.3.7 Sending MCS Attach User Confirm PDU
+###### 3.3.5.3.7 Sending MCS Attach User Confirm PDU
 
 The structure and fields of the MCS Attach User Confirm PDU are described in section 2.2.1.7.
 
@@ -28846,7 +28027,7 @@ If Enhanced RDP Security (section 5.4) is in effect, the External Security Proto
 be used to encrypt the entire PDU and generate a verification digest before the PDU is transmitted
 over the wire.
 
-3.3.5.3.8 Processing MCS Channel Join Request PDU(s)
+###### 3.3.5.3.8 Processing MCS Channel Join Request PDU(s)
 
 The structure and fields of the MCS Channel Join Request PDU are described in section 2.2.1.8.
 
@@ -28866,7 +28047,8 @@ Release: March 9, 2026
 
 318 / 444
 
-Upon receiving the MCS Channel Join Request PDU the server MUST carry out any necessary
+
+Upon receiving the MCS Channel Join Request PDU the server MUST carry out any necessary
 processing to mark the channel as "joined" and MUST then send the MCS Channel Join Confirm PDU
 (section 3.3.5.3.9) to the client to indicate the result of the join operation. If the server receives a
 Channel Join Request PDU for a channel that has already been joined, then the request SHOULD be
@@ -28882,7 +28064,7 @@ the I/O channel, the message channel, and all static virtual channels) SHOULD be
 joined by the server. The server SHOULD ignore any MCS Channel Join Request PDUs and SHOULD
 proceed to the RDP Security Commencement phase (section 1.3.1.1).
 
-3.3.5.3.9 Sending MCS Channel Join Confirm PDU(s)
+###### 3.3.5.3.9 Sending MCS Channel Join Confirm PDU(s)
 
 The structure and fields of the MCS Channel Join Confirm PDU are described in section 2.2.1.9.
 
@@ -28924,9 +28106,9 @@ If Enhanced RDP Security (section 5.4) is in effect, the External Security Proto
 be used to encrypt the entire PDU and generate a verification digest before the PDU is transmitted
 over the wire.
 
-3.3.5.3.10
+###### 3.3.5.3.10 Processing Security Exchange PDU
 
-Processing Security Exchange PDU
+
 
 The structure and fields of the Security Exchange PDU are described in section 2.2.1.10.
 
@@ -28944,7 +28126,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The embedded flags field of the basicSecurityHeader MUST contain the SEC_EXCHANGE_PKT
+
+The embedded flags field of the basicSecurityHeader MUST contain the SEC_EXCHANGE_PKT
 (0x0001) flag (described in section 2.2.8.1.1.2.1). If this flag is not present then the packet cannot be
 interpreted as a Security Exchange PDU, and the connection SHOULD be dropped. If the
 SEC_LICENSE_ENCRYPT_SC (0x0200) flag is present, then the client is able to accept encrypted
@@ -28963,9 +28146,9 @@ accomplish this task by employing the techniques described in section 5.3.5. On 
 of the session keys, the server MUST store the session keys in the Session Keys store (section
 3.3.1.10).
 
-3.3.5.3.11
+###### 3.3.5.3.11 Processing Client Info PDU
 
-Processing Client Info PDU
+
 
 The structure and fields of the Client Info PDU are specified in section 2.2.1.11.
 
@@ -29013,7 +28196,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-If an auto-reconnect cookie exists in the autoReconnectCookie field, the server SHOULD store the
+
+If an auto-reconnect cookie exists in the autoReconnectCookie field, the server SHOULD store the
 cookie in the Automatic Reconnection Cookie store (section 3.3.1.10)and use it to log on the user once
 the connection sequence completes (for a description of how automatic reconnection works, see
 section 5.5). If logon with the cookie fails, the credentials supplied in the Client Info PDU SHOULD be
@@ -29023,9 +28207,9 @@ Once the server has successfully processed the Client Info PDU, it can enter the
 RDP Connection Sequence and carry out a licensing exchange with the client (see section 1.3.1.1 for
 an overview of the RDP Connection Sequence phases).
 
-3.3.5.3.12
+###### 3.3.5.3.12 Sending License Error PDU - Valid Client
 
-Sending License Error PDU - Valid Client
+
 
 The structure and fields of the License Error (Valid Client) PDU are described in section 2.2.1.12.
 
@@ -29063,9 +28247,9 @@ The remainder of the PDU MUST be populated according to the structure and type d
 After sending the License Error (Valid Client) PDU, the server MUST send the Demand Active PDU
 (section 3.3.5.3.13.1) to the client.
 
-3.3.5.3.13  Mandatory Capability Exchange
+###### 3.3.5.3.13 Mandatory Capability Exchange
 
-3.3.5.3.13.1  Sending Demand Active PDU
+###### 3.3.5.3.13.1 Sending Demand Active PDU
 
 The structure and fields of the Demand Active PDU are described in section 2.2.1.13.1.
 
@@ -29082,7 +28266,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-the embedded channelId field MUST be set to the MCS I/O channel ID held in the I/O Channel ID
+
+the embedded channelId field MUST be set to the MCS I/O channel ID held in the I/O Channel ID
 store (section 3.3.1.3). The embedded userData field contains the remaining fields of the Demand
 Active PDU.
 
@@ -29101,7 +28286,7 @@ SEC_ENCRYPT (0x0008) flag.
 The remaining fields are populated as described in section 2.2.1.13.1.1, with the combined capability
 set data being inserted into the capabilitySets field.
 
-3.3.5.3.13.2  Processing Confirm Active PDU
+###### 3.3.5.3.13.2 Processing Confirm Active PDU
 
 The structure and fields of the Confirm Active PDU are described in section 2.2.1.13.2.
 
@@ -29137,9 +28322,9 @@ After successfully processing the Confirm Active PDU, the server MUST send the S
 (section 3.3.5.3.14) to the client. If processing of the Confirm Active PDU was unsuccessful, the
 connection SHOULD be dropped.
 
-3.3.5.3.14
+###### 3.3.5.3.14 Processing Synchronize PDU
 
-Processing Synchronize PDU
+
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -29148,13 +28333,14 @@ Release: March 9, 2026
 
 322 / 444
 
-The structure and fields of the Synchronize PDU are described in section 2.2.1.14, and the techniques
+
+The structure and fields of the Synchronize PDU are described in section 2.2.1.14, and the techniques
 described in section 3.3.5.2 demonstrate how to process the contents of the PDU. The contents of the
 targetUser field MUST be ignored.
 
-3.3.5.3.15
+###### 3.3.5.3.15 Processing Control PDU - Cooperate
 
-Processing Control PDU - Cooperate
+
 
 The structure and fields of the Control (Cooperate) PDU are described in section 2.2.1.15, and the
 techniques described in section 3.3.5.2 demonstrate how to process the contents of the PDU. The
@@ -29164,9 +28350,9 @@ After successfully processing the client-to-server Control (Cooperate) PDU, the 
 Control (Cooperate) PDU (section 3.3.5.3.20) to the client. If processing of the client-to-server Control
 (Cooperate) PDU was unsuccessful, the connection SHOULD be dropped.
 
-3.3.5.3.16
+###### 3.3.5.3.16 Processing Control PDU - Request Control
 
-Processing Control PDU - Request Control
+
 
 The structure and fields of the Control (Request Control) PDU are described in section 2.2.1.16, and
 the techniques described in section 3.3.5.2 demonstrate how to process the contents of the PDU. The
@@ -29176,9 +28362,9 @@ After successfully processing the Control (Request Control) PDU, the server MUST
 (Granted Control) PDU (section 3.3.5.3.21) to the client. If processing of the Control (Request Control)
 PDU was unsuccessful, the connection SHOULD be dropped.
 
-3.3.5.3.17
+###### 3.3.5.3.17 Processing Persistent Key List PDU(s)
 
-Processing Persistent Key List PDU(s)
+
 
 The structure and fields of the Persistent Key List PDU are described in section 2.2.1.17, and the
 techniques described in section 3.3.5.2 demonstrate how to process the contents of the PDU. Note
@@ -29189,9 +28375,9 @@ After the server has successfully processed the Persistent Key List PDU (or sequ
 List PDUs), it MUST store the 64-bit bitmap keys received from the client in the Cached Bitmap Keys
 store (section 3.3.1.8).
 
-3.3.5.3.18
+###### 3.3.5.3.18 Processing Font List PDU
 
-Processing Font List PDU
+
 
 The structure and fields of the Font List are described in section 2.2.1.18, and the techniques
 described in section 3.3.5.2 demonstrate how to process the contents of the PDU. The contents of the
@@ -29201,17 +28387,17 @@ After successfully processing the Font List PDU, the server MUST send the Font M
 3.3.5.3.22) to the client. If processing of the Font List PDU was unsuccessful, the connection SHOULD
 be dropped.
 
-3.3.5.3.19
+###### 3.3.5.3.19 Sending Synchronize PDU
 
-Sending Synchronize PDU
+
 
 The structure and fields of the Synchronize PDU are described in section 2.2.1.19, and the techniques
 described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The targetUser
 field SHOULD<49> be set to zero. The contents of this PDU SHOULD NOT be compressed.
 
-3.3.5.3.20
+###### 3.3.5.3.20 Sending Control PDU - Cooperate
 
-Sending Control PDU - Cooperate
+
 
 The structure and fields of the Control (Cooperate) PDU are described in section 2.2.1.20, and the
 techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The
@@ -29225,9 +28411,10 @@ Release: March 9, 2026
 
 323 / 444
 
-3.3.5.3.21
 
-Sending Control PDU - Granted Control
+###### 3.3.5.3.21 Sending Control PDU - Granted Control
+
+
 
 The structure and fields of the Control (Granted Control) PDU are described in section 2.2.1.21, and
 the techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The
@@ -29235,9 +28422,9 @@ grantId field SHOULD be set to the User Channel ID (held in the User Channel ID 
 while the controlId field SHOULD be set to the MCS server channel ID (held in the Server Channel ID
 store (section 3.3.1.5)). The contents of this PDU SHOULD NOT be compressed.
 
-3.3.5.3.22
+###### 3.3.5.3.22 Sending Font Map PDU
 
-Sending Font Map PDU
+
 
 The structure and fields of the Font Map PDU are described in section 2.2.1.22, and the techniques
 described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The contents of
@@ -29246,9 +28433,9 @@ this PDU SHOULD NOT be compressed.
 Once the server has successfully sent this PDU, graphics and pointer updates (section 2.2.9) SHOULD
 be sent to the client (section 3.3.5.9).
 
-3.3.5.4  Disconnection Sequences
+##### 3.3.5.4 Disconnection Sequences
 
-3.3.5.4.1 Processing Shutdown Request PDU
+###### 3.3.5.4.1 Processing Shutdown Request PDU
 
 The structure and fields of the Shutdown Request PDU are described in section 2.2.2.1, and the
 techniques described in section 3.3.5.2 demonstrate how to process the contents of the PDU.
@@ -29258,15 +28445,15 @@ Request Denied PDU (section 3.3.5.4.2) to the client if a logged-on user account
 session. If a logged-on user account is not associated with the session, the server MUST close the
 connection.
 
-3.3.5.4.2 Sending Shutdown Request Denied PDU
+###### 3.3.5.4.2 Sending Shutdown Request Denied PDU
 
 The structure and fields of the Shutdown Request Denied PDU are described in section 2.2.2.2, and
 the techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The
 contents of this PDU SHOULD NOT be compressed.
 
-3.3.5.5  Deactivation-Reconnection Sequence
+##### 3.3.5.5 Deactivation-Reconnection Sequence
 
-3.3.5.5.1 Sending Deactivate All PDU
+###### 3.3.5.5.1 Sending Deactivate All PDU
 
 The structure and fields of the Deactivate All PDU are described in section 2.2.3.1, and the techniques
 described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU.
@@ -29295,17 +28482,18 @@ Release: March 9, 2026
 
 324 / 444
 
-3.3.5.6  Auto-Reconnect Sequence
 
-3.3.5.6.1 Sending Auto-Reconnect Status PDU
+##### 3.3.5.6 Auto-Reconnect Sequence
+
+###### 3.3.5.6.1 Sending Auto-Reconnect Status PDU
 
 The structure and fields of the Auto-Reconnect Status PDU are described in section 2.2.4.1, and the
 techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The
 contents of this PDU SHOULD NOT be compressed.
 
-3.3.5.7  Server Error Reporting and Status Updates
+##### 3.3.5.7 Server Error Reporting and Status Updates
 
-3.3.5.7.1 Sending Set Error Info PDU
+###### 3.3.5.7.1 Sending Set Error Info PDU
 
 The structure and fields of the Set Error Info PDU are described in section 2.2.5.1, and the techniques
 described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The contents of
@@ -29318,7 +28506,7 @@ Core Data (section 2.2.1.3.2).
 After the PDU has been sent the server MUST disconnect the client (since the Set Error Info PDU has
 been sent, the client will be aware of the reason for the disconnect).
 
-3.3.5.7.1.1  User Authorization Failures
+###### 3.3.5.7.1.1 User Authorization Failures
 
 The process of user authorization ensures that a user has sufficient permission to access a server
 remotely via RDP. User authorization MUST only take place after the credentials for a user have been
@@ -29337,7 +28525,7 @@ Set Error Info PDU to the client with the error code ERRINFO_SERVER_INSUFFICIENT
 (0x00000009) and close the connection. If the client does not support the Set Error Info PDU, the
 server MUST close the connection without sending a Set Error Info PDU.
 
-3.3.5.7.2 Sending Status Info PDU
+###### 3.3.5.7.2 Sending Status Info PDU
 
 The structure and fields of the Status Info PDU are described in section 2.2.5.2, and the techniques
 specified in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The contents of this
@@ -29347,11 +28535,11 @@ This PDU MUST NOT be sent to a client which has not indicated support for it by 
 RNS_UD_CS_SUPPORT_STATUSINFO_PDU (0x0004) in the earlyCapabilityFlags field of the Client
 Core Data (section 2.2.1.3.2).
 
-3.3.5.8  Keyboard and Mouse Input
+##### 3.3.5.8 Keyboard and Mouse Input
 
-3.3.5.8.1 Input Event Notifications
+###### 3.3.5.8.1 Input Event Notifications
 
-3.3.5.8.1.1  Processing Input Event PDU
+###### 3.3.5.8.1.1 Processing Input Event PDU
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -29360,7 +28548,8 @@ Release: March 9, 2026
 
 325 / 444
 
-The structure and fields of the Input Event PDU are described in sections 2.2.8.1.1.3 and
+
+The structure and fields of the Input Event PDU are described in sections 2.2.8.1.1.3 and
 2.2.8.1.1.3.1, and the techniques described in section 3.3.5.2 demonstrate how to process the
 contents of the PDU.
 
@@ -29388,7 +28577,7 @@ connection.
 
 Once this PDU has been processed, the server MUST inject the input event into the user's session.
 
-3.3.5.8.1.2  Processing Fast-Path Input Event PDU
+###### 3.3.5.8.1.2 Processing Fast-Path Input Event PDU
 
 The Fast-Path Input Event PDU has the following basic structure (sections 5.3.8 and 5.4.4):
 
@@ -29437,7 +28626,8 @@ Release: March 9, 2026
 
 326 / 444
 
-The contents of the embedded action field of the fpInputHeader field MUST be set to
+
+The contents of the embedded action field of the fpInputHeader field MUST be set to
 FASTPATH_INPUT_ACTION_FASTPATH (0). If it is not set to this value the PDU is not a Fast-Path
 Input Event PDU and MUST be processed as a slow-path PDU (section 3.3.5.2).
 
@@ -29456,23 +28646,23 @@ received that does not match one of the known types, the server SHOULD drop the 
 
 Once this PDU has been processed, the server MUST inject the input event into the user's session.
 
-3.3.5.8.2 Keyboard Status PDUs
+###### 3.3.5.8.2 Keyboard Status PDUs
 
-3.3.5.8.2.1  Sending Set Keyboard Indicators PDU
+###### 3.3.5.8.2.1 Sending Set Keyboard Indicators PDU
 
 The structure and fields of the Set Keyboard Indicators PDU are described in section 2.2.8.2.1, and
 the techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The
 contents of this PDU SHOULD NOT be compressed.
 
-3.3.5.8.2.2  Sending Set Keyboard IME Status PDU
+###### 3.3.5.8.2.2 Sending Set Keyboard IME Status PDU
 
 The structure and fields of the Set Keyboard IME Status PDU are described in section 2.2.8.2.2, and
 the techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The
 contents of this PDU SHOULD NOT be compressed.
 
-3.3.5.9  Basic Output
+##### 3.3.5.9 Basic Output
 
-3.3.5.9.1 Sending Slow-Path Graphics Update PDU
+###### 3.3.5.9.1 Sending Slow-Path Graphics Update PDU
 
 The structure and fields of the Slow-Path Graphics Update PDU are described in section 2.2.9.1.1.3,
 and the techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU.
@@ -29494,7 +28684,7 @@ The contents of this PDU SHOULD be compressed by the server before any MAC signa
 constructed and encryption methods applied if the size of the data payload exceeds 50 bytes. The
 Share Data Header MUST be initialized with the compression usage information (section 3.3.5.1).
 
-3.3.5.9.2 Sending Slow-Path Pointer Update PDU
+###### 3.3.5.9.2 Sending Slow-Path Pointer Update PDU
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -29503,7 +28693,8 @@ Release: March 9, 2026
 
 327 / 444
 
-The structure and fields of the Slow-Path Pointer Update PDU are described in section 2.2.9.1.1.4, and
+
+The structure and fields of the Slow-Path Pointer Update PDU are described in section 2.2.9.1.1.4, and
 the techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU.
 
 The messageType field MUST be initialized with the identifier describing the type of the Pointer
@@ -29532,7 +28723,7 @@ The contents of this PDU SHOULD be compressed by the server before any MAC signa
 constructed and encryption methods applied if the size of the data payload exceeds 50 bytes. The
 Share Data Header MUST be initialized with the compression usage information (section 3.3.5.1).
 
-3.3.5.9.3 Sending Fast-Path Update PDU
+###### 3.3.5.9.3 Sending Fast-Path Update PDU
 
 The Fast-Path Update PDU has the following basic structure (sections 5.3.8 and 5.4.4):
 
@@ -29585,7 +28776,8 @@ Release: March 9, 2026
 
 328 / 444
 
-The fpOutputHeader, length1, and length2 fields MUST be initialized as described in section
+
+The fpOutputHeader, length1, and length2 fields MUST be initialized as described in section
 2.2.9.1.2. Because the PDU is in fast-path format, the embedded action field of the fpOutputHeader
 field MUST be set to FASTPATH_OUTPUT_ACTION_FASTPATH (0).
 
@@ -29609,22 +28801,22 @@ compression field of the common updateHeader field MUST contain the
 FASTPATH_OUTPUT_COMPRESSION_USED flag and the optional compressionFlags field MUST be
 initialized with the compression usage information.
 
-3.3.5.9.4 Sound
+###### 3.3.5.9.4 Sound
 
-3.3.5.9.4.1  Sending Play Sound PDU
+###### 3.3.5.9.4.1 Sending Play Sound PDU
 
 The structure and fields of the Play Sound PDU are described in section 2.2.9.1.1.5, and the
 techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The
 Play Sound PDU SHOULD<50> be sent to instruct a client to play a sound by specifying its frequency
 and duration. The contents of this PDU SHOULD NOT be compressed.
 
-3.3.5.10
+##### 3.3.5.10 Logon and Authorization Notifications
 
-Logon and Authorization Notifications
 
-3.3.5.10.1
 
-Sending Save Session Info PDU
+###### 3.3.5.10.1 Sending Save Session Info PDU
+
+
 
 The structure and fields of the Save Session Info PDU are described in section 2.2.10.1.
 
@@ -29658,7 +28850,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Capability Set (section 2.2.7.1.1) received from the client (section 3.3.5.3.13.2), determines
+
+Capability Set (section 2.2.7.1.1) received from the client (section 3.3.5.3.13.2), determines
 whether the INFOTYPE_LOGON or INFOTYPE_LOGON_LONG type is used.
 
 A logon notification of type INFOTYPE_LOGON_PLAINNOTIFY SHOULD be sent whenever a notification
@@ -29667,9 +28860,9 @@ of type INFOTYPE_LOGON or INFOTYPE_LOGON_LONG would not be sent.
 The techniques described in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The
 contents of this PDU SHOULD NOT be compressed.
 
-3.3.5.10.2
+###### 3.3.5.10.2 Sending Early User Authorization Result PDU
 
-Sending Early User Authorization Result PDU
+
 
 The structure and fields of the Early User Authorization Result PDU are described in section 2.2.10.2.
 If the PROTOCOL_HYBRID_EX (0x00000008) flag was specified in the requestedProtocols field of
@@ -29680,13 +28873,13 @@ indicate the result of the authorization by using the Early User Authorization R
 sent to the client, the Early User Authorization Result PDU MUST be sent before any post-handshake
 PDUs are transmitted (section 5.4.2.1 and 5.4.2.2).
 
-3.3.5.11
+##### 3.3.5.11 Controlling Server Graphics Output
 
-Controlling Server Graphics Output
 
-3.3.5.11.1
 
-Processing Refresh Rect PDU
+###### 3.3.5.11.1 Processing Refresh Rect PDU
+
+
 
 The structure and fields of the Refresh Rect PDU are described in section 2.2.11.2, and the techniques
 described in section 3.3.5.2 demonstrate how to process the contents of the PDU.
@@ -29694,9 +28887,9 @@ described in section 3.3.5.2 demonstrate how to process the contents of the PDU.
 Once this PDU has been processed, the server MUST send updated graphics data for the region
 specified by the PDU.
 
-3.3.5.11.2
+###### 3.3.5.11.2 Processing Suppress Output PDU
 
-Processing Suppress Output PDU
+
 
 The structure and fields of the Suppress Output PDU are described in section 2.2.11.3, and the
 techniques described in section 3.3.5.2 demonstrate how to process the contents of the PDU.
@@ -29704,13 +28897,13 @@ techniques described in section 3.3.5.2 demonstrate how to process the contents 
 Once this PDU has been processed, the server MUST stop or resume sending graphics updates,
 depending on the value of the allowDisplayUpdates field in the PDU.
 
-3.3.5.12
+##### 3.3.5.12 Display Update Notifications
 
-Display Update Notifications
 
-3.3.5.12.1
 
-Sending Monitor Layout PDU
+###### 3.3.5.12.1 Sending Monitor Layout PDU
+
+
 
 The structure and fields of the Monitor Layout PDU are specified in section 2.2.12.1, and the
 techniques specified in section 3.3.5.1 demonstrate how to initialize the contents of the PDU. The
@@ -29720,13 +28913,13 @@ This PDU MUST NOT be sent to a client that has not indicated support for it by s
 RNS_UD_CS_SUPPORT_MONITOR_LAYOUT_PDU flag (0x0040) in the earlyCapabilityFlags field of
 the Client Core Data (section 2.2.1.3.2).
 
-3.3.5.13
+##### 3.3.5.13 Server Redirection
 
-Server Redirection
 
-3.3.5.13.1
 
-Sending of the Server Redirection PDUs
+###### 3.3.5.13.1 Sending of the Server Redirection PDUs
+
+
 
 An overview of the principles behind server redirection and an example of how it operates within the
 context of an RDP connection are presented in section 1.3.8.
@@ -29738,7 +28931,8 @@ Release: March 9, 2026
 
 330 / 444
 
-Two variants of the Server Redirection PDU are used to force the client to direct the current
+
+Two variants of the Server Redirection PDU are used to force the client to direct the current
 connection to another server. The Standard Security variant (section 2.2.13.2) of the Server
 Redirection PDU MUST be used when Enhanced RDP Security (section 5.4) is not in effect. When
 Enhanced RDP Security is being used to secure the connection, the Enhanced Security variant (section
@@ -29753,9 +28947,9 @@ The techniques described in section 3.3.5.1 describe how to initialize the two v
 instructions regarding the Share Data Header MUST be ignored because it is not present in either
 PDU). The contents of this PDU SHOULD NOT be compressed.
 
-3.3.5.14
+##### 3.3.5.14 Network Characteristics Detection
 
-Network Characteristics Detection
+
 
 The steps that follow describe how a server SHOULD respond when receiving the client-to-server
 network characteristics response detection messages described in section 2.2.14.2.
@@ -29780,13 +28974,13 @@ using the following calculation: (byteCount * 8) / timeDelta.
 or bandwidth measurement operation that is in progress and instead use the values transmitted in
 the bandwidth and rtt fields.
 
-3.3.5.15
+##### 3.3.5.15 Multitransport Bootstrapping
 
-Multitransport Bootstrapping
 
-3.3.5.15.1
 
-Sending the Initiate Multitransport Request PDU
+###### 3.3.5.15.1 Sending the Initiate Multitransport Request PDU
+
+
 
 The structure and fields of the Initiate Multitransport Request PDU are described in section 2.2.15.1
 and the PDU MUST be initialized according to this specification. The embedded initiator field of the
@@ -29811,16 +29005,17 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-correctly correlated with the Tunnel Create Request PDU ([MS-RDPEMT] section 2.2.2.1) or Initiate
+
+correctly correlated with the Tunnel Create Request PDU ([MS-RDPEMT] section 2.2.2.1) or Initiate
 Multitransport Response PDU (section 2.2.15.2).
 
 The Initiate Multitransport Request PDU is only used to bootstrap the creation of a sideband channel.
 More information on the creation, setup sequence, and operation of sideband channels is available in
 [MS-RDPEMT] section 1.3.1.
 
-3.3.5.15.2
+###### 3.3.5.15.2 Processing the Initiate Multitransport Response PDU
 
-Processing the Initiate Multitransport Response PDU
+
 
 The structure and fields of the Initiate Multitransport Response PDU are described in section 2.2.15.2.
 The receipt of this PDU indicates to the server whether or not the client was able to initiate a sideband
@@ -29828,22 +29023,22 @@ channel for the request associated with the ID specified in the requestId field.
 security cookie associated with the request can be determined by looking up the data associated with
 the request ID in the Multitransport Request Data store (section 3.3.1.14).
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
-3.3.6.1  Server-Side Connection Sequence Timeout
+##### 3.3.6.1 Server-Side Connection Sequence Timeout
 
 The Server-Side Connection Sequence Timeout fires if more than 60 seconds have elapsed on the
 server-side Connection Sequence Timeout Timer (section 3.3.2.1). In this event the server MAY
 terminate the connection to the server.
 
-3.3.6.2  Auto-Reconnect Cookie Update
+##### 3.3.6.2 Auto-Reconnect Cookie Update
 
 The Auto-Reconnect Cookie Update event fires at hourly intervals and triggers the creation of an Auto-
 Reconnect cookie (section 5.5). This cookie is effectively a 16-byte, cryptographically secure random
 number contained within a Server Auto-Reconnect Packet (section 2.2.4.2), and it is sent to the client
 by using the Save Session Info PDU (section 2.2.10.1).
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -29854,14 +29049,15 @@ Release: March 9, 2026
 
 332 / 444
 
-4  Protocol Examples
 
-4.1  Annotated Connection Sequence
+## 4 Protocol Examples
+
+### 4.1 Annotated Connection Sequence
 
 The annotated connection sequence PDUs detailed in sections 4.1.1 through  4.1.22 were exchanged
 between a Microsoft RDP 5.1 client and Microsoft RDP 5.1 server.
 
-4.1.1  Client X.224 Connection Request PDU
+#### 4.1.1 Client X.224 Connection Request PDU
 
 The following is an annotated dump of the X.224 Connection Request PDU (section 2.2.1.1).
 
@@ -29888,7 +29084,7 @@ The following is an annotated dump of the X.224 Connection Request PDU (section 
  08 00 -> RDP_NEG_REQ::length (8 bytes)
  00 00 00 00 -> RDP_NEG_REQ::requestedProtocols (PROTOCOL_RDP)
 
-4.1.2  Server X.224 Connection Confirm PDU
+#### 4.1.2 Server X.224 Connection Confirm PDU
 
 The following is an annotated dump of the X.224 Connection Confirm PDU (section 2.2.1.2).
 
@@ -29917,7 +29113,8 @@ Release: March 9, 2026
 
 333 / 444
 
-4.1.3  Client MCS Connect Initial PDU with GCC Conference Create Request
+
+#### 4.1.3 Client MCS Connect Initial PDU with GCC Conference Create Request
 
 The following is an annotated dump of the MCS Connect Initial PDU with GCC Conference Create
 Request (section 2.2.1.3).
@@ -29993,7 +29190,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-0x94 are length bytes, which indicates that the length is greater than 256 bytes and less
+
+0x94 are length bytes, which indicates that the length is greater than 256 bytes and less
 than 65536 bytes, specifically 0x194 (404) bytes.
 
  04 01 01 -> Connect-Initial::callingDomainSelector
@@ -30070,7 +29268,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- 0 - padding
+
+ 0 - padding
 
  05 -> object length = 5 bytes
 
@@ -30147,7 +29346,8 @@ Release: March 9, 2026
 
 336 / 444
 
- 0x01:
+
+ 0x01:
  0 - --\
  0 -   |
  0 -   |
@@ -30223,7 +29423,8 @@ Release: March 9, 2026
 
 337 / 444
 
- 0x07
+
+ 0x07
  = 0x01 | 0x02 | 0x04
  = RNS_UD_24BPP_SUPPORT | RNS_UD_16BPP_SUPPORT | RNS_UD_15BPP_SUPPORT
 
@@ -30298,9 +29499,10 @@ Release: March 9, 2026
 
 338 / 444
 
-   CHANNEL_OPTION_ENCRYPT_RDP
 
-4.1.4  Server MCS Connect Response PDU with GCC Conference Create Response
+   CHANNEL_OPTION_ENCRYPT_RDP
+
+#### 4.1.4 Server MCS Connect Response PDU with GCC Conference Create Response
 
 The following is an annotated dump of the MCS Connect Response PDU with GCC Conference
 Create Response (section 2.2.1.4).
@@ -30371,7 +29573,8 @@ Release: March 9, 2026
 
 339 / 444
 
- PER encoded (ALIGNED variant of BASIC-PER) GCC Conference Create Response
+
+ PER encoded (ALIGNED variant of BASIC-PER) GCC Conference Create Response
  PDU:
  14 76 0a 01 01 00 01 c0 00 00 4d 63 44 6e 81 08
 
@@ -30448,7 +29651,8 @@ Release: March 9, 2026
 
 340 / 444
 
- 0 -   | number of UserData sets = 1
+
+ 0 -   | number of UserData sets = 1
  0 -   |
  0 -   |
  0 -   |
@@ -30525,7 +29729,8 @@ Release: March 9, 2026
 
 341 / 444
 
- 01 00 00 00 -> PROPRIETARYSERVERCERTIFICATE::dwVersion = CERT_CHAIN_VERSION_1 (1)
+
+ 01 00 00 00 -> PROPRIETARYSERVERCERTIFICATE::dwVersion = CERT_CHAIN_VERSION_1 (1)
  01 00 00 00 -> PROPRIETARYSERVERCERTIFICATE::dwSigAlgId = SIGNATURE_ALG_RSA (1)
  01 00 00 00 -> PROPRIETARYSERVERCERTIFICATE::dwKeyAlgId = KEY_EXCHANGE_ALG_RSA (1)
  06 00 -> PROPRIETARYSERVERCERTIFICATE::wPublicKeyBlobType = BB_RSA_KEY_BLOB (6)
@@ -30561,7 +29766,7 @@ Release: March 9, 2026
  aa 71 3e 0f 54 b9 9a e4 99 68 3f 6c d6 76 84 61
  00 00 00 00 00 00 00 00 -> PROPRIETARYSERVERCERTIFICATE::SignatureBlob
 
-4.1.5  Client MCS Erect Domain Request PDU
+#### 4.1.5 Client MCS Erect Domain Request PDU
 
 The following is an annotated dump of the MCS Erect Domain Request PDU (section 2.2.1.5).
 
@@ -30598,7 +29803,8 @@ Release: March 9, 2026
 
 342 / 444
 
- 0 -   |
+
+ 0 -   |
  1 - --/
 
  0x00:
@@ -30632,7 +29838,7 @@ Release: March 9, 2026
  0 -   |
  0 - --/
 
-4.1.6  Client MCS Attach User Request PDU
+#### 4.1.6 Client MCS Attach User Request PDU
 
 The following is an annotated dump of the MCS Attach User Request PDU (section 2.2.1.6).
 
@@ -30654,7 +29860,7 @@ The following is an annotated dump of the MCS Attach User Request PDU (section 2
  0 - padding
  0 - padding
 
-4.1.7  Server MCS Attach-User Confirm PDU
+#### 4.1.7 Server MCS Attach-User Confirm PDU
 
 The following is an annotated dump of the MCS Attach User Confirm PDU (section 2.2.1.7).
 
@@ -30669,7 +29875,8 @@ Release: March 9, 2026
 
 343 / 444
 
- 02 f0 80 -> X.224 Data TPDU
+
+ 02 f0 80 -> X.224 Data TPDU
 
  PER encoded (ALIGNED variant of BASIC-PER) PDU contents:
  2e 00 00 06
@@ -30715,11 +29922,11 @@ Release: March 9, 2026
  1 -   |
  0 - --/
 
-4.1.8  MCS Channel Join Request and Confirm PDUs
+#### 4.1.8 MCS Channel Join Request and Confirm PDUs
 
-4.1.8.1  Channel 1007
+##### 4.1.8.1 Channel 1007
 
-4.1.8.1.1 Client Join Request PDU for Channel 1007 (User Channel)
+###### 4.1.8.1.1 Client Join Request PDU for Channel 1007 (User Channel)
 
 The following is an annotated dump of the MCS Channel Join Request PDU (section 2.2.1.8).
 
@@ -30742,7 +29949,8 @@ Release: March 9, 2026
 
 344 / 444
 
- 1 -   | CHOICE: From DomainMCSPDU select channelJoinRequest (14)
+
+ 1 -   | CHOICE: From DomainMCSPDU select channelJoinRequest (14)
  1 -   | of type ChannelJoinRequest
  1 -   |
  0 - --/
@@ -30790,7 +29998,7 @@ Release: March 9, 2026
  1 -   |
  1 - --/
 
-4.1.8.1.2 Server Join Confirm PDU for Channel 1007 (User Channel)
+###### 4.1.8.1.2 Server Join Confirm PDU for Channel 1007 (User Channel)
 
 The following is an annotated dump of the MCS Channel Join Confirm PDU (section 2.2.1.9).
 
@@ -30817,7 +30025,8 @@ Release: March 9, 2026
 
 345 / 444
 
- 1 - ChannelJoinConfirm::channelId present
+
+ 1 - ChannelJoinConfirm::channelId present
  0 - --\
        |
  0x00: | ChannelJoinConfirm::result = rt-successful (0)
@@ -30894,14 +30103,15 @@ Release: March 9, 2026
 
 346 / 444
 
- 1 -   |
+
+ 1 -   |
  1 -   |
  1 -   |
  1 - --/
 
-4.1.8.2  Channel 1003
+##### 4.1.8.2 Channel 1003
 
-4.1.8.2.1 Client Join Request PDU for Channel 1003 (I/O Channel)
+###### 4.1.8.2.1 Client Join Request PDU for Channel 1003 (I/O Channel)
 
 The following is an annotated dump of the MCS Channel Join Request PDU (section 2.2.1.8).
 
@@ -30910,7 +30120,7 @@ The following is an annotated dump of the MCS Channel Join Request PDU (section 
  ChannelJoinRequest::initiator = 6 + 1001 = 1007
  ChannelJoinRequest::channelId = 0x03eb = 1003
 
-4.1.8.2.2 Server Join Confirm PDU for Channel 1003 (I/O Channel)
+###### 4.1.8.2.2 Server Join Confirm PDU for Channel 1003 (I/O Channel)
 
 The following is an annotated dump of the MCS Channel Join Confirm PDU (section 2.2.1.9).
 
@@ -30921,9 +30131,9 @@ The following is an annotated dump of the MCS Channel Join Confirm PDU (section 
  ChannelJoinConfirm::requested = 0x03eb = 1003
  ChannelJoinConfirm::channelId = 0x03eb = 1003
 
-4.1.8.3  Channel 1004
+##### 4.1.8.3 Channel 1004
 
-4.1.8.3.1 Client Join Request PDU for Channel 1004 (rdpdr Channel)
+###### 4.1.8.3.1 Client Join Request PDU for Channel 1004 (rdpdr Channel)
 
 The following is an annotated dump of the MCS Channel Join Request PDU (section 2.2.1.8).
 
@@ -30932,7 +30142,7 @@ The following is an annotated dump of the MCS Channel Join Request PDU (section 
  ChannelJoinRequest::initiator = 6 + 1001 = 1007
  ChannelJoinRequest::channelId = 0x03ec = 1004
 
-4.1.8.3.2 Server Join Confirm PDU for Channel 1004 (rdpdr Channel)
+###### 4.1.8.3.2 Server Join Confirm PDU for Channel 1004 (rdpdr Channel)
 
 The following is an annotated dump of the Client MCS Channel Join Confirm PDU (section 2.2.1.9).
 
@@ -30943,9 +30153,9 @@ The following is an annotated dump of the Client MCS Channel Join Confirm PDU (s
  ChannelJoinConfirm::requested = 0x03ec = 1004
  ChannelJoinConfirm::channelId = 0x03ec = 1004
 
-4.1.8.4  Channel 1005
+##### 4.1.8.4 Channel 1005
 
-4.1.8.4.1 Client Join Request PDU for Channel 1005 (cliprdr Channel)
+###### 4.1.8.4.1 Client Join Request PDU for Channel 1005 (cliprdr Channel)
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -30954,14 +30164,15 @@ Release: March 9, 2026
 
 347 / 444
 
-The following is an annotated dump of the MCS Channel Join Request PDU (section 2.2.1.8).
+
+The following is an annotated dump of the MCS Channel Join Request PDU (section 2.2.1.8).
 
  00000000 03 00 00 0c 02 f0 80 38 00 06 03 ed             .......8....
 
  ChannelJoinRequest::initiator = 6 + 1001 = 1007
  ChannelJoinRequest::channelId = 0x03ed = 1005
 
-4.1.8.4.2 Server Join Confirm PDU for Channel 1005 (cliprdr Channel)
+###### 4.1.8.4.2 Server Join Confirm PDU for Channel 1005 (cliprdr Channel)
 
 The following is an annotated dump of the MCS Channel Join Confirm PDU (section 2.2.1.9).
 
@@ -30973,9 +30184,9 @@ The following is an annotated dump of the MCS Channel Join Confirm PDU (section 
  ChannelJoinConfirm::requested = 0x03ed = 1005
  ChannelJoinConfirm::channelId = 0x03ed = 1005
 
-4.1.8.5  Channel 1006
+##### 4.1.8.5 Channel 1006
 
-4.1.8.5.1 Client Join Request PDU for Channel 1006 (rdpsnd Channel)
+###### 4.1.8.5.1 Client Join Request PDU for Channel 1006 (rdpsnd Channel)
 
 The following is an annotated dump of the MCS Channel Join Request PDU (section 2.2.1.8).
 
@@ -30984,7 +30195,7 @@ The following is an annotated dump of the MCS Channel Join Request PDU (section 
  ChannelJoinRequest::initiator = 6 + 1001 = 1007
  ChannelJoinRequest::channelId = 0x03ee = 1006
 
-4.1.8.5.2 Server Join Confirm PDU for Channel 1006 (rdpsnd Channel)
+###### 4.1.8.5.2 Server Join Confirm PDU for Channel 1006 (rdpsnd Channel)
 
 The following is an annotated dump of the MCS Channel Join Confirm PDU (section 2.2.1.9).
 
@@ -30995,7 +30206,7 @@ The following is an annotated dump of the MCS Channel Join Confirm PDU (section 
  ChannelJoinConfirm::requested = 0x03ee = 1006
  ChannelJoinConfirm::channelId = 0x03ee = 1006
 
-4.1.9  Client Security Exchange PDU
+#### 4.1.9 Client Security Exchange PDU
 
 The following is an annotated dump of the Security Exchange PDU (section 2.2.1.10).
 
@@ -31019,7 +30230,8 @@ Release: March 9, 2026
 
 348 / 444
 
- 0x64:
+
+ 0x64:
  0 - --\
  1 -   |
  1 -   | CHOICE: From DomainMCSPDU select sendDataRequest (25)
@@ -31095,7 +30307,8 @@ Release: March 9, 2026
 
 349 / 444
 
- 0 -   |
+
+ 0 -   |
  0 - --/
 
  01 02 -> TS_SECURITY_HEADER::flags = 0x0201
@@ -31115,7 +30328,7 @@ Release: March 9, 2026
 
  00 00 00 00 00 00 00 00 -> 8-bytes of rear padding (always present)
 
-4.1.10 Client Info PDU
+#### 4.1.10 Client Info PDU
 
 The following is an annotated dump of the Client Info PDU (section 2.2.1.11).
 
@@ -31168,7 +30381,8 @@ Release: March 9, 2026
 
 350 / 444
 
- = SEC_INFO_PKT | SEC_ENCRYPT
+
+ = SEC_INFO_PKT | SEC_ENCRYPT
 
  00 00 -> TS_SECURITY_HEADER::flagsHi - ignored as flags field does
  not contain SEC_FLAGSHI_VALID (0x8000)
@@ -31245,7 +30459,8 @@ Release: March 9, 2026
 
 351 / 444
 
-   0x00000010 |
+
+   0x00000010 |
    0x00000020 |
    0x00000080 |
    0x00000100 |
@@ -31322,7 +30537,8 @@ Release: March 9, 2026
 
 352 / 444
 
- 00 00 -> TS_TIME_ZONE_INFORMATION::StandardDate::wMilliseconds = 0
+
+ 00 00 -> TS_TIME_ZONE_INFORMATION::StandardDate::wMilliseconds = 0
 
  00 00 00 00 -> TS_TIME_ZONE_INFORMATION::StandardBias = 0
 
@@ -31349,7 +30565,7 @@ Release: March 9, 2026
  TS_PERF_DISABLE_WALLPAPER
  00 00 -> TS_EXTENDED_INFO_PACKET:: cbAutoReconnectCookie = 0
 
-4.1.11 Server License Error PDU - Valid Client
+#### 4.1.11 Server License Error PDU - Valid Client
 
 The following is an annotated dump of the License Error (Valid Client) PDU (section 2.2.1.12).
 
@@ -31394,7 +30610,8 @@ Release: March 9, 2026
 
 353 / 444
 
- 0 -   |
+
+ 0 -   |
  0 -   |
  0 -   |
  0 -   |
@@ -31471,10 +30688,11 @@ Release: March 9, 2026
 
 354 / 444
 
- 04 00 -> LICENSE_ERROR_MESSAGE::bbErrorInfo::wBlobType = BB_ERROR_BLOB
+
+ 04 00 -> LICENSE_ERROR_MESSAGE::bbErrorInfo::wBlobType = BB_ERROR_BLOB
  00 00 -> LICENSE_ERROR_MESSAGE::bbErrorInfo::wBlobLen = 0
 
-4.1.12 Server Demand Active PDU
+#### 4.1.12 Server Demand Active PDU
 
 The following is an annotated dump of the Demand Active PDU (section 2.2.1.13.1).
 
@@ -31545,7 +30763,8 @@ Release: March 9, 2026
 
 355 / 444
 
- a7 24 b3 f9 6a 3a 87 c7 39 0f 59 b7 d6 3d c4 23
+
+ a7 24 b3 f9 6a 3a 87 c7 39 0f 59 b7 d6 3d c4 23
  d7 d3 fe c5 f3 b6 16 e4 2c c2 c7 27 a7 31 e9 d9
  84 b8 19 59 ea a7 e1 1c d2 8d a7 00 61 e9 b5 ab
  0d 53 fe e2 cc 1d b8 93 39 c1 d4 e4 40 b3 e4 b8
@@ -31622,7 +30841,8 @@ Release: March 9, 2026
 
 356 / 444
 
- 00 00 -> TS_GENERAL_CAPABILITYSET::compressionTypes = 0
+
+ 00 00 -> TS_GENERAL_CAPABILITYSET::compressionTypes = 0
  1d 04 -> TS_GENERAL_CAPABILITYSET::extraFlags = 0x041d
  0x041d
  = 0x0400 |
@@ -31698,7 +30918,8 @@ Release: March 9, 2026
 
 357 / 444
 
- (not initialized by server)
+
+ (not initialized by server)
  91 bf -> TS_GDIPLUS_IMAGE_CACHE_PROPERTIES::GdipObjectImageCacheMaxSize
  (not initialized by server)
 
@@ -31775,7 +30996,8 @@ Release: March 9, 2026
 
 358 / 444
 
- 01 -> TS_ORDER_CAPABILITYSET::orderSupport[TS_NEG_DRAWNINEGRID_INDEX] = TRUE
+
+ 01 -> TS_ORDER_CAPABILITYSET::orderSupport[TS_NEG_DRAWNINEGRID_INDEX] = TRUE
  01 -> TS_ORDER_CAPABILITYSET::orderSupport[TS_NEG_LINETO_INDEX] = TRUE
  01 -> TS_ORDER_CAPABILITYSET::orderSupport[TS_NEG_MULTI_DRAWNINEGRID_INDEX] = TRUE
  01 -> TS_ORDER_CAPABILITYSET::orderSupport[0x0A] = TRUE
@@ -31851,7 +31073,8 @@ Release: March 9, 2026
 
 359 / 444
 
- Input Capability Set (88 bytes)
+
+ Input Capability Set (88 bytes)
  0d 00 58 00 35 00 00 00 a1 06 00 00 40 42 0f 00
  0c f6 13 f3 93 5a 37 f3 00 90 30 e1 34 1c 38 f3
  40 f6 13 f3 04 00 00 00 4c 54 dc e2 08 50 dc e2
@@ -31913,7 +31136,7 @@ Release: March 9, 2026
 
  00 00 00 00 -> TS_DEMAND_ACTIVE_PDU::sessionId = 0
 
-4.1.13 Client Confirm Active PDU
+#### 4.1.13 Client Confirm Active PDU
 
 The following is an annotated dump of the Confirm Active PDU (section 2.2.1.13.2).
 
@@ -31924,7 +31147,8 @@ Release: March 9, 2026
 
 360 / 444
 
- 00000000 03 00 02 07 02 f0 80 64 00 06 03 eb 70 81 f8 38 .......d....p..8
+
+ 00000000 03 00 02 07 02 f0 80 64 00 06 03 eb 70 81 f8 38 .......d....p..8
  00000010 00 00 00 ab 1f 51 e7 93 17 5c 45 04 36 38 41 80 .....Q...\E.68A.
  00000020 2f ad d4 d3 48 e9 88 84 05 f4 3f c4 d1 e8 9d 92 /...H.....?.....
  00000030 85 ac e6 fd 25 30 6d b5 fe 0e 4b 72 e3 f4 15 9f ....%0m...Kr....
@@ -32001,7 +31225,8 @@ Release: March 9, 2026
 
 361 / 444
 
- 89 ca fc ff cf 37 04 b1 12 fd d2 03 30 b4 c7 fe
+
+ 89 ca fc ff cf 37 04 b1 12 fd d2 03 30 b4 c7 fe
  a1 ad 5e 2b 8d 21 3d 18 6e 0c b0 18 c4 78 33 06
  f0 14 67 7a 7d 09 1c 6e 66 57 00 db be 95 ef bf
  c2 1a a7 11 5e d2 d3 36 c8 13 8d 64 ed 0f a3 bf
@@ -32077,7 +31302,8 @@ Release: March 9, 2026
 
 362 / 444
 
- General Capability Set (24 bytes)
+
+ General Capability Set (24 bytes)
  01 00 18 00 01 00 03 00 00 02 00 00 00 00 1d 04
  00 00 00 00 00 00 00 00
 
@@ -32154,7 +31380,8 @@ Release: March 9, 2026
 
 363 / 444
 
- 01 00 -> TS_ORDER_CAPABILITYSET::desktopSaveXGranularity = 1
+
+ 01 00 -> TS_ORDER_CAPABILITYSET::desktopSaveXGranularity = 1
  14 00 -> TS_ORDER_CAPABILITYSET::desktopSaveYGranularity = 20
  00 00 -> TS_ORDER_CAPABILITYSET::pad2octetsA
  01 00 -> TS_ORDER_CAPABILITYSET::maximumOrderLevel = ORD_LEVEL_1_ORDERS (1)
@@ -32230,7 +31457,8 @@ Release: March 9, 2026
 
 364 / 444
 
- 00 00 -> TS_ORDER_CAPABILITYSET::pad2octetsE
+
+ 00 00 -> TS_ORDER_CAPABILITYSET::pad2octetsE
 
  Bitmap Cache Rev. 2 Capability Set (40 bytes)
  13 00 28 00 03 00 00 03 78 00 00 00 78 00 00 00
@@ -32306,7 +31534,8 @@ Release: March 9, 2026
 
 365 / 444
 
- Pointer Capability Set (10 bytes)
+
+ Pointer Capability Set (10 bytes)
  08 00 0a 00 01 00 14 00 15 00
 
  08 00 -> TS_POINTER_CAPABILITYSET::capabilitySetType = CAPSTYPE_POINTER (8)
@@ -32381,7 +31610,8 @@ Release: March 9, 2026
 
 366 / 444
 
- 0e 00 -> TS_FONT_CAPABILITYSET::capabilitySetType = CAPSTYPE_FONT (14)
+
+ 0e 00 -> TS_FONT_CAPABILITYSET::capabilitySetType = CAPSTYPE_FONT (14)
  08 00 -> TS_FONT_CAPABILITYSET::lengthCapability = 8 bytes
 
  01 00 -> TS_FONT_CAPABILITYSET::fontSupportFlags = 0x0001 = FONTSUPPORT_FONTLIST
@@ -32456,7 +31686,8 @@ Release: March 9, 2026
 
 367 / 444
 
- 01 00 00 00 -> TS_BRUSH_CAPABILITYSET::brushSupportLevel = BRUSH_COLOR_8x8 (1)
+
+ 01 00 00 00 -> TS_BRUSH_CAPABILITYSET::brushSupportLevel = BRUSH_COLOR_8x8 (1)
 
  Offscreen Bitmap Cache Capability Set (12 bytes)
  11 00 0c 00 01 00 00 00 00 1e 64 00
@@ -32516,7 +31747,7 @@ Release: March 9, 2026
  00 00 -> TS_GDIPLUS_IMAGE_CACHE_PROPERTIES::GdipObjectImageCacheTotalSize
  00 00 -> TS_GDIPLUS_IMAGE_CACHE_PROPERTIES::GdipObjectImageCacheMaxSize
 
-4.1.14 Client Synchronize PDU
+#### 4.1.14 Client Synchronize PDU
 
 The following is an annotated dump of the Synchronize PDU (section 2.2.1.14).
 
@@ -32527,7 +31758,8 @@ Release: March 9, 2026
 
 368 / 444
 
- 00000000 03 00 00 30 02 f0 80 64 00 06 03 eb 70 22 28 00 ...0...d....p"(.
+
+ 00000000 03 00 00 30 02 f0 80 64 00 06 03 eb 70 22 28 00 ...0...d....p"(.
  00000010 81 f8 59 ff cb 2f 73 57 2b 42 db 88 2e 23 a9 97 ..Y../sW+B...#..
  00000020 c2 b1 f5 74 bc 49 cc 8a d8 fd 60 8a 7a f6 44 75 ...t.I....`.z.Du
 
@@ -32576,7 +31808,7 @@ Release: March 9, 2026
  01 00 ->TS_SYNCHRONIZE_PDU::messageType = SYNCMSGTYPE_SYNC (1)
  ea 03 ->TS_SYNCHRONIZE_PDU::targetUser = 0x03ea
 
-4.1.15 Client Control PDU - Cooperate
+#### 4.1.15 Client Control PDU - Cooperate
 
 The following is an annotated dump of the Client Control (Cooperate) PDU (section 2.2.1.15).
 
@@ -32601,7 +31833,8 @@ Release: March 9, 2026
 
 369 / 444
 
- userData length = 0x26 = 38 bytes
+
+ userData length = 0x26 = 38 bytes
 
  08 00 -> TS_SECURITY_HEADER::flags = 0x0008 = SEC_ENCRYPT
  81 f8 -> TS_SECURITY_HEADER::flagsHi - ignored as flags field does
@@ -32634,7 +31867,7 @@ Release: March 9, 2026
  00 00 -> TS_CONTROL_PDU::grantId = 0
  00 00 00 00 -> TS_CONTROL_PDU::controlId = 0
 
-4.1.16 Client Control PDU - Request Control
+#### 4.1.16 Client Control PDU - Request Control
 
 The following is an annotated dump of the Client Control (Request) PDU (section 2.2.1.16).
 
@@ -32675,7 +31908,8 @@ Release: March 9, 2026
 
 370 / 444
 
- 0x0017
+
+ 0x0017
  = 0x0010 | 0x0007
  = TS_PROTOCOL_VERSION | PDUTYPE_DATAPDU
 
@@ -32692,7 +31926,7 @@ Release: March 9, 2026
  00 00 -> TS_CONTROL_PDU::grantId = 0
  00 00 00 00 -> TS_CONTROL_PDU::controlId = 0
 
-4.1.17 Client Persistent Key List PDU
+#### 4.1.17 Client Persistent Key List PDU
 
 The following is an annotated dump of the Persistent Key List PDU (section 2.2.1.17).
 
@@ -32749,7 +31983,8 @@ Release: March 9, 2026
 
 371 / 444
 
- cb 7e 81 b6 33 bb 4d 9a 13 80 e7 57 2a 0d 1d 11
+
+ cb 7e 81 b6 33 bb 4d 9a 13 80 e7 57 2a 0d 1d 11
  b4 18 c4 31 2f 4f 89 77 09 94 2e c3 8e bf fd 6a
  39 2b 47 74 0e 12 74 ec 45 14 c3 6b 27 d6 b6 93
  11 a4 bc 46 de 69 4a b4 54 c7 24 24 99 8f 60 b7
@@ -32826,7 +32061,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- bc c3 70 02 -> High 32-bits of Cache 2, Key 3 (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY::Key2)
+
+ bc c3 70 02 -> High 32-bits of Cache 2, Key 3 (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY::Key2)
  9f aa fa fd -> Low 32-bits of Cache 2, Key 4 (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY::Key1)
  6e ba 58 dc -> High 32-bits of Cache 2, Key 4 (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY::Key2)
  7b af de 06 -> Low 32-bits of Cache 2, Key 5 (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY::Key1)
@@ -32871,7 +32107,7 @@ Release: March 9, 2026
  83 c7 54 31 -> Low 32-bits of Cache 2, Key 24 (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY::Key1)
  aa 8a 90 b3 -> High 32-bits of Cache 2, Key 24 (TS_BITMAPCACHE_PERSISTENT_LIST_ENTRY::Key2)
 
-4.1.18 Client Font List PDU
+#### 4.1.18 Client Font List PDU
 
 The following is an annotated dump of the Font List PDU (section 2.2.1.18).
 
@@ -32900,7 +32136,8 @@ Release: March 9, 2026
 
 373 / 444
 
- not contain SEC_FLAGSHI_VALID (0x8000)
+
+ not contain SEC_FLAGSHI_VALID (0x8000)
  98 19 5c fb 92 92 f5 97 -> TS_SECURITY_HEADER1::dataSignature
 
  18 b2 b7 c3 13 dc 03 fb 64 45 c0 43 6d 91 37 26
@@ -32935,7 +32172,7 @@ Release: March 9, 2026
 
  32 00 -> TS_FONT_LIST_PDU::entrySize = 0x0032 = 50 bytes
 
-4.1.19 Server Synchronize PDU
+#### 4.1.19 Server Synchronize PDU
 
 The following is an annotated dump of the Synchronize PDU (section 2.2.1.19).
 
@@ -32974,7 +32211,8 @@ Release: March 9, 2026
 
 374 / 444
 
- 00000000 16 00 17 00 ea 03 ea 03 01 00 14 00 16 00 1f 00 ................
+
+ 00000000 16 00 17 00 ea 03 ea 03 01 00 14 00 16 00 1f 00 ................
  00000010 00 00 01 00 63 44                               ....cD
 
  16 00 -> TS_SHARECONTROLHEADER::totalLength = 0x0016 = 22 bytes
@@ -32995,7 +32233,7 @@ Release: March 9, 2026
  01 00 -> TS_SYNCHRONIZE_PDU::messageType = SYNCMSGTYPE_SYNC (1)
  63 44 -> TS_SYNCHRONIZE_PDU::targetUser (uninitialized due to bug)
 
-4.1.20 Server Control PDU - Cooperate
+#### 4.1.20 Server Control PDU - Cooperate
 
 The following is an annotated dump of the Server Control (Cooperate) PDU (section 2.2.1.20).
 
@@ -33048,7 +32286,8 @@ Release: March 9, 2026
 
 375 / 444
 
- 02 -> TS_SHAREDATAHEADER::streamID = STREAM_MED (2)
+
+ 02 -> TS_SHAREDATAHEADER::streamID = STREAM_MED (2)
  1a 00 -> TS_SHAREDATAHEADER::uncompressedLength = 0x001a = 26 bytes
  14 -> TS_SHAREDATAHEADER::pduType2 = PDUTYPE2_CONTROL (20)
  00 -> TS_SHAREDATAHEADER::compressedType = 0
@@ -33058,7 +32297,7 @@ Release: March 9, 2026
  00 00 -> TS_CONTROL_PDU::grantId = 0
  00 00 00 00 -> TS_CONTROL_PDU::controlId = 0
 
-4.1.21 Server Control PDU - Granted Control
+#### 4.1.21 Server Control PDU - Granted Control
 
 The following is an annotated dump of the Server Control (Granted Control) PDU (section 2.2.1.21).
 
@@ -33119,7 +32358,8 @@ Release: March 9, 2026
 
 376 / 444
 
-4.1.22 Server Font Map PDU
+
+#### 4.1.22 Server Font Map PDU
 
 The following is an annotated dump of the Font Map PDU (section 2.2.1.22).
 
@@ -33180,7 +32420,7 @@ The following is an annotated dump of the Font Map PDU (section 2.2.1.22).
 
  04 00 -> TS_FONT_MAP_PDU::entrySize = 4 bytes
 
-4.2  Annotated User-Initiated (on Client) Disconnection Sequence
+### 4.2 Annotated User-Initiated (on Client) Disconnection Sequence
 
 The annotated disconnection sequence PDUs detailed in sections 4.2.1 through 4.2.3 were exchanged
 between a Microsoft RDP 5.1 client and Microsoft RDP 5.1 server.
@@ -33192,7 +32432,8 @@ Release: March 9, 2026
 
 377 / 444
 
-4.2.1  Client Shutdown Request PDU
+
+#### 4.2.1 Client Shutdown Request PDU
 
 The following is an annotated dump of the Shutdown Request PDU (section 2.2.2.1).
 
@@ -33238,7 +32479,7 @@ The following is an annotated dump of the Shutdown Request PDU (section 2.2.2.1)
  00 -> TS_SHAREDATAHEADER::compressedType = 0
  00 00 -> TS_SHAREDATAHEADER::compressedLength = 0
 
-4.2.2  Server Shutdown Request Denied PDU
+#### 4.2.2 Server Shutdown Request Denied PDU
 
 The following is an annotated dump of the Shutdown Request Denied PDU (section 2.2.2.2).
 
@@ -33266,7 +32507,8 @@ Release: March 9, 2026
 
 378 / 444
 
- not contain SEC_FLAGSHI_VALID (0x8000)
+
+ not contain SEC_FLAGSHI_VALID (0x8000)
  31 19 b0 6c e3 cf 5e 0a -> TS_SECURITY_HEADER1::dataSignature
 
  df b6 5f 69 ce 41 e3 23 f1 f6 50 4a 59 2e af e8
@@ -33291,7 +32533,7 @@ Release: March 9, 2026
  00 -> TS_SHAREDATAHEADER::compressedType = 0
  00 00 -> TS_SHAREDATAHEADER::compressedLength = 0
 
-4.2.3  MCS Disconnect Provider Ultimatum PDU
+#### 4.2.3 MCS Disconnect Provider Ultimatum PDU
 
 The following is an annotated dump of the MCS Disconnect Provider Ultimatum PDU (section 2.2.2.3).
 
@@ -33323,7 +32565,7 @@ The following is an annotated dump of the MCS Disconnect Provider Ultimatum PDU 
  0 - padding
  0 - padding
 
-4.3  Annotated Save Session Info PDU
+### 4.3 Annotated Save Session Info PDU
 
 The annotated Save Session Info PDUs detailed in sections 4.3.1 through 4.3.3 were sent from a
 Microsoft RDP 5.1 server to a Microsoft RDP 5.1 client.
@@ -33335,7 +32577,8 @@ Release: March 9, 2026
 
 379 / 444
 
-4.3.1  Logon Info Version 2
+
+#### 4.3.1 Logon Info Version 2
 
 The following is an annotated dump of Save Session Info PDU containing a Logon Info Version 2
 structure, section 2.2.10.1.1.2.
@@ -33412,7 +32655,8 @@ Release: March 9, 2026
 
 380 / 444
 
- 68 84 12 11 a1 b8 5c 28 b2 78 15 30 98 c2 20 00
+
+ 68 84 12 11 a1 b8 5c 28 b2 78 15 30 98 c2 20 00
  36 ef e6 6c 91 60 d2 c7 51 f7 de 49 c3 0c 3e 5b
  51 89 7f a3 b3 d6 58 30 50 7b 1b ed 47 b6 8a fe
  4f e2 e3 7b 65 08 52 ed bf 52 16 8c 8b 42 4e 31
@@ -33488,7 +32732,8 @@ Release: March 9, 2026
 
 381 / 444
 
- 000001b0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+ 000001b0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000001c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000001d0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000001e0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -33564,7 +32809,8 @@ Release: March 9, 2026
 
 382 / 444
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -33577,7 +32823,7 @@ Release: March 9, 2026
  65 00 6c 00 74 00 6f 00 6e 00 73 00 00 00 ->
  TS_LOGON_INFO_VERSION_2::UserName = "username"
 
-4.3.2  Plain Notify
+#### 4.3.2 Plain Notify
 
 The following is an annotated dump of Save Session Info PDU (section 2.2.10.1.1) containing a Plain
 Notify structure, section 2.2.10.1.1.3.
@@ -33638,7 +32884,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- dataPriority = high
+
+ dataPriority = high
  segmentation = begin | end
  userData length = 0x262 = 610 bytes
 
@@ -33715,7 +32962,8 @@ Release: March 9, 2026
 
 384 / 444
 
- 000e0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+ 000e0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000f0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00100 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00110 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -33792,7 +33040,8 @@ Release: March 9, 2026
 
 385 / 444
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -33805,7 +33054,7 @@ Release: March 9, 2026
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ->
  TS_PLAIN_NOTIFY::Pad (576 bytes)
 
-4.3.3  Logon Info Extended
+#### 4.3.3 Logon Info Extended
 
 The following is an annotated dump of Save Session Info PDU (section 2.2.10.1.1) containing a Logon
 Info Extended structure, as specified in section 2.2.10.1.1.4.
@@ -33866,7 +33115,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- initiator = 1002 (0x03ea)
+
+ initiator = 1002 (0x03ea)
  channelId = 1003 (0x03eb)
  dataPriority = high
  segmentation = begin | end
@@ -33943,7 +33193,8 @@ Release: March 9, 2026
 
 387 / 444
 
- 000a0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+ 000a0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000b0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  000d0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -34020,7 +33271,8 @@ Release: March 9, 2026
 
 388 / 444
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -34051,7 +33303,7 @@ Release: March 9, 2026
  00 00 00 00 00 00 00 00 00 00 ->
  TS_LOGON_INFO_EXTENDED::Pad (570 bytes)
 
-4.4  Annotated Server-to-Client Virtual Channel PDU
+### 4.4 Annotated Server-to-Client Virtual Channel PDU
 
 The following is an annotated dump of the Virtual Channel PDU (section 2.2.6.1) that was
 exchanged between a Microsoft RDP 5.1 client and Microsoft RDP 5.1 server.
@@ -34093,7 +33345,8 @@ Release: March 9, 2026
 
 389 / 444
 
- 08 00 00 00 -> CHANNEL_PDU_HEADER::length = 8 bytes
+
+ 08 00 00 00 -> CHANNEL_PDU_HEADER::length = 8 bytes
 
  03 00 00 00 -> CHANNEL_PDU_HEADER::flags = 0x00000003
  0x00000003
@@ -34103,7 +33356,7 @@ Release: March 9, 2026
  03 00 01 00 00 00 00 00 -> Channel data to be processed by the
  "cliprdr" handler
 
-4.5  Annotated Standard Security Server Redirection PDU
+### 4.5 Annotated Standard Security Server Redirection PDU
 
 The following is an annotated dump of a Standard Security Server Redirection PDU (section
 2.2.13.2.1) that was sent from a Microsoft RDP 5.1 server to a Microsoft RDP 5.1 client.
@@ -34166,7 +33419,8 @@ Release: March 9, 2026
 
 390 / 444
 
- 00 00 -> TS_SECURITY_HEADER::flagsHi - ignored as flags field does not contain
+
+ 00 00 -> TS_SECURITY_HEADER::flagsHi - ignored as flags field does not contain
 RDP_SEC_FLAGSHI_VALID (0x8000)
  58 dd 3f e5 f3 de 80 26 -> TS_SECURITY_HEADER1::dataSignature
 
@@ -34243,7 +33497,8 @@ Release: March 9, 2026
 
 391 / 444
 
- 000001d0 65 00 66 00 32 00 39 00 00 00 1e 00 00 00 31 00 e.f.2.9.......1.
+
+ 000001d0 65 00 66 00 32 00 39 00 00 00 1e 00 00 00 31 00 e.f.2.9.......1.
  000001e0 35 00 37 00 2e 00 35 00 39 00 2e 00 32 00 34 00 5.7...5.9...2.4.
  000001f0 30 00 2e 00 31 00 34 00 34 00 00 00 c0 c0 c0 c0 0...1.4.4.......
  00000200 c0 c0 c0 c0                                     ....
@@ -34320,7 +33575,8 @@ Release: March 9, 2026
 
 392 / 444
 
- 4a 00 49 00 41 00 5a 00 4f 00 55 00 2d 00 54 00
+
+ 4a 00 49 00 41 00 5a 00 4f 00 55 00 2d 00 54 00
  45 00 53 00 54 00 32 00 00 00 -> RDP_SERVER_REDIRECTION_PACKET::TargetNetBiosName = "JIAZOU-
 TEST2"
 
@@ -34343,7 +33599,7 @@ TEST2"
 
  c0 c0 c0 c0 c0 c0 c0 c0 -> RDP_SERVER_REDIRECTION_PACKET::Pad
 
-4.6  Annotated Enhanced Security Server Redirection PDU
+### 4.6 Annotated Enhanced Security Server Redirection PDU
 
 The following is an annotated dump of an Enhanced Security Server Redirection
 PDU (section 2.2.13.3.1) that was sent from a Microsoft RDP 5.1 server to a Microsoft RDP 5.1 client.
@@ -34393,7 +33649,8 @@ Release: March 9, 2026
 
 393 / 444
 
- 02 f0 80 -> X.224 Data TPDU
+
+ 02 f0 80 -> X.224 Data TPDU
 
  68 00 01 03 eb 70 82 0d -> PER encoded (ALIGNED variant of BASIC-PER) SendDataIndication
  initiator = 1002 (0x03ea)
@@ -34469,7 +33726,8 @@ Release: March 9, 2026
 
 394 / 444
 
- 6a 00 69 00 61 00 7a 00 6f 00 75 00 2d 00 74 00
+
+ 6a 00 69 00 61 00 7a 00 6f 00 75 00 2d 00 74 00
  65 00 73 00 74 00 32 00 2e 00 74 00 73 00 2d 00
  73 00 74 00 72 00 65 00 73 00 73 00 31 00 2e 00
  6e 00 74 00 74 00 65 00 73 00 74 00 2e 00 6d 00
@@ -34504,7 +33762,7 @@ TEST2"
 
  00 -> TS_ENHANCED_SECURITY_SERVER_REDIRECTION::pad1Octet
 
-4.7  Annotated Fast-Path Input Event PDU
+### 4.7 Annotated Fast-Path Input Event PDU
 
 The following is an annotated dump of a Fast-Path Input Event PDU (section 2.2.8.1.2) that was sent
 from a Microsoft RDP 5.1 client to a Microsoft RDP 5.1 server.
@@ -34542,7 +33800,8 @@ Release: March 9, 2026
 
 395 / 444
 
- eventCode = 1 (FASTPATH_INPUT_EVENT_MOUSE)
+
+ eventCode = 1 (FASTPATH_INPUT_EVENT_MOUSE)
 
  00 08 -> TS_FP_POINTER_EVENT::pointerFlags = 0x0800
  0x0800
@@ -34551,7 +33810,7 @@ Release: March 9, 2026
  ab 02 -> TS_FP_POINTER_EVENT::xPos = 0x02ab = 683
  6f 01 -> TS_FP_POINTER_EVENT::yPos = 0x016f = 367
 
-4.8  Java Code to Encrypt and Decrypt a Sample Client Random
+### 4.8 Java Code to Encrypt and Decrypt a Sample Client Random
 
 The following Java code illustrates how to encrypt and decrypt with RSA.
 
@@ -34616,7 +33875,8 @@ Release: March 9, 2026
 
 396 / 444
 
-         byte[] modulusBytes,
+
+         byte[] modulusBytes,
          byte[] exponentBytes,
          byte[] dataBytes
          )
@@ -34692,7 +33952,8 @@ Release: March 9, 2026
 
 397 / 444
 
-         BigInteger modulus = new BigInteger(
+
+         BigInteger modulus = new BigInteger(
              1,
              modulusBytes
              );
@@ -34769,7 +34030,8 @@ Release: March 9, 2026
 
 398 / 444
 
-         };
+
+         };
 
          //
          // Exponent bytes (in little endian order) obtained straight
@@ -34846,7 +34108,8 @@ Release: March 9, 2026
 
 399 / 444
 
-         byte[] decryptedClientRandomBytes = RsaDecrypt(
+
+         byte[] decryptedClientRandomBytes = RsaDecrypt(
              modulusBytes,
              privateExponentBytes,
              encryptedClientRandomBytes
@@ -34857,7 +34120,7 @@ Release: March 9, 2026
      }
  };
 
-4.9  Java Code to Sign a Sample Proprietary Certificate Hash
+### 4.9 Java Code to Sign a Sample Proprietary Certificate Hash
 
 The following Java code illustrates how to sign a Proprietary Certificate Hash with RSA.
 
@@ -34919,7 +34182,8 @@ Release: March 9, 2026
 
 400 / 444
 
-     //
+
+     //
      public static byte[] RsaEncrypt(
          byte[] modulusBytes,
          byte[] exponentBytes,
@@ -34996,7 +34260,8 @@ Release: March 9, 2026
 
 401 / 444
 
-         ReverseByteArray(encryptedDataBytes);
+
+         ReverseByteArray(encryptedDataBytes);
 
          BigInteger modulus = new BigInteger(
              1,
@@ -35073,7 +34338,8 @@ Release: March 9, 2026
 
 402 / 444
 
-             (byte) 0x20, (byte) 0x93, (byte) 0x09, (byte) 0x5f,
+
+             (byte) 0x20, (byte) 0x93, (byte) 0x09, (byte) 0x5f,
              (byte) 0x05, (byte) 0x6d, (byte) 0xea, (byte) 0x87,
          };
 
@@ -35149,7 +34415,8 @@ Release: March 9, 2026
 
 403 / 444
 
-             privateExponentBytes,
+
+             privateExponentBytes,
              hashBytes
              );
 
@@ -35170,7 +34437,7 @@ Release: March 9, 2026
      }
  };
 
-4.10  Specifying the Active Keyboard Layout and Language
+### 4.10 Specifying the Active Keyboard Layout and Language
 
 Examples of how to encode a select set of keyboard layouts and language combinations are presented
 in this section.
@@ -35200,7 +34467,7 @@ word of the CodePage field of the Info Packet (2.2.1.11.1.1) structure (if the I
  TS_UD_CS_CORE::KeyboardLayout = 0x0000082C
  LOWORD(TS_INFO_PACKET::CodePage) = 0x0843
 
-4.11  RDS AAD Auth and CloudAP
+### 4.11 RDS AAD Auth and CloudAP
 
 The Cloud Authentication Provider (CloudAP) package provides several APIs that can help with an
 RDS AAD Auth protocol implementation on Windows operating systems. The ID of the CloudAP
@@ -35212,7 +34479,8 @@ Release: March 9, 2026
 
 404 / 444
 
-package can be obtained by calling LsaLookupAuthenticationPackage function. It can be used by
+
+package can be obtained by calling LsaLookupAuthenticationPackage function. It can be used by
 calling the LsaCallAuthenticationPackage function.<52>
 
 #include <iostream>
@@ -35289,7 +34557,8 @@ Release: March 9, 2026
 
 405 / 444
 
-    HANDLE hLsa,
+
+    HANDLE hLsa,
     ULONG cloudApPackageId,
     const string& requestJson
     )
@@ -35366,11 +34635,12 @@ Release: March 9, 2026
 
 406 / 444
 
-    }
+
+    }
 
  }
 
-4.11.1 Generating a Server Nonce
+#### 4.11.1 Generating a Server Nonce
 
 To generate a Server Nonce call CloudAP with the following JSON message as the input:
 
@@ -35391,7 +34661,7 @@ Example:
      "{\"call\":9, \"correlationId\":\"B9C64CDD-914A-4865-B113-E01315B976AD\"}"
      );
 
-4.11.2 Validating an Authentication Request
+#### 4.11.2 Validating an Authentication Request
 
 To validate an Authentication Request pass it to CloudAP inside the following JSON message:
 
@@ -35406,7 +34676,7 @@ Where correlation_id is a stringified GUID used for diagnostics.
 The call will return a JSON message containing a Base64URL encoded credential blob which can be
 passed to the LsaLogonUser function to log in the user.
 
-4.11.3 Acquiring an AAD Nonce
+#### 4.11.3 Acquiring an AAD Nonce
 
 The client MUST acquire a fresh AAD Nonce from the Azure AD Authority during every RDS AAD Auth
 handshake. To accomplish this the client must send a "POST" HTTP request to the Token endpoint on
@@ -35427,7 +34697,8 @@ Release: March 9, 2026
 
 407 / 444
 
- }
+
+ }
 
 Where aad_nonce is the AAD Nonce.
 
@@ -35450,7 +34721,7 @@ Example HTTP response (line breaks added and some values truncated for readabili
      "Nonce":"AwABA...<truncated>"
  }
 
-4.11.4 Acquiring an RDP Access Token
+#### 4.11.4 Acquiring an RDP Access Token
 
 The client follows the standard OAuth 2.0 Authorization Code Grant flow described in [RFC6749]
 section 4.1]. All requests must be sent to an Azure AD Authority server. The Azure AD Authority
@@ -35494,7 +34765,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-section 4. The client must send a JWK containing only a kid element, with the value containing an RFC
+
+section 4. The client must send a JWK containing only a kid element, with the value containing an RFC
 7638-compliant JWK thumbprint ([RFC7638]  section 3) that is Base64 encoded. The client should
 minify the JSON contents of req_cnf before sending to the service in order to reduce the size of
 transmitted data.
@@ -35543,23 +34815,24 @@ Release: March 9, 2026
 
 409 / 444
 
-<!-- Extracted images from page 410 -->
+
+<!-- Extracted images from page 410 -->
 ![Extracted image 1 from page 410]([MS-RDPBCGR].images/page410-img01.png)
 <!-- /Extracted images from page 410 -->
 
-5  Security
+## 5 Security
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 See sections 5.3 through 5.5 for complete details of RDP security considerations.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
-5.3  Standard RDP Security
+### 5.3 Standard RDP Security
 
-5.3.1  Encryption Levels
+#### 5.3.1 Encryption Levels
 
 Standard RDP Security (section 5.3) supports four levels of encryption: Low, Client Compatible, High,
 and FIPS Compliant. The required Encryption Level is configured on the server.
@@ -35580,7 +34853,7 @@ maximum key strength.
 
 Processing Standard 140-1 validated encryption methods.
 
-5.3.2  Negotiating the Cryptographic Configuration
+#### 5.3.2 Negotiating the Cryptographic Configuration
 
 Clients advertise their cryptographic support (for use with Standard RDP Security mechanisms, as
 described in sections 5.3.3 to 5.3.8) in the Client Security Data (section 2.2.1.3.3), sent to the server
@@ -35599,7 +34872,8 @@ Release: March 9, 2026
 
 410 / 444
 
-The Encryption Method and Encryption Level (section 5.3.1) are closely related. If the Encryption Level
+
+The Encryption Method and Encryption Level (section 5.3.1) are closely related. If the Encryption Level
 is zero, then the Encryption Method is zero (the converse is also true). This means that if no
 encryption is being used for the session (an Encryption Level of zero), there is no Encryption Method
 being applied to the data. If the Encryption Level is greater than zero (encryption is in force for at
@@ -35619,7 +34893,7 @@ licensing PDUs ([MS-RDPELE]), which always contain the Security Header (section 
 protect the confidentiality of client-to-server user data, an RDP server ensures that the negotiated
 Encryption Level is always greater than zero when using Standard RDP Security mechanisms.
 
-5.3.2.1  Cryptographic Negotiation Failures
+##### 5.3.2.1 Cryptographic Negotiation Failures
 
 The Encryption Method selected by the server (section 5.3.2) is based on the Encryption Methods
 supported by the client (section 2.2.1.3.3), the Encryption Methods supported by the server and the
@@ -35647,9 +34921,9 @@ encryption methods.
 If the server is not able to select an Encryption Method to send to the client, then the network
 connection is closed.
 
-5.3.3  Server Certificates
+#### 5.3.3 Server Certificates
 
-5.3.3.1  Proprietary Certificates
+##### 5.3.3.1 Proprietary Certificates
 
 Proprietary Certificates are used exclusively by servers that have not received an X.509 certificate
 from a Domain or Enterprise License Server. Every server creates a public/private key pair and then
@@ -35660,7 +34934,7 @@ The server sends the Proprietary Certificate to the client in the Server Securit
 2.2.1.4.3) during the Basic Settings Exchange phase of the RDP Connection Sequence (section
 1.3.1.1). The Proprietary Certificate structure is detailed in section 2.2.1.4.3.1.1.
 
-5.3.3.1.1 Terminal Services Signing Key
+###### 5.3.3.1.1 Terminal Services Signing Key
 
 [MS-RDPBCGR] - v20260309
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -35669,7 +34943,8 @@ Release: March 9, 2026
 
 411 / 444
 
-The modulus, private exponent, and public exponent of the 512-bit Terminal Services asymmetric key
+
+The modulus, private exponent, and public exponent of the 512-bit Terminal Services asymmetric key
 used for signing Proprietary Certificates with the RSA algorithm are detailed as follows.
 
 64-byte Modulus (n):
@@ -35701,7 +34976,7 @@ used for signing Proprietary Certificates with the RSA algorithm are detailed as
 The enumerated integers are in little-endian byte order. The public key is the pair (e, n), while the
 private key is the pair (d, n).
 
-5.3.3.1.2 Signing a Proprietary Certificate
+###### 5.3.3.1.2 Signing a Proprietary Certificate
 
 The Proprietary Certificate is signed by using RSA to encrypt the hash of the first six fields with the
 Terminal Services private signing key (specified in section 5.3.3.1.1) and then appending the result to
@@ -35733,7 +35008,8 @@ Release: March 9, 2026
 
 412 / 444
 
- 0xaf 0xfe 0x36 0xf2 0xc5 0xa1 0x44 0x2e
+
+ 0xaf 0xfe 0x36 0xf2 0xc5 0xa1 0x44 0x2e
  0x47 0xc1 0x31 0xa7 0xdb 0xc6 0x67 0x02
  0x64 0x71 0x5c 0x00 0xc9 0xb6 0xb3 0x04
  0xd0 0x89 0x9f 0xe7 0x6b 0x24 0xe8 0xe8
@@ -35796,7 +35072,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-5.3.3.1.3 Validating a Proprietary Certificate
+
+###### 5.3.3.1.3 Validating a Proprietary Certificate
 
 Verification of the Proprietary Certificate signature is carried out by decrypting the signature with the
 Terminal Services public signing key and then verifying that this result is the same as the MD5 hash of
@@ -35852,7 +35129,7 @@ Example Java source code that shows how to use a private 64-byte asymmetric key 
 of 63 bytes by using RSA is presented in section 4.9. The code also shows how to use the associated
 public key to verify the signature.
 
-5.3.3.2  X.509 Certificate Chains
+##### 5.3.3.2 X.509 Certificate Chains
 
 X.509-compliant certificates are issued to servers upon request by Domain or Enterprise License
 Servers and are required to issue client licenses (see [MS-RDPELE] for more information on RDP
@@ -35866,7 +35143,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-<!-- Extracted images from page 415 -->
+
+<!-- Extracted images from page 415 -->
 ![Extracted image 1 from page 415]([MS-RDPBCGR].images/page415-img01.png)
 <!-- /Extracted images from page 415 -->
 
@@ -35881,7 +35159,7 @@ Proprietary Certificate (section 2.2.1.4.3.1.1). Proprietary Certificates are al
 4.0 client connects to a server (the client version can be determined from the Client Core Data
 (section 2.2.1.3.2)).
 
-5.3.4  Client and Server Random Values
+#### 5.3.4 Client and Server Random Values
 
 The client and server both generate a 32-byte random value using a cryptographically-safe
 pseudorandom number generator.
@@ -35899,7 +35177,7 @@ Figure 9: Client and server random value exchange
 The two random values are used by the client and server to generate session keys to secure the
 connection.
 
-5.3.4.1  Encrypting Client Random
+##### 5.3.4.1 Encrypting Client Random
 
 The client random is encrypted by the client with the server's public key (obtained from the Server
 Security Data (section 2.2.1.4.3)) using RSA. Mathematically the encryption operation is formulated
@@ -35920,7 +35198,8 @@ Release: March 9, 2026
 
 415 / 444
 
- n = modulus
+
+ n = modulus
 
 The client random value is interpreted as an unsigned little-endian integer value when performing the
 encryption. The resultant encrypted client random is copied into a zeroed-out buffer, which is of size:
@@ -35935,7 +35214,7 @@ Example Java source code that shows how to use a public 64-byte asymmetric key t
 byte client random using RSA is presented in section 4.8. The code also shows how to use the
 associated private key to decrypt the ciphertext.
 
-5.3.4.2  Decrypting Client Random
+##### 5.3.4.2 Decrypting Client Random
 
 The server can decrypt the client random because it possesses the private exponent of the
 public/private key pair which it generated. Mathematically the decryption operation is formulated as
@@ -35954,7 +35233,7 @@ The encrypted client random is obtained from the Security Exchange PDU (section 
 encrypted client random value is interpreted as an unsigned little-endian integer value when
 performing the decryption operation.
 
-5.3.5  Initial Session Key Generation
+#### 5.3.5 Initial Session Key Generation
 
 RDP uses three symmetric session keys derived from the client and server random values (section
 5.3.4). Client-to-server traffic is encrypted with one of these keys (known as the "client's encryption
@@ -35962,7 +35241,7 @@ key" and "server's decryption key"), server-to-client traffic with another (know
 encryption key" and "client's decryption key") and the final key is used to generate a MAC over the
 data to help ensure its integrity. The generated keys are 40, 56, or 128 bits in length.
 
-5.3.5.1  Non-FIPS
+##### 5.3.5.1 Non-FIPS
 
 The client and server random values are used to create a 384-bit Pre-Master Secret by concatenating
 the first 192 bits of the Client Random with the first 192 bits of the Server Random.
@@ -35979,7 +35258,8 @@ Release: March 9, 2026
 
 416 / 444
 
- MasterSecret = PreMasterHash(0x41) + PreMasterHash(0x4242) + PreMasterHash(0x434343)
+
+ MasterSecret = PreMasterHash(0x41) + PreMasterHash(0x4242) + PreMasterHash(0x434343)
 
 Here, the PreMasterHash function is defined as follows.
 
@@ -36033,7 +35313,8 @@ Release: March 9, 2026
 
 417 / 444
 
-To reduce the entropy of the keys to either 40 or 56 bits, the 128-bit client and server keys are salted
+
+To reduce the entropy of the keys to either 40 or 56 bits, the 128-bit client and server keys are salted
 appropriately to produce 64-bit versions with the required strength. The salt values to reduce key
 entropy are shown in the following table:
 
@@ -36099,7 +35380,7 @@ encryption key is used to initialize the RC4 substitution table that is used to 
 the decryption key is used to initialize the RC4 substitution table that is used to perform decryption
 (for more information on RC4 substitution table initialization, see [[SCHNEIER]] section 17.1).
 
-5.3.5.2  FIPS
+##### 5.3.5.2 FIPS
 
 The client and server random values are used to generate temporary 160-bit initial encryption and
 decryption keys by using the SHA-1 hash function. The client generates the following:
@@ -36119,7 +35400,8 @@ Release: March 9, 2026
 
 418 / 444
 
-Each of these four keys are then expanded to be 168 bits in length by copying the first 8 bits of each
+
+Each of these four keys are then expanded to be 168 bits in length by copying the first 8 bits of each
 key to the rear of the key:
 
  ClientEncryptKey = ClientEncryptKeyT + First8Bits(ClientEncryptKeyT)
@@ -36177,7 +35459,8 @@ Release: March 9, 2026
 
 419 / 444
 
- 0x51 0x3D 0x10 0x76 0x26 ...
+
+ 0x51 0x3D 0x10 0x76 0x26 ...
 
 After producing the client and server encryption and decryption keys, the shared key to be used with
 the SHA-1 hash function to produce Hash-Based Message Authentication Codes (HMAC) ([RFC2104])
@@ -36193,7 +35476,7 @@ decryption keys are identical, while the server encryption and client decryption
 At the end of this process the client and server will each possess three symmetric keys to use with the
 Triple DES block cipher: an HMAC key, an encryption key, and a decryption key.
 
-5.3.6  Encrypting and Decrypting the I/O Data Stream
+#### 5.3.6 Encrypting and Decrypting the I/O Data Stream
 
 If the Encryption Level (section 5.4.1) of the server is greater than zero, then encryption will always
 be in effect. At a minimum, all client-to-server traffic (except for licensing PDUs which have optional
@@ -36273,7 +35556,7 @@ client traffic using Triple DES
 Client-to-server and server-to-
 client traffic using SHA-1
 
-5.3.6.1  Non-FIPS
+##### 5.3.6.1 Non-FIPS
 
 The client and server follow the same series of steps to encrypt a block of data. First, a MAC value is
 generated over the unencrypted data.
@@ -36285,7 +35568,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- Pad1 = 0x36 repeated 40 times to give 320 bits
+
+ Pad1 = 0x36 repeated 40 times to give 320 bits
  Pad2 = 0x5C repeated 48 times to give 384 bits
 
  SHAComponent = SHA(MACKeyN + Pad1 + DataLength + Data)
@@ -36306,7 +35590,7 @@ data, and the first 8 bytes of this MAC are compared to the 8-byte MAC value tha
 wire. If the MAC values do not match, an appropriate error is generated and the connection is
 dropped.
 
-5.3.6.1.1 Salted MAC Generation
+###### 5.3.6.1.1 Salted MAC Generation
 
 The MAC value can be generated by salting the data to be hashed with the current encryption count.
 For example, assume that 42 packets have already been encrypted. When the next packet is
@@ -36325,7 +35609,7 @@ The use of the salted MAC is dictated by capability flags in the General Capabil
 Sequence (section 1.3.1.1). In addition, the presence of a salted MAC is indicated by the presence of
 the SEC_SECURE_CHECKSUM flag in the Security Header flags field (section 5.3.8).
 
-5.3.6.2  FIPS
+##### 5.3.6.2 FIPS
 
 Prior to performing an encryption or decryption operation, the cryptographic modules used to
 implement Triple DES are configured with the following Initialization Vector.
@@ -36344,7 +35628,8 @@ Release: March 9, 2026
 
 421 / 444
 
-EncryptionCount is the cumulative encryption count, indicating how many encryptions have been
+
+EncryptionCount is the cumulative encryption count, indicating how many encryptions have been
 carried out. It is expressed as a little-endian 32-bit integer. The description for Data is the same as in
 section 5.3.6.1.
 
@@ -36355,12 +35640,12 @@ Security Header (sections 2.2.8.1 and 2.2.9.1) has an extra field to record the 
 bytes which were appended to the data prior to encryption to ensure that upon decryption these bytes
 are not included as part of the data.
 
-5.3.7  Session Key Updates
+#### 5.3.7 Session Key Updates
 
 During the course of a session, the symmetric encryption and decryption keys might need to be
 refreshed.
 
-5.3.7.1  Non-FIPS
+##### 5.3.7.1 Non-FIPS
 
 The encryption and the decryption keys are updated after 4,096 packets have been sent or received.
 
@@ -36409,7 +35694,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-<!-- Extracted images from page 423 -->
+
+<!-- Extracted images from page 423 -->
 ![Extracted image 1 from page 423]([MS-RDPBCGR].images/page423-img01.png)
 <!-- /Extracted images from page 423 -->
 
@@ -36448,12 +35734,12 @@ perform the salting operation).
 Finally, the new 40-bit or 56-bit encryption key (NewEncryptKey40 or NewEncryptKey56) is used to
 reinitialize the associated RC4 substitution table.
 
-5.3.7.2  FIPS
+##### 5.3.7.2 FIPS
 
 No session key updates take place for the duration of a connection if Standard RDP Security
 mechanisms (section 5.3) are being used with a FIPS Encryption Level.
 
-5.3.8  Packet Layout in the I/O Data Stream
+#### 5.3.8 Packet Layout in the I/O Data Stream
 
 The usage of Standard RDP Security mechanisms (section 5.3) results in a security header being
 present in all packets following the Security Exchange PDU (section 2.2.1.10) when encryption is in
@@ -36467,7 +35753,8 @@ Release: March 9, 2026
 
 423 / 444
 
-<!-- Extracted images from page 424 -->
+
+<!-- Extracted images from page 424 -->
 ![Extracted image 1 from page 424]([MS-RDPBCGR].images/page424-img01.png)
 ![Extracted image 2 from page 424]([MS-RDPBCGR].images/page424-img02.png)
 <!-- /Extracted images from page 424 -->
@@ -36495,7 +35782,7 @@ section 2.2.1.12), which always contain the Security Header.
 See sections 2.2.8.1 and 2.2.9.1 for more details on slow and fast-path packet formats and the
 structure of the Security Header in both of these scenarios.
 
-5.4  Enhanced RDP Security
+### 5.4 Enhanced RDP Security
 
 When Enhanced RDP Security is used, RDP traffic is no longer protected by using the techniques
 described in section 5.3. Instead, all security operations (such as encryption and decryption, data
@@ -36539,7 +35826,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-5.4.1  Encryption Levels
+
+#### 5.4.1 Encryption Levels
 
 Enhanced RDP Security (section 5.4) supports a subset of the encryption levels used by Standard RDP
 Security (section 5.3.1). The required Encryption Level is configured on the server.
@@ -36564,7 +35852,7 @@ level returned to the client is ENCRYPTION_LEVEL_NONE (0). This is due to the fa
 encryption for the session is provided by an External Security Protocol (section 5.4.5) and double-
 encryption of the RDP traffic (although possible) is not desirable from a performance standpoint.
 
-5.4.2  Security-Enhanced Connection Sequence
+#### 5.4.2 Security-Enhanced Connection Sequence
 
 When Enhanced RDP Security (section 5.4) is being used, the connection sequence is changed to
 incorporate the possible use of an External Security Protocol (section 5.4.5). A brief overview of the
@@ -36572,7 +35860,7 @@ connection sequence changes are described in section 1.3.1.2. The two variations
 Enhanced Connection Sequence are the Negotiation-Based Approach (section 5.4.2.1) and the Direct
 Approach (section 5.4.2.2).
 
-5.4.2.1  Negotiation-Based Approach
+##### 5.4.2.1 Negotiation-Based Approach
 
 The client advertises the security protocols which it supports by appending an RDP Negotiation
 Request (section 2.2.1.1.1) structure to the X.224 Connection Request PDU (section 2.2.1.1).
@@ -36599,7 +35887,8 @@ Release: March 9, 2026
 
 425 / 444
 
-<!-- Extracted images from page 426 -->
+
+<!-- Extracted images from page 426 -->
 ![Extracted image 1 from page 426]([MS-RDPBCGR].images/page426-img01.png)
 <!-- /Extracted images from page 426 -->
 
@@ -36612,7 +35901,7 @@ handshake as part of the Basic Settings Exchange phase of the RDP Connection Seq
 choice in the Client Core Data (section 2.2.1.3.2), while the server replays the client's requested
 protocols in the Server Core Data (section 2.2.1.4.2).
 
-5.4.2.2  Direct Approach
+##### 5.4.2.2 Direct Approach
 
 The Negotiation-Based Approach (specified in section 5.4.2.1) aims to have the client and server
 agree on a security protocol to use for the connection. The fact that the X.224 messages are
@@ -36636,7 +35925,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-<!-- Extracted images from page 427 -->
+
+<!-- Extracted images from page 427 -->
 ![Extracted image 1 from page 427]([MS-RDPBCGR].images/page427-img01.png)
 <!-- /Extracted images from page 427 -->
 
@@ -36654,7 +35944,7 @@ As specified in the Negotiation-Based Approach, the client and server also confi
 protocol and the requested protocols in the Client Core Data (section 2.2.1.3.2) and Server Core Data
 (section 2.2.1.4.2), respectively.
 
-5.4.2.3  Changes to the Security Commencement Phase
+##### 5.4.2.3 Changes to the Security Commencement Phase
 
 If Standard RDP Security mechanisms are not being used in conjunction with an External Security
 protocol (that is, the selected Encryption Level described in section 5.3.2 is
@@ -36664,7 +35954,7 @@ Exchange PDU (section 2.2.1.10). This PDU can be dropped because the Client Rand
 in this case because encryption for the connection is only provided by the External Security Protocol
 (section 5.4.5).
 
-5.4.2.4  Disabling Forced Encryption of Licensing Packets
+##### 5.4.2.4 Disabling Forced Encryption of Licensing Packets
 
 Encryption of licensing PDUs is optional when Standard RDP Security mechanisms (section 5.3) are
 being used. However, if an External Security Protocol (section 5.4.5) is being used, then the server
@@ -36677,7 +35967,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-<!-- Extracted images from page 428 -->
+
+<!-- Extracted images from page 428 -->
 ![Extracted image 1 from page 428]([MS-RDPBCGR].images/page428-img01.png)
 ![Extracted image 2 from page 428]([MS-RDPBCGR].images/page428-img02.png)
 <!-- /Extracted images from page 428 -->
@@ -36686,12 +35977,12 @@ will encrypt them. For this reason, the SEC_LICENSE_ENCRYPT_CS (0x0200) and
 SEC_LICENSE_ENCRYPT_SC (0x0200) flags (section 2.2.8.1.1.2.1) do not need to be set in the
 Security Header that is always attached to licensing packets.
 
-5.4.3  Encrypting and Decrypting the I/O Data Stream
+#### 5.4.3 Encrypting and Decrypting the I/O Data Stream
 
 Encryption and decryption of RDP traffic is only carried out by the External Security Protocol (section
 5.4.5) layer. Double-encryption of data does not take place.
 
-5.4.4  Packet Layout in the I/O Data Stream
+#### 5.4.4 Packet Layout in the I/O Data Stream
 
 Because RDP encryption is not used in the presence of an External Security Protocol (section 5.4.5)
 layer, the security header data (section 5.4.4) is not present in any RDP traffic (except for the Client
@@ -36710,7 +36001,7 @@ Figure 16: Encrypted fast-path packet
 Notice that in both of these cases, the security header data is missing. See sections 2.2.8.1 and
 2.2.9.1 for more details on slow and fast-path packet formats.
 
-5.4.5  External Security Protocols Used By RDP
+#### 5.4.5 External Security Protocols Used By RDP
 
 RDP supports seven External Security Protocols: TLS 1.0 ([RFC2246]), TLS 1.1 ([RFC4346])<53>, TLS
 1.2 ([RFC5246])<54>, TLS 1.3 ([RFC8446]),<55> the Credential Security Support Provider
@@ -36719,14 +36010,14 @@ All of the TLS variants and the CredSSP protocol require external infrastructure
 certificates (TLS and CredSSP) or Key Distribution Centers (CredSSP), to run successfully. These
 resources are opaque to RDP and left to implementers to provide, set up, and maintain.
 
-5.4.5.1  Transport Layer Security (TLS)
+##### 5.4.5.1 Transport Layer Security (TLS)
 
 TLS 1.0, 1.1, 1.2, and 1.3 are represented by the PROTOCOL_SSL (0x00000001) flag in the RDP
 Negotiation Request (section 2.2.1.1.1) and RDP Negotiation Response (section 2.2.1.2.1)
 structures. TLS is derived from SSL ([SSL3]) and was added to RDP to enable authentication of the
 remote computer's identity, hence mitigating man-in-the-middle attacks on RDP traffic.<57>
 
-5.4.5.2  CredSSP
+##### 5.4.5.2 CredSSP
 
 CredSSP is represented by the PROTOCOL_HYBRID (0x00000002) and PROTOCOL_HYBRID_EX
 (0x00000008) flags in the RDP Negotiation Request (section 2.2.1.1.1) and RDP Negotiation Response
@@ -36738,7 +36029,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-(section 2.2.1.2.1) structures. The Credential Security Support Provider (CredSSP) Protocol [MS-
+
+(section 2.2.1.2.1) structures. The Credential Security Support Provider (CredSSP) Protocol [MS-
 CSSP] is essentially the amalgamation of TLS with Kerberos and NT LAN Manager (NTLM). Besides
 enabling authentication of the remote computer's identity, the Credential Security Support Provider
 (CredSSP) Protocol also facilitates user authentication and the transfer of user credentials from client
@@ -36752,11 +36044,11 @@ Once Kerberos or NTLM has completed successfully, the user's credentials are sen
 Traffic on the wire remains encrypted with TLS and is wrapped by TLS headers. There is no double-
 encryption of traffic because the Kerberos (or NTLM) session is securely bound to the TLS session.
 
-5.4.5.2.1 User Authorization Failures
+###### 5.4.5.2.1 User Authorization Failures
 
 User authorization failures are handled as specified in 3.3.5.7.1.1.
 
-5.4.5.2.2 TLS Fatal Alerts
+###### 5.4.5.2.2 TLS Fatal Alerts
 
 The CredSSP protocol leverages TLS Alert Messages with the level set to Fatal ([RFC2246] section 7.2,
 [RFC4346] section 7.2, and [RFC5246] section 7.2) to report error conditions. The alert messages that
@@ -36813,7 +36105,7 @@ A generic, catch-all error code.
 
 80
 
-5.4.5.3  RDSTLS Security
+##### 5.4.5.3 RDSTLS Security
 
 RDSTLS is a variation of Enhanced RDP Security that is primarily used in the context of server
 redirection scenarios (section 1.3.8). Server authentication, encryption, decryption, and data integrity
@@ -36827,11 +36119,12 @@ Release: March 9, 2026
 
 429 / 444
 
-<!-- Extracted images from page 430 -->
+
+<!-- Extracted images from page 430 -->
 ![Extracted image 1 from page 430]([MS-RDPBCGR].images/page430-img01.png)
 <!-- /Extracted images from page 430 -->
 
-5.4.5.3.1 RDSTLS Connection Sequence
+###### 5.4.5.3.1 RDSTLS Connection Sequence
 
 The RDSTLS connection sequence only takes place in the context of the Negotiation-Based Approach
 (section 5.4.2.1) of the security-enhanced connection sequence.
@@ -36868,12 +36161,13 @@ Release: March 9, 2026
 
 430 / 444
 
-Upon successful completion of the RDSTLS protocol, the subsequent RDP traffic is encrypted and
+
+Upon successful completion of the RDSTLS protocol, the subsequent RDP traffic is encrypted and
 wrapped by the TLS protocol using the parameters negotiated as part of the TLS handshake. If the
 RDSTLS Authentication PDU indicates that user authentication has failed, then the client SHOULD drop
 the connection.
 
-5.4.5.4  RDS AAD Auth Security
+##### 5.4.5.4 RDS AAD Auth Security
 
 RDS AAD Auth is a variation of Enhanced RDP Security that is used to authenticate a user to an Azure
 AD-joined device or to a Hybrid Azure AD-joined device. Server authentication, encryption, decryption,
@@ -36881,7 +36175,7 @@ and data integrity checks are implemented by leveraging the TLS security protoco
 authentication is accomplished by exchanging RDS AAD Auth PDUs directly following the TLS
 handshake.<58>
 
-5.4.5.4.1 RDS AAD Auth Connection Sequence
+###### 5.4.5.4.1 RDS AAD Auth Connection Sequence
 
 The RDS AAD Auth connection sequence only takes place in the context of the Negotiation-Based
 Approach (section 5.4.2.1) of the security-enhanced connection sequence.
@@ -36893,7 +36187,8 @@ Release: March 9, 2026
 
 431 / 444
 
-<!-- Extracted images from page 432 -->
+
+<!-- Extracted images from page 432 -->
 ![Extracted image 1 from page 432]([MS-RDPBCGR].images/page432-img01.png)
 <!-- /Extracted images from page 432 -->
 
@@ -36923,7 +36218,8 @@ Release: March 9, 2026
 
 432 / 444
 
-5.  The client and server perform a TLS handshake. All subsequent messages exchanged between the
+
+5.  The client and server perform a TLS handshake. All subsequent messages exchanged between the
 
 client and the server will be wrapped by the TLS protocol.
 
@@ -36940,7 +36236,7 @@ it to the client.
 Sample code to accomplish steps 3, 4, 6 and 8 is available in sections 4.11.4, 4.11.3, 4.11.1, and
 4.11.2  respectively.
 
-5.5  Automatic Reconnection
+### 5.5 Automatic Reconnection
 
 The Automatic Reconnection feature allows a client to reconnect to an existing session (after a short-
 term network failure has occurred) without having to resend the user's credentials to the server. A
@@ -36994,7 +36290,8 @@ Release: March 9, 2026
 
 433 / 444
 
-6.  If the check in Step 5 passes, then the client is automatically reconnected to the desired session;
+
+6.  If the check in Step 5 passes, then the client is automatically reconnected to the desired session;
 
 otherwise the client obtains the user's credentials to regain access to the session on the remote
 server.
@@ -37012,7 +36309,8 @@ Release: March 9, 2026
 
 434 / 444
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -37081,7 +36379,8 @@ Release: March 9, 2026
 
 435 / 444
 
-<3> Section 2.2.1.2.1:  Microsoft RDP 4.0, 5.0, 5.1, 5.2, 6.0, 6.1, and 7.0 servers do not support
+
+<3> Section 2.2.1.2.1:  Microsoft RDP 4.0, 5.0, 5.1, 5.2, 6.0, 6.1, and 7.0 servers do not support
 credential-less logon over CredSSP. This functionality is not supported in Windows Server 2003 and
 Windows Server 2008.
 
@@ -37149,7 +36448,8 @@ Release: March 9, 2026
 
 436 / 444
 
-(0x00000002) flag is not set in the earlyCapabilityFlags field of the Server Core Data (section
+
+(0x00000002) flag is not set in the earlyCapabilityFlags field of the Server Core Data (section
 2.2.1.4.2).
 
 <23> Section 2.2.1.11.1.1.1: Microsoft RDP 8.0, 8.1, 10.0, 10.1, 10.2, 10.3, 10.4, and 10.5 clients do
@@ -37218,7 +36518,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-of the entire virtual desktop by sending two Suppress Output PDUs (section 2.2.11.3): one Suppress
+
+of the entire virtual desktop by sending two Suppress Output PDUs (section 2.2.11.3): one Suppress
 Output PDU to suppress display updates, followed by another Suppress Output PDU to resume display
 updates.
 
@@ -37286,7 +36587,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-(section 2.2.1.11) or if the username or domain used to log on to the session is different from what
+
+(section 2.2.1.11) or if the username or domain used to log on to the session is different from what
 was sent in the Client Info PDU.
 
 <52> Section 4.11:  These features are available only after installation of the updates in [MSKB-
@@ -37323,7 +36625,8 @@ Release: March 9, 2026
 
 439 / 444
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -37368,7 +36671,8 @@ Release: March 9, 2026
 
 440 / 444
 
-8  Index
+
+## 8 Index
 _
 
 __packet__ packet (section 2.2.1.1.2 40, section
@@ -37525,7 +36829,8 @@ Release: March 9, 2026
 
 441 / 444
 
-Fast-Path Input Event PDU processing 327
+
+Fast-Path Input Event PDU processing 327
 Fields - vendor-extensible 37
 Flags - setting compression flags 262
 
@@ -37673,7 +36978,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Security
+
+Security
    automatic reconnection 433
    enhanced RDP security (section 2.2.13.3 237,
 
@@ -37843,7 +37149,8 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-TS_SHUTDOWN_DENIED_PDU packet 114
+
+TS_SHUTDOWN_DENIED_PDU packet 114
 TS_SHUTDOWN_REQ_PDU packet 113
 TS_SOUND_CAPABILITYSET packet 153
 TS_Standard_Security_Server_Redirection_PDU

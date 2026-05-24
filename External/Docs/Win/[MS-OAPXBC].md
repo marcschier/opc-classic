@@ -63,7 +63,8 @@ Release: April 14, 2026
 
 1 / 42
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -217,273 +218,112 @@ Release: April 14, 2026
 
 2 / 42
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HTTP Headers](#221-http-headers)
+      - [2.2.1.1 x-ms-RefreshTokenCredential](#2211-x-ms-refreshtokencredential)
+      - [2.2.1.2 x-ms-DeviceCredential](#2212-x-ms-devicecredential)
+      - [2.2.1.3 x-ms-SsoFlags](#2213-x-ms-ssoflags)
+      - [2.2.1.4 x-ms-SsoFlagsSubstatus](#2214-x-ms-ssoflagssubstatus)
+    - [2.2.2 Data Structures](#222-data-structures)
+      - [2.2.2.1 krctx](#2221-krctx)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 OAuthBrokerExtension Client Details](#31-oauthbrokerextension-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Token endpoint (/token)](#3151-token-endpoint-token)
+        - [3.1.5.1.1 POST (Request for Nonce)](#31511-post-request-for-nonce)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+        - [3.1.5.1.2 POST (Request for Primary Refresh Token)](#31512-post-request-for-primary-refresh-token)
+          - [3.1.5.1.2.1 Request Body](#315121-request-body)
+          - [3.1.5.1.2.2 Response Body](#315122-response-body)
+          - [3.1.5.1.2.3 Processing Details](#315123-processing-details)
+        - [3.1.5.1.3 POST (Exchange Primary Refresh Token for Access Token)](#31513-post-exchange-primary-refresh-token-for-access-token)
+          - [3.1.5.1.3.1 Request Body](#315131-request-body)
+          - [3.1.5.1.3.2 Response Body](#315132-response-body)
+          - [3.1.5.1.3.3 Processing Details](#315133-processing-details)
+        - [3.1.5.1.4 POST (Exchange Primary Refresh Token for User Authentication Certificate)](#31514-post-exchange-primary-refresh-token-for-user-authentication-certificate)
+          - [3.1.5.1.4.1 Request Body](#315141-request-body)
+          - [3.1.5.1.4.2 Response Body](#315142-response-body)
+          - [3.1.5.1.4.3 Processing Details](#315143-processing-details)
+      - [3.1.5.2 Authorization endpoint (/authorize)](#3152-authorization-endpoint-authorize)
+        - [3.1.5.2.1 GET](#31521-get)
+          - [3.1.5.2.1.1 Request Body](#315211-request-body)
+          - [3.1.5.2.1.2 Response Body](#315212-response-body)
+          - [3.1.5.2.1.3 Processing Details](#315213-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 OAuthBrokerExtension Server Details](#32-oauthbrokerextension-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Token endpoint (/token)](#3251-token-endpoint-token)
+        - [3.2.5.1.1 POST (Request for Nonce)](#32511-post-request-for-nonce)
+          - [3.2.5.1.1.1 Request Body](#325111-request-body)
+          - [3.2.5.1.1.2 Response Body](#325112-response-body)
+          - [3.2.5.1.1.3 Processing Details](#325113-processing-details)
+        - [3.2.5.1.2 POST (Request for Primary Refresh Token)](#32512-post-request-for-primary-refresh-token)
+          - [3.2.5.1.2.1 Request Body](#325121-request-body)
+            - [3.2.5.1.2.1.1 Username Password Authentication](#3251211-username-password-authentication)
+            - [3.2.5.1.2.1.2 User JWT Authentication](#3251212-user-jwt-authentication)
+            - [3.2.5.1.2.1.3 Refresh Token Authentication](#3251213-refresh-token-authentication)
+            - [3.2.5.1.2.1.4 User Certificate Authentication](#3251214-user-certificate-authentication)
+          - [3.2.5.1.2.2 Response Body](#325122-response-body)
+          - [3.2.5.1.2.3 Processing Details](#325123-processing-details)
+        - [3.2.5.1.3 POST (Exchange Primary Refresh Token for Access Token)](#32513-post-exchange-primary-refresh-token-for-access-token)
+          - [3.2.5.1.3.1 Request Body](#325131-request-body)
+          - [3.2.5.1.3.2 Response Body](#325132-response-body)
+          - [3.2.5.1.3.3 Processing Details](#325133-processing-details)
+        - [3.2.5.1.4 POST (Exchange Primary Refresh Token for User Authentication Certificate)](#32514-post-exchange-primary-refresh-token-for-user-authentication-certificate)
+          - [3.2.5.1.4.1 Request Body](#325141-request-body)
+          - [3.2.5.1.4.2 Response Body](#325142-response-body)
+          - [3.2.5.1.4.3 Processing Details](#325143-processing-details)
+      - [3.2.5.2 Authorization endpoint (/authorize)](#3252-authorization-endpoint-authorize)
+        - [3.2.5.2.1 GET](#32521-get)
+          - [3.2.5.2.1.1 Request Body](#325211-request-body)
+            - [3.2.5.2.1.1.1 x-ms-RefreshTokenCredential HTTP header format](#3252111-x-ms-refreshtokencredential-http-header-format)
+            - [3.2.5.2.1.1.2 x-ms-DeviceCredential HTTP header format](#3252112-x-ms-devicecredential-http-header-format)
+          - [3.2.5.2.1.2 Response Body](#325212-response-body)
+          - [3.2.5.2.1.3 Processing Details](#325213-processing-details)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Obtain a Nonce](#41-obtain-a-nonce)
+  - [4.2 Obtain a Primary Refresh Token](#42-obtain-a-primary-refresh-token)
+  - [4.3 Obtain an Access Token](#43-obtain-an-access-token)
+  - [4.4 Obtain a User Authentication Certificate](#44-obtain-a-user-authentication-certificate)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Data Types ........................................................................................ 10
-HTTP Headers ............................................................................................ 10
-x-ms-RefreshTokenCredential ................................................................. 10
-x-ms-DeviceCredential .......................................................................... 10
-x-ms-SsoFlags ...................................................................................... 11
-x-ms-SsoFlagsSubstatus ........................................................................ 11
-Data Structures .......................................................................................... 11
-krctx ................................................................................................... 11
-Directory Service Schema Elements ................................................................... 12
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2.2.2.1
-
-2.2.2
-
-2.3
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.2
-
-3.1.5.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3  Protocol Details ..................................................................................................... 13
-OAuthBrokerExtension Client Details .................................................................. 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Token endpoint (/token) ........................................................................ 14
-POST (Request for Nonce) ................................................................ 14
-Request Body ............................................................................ 14
-Response Body .......................................................................... 14
-Processing Details ...................................................................... 14
-POST (Request for Primary Refresh Token) ......................................... 14
-Request Body ............................................................................ 15
-Response Body .......................................................................... 15
-Processing Details ...................................................................... 15
-POST (Exchange Primary Refresh Token for Access Token) ................... 15
-Request Body ............................................................................ 15
-Response Body .......................................................................... 15
-Processing Details ...................................................................... 15
-POST (Exchange Primary Refresh Token for User Authentication Certificate)
- ..................................................................................................... 16
-Request Body ............................................................................ 16
-Response Body .......................................................................... 16
-Processing Details ...................................................................... 16
-Authorization endpoint (/authorize) ......................................................... 17
-GET ............................................................................................... 17
-Request Body ............................................................................ 17
-Response Body .......................................................................... 17
-Processing Details ...................................................................... 17
-
-3.1.5.1.4.1
-3.1.5.1.4.2
-3.1.5.1.4.3
-
-3.1.5.2.1.1
-3.1.5.2.1.2
-3.1.5.2.1.3
-
-3.1.5.1.3.1
-3.1.5.1.3.2
-3.1.5.1.3.3
-
-3.1.5.1.2.1
-3.1.5.1.2.2
-3.1.5.1.2.3
-
-3.1.5.1.4
-
-3.1.5.2.1
-
-3.1.5.1.3
-
-3.1.5.2
-
-[MS-OAPXBC] - v20260414
-OAuth 2.0 Protocol Extensions for Broker Clients
-Copyright © 2026 Microsoft Corporation
-Release: April 14, 2026
-
-3 / 42
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-3.2.5.1.1
-
-3.2.5.1.2
-
-3.2.5.1.2.1
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-
-3.2.5.1.2.1.1
-3.2.5.1.2.1.2
-3.2.5.1.2.1.3
-3.2.5.1.2.1.4
-
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-OAuthBrokerExtension Server Details ................................................................. 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Token endpoint (/token) ........................................................................ 19
-POST (Request for Nonce) ................................................................ 19
-Request Body ............................................................................ 19
-Response Body .......................................................................... 19
-Processing Details ...................................................................... 20
-POST (Request for Primary Refresh Token) ......................................... 20
-Request Body ............................................................................ 20
-Username Password Authentication ........................................ 21
-User JWT Authentication ........................................................ 21
-Refresh Token Authentication................................................. 22
-User Certificate Authentication ............................................... 22
-Response Body .......................................................................... 22
-Processing Details ...................................................................... 23
-POST (Exchange Primary Refresh Token for Access Token) ................... 24
-Request Body ............................................................................ 24
-Response Body .......................................................................... 25
-Processing Details ...................................................................... 26
-POST (Exchange Primary Refresh Token for User Authentication Certificate)
- ..................................................................................................... 26
-Request Body ............................................................................ 26
-Response Body .......................................................................... 27
-Processing Details ...................................................................... 28
-Authorization endpoint (/authorize) ......................................................... 30
-GET ............................................................................................... 30
-Request Body ............................................................................ 30
-x-ms-RefreshTokenCredential HTTP header format ................... 30
-x-ms-DeviceCredential HTTP header format ............................. 31
-Response Body .......................................................................... 31
-Processing Details ...................................................................... 31
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-
-3.2.5.1.3.1
-3.2.5.1.3.2
-3.2.5.1.3.3
-
-3.2.5.1.4.1
-3.2.5.1.4.2
-3.2.5.1.4.3
-
-3.2.5.2.1.1.1
-3.2.5.2.1.1.2
-
-3.2.5.2.1.2
-3.2.5.2.1.3
-
-3.2.5.1.2.2
-3.2.5.1.2.3
-
-3.2.5.2.1.1
-
-3.2.5.1.3
-
-3.2.5.1.4
-
-3.2.5.2
-
-3.2.5.2.1
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 33
-Obtain a Nonce ................................................................................................ 33
-Obtain a Primary Refresh Token ......................................................................... 33
-Obtain an Access Token .................................................................................... 34
-Obtain a User Authentication Certificate .............................................................. 35
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 37
-Security Considerations for Implementers ........................................................... 37
-Index of Security Parameters ............................................................................ 37
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 38
-
-7  Change Tracking .................................................................................................... 40
-
-8  Index ..................................................................................................................... 41
-
-[MS-OAPXBC] - v20260414
-OAuth 2.0 Protocol Extensions for Broker Clients
-Copyright © 2026 Microsoft Corporation
-Release: April 14, 2026
-
-4 / 42
-
-1  Introduction
+## 1 Introduction
 
 The OAuth 2.0 Protocol Extensions for Broker Clients (OAPXBC) specify extensions to the OAuth 2.0
 Authorization Framework, specified in [RFC6749], that allow a high privilege broker client to obtain
@@ -492,7 +332,7 @@ access tokens on behalf of calling clients and how these tokens are accessed thr
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -554,7 +394,8 @@ OAuth 2.0 Protocol Extensions for Broker Clients
 Copyright © 2026 Microsoft Corporation
 Release: April 14, 2026
 
-schema NC in its forest. The domain controller is the server side of Authentication Protocol
+
+schema NC in its forest. The domain controller is the server side of Authentication Protocol
 Domain Support [MS-APDS].
 
 JavaScript Object Notation (JSON): A text-based, data interchange format that is used to
@@ -594,14 +435,14 @@ specified in [RFC3280].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -625,7 +466,8 @@ Release: April 14, 2026
 
 6 / 42
 
-[MS-KPP] Microsoft Corporation, "Key Provisioning Protocol".
+
+[MS-KPP] Microsoft Corporation, "Key Provisioning Protocol".
 
 [MS-OAPX] Microsoft Corporation, "OAuth 2.0 Protocol Extensions".
 
@@ -668,7 +510,7 @@ editor.org/info/rfc7519
 Recommendation for Key Derivation Using Pseudorandom Functions", October 2009,
 https://csrc.nist.gov/publications/detail/sp/800-108/final
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-CVE-2021-33781] Microsoft Corporation, "Azure AD Security Feature Bypass Vulnerability",
 CVE-2021-33781, July 13, 2021, https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-
@@ -688,11 +530,12 @@ Release: April 14, 2026
 
 7 / 42
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-OAPXBC].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The OAuth 2.0 Protocol Extensions for Broker Clients (OAPXBC) specify extensions to the OAuth 2.0
 Authorization Framework defined in [RFC6749]. These extensions allow a high privilege broker client
@@ -708,7 +551,7 @@ apply to all AD FS behavior levels.
 Note: Throughout this specification, the fictitious names "client.example.com" and
 "server.example.com" are used as they are used in [RFC6749].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The OAuth 2.0 Protocol Extensions for Broker Clients specify extensions to the industry standard
 OAuth 2.0 Authorization Framework that is defined in [RFC6749] and the extensions described in [MS-
@@ -718,7 +561,7 @@ the relationships of these RFCs and protocols.
 
 Figure 1: Protocol dependency
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The OAuth 2.0 Protocol Extensions for Broker Clients define extensions to [RFC6749] and [MS-OAPX].
 A prerequisite to implementing the OAuth 2.0 Protocol Extensions is that the REQUIRED parts of
@@ -739,7 +582,8 @@ Release: April 14, 2026
 
 8 / 42
 
-
+
+
 
 
 
@@ -755,13 +599,13 @@ The OAuth 2.0 Protocol Extensions for Broker Clients assume that they, the OAuth
 Extensions [MS-OAPX], and the OpenID Connect 1.0 Protocol Extensions [MS-OIDCE], if being used,
 are all be running on the same AD FS server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The OAuth 2.0 Protocol Extensions for Broker Clients are supported by all AD FS servers that are at
 an AD FS behavior level of AD_FS_BEHAVIOR_LEVEL_2 or higher. See [MS-OAPX] section 3.2.1.1
 for the formal definition of AD FS behavior level.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -776,11 +620,11 @@ Localization: The OAuth 2.0 Protocol Extensions for Broker Clients do not return
 Capability Negotiation: The OAuth 2.0 Protocol Extensions for Broker Clients do not support
 capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -791,15 +635,16 @@ Release: April 14, 2026
 
 9 / 42
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The HTTPS protocol [RFC2818] MUST be used as the transport.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  HTTP Headers
+#### 2.2.1 HTTP Headers
 
 The messages exchanged in the OAuth 2.0 Protocol Extensions for Broker Clients use the following
 HTTP headers in addition to the existing set of standard HTTP headers.
@@ -830,7 +675,7 @@ This optional header can be used by the client to provide additional information
 the x-ms-SsoFlags. The value for this header MUST be base64-encoded JSON
 format.
 
-2.2.1.1  x-ms-RefreshTokenCredential
+##### 2.2.1.1 x-ms-RefreshTokenCredential
 
 The x-ms-RefreshTokenCredential HTTP header is optional and can be specified by the client role
 of the OAuth 2.0 Protocol Extensions for Broker Clients. This header is used to pass a previously
@@ -845,7 +690,7 @@ follows.
  String = *(%x20-7E)
  x-ms-RefreshTokenCredential = String
 
-2.2.1.2  x-ms-DeviceCredential
+##### 2.2.1.2 x-ms-DeviceCredential
 
 The x-ms-DeviceCredential HTTP header is optional and can be specified by the client role of the
 OAuth 2.0 Protocol Extensions for Broker Clients. This header is used to authenticate the device on
@@ -863,9 +708,10 @@ Release: April 14, 2026
 
 10 / 42
 
- x-ms-DeviceCredential = String
 
-2.2.1.3  x-ms-SsoFlags
+ x-ms-DeviceCredential = String
+
+##### 2.2.1.3 x-ms-SsoFlags
 
 The x-ms-SsoFlags HTTP header is optional. This header is used to provide the state of the
 automatic app sign in policy on the device which the client is running.
@@ -875,7 +721,7 @@ as follows.
 
  x-ms-SsoFlags = <Flag 1>|<Flag 2>|<Flag 3>
 
-2.2.1.4  x-ms-SsoFlagsSubstatus
+##### 2.2.1.4 x-ms-SsoFlagsSubstatus
 
 The x-ms-SsoFlagsSubstatus HTTP header is optional. This header is used to provide additional
 information for the x-ms-SsoFlags policy state.
@@ -885,7 +731,7 @@ format for the x-ms-SsoFlagsSubstatus header is as follows.
 
  x-ms-SsoFlagsSubstatus = Based64Encoded({"<key1>":"<value1>", "<key2>:"<value2>"})
 
-2.2.2  Data Structures
+#### 2.2.2 Data Structures
 
 The following table summarizes the set of common data structures that are defined by this
 specification.
@@ -904,7 +750,7 @@ OPTIONAL. The OAuth 2.0 client includes this parameter in the POST
 body of a request when the OAuth logon certificate request needs
 to be authorized.
 
-2.2.2.1  krctx
+##### 2.2.2.1 krctx
 
  POST /token HTTP/1.1
  Host: server.example.com
@@ -929,7 +775,8 @@ Release: April 14, 2026
 
 11 / 42
 
-The AD FS server ignores this parameter unless its AD FS behavior level  is
+
+The AD FS server ignores this parameter unless its AD FS behavior level  is
 AD_FS_BEHAVIOR_LEVEL_3 or higher ([MS-OAPX] section 3.2.1.1) and the AD FS server is capable of
 processing the parameter, as indicated by the value "winhello_cert_kr" being included in the
 capabilities field of the OpenID Provider Metadata ([MS-OIDCE] section 2.2.3.2).<1>
@@ -970,7 +817,7 @@ MUST be set to "1".
 
 MUST be set to "1".
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol accesses the Directory Service schema classes and attributes that are listed in the
 following table(s).
@@ -1000,15 +847,16 @@ Release: April 14, 2026
 
 12 / 42
 
-3  Protocol Details
 
-3.1  OAuthBrokerExtension Client Details
+## 3 Protocol Details
+
+### 3.1 OAuthBrokerExtension Client Details
 
 The client role of the OAuth 2.0 Protocol Extensions for Broker Clients is the initiator of requests for
 access tokens on behalf of other clients. The client role also stores data that is important to these
 requests such as a nonce and the primary refresh token.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1055,11 +903,11 @@ User Authentication Key: A key used to authenticate an end user. The msDS-KeyCre
 attribute of a user object in Active Directory is used to store and access the public portion of the
 key.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The OAuth 2.0 Protocol Extensions for Broker Clients do not define any special initialization
 requirements.
@@ -1071,11 +919,12 @@ OAuth 2.0 Protocol Extensions for Broker Clients
 Copyright © 2026 Microsoft Corporation
 Release: April 14, 2026
 
-3.1.4  Higher-Layer Triggered Events
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The resources that are accessed and manipulated by this protocol are defined in [RFC6749] and
 shown below for reference.
@@ -1092,7 +941,7 @@ Authorization endpoint (/authorize)  For a description, see section 3.2.5.
 
 The HTTP responses to all the HTTP methods are defined in corresponding sections of [RFC6749].
 
-3.1.5.1  Token endpoint (/token)
+##### 3.1.5.1 Token endpoint (/token)
 
 The following HTTP method is allowed to be performed on this resource.
 
@@ -1102,7 +951,7 @@ POST
 
 For a description, see section 3.2.5.1.
 
-3.1.5.1.1 POST (Request for Nonce)
+###### 3.1.5.1.1 POST (Request for Nonce)
 
 This method requests a nonce value from the server that the client then includes in a future request
 for a primary refresh token, as defined in section 3.1.5.1.2.
@@ -1111,21 +960,21 @@ This operation is transported by an HTTP POST and can be invoked through the fol
 
  /token
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 The format of the request is defined in section 3.2.5.1.1.1.
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 The format of the response is defined in section 3.2.5.1.1.2.
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 The nonce that is received in the response body of this request is stored in the Nonce abstract data
 model element (section 3.1.1). This nonce is used in a future request for a primary refresh token, as
 defined in section 3.1.5.1.2.
 
-3.1.5.1.2 POST (Request for Primary Refresh Token)
+###### 3.1.5.1.2 POST (Request for Primary Refresh Token)
 
 This method requests a primary refresh token that the client can then exchange for access tokens or
 user authentication certificates, as defined in sections 3.1.5.1.3 and 3.1.5.1.4.
@@ -1139,17 +988,18 @@ OAuth 2.0 Protocol Extensions for Broker Clients
 Copyright © 2026 Microsoft Corporation
 Release: April 14, 2026
 
- /token
 
-3.1.5.1.2.1  Request Body
+ /token
+
+###### 3.1.5.1.2.1 Request Body
 
 The format of the request is defined in section 3.2.5.1.2.1.
 
-3.1.5.1.2.2  Response Body
+###### 3.1.5.1.2.2 Response Body
 
 The format of the response is defined in section 3.2.5.1.2.2.
 
-3.1.5.1.2.3  Processing Details
+###### 3.1.5.1.2.3 Processing Details
 
 Request processing:
 
@@ -1179,7 +1029,7 @@ The client decrypts the session_key_jwe field of the response by following the p
 [RFC7516] section 5.2 and by using the Session Transport Key ADM element (section 3.1.1).  The
 client stores the decrypted key in the Session Key ADM element.
 
-3.1.5.1.3 POST (Exchange Primary Refresh Token for Access Token)
+###### 3.1.5.1.3 POST (Exchange Primary Refresh Token for Access Token)
 
 This method exchanges a primary refresh token for an access token.
 
@@ -1187,15 +1037,15 @@ This operation is transported by an HTTP POST and can be invoked through the fol
 
  /token
 
-3.1.5.1.3.1  Request Body
+###### 3.1.5.1.3.1 Request Body
 
 The format of the request is defined in section 3.2.5.1.3.1.
 
-3.1.5.1.3.2  Response Body
+###### 3.1.5.1.3.2 Response Body
 
 The format of the response is defined in section 3.2.5.1.3.2.
 
-3.1.5.1.3.3  Processing Details
+###### 3.1.5.1.3.3 Processing Details
 
 [MS-OAPXBC] - v20260414
 OAuth 2.0 Protocol Extensions for Broker Clients
@@ -1204,7 +1054,8 @@ Release: April 14, 2026
 
 15 / 42
 
-The client first requests a primary refresh token from the server as defined in sections 3.1.5.1.2 and
+
+The client first requests a primary refresh token from the server as defined in sections 3.1.5.1.2 and
 3.2.5.1.2. It then uses the Primary Refresh Token ADM element (section 3.1.1) to populate the
 refresh_token field in this request for the access token.
 
@@ -1217,7 +1068,7 @@ the client chooses to use KDFv2, the client MUST use SHA256(ctx || assertion pay
 as the context for deriving the signing key. The client MUST also add the JWT header field "kdf_ver"
 with value set to 2 to communicate that KDFv2 was used to create the derived signing key.
 
-3.1.5.1.4 POST (Exchange Primary Refresh Token for User Authentication Certificate)
+###### 3.1.5.1.4 POST (Exchange Primary Refresh Token for User Authentication Certificate)
 
 This method exchanges a primary refresh token for a user authentication certificate.<3>
 
@@ -1225,15 +1076,15 @@ This operation is transported by an HTTP POST and can be invoked through the fol
 
  /token
 
-3.1.5.1.4.1  Request Body
+###### 3.1.5.1.4.1 Request Body
 
 The format of the request is defined in section 3.2.5.1.4.1.
 
-3.1.5.1.4.2  Response Body
+###### 3.1.5.1.4.2 Response Body
 
 The format of the response is defined in section 3.2.5.1.4.2.
 
-3.1.5.1.4.3  Processing Details
+###### 3.1.5.1.4.3 Processing Details
 
 When the client obtains the OpenID Provider Metadata from the server ([MS-OIDCE] section 2.2.3.2),
 it checks for the capabilities field. If the field exists in the metadata and includes the value
@@ -1270,13 +1121,14 @@ OAuth 2.0 Protocol Extensions for Broker Clients
 Copyright © 2026 Microsoft Corporation
 Release: April 14, 2026
 
-If the capabilities field of the OpenID Provider Metadata from the server includes the value
+
+If the capabilities field of the OpenID Provider Metadata from the server includes the value
 "winhello_cert_kr", the client can include the krctx parameter, set to a value that contains a JWT. The
 JWT is structured as defined in section 2.2.2.1 and contains the data defined in section 3.2.5.1.4.3.
 The "winhello_cert_kr" value is supported on the AD FS server only if its AD FS behavior level is
 AD_FS_BEHAVIOR_LEVEL_3 or higher. See section 2.2.2.1 for additional support information.
 
-3.1.5.2  Authorization endpoint (/authorize)
+##### 3.1.5.2 Authorization endpoint (/authorize)
 
 As defined in [RFC6749] section 3.1 (Authorization Endpoint), the authorization endpoint on the
 authorization server is used to interact with the resource owner and obtain an authorization grant. The
@@ -1288,22 +1140,22 @@ GET
 
 For a description, see section 3.2.5.2.
 
-3.1.5.2.1 GET
+###### 3.1.5.2.1 GET
 
 For the syntax and semantics of the GET method, see section 3.2.5.2.1.
 
 The request, response, and processing details are the same as those specified in [MS-OAPX] section
 3.1.5.1.1, with the following additions.
 
-3.1.5.2.1.1  Request Body
+###### 3.1.5.2.1.1 Request Body
 
 The format of the request is defined in section 3.2.5.2.1.1.
 
-3.1.5.2.1.2  Response Body
+###### 3.1.5.2.1.2 Response Body
 
 The response body of this method is the same as that specified in [MS-OAPX] section 3.1.5.1.1.2.
 
-3.1.5.2.1.3  Processing Details
+###### 3.1.5.2.1.3 Processing Details
 
 The processing details are the same as those specified in [MS-OAPX] section 3.1.5.1.1.3, with the
 following addition.
@@ -1339,7 +1191,8 @@ Release: April 14, 2026
 
 17 / 42
 
-the context for deriving the signing key. The client MUST also add the JWT header field "kdf_ver" with
+
+the context for deriving the signing key. The client MUST also add the JWT header field "kdf_ver" with
 value set to 2 to communicate that KDFv2 was used for creating the derived signing key.
 
 If a certificate is available to the client in the Device Certificate ADM element (section 3.1.1), the
@@ -1359,38 +1212,38 @@ Note The client can include both the x-ms-RefreshTokenCredential HTTP header and
 DeviceCredential HTTP header in a request, but the server ignores the x-ms-DeviceCredential HTTP
 header if the x-ms-RefreshTokenCredential HTTP header that is provided is valid.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  OAuthBrokerExtension Server Details
+### 3.2 OAuthBrokerExtension Server Details
 
 The server role of the OAuth 2.0 Protocol Extensions for Broker Clients corresponds to the notion of an
 authorization server as defined in [RFC6749] section 1.1 (Roles). The server role responds to the
 client's requests for a nonce, a primary refresh token, and access tokens.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The OAuth 2.0 Protocol Extensions for Broker Clients do not define any special initialization
 requirements.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The resources accessed and manipulated by this protocol are defined in [RFC6749] and are shown
 below for reference.
@@ -1402,7 +1255,8 @@ Release: April 14, 2026
 
 18 / 42
 
-Resource
+
+Resource
 
 Description
 
@@ -1421,7 +1275,7 @@ is used to interact with the resource owner and obtain an authorization grant.
 
 The HTTP responses to all the HTTP methods are defined in corresponding sections of [RFC6749].
 
-3.2.5.1  Token endpoint (/token)
+##### 3.2.5.1 Token endpoint (/token)
 
 As defined in [RFC6749] section 3.2 (Token Endpoint), the token endpoint on the AD FS server is
 used by an OAuth 2.0 client to obtain an access token by presenting its authorization grant or refresh
@@ -1437,7 +1291,7 @@ Description
 An access token request issued by the OAuth 2.0 client to the token endpoint of the AD FS server
 in accordance with the requirements of [RFC6749] section 4.1.3 (Access Token Request).
 
-3.2.5.1.1 POST (Request for Nonce)
+###### 3.2.5.1.1 POST (Request for Nonce)
 
 This method requests a nonce value from the server that the client then includes in a future request
 for a primary refresh token, as defined in section 3.2.5.1.2.
@@ -1446,7 +1300,7 @@ This operation is transported by an HTTP POST and can be invoked through the fol
 
  /token
 
-3.2.5.1.1.1  Request Body
+###### 3.2.5.1.1.1 Request Body
 
 To request a nonce, the client creates and sends the following request body.
 
@@ -1455,7 +1309,7 @@ To request a nonce, the client creates and sends the following request body.
 
  grant_type=srv_challenge
 
-3.2.5.1.1.2  Response Body
+###### 3.2.5.1.1.2 Response Body
 
 The server sends the following response body for this request.
 
@@ -1475,12 +1329,13 @@ Release: April 14, 2026
 
 19 / 42
 
-Nonce (REQUIRED): An opaque, base64 URL-encoded value ([RFC4648] section 5). Padding is not
+
+Nonce (REQUIRED): An opaque, base64 URL-encoded value ([RFC4648] section 5). Padding is not
 
 required ([RFC4648] section 3.2).  It is to be used by the client in a future request for a primary
 refresh token.
 
-3.2.5.1.1.3  Processing Details
+###### 3.2.5.1.1.3 Processing Details
 
 Generation of the Nonce field of the response is implementation specific, provided that the nonce
 meets the following requirements:
@@ -1501,7 +1356,7 @@ a primary refresh token matches a nonce that was issued recently (see section 3.
 The server SHOULD use a method that makes it difficult for an attacker to guess valid nonce
 values.
 
-3.2.5.1.2 POST (Request for Primary Refresh Token)
+###### 3.2.5.1.2 POST (Request for Primary Refresh Token)
 
 This method requests a primary refresh token that the client can then exchange for access tokens or
 user authentication certificates, as defined in sections 3.2.5.1.3 and 3.2.5.1.4.
@@ -1510,7 +1365,7 @@ This operation is transported by an HTTP POST and can be invoked through the fol
 
  /token
 
-3.2.5.1.2.1  Request Body
+###### 3.2.5.1.2.1 Request Body
 
 A signed request is passed as a JSON Web Token (JWT), as specified in [OIDCCore] section 6.1,
 and the JWT is signed with a device key.
@@ -1549,7 +1404,8 @@ Release: April 14, 2026
 
 20 / 42
 
-  Section 3.2.5.1.2.1.3 if using a previous refresh token for authentication.
+
+  Section 3.2.5.1.2.1.3 if using a previous refresh token for authentication.
 
 The signature header fields MUST be given the following values:
 
@@ -1567,7 +1423,7 @@ creating context, which is used in deriving the Session Key. This is used in flo
 Primary Refresh token for another token or user authentication certificate, as defined in sections
 3.1.5.1.3 and 3.1.5.1.4.
 
-3.2.5.1.2.1.1  Username Password Authentication
+###### 3.2.5.1.2.1.1 Username Password Authentication
 
 If authenticating the user by using username and password, the client includes the following fields in
 the JWT described in section 3.2.5.1.2.1:
@@ -1578,7 +1434,7 @@ username (REQUIRED): The username of the user for which the primary refresh toke
 
 password (REQUIRED): The password of the user for which the primary refresh token is requested.
 
-3.2.5.1.2.1.2  User JWT Authentication
+###### 3.2.5.1.2.1.2 User JWT Authentication
 
 If authenticating the user by using a signed JWT, the client includes the following fields in the JWT
 described in section 3.2.5.1.2.1:
@@ -1621,9 +1477,10 @@ Release: April 14, 2026
 
 21 / 42
 
-use (REQUIRED): "ngc"
 
-3.2.5.1.2.1.3  Refresh Token Authentication
+use (REQUIRED): "ngc"
+
+###### 3.2.5.1.2.1.3 Refresh Token Authentication
 
 If authenticating the user by using a previously obtained refresh token, the client includes the
 following fields in the JWT described in section 3.2.5.1.2.1:
@@ -1633,7 +1490,7 @@ grant_type (REQUIRED): "refresh_token"
 refresh_token (REQUIRED): A refresh token ([RFC6749] section 1.5) that was previously obtained
 from the server.
 
-3.2.5.1.2.1.4  User Certificate Authentication
+###### 3.2.5.1.2.1.4 User Certificate Authentication
 
 If authenticating the user by using a signed JWT, the client includes the following fields in the JWT
 described in section 3.2.5.1.2.1:
@@ -1667,7 +1524,7 @@ x5c (REQUIRED): The certificate used to sign the request, following the format d
 
 [RFC7515] section 4.1.6.
 
-3.2.5.1.2.2  Response Body
+###### 3.2.5.1.2.2 Response Body
 
 The response to the request is a JSON object with the following fields:
 
@@ -1695,7 +1552,8 @@ Release: April 14, 2026
 
 22 / 42
 
-JWE is the encrypted key section, which the client will use for future signature and decryption
+
+JWE is the encrypted key section, which the client will use for future signature and decryption
 operations as described in section 3.1.5.1.3.
 
 id_token (REQUIRED): An ID token for the user that is authenticated in the request, as described in
@@ -1706,7 +1564,7 @@ Note that id_token may include upn and email claims. Although these are marked a
 (see [MS-OIDCE] section 2.2.3.1), a client broker that follows this specification requires one or the
 other, but not both.
 
-3.2.5.1.2.3  Processing Details
+###### 3.2.5.1.2.3 Processing Details
 
 After receiving the request, the server verifies the signature of the request and also verifies that the
 request_nonce is a nonce value previously issued by the server as defined in section 3.2.5.1.1. The
@@ -1777,7 +1635,8 @@ OAuth 2.0 Protocol Extensions for Broker Clients
 Copyright © 2026 Microsoft Corporation
 Release: April 14, 2026
 
-
+
+
 
 
 
@@ -1813,7 +1672,7 @@ session_key_jwe field of the response by creating a session key and encrypting i
 process in [RFC7516] section 5.1 and by using the session transport key found in the msDS-
 KeyCredentialLink attribute of the previously located msDS-Device object.
 
-3.2.5.1.3 POST (Exchange Primary Refresh Token for Access Token)
+###### 3.2.5.1.3 POST (Exchange Primary Refresh Token for Access Token)
 
 Given the primary refresh token that was obtained in section 3.2.5.1.2, this method requests an
 access token.
@@ -1822,7 +1681,7 @@ This operation is transported by an HTTP POST and can be invoked through the fol
 
  /token
 
-3.2.5.1.3.1  Request Body
+###### 3.2.5.1.3.1 Request Body
 
 A signed request is passed as a JSON Web Token (JWT), as specified in [OIDCCore] section 6.1,
 and the JWT is signed with a session key.
@@ -1853,7 +1712,8 @@ Release: April 14, 2026
 
 24 / 42
 
-resource (OPTIONAL): The resource for which the access token is requested, as defined in [MS-
+
+resource (OPTIONAL): The resource for which the access token is requested, as defined in [MS-
 
 OAPX] section 2.2.3.
 
@@ -1881,7 +1741,7 @@ kdf_ver (OPTIONAL): If ctx was created using KDFv2, the client MUST include the 
 
 the kdf_ver field set to 2.
 
-3.2.5.1.3.2  Response Body
+###### 3.2.5.1.3.2 Response Body
 
 The response format is an encrypted JWT. The encrypted JWT (or JWE) format is described in
 [RFC7516].
@@ -1931,7 +1791,8 @@ OAuth 2.0 Protocol Extensions for Broker Clients
 Copyright © 2026 Microsoft Corporation
 Release: April 14, 2026
 
-3.2.5.1.3.3  Processing Details
+
+###### 3.2.5.1.3.3 Processing Details
 
 The server verifies that the request was signed by the client with a key derived from the session key
 previously issued to the client using the process for deriving the signing key described in section
@@ -1978,7 +1839,7 @@ The server can include an ID token (see [OIDCCore]) in the id_token field of the
 The server encrypts the response using a key that was derived by using the same process as that
 used for deriving the signing key, as defined in section 3.1.5.1.3.3.
 
-3.2.5.1.4 POST (Exchange Primary Refresh Token for User Authentication Certificate)
+###### 3.2.5.1.4 POST (Exchange Primary Refresh Token for User Authentication Certificate)
 
 Given the primary refresh token that was obtained in section 3.2.5.1.2, this method requests a
 certificate that can be used to authenticate the user.<6>
@@ -1987,7 +1848,7 @@ This operation is transported by an HTTP POST and can be invoked through the fol
 
  /token
 
-3.2.5.1.4.1  Request Body
+###### 3.2.5.1.4.1 Request Body
 
 A signed request is passed as a JSON Web Token (JWT), as specified in [OIDCCore] section 6.1,
 and the JWT is signed with a session key.
@@ -2007,7 +1868,8 @@ Release: April 14, 2026
 
 26 / 42
 
-The JWT fields MUST be given the following values:
+
+The JWT fields MUST be given the following values:
 
 client_id (REQUIRED): The client identifier for the client ([RFC6749] section 1.1) to which an access
 
@@ -2059,7 +1921,7 @@ kdf_ver (OPTIONAL): If ctx was created using KDFv2, the client MUST include the 
 
 the kdf_ver field set to 2.
 
-3.2.5.1.4.2  Response Body
+###### 3.2.5.1.4.2 Response Body
 
 The response format is an encrypted JWT. The encrypted JWT (or JSON Web Encryption (JWE))
 format is described in [RFC7516].
@@ -2083,7 +1945,8 @@ Release: April 14, 2026
 
 27 / 42
 
-x5c (REQUIRED): A base64-encoded Cryptographic Message Syntax (CMS) certificate chain or a
+
+x5c (REQUIRED): A base64-encoded Cryptographic Message Syntax (CMS) certificate chain or a
 Certificate Management Messages over CMS (CMC) full PKI response (see [MS-WCCE]
 section 2.2.2.8) containing a certificate that can be used to authenticate the user.
 
@@ -2109,7 +1972,7 @@ Note that id_token may include upn and email claims. Although these are marked a
 (see [MS-OIDCE] section 2.2.3.1), a client broker that follows this specification requires one or the
 other, but not both.
 
-3.2.5.1.4.3  Processing Details
+###### 3.2.5.1.4.3 Processing Details
 
 The server verifies that the request was signed by the client with a key derived from the session key
 previously issued to the client using the process for deriving the signing key described in section
@@ -2164,7 +2027,8 @@ Release: April 14, 2026
 
 28 / 42
 
-
+
+
 
 
 
@@ -2251,7 +2115,8 @@ Release: April 14, 2026
 
 29 / 42
 
-3.2.5.2  Authorization endpoint (/authorize)
+
+##### 3.2.5.2 Authorization endpoint (/authorize)
 
 As defined in [RFC6749] section 3.1 (Authorization Endpoint), the authorization endpoint on the
 authorization server is used to interact with the resource owner and obtain an authorization grant. The
@@ -2267,14 +2132,14 @@ Description
 An authorization request issued by the OAuth 2.0 client to the authorization endpoint of the AD FS
 server in accordance with the requirements of [RFC6749] section 4.1.1 (Authorization Request).
 
-3.2.5.2.1 GET
+###### 3.2.5.2.1 GET
 
 This method is transported by an HTTP GET.
 
 The request, response, and processing details of this method are the same as those specified in [MS-
 OAPX] section 3.2.5.1.1, with the following additions.
 
-3.2.5.2.1.1  Request Body
+###### 3.2.5.2.1.1 Request Body
 
 The request body of this method is the same as that specified in [MS-OAPX] section 3.2.5.1.1.1, with
 the following addition.
@@ -2314,7 +2179,7 @@ A JWT signed with a device certificate,
 formatted as described in section
 2.2.1.2.
 
-3.2.5.2.1.1.1  x-ms-RefreshTokenCredential HTTP header format
+###### 3.2.5.2.1.1.1 x-ms-RefreshTokenCredential HTTP header format
 
 The x-ms-RefreshTokenCredential HTTP header is a signed JWT, as defined in section 2.2.1.1.
 
@@ -2339,7 +2204,8 @@ OAuth 2.0 Protocol Extensions for Broker Clients
 Copyright © 2026 Microsoft Corporation
 Release: April 14, 2026
 
-ua_redirect_uri (OPTIONAL): A redirect_uri of the user-agent using this header
+
+ua_redirect_uri (OPTIONAL): A redirect_uri of the user-agent using this header
 
 x_client_platform (OPTIONAL): The value is used to inform the AAD/server the platform on which
 
@@ -2363,7 +2229,7 @@ ctx (REQUIRED): The base64-encoded bytes used for signature key derivation. Refe
 kdf_ver (OPTIONAL): If ctx was created using KDFv2, the client MUST include the JWT header with
 this field value set to 2.
 
-3.2.5.2.1.1.2  x-ms-DeviceCredential HTTP header format
+###### 3.2.5.2.1.1.2 x-ms-DeviceCredential HTTP header format
 
 The x-ms-DeviceCredential HTTP header is a signed JWT, as defined in section 2.2.1.2,.
 
@@ -2400,11 +2266,11 @@ alg (REQUIRED): "RS256"
 x5c (REQUIRED): The certificate is used to sign the request, following the format specified in
 [RFC7515] section 4.1.6.
 
-3.2.5.2.1.2  Response Body
+###### 3.2.5.2.1.2 Response Body
 
 The response body of this method is the same as that specified in [MS-OAPX] section 3.2.5.1.1.2.
 
-3.2.5.2.1.3  Processing Details
+###### 3.2.5.2.1.3 Processing Details
 
 [MS-OAPXBC] - v20260414
 OAuth 2.0 Protocol Extensions for Broker Clients
@@ -2413,7 +2279,8 @@ Release: April 14, 2026
 
 31 / 42
 
-The processing details are the same as those specified in [MS-OAPX] section 3.2.5.1.1.3, with the
+
+The processing details are the same as those specified in [MS-OAPX] section 3.2.5.1.1.3, with the
 following additions.
 
 The AD FS server processes the x-ms-RefreshTokenCredential HTTP header as follows.
@@ -2453,11 +2320,11 @@ If the client provided a referred token-binding ID using the tbidv2 POST body pa
 section 2.2.3), the AD FS Server secures the response Access Token with the referred token-binding
 ID that was provided.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
  None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2468,7 +2335,8 @@ Release: April 14, 2026
 
 32 / 42
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections show examples of the requests and responses that are defined by the OAuth
 2.0 Protocol Extensions for Broker Clients.
@@ -2479,7 +2347,7 @@ Note: Throughout these examples, the fictitious name "server.example.com" is use
 Note: Throughout these examples, the HTTP samples line breaks were added and irrelevant fields
 were removed to enhance readability.
 
-4.1  Obtain a Nonce
+### 4.1 Obtain a Nonce
 
 The following example shows a request from the broker client to the AD FS server for a nonce (section
 3.2.5.1.1.1) and the response from the AD FS server that contains the nonce (section 3.2.5.1.1.2).
@@ -2505,7 +2373,7 @@ Response:
  }
  {"Nonce":"eyJWZXJza..."}
 
-4.2  Obtain a Primary Refresh Token
+### 4.2 Obtain a Primary Refresh Token
 
 The following example shows a request from the broker client to the AD FS server for a primary
 refresh token (section 3.2.5.1.2.1) using the obtained nonce (section 4.1) and the response from the
@@ -2532,7 +2400,8 @@ Release: April 14, 2026
 
 33 / 42
 
-As described in sections 3.2.5.1.2.1 and 3.2.5.1.2.1.1, the content of the request parameter above is
+
+As described in sections 3.2.5.1.2.1 and 3.2.5.1.2.1.1, the content of the request parameter above is
 a signed JWT. An example of the raw JWT with header is given below.
 
  {
@@ -2564,7 +2433,7 @@ Response:
   "id_token":"eyJ0eXAiOiJKV1QiLCJhbGci..."
  }
 
-4.3  Obtain an Access Token
+### 4.3 Obtain an Access Token
 
 The following example shows a request from the broker client to the AD FS server for an access token
 (section 3.2.5.1.3.1) using the obtained primary refresh token (section 4.2) and the response from
@@ -2600,7 +2469,8 @@ Release: April 14, 2026
 
 34 / 42
 
-   "scope":"aza openid",
+
+   "scope":"aza openid",
    "resource":"https://resource_server1",
    "iat":1443739462,
    "exp":1443743062,
@@ -2636,7 +2506,7 @@ example of the decrypted JWT with header is given below.
    "id_token":"eyJ0eXAiOiJKV1..."
  }
 
-4.4  Obtain a User Authentication Certificate
+### 4.4 Obtain a User Authentication Certificate
 
 The following example shows a request from the broker client to the AD FS server for a user
 authentication certificate (section 3.2.5.1.4.1) using the obtained primary refresh token (section 4.2)
@@ -2666,7 +2536,8 @@ OAuth 2.0 Protocol Extensions for Broker Clients
 Copyright © 2026 Microsoft Corporation
 Release: April 14, 2026
 
- {
+
+ {
    "alg":"HS256",
    "ctx":"alusEDoF8fY+3p3EPnLFzBjl2DUty0Ov",
  }
@@ -2718,13 +2589,14 @@ Release: April 14, 2026
 
 36 / 42
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2735,7 +2607,8 @@ Release: April 14, 2026
 
 37 / 42
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2832,7 +2705,8 @@ OAuth 2.0 Protocol Extensions for Broker Clients
 Copyright © 2026 Microsoft Corporation
 Release: April 14, 2026
 
-This method is exercised in Windows 10 v1703 operating system and later only if [MSKB-4022723] is
+
+This method is exercised in Windows 10 v1703 operating system and later only if [MSKB-4022723] is
 installed on Windows Server 2016 or if a later version of the product is being used for the server role.
 
 <4> Section 3.2.5.1.2.1:  Windows clients use the identifier "38aa3b87-a06d-4817-b275-
@@ -2874,7 +2748,8 @@ Release: April 14, 2026
 
 39 / 42
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2942,7 +2817,8 @@ Release: April 14, 2026
 
 40 / 42
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3080,7 +2956,8 @@ Overview (synopsis) 8
 
 41 / 42
 
-P
+
+P
 
 Parameters - security index 37
 Preconditions 8

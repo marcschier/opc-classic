@@ -63,7 +63,8 @@ Release: March 30, 2026
 
 1 / 99
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ technical content.
 
 2 / 99
 
-Date
+
+Date
 
 Revision
 History
@@ -553,7 +555,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Date
+
+Date
 
 Revision
 History
@@ -602,364 +605,144 @@ Release: March 30, 2026
 
 4 / 99
 
-Table of Contents
 
-1.3
-
-1.3.1
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 11
-Normative References ................................................................................. 12
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 13
-NTLM Authentication Call Flow ...................................................................... 14
-NTLM Connection-Oriented Call Flow ....................................................... 15
-NTLM Connectionless (Datagram-Oriented) Call Flow ................................. 16
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 17
-Applicability Statement ..................................................................................... 17
-Versioning and Capability Negotiation ................................................................. 17
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 17
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1.1
-1.3.1.2
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Message Syntax ............................................................................................... 18
-NTLM Messages .......................................................................................... 19
-NEGOTIATE_MESSAGE .......................................................................... 19
-CHALLENGE_MESSAGE .......................................................................... 22
-AUTHENTICATE_MESSAGE ..................................................................... 25
-NTLM Structures ......................................................................................... 30
-AV_PAIR .............................................................................................. 30
-Single_Host_Data ................................................................................. 32
-LM_RESPONSE ..................................................................................... 33
-LMv2_RESPONSE .................................................................................. 33
-NEGOTIATE .......................................................................................... 33
-NTLM v1 Response: NTLM_RESPONSE ..................................................... 36
-NTLM v2: NTLMv2_CLIENT_CHALLENGE .................................................. 36
-NTLM2 V2 Response: NTLMv2_RESPONSE ................................................ 37
-NTLMSSP_MESSAGE_SIGNATURE ........................................................... 38
-NTLMSSP_MESSAGE_SIGNATURE ...................................................... 38
-NTLMSSP_MESSAGE_SIGNATURE for Extended Session Security ........... 39
-VERSION ............................................................................................. 39
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-
-2.2.2.9.1
-2.2.2.9.2
-
-2.2.2.10
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 41
-Client Details ................................................................................................... 41
-Abstract Data Model .................................................................................... 41
-Variables Internal to the Protocol ............................................................ 41
-Variables Exposed to the Application ....................................................... 42
-Timers ...................................................................................................... 43
-Initialization ............................................................................................... 43
-Higher-Layer Triggered Events ..................................................................... 43
-Message Processing Events and Sequencing Rules .......................................... 44
-Connection-Oriented ............................................................................. 44
-Client Initiates the NEGOTIATE_MESSAGE .......................................... 44
-Client Receives a CHALLENGE_MESSAGE from the Server..................... 45
-Connectionless ..................................................................................... 48
-Client Receives a CHALLENGE_MESSAGE ............................................ 48
-Timer Events .............................................................................................. 49
-Other Local Events ...................................................................................... 49
-Server Details .................................................................................................. 49
-Abstract Data Model .................................................................................... 49
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.6
-3.1.7
-
-3.1.5.2.1
-
-3.1.5.1
-
-3.1.5.2
-
-3.2.1
-
-3.2
-
-[MS-NLMP] - v20260330
-NT LAN Manager (NTLM) Authentication Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-5 / 99
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.2.1.1
-3.2.1.2
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.2.5.2
-
-3.2.5.2.1
-3.2.5.2.2
-
-Variables Internal to the Protocol ............................................................ 49
-Variables Exposed to the Application ....................................................... 50
-Timers ...................................................................................................... 50
-Initialization ............................................................................................... 50
-Higher-Layer Triggered Events ..................................................................... 50
-Message Processing Events and Sequencing Rules .......................................... 51
-Connection-Oriented ............................................................................. 51
-Server Receives a NEGOTIATE_MESSAGE from the Client ..................... 51
-Server Receives an AUTHENTICATE_MESSAGE from the Client .............. 53
-Connectionless NTLM ............................................................................. 56
-Server Sends the Client an Initial CHALLENGE_MESSAGE ..................... 56
-Server Response Checking ................................................................ 56
-Timer Events .............................................................................................. 58
-Other Local Events ...................................................................................... 58
-NTLM v1 and NTLM v2 Messages ........................................................................ 58
-NTLM v1 Authentication ............................................................................... 58
-NTLM v2 Authentication ............................................................................... 60
-Session Security Details .................................................................................... 61
-Abstract Data Model .................................................................................... 62
-Message Integrity ....................................................................................... 62
-Message Confidentiality ............................................................................... 63
-Message Signature Functions ....................................................................... 63
-Without Extended Session Security ......................................................... 64
-With Extended Session Security .............................................................. 65
-Without NTLMSSP_NEGOTIATE_SIGN ...................................................... 65
-KXKEY, SIGNKEY, and SEALKEY ................................................................... 66
-KXKEY ................................................................................................. 66
-SIGNKEY .............................................................................................. 67
-SEALKEY .............................................................................................. 67
-GSS_WrapEx() Call ..................................................................................... 68
-Signature Creation for GSS_WrapEx() ..................................................... 69
-GSS_UnwrapEx() Call .................................................................................. 69
-Signature Creation for GSS_UnwrapEx() .................................................. 70
-GSS_GetMICEx() Call .................................................................................. 70
-Signature Creation for GSS_GetMICEx() .................................................. 70
-GSS_VerifyMICEx() Call ............................................................................... 71
-Signature Creation for GSS_VerifyMICEx() ............................................... 71
-
-3.4.4.1
-3.4.4.2
-3.4.4.3
-
-3.4.5
-
-3.4.5.1
-3.4.5.2
-3.4.5.3
-
-3.4.6
-
-3.4.6.1
-
-3.4.7
-
-3.4.7.1
-
-3.4.8
-
-3.4.9
-
-3.4.8.1
-
-3.4.9.1
-
-4.1
-4.2
-
-4.2.2.1
-
-4.2.2.2
-
-4.2.1
-4.2.2
-
-4.2.2.1.1
-4.2.2.1.2
-4.2.2.1.3
-
-4  Protocol Examples ................................................................................................. 72
-NTLM Over Server Message Block (SMB) ............................................................. 72
-Cryptographic Values for Validation .................................................................... 73
-Common Values ......................................................................................... 73
-NTLM v1 Authentication ............................................................................... 74
-Calculations .......................................................................................... 74
-LMOWFv1() .................................................................................... 74
-NTOWFv1() .................................................................................... 75
-Session Base Key and Key Exchange Key ........................................... 75
-Results ................................................................................................ 75
-NTLMv1 Response ........................................................................... 75
-LMv1 Response ............................................................................... 75
-Encrypted Session Key ..................................................................... 75
-Messages ............................................................................................. 76
-GSS_WrapEx Examples.......................................................................... 76
-NTLM v1 with Client Challenge ..................................................................... 77
-Calculations .......................................................................................... 78
-NTOWFv1() .................................................................................... 78
-Session Base Key ............................................................................ 78
-Key Exchange Key ........................................................................... 78
-
-4.2.3.1.1
-4.2.3.1.2
-4.2.3.1.3
-
-4.2.2.2.1
-4.2.2.2.2
-4.2.2.2.3
-
-4.2.2.3
-4.2.2.4
-
-4.2.3.1
-
-4.2.3
-
-[MS-NLMP] - v20260330
-NT LAN Manager (NTLM) Authentication Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-6 / 99
-
-4.2.3.3
-4.2.3.4
-
-4.2.4
-
-4.2.4.1
-
-4.2.3.2
-
-4.2.3.2.1
-4.2.3.2.2
-
-Results ................................................................................................ 78
-LMv1 Response ............................................................................... 78
-NTLMv1 Response ........................................................................... 78
-Messages ............................................................................................. 78
-GSS_WrapEx Examples.......................................................................... 79
-NTLMv2 Authentication ................................................................................ 80
-Calculations .......................................................................................... 81
-NTOWFv2() and LMOWFv2() ............................................................. 81
-Session Base Key ............................................................................ 81
-temp .............................................................................................. 81
-Results ................................................................................................ 81
-LMv2 Response ............................................................................... 81
-NTLMv2 Response ........................................................................... 81
-Encrypted Session Key ..................................................................... 81
-Messages ............................................................................................. 81
-GSS_WrapEx Examples.......................................................................... 82
-
-4.2.4.1.1
-4.2.4.1.2
-4.2.4.1.3
-
-4.2.4.2
-
-4.2.4.2.1
-4.2.4.2.2
-4.2.4.2.3
-
-4.2.4.3
-4.2.4.4
-
-5  Security ................................................................................................................. 84
-Security Considerations for Implementers ........................................................... 84
-Index of Security Parameters ............................................................................ 84
-
-5.1
-5.2
-
-6  Appendix A: Cryptographic Operations Reference ................................................. 85
-
-7  Appendix B: Product Behavior ............................................................................... 88
-
-8  Change Tracking .................................................................................................... 96
-
-9  Index ..................................................................................................................... 97
-
-[MS-NLMP] - v20260330
-NT LAN Manager (NTLM) Authentication Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-7 / 99
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 NTLM Authentication Call Flow](#131-ntlm-authentication-call-flow)
+      - [1.3.1.1 NTLM Connection-Oriented Call Flow](#1311-ntlm-connection-oriented-call-flow)
+      - [1.3.1.2 NTLM Connectionless (Datagram-Oriented) Call Flow](#1312-ntlm-connectionless-datagram-oriented-call-flow)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 NTLM Messages](#221-ntlm-messages)
+      - [2.2.1.1 NEGOTIATE_MESSAGE](#2211-negotiatemessage)
+      - [2.2.1.2 CHALLENGE_MESSAGE](#2212-challengemessage)
+      - [2.2.1.3 AUTHENTICATE_MESSAGE](#2213-authenticatemessage)
+    - [2.2.2 NTLM Structures](#222-ntlm-structures)
+      - [2.2.2.1 AV_PAIR](#2221-avpair)
+      - [2.2.2.2 Single_Host_Data](#2222-singlehostdata)
+      - [2.2.2.3 LM_RESPONSE](#2223-lmresponse)
+      - [2.2.2.4 LMv2_RESPONSE](#2224-lmv2response)
+      - [2.2.2.5 NEGOTIATE](#2225-negotiate)
+      - [2.2.2.6 NTLM v1 Response: NTLM_RESPONSE](#2226-ntlm-v1-response-ntlmresponse)
+      - [2.2.2.7 NTLM v2: NTLMv2_CLIENT_CHALLENGE](#2227-ntlm-v2-ntlmv2clientchallenge)
+      - [2.2.2.8 NTLM2 V2 Response: NTLMv2_RESPONSE](#2228-ntlm2-v2-response-ntlmv2response)
+      - [2.2.2.9 NTLMSSP_MESSAGE_SIGNATURE](#2229-ntlmsspmessagesignature)
+        - [2.2.2.9.1 NTLMSSP_MESSAGE_SIGNATURE](#22291-ntlmsspmessagesignature)
+        - [2.2.2.9.2 NTLMSSP_MESSAGE_SIGNATURE for Extended Session Security](#22292-ntlmsspmessagesignature-for-extended-session-security)
+      - [2.2.2.10 VERSION](#22210-version)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Variables Internal to the Protocol](#3111-variables-internal-to-the-protocol)
+      - [3.1.1.2 Variables Exposed to the Application](#3112-variables-exposed-to-the-application)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Connection-Oriented](#3151-connection-oriented)
+        - [3.1.5.1.1 Client Initiates the NEGOTIATE_MESSAGE](#31511-client-initiates-the-negotiatemessage)
+        - [3.1.5.1.2 Client Receives a CHALLENGE_MESSAGE from the Server](#31512-client-receives-a-challengemessage-from-the-server)
+      - [3.1.5.2 Connectionless](#3152-connectionless)
+        - [3.1.5.2.1 Client Receives a CHALLENGE_MESSAGE](#31521-client-receives-a-challengemessage)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Variables Internal to the Protocol](#3211-variables-internal-to-the-protocol)
+      - [3.2.1.2 Variables Exposed to the Application](#3212-variables-exposed-to-the-application)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Connection-Oriented](#3251-connection-oriented)
+        - [3.2.5.1.1 Server Receives a NEGOTIATE_MESSAGE from the Client](#32511-server-receives-a-negotiatemessage-from-the-client)
+        - [3.2.5.1.2 Server Receives an AUTHENTICATE_MESSAGE from the Client](#32512-server-receives-an-authenticatemessage-from-the-client)
+      - [3.2.5.2 Connectionless NTLM](#3252-connectionless-ntlm)
+        - [3.2.5.2.1 Server Sends the Client an Initial CHALLENGE_MESSAGE](#32521-server-sends-the-client-an-initial-challengemessage)
+        - [3.2.5.2.2 Server Response Checking](#32522-server-response-checking)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 NTLM v1 and NTLM v2 Messages](#33-ntlm-v1-and-ntlm-v2-messages)
+    - [3.3.1 NTLM v1 Authentication](#331-ntlm-v1-authentication)
+    - [3.3.2 NTLM v2 Authentication](#332-ntlm-v2-authentication)
+  - [3.4 Session Security Details](#34-session-security-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Message Integrity](#342-message-integrity)
+    - [3.4.3 Message Confidentiality](#343-message-confidentiality)
+    - [3.4.4 Message Signature Functions](#344-message-signature-functions)
+      - [3.4.4.1 Without Extended Session Security](#3441-without-extended-session-security)
+      - [3.4.4.2 With Extended Session Security](#3442-with-extended-session-security)
+      - [3.4.4.3 Without NTLMSSP_NEGOTIATE_SIGN](#3443-without-ntlmsspnegotiatesign)
+    - [3.4.5 KXKEY, SIGNKEY, and SEALKEY](#345-kxkey-signkey-and-sealkey)
+      - [3.4.5.1 KXKEY](#3451-kxkey)
+      - [3.4.5.2 SIGNKEY](#3452-signkey)
+      - [3.4.5.3 SEALKEY](#3453-sealkey)
+    - [3.4.6 GSS_WrapEx() Call](#346-gsswrapex-call)
+      - [3.4.6.1 Signature Creation for GSS_WrapEx()](#3461-signature-creation-for-gsswrapex)
+    - [3.4.7 GSS_UnwrapEx() Call](#347-gssunwrapex-call)
+      - [3.4.7.1 Signature Creation for GSS_UnwrapEx()](#3471-signature-creation-for-gssunwrapex)
+    - [3.4.8 GSS_GetMICEx() Call](#348-gssgetmicex-call)
+      - [3.4.8.1 Signature Creation for GSS_GetMICEx()](#3481-signature-creation-for-gssgetmicex)
+    - [3.4.9 GSS_VerifyMICEx() Call](#349-gssverifymicex-call)
+      - [3.4.9.1 Signature Creation for GSS_VerifyMICEx()](#3491-signature-creation-for-gssverifymicex)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 NTLM Over Server Message Block (SMB)](#41-ntlm-over-server-message-block-smb)
+  - [4.2 Cryptographic Values for Validation](#42-cryptographic-values-for-validation)
+    - [4.2.1 Common Values](#421-common-values)
+    - [4.2.2 NTLM v1 Authentication](#422-ntlm-v1-authentication)
+      - [4.2.2.1 Calculations](#4221-calculations)
+        - [4.2.2.1.1 LMOWFv1()](#42211-lmowfv1)
+        - [4.2.2.1.2 NTOWFv1()](#42212-ntowfv1)
+        - [4.2.2.1.3 Session Base Key and Key Exchange Key](#42213-session-base-key-and-key-exchange-key)
+      - [4.2.2.2 Results](#4222-results)
+        - [4.2.2.2.1 NTLMv1 Response](#42221-ntlmv1-response)
+        - [4.2.2.2.2 LMv1 Response](#42222-lmv1-response)
+        - [4.2.2.2.3 Encrypted Session Key](#42223-encrypted-session-key)
+      - [4.2.2.3 Messages](#4223-messages)
+      - [4.2.2.4 GSS_WrapEx Examples](#4224-gsswrapex-examples)
+    - [4.2.3 NTLM v1 with Client Challenge](#423-ntlm-v1-with-client-challenge)
+      - [4.2.3.1 Calculations](#4231-calculations)
+        - [4.2.3.1.1 NTOWFv1()](#42311-ntowfv1)
+        - [4.2.3.1.2 Session Base Key](#42312-session-base-key)
+        - [4.2.3.1.3 Key Exchange Key](#42313-key-exchange-key)
+      - [4.2.3.2 Results](#4232-results)
+        - [4.2.3.2.1 LMv1 Response](#42321-lmv1-response)
+        - [4.2.3.2.2 NTLMv1 Response](#42322-ntlmv1-response)
+      - [4.2.3.3 Messages](#4233-messages)
+      - [4.2.3.4 GSS_WrapEx Examples](#4234-gsswrapex-examples)
+    - [4.2.4 NTLMv2 Authentication](#424-ntlmv2-authentication)
+      - [4.2.4.1 Calculations](#4241-calculations)
+        - [4.2.4.1.1 NTOWFv2() and LMOWFv2()](#42411-ntowfv2-and-lmowfv2)
+        - [4.2.4.1.2 Session Base Key](#42412-session-base-key)
+        - [4.2.4.1.3 temp](#42413-temp)
+      - [4.2.4.2 Results](#4242-results)
+        - [4.2.4.2.1 LMv2 Response](#42421-lmv2-response)
+        - [4.2.4.2.2 NTLMv2 Response](#42422-ntlmv2-response)
+        - [4.2.4.2.3 Encrypted Session Key](#42423-encrypted-session-key)
+      - [4.2.4.3 Messages](#4243-messages)
+      - [4.2.4.4 GSS_WrapEx Examples](#4244-gsswrapex-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Cryptographic Operations Reference](#6-appendix-a-cryptographic-operations-reference)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The NT LAN Manager (NTLM) Authentication Protocol is used for authentication between clients and
 servers. These extensions provide additional capability for authorization information including group
@@ -987,7 +770,7 @@ The implementation chooses to directly use NLMP.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1038,7 +821,8 @@ Release: March 30, 2026
 
 8 / 99
 
-connectionless protocol: A transport protocol that enables endpoints to communicate without a
+
+connectionless protocol: A transport protocol that enables endpoints to communicate without a
 previous connection arrangement and that treats each packet independently as a datagram.
 Examples of connectionless protocols are Internet Protocol (IP) and User Datagram Protocol
 (UDP).
@@ -1108,7 +892,8 @@ Release: March 30, 2026
 
 9 / 99
 
-Generic Security Services (GSS): An Internet standard, as described in [RFC2743], for providing
+
+Generic Security Services (GSS): An Internet standard, as described in [RFC2743], for providing
 security services to applications. It consists of an application programming interface (GSS-API)
 set, as well as standards that describe the structure of the security data.
 
@@ -1186,7 +971,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-object identifier (OID): In the context of an object server, a 64-bit number that uniquely
+
+object identifier (OID): In the context of an object server, a 64-bit number that uniquely
 
 identifies an object.
 
@@ -1247,7 +1033,7 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1259,10 +1045,11 @@ Release: March 30, 2026
 
 11 / 99
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1309,7 +1096,7 @@ https://www.rfc-editor.org/info/rfc4121
 [RFC4757] Jaganathan, K., Zhu, L., and Brezak, J., "The RC4-HMAC Kerberos Encryption Types Used
 by Microsoft Windows", RFC 4757, December 2006, https://www.rfc-editor.org/info/rfc4757
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-AUTHSOD] Microsoft Corporation, "Authentication Services Protocols Overview".
 
@@ -1326,7 +1113,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-[MSDN-DecryptMsg] Microsoft Corporation, "DecryptMessage (General) function",
+
+[MSDN-DecryptMsg] Microsoft Corporation, "DecryptMessage (General) function",
 http://msdn.microsoft.com/en-us/library/aa375211.aspx
 
 [MSDN-EncryptMsg] Microsoft Corporation, "EncryptMessage (General)",
@@ -1340,7 +1128,7 @@ preview-3f9eb9e1-72ca-4b42-af97-39aace788d93
 https://support.microsoft.com/en-gb/topic/september-9-2025-kb5065426-os-build-26100-6584-
 77a41d9b-1b7c-4198-b9a5-3c4b6706dea9
 
-1.3  Overview
+### 1.3 Overview
 
 NT LAN Manager (NTLM) is the name of a family of security protocols. NTLM is used by application
 protocols to authenticate remote users and, optionally, to provide session security when requested
@@ -1396,7 +1184,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-NLMP].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1407,7 +1196,7 @@ challenge, and which response fields are set. <2>
 In addition to authentication, the NTLM protocol optionally provides for session security—specifically
 message integrity and confidentiality through signing and sealing functions in NTLM.
 
-1.3.1  NTLM Authentication Call Flow
+#### 1.3.1 NTLM Authentication Call Flow
 
 This section provides an overview of the end-to-end message flow when application protocols use
 NTLM to authenticate a user to a server.
@@ -1446,14 +1235,15 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-NLMP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 An overview of the connection-oriented and connectionless variants of NTLM is provided in the
 following sections.
 
-1.3.1.1  NTLM Connection-Oriented Call Flow
+##### 1.3.1.1 NTLM Connection-Oriented Call Flow
 
 The following illustration shows a typical NTLM connection-oriented call flow when an application
 protocol creates an authenticated session. For detailed message specifications, see section 2. The
@@ -1495,11 +1285,12 @@ Release: March 30, 2026
 
 15 / 99
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-NLMP].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
-1.3.1.2  NTLM Connectionless (Datagram-Oriented) Call Flow
+##### 1.3.1.2 NTLM Connectionless (Datagram-Oriented) Call Flow
 
 The following illustration shows a typical NTLM connectionless (datagram-oriented) call flow.
 
@@ -1530,7 +1321,7 @@ succeeds and the application protocol continues according to its specification. 
 fails, the server might send the status in an application protocol–specified way, or it might simply
 terminate the connection.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Because NTLM is embedded in the application protocol, it does not have transport dependencies of its
 own.
@@ -1548,12 +1339,13 @@ Release: March 30, 2026
 
 16 / 99
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 To use NTLM or to use the NTLM security support provider (SSP), a client is required to have a
 shared secret with the server or domain controller (DC) when using a domain account.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 An implementer can use the NTLM Authentication Protocol to provide for client authentication (where
 the server verifies the client's identity) for applications. Because NTLM does not provide for server
@@ -1561,7 +1353,7 @@ authentication, applications that use NTLM are susceptible to attacks from spoof
 Applications are therefore discouraged from using NTLM directly. If it is an option, authentication via
 KILE is preferred.<5>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The NTLM authentication version is not negotiated by the protocol. It has to be configured on both the
 client and the server prior to authentication. The version is selected by the client, and requested
@@ -1583,11 +1375,11 @@ In connectionless NTLM, the server starts the negotiation with the CHALLENGE_MES
 message and the client replies with NegotiateFlags in the subsequent AUTHENTICATE_MESSAGE
 message.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 NTLM has been assigned the following object identifier (OID):
 iso.org.dod.internet.private.enterprise.Microsoft.security.mechanisms.NTLM (1.3.6.1.4.1.311.2.2.10)
@@ -1599,15 +1391,16 @@ Release: March 30, 2026
 
 17 / 99
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 NTLM messages are passed between the client and server. The NTLM messages MUST be embedded
 within the application protocol that is using NTLM authentication. NTLM itself does not establish any
 transport connections.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The NTLM Authentication Protocol consists of three message types used during authentication and one
 message type used for message integrity after authentication has occurred.
@@ -1675,7 +1468,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -1719,9 +1513,9 @@ occur out-of-band.
 All Unicode strings are encoded with UTF-16 and the byte order mark (BOM) is not sent over the
 wire. NLMP uses little-endian order unless otherwise specified.
 
-2.2.1  NTLM Messages
+#### 2.2.1 NTLM Messages
 
-2.2.1.1  NEGOTIATE_MESSAGE
+##### 2.2.1.1 NEGOTIATE_MESSAGE
 
 The NEGOTIATE_MESSAGE defines an NTLM negotiate message that is sent from the client to the
 server. This message allows the client to specify its supported NTLM options to the server.
@@ -1754,7 +1548,8 @@ Release: March 30, 2026
 
 19 / 99
 
-...
+
+...
 
 WorkstationFields
 
@@ -1836,7 +1631,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1923,11 +1719,12 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-WorkstationName (variable): If WorkstationLen does not equal 0x0000, WorkstationName
+
+WorkstationName (variable): If WorkstationLen does not equal 0x0000, WorkstationName
 MUST be a byte array that contains the name of the client machine that MUST be encoded
 using the OEM character set. Otherwise, this data is not present.
 
-2.2.1.2  CHALLENGE_MESSAGE
+##### 2.2.1.2 CHALLENGE_MESSAGE
 
 The CHALLENGE_MESSAGE defines an NTLM challenge message that is sent from the server to the
 client. The CHALLENGE_MESSAGE is used by the server to challenge the client to prove its identity.
@@ -1992,7 +1789,8 @@ Release: March 30, 2026
 
 22 / 99
 
-TargetNameFields (8 bytes): A field containing TargetName information. The field diagram for
+
+TargetNameFields (8 bytes): A field containing TargetName information. The field diagram for
 
 TargetNameFields is as follows.
 
@@ -2085,7 +1883,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-  TargetInfoLen (2 bytes): A 16-bit unsigned integer that defines the size, in bytes, of
+
+  TargetInfoLen (2 bytes): A 16-bit unsigned integer that defines the size, in bytes, of
 
 TargetInfo in Payload.
 
@@ -2166,7 +1965,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-2.2.1.3  AUTHENTICATE_MESSAGE
+
+##### 2.2.1.3 AUTHENTICATE_MESSAGE
 
 The AUTHENTICATE_MESSAGE defines an NTLM authenticate message that is sent from the client to
 the server after the CHALLENGE_MESSAGE (section 2.2.1.2) is processed by the client.
@@ -2233,7 +2033,8 @@ Release: March 30, 2026
 
 25 / 99
 
-...
+
+...
 
 Signature (8 bytes): An 8-byte character array that MUST contain the ASCII string ('N', 'T', 'L', 'M',
 
@@ -2327,7 +2128,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-  NtChallengeResponseMaxLen (2 bytes): A 16-bit unsigned integer that SHOULD be set to
+
+  NtChallengeResponseMaxLen (2 bytes): A 16-bit unsigned integer that SHOULD be set to
 
 the value of NtChallengeResponseLen and MUST be ignored on receipt.
 
@@ -2421,7 +2223,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-If the client chooses to send a UserName to the server, the fields are set to the following values:
+
+If the client chooses to send a UserName to the server, the fields are set to the following values:
 
   UserNameLen (2 bytes): A 16-bit unsigned integer that defines the size, in bytes, of
 
@@ -2503,7 +2306,8 @@ Release: March 30, 2026
 
 28 / 99
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2589,7 +2393,8 @@ Release: March 30, 2026
 
 29 / 99
 
-...
+
+...
 
 NtChallengeResponse (variable)
 
@@ -2638,9 +2443,9 @@ Workstation MUST be encoded in the negotiated character set.
 EncryptedRandomSessionKey (variable):  The client's encrypted random session key.
 EncryptedRandomSessionKey and its usage are defined in sections 3.1.5 and 3.2.5.
 
-2.2.2  NTLM Structures
+#### 2.2.2 NTLM Structures
 
-2.2.2.1  AV_PAIR
+##### 2.2.2.1 AV_PAIR
 
 The AV_PAIR structure defines an attribute/value pair. Sequences of AV_PAIR structures are used
 in the CHALLENGE_MESSAGE (section 2.2.1.2) directly. They are also in the
@@ -2654,7 +2459,8 @@ Release: March 30, 2026
 
 30 / 99
 
-Although the following figure suggests that the most significant bit (MSB) of AvId is aligned with the
+
+Although the following figure suggests that the most significant bit (MSB) of AvId is aligned with the
 MSB of a 32-bit word, an AV_PAIR can be aligned on any byte boundary and can be 4+N bytes long
 for arbitrary N (N = the contents of AvLen).
 
@@ -2778,7 +2584,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Value
+
+Value
 
 0x000A
 
@@ -2798,7 +2605,7 @@ description in this topic.
 When AV pairs are specified, MsvAvEOL MUST be the last item specified. All other AV pairs, if present,
 can be specified in any order.
 
-2.2.2.2  Single_Host_Data
+##### 2.2.2.2 Single_Host_Data
 
 The Single_Host_Data structure allows a client to send machine-specific information within an
 authentication exchange to services on the same machine. The client can produce additional
@@ -2856,9 +2663,10 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Reserved (32 bytes): This field SHOULD<23> be set to zero and MUST be ignored on receipt.
 
-2.2.2.3  LM_RESPONSE
+Reserved (32 bytes): This field SHOULD<23> be set to zero and MUST be ignored on receipt.
+
+##### 2.2.2.3 LM_RESPONSE
 
 The LM_RESPONSE structure defines the NTLM v1 authentication LmChallengeResponse in the
 AUTHENTICATE_MESSAGE. This response is used only when NTLM v1 authentication is configured.
@@ -2884,7 +2692,7 @@ Response (24 bytes): A 24-byte array of unsigned char that contains the client's
 
 LmChallengeResponse as defined in section 3.3.1.
 
-2.2.2.4  LMv2_RESPONSE
+##### 2.2.2.4 LMv2_RESPONSE
 
 The LMv2_RESPONSE structure defines the NTLM v2 authentication LmChallengeResponse in the
 AUTHENTICATE_MESSAGE. This response is used only when NTLM v2 authentication is configured.
@@ -2920,7 +2728,7 @@ ChallengeFromClient (8 bytes): An 8-byte array of unsigned char that contains th
 
 ClientChallenge (as defined in section 3.3.2). See section 3.1.5.1.2 for details.
 
-2.2.2.5  NEGOTIATE
+##### 2.2.2.5 NEGOTIATE
 
 During NTLM authentication, each of the following flags is a possible value of the NegotiateFlags field
 of the NEGOTIATE_MESSAGE, CHALLENGE_MESSAGE, and AUTHENTICATE_MESSAGE, unless
@@ -2933,7 +2741,8 @@ Release: March 30, 2026
 
 33 / 99
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3046,7 +2855,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-requested, NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY alone MUST be returned to the
+
+requested, NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY alone MUST be returned to the
 client. NTLM v2 authentication session key generation MUST be supported by both the client and
 the DC in order to be used, and extended session security signing and sealing requires support
 from the client and the server in order to be used.<26> An alternate name for this field is
@@ -3116,7 +2926,8 @@ Release: March 30, 2026
 
 35 / 99
 
-F (1 bit): If set, requests connectionless authentication. If NTLMSSP_NEGOTIATE_DATAGRAM is set,
+
+F (1 bit): If set, requests connectionless authentication. If NTLMSSP_NEGOTIATE_DATAGRAM is set,
 then NTLMSSP_NEGOTIATE_KEY_EXCH MUST always be set in the AUTHENTICATE_MESSAGE to
 the server and the CHALLENGE_MESSAGE to the client. An alternate name for this field is
 NTLMSSP_NEGOTIATE_DATAGRAM.
@@ -3157,7 +2968,7 @@ The A and B bits are evaluated together as follows:
 
   A==0 and B==0: The protocol MUST return SEC_E_INVALID_TOKEN.
 
-2.2.2.6  NTLM v1 Response: NTLM_RESPONSE
+##### 2.2.2.6 NTLM v1 Response: NTLM_RESPONSE
 
 The NTLM_RESPONSE structure defines the NTLM v1 authentication NtChallengeResponse in the
 AUTHENTICATE_MESSAGE. This response is only used when NTLM v1 authentication is configured.
@@ -3183,7 +2994,7 @@ Response (24 bytes): A 24-byte array of unsigned char that contains the client's
 
 NtChallengeResponse (section 3.3.1).
 
-2.2.2.7  NTLM v2: NTLMv2_CLIENT_CHALLENGE
+##### 2.2.2.7 NTLM v2: NTLMv2_CLIENT_CHALLENGE
 
 The NTLMv2_CLIENT_CHALLENGE structure defines the client challenge in the
 AUTHENTICATE_MESSAGE. This structure is used only when NTLM v2 authentication is configured and
@@ -3196,7 +3007,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3261,7 +3073,7 @@ AvPairs (variable): A byte array that contains a sequence of AV_PAIR structures 
 The sequence contains the server-naming context and is terminated by an AV_PAIR structure
 with an AvId field of MsvAvEOL.
 
-2.2.2.8  NTLM2 V2 Response: NTLMv2_RESPONSE
+##### 2.2.2.8 NTLM2 V2 Response: NTLMv2_RESPONSE
 
 The NTLMv2_RESPONSE structure defines the NTLMv2 authentication NtChallengeResponse in the
 AUTHENTICATE_MESSAGE. This response is used only when NTLMv2 authentication is configured.
@@ -3286,7 +3098,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-...
+
+...
 
 ...
 
@@ -3304,7 +3117,7 @@ NTLMv2_CLIENT_CHALLENGE (variable): A variable-length byte array, defined in sec
 that contains the ClientChallenge as defined in section 3.3.2. ChallengeFromClient corresponds
 to the temp variable from section 3.3.2.
 
-2.2.2.9  NTLMSSP_MESSAGE_SIGNATURE
+##### 2.2.2.9 NTLMSSP_MESSAGE_SIGNATURE
 
 The NTLMSSP_MESSAGE_SIGNATURE structure (section 3.4.4), specifies the signature block used
 for application message integrity and confidentiality. This structure is then passed back to the
@@ -3318,7 +3131,7 @@ NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY flag is negotiated:
 
   NTLMSSP_MESSAGE_SIGNATURE for Extended Session Security
 
-2.2.2.9.1 NTLMSSP_MESSAGE_SIGNATURE
+###### 2.2.2.9.1 NTLMSSP_MESSAGE_SIGNATURE
 
 This version of the NTLMSSP_MESSAGE_SIGNATURE structure MUST be used when the
 NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY flag is not negotiated.
@@ -3361,7 +3174,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-2.2.2.9.2 NTLMSSP_MESSAGE_SIGNATURE for Extended Session Security
+
+###### 2.2.2.9.2 NTLMSSP_MESSAGE_SIGNATURE for Extended Session Security
 
 This version of the NTLMSSP_MESSAGE_SIGNATURE structure MUST be used when the
 NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY flag is negotiated.
@@ -3395,9 +3209,9 @@ SeqNum (4 bytes):  A 32-bit unsigned integer that contains the NTLM sequence num
 
 application message.
 
-2.2.2.10
+##### 2.2.2.10 VERSION
 
-VERSION
+
 
 The VERSION structure contains operating system version information that SHOULD<32> be ignored.
 This structure is used for debugging purposes only and its value does not affect NTLM message
@@ -3452,7 +3266,8 @@ Release: March 30, 2026
 
 39 / 99
 
-Value
+
+Value
 
 Meaning
 
@@ -3469,7 +3284,8 @@ Release: March 30, 2026
 
 40 / 99
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections offer a detailed specification of the NTLM message computation:
 
@@ -3488,9 +3304,9 @@ detailed specification of the algorithms used to calculate the signing and seali
 The Cryptographic Operations Reference in section 6 defines the cryptographic primitives used in this
 section.
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3501,7 +3317,7 @@ document.
 The following sections specify variables that are internal to the client and are maintained across the
 NTLM authentication sequence.
 
-3.1.1.1  Variables Internal to the Protocol
+##### 3.1.1.1 Variables Internal to the Protocol
 
 ClientConfigFlags: The set of client configuration flags (section 2.2.2.5) that specify the full set of
 capabilities of the client.
@@ -3536,7 +3352,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-ClientRequire128bitEncryption: A Boolean setting that requires the client to use 128-bit
+
+ClientRequire128bitEncryption: A Boolean setting that requires the client to use 128-bit
 encryption.<39>
 
 The following variables are internal to the client and are maintained for the entire length of the
@@ -3562,7 +3379,7 @@ ServerSigningKey: The signing key used by the server to sign messages and used b
 verify signed server messages. It is generated after the client is authenticated by the server and is not
 passed over the wire.
 
-3.1.1.2  Variables Exposed to the Application
+##### 3.1.1.2 Variables Exposed to the Application
 
 The following parameters are provided by the application to the NTLM client. These logical
 parameters can influence various protocol-defined flags.<41>
@@ -3601,7 +3418,8 @@ Release: March 30, 2026
 
 42 / 99
 
-Datagram: A Boolean setting that indicates that the connectionless mode of NTLM is to be selected. If
+
+Datagram: A Boolean setting that indicates that the connectionless mode of NTLM is to be selected. If
 the Datagram option is selected by the client, then connectionless mode is used and NTLM performs a
 bitwise OR operation with the following NTLM Negotiate Flag into the ClientConfigFlags.
 
@@ -3625,15 +3443,15 @@ binding. This value is optional.<43>
 UnverifiedTargetName: A Boolean setting that indicates that the caller generated the target's SPN
 from an untrusted source. This value is optional.<44>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The application SHOULD<45> initiate NTLM authentication through the Security Support Provider
 Interface (SSPI).  NTLM does not support token framing as defined in [RFC2743] section 3.1.
@@ -3666,7 +3484,8 @@ Release: March 30, 2026
 
 43 / 99
 
-Once the security context is established, the client application can call GSS_WrapEx() (section
+
+Once the security context is established, the client application can call GSS_WrapEx() (section
 3.4.6) to encrypt messages.
 
   GSS_Unwrap
@@ -3685,12 +3504,12 @@ Once the security context is established, the client application can call GSS_Ge
 Once the security context is established, the client application can call GSS_VerifyMICEx()
 (section 3.4.9) to verify a signature produced by GSS_GetMICEx().
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 This section specifies how the client processes and returns messages. As discussed earlier, the
 message transport is provided by the application that is using NTLM.
 
-3.1.5.1  Connection-Oriented
+##### 3.1.5.1 Connection-Oriented
 
 Message processing on the client takes place in the following two cases:
 
@@ -3716,7 +3535,7 @@ The pseudocode RC4K(key, message) is defined as a one-time instance of RC4 whose
 to key, after which RC4 is applied to the message. On completion of this operation, the internal key
 state is destroyed.
 
-3.1.5.1.1 Client Initiates the NEGOTIATE_MESSAGE
+###### 3.1.5.1.1 Client Initiates the NEGOTIATE_MESSAGE
 
 When the client application initiates the exchange through SSPI, the NTLM client sends the
 NEGOTIATE_MESSAGE (section 2.2.1.1) to the server, which is embedded in an application protocol
@@ -3735,7 +3554,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-
+
+
 
 
 
@@ -3768,7 +3588,7 @@ string, and the Workstation field MUST be set to a zero-length string. If the
 NTLMSSP_NEGOTIATE_VERSION flag is not set by the client application, the Version field MUST be set
 to all-zero.
 
-3.1.5.1.2 Client Receives a CHALLENGE_MESSAGE from the Server
+###### 3.1.5.1.2 Client Receives a CHALLENGE_MESSAGE from the Server
 
 When the client receives a CHALLENGE_MESSAGE (section 2.2.1.2) from the server, it MUST
 determine if the features selected by the server are strong enough for the client authentication policy.
@@ -3810,7 +3630,8 @@ Release: March 30, 2026
 
 45 / 99
 
- --   The following NTLM keys generated by the client are defined in
+
+ --   The following NTLM keys generated by the client are defined in
       section 3.1.1:
  --   ExportedSessionKey, ClientSigningKey, ClientSealingKey,
       ServerSigningKey, and ServerSealingKey.
@@ -3878,7 +3699,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-    ResponseKeyLM, CHALLENGE_MESSAGE.ServerChallenge,
+
+    ResponseKeyLM, CHALLENGE_MESSAGE.ServerChallenge,
     ChallengeFromClient, Time,
     CHALLENGE_MESSAGE.TargetInfo)
 
@@ -3968,10 +3790,11 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-When this process is complete, the client MUST send the AUTHENTICATE_MESSAGE to the server,
+
+When this process is complete, the client MUST send the AUTHENTICATE_MESSAGE to the server,
 embedded in an application protocol message, and encoded as specified by that application protocol.
 
-3.1.5.2  Connectionless
+##### 3.1.5.2 Connectionless
 
 The client action for connectionless NTLM authentication is similar to that of connection-oriented
 authentication (section 3.1.5.1). However, the first message sent in connectionless authentication is
@@ -3981,7 +3804,7 @@ NEGOTIATE_MESSAGE (section 2.2.1.1) as in the connection-oriented authentication
 The message processing for connectionless NTLM authentication<53> is as specified in the following
 sections.
 
-3.1.5.2.1 Client Receives a CHALLENGE_MESSAGE
+###### 3.1.5.2.1 Client Receives a CHALLENGE_MESSAGE
 
 When the client receives a CHALLENGE_MESSAGE (section 2.2.1.2), it MUST produce a challenge
 response and an encrypted session key. The client MUST send the negotiated features (flags), the
@@ -4040,7 +3863,8 @@ Release: March 30, 2026
 
 48 / 99
 
-
+
+
 
 If the CHALLENGE_MESSAGE contains a TargetInfo field
 
@@ -4074,17 +3898,17 @@ Value field to an empty string without terminating NULL.
 When this process is complete, the client MUST send the AUTHENTICATE_MESSAGE to the server,
 embedded in an application protocol message, and encoded as specified by that application protocol.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4095,7 +3919,7 @@ document.
 The following sections specify variables that are internal to the server and are maintained across the
 NTLM authentication sequence.
 
-3.2.1.1  Variables Internal to the Protocol
+##### 3.2.1.1 Variables Internal to the Protocol
 
 The server maintains all of the variables that the client does (section 3.1.1.1) except the
 ClientConfigFlags.
@@ -4118,7 +3942,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-DnsMachineName: A string that indicates the FQDN of the server.
+
+DnsMachineName: A string that indicates the FQDN of the server.
 
 NbDomainName: A string that indicates the NetBIOS name of the server's domain.
 
@@ -4133,7 +3958,7 @@ to NEGOTIATE_MESSAGE messages.<60>
 ServerRequire128bitEncryption: A Boolean setting that requires the server to use 128-bit
 encryption.<61>
 
-3.2.1.2  Variables Exposed to the Application
+##### 3.2.1.2 Variables Exposed to the Application
 
 The server also maintains the ClientSuppliedTargetName variable (section 3.1.1.2).
 
@@ -4151,15 +3976,15 @@ binding. This value is optional. <62>
 ApplicationRequiresCBT: A Boolean setting which indicates the application requires channel binding.
 <63>
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The sequence number is set to zero.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The application server initiates NTLM authentication through the SSPI.
 
@@ -4185,7 +4010,8 @@ Release: March 30, 2026
 
 50 / 99
 
-Once the security context is established, the server application can call GSS_UnwrapEx()
+
+Once the security context is established, the server application can call GSS_UnwrapEx()
 (section 3.4.7) to decrypt messages that were encrypted by GSS_WrapEx.
 
   GSS_GetMIC
@@ -4199,7 +4025,7 @@ whose fields are defined in section 2.2.2.9.
 Once the security context is established, the server application can call GSS_VerifyMICEx()
 (section 3.4.9) to verify a signature produced by GSS_GetMICEx().
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The server-side processing of messages can happen in response to two different messages from the
 client:
@@ -4214,7 +4040,7 @@ with a CHALLENGE_MESSAGE (section 2.2.1.2)).
 The server receives an AUTHENTICATE_MESSAGE (section 2.2.1.3) from the client (the server
 verifies the client's authentication information that is embedded in the message).
 
-3.2.5.1  Connection-Oriented
+##### 3.2.5.1 Connection-Oriented
 
 Message processing on the server takes place in the following two cases:
 
@@ -4228,7 +4054,7 @@ and decodes the AUTHENTICATE_MESSAGE.
 
 These two cases are specified in the following sections.
 
-3.2.5.1.1 Server Receives a NEGOTIATE_MESSAGE from the Client
+###### 3.2.5.1.1 Server Receives a NEGOTIATE_MESSAGE from the Client
 
 Upon receipt of the embedded NEGOTIATE_MESSAGE, the server MUST extract and decode the
 NEGOTIATE_MESSAGE.
@@ -4258,7 +4084,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- -- Input:
+
+ -- Input:
  --   CfgFlg - Defined in section 3.2.1.
  --   An NTLM NEGOTIATE_MESSAGE whose message fields are defined in
       section 2.2.1.1.
@@ -4332,7 +4159,8 @@ Release: March 30, 2026
 
 52 / 99
 
- If (NbDomainName is not NIL)
+
+ If (NbDomainName is not NIL)
       AddAvPair(TargetInfo, MsvAvNbDomainName, NbDomainName)
  EndIf
  If (DnsMachineName is not NIL)
@@ -4349,7 +4177,7 @@ Release: March 30, 2026
 When this process is complete, the server MUST send the CHALLENGE_MESSAGE to the client,
 embedded in an application protocol message, and encoded according to that application protocol.
 
-3.2.5.1.2 Server Receives an AUTHENTICATE_MESSAGE from the Client
+###### 3.2.5.1.2 Server Receives an AUTHENTICATE_MESSAGE from the Client
 
 Upon receipt of the embedded AUTHENTICATE_MESSAGE (section 2.2.1.3), the server MUST extract
 and decode the AUTHENTICATE_MESSAGE.
@@ -4403,7 +4231,8 @@ Release: March 30, 2026
 
 53 / 99
 
-      below:
+
+      below:
  --    KeyExchangeKey, ResponseKeyNT, ResponseKeyLM, SessionBaseKey
  -       Temporary variables used to store 128-bit keys.
  --    MIC - message integrity for the NTLM NEGOTIATE_MESSAGE,
@@ -4480,7 +4309,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-              If (AUTHENTICATE_MESSAGE.LmChallengeResponse !=
+
+              If (AUTHENTICATE_MESSAGE.LmChallengeResponse !=
 
                ExpectedLmChallengeResponse)
                  If (Guest user is not disabled AND Guest user has no password set AND
@@ -4564,7 +4394,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-
+
+
 
 If the AUTHENTICATE_MESSAGE does not contain a nonzero MsvAvChannelBindings
 AV_PAIR
@@ -4607,7 +4438,7 @@ an integrity check on the next message from the server, it detects that the serv
 Note  User names MUST be case-insensitive. For additional information about the case sensitivity of
 user names, see [MS-AUTHSOD] section 1.1.1.2.
 
-3.2.5.2  Connectionless NTLM
+##### 3.2.5.2 Connectionless NTLM
 
 The server action for connectionless NTLM authentication is similar to that of connection-oriented
 authentication (section 3.1.5.1). However, the first message sent in connectionless authentication is
@@ -4617,7 +4448,7 @@ NEGOTIATE_MESSAGE as in the connection-oriented authentication.
 The message processing for connectionless NTLM authentication<71> is as specified in the following
 sections.
 
-3.2.5.2.1 Server Sends the Client an Initial CHALLENGE_MESSAGE
+###### 3.2.5.2.1 Server Sends the Client an Initial CHALLENGE_MESSAGE
 
 The server MUST send a set of supported features and a random key to use as part of the challenge.
 This key is in the form of a 64-bit (8-byte) nonce value for the ServerChallenge value. The nonce is a
@@ -4626,7 +4457,7 @@ variant always uses key exchange, so the NTLMSSP_NEGOTIATE_KEY_EXCH flag MUST be
 required flags mask. The client SHOULD determine the set of supported features and whether those
 meet minimum security requirements. This message is sent to the client as a CHALLENGE_MESSAGE.
 
-3.2.5.2.2 Server Response Checking
+###### 3.2.5.2.2 Server Response Checking
 
 If ServerBlock == TRUE, then the server MUST return STATUS_NOT_SUPPORTED ([MS-ERREF]
 section 2.3.1). <72>
@@ -4638,7 +4469,8 @@ Release: March 30, 2026
 
 56 / 99
 
-If ServerRequire128bitEncryption == TRUE, then if 128-bit encryption is not negotiated then the
+
+If ServerRequire128bitEncryption == TRUE, then if 128-bit encryption is not negotiated then the
 server MUST return SEC_E_UNSUPPORTED_FUNCTION ([MS-ERREF] section 2.1.1) to the application.
 <73>
 
@@ -4721,7 +4553,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-
+
+
 
 If the AUTHENTICATE_MESSAGE contains a MsvAvTargetName
 
@@ -4734,21 +4567,21 @@ If MsvAvFlags bit 0x00000004 is set, the server MUST set ClientSuppliedTargetNam
 
   Value == ClientSuppliedTargetName
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  NTLM v1 and NTLM v2 Messages
+### 3.3 NTLM v1 and NTLM v2 Messages
 
 This section provides further details about how the client and server compute the responses depending
 on whether NTLM v1 or NTLM v2 is used. It also includes details about the NTOWF and LMOWF
 functions whose output is subsequently used to compute the response.
 
-3.3.1  NTLM v1 Authentication
+#### 3.3.1 NTLM v1 Authentication
 
 The following pseudocode defines the details of the algorithms used to calculate the keys used in
 NTLM v1 authentication.
@@ -4793,7 +4626,8 @@ Release: March 30, 2026
 
 58 / 99
 
- --
+
+ --
  -- Functions Used:
  --   Z(M)- Defined in section 6.
 
@@ -4860,7 +4694,8 @@ Release: March 30, 2026
 
 59 / 99
 
-3.3.2  NTLM v2 Authentication
+
+#### 3.3.2 NTLM v2 Authentication
 
 The following pseudocode defines the details of the algorithms used to calculate the keys used in
 NTLM v2 authentication.
@@ -4932,7 +4767,8 @@ Release: March 30, 2026
 
 60 / 99
 
- CHALLENGE_MESSAGE.ServerChallenge, ClientChallenge, Time, ServerName)
+
+ CHALLENGE_MESSAGE.ServerChallenge, ClientChallenge, Time, ServerName)
  As
  If (User is set to "" && Passwd is set to "")
      -- Special case for anonymous authentication
@@ -4969,7 +4805,7 @@ expected NTOWF v2 and/or LMOWF v2 value of the response using the NTOWF and/or L
 locally, and matches it against the response provided. If the response values match, it MUST calculate
 KeyExchangeKey; otherwise, it MUST return an error to the calling application.<79>
 
-3.4  Session Security Details
+### 3.4 Session Security Details
 
 If it is negotiated, session security provides message integrity (signing) and message confidentiality
 (sealing). When NTLM v2 authentication is not negotiated, only one key is used for sealing. As a
@@ -4999,10 +4835,11 @@ Release: March 30, 2026
 
 61 / 99
 
- SealingKey' = MD5(ConcatenationOf(SealingKey, SequenceNumber))
+
+ SealingKey' = MD5(ConcatenationOf(SealingKey, SequenceNumber))
  RC4Init(Handle, SealingKey')
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5059,7 +4896,7 @@ confidentiality with the NTLM SSP. For more details, see section 3.4.3, Message 
 If integrity is established, then the application MUST call GSS_GetMIC() to invoke integrity with
 the NTLM SSP. For more details, see section 3.4.2.
 
-3.4.2  Message Integrity
+#### 3.4.2 Message Integrity
 
 The function to sign a message MUST be calculated as follows:
 
@@ -5075,7 +4912,8 @@ Release: March 30, 2026
 
 62 / 99
 
- --   Handle - The handle to a key state structure corresponding to
+
+ --   Handle - The handle to a key state structure corresponding to
  --   the current state of the SealingKey
  --
  -- Output:      Signed message
@@ -5099,7 +4937,7 @@ zero and then incremented by one for each message sent.
 On receipt, the message authentication code (MAC) value is computed and compared with the
 received value. If they differ, the message MUST be discarded (section 3.4.4).
 
-3.4.3  Message Confidentiality
+#### 3.4.3 Message Confidentiality
 
 Message confidentiality, if it is negotiated, also implies message integrity. If message confidentiality is
 negotiated, a sealed (and implicitly signed) message is sent instead of a signed or unsigned message.
@@ -5130,7 +4968,7 @@ number is as follows.
 Message confidentiality is available in connectionless mode only if the client configures extended
 session security.
 
-3.4.4  Message Signature Functions
+#### 3.4.4 Message Signature Functions
 
 In the case of connectionless NTLM authentication, the SeqNum parameter SHOULD be specified by
 the application and the RC4 stream MUST be reinitialized before each message (see section 3.4).
@@ -5142,13 +4980,14 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-In the case of connection-oriented authentication, the SeqNum parameter MUST start at 0 and is
+
+In the case of connection-oriented authentication, the SeqNum parameter MUST start at 0 and is
 incremented by one for each message sent. The receiver expects the first received message to have
 SeqNum equal to 0, and to be one greater for each subsequent message received. If a received
 message does not contain the expected SeqNum, an error MUST be returned to the receiving
 application, and SeqNum is not incremented.
 
-3.4.4.1  Without Extended Session Security
+##### 3.4.4.1 Without Extended Session Security
 
 When Extended Session Security (NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY) is not
 negotiated and session security (NTLMSSP_NEGOTIATE_SIGN or NTLMSSP_NEGOTIATE_SEAL) is
@@ -5216,7 +5055,8 @@ Release: March 30, 2026
 
 64 / 99
 
-3.4.4.2  With Extended Session Security
+
+##### 3.4.4.2 With Extended Session Security
 
 When Extended Session Security (NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY) is
 negotiated and session security (NTLMSSP_NEGOTIATE_SIGN or NTLMSSP_NEGOTIATE_SEAL) is
@@ -5275,7 +5115,7 @@ RC4, as follows:
       Set SeqNum to SeqNum + 1
  EndDefine
 
-3.4.4.3  Without NTLMSSP_NEGOTIATE_SIGN
+##### 3.4.4.3 Without NTLMSSP_NEGOTIATE_SIGN
 
 When NTLMSSP_ALWAYS_NEGOTIATE_SIGN is set (see M bit, section 2.2.2.5) and message integrity
 (NTLMSSP_NEGOTIATE_SIGN) is not negotiated, the message signature for NTLM is a 16-byte value
@@ -5289,16 +5129,17 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-  A 4-byte version-number value that is set to 1 (Version).
+
+  A 4-byte version-number value that is set to 1 (Version).
 
   All other bytes set to zero (RandomPad, Checksum, and SeqNum).
 
-3.4.5  KXKEY, SIGNKEY, and SEALKEY
+#### 3.4.5 KXKEY, SIGNKEY, and SEALKEY
 
 This topic specifies how key exchange (KXKEY), signing (SIGNKEY), and sealing (SEALKEY) keys are
 generated.
 
-3.4.5.1  KXKEY
+##### 3.4.5.1 KXKEY
 
 If NTLM v1 is used and extended session security is not negotiated, the 128-bit key exchange key
 value is calculated as follows:
@@ -5359,13 +5200,14 @@ Release: March 30, 2026
 
 66 / 99
 
-      Set KeyExchangeKey to HMAC_MD5(SessionBaseKey, ConcatenationOf(ServerChallenge,
+
+      Set KeyExchangeKey to HMAC_MD5(SessionBaseKey, ConcatenationOf(ServerChallenge,
 LmChallengeResponse [0..7]))
  EndDefine
 
 If NTLM v2 is used, KeyExchangeKey MUST be set to the given 128-bit SessionBaseKey value.
 
-3.4.5.2  SIGNKEY
+##### 3.4.5.2 SIGNKEY
 
 If extended session security is not negotiated (section 2.2.2.5), then no signing keys are available
 and message signing is not supported.
@@ -5409,7 +5251,7 @@ Functions used:
  Endif
  EndDefine
 
-3.4.5.3  SEALKEY
+##### 3.4.5.3 SEALKEY
 
 The sealing key function produces an encryption key from the random session key and the null-
 terminated ASCII constants shown.
@@ -5433,7 +5275,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Input:
+
+Input:
 
 
 
@@ -5485,7 +5328,7 @@ Functions used:
  Endif
  EndDefine
 
-3.4.6  GSS_WrapEx() Call
+#### 3.4.6 GSS_WrapEx() Call
 
 This call is an extension to GSS_Wrap [RFC2743] that passes multiple buffers.<80>
 
@@ -5514,7 +5357,8 @@ Release: March 30, 2026
 
 68 / 99
 
-
+
+
 
 
 
@@ -5558,7 +5402,7 @@ Confidentiality) in output_message.
 For NTLMv1, input data buffers for which sign==TRUE are included in the message signature. For
 NTLMv2, all input data buffers are included in the message signature (section 3.4.6.1).
 
-3.4.6.1  Signature Creation for GSS_WrapEx()
+##### 3.4.6.1 Signature Creation for GSS_WrapEx()
 
 Section 3.4.2 specifies the algorithm used by GSS_WrapEx() to create the signature. The signature
 contains the NTLMSSP_MESSAGE_SIGNATURE structure (section 2.2.2.9).
@@ -5567,7 +5411,7 @@ The checksum is computed over the concatenated input buffers using only the inpu
 where sign==TRUE for NTLMv1 and all of the input data buffers for NTLMv2, including the cleartext
 data buffers.
 
-3.4.7  GSS_UnwrapEx() Call
+#### 3.4.7 GSS_UnwrapEx() Call
 
 This call is an extension to GSS_Unwrap [RFC2743] that passes multiple buffers.<81>
 
@@ -5610,7 +5454,8 @@ Release: March 30, 2026
 
 69 / 99
 
-  major_status INTEGER
+
+  major_status INTEGER
 
   minor_status INTEGER
 
@@ -5629,13 +5474,13 @@ data OCTET STRING
 This call is identical to GSS_Unwrap, except that it supports multiple input buffers. Input data buffers
 having conf_state==TRUE are decrypted in the output_message.
 
-3.4.7.1  Signature Creation for GSS_UnwrapEx()
+##### 3.4.7.1 Signature Creation for GSS_UnwrapEx()
 
 For NTLMv1, all input data buffers where signed==TRUE are concatenated together and the signature
 is verified against the resulting concatenated buffer. For NTLMv2, the signature is verified for all of the
 input data buffers.
 
-3.4.8  GSS_GetMICEx() Call
+#### 3.4.8 GSS_GetMICEx() Call
 
 Inputs:
 
@@ -5679,7 +5524,7 @@ per_msg_token OCTET STRING
 
 This call is identical to GSS_GetMIC(), except that it supports multiple input buffers.
 
-3.4.8.1  Signature Creation for GSS_GetMICEx()
+##### 3.4.8.1 Signature Creation for GSS_GetMICEx()
 
 Section 3.4.2 specifies the algorithm used by GSS_GetMICEx() to create the signature. The
 per_msg_token contains the NTLMSSP_MESSAGE_SIGNATURE structure (section 2.2.2.9).
@@ -5695,7 +5540,8 @@ Release: March 30, 2026
 
 70 / 99
 
-3.4.9  GSS_VerifyMICEx() Call
+
+#### 3.4.9 GSS_VerifyMICEx() Call
 
 Inputs:
 
@@ -5729,7 +5575,7 @@ qop_state INTEGER
 
 This call is identical to GSS_VerifyMIC(), except that it supports multiple input buffers.
 
-3.4.9.1  Signature Creation for GSS_VerifyMICEx()
+##### 3.4.9.1 Signature Creation for GSS_VerifyMICEx()
 
 For NTLMv1, all input data buffers where signed==TRUE are concatenated together and the signature
 is verified against the resulting concatenated buffer. For NTLMv2, the signature is verified for all of the
@@ -5746,13 +5592,14 @@ Release: March 30, 2026
 
 71 / 99
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-NLMP].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  NTLM Over Server Message Block (SMB)
+### 4.1 NTLM Over Server Message Block (SMB)
 
 NTLM over a Server Message Block (SMB) transport is a common use of NTLM authentication and
 encryption. Although KILE is the preferred authentication method of an SMB session as described in
@@ -5787,7 +5634,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Step 5: The client extracts the ServerChallenge field from the NTLM CHALLENGE_MESSAGE and
+
+Step 5: The client extracts the ServerChallenge field from the NTLM CHALLENGE_MESSAGE and
 sends an NTLM AUTHENTICATE_MESSAGE (section 2.2.1.3) to the server (embedded in an
 SMB_COM_SESSION_SETUP_ANDX request message).
 
@@ -5797,12 +5645,12 @@ succeeds, and the client's security context is now established on the server.
 Step 6: The server sends a success message embedded in an SMB_COM_SESSION_SETUP_ANDX
 response message.
 
-4.2  Cryptographic Values for Validation
+### 4.2 Cryptographic Values for Validation
 
 The topics in this section contain Byte Array values which can be used when validating NTLM
 cryptographic implementations.
 
-4.2.1  Common Values
+#### 4.2.1 Common Values
 
 These values are used in multiple examples.
 
@@ -5844,7 +5692,8 @@ Release: March 30, 2026
 
 73 / 99
 
-ClientChallenge:
+
+ClientChallenge:
 
  0000000: aa aa aa aa aa aa aa aa                           ........
 
@@ -5852,7 +5701,7 @@ ServerChallenge:
 
  0000000: 01 23 45 67 89 ab cd ef                           .#Eg..&#x2550;.
 
-4.2.2  NTLM v1 Authentication
+#### 4.2.2 NTLM v1 Authentication
 
 The following calculations are used in section 3.3.1.
 
@@ -5882,9 +5731,9 @@ The Challenge Flags used in the following NTLM v1 examples are:
 
  0000000: 33 82 02 e2                                       3...
 
-4.2.2.1  Calculations
+##### 4.2.2.1 Calculations
 
-4.2.2.1.1 LMOWFv1()
+###### 4.2.2.1.1 LMOWFv1()
 
 The LMOWFv1() is defined in section 3.3.1.
 
@@ -5905,22 +5754,23 @@ Release: March 30, 2026
 
 74 / 99
 
-4.2.2.1.2 NTOWFv1()
+
+###### 4.2.2.1.2 NTOWFv1()
 
 The NTOWFv1() is defined in section 3.3.1. When calculating the NTOWFv1 using the values above,
 then NTOWFv1("Password", "User", "Domain") is:
 
  0000000: a4 f4 9c 40 65 10 bd ca b6 82 4e e7 c3 0f d8 52   ...@e.....N....R
 
-4.2.2.1.3 Session Base Key and Key Exchange Key
+###### 4.2.2.1.3 Session Base Key and Key Exchange Key
 
 The SessionBaseKey is specified in section 3.3.1.
 
  0000000: d8 72 62 b0 cd e4 b1 cb 74 99 be cc cd f1 07 84   .rb.&#x2550;...t...&#x2550;...
 
-4.2.2.2  Results
+##### 4.2.2.2 Results
 
-4.2.2.2.1 NTLMv1 Response
+###### 4.2.2.2.1 NTLMv1 Response
 
 The NTChallengeResponse is specified in section 3.3.1. With
 NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY not set, using the values above, the result is:
@@ -5928,7 +5778,7 @@ NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY not set, using the values above, the 
  0000000: 67 c4 30 11 f3 02 98 a2 ad 35 ec e6 4f 16 33 1c   g&#x2500;0......5..O.3.
  0000010: 44 bd be d9 27 84 1f 94                           D...'...
 
-4.2.2.2.2 LMv1 Response
+###### 4.2.2.2.2 LMv1 Response
 
 The LmChallengeResponse is specified in section 3.3.1. With the
 NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY flag not set and with the
@@ -5941,7 +5791,7 @@ If the NTLMSSP_NEGOTIATE_LM_KEY flag is set then the KeyExchangeKey is:
 
  0000000: b0 9e 37 9f 7f be cb 1e af 0a fd cb 03 83 c8 a0   ..7.............
 
-4.2.2.2.3 Encrypted Session Key
+###### 4.2.2.2.3 Encrypted Session Key
 
 RC4 encryption of the RandomSessionKey with the KeyExchangeKey:
 
@@ -5960,9 +5810,10 @@ Release: March 30, 2026
 
 75 / 99
 
- 0000000: 4c d7 bb 57 d6 97 ef 9b 54 9f 02 b8 f9 b3 78 64   L..W....T.....xd
 
-4.2.2.3  Messages
+ 0000000: 4c d7 bb 57 d6 97 ef 9b 54 9f 02 b8 f9 b3 78 64   L..W....T.....xd
+
+##### 4.2.2.3 Messages
 
 The CHALLENGE_MESSAGE (section 2.2.1.2):
 
@@ -5986,7 +5837,7 @@ The AUTHENTICATE_MESSAGE (section 2.2.1.3):
  0000090: 4f 16 33 1c 44 bd be d9 27 84 1f 94 51 88 22 b1   O·3·D...'...Q.".
  00000A0: b3 f3 50 c8 95 86 82 ec bb 3e 3c b7               ..P......><.
 
-4.2.2.4  GSS_WrapEx Examples
+##### 4.2.2.4 GSS_WrapEx Examples
 
 The GSS_WrapEx() is specified in section 3.4.6. The following data is part of the security context state
 for the NTLM Session.
@@ -6019,7 +5870,8 @@ Release: March 30, 2026
 
 76 / 99
 
-Checksum: CRC32(Message):
+
+Checksum: CRC32(Message):
 
  0000000: 7d 84 aa 93                                       }...
 
@@ -6043,7 +5895,7 @@ Assembled Signature:
 
  0000000: 01 00 00 00 45 c8 44 e5 09 dc d1 df 2e 45 9d 36   ····E╚Dσ·▄╤▀.E¥6
 
-4.2.3  NTLM v1 with Client Challenge
+#### 4.2.3 NTLM v1 with Client Challenge
 
 The following calculations are used in section 3.3.1. This example uses weaker key strengths than
 advised. Using stronger key strengths with NTLM v1 with client challenge results in the same
@@ -6078,46 +5930,47 @@ Release: March 30, 2026
 
 77 / 99
 
- 0000000: 33 82 0a 82                                       3...
 
-4.2.3.1  Calculations
+ 0000000: 33 82 0a 82                                       3...
 
-4.2.3.1.1 NTOWFv1()
+##### 4.2.3.1 Calculations
+
+###### 4.2.3.1.1 NTOWFv1()
 
 The NTOWFv1() is defined in section 3.3.1. When calculating the NTOWFv1 using the values above,
 then NTOWFv1("Password", "User", "Domain") is:
 
  0000000: a4 f4 9c 40 65 10 bd ca b6 82 4e e7 c3 0f d8 52   ...@e.....N....R
 
-4.2.3.1.2 Session Base Key
+###### 4.2.3.1.2 Session Base Key
 
 The SessionBaseKey is specified in section 3.3.1:
 
  0000000: d8 72 62 b0 cd e4 b1 cb 74 99 be cc cd f1 07 84   .rb.═...t...═.•.
 
-4.2.3.1.3 Key Exchange Key
+###### 4.2.3.1.3 Key Exchange Key
 
 The KeyExchangeKey is specified in section 3.4.5.1. Using the values above, the result is:
 
  0000000: eb 93 42 9a 8b d9 52 f8 b8 9c 55 b8 7f 47 5e dc   ..B...R...U..G..
 
-4.2.3.2  Results
+##### 4.2.3.2 Results
 
-4.2.3.2.1 LMv1 Response
+###### 4.2.3.2.1 LMv1 Response
 
 The LmChallengeResponse is specified in section 3.3.1. Using the previous values, the result is:
 
  0000000: aa aa aa aa aa aa aa aa 00 00 00 00 00 00 00 00   ................
  0000010: 00 00 00 00 00 00 00 00                           ........
 
-4.2.3.2.2 NTLMv1 Response
+###### 4.2.3.2.2 NTLMv1 Response
 
 The NTChallengeResponse is specified in section 3.3.1. Using the values above, the result is:
 
  0000000: 75 37 f8 03 ae 36 71 28 ca 45 82 04 bd e7 ca f8   u7...6q(.E......
  0000010: 1e 97 ed 26 83 26 72 32                           .... r2
 
-4.2.3.3  Messages
+##### 4.2.3.3 Messages
 
 The CHALLENGE_MESSAGE (section 2.2.1.2):
 
@@ -6133,7 +5986,8 @@ Release: March 30, 2026
 
 78 / 99
 
- 0000040: 65 00 72 00                                       e·r·
+
+ 0000040: 65 00 72 00                                       e·r·
 
 The AUTHENTICATE_MESSAGE (section 2.2.1.3):
 
@@ -6148,7 +6002,7 @@ The AUTHENTICATE_MESSAGE (section 2.2.1.3):
  0000080: 00 00 00 00 75 37 f8 03 ae 36 71 28 ca 45 82 04   ····u7.·.6q(.E.·
  0000090: bd e7 ca f8 1e 97 ed 26 83 26 72 32               ....·ù.&.&r2
 
-4.2.3.4  GSS_WrapEx Examples
+##### 4.2.3.4 GSS_WrapEx Examples
 
 The GSS_WrapEx() is specified in section 3.4.6. The following data is part of the security context state
 for the NTLM Session.
@@ -6193,7 +6047,8 @@ Release: March 30, 2026
 
 79 / 99
 
- 0000010: c9 9d                                             ╔¥
+
+ 0000010: c9 9d                                             ╔¥
 
 Checksum: HMAC_MD5(SigningKey, ConcatenationOf(SeqNum, Message))[0..7]:
 
@@ -6203,7 +6058,7 @@ Signature:
 
  0000000: 01 00 00 00 ff 2a eb 52 f6 81 79 3a 00 00 00 00   •••• *.R..y:••••
 
-4.2.4  NTLMv2 Authentication
+#### 4.2.4 NTLMv2 Authentication
 
 The following calculations are used in section 3.3.2.
 
@@ -6252,22 +6107,23 @@ Release: March 30, 2026
 
 80 / 99
 
-4.2.4.1  Calculations
 
-4.2.4.1.1 NTOWFv2() and LMOWFv2()
+##### 4.2.4.1 Calculations
+
+###### 4.2.4.1.1 NTOWFv2() and LMOWFv2()
 
 The LMOWF v2() and The NTOWF v2() are defined in section 3.3.2. When calculating the LMOWFv2
 or NTOWFv2, using the values above, then NTOWFv2("Password", "User", "Domain") is:
 
  0000000: 0c 86 8a 40 3b fd 7a 93 a3 00 1e f2 2e f0 2e 3f   ...@;..........?
 
-4.2.4.1.2 Session Base Key
+###### 4.2.4.1.2 Session Base Key
 
 The SessionBaseKey is specified in section 3.3.2. Using the values above:
 
  0000000: 8d e4 0c ca db c1 4a 82 f1 5c b0 ad 0d e9 5c a3   ......J..\....\.
 
-4.2.4.1.3 temp
+###### 4.2.4.1.3 temp
 
 temp is specified in section 3.3.2. Using the values above:
 
@@ -6277,29 +6133,29 @@ temp is specified in section 3.3.2. Using the values above:
  00000C0: 01 00 0c 00 53 00 65 00 72 00 76 00 65 00 72 00   ••••S•e•r•v•e•r•
  00000D0: 00 00 00 00 00 00 00 00
 
-4.2.4.2  Results
+##### 4.2.4.2 Results
 
-4.2.4.2.1 LMv2 Response
+###### 4.2.4.2.1 LMv2 Response
 
 The LmChallengeResponse is specified in section 3.3.2. Using the values above:
 
  0000000: 86 c3 50 97 ac 9c ec 10 25 54 76 4a 57 cc cc 19   ..P.....%TvJW...
  0000010: aa aa aa aa aa aa aa aa                           ........
 
-4.2.4.2.2 NTLMv2 Response
+###### 4.2.4.2.2 NTLMv2 Response
 
 The NTChallengeResponse is specified in section 3.3.2. Using the values above, the response (section
 2.2.2.8) is:
 
  0000000: 68 cd 0a b8 51 e5 1c 96 aa bc 92 7b eb ef 6a 1c   h&#x2550;..Q......{..j.
 
-4.2.4.2.3 Encrypted Session Key
+###### 4.2.4.2.3 Encrypted Session Key
 
 RC4 encryption of the RandomSessionKey with the KeyExchangeKey:
 
  0000000: c5 da d2 54 4f c9 79 90 94 ce 1c e9 0b c9 d0 3e   ...TO.y........&gt;
 
-4.2.4.3  Messages
+##### 4.2.4.3 Messages
 
 The CHALLENGE_MESSAGE (section 2.2.1.2):
 
@@ -6310,7 +6166,8 @@ Release: March 30, 2026
 
 81 / 99
 
- 0000000: 4e 54 4c 4d 53 53 50 00 02 00 00 00 0c 00 0c 00   NTLMSSP•••••••••
+
+ 0000000: 4e 54 4c 4d 53 53 50 00 02 00 00 00 0c 00 0c 00   NTLMSSP•••••••••
  0000010: 38 00 00 00 33 82 8a e2 01 23 45 67 89 ab cd ef   8•••3...•#Eg..═.
  0000020: 00 00 00 00 00 00 00 00 24 00 24 00 44 00 00 00   ••••••••$•$•D•••
  0000030: 06 00 70 17 00 00 00 0f 53 00 65 00 72 00 76 00   ••p•••••S•e•r•v•
@@ -6336,7 +6193,7 @@ The AUTHENTICATE_MESSAGE (section 2.2.1.3):
  00000D0: 00 00 00 00 00 00 00 00 c5 da d2 54 4f c9 79 90   ········...TO.y.
  00000E0: 94 ce 1c e9 0b c9 d0 3e                           ..·..·..>
 
-4.2.4.4  GSS_WrapEx Examples
+##### 4.2.4.4 GSS_WrapEx Examples
 
 The GSS_WrapEx() is specified in section 3.4.6. The following data is part of the security context state
 for the NTLM Session.
@@ -6371,7 +6228,8 @@ Release: March 30, 2026
 
 82 / 99
 
-The output message data and signature is created using SEAL() specified in section 3.4.3.
+
+The output message data and signature is created using SEAL() specified in section 3.4.3.
 Output_message will contain conf_state == TRUE, signed == TRUE and data:
 
 Data:
@@ -6398,9 +6256,10 @@ Release: March 30, 2026
 
 83 / 99
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 NTLM does not support any recent cryptographic methods, such as AES or SHA-256. It uses cyclic
 redundancy check (CRC) or message digest algorithms ([RFC1321]) for integrity, and it uses RC4
@@ -6425,7 +6284,7 @@ username Guest and by providing the assigned password, login processing happens 
 user. This is not recommended, as the Guest user would be handled like a regular user, which it is not
 an intended or desired result.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -6448,7 +6307,8 @@ Release: March 30, 2026
 
 84 / 99
 
-6  Appendix A: Cryptographic Operations Reference
+
+## 6 Appendix A: Cryptographic Operations Reference
 
 In the algorithms provided in this documentation, pseudocode is provided to illustrate the process
 used to compute keys and perform other cryptographic operations prior to protocol exchange. The
@@ -6567,7 +6427,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- Functions
+
+ Functions
 
 Description
 
@@ -6710,7 +6571,8 @@ Release: March 30, 2026
 
 86 / 99
 
- Functions
+
+ Functions
 
 Description
 
@@ -6752,7 +6614,8 @@ Release: March 30, 2026
 
 87 / 99
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6821,7 +6684,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-<4> Section 1.4: When authenticating a domain account with NTLM, Windows uses Netlogon ([MS-
+
+<4> Section 1.4: When authenticating a domain account with NTLM, Windows uses Netlogon ([MS-
 APDS]) to have the DC take the challenge and the client's response, and validate the user
 authentication against the DC's user database.
 
@@ -6888,7 +6752,8 @@ Release: March 30, 2026
 
 89 / 99
 
-<19> Section 2.2.2.1: MsvAvChannelBindings AV_PAIR type is not supported in Windows NT,
+
+<19> Section 2.2.2.1: MsvAvChannelBindings AV_PAIR type is not supported in Windows NT,
 Windows 2000, Windows XP, Windows Server 2003, Windows Vista, or Windows Server 2008.
 
 <20> Section 2.2.2.2: Windows does not process this field when sent on the wire.
@@ -6976,7 +6841,8 @@ Release: March 30, 2026
 
 90 / 99
 
-Product
+
+Product
 
 Windows 7
 
@@ -7094,7 +6960,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-<37> Section 3.1.1.1: ClientBlocked is not supported in Windows NT, Windows 2000, Windows XP,
+
+<37> Section 3.1.1.1: ClientBlocked is not supported in Windows NT, Windows 2000, Windows XP,
 Windows Server 2003, Windows Vista, and Windows Server 2008.
 
 <38> Section 3.1.1.1:  ClientBlockExceptions is not supported in Windows NT, Windows 2000,
@@ -7162,7 +7029,8 @@ Release: March 30, 2026
 
 92 / 99
 
-<57> Section 3.1.5.2.1: Not supported in Windows NT, Windows 2000, Windows XP, and Windows
+
+<57> Section 3.1.5.2.1: Not supported in Windows NT, Windows 2000, Windows XP, and Windows
 Server 2003.
 
 <58> Section 3.1.5.2.1: This functionality is not supported in Windows NT, Windows 2000, Windows
@@ -7230,7 +7098,8 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-<76> Section 3.2.5.2.2: This functionality is not supported in Windows NT, Windows 2000, Windows
+
+<76> Section 3.2.5.2.2: This functionality is not supported in Windows NT, Windows 2000, Windows
 XP, Windows Server 2003, Windows Vista, and Windows Server 2008.
 
 <77> Section 3.2.5.2.2: Not supported in Windows NT, Windows 2000, Windows XP, Windows Server
@@ -7296,7 +7165,8 @@ Release: March 30, 2026
 
 94 / 99
 
-0: Server sends LM and NTLM response and never uses extended session security. Clients use LM and
+
+0: Server sends LM and NTLM response and never uses extended session security. Clients use LM and
 NTLM authentication, and never use extended session security. DCs accept LM, NTLM, and NTLM v2
 authentication.
 
@@ -7324,7 +7194,8 @@ Release: March 30, 2026
 
 95 / 99
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7361,7 +7232,8 @@ Release: March 30, 2026
 
 96 / 99
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -7493,7 +7365,8 @@ Initialization
 
 97 / 99
 
-   server 50
+
+   server 50
 Introduction 8
 
 K
@@ -7635,7 +7508,8 @@ Session security
 
 98 / 99
 
-      signature creation 70
+
+      signature creation 70
    GSS_UnwrapEx()
       call 69
       signature creation 70

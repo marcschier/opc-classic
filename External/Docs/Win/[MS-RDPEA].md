@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 63
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 63
 
-Date
+
+Date
 
 Revision
 History
@@ -524,7 +526,8 @@ Release: April 23, 2024
 
 3 / 63
 
-Date
+
+Date
 
 Revision
 History
@@ -549,373 +552,151 @@ Release: April 23, 2024
 
 4 / 63
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 8
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Audio Redirection Protocol Transport Options ................................................. 10
-Audio Redirection Protocol ........................................................................... 10
-Initialization Sequence ........................................................................... 10
-Data Transfer Sequences ....................................................................... 12
-Audio Setting Transfer Sequences ........................................................... 14
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 15
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 15
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Message Syntax ............................................................................................... 16
-RDPSND PDU Header (SNDPROLOG) ............................................................. 16
-Initialization Sequence ................................................................................ 17
-
-2.2.1
-2.2.2
-
-2.2.3
-
-2.2.2.1
-
-2.2.2.1.1
-
-Server Audio Formats and Version PDU
-(SERVER_AUDIO_VERSION_AND_FORMATS) ........................................... 17
-Audio Format (AUDIO_FORMAT) ........................................................ 18
-
-2.2.2.2
-
-2.2.2.3
-2.2.2.4
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-
-Client Audio Formats and Version PDU
-(CLIENT_AUDIO_VERSION_AND_FORMATS) ............................................ 19
-Quality Mode PDU ................................................................................. 21
-Crypt Key PDU (SNDCRYPT) ................................................................... 22
-Data Sequence ........................................................................................... 22
-Training PDU (SNDTRAINING) ................................................................ 22
-Training Confirm PDU (SNDTRAININGCONFIRM) ....................................... 23
-WaveInfo PDU (SNDWAVINFO) ............................................................... 23
-Wave PDU (SNDWAV) ............................................................................ 24
-Wave Encrypt PDU (SNDWAVCRYPT) ....................................................... 24
-UDP Wave PDU (SNDUDPWAVE) ............................................................. 25
-Audio FragData (AUDIO_FRAGDATA) ................................................. 26
-2.2.3.7
-UDP Wave Last PDU (SNDUDPWAVELAST) ............................................... 26
-2.2.3.8
-Wave Confirm PDU (SNDWAV_CONFIRM) ................................................. 27
-Close PDU (SNDCLOSE) ......................................................................... 28
-2.2.3.9
-2.2.3.10  Wave2 PDU (SNDWAVE2) ...................................................................... 28
-Audio Setting Transfer Sequences ................................................................. 29
-Volume PDU (SNDVOL) .......................................................................... 29
-Pitch PDU (SNDPITCH)........................................................................... 29
-
-2.2.4.1
-2.2.4.2
-
-2.2.3.6.1
-
-2.2.4
-
-3.1
-
-3.1.1
-
-3  Protocol Details ..................................................................................................... 31
-Common Details .............................................................................................. 31
-Abstract Data Model .................................................................................... 31
-Protocol Version .................................................................................... 31
-Audio Format List and Current Audio Format ............................................ 31
-Crypt Key............................................................................................. 31
-Quality Mode Setting ............................................................................. 31
-UDP Support ........................................................................................ 31
-Timers ...................................................................................................... 32
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3.1.2
-
-[MS-RDPEA] - v20240423
-Remote Desktop Protocol: Audio Output Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 63
-
-3.1.4.1
-
-3.1.3
-3.1.4
-
-3.1.5
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2
-
-3.2.5.1
-
-3.2.5.1.1
-
-3.2.5.2
-
-3.2.5.2.1
-
-3.2.5.3
-
-3.2.5.3.1
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-3.2.5.1.1.4
-3.2.5.1.1.5
-3.2.5.1.1.6
-
-3.2.5.2.1.1
-3.2.5.2.1.2
-3.2.5.2.1.3
-3.2.5.2.1.4
-3.2.5.2.1.5
-3.2.5.2.1.6
-3.2.5.2.1.7
-
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Playing Audio ....................................................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 33
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-Client Details ................................................................................................... 35
-Abstract Data Model .................................................................................... 35
-Timers ...................................................................................................... 35
-Initialization ............................................................................................... 35
-Higher-Layer Triggered Events ..................................................................... 35
-Message Processing Events and Sequencing Rules .......................................... 35
-Initialization Sequence ........................................................................... 35
-Messages ....................................................................................... 36
-Processing a Server Audio Formats and Version PDU ...................... 36
-Sending a Client Audio Formats and Version PDU ........................... 36
-Sending a Quality Mode PDU ....................................................... 36
-Processing a Training PDU ........................................................... 36
-Sending a Training Confirm PDU .................................................. 36
-Processing a Crypt Key PDU ........................................................ 37
-Data Transfer Sequence ......................................................................... 37
-Messages ....................................................................................... 37
-Processing a WaveInfo PDU ......................................................... 37
-Processing a Wave PDU .............................................................. 37
-Processing a Wave Encrypt PDU ................................................... 38
-Processing a UDP Wave PDU ....................................................... 38
-Processing a UDP Wave Last PDU ................................................. 38
-Sending a Wave Confirm PDU ...................................................... 38
-Processing a Close PDU .............................................................. 39
-Settings Transfer Sequence .................................................................... 39
-Messages ....................................................................................... 39
-Processing a Volume PDU ........................................................... 39
-Processing a Pitch PDU ............................................................... 39
-Timer Events .............................................................................................. 39
-Other Local Events ...................................................................................... 40
-Server Details .................................................................................................. 40
-Abstract Data Model .................................................................................... 40
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Initialization Sequence ........................................................................... 40
-Messages ....................................................................................... 40
-Sending a Server Audio Formats and Version PDU.......................... 40
-Processing a Client Audio Formats and Version PDU ....................... 40
-Processing a Quality Mode PDU .................................................... 41
-Sending a Training PDU .............................................................. 41
-Processing a Training Confirm PDU ............................................... 41
-Sending a Crypt Key PDU ............................................................ 41
-Data Transfer Sequence ......................................................................... 41
-Messages ....................................................................................... 42
-Sending a WaveInfo PDU ............................................................ 42
-Sending a Wave PDU .................................................................. 42
-Sending a Wave Encrypt PDU ...................................................... 42
-Sending a UDP Wave PDU ........................................................... 43
-Sending a UDP Wave Last PDU .................................................... 43
-Processing a Wave Confirm PDU .................................................. 44
-Sending a Close PDU .................................................................. 44
-
-3.3.5.2.1.1
-3.3.5.2.1.2
-3.3.5.2.1.3
-3.3.5.2.1.4
-3.3.5.2.1.5
-3.3.5.2.1.6
-3.3.5.2.1.7
-
-3.3.5.1.1.1
-3.3.5.1.1.2
-3.3.5.1.1.3
-3.3.5.1.1.4
-3.3.5.1.1.5
-3.3.5.1.1.6
-
-3.2.5.3.1.1
-3.2.5.3.1.2
-
-3.3.5.1
-
-3.3.5.1.1
-
-3.3.5.2
-
-3.3.5.2.1
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-[MS-RDPEA] - v20240423
-Remote Desktop Protocol: Audio Output Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 63
-
-3.3.5.3
-
-3.3.5.3.1
-
-3.3.5.2.1.8
-
-Sending a Wave2 PDU ................................................................ 44
-Audio Settings Transfer Sequence ........................................................... 44
-Messages ....................................................................................... 44
-Sending a Volume PDU ............................................................... 44
-Sending a Pitch PDU ................................................................... 45
-Timer Events .............................................................................................. 45
-Other Local Events ...................................................................................... 45
-
-3.3.5.3.1.1
-3.3.5.3.1.2
-
-3.3.6
-3.3.7
-
-4.2
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-
-4  Protocol Examples ................................................................................................. 46
-Annotated Initialization Sequence ...................................................................... 46
-Server Audio Formats and Version PDU ......................................................... 46
-Client Audio Formats and Version PDU .......................................................... 47
-Training PDU .............................................................................................. 48
-Training Confirm PDU .................................................................................. 48
-Annotated Virtual Channel Data Transfer Sequence .............................................. 48
-WaveInfo PDU ............................................................................................ 49
-Wave PDU ................................................................................................. 49
-Wave Confirm PDU ..................................................................................... 49
-Wave2 PDU ................................................................................................ 49
-Annotated UDP Data Transfer Sequence Using Wave Encrypt PDU .......................... 50
-Wave Encrypt PDU ...................................................................................... 50
-Wave Confirm PDU ..................................................................................... 50
-Annotated UDP Data Transfer Sequence Using UPD Wave PDU ............................... 50
-UDP Wave PDU ........................................................................................... 50
-UDP Wave Last PDU .................................................................................... 51
-Wave Confirm PDU ..................................................................................... 51
-
-4.2.1
-4.2.2
-4.2.3
-4.2.4
-
-4.4.1
-4.4.2
-4.4.3
-
-4.3.1
-4.3.2
-
-4.4
-
-4.3
-
-5  Security ................................................................................................................. 52
-Security Considerations for Implementers ........................................................... 52
-Index of Security Parameters ............................................................................ 52
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 53
-
-7  Change Tracking .................................................................................................... 60
-
-8  Index ..................................................................................................................... 61
-
-[MS-RDPEA] - v20240423
-Remote Desktop Protocol: Audio Output Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 63
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Audio Redirection Protocol Transport Options](#131-audio-redirection-protocol-transport-options)
+    - [1.3.2 Audio Redirection Protocol](#132-audio-redirection-protocol)
+      - [1.3.2.1 Initialization Sequence](#1321-initialization-sequence)
+      - [1.3.2.2 Data Transfer Sequences](#1322-data-transfer-sequences)
+      - [1.3.2.3 Audio Setting Transfer Sequences](#1323-audio-setting-transfer-sequences)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 RDPSND PDU Header (SNDPROLOG)](#221-rdpsnd-pdu-header-sndprolog)
+    - [2.2.2 Initialization Sequence](#222-initialization-sequence)
+      - [2.2.2.1 Server Audio Formats and Version PDU](#2221-server-audio-formats-and-version-pdu)
+        - [2.2.2.1.1 Audio Format (AUDIO_FORMAT)](#22211-audio-format-audioformat)
+      - [2.2.2.2 Client Audio Formats and Version PDU](#2222-client-audio-formats-and-version-pdu)
+      - [2.2.2.3 Quality Mode PDU](#2223-quality-mode-pdu)
+      - [2.2.2.4 Crypt Key PDU (SNDCRYPT)](#2224-crypt-key-pdu-sndcrypt)
+    - [2.2.3 Data Sequence](#223-data-sequence)
+      - [2.2.3.1 Training PDU (SNDTRAINING)](#2231-training-pdu-sndtraining)
+      - [2.2.3.2 Training Confirm PDU (SNDTRAININGCONFIRM)](#2232-training-confirm-pdu-sndtrainingconfirm)
+      - [2.2.3.3 WaveInfo PDU (SNDWAVINFO)](#2233-waveinfo-pdu-sndwavinfo)
+      - [2.2.3.4 Wave PDU (SNDWAV)](#2234-wave-pdu-sndwav)
+      - [2.2.3.5 Wave Encrypt PDU (SNDWAVCRYPT)](#2235-wave-encrypt-pdu-sndwavcrypt)
+      - [2.2.3.6 UDP Wave PDU (SNDUDPWAVE)](#2236-udp-wave-pdu-sndudpwave)
+        - [2.2.3.6.1 Audio FragData (AUDIO_FRAGDATA)](#22361-audio-fragdata-audiofragdata)
+      - [2.2.3.7 UDP Wave Last PDU (SNDUDPWAVELAST)](#2237-udp-wave-last-pdu-sndudpwavelast)
+      - [2.2.3.8 Wave Confirm PDU (SNDWAV_CONFIRM)](#2238-wave-confirm-pdu-sndwavconfirm)
+      - [2.2.3.9 Close PDU (SNDCLOSE)](#2239-close-pdu-sndclose)
+      - [2.2.3.10 Wave2 PDU (SNDWAVE2)](#22310-wave2-pdu-sndwave2)
+    - [2.2.4 Audio Setting Transfer Sequences](#224-audio-setting-transfer-sequences)
+      - [2.2.4.1 Volume PDU (SNDVOL)](#2241-volume-pdu-sndvol)
+      - [2.2.4.2 Pitch PDU (SNDPITCH)](#2242-pitch-pdu-sndpitch)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Protocol Version](#3111-protocol-version)
+      - [3.1.1.2 Audio Format List and Current Audio Format](#3112-audio-format-list-and-current-audio-format)
+      - [3.1.1.3 Crypt Key](#3113-crypt-key)
+      - [3.1.1.4 Quality Mode Setting](#3114-quality-mode-setting)
+      - [3.1.1.5 UDP Support](#3115-udp-support)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Playing Audio](#3141-playing-audio)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Initialization Sequence](#3251-initialization-sequence)
+        - [3.2.5.1.1 Messages](#32511-messages)
+          - [3.2.5.1.1.1 Processing a Server Audio Formats and Version PDU](#325111-processing-a-server-audio-formats-and-version-pdu)
+          - [3.2.5.1.1.2 Sending a Client Audio Formats and Version PDU](#325112-sending-a-client-audio-formats-and-version-pdu)
+          - [3.2.5.1.1.3 Sending a Quality Mode PDU](#325113-sending-a-quality-mode-pdu)
+          - [3.2.5.1.1.4 Processing a Training PDU](#325114-processing-a-training-pdu)
+          - [3.2.5.1.1.5 Sending a Training Confirm PDU](#325115-sending-a-training-confirm-pdu)
+          - [3.2.5.1.1.6 Processing a Crypt Key PDU](#325116-processing-a-crypt-key-pdu)
+      - [3.2.5.2 Data Transfer Sequence](#3252-data-transfer-sequence)
+        - [3.2.5.2.1 Messages](#32521-messages)
+          - [3.2.5.2.1.1 Processing a WaveInfo PDU](#325211-processing-a-waveinfo-pdu)
+          - [3.2.5.2.1.2 Processing a Wave PDU](#325212-processing-a-wave-pdu)
+          - [3.2.5.2.1.3 Processing a Wave Encrypt PDU](#325213-processing-a-wave-encrypt-pdu)
+          - [3.2.5.2.1.4 Processing a UDP Wave PDU](#325214-processing-a-udp-wave-pdu)
+          - [3.2.5.2.1.5 Processing a UDP Wave Last PDU](#325215-processing-a-udp-wave-last-pdu)
+          - [3.2.5.2.1.6 Sending a Wave Confirm PDU](#325216-sending-a-wave-confirm-pdu)
+          - [3.2.5.2.1.7 Processing a Close PDU](#325217-processing-a-close-pdu)
+      - [3.2.5.3 Settings Transfer Sequence](#3253-settings-transfer-sequence)
+        - [3.2.5.3.1 Messages](#32531-messages)
+          - [3.2.5.3.1.1 Processing a Volume PDU](#325311-processing-a-volume-pdu)
+          - [3.2.5.3.1.2 Processing a Pitch PDU](#325312-processing-a-pitch-pdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Initialization Sequence](#3351-initialization-sequence)
+        - [3.3.5.1.1 Messages](#33511-messages)
+          - [3.3.5.1.1.1 Sending a Server Audio Formats and Version PDU](#335111-sending-a-server-audio-formats-and-version-pdu)
+          - [3.3.5.1.1.2 Processing a Client Audio Formats and Version PDU](#335112-processing-a-client-audio-formats-and-version-pdu)
+          - [3.3.5.1.1.3 Processing a Quality Mode PDU](#335113-processing-a-quality-mode-pdu)
+          - [3.3.5.1.1.4 Sending a Training PDU](#335114-sending-a-training-pdu)
+          - [3.3.5.1.1.5 Processing a Training Confirm PDU](#335115-processing-a-training-confirm-pdu)
+          - [3.3.5.1.1.6 Sending a Crypt Key PDU](#335116-sending-a-crypt-key-pdu)
+      - [3.3.5.2 Data Transfer Sequence](#3352-data-transfer-sequence)
+        - [3.3.5.2.1 Messages](#33521-messages)
+          - [3.3.5.2.1.1 Sending a WaveInfo PDU](#335211-sending-a-waveinfo-pdu)
+          - [3.3.5.2.1.2 Sending a Wave PDU](#335212-sending-a-wave-pdu)
+          - [3.3.5.2.1.3 Sending a Wave Encrypt PDU](#335213-sending-a-wave-encrypt-pdu)
+          - [3.3.5.2.1.4 Sending a UDP Wave PDU](#335214-sending-a-udp-wave-pdu)
+          - [3.3.5.2.1.5 Sending a UDP Wave Last PDU](#335215-sending-a-udp-wave-last-pdu)
+          - [3.3.5.2.1.6 Processing a Wave Confirm PDU](#335216-processing-a-wave-confirm-pdu)
+          - [3.3.5.2.1.7 Sending a Close PDU](#335217-sending-a-close-pdu)
+          - [3.3.5.2.1.8 Sending a Wave2 PDU](#335218-sending-a-wave2-pdu)
+      - [3.3.5.3 Audio Settings Transfer Sequence](#3353-audio-settings-transfer-sequence)
+        - [3.3.5.3.1 Messages](#33531-messages)
+          - [3.3.5.3.1.1 Sending a Volume PDU](#335311-sending-a-volume-pdu)
+          - [3.3.5.3.1.2 Sending a Pitch PDU](#335312-sending-a-pitch-pdu)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Annotated Initialization Sequence](#41-annotated-initialization-sequence)
+    - [4.1.1 Server Audio Formats and Version PDU](#411-server-audio-formats-and-version-pdu)
+    - [4.1.2 Client Audio Formats and Version PDU](#412-client-audio-formats-and-version-pdu)
+    - [4.1.3 Training PDU](#413-training-pdu)
+    - [4.1.4 Training Confirm PDU](#414-training-confirm-pdu)
+  - [4.2 Annotated Virtual Channel Data Transfer Sequence](#42-annotated-virtual-channel-data-transfer-sequence)
+    - [4.2.1 WaveInfo PDU](#421-waveinfo-pdu)
+    - [4.2.2 Wave PDU](#422-wave-pdu)
+    - [4.2.3 Wave Confirm PDU](#423-wave-confirm-pdu)
+    - [4.2.4 Wave2 PDU](#424-wave2-pdu)
+  - [4.3 Annotated UDP Data Transfer Sequence Using Wave Encrypt PDU](#43-annotated-udp-data-transfer-sequence-using-wave-encrypt-pdu)
+    - [4.3.1 Wave Encrypt PDU](#431-wave-encrypt-pdu)
+    - [4.3.2 Wave Confirm PDU](#432-wave-confirm-pdu)
+  - [4.4 Annotated UDP Data Transfer Sequence Using UPD Wave PDU](#44-annotated-udp-data-transfer-sequence-using-upd-wave-pdu)
+    - [4.4.1 UDP Wave PDU](#441-udp-wave-pdu)
+    - [4.4.2 UDP Wave Last PDU](#442-udp-wave-last-pdu)
+    - [4.4.3 Wave Confirm PDU](#443-wave-confirm-pdu)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Remote Desktop Protocol: Audio Output Virtual Channel Extension [MS-RDPEA], an extension to
 the Remote Desktop Protocol, seamlessly transfers audio data from a server to a client.
@@ -923,7 +704,7 @@ the Remote Desktop Protocol, seamlessly transfers audio data from a server to a 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -967,7 +748,7 @@ over a main data connection, in 1600-byte chunks, as specified in Static Virtual
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -981,7 +762,8 @@ Release: April 23, 2024
 
 8 / 63
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1010,7 +792,7 @@ editor.org/info/rfc2361
 [SCHNEIER] Schneier, B., "Applied Cryptography, Second Edition", John Wiley and Sons, 1996, ISBN:
 0471117099.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ETSI-GSM] European Telecommunications Standards Organization, "GSM UMTS 3GPP Numbering
 Cross Reference", March 2008,
@@ -1035,7 +817,7 @@ us/library/ms713497.aspx
 [MSDN-getsockname] Microsoft Corporation, "getsockname function", http://msdn.microsoft.com/en-
 us/library/ms738543.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This section provides a high-level overview of the operation of Remote Desktop Protocol: Audio Output
 Virtual Channel Extension. The purpose of the protocol is to transfer audio data from the server to the
@@ -1047,10 +829,11 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-client. For example, when the server plays an audio file, this protocol is used by the server to transfer
+
+client. For example, when the server plays an audio file, this protocol is used by the server to transfer
 the audio data to the client. The client can then play the audio.
 
-1.3.1  Audio Redirection Protocol Transport Options
+#### 1.3.1 Audio Redirection Protocol Transport Options
 
 Remote Desktop Protocol: Audio Output Virtual Channel Extension information can be exchanged
 between the client and server via two different transport methods:
@@ -1072,7 +855,7 @@ channels or static virtual channels.
 The term dynamic virtual channel is used when either a reliable transport or an unreliable UDP
 transport, as specified in [MS-RDPEUDP], is used.
 
-1.3.2  Audio Redirection Protocol
+#### 1.3.2 Audio Redirection Protocol
 
 Remote Desktop Protocol: Audio Output Virtual Channel Extension is divided into three distinct
 sequences:
@@ -1091,7 +874,7 @@ Audio data is transferred.
 
 Changes to audio settings are transferred.
 
-1.3.2.1  Initialization Sequence
+##### 1.3.2.1 Initialization Sequence
 
 The initialization sequence has the following goals:
 
@@ -1118,7 +901,8 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RDPEA].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1142,14 +926,15 @@ Release: April 23, 2024
 
 11 / 63
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RDPEA].images/page012-img01.png)
 ![Extracted image 2 from page 12]([MS-RDPEA].images/page012-img02.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 2: Initialization sequence using virtual channels for data transfer
 
-1.3.2.2  Data Transfer Sequences
+##### 1.3.2.2 Data Transfer Sequences
 
 The data transfer sequences have the goal of transferring audio data from the server to the client.
 Two different protocols exist for the data transfer sequences: one protocol transfers over virtual
@@ -1172,7 +957,8 @@ Release: April 23, 2024
 
 12 / 63
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-RDPEA].images/page013-img01.png)
 ![Extracted image 2 from page 13]([MS-RDPEA].images/page013-img02.png)
 <!-- /Extracted images from page 13 -->
@@ -1207,7 +993,8 @@ Release: April 23, 2024
 
 13 / 63
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-RDPEA].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1220,20 +1007,20 @@ data is encrypted using this key.
 At the end of the audio data transfer, the server notifies the client by sending a Close
 PDU (section 2.2.3.9) over a virtual channel.
 
-1.3.2.3  Audio Setting Transfer Sequences
+##### 1.3.2.3 Audio Setting Transfer Sequences
 
 The audio setting transfer sequence has the goal of transferring audio setting changes from the server
 to the client. Two different settings can be redirected: Volume and Pitch. All audio setting transfer
 sequences are sent over virtual channels. The settings are redirected using the Volume
 PDU (section 2.2.4.1) and Pitch PDU (section 2.2.4.2), respectively.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Audio Output Virtual Channel Extension is embedded in a static virtual
 channel transport, as specified in [MS-RDPBCGR] section 1.3.3 or a dynamic virtual channel transport,
 as specified in [MS-RDPEDYC].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Audio Output Virtual Channel Extension operates only after the static
 virtual channel transport (as specified in [MS-RDPBCGR]) or dynamic virtual channel (as specified in
@@ -1241,7 +1028,7 @@ virtual channel transport (as specified in [MS-RDPBCGR]) or dynamic virtual chan
 other communication occurs over the Remote Desktop Protocol: Audio Output Virtual Channel
 Extension.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Audio Output Virtual Channel Extension is designed to be run within the
 context of a Remote Desktop Protocol virtual channel established between a client and server. This
@@ -1254,7 +1041,8 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 The Remote Desktop Protocol: Audio Output Virtual Channel Extension is capability-based. The client
 and the server exchange capabilities during the protocol Initialization Sequence (as specified in section
@@ -1263,11 +1051,11 @@ and the server exchange capabilities during the protocol Initialization Sequence
 After the capabilities have been received and stored, the client and the server do not send PDUs or
 data formats that cannot be processed by the other.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1278,9 +1066,10 @@ Release: April 23, 2024
 
 15 / 63
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol is designed to operate over three transports:
 
@@ -1306,12 +1095,12 @@ and they MUST also be used to change audio settings. Audio data can be transferr
 or virtual channels. The sections that follow specify when to send Data Transfer Sequence messages
 over UDP and when to send them over virtual channels.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections contain Remote Desktop Protocol: Audio Output Virtual Channel Extension
 message syntax.
 
-2.2.1  RDPSND PDU Header (SNDPROLOG)
+#### 2.2.1 RDPSND PDU Header (SNDPROLOG)
 
 The RDPSND PDU header is present in many audio PDUs. It is used to identify the PDU type, specify
 the length of the PDU, and convey message flags.
@@ -1370,7 +1159,8 @@ Release: April 23, 2024
 
 16 / 63
 
-Value
+
+Value
 
 0x04
 
@@ -1441,7 +1231,7 @@ this field specifies the size, in bytes, of the data that follows the RDPSND PDU
 msgType is set to 0x02 (SNDC_WAVE), then the representation of BodySize is explained in the
 Header field in section 2.2.3.3.
 
-2.2.2  Initialization Sequence
+#### 2.2.2 Initialization Sequence
 
 The following sections contain Remote Desktop Protocol: Audio Output Virtual Channel Extension
 message syntax for the initialization sequence. The initialization sequence is used to accomplish the
@@ -1458,7 +1248,7 @@ transmitted in a format specified by this list.
 
   Determine whether UDP can be used to transmit audio data.
 
-2.2.2.1  Server Audio Formats and Version PDU
+##### 2.2.2.1 Server Audio Formats and Version PDU
 
 (SERVER_AUDIO_VERSION_AND_FORMATS)
 
@@ -1472,7 +1262,8 @@ Release: April 23, 2024
 
 17 / 63
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1548,7 +1339,7 @@ sndFormats (variable): A variable-sized array of audio formats supported by the 
 conforming in structure to the AUDIO_FORMAT structure. The number of formats in the array is
 wNumberOfFormats.
 
-2.2.2.1.1 Audio Format (AUDIO_FORMAT)
+###### 2.2.2.1.1 Audio Format (AUDIO_FORMAT)
 
 The AUDIO_FORMAT structure is used to describe a supported audio format.
 
@@ -1559,7 +1350,8 @@ Release: April 23, 2024
 
 18 / 63
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1619,7 +1411,7 @@ cbSize (2 bytes): An unsigned 16-bit integer specifying the size of the data fie
 data (variable): Extra data specific to the audio format.<4> See [MSDN-AUDIOFORMAT] for
 additional details about extra format information. The size of data, in bytes, is cbSize.
 
-2.2.2.2  Client Audio Formats and Version PDU
+##### 2.2.2.2 Client Audio Formats and Version PDU
 
 (CLIENT_AUDIO_VERSION_AND_FORMATS)
 
@@ -1636,7 +1428,8 @@ Release: April 23, 2024
 
 19 / 63
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1729,7 +1522,8 @@ Release: April 23, 2024
 
 20 / 63
 
-wDGramPort (2 bytes): A 16-bit unsigned integer that, if set to a nonzero value, specifies the client
+
+wDGramPort (2 bytes): A 16-bit unsigned integer that, if set to a nonzero value, specifies the client
 
 port that the server MUST use to send data over UDP. A zero value means UDP is not supported.
 This field MUST be specified by using big-endian byte ordering.
@@ -1755,7 +1549,7 @@ the server, each conforming in structure to the AUDIO_FORMAT. Each audio format 
 appear in the Server Audio Formats and Version PDU list of audio formats just sent by the server.
 The number of formats in the array is wNumberOfFormats.
 
-2.2.2.3  Quality Mode PDU
+##### 2.2.2.3 Quality Mode PDU
 
 The Quality Mode PDU is a PDU used by the client to select one of three quality modes. If both the
 client and server are at least version 6, the client MUST send a Quality Mode PDU immediately after
@@ -1823,7 +1617,8 @@ Release: April 23, 2024
 
 21 / 63
 
-2.2.2.4  Crypt Key PDU (SNDCRYPT)
+
+##### 2.2.2.4 Crypt Key PDU (SNDCRYPT)
 
 The Crypt Key PDU is a PDU used to send a 32-byte key from the server to the client. The key is used
 to encrypt some audio data sent over UDP. This PDU MUST be sent using virtual channels.
@@ -1864,7 +1659,7 @@ is sent, the key MUST be used to encrypt the audio data. When a UDP Wave PDU is 
 UDP Wave Last PDU, there is no encrypted audio data and the key MUST be used instead to
 generate a signature.
 
-2.2.3  Data Sequence
+#### 2.2.3 Data Sequence
 
 The following sections contain the Remote Desktop Protocol: Audio Output Virtual Channel Extension
 message syntax for the data transfer sequence. The data transfer sequence is used to transfer audio
@@ -1872,7 +1667,7 @@ data from server to client. To receive audio data from the server, the client MU
 TSSNDCAPS_ALIVE (0x0000001) in the Client Audio Formats and Version PDU sent during the
 initialization sequence described in section 2.2.2.
 
-2.2.3.1  Training PDU (SNDTRAINING)
+##### 2.2.3.1 Training PDU (SNDTRAINING)
 
 The Training PDU is a PDU used by the server to request that the client send it a Training Confirm
 PDU. In response, the client MUST immediately send a Training Confirm PDU to the server. The server
@@ -1905,7 +1700,8 @@ Release: April 23, 2024
 
 22 / 63
 
-...
+
+...
 
 Header (4 bytes): An RDPSND PDU Header (section 2.2.1). The msgType field of the RDPSND PDU
 
@@ -1920,7 +1716,7 @@ specifies the size, in bytes, of the entire PDU. If the size of data is 0, then 
 
 data (variable): Unused. The value in this field is arbitrary and MUST be ignored on receipt.
 
-2.2.3.2  Training Confirm PDU (SNDTRAININGCONFIRM)
+##### 2.2.3.2 Training Confirm PDU (SNDTRAININGCONFIRM)
 
 The Training Confirm PDU is a PDU sent by the client to confirm the reception of a Training PDU. This
 PDU MUST be sent using virtual channels or UDP. The server MAY use data from this PDU to calculate
@@ -1957,7 +1753,7 @@ wPackSize (2 bytes): A 16-bit unsigned integer. This value MUST be set to the sa
 wPackSize field in the Training PDU received from the server. If the value is not set as indicated,
 the result from the server-side calculation (section 3.3.5.1.1.5) will be invalid.
 
-2.2.3.3  WaveInfo PDU (SNDWAVINFO)
+##### 2.2.3.3 WaveInfo PDU (SNDWAVINFO)
 
 The WaveInfo PDU is the first of two consecutive PDUs used to transmit audio data over virtual
 channels. This packet contains information about the audio data along with the first 4 bytes of the
@@ -1993,7 +1789,8 @@ Release: April 23, 2024
 
 23 / 63
 
-Header (4 bytes): An RDPSND PDU Header (section 2.2.1). The msgType field of the RDPSND PDU
+
+Header (4 bytes): An RDPSND PDU Header (section 2.2.1). The msgType field of the RDPSND PDU
 Header MUST be set to SNDC_WAVE (0x02). The BodySize field of the RDPSND PDU Header is
 the size of the WaveInfo PDU plus the size of the data field of the Wave PDU that immediately
 follows this packet minus the size of the Header.
@@ -2022,7 +1819,7 @@ PDU, which MUST be a Wave PDU. The audio data MUST be in the audio format from t
 formats exchanged during the Initialization Sequence (section 2.2.2); this list is found at the index
 specified in the wFormatNo field.
 
-2.2.3.4  Wave PDU (SNDWAV)
+##### 2.2.3.4 Wave PDU (SNDWAV)
 
 The Wave PDU is the second of two consecutive PDUs used to transmit audio data over virtual
 channels. This packet contains the rest of the audio data not sent in the WaveInfo PDU. This PDU
@@ -2055,7 +1852,7 @@ field). The format of the audio data MUST be the format specified in the list of
 during the Initialization Sequence and found at the index specified in the wFormatNo field of the
 preceding WaveInfo PDU.
 
-2.2.3.5  Wave Encrypt PDU (SNDWAVCRYPT)
+##### 2.2.3.5 Wave Encrypt PDU (SNDWAVCRYPT)
 
 The Wave Encrypt PDU is a PDU used to send audio data from the server to the client. This PDU MUST
 be sent over UDP.
@@ -2067,7 +1864,8 @@ Release: April 23, 2024
 
 24 / 63
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2126,7 +1924,7 @@ data (variable): Encrypted audio data. The audio data MUST be in the format spec
 wFormatNo and MUST be encrypted. For an explanation of how the data is encrypted, see
 section 3.3.5.2.1.3.
 
-2.2.3.6  UDP Wave PDU (SNDUDPWAVE)
+##### 2.2.3.6 UDP Wave PDU (SNDUDPWAVE)
 
 The UDP Wave PDU is a PDU used to send a fragment of audio data from the server to the client. This
 packet is only used when the client and server versions are both at least 5. This PDU MUST be sent
@@ -2158,7 +1956,8 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Data (variable)
+
+Data (variable)
 
 ...
 
@@ -2179,7 +1978,7 @@ Data (variable): A portion of an Audio FragData structure. Several UDP Wave PDUs
 Last PDU contain pieces of a structure conforming to Audio FragData. This algorithm is specified in
 section 3.2.5.2.1.5.
 
-2.2.3.6.1 Audio FragData (AUDIO_FRAGDATA)
+###### 2.2.3.6.1 Audio FragData (AUDIO_FRAGDATA)
 
 The Audio FragData structure is used to describe the data that is fragmented and sent in several UDP
 Wave PDUs and a final UDP Wave Last PDU.
@@ -2210,7 +2009,7 @@ creating the signature field of a Wave Encrypt PDU as specified in section 3.3.5
 Data (variable): Audio data. The format of the audio data MUST be the format specified in the
 wFormatNo field of the UDP Wave Last PDU that sends the final piece of this structure.
 
-2.2.3.7  UDP Wave Last PDU (SNDUDPWAVELAST)
+##### 2.2.3.7 UDP Wave Last PDU (SNDUDPWAVELAST)
 
 The UDP Wave Last PDU is a PDU used to send the final fragment of audio data from the server to the
 client. This packet is only used when the client and server versions are both at least 5. This PDU MUST
@@ -2246,7 +2045,8 @@ Release: April 23, 2024
 
 26 / 63
 
-bPad
+
+bPad
 
 Data (variable)
 
@@ -2277,7 +2077,7 @@ Data (variable): A portion of an Audio FragData. Several UDP Wave PDUs and a UDP
 MUST contain pieces of a structure conforming to Audio FragData, as specified in section
 3.2.5.2.1.5.
 
-2.2.3.8  Wave Confirm PDU (SNDWAV_CONFIRM)
+##### 2.2.3.8 Wave Confirm PDU (SNDWAV_CONFIRM)
 
 The Wave Confirm PDU is a PDU that MUST be sent by the client to the server immediately after the
 following two events occur:
@@ -2330,11 +2130,12 @@ Release: April 23, 2024
 
 27 / 63
 
-bPad (1 byte): An unsigned 8-bit integer. This field is unused. The value is arbitrary and MUST be
+
+bPad (1 byte): An unsigned 8-bit integer. This field is unused. The value is arbitrary and MUST be
 
 ignored on receipt.
 
-2.2.3.9  Close PDU (SNDCLOSE)
+##### 2.2.3.9 Close PDU (SNDCLOSE)
 
 The Close PDU is a PDU sent by the server to notify the client that audio streaming has stopped. This
 PDU MUST be sent using virtual channels.
@@ -2356,9 +2157,9 @@ Header (4 bytes): An RDPSND PDU Header (section 2.2.1). The msgType field of the
 
 Header MUST be set to SNDC_CLOSE (0x01).
 
-2.2.3.10
+##### 2.2.3.10 Wave2 PDU (SNDWAVE2)
 
-Wave2 PDU (SNDWAVE2)
+
 
 The Wave2 PDU is used to transmit audio data over virtual channels.
 
@@ -2418,7 +2219,8 @@ Release: April 23, 2024
 
 28 / 63
 
-dwAudioTimeStamp (4 bytes): A 32-bit unsigned integer representing the timestamp when the
+
+dwAudioTimeStamp (4 bytes): A 32-bit unsigned integer representing the timestamp when the
 
 server gets audio data from the audio source. The timestamp is the number of milliseconds that
 have elapsed since the system was started. This timestamp SHOULD be used to sync the audio
@@ -2431,14 +2233,14 @@ Data (variable): Audio data. The format of the audio data MUST be the format spe
 formats exchanged during the initialization sequence and found at the index specified in the
 wFormatNo field.
 
-2.2.4  Audio Setting Transfer Sequences
+#### 2.2.4 Audio Setting Transfer Sequences
 
 The following sections contain the message syntax for the audio setting transfer sequence. The audio
 setting transfer sequence is used to transfer audio setting changes from the server to the client. Two
 different settings MAY be redirected: Volume and Pitch. All audio setting transfer sequences are sent
 over virtual channels.
 
-2.2.4.1  Volume PDU (SNDVOL)
+##### 2.2.4.1 Volume PDU (SNDVOL)
 
 The Volume PDU is a PDU sent from the server to the client to specify the volume to be set on the
 audio stream. For this packet to be sent, the client MUST have set the flag TSSNDCAPS_VOLUME
@@ -2468,7 +2270,7 @@ Volume (4 bytes): A 32-bit unsigned integer specifying the volume to be set on t
 
 See the dwVolume field in section 2.2.2.2 for semantics of the data in this field.
 
-2.2.4.2  Pitch PDU (SNDPITCH)
+##### 2.2.4.2 Pitch PDU (SNDPITCH)
 
 The Pitch PDU is a PDU sent from the server to the client to specify the pitch to be set on the audio
 stream. For this packet to be sent, the client MUST have set the flag TSSNDCAPS_PITCH (0x0000004)
@@ -2501,7 +2303,8 @@ Release: April 23, 2024
 
 29 / 63
 
-Pitch (4 bytes): A 32-bit unsigned integer. Although the server can send this PDU, the client MUST
+
+Pitch (4 bytes): A 32-bit unsigned integer. Although the server can send this PDU, the client MUST
 
 ignore it.
 
@@ -2512,11 +2315,12 @@ Release: April 23, 2024
 
 30 / 63
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate an
@@ -2524,14 +2328,14 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.1.1  Protocol Version
+##### 3.1.1.1 Protocol Version
 
 The wVersion field of the Server Audio Formats and Version PDU and Client Audio Formats and
 Version PDU indicate the protocol version supported on the server and client, respectively. The
 protocol version is used to determine some of the protocol capabilities. For example, the Quality Mode
 is supported only if both the client protocol version and server protocol version are at least 6.
 
-3.1.1.2  Audio Format List and Current Audio Format
+##### 3.1.1.2 Audio Format List and Current Audio Format
 
 A list of audio formats is sent by the client to the server in the Client Audio Formats and Version
 PDU. This list MUST be maintained throughout the duration of the protocol. The wFormatNo field of
@@ -2540,7 +2344,7 @@ format located at that index is the current audio format. The current audio form
 protocol operation. The index to the audio format list is zero-based, where the value 0 refers to the
 first format in the list.
 
-3.1.1.3  Crypt Key
+##### 3.1.1.3 Crypt Key
 
 The Crypt Key is a key used by the client and the server for two purposes:
 
@@ -2550,14 +2354,14 @@ The Crypt Key is a key used by the client and the server for two purposes:
 
 A specification for both purposes is specified in section 3.3.5.2.1.3.
 
-3.1.1.4  Quality Mode Setting
+##### 3.1.1.4 Quality Mode Setting
 
 If protocol versions of both the client and server are at least version 6, then the client MUST inform
 the server of its preferred audio quality setting by sending a Quality Mode PDU to the server. This
 setting SHOULD be stored on the server, and it specifies which mode the server uses to tune the audio
 quality for the connection.
 
-3.1.1.5  UDP Support
+##### 3.1.1.5 UDP Support
 
 To attempt to have data sent over UDP, the client advertises a port in a Client Audio Formats and
 Version PDU. The server attempts to use UDP by sending a Training PDU to the client over the port;
@@ -2573,20 +2377,21 @@ Release: April 23, 2024
 
 31 / 63
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 No common timers are used.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Before protocol operation can commence, the static or dynamic virtual channel MUST be established
 by using the parameters specified in section 2.1.<11> The server and client also need to negotiate the
 protocol version, whether to use UDP, and a common list of audio formats, by exchanging a Server
 Audio Formats and Version PDU and a Client Audio Formats and Version PDU.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Playing Audio
+##### 3.1.4.1 Playing Audio
 
 When audio is played on the server (for example, when the server opens an MP3 file in Windows
 Media Player), the server MUST start redirecting the audio data. If the initialization sequence (section
@@ -2600,11 +2405,12 @@ Release: April 23, 2024
 
 32 / 63
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-RDPEA].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Figure 7: State transition diagram
 
@@ -2629,7 +2435,8 @@ Release: April 23, 2024
 
 33 / 63
 
-Action: server terminates the protocol.
+
+Action: server terminates the protocol.
 
 4.  Event: client version <6 or server version <6.
 
@@ -2702,7 +2509,8 @@ Release: April 23, 2024
 
 34 / 63
 
-19. Event: timeout after waiting for Training Confirm PDU through virtual channel.
+
+19. Event: timeout after waiting for Training Confirm PDU through virtual channel.
 
 Action: server terminates the protocol.
 
@@ -2721,35 +2529,35 @@ Action: server sends Close PDU and server terminates the protocol.
 Unless otherwise specified, malformed, unrecognized, and out-of-sequence packets MUST be ignored
 by the server and the client.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No common timer events are used.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no common local events.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are used.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 No client higher-layer triggered events are used.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Initialization Sequence
+##### 3.2.5.1 Initialization Sequence
 
 Initialization messages exchange the basic information to establish the connection, and to perform
 capabilities negotiation. Initialization ensures that the server and client both know which messages are
@@ -2764,9 +2572,10 @@ Release: April 23, 2024
 
 35 / 63
 
-3.2.5.1.1 Messages
 
-3.2.5.1.1.1  Processing a Server Audio Formats and Version PDU
+###### 3.2.5.1.1 Messages
+
+###### 3.2.5.1.1.1 Processing a Server Audio Formats and Version PDU
 
 The structure and fields of the Server Audio Formats and Version PDU are specified in section 2.2.2.1.
 
@@ -2774,7 +2583,7 @@ The Server Audio Formats and Version PDU MUST be the first message received by t
 protocol sequence. The client uses the version of the server to discover which messages are supported
 by the protocol.
 
-3.2.5.1.1.2  Sending a Client Audio Formats and Version PDU
+###### 3.2.5.1.1.2 Sending a Client Audio Formats and Version PDU
 
 The structure and fields of the Client Audio Formats and Version PDU are specified in section 2.2.2.2.
 
@@ -2798,14 +2607,14 @@ data over virtual channels and no data over UDP.
 If the client does not want to allow the server to send audio data over UDP, thereby forcing all audio
 data to be sent over virtual channels, the client MUST set the wDGramPort field to 0.
 
-3.2.5.1.1.3  Sending a Quality Mode PDU
+###### 3.2.5.1.1.3 Sending a Quality Mode PDU
 
 The structure and fields of the Quality Mode PDU are specified in section 2.2.2.3.
 
 If both the client and server are at least version 6, then the client MUST send a Quality Mode PDU
 immediately after sending the audio formats.
 
-3.2.5.1.1.4  Processing a Training PDU
+###### 3.2.5.1.1.4 Processing a Training PDU
 
 The structure and fields of the Training PDU are specified in section 2.2.3.1.
 
@@ -2819,7 +2628,7 @@ method that is used to send the Training PDU by the server.
 The client MUST respond with a Training Confirm PDU using the same transport on which the Training
 PDU was received.
 
-3.2.5.1.1.5  Sending a Training Confirm PDU
+###### 3.2.5.1.1.5 Sending a Training Confirm PDU
 
 The structure and fields of the Training Confirm PDU are specified in section 2.2.3.2.
 
@@ -2830,11 +2639,12 @@ Release: April 23, 2024
 
 36 / 63
 
-A Training Confirm PDU MUST NOT be sent unless the client has just received a Training PDU from the
+
+A Training Confirm PDU MUST NOT be sent unless the client has just received a Training PDU from the
 server. The wTimeStamp and wPackSize field MUST be set to the same value as the wTimeStamp
 and wPackSize field of the Training PDU just received.
 
-3.2.5.1.1.6  Processing a Crypt Key PDU
+###### 3.2.5.1.1.6 Processing a Crypt Key PDU
 
 The structure and fields of the Crypt Key PDU are specified in section 2.2.2.4.
 
@@ -2853,13 +2663,13 @@ exchange.
 This key MUST be used to help digitally sign pieces of audio data and to help encrypt pieces of audio
 data.
 
-3.2.5.2  Data Transfer Sequence
+##### 3.2.5.2 Data Transfer Sequence
 
 The data transfer sequence messages are used to send audio data from the server to the client.
 
-3.2.5.2.1 Messages
+###### 3.2.5.2.1 Messages
 
-3.2.5.2.1.1  Processing a WaveInfo PDU
+###### 3.2.5.2.1.1 Processing a WaveInfo PDU
 
 The structure and fields of the WaveInfo PDU are specified in section 2.2.3.3.
 
@@ -2880,7 +2690,7 @@ than n, the client abandons all packets associated with cBlockNo n and quits pro
 
 This PDU MUST have been sent by the server over virtual channels.
 
-3.2.5.2.1.2  Processing a Wave PDU
+###### 3.2.5.2.1.2 Processing a Wave PDU
 
 The structure and fields of the Wave PDU are specified in section 2.2.3.4.
 
@@ -2897,7 +2707,8 @@ Release: April 23, 2024
 
 37 / 63
 
-3.2.5.2.1.3  Processing a Wave Encrypt PDU
+
+###### 3.2.5.2.1.3 Processing a Wave Encrypt PDU
 
 The structure and fields of the Wave Encrypt PDU are specified in section 2.2.3.5.
 
@@ -2913,7 +2724,7 @@ section 3.3.5.2.1.3.
 
 This PDU MUST have been sent by the server over UDP.
 
-3.2.5.2.1.4  Processing a UDP Wave PDU
+###### 3.2.5.2.1.4 Processing a UDP Wave PDU
 
 The structure and fields of the UDP Wave PDU are specified in section 2.2.3.6.
 
@@ -2929,7 +2740,7 @@ client MUST disregard any pending UDP Wave PDUs from previous blocks.
 This PDU MUST have been sent over UDP and only if the client's version and the server's version are
 both at least 5.
 
-3.2.5.2.1.5  Processing a UDP Wave Last PDU
+###### 3.2.5.2.1.5 Processing a UDP Wave Last PDU
 
 The structure and fields of the UDP Wave Last PDU are specified in section 2.2.3.7.
 
@@ -2955,7 +2766,7 @@ and Version PDU. A value of i means the format of the audio data is the ith form
 This PDU MUST have been sent over UDP and only if the client's version and the server's version are
 both at least 5.
 
-3.2.5.2.1.6  Sending a Wave Confirm PDU
+###### 3.2.5.2.1.6 Sending a Wave Confirm PDU
 
 [MS-RDPEA] - v20240423
 Remote Desktop Protocol: Audio Output Virtual Channel Extension
@@ -2964,7 +2775,8 @@ Release: April 23, 2024
 
 38 / 63
 
-The structure and fields of the Wave Confirm PDU are specified in section 2.2.3.8.
+
+The structure and fields of the Wave Confirm PDU are specified in section 2.2.3.8.
 
 Unless an unreliable UDP transport is used, as specified in [MS-RDPEUDP], the client MUST send a
 Wave Confirm PDU in response to any audio sample sent by the server. The client MUST send the
@@ -2981,7 +2793,7 @@ Encrypt PDU, or UDP Wave Last PDU, plus the time, in milliseconds, between recei
 wave PDU from the network and sending this PDU. This enables the server to calculate the amount of
 time it takes for the client to receive the audio data PDU and send the confirmation.
 
-3.2.5.2.1.7  Processing a Close PDU
+###### 3.2.5.2.1.7 Processing a Close PDU
 
 The structure and fields of the Close PDU are specified in section 2.2.3.9. The Close PDU is sent when
 the server intends to stop rendering audio (for example, just before a disconnect).
@@ -2994,28 +2806,28 @@ redirection protocol).
 
 This packet MUST be received over virtual channels.
 
-3.2.5.3  Settings Transfer Sequence
+##### 3.2.5.3 Settings Transfer Sequence
 
 The Settings Transfer Sequence messages are used to send audio settings changes from the server to
 the client. These packets are sent any time after the initialization sequence or any time before the
 server sends a Close PDU.
 
-3.2.5.3.1 Messages
+###### 3.2.5.3.1 Messages
 
-3.2.5.3.1.1  Processing a Volume PDU
+###### 3.2.5.3.1.1 Processing a Volume PDU
 
 The structure and fields of the Volume PDU are specified in section 2.2.4.1.
 
 On receiving a Volume PDU, the client MUST adjust the volume to the value specified in the Volume
 field.
 
-3.2.5.3.1.2  Processing a Pitch PDU
+###### 3.2.5.3.1.2 Processing a Pitch PDU
 
 The structure and fields of the Pitch PDU are specified in section 2.2.4.2.
 
 On receiving a Pitch PDU, the client does nothing.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No client timer events are used.
 
@@ -3026,44 +2838,45 @@ Release: April 23, 2024
 
 39 / 63
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 No additional client events are used.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The server MAY use a timeout while waiting for a Client Audio Formats and Version PDU.<14> The
 server MAY use a timeout in implementing a retry algorithm for the UDP Training PDU.<15> The
 server MAY also use a timeout while waiting for a Quality Mode PDU.<16>
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The server MUST play and stream audio. For example, if a user opens an audio file in a media player,
 the server initiates this protocol and begins streaming the audio.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Initialization Sequence
+##### 3.3.5.1 Initialization Sequence
 
-3.3.5.1.1 Messages
+###### 3.3.5.1.1 Messages
 
-3.3.5.1.1.1  Sending a Server Audio Formats and Version PDU
+###### 3.3.5.1.1.1 Sending a Server Audio Formats and Version PDU
 
 The structure and fields of the Server Audio Formats and Version PDU are specified in section 2.2.2.1.
 
 The first message the server sends to the client MUST be a Server Audio Formats and Version PDU.
 
-3.3.5.1.1.2  Processing a Client Audio Formats and Version PDU
+###### 3.3.5.1.1.2 Processing a Client Audio Formats and Version PDU
 
 The structure and fields of the Client Audio Formats and Version PDU (client PDU) are specified in
 section 2.2.2.2. The server MUST receive this message prior to receiving any other message that is
@@ -3087,10 +2900,11 @@ Release: April 23, 2024
 
 40 / 63
 
-Although the dwPitch field specifies the initial pitch on the client, the server does nothing with this
+
+Although the dwPitch field specifies the initial pitch on the client, the server does nothing with this
 value.
 
-3.3.5.1.1.3  Processing a Quality Mode PDU
+###### 3.3.5.1.1.3 Processing a Quality Mode PDU
 
 The structure and fields of the Quality Mode PDU are specified in section 2.2.2.3.
 
@@ -3100,7 +2914,7 @@ the wQualityMode field as specified in section 3.1.1.4. The server SHOULD use th
 DYNAMIC_QUALITY (section 2.2.2.3) if it does not receive the Quality Mode PDU within a specified
 amount of time.<19>
 
-3.3.5.1.1.4  Sending a Training PDU
+###### 3.3.5.1.1.4 Sending a Training PDU
 
 The structure and fields of the Training PDU are specified in section 2.2.3.1.
 
@@ -3114,7 +2928,7 @@ initialization sequence.
 If the client advertises a UDP port during version exchange, the server SHOULD<20> choose to send
 the Training PDU over UDP but does not have to.
 
-3.3.5.1.1.5  Processing a Training Confirm PDU
+###### 3.3.5.1.1.5 Processing a Training Confirm PDU
 
 The structure and fields of the Training Confirm PDU are specified in section 2.2.3.2.
 
@@ -3131,7 +2945,7 @@ certain amount of time, then the server SHOULD send additional Training PDUs ove
 several retries the server has not successfully received a Training Confirm PDU, the server SHOULD
 use virtual channels for data transfer instead of UDP.<21>
 
-3.3.5.1.1.6  Sending a Crypt Key PDU
+###### 3.3.5.1.1.6 Sending a Crypt Key PDU
 
 The structure and fields of the Crypt Key PDU are specified in section 2.2.2.4.
 
@@ -3141,7 +2955,7 @@ the data transfer sequence, the server MUST NOT send a Crypt Key PDU. To use UDP
 have advertised a valid port during version exchange, and the server MUST have successfully sent a
 Training PDU and received a Training Confirm PDU from the client over UDP.
 
-3.3.5.2  Data Transfer Sequence
+##### 3.3.5.2 Data Transfer Sequence
 
 The data transfer sequence messages are used to send audio data from the server to the client.
 
@@ -3154,7 +2968,8 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The first involves sending a WaveInfo PDU and a Wave PDU, and receiving a Wave Confirm PDU
+
+1.  The first involves sending a WaveInfo PDU and a Wave PDU, and receiving a Wave Confirm PDU
 
 over virtual channels.
 
@@ -3179,9 +2994,9 @@ For the data transfer sequence to take place, the client MUST have set the TSSND
 After a particular sequence is selected for use by the server, that sequence SHOULD be used
 throughout the protocol. Any malformed packets MUST be ignored.
 
-3.3.5.2.1 Messages
+###### 3.3.5.2.1 Messages
 
-3.3.5.2.1.1  Sending a WaveInfo PDU
+###### 3.3.5.2.1.1 Sending a WaveInfo PDU
 
 The structure and fields of the WaveInfo PDU are specified in section 2.2.3.3.
 
@@ -3203,7 +3018,7 @@ and Version PDU. A value of i means the format of the audio data is the ith form
 
 This PDU MUST be sent over virtual channels.
 
-3.3.5.2.1.2  Sending a Wave PDU
+###### 3.3.5.2.1.2 Sending a Wave PDU
 
 The structure and fields of the Wave PDU are specified in section 2.2.3.4.
 
@@ -3212,7 +3027,7 @@ sample.
 
 This PDU MUST be sent over virtual channels.
 
-3.3.5.2.1.3  Sending a Wave Encrypt PDU
+###### 3.3.5.2.1.3 Sending a Wave Encrypt PDU
 
 The structure and fields of the Wave Encrypt PDU are specified in section 2.2.3.5.
 
@@ -3223,7 +3038,8 @@ Release: April 23, 2024
 
 42 / 63
 
-Unlike a WaveInfo PDU and Wave PDU, the Wave Encrypt PDU contains the entire audio sample in the
+
+Unlike a WaveInfo PDU and Wave PDU, the Wave Encrypt PDU contains the entire audio sample in the
 data field.
 
 The cBlockNo field MUST be set as specified in section 3.3.5.2.1.1.
@@ -3281,7 +3097,7 @@ hash. The value of this field is set to the first 8 bytes of this hash.
 
 This PDU MUST be sent over UDP<25>.
 
-3.3.5.2.1.4  Sending a UDP Wave PDU
+###### 3.3.5.2.1.4 Sending a UDP Wave PDU
 
 The structure and fields of the UDP Wave PDU are specified in section 2.2.3.6.
 
@@ -3297,7 +3113,7 @@ The cBlockNo field MUST be set as specified in section 3.3.5.2.1.1.
 
 This PDU MUST be sent over UDP and only if the client and server's versions are both at least 5.
 
-3.3.5.2.1.5  Sending a UDP Wave Last PDU
+###### 3.3.5.2.1.5 Sending a UDP Wave Last PDU
 
 43 / 63
 
@@ -3306,7 +3122,8 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The structure and fields of the UDP Wave Last PDU are specified in section 2.2.3.7.
+
+The structure and fields of the UDP Wave Last PDU are specified in section 2.2.3.7.
 
 The cBlockNo field MUST be set as specified in section 3.3.5.2.1.1.
 
@@ -3315,7 +3132,7 @@ and Version PDU. A value of i means the format of the audio data is the ith form
 
 This PDU MUST be sent over UDP and only if the client and server's versions are both at least 5.
 
-3.3.5.2.1.6  Processing a Wave Confirm PDU
+###### 3.3.5.2.1.6 Processing a Wave Confirm PDU
 
 The structure and fields of the Wave Confirm PDU are specified in section 2.2.3.8.
 
@@ -3325,7 +3142,7 @@ has a cBlockNo value identical to cConfirmedBlockNo.
 If the server sent the audio sample using UDP and does not receive a Wave Confirm PDU, then the
 server MUST continue normally.
 
-3.3.5.2.1.7  Sending a Close PDU
+###### 3.3.5.2.1.7 Sending a Close PDU
 
 The structure and fields of the Close PDU are specified in section 2.2.3.9.
 
@@ -3333,7 +3150,7 @@ To stop sending audio, the server sends this PDU.
 
 This packet MUST be sent over virtual channels.
 
-3.3.5.2.1.8  Sending a Wave2 PDU
+###### 3.3.5.2.1.8 Sending a Wave2 PDU
 
 The structure and fields of the Wave2 PDU are specified in section 2.2.3.10.
 
@@ -3350,14 +3167,14 @@ and Version PDU. A value of i means that the format of the audio data is the ith
 
 This PDU MUST be sent over virtual channels.
 
-3.3.5.3  Audio Settings Transfer Sequence
+##### 3.3.5.3 Audio Settings Transfer Sequence
 
 The audio settings transfer sequence messages are used to send audio setting changes from the
 server to the client.
 
-3.3.5.3.1 Messages
+###### 3.3.5.3.1 Messages
 
-3.3.5.3.1.1  Sending a Volume PDU
+###### 3.3.5.3.1.1 Sending a Volume PDU
 
 The structure and fields of the Volume PDU are specified in section 2.2.4.1.
 
@@ -3372,7 +3189,8 @@ Release: April 23, 2024
 
 44 / 63
 
-3.3.5.3.1.2  Sending a Pitch PDU
+
+###### 3.3.5.3.1.2 Sending a Pitch PDU
 
 The structure and fields of the Pitch PDU are specified in section 2.2.4.2.
 
@@ -3380,11 +3198,11 @@ For the server to send this packet, the client MUST have had the TSSNDCAPS_PITCH
 flag set in the dwFlags field of the Client Audio Formats and Version PDU sent during the initialization
 sequence.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 No server timer events are used.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 No additional server events are used.
 
@@ -3395,14 +3213,15 @@ Release: April 23, 2024
 
 45 / 63
 
-4  Protocol Examples
 
-4.1  Annotated Initialization Sequence
+## 4 Protocol Examples
+
+### 4.1 Annotated Initialization Sequence
 
 The following is an annotated dump of an initialization sequence using virtual channels for data
 transfer, as specified in section 1.3.2.1.
 
-4.1.1  Server Audio Formats and Version PDU
+#### 4.1.1 Server Audio Formats and Version PDU
 
 The following is an annotated dump of a Server Audio Formats and Version PDU.
 
@@ -3468,7 +3287,8 @@ Release: April 23, 2024
 
 46 / 63
 
-    00 04 -> AUDIO_FORMAT::nBlockAlign = 0x400 = 1024
+
+    00 04 -> AUDIO_FORMAT::nBlockAlign = 0x400 = 1024
     04 00 -> AUDIO_FORMAT::wBitsPerSample = 4
     20 00 -> AUDIO_FORMAT::cbSize = 0x20 = 32
  f4 03 07 00 00 01 00 00 00 02 00 ff 00 00 00 00 c0 00 40 00 f0 00 00
@@ -3483,7 +3303,7 @@ Release: April 23, 2024
     02 00 -> AUDIO_FORMAT::cbSize = 2
     f9 03 -> AUDIO_FORMAT::data
 
-4.1.2  Client Audio Formats and Version PDU
+#### 4.1.2 Client Audio Formats and Version PDU
 
 The following is an annotated dump of a Client Audio Formats and Version PDU.
 
@@ -3542,7 +3362,8 @@ Release: April 23, 2024
 
 47 / 63
 
-   22 56 00 00 -> AUDIO_FORMAT::nSamplesPerSec = 0x5622 = 22050
+
+   22 56 00 00 -> AUDIO_FORMAT::nSamplesPerSec = 0x5622 = 22050
    44 ac 00 00 -> AUDIO_FORMAT::nAvgBytesPerSec = 0xac44 = 44100
    02 00 -> AUDIO_FORMAT::nBlockAlign = 2
    08 00 -> AUDIO_FORMAT::wBitsPerSample = 8
@@ -3568,7 +3389,7 @@ Release: April 23, 2024
    02 00 -> AUDIO_FORMAT::cbSize = 2
    f9 03 -> AUDIO_FORMAT::data
 
-4.1.3  Training PDU
+#### 4.1.3 Training PDU
 
 The following is an annotated dump of a Training PDU.
 
@@ -3588,7 +3409,7 @@ The following is an annotated dump of a Training PDU.
  00 04 -> SNDTRAINING::wPackSize = 0x400 = 1024 bytes
  52 90 49 … 72 9d 49 -> SNDTRAINING::data
 
-4.1.4  Training Confirm PDU
+#### 4.1.4 Training Confirm PDU
 
 The following is an annotated dump of a Training Confirm PDU.
 
@@ -3607,12 +3428,13 @@ Release: April 23, 2024
 
 48 / 63
 
-4.2  Annotated Virtual Channel Data Transfer Sequence
+
+### 4.2 Annotated Virtual Channel Data Transfer Sequence
 
 The following is an annotated dump of a data transfer sequence over virtual channels, as specified in
 section 1.3.2.2.
 
-4.2.1  WaveInfo PDU
+#### 4.2.1 WaveInfo PDU
 
 The following is an annotated dump of a WaveInfo PDU.
 
@@ -3628,7 +3450,7 @@ The following is an annotated dump of a WaveInfo PDU.
  00 00 00 -> SNDWAVINFO::bPad = 0
  20 48 17 d6 -> SNDWAVINFO::data
 
-4.2.2  Wave PDU
+#### 4.2.2 Wave PDU
 
 The following is an annotated dump of a Wave PDU.
 
@@ -3643,7 +3465,7 @@ The following is an annotated dump of a Wave PDU.
  00 00 00 00 -> SNDWAVE::Type = 0
  84 02 80… ba 48 aa -> SNDWAVE::data
 
-4.2.3  Wave Confirm PDU
+#### 4.2.3 Wave Confirm PDU
 
 The following is an annotated dump of a Wave Confirm PDU.
 
@@ -3657,7 +3479,7 @@ The following is an annotated dump of a Wave Confirm PDU.
  08 -> SNDWAV_CONFIRM::cConfirmedBlockNo = 8
  77 -> SNDWAV_CONFIRM::bPad = 0x77
 
-4.2.4  Wave2 PDU
+#### 4.2.4 Wave2 PDU
 
 The following is an annotated dump of a Wave2 PDU.
 
@@ -3673,7 +3495,8 @@ Release: April 23, 2024
 
 49 / 63
 
- 00000040 60 c4 03 c5 f8 57 1d d6-5a 2b f3 4f 83 9e 5f 04  `....W..Z+.O.._.
+
+ 00000040 60 c4 03 c5 f8 57 1d d6-5a 2b f3 4f 83 9e 5f 04  `....W..Z+.O.._.
  ...
  000000e0 b1 51 00 09 8b 26 04 c1-71 41 71 34 eb bc 01 25  .Q...&..qAq4...%
  000000f0 45 c6 e0 14 2c 0c 20 b1-6b 67 d8 10 5c 48 a8 2e  E...,. .kg..\H..
@@ -3690,12 +3513,12 @@ Release: April 23, 2024
  c2 b8 ac 0d -> SNDWAVE2::dwAudioTimeStamp = 0xdacb8c2 = 229423298
  27 0c 45 … 00 55 c0 -> SNDWAVE2::data
 
-4.3  Annotated UDP Data Transfer Sequence Using Wave Encrypt PDU
+### 4.3 Annotated UDP Data Transfer Sequence Using Wave Encrypt PDU
 
 The following is an annotated dump of a data transfer sequence over UDP when the client and server
 versions are both less than 5, as specified in section 1.3.2.2.
 
-4.3.1  Wave Encrypt PDU
+#### 4.3.1 Wave Encrypt PDU
 
 The following is an annotated dump of a Wave Encrypt PDU.
 
@@ -3712,7 +3535,7 @@ The following is an annotated dump of a Wave Encrypt PDU.
  00 00 00 -> SNDWAVCRYPT::bPad
  fd 19 07 55 ... c0 42 78  -> SNDWAVCRYPT::data
 
-4.3.2  Wave Confirm PDU
+#### 4.3.2 Wave Confirm PDU
 
 The following is an annotated dump of a Wave Confirm PDU.
 
@@ -3726,7 +3549,7 @@ The following is an annotated dump of a Wave Confirm PDU.
  24 -> SNDWAV_CONFIRM::cConfirmedBlockNo = 0x24 = 36
  22 -> SNDWAV_CONFIRM::bPad = 0x22
 
-4.4  Annotated UDP Data Transfer Sequence Using UPD Wave PDU
+### 4.4 Annotated UDP Data Transfer Sequence Using UPD Wave PDU
 
 The following is an annotated dump of a data transfer sequence over UDP when the client and server
 versions are both at least 5, as specified in section 1.3.2.2.
@@ -3738,7 +3561,8 @@ Release: April 23, 2024
 
 50 / 63
 
-4.4.1  UDP Wave PDU
+
+#### 4.4.1 UDP Wave PDU
 
 The following is an annotated dump of a UDP Wave PDU.
 
@@ -3750,7 +3574,7 @@ The following is an annotated dump of a UDP Wave PDU.
  00 -> SNDUDPWAVE::cFragNo = 0
  87 27 b8 ... 00 00 00 -> SNDUDPWAVE::data
 
-4.4.2  UDP Wave Last PDU
+#### 4.4.2 UDP Wave Last PDU
 
 The following is an annotated dump of a UDP Wave Last PDU.
 
@@ -3765,7 +3589,7 @@ The following is an annotated dump of a UDP Wave Last PDU.
  00 00 00 -> SNDUDPWAVELAST::bPad
  00 00 00 ... 00 00 00 -> SNDUDPWAVELAST::data
 
-4.4.3  Wave Confirm PDU
+#### 4.4.3 Wave Confirm PDU
 
  The following is an annotated dump of a Wave Confirm PDU.
 
@@ -3786,9 +3610,10 @@ Release: April 23, 2024
 
 51 / 63
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 All virtual channel traffic is secured by the underlying core Remote Desktop Protocol. An overview of
 the implemented security-related mechanisms is specified in [MS-RDPBCGR] section 5.
@@ -3807,7 +3632,7 @@ transmitted intact is not possible because these PDUs are not signed. Sending au
 UDP sequence is not recommended because SHA-1 has been proven to be insecure. Instead, virtual
 channels are recommended.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3818,7 +3643,8 @@ Release: April 23, 2024
 
 52 / 63
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3890,7 +3716,8 @@ Release: April 23, 2024
 
 53 / 63
 
-<3> Section 2.2.2.1:
+
+<3> Section 2.2.2.1:
 
 Client and
 server version
@@ -4001,7 +3828,8 @@ Release: April 23, 2024
 
 54 / 63
 
-Codec name
+
+Codec name
 
  Format tag
 
@@ -4091,7 +3919,8 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0
+
+ 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0
          1 1 1 1   1 1 2 2 2 2 2 2   3 3 3 3 3 4 4 4   4 4 ...
          5 4 3 2   1 0 5 4 3 2 1 0   4 3 2 1 0 4 3 2   1 0 ...
 
@@ -4174,7 +4003,8 @@ Release: April 23, 2024
 
 56 / 63
 
-Windows Vista, Windows Server 2008, Windows 7, and Windows Server 2008 R2 always use static
+
+Windows Vista, Windows Server 2008, Windows 7, and Windows Server 2008 R2 always use static
 virtual channels, even if the client advertises a UDP port.
 
 Windows 8 and Windows Server 2012 always use virtual channels, even if the client advertises a UDP
@@ -4242,7 +4072,8 @@ Release: April 23, 2024
 
 57 / 63
 
-Windows Vista, Windows Server 2008, Windows 7, and Windows Server 2008 R2 always use static
+
+Windows Vista, Windows Server 2008, Windows 7, and Windows Server 2008 R2 always use static
 virtual channels, even if the client advertises a UDP port.
 
 Windows 8 and Windows Server 2012 always use virtual channels, even if the client advertises a UDP
@@ -4311,7 +4142,8 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<25> Section 3.3.5.2.1.3: Windows XP and Windows Server 2003 clients try to negotiate UDP by
+
+<25> Section 3.3.5.2.1.3: Windows XP and Windows Server 2003 clients try to negotiate UDP by
 using the API function getsockname. If this function is successful, these clients advertise a UDP port.
 Otherwise, these clients use static virtual channels. For more information about the getsockname
 function, see [MSDN-getsockname].
@@ -4323,7 +4155,8 @@ Release: April 23, 2024
 
 59 / 63
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4367,7 +4200,8 @@ Release: April 23, 2024
 
 60 / 63
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -4519,7 +4353,8 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   transport 16
+
+   transport 16
 
 N
 
@@ -4667,7 +4502,8 @@ Release: April 23, 2024
 
 62 / 63
 
-Wave Confirm PDU
+
+Wave Confirm PDU
    example (section 4.2.3 49, section 4.3.2 50,
 
 section 4.4.3 51)

@@ -63,7 +63,8 @@ Release: June 10, 2024
 
 1 / 54
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: June 10, 2024
 
 2 / 54
 
-Date
+
+Date
 
 Revision
 History
@@ -528,7 +530,8 @@ Release: June 10, 2024
 
 3 / 54
 
-Date
+
+Date
 
 Revision
 History
@@ -602,146 +605,66 @@ Release: June 10, 2024
 
 4 / 54
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Common Types](#21-common-types)
+  - [2.2 Constructed Security Types](#22-constructed-security-types)
+    - [2.2.1 KERB_SID_AND_ATTRIBUTES](#221-kerbsidandattributes)
+    - [2.2.2 GROUP_MEMBERSHIP](#222-groupmembership)
+    - [2.2.3 DOMAIN_GROUP_MEMBERSHIP](#223-domaingroupmembership)
+  - [2.3 PACTYPE](#23-pactype)
+  - [2.4 PAC_INFO_BUFFER](#24-pacinfobuffer)
+  - [2.5 KERB_VALIDATION_INFO](#25-kerbvalidationinfo)
+  - [2.6 PAC Credentials](#26-pac-credentials)
+    - [2.6.1 PAC_CREDENTIAL_INFO](#261-paccredentialinfo)
+    - [2.6.2 PAC_CREDENTIAL_DATA](#262-paccredentialdata)
+    - [2.6.3 SECPKG_SUPPLEMENTAL_CRED](#263-secpkgsupplementalcred)
+    - [2.6.4 NTLM_SUPPLEMENTAL_CREDENTIAL](#264-ntlmsupplementalcredential)
+  - [2.7 PAC_CLIENT_INFO](#27-pacclientinfo)
+  - [2.8 PAC_SIGNATURE_DATA](#28-pacsignaturedata)
+    - [2.8.1 Generation of PAC Signatures](#281-generation-of-pac-signatures)
+    - [2.8.2 Ticket Signature](#282-ticket-signature)
+    - [2.8.3 Extended KDC Signature](#283-extended-kdc-signature)
+    - [2.8.4 Server Signature](#284-server-signature)
+    - [2.8.5 KDC Signature](#285-kdc-signature)
+  - [2.9 S4U_DELEGATION_INFO](#29-s4udelegationinfo)
+  - [2.10 UPN_DNS_INFO](#210-upndnsinfo)
+  - [2.11 PAC_CLIENT_CLAIMS_INFO](#211-pacclientclaimsinfo)
+  - [2.12 PAC_DEVICE_INFO](#212-pacdeviceinfo)
+  - [2.13 PAC_DEVICE_CLAIMS_INFO](#213-pacdeviceclaimsinfo)
+  - [2.14 PAC_ATTRIBUTES_INFO](#214-pacattributesinfo)
+  - [2.15 PAC_REQUESTOR_SID](#215-pacrequestorsid)
+  - [2.16 PAC_REQUESTOR_GUID](#216-pacrequestorguid)
+  - [2.17 Formal MIDL Definition](#217-formal-midl-definition)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Logon Authorization Information](#31-logon-authorization-information)
+  - [3.2 Client Information](#32-client-information)
+  - [3.3 Signatures](#33-signatures)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+    - [4.1.1 Tampered PAC Data](#411-tampered-pac-data)
+    - [4.1.2 Authorization Validation and Filtering](#412-authorization-validation-and-filtering)
+      - [4.1.2.1 Rules for SID Inclusion in the PAC](#4121-rules-for-sid-inclusion-in-the-pac)
+      - [4.1.2.2 SID Filtering and Claims Transformation](#4122-sid-filtering-and-claims-transformation)
+      - [4.1.2.3 crealm Filtering](#4123-crealm-filtering)
+  - [4.2 Index of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Protocols and Other Structures .................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Localization ............................................................................... 11
-Vendor-Extensible Fields ................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-2.2
-
-2.3
-2.4
-2.5
-2.6
-
-2.2.1
-2.2.2
-2.2.3
-
-2.6.1
-2.6.2
-2.6.3
-2.6.4
-
-2  Structures ............................................................................................................. 12
-Common Types ................................................................................................ 13
-Constructed Security Types ............................................................................... 13
-KERB_SID_AND_ATTRIBUTES ...................................................................... 13
-GROUP_MEMBERSHIP ................................................................................. 14
-DOMAIN_GROUP_MEMBERSHIP .................................................................... 14
-PACTYPE ......................................................................................................... 14
-PAC_INFO_BUFFER........................................................................................... 15
-KERB_VALIDATION_INFO .................................................................................. 17
-PAC Credentials ............................................................................................... 21
-PAC_CREDENTIAL_INFO .............................................................................. 22
-PAC_CREDENTIAL_DATA ............................................................................. 23
-SECPKG_SUPPLEMENTAL_CRED ................................................................... 23
-NTLM_SUPPLEMENTAL_CREDENTIAL ............................................................. 24
-PAC_CLIENT_INFO ........................................................................................... 24
-PAC_SIGNATURE_DATA .................................................................................... 25
-Generation of PAC Signatures....................................................................... 26
-Ticket Signature ......................................................................................... 27
-Extended KDC Signature ............................................................................. 27
-Server Signature ........................................................................................ 28
-KDC Signature ........................................................................................... 28
-2.9
-S4U_DELEGATION_INFO ................................................................................... 28
-2.10  UPN_DNS_INFO ............................................................................................... 29
-PAC_CLIENT_CLAIMS_INFO ............................................................................... 30
-2.11
-PAC_DEVICE_INFO ........................................................................................... 31
-2.12
-PAC_DEVICE_CLAIMS_INFO .............................................................................. 32
-2.13
-PAC_ATTRIBUTES_INFO .................................................................................... 32
-2.14
-PAC_REQUESTOR_SID ...................................................................................... 33
-2.15
-PAC_REQUESTOR_GUID ................................................................................... 33
-2.16
-Formal MIDL Definition ..................................................................................... 34
-2.17
-
-2.8.1
-2.8.2
-2.8.3
-2.8.4
-2.8.5
-
-2.7
-2.8
-
-3  Structure Examples ............................................................................................... 37
-Logon Authorization Information ........................................................................ 39
-Client Information ............................................................................................ 41
-Signatures ...................................................................................................... 41
-
-3.1
-3.2
-3.3
-
-4.1
-
-4.1.1
-4.1.2
-
-4  Security ................................................................................................................. 42
-Security Considerations for Implementers ........................................................... 42
-Tampered PAC Data .................................................................................... 42
-Authorization Validation and Filtering ............................................................ 42
-Rules for SID Inclusion in the PAC ........................................................... 42
-SID Filtering and Claims Transformation .................................................. 42
-crealm Filtering ..................................................................................... 47
-Index of Security Fields .................................................................................... 47
-
-4.1.2.1
-4.1.2.2
-4.1.2.3
-
-4.2
-
-[MS-PAC] - v20240610
-Privilege Attribute Certificate Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: June 10, 2024
-
-5 / 54
-
-5  Appendix A: Product Behavior ............................................................................... 48
-
-6  Change Tracking .................................................................................................... 52
-
-7  Index ..................................................................................................................... 53
-
-[MS-PAC] - v20240610
-Privilege Attribute Certificate Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: June 10, 2024
-
-6 / 54
-
-1  Introduction
+## 1 Introduction
 
 The Privilege Attribute Certificate (PAC) Data Structure is used by authentication protocols that verify
 identities to transport authorization information, which controls access to resources. The Kerberos
@@ -754,7 +677,7 @@ metadata.<1>
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -811,7 +734,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-DS DC on one server. The AD LDS DC contains full NC replicas of the config NC and the schema
+
+DS DC on one server. The AD LDS DC contains full NC replicas of the config NC and the schema
 NC in its forest. The domain controller is the server side of Authentication Protocol Domain
 Support [MS-APDS].
 
@@ -884,7 +808,8 @@ Release: June 10, 2024
 
 8 / 54
 
-ticket-granting ticket (TGT): A special type of ticket that can be used to obtain other tickets.
+
+ticket-granting ticket (TGT): A special type of ticket that can be used to obtain other tickets.
 
 The TGT is obtained after the initial authentication in the Authentication Service (AS) exchange;
 thereafter, users do not need to present their credentials, but can use the TGT to obtain
@@ -901,14 +826,14 @@ Convention (UNC) syntax. Also known as UncPath.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -951,7 +876,8 @@ Release: June 10, 2024
 
 9 / 54
 
-[MS-SAMR] Microsoft Corporation, "Security Account Manager (SAM) Remote Protocol (Client-to-
+
+[MS-SAMR] Microsoft Corporation, "Security Account Manager (SAM) Remote Protocol (Client-to-
 Server)".
 
 [MS-SFU] Microsoft Corporation, "Kerberos Protocol Extensions: Service for User and Constrained
@@ -978,7 +904,7 @@ Service (V5)", RFC 4120, July 2005, https://www.rfc-editor.org/rfc/rfc4120
 [RFC4757] Jaganathan, K., Zhu, L., and Brezak, J., "The RC4-HMAC Kerberos Encryption Types Used
 by Microsoft Windows", RFC 4757, December 2006, https://www.rfc-editor.org/info/rfc4757
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MIDLINF] Microsoft Corporation, "MIDL Language Reference", https://learn.microsoft.com/en-
 us/windows/desktop/Midl/midl-language-reference
@@ -1005,7 +931,7 @@ https://support.microsoft.com/en-us/kb/3155495
 [SIDATT] Microsoft Corporation, "TOKEN_GROUPS", http://msdn.microsoft.com/en-
 us/library/aa379624.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The PAC is a structure that conveys authorization-related information provided by domain
 controllers (DCs). The PAC is used by authentication protocols that verify identities to transport
@@ -1017,7 +943,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-authorization information, which controls access to resources. Once authentication has been
+
+authorization information, which controls access to resources. Once authentication has been
 accomplished, the next task is to decide if a particular request is authorized. Management of network
 systems often models broad authorization decisions through groups; for example, all engineers who
 can access a specific printer or all sales personnel who can access a certain web server. Making group
@@ -1051,20 +978,20 @@ protocols to use at a later time.
 
   Service for User (S4U) protocol [MS-SFU] data.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The PAC is used primarily in [MS-KILE] but can be carried in other protocols, such as Remote
 Certificate Mapping [MS-RCMP] for representing authorization information such as group membership.
 The PAC is used by the Digest validation protocol [MS-APDS] and Remote Certificate Mapping Protocol
 [MS-RCMP].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The PAC structure can be used to transport authorization information from the DC to the client's
 operating system. In addition to the user's group membership information, the PAC can include
 additional credential information, profile and policy information, and supporting security metadata.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 The PAC contains a version number field that is not used.
 
@@ -1072,7 +999,7 @@ The PAC can contain Unicode strings whose values are specified by and are meanin
 customer's domain administrator. It is assumed that both the creator and the recipient of a PAC have
 compatible levels of Unicode.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 None.
 
@@ -1083,11 +1010,12 @@ Release: June 10, 2024
 
 11 / 54
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-PAC].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-2  Structures
+## 2 Structures
 
 Some of the PAC structures are formatted by using the Distributed Computing Environment (DCE)
 data representation as specified in [C706], and as exposed by the marshaling support in the Remote
@@ -1122,15 +1050,16 @@ Release: June 10, 2024
 
 12 / 54
 
-2.1  Common Types
+
+### 2.1 Common Types
 
 The PAC uses the following simple types, which are specified in [MS-DTYP]: BYTE, FILETIME, UCHAR,
 ULONG, ULONG64, USHORT, and WCHAR. The PAC also makes use of the RPC_SID and
 RPC_UNICODE_STRING structures, as specified in [MS-DTYP].
 
-2.2  Constructed Security Types
+### 2.2 Constructed Security Types
 
-2.2.1  KERB_SID_AND_ATTRIBUTES
+#### 2.2.1 KERB_SID_AND_ATTRIBUTES
 
 The KERB_SID_AND_ATTRIBUTES structure represents a SID and its attributes for use in
 authentication. It is sent within the KERB_VALIDATION_INFO (section 2.5) structure and used to
@@ -1200,7 +1129,8 @@ Release: June 10, 2024
 
 13 / 54
 
-2.2.2  GROUP_MEMBERSHIP
+
+#### 2.2.2 GROUP_MEMBERSHIP
 
 The GROUP_MEMBERSHIP structure identifies a group to which an account belongs. It is sent within
 the KERB_VALIDATION_INFO (section 2.5) structure.
@@ -1218,7 +1148,7 @@ Attributes: A 32-bit unsigned integer value that contains the group membership a
 RID contained in RelativeId. The possible values for the Attributes flags are identical to those
 specified in KERB_SID_AND_ATTRIBUTES (section 2.2.1).
 
-2.2.3  DOMAIN_GROUP_MEMBERSHIP
+#### 2.2.3 DOMAIN_GROUP_MEMBERSHIP
 
 The DOMAIN_GROUP_MEMBERSHIP structure identifies a domain and groups to which an account
 belongs. It is sent within the PAC_DEVICE_INFO (section 2.12) structure.<2>
@@ -1243,7 +1173,7 @@ GroupIds: A pointer to a list of GROUP_MEMBERSHIP structures that contain the gr
 
 account belongs in the domain. The number of groups in this list MUST be equal to GroupCount.
 
-2.3  PACTYPE
+### 2.3 PACTYPE
 
 The PACTYPE structure is the topmost structure of the PAC and specifies the number of elements in
 the PAC_INFO_BUFFER (section 2.4) array. The PACTYPE structure serves as the header for the
@@ -1266,7 +1196,8 @@ Release: June 10, 2024
 
 14 / 54
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1299,7 +1230,7 @@ The actual contents of the PAC are placed serially after the variable set of PAC
 structures. The contents are individually serialized PAC elements. All PAC elements MUST be placed
 on an 8-byte boundary.
 
-2.4  PAC_INFO_BUFFER
+### 2.4 PAC_INFO_BUFFER
 
 Following the PACTYPE (section 2.3) structure is an array of PAC_INFO_BUFFER structures each of
 which defines the type and byte offset to a buffer of the PAC. The PAC_INFO_BUFFER array has no
@@ -1346,7 +1277,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1467,10 +1399,11 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-data offset MUST be a multiple of eight. The following sections specify the format of each type of
+
+data offset MUST be a multiple of eight. The following sections specify the format of each type of
 element.
 
-2.5  KERB_VALIDATION_INFO
+### 2.5 KERB_VALIDATION_INFO
 
 The KERB_VALIDATION_INFO structure defines the user's logon and authorization information
 provided by the DC. A pointer to the KERB_VALIDATION_INFO structure is serialized into an array
@@ -1539,7 +1472,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-LogoffTime: A FILETIME structure that contains the time the client's logon session is set to expire.
+
+LogoffTime: A FILETIME structure that contains the time the client's logon session is set to expire.
 
 If the session is set not to expire, the dwHighDateTime member is set to 0x7FFFFFFF and the
 dwLowDateTime member set to 0xFFFFFFFF. A recipient of the PAC SHOULD<11> use this
@@ -1617,7 +1551,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-UserId: A 32-bit unsigned integer that contains the RID of the account. If the UserId member equals
+
+UserId: A 32-bit unsigned integer that contains the RID of the account. If the UserId member equals
 
 0x00000000, the first group SID in this member is the SID for this account.
 
@@ -1722,7 +1657,8 @@ Release: June 10, 2024
 
 19 / 54
 
-All other bits MUST be set to zero and MUST be ignored on receipt.
+
+All other bits MUST be set to zero and MUST be ignored on receipt.
 
 UserSessionKey: A session key that is used for cryptographic operations on a session. This field is
 
@@ -1803,7 +1739,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-PAC].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1815,7 +1752,7 @@ bit MUST be set in the UserFlags member.
 
 When this field is not used, it MUST be set to NULL.
 
-2.6  PAC Credentials
+### 2.6 PAC Credentials
 
 When the Kerberos authentication is performed through means other than a password, the PAC
 includes an element that is used to send credentials for alternate security protocols to the client during
@@ -1849,10 +1786,11 @@ Release: June 10, 2024
 
 21 / 54
 
-credentials and credential information specific to the implementation of the protocol. NTLM [MS-NLMP]
+
+credentials and credential information specific to the implementation of the protocol. NTLM [MS-NLMP]
 credentials are supplied in the NTLM_SUPPLEMENTAL_CREDENTIAL structure.
 
-2.6.1  PAC_CREDENTIAL_INFO
+#### 2.6.1 PAC_CREDENTIAL_INFO
 
 The PAC_CREDENTIAL_INFO structure serves as the header for the credential information. The
 PAC_CREDENTIAL_INFO header indicates the encryption algorithm that was used to encrypt the
@@ -1926,7 +1864,8 @@ Release: June 10, 2024
 
 22 / 54
 
-Value
+
+Value
 
 Meaning
 
@@ -1943,7 +1882,7 @@ SerializedData (variable): A variable length PAC_CREDENTIAL_DATA structure that 
 credentials encrypted using the mechanism specified by the EncryptionType field. The byte array
 of encrypted data is computed according to the procedures specified in [RFC3961].
 
-2.6.2  PAC_CREDENTIAL_DATA
+#### 2.6.2 PAC_CREDENTIAL_DATA
 
 The PAC_CREDENTIAL_DATA structure defines an array of security package-specific credentials that
 are provided to the Kerberos client. The PAC_CREDENTIAL_DATA structure is marshaled by RPC
@@ -1971,7 +1910,7 @@ using the key and cryptographic system selected through the AS protocol and the 
 message (as specified in [RFC4120] section 3.1.3 and [RFC4556]). Fields (for capturing this
 information) and cryptographic parameters are specified in PAC_CREDENTIAL_INFO (section 2.6.1).
 
-2.6.3  SECPKG_SUPPLEMENTAL_CRED
+#### 2.6.3 SECPKG_SUPPLEMENTAL_CRED
 
 The SECPKG_SUPPLEMENTAL_CRED structure defines the name of the security package that
 requires supplemental credentials and the credential buffer for that package. The
@@ -1997,7 +1936,8 @@ Release: June 10, 2024
 
 23 / 54
 
-CredentialSize: A 32-bit unsigned integer that MUST specify the length, in bytes, of the data in the
+
+CredentialSize: A 32-bit unsigned integer that MUST specify the length, in bytes, of the data in the
 
 Credentials member.
 
@@ -2005,7 +1945,7 @@ Credentials: A pointer that MUST reference the serialized credentials being pres
 
 protocol named in PackageName.
 
-2.6.4  NTLM_SUPPLEMENTAL_CREDENTIAL
+#### 2.6.4 NTLM_SUPPLEMENTAL_CREDENTIAL
 
 The NTLM_SUPPLEMENTAL_CREDENTIAL structure is used to encode the credentials that the
 NTLM security protocol uses, specifically the LAN Manager hash (LM OWF) and the NT hash (NT OWF).
@@ -2065,7 +2005,7 @@ NtPassword: A 16-element array of unsigned 8-bit integers that define the NT OWF
 
 NtPassword member MUST be ignored if the N flag is not set in the Flags member.
 
-2.7  PAC_CLIENT_INFO
+### 2.7 PAC_CLIENT_INFO
 
 The PAC_CLIENT_INFO structure is a variable length buffer of the PAC that contains the client's
 name and authentication time. It is used to verify that the PAC corresponds to the client of the ticket.
@@ -2079,7 +2019,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-PAC_INFO_BUFFER structure (section 2.4) in the Buffers array. The ulType field of the
+
+PAC_INFO_BUFFER structure (section 2.4) in the Buffers array. The ulType field of the
 corresponding PAC_INFO_BUFFER is set to 0x0000000A.
 
 The PAC_CLIENT_INFO structure is defined as follows.
@@ -2124,7 +2065,7 @@ Name (variable): An array of 16-bit Unicode characters in little-endian format t
 
 client's account name.
 
-2.8  PAC_SIGNATURE_DATA
+### 2.8 PAC_SIGNATURE_DATA
 
 Two PAC_SIGNATURE_DATA structures are appended to the PAC which stores the server and KDC
 signatures. These structures are placed after the Buffers array of the topmost PACTYPE structure
@@ -2152,7 +2093,8 @@ Release: June 10, 2024
 
 25 / 54
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2214,7 +2156,7 @@ RODCIdentifier (2 bytes): A 16-bit unsigned integer value in little-endian forma
 first 16 bits of the key version number ([MS-KILE] section 3.1.5.8) when the KDC is an RODC.
 When the KDC is not an RODC, this field does not exist.
 
-2.8.1  Generation of PAC Signatures
+#### 2.8.1 Generation of PAC Signatures
 
 PAC signatures have a significance in relation to the PAC and an order of processing.
 
@@ -2243,7 +2185,8 @@ Release: June 10, 2024
 
 26 / 54
 
-1.  Build the PAC. This includes not just the authorization data, but also the ticket signature which
+
+1.  Build the PAC. This includes not just the authorization data, but also the ticket signature which
 can be computed before the PAC is complete. Build the PAC with zeroes as placeholders in all the
 buffers that will be filled in later.
 
@@ -2255,7 +2198,7 @@ signature.
 
 The following sections define each signature's generation and calculation process.
 
-2.8.2  Ticket Signature
+#### 2.8.2 Ticket Signature
 
 The ticket signature<18> is calculated first and populated before any of the PAC signatures are
 calculated.
@@ -2282,7 +2225,7 @@ When a ticket is altered as during renewal ([RFC4120] section 2.3), the KDC SHOU
 integrity of the existing ticket signature and then recompute the ticket signature, extended KDC
 signature,  server signature, KDC signature, and in the PAC.
 
-2.8.3  Extended KDC Signature
+#### 2.8.3 Extended KDC Signature
 
 The extended KDC signature<19> MUST be generated BEFORE the Server Signature (section
 2.8.4) is generated.
@@ -2310,11 +2253,12 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-When a ticket is altered as during renewal ([RFC4120] section 2.3), the KDC SHOULD verify the
+
+When a ticket is altered as during renewal ([RFC4120] section 2.3), the KDC SHOULD verify the
 integrity of the existing signatures and then recompute the ticket signature, extended KDC
 signature, server signature, KDC signature in the PAC.
 
-2.8.4  Server Signature
+#### 2.8.4 Server Signature
 
 The server signature MUST be generated AFTER the extended KDC signature (section 2.8.3).
 
@@ -2331,7 +2275,7 @@ part of the response is used. The checksum type corresponds to the key unless th
 which case the KERB_CHECKSUM_HMAC_MD5 key is used. The resulting hash value is then placed in
 the Signature field of the server's PAC_SIGNATURE_DATA structure.
 
-2.8.5  KDC Signature
+#### 2.8.5 KDC Signature
 
 The KDC signature is a counter signature of the server signature, so it MUST be computed after the
 server signature. It is calculated last and always zero when the PAC signatures are calculated.
@@ -2372,7 +2316,7 @@ fail.
 
 The resulting hash is placed in the Signature field of the KDC's PAC_SIGNATURE_DATA structure.
 
-2.9  S4U_DELEGATION_INFO
+### 2.9 S4U_DELEGATION_INFO
 
 The S4U_DELEGATION_INFO structure is used for constrained delegation information.<22> It lists
 the services that have been delegated through this Kerberos client and subsequent services or
@@ -2387,7 +2331,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-The S4U_DELEGATION_INFO structure is defined as follows.
+
+The S4U_DELEGATION_INFO structure is defined as follows.
 
  typedef struct _S4U_DELEGATION_INFO {
      RPC_UNICODE_STRING S4U2proxyTarget;
@@ -2405,7 +2350,7 @@ S4UTransitedServices: MUST contain the list of all services that have been deleg
 
 this client and subsequent services or servers.
 
-2.10  UPN_DNS_INFO
+### 2.10 UPN_DNS_INFO
 
 The UPN_DNS_INFO structure contains the client's UPN, fully qualified domain name (FQDN),
 SAM name (optional), and SID (optional). It is used to provide the UPN, FQDN, SAM name, and SID
@@ -2467,7 +2412,8 @@ Release: June 10, 2024
 
 29 / 54
 
-UpnOffset (2 bytes): An unsigned 16-bit integer in little-endian format that contains the offset to
+
+UpnOffset (2 bytes): An unsigned 16-bit integer in little-endian format that contains the offset to
 the beginning of the UPN information, in bytes, from the beginning of the UPN_DNS_INFO
 structure (section 2.10).
 
@@ -2534,7 +2480,7 @@ after the UPN_DNS_INFO structure following the header and starting with the corr
 in a consecutive buffer. The UPN, FQDN, and SAM name are encoded using a two-byte UTF16 scheme,
 in little-endian order.
 
-2.11  PAC_CLIENT_CLAIMS_INFO
+### 2.11 PAC_CLIENT_CLAIMS_INFO
 
 The PAC_CLIENT_CLAIMS_ INFO structure is a variable length buffer of the PAC that
 SHOULD<24> contain the client's marshaled claims blob. The PAC_CLIENT_CLAIMS_ INFO
@@ -2547,7 +2493,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-at the offset specified in the Offset field of the corresponding PAC_INFO_BUFFER structure (section
+
+at the offset specified in the Offset field of the corresponding PAC_INFO_BUFFER structure (section
 2.4) in the Buffers array. The ulType field of the corresponding PAC_INFO_BUFFER is set to
 0x0000000D.
 
@@ -2578,7 +2525,7 @@ Claims (variable): A variable-length CLAIMS_SET_METADATA structure ([MS-ADTS] se
 
 2.2.18.8) that contains claims.
 
-2.12  PAC_DEVICE_INFO
+### 2.12 PAC_DEVICE_INFO
 
 The PAC_DEVICE_INFO structure is a variable length buffer of the PAC that SHOULD<25> contain
 the device's logon and authorization information provided by the DC. A pointer to the
@@ -2625,7 +2572,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-AccountGroupIds: A pointer to a list of GROUP_MEMBERSHIP (section 2.2.2) structures that
+
+AccountGroupIds: A pointer to a list of GROUP_MEMBERSHIP (section 2.2.2) structures that
 
 contains the groups to which the account belongs in the account domain. The number of groups in
 this list MUST be equal to GroupCount.
@@ -2647,7 +2595,7 @@ DomainGroup: A pointer to a list of DOMAIN_GROUP_MEMBERSHIP structures (section 
 that contains the domains to which the account belongs to a group. The number of sets in this list
 MUST be equal to DomainCount.
 
-2.13  PAC_DEVICE_CLAIMS_INFO
+### 2.13 PAC_DEVICE_CLAIMS_INFO
 
 The PAC_DEVICE_CLAIMS_ INFO structure is a variable length buffer of the PAC that
 SHOULD<26> contain the client's marshaled claims blob. The PAC_DEVICE_CLAIMS_ INFO
@@ -2683,7 +2631,7 @@ Claims (variable): A variable-length CLAIMS_SET_METADATA structure ([MS-ADTS] se
 
 2.2.18.8) that contains claims.
 
-2.14  PAC_ATTRIBUTES_INFO
+### 2.14 PAC_ATTRIBUTES_INFO
 
 The PAC_ATTRIBUTES_INFO structure is a variable length buffer of the PAC that SHOULD<27>
 contain supplemental information about the PAC or the client. The PAC_ATTRIBUTES_INFO
@@ -2701,7 +2649,8 @@ Release: June 10, 2024
 
 32 / 54
 
- typedef struct _PAC_ATTRIBUTES_INFO {
+
+ typedef struct _PAC_ATTRIBUTES_INFO {
      ULONG FlagsLength;                // specified in bits
      ULONG Flags[ANYSIZE_ARRAY];
  } PAC_ATTRIBUTES_INFO, *PPAC_ATTRIBUTES_INFO;
@@ -2748,7 +2697,7 @@ The client did not request or decline a PAC and was given one implicitly.
 
 0x00000002
 
-2.15  PAC_REQUESTOR_SID
+### 2.15 PAC_REQUESTOR_SID
 
 The PAC_REQUESTOR_SID structure is a variable length buffer of the PAC that SHOULD<28>
 contain the SID ([MSDN-SID]) of the client that requested the ticket. In normal scenarios, that will be
@@ -2761,7 +2710,7 @@ corresponding PAC_INFO_BUFFER is set to 0x00000012.
 
 The PAC_REQUESTOR_SID structure contains a single SID structure.
 
-2.16  PAC_REQUESTOR_GUID
+### 2.16 PAC_REQUESTOR_GUID
 
 The PAC_REQUESTOR_GUID structure is a constant length buffer that MUST contain the GUID
 ([MS-DTYP] section 2.3.4]) of the client that requested the ticket. The PAC_REQUESTOR_GUID
@@ -2779,7 +2728,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-2.17  Formal MIDL Definition
+
+### 2.17 Formal MIDL Definition
 
 The Microsoft Interface Definition Language (MIDL) description of the PAC is as follows.
 
@@ -2856,7 +2806,8 @@ Release: June 10, 2024
 
 34 / 54
 
-     ULONG Reserved1[2];
+
+     ULONG Reserved1[2];
      ULONG UserAccountControl;
      ULONG Reserved3[7];
      ULONG SidCount;
@@ -2933,7 +2884,8 @@ Release: June 10, 2024
 
 35 / 54
 
-     ULONG UserId;
+
+     ULONG UserId;
      ULONG PrimaryGroupId;
      PISID AccountDomainId;
      ULONG AccountGroupCount;
@@ -2960,7 +2912,8 @@ Release: June 10, 2024
 
 36 / 54
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following is an annotated dump of an encoded PAC, beginning with the AD-IF-RELEVANT
 structure.
@@ -3036,7 +2989,8 @@ Release: June 10, 2024
 
 37 / 54
 
- 000003f0  00 00 00 00 00 05 15 00 00 00 59 51 b8 17 66 72  ..........YQ..fr
+
+ 000003f0  00 00 00 00 00 05 15 00 00 00 59 51 b8 17 66 72  ..........YQ..fr
  00000400  5d 25 64 63 3b 0b 5d b4 32 00 05 00 00 00 01 05  ]%dc;.].2.......
  00000410  00 00 00 00 00 05 15 00 00 00 59 51 b8 17 66 72  ..........YQ..fr
  00000420  5d 25 64 63 3b 0b 41 16 35 00 05 00 00 00 01 05  ]%dc;.A.5.......
@@ -3100,7 +3054,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
- 00000030  00 00 12 00 00 00 f8 04 00 00 00 00 00 00 06 00  ................
+
+ 00000030  00 00 12 00 00 00 f8 04 00 00 00 00 00 00 06 00  ................
  00000040  00 00 14 00 00 00 10 05 00 00 00 00 00 00 07 00  ................
  00000050  00 00 14 00 00 00 28 05 00 00 00 00 00 00        ......(.......
 
@@ -3110,7 +3065,7 @@ structures (see PAC_SIGNATURE_DATA (section 2.8)) , respectively. They point to 
 at offset (0x00000016 + 0x000004F8), (0x00000016 + 0x00000510), and
 (0x00000016+0x00000528).
 
-3.1  Logon Authorization Information
+### 3.1 Logon Authorization Information
 
 The first of the PAC_INFO_BUFFER (section 2.4) structures indicates a logon information structure.
 This structure begins at offset 0x0000005E in this example, as noted previously. This
@@ -3160,7 +3115,8 @@ Release: June 10, 2024
 
 39 / 54
 
-for KERB_VALIDATION_INFO, 0x000000D8 bytes in length, this begins at 0x0000014A in the following
+
+for KERB_VALIDATION_INFO, 0x000000D8 bytes in length, this begins at 0x0000014A in the following
 example:
 
  00000140                                04 00 00 00 00 00            ......
@@ -3220,14 +3176,15 @@ Release: June 10, 2024
 
 40 / 54
 
-This is a SID with four subauthorities. Decoded into string format, this SID is "S-1-5-21-397955417-
+
+This is a SID with four subauthorities. Decoded into string format, this SID is "S-1-5-21-397955417-
 626881126-188441444". The SID for the preceding group would be "S-1-5-21-397955417-
 626881126-188441444-3392609" with the RID from the GROUP_MEMBERSHIP structure appended to
 the SID of the domain.
 
 The remainder of the KERB_VALIDATION_INFO structure is a straightforward use of these concepts.
 
-3.2  Client Information
+### 3.2 Client Information
 
 The PAC_CLIENT_INFO (section 2.7) structure is a simple structure that is not NDR-encoded.
 
@@ -3239,7 +3196,7 @@ timestamp of the time the initial TGT used to request this ticket be issued. Fol
 length of the name in bytes, 0x0008, and then an 8-byte, 4-character sequence of Unicode characters
 that make up the name of the client, or "lzhu".
 
-3.3  Signatures
+### 3.3 Signatures
 
 The last two sections in this example are the signatures of the PAC contents, as specified in
 PAC_SIGNATURE_DATA (section 2.8). These signatures allow the KDC or the principal verifying the
@@ -3260,11 +3217,12 @@ Release: June 10, 2024
 
 41 / 54
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
 
-4.1.1  Tampered PAC Data
+### 4.1 Security Considerations for Implementers
+
+#### 4.1.1 Tampered PAC Data
 
 The signature of a PAC prevents elevation of privilege attacks. The signature has to be verified to
 avoid these attacks.
@@ -3272,7 +3230,7 @@ avoid these attacks.
 Encryption of credential information within a PAC allows for secure transmission of credentials during
 a PKINIT logon.
 
-4.1.2  Authorization Validation and Filtering
+#### 4.1.2 Authorization Validation and Filtering
 
 When a PAC is conveyed across a trust boundary, the receiving server addresses the threat of forged
 identities in the PAC. For example, the PAC might contain SIDs that are actually from the receiving
@@ -3285,7 +3243,7 @@ To mitigate this threat, any KDC accepting a PAC from another domain through an 
 has to filter out any SIDs that are not correct. To filter the SIDs and client names correctly and safely,
 an implementation can use the guidelines discussed in the following sections.<29><30>
 
-4.1.2.1  Rules for SID Inclusion in the PAC
+##### 4.1.2.1 Rules for SID Inclusion in the PAC
 
 The following rules apply for domain local SIDs, domain global SIDs, and universal group SIDs:
 
@@ -3314,7 +3272,7 @@ the PAC by the KDC if both the ADS_UF_WORKSTATION_ACCOUNT and the
 ADS_UF_PARTIAL_SECRETS_ACCOUNT flags are set in the security principal's
 userAccountControl attribute in Active Directory ([MS-ADTS] section 2.2.16).
 
-4.1.2.2  SID Filtering and Claims Transformation
+##### 4.1.2.2 SID Filtering and Claims Transformation
 
 A PAC from a cross-realm TGT needs to be parsed and analyzed. The type and stringency of the
 analysis is determined by the type and quality of inter-domain trust from which the TGT originates.
@@ -3326,7 +3284,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-The different types of trusts are qualified based on their different SID filtering and claims
+
+The different types of trusts are qualified based on their different SID filtering and claims
 transformation requirements. Different trust boundaries apply to each trust type, as specified in the
 following table.<31>
 
@@ -3426,7 +3385,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-Action
+
+Action
 
 Rules
 
@@ -3572,7 +3532,8 @@ Release: June 10, 2024
 
 44 / 54
 
-SID pattern
+
+SID pattern
 
 Description of the
 pattern
@@ -3762,7 +3723,8 @@ Release: June 10, 2024
 
 45 / 54
 
-SID pattern
+
+SID pattern
 
 Description of the
 pattern
@@ -3945,7 +3907,8 @@ Release: June 10, 2024
 
 46 / 54
 
-SID pattern
+
+SID pattern
 
 Description of the
 pattern
@@ -4015,7 +3978,7 @@ Invalid SIDs
 
 AlwaysFilter
 
-4.1.2.3  crealm Filtering
+##### 4.1.2.3 crealm Filtering
 
 When decoding a cross-realm TGT, the crealm fields inside the TGT are compared to the expected
 name of the realm for the interrealm trust. If the names do not match the TGT, they are rejected,
@@ -4025,7 +3988,7 @@ These constraints can include allowing fully trusted domains to supply any creal
 that it would have validated it prior to passing it along, or any other settings that are established out
 of band. The full set of constraints is implementation-specific.
 
-4.2  Index of Security Fields
+### 4.2 Index of Security Fields
 
 Security field
 
@@ -4044,7 +4007,8 @@ Release: June 10, 2024
 
 47 / 54
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4113,7 +4077,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-authorization information, Windows uses that field to carry information about Windows groups. When
+
+authorization information, Windows uses that field to carry information about Windows groups. When
 Windows receives the structure containing group information, Windows can interpret the group
 information in a manner consistent with other authorization decisions and information on the system.
 
@@ -4180,7 +4145,8 @@ Release: June 10, 2024
 
 49 / 54
 
-<18> Section 2.8.2: For more information about the ticket signature, see Kerberos Security Feature
+
+<18> Section 2.8.2: For more information about the ticket signature, see Kerberos Security Feature
 Bypass Vulnerability security update November 2020 [MSFT-CVE-2020-17049]. This update applies to
 Windows Server 2008 with SP2 and later.
 
@@ -4247,7 +4213,8 @@ Release: June 10, 2024
 
 50 / 54
 
-<33> Section 4.1.2.2: Claims transformation is not supported on Windows 2000, Windows Server
+
+<33> Section 4.1.2.2: Claims transformation is not supported on Windows 2000, Windows Server
 2003, Windows Server 2008, or Windows Server 2008 R2 domain controllers.
 
 <34> Section 4.1.2.2: Privileged Identity Management trusts are not supported on Windows 2000,
@@ -4279,7 +4246,8 @@ Release: June 10, 2024
 
 51 / 54
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4369,7 +4337,8 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 11
@@ -4504,7 +4473,8 @@ Security
 
 53 / 54
 
-   SID inclusion rules 42
+
+   SID inclusion rules 42
    structure types
       DOMAIN_GROUP_MEMBERSHIP structure 14
       GROUP_MEMBERSHIP structure 14

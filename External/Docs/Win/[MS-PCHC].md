@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 31
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 31
 
-Date
+
+Date
 
 Revision
 History
@@ -438,167 +440,73 @@ Release: April 23, 2024
 
 3 / 31
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Request Messages](#221-request-messages)
+      - [2.2.1.1 MESSAGE_HEADER](#2211-messageheader)
+      - [2.2.1.2 CONNECTION_INFORMATION](#2212-connectioninformation)
+      - [2.2.1.3 INITIAL_OFFER_MESSAGE](#2213-initialoffermessage)
+      - [2.2.1.4 SEGMENT_INFO_MESSAGE](#2214-segmentinfomessage)
+      - [2.2.1.5 BATCHED_OFFER_MESSAGE](#2215-batchedoffermessage)
+    - [2.2.2 Response Messages](#222-response-messages)
+      - [2.2.2.1 Transport Header](#2221-transport-header)
+      - [2.2.2.2 Response Code](#2222-response-code)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 INITIAL_OFFER_MESSAGE Request Received](#3151-initialoffermessage-request-received)
+      - [3.1.5.2 SEGMENT_INFO_MESSAGE Request Received](#3152-segmentinfomessage-request-received)
+      - [3.1.5.3 BATCHED_OFFER_MESSAGE Request Received](#3153-batchedoffermessage-request-received)
+      - [3.1.5.4 Other Message Received](#3154-other-message-received)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 INITIAL_OFFER_MESSAGE Response Received](#3251-initialoffermessage-response-received)
+      - [3.2.5.2 SEGMENT_INFO_MESSAGE Response Received](#3252-segmentinfomessage-response-received)
+      - [3.2.5.3 HTTP Status Code 401 Response Received](#3253-http-status-code-401-response-received)
+      - [3.2.5.4 BATCHED_OFFER_MESSAGE Response Received](#3254-batchedoffermessage-response-received)
+      - [3.2.5.5 Other Message Received](#3255-other-message-received)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Hosted Cache with No Block Hashes](#41-hosted-cache-with-no-block-hashes)
+  - [4.2 Hosted Cache with Block Hashes and No Data Blocks](#42-hosted-cache-with-block-hashes-and-no-data-blocks)
+  - [4.3 Hosted Cache with Block Hashes and Data Blocks](#43-hosted-cache-with-block-hashes-and-data-blocks)
+  - [4.4 Hosted Cache with No Data Blocks](#44-hosted-cache-with-no-data-blocks)
+  - [4.5 Hosted Cache with Data Blocks](#45-hosted-cache-with-data-blocks)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Request Messages ...................................................................................... 11
-MESSAGE_HEADER ............................................................................... 12
-CONNECTION_INFORMATION ................................................................. 12
-INITIAL_OFFER_MESSAGE ..................................................................... 13
-SEGMENT_INFO_MESSAGE .................................................................... 13
-BATCHED_OFFER_MESSAGE................................................................... 14
-Response Messages .................................................................................... 16
-Transport Header .................................................................................. 16
-Response Code ..................................................................................... 16
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2.2.2.1
-2.2.2.2
-
-2.2.2
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3  Protocol Details ..................................................................................................... 18
-Server Details .................................................................................................. 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-INITIAL_OFFER_MESSAGE Request Received ............................................ 18
-SEGMENT_INFO_MESSAGE Request Received ........................................... 19
-BATCHED_OFFER_MESSAGE Request Received ......................................... 19
-Other Message Received ........................................................................ 19
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Client Details ................................................................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-INITIAL_OFFER_MESSAGE Response Received.......................................... 21
-SEGMENT_INFO_MESSAGE Response Received ......................................... 21
-HTTP Status Code 401 Response Received ............................................... 21
-BATCHED_OFFER_MESSAGE Response Received ....................................... 21
-Other Message Received ........................................................................ 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 23
-Hosted Cache with No Block Hashes ................................................................... 23
-
-4.1
-
-4 / 31
-
-[MS-PCHC] - v20240423
-Peer Content Caching and Retrieval: Hosted Cache Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4.2
-4.3
-4.4
-4.5
-
-Hosted Cache with Block Hashes and No Data Blocks ............................................ 23
-Hosted Cache with Block Hashes and Data Blocks ................................................ 24
-Hosted Cache with No Data Blocks ..................................................................... 24
-Hosted Cache with Data Blocks .......................................................................... 25
-
-5  Security ................................................................................................................. 26
-Security Considerations for Implementers ........................................................... 26
-Index of Security Parameters ............................................................................ 26
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 27
-
-7  Change Tracking .................................................................................................... 29
-
-8  Index ..................................................................................................................... 30
-
-[MS-PCHC] - v20240423
-Peer Content Caching and Retrieval: Hosted Cache Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 31
-
-1  Introduction
+## 1 Introduction
 
 The Peer Content Caching and Retrieval: Hosted Cache Protocol is used by clients to offer metadata to
 a hosted cache server. The hosted cache server then may use the Peer Content Caching and Retrieval:
@@ -618,7 +526,7 @@ hosted caches in place of peer-based caching.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -668,7 +576,8 @@ Release: April 23, 2024
 
 6 / 31
 
-HoHoDk: A hash that represents the content-specific label or public identifier that is used to
+
+HoHoDk: A hash that represents the content-specific label or public identifier that is used to
 
 discover content from other peers or from the hosted cache. This identifier is disclosed freely
 in broadcast messages. Knowledge of this identifier does not prove authorization to access the
@@ -744,17 +653,18 @@ Release: April 23, 2024
 
 7 / 31
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -784,7 +694,7 @@ editor.org/info/rfc2818
 [RFC4559] Jaganathan, K., Zhu, L., and Brezak, J., "SPNEGO-based Kerberos and NTLM HTTP
 Authentication in Microsoft Windows", RFC 4559, June 2006, https://www.rfc-editor.org/info/rfc4559
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-BUP] Microsoft Corporation, "Background Intelligent Transfer Service (BITS) Upload Protocol".
 
@@ -797,7 +707,7 @@ http://msdn.microsoft.com/en-us/library/bb968799(VS.85).aspx
 [MSDOCS-WinINet] Microsoft Corporation, "Windows Internet", https://learn.microsoft.com/en-
 us/windows/desktop/WinInet/wininet-reference
 
-1.3  Overview
+### 1.3 Overview
 
 The Peer Content Caching and Retrieval: Hosted Cache Protocol provides a mechanism for clients to
 inform the hosted cache about segment availability. There are two primary roles:<1>
@@ -809,13 +719,14 @@ Peer Content Caching and Retrieval: Hosted Cache Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Client: The client informs the hosted cache that it has segments it can offer.
+
+  Client: The client informs the hosted cache that it has segments it can offer.
 
   Hosted cache: The hosted cache gets the range of block hashes associated with the segment
 
 being offered, and then retrieves the blocks within the segment that it needs.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The client's connection to a hosted cache uses the Hypertext Transfer Protocol over Secure
 Sockets Layer (HTTPS) ([RFC2818]) or the Hypertext Transfer Protocol (HTTP) ([RFC2616]) as
@@ -826,7 +737,7 @@ Retrieval Protocol (PCCRR) [MS-PCCRR].
 The hosted cache uses the PCCRR framework as a client-role peer to retrieve the blocks from the
 peer that is offering them.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The following are prerequisites for using this protocol:
 
@@ -866,7 +777,7 @@ is passed as part of the CONNECTION_INFORMATION field in the various request mes
 the client to the hosted cache. This allows the hosted cache to use the PCCRR framework to
 connect to the client to retrieve data blocks in the segment.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Enterprise branch offices typically connect to headquarters over low-bandwidth/high-latency wide area
 network (WAN) links. As a result, WAN links are generally congested, and application responsiveness
@@ -887,10 +798,11 @@ Release: April 23, 2024
 
 9 / 31
 
-not, they retrieve data from the content server across the WAN link and subsequently add it to the
+
+not, they retrieve data from the content server across the WAN link and subsequently add it to the
 hosted cache.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There is no version negotiation or capability negotiation behavior. The protocol versions use different
 transports; the version is implied by the transport used.
@@ -910,11 +822,11 @@ employed.
 
   Localization: Localization-dependent protocol behavior is specified in sections 2.2 and 3.1.5.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter  Value
 
@@ -939,9 +851,10 @@ Release: April 23, 2024
 
 10 / 31
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The client sends a request message as the payload of an HTTP POST request, and the server sends
 the response message as the payload of the HTTP response.
@@ -964,11 +877,11 @@ The hosted cache can be configured to require of the client SPNEGO-based HTTP au
 acceptable authorization header with a response indicating an HTTP status code 401 (Unauthorized).
 In that case, the transport MUST pass that status code to the protocol layer.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.2.1  Request Messages
+#### 2.2.1 Request Messages
 
 Request messages consist of a message header, connection information, and a message body.
 
@@ -1008,11 +921,12 @@ Release: April 23, 2024
 
 11 / 31
 
-MessageBody (variable): The message payload, which is specific to the type of message identified
+
+MessageBody (variable): The message payload, which is specific to the type of message identified
 
 in the MessageHeader field.
 
-2.2.1.1  MESSAGE_HEADER
+##### 2.2.1.1 MESSAGE_HEADER
 
 Request messages use MESSAGE_HEADER as a common header, which consists of the following
 fields.
@@ -1071,7 +985,7 @@ Value  Meaning
 
 Padding (4 bytes): The value of this field is indeterminate and MUST be ignored on processing.
 
-2.2.1.2  CONNECTION_INFORMATION
+##### 2.2.1.2 CONNECTION_INFORMATION
 
 Request messages use the CONNECTION_INFORMATION structure as a common connection
 information structure, which describes the information needed by the hosted cache to use the Peer
@@ -1102,13 +1016,14 @@ Release: April 23, 2024
 
 12 / 31
 
-Port (2 bytes): A 16-bit unsigned integer that MUST be set by the client to the port on which it is
+
+Port (2 bytes): A 16-bit unsigned integer that MUST be set by the client to the port on which it is
 
 listening as a server-role peer, for use with the retrieval protocol.
 
 Padding (6 bytes): The value of this field is indeterminate and MUST be ignored on processing.
 
-2.2.1.3  INITIAL_OFFER_MESSAGE
+##### 2.2.1.3 INITIAL_OFFER_MESSAGE
 
 The INITIAL_OFFER_MESSAGE is a request message that notifies the hosted cache of new
 content available on the client. This message consists of the following fields.
@@ -1148,7 +1063,7 @@ Hash (variable): The Hash field is a binary byte array that contains the HoHoDk 
 that was partly or fully retrieved by the client. The size of this field is calculated as the total
 message size minus the sum of the field sizes that precede the Hash field.
 
-2.2.1.4  SEGMENT_INFO_MESSAGE
+##### 2.2.1.4 SEGMENT_INFO_MESSAGE
 
 A SEGMENT_INFO_MESSAGE is a request message sent by the client to the hosted cache
 containing the segment hash of data (HoD) for the previously offered segment, as well as the
@@ -1182,7 +1097,8 @@ Release: April 23, 2024
 
 13 / 31
 
-...
+
+...
 
 ContentTag
 
@@ -1246,7 +1162,7 @@ The blocks field MUST contain a single SegmentContentBlocks ([MS-PCCRC] section 
 corresponding to the segment being offered, copied from the blocks field in the original
 Content Information data structure.
 
-2.2.1.5  BATCHED_OFFER_MESSAGE
+##### 2.2.1.5 BATCHED_OFFER_MESSAGE
 
 The BATCHED_OFFER_MESSAGE is a request message that notifies the hosted cache of new
 content that is available on the client. This message consists of the following fields.
@@ -1258,7 +1174,8 @@ Release: April 23, 2024
 
 14 / 31
 
-Note  This message is only available for protocol version 2.0.
+
+Note  This message is only available for protocol version 2.0.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1341,7 +1258,8 @@ Release: April 23, 2024
 
 15 / 31
 
-Value  Meaning
+
+Value  Meaning
 
 0x01
 
@@ -1365,7 +1283,7 @@ Length of SegmentHoHoDk
 
 0x04 (Truncated SHA-512)  32 bytes
 
-2.2.2  Response Messages
+#### 2.2.2 Response Messages
 
 Response messages are sent in response to the following request messages:
 
@@ -1377,7 +1295,7 @@ INITIAL_OFFER_MESSAGE, section 2.2.1.3
 
   BATCHED_OFFER_MESSAGE, section 2.2.1.5
 
-2.2.2.1  Transport Header
+##### 2.2.2.1 Transport Header
 
 The transport adds the following Transport Header in front of any response protocol message.
 
@@ -1396,7 +1314,7 @@ Size
 
 Size (4 bytes): Total message size in bytes, excluding this field.
 
-2.2.2.2  Response Code
+##### 2.2.2.2 Response Code
 
 Each response message contains the following Response Code.
 
@@ -1426,7 +1344,8 @@ Release: April 23, 2024
 
 16 / 31
 
-Value
+
+Value
 
 Meaning
 
@@ -1454,17 +1373,18 @@ Release: April 23, 2024
 
 17 / 31
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 There are two roles in the Peer Content Caching and Retrieval: Hosted Cache Protocol, the hosted
 cache and the client.
 
-3.1  Server Details
+### 3.1 Server Details
 
 The hosted cache is the server entity that is offered a content segment and then determines if it will
 get more information about the block hashes contained in that segment.<6>
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The following state is maintained for the operation of the hosted cache:
 
@@ -1480,11 +1400,11 @@ Caching and Retrieval: Retrieval Protocol (PCCRR) framework [MS-PCCRR].
 
 Note  The preceding conceptual data can be implemented using a variety of techniques.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The following initialization of the hosted cache MUST be performed:
 
@@ -1498,13 +1418,13 @@ or URLs specified in section 2.1.
 If HTTPS is used as a transport, the hosted cache MUST be provisioned with a certificate and
 associated private key such that it is compatible with HTTPS server authentication [RFC2818].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  INITIAL_OFFER_MESSAGE Request Received
+##### 3.1.5.1 INITIAL_OFFER_MESSAGE Request Received
 
 The hosted cache MUST respond with a correctly formatted response message if the request is sent
 via a registered URL, as specified in section 2.2.2.
@@ -1524,7 +1444,8 @@ Release: April 23, 2024
 
 18 / 31
 
-framework [MS-PCCRR] as a client-role peer to retrieve the missing blocks from the offering
+
+framework [MS-PCCRR] as a client-role peer to retrieve the missing blocks from the offering
 client.
 
 The hosted cache, acting as a PCCRR client-role peer, MUST connect to the client's IP address
@@ -1541,7 +1462,7 @@ cache.
 The hosted cache MUST specify a response code of 1 if its list of block hashes associated with the
 segment is incomplete.
 
-3.1.5.2  SEGMENT_INFO_MESSAGE Request Received
+##### 3.1.5.2 SEGMENT_INFO_MESSAGE Request Received
 
 Regardless of whether an INITIAL_OFFER_MESSAGE has previously been received from this client, the
 hosted cache MUST respond with a message formatted as specified in section 2.2.2 and MUST perform
@@ -1568,7 +1489,7 @@ added to the hosted cache's block cache.
 The ContentTag MUST be passed to the higher layer. The ContentTag is described in the
 SEGMENT_INFO_MESSAGE request, section 2.2.1.4.
 
-3.1.5.3  BATCHED_OFFER_MESSAGE Request Received
+##### 3.1.5.3 BATCHED_OFFER_MESSAGE Request Received
 
 The hosted cache MUST respond with a correctly formatted response message if the request is sent
 via an HTTP URL, as specified in section 2.2.2.
@@ -1595,26 +1516,27 @@ Release: April 23, 2024
 
 19 / 31
 
-3.1.5.4  Other Message Received
+
+##### 3.1.5.4 Other Message Received
 
 If anything other than a correctly formatted INITIAL_OFFER_MESSAGE (section 2.2.1.3),
 SEGMENT_INFO_MESSAGE (section 2.2.1.4) or BATCHED_OFFER_MESSAGE (section 2.2.1.5) is
 received, it MUST be dropped and the protocol sequence aborted.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
 The client initiates the use of this protocol once there are new blocks available to offer to the hosted
 cache.<7>
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The following state is maintained for the operation of the client:
 
@@ -1646,7 +1568,7 @@ tag and use it for all content offered.<8>
 
 Note  The preceding conceptual data can be implemented using a variety of techniques.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Request Timer: The client uses a request timer to track the expiration of a request message. When a
 new request message is sent to the hosted cache, the timer is started, or restarted if it was stopped.
@@ -1662,13 +1584,14 @@ Peer Content Caching and Retrieval: Hosted Cache Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Each time the Request Timer increments the tick counter, the timer checks if the value of the current
+
+Each time the Request Timer increments the tick counter, the timer checks if the value of the current
 tick counter has exceeded the expiry of the request message, as shown in the calculation. If the
 request message is found to have expired, the client drops the expired message and does not process
 any response messages for the expired message that arrive after the message has been dropped.
 When there are no more pending outbound requests, the Request Timer is stopped.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client initialization MUST explicitly include the following information:
 
@@ -1685,7 +1608,7 @@ The chain's root certificate such that it is compatible with HTTPS server authen
 The client content information associated with the segment, as described in the section 3.2.1. This
 content is provided by a higher-layer protocol.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 New blocks available: When the higher layer has new blocks in a segment to offer the hosted cache,
 it passes them to this protocol, along with the segment's associated content information and the
@@ -1698,9 +1621,9 @@ The higher layer SHOULD initiate the use of this protocol only when a sufficient
 have been received from the content server. Doing otherwise, such as initiating the protocol for every
 new block that becomes available, could lead to poor network performance.<9>
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  INITIAL_OFFER_MESSAGE Response Received
+##### 3.2.5.1 INITIAL_OFFER_MESSAGE Response Received
 
 If a message response matches one of its set of outstanding requests, the client MUST delete it from
 the set of outstanding requests and cancel the Request Timer for this request. If the response is
@@ -1711,12 +1634,12 @@ timer must also be set for this message.
 If there are no outstanding requests that match with the message response, the client MUST discard
 the message.
 
-3.2.5.2  SEGMENT_INFO_MESSAGE Response Received
+##### 3.2.5.2 SEGMENT_INFO_MESSAGE Response Received
 
 The client MUST cancel the Request Timer for the corresponding request and remove it from the
 client's set of outstanding request messages.
 
-3.2.5.3  HTTP Status Code 401 Response Received
+##### 3.2.5.3 HTTP Status Code 401 Response Received
 
 The client MUST resend the request, indicating to the transport to perform SPNEGO-based HTTP
 authentication (section 2.1). The Request Timer for the request MUST also be reset to its initial
@@ -1729,23 +1652,24 @@ Release: April 23, 2024
 
 21 / 31
 
-3.2.5.4  BATCHED_OFFER_MESSAGE Response Received
+
+##### 3.2.5.4 BATCHED_OFFER_MESSAGE Response Received
 
 The client MUST cancel the Request Timer for the corresponding request and remove it from the
 client's set of outstanding request messages.
 
-3.2.5.5  Other Message Received
+##### 3.2.5.5 Other Message Received
 
 If any message other than a correctly formatted INITIAL_OFFER_MESSAGE (section 2.2.1.3) request,
 SEGMENT_INFO_MESSAGE (section 2.2.1.4) request, or BATCHED_OFFER_MESSAGE (section 2.2.1.5)
 request response is received on the port which the client is currently using for this protocol, the
 message MUST be dropped and the protocol sequence aborted.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 Request Timer expires: The related outstanding message request MUST be removed.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1756,13 +1680,14 @@ Release: April 23, 2024
 
 22 / 31
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-PCHC].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Hosted Cache with No Block Hashes
+### 4.1 Hosted Cache with No Block Hashes
 
 This section presents an example of a hosted cache that has none of the block hashes associated with
 the segment that is offered.
@@ -1775,7 +1700,7 @@ the blocks desired.
 
 Figure 1: Hosted cache with no block hashes
 
-4.2  Hosted Cache with Block Hashes and No Data Blocks
+### 4.2 Hosted Cache with Block Hashes and No Data Blocks
 
 This section presents an example of a hosted cache that has the block hashes associated with the
 segment but no data blocks.
@@ -1793,14 +1718,15 @@ Release: April 23, 2024
 
 23 / 31
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-PCHC].images/page024-img01.png)
 ![Extracted image 2 from page 24]([MS-PCHC].images/page024-img02.png)
 <!-- /Extracted images from page 24 -->
 
 Figure 2: Hosted cache with block hashes and no data blocks
 
-4.3  Hosted Cache with Block Hashes and Data Blocks
+### 4.3 Hosted Cache with Block Hashes and Data Blocks
 
 This section presents an example of a hosted cache that has all the block hashes associated with the
 segment and all the data blocks.
@@ -1811,7 +1737,7 @@ for the segment and responds with a code of zero.
 
 Figure 3: Hosted cache with block hashes and data blocks
 
-4.4  Hosted Cache with No Data Blocks
+### 4.4 Hosted Cache with No Data Blocks
 
 This section presents an example of a version 2.0 hosted cache that has no data blocks and a version
 2.0 client.
@@ -1827,7 +1753,8 @@ Peer Content Caching and Retrieval: Hosted Cache Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-PCHC].images/page025-img01.png)
 ![Extracted image 2 from page 25]([MS-PCHC].images/page025-img02.png)
 <!-- /Extracted images from page 25 -->
@@ -1837,7 +1764,7 @@ segments that are available from the offering client.
 
 Figure 4: Hosted cache with block hashes and no data blocks
 
-4.5  Hosted Cache with Data Blocks
+### 4.5 Hosted Cache with Data Blocks
 
 This section presents an example of a version 2.0 hosted cache that has all the data blocks associated
 with all the segments in the list and a version 2.0 client.
@@ -1855,9 +1782,10 @@ Release: April 23, 2024
 
 25 / 31
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Peer Content Caching and Retrieval: Hosted Cache Protocol messages are secured using HTTPS.
 
@@ -1866,7 +1794,7 @@ choose to authenticate clients and a higher layer or administrator action can co
 authenticating clients. HTTP authentication is the mechanism used to complete these actions as
 specified in [RFC4559].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security Parameter  Section
 
@@ -1881,7 +1809,8 @@ Release: April 23, 2024
 
 26 / 31
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1950,7 +1879,8 @@ Peer Content Caching and Retrieval: Hosted Cache Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<6> Section 3.1: In Windows Vista and Windows Server 2008, support for the server-side elements of
+
+<6> Section 3.1: In Windows Vista and Windows Server 2008, support for the server-side elements of
 this protocol is not available.
 
 <7> Section 3.2: In Windows Vista and Windows Server 2008, support for the client-side elements of
@@ -1993,7 +1923,8 @@ Release: April 23, 2024
 
 28 / 31
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2037,7 +1968,8 @@ Release: April 23, 2024
 
 29 / 31
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2169,7 +2101,8 @@ O
 
 30 / 31
 
-T
+
+T
 
 Timer events
    client 22

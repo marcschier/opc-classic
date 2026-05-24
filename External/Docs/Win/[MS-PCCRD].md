@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Peer Content Caching and Retrieval: Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -439,174 +441,76 @@ Release: April 23, 2024
 
 3 / 32
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+      - [2.2.2.1 Probe](#2221-probe)
+      - [2.2.2.2 ProbeMatch](#2222-probematch)
+    - [2.2.3 Elements](#223-elements)
+      - [2.2.3.1 Types](#2231-types)
+      - [2.2.3.2 Scopes 1](#2232-scopes-1)
+      - [2.2.3.3 Scopes 2](#2233-scopes-2)
+      - [2.2.3.4 Address](#2234-address)
+      - [2.2.3.5 MetadataVersion](#2235-metadataversion)
+      - [2.2.3.6 InstanceId](#2236-instanceid)
+      - [2.2.3.7 MessageNumber](#2237-messagenumber)
+      - [2.2.3.8 XAddrs](#2238-xaddrs)
+      - [2.2.3.9 Any](#2239-any)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Receive ProbeMatch](#3141-receive-probematch)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 Discovery Probe Started](#3161-discovery-probe-started)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Receive Probe](#3241-receive-probe)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+      - [3.2.6.1 Segment ID Added or Removed](#3261-segment-id-added-or-removed)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Version 1.0 Probe Message](#41-version-10-probe-message)
+  - [4.2 Version 2.0 Probe Message](#42-version-20-probe-message)
+  - [4.3 Version 1.0 ProbeMatch Message](#43-version-10-probematch-message)
+  - [4.4 Version 2.0 ProbeMatch Message](#44-version-20-probematch-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.3
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Message Syntax ................................................................................. 12
-Namespaces .............................................................................................. 12
-Messages ................................................................................................... 12
-Probe .................................................................................................. 13
-ProbeMatch .......................................................................................... 13
-Elements ................................................................................................... 15
-Types .................................................................................................. 15
-Scopes 1 .............................................................................................. 15
-Scopes 2 .............................................................................................. 16
-Address ............................................................................................... 16
-MetadataVersion ................................................................................... 16
-InstanceId ........................................................................................... 17
-MessageNumber ................................................................................... 17
-XAddrs ................................................................................................ 17
-Any ..................................................................................................... 17
-Complex Types ........................................................................................... 18
-Simple Types ............................................................................................. 18
-Attributes .................................................................................................. 18
-Groups ...................................................................................................... 18
-Attribute Groups ......................................................................................... 18
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.4.1
-
-3.1.5
-3.1.6
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 19
-Client Details ................................................................................................... 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Receive ProbeMatch .............................................................................. 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Discovery Probe Started ........................................................................ 20
-Server Details .................................................................................................. 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Receive Probe ....................................................................................... 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Segment ID Added or Removed .............................................................. 21
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-
-3.2.6.1
-
-3.1.6.1
-
-3.2.4.1
-
-3.2
-
-[MS-PCCRD] - v20240423
-Peer Content Caching and Retrieval: Discovery Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 32
-
-4  Protocol Examples ................................................................................................. 22
-Version 1.0 Probe Message ................................................................................ 22
-Version 2.0 Probe Message ................................................................................ 22
-Version 1.0 ProbeMatch Message ....................................................................... 23
-Version 2.0 ProbeMatch Message ....................................................................... 24
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 26
-Security Considerations for Implementers ........................................................... 26
-Index of Security Parameters ............................................................................ 26
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 27
-
-7  Appendix B: Product Behavior ............................................................................... 28
-
-8  Change Tracking .................................................................................................... 30
-
-9  Index ..................................................................................................................... 31
-
-[MS-PCCRD] - v20240423
-Peer Content Caching and Retrieval: Discovery Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 32
-
-1  Introduction
+## 1 Introduction
 
 The Peer Content Caching and Retrieval (PCCR): Discovery Protocol is used to locate content from
 peers who claim to have the content of interest on a peer-to-peer network. This protocol is used
@@ -634,7 +538,7 @@ hosted caches in place of peer-based caching.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -677,7 +581,8 @@ Peer Content Caching and Retrieval: Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-these terms does not imply or require a specific algorithm or mechanism to generate the value.
+
+these terms does not imply or require a specific algorithm or mechanism to generate the value.
 Specifically, the use of this term does not imply or require that the algorithms described in
 [RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
@@ -753,7 +658,8 @@ Release: April 23, 2024
 
 7 / 32
 
-User Datagram Protocol (UDP): The connectionless protocol within TCP/IP that corresponds to
+
+User Datagram Protocol (UDP): The connectionless protocol within TCP/IP that corresponds to
 
 the transport layer in the ISO/OSI reference model.
 
@@ -801,14 +707,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -823,7 +729,8 @@ Peer Content Caching and Retrieval: Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-PCCRR] Microsoft Corporation, "Peer Content Caching and Retrieval: Retrieval Protocol".
+
+[MS-PCCRR] Microsoft Corporation, "Peer Content Caching and Retrieval: Retrieval Protocol".
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
@@ -853,7 +760,7 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2/2] Biron, P., and Malhotra, A., Eds., "XML Schema Part 2: Datatypes Second Edition",
 W3C Recommendation, October 2004, https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-BUP] Microsoft Corporation, "Background Intelligent Transfer Service (BITS) Upload Protocol".
 
@@ -863,7 +770,7 @@ http://msdn.microsoft.com/en-us/library/bb968799(VS.85).aspx
 [WS-Addr-Core] World Wide Web Consortium, "Web Services Addressing 1.0 - Core", W3C
 Recommendation, May 2006, http://www.w3.org/TR/ws-addr-core/
 
-1.3  Overview
+### 1.3 Overview
 
 The Peer Content Caching and Retrieval (PCCR): Discovery Protocol is based on the Web Services
 Dynamic Discovery (WS-Discovery) Protocol [WS-Discovery], referred to as WSD, which uses
@@ -888,11 +795,12 @@ Release: April 23, 2024
 
 9 / 32
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-PCCRD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The PCCR Discovery Protocol uses the Web Services Dynamic Discovery protocol (WS-Discovery)
 [WS-Discovery], which uses SOAP-over-UDP [SOAP-UDP] [RFC768] as its network transport. In the
@@ -902,7 +810,7 @@ specific segments of content.
 
 Figure 1: Layering of the protocol stack
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The PCCR Discovery Protocol depends on the Web Services Dynamic Discovery protocol (WS-
 Discovery) [WS-Discovery]. The client requesting the discovery is required to have the content
@@ -911,7 +819,7 @@ looking for, and the peers answering the request are required to have a (possibl
 content that they can check to see if they have the requested content stored locally in order to answer
 a query.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 A client uses the PCCR Discovery Protocol to locate peers with the content it requires, in the context of
 the Peer Content Caching and Retrieval Framework. The protocol is thus appropriate only in settings
@@ -925,7 +833,7 @@ not for discovering hashes for given names or URLs. It is necessary for the clie
 original content servers (as opposed to the peer caches) to obtain the Content Information data
 structure [MS-PCCRC] containing hashes corresponding to the contents.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The PCCR Discovery Protocol is based on the [WS-Discovery] standard and does not define any new
 mechanisms for the following areas:
@@ -949,17 +857,18 @@ Release: April 23, 2024
 
 10 / 32
 
-  Capability negotiation
+
+  Capability negotiation
 
 This specification defines version 2.0 of the PCCR Discovery Protocol, which preserves the messages
 from version 1.0 and allows for efficient discovery of multiple segments. Capability negotiation is
 achieved using standard fields of the Web Services Dynamic Discovery (WS-Discovery) protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -970,9 +879,10 @@ Release: April 23, 2024
 
 11 / 32
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The PCCR Discovery Protocol uses the Web Services Dynamic Discovery (WS-Discovery) Protocol
 [WS-Discovery], and the actual transport protocol is abstracted by WSD. The PCCR Discovery Protocol
@@ -980,7 +890,7 @@ simply uses WSD with certain elements set to custom values and relies on WSD for
 transport of the Receive Probe (section 3.2.4.1) and Receive ProbeMatch (section 3.1.4.1)
 messages.<1>
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema (XSD) [XMLSCHEMA2/2], and Web Services Description Language (WSDL) [WSDL].
@@ -988,7 +898,7 @@ Schema (XSD) [XMLSCHEMA2/2], and Web Services Description Language (WSDL) [WSDL]
 Finally, unless specified otherwise, all 2-byte and 4-byte integer fields are defined in network byte
 order.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1032,7 +942,7 @@ follows.
 Note  The preceding URI does not contain any schema definition. It is used merely as a tag to identify
 the namespace. All elements related to the preceding namespaces are defined in this document.
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 The following table summarizes the set of common WSDL messages defined by this specification.
 WSDL message definitions are described with the operation for those that are only applicable to a
@@ -1053,7 +963,8 @@ Peer Content Caching and Retrieval: Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Message
+
+Message
 
 Description
 
@@ -1064,7 +975,7 @@ searching for content described by a version 2.0 Content Information structure a
 formatted according to the version 1.0 descriptions when searching for content described by a version
 1.0 Content Information structure.<2>
 
-2.2.2.1  Probe
+##### 2.2.2.1 Probe
 
 The Probe WS-Discovery message that is part of the [WS-Discovery] standard. A client sends a
 Probe message to find a specific service defined by Types (section 2.2.3.1) and Scopes (section
@@ -1098,7 +1009,7 @@ Types: The <Types> element, as specified in section 2.2.3.1.
 
 Scopes: The <Scopes> element, as specified in section 2.2.3.3.
 
-2.2.2.2  ProbeMatch
+##### 2.2.2.2 ProbeMatch
 
 A ProbeMatch message SHOULD be sent in response to a Probe message (section 2.2.2.1) if the
 replying peer has the content segments listed in the Probe message as specified in section 3.2.4.1.
@@ -1122,7 +1033,8 @@ Release: April 23, 2024
 
 13 / 32
 
-     </wsd:Types>
+
+     </wsd:Types>
      <wsd:Scopes>
  0200000000000000000000000000000000000000000000000000000000000000
  0000000000000000000000000000000000000000000000000000000000000000
@@ -1193,7 +1105,8 @@ Peer Content Caching and Retrieval: Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3  Elements
+
+#### 2.2.3 Elements
 
 The following table summarizes the set of common XML schema elements defined by this
 specification. XML schema element definitions are described with the message for those that are only
@@ -1240,7 +1153,7 @@ Version 1.0: Used to indicate how many blocks in each discovered segment are ava
 
 Version 2.0: Used to indicate the ages of the discovered segments.
 
-2.2.3.1  Types
+##### 2.2.3.1 Types
 
 The <Types> element represents the list of discovery provider types. When specified in the request
 message, the value indicates the Types to be searched for. When specified in the response, the value
@@ -1256,7 +1169,7 @@ Version 2.0 <Types> Element
 
  PeerDist:PeerDistDataV2
 
-2.2.3.2  Scopes 1
+##### 2.2.3.2 Scopes 1
 
 The <Scopes> element represents the list of discovery provider scopes, where each element in the list
 is a string. When specified in the request message, the peer MUST populate this value to indicate the
@@ -1275,7 +1188,8 @@ Peer Content Caching and Retrieval: Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3.3  Scopes 2
+
+##### 2.2.3.3 Scopes 2
 
 The <Scopes> element represents the list of discovery provider scopes, where each element in the list
 is a string.
@@ -1332,7 +1246,7 @@ peer does not have the segment in its cache. The least significant bit MUST be s
 responding peer has all blocks belonging to the segment in its cache or it MUST be set to 0 if the
 responding peer does not have all blocks belonging to the segment in its cache.
 
-2.2.3.4  Address
+##### 2.2.3.4 Address
 
 The <Address> element identifies the responding device. It MUST be set to a globally unique
 identifier (GUID) as a "uuid:" scheme URI.<3> The <Address> element is a child element of the
@@ -1341,7 +1255,7 @@ identifier.
 
  urn:uuid:87A89944-0230-43a5-AC4E-FAB1386C8E2C
 
-2.2.3.5  MetadataVersion
+##### 2.2.3.5 MetadataVersion
 
 The <MetadataVersion> element is the current metadata version and MUST be set to 1<4> or 2.<5>
 
@@ -1352,14 +1266,15 @@ Peer Content Caching and Retrieval: Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3.6  InstanceId
+
+##### 2.2.3.6 InstanceId
 
 The <InstanceId> element is the identifier for the current instance of the device being published. It
 MUST be generated at run time when the service starts and MUST be incremented whenever the
 service is restarted. The recommendations on the initial value and processing rules of the InstanceId
 are specified in [WS-Discovery], Appendix I – Application Sequencing.<6>
 
-2.2.3.7  MessageNumber
+##### 2.2.3.7 MessageNumber
 
 The <MessageNumber> element is the counter within the scope of the instance identifier for the
 current message. This MUST be generated at run time, and the MessageNumber MUST be
@@ -1370,14 +1285,14 @@ using the Discovery Protocol can send, not just the ProbeMatch message defined i
 Protocol. The rules on initializing, processing, and incrementing the MessageNumber are specified in
 [WS-Discovery], Appendix I – Application Sequencing.
 
-2.2.3.8  XAddrs
+##### 2.2.3.8 XAddrs
 
 The <XAddrs> element with a ProbeMatch message contains the list of transport URIs supported by
 the peer responding to the Probe message. Each transport URI string MUST contain an address and
 port number that can be used for connection by a remote host. For detailed format specifications on
 transport URIs containing IP addresses and port numbers, see [RFC3986].
 
-2.2.3.9  Any
+##### 2.2.3.9 Any
 
 Version 1.0 <Any> element
 
@@ -1417,7 +1332,8 @@ Release: April 23, 2024
 
 17 / 32
 
-    </PeerDist:SegmentAges>
+
+    </PeerDist:SegmentAges>
  </PeerDist:PeerDistData>
 
 PeerDistData: This element encloses all custom metadata for Version 2.0 responses.
@@ -1426,23 +1342,23 @@ SegmentAges: This element is a child of the <PeerDistData> element. This field c
 representation of a bit array encoded as a UTF-8 string. For more details about the format of the
 SegmentAges field, see [MS-PCCRR].
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML Schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML Schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML Schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML Schema attribute group definitions.
 
@@ -1453,15 +1369,16 @@ Release: April 23, 2024
 
 18 / 32
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Discovery Protocol utilizes the Probe and ProbeMatch messages from the WSD Protocol. Refer
 to [WS-Discovery] for the detailed protocol operation. This section describes how the Probe and
 ProbeMatch messages are used in the PCCR Discovery Protocol.
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1482,7 +1399,7 @@ APP_MAX_DELAY: The maximum time a server peer can wait before sending a ProbeMat
 
 message.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The client peer MUST set a request timer when sending a Probe message to wait for a certain
 period of time for the incoming replies. The request timer is configurable such that system
@@ -1493,7 +1410,7 @@ section 3.2.2 to ensure that enough replies are received by a requesting peer. W
 expires on a requesting peer without receiving any ProbeMatch replies, the implementation MUST
 remove that Probe message and its associated HoHoDk List from the Outstanding Probe List.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The elements for the Probe message MUST be initialized according to their corresponding values or
 rules, as specified in section 2.2.2.1.
@@ -1502,7 +1419,7 @@ The HoHoDk List (or segment ID list) on the requesting peer MUST be initialized 
 supplied by applications using the Discovery Protocol. This list consists of the HoHoDks passed by the
 applications through the interface of the Discovery Protocol as specified in section 1.4.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations for the client as defined by this
 specification.
@@ -1520,7 +1437,8 @@ Release: April 23, 2024
 
 19 / 32
 
-3.1.4.1  Receive ProbeMatch
+
+##### 3.1.4.1 Receive ProbeMatch
 
 This event is triggered by the WSD layer on receiving a response to a Probe as specified in section
 3.2.4.1. The peer that receives a ProbeMatch message MUST check the <Types> and <XAddrs>
@@ -1532,28 +1450,28 @@ message to the higher layer.
 
 All malformed ProbeMatch messages MUST be silently discarded.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 When the request timer for a specific Probe message expires on the requesting peer, that Probe
 message and its associated HoHoDk List are removed from the Outstanding Probe List.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 All malformed messages destined for the Peer Content Caching and Retrieval framework MUST be
 silently discarded. All WSD messages destined for other services will be dispatched by the WSD
 service to other registered components for the specific service types. For general WSD message
 processing and error handling, refer to [WS-Discovery].
 
-3.1.6.1  Discovery Probe Started
+##### 3.1.6.1 Discovery Probe Started
 
 To start a PCCR Discovery Probe, the higher layer passes one or more segment HoHoDks from the
 content it is looking for to the client-role peer, which sends out a WSD Probe message that is
 modified, as specified in section 2.2.2.1. It then adds the Probe together with its HoHoDks to the
 Outstanding Probe List and sets the request timer for this Probe.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1567,7 +1485,7 @@ Available Segment List: A list of all HoHoDks for all available segments, and th
 
 block counts.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The server peer MUST set a backoff timer [WS-Discovery] randomly between 1 millisecond and a
 maximum value (defined by the WSD Protocol constant APP_MAX_DELAY). If the server peer has
@@ -1582,17 +1500,18 @@ Peer Content Caching and Retrieval: Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-administrators can adjust the value based on their current network environments. By default,
+
+administrators can adjust the value based on their current network environments. By default,
 APP_MAX_DELAY SHOULD be set to 65 milliseconds.<7>
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server peers MUST initialize an empty Available Segment List and populate the list with the
 HoHoDks supplied by the higher-layer applications of the PCCR Discovery Protocol. The server
 peers MUST also generate and set the initial values for Address (section 2.2.3.4),
 InstanceId (section 2.2.3.6), and MessageNumber (section 2.2.3.7).
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations for the server as defined by this
 specification.
@@ -1603,7 +1522,7 @@ Description
 
 Receive Probe  Triggered by the WSD layer on receiving a Probe message.
 
-3.2.4.1  Receive Probe
+##### 3.2.4.1 Receive Probe
 
 This event is triggered by the WSD layer on receiving a Probe message. The event processing
 involves checking the <Types> and <Scopes> elements to verify that the Probe was initiated by a
@@ -1621,18 +1540,18 @@ block counts.
 All malformed Probe messages MUST be silently discarded. A Probe having an empty or an
 incorrectly formatted <Scopes> element is considered as a malformed Probe message.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 The behavior of the backoff timer is defined in [WS-Discovery].
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 All malformed messages destined for the Windows Peer Content Caching and Retrieval framework
 MUST be silently discarded. All WSD messages destined for other services will be dispatched by the
 WSD service to other registered components for the specific service types. For general WSD message
 processing and error handling, refer to [WS-Discovery].
 
-3.2.6.1  Segment ID Added or Removed
+##### 3.2.6.1 Segment ID Added or Removed
 
 When the higher-layer protocol or applications of the Discovery Protocol add or remove a segment
 ID/HoHoDk, the server peer MUST update its Available Segment List accordingly, with the
@@ -1645,9 +1564,10 @@ Release: April 23, 2024
 
 21 / 32
 
-4  Protocol Examples
 
-4.1  Version 1.0 Probe Message
+## 4 Protocol Examples
+
+### 4.1 Version 1.0 Probe Message
 
 A client node in a branch office contacts a Peer Content Caching and Retrieval–capable content server
 to retrieve a webpage, http://vortex.example.com/sample.html. It receives a list of hashes that
@@ -1688,7 +1608,7 @@ represent the indices of the content. The client then sends the following WSD Pr
 The <Types> and <Scopes> elements contain the Discovery Protocol–specific values. The <Scopes>
 element in this example shows only one HoHoDk.
 
-4.2  Version 2.0 Probe Message
+### 4.2 Version 2.0 Probe Message
 
 Version 2.0 Probe message
 
@@ -1715,7 +1635,8 @@ Release: April 23, 2024
 
 22 / 32
 
-     </wsa:MessageID>
+
+     </wsa:MessageID>
    </soap:Header>
    <soap:Body>
      <wsd:Probe>
@@ -1743,7 +1664,7 @@ segment at least some blocks of which are available locally. If a match is found
 backoff timer and replies with the ProbeMatch message after the timer expires, as described in
 section 4.3 for version 1.0 and 4.4 for version 2.0.
 
-4.3  Version 1.0 ProbeMatch Message
+### 4.3 Version 1.0 ProbeMatch Message
 
 Version 1.0 ProbeMatch message
 
@@ -1785,7 +1706,8 @@ Release: April 23, 2024
 
 23 / 32
 
-             PeerDist:PeerDistData
+
+             PeerDist:PeerDistData
            </wsd:Types>
            <wsd:Scopes>
  0200000000000000000000000000000000000000000000000000000000000000
@@ -1812,7 +1734,7 @@ Discovery Protocol–specific values. The block of syntax for the <PeerDist:Peer
 following after the <MetadataVersion> element contains the block counts for the segment referred to
 in the <Scopes> element.
 
-4.4  Version 2.0 ProbeMatch Message
+### 4.4 Version 2.0 ProbeMatch Message
 
 Version 2.0 ProbeMatch message
 
@@ -1857,7 +1779,8 @@ Release: April 23, 2024
 
 24 / 32
 
- /////////////w==
+
+ /////////////w==
            </wsd:Scopes>
            <wsd:XAddrs>
              157.59.141.183:54321
@@ -1885,18 +1808,19 @@ Release: April 23, 2024
 
 25 / 32
 
-5  Security
+
+## 5 Security
 
 WSD messages are multicast on the local subnet. Because the Discovery Protocol works on top of the
 Web Services Dynamic Discovery Protocol [WS-Discovery], it leverages the security model of WS-
 Discovery. In addition, the Discovery Protocol rejects responses from any subnet other than the local
 subnet. For details about the security model of WSD, see [WS-Discovery].
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1907,7 +1831,8 @@ Release: April 23, 2024
 
 26 / 32
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 This protocol follows the Web Services Dynamic Discovery protocol [WS-Discovery]. Its Web Services
 Description Language [WSDL] is identical to that of WS-Discovery.
@@ -1919,7 +1844,8 @@ Release: April 23, 2024
 
 27 / 32
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1988,7 +1914,8 @@ Peer Content Caching and Retrieval: Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<6> Section 2.2.3.6: In Windows 7 and Windows Server 2008 R2 operating system, the InstanceId is
+
+<6> Section 2.2.3.6: In Windows 7 and Windows Server 2008 R2 operating system, the InstanceId is
 generated by taking the boot time of the service in seconds since 1970-01-01 Time 00:00:00 UTC.
 
 <7> Section 3.2.2: In Windows 7 and Windows Server 2008 R2, the default value for the request
@@ -2029,7 +1956,8 @@ Release: April 23, 2024
 
 29 / 32
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2073,7 +2001,8 @@ Release: April 23, 2024
 
 30 / 32
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2205,7 +2134,8 @@ Release: April 23, 2024
 
 31 / 32
 
-   ProbeMatch message 13
+
+   ProbeMatch message 13
    Scopes 1 element 15
    Scopes 2 element 16
    simple types 18

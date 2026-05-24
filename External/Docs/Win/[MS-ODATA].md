@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 290
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Date
+
+Date
 
 Revision
 History
@@ -398,805 +400,272 @@ Release: March 13, 2019
 
 3 / 290
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 14
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-OData 2.0 Version-Specific Summary ............................................................ 16
-OData 3.0 Version-Specific Summary ............................................................ 18
-Vendor-Extensible Fields ................................................................................... 23
-Standards Assignments ..................................................................................... 23
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-1.7.1
-1.7.2
-
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.4
-
-2.2.1.3.1
-
-2.2.1.4.1
-
-2.2.2
-2.2.3
-
-2.2.1.5
-2.2.1.6
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-
-2  Messages ............................................................................................................... 24
-Transport ........................................................................................................ 24
-Message Syntax ............................................................................................... 24
-Abstract Data Model .................................................................................... 24
-Named Resource Stream ........................................................................ 26
-Named Resource Stream Instance ........................................................... 26
-Actions ................................................................................................ 26
-Action Metadata URL ........................................................................ 27
-Functions ............................................................................................. 28
-Function Metadata URL .................................................................... 28
-Service Operations ................................................................................ 29
-Containment ........................................................................................ 29
-Abstract Type System ................................................................................. 30
-URI Format: Resource Addressing Rules ........................................................ 38
-URI Syntax .......................................................................................... 39
-Service Root (serviceRoot) and Path Prefix (pathPrefix) ............................. 44
-Resource Path (resourcePath) ................................................................. 44
-Resource Path: Construction Rules .......................................................... 45
-Resource Path: Semantics ...................................................................... 48
-Query Options ...................................................................................... 56
-System Query Options ..................................................................... 57
-Common Expression Syntax ........................................................ 59
-Expression Construction and Evaluation Rules .......................... 64
-Operator Precedence............................................................. 85
-Unary Numeric Promotions .................................................... 86
-Binary Numeric Promotions .................................................... 86
-Lifted Operators ................................................................... 87
-Numeric Promotions for Method Call Parameters ...................... 88
-Geospatial Coordinate Transformations ................................... 89
-Coordinate Transformations Within a Topology ................... 89
-Arbitrary Coordinate Transformations ................................ 89
-Geospatial Extension Methods ................................................ 90
-Extending Type Support for Defined Functions .................... 90
-Implementing One of the Functions Defined in [OGC-
-SFOLECOM] ................................................................... 90
-Arbitrary Extensions ........................................................ 91
-Evaluating System Query Options ................................................ 91
-Expand System Query Option ($expand) ...................................... 92
-Filter System Query Option ($filter) ............................................. 93
-Format System Query Option ($format) ........................................ 94
-
-2.2.3.6.1.1.1
-2.2.3.6.1.1.2
-2.2.3.6.1.1.3
-2.2.3.6.1.1.4
-2.2.3.6.1.1.5
-2.2.3.6.1.1.6
-2.2.3.6.1.1.7
-
-2.2.3.6.1.2
-2.2.3.6.1.3
-2.2.3.6.1.4
-2.2.3.6.1.5
-
-2.2.3.6.1.1.7.1
-2.2.3.6.1.1.7.2
-
-2.2.3.6.1.1.8.1
-2.2.3.6.1.1.8.2
-
-2.2.3.6.1.1.8.3
-
-2.2.3.6.1.1.8
-
-2.2.3.6.1.1
-
-2.2.3.6.1
-
-[MS-ODATA] - v20190313
-Open Data Protocol (OData)
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 290
-
-2.2.4
-
-2.2.5
-
-2.2.6
-
-2.2.5.1
-
-2.2.4.1
-
-2.2.3.7
-
-2.2.3.7.2.1
-
-2.2.3.8
-2.2.3.9
-
-2.2.3.7.1
-2.2.3.7.2
-
-2.2.5.1.1
-2.2.5.1.2
-2.2.5.1.3
-
-2.2.3.6.2
-2.2.3.6.3
-2.2.3.6.4
-2.2.3.6.5
-
-2.2.3.6.1.6
-2.2.3.6.1.7
-2.2.3.6.1.8
-2.2.3.6.1.9
-2.2.3.6.1.10
-2.2.3.6.1.11
-2.2.3.6.1.12
-
-OrderBy System Query Option ($orderby) ..................................... 94
-Skip System Query Option ($skip) ............................................... 95
-Top System Query Option ($top) ................................................. 96
-Skip Token System Query Option ($skiptoken) .............................. 96
-InlineCount System Query Option ($inlinecount) ............................ 97
-Select System Query Option ($select) .......................................... 98
-System Query Option: Additional Construction Rules ..................... 101
-Custom Query Options .................................................................... 101
-Service Operation Parameters .......................................................... 101
-Function Parameters ....................................................................... 102
-Action Parameters .......................................................................... 103
-Data Service Metadata .......................................................................... 104
-Service Document .......................................................................... 104
-Conceptual Schema Definition Language Document for Data Services ... 105
-Conceptual Schema Definition Language Document Extensions for
-Customizable Feeds .................................................................. 108
-URI Equivalence ................................................................................... 112
-Canonical URIs .................................................................................... 112
-HTTP Methods ........................................................................................... 112
-PATCH/MERGE ..................................................................................... 113
-HTTP Header Fields .................................................................................... 113
-Accept ................................................................................................ 114
-application/atom+xml ..................................................................... 115
-application/json .............................................................................. 115
-application/json;odata=verbose ....................................................... 115
-Content-Type ...................................................................................... 115
-2.2.5.2
-DataServiceVersion .............................................................................. 116
-2.2.5.3
-ETag .................................................................................................. 117
-2.2.5.4
-If-Match .............................................................................................. 118
-2.2.5.5
-If-None-Match ..................................................................................... 118
-2.2.5.6
-MaxDataServiceVersion ........................................................................ 119
-2.2.5.7
-X-HTTP-Method ................................................................................... 119
-2.2.5.8
-Prefer ................................................................................................. 120
-2.2.5.9
-2.2.5.10
-Preference-Applied ............................................................................... 121
-2.2.5.11  DataServiceId ...................................................................................... 121
-Common Payload Syntax ............................................................................ 121
-Common Serialization Rules for XML-Based Formats ................................. 122
-AtomPub Format .................................................................................. 125
-Entity Set (as an Atom Feed Element) ............................................... 125
-InlineCount Representation (for Collections of Entities) .................. 126
-Entity Set (as an Atom Feed Element) with Actions ....................... 127
-Entity Set (as an Atom Feed Element) with Functions .................... 128
-Entity Type (as an Atom Entry Element) ............................................ 129
-Entity Type (as an Atom Entry Element) with a Customizable Feed
-Property Mapping...................................................................... 132
-Entity Type (as an Atom Entry Element) with Actions .................... 133
-Entity Type (as an Atom Entry Element) with Functions ................. 133
-Complex Type ................................................................................ 134
-Navigation Property ........................................................................ 134
-EDMSimpleType Property ................................................................ 134
-Deferred Content ............................................................................ 135
-Inline Representation ................................................................ 135
-Service Document .......................................................................... 137
-Additional Representations .............................................................. 138
-Collection Property ......................................................................... 138
-Collection Property of Complex Type ........................................... 138
-Collection of EDMSimpleType ...................................................... 139
-2.2.6.2.10  Named Resource Streams................................................................ 139
-
-2.2.6.2.3
-2.2.6.2.4
-2.2.6.2.5
-2.2.6.2.6
-
-2.2.6.2.1.1
-2.2.6.2.1.2
-2.2.6.2.1.3
-
-2.2.6.2.7
-2.2.6.2.8
-2.2.6.2.9
-
-2.2.6.2.9.1
-2.2.6.2.9.2
-
-2.2.6.2.2.2
-2.2.6.2.2.3
-
-2.2.6.1
-2.2.6.2
-
-2.2.6.2.6.1
-
-2.2.6.2.2.1
-
-2.2.6.2.1
-
-2.2.6.2.2
-
-[MS-ODATA] - v20190313
-Open Data Protocol (OData)
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 290
-
-2.2.6.3
-
-2.2.6.4
-
-2.2.6.5
-
-2.2.6.4.1
-
-2.2.6.3.2
-
-2.2.6.3.3
-
-2.2.6.3.1
-
-2.2.6.3.9.1
-
-2.2.6.3.1.1
-
-2.2.6.2.11
-2.2.6.2.12
-
-2.2.6.3.3.1
-2.2.6.3.3.2
-
-2.2.6.3.2.1
-2.2.6.3.2.2
-2.2.6.3.2.3
-
-2.2.6.3.4
-2.2.6.3.5
-2.2.6.3.6
-2.2.6.3.7
-2.2.6.3.8
-2.2.6.3.9
-
-Links and Subtypes......................................................................... 140
-Annotations ................................................................................... 141
-Verbose JSON Format ........................................................................... 144
-Common Verbose JSON Serialization Rules for All EDM Constructs ........ 144
-Modifications to GeoJSON for Use in OData .................................. 149
-Entity Set (as a Verbose JSON Array)................................................ 149
-InlineCount Representation (for Collections of Entities) .................. 150
-Entity Set (as a Verbose JSON Array) with Actions ........................ 151
-Entity Set (as a Verbose JSON Array) with Functions ..................... 152
-Entity Type (as a Verbose JSON Object) ............................................ 153
-Entity Type (as a Verbose JSON Object) with Actions .................... 157
-Entity Type (as a Verbose JSON Object) with Functions ................. 158
-Complex Type ................................................................................ 158
-Collection of Complex Type Instances ............................................... 159
-Navigation Property ........................................................................ 160
-Collection of EDMSimpleType Values ................................................. 160
-EDMSimpleType Property ................................................................ 161
-Deferred Content ............................................................................ 162
-Inline Representation ................................................................ 162
-Links ............................................................................................. 164
-2.2.6.3.10
-InlineCount Representation (for Collections of Links) .......................... 165
-2.2.6.3.11
-Service Document .......................................................................... 165
-2.2.6.3.12
-2.2.6.3.13
-Collection Property ......................................................................... 166
-2.2.6.3.14  Named Resource Streams................................................................ 166
-Links and Subtypes......................................................................... 168
-2.2.6.3.15
-Annotations ................................................................................... 168
-2.2.6.3.16
-Raw Format......................................................................................... 168
-EDMSimpleType Property ................................................................ 168
-XML Format ......................................................................................... 169
-Complex Type ................................................................................ 169
-Collection of Complex Type Instances ............................................... 169
-EDMSimpleType Property ................................................................ 169
-Collection of EDMSimpleType Values ................................................. 170
-Links ............................................................................................. 170
-InlineCount Representation (for Collections of Links) ..................... 171
-Next Page (for Collections of Links) ............................................. 171
-Collection of Complex Type .............................................................. 171
-Collection of EDMSimpleType ........................................................... 172
-Preferred OData 3.0 JSON Format .......................................................... 172
-Request Types........................................................................................... 172
-Insert Request Types ............................................................................ 173
-InsertEntity Request ....................................................................... 173
-Examples ................................................................................. 175
-InsertLink Request ......................................................................... 180
-InsertMediaResource Request .......................................................... 181
-Retrieve Request Types ........................................................................ 183
-RetrieveEntitySet Request ............................................................... 183
-RetrieveEntity Request .................................................................... 184
-RetrieveComplexType Request ......................................................... 185
-RetrievePrimitiveProperty Request .................................................... 187
-RetrieveValue Request .................................................................... 188
-RetrieveCollectionProperty Request .................................................. 189
-RetrieveServiceMetadata Request ..................................................... 190
-RetrieveServiceDocument Request ................................................... 191
-RetrieveLink Request ...................................................................... 192
-RetrieveCount Request .................................................................... 193
-Retrieve Request Containing a Customizable Feed Mapping ................. 194
-RetrieveMediaResource Request ....................................................... 194
-
-2.2.7.2.1
-2.2.7.2.2
-2.2.7.2.3
-2.2.7.2.4
-2.2.7.2.5
-2.2.7.2.6
-2.2.7.2.7
-2.2.7.2.8
-2.2.7.2.9
-2.2.7.2.10
-2.2.7.2.11
-2.2.7.2.12
-
-2.2.6.5.1
-2.2.6.5.2
-2.2.6.5.3
-2.2.6.5.4
-2.2.6.5.5
-
-2.2.6.5.5.1
-2.2.6.5.5.2
-
-2.2.6.5.6
-2.2.6.5.7
-
-2.2.7.1.2
-2.2.7.1.3
-
-2.2.7.1.1.1
-
-2.2.7.1.1
-
-2.2.6.6
-
-2.2.7
-
-2.2.7.1
-
-2.2.7.2
-
-[MS-ODATA] - v20190313
-Open Data Protocol (OData)
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-6 / 290
-
-2.2.7.3
-
-2.2.7.3.1
-
-2.2.7.3.1.1
-
-2.2.7.3.2
-2.2.7.3.3
-2.2.7.3.4
-2.2.7.3.5
-2.2.7.3.6
-2.2.7.3.7
-2.2.7.3.8
-
-2.2.7.4
-
-2.2.7.4.1
-2.2.7.4.2
-2.2.7.4.3
-
-2.2.7.5
-
-2.2.7.5.1
-2.2.7.5.2
-
-2.2.7.6
-
-2.2.7.6.1
-
-2.2.7.6.2
-2.2.7.6.3
-2.2.7.6.4
-2.2.7.6.5
-2.2.7.6.6
-2.2.7.6.7
-2.2.7.6.8
-
-Update Request Types .......................................................................... 195
-UpdateEntity Request ..................................................................... 195
-Example .................................................................................. 197
-UpdateComplexType Request ........................................................... 197
-UpdatePrimitiveProperty Request ..................................................... 199
-UpdateCollectionProperty Request .................................................... 200
-UpdateValue Request ...................................................................... 201
-UpdateLink Request ........................................................................ 202
-UpdateMediaResource Request ......................................................... 204
-Update Request Containing a Customizable Feed Property Mapping ...... 205
-Delete Request Types ........................................................................... 205
-DeleteEntity Request ...................................................................... 205
-DeleteLink Request ......................................................................... 206
-DeleteValue Request ....................................................................... 207
-Invoke Request Types .......................................................................... 208
-Invoke Action Request .................................................................... 210
-Invoke Function Request ................................................................. 211
-Batch Request ..................................................................................... 212
-Change Set Syntax ......................................................................... 213
-Referencing Requests in a Change Set ......................................... 213
-Query Operation Syntax .................................................................. 214
-HTTP Request Restrictions ............................................................... 214
-Batch Request Syntax ..................................................................... 214
-Example Batch Request ................................................................... 215
-Batch Responses ............................................................................ 217
-Batch Response Syntax ................................................................... 217
-Example Batch Response ................................................................. 218
-Tunneled Requests ............................................................................... 220
-Response Types ........................................................................................ 220
-Error Response .................................................................................... 220
-XML Error Response ........................................................................ 221
-Verbose JSON Error Response .......................................................... 222
-
-2.2.7.6.1.1
-
-2.2.7.7
-
-2.2.8
-
-2.2.8.1
-
-2.2.8.1.1
-2.2.8.1.2
-
-3.1
-
-3.1.4.3
-
-3.1.4.3.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.4.2.1
-3.1.4.2.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ................................................................................................... 224
-Client Details .................................................................................................. 224
-Abstract Data Model ................................................................................... 224
-Timers ..................................................................................................... 224
-Initialization .............................................................................................. 224
-Higher-Layer Triggered Events .................................................................... 224
-Common Rules for All Requests ............................................................. 224
-Request to Insert Resources .................................................................. 224
-Sending an InsertEntity Request ...................................................... 225
-Sending an InsertLink Request ......................................................... 225
-Request to Retrieve Resources............................................................... 225
-Common Rules for Sending Retrieve Requests ................................... 225
-Request to Update Resources ................................................................ 226
-Common Rules for Sending Update Requests ..................................... 226
-Request to Delete Resources ................................................................. 227
-Common Rules for Sending Delete Requests ...................................... 227
-Request to Invoke a Service Operation ................................................... 227
-Request to Send a Batch of Operations ................................................... 228
-Request to Invoke an Action .................................................................. 228
-Request to Invoke a Function ................................................................ 229
-Message Processing Events and Sequencing Rules ......................................... 229
-Common Rules for Receiving Responses from Data Service Requests ......... 229
-Responses from Insert Requests ............................................................ 230
-Timer Events ............................................................................................. 230
-Other Local Events ..................................................................................... 230
-
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-
-3.1.5.1
-3.1.5.2
-
-3.1.6
-3.1.7
-
-3.1.4.4.1
-
-3.1.4.5.1
-
-3.1.4.4
-
-3.1.4.5
-
-3.1.5
-
-[MS-ODATA] - v20190313
-Open Data Protocol (OData)
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-7 / 290
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.2.1
-
-3.2.5.1
-3.2.5.2
-
-Server Details ................................................................................................. 230
-Abstract Data Model ................................................................................... 230
-Timers ..................................................................................................... 230
-Initialization .............................................................................................. 230
-Higher-Layer Triggered Events .................................................................... 230
-Message Processing Events and Sequencing Rules ......................................... 230
-Common Rules for Receiving All Data Service Requests ............................ 230
-Common Rules for Executing Received Insert, Update, or Delete Data Service
-Requests ............................................................................................ 231
-Common Rules for Executing Requests Containing a Customizable Feeds
-Mapped Property ............................................................................ 232
-Executing a Received Insert Request ...................................................... 232
-Executing a Received InsertEntity Request ........................................ 233
-Executing a Received InsertLink Request ........................................... 233
-Executing a Received InsertMediaResource Request ............................ 233
-Executing a Received Retrieve Request ................................................... 234
-Executing a Received RetrieveEntitySet Request ................................ 234
-Executing a Received RetrieveValue Request ..................................... 235
-Executing a Received RetrieveCount Request ..................................... 235
-Executing a Received Update Request .................................................... 235
-Executing a Received UpdateEntity Request ....................................... 236
-Executing a Received Delete Request ..................................................... 237
-Executing a Received Invoke Request ..................................................... 237
-Executing a Received Batch Request ...................................................... 237
-Executing a Received Invoke Action Request ........................................... 238
-Executing a Received Invoke Function Request ........................................ 238
-Timer Events ............................................................................................. 239
-Other Local Events ..................................................................................... 239
-Common Response Codes ........................................................................... 239
-
-3.2.5.3
-
-3.2.5.3.1
-3.2.5.3.2
-3.2.5.3.3
-
-3.2.5.4
-
-3.2.5.4.1
-3.2.5.4.2
-3.2.5.4.3
-
-3.2.5.5
-
-3.2.5.5.1
-
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-3.2.5.10
-
-3.2.6
-3.2.7
-3.2.8
-
-4.2.1
-
-4.1
-4.2
-
-4.2.1.1
-4.2.1.2
-4.2.1.3
-4.2.1.4
-4.2.1.5
-
-4  Protocol Examples ............................................................................................... 240
-Insert a New Entity ......................................................................................... 240
-Retrieve Resources .......................................................................................... 240
-Retrieve a Collection of Entities ................................................................... 240
-Retrieve a Collection of Entities by Using the AtomPub Format ................... 240
-Retrieve a Collection of Entities by Using the Verbose JSON Format............ 241
-Retrieve a Partial Collection of Entities by Using the AtomPub Format ......... 242
-Retrieve a Partial Collection of Entities by Using the Verbose JSON Format .. 244
-Retrieve a Collection of Entities with an Inline Count by Using the AtomPub
-Format ............................................................................................... 245
-Retrieve a Collection of Entities with an Inline Count by Using the Verbose JSON
-Format ............................................................................................... 246
-Retrieve a Collection of Entities with Named Resource Streams by Using the
-AtomPub Format .................................................................................. 248
-Retrieve a Collection of Entities with Named Resource Streams by Using the
-Verbose JSON Format ........................................................................... 249
-Retrieve a Single Entity by Using the AtomPub Format ................................... 250
-
-4.2.1.8
-
-4.2.1.7
-
-4.2.1.6
-
-4.2.2
-
-4.2.2.1
-
-4.2.3
-4.2.4
-
-4.2.5
-
-4.2.6
-4.2.7
-4.2.8
-4.2.9
-
-Retrieve a Single Entity with a Mapped Property by Using the AtomPub Format
- ......................................................................................................... 251
-Retrieve a Single Entity by Using the Verbose JSON Format ............................ 252
-Retrieve a Single Entity and Its Directly Related Entities by Using the AtomPub
-Format ..................................................................................................... 253
-Retrieve a Single Entity and Its Directly Related Entities by Using the Verbose JSON
-Format ..................................................................................................... 255
-Retrieve a Data Service's Metadata Document (CSDL) .................................... 256
-Retrieve the Count of a Collection of Entities ................................................. 259
-Retrieve a Single Entity Exposing an Action by Using the AtomPub Format ........ 259
-Retrieve a Single Entity Exposing an Action by Using the Verbose JSON Format 260
-
-8 / 290
-
-[MS-ODATA] - v20190313
-Open Data Protocol (OData)
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4.2.10
-4.2.11
-
-4.3
-
-4.3.1
-4.3.2
-4.3.3
-4.3.4
-
-4.4.1
-4.4.2
-4.4.3
-
-4.4
-
-4.5
-4.6
-
-4.7
-
-4.6.1
-4.6.2
-4.6.3
-
-4.7.1
-4.7.2
-4.7.3
-
-Retrieve a Single Entity Exposing a Function by Using the AtomPub Format ...... 261
-Retrieve a Single Entity Exposing a Function by Using the Verbose JSON Format262
-Update an Existing Entity ................................................................................. 263
-Replace-Based Update by Using the AtomPub Format ..................................... 263
-Replace-Based Update by Using the Verbose JSON Format ............................. 264
-Merge-Based Update by Using the AtomPub Format ....................................... 265
-Merge-Based Update by Using the Verbose JSON Format ................................ 266
-Update the Relationship Between Two Entities .................................................... 267
-Update a Relationship by Using the AtomPub Format ..................................... 267
-Update a Relationship by Using the Verbose JSON Format .............................. 268
-Delete an Existing Entity ............................................................................. 268
-Batch Requests ............................................................................................... 269
-Working with Media Resources (BLOBs) ............................................................. 269
-Insert a New Media Resource ...................................................................... 269
-Update a Media Resource............................................................................ 269
-Query an Existing Media Resource ............................................................... 270
-Working with Named Resource Streams Instances (BLOBs) .................................. 270
-Retrieving a Named Resource Stream Instance ............................................. 270
-Updating a Named Resource Stream Instance ............................................... 271
-Unsupported Operations ............................................................................. 272
-Inserting a New Named Resource Stream Instance .................................. 272
-Deleting a New Named Resource Stream Instance ................................... 272
-Invoking an Action .......................................................................................... 272
-Invoking a Function ......................................................................................... 273
-
-4.7.3.1
-4.7.3.2
-
-4.8
-4.9
-
-5  Security ............................................................................................................... 274
-Security Considerations for Implementers .......................................................... 274
-Index of Security Parameters ........................................................................... 274
-
-5.1
-5.2
-
-6  Appendix A: Sample Entity Data Model and CSDL Document ............................... 275
-
-7  Appendix B: Product Behavior ............................................................................. 280
-
-8  Change Tracking .................................................................................................. 284
-
-9  Index ................................................................................................................... 285
-
-[MS-ODATA] - v20190313
-Open Data Protocol (OData)
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-9 / 290
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 OData 2.0 Version-Specific Summary](#171-odata-20-version-specific-summary)
+    - [1.7.2 OData 3.0 Version-Specific Summary](#172-odata-30-version-specific-summary)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Abstract Data Model](#221-abstract-data-model)
+      - [2.2.1.1 Named Resource Stream](#2211-named-resource-stream)
+      - [2.2.1.2 Named Resource Stream Instance](#2212-named-resource-stream-instance)
+      - [2.2.1.3 Actions](#2213-actions)
+        - [2.2.1.3.1 Action Metadata URL](#22131-action-metadata-url)
+      - [2.2.1.4 Functions](#2214-functions)
+        - [2.2.1.4.1 Function Metadata URL](#22141-function-metadata-url)
+      - [2.2.1.5 Service Operations](#2215-service-operations)
+      - [2.2.1.6 Containment](#2216-containment)
+    - [2.2.2 Abstract Type System](#222-abstract-type-system)
+    - [2.2.3 URI Format: Resource Addressing Rules](#223-uri-format-resource-addressing-rules)
+      - [2.2.3.1 URI Syntax](#2231-uri-syntax)
+      - [2.2.3.2 Service Root (serviceRoot) and Path Prefix (pathPrefix)](#2232-service-root-serviceroot-and-path-prefix-pathprefix)
+      - [2.2.3.3 Resource Path (resourcePath)](#2233-resource-path-resourcepath)
+      - [2.2.3.4 Resource Path: Construction Rules](#2234-resource-path-construction-rules)
+      - [2.2.3.5 Resource Path: Semantics](#2235-resource-path-semantics)
+      - [2.2.3.6 Query Options](#2236-query-options)
+        - [2.2.3.6.1 System Query Options](#22361-system-query-options)
+          - [2.2.3.6.1.1 Common Expression Syntax](#223611-common-expression-syntax)
+            - [2.2.3.6.1.1.1 Expression Construction and Evaluation Rules](#2236111-expression-construction-and-evaluation-rules)
+            - [2.2.3.6.1.1.2 Operator Precedence](#2236112-operator-precedence)
+            - [2.2.3.6.1.1.3 Unary Numeric Promotions](#2236113-unary-numeric-promotions)
+            - [2.2.3.6.1.1.4 Binary Numeric Promotions](#2236114-binary-numeric-promotions)
+            - [2.2.3.6.1.1.5 Lifted Operators](#2236115-lifted-operators)
+            - [2.2.3.6.1.1.6 Numeric Promotions for Method Call Parameters](#2236116-numeric-promotions-for-method-call-parameters)
+            - [2.2.3.6.1.1.7 Geospatial Coordinate Transformations](#2236117-geospatial-coordinate-transformations)
+              - [2.2.3.6.1.1.7.1 Coordinate Transformations Within a Topology](#22361171-coordinate-transformations-within-a-topology)
+              - [2.2.3.6.1.1.7.2 Arbitrary Coordinate Transformations](#22361172-arbitrary-coordinate-transformations)
+            - [2.2.3.6.1.1.8 Geospatial Extension Methods](#2236118-geospatial-extension-methods)
+              - [2.2.3.6.1.1.8.1 Extending Type Support for Defined Functions](#22361181-extending-type-support-for-defined-functions)
+              - [2.2.3.6.1.1.8.2 Implementing One of the Functions Defined in [OGC-SFOLECOM]](#22361182-implementing-one-of-the-functions-defined-in-ogc-sfolecom)
+              - [2.2.3.6.1.1.8.3 Arbitrary Extensions](#22361183-arbitrary-extensions)
+          - [2.2.3.6.1.2 Evaluating System Query Options](#223612-evaluating-system-query-options)
+          - [2.2.3.6.1.3 Expand System Query Option ($expand)](#223613-expand-system-query-option-expand)
+          - [2.2.3.6.1.4 Filter System Query Option ($filter)](#223614-filter-system-query-option-filter)
+          - [2.2.3.6.1.5 Format System Query Option ($format)](#223615-format-system-query-option-format)
+          - [2.2.3.6.1.6 OrderBy System Query Option ($orderby)](#223616-orderby-system-query-option-orderby)
+          - [2.2.3.6.1.7 Skip System Query Option ($skip)](#223617-skip-system-query-option-skip)
+          - [2.2.3.6.1.8 Top System Query Option ($top)](#223618-top-system-query-option-top)
+          - [2.2.3.6.1.9 Skip Token System Query Option ($skiptoken)](#223619-skip-token-system-query-option-skiptoken)
+          - [2.2.3.6.1.10 InlineCount System Query Option ($inlinecount)](#2236110-inlinecount-system-query-option-inlinecount)
+          - [2.2.3.6.1.11 Select System Query Option ($select)](#2236111-select-system-query-option-select)
+          - [2.2.3.6.1.12 System Query Option: Additional Construction Rules](#2236112-system-query-option-additional-construction-rules)
+        - [2.2.3.6.2 Custom Query Options](#22362-custom-query-options)
+        - [2.2.3.6.3 Service Operation Parameters](#22363-service-operation-parameters)
+        - [2.2.3.6.4 Function Parameters](#22364-function-parameters)
+        - [2.2.3.6.5 Action Parameters](#22365-action-parameters)
+      - [2.2.3.7 Data Service Metadata](#2237-data-service-metadata)
+        - [2.2.3.7.1 Service Document](#22371-service-document)
+        - [2.2.3.7.2 Conceptual Schema Definition Language Document for Data Services](#22372-conceptual-schema-definition-language-document-for-data-services)
+          - [2.2.3.7.2.1 Conceptual Schema Definition Language Document Extensions for](#223721-conceptual-schema-definition-language-document-extensions-for)
+      - [2.2.3.8 URI Equivalence](#2238-uri-equivalence)
+      - [2.2.3.9 Canonical URIs](#2239-canonical-uris)
+    - [2.2.4 HTTP Methods](#224-http-methods)
+      - [2.2.4.1 PATCH/MERGE](#2241-patchmerge)
+    - [2.2.5 HTTP Header Fields](#225-http-header-fields)
+      - [2.2.5.1 Accept](#2251-accept)
+        - [2.2.5.1.1 application/atom+xml](#22511-applicationatomxml)
+        - [2.2.5.1.2 application/json](#22512-applicationjson)
+        - [2.2.5.1.3 application/json;odata=verbose](#22513-applicationjsonodataverbose)
+      - [2.2.5.2 Content-Type](#2252-content-type)
+      - [2.2.5.3 DataServiceVersion](#2253-dataserviceversion)
+      - [2.2.5.4 ETag](#2254-etag)
+      - [2.2.5.5 If-Match](#2255-if-match)
+      - [2.2.5.6 If-None-Match](#2256-if-none-match)
+      - [2.2.5.7 MaxDataServiceVersion](#2257-maxdataserviceversion)
+      - [2.2.5.8 X-HTTP-Method](#2258-x-http-method)
+      - [2.2.5.9 Prefer](#2259-prefer)
+      - [2.2.5.10 Preference-Applied](#22510-preference-applied)
+      - [2.2.5.11 DataServiceId](#22511-dataserviceid)
+    - [2.2.6 Common Payload Syntax](#226-common-payload-syntax)
+      - [2.2.6.3 for the Verbose JSON legacy representation.](#2263-for-the-verbose-json-legacy-representation)
+        - [2.2.6.3.1 Common Verbose JSON Serialization Rules for All EDM Constructs](#22631-common-verbose-json-serialization-rules-for-all-edm-constructs)
+        - [2.2.6.3.14 Edm.Geography](#226314-edmgeography)
+        - [2.2.6.3.15 Links and Subtypes](#226315-links-and-subtypes)
+        - [2.2.6.3.16 Annotations](#226316-annotations)
+      - [2.2.6.4 Raw Format](#2264-raw-format)
+        - [2.2.6.4.1 EDMSimpleType Property](#22641-edmsimpletype-property)
+      - [2.2.6.5 XML Format](#2265-xml-format)
+        - [2.2.6.5.1 Complex Type](#22651-complex-type)
+        - [2.2.6.5.2 Collection of Complex Type Instances](#22652-collection-of-complex-type-instances)
+        - [2.2.6.5.3 EDMSimpleType Property](#22653-edmsimpletype-property)
+        - [2.2.6.5.4 Collection of EDMSimpleType Values](#22654-collection-of-edmsimpletype-values)
+        - [2.2.6.5.5 Links](#22655-links)
+          - [2.2.6.5.5.1 InlineCount Representation (for Collections of Links)](#226551-inlinecount-representation-for-collections-of-links)
+          - [2.2.6.5.5.2 Next Page (for Collections of Links)](#226552-next-page-for-collections-of-links)
+        - [2.2.6.5.6 Collection of Complex Type](#22656-collection-of-complex-type)
+        - [2.2.6.5.7 Collection of EDMSimpleType](#22657-collection-of-edmsimpletype)
+      - [2.2.6.6 Preferred OData 3.0 JSON Format](#2266-preferred-odata-30-json-format)
+    - [2.2.7 Request Types](#227-request-types)
+      - [2.2.7.1 Insert Request Types](#2271-insert-request-types)
+        - [2.2.7.1.1 InsertEntity Request](#22711-insertentity-request)
+          - [2.2.7.1.1.1 Examples](#227111-examples)
+        - [2.2.7.1.2 InsertLink Request](#22712-insertlink-request)
+        - [2.2.7.1.3 InsertMediaResource Request](#22713-insertmediaresource-request)
+      - [2.2.7.2 Retrieve Request Types](#2272-retrieve-request-types)
+        - [2.2.7.2.1 RetrieveEntitySet Request](#22721-retrieveentityset-request)
+        - [2.2.7.2.2 RetrieveEntity Request](#22722-retrieveentity-request)
+        - [2.2.7.2.3 RetrieveComplexType Request](#22723-retrievecomplextype-request)
+        - [2.2.7.2.4 RetrievePrimitiveProperty Request](#22724-retrieveprimitiveproperty-request)
+        - [2.2.7.2.5 RetrieveValue Request](#22725-retrievevalue-request)
+        - [2.2.7.2.6 RetrieveCollectionProperty Request](#22726-retrievecollectionproperty-request)
+        - [2.2.7.2.7 RetrieveServiceMetadata Request](#22727-retrieveservicemetadata-request)
+        - [2.2.7.2.8 RetrieveServiceDocument Request](#22728-retrieveservicedocument-request)
+        - [2.2.7.2.9 RetrieveLink Request](#22729-retrievelink-request)
+        - [2.2.7.2.10 RetrieveCount Request](#227210-retrievecount-request)
+        - [2.2.7.2.11 Retrieve Request Containing a Customizable Feed Mapping](#227211-retrieve-request-containing-a-customizable-feed-mapping)
+        - [2.2.7.2.12 RetrieveMediaResource Request](#227212-retrievemediaresource-request)
+      - [2.2.7.3 Update Request Types](#2273-update-request-types)
+        - [2.2.7.3.1 UpdateEntity Request](#22731-updateentity-request)
+          - [2.2.7.3.1.1 Example](#227311-example)
+        - [2.2.7.3.2 UpdateComplexType Request](#22732-updatecomplextype-request)
+        - [2.2.7.3.3 UpdatePrimitiveProperty Request](#22733-updateprimitiveproperty-request)
+        - [2.2.7.3.4 UpdateCollectionProperty Request](#22734-updatecollectionproperty-request)
+        - [2.2.7.3.5 UpdateValue Request](#22735-updatevalue-request)
+        - [2.2.7.3.6 UpdateLink Request](#22736-updatelink-request)
+        - [2.2.7.3.7 UpdateMediaResource Request](#22737-updatemediaresource-request)
+        - [2.2.7.3.8 Update Request Containing a Customizable Feed Property Mapping](#22738-update-request-containing-a-customizable-feed-property-mapping)
+      - [2.2.7.4 Delete Request Types](#2274-delete-request-types)
+        - [2.2.7.4.1 DeleteEntity Request](#22741-deleteentity-request)
+        - [2.2.7.4.2 DeleteLink Request](#22742-deletelink-request)
+        - [2.2.7.4.3 DeleteValue Request](#22743-deletevalue-request)
+      - [2.2.7.5 Invoke Request Types](#2275-invoke-request-types)
+        - [2.2.7.5.1 Invoke Action Request](#22751-invoke-action-request)
+        - [2.2.7.5.2 Invoke Function Request](#22752-invoke-function-request)
+      - [2.2.7.6 Batch Request](#2276-batch-request)
+        - [2.2.7.6.1 Change Set Syntax](#22761-change-set-syntax)
+          - [2.2.7.6.1.1 Referencing Requests in a Change Set](#227611-referencing-requests-in-a-change-set)
+        - [2.2.7.6.2 Query Operation Syntax](#22762-query-operation-syntax)
+        - [2.2.7.6.3 HTTP Request Restrictions](#22763-http-request-restrictions)
+        - [2.2.7.6.4 Batch Request Syntax](#22764-batch-request-syntax)
+        - [2.2.7.6.5 Example Batch Request](#22765-example-batch-request)
+        - [2.2.7.6.6 Batch Responses](#22766-batch-responses)
+        - [2.2.7.6.7 Batch Response Syntax](#22767-batch-response-syntax)
+        - [2.2.7.6.8 Example Batch Response](#22768-example-batch-response)
+      - [2.2.7.7 Tunneled Requests](#2277-tunneled-requests)
+    - [2.2.8 Response Types](#228-response-types)
+      - [2.2.8.1 Error Response](#2281-error-response)
+        - [2.2.8.1.1 XML Error Response](#22811-xml-error-response)
+        - [2.2.8.1.2 Verbose JSON Error Response](#22812-verbose-json-error-response)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Common Rules for All Requests](#3141-common-rules-for-all-requests)
+      - [3.1.4.2 Request to Insert Resources](#3142-request-to-insert-resources)
+        - [3.1.4.2.1 Sending an InsertEntity Request](#31421-sending-an-insertentity-request)
+        - [3.1.4.2.2 Sending an InsertLink Request](#31422-sending-an-insertlink-request)
+      - [3.1.4.3 Request to Retrieve Resources](#3143-request-to-retrieve-resources)
+        - [3.1.4.3.1 Common Rules for Sending Retrieve Requests](#31431-common-rules-for-sending-retrieve-requests)
+      - [3.1.4.4 Request to Update Resources](#3144-request-to-update-resources)
+        - [3.1.4.4.1 Common Rules for Sending Update Requests](#31441-common-rules-for-sending-update-requests)
+      - [3.1.4.5 Request to Delete Resources](#3145-request-to-delete-resources)
+        - [3.1.4.5.1 Common Rules for Sending Delete Requests](#31451-common-rules-for-sending-delete-requests)
+      - [3.1.4.6 Request to Invoke a Service Operation](#3146-request-to-invoke-a-service-operation)
+      - [3.1.4.7 Request to Send a Batch of Operations](#3147-request-to-send-a-batch-of-operations)
+      - [3.1.4.8 Request to Invoke an Action](#3148-request-to-invoke-an-action)
+      - [3.1.4.9 Request to Invoke a Function](#3149-request-to-invoke-a-function)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Common Rules for Receiving Responses from Data Service Requests](#3151-common-rules-for-receiving-responses-from-data-service-requests)
+      - [3.1.5.2 Responses from Insert Requests](#3152-responses-from-insert-requests)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Common Rules for Receiving All Data Service Requests](#3251-common-rules-for-receiving-all-data-service-requests)
+      - [3.2.5.2 Common Rules for Executing Received Insert, Update, or Delete Data Service](#3252-common-rules-for-executing-received-insert-update-or-delete-data-service)
+        - [3.2.5.2.1 Common Rules for Executing Requests Containing a Customizable Feeds](#32521-common-rules-for-executing-requests-containing-a-customizable-feeds)
+      - [3.2.5.3 Executing a Received Insert Request](#3253-executing-a-received-insert-request)
+        - [3.2.5.3.1 Executing a Received InsertEntity Request](#32531-executing-a-received-insertentity-request)
+        - [3.2.5.3.2 Executing a Received InsertLink Request](#32532-executing-a-received-insertlink-request)
+        - [3.2.5.3.3 Executing a Received InsertMediaResource Request](#32533-executing-a-received-insertmediaresource-request)
+      - [3.2.5.4 Executing a Received Retrieve Request](#3254-executing-a-received-retrieve-request)
+        - [3.2.5.4.1 Executing a Received RetrieveEntitySet Request](#32541-executing-a-received-retrieveentityset-request)
+        - [3.2.5.4.2 Executing a Received RetrieveValue Request](#32542-executing-a-received-retrievevalue-request)
+        - [3.2.5.4.3 Executing a Received RetrieveCount Request](#32543-executing-a-received-retrievecount-request)
+      - [3.2.5.5 Executing a Received Update Request](#3255-executing-a-received-update-request)
+        - [3.2.5.5.1 Executing a Received UpdateEntity Request](#32551-executing-a-received-updateentity-request)
+      - [3.2.5.6 Executing a Received Delete Request](#3256-executing-a-received-delete-request)
+      - [3.2.5.7 Executing a Received Invoke Request](#3257-executing-a-received-invoke-request)
+      - [3.2.5.8 Executing a Received Batch Request](#3258-executing-a-received-batch-request)
+      - [3.2.5.9 Executing a Received Invoke Action Request](#3259-executing-a-received-invoke-action-request)
+      - [3.2.5.10 Executing a Received Invoke Function Request](#32510-executing-a-received-invoke-function-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+    - [3.2.8 Common Response Codes](#328-common-response-codes)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Insert a New Entity](#41-insert-a-new-entity)
+  - [4.2 Retrieve Resources](#42-retrieve-resources)
+    - [4.2.1 Retrieve a Collection of Entities](#421-retrieve-a-collection-of-entities)
+      - [4.2.1.1 Retrieve a Collection of Entities by Using the AtomPub Format](#4211-retrieve-a-collection-of-entities-by-using-the-atompub-format)
+      - [4.2.1.2 Retrieve a Collection of Entities by Using the Verbose JSON Format](#4212-retrieve-a-collection-of-entities-by-using-the-verbose-json-format)
+      - [4.2.1.3 Retrieve a Partial Collection of Entities by Using the AtomPub Format](#4213-retrieve-a-partial-collection-of-entities-by-using-the-atompub-format)
+      - [4.2.1.4 Retrieve a Partial Collection of Entities by Using the Verbose JSON Format](#4214-retrieve-a-partial-collection-of-entities-by-using-the-verbose-json-format)
+      - [4.2.1.5 Retrieve a Collection of Entities with an Inline Count by Using the AtomPub](#4215-retrieve-a-collection-of-entities-with-an-inline-count-by-using-the-atompub)
+      - [4.2.1.6 Retrieve a Collection of Entities with an Inline Count by Using the Verbose](#4216-retrieve-a-collection-of-entities-with-an-inline-count-by-using-the-verbose)
+      - [4.2.1.7 Retrieve a Collection of Entities with Named Resource Streams by Using the](#4217-retrieve-a-collection-of-entities-with-named-resource-streams-by-using-the)
+      - [4.2.1.8 Retrieve a Collection of Entities with Named Resource Streams by Using the](#4218-retrieve-a-collection-of-entities-with-named-resource-streams-by-using-the)
+    - [4.2.2 Retrieve a Single Entity by Using the AtomPub Format](#422-retrieve-a-single-entity-by-using-the-atompub-format)
+      - [4.2.2.1 Retrieve a Single Entity with a Mapped Property by Using the AtomPub Format](#4221-retrieve-a-single-entity-with-a-mapped-property-by-using-the-atompub-format)
+    - [4.2.3 Retrieve a Single Entity by Using the Verbose JSON Format](#423-retrieve-a-single-entity-by-using-the-verbose-json-format)
+    - [4.2.4 Retrieve a Single Entity and Its Directly Related Entities by Using the AtomPub](#424-retrieve-a-single-entity-and-its-directly-related-entities-by-using-the-atompub)
+    - [4.2.5 Retrieve a Single Entity and Its Directly Related Entities by Using the Verbose](#425-retrieve-a-single-entity-and-its-directly-related-entities-by-using-the-verbose)
+    - [4.2.6 Retrieve a Data Service's Metadata Document (CSDL)](#426-retrieve-a-data-services-metadata-document-csdl)
+    - [4.2.7 Retrieve the Count of a Collection of Entities](#427-retrieve-the-count-of-a-collection-of-entities)
+    - [4.2.8 Retrieve a Single Entity Exposing an Action by Using the AtomPub Format](#428-retrieve-a-single-entity-exposing-an-action-by-using-the-atompub-format)
+    - [4.2.9 Retrieve a Single Entity Exposing an Action by Using the Verbose JSON Format](#429-retrieve-a-single-entity-exposing-an-action-by-using-the-verbose-json-format)
+    - [4.2.10 Retrieve a Single Entity Exposing a Function by Using the AtomPub Format](#4210-retrieve-a-single-entity-exposing-a-function-by-using-the-atompub-format)
+    - [4.2.11 Retrieve a Single Entity Exposing a Function by Using the Verbose JSON Format](#4211-retrieve-a-single-entity-exposing-a-function-by-using-the-verbose-json-format)
+  - [4.3 Update an Existing Entity](#43-update-an-existing-entity)
+    - [4.3.1 Replace-Based Update by Using the AtomPub Format](#431-replace-based-update-by-using-the-atompub-format)
+    - [4.3.2 Replace-Based Update by Using the Verbose JSON Format](#432-replace-based-update-by-using-the-verbose-json-format)
+    - [4.3.3 Merge-Based Update by Using the AtomPub Format](#433-merge-based-update-by-using-the-atompub-format)
+    - [4.3.4 Merge-Based Update by Using the Verbose JSON Format](#434-merge-based-update-by-using-the-verbose-json-format)
+  - [4.4 Update the Relationship Between Two Entities](#44-update-the-relationship-between-two-entities)
+    - [4.4.1 Update a Relationship by Using the AtomPub Format](#441-update-a-relationship-by-using-the-atompub-format)
+    - [4.4.2 Update a Relationship by Using the Verbose JSON Format](#442-update-a-relationship-by-using-the-verbose-json-format)
+    - [4.4.3 Delete an Existing Entity](#443-delete-an-existing-entity)
+  - [4.5 Batch Requests](#45-batch-requests)
+  - [4.6 Working with Media Resources (BLOBs)](#46-working-with-media-resources-blobs)
+    - [4.6.1 Insert a New Media Resource](#461-insert-a-new-media-resource)
+    - [4.6.2 Update a Media Resource](#462-update-a-media-resource)
+    - [4.6.3 Query an Existing Media Resource](#463-query-an-existing-media-resource)
+  - [4.7 Working with Named Resource Streams Instances (BLOBs)](#47-working-with-named-resource-streams-instances-blobs)
+    - [4.7.1 Retrieving a Named Resource Stream Instance](#471-retrieving-a-named-resource-stream-instance)
+    - [4.7.2 Updating a Named Resource Stream Instance](#472-updating-a-named-resource-stream-instance)
+    - [4.7.3 Unsupported Operations](#473-unsupported-operations)
+      - [4.7.3.1 Inserting a New Named Resource Stream Instance](#4731-inserting-a-new-named-resource-stream-instance)
+      - [4.7.3.2 Deleting a New Named Resource Stream Instance](#4732-deleting-a-new-named-resource-stream-instance)
+  - [4.8 Invoking an Action](#48-invoking-an-action)
+  - [4.9 Invoking a Function](#49-invoking-a-function)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Sample Entity Data Model and CSDL Document](#6-appendix-a-sample-entity-data-model-and-csdl-document)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Open Data (OData) protocol enables applications that use common web technologies, like Atom
 Publishing Protocol (AtomPub), JavaScript Object Notation (JSON), and XML, to expose data
@@ -1210,7 +679,7 @@ OData 1.0.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1267,7 +736,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-create retrieve update delete (CRUD): The four basic functions of persistent storage. The "C"
+
+create retrieve update delete (CRUD): The four basic functions of persistent storage. The "C"
 stands for create, the "R" for retrieve, the "U" for update, and the "D" for delete. CRUD is used
 to denote these conceptual actions and does not imply the associated meaning in a particular
 technology area (such as in databases, file systems, and so on) unless that associated meaning
@@ -1347,7 +817,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-primitive property: A property of type EDMSimpleType [MC-CSDL] that is defined on an
+
+primitive property: A property of type EDMSimpleType [MC-CSDL] that is defined on an
 
 EntityType.
 
@@ -1392,14 +863,14 @@ names but come from different sources. For more information, see [XMLNS-2ED].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1420,7 +891,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[IEEE754-2008] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-2008, August
+
+[IEEE754-2008] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-2008, August
 2008, http://standards.ieee.org/findstds/standard/754-2008.html
 
 Note There is a charge to download the specification.
@@ -1488,7 +960,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[RFC5789] Dusseault, L., and Snell, J., "PATCH Method for HTTP", RFC 5789, March 2010,
+
+[RFC5789] Dusseault, L., and Snell, J., "PATCH Method for HTTP", RFC 5789, March 2010,
 http://www.rfc-editor.org/rfc/rfc5789.txt
 
 [XML-BASE] Marsh, J., and Tobin, R., Eds., "XML Base (Second Edition)", W3C Recommendation,
@@ -1501,14 +974,14 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 Part 1: Structures Second Edition", W3C Recommendation, October 2004,
 https://www.w3.org/TR/2004/REC-xmlschema-1-20041028/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
 [REST] Fielding, R., "Architectural Styles and the Design of Network-based Software Architectures",
 2000, http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
 
-1.3  Overview
+### 1.3 Overview
 
 The OData protocol is used to create Representational State Transfer (REST)-based [REST] data
 services which enable resources, that are identified by using Uniform Resource Identifiers
@@ -1537,7 +1010,7 @@ mid-tier service technology for applications, such as Asynchronous JavaScript an
 applications, Rich Interactive Applications (RIA), and other applications that operate against data that
 is stored across Internet trust boundaries.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This document defines version 1.0, version 2.0, and version 3.0 of the Open Data (OData) protocol.
 The OData protocol is based on the AtomPub format [RFC5023], which in turn, relies on HTTP
@@ -1552,7 +1025,8 @@ Release: March 13, 2019
 
 14 / 290
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-ODATA].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1562,7 +1036,7 @@ JavaScript Object Notation (JSON) format [RFC4627].
 
 Figure 1: OData relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The OData protocol does not provide a mechanism for a client to discover the existence and location of
 arbitrary data services (of the server). It is a prerequisite that the client obtain a URI to the server
@@ -1573,7 +1047,7 @@ authorization scheme. Implementers of the protocol ought to review the recommend
 prerequisites in Security Considerations for Implementers (section 5.1) of this document and in
 [RFC5023] section 15.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 AtomPub, as specified in [RFC5023], in combination with the OData protocol, is appropriate for use in
 Web services that need a uniform, flexible, general purpose interface for exposing create retrieve
@@ -1581,7 +1055,7 @@ update delete (CRUD) operations on a data model to clients. It is less suited to
 are primarily method-oriented or in which data operations are constrained to certain prescribed
 patterns.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas: <1>
 
@@ -1595,7 +1069,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Protocol Versions: Clients specify the protocol version by using the
+
+Protocol Versions: Clients specify the protocol version by using the
 DataServiceVersion (section 2.2.5.3) and MaxDataServiceVersion (section 2.2.5.7) request
 headers. Servers specify the protocol version by using the DataServiceVersion (section 2.2.5.3)
 response header.
@@ -1648,7 +1123,7 @@ response (that is, the value is not larger than the value of the
 MaxDataServiceVersion (section 2.2.5.7) header sent in the associated request). The value of the
 headeris the lowest version of the protocol the server can use to fulfill the request.
 
-1.7.1  OData 2.0 Version-Specific Summary
+#### 1.7.1 OData 2.0 Version-Specific Summary
 
 Following is a summary of the protocol constructs that are defined in this document that apply to
 OData 2.0 and OData 3.0. This section is structured by protocol feature, which is described and lists
@@ -1662,7 +1137,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Partial sets of entities: Servers responds to RetrieveEntitySet (section 2.2.7.2.1) GET requests
+
+Partial sets of entities: Servers responds to RetrieveEntitySet (section 2.2.7.2.1) GET requests
 with a response body containing a representation of a partial list of the entities that are identified
 by the request URI and a link to the next partial list.
 
@@ -1732,7 +1208,8 @@ Release: March 13, 2019
 
 17 / 290
 
-  2.2.3.6.1 System Query Options
+
+  2.2.3.6.1 System Query Options
 
   2.2.3.6.1.2 Evaluating System Query Options
 
@@ -1776,7 +1253,7 @@ been enhanced to allow for the representation of additional collection-level met
 
   2.2.6.3 JavaScript Object Notation (JSON) Format
 
-1.7.2  OData 3.0 Version-Specific Summary
+#### 1.7.2 OData 3.0 Version-Specific Summary
 
 Following is a summary of the protocol constructs that are defined in this document that apply to
 OData 3.0. This section is structured by protocol feature, which is briefly described, and lists the
@@ -1803,7 +1280,8 @@ Release: March 13, 2019
 
 18 / 290
 
-  2.2.6.2.9 Collection Property
+
+  2.2.6.2.9 Collection Property
 
   2.2.6.2.9.1 Collection Property of Complex Type
 
@@ -1874,7 +1352,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  2.2.6.3.6 Navigation Property
+
+  2.2.6.3.6 Navigation Property
 
   2.2.6.3.9 Deferred Content
 
@@ -1946,7 +1425,8 @@ Release: March 13, 2019
 
 20 / 290
 
-  2.2.7.3.5 UpdateValue Request
+
+  2.2.7.3.5 UpdateValue Request
 
   2.2.7.3.6 UpdateLink Request
 
@@ -2018,7 +1498,8 @@ Release: March 13, 2019
 
 21 / 290
 
-Actions and functions: Actions provide a way to define and invoke side effecting operations that
+
+Actions and functions: Actions provide a way to define and invoke side effecting operations that
 are associated with an entity or a collection of entities. Functions provide a way to define and
 invoke operations that are free of side effects.
 
@@ -2089,7 +1570,8 @@ Release: March 13, 2019
 
 22 / 290
 
-Containment: Containment provides a way to model situations in which an EntityType is
+
+Containment: Containment provides a way to model situations in which an EntityType is
 contained by another EntityType. This implies constraints on how to access, create, and update
 the contained EntityType.
 
@@ -2110,7 +1592,7 @@ more closely resembles custom JSON formats.
 
   2.2.6 Common Payload Syntax
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The AtomPub-based messages defined in Messages (section 2) can be extended by adding additional
 elements or attributes. Such extensions cannot be in any of the namespaces that are listed in
@@ -2118,7 +1600,7 @@ Common Serialization Rules for XML-based Formats (section 2.2.6.1).
 
 Additional extensibility rules are defined in [RFC5023] section 6.2.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -2129,9 +1611,10 @@ Release: March 13, 2019
 
 23 / 290
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The OData protocol that is defined in this specification and the Atom Publishing Protocol (AtomPub)
 [RFC5023] both use HTTP (as specified in [RFC2616]) as the transport layer. HTTP operations are
@@ -2146,7 +1629,7 @@ This specification does not prescribe a mechanism to secure (authenticate, encry
 AtomPub communications. For security recommendations which relate to the protocol's transport
 layer, see [RFC5023] section 15.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section includes the following:
 
@@ -2183,7 +1666,7 @@ Note  All the example URIs and message payloads used in this section and through
 of this document are based on the sample conceptual schema definition language (CSDL)
 document in Appendix A: Sample Entity Data Model and CSDL Document (section 6).
 
-2.2.1  Abstract Data Model
+#### 2.2.1 Abstract Data Model
 
 This section describes a data modeling vocabulary that a server uses to describe the data it exposes.
 This modeling vocabulary is also used in subsequent sections of this document to describe data as
@@ -2195,7 +1678,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-exchanged by this document. The use of this modeling vocabulary does not mandate a particular data
+
+exchanged by this document. The use of this modeling vocabulary does not mandate a particular data
 persistence format or implementation on the server, as long as the server's interface is consistent with
 the OData protocol.
 
@@ -2277,7 +1761,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Entity Data Model
+
+Entity Data Model
 
 FunctionImport with Binding equals true and IsSideEffecting equals
 false
@@ -2289,7 +1774,7 @@ m:function element
 
 Table: Entity Data Model Concepts Mapped to AtomPub Resource Types
 
-2.2.1.1  Named Resource Stream
+##### 2.2.1.1 Named Resource Stream
 
 Applies to the OData 3.0 protocol
 
@@ -2305,7 +1790,7 @@ stream instance.
 
 Named resource streams are supported only in the OData 3.0 protocol.
 
-2.2.1.2  Named Resource Stream Instance
+##### 2.2.1.2 Named Resource Stream Instance
 
 Applies to the OData 3.0 protocol
 
@@ -2333,7 +1818,7 @@ request.
 
 with the named resource stream instance ETag (section 2.2.5.4).
 
-2.2.1.3  Actions
+##### 2.2.1.3 Actions
 
 Applies to the OData 3.0 protocol
 
@@ -2354,7 +1839,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Might have IsBindable set to "true".
+
+  Might have IsBindable set to "true".
 
   Has a first parameter with a type that is either an EntityType or a collection of an EntityType if
 
@@ -2384,7 +1870,7 @@ annotations attribute defaults to "false".
 
 same Name. This means that actions are not to have overloads.
 
-2.2.1.3.1 Action Metadata URL
+###### 2.2.1.3.1 Action Metadata URL
 
 Applies to the OData 3.0 protocol
 
@@ -2437,9 +1923,10 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Listing: ABNF Rule for Constructing the Action Metadata URL
 
-2.2.1.4  Functions
+Listing: ABNF Rule for Constructing the Action Metadata URL
+
+##### 2.2.1.4 Functions
 
 Applies to the OData 3.0 protocol
 
@@ -2481,7 +1968,7 @@ element MUST have a different number of parameters or, if the number of paramete
 same, the ordered set of parameter types MUST be different. If the unordered sets of parameters
 types are the same, each unordered set of parameter names MUST differ.
 
-2.2.1.4.1 Function Metadata URL
+###### 2.2.1.4.1 Function Metadata URL
 
 Applies to the OData 3.0 protocol
 
@@ -2510,7 +1997,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- entityContainer       = ; section 2.2.1.3.1
+
+ entityContainer       = ; section 2.2.1.3.1
                        ; the name of an Entity Container in the EDM model
 
  functionName          = *pchar ; section 3.3 of [RFC3986]
@@ -2526,7 +2014,7 @@ Release: March 13, 2019
 
 Listing: ABNF Rule for Constructing the Function Metadata URL
 
-2.2.1.5  Service Operations
+##### 2.2.1.5 Service Operations
 
 Applies to the OData 3.0 protocol
 
@@ -2541,7 +2029,7 @@ actions or functions in OData 3.0.
 
 Service operations are described in detail in sections 2.2.7.5. and 2.2.3.7.2.
 
-2.2.1.6  Containment
+##### 2.2.1.6 Containment
 
 Applies to the OData 3.0 protocol
 
@@ -2577,7 +2065,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-For recursive containment, the End of the containment AssociationType that is specified by the
+
+For recursive containment, the End of the containment AssociationType that is specified by the
 FromRole attribute of the containment NavigationProperty MUST have a multiplicity of '0..1'.
 Additionally, the End specified by the ToRole MUST NOT have a multiplicity of '1' because this would
 lead to endless recursion.
@@ -2612,7 +2101,7 @@ contained entity can still be created either by using a "deep insert" (section 2
 both the container and the contained entities in one request or by invoking an action (section 4.8) that
 creates the contained entity.
 
-2.2.2  Abstract Type System
+#### 2.2.2 Abstract Type System
 
 The abstract type system that is used to define the primitive types that are supported by a data
 service is defined in [MC-CSDL] (section 2.2.1). When the value of a primitive type needs to be
@@ -2646,7 +2135,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- nanInfinity       =  nan / negativeInfinity / positiveInfinity
+
+ nanInfinity       =  nan / negativeInfinity / positiveInfinity
  sign              =  "-" / ""
  DIGIT             =  ; see [RFC5234] Appendix B.1 Core Rules
  UTF8-char         =  ; see [RFC3629]
@@ -2733,7 +2223,8 @@ dateTimeLiteral
 
 31 / 290
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in URIs and
@@ -2818,7 +2309,8 @@ expDecimal     = sign
 
 32 / 290
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in URIs and
@@ -2904,7 +2396,8 @@ Release: March 13, 2019
 
 33 / 290
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in URIs and
@@ -3005,7 +2498,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in URIs and
@@ -3097,7 +2591,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in URIs and
@@ -3191,7 +2686,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in URIs and
@@ -3298,7 +2794,8 @@ Release: March 13, 2019
 
 37 / 290
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in URIs and
@@ -3391,7 +2888,7 @@ N/A
 
 Table: Literal Form of Entity Data Model Primitive Types
 
-2.2.3  URI Format: Resource Addressing Rules
+#### 2.2.3 URI Format: Resource Addressing Rules
 
 The Atom Publishing (AtomPub) Protocol specifies operations for publishing and editing resources by
 using HTTP, but does not constrain the form of the URIs, as specified in [RFC3986], that are used to
@@ -3412,7 +2909,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-subsections defines a set of recommended, but not required, rules for constructing a URI or IRI to
+
+subsections defines a set of recommended, but not required, rules for constructing a URI or IRI to
 identify the various parts of the data and metadata in an EDM.
 
 Servers and clients MAY use alternate URI path construction rules because HTTP [RFC2616] specifies
@@ -3429,7 +2927,7 @@ Before an IRI can be used by an HTTP request, the IRI is first converted to a UR
 algorithm defined in [RFC3987] section 3.1. For the remainder of this document, the term URI is used
 to refer to a URI or an IRI that has been converted to a URI.
 
-2.2.3.1  URI Syntax
+##### 2.2.3.1 URI Syntax
 
 The Augmented BNF for URI Construction listing in this section specifies that a data service URI (see
 dataSvcAbs-URI) is comprised of four sections: the scheme [RFC3986], a data service root or path
@@ -3483,7 +2981,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                       / actionCall
+
+                       / actionCall
 
  paren               = "()"
 
@@ -3559,7 +3058,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- navPath-options     = [
+
+ navPath-options     = [
                          navPath-np /
                          propertyPath /
                          propertyPath-ct /
@@ -3635,7 +3135,8 @@ Release: March 13, 2019
 
 41 / 290
 
-                     "time" |
+
+                     "time" |
                      "datetimeoffset" |
                      "stream" |
                      concreteSpatialTypeName |
@@ -3710,7 +3211,8 @@ Release: March 13, 2019
 
 42 / 290
 
- ;Note: The semantic meaning, relationship to Entity Data Model
+
+ ;Note: The semantic meaning, relationship to Entity Data Model
  ;      (EDM) constructs and additional URI construction
  ;      constraints for the following grammar rules are further
  ;      defined in (section 2.2.3.4) and (section 2.2.3.5)
@@ -3787,7 +3289,8 @@ Release: March 13, 2019
 
 43 / 290
 
-      ; the name of a Function Import which returns a collection
+
+      ; the name of a Function Import which returns a collection
       ; of primitive type (see section 2.2.2) values.  Each member
       ; of the collection is of the same type.
 
@@ -3800,7 +3303,7 @@ Release: March 13, 2019
 
 Listing: Augmented BNF for URI Construction
 
-2.2.3.2  Service Root (serviceRoot) and Path Prefix (pathPrefix)
+##### 2.2.3.2 Service Root (serviceRoot) and Path Prefix (pathPrefix)
 
 The serviceRoot section of a data service URI represents the location of the root of a data service.
 The resource that is identified by this URI MUST be an AtomPub Service Document, as specified in
@@ -3821,7 +3324,7 @@ Subsequent examples in this document use a URI scheme of http://. This is done t
 complete example. However, the URI-addressing rules defined in this document do not mandate that
 the http:// scheme be used to address elements on an Entity Data Model (EDM).
 
-2.2.3.3  Resource Path (resourcePath)
+##### 2.2.3.3 Resource Path (resourcePath)
 
 This section describes the construction rules for the resource path part of a data service URI. These
 rules dictate how the names of an EntitySet, EntityType, entity NavigationProperty, Member, named
@@ -3847,7 +3350,8 @@ Release: March 13, 2019
 
 44 / 290
 
-2.2.3.4  Resource Path: Construction Rules
+
+##### 2.2.3.4 Resource Path: Construction Rules
 
 This section further defines grammar rules noted in the Augmented BNF for URI Construction listing in
 URI Syntax (section 2.2.3.1) which map directly to constructs defined in an Entity Data Model
@@ -3915,7 +3419,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- http://<Any iauthority [RFC3987] and optional URI path segments>/<Entity Container
+
+ http://<Any iauthority [RFC3987] and optional URI path segments>/<Entity Container
 name>.<Entity Set name>
 
 entityType: The name of an EntityType in the EDM associated with the data service. The
@@ -3979,7 +3484,8 @@ Release: March 13, 2019
 
 46 / 290
 
-entityNavProperty-et: This rule is the same as entityNavProperty, but with the added
+
+entityNavProperty-et: This rule is the same as entityNavProperty, but with the added
 constraint that the NavigationProperty MUST identify an EntityType instance.
 
 entityNamedStream: Identifies the name of a property on an EntityType that is of type
@@ -4051,7 +3557,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.3.5  Resource Path: Semantics
+
+##### 2.2.3.5 Resource Path: Semantics
 
 This section describes the semantics for a base set of data service URIs. From these base cases, the
 semantics of longer URIs are defined by composing the rules below.
@@ -4123,7 +3630,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 URI3 = scheme serviceRoot "/" entitySet "(" keyPredicate ")/" entityComplexProperty
 
@@ -4193,7 +3701,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- Identifies: Same as preceding, but identifies the value of the property free of any
+
+ Identifies: Same as preceding, but identifies the value of the property free of any
 metadata or surrounding markup.
 
 
@@ -4261,7 +3770,8 @@ Release: March 13, 2019
 
 50 / 290
 
-
+
+
 
 URI9 = scheme serviceRoot "/$batch"
 
@@ -4339,7 +3849,8 @@ Release: March 13, 2019
 
 51 / 290
 
-If no FunctionImport exists in the EDM associated with the data service that has the same name
+
+If no FunctionImport exists in the EDM associated with the data service that has the same name
 as specified by the serviceOperation-prim rule, this URI MUST represent a resource that does
 not exist in the data model.
 
@@ -4413,7 +3924,8 @@ Release: March 13, 2019
 
 52 / 290
 
-The named resource stream segment is supported only in the OData 3.0 protocol.
+
+The named resource stream segment is supported only in the OData 3.0 protocol.
 
 
 
@@ -4487,7 +3999,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  entityComplexProperty
+
+  entityComplexProperty
 
   entityProperty
 
@@ -4558,7 +4071,8 @@ Release: March 13, 2019
 
 54 / 290
 
-Examples:
+
+Examples:
 
  URI: http://host/service.svc/TopTenCustomersInCity(city='Seattle')
  Identifies: Results of evaluating the TopTenCustomersInCity function with a parameter
@@ -4627,7 +4141,8 @@ Release: March 13, 2019
 
 55 / 290
 
-A functionCall—partiallyBound segment is also the only segment that can be appended to a
+
+A functionCall—partiallyBound segment is also the only segment that can be appended to a
 resource path that represents a collection of primitive types or ComplexTypes.
 
 This functionCall-partiallyBound segment MAY also be applied to arbitrary navPaths.
@@ -4684,7 +4199,7 @@ Parameters (section 2.2.3.6.5)).
 
 Listing: Resource Path Semantics
 
-2.2.3.6  Query Options
+##### 2.2.3.6 Query Options
 
 As described in section 2.2.3, all data services MUST follow the query string parsing and construction
 rules as defined in this section and its subsections.
@@ -4699,7 +4214,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-(2.2.3.6.3). System query options and service operation parameters MUST conform to the following
+
+(2.2.3.6.3). System query options and service operation parameters MUST conform to the following
 rules:
 
   Any number of the query options MAY<5> be specified in a data service URI.
@@ -4716,7 +4232,7 @@ Options (section 2.2.3.6.1).
 
   Custom Query Options (section 2.2.3.6.2) MUST NOT begin with a "$".
 
-2.2.3.6.1 System Query Options
+###### 2.2.3.6.1 System Query Options
 
 System query options in a data service URI, defined in URI Format: Resource Addressing
 Rules (section 2.2.3) are directives that are defined by this document that a client MAY specify to
@@ -4801,7 +4317,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-System
+
+System
 query
 option
 
@@ -4969,7 +4486,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-$expand  $filter  $format  $orderby  $skip  $top  $skiptoken
+
+$expand  $filter  $format  $orderby  $skip  $top  $skiptoken
 
 $inlinecount
 (Note 3)
@@ -5165,7 +4683,7 @@ entities.
 Note 3: The $inlinecount and $select system query options are supported in the OData 2.0 and
 OData 3.0 protocols.
 
-2.2.3.6.1.1  Common Expression Syntax
+###### 2.2.3.6.1.1 Common Expression Syntax
 
 The Filter and OrderBy query options are specified in the data service URI via the common
 expression syntax defined in following Augmented BNF for query option expressions listing.
@@ -5179,7 +4697,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-              parenExpression / literalExpression / addExpression /
+
+              parenExpression / literalExpression / addExpression /
               subExpression / mulExpression / divExpression /
               modExpression /  negateExpression / memberExpression
               / firstMemberExpression / castExpression / functionCallExpression ) [WSP]
@@ -5256,7 +4775,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                         entityCollectionProperty
+
+                         entityCollectionProperty
                          ; section 2.2.3.1
 
  firstBoolPrimitiveMemberExpression = [namespaceQualifiedEntityType "/"]entityProperty
@@ -5333,7 +4853,8 @@ Release: March 13, 2019
 
 61 / 290
 
-                                "(" [WSP] commonexpression [WSP]
+
+                                "(" [WSP] commonexpression [WSP]
                                 "," [WSP] commonexpression  [WSP] ")"
 
  indexOfMethodCallExpression = "indexof" [WSP]
@@ -5410,7 +4931,8 @@ Release: March 13, 2019
 
 62 / 290
 
-                               "(" [WSP] commonexpression [WSP] ")"
+
+                               "(" [WSP] commonexpression [WSP] ")"
 
  distanceMethodCallExpression = "geo.distance" [WSP]
                                 "(" [WSP] commonexpression [WSP]
@@ -5487,7 +5009,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                               [WSP]
+
+                               [WSP]
                                literalExpression / structuralValue / entityReference
                                [WSP]
 
@@ -5517,7 +5040,7 @@ A data service MAY reject any requests that contain expressions not defined in t
 Common expressions SHOULD be constructed and evaluated according to the rules defined in common
 expression syntax for each specific expression type.
 
-2.2.3.6.1.1.1  Expression Construction and Evaluation Rules
+###### 2.2.3.6.1.1.1 Expression Construction and Evaluation Rules
 
 commonExpression: A data service MAY support the commonExpression common expression.
 If supported, a commonExpression MUST represent any and all supported common expression
@@ -5555,7 +5078,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-the common expressions as operands of the operation. Those operand expressions MUST evaluate
+
+the common expressions as operands of the operation. Those operand expressions MUST evaluate
 to a value of one of the following EDM primitive types:
 
   Edm.Decimal
@@ -5624,7 +5148,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-common expression syntax. If this operation is supported, the data service MAY<11> support some
+
+common expression syntax. If this operation is supported, the data service MAY<11> support some
 or all of the common expressions as operands of the operation. Those operand expressions MUST
 evaluate to a value of one of the following EDM primitive types:
 
@@ -5691,7 +5216,8 @@ Release: March 13, 2019
 
 66 / 290
 
-modExpression: A data service MAY support the binary remainder operator. The operation of
+
+modExpression: A data service MAY support the binary remainder operator. The operation of
 computing the remainder of two expressions is represented as a modExpression common
 expression in the common expression syntax. If this operation is supported, the data service
 MAY<13> support some or all of the common expressions as operands of the operation. Those
@@ -5759,7 +5285,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-negateExpression SHOULD always be equal to the result of evaluating the subExpression where
+
+negateExpression SHOULD always be equal to the result of evaluating the subExpression where
 one operand is the value zero and the other is the value of the operand.
 
 The data service MAY support evaluating an operand with a null value following the rules defined in
@@ -5825,7 +5352,8 @@ Release: March 13, 2019
 
 68 / 290
 
-firstMemberExpression: A data service MAY support the referencing of a navigation, complex, or
+
+firstMemberExpression: A data service MAY support the referencing of a navigation, complex, or
 simple property of the EntityType or ComplexType represented by the last segment in the
 navigation portion of the URI. This is represented by the firstMemberExpression common
 expression in the common expression syntax.
@@ -5893,7 +5421,8 @@ Release: March 13, 2019
 
 69 / 290
 
-  Edm.DateTimeOffset
+
+  Edm.DateTimeOffset
 
   Edm.Time
 
@@ -5963,7 +5492,8 @@ Release: March 13, 2019
 
 70 / 290
 
-  Edm.Int32
+
+  Edm.Int32
 
   Edm.Int64
 
@@ -6033,7 +5563,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-If supported, a data service SHOULD follow the binary numeric promotion rules defined in Binary
+
+If supported, a data service SHOULD follow the binary numeric promotion rules defined in Binary
 Numeric Promotions (section 2.2.3.6.1.1.4) to implicitly convert the operands to a common
 supported EDM primitive type. The EDM primitive type of the result of evaluating the ltExpression
 MUST be Edm.Boolean.
@@ -6101,7 +5632,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-gtExpression: A data service MAY support the binary greater than operator. The operation of
+
+gtExpression: A data service MAY support the binary greater than operator. The operation of
 evaluating whether one expression is greater than the other expression is represented as a
 gtExpression common expression in the common expression syntax. If this operation is
 supported, the data service MAY<21> support some or all of the common expressions as operands
@@ -6171,7 +5703,8 @@ Release: March 13, 2019
 
 73 / 290
 
-  Edm.Time
+
+  Edm.Time
 
   Edm.Byte
 
@@ -6237,7 +5770,8 @@ Release: March 13, 2019
 
 74 / 290
 
-If supported, the data service MUST evaluate the isofExpression to return a value of true if the
+
+If supported, the data service MUST evaluate the isofExpression to return a value of true if the
 targeted instance MAY be converted to the specified type. If the conversion is not allowed, the
 expression MUST be evaluated to false.
 
@@ -6303,7 +5837,8 @@ Release: March 13, 2019
 
 75 / 290
 
-boolMethodCallExpression: A data service MAY support the boolMethodCallExpression
+
+boolMethodCallExpression: A data service MAY support the boolMethodCallExpression
 common expression. If supported, a boolMethodCallExpression MUST be a method call
 expression that evaluates to the EDM primitive type Edm.Boolean.
 
@@ -6371,7 +5906,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-If supported, a data service SHOULD follow the numeric promotion rules for method call
+
+If supported, a data service SHOULD follow the numeric promotion rules for method call
 parameters, as defined in Binary Numeric Promotions (section 2.2.3.6.1.1.4), to implicitly convert
 the parameters to a supported EDM primitive type.
 
@@ -6438,7 +5974,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-If supported, a data service SHOULD follow the numeric promotion rules for method call
+
+If supported, a data service SHOULD follow the numeric promotion rules for method call
 parameters, defined in Binary Numeric Promotions (section 2.2.3.6.1.1.4), to implicitly convert the
 parameters to a supported EDM primitive type.
 
@@ -6506,7 +6043,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-expressions as the parameters of this method. The parameter expressions MUST evaluate to a
+
+expressions as the parameters of this method. The parameter expressions MUST evaluate to a
 value of the EDM primitive type Edm.String.
 
 The concatMethodCallExpression SHOULD NOT be supported for parameters of any other EDM
@@ -6573,7 +6111,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-monthMethodCallExpression: A data service MAY support the month method. This method call
+
+monthMethodCallExpression: A data service MAY support the month method. This method call
 is represented as a monthMethodCallExpression common expression in the common expression
 syntax. If this method is supported, the data service MAY<40> support some or all of the common
 expressions as the parameter of this method. The parameter expression MUST evaluate to a value
@@ -6641,7 +6180,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-secondMethodCallExpression: A data service MAY support the second method. This method call
+
+secondMethodCallExpression: A data service MAY support the second method. This method call
 is represented as a secondMethodCallExpression common expression in the common expression
 syntax. If this method is supported, the data service MAY<44> support some or all of the common
 expressions as the parameter of this method. The parameter expression MUST evaluate to a value
@@ -6708,7 +6248,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-ceilingMethodCallExpression: A data service MAY support the ceiling method. This method call
+
+ceilingMethodCallExpression: A data service MAY support the ceiling method. This method call
 is represented as a ceilingMethodCallExpression common expression in the common expression
 syntax. If this method is supported, the data service MAY<47> support some or all of the common
 expressions as the parameter of this method. The parameter expression MUST evaluate to a value
@@ -6776,7 +6317,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-common expression syntax. If this method is supported, the data service MAY support some or all
+
+common expression syntax. If this method is supported, the data service MAY support some or all
 of the common expressions as the parameter of this method. The parameter expression MUST
 evaluate to a value of one of the following EDM primitive types:
 
@@ -6843,7 +6385,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-A variable name is specified by using a lambdaVariableExpression common expression in the
+
+A variable name is specified by using a lambdaVariableExpression common expression in the
 common expression syntax. This variable name can then be used in a
 lambdaPredicateExpression to specify a filter over the corresponding collection.
 
@@ -6909,7 +6452,8 @@ Release: March 13, 2019
 
 84 / 290
 
-The data service method MUST return true if any members of the collection satisfy the filter that is
+
+The data service method MUST return true if any members of the collection satisfy the filter that is
 specified in the lambdaPredicateExpression or otherwise false.
 
 lambdaMethodCallExpression expressions can be nested inside an anyMethodCallExpression.
@@ -6951,7 +6495,7 @@ structuralValue.
 entityReference: A data service MAY support passing an entity or collection of entities by
 reference as the value in a functionParameterExpression by using an entityReference.
 
-2.2.3.6.1.1.2  Operator Precedence
+###### 2.2.3.6.1.1.2 Operator Precedence
 
 The following table summarizes the precedence of operators in the common expression syntax.
 Operators are listed by operator category in order of precedence from highest to lowest. Operators in
@@ -7006,7 +6550,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Category
+
+Category
 
 Expression
 
@@ -7094,13 +6639,13 @@ A data service MAY<49> support some or all of the common expressions that repres
 operators above. For supported operators, the data service SHOULD evaluate the operators in a
 common expression in order of precedence of operator category.
 
-2.2.3.6.1.1.3  Unary Numeric Promotions
+###### 2.2.3.6.1.1.3 Unary Numeric Promotions
 
 A data service MAY support unary numeric promotions for the negation operator
 (negateExpression common expressions). Unary promotions consist of converting operands of type
 Edm.Byte or Edm.Int16 to Edm.Int32 and of type Edm.Single to Edm.Double.
 
-2.2.3.6.1.1.4  Binary Numeric Promotions
+###### 2.2.3.6.1.1.4 Binary Numeric Promotions
 
 A data service MAY support binary numeric promotion for operands of the following operations.
 
@@ -7143,7 +6688,8 @@ Release: March 13, 2019
 
 86 / 290
 
-Operation
+
+Operation
 
 Common Expression
 
@@ -7208,7 +6754,7 @@ Edm.Double.
 If binary numeric promotion is supported, a data service SHOULD use a castExpression to
 promote an operand to the target type.
 
-2.2.3.6.1.1.5  Lifted Operators
+###### 2.2.3.6.1.1.5 Lifted Operators
 
 A data service MAY support the allowance of operators that operate on Entity Data Model (EDM)
 primitive types to also be used with nullable forms of those types for the following operations.
@@ -7234,7 +6780,8 @@ Release: March 13, 2019
 
 87 / 290
 
-Type
+
+Type
 
 Operation  Common Expression
 
@@ -7342,7 +6889,7 @@ NavigationProperties are null.
 If supported, for Boolean expressions evaluated to the value of null, a data service MUST return
 the value of false.
 
-2.2.3.6.1.1.6  Numeric Promotions for Method Call Parameters
+###### 2.2.3.6.1.1.6 Numeric Promotions for Method Call Parameters
 
 A data service MAY support numeric promotions for method call parameters.
 
@@ -7360,7 +6907,8 @@ Release: March 13, 2019
 
 88 / 290
 
-  Edm.Single
+
+  Edm.Single
 
   Edm.Byte
 
@@ -7402,16 +6950,16 @@ Edm.Int16.
 If binary numeric promotion is supported, a data service SHOULD use a castExpression to
 promote an operand to the target type.
 
-2.2.3.6.1.1.7  Geospatial Coordinate Transformations
+###### 2.2.3.6.1.1.7 Geospatial Coordinate Transformations
 
 A data service MAY choose to support transformation between geospatial coordinate systems. If so,
 the implementation MUST support one of the following two levels of transformation: coordinate
 transformations within a topology, or arbitrary coordinate transformations, that is, transformation
 between any two coordinate systems.
 
-2.2.3.6.1.1.7.1
+###### 2.2.3.6.1.1.7.1 Coordinate Transformations Within a Topology
 
-Coordinate Transformations Within a Topology
+
 
 Coordinate transformations within a topology MUST NOT change the type of the Edm.Primitive that
 is being transformed. Coordinate transformations change the SRID, as well as the values for the
@@ -7434,9 +6982,9 @@ greater margin of error than this potential algorithm.
 The algorithm SHOULD comply with common practice in the geospatial field. If possible, it
 SHOULD follow a standard provided by a relevant standards body.
 
-2.2.3.6.1.1.7.2
+###### 2.2.3.6.1.1.7.2 Arbitrary Coordinate Transformations
 
-Arbitrary Coordinate Transformations
+
 
 89 / 290
 
@@ -7445,7 +6993,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The types that inherit from Edm.Geography constitute the geographic topology, while the types that
+
+The types that inherit from Edm.Geography constitute the geographic topology, while the types that
 inherit from Edm.Geometry constitute the geometric topology. The former uses a round model of
 Earth, while the latter uses a flat model.
 
@@ -7471,7 +7020,7 @@ pairs, in either direction:
 The algorithm that is used for the coordinate transformation MUST meet all of the same requirements
 as specified in Coordinate Transformations Within a Topology (section 2.2.3.6.1.1.7.1).
 
-2.2.3.6.1.1.8  Geospatial Extension Methods
+###### 2.2.3.6.1.1.8 Geospatial Extension Methods
 
 A data service MAY support arbitrary method calls on geospatial types by using the function's
 extensibility point. If the data service supports methods beyond those that are defined in this
@@ -7487,9 +7036,9 @@ Implements one of the functions defined in [OGC-SFOLECOM].
 
   Arbitrary extension in a private namespace.
 
-2.2.3.6.1.1.8.1
+###### 2.2.3.6.1.1.8.1 Extending Type Support for Defined Functions
 
-Extending Type Support for Defined Functions
+
 
 A data service MAY extend the Edm.Primitive types that are allowed as parameters to the standard
 geospatial functions. If the data service extends the Edm.Primitive types that are allowed as
@@ -7516,9 +7065,9 @@ specification as possible, taking into account the differences in the topologies
 The method MUST be implemented as an overload of the defined method. In particular, it MUST
 have the same representation in URLs, varying only in the types of the parameters.
 
-2.2.3.6.1.1.8.2
+###### 2.2.3.6.1.1.8.2 Implementing One of the Functions Defined in [OGC-SFOLECOM]
 
-Implementing One of the Functions Defined in [OGC-SFOLECOM]
+
 
 [MS-ODATA] - v20190313
 Open Data Protocol (OData)
@@ -7527,7 +7076,8 @@ Release: March 13, 2019
 
 90 / 290
 
-A data service MAY support additional functions as defined in [OGC-SFOLECOM]. If the data service
+
+A data service MAY support additional functions as defined in [OGC-SFOLECOM]. If the data service
 supports additional functions as defined in [OGC-SFOLECOM], the implementation MUST meet the
 following criteria:
 
@@ -7557,15 +7107,15 @@ The method MAY be named in the geo namespace. If so, the name MUST be the name a
 in [OGC-SFOLECOM], but translated to all lowercase. For example, a compliant version of the
 [OGC-SFOLECOM] function “Union” MAY be named "geo.union".
 
-2.2.3.6.1.1.8.3
+###### 2.2.3.6.1.1.8.3 Arbitrary Extensions
 
-Arbitrary Extensions
+
 
 A data service MAY provide any additional geospatial operations, by defining them as functions. Each
 such extension MUST meet the criteria of that section. Such extensions MUST NOT be placed in the
 geo namespace. They SHOULD be placed in a namespace under the control of that data service.
 
-2.2.3.6.1.2  Evaluating System Query Options
+###### 2.2.3.6.1.2 Evaluating System Query Options
 
 Any combination of the system query options defined in this document MAY be present on a valid data
 service URI. A data service URI with more than one query option present MUST be evaluated as if
@@ -7607,12 +7157,13 @@ Release: March 13, 2019
 
 91 / 290
 
-7.  Of the two entities returned from step 6, select only the CustomerName and CustomerID
+
+7.  Of the two entities returned from step 6, select only the CustomerName and CustomerID
 
 properties of the Customer entities and all properties of the Order entities. The preceding URI
 identifies the two entities (and their related entities) returned from this step.
 
-2.2.3.6.1.3  Expand System Query Option ($expand)
+###### 2.2.3.6.1.3 Expand System Query Option ($expand)
 
 The presence of the $expand system query option indicates that entities associated with the
 EntityType instance or EntitySet, identified by the resource path section of the URI, MUST be
@@ -7672,12 +7223,13 @@ Release: March 13, 2019
 
 92 / 290
 
-For each Customer entity in the Customers EntitySet, the value of all associated InHouseStaff MUST
+
+For each Customer entity in the Customers EntitySet, the value of all associated InHouseStaff MUST
 be represented inline if the entity is of type VipCustomer or a subtype of that. For entity instances
 that are not of type VipCustomer, or any of its subtypes, that entity instance MUST be returned with
 no inline representation for the expanded NavigationProperty.
 
-2.2.3.6.1.4  Filter System Query Option ($filter)
+###### 2.2.3.6.1.4 Filter System Query Option ($filter)
 
 A data service URI with a $filter system query option identifies a subset of the entities in the
 EntitySet, identified by the resource path section of the URI, by only selecting the entities that satisfy
@@ -7732,7 +7284,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.3.6.1.5  Format System Query Option ($format)
+
+###### 2.2.3.6.1.5 Format System Query Option ($format)
 
 A data service URI with a $format system query option specifies that a response to the request
 SHOULD use the media type specified by the query option.
@@ -7785,7 +7338,7 @@ Example:
 
  http://host/service.svc/Orders(1)/ShipCountry/$value/?$format=verbosejson
 
-2.2.3.6.1.6  OrderBy System Query Option ($orderby)
+###### 2.2.3.6.1.6 OrderBy System Query Option ($orderby)
 
 A data service URI with a $orderby system query option specifies an expression for determining
 what values are used to order the entities in the EntitySet, identified by the resource path section of
@@ -7803,7 +7356,8 @@ Release: March 13, 2019
 
 94 / 290
 
-If supported, the data service MUST return the entities, in order, based on the expression specified. If
+
+If supported, the data service MUST return the entities, in order, based on the expression specified. If
 multiple expressions are specified and a data service supports sorting based on multiple values, then a
 data service MUST return the entities ordered by a secondary sort for each additional expression
 specified.
@@ -7840,7 +7394,7 @@ order for that entity instance is undefined. Actual ordering of such entity inst
 data service and no semantics for doing so are mandated; however, a data service MUST always use
 the same semantics when ordering the results for such a URI request.
 
-2.2.3.6.1.7  Skip System Query Option ($skip)
+###### 2.2.3.6.1.7 Skip System Query Option ($skip)
 
 A data service URI with a $skip system query option identifies a subset of the entities in the
 collection of entities identified by the resource path section of the URI. That subset is defined by
@@ -7866,7 +7420,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- skipQueryOp = "$skip=" 1*DIGIT
+
+ skipQueryOp = "$skip=" 1*DIGIT
 
 Examples:
 
@@ -7879,7 +7434,7 @@ The set of Order entities sorted by ShippedDate (descending), starting with the 
 The set of Order entity type instances (associated with the Customer entity type instance identified by
 EntityKey value 'ALFKI') starting with the 11th order.
 
-2.2.3.6.1.8  Top System Query Option ($top)
+###### 2.2.3.6.1.8 Top System Query Option ($top)
 
 A data service URI with a $top system query option identifies a subset of the entities in the
 collection of entities, identified by the resource path section of the URI. This subset is formed by
@@ -7911,7 +7466,7 @@ property.
 The first 20 Order entity instances returned in order of a sorting scheme determined by the data
 service.
 
-2.2.3.6.1.9  Skip Token System Query Option ($skiptoken)
+###### 2.2.3.6.1.9 Skip Token System Query Option ($skiptoken)
 
 The value of a $skiptoken system query option is an opaque token that MUST identify a starting
 point in the collection of entities identified by the URI containing the $skiptoken parameter. For
@@ -7924,7 +7479,8 @@ Release: March 13, 2019
 
 96 / 290
 
-entity in a collection containing 10 entities, or any other position within the collection represented by
+
+entity in a collection containing 10 entities, or any other position within the collection represented by
 the URI containing the $skiptoken parameter.
 
 Since the value of a $skiptoken query option identifies an index into a collection of entities, a data
@@ -7949,7 +7505,7 @@ Examples:
 A subset of the Order entity instances (sorted by the OrderID property) starting from a position in
 the collection of all Order entities identified by the skip token parameter.
 
-2.2.3.6.1.10  InlineCount System Query Option ($inlinecount)
+###### 2.2.3.6.1.10 InlineCount System Query Option ($inlinecount)
 
 Applies to the OData 2.0 and OData 3.0 protocols
 
@@ -7990,7 +7546,8 @@ Release: March 13, 2019
 
 97 / 290
 
-All order instances and the count of all order instances returned.
+
+All order instances and the count of all order instances returned.
 
  http://host/service.svc/Orders?$inlinecount=allpages&$top=10
 
@@ -8005,7 +7562,7 @@ Returns the first 10 order instances with no count of matching order instances.
 Returns all order instances with ShipCountry equal to "France" and the count of all order instances
 with ShipCountry equal to "France".
 
-2.2.3.6.1.11  Select System Query Option ($select)
+###### 2.2.3.6.1.11 Select System Query Option ($select)
 
 Applies to the OData 2.0 and OData 3.0 protocols
 
@@ -8056,7 +7613,8 @@ Release: March 13, 2019
 
 98 / 290
 
-
+
+
 
 
 
@@ -8148,7 +7706,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The allFunctions clause requests all functions that are known to the server and that are bindable
+
+The allFunctions clause requests all functions that are known to the server and that are bindable
 to the entities in the response.
 
 If a function is requested as a selectItem, either explicitly by using an individualFunction
@@ -8207,7 +7766,8 @@ Release: March 13, 2019
 
 100 / 290
 
-In a response from a data service, the CustomerID is included, along with the Order entities and all
+
+In a response from a data service, the CustomerID is included, along with the Order entities and all
 properties of the Order entities. But rather than including the fully expanded Order Detail entities
 referenced in the expand clause, each Order will contain a link that references the corresponding
 collection of Order Detail entities.
@@ -8242,7 +7802,7 @@ for all Customer EntityType and/or subtypes. Additionally, the CreateOrders acti
 each customer if and only if the action is bindable to that customer. All other actions and functions are
 omitted.
 
-2.2.3.6.1.12  System Query Option: Additional Construction Rules
+###### 2.2.3.6.1.12 System Query Option: Additional Construction Rules
 
 The following rules are in addition to the grammar rules that are defined in each of the individual
 system query option sections:
@@ -8252,7 +7812,7 @@ system query option sections:
 If the last segment of the ResourcePath is an entityNamedStream, the system query options
 MAY include the format system query option. But all other query options MUST NOT be used.
 
-2.2.3.6.2 Custom Query Options
+###### 2.2.3.6.2 Custom Query Options
 
 Custom query options provide an extensible mechanism for data service-specific information to be
 placed in a data service URI query string. A custom query option is any query option of the form
@@ -8260,7 +7820,7 @@ shown by the rule "customQueryOption" in URI Syntax (section 2.2.3.1). Custom qu
 NOT begin with a "$" character because the character is reserved for system query options, as
 described in System Query Options (section 2.2.3.6.1).
 
-2.2.3.6.3 Service Operation Parameters
+###### 2.2.3.6.3 Service Operation Parameters
 
 101 / 290
 
@@ -8269,7 +7829,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Service operations represent the FunctionImports, as specified in [MC-CSDL], which accept only
+
+Service operations represent the FunctionImports, as specified in [MC-CSDL], which accept only
 primitive type input parameters defined in the Entity Data Model (EDM) associated with a data
 service. If a FunctionImport requires input parameters, those parameters are passed via query
 string name/value pairs appended to the data service URI identifying the FunctionImport, as
@@ -8291,7 +7852,7 @@ To pass parameters to a service operation, the following syntax is used.
 
 Listing: ABNF Grammar for Service Operation Parameters
 
-2.2.3.6.4 Function Parameters
+###### 2.2.3.6.4 Function Parameters
 
 Applies to OData 3.0 protocol
 
@@ -8344,7 +7905,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- functionParameterName = ; section 2.2.3.1
+
+ functionParameterName = ; section 2.2.3.1
                       ; the name of a parameter of the final Function segment
                       ; in the Uri path, defined in the EDM model
                       ; associated with the Data Service, specified in the URI path
@@ -8385,7 +7947,7 @@ Release: March 13, 2019
 
 Listing: ABNF Grammar for Function Parameters
 
-2.2.3.6.5 Action Parameters
+###### 2.2.3.6.5 Action Parameters
 
 Applies to the OData 3.0 protocol
 
@@ -8413,7 +7975,8 @@ Release: March 13, 2019
 
 103 / 290
 
-Any parameters to the action that is identified by the request URI that are omitted MUST be
+
+Any parameters to the action that is identified by the request URI that are omitted MUST be
 interpreted as having a null value.
 
 A client MAY choose to provide no Body and Content-Type header if the Action has either no
@@ -8460,9 +8023,9 @@ Verbose JSON format, the following syntax is used.
 
 Listing: ABNF Grammar for Action Parameters
 
-2.2.3.7  Data Service Metadata
+##### 2.2.3.7 Data Service Metadata
 
-2.2.3.7.1 Service Document
+###### 2.2.3.7.1 Service Document
 
 For a client to interact with a data service, it needs to discover the locations of the available
 collections of resources AtomPub [RFC5023] defines Service Documents to support this discovery
@@ -8481,7 +8044,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-See Service Document in [MS-ODATAJSON] section 2.1.16 for details about the representation of the
+
+See Service Document in [MS-ODATAJSON] section 2.1.16 for details about the representation of the
 data provided by a Service Document in the preferred OData 3.0 JSON format.
 
 Service Document (section 2.2.6.3.12) describes a Verbose JSON representation of the data provided
@@ -8494,7 +8058,7 @@ NOT have a corresponding collection for AtomPub (section 2.2.6.2.7) or a corresp
 JSON ([MS-ODATAJSON] section 2.1.16) or for Verbose JSON (section 2.2.6.3.12) in the Service
 Document, as described in this section.
 
-2.2.3.7.2 Conceptual Schema Definition Language Document for Data Services
+###### 2.2.3.7.2 Conceptual Schema Definition Language Document for Data Services
 
 All data services SHOULD expose a conceptual schema definition language (CSDL) based
 metadata endpoint that describes the structure and organization of all the resources exposed as
@@ -8551,7 +8115,8 @@ Release: March 13, 2019
 
 105 / 290
 
-  <xs:attributeGroup name="TCommonPropertyAttributes">
+
+  <xs:attributeGroup name="TCommonPropertyAttributes">
      <xs:attribute name="Name" type="edm:TSimpleIdentifier" use="required" />
      <xs:attribute name="Type" type="edm:TPropertyType" use="required" />
      <xs:attribute name="Nullable" type="xs:boolean" default="true"
@@ -8627,7 +8192,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <xs:element name="Key" type="edm:TEntityKeyElement" minOccurs="0"
+
+       <xs:element name="Key" type="edm:TEntityKeyElement" minOccurs="0"
   maxOccurs="1" />
        <xs:choice minOccurs="0" maxOccurs="unbounded">
          <xs:element name="Property" type="edm:TEntityProperty" minOccurs="0"
@@ -8697,7 +8263,8 @@ Release: March 13, 2019
 
 107 / 290
 
-ServiceOperation that exposes the FunctionImport. If this attribute is present, the
+
+ServiceOperation that exposes the FunctionImport. If this attribute is present, the
 FunctionImport MUST be callable by using the HTTP method that is specified.
 
 IsAlwaysBindable: This attribute MAY be used on a FunctionImport element [MC-
@@ -8755,7 +8322,7 @@ example, this EntityType has two named resource streams (Thumbnail and PrintRead
 
        </EntityType>
 
-2.2.3.7.2.1  Conceptual Schema Definition Language Document Extensions for
+###### 2.2.3.7.2.1 Conceptual Schema Definition Language Document Extensions for
 
 Customizable Feeds
 
@@ -8766,7 +8333,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Applies to the OData 2.0 and OData 3.0 protocols
+
+Applies to the OData 2.0 and OData 3.0 protocols
 
 This section defines OData protocol specific extensions (shown in the XML schema that follows) to the
 data-service-specific metadata document that is defined in the preceding section. These attributes
@@ -8836,7 +8404,8 @@ Release: March 13, 2019
 
 109 / 290
 
- </ComplexType>
+
+ </ComplexType>
 
 A property mapping MUST be defined as an attribute on the Property element of an entity type (as in
 the previous example) or on the EntityType element that contains the property to be mapped. A
@@ -8901,7 +8470,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- atomSpecificElementName =
+
+ atomSpecificElementName =
                       ; the following values are defined in OData 2.0 and OData 3.0
                           "SyndicationAuthorName"
                            / "SyndicationAuthorEmail"
@@ -8967,18 +8537,19 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-an FC_NsUri value of "http://www.microsoft.com" would create the following element under the
+
+an FC_NsUri value of "http://www.microsoft.com" would create the following element under the
 atom:entry element.
 
  <emp:Location xmlns:emp="http://www.microsoft.com">Seattle</emp:Location>
 
-2.2.3.8  URI Equivalence
+##### 2.2.3.8 URI Equivalence
 
 When determining if two URIs are equivalent, each URI SHOULD be normalized by using the rules
 specified in [RFC3987] and [RFC3986] and then compared for equality by using the equivalence rules
 specified in [RFC2616] section 3.2.3.
 
-2.2.3.9  Canonical URIs
+##### 2.2.3.9 Canonical URIs
 
 For data services conformant with the URI path construction rules defined in this specification, the
 canonical form of an absolute URI identifying a single EntityType instance MUST be formed by adding
@@ -9017,7 +8588,7 @@ its container EntityType, the keyPredicate that is used in the canonical URI for
 EntityType instance ought to omit the key values that are shared between the containing and the
 contained EntityType instances.
 
-2.2.4  HTTP Methods
+#### 2.2.4 HTTP Methods
 
 This section describes only the HTTP methods that are defined by this document and are not specified
 in [RFC2616]. All additional HTTP methods that are referred to in this document are specified in
@@ -9030,7 +8601,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.4.1  PATCH/MERGE
+
+##### 2.2.4.1 PATCH/MERGE
 
 Data services support two types of update operations: merge and replace. In accordance with
 [RFC5023] and as described in Update Request Types (section 2.2.7.3), the HTTP PUT method
@@ -9075,7 +8647,7 @@ The ABNF syntax of the HTTP MERGE method is defined as follows.
 
 Listing: ABNF Grammar for HTTP MERGE Method
 
-2.2.5  HTTP Header Fields
+#### 2.2.5 HTTP Header Fields
 
 The OData protocol uses existing headers as specified in [RFC2616] as well as custom HTTP headers
 that are defined in this document. Some of the headers that are specified in [RFC2616] are further
@@ -9096,7 +8668,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-If a client or server receives an HTTP header that is defined in this section and the header contains an
+
+If a client or server receives an HTTP header that is defined in this section and the header contains an
 unknown or malformed token, as specified in this section, the request or response that contains the
 header MUST be considered malformed.
 
@@ -9115,7 +8688,7 @@ and between adjacent words and separators without changing the interpretation of
 delimiter (LWS and/or separators) MUST exist between any two tokens, as specified in [RFC2616],
 because they would otherwise be interpreted as a single token.
 
-2.2.5.1  Accept
+##### 2.2.5.1 Accept
 
 A primary goal of data services is to allow a client of the service to focus on the data being
 transmitted and not be required to understand a single data format. As such, the OData protocol that
@@ -9184,7 +8757,8 @@ Release: March 13, 2019
 
 114 / 290
 
-Value of Accept request header
+
+Value of Accept request header
 
 Value of Content-Type response header
 
@@ -9231,13 +8805,13 @@ A data service MAY accept requests with Accept header values other than those sh
 preceding table. The returned Content-Type response header value for such requests is not defined by
 this specification.
 
-2.2.5.1.1 application/atom+xml
+###### 2.2.5.1.1 application/atom+xml
 
 This content type is used to request the data service format for the response payload by using the
 application/atom+xml format according to the formatting rules that are outlined in AtomPub
 Format (section 2.2.6.2). A data service MUST support this content type.
 
-2.2.5.1.2 application/json
+###### 2.2.5.1.2 application/json
 
 For OData 1.0 and OData 2.0 services, this content type is used to request the data service format for
 the response payload according to the formatting rules that are outlined in Verbose JSON
@@ -9246,13 +8820,13 @@ Format (section 2.2.6.3).
 For OData 3.0 services, the application/json content type returns the preferred OData 3.0 JSON
 format as defined in [MS-ODATAJSON] section 2.1.5.
 
-2.2.5.1.3 application/json;odata=verbose
+###### 2.2.5.1.3 application/json;odata=verbose
 
 This content type is used to request the data service format for the response payload by using the
 application/json;odata=verbose format according to the formatting rules that are outlined in Verbose
 JSON Format (section 2.2.6.3). A data service MAY support this content type.
 
-2.2.5.2  Content-Type
+##### 2.2.5.2 Content-Type
 
 The Content-Type header is used as specified in [RFC2616]. However, because this document
 describes messages for the application/atom+xml (section 2.2.5.1.1),
@@ -9267,7 +8841,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-specified in [RFC5234]. The exception to the above rule is when messages are used that represent a
+
+specified in [RFC5234]. The exception to the above rule is when messages are used that represent a
 Media Resource [RFC5023] or the raw value of an entity's property (see section 2.2.3.5).
 
  Content-Type     = "Content-Type:"
@@ -9287,7 +8862,7 @@ Listing: Content-Type Header ABNF Grammar
 
  Example: Content-Type: application/atom+xml;charset=UTF-8
 
-2.2.5.3  DataServiceVersion
+##### 2.2.5.3 DataServiceVersion
 
 This header is a custom HTTP header defined by this document for protocol versioning purposes. This
 header MAY be present on any request or response message.
@@ -9334,7 +8909,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.5.4  ETag
+
+##### 2.2.5.4 ETag
 
 An ETag (entity tag) is an HTTP response header returned by an HTTP/1.1 compliant web server used
 to determine change in content of a resource at a given URL. The value of the header is an opaque
@@ -9401,7 +8977,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- ETag       = "ETag" ":"
+
+ ETag       = "ETag" ":"
               entity-tag
               CRLF                    ; exactly as specified in [RFC2616] section 14.19
 
@@ -9416,7 +8993,7 @@ Release: March 13, 2019
 Example following the model defined in Appendix A: Sample Entity Data Model and CSDL Document:
 ETag: W/"X'000000000000D2F3'"
 
-2.2.5.5  If-Match
+##### 2.2.5.5 If-Match
 
 The If-Match request-header field is used with a method to make it conditional. As specified in
 [RFC2616], "the purpose of this feature is to allow efficient updates of cached information with a
@@ -9451,7 +9028,7 @@ The syntax of the If-Match header is defined as follows:
 
 Example: If-Match: W/"X'000000000000D2F3'"
 
-2.2.5.6  If-None-Match
+##### 2.2.5.6 If-None-Match
 
 The If-None-Match request header is used with a method to make it conditional. As specified in
 [RFC2616], "The purpose of this feature is to allow efficient updates of cached information with a
@@ -9466,7 +9043,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The If-None-Match header is used in this document as specified in [RFC2616]. However, this
+
+The If-None-Match header is used in this document as specified in [RFC2616]. However, this
 document further limits it to the types of requests with which the header can be used. Additional
 constraints are also added to the syntax of the header value.
 
@@ -9486,7 +9064,7 @@ The syntax of the If-None-Match header is defined as follows:
  ; entity-tag is as per the definition in (section 2.2.4.4)
  If-None-Match = "If-None-Match" ":" ( "*" / 1*entity-tag ) CRLF
 
-2.2.5.7  MaxDataServiceVersion
+##### 2.2.5.7 MaxDataServiceVersion
 
 This header is a custom HTTP request only header defined by this document for protocol versioning
 purposes. This header MAY be present on any request message from client to server.
@@ -9514,7 +9092,7 @@ Listing: Syntax of the MaxDataServiceVersion Header
 
  Example: MaxDataServiceVersion: 1.0;AspNetAjax
 
-2.2.5.8  X-HTTP-Method
+##### 2.2.5.8 X-HTTP-Method
 
 This header is a custom HTTP request header defined by this document.
 
@@ -9531,7 +9109,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-existing HTTP libraries do not allow creation of requests using verbs other than GET or POST.
+
+existing HTTP libraries do not allow creation of requests using verbs other than GET or POST.
 Therefore, an alternative way of specifying request types which use verbs other than GET and POST is
 needed to ensure that this document works well in a wide range of environments.
 
@@ -9568,7 +9147,7 @@ Categories EntitySet instead of performing an insert operation.
 
 Listing: Delete Request Tunneled in a POST Request
 
-2.2.5.9  Prefer
+##### 2.2.5.9 Prefer
 
 A Prefer header is included in a request to state the client’s preferred, but not required, server
 behavior (that is, a hint to the server). The Prefer header MAY be included on any request type (within
@@ -9594,7 +9173,8 @@ Release: March 13, 2019
 
 120 / 290
 
-A header value of "return-no-content" indicates that the client prefers that the server not include an
+
+A header value of "return-no-content" indicates that the client prefers that the server not include an
 entity representing the current state of the resource in the response to a successful request. If the
 value is “return-no-content”, the server MAY choose to return an empty response payload with status
 code 204.
@@ -9615,9 +9195,9 @@ by this specification. If any of the preference values of the Prefer header are 
 service, those values of the Prefer header MUST be ignored by the server and the server MUST
 continue processing the request as if the Prefer header was not specified.
 
-2.2.5.10
+##### 2.2.5.10 Preference-Applied
 
-Preference-Applied
+
 
 When a Prefer (section 2.2.5.9) header value is successfully honored by the server, it MAY include a
 Preference-Applied response header that states which preference values were honored by the server.
@@ -9627,9 +9207,9 @@ The syntax of the Preference-Applied response header is defined as follows:
 
  Prefer       =  "Preference-Applied" ":" preference
 
-2.2.5.11
+##### 2.2.5.11 DataServiceId
 
-DataServiceId
+
 
 The DataServiceId response header is returned by the server when the response payload for an
 InsertEntity request (section 2.2.7.1.1) or an InsertMediaResource request (section 2.2.7.1.3) is
@@ -9647,7 +9227,7 @@ The DataServiceId header is only meaningful in a response to an InsertEntity req
 InsertMediaResource request with a 204-No Content response. If it is included on any other response
 or request, the DataServiceId header MUST be ignored.
 
-2.2.6  Common Payload Syntax
+#### 2.2.6 Common Payload Syntax
 
 The OData protocol that is defined in this document enables clients and servers to perform actions (for
 example, CRUD operations) on entities in an Entity Data Model (EDM), as specified in [MC-CSDL],
@@ -9660,7 +9240,8 @@ Release: March 13, 2019
 
 121 / 290
 
-on). Each serialization format or representation of an entity can be used in the payload of request and
+
+on). Each serialization format or representation of an entity can be used in the payload of request and
 response messages, as specified in Request Types (section 2.2.7).
 
 AtomPub Format (section 2.2.6.2) specifies how to represent EDM constructs (single EntityType
@@ -9671,7 +9252,7 @@ AtomPub [RFC5023] format.
 constructs (single EntityType instance, multiple EntityType instances in an EntitySet,
 NavigationProperty properties, and so on) by using the JavaScript Object Notation (JSON)
 [RFC4627] format: see [MS-ODATAJSON] for the preferred OData 3.0 representation and section
-2.2.6.3 for the Verbose JSON legacy representation.
+##### 2.2.6.3 for the Verbose JSON legacy representation.
 
 Note that Request Types (section 2.2.7) defines additional payload syntax directives, dependent on
 the message context, that MUST be adhered to in addition to those defined in this section.
@@ -9744,7 +9325,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive
 type representation in
@@ -9884,7 +9466,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive
 type representation in
@@ -10012,7 +9595,8 @@ Release: March 13, 2019
 
 124 / 290
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive
 type representation in
@@ -10092,7 +9676,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-CSDL]. If the URI in the sibling atom:id element is of the same form as URI6, as defined in Resource
+
+CSDL]. If the URI in the sibling atom:id element is of the same form as URI6, as defined in Resource
 Path: Semantics (section 2.2.3.5) (last path segment is a NavigationProperty) and the
 NavigationProperty identifies an EntitySet, then the atom:title element MAY contain the name of
 the NavigationProperty instead of the name of the EntitySet that is identified by the property.
@@ -10162,7 +9747,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <updated>2009-03-27T23:41:29Z</updated>
+
+   <updated>2009-03-27T23:41:29Z</updated>
    <link rel="self" title="Customers" href="Customers" />
    <m:count>91</m:count>
    <entry>
@@ -10234,7 +9820,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-via the target URL, the target URL cannot include a value for the binding parameter in the request
+
+via the target URL, the target URL cannot include a value for the binding parameter in the request
 body.
 
 The m:action element MUST have a title attribute that contains a simple string that is used as a
@@ -10302,7 +9889,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-invokes the function via the target URL, it MUST not include a value for the binding parameter in the
+
+invokes the function via the target URL, it MUST not include a value for the binding parameter in the
 request via a parameter appended to the target URL.
 
 The m:function element MUST have a title attribute that contains a simple string that is used as a
@@ -10371,7 +9959,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-of the m:properties element that represent entity properties MUST have the same name as the
+
+of the m:properties element that represent entity properties MUST have the same name as the
 property they represent, MUST belong to the data services namespace (section 2.2.6.1), and MAY
 have an m:type attribute to specify the EDM type of the property. If the m:type attribute is
 missing, the EDM type of the property MUST be assumed to be Edm.String. If the EntityType
@@ -10435,7 +10024,8 @@ Release: March 13, 2019
 
 130 / 290
 
-Note   Atom also requires a type attribute, which MUST have a value of
+
+Note   Atom also requires a type attribute, which MUST have a value of
 "application/atom+xml;type=entry" when the NavigationProperty identifies a single entity
 instance and "application/atom+xml;type=feed" when the property identifies an EntitySet.
 
@@ -10505,7 +10095,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-        dataservices/relatedlinks/Orders" type="application/xml"
+
+        dataservices/relatedlinks/Orders" type="application/xml"
         title="Orders"
         href="Customers('ALFKI')/$links/Orders" />
    <content type="application/xml">
@@ -10578,7 +10169,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   </author>
+
+   </author>
    <link rel="edit" title="Employees" href="Employees(1)" />
    <content type="application/xml">
     <m:properties>
@@ -10647,7 +10239,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-functions can be bound to the entity, and therefore, there can be an arbitrary number of m:function
+
+functions can be bound to the entity, and therefore, there can be an arbitrary number of m:function
 elements.
 
 The m:function element MUST have a metadata attribute that contains the Function Metadata
@@ -10712,7 +10305,8 @@ Release: March 13, 2019
 
 134 / 290
 
-For a description of how properties are serialized in request/response payloads that represent an
+
+For a description of how properties are serialized in request/response payloads that represent an
 EntityType instance, see Entity Type (as an Atom Entry Element) (section 2.2.6.2.2).
 
 An Atom representation of properties outside of the context of an atom:entry element is not defined.
@@ -10780,7 +10374,8 @@ Release: March 13, 2019
 
 135 / 290
 
-        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
+
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
         xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
         xmlns="http://www.w3.org/2005/Atom">
    <category term="SampleModel.Customer"
@@ -10857,7 +10452,8 @@ Release: March 13, 2019
 
 136 / 290
 
-             <name />
+
+             <name />
            </author>
            <link rel="edit" title="Orders" href="Orders(2)" />
            <link
@@ -10927,7 +10523,8 @@ Release: March 13, 2019
 
 137 / 290
 
- <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+ <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
  <service xml:base="http://localhost:2032/nw.svc/"
           xmlns:atom="http://www.w3.org/2005/Atom"
           xmlns:app="http://www.w3.org/2007/app"
@@ -10994,7 +10591,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-in Common Serialization Rules for XML-based Formats (section 2.2.6.1)), MAY exist on the element
+
+in Common Serialization Rules for XML-based Formats (section 2.2.6.1)), MAY exist on the element
 representing the item in the collection.
 
 A collection property of ComplexType MUST NOT contain null values of the ComplexType. If the
@@ -11077,7 +10675,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-atom:link element for the named resource stream, clients MUST assume that the self link and edit
+
+atom:link element for the named resource stream, clients MUST assume that the self link and edit
 link are the same and that the href of the edit link atom:link element MAY be used instead.
 
 Similarly, the server MAY expose the named resource stream instance as read-only by including only
@@ -11159,7 +10758,8 @@ Release: March 13, 2019
 
 140 / 290
 
-
+
+
 
 
 
@@ -11236,7 +10836,8 @@ Release: March 13, 2019
 
 141 / 290
 
-target Attribute: The annotation element MAY have a target attribute to state the target element
+
+target Attribute: The annotation element MAY have a target attribute to state the target element
 that is being annotated. Legal values for this annotation are '.' or the name of the target element that
 is being annotated.
 
@@ -11308,7 +10909,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <!-- Note: navigation properties have been removed to limit the size of this example -->
+
+     <!-- Note: navigation properties have been removed to limit the size of this example -->
      <content type="application/xml">
        <m:properties>
          <!-- instance of a structured annotation targetting the CompanyName property -->
@@ -11385,7 +10987,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-         <d:Country>Germany</d:Country>
+
+         <d:Country>Germany</d:Country>
          <d:Phone>030-0074321</d:Phone>
          <d:Fax>030-0076545</d:Fax>
        </m:properties>
@@ -11413,7 +11016,7 @@ Verbose JSON representation is not defined by this document.
 Note  Verbose JSON is considered a legacy format. OData 3.0 services MAY<61> support the Verbose
 JSON format and SHOULD<62> support the preferred OData 3.0 JSON format 2.2.6.6.
 
-2.2.6.3.1 Common Verbose JSON Serialization Rules for All EDM Constructs
+###### 2.2.6.3.1 Common Verbose JSON Serialization Rules for All EDM Constructs
 
 Literal values of the Entity Data Model (EDM) primitive types are represented as Verbose JSON
 literal values, as defined by the rules in the following Common Verbose JSON Serialization Rules for All
@@ -11466,7 +11069,8 @@ true        = ; see [RFC4627]
 
 144 / 290
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in Verbose
@@ -11552,7 +11156,8 @@ doubleLiteral   = ; see section
 
 145 / 290
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in Verbose
@@ -11644,7 +11249,8 @@ mark
 
 146 / 290
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in Verbose
@@ -11669,9 +11275,9 @@ Edm.Stream
 N/A
 
 namedStreamInVJson= see section
-2.2.6.3.14
+###### 2.2.6.3.14 Edm.Geography
 
-Edm.Geography
+
 
 N/A
 
@@ -11736,7 +11342,8 @@ for a GeometryCollection>
 
 147 / 290
 
-EDM primitive type
+
+EDM primitive type
 
 ABNF rule for primitive type
 representation in Verbose
@@ -11844,7 +11451,8 @@ Release: March 13, 2019
 
 148 / 290
 
-Any GeoJSON value that is used in OData SHOULD order the keys with type first, then coordinates,
+
+Any GeoJSON value that is used in OData SHOULD order the keys with type first, then coordinates,
 then any other keys. This improves streaming parser performance when parsing values on open types
 or in other cases where metadata is not present.
 
@@ -11913,7 +11521,8 @@ Release: March 13, 2019
 
 149 / 290
 
-                   quotation-mark
+
+                   quotation-mark
 
  entityTypeInVJson = ; see section 2.2.6.3.3
  resourcePath      = ; see section 2.2.3.1
@@ -11983,7 +11592,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-        "Orders": {
+
+        "Orders": {
            "results": [
              {
                 "__metadata": { "uri": "Orders(1)",
@@ -12053,7 +11663,8 @@ Release: March 13, 2019
 
 151 / 290
 
-The target name/value pair MUST be included and MUST contain a URL. This is the URL to which
+
+The target name/value pair MUST be included and MUST contain a URL. This is the URL to which
 clients issue an Invoke Action request (section 2.2.7.5.1) to invoke the action. The binding parameter
 is assumed to be bound to the encompassing feed definition. Therefore, if the client invokes the action
 via the target URL, the request body MUST not include a value for the binding parameter.
@@ -12121,7 +11732,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The title name/value pair MUST be included and MUST contain a simple string that is used as a simple
+
+The title name/value pair MUST be included and MUST contain a simple string that is used as a simple
 but not necessarily unique name for the function. Generally, servers SHOULD specify a value that
 would be easily understood by any user because the title is likely to be used by clients to display
 options to an end user.
@@ -12206,7 +11818,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-"__metadata" property contains seven name/value pairs: "uri", "type," "etag", "edit_media",
+
+"__metadata" property contains seven name/value pairs: "uri", "type," "etag", "edit_media",
 "media_src", "media_etag", and "content_type". In OData 3.0, four more name/value pairs are added:
 "properties", "actions", "functions", and "id". The order of these name/value pairs is insignificant. The
 value of the "uri" name/value pair MUST be the Canonical URIs identifying the EntityType instance
@@ -12274,7 +11887,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                           *( value-seperator ( entityTypeProperty / entityTypeProperty ))
+
+                           *( value-seperator ( entityTypeProperty / entityTypeProperty ))
                            [ value-seperator metadataNVP]
                        )
                        / metadataNVP
@@ -12351,7 +11965,8 @@ Release: March 13, 2019
 
 155 / 290
 
-                       quotation-mark titleValue quotation-mark
+
+                       quotation-mark titleValue quotation-mark
 
  titleValue          = *pchar        ; section 3.3 of [RFC3986]
 
@@ -12427,7 +12042,8 @@ Release: March 13, 2019
 
 156 / 290
 
-                       uriNVP
+
+                       uriNVP
                        end-object
                        end-object
 
@@ -12496,7 +12112,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The title name/value pair MUST be included and contain a simple string that is used as a simple but
+
+The title name/value pair MUST be included and contain a simple string that is used as a simple but
 not necessarily unique name for the action. Generally, servers SHOULD specify a value that would be
 easily understood by any user because the title is likely to be used by clients to display options to an
 end user.
@@ -12563,7 +12180,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-property on the ComplexType and the value of the pair MUST equal the value of the property. The
+
+property on the ComplexType and the value of the pair MUST equal the value of the property. The
 order name/value pairs that appear within the JSON object MUST be considered insignificant.
 
 The syntax of the Verbose JSON representation of a ComplexType is defined by the grammar listed
@@ -12632,7 +12250,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- ; OData 2.0 response Verbose JSON representation of a collection of ComplexType instances;
+
+ ; OData 2.0 response Verbose JSON representation of a collection of ComplexType instances;
  entityCollCTInVJson2 = begin-object
                        resultsNVP
                        [(value-seperator entityCTMetadata)] ; see section 2.2.6.3.4
@@ -12701,7 +12320,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-defines the OData 3.0 Verbose JSON representation of a collection of EDMSimpleType values for
+
+defines the OData 3.0 Verbose JSON representation of a collection of EDMSimpleType values for
 response payloads only.
 
  ; Request and OData 1.0 response Verbose JSON representation of a collection of EDMSimpleType
@@ -12771,7 +12391,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- entityPropertyInVJson  = quotation-mark entityProperty quotation-mark
+
+ entityPropertyInVJson  = quotation-mark entityProperty quotation-mark
                          name-seperator
                          entityPropertyValueInVJson
 
@@ -12840,7 +12461,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-    "Address": { "Street": "57 Contoso St", "City": "Seattle",
+
+    "Address": { "Street": "57 Contoso St", "City": "Seattle",
       "Location": {
         "crs": {
           "type": "name",
@@ -12912,7 +12534,8 @@ Release: March 13, 2019
 
 163 / 290
 
-Listing: OData Verbose 3.0 JSON-Formatted Customer Entity with the Orders Navigation
+
+Listing: OData Verbose 3.0 JSON-Formatted Customer Entity with the Orders Navigation
 Property Value Formatted Inline
 
 2.2.6.3.10
@@ -12983,7 +12606,8 @@ Release: March 13, 2019
 
 164 / 290
 
- [
+
+ [
    {"uri": "http://host/service.svc/Orders(1)"},
    {"uri": "http://host/service.svc/Orders(2)"}
  ]
@@ -13054,7 +12678,8 @@ Release: March 13, 2019
 
 165 / 290
 
-Listing: Verbose JSON Service Document Describing a Data Service
+
+Listing: Verbose JSON Service Document Describing a Data Service
 
 2.2.6.3.13
 
@@ -13124,7 +12749,8 @@ Release: March 13, 2019
 
 166 / 290
 
-                     end-object
+
+                     end-object
                      ; defined in section 2.2.6.3.3
 
  mleMetadata      =
@@ -13195,7 +12821,8 @@ Release: March 13, 2019
 
 167 / 290
 
-              "content-type": "img/jpeg",
+
+              "content-type": "img/jpeg",
               "media_etag": "####"
          }
     },
@@ -13210,9 +12837,9 @@ Release: March 13, 2019
 
 Listing: Entity with Named Resource Streams Formatted in Verbose JSON
 
-2.2.6.3.15
+###### 2.2.6.3.15 Links and Subtypes
 
-Links and Subtypes
+
 
 Entity instances in an EntitySet MAY not belong to the same EntityType but MUST all be derived
 from the EntityType baseType associated with the EntitySet. In the OData 3.0 protocol, in addition
@@ -13235,11 +12862,11 @@ editMediaNVP
 
   mediaSrcNVP
 
-2.2.6.3.16  Annotations
+###### 2.2.6.3.16 Annotations
 
 Instance annotations are not supported in the Verbose JSON format.
 
-2.2.6.4  Raw Format
+##### 2.2.6.4 Raw Format
 
 The data service URI addressing scheme, as specified in URI Format: Resource Addressing
 Rules (section 2.2.3), enables directly addressing the "raw" value (see URI 4 and URI 5 in Resource
@@ -13247,7 +12874,7 @@ Path: Semantics (section 2.2.3.5)) of EDMSimpleType properties defined on an Ent
 ComplexType. This allows the constituent parts of an EntityType to be identified independent of the
 rest of the EntityType and without any wrapping syntax.
 
-2.2.6.4.1 EDMSimpleType Property
+###### 2.2.6.4.1 EDMSimpleType Property
 
 By default, the raw value (identified via URIs with resource paths ending in "$value") of any
 EDMSimpleType property (except those of type Edm.Binary) SHOULD be represented using the
@@ -13266,7 +12893,8 @@ Release: March 13, 2019
 
 168 / 290
 
-2.2.6.5  XML Format
+
+##### 2.2.6.5 XML Format
 
 The data service URI addressing scheme, specified in URI Format: Resource Addressing
 Rules (section 2.2.3), enables the constituent parts of an EntityType and associations between
@@ -13279,7 +12907,7 @@ which case it is to use the format defined in Raw Format (section 2.2.6.4)).
 The serializations defined in the following subsections MUST be identified with the application/xml
 media type or text/xml media types.
 
-2.2.6.5.1 Complex Type
+###### 2.2.6.5.1 Complex Type
 
 A ComplexType property, defined on an EntityType, MUST be represented in the same way as it is
 within in the Atom-based format, as specified in section Complex Type (section 2.2.6.2.3); however,
@@ -13301,7 +12929,7 @@ attribute set to true, as required by the Common Serialization Rules for XML-bas
 
 Listing: XML-formatted Complex Type
 
-2.2.6.5.2 Collection of Complex Type Instances
+###### 2.2.6.5.2 Collection of Complex Type Instances
 
 A collection of ComplexType instances is represented in XML as a single XML document with the root
 element of the document equal to the same name of the service operation returning the
@@ -13318,7 +12946,7 @@ ComplexType.
 Each property of the ComplexType instance is represented in the same way as in the XML
 serialization of a single ComplexType, as described in Complex Type (section 2.2.6.2.3).
 
-2.2.6.5.3 EDMSimpleType Property
+###### 2.2.6.5.3 EDMSimpleType Property
 
 Properties of type EDMSimpleType MUST be represented as a single (root) XML element in the data
 service namespace, as described in Common Serialization Rules for XML-based
@@ -13332,12 +12960,13 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-missing, the EDM type of the property MUST be assumed to be Edm.String. The text value of the
+
+missing, the EDM type of the property MUST be assumed to be Edm.String. The text value of the
 element MUST be equal to the value of the property. The property value is formatted, as described in
 the EDM Primitive Type Formats for XML Element Values table in Common Serialization Rules for XML-
 based Formats (section 2.2.6.1).
 
-2.2.6.5.4 Collection of EDMSimpleType Values
+###### 2.2.6.5.4 Collection of EDMSimpleType Values
 
 A collection of EDMSimpleType values MUST be represented as a single XML document with the root
 element of the document equal to the name of the service operation, action, or function returning the
@@ -13349,7 +12978,7 @@ Each value in the collection is represented as a child element of the root eleme
 Formats for XML Element Values table in Common Serialization Rules for XML-based
 Formats (section 2.2.6.1).
 
-2.2.6.5.5 Links
+###### 2.2.6.5.5 Links
 
 Links represent unidirectional associations or one direction of a bidirectional association between
 EntityTypes. Using the Customer and Order EntityTypes, associations, and instance sample data, as
@@ -13399,7 +13028,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-For example, using the sample model and instance data, as described in Appendix A: Sample Entity
+
+For example, using the sample model and instance data, as described in Appendix A: Sample Entity
 Data Model and CSDL Document (section 6), the links from the Customer with EntityKey entity
 "ALFKI" to Order instances are represented as follows.
 
@@ -13411,9 +13041,9 @@ Data Model and CSDL Document (section 6), the links from the Customer with Entit
 
 Listing: Example of Links Formatted as XML
 
-2.2.6.5.5.1
+###### 2.2.6.5.5.1 InlineCount Representation (for Collections of Links)
 
-InlineCount Representation (for Collections of Links)
+
 
 Applies to the OData 2.0 and OData 3.0 protocols
 
@@ -13428,7 +13058,7 @@ service.
 The count value included in the result MUST be enclosed in an m:count element which MUST be the
 first child element of the root links element.
 
-2.2.6.5.5.2  Next Page (for Collections of Links)
+###### 2.2.6.5.5.2 Next Page (for Collections of Links)
 
 A response containing a collection of links MAY include a next element in the Data Service Namespace
 (section 2.2.6.1) as the final child element of the root links element if the server only returned a
@@ -13437,7 +13067,7 @@ subset (or single page) of the collection of links.
 The value of the next element MUST be a URI that identifies the next page of the links in the
 collection; often the URI will include a Skip Token system query option (section 2.2.3.6.1.9).
 
-2.2.6.5.6 Collection of Complex Type
+###### 2.2.6.5.6 Collection of Complex Type
 
 In the OData 3.0 protocol, a collection property of complex types, defined on an EntityType, MUST be
 represented in the same way that it is in the Atom-based format, as specified in section Collection
@@ -13467,9 +13097,10 @@ Release: March 13, 2019
 
 171 / 290
 
-Listing: XML Formatted Collection of Complex Type
 
-2.2.6.5.7 Collection of EDMSimpleType
+Listing: XML Formatted Collection of Complex Type
+
+###### 2.2.6.5.7 Collection of EDMSimpleType
 
 In the OData 3.0 protocol, a collection property of simple types, defined on an EntityType, MUST be
 represented in the same way that it is in the Atom-based format, as specified in section 2.2.6.2.9.2.
@@ -13488,12 +13119,12 @@ Sample EDM and CSDL Document (section 6)) is represented in the following listin
 
 Listing: XML Formatted Collection of EDMSimpleType
 
-2.2.6.6  Preferred OData 3.0 JSON Format
+##### 2.2.6.6 Preferred OData 3.0 JSON Format
 
 OData 3.0 services SHOULD<65> support the preferred OData 3.0 JSON format as defined in [MS-
 ODATAJSON].
 
-2.2.7  Request Types
+#### 2.2.7 Request Types
 
 This document defines requests that a client can send to a data service.
 
@@ -13536,7 +13167,8 @@ Release: March 13, 2019
 
 172 / 290
 
-
+
+
 
 
 
@@ -13559,7 +13191,7 @@ common ABNF syntax rules used throughout this section.
 
 Listing: Common Grammar Rules for Request Types
 
-2.2.7.1  Insert Request Types
+##### 2.2.7.1 Insert Request Types
 
 This section defines all the insert request types a client can send to a data service. All insert requests
 use the HTTP POST request method. The type of insert action is further defined by the request URI
@@ -13571,7 +13203,7 @@ insert a new EntityType instance into an EntitySet.
 InsertLink Request (section 2.2.7.1.2) defines the InsertLink request type that is used to add a new
 link between EntityTypes instances.
 
-2.2.7.1.1 InsertEntity Request
+###### 2.2.7.1.1 InsertEntity Request
 
 The purpose of the InsertEntity request is to enable a new EntityType instance, potentially with new
 related entities, to be inserted into an EntitySet. The base rules and semantics of this request type are
@@ -13606,7 +13238,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-customer entity in a customer relationship management focused data service. Such linking is to be
+
+customer entity in a customer relationship management focused data service. Such linking is to be
 supported only if the EntityType of the to-be-inserted entity defines a NavigationProperty which
 associates the new entity and the to-be-related entity.
 
@@ -13676,7 +13309,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The syntax of a response to a successful InsertEntity request is defined as follows.
+
+The syntax of a response to a successful InsertEntity request is defined as follows.
 
  insertEntity-Resp        = Status-Line    ; see [RFC2616] section 6.1.1
                             insertEntity-RespHeaders
@@ -13705,7 +13339,7 @@ Release: March 13, 2019
 
 The syntax of an error response is shown in Error Response (section 2.2.8.1).
 
-2.2.7.1.1.1  Examples
+###### 2.2.7.1.1.1 Examples
 
 See Appendix A: Sample Entity Data Model and CSDL Document (section 6) for the sample model and
 data used in this section.
@@ -13750,7 +13384,8 @@ Release: March 13, 2019
 
 175 / 290
 
-      <d:CustomerID>ASDFG</d:CustomerID>
+
+      <d:CustomerID>ASDFG</d:CustomerID>
       <d:CompanyName>Contoso Widgets</d:CompanyName>
       <d:Address>
         <d:Street>58 Contoso St</d:Street>
@@ -13822,7 +13457,8 @@ Release: March 13, 2019
 
 176 / 290
 
-  POST /service.svc/Customers HTTP/1.1
+
+  POST /service.svc/Customers HTTP/1.1
   Host: host
   Content-Type: application/json;odata=verbose
   Accept: application/json;odata=verbose
@@ -13894,7 +13530,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-         xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+
+         xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
          xmlns="http://www.w3.org/2005/Atom">
     <id>http://host/service.svc/Customers('ASDFG')</id>
     <title type="text" />
@@ -13969,7 +13606,8 @@ Release: March 13, 2019
 
 178 / 290
 
-  Content-Type: application/atom+xml;type=entry
+
+  Content-Type: application/atom+xml;type=entry
   DataServiceVersion: 3.0
   Content-Length: nnn
   ETag: W/"X'000000000000FA01'"
@@ -14044,7 +13682,8 @@ Release: March 13, 2019
 
 179 / 290
 
-     ]
+
+     ]
   }
 
 HTTP Response (Version 3.0):
@@ -14078,7 +13717,7 @@ HTTP Response (Version 3.0):
    }
   }
 
-2.2.7.1.2 InsertLink Request
+###### 2.2.7.1.2 InsertLink Request
 
 The purpose of the InsertLink request is to enable a new link to be created between two EntityType
 instances. AtomPub, as specified in [RFC5023], does not define a request of this type. Therefore, this
@@ -14111,7 +13750,8 @@ Release: March 13, 2019
 
 180 / 290
 
-If an InsertLink request is successful, the response MUST have a 204 status code, as specified in
+
+If an InsertLink request is successful, the response MUST have a 204 status code, as specified in
 [RFC2616], and contain an empty response body.
 
 If the InsertLink request is not successful (an error occurred while processing the request), the
@@ -14160,7 +13800,7 @@ The syntax of a response to a successful InsertLink request is defined as follow
                               [Preference-Applied]     ; see section 2.2.5.10
                               *(HTTP-Header-Types)
 
-2.2.7.1.3 InsertMediaResource Request
+###### 2.2.7.1.3 InsertMediaResource Request
 
 The purpose of the InsertMediaResource request is to enable a BLOB (in other words, a media
 resource) along with an associated EntityType instance which, potentially with new related entities, is
@@ -14180,7 +13820,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-As specified in [RFC5023] section 9.6, insert requests of this type use the HTTP POST method and the
+
+As specified in [RFC5023] section 9.6, insert requests of this type use the HTTP POST method and the
 request URI has to represent an AtomPub collection. Because a collection maps to an EntitySet (that
 is, a collection of entities) in an EDM, the HTTP request line URI MUST be any URI that identifies a
 collection of entities. If the EntityType associated with the implicitly created MLE defines a
@@ -14246,9 +13887,10 @@ Release: March 13, 2019
 
 182 / 290
 
-2.2.7.2  Retrieve Request Types
 
-2.2.7.2.1 RetrieveEntitySet Request
+##### 2.2.7.2 Retrieve Request Types
+
+###### 2.2.7.2.1 RetrieveEntitySet Request
 
 A RetrieveEntitySet request is used by a client to retrieve the entries in an AtomPub collection, as
 specified in [RFC5023], that maps to an EntitySet in the abstract data model used in this document,
@@ -14315,7 +13957,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                                ; see [RFC2616] section 6.1.1
+
+                                ; see [RFC2616] section 6.1.1
                                   retrieveEntitySet-RespHeaders
                                   CRLF
                                   retrieveEntitySet-RespBody
@@ -14339,7 +13982,7 @@ Release: March 13, 2019
                                     end-object)
                                     ; see section 2.2.6.3.2
 
-2.2.7.2.2 RetrieveEntity Request
+###### 2.2.7.2.2 RetrieveEntity Request
 
 A RetrieveEntity request is used by a client to retrieve an AtomPub entry resource, as specified in
 [RFC5023], and potentially related entities that map to EntityType instances, as described in Abstract
@@ -14382,7 +14025,8 @@ Release: March 13, 2019
 
 184 / 290
 
-If the RetrieveEntity request is not successful (for example, an error occurred while processing the
+
+If the RetrieveEntity request is not successful (for example, an error occurred while processing the
 request), the response MUST be formatted according to Error Response (section 2.2.8.1).
 
 The syntax of a RetrieveEntity request is defined as follows:
@@ -14446,7 +14090,7 @@ The syntax of a response to a successful RetrieveEntity request is defined as fo
                                    ; see section 2.2.6.3.3 &
                                    ; 2.2.6.3.9.1
 
-2.2.7.2.3 RetrieveComplexType Request
+###### 2.2.7.2.3 RetrieveComplexType Request
 
 [MS-ODATA] - v20190313
 Open Data Protocol (OData)
@@ -14455,7 +14099,8 @@ Release: March 13, 2019
 
 185 / 290
 
-The purpose of the RetrieveComplexType request is to enable the value of a ComplexType property
+
+The purpose of the RetrieveComplexType request is to enable the value of a ComplexType property
 on an EntityType instance to be retrieved by a client. AtomPub, as specified in [RFC5023], does not
 define operations on subcomponents of an entry resource. As such, this request type is not based on
 an AtomPub-defined [RFC5023] request.
@@ -14525,9 +14170,10 @@ Release: March 13, 2019
 
 186 / 290
 
-                              ; see section 2.2.6.3.4
 
-2.2.7.2.4 RetrievePrimitiveProperty Request
+                              ; see section 2.2.6.3.4
+
+###### 2.2.7.2.4 RetrievePrimitiveProperty Request
 
 The purpose of the RetrievePrimitiveProperty request is to enable the value of an EDMSimpleType
 property on an EntityType instance (or one of its constituent ComplexType instances) to be
@@ -14594,7 +14240,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                             2.2.6.5.3>
+
+                             2.2.6.5.3>
                             / (begin-object
                                quotation-mark "d" quotation-mark
                                name-seperator
@@ -14604,7 +14251,7 @@ Release: March 13, 2019
                                end-object)
                                ; see section 2.2.6.3.8
 
-2.2.7.2.5 RetrieveValue Request
+###### 2.2.7.2.5 RetrieveValue Request
 
 The purpose of the RetrieveValue Request is to enable the raw value of an EDMSimpleType property
 on an EntityType instance to be retrieved by a client. AtomPub, as specified in [RFC5023], does not
@@ -14664,11 +14311,12 @@ Release: March 13, 2019
 
 188 / 290
 
-                            *(HTTP-Header-Types)
+
+                            *(HTTP-Header-Types)
 
  retrieveValue-RespBody   = <Property value formatted as per section 2.2.6.4.1>
 
-2.2.7.2.6 RetrieveCollectionProperty Request
+###### 2.2.7.2.6 RetrieveCollectionProperty Request
 
 The purpose of the RetrieveCollectionProperty request is to enable the value of a collection property
 on an EntityType instance to be retrieved by a client. AtomPub, as specified in [RFC5023], does not
@@ -14733,11 +14381,12 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                                       Verbose JSON as per sections 2.2.6.3.5 and 2.2.6.3.7>
+
+                                       Verbose JSON as per sections 2.2.6.3.5 and 2.2.6.3.7>
                                     / <Collection property values formatted in XML as
                                        per sections 2.2.6.5.6 and 2.2.6.5.7>
 
-2.2.7.2.7 RetrieveServiceMetadata Request
+###### 2.2.7.2.7 RetrieveServiceMetadata Request
 
 The purpose of the RetrieveServiceMetadata Request is to enable a client to retrieve the conceptual
 schema definition language (CSDL) document, as specified in [MC-CSDL], describing the data
@@ -14802,10 +14451,11 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                                 defining the data service>
+
+                                 defining the data service>
                                 ; see section 2.2.3.7.2
 
-2.2.7.2.8 RetrieveServiceDocument Request
+###### 2.2.7.2.8 RetrieveServiceDocument Request
 
 The purpose of the RetrieveServiceDocument request is to enable a client to retrieve the Service
 Document describing the collection of resources exposed by a data service, as described in Service
@@ -14870,7 +14520,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                                       *(HTTP-Header-Types)
+
+                                       *(HTTP-Header-Types)
 
  retrieveServiceDocument-RespBody   = <Service Document formatted by using AtomPub
                                         as per section 2.2.6.2.7>
@@ -14883,7 +14534,7 @@ Release: March 13, 2019
                                         end-object)
                                         ; see section 2.2.6.3.11
 
-2.2.7.2.9 RetrieveLink Request
+###### 2.2.7.2.9 RetrieveLink Request
 
 The purpose of the RetrieveLink request is to enable the links representing the relationships from one
 EntityType instance to another or from one EntityType instance to all others in a specified EntitySet
@@ -14938,7 +14589,8 @@ Release: March 13, 2019
 
 192 / 290
 
- retrieveLink-Resp         =  Status-Line              ; see [RFC2616] section 6.1.1
+
+ retrieveLink-Resp         =  Status-Line              ; see [RFC2616] section 6.1.1
                               retrieveLink-RespHeaders
                               CRLF
                               retrieveLink-RespBody
@@ -14955,7 +14607,7 @@ Release: March 13, 2019
                                 <Representation of the links or link addressed in the
                                  request URI formatted as per section 2.2.6.3.10>
 
-2.2.7.2.10  RetrieveCount Request
+###### 2.2.7.2.10 RetrieveCount Request
 
 Applies to the OData 2.0 and OData 3.0 protocols
 
@@ -15010,7 +14662,8 @@ Release: March 13, 2019
 
 193 / 290
 
-                                 ; see section 2.2.3.1
+
+                                 ; see section 2.2.3.1
 
 The syntax of a response to a successful RetrieveCount Request is defined as follows:
 
@@ -15025,7 +14678,7 @@ The syntax of a response to a successful RetrieveCount Request is defined as fol
 
  retrieveCount-RespBody   = <Count value formatted as per section 2.2.6.4.1>
 
-2.2.7.2.11  Retrieve Request Containing a Customizable Feed Mapping
+###### 2.2.7.2.11 Retrieve Request Containing a Customizable Feed Mapping
 
 Applies to the OData 2.0 and OData 3.0 protocols
 
@@ -15043,7 +14696,7 @@ mapping. System query options and service operations that accept a property name
 MUST treat the value of the parameter as identifying the name of a property identified on an
 EntityType and not the mapped location of that property.
 
-2.2.7.2.12  RetrieveMediaResource Request
+###### 2.2.7.2.12 RetrieveMediaResource Request
 
 A RetrieveMediaResource Request is used by a client to retrieve an AtomPub Media Resource, as
 specified in [RFC5023] section 9.6, that maps to a BLOB associated with an EntityType instance, as
@@ -15077,7 +14730,8 @@ Release: March 13, 2019
 
 194 / 290
 
- retrieveEntity-QueryOps   = ; section 2.2.7.2.2
+
+ retrieveEntity-QueryOps   = ; section 2.2.7.2.2
 
  entityTypeInstanceMRUri   = ; see section 2.2.7.3.5
 
@@ -15093,9 +14747,9 @@ The syntax of a response to a successful RetrieveMediaResource Request is define
 
  retrieveMR-RespBody         =  <Any valid HTTP response body>
 
-2.2.7.3  Update Request Types
+##### 2.2.7.3 Update Request Types
 
-2.2.7.3.1 UpdateEntity Request
+###### 2.2.7.3.1 UpdateEntity Request
 
 An UpdateEntity Request is used by a client to update an existing AtomPub Entry Resource, as
 specified in [RFC5023], that maps to an EntityType instance in the abstract data model used in this
@@ -15141,7 +14795,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-attribute of the atom:link element is equal the URI that identifies the existing entity that is the target
+
+attribute of the atom:link element is equal the URI that identifies the existing entity that is the target
 of the link.
 
 To bind the new entity to an existing entity by using the preferred OData 3.0 JSON format, see
@@ -15212,7 +14867,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- updateEntity-RespBody     =  <Entity (possibly with expanded navigation properties) formatted
+
+ updateEntity-RespBody     =  <Entity (possibly with expanded navigation properties) formatted
                                by using JSON as per [ODataJSON4.0] sections 6 and 8.3>
                                / <Entity Type instance (possibly with
                                    related instances) formatted by using
@@ -15225,7 +14881,7 @@ Release: March 13, 2019
                                    ; see section 2.2.6.3.3 &
                                    ; 2.2.6.3.9.1
 
-2.2.7.3.1.1  Example
+###### 2.2.7.3.1.1 Example
 
 See Appendix A: Sample Entity Data Model and CSDL Document (section 6) for the sample model and
 data used in this section.
@@ -15256,7 +14912,7 @@ HTTP Response:
  DataServiceVersion: 1.0
  ETag: W/"X'000000000000FA01'"
 
-2.2.7.3.2 UpdateComplexType Request
+###### 2.2.7.3.2 UpdateComplexType Request
 
 The purpose of the UpdateComplexType request is to enable the value of a ComplexType instance to
 be updated. AtomPub, as specified in [RFC5023], does not define operations on subcomponents of an
@@ -15280,7 +14936,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-or PATCH method MUST merge the property values of the ComplexType addressed via the request
+
+or PATCH method MUST merge the property values of the ComplexType addressed via the request
 URI with the property values that are provided in the payload, as specified in
 PATCH/MERGE (section 2.2.4.1).
 
@@ -15352,11 +15009,12 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                              (entityCTInVJson / entityCTInVJson2)
+
+                              (entityCTInVJson / entityCTInVJson2)
                               end-object)
                               ; see section 2.2.6.3.4
 
-2.2.7.3.3 UpdatePrimitiveProperty Request
+###### 2.2.7.3.3 UpdatePrimitiveProperty Request
 
 The purpose of the UpdatePrimitiveProperty request is to enable the value of an EDMSimpleType
 property on an EntityType instance to be updated. AtomPub, as specified in [RFC5023], does not
@@ -15421,7 +15079,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                              ; see section 2.2.6.3.8
+
+                              ; see section 2.2.6.3.8
 
  entityTypeInstancePropertyUri = ; see section 2.2.7.4.3
 
@@ -15451,7 +15110,7 @@ The syntax of a response to a successful UpdatePrimitiveProperty request is defi
                                end-object)
                                ; see section 2.2.6.3.8
 
-2.2.7.3.4 UpdateCollectionProperty Request
+###### 2.2.7.3.4 UpdateCollectionProperty Request
 
 The purpose of the UpdateCollectionProperty request is to enable the value of a collection instance to
 be updated. AtomPub, as specified in [RFC5023], does not define operations on subcomponents of an
@@ -15488,7 +15147,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The syntax of an UpdateCollectionProperty request is defined as follows:
+
+The syntax of an UpdateCollectionProperty request is defined as follows:
 
  updateCollection-Req            = updateCollection-ReqLine
                            updateCollection-ReqHeaders
@@ -15537,7 +15197,7 @@ The syntax of a response to a successful UpdateComplexType Request is defined as
                                    / <Collection of values formatted in XML
                                       as per sections 2.2.6.5.6 and 2.2.6.5.7>
 
-2.2.7.3.5 UpdateValue Request
+###### 2.2.7.3.5 UpdateValue Request
 
 The purpose of the UpdateValue request is to enable the value of an EDMSimpleType property on an
 EntityType instance to be updated. AtomPub [RFC5023] does not define operations on
@@ -15557,7 +15217,8 @@ Release: March 13, 2019
 
 201 / 290
 
-The payload of the request MUST be formatted according to the rules defined in EDMSimpleType
+
+The payload of the request MUST be formatted according to the rules defined in EDMSimpleType
 Property (section 2.2.6.4.1). A server receiving a request of this type MUST replace the value of the
 property addressed via the request URI with the value provided in the payload. The server MUST
 perform the same behavior whether the request uses the HTTP MERGE, PATCH, or PUT method.
@@ -15614,7 +15275,7 @@ The syntax of a response to a successful UpdateValue request is defined as follo
 
  updateValue-RespBody   = <Property value formatted as per section 2.2.6.4.1>
 
-2.2.7.3.6 UpdateLink Request
+###### 2.2.7.3.6 UpdateLink Request
 
 [MS-ODATA] - v20190313
 Open Data Protocol (OData)
@@ -15623,7 +15284,8 @@ Release: March 13, 2019
 
 202 / 290
 
-The purpose of the UpdateLink request is to enable a Link to be established between two EntityType
+
+The purpose of the UpdateLink request is to enable a Link to be established between two EntityType
 instances. AtomPub [RFC5023] does not define a request of this type. Therefore, this request type is
 not based on an AtomPub-defined [RFC5023] request.
 
@@ -15692,7 +15354,8 @@ Release: March 13, 2019
 
 203 / 290
 
-The syntax of a response to a successful UpdateLink request is defined as follows:
+
+The syntax of a response to a successful UpdateLink request is defined as follows:
 
  updateLink-Resp         =    Status-Line              ; see [RFC2616] section 6.1.1
                               updateLink-RespHeaders
@@ -15712,7 +15375,7 @@ Release: March 13, 2019
                                 <Representation of the links or link addressed in the
                                  request URI formatted as per section 2.2.6.3.10>
 
-2.2.7.3.7 UpdateMediaResource Request
+###### 2.2.7.3.7 UpdateMediaResource Request
 
 An UpdateMediaResource request is used by a client to update an existing AtomPub media resource,
 as specified in [RFC5023] section 9.6. The AtomPub media resource maps to BLOB, which is described
@@ -15762,7 +15425,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                            ; see section 2.2.3 and section 2.2.3.5 – URI17
+
+                            ; see section 2.2.3 and section 2.2.3.5 – URI17
 
  updateEntity-QueryOps    = ; see section 2.2.7.3.1
 
@@ -15792,7 +15456,7 @@ The syntax of a response to a successful UpdateMediaResource request is defined 
                               ; the entityTypeInVJson representation MUST include all name
                               ; value/pairs denoted in the mleMetadata rule
 
-2.2.7.3.8 Update Request Containing a Customizable Feed Property Mapping
+###### 2.2.7.3.8 Update Request Containing a Customizable Feed Property Mapping
 
 Applies to the OData 2.0 and OData 3.0 protocols
 
@@ -15809,9 +15473,9 @@ Type (as an Atom Entry Element) (section 2.2.6.2.2). If the property value is in
 m:properties element (as described in section 2.2.6.2.2), the data service MUST use that value when
 updating the EntityType instance.
 
-2.2.7.4  Delete Request Types
+##### 2.2.7.4 Delete Request Types
 
-2.2.7.4.1 DeleteEntity Request
+###### 2.2.7.4.1 DeleteEntity Request
 
 The purpose of the DeleteEntity request is to enable an EntityType instance to be deleted from a
 data service. The base rules and semantics of this request type are defined by AtomPub, as
@@ -15828,7 +15492,8 @@ Release: March 13, 2019
 
 205 / 290
 
-As in [RFC5023] section 9.4, DeleteEntity requests MUST use the HTTP DELETE method, and the URI
+
+As in [RFC5023] section 9.4, DeleteEntity requests MUST use the HTTP DELETE method, and the URI
 specified by the client in the HTTP request line addresses an AtomPub Member Resource. Because an
 Entry Resource (subtype of Member Resource) maps to an EntityType instance in an Entity Data
 Model, the HTTP request line URI MUST be any valid data service URI which identifies a single
@@ -15875,7 +15540,7 @@ The syntax of a response to a successful DeleteEntity request is defined as foll
  deleteEntity-RespHeaders  = DataServiceVersion             ; see section 2.2.5.3
                             *(HTTP-Header-Types)
 
-2.2.7.4.2 DeleteLink Request
+###### 2.2.7.4.2 DeleteLink Request
 
 The purpose of the DeleteLink request is to enable an existing link between two EntityType instances
 to be removed. AtomPub [RFC5023] does not define a request of this type. Therefore, this request
@@ -15896,7 +15561,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-DeleteLink request MUST contain 0 bytes in the payload. If a DeleteLink request is successful, the
+
+DeleteLink request MUST contain 0 bytes in the payload. If a DeleteLink request is successful, the
 response MUST have a 204 status code, as specified in [RFC2616], and an empty response body.
 
 If the DeleteLink request is not successful (for example, an error occurred while processing the
@@ -15934,7 +15600,7 @@ The syntax of a response to a successful DeleteLink request is defined as follow
  deleteLink-RespHeaders  =    DataServiceVersion       ; see section 2.2.5.3
                               *(HTTP-Header-Types)
 
-2.2.7.4.3 DeleteValue Request
+###### 2.2.7.4.3 DeleteValue Request
 
 The purpose of the DeleteValue Request is to enable an EDMSimpleType property of an EntityType
 instance to be set to null. AtomPub [RFC5023] does not define operations on subcomponents of an
@@ -15963,7 +15629,8 @@ Release: March 13, 2019
 
 207 / 290
 
- deleteValue-Req         = deleteValue-ReqLine
+
+ deleteValue-Req         = deleteValue-ReqLine
                            deleteValue-ReqHeaders
                            CRLF
 
@@ -15995,7 +15662,7 @@ The syntax of a response to a successful DeleteValue request is defined as follo
  deleteValue-RespHeaders = DataServiceVersion          ; see section 2.2.5.3
                             *(HTTP-Header-Types)
 
-2.2.7.5  Invoke Request Types
+##### 2.2.7.5 Invoke Request Types
 
 The purpose of the Invoke request is to enable a client to call a FunctionImport, as specified in [MC-
 CSDL] section 2.1.15, that is exposed by a service operation in a data service. Note that this
@@ -16032,7 +15699,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                           ; is defined by the httpMethod CSDL annotation
+
+                           ; is defined by the httpMethod CSDL annotation
                            ; defined in section 2.2.3.7.2
                            SP serviceOperationUri invoke-QueryOps
                            SP HTTP-Version
@@ -16106,12 +15774,13 @@ Release: March 13, 2019
 
 209 / 290
 
- quotation-mark          = ; see [RFC4627] section 2.5
+
+ quotation-mark          = ; see [RFC4627] section 2.5
 
  ; a Function Import which returns a single primitive type value
  invoke-RespBody-prim     = retrievePP-RespBody        ; see section 2.2.7.2.4
 
-2.2.7.5.1 Invoke Action Request
+###### 2.2.7.5.1 Invoke Action Request
 
 Applies to the OData 3.0 protocol
 
@@ -16176,7 +15845,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                             actionParameterValue
+
+                             actionParameterValue
 
  actionParameterName       = *pchar
                              ; the name of a parameter to the Action
@@ -16194,7 +15864,7 @@ The syntax of a response to a successful Invoke Action request is defined as fol
                              CRLF
                              [invoke-RespBody]  ; missing if the Action has no ReturnType
 
-2.2.7.5.2 Invoke Function Request
+###### 2.2.7.5.2 Invoke Function Request
 
 Applies to the OData 3.0 protocol
 
@@ -16244,10 +15914,11 @@ Release: March 13, 2019
 
 211 / 290
 
- invokeFunction-Resp = invoke-Resp
+
+ invokeFunction-Resp = invoke-Resp
                        ; see section 2.2.7.5
 
-2.2.7.6  Batch Request
+##### 2.2.7.6 Batch Request
 
 The request types defined in the preceding subsections provide mechanisms for a client to query and
 manipulate resources exposed by a data service whereby each request type maps to a single HTTP
@@ -16313,7 +15984,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-separated by the boundary defined in the Content-Type header of the request. Implementers SHOULD
+
+separated by the boundary defined in the Content-Type header of the request. Implementers SHOULD
 follow the recommendations for boundary generation described in [RFC2046] section 5.1.
 
 Preambles and Epilogues in the MIME payload, as defined in [RFC2046], are valid but MUST be
@@ -16331,7 +16003,7 @@ defined in this document that add constraints to rules defined in MIME-related R
 
 Listing: Batch Request Headers
 
-2.2.7.6.1 Change Set Syntax
+###### 2.2.7.6.1 Change Set Syntax
 
 Each change set MUST be represented within its MIME part in the Batch payload as a nested
 multipart/mixed message. This MUST be specified by including a Content-Type header, which
@@ -16366,7 +16038,7 @@ Request (section 2.2.7.5). The only exception is that the Content-Length request
 mandatory in requests that include request payloads. For restrictions on the HTTP constructs that can
 be used in batched HTTP requests, see HTTP Request Restrictions (section 2.2.7.6.3).
 
-2.2.7.6.1.1  Referencing Requests in a Change Set
+###### 2.2.7.6.1.1 Referencing Requests in a Change Set
 
 To enable referencing a new entity created via an Insert request, as described in Insert Request
 Types (section 2.2.7.1), from a subsequent request within the same change set, this document
@@ -16379,7 +16051,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Each MIME part that represents a request in a change set MUST include a Content-ID MIME header as
+
+Each MIME part that represents a request in a change set MUST include a Content-ID MIME header as
 an HTTP header of the MIME part request. If a MIME part defines an InsertEntity request or invokes an
 action that returns an entity, then the entity, as defined by the InsertEntity request or action
 invocation, MAY be referenced by subsequent requests in the change set by using the "$<Content-ID
@@ -16388,7 +16061,7 @@ request within the change set. When used in this way, the token acts as an alias
 path that identifies the new entity. Requests in different change sets cannot reference one another,
 even if they are in the same batch.
 
-2.2.7.6.2 Query Operation Syntax
+###### 2.2.7.6.2 Query Operation Syntax
 
 Each query operation in a Batch Request is represented as a MIME part, separated from other MIME
 parts using the boundary defined in the Content-Type header of the Batch request.
@@ -16403,7 +16076,7 @@ as if it was a standalone HTTP request (not part of a Batch request) and follow 
 Retrieve Request Types (section 2.2.7.2). For restrictions on the HTTP constructs that can be used in
 batched HTTP requests, see HTTP Request Restrictions (section 2.2.7.6.3).
 
-2.2.7.6.3 HTTP Request Restrictions
+###### 2.2.7.6.3 HTTP Request Restrictions
 
 Each MIME part body which represents a single request SHOULD NOT:
 
@@ -16420,7 +16093,7 @@ Data services can choose to disallow additional HTTP constructs in HTTP requests
 MIME part bodies. For example, a data service might choose to disallow chunked encoding to be used
 by such HTTP requests.
 
-2.2.7.6.4 Batch Request Syntax
+###### 2.2.7.6.4 Batch Request Syntax
 
 The syntax of a Batch request is defined as follows.
 
@@ -16453,7 +16126,8 @@ Release: March 13, 2019
 
 214 / 290
 
- body-part                =   batchQueryOperation-ReqBodyPart
+
+ body-part                =   batchQueryOperation-ReqBodyPart
                               / batchChangeSet-ReqMultiPart
  ; this rule redefines and adds constraints to the 'body-part' grammar rule in [RFC2046]
 
@@ -16494,7 +16168,7 @@ Release: March 13, 2019
  epilogue                 = ; see [RFC2046] section 5.1.1
  id                       = ; see [RFC2045] section 7
 
-2.2.7.6.5 Example Batch Request
+###### 2.2.7.6.5 Example Batch Request
 
 This section shows an example Batch request that contains the following operations in the order
 described:
@@ -16528,7 +16202,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- POST /service.svc/$batch HTTP/1.1
+
+ POST /service.svc/$batch HTTP/1.1
  Host: host
  Content-Type: multipart/mixed; boundary=batch_36522ad7-fc75-4b56-8c71-56071383e77b
 
@@ -16598,7 +16273,8 @@ Release: March 13, 2019
 
 216 / 290
 
-2.2.7.6.6 Batch Responses
+
+###### 2.2.7.6.6 Batch Responses
 
 If a data service receives a Batch request (section 2.2.7.6) with a valid set of HTTP request headers,
 it MUST respond with a 202 Accepted HTTP response code to indicate that the request has been
@@ -16632,7 +16308,7 @@ response is not represented using the multipart/mixed media type. Instead, a sin
 the "application/http" media type, is returned that applies to all requests in the change set and MUST
 be formatted according to Error Response (section 2.2.8.1).
 
-2.2.7.6.7 Batch Response Syntax
+###### 2.2.7.6.7 Batch Response Syntax
 
 The syntax of a Batch response is defined as follows.
 
@@ -16668,7 +16344,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                                        in section 2.2.7.2>
+
+                                        in section 2.2.7.2>
 
  mimePart-RespHeaders     =   contentTypeMime-Part  ; see section 2.2.7.6.1
                               CRLF
@@ -16709,7 +16386,7 @@ Release: March 13, 2019
  epilogue                 = ; see [RFC2046] section 5.1.1
  Status-Line              = ; see [RFC2616] section 6.1
 
-2.2.7.6.8 Example Batch Response
+###### 2.2.7.6.8 Example Batch Response
 
 The examples below represent a few of the possible responses to the Batch Request shown in Example
 Batch Request (section 2.2.7.6.5).
@@ -16738,7 +16415,8 @@ Release: March 13, 2019
 
 218 / 290
 
- HTTP/1.1 200 Ok
+
+ HTTP/1.1 200 Ok
  Content-Type: application/atom+xml;type=entry
  Content-Length: ###
 
@@ -16806,7 +16484,8 @@ Release: March 13, 2019
 
 219 / 290
 
-The formatting used is the same as that defined in Example Batch Request (section 2.2.7.6.5).
+
+The formatting used is the same as that defined in Example Batch Request (section 2.2.7.6.5).
 Response bodies are excluded in favor of English descriptions inside "<>" brackets to simplify the
 example.
 
@@ -16845,7 +16524,7 @@ example.
  <Error message>
  --batch(36522ad7-fc75-4b56-8c71-56071383e77b)—
 
-2.2.7.7  Tunneled Requests
+##### 2.2.7.7 Tunneled Requests
 
 This section does not define a new request type, but rather defines an alternate way of representing
 Update Request Types (section 2.2.7.3) and Delete Request Types (section 2.2.7.4) by using a POST
@@ -16856,9 +16535,9 @@ This Tunneled Request type is fully defined through X-HTTP-Method header usage. 
 HTTP-Method (section 2.2.5.8) for details regarding how the X-HTTP-Method header is used to create
 a Tunneled Request.
 
-2.2.8  Response Types
+#### 2.2.8 Response Types
 
-2.2.8.1  Error Response
+##### 2.2.8.1 Error Response
 
 This section defines the structure of a response payload if a request to a data service completed in
 error. Two types of error conditions are defined: "in-stream" and "top-level".
@@ -16874,7 +16553,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-used to indicate that an error has occurred. This document does not prescribe an error response
+
+used to indicate that an error has occurred. This document does not prescribe an error response
 generation method for in-stream errors.
 
 In the context of this document, "top-level" errors SHOULD be used when the data service that is
@@ -16918,7 +16598,7 @@ The syntax of a top-level error response is defined as follows:
 
 Listing: Top-level Error Response ABNF Grammar
 
-2.2.8.1.1 XML Error Response
+###### 2.2.8.1.1 XML Error Response
 
 This section defines an XML format for error messages that MUST be used in response payloads
 representing top-level errors, as specified in Error Response (section 2.2.8.1), when the server uses
@@ -16942,7 +16622,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  <xs:complexType>
+
+  <xs:complexType>
    <xs:sequence>
      <xs:element name="code" type="xs:string" minOccurs="1"
      maxOccurs="1"/>
@@ -16976,7 +16657,7 @@ Note  The innererror element is to be used only in development environments. If 
 in a response from a production data service, it is not to include system internal information in
 order to guard against information disclosure security concerns.
 
-2.2.8.1.2 Verbose JSON Error Response
+###### 2.2.8.1.2 Verbose JSON Error Response
 
 This section defines the structure of an error message represented in Verbose JSON, as specified in
 [RFC4627], that MUST be used in response payloads representing top-level errors, as specified in
@@ -17014,7 +16695,8 @@ Release: March 13, 2019
 
 222 / 290
 
-   ; Human readable description of the error
+
+   ; Human readable description of the error
 
  langNVP       =  quotation-mark "lang" quotation-mark name-seperator string
    ;  A string as per [RFC4646]
@@ -17044,30 +16726,31 @@ Release: March 13, 2019
 
 223 / 290
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 The abstract data model used by data service clients is described in Abstract Data
 Model (section 2.2.1).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Clients MUST adhere to the request generation and response processing rules (for the client role)
 defined in AtomPub [RFC5023] and HTTP [RFC2616]. This section defines the additional rules,
 specific to this document, to which clients MUST adhere.
 
-3.1.4.1  Common Rules for All Requests
+##### 3.1.4.1 Common Rules for All Requests
 
 Requests sent by clients MUST NOT specify any of the HTTP headers or tokens defined in HTTP Header
 Fields (section 2.2.5) or [RFC2616] which are defined for use only in responses.
@@ -17087,7 +16770,7 @@ application/xml as the response format (see XML Format (section 2.2.6.5)).
 After sending a request, the client MUST wait for another higher-layer triggered event or for the
 response to the request to be received.
 
-3.1.4.2  Request to Insert Resources
+##### 3.1.4.2 Request to Insert Resources
 
 When a higher layer needs to insert entities into a data service, it MUST cause the client to send the
 appropriate Insert request type, as specified in Insert Request Types (section 2.2.7.1) and as detailed
@@ -17106,10 +16789,11 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-state of the resource in the response to a successful insert request by using the
+
+state of the resource in the response to a successful insert request by using the
 Prefer (section 2.2.5.9) header.
 
-3.1.4.2.1 Sending an InsertEntity Request
+###### 3.1.4.2.1 Sending an InsertEntity Request
 
 The InsertEntity Request (section 2.2.7.1.1) MUST adhere to the syntax specified in InsertEntity
 Request (section 2.2.7.1.1).
@@ -17137,7 +16821,7 @@ specifying an entity's type information in a request.
 Rules for processing the response to an InsertEntity are specified in Responses from Insert
 Requests (section 3.1.5.2).
 
-3.1.4.2.2 Sending an InsertLink Request
+###### 3.1.4.2.2 Sending an InsertLink Request
 
 The InsertLink request MUST adhere to the syntax specified in InsertLink Request (section 2.2.7.1.2).
 
@@ -17148,7 +16832,7 @@ application/json (section 2.2.5.1.2), or application/json;odata=verbose (section
 Rules for processing the response to an InsertLink Request (section 2.2.7.1.2) are specified in
 Common Rules for Receiving Responses from Data Service Requests (section 3.1.5.1).
 
-3.1.4.3  Request to Retrieve Resources
+##### 3.1.4.3 Request to Retrieve Resources
 
 When a higher layer needs to retrieve resources from a data service, it MUST cause the client to
 send the appropriate Retrieve Request Type (section 2.2.7.2), as specified in the remainder of this
@@ -17160,7 +16844,7 @@ Retrieve Request Types (section 2.2.7.2), the URI MUST identify the data service
 retrieved. Such a URI MAY include Query Options (section 2.2.3.6) which further define the resources
 to be retrieved.
 
-3.1.4.3.1 Common Rules for Sending Retrieve Requests
+###### 3.1.4.3.1 Common Rules for Sending Retrieve Requests
 
 This section defines all the rules to which clients MUST adhere when sending Retrieve requests.
 Therefore, no additional rules for specific Retrieve request types are defined in this document.
@@ -17172,7 +16856,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Retrieve requests MUST adhere to the syntax rules that are specified in Retrieve Request
+
+Retrieve requests MUST adhere to the syntax rules that are specified in Retrieve Request
 Types (section 2.2.7.2).
 
 As noted in Common Rules for all Requests (section 3.1.4.1), the client SHOULD specify the
@@ -17206,7 +16891,7 @@ If the retrieve request URI identifies a Media Resource, the request MAY include
 
 For rules for processing responses, see Retrieve Request Types (section 2.2.7.2).
 
-3.1.4.4  Request to Update Resources
+##### 3.1.4.4 Request to Update Resources
 
 When a higher layer needs to update an existing resource in a data service, it MUST cause the
 client to send the appropriate Update Request Type (section 2.2.7.3), as specified in the remainder of
@@ -17216,7 +16901,7 @@ The higher layer MUST provide the request URI, which it obtained from a prior da
 or other means, as specified in Update Request Types (section 2.2.7.3). The URI MUST identify the
 data service resource to be updated.
 
-3.1.4.4.1 Common Rules for Sending Update Requests
+###### 3.1.4.4.1 Common Rules for Sending Update Requests
 
 This section defines all the rules to which clients MUST adhere when sending Update requests.
 Therefore, no additional rules for specific Update request types are defined in this document.
@@ -17239,7 +16924,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-If the Update request URI (provided by the higher layer) identifies an entity, ComplexType instance,
+
+If the Update request URI (provided by the higher layer) identifies an entity, ComplexType instance,
 primitive property, or property value, and the associated EntityType defines a concurrency token, the
 client SHOULD include an If-Match (section 2.2.5.5) header in the request. The concurrency token
 provided as the value of the header MUST be a token that is associated with the EntityType of the
@@ -17262,7 +16948,7 @@ The client MAY specify a preference/hint about whether to include an entity that
 current state of the resource in the response to a successful update request by using the
 Prefer (section 2.2.5.9) header.
 
-3.1.4.5  Request to Delete Resources
+##### 3.1.4.5 Request to Delete Resources
 
 When the higher layer needs to delete an existing resource in a data service it MUST cause the
 client to send the appropriate Delete Request Type (section 2.2.7.4), as specified in the remainder of
@@ -17271,7 +16957,7 @@ this section.
 The higher layer MUST provide the request URI, which the higher layer obtained from a prior data
 service response or other means. The URI MUST identify the data service resource to be deleted.
 
-3.1.4.5.1 Common Rules for Sending Delete Requests
+###### 3.1.4.5.1 Common Rules for Sending Delete Requests
 
 This section defines all the rules to which clients MUST adhere when sending Delete requests.
 Therefore, no additional rules for specific Delete request types are defined in this document.
@@ -17292,7 +16978,7 @@ Request Types (section 2.2.7.4) MAY be sent as a tunneled request (section 2.2.7
 Rules for processing the response to Delete Requests is specified in Common Rules for Receiving
 Responses from Data Service Requests (section 3.1.5.1).
 
-3.1.4.6  Request to Invoke a Service Operation
+##### 3.1.4.6 Request to Invoke a Service Operation
 
 When the higher layer needs to invoke a Service Operation in a data service, it MUST cause the
 client to send the appropriate Invoke Request (section 2.2.7.5) type.
@@ -17304,7 +16990,8 @@ Release: March 13, 2019
 
 227 / 290
 
-The higher layer MUST provide the request URI, which the higher layer obtained from a prior data
+
+The higher layer MUST provide the request URI, which the higher layer obtained from a prior data
 service response or other means. As defined by the Invoke request types, Invoke
 Request (section 2.2.7.5), the URI MUST identify the service operation to be invoked.
 
@@ -17324,7 +17011,7 @@ Request (section 2.2.7.5) MAY be sent as a tunneled request (section 2.2.7.7).
 Rules for processing the response to Service Operation requests are specified in Common Rules for
 Receiving Responses from Data Service Requests (section 3.1.5.1).
 
-3.1.4.7  Request to Send a Batch of Operations
+##### 3.1.4.7 Request to Send a Batch of Operations
 
 When the higher layer needs to send a batch of operations to a data service, it MUST cause the client
 to send a Batch Request (section 2.2.7.6), as specified in the remainder of this section.
@@ -17338,7 +17025,7 @@ Batch requests MUST adhere to the syntax rules specified in Batch Request.
 Each operation sent within a Batch Request MUST follow the guidelines for the associated request
 types specified in section 3.1.4.
 
-3.1.4.8  Request to Invoke an Action
+##### 3.1.4.8 Request to Invoke an Action
 
 Applies to the OData 3.0 protocol
 
@@ -17371,7 +17058,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.1.4.9  Request to Invoke a Function
+
+##### 3.1.4.9 Request to Invoke a Function
 
 Applies to the OData 3.0 protocol
 
@@ -17393,9 +17081,9 @@ Rules for processing the response to Invoke function requests are specified in C
 Receiving Responses from Data Service Requests (section 3.1.5.1) and Executing a Received Invoke
 Function Request (section 3.2.5.10).
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Common Rules for Receiving Responses from Data Service Requests
+##### 3.1.5.1 Common Rules for Receiving Responses from Data Service Requests
 
 This section defines a common set of rules to which a client MUST adhere when receiving a response
 to any data service request that is sent.
@@ -17437,10 +17125,11 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-request acted) to the higher layer such that the value can be used in a future request, or in an If-
+
+request acted) to the higher layer such that the value can be used in a future request, or in an If-
 Match (section 2.2.5.5) or If-None-Match (section 2.2.5.6) request header.
 
-3.1.5.2  Responses from Insert Requests
+##### 3.1.5.2 Responses from Insert Requests
 
 In addition to the common response processing rules in Common Rules: Receiving Responses from
 Data Service Requests (section 3.1.5.1), the client MUST interpret the response body of a response to
@@ -17456,37 +17145,37 @@ In OData 3.0, it is possible for the client to express the preference of receivi
 insert request (see Prefer (section 2.2.5.9)). In this case, the data service alters the data it received in
 an Insert request and the alterations are not reflected back to the client.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 If the TCP connection to the server is disconnected after the client has sent a request but before it has
 completely received the response, and the client did not initiate the disconnection, the client SHOULD
 report this event as an error to the higher layer.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model used by data services is described in Abstract Data Model (section 2.2.1).
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Common Rules for Receiving All Data Service Requests
+##### 3.2.5.1 Common Rules for Receiving All Data Service Requests
 
 This section outlines a set of directives that a server MUST follow when processing requests. In
 addition, further directives specific to each request type are defined in the following sections.
@@ -17498,7 +17187,8 @@ Release: March 13, 2019
 
 230 / 290
 
-If a request includes a DataServiceVersion (section 2.2.5.3) header, the server MUST validate that the
+
+If a request includes a DataServiceVersion (section 2.2.5.3) header, the server MUST validate that the
 header value is correctly formatted according to the rules in DataServiceVersion (section 2.2.5.3) and
 that the version number provided in the header is less than or equal to the maximum version of this
 document the data service implements. If so, then the server MUST interpret the request as defined
@@ -17529,7 +17219,7 @@ defines a concurrency token, the request is processed as if the concurrency chec
 Servers MAY<69> choose to implement access control policies where certain requests are rejected
 based on the requesting identity, the target resource, and potentially other environmental information.
 
-3.2.5.2  Common Rules for Executing Received Insert, Update, or Delete Data Service
+##### 3.2.5.2 Common Rules for Executing Received Insert, Update, or Delete Data Service
 
 Requests
 
@@ -17566,7 +17256,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.2.5.2.1 Common Rules for Executing Requests Containing a Customizable Feeds
+
+###### 3.2.5.2.1 Common Rules for Executing Requests Containing a Customizable Feeds
 
 Mapped Property
 
@@ -17600,7 +17291,7 @@ mapping. System query options and service operations that accept a property name
 MUST be addressed by using the name of a property identified on an EntityType and not the mapped
 location of that property.
 
-3.2.5.3  Executing a Received Insert Request
+##### 3.2.5.3 Executing a Received Insert Request
 
 The directives defined in this section apply when executing a received request of any of the Insert
 request types defined in Insert Request Types (section 2.2.7.1).
@@ -17631,14 +17322,15 @@ Release: March 13, 2019
 
 232 / 290
 
-If the request URI does not match associated URIs anywhere in the request payload where URIs are
+
+If the request URI does not match associated URIs anywhere in the request payload where URIs are
 expected, then the request URI takes precedence and the payload SHOULD be treated as if the URIs
 in it matched the value of the request URI.
 
 A data service MAY alter or ignore any of the values provided in the request payload before performing
 the insert operation.
 
-3.2.5.3.1 Executing a Received InsertEntity Request
+###### 3.2.5.3.1 Executing a Received InsertEntity Request
 
 In addition to the directives specified in sections Common Rules: Receiving Responses from Data
 Service Requests (section 3.1.5.1), Common Rules for Executing Received Insert, Update, or Delete
@@ -17664,7 +17356,7 @@ the server.
 In OData 3.0, the response MAY have a 204 status code, as specified in [RFC2616], based on the
 client preference (see Prefer (section 2.2.5.9)) on the InsertEntity Request.
 
-3.2.5.3.2 Executing a Received InsertLink Request
+###### 3.2.5.3.2 Executing a Received InsertLink Request
 
 In addition to the directives specified in Common Rules for Receiving All Data Service
 Requests (section 3.2.5.1), Common Rules for Executing Received Insert, Update, or Delete Data
@@ -17676,7 +17368,7 @@ response code. In OData 3.0, the response MAY have a 201 response code, as speci
 if the UpdateLink response body includes the updated link. Then, the response will have a response
 body that is the same as the response body to a RetrieveLink request (section 2.2.7.2.9).
 
-3.2.5.3.3 Executing a Received InsertMediaResource Request
+###### 3.2.5.3.3 Executing a Received InsertMediaResource Request
 
 In addition to the directives specified in sections 3.2.5.2 and 3.2.5.3, the directives defined in this
 section apply when executing an InsertMediaResource Request (section 2.2.7.1.3).
@@ -17697,10 +17389,11 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-In OData 3.0, the response MAY have a 204 response code, as specified in [RFC2616], based on the
+
+In OData 3.0, the response MAY have a 204 response code, as specified in [RFC2616], based on the
 client preference (see Prefer (section 2.2.5.9)) on the InsertMediaResource Request.
 
-3.2.5.4  Executing a Received Retrieve Request
+##### 3.2.5.4 Executing a Received Retrieve Request
 
 The directives defined in this section apply when executing a received request of any of the Retrieve
 request types defined in Retrieve Request Types (section 2.2.7.2).
@@ -17736,7 +17429,7 @@ If the validation succeeds, the server MUST obtain the requested resources and r
 (with a 2xx response code) following the rules for the retrieve request type, as specified in Retrieve
 Request Types (section 2.2.7.2).
 
-3.2.5.4.1 Executing a Received RetrieveEntitySet Request
+###### 3.2.5.4.1 Executing a Received RetrieveEntitySet Request
 
 In addition to the directives specified in sections Common Rules: Receiving Responses from Data
 Service Requests (section 3.1.5.1) and Executing a Received Retrieve Request (section 3.2.5.4), the
@@ -17764,10 +17457,11 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-using OData 3.0. See sections 4.2.1.3 and 4.2.1.4 for examples of data service responses that include
+
+using OData 3.0. See sections 4.2.1.3 and 4.2.1.4 for examples of data service responses that include
 partial sets of entities.
 
-3.2.5.4.2 Executing a Received RetrieveValue Request
+###### 3.2.5.4.2 Executing a Received RetrieveValue Request
 
 In addition to the directives specified in sections Common Rules: Receiving Responses from Data
 Service Requests (section 3.1.5.1), and Executing a Received Retrieve Request (section 3.2.5.4), the
@@ -17778,7 +17472,7 @@ If the value to be returned by a response to a RetrieveValue request is null, th
 respond with a 404 (Not Found) and an error message formatted according to Error
 Response (section 2.2.8.1).
 
-3.2.5.4.3 Executing a Received RetrieveCount Request
+###### 3.2.5.4.3 Executing a Received RetrieveCount Request
 
 Applies to the OData 2.0 and OData 3.0 protocols
 
@@ -17804,7 +17498,7 @@ RetrieveCount requests are supported in the OData 2.0 and OData 3.0 protocols. A
 RetrieveCount request MUST also include a DataServiceVersion (section 2.2.5.3) response header to
 indicate which version of the OData protocol that the response is using.
 
-3.2.5.5  Executing a Received Update Request
+##### 3.2.5.5 Executing a Received Update Request
 
 The directives defined in this section apply when executing a received request of any of the Update
 request types that are defined in Update Request Types (section 2.2.7.3).
@@ -17830,7 +17524,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The HTTP MERGE, HTTP PATCH, and HTTP PUT methods are defined by this document to have identical
+
+The HTTP MERGE, HTTP PATCH, and HTTP PUT methods are defined by this document to have identical
 semantics for UpdateProperty (section 2.2.7.3.3), UpdateLink (section 2.2.7.3.6), and
 UpdateValue (section 2.2.7.3.5) request types. Thus, when servers execute such requests, there
 MUST NOT be any observable difference (from the client's perspective) between a successful response
@@ -17868,7 +17563,7 @@ Content) response code.
 In OData 3.0, the response MAY have a 200 response code, as specified in [RFC2616], if the response
 body includes the updated values as they exist on the server.
 
-3.2.5.5.1 Executing a Received UpdateEntity Request
+###### 3.2.5.5.1 Executing a Received UpdateEntity Request
 
 In addition to the directives specified in Common Rules: Receiving Responses from Data Service
 Requests (section 3.1.5.1), Common Rules for Executing Received Insert, Update, or Delete Data
@@ -17898,7 +17593,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.2.5.6  Executing a Received Delete Request
+
+##### 3.2.5.6 Executing a Received Delete Request
 
 The directives defined in this section apply when executing a received request of any of the Delete
 request types defined in Delete Request Types (section 2.2.7.4).
@@ -17923,7 +17619,7 @@ delete operations MUST always return a 204 (No Content) response code.
 If a Delete request type (section 2.2.7.4) includes a request payload, it MUST be ignored and the
 request MUST be treated as if no entity body was provided.
 
-3.2.5.7  Executing a Received Invoke Request
+##### 3.2.5.7 Executing a Received Invoke Request
 
 The directives defined in this section apply when executing a received Invoke request, as specified in
 Invoke Request (section 2.2.7.5).
@@ -17942,7 +17638,7 @@ pass null for the parameter value to the function. If the parameter type is not 
 If the FunctionImport, as specified in [MC-CSDL], is invoked successfully, the return value MUST be
 serialized according to the syntax rules defined in Invoke Request (section 2.2.7.5).
 
-3.2.5.8  Executing a Received Batch Request
+##### 3.2.5.8 Executing a Received Batch Request
 
 The directives defined in this section apply when executing a received Batch request as specified in
 Batch Request (section 2.2.7.6).
@@ -17965,12 +17661,13 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-If the headers of a Batch request are received successfully, a data service MUST respond with a 202
+
+If the headers of a Batch request are received successfully, a data service MUST respond with a 202
 (Accepted) response code allowing the service to signal that part of the request is received, but that
 processing of the request has not yet occurred. The response to a Batch request MUST adhere to the
 syntax and rules defined in Batch Responses (section 2.2.7.6.6).
 
-3.2.5.9  Executing a Received Invoke Action Request
+##### 3.2.5.9 Executing a Received Invoke Action Request
 
 The directives defined in this section apply when executing a received Invoke Action request, as
 specified in Invoke Action Request (section 2.2.7.5.1).
@@ -18002,9 +17699,9 @@ comparing its current ETag with the ETag included in the If-Match header. If the
 changed, the server MUST return a 412 (Precondition Failed) response code, in accordance with the
 rules specified in [RFC2616].
 
-3.2.5.10
+##### 3.2.5.10 Executing a Received Invoke Function Request
 
-Executing a Received Invoke Function Request
+
 
 The directives defined in this section apply when executing a received Invoke Function request, as
 specified in Invoke Function Request (section 2.2.7.5.2).
@@ -18034,7 +17731,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-If the parameter type is not nullable, as specified in [MC-CSDL], a 4xx response code MUST be
+
+If the parameter type is not nullable, as specified in [MC-CSDL], a 4xx response code MUST be
 returned.
 
 If the FunctionImport, as specified in [MC-CSDL], is invoked successfully, the return value MUST be
@@ -18046,18 +17744,18 @@ MUST return a 404 response code.
 If the Invoke Function Request is bound to a resource that does not support the function, the server
 MUST return a 405 (Method Not Allowed) response code.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 If the TCP connection to the client is disconnected after the server started processing a received
 request but before it has completely finished processing the request, and the server did not initiate
 the disconnection, the server SHOULD complete the requested action even though all of the results
 cannot be returned to the client.
 
-3.2.8  Common Response Codes
+#### 3.2.8 Common Response Codes
 
 This section summarizes the response codes a data service uses to indicate various conditions. A
 data service can use alternate or additional response codes. If multiple conditions apply, the HTTP
@@ -18104,20 +17802,21 @@ Release: March 13, 2019
 
 239 / 290
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 All examples in this section use the sample data model and instance data shown in Appendix A:
 Sample Entity Data Model and CSDL Document (section 6).
 
-4.1  Insert a New Entity
+### 4.1 Insert a New Entity
 
 Detailed examples for inserting a new entity are provided in Examples (section 2.2.7.1.1.1).
 
-4.2  Retrieve Resources
+### 4.2 Retrieve Resources
 
-4.2.1  Retrieve a Collection of Entities
+#### 4.2.1 Retrieve a Collection of Entities
 
-4.2.1.1  Retrieve a Collection of Entities by Using the AtomPub Format
+##### 4.2.1.1 Retrieve a Collection of Entities by Using the AtomPub Format
 
 The following example illustrates the exchange of messages required for a client to retrieve a
 collection of Order entities related to a specific Customer entity from a data service.
@@ -18172,7 +17871,8 @@ Release: March 13, 2019
 
 240 / 290
 
-                 href="Orders(1)/ SampleModel.Order/$links/Customer" />
+
+                 href="Orders(1)/ SampleModel.Order/$links/Customer" />
            <link
        rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/OrderLines"
                  type="application/atom+xml;type=feed" title="OrderLines"
@@ -18223,7 +17923,7 @@ Release: March 13, 2019
          </entry>
  </feed>
 
-4.2.1.2  Retrieve a Collection of Entities by Using the Verbose JSON Format
+##### 4.2.1.2 Retrieve a Collection of Entities by Using the Verbose JSON Format
 
 The following example illustrates the exchange of messages that is required for a client to retrieve a
 collection of Order entities that are related to a specific Customer entity from a data service.
@@ -18243,7 +17943,8 @@ Release: March 13, 2019
 
 241 / 290
 
-Response:
+
+Response:
 
  HTTP/1.1 200 OK
  Date: Fri, 12 Dec 2008 17:17:11 GMT
@@ -18297,7 +17998,7 @@ Release: March 13, 2019
           }
  ]}
 
-4.2.1.3  Retrieve a Partial Collection of Entities by Using the AtomPub Format
+##### 4.2.1.3 Retrieve a Partial Collection of Entities by Using the AtomPub Format
 
 The following example illustrates the exchange of messages that is required for a client to retrieve a
 collection of Order entities that are related to a specific Customer entity from a data service. This
@@ -18316,7 +18017,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- Host: host
+
+ Host: host
  Accept: application/atom+xml
  DataServiceVersion: 1.0
  MaxDataServiceVersion: 3.0
@@ -18391,7 +18093,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                 href="Orders(2)/SampleModel.Order /Customer" />
+
+                 href="Orders(2)/SampleModel.Order /Customer" />
            <link
         rel="http://schemas.microsoft.com/ado/2007/08/dataservices/relatedlinks/Customer"
                  type="application/ xml" title="Customer"
@@ -18413,7 +18116,7 @@ Release: March 13, 2019
                href="http://host/service.svc/Customers('ALFKI')/Orders?$skiptoken=2" />
  </feed>
 
-4.2.1.4  Retrieve a Partial Collection of Entities by Using the Verbose JSON Format
+##### 4.2.1.4 Retrieve a Partial Collection of Entities by Using the Verbose JSON Format
 
 The following example illustrates the exchange of messages that is required for a client to retrieve,
 from a data service, a collection of Order entities that are related to a specific Customer entity.
@@ -18461,7 +18164,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-          },
+
+          },
           {
              "__metadata": { "uri": "Orders(2)",
                              "type": "SampleModel.Order"
@@ -18486,7 +18190,7 @@ Release: March 13, 2019
        }
     }
 
-4.2.1.5  Retrieve a Collection of Entities with an Inline Count by Using the AtomPub
+##### 4.2.1.5 Retrieve a Collection of Entities with an Inline Count by Using the AtomPub
 
 Format
 
@@ -18533,7 +18237,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-           <title type="text" />
+
+           <title type="text" />
            <updated>2008-03-30T21:52:45Z</updated>
            <author>
              <name />
@@ -18593,7 +18298,7 @@ Release: March 13, 2019
          </entry>
  </feed>
 
-4.2.1.6  Retrieve a Collection of Entities with an Inline Count by Using the Verbose
+##### 4.2.1.6 Retrieve a Collection of Entities with an Inline Count by Using the Verbose
 
 JSON Format
 
@@ -18607,7 +18312,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-with the Customer entity from a data service. This example is supported only in the OData 2.0 and
+
+with the Customer entity from a data service. This example is supported only in the OData 2.0 and
 OData 3.0 protocols.
 
 Request:
@@ -18678,7 +18384,8 @@ Release: March 13, 2019
 
 247 / 290
 
-4.2.1.7  Retrieve a Collection of Entities with Named Resource Streams by Using the
+
+##### 4.2.1.7 Retrieve a Collection of Entities with Named Resource Streams by Using the
 
 AtomPub Format
 
@@ -18752,7 +18459,8 @@ Release: March 13, 2019
 
 248 / 290
 
-            <m:properties>
+
+            <m:properties>
              <d:ID m:type="Edm.Int32">1</d:ID>
              <d:Name m:type="Edm.String">Mount Fuji</d:Name>
             </m:properties>
@@ -18800,7 +18508,7 @@ rel="http://schemas.microsoft.com/ado/2007/08/dataservices/mediaresource/PrintRe
          </entry>
  </feed>
 
-4.2.1.8  Retrieve a Collection of Entities with Named Resource Streams by Using the
+##### 4.2.1.8 Retrieve a Collection of Entities with Named Resource Streams by Using the
 
 Verbose JSON Format
 
@@ -18825,7 +18533,8 @@ Release: March 13, 2019
 
 249 / 290
 
- HTTP/1.1 200 OK
+
+ HTTP/1.1 200 OK
  Date: Fri, 12 Dec 2008 17:17:11 GMT
  Content-Type: application/json;odata=verbose; type=feed
  Content-Length: nnn
@@ -18880,7 +18589,7 @@ Release: March 13, 2019
           }
  ]}
 
-4.2.2  Retrieve a Single Entity by Using the AtomPub Format
+#### 4.2.2 Retrieve a Single Entity by Using the AtomPub Format
 
 The following example illustrates the exchange of messages that is required for a client to retrieve a
 Customer entity with an EntityKey value equal to "ALFKI" by using the AtomPub format.
@@ -18899,7 +18608,8 @@ Release: March 13, 2019
 
 250 / 290
 
- MaxDataServiceVersion: 3.0
+
+ MaxDataServiceVersion: 3.0
 
 Response:
 
@@ -18948,7 +18658,7 @@ Response:
    </content>
  </entry>
 
-4.2.2.1  Retrieve a Single Entity with a Mapped Property by Using the AtomPub Format
+##### 4.2.2.1 Retrieve a Single Entity with a Mapped Property by Using the AtomPub Format
 
 The following example illustrates the exchange of messages required for a client to retrieve an
 Employee entity with an EntityKey value equal to 1 by using the AtomPub format. The
@@ -18969,7 +18679,8 @@ Release: March 13, 2019
 
 251 / 290
 
- Host: host
+
+ Host: host
  Accept: application/atom+xml
  DataServiceVersion: 1.0
  MaxDataServiceVersion: 2.0
@@ -19013,7 +18724,7 @@ Response:
    <emp:Location xmlns:emp="http://www.microsoft.com">Seattle</emp:Location>
  </entry>
 
-4.2.3  Retrieve a Single Entity by Using the Verbose JSON Format
+#### 4.2.3 Retrieve a Single Entity by Using the Verbose JSON Format
 
 The following example illustrates the exchange of messages that is required for a client to retrieve a
 Customer entity with an EntityKey value that is equal to "ALFKI" by using the Verbose JSON format.
@@ -19038,7 +18749,8 @@ Release: March 13, 2019
 
 252 / 290
 
- Content-Type: application/json;odata=verbose
+
+ Content-Type: application/json;odata=verbose
  Content-Length: nnn
  ETag: W/"X'000000000000FA01'"
  DataServiceVersion: 3.0
@@ -19070,7 +18782,7 @@ Release: March 13, 2019
   }
  }
 
-4.2.4  Retrieve a Single Entity and Its Directly Related Entities by Using the AtomPub
+#### 4.2.4 Retrieve a Single Entity and Its Directly Related Entities by Using the AtomPub
 
 Format
 
@@ -19110,7 +18822,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <id>http://host/service.svc/Customers('ALFKI')</id>
+
+   <id>http://host/service.svc/Customers('ALFKI')</id>
    <title type="text" />
    <updated>2008-03-30T21:32:23Z</updated>
    <author>
@@ -19187,7 +18900,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-           <link
+
+           <link
         rel="http://schemas.microsoft.com/ado/2007/08/dataservices/relatedlinks/Customer"
                  type="application/xml" title="Customer"
                  href="Orders(2)/SampleModel.Order/$links/Customer" />
@@ -19222,7 +18936,7 @@ Release: March 13, 2019
    </content>
  </entry>
 
-4.2.5  Retrieve a Single Entity and Its Directly Related Entities by Using the Verbose
+#### 4.2.5 Retrieve a Single Entity and Its Directly Related Entities by Using the Verbose
 
 JSON Format
 
@@ -19259,7 +18973,8 @@ Release: March 13, 2019
 
 255 / 290
 
-                               "Orders" : {
+
+                               "Orders" : {
                                  "associationuri" :
 "Customer(\'ALFKI\')/SampleModel.Customer/$links/Orders"
 }}
@@ -19319,7 +19034,7 @@ Release: March 13, 2019
     ]
  } }
 
-4.2.6  Retrieve a Data Service's Metadata Document (CSDL)
+#### 4.2.6 Retrieve a Data Service's Metadata Document (CSDL)
 
 The following example illustrates the exchange of messages that is required for a client to obtain a
 description document of a data service, as specified in RetrieveServiceMetadata
@@ -19332,7 +19047,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The following data service metadata document contains customizable feed property mappings that are
+
+The following data service metadata document contains customizable feed property mappings that are
 supported only in OData 2.0 and OData 3.0.
 
 The data service metadata document also contains named resource streams that are supported only in
@@ -19406,7 +19122,8 @@ Release: March 13, 2019
 
 257 / 290
 
-            <Parameter Name="discountCode" Type="Edm.String" Mode="In" />
+
+            <Parameter Name="discountCode" Type="Edm.String" Mode="In" />
          </FunctionImport>
        </EntityContainer>
        <EntityType Name="Order">
@@ -19483,7 +19200,8 @@ Release: March 13, 2019
 
 258 / 290
 
-         <Key>
+
+         <Key>
            <PropertyRef Name="ID" />
          </Key>
          <Property Name="ID" Type="Edm.Int32" Nullable="false" />
@@ -19514,7 +19232,7 @@ Release: March 13, 2019
   </edmx:DataServices>
  </edmx:Edmx>
 
-4.2.7  Retrieve the Count of a Collection of Entities
+#### 4.2.7 Retrieve the Count of a Collection of Entities
 
 The following example illustrates the exchange of messages required for a client to retrieve a count of
 all Customer entities. This example is supported only in the OData 2.0 and OData 3.0 protocols.
@@ -19538,7 +19256,7 @@ Response:
 
  91
 
-4.2.8  Retrieve a Single Entity Exposing an Action by Using the AtomPub Format
+#### 4.2.8 Retrieve a Single Entity Exposing an Action by Using the AtomPub Format
 
 The following example illustrates the exchange of messages that is required for a client to retrieve a
 Company entity with an EntityKey value equal to 1 using the AtomPub format. The server indicates
@@ -19550,7 +19268,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-that the returned Company allows an action (Audit) to be invoked against it. Actions are supported
+
+that the returned Company allows an action (Audit) to be invoked against it. Actions are supported
 only in the OData 3.0 protocol.
 
 Request:
@@ -19593,7 +19312,7 @@ Response:
    </content>
  </entry>
 
-4.2.9  Retrieve a Single Entity Exposing an Action by Using the Verbose JSON Format
+#### 4.2.9 Retrieve a Single Entity Exposing an Action by Using the Verbose JSON Format
 
 The following example illustrates the exchange of messages that is required for a client to retrieve a
 Customer entity with EntityKey value equal to "ALFKI" by using the Verbose JSON format. The server
@@ -19617,7 +19336,8 @@ Release: March 13, 2019
 
 260 / 290
 
- HTTP/1.1 200 OK
+
+ HTTP/1.1 200 OK
  Date: Fri, 12 Dec 2008 17:17:11 GMT
  Content-Type: application/json;odata=verbose
  Content-Length: nnn
@@ -19658,7 +19378,7 @@ Release: March 13, 2019
   }
  }
 
-4.2.10 Retrieve a Single Entity Exposing a Function by Using the AtomPub Format
+#### 4.2.10 Retrieve a Single Entity Exposing a Function by Using the AtomPub Format
 
 The following example illustrates the exchange of messages that is required for a client to retrieve a
 Company entity with an EntityKey value equal to 2 by using the AtomPub format. The server
@@ -19688,7 +19408,8 @@ Release: March 13, 2019
 
 261 / 290
 
- <?xml version="1.0" encoding="utf-8"?>
+
+ <?xml version="1.0" encoding="utf-8"?>
  <entry xml:base="http://host/service.svc/"
         xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
         xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
@@ -19713,7 +19434,7 @@ Release: March 13, 2019
    </content>
  </entry>
 
-4.2.11 Retrieve a Single Entity Exposing a Function by Using the Verbose JSON Format
+#### 4.2.11 Retrieve a Single Entity Exposing a Function by Using the Verbose JSON Format
 
 The following example illustrates the exchange of messages that is required for a client to retrieve a
 Customer entity with EntityKey value equal to "ALFKI" by using the Verbose JSON format. The server
@@ -19759,7 +19480,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-                "target" : "Customers(\'ALFKI\')/SampleEntities.TopTenOrders"
+
+                "target" : "Customers(\'ALFKI\')/SampleEntities.TopTenOrders"
             }]
         }
     },
@@ -19779,9 +19501,9 @@ Release: March 13, 2019
   }
  }
 
-4.3  Update an Existing Entity
+### 4.3 Update an Existing Entity
 
-4.3.1  Replace-Based Update by Using the AtomPub Format
+#### 4.3.1 Replace-Based Update by Using the AtomPub Format
 
 The following example illustrates the exchange of messages that is required for a client to update an
 existing entity in a data service by using the AtomPub format and replace-based update semantics.
@@ -19829,7 +19551,8 @@ Release: March 13, 2019
 
 263 / 290
 
- <?xml version="1.0" encoding="utf-8"?>
+
+ <?xml version="1.0" encoding="utf-8"?>
  <entry xml:base="http://host/service.svc/"
         xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
         xmlns:gml=http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsf.xsd
@@ -19866,7 +19589,7 @@ Release: March 13, 2019
    </content>
  </entry>
 
-4.3.2  Replace-Based Update by Using the Verbose JSON Format
+#### 4.3.2 Replace-Based Update by Using the Verbose JSON Format
 
 The following example illustrates the exchange of messages that is required for a client to update an
 existing entity in a data service by using the Verbose JSON format and replace-based update
@@ -19899,7 +19622,8 @@ Release: March 13, 2019
 
 264 / 290
 
-HTTP Response:
+
+HTTP Response:
 
  HTTP/1.1 200 OK
  Date: Thurs, 4 Dec 2008 17:17:11 GMT
@@ -19929,7 +19653,7 @@ Customers(\'ALFKI\')/SampleModel.Customer/$links/Orders"
   }
  }
 
-4.3.3  Merge-Based Update by Using the AtomPub Format
+#### 4.3.3 Merge-Based Update by Using the AtomPub Format
 
 The following example illustrates the exchange of messages that is required for a client to update an
 existing entity in a data service by using the AtomPub format and merge-based update semantics.
@@ -19970,7 +19694,8 @@ Release: March 13, 2019
 
 265 / 290
 
- Content-Length: nnn
+
+ Content-Length: nnn
  ETag: W/"X'000000000000FA02'"
  DataServiceVersion: 3.0
  Preference-Applied: return-content
@@ -20013,7 +19738,7 @@ Release: March 13, 2019
    </content>
  </entry>
 
-4.3.4  Merge-Based Update by Using the Verbose JSON Format
+#### 4.3.4 Merge-Based Update by Using the Verbose JSON Format
 
 The following example illustrates the exchange of messages that is required for a client to update an
 existing entity in a data service by using the Verbose JSON format and merge-based update
@@ -20042,7 +19767,8 @@ Release: March 13, 2019
 
 266 / 290
 
-    "Address": { "Street": "Updated Street" }
+
+    "Address": { "Street": "Updated Street" }
   }
  }
 
@@ -20085,9 +19811,9 @@ Customers(\'ALFKI\')/SampleModel.Customer/$links/Orders "
   }
  }
 
-4.4  Update the Relationship Between Two Entities
+### 4.4 Update the Relationship Between Two Entities
 
-4.4.1  Update a Relationship by Using the AtomPub Format
+#### 4.4.1 Update a Relationship by Using the AtomPub Format
 
 The following example illustrates the exchange of messages that is required for a client to update the
 association between the Order entity with EntityKey value 1 and its associated Customer. This
@@ -20109,7 +19835,8 @@ Release: March 13, 2019
 
 267 / 290
 
- <uri
+
+ <uri
 xmlns="http://schemas.microsoft.com/ado/2007/08/dataservices">http://host/service.svc/Custome
 r('ASDFG')</uri>
 
@@ -20119,7 +19846,7 @@ HTTP Response:
  Date: Fri, 12 Dec 2008 17:17:11 GMT
  DataServiceVersion: 1.0
 
-4.4.2  Update a Relationship by Using the Verbose JSON Format
+#### 4.4.2 Update a Relationship by Using the Verbose JSON Format
 
 The following example illustrates the exchange of messages required for a client to update the
 association between the Order entity with EntityKey value 1 and its associated Customer. This
@@ -20142,7 +19869,7 @@ HTTP Response:
  Date: Fri, 12 Dec 2008 17:17:11 GMT
  DataServiceVersion: 1.0
 
-4.4.3  Delete an Existing Entity
+#### 4.4.3 Delete an Existing Entity
 
 The following example illustrates the exchange of messages required for a client to delete an existing
 entity in a data service. This example shows the deletion of the Customer entity with the EntityKey
@@ -20169,18 +19896,19 @@ Release: March 13, 2019
 
 268 / 290
 
-4.5  Batch Requests
+
+### 4.5 Batch Requests
 
 Detailed Batch request and response examples are provided in sections Example Batch
 Request (section 2.2.7.6.5) and Example Batch Response (section 2.2.7.6.8).
 
-4.6  Working with Media Resources (BLOBs)
+### 4.6 Working with Media Resources (BLOBs)
 
 The examples that follow in this section illustrate the exchange of messages required for a client to
 create a Media Resource, update it, and then retrieve the associated Media Link Entry. This example
 shows the deletion of the Document entity with the EntityKey value equal to 300.
 
-4.6.1  Insert a New Media Resource
+#### 4.6.1 Insert a New Media Resource
 
 HTTP Request:
 
@@ -20225,7 +19953,7 @@ HTTP Response:
                   href="http://host/service.svc/Documents(300)/SampleModel.Document" />
         </entry>
 
-4.6.2  Update a Media Resource
+#### 4.6.2 Update a Media Resource
 
 HTTP Request:
 
@@ -20236,7 +19964,8 @@ Release: March 13, 2019
 
 269 / 290
 
-        PUT /Documents(300)/SampleModel.Document HTTP/1.1
+
+        PUT /Documents(300)/SampleModel.Document HTTP/1.1
         Host: host
         Content-Type: application/rtf
         DataServiceVersion: 1.0
@@ -20251,7 +19980,7 @@ HTTP Response:
         Date: Fri, 11 Oct 2008 04:23:49 GMT
         DataServiceVersion: 1.0
 
-4.6.3  Query an Existing Media Resource
+#### 4.6.3 Query an Existing Media Resource
 
 HTTP Request:
 
@@ -20269,9 +19998,9 @@ HTTP Response:
         DataServiceVersion: 1.0
         ...binary data for the rtf document...
 
-4.7  Working with Named Resource Streams Instances (BLOBs)
+### 4.7 Working with Named Resource Streams Instances (BLOBs)
 
-4.7.1  Retrieving a Named Resource Stream Instance
+#### 4.7.1 Retrieving a Named Resource Stream Instance
 
 To retrieve a named resource stream instance, a client issues an HTTP GET request against the named
 resource stream self-link.
@@ -20298,7 +20027,8 @@ Release: March 13, 2019
 
 270 / 290
 
-        GET /Photos(1)/SampleModel.Photo/Thumbnail HTTP/1.1
+
+        GET /Photos(1)/SampleModel.Photo/Thumbnail HTTP/1.1
         Host: host
         Accept: image/png
         DataServiceVersion: 1.0
@@ -20321,7 +20051,7 @@ Servers that do support the If-None-Match header return the stream only when it 
 because the version represented by the ETag specified in the If-None-Match header is no longer the
 current version.
 
-4.7.2  Updating a Named Resource Stream Instance
+#### 4.7.2 Updating a Named Resource Stream Instance
 
 To update the named resource stream instance, clients use a standard HTTP [RFC2616] PUT to the
 URI that is specified in the named resource stream instance's edit link.
@@ -20357,9 +20087,10 @@ Release: March 13, 2019
 
 271 / 290
 
-4.7.3  Unsupported Operations
 
-4.7.3.1  Inserting a New Named Resource Stream Instance
+#### 4.7.3 Unsupported Operations
+
+##### 4.7.3.1 Inserting a New Named Resource Stream Instance
 
 There is no direct way to insert a named resource stream instance.
 
@@ -20373,14 +20104,14 @@ Servers can choose to initialize the named resource stream to a nonempty value w
 EntityType instance is created. However, it is likely that the named resource stream instance will be
 empty immediately after creating the EntityType instance.
 
-4.7.3.2  Deleting a New Named Resource Stream Instance
+##### 4.7.3.2 Deleting a New Named Resource Stream Instance
 
 There is no direct way to delete a named resource stream instance.
 
 Instead, you can update the named resource stream instance by using its edit link so that it contains
 an empty stream. Or, you can delete the containing EntityType instance.
 
-4.8  Invoking an Action
+### 4.8 Invoking an Action
 
 To invoke an action, a client sends an HTTP POST request to the URL that represents the action.
 Binding allows a client to send a POST request to a URL that represents the action with the binding
@@ -20421,10 +20152,11 @@ Release: March 13, 2019
 
 272 / 290
 
-Notice in this example that because the CreateOrder action has no ReturnType, the response code is
+
+Notice in this example that because the CreateOrder action has no ReturnType, the response code is
 204 (No Content).
 
-4.9  Invoking a Function
+### 4.9 Invoking a Function
 
 To invoke a function, a client sends an HTTP GET request to the URL that represents the function.
 Binding allows the client to send the GET request to a URL that represents the function with the
@@ -20466,15 +20198,16 @@ Release: March 13, 2019
 
 273 / 290
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers of the protocol defined in this document are encouraged to review sections 14 and 15 of
 [RFC5023], which outline security considerations for the Atom Publishing Protocol. Such considerations
 apply directly to the protocol defined in this document.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -20485,7 +20218,8 @@ Release: March 13, 2019
 
 274 / 290
 
-6  Appendix A: Sample Entity Data Model and CSDL Document
+
+## 6 Appendix A: Sample Entity Data Model and CSDL Document
 
 An Entity Data Model conceptual schema, as specified in [MC-CSDL], is an XML document written
 with the conceptual schema definition language (CSDL), which describes entities and the
@@ -20555,7 +20289,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- http://host/service.svc/Customers('ALFKI')/Orders(1)/OrderLines
+
+ http://host/service.svc/Customers('ALFKI')/Orders(1)/OrderLines
 
 The metadata document CSDL for the service:
 
@@ -20626,7 +20361,8 @@ Release: March 13, 2019
 
 276 / 290
 
-                         IsSideEffecting="false">
+
+                         IsSideEffecting="false">
             <Parameter Name="customers" Type="Collection(SampleModel.Customer)" Mode="In" />
          </FunctionImport>
 
@@ -20702,7 +20438,8 @@ Release: March 13, 2019
 
 277 / 290
 
-            FromRole="Order" ToRole="OrderLine" />
+
+            FromRole="Order" ToRole="OrderLine" />
        </EntityType>
 
        <EntityType Name="OrderLine">
@@ -20779,7 +20516,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       </EntityType>
+
+       </EntityType>
 
        <EntityType Name="Document" m:HasStream="true">
          <Key>
@@ -20847,7 +20585,8 @@ Release: March 13, 2019
 
 279 / 290
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -20945,7 +20684,8 @@ Open Data Protocol (OData)
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-appended with parentheses, but never generates such URIs in response payloads or HTTP response
+
+appended with parentheses, but never generates such URIs in response payloads or HTTP response
 headers.
 
 <5> Section 2.2.3.6: The data service client library always generates a single system query option of
@@ -21016,7 +20756,8 @@ Release: March 13, 2019
 
 281 / 290
 
-<32> Section 2.2.3.6.1.1.1: The data service server library supports all of the expressions.
+
+<32> Section 2.2.3.6.1.1.1: The data service server library supports all of the expressions.
 
 <33> Section 2.2.3.6.1.1.1: The data service server library supports all of the expressions.
 
@@ -21084,7 +20825,8 @@ Release: March 13, 2019
 
 282 / 290
 
-<58> Section 2.2.6.2: The data service client library and server library use only the request and
+
+<58> Section 2.2.6.2: The data service client library and server library use only the request and
 response messages that are defined in this document.
 
 <59> Section 2.2.6.2.2: The data service libraries do not write the m:properties element if it is
@@ -21144,7 +20886,8 @@ Release: March 13, 2019
 
 283 / 290
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -21195,7 +20938,8 @@ Release: March 13, 2019
 
 284 / 290
 
-9  Index
+
+## 9 Index
 A
 
    retrieving single entity and related entities 253
@@ -21343,7 +21087,8 @@ Common expression syntax
 
 285 / 290
 
-   overview 59
+
+   overview 59
    unary numeric promotions 86
 Common Payload Syntax message 121
 Complex Type property
@@ -21515,7 +21260,8 @@ Higher-layer triggered events
 
 286 / 290
 
-HTTP header fields
+
+HTTP header fields
    Accept 114
    Content-Type 115
    dataserviceid 121
@@ -21655,7 +21401,8 @@ O
 
 287 / 290
 
-Operations - unsupported
+
+Operations - unsupported
    deleting new named resource stream instance 272
    inserting new named resource stream instance 272
 Other local events
@@ -21820,7 +21567,8 @@ using Verbose JSON format 255
 
 288 / 290
 
-   single entity by using Verbose JSON format 252
+
+   single entity by using Verbose JSON format 252
    single entity with a mapped property by using
 
 AtomPub format 251
@@ -21968,7 +21716,8 @@ Update request types
 
 289 / 290
 
-   Complex Type property 169
+
+   Complex Type property 169
    EDMSimpleType property 169
    error response 221
    links 170

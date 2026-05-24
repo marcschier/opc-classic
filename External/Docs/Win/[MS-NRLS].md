@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 50
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: March 13, 2019
 
 2 / 50
 
-Date
+
+Date
 
 Revision
 History
@@ -501,258 +503,110 @@ Release: March 13, 2019
 
 3 / 50
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Client Activation](#131-client-activation)
+    - [1.3.2 Lifetime Management](#132-lifetime-management)
+    - [1.3.3 Sponsor](#133-sponsor)
+    - [1.3.4 Notational Conventions](#134-notational-conventions)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 ArrayList](#221-arraylist)
+    - [2.2.2 ConstructionCall](#222-constructioncall)
+    - [2.2.3 ContextLevelActivator](#223-contextlevelactivator)
+    - [2.2.4 ConstructionLevelActivator](#224-constructionlevelactivator)
+    - [2.2.5 ConstructionResponse](#225-constructionresponse)
+    - [2.2.6 LeaseState](#226-leasestate)
+    - [2.2.7 ArgumentException](#227-argumentexception)
+    - [2.2.8 ArgumentNullException](#228-argumentnullexception)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IActivator](#31-iactivator)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Activate](#3141-activate)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 Register Activatable Server Type](#3161-register-activatable-server-type)
+  - [3.2 MarshalByRefObject](#32-marshalbyrefobject)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 GetLifetimeService](#3241-getlifetimeservice)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 ILease](#33-ilease)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 Renew](#3341-renew)
+      - [3.3.4.2 Register](#3342-register)
+      - [3.3.4.3 Register(Overload)](#3343-registeroverload)
+      - [3.3.4.4 Unregister](#3344-unregister)
+      - [3.3.4.5 get_InitialLeaseTime](#3345-getinitialleasetime)
+      - [3.3.4.6 set_InitialLeaseTime](#3346-setinitialleasetime)
+      - [3.3.4.7 get_RenewOnCallTime](#3347-getrenewoncalltime)
+      - [3.3.4.8 set_RenewOnCallTime](#3348-setrenewoncalltime)
+      - [3.3.4.9 get_SponsorshipTimeout](#3349-getsponsorshiptimeout)
+      - [3.3.4.10 set_SponsorshipTimeout](#33410-setsponsorshiptimeout)
+      - [3.3.4.11 get_CurrentLeaseTime](#33411-getcurrentleasetime)
+      - [3.3.4.12 get_CurrentState](#33412-getcurrentstate)
+    - [3.3.5 Timer Events](#335-timer-events)
+      - [3.3.5.1 Lease TTL Timer](#3351-lease-ttl-timer)
+      - [3.3.5.2 Sponsorship Timer](#3352-sponsorship-timer)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+      - [3.3.6.1 Binding to Server Object](#3361-binding-to-server-object)
+      - [3.3.6.2 Marshal Server Object](#3362-marshal-server-object)
+      - [3.3.6.3 Unmarshal Server Object](#3363-unmarshal-server-object)
+  - [3.4 ISponsor](#34-isponsor)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+      - [3.4.4.1 Renewal](#3441-renewal)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+  - [3.5 Object](#35-object)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Message Processing Events and Sequencing Rules](#354-message-processing-events-and-sequencing-rules)
+      - [3.5.4.1 FieldGetter](#3541-fieldgetter)
+      - [3.5.4.2 FieldSetter](#3542-fieldsetter)
+    - [3.5.5 Timer Events](#355-timer-events)
+    - [3.5.6 Other Local Events](#356-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 CAO Activation Request/Response Message.](#41-cao-activation-requestresponse-message)
+    - [4.1.1 Activation Request Message](#411-activation-request-message)
+    - [4.1.2 Activation Response Message](#412-activation-response-message)
+  - [4.2 Registering a Sponsor for a CAO Object](#42-registering-a-sponsor-for-a-cao-object)
+  - [4.3 Incrementing TTL of a Server Object](#43-incrementing-ttl-of-a-server-object)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full Definitions](#6-appendix-a-full-definitions)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Client Activation ........................................................................................... 8
-Lifetime Management .................................................................................... 9
-Sponsor ....................................................................................................... 9
-Notational Conventions ................................................................................ 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Common Data Types ........................................................................................ 14
-ArrayList.................................................................................................... 14
-ConstructionCall ......................................................................................... 14
-ContextLevelActivator ................................................................................. 15
-ConstructionLevelActivator ........................................................................... 16
-ConstructionResponse ................................................................................. 16
-LeaseState ................................................................................................. 16
-ArgumentException ..................................................................................... 17
-ArgumentNullException ............................................................................... 17
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.2
-
-3.1.6.1
-
-3.1.4.1
-
-3.1.5
-3.1.6
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 18
-IActivator ........................................................................................................ 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Activate ............................................................................................... 19
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Register Activatable Server Type............................................................. 20
-MarshalByRefObject ......................................................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-GetLifetimeService ................................................................................ 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-ILease ............................................................................................................ 21
-Abstract Data Model .................................................................................... 22
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 22
-Message Processing Events and Sequencing Rules .......................................... 22
-Renew ................................................................................................. 23
-Register ............................................................................................... 24
-Register(Overload) ................................................................................ 24
-
-3.3.4.1
-3.3.4.2
-3.3.4.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.2.5
-3.2.6
-
-3.2.4.1
-
-3.3
-
-[MS-NRLS] - v20190313
-.NET Remoting: Lifetime Services Extension
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 50
-
-3.3.4.4
-3.3.4.5
-3.3.4.6
-3.3.4.7
-3.3.4.8
-3.3.4.9
-3.3.4.10
-3.3.4.11
-3.3.4.12
-
-3.3.5
-
-3.3.6
-
-3.3.5.1
-3.3.5.2
-
-3.3.6.1
-3.3.6.2
-3.3.6.3
-
-3.4
-
-Unregister ............................................................................................ 25
-get_InitialLeaseTime ............................................................................. 25
-set_InitialLeaseTime .............................................................................. 26
-get_RenewOnCallTime ........................................................................... 26
-set_RenewOnCallTime ........................................................................... 26
-get_SponsorshipTimeout ........................................................................ 26
-set_SponsorshipTimeout ........................................................................ 27
-get_CurrentLeaseTime ........................................................................... 27
-get_CurrentState .................................................................................. 27
-Timer Events .............................................................................................. 28
-Lease TTL Timer ................................................................................... 28
-Sponsorship Timer ................................................................................ 28
-Other Local Events ...................................................................................... 29
-Binding to Server Object ........................................................................ 29
-Marshal Server Object ........................................................................... 29
-Unmarshal Server Object ....................................................................... 29
-ISponsor ......................................................................................................... 29
-Abstract Data Model .................................................................................... 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Message Processing Events and Sequencing Rules .......................................... 29
-Renewal ............................................................................................... 29
-Timer Events .............................................................................................. 30
-Other Local Events ...................................................................................... 30
-Object ............................................................................................................ 30
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 30
-FieldGetter ........................................................................................... 31
-FieldSetter ........................................................................................... 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 32
-
-3.5
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.5
-3.4.6
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-3.5.5
-3.5.6
-
-3.5.4.1
-3.5.4.2
-
-3.4.4.1
-
-4.1
-
-4  Protocol Examples ................................................................................................. 33
-CAO Activation Request/Response Message. ........................................................ 33
-Activation Request Message ......................................................................... 33
-Activation Response Message ....................................................................... 37
-Registering a Sponsor for a CAO Object .............................................................. 41
-Incrementing TTL of a Server Object .................................................................. 42
-
-4.1.1
-4.1.2
-
-4.2
-4.3
-
-5  Security ................................................................................................................. 43
-Security Considerations for Implementers ........................................................... 43
-Index of Security Parameters ............................................................................ 43
-
-5.1
-5.2
-
-6  Appendix A: Full Definitions .................................................................................. 44
-
-7  Appendix B: Product Behavior ............................................................................... 46
-
-8  Change Tracking .................................................................................................... 48
-
-9  Index ..................................................................................................................... 49
-
-[MS-NRLS] - v20190313
-.NET Remoting: Lifetime Services Extension
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 50
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the .NET Remoting: Lifetime Services Extension protocol. This protocol adds
 lifetime and remote activation capabilities to the .NET Remoting Protocol (specified in [MS-NRTP]).
@@ -762,7 +616,7 @@ concepts.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -825,7 +679,8 @@ Release: March 13, 2019
 
 6 / 50
 
-Null Object: Part of the Remoting Data Model. Null Object is a special value that can be used in
+
+Null Object: Part of the Remoting Data Model. Null Object is a special value that can be used in
 
 place of an instance of a Class, Array, or String. It indicates that no instance is being specified.
 For more information, see [MS-NRTP] section 3.1.1.
@@ -902,14 +757,15 @@ Release: March 13, 2019
 
 7 / 50
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -920,7 +776,7 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
@@ -929,7 +785,7 @@ assist you in finding the relevant information.
 [MSDN-RemotingLifetime] Microsoft Corporation, "Lifetime Leases", https://learn.microsoft.com/en-
 us/previous-versions/dotnet/netframework-4.0/23bk23zc(v=vs.100)
 
-1.3  Overview
+### 1.3 Overview
 
 The .NET Remoting Protocol (specified in [MS-NRTP]) defines mechanisms for the creation of Server
 Objects and the invocation of Remote Methods on those Server Objects.
@@ -951,7 +807,7 @@ following sections:
 Much of the basic information and terminology used in this document is also common to the .NET
 Remoting Protocol. For more information, see [MS-NRTP] section 2.2.5.
 
-1.3.1  Client Activation
+#### 1.3.1 Client Activation
 
 This protocol introduces a new type of Server Object called a Client-Activated Object (CAO). A
 CAO can be remotely activated by a client by invoking the Activate Remote Method on a well-known
@@ -967,7 +823,8 @@ and can use it to create a Proxy to invoke methods on the CAO.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-NRLS].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -976,7 +833,7 @@ the following figure.
 
 Figure 1: Client activating a server object
 
-1.3.2  Lifetime Management
+#### 1.3.2 Lifetime Management
 
 This protocol specifies a lease-based model for lifetime management of Marshaled Server Objects
 (MSO) and the Singleton SAO.
@@ -991,7 +848,7 @@ Server Object's Lease Object. The client gets a Server Object Reference to the L
 Server Object by calling the Server Object's GetLifetimeService Remote Method. The client can then
 invoke the Renew Remote Method on the Lease Object to extend the TTL by a desired amount.
 
-1.3.3  Sponsor
+#### 1.3.3 Sponsor
 
 A Lease Object for a given Server Object maintains a list of Sponsors that are called when the TTL
 of the Server Object expires. Each Sponsor can specify whether the Server Object's TTL has to be
@@ -1006,7 +863,8 @@ removed from the Server Object Table, making it unavailable to clients.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-NRLS].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-NRLS].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
@@ -1030,7 +888,8 @@ Release: March 13, 2019
 
 10 / 50
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-NRLS].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1050,13 +909,14 @@ Release: March 13, 2019
 
 11 / 50
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-NRLS].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 5: Client timed out or unresponsive
 
-1.3.4  Notational Conventions
+#### 1.3.4 Notational Conventions
 
 All Remoting Type and Remoting Interface definitions in this specification use the .NET Remoting
 Description Notation defined in [MS-NRTP] section 2.2.5. This notation is specific to .NET Remoting-
@@ -1065,7 +925,7 @@ mandate that implementations adhere to a particular Application Programming Inte
 programming language as long as their external behavior is consistent with that described in this
 document.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is a .NET Remoting-based protocol, using the .NET Remoting Protocol, as specified in
 [MS-NRTP] as a transport. Additionally, this protocol extends the .NET Remoting Protocol, adding new
@@ -1078,7 +938,8 @@ methods for activation and lifetime management.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-NRLS].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1086,13 +947,13 @@ The protocol layering of the related protocols is as follows.
 
 Figure 6: NRLS protocol stack
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol layers on top of the .NET Remoting Protocol and, as a result, has the prerequisites
 specified in [MS-NRTP]. In addition, for a CAO, the client application must be configured with enough
 information about the Server Type to construct the activation message.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The protocol described in this specification is applicable to users of the .NET Remoting Protocol, as
 specified in [MS-NRTP] in environments that require distributed activation and lifetime management
@@ -1105,15 +966,15 @@ The Sponsor mechanism requires that references be maintained from each server to
 Sponsors. In addition, the server has to individually contact each client with a Sponsor, which does
 not scale for large numbers of clients holding Sponsors.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol has no versioning or capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol has no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments made by this protocol.
 
@@ -1124,19 +985,20 @@ Release: March 13, 2019
 
 13 / 50
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify message relationships to the .NET Remoting Protocol [MS-NRTP], as
 well as common .NET Remoting: Lifetime Services Extension Remoting Types.
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol can be bound to any transport supported by the .NET Remoting Protocol, as specified in
 [MS-NRTP] section 2.1.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  ArrayList
+#### 2.2.1 ArrayList
 
 ArrayList is a class. The Library name of the class is "mscorlib". It represents a collection of Data
 Values. The capacity of the collection is increased dynamically as required.
@@ -1167,7 +1029,7 @@ element of the _items Array has an index greater than or equal to the value of t
 considered part of the ArrayList. The element MAY contain any value and the value MUST be
 ignored.<2>
 
-2.2.2  ConstructionCall
+#### 2.2.2 ConstructionCall
 
 ConstructionCall is a class. The Library name of the class is "mscorlib". It is used to activate a Server
 Object.
@@ -1191,7 +1053,8 @@ Release: March 13, 2019
 
 14 / 50
 
-     System.Object                   __Activator;
+
+     System.Object                   __Activator;
      String                          __ActivationTypeName;
      System.Collections.ArrayList    __ContextProperties;
      System.Object[]                 __CallSiteActivationAttributes;
@@ -1243,7 +1106,7 @@ __CallSiteActivationAttributes: A Null Object, or an Array of any Data Values. T
 interpretation of the values is higher-layer–defined. If there are no values, then this value MUST
 be a Null Object.<6>
 
-2.2.3  ContextLevelActivator
+#### 2.2.3 ContextLevelActivator
 
 ContextLevelActivator is a class. The Library name of the class is "mscorlib". It is used in the
 __Activator field of a ConstructionCall instance.
@@ -1264,9 +1127,10 @@ Release: March 13, 2019
 
 15 / 50
 
-m_NextActivator: An instance of ConstructionLevelActivator.
 
-2.2.4  ConstructionLevelActivator
+m_NextActivator: An instance of ConstructionLevelActivator.
+
+#### 2.2.4 ConstructionLevelActivator
 
 ConstructionLevelActivator is a class. The Library name of the class is "mscorlib". It is used in the
 m_NextActivator field of a ContextLevelActivator instance.
@@ -1280,7 +1144,7 @@ m_NextActivator field of a ContextLevelActivator instance.
 
 This class has no Members.
 
-2.2.5  ConstructionResponse
+#### 2.2.5 ConstructionResponse
 
 ConstructionResponse is a class. The Library name of the Class is "mscorlib". It is used to contain
 the activated Server Object.
@@ -1314,7 +1178,7 @@ MUST be 0.
 
 __CallContext: The value of this field MUST be NullObject.
 
-2.2.6  LeaseState
+#### 2.2.6 LeaseState
 
 The LeaseState enumeration provides state information about a Lease Object. The size of this
 enumeration is an Int32.
@@ -1331,7 +1195,8 @@ Release: March 13, 2019
 
 16 / 50
 
-      Null     = 0,
+
+      Null     = 0,
       Initial  = 1,
       Active   = 2,
       Renewing = 3,
@@ -1349,7 +1214,7 @@ Renewing:  The TTL has expired and is in the process of renewing.
 
 Expired:  The Lease Object has expired.
 
-2.2.7  ArgumentException
+#### 2.2.7 ArgumentException
 
 ArgumentException is a Derived Class of SystemException. The Library name of the Class is
 "mscorlib". When thrown from a Remote Method, it indicates that one of the arguments to the
@@ -1367,7 +1232,7 @@ constraint: the HResult member MUST be hex value 0x80070057.
 
 ParamName: A string value that contains the name of an invalid argument.
 
-2.2.8  ArgumentNullException
+#### 2.2.8 ArgumentNullException
 
 ArgumentNullException is a Derived Class of ArgumentException. The Library name of the Class is
 "mscorlib". When thrown from a Remote Method, it indicates that a required argument of the
@@ -1389,7 +1254,8 @@ Release: March 13, 2019
 
 17 / 50
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This protocol extends the server and client roles defined in the .NET Remoting Protocol [MS-NRTP] by
 defining Remoting Interfaces to be implemented by each role. For each Remoting Interface, the client
@@ -1436,11 +1302,11 @@ The client MAY implement the ISponsor (section 3.4) interface to participate in 
 management of the Server Object.<8> By implementing the ISponsor interface, the client is also
 acting in the server role defined in [MS-NRTP]section3.2.
 
-3.1  IActivator
+### 3.1 IActivator
 
 The RemotingTypeName of the interface is "System.Runtime.Remoting.Activation.IActivator".
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1467,11 +1333,12 @@ request.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 There are no timers associated with this interface.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 A Singleton SAO MUST be registered as specified in [MS-NRTP] section 3.2.4.1. The Server Object
 MUST implement the IActivator (section 3.1) interface. The Server Object URI MUST be
@@ -1481,7 +1348,7 @@ The Activatable Types Table MUST be populated with the initial set of activatabl
 and their Constructor Method Signatures specified by the higher layer in an implementation-specific
 way.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This interface includes the following method.
 
@@ -1489,7 +1356,7 @@ Method  Description
 
 Activate  Activates the specified Server Object
 
-3.1.4.1  Activate
+##### 3.1.4.1 Activate
 
 The Activate method activates a Server Object. The parameter specifies the Server Type of the
 Server Object.
@@ -1532,7 +1399,8 @@ Activatable Types Table, then that is the Constructor Method Signature for the a
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 If there is more than one Constructor Method Signature associated with the Server Type, then the
 Constructor Method Signature that matches exactly the __MethodSignature field of the
@@ -1574,13 +1442,13 @@ instance.
 
 The ConstructionResponse instance MUST be sent back as the return value of the method.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 There are no timer events associated with this interface.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
-3.1.6.1  Register Activatable Server Type
+##### 3.1.6.1 Register Activatable Server Type
 
 The implementation SHOULD provide an implementation-specific way for the higher layer to register a
 Server Type for activation after initialization has completed. When a Server Type is registered for
@@ -1588,11 +1456,11 @@ activation, the implementation MUST add the Server Type and its Constructor Meth
 the Activatable Types Table. This protocol does not provide a mechanism for unregistering a Server
 Type once it has been registered for activation.
 
-3.2  MarshalByRefObject
+### 3.2 MarshalByRefObject
 
 The RemotingTypeName of the interface is "System.MarshalByRefObject".
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This protocol extends the .NET Remoting: Core Protocol Specification Abstract Data Model (as
 specified in [MS-NRTP]sections 3.1.1 and 3.2.1) to associate a Lease Object with every active Server
@@ -1604,19 +1472,20 @@ Release: March 13, 2019
 
 20 / 50
 
-Object. The Lease Object MUST be a valid Server Object (as specified in [MS-NRTP] 3.1.1) that
+
+Object. The Lease Object MUST be a valid Server Object (as specified in [MS-NRTP] 3.1.1) that
 implements the ILease (section 3.3) interface.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no timers associated with this interface.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 A Lease Object and Lease Object Data MUST be created and associated with a Singleton SAO or
 MSO during initialization.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This interface includes the following method.
 
@@ -1626,7 +1495,7 @@ Description
 
 GetLifetimeService  Returns the Lease Object associated with the target Server Object.
 
-3.2.4.1  GetLifetimeService
+##### 3.2.4.1 GetLifetimeService
 
 GetLifetimeService retrieves a reference to the Lease Object associated with the target Server
 Object.
@@ -1647,15 +1516,15 @@ On the first call to GetLifetimeService, the implementation MUST do the followin
 
 The Server Object Reference MUST be returned as the Return Value for the method.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 There are no timer events associated with this interface.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 There are no other local events.
 
-3.3  ILease
+### 3.3 ILease
 
 The RemotingTypeName of the interface is "System.Runtime.Remoting.Lifetime.ILease".
 
@@ -1666,7 +1535,8 @@ The RemotingTypeName of the interface is "System.Runtime.Remoting.Lifetime.ILeas
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.3.1  Abstract Data Model
+
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1703,7 +1573,7 @@ associated Server Object.
 
 RenewalTime field values.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 Lease TTL Timer:  Tracks the TTL of a Server Object. Each Lease Object is associated with a
 
@@ -1711,13 +1581,13 @@ Lease TTL Timer that fires when its TTL expires.
 
 Sponsorship Timer: Tracks the duration of each Renewal call to a Sponsor.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 An implementation MUST set the initial values of InitialLeaseTime, RenewOnCallTime and
 SponsorshipTimeout to a nonzero positive value. The initial value of the CurrentState MUST be
 Initial.<10>
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 This interface includes the following methods.
 
@@ -1747,7 +1617,8 @@ Release: March 13, 2019
 
 22 / 50
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-NRLS].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1789,7 +1660,7 @@ LeaseState transitions is specified in the following diagram.
 
 Figure 7: Lease state machine
 
-3.3.4.1  Renew
+##### 3.3.4.1 Renew
 
 Renew extends the TTL of a Server Object.
 
@@ -1800,7 +1671,8 @@ Release: March 13, 2019
 
 23 / 50
 
- TimeSpan Renew(
+
+ TimeSpan Renew(
       TimeSpan renewalTime
  );
 
@@ -1822,7 +1694,7 @@ Otherwise, if the CurrentState is valid, the new TTL for the Server Object is th
 current value of the Lease TTL Timer, whichever is greater. The implementation MUST reset the Lease
 TTL Timer to the new TTL value and return it as the return value of the Renew method.
 
-3.3.4.2  Register
+##### 3.3.4.2 Register
 
 Register registers a Sponsor with the Lease Object associated with the Server Object.
 
@@ -1842,7 +1714,7 @@ The implementation of the method MUST create a new Sponsor Info by using a Spons
 referenced by the argument sponsor, and a TimeSpan value of 0. The Sponsor Info MUST be added to
 the end of the SponsorList of the associated Lease Data.
 
-3.3.4.3  Register(Overload)
+##### 3.3.4.3 Register(Overload)
 
 Register(Overload) registers a Sponsor with the Lease Object associated with the Server Object.
 This implementation of the method includes a second parameter, renewalTime.
@@ -1861,7 +1733,8 @@ sponsor:  A Proxy to a Server Object that implements the ISponsor interface.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-renewalTime: A TimeSpan value that specifies the required TTL for the Server Object.
+
+renewalTime: A TimeSpan value that specifies the required TTL for the Server Object.
 
 Return Values: There are no return values for this method.
 
@@ -1885,7 +1758,7 @@ decreasing order of the Sponsor Info's renewalTime.
 Extend the CurrentLeaseTime of the associated Lease Data with the renewal TimeSpan as
 specified in the Renew method.
 
-3.3.4.4  Unregister
+##### 3.3.4.4 Unregister
 
 Unregister removes the specified Sponsor from the Sponsor List.
 
@@ -1908,7 +1781,7 @@ If the SponsorList of the associated Lease Data contains a Sponsor Info with Spo
 to the one referenced by the sponsor argument, the implementation MUST remove the Sponsor Info
 from the SponsorList.
 
-3.3.4.5  get_InitialLeaseTime
+##### 3.3.4.5 get_InitialLeaseTime
 
 get_InitialLeaseTime returns the Lease Object's InitialLeaseTime.
 
@@ -1930,7 +1803,8 @@ of the associated Lease Data.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.3.4.6  set_InitialLeaseTime
+
+##### 3.3.4.6 set_InitialLeaseTime
 
 set_InitialLeaseTime updates the Lease Object's InitialLeaseTime with a specified value.
 
@@ -1950,7 +1824,7 @@ the client; otherwise, the InitialLeaseTime MUST be set to the value of the argu
 
 If the new TimeSpan value is negative, the CurrentState MUST be set to Null state.
 
-3.3.4.7  get_RenewOnCallTime
+##### 3.3.4.7 get_RenewOnCallTime
 
 get_RenewOnCallTime returns the Lease Object's RenewOnCallTime.
 
@@ -1965,7 +1839,7 @@ Remote Methods in .NET Remoting (as specified in [MS-NRTP] section 3.2.5.1.7.2).
 The method has no arguments. The implementation of the method MUST return the RenewOnCallTime
 of the associated Lease Data.
 
-3.3.4.8  set_RenewOnCallTime
+##### 3.3.4.8 set_RenewOnCallTime
 
 set_RenewOnCallTime updates the Lease Object's RenewOnCallTime.
 
@@ -1985,7 +1859,7 @@ If the associated Lease Data's CurrentState is not "Initial", then a RemotingExc
 constructed (as specified in [MS-NRTP] section 3.2.5.1.7.2), and the exception MUST be sent back to
 the client; otherwise, the argument value MUST be set as the new value of RenewOnCallTime.
 
-3.3.4.9  get_SponsorshipTimeout
+##### 3.3.4.9 get_SponsorshipTimeout
 
 get_SponsorshipTimeout returns the Lease Object's SponsorshipTimeout.
 
@@ -1996,7 +1870,8 @@ get_SponsorshipTimeout returns the Lease Object's SponsorshipTimeout.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- TimeSpan get_SponsorshipTimeout();
+
+ TimeSpan get_SponsorshipTimeout();
 
 Return Values: A TimeSpan value that is the SponsorshipTimeout in the associated Lease Data.
 
@@ -2007,9 +1882,9 @@ Remote Methods in .NET Remoting (as specified in [MS-NRTP] section 3.2.5.1.7.2).
 The method has no arguments. The implementation of the method MUST return the
 SponsorshipTimeout of the associated Lease Data.
 
-3.3.4.10
+##### 3.3.4.10 set_SponsorshipTimeout
 
-set_SponsorshipTimeout
+
 
 set_SponsorshipTimeout updates the Lease Object's SponsorshipTimeout.
 
@@ -2029,9 +1904,9 @@ If the associated Lease Data's CurrentState is not "Initial", then a RemotingExc
 constructed (as specified in [MS-NRTP] section 3.2.5.1.7.2), and the Exception MUST be sent back to
 the client; otherwise, the argument value MUST be set as the new value of SponsorshipTimeout.
 
-3.3.4.11
+##### 3.3.4.11 get_CurrentLeaseTime
 
-get_CurrentLeaseTime
+
 
 get_CurrentLeaseTime returns the expiration time of the Lease Object.
 
@@ -2046,9 +1921,9 @@ Remote Methods in .NET Remoting (as specified in [MS-NRTP] section 3.2.5.1.7.2).
 The method has no arguments. The implementation of the method MUST return the current value of
 the Lease TTL Timer.
 
-3.3.4.12
+##### 3.3.4.12 get_CurrentState
 
-get_CurrentState
+
 
 get_CurrentState returns the current LeaseState value of the Lease Object.
 
@@ -2067,12 +1942,13 @@ Release: March 13, 2019
 
 27 / 50
 
-The method has no arguments. The implementation of the method MUST return the CurrentState of
+
+The method has no arguments. The implementation of the method MUST return the CurrentState of
 the associated Lease Data.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
-3.3.5.1  Lease TTL Timer
+##### 3.3.5.1 Lease TTL Timer
 
 When the Lease TTL Timer is fired, an implementation of the protocol MUST evaluate lease renewal as
 specified below.
@@ -2129,7 +2005,7 @@ following:
 
   Unmarshal the Lease Object as specified in [MS-NRTP] section 3.2.4.3.
 
-3.3.5.2  Sponsorship Timer
+##### 3.3.5.2 Sponsorship Timer
 
 If the Sponsorship Timer fires before the pending Renewal method has completed, the implementation
 MUST remove the Sponsor Info from the SponsorList and move to the next Sponsor Info in the
@@ -2142,45 +2018,46 @@ Release: March 13, 2019
 
 28 / 50
 
-3.3.6  Other Local Events
 
-3.3.6.1  Binding to Server Object
+#### 3.3.6 Other Local Events
+
+##### 3.3.6.1 Binding to Server Object
 
 This protocol augments [MS-NRTP] section 3.2.5.1.2 to specify additional processing for lifetime
 management. When a request is bound to a Server Object, the Lease Object associated with that
 Server Object MUST be renewed as specified in the ILease Renew method using the current value of
 the Lease Data RenewOnCallTime as the value for the renewalTime argument.
 
-3.3.6.2  Marshal Server Object
+##### 3.3.6.2 Marshal Server Object
 
 This protocol augments [MS-NRTP] section 3.5.4.1 to specify additional processing for lifetime
 management. When a Server Object is marshaled, the Lease Object associated with that Server
 Object MUST be renewed as specified in the ILease Renew method using the current value of the
 Lease Data RenewOnCallTime as the value for the renewalTime argument.
 
-3.3.6.3  Unmarshal Server Object
+##### 3.3.6.3 Unmarshal Server Object
 
 This protocol augments [MS-NRTP] section 3.5.4.1 to specify additional processing for lifetime
 management. When a Server Object is unmarshaled, the implementation MAY expire the Lease
 Object associated with that Server Object as specified in Lease TTL Timer (section 3.3.5.1). <11>
 
-3.4  ISponsor
+### 3.4 ISponsor
 
 The RemotingTypeName of the interface is "System.Runtime.Remoting.Lifetime.ISponsor".
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 There is no data model for this interface.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 There are no timers beyond those provided by the underlying transport layers.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 There is no initialization required by the implementation of this interface.
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 This interface includes the following method.
 
@@ -2188,7 +2065,7 @@ Method  Description
 
 Renewal  Extends the TTL of the associated Server Object
 
-3.4.4.1  Renewal
+##### 3.4.4.1 Renewal
 
 Renewal extends the TTL of the associated Server Object.
 
@@ -2201,7 +2078,8 @@ Release: March 13, 2019
 
 29 / 50
 
-lease: The expiring ILease object.
+
+lease: The expiring ILease object.
 
 Return Value: A TimeSpan value that indicates the new TTL for the Server Object.
 
@@ -2226,35 +2104,35 @@ Lease needs to be renewed, and this Sponsor needs to be kept in the Lease Sponso
 The implementation SHOULD NOT call methods on the lease argument but instead rely on the return
 value to indicate renewal.
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 There are no timer events.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 There are no other events.
 
-3.5  Object
+### 3.5 Object
 
 The RemotingTypeName of the interface is "System.Object".
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 This protocol extends the .NET Remoting: Core Protocol Specification Abstract Data Model (as
 specified in [MS-NRTP] sections 3.1.1 and 3.2.1) to associate zero or more Remote Fields with every
 active Server Object.  For more information about Remote Fields, see [MS-NRTP] sections 3.1.5.1.3
 and 3.1.5.2.3.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 There are no timers associated with this interface.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 Each Remote Field defined for the Server Object MUST be initialized as required by the application or
 higher-layer in an implementation-specific way.
 
-3.5.4  Message Processing Events and Sequencing Rules
+#### 3.5.4 Message Processing Events and Sequencing Rules
 
 This interface includes the following methods.
 
@@ -2271,13 +2149,14 @@ Release: March 13, 2019
 
 30 / 50
 
-Method
+
+Method
 
 Description
 
 FieldSetter  Sets the value of the specified field to the specified value.
 
-3.5.4.1  FieldGetter
+##### 3.5.4.1 FieldGetter
 
 FieldGetter returns the value of the specified Remote Field. For more information about how this
 method is used for Remote Fields, see [MS-NRTP] sections 3.1.5.1.3 and 3.1.5.2.3.
@@ -2302,7 +2181,7 @@ specified in [MS-NRTP] section 3.2.5.1.7), if the Remote Field specified in the 
 not defined in the Server Interface specified by the typeName argument, a RemotingException (as
 specified in [MS-NRTP] section 2.2.2.8) MUST be sent back.
 
-3.5.4.2  FieldSetter
+##### 3.5.4.2 FieldSetter
 
 FieldSetter sets the value of the specified Remote Field to the specified value. For more information
 about how this method is used for Remote Fields, see [MS-NRTP] sections 3.1.5.1.4 and 3.1.5.2.4.
@@ -2327,7 +2206,7 @@ specified in [MS-NRTP] section 3.2.5.1.7.2), if the Remote Field specified in th
 is not defined in the Type specified by the typeName argument, a RemotingException (as specified in
 [MS-NRTP] section 2.2.2.8) MUST be sent back.
 
-3.5.5  Timer Events
+#### 3.5.5 Timer Events
 
 There are no timer events associated with this interface.
 
@@ -2338,7 +2217,8 @@ Release: March 13, 2019
 
 31 / 50
 
-3.5.6  Other Local Events
+
+#### 3.5.6 Other Local Events
 
 There are no other local events.
 
@@ -2349,16 +2229,17 @@ Release: March 13, 2019
 
 32 / 50
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-NRLS].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections provide common scenarios to illustrate the function of the .NET Remoting:
 Lifetime Services Extension.
 
-4.1  CAO Activation Request/Response Message.
+### 4.1 CAO Activation Request/Response Message.
 
 This sample shows the messages involved when the client sends an activation request for a CAO
 where the transport is TCP and the format is binary.
@@ -2376,7 +2257,7 @@ The sequence diagram for an activation process is shown in the following figure.
 
 Figure 8: Activation process
 
-4.1.1  Activation Request Message
+#### 4.1.1 Activation Request Message
 
 The client passes a ConstructionCall (section 2.2.2) instance as an argument to the Activate method of
 the IActivator interface.
@@ -2400,7 +2281,8 @@ Release: March 13, 2019
 
 33 / 50
 
-       HeaderToken: RequestUri (0x04)
+
+       HeaderToken: RequestUri (0x04)
        DataType:  CountedString (0x01)
        StringEncoding: UTF8 (0x01)
        UriValue: tcp://maheshdev2:8080/RemoteActivationService.rem
@@ -2477,7 +2359,8 @@ Release: March 13, 2019
 
 34 / 50
 
-             MemberNames:
+
+             MemberNames:
                 Data: __CallContext
              MemberNames:
                 Data: __CallSiteActivationAttributes
@@ -2554,7 +2437,8 @@ Release: March 13, 2019
 
 35 / 50
 
-       IdRef: 5 (0x05)
+
+       IdRef: 5 (0x05)
     BinaryArray:
        BinaryHeaderEnum: BinaryArray (0x07)
        ObjectId: 4 (0x04)
@@ -2628,7 +2512,8 @@ Release: March 13, 2019
 
 36 / 50
 
-4.1.2  Activation Response Message
+
+#### 4.1.2 Activation Response Message
 
 The server sends back the ObjRef (as specified in [MS-NRTP] section 2.2.2.1) of the activated object
 as part of the ConstructionResponse instance that is the Return Value. The ObjRef that is passed
@@ -2710,7 +2595,8 @@ Release: March 13, 2019
 
 37 / 50
 
-       IdRef: 2
+
+       IdRef: 2
     SystemClassWithMembersAndTypes:
        BinaryHeaderEnum: SystemClassWithMembersAndTypes (0x04)
        ObjectId: 2
@@ -2787,7 +2673,8 @@ Release: March 13, 2019
 
 38 / 50
 
-          String  (0x01)
+
+          String  (0x01)
           PrimitiveTypeEnum  (0x00)
           SystemClass (0x03)
           SystemClass (0x03)
@@ -2864,7 +2751,8 @@ Release: March 13, 2019
 
 39 / 50
 
-          ObjectArray  (0x05)
+
+          ObjectArray  (0x05)
     MemberReference:
        BinaryHeaderEnum: MemberReference (0x09)
        IdRef: 11 (0x0B)
@@ -2941,7 +2829,8 @@ Release: March 13, 2019
 
 40 / 50
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-NRLS].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2952,7 +2841,7 @@ Release: March 13, 2019
     MessageEnd:
        BinaryHeaderEnum: MessageEnd (0x0B)
 
-4.2  Registering a Sponsor for a CAO Object
+### 4.2 Registering a Sponsor for a CAO Object
 
 This sample shows the sequence of steps involved when the client registers a Sponsor to manage the
 lifetime of the remote CAO Server Object.
@@ -2980,11 +2869,12 @@ Release: March 13, 2019
 
 41 / 50
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-NRLS].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
-4.3  Incrementing TTL of a Server Object
+### 4.3 Incrementing TTL of a Server Object
 
 The client does not need to register a Sponsor to manage the lifetime of the remote Server Object.
 
@@ -3002,12 +2892,13 @@ Release: March 13, 2019
 
 42 / 50
 
-5  Security
+
+## 5 Security
 
  The following sections specify security considerations for implementers of the .NET Remoting:
 Lifetime Services Extension.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 This protocol allows a client to request that the server activate a local object by name. This could
 potentially result in the client being able to run arbitrary code on the server.
@@ -3016,7 +2907,7 @@ Implementers can safeguard against this threat by restricting the set of Remotin
 request to those that are known to be safe—for example, by maintaining a list of allowable Remoting
 Types for the application to configure.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol has no security parameters.
 
@@ -3027,7 +2918,8 @@ Release: March 13, 2019
 
 43 / 50
 
-6  Appendix A: Full Definitions
+
+## 6 Appendix A: Full Definitions
 
 For ease of implementation, the complete definitions of Remoting Types and Server Interfaces are
 provided below.
@@ -3105,7 +2997,8 @@ Release: March 13, 2019
 
 44 / 50
 
-     System.Type[]                 __MethodSignature;
+
+     System.Type[]                 __MethodSignature;
      String                        __TypeName;
      System.Object[]               __Args;
      System.Object                 __CallContext;
@@ -3158,7 +3051,8 @@ Release: March 13, 2019
 
 45 / 50
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3226,7 +3120,8 @@ participate in the lifetime management of the Server Object.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -3286,7 +3181,8 @@ Release: March 13, 2019
 
 47 / 50
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3323,7 +3219,8 @@ Release: March 13, 2019
 
 48 / 50
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3461,7 +3358,8 @@ MarshalByRefObject
 
 49 / 50
 
-Sponsor 9
+
+Sponsor 9
 Standards assignments 13
 
 T

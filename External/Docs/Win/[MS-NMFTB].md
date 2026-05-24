@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 24
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -265,7 +266,8 @@ Release: March 13, 2019
 
 2 / 24
 
-Date
+
+Date
 
 Revision
 History
@@ -331,167 +333,73 @@ Release: March 13, 2019
 
 3 / 24
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 TCP Connection Aborted](#3161-tcp-connection-aborted)
+      - [3.1.6.2 Higher-Layer Triggered Events](#3162-higher-layer-triggered-events)
+        - [3.1.6.2.1 Abort the TCP Connection](#31621-abort-the-tcp-connection)
+  - [3.2 Initiator Details](#32-initiator-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 CONNECTED State](#3211-connected-state)
+      - [3.2.1.2 BUSY State](#3212-busy-state)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+      - [3.2.6.1 End Framing Session](#3261-end-framing-session)
+      - [3.2.6.2 Higher-Layer Triggered Events](#3262-higher-layer-triggered-events)
+        - [3.2.6.2.1 Connect](#32621-connect)
+  - [3.3 Receiver Details](#33-receiver-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+      - [3.3.6.1 End Framing Session](#3361-end-framing-session)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Message Syntax ................................................................................. 10
-Namespaces .............................................................................................. 10
-Messages ................................................................................................... 10
-Elements ................................................................................................... 10
-Complex Types ........................................................................................... 10
-Simple Types ............................................................................................. 10
-Attributes .................................................................................................. 11
-Groups ...................................................................................................... 11
-Attribute Groups ......................................................................................... 11
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.2
-
-3.2.1
-
-3.1.6.2.1
-
-3.2.1.1
-3.2.1.2
-
-3.1.6.1
-3.1.6.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-
-3  Protocol Details ..................................................................................................... 12
-Common Details .............................................................................................. 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-TCP Connection Aborted ........................................................................ 13
-Higher-Layer Triggered Events ............................................................... 13
-Abort the TCP Connection ................................................................. 13
-Initiator Details ................................................................................................ 13
-Abstract Data Model .................................................................................... 13
-CONNECTED State ................................................................................ 14
-BUSY State .......................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-End Framing Session ............................................................................. 14
-Higher-Layer Triggered Events ............................................................... 14
-Connect ......................................................................................... 14
-Receiver Details ............................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 15
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.2.6.1
-3.2.6.2
-
-3.2.6.2.1
-
-3.3
-
-[MS-NMFTB] - v20190313
-.NET Message Framing TCP Binding Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 24
-
-3.3.6.1
-
-End Framing Session ............................................................................. 15
-
-4  Protocol Examples ................................................................................................. 17
-
-5  Security ................................................................................................................. 18
-Security Considerations for Implementers ........................................................... 18
-Index of Security Parameters ............................................................................ 18
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 19
-
-7  Appendix B: Product Behavior ............................................................................... 20
-
-8  Change Tracking .................................................................................................... 22
-
-9  Index ..................................................................................................................... 23
-
-[MS-NMFTB] - v20190313
-.NET Message Framing TCP Binding Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 24
-
-1  Introduction
+## 1 Introduction
 
 The .NET Message Framing TCP Binding Protocol specifies how the .NET Message Framing Protocol
 [MC-NMF] is used for framing SOAP messages over TCP [RFC793].
@@ -502,7 +410,7 @@ defined by a higher-layer protocol are framed for transport over TCP.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -563,7 +471,8 @@ Release: March 13, 2019
 
 6 / 24
 
-Web Services Description Language (WSDL): An XML format for describing network services
+
+Web Services Description Language (WSDL): An XML format for describing network services
 
 as a set of endpoints that operate on messages that contain either document-oriented or
 procedure-oriented information. The operations and messages are described abstractly and are
@@ -585,14 +494,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -631,7 +540,8 @@ W3C Member Submission, April 2006, http://www.w3.org/Submission/2006/SUBM-wsdl11
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-NMFTB].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -649,11 +559,11 @@ names-20060816/
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 The .NET Message Framing TCP Binding Protocol specifies how the mechanism for framing messages
 over any transport protocol, as defined in the .NET Message Framing Protocol [MC-NMF], can be
@@ -663,7 +573,7 @@ The .NET Message Framing TCP Binding Protocol also defines the net.tcp URI schem
 identifying this protocol as the transport for sending SOAP 1.1 messages [SOAP1.1] or SOAP 1.2
 messages [SOAP1.2-1/2003].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The .NET Message Framing TCP Binding Protocol uses TCP as the transport [RFC793].
 
@@ -674,7 +584,7 @@ The following figure shows the protocol stack:
 
 Figure 1: .NET Message Framing TCP Binding Protocol transport stack
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The .NET Message Framing TCP Binding Protocol requires that an initiator can connect to a receiver
 over TCP [RFC793].
@@ -686,13 +596,14 @@ over TCP [RFC793].
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The .NET Message Framing TCP Binding Protocol is applicable in scenarios where an initiator and a
 receiver require a communication mechanism to send and receive SOAP messages over TCP
 [RFC793].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -707,11 +618,11 @@ version 1.2 [SOAP1.2-1/2003] is required.
 
 to use.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol has no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for this protocol.
 
@@ -722,9 +633,10 @@ Release: March 13, 2019
 
 9 / 24
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The .NET Message Framing TCP Binding Protocol requires TCP [RFC793].
 
@@ -736,13 +648,13 @@ An endpoint that uses the .NET Message Framing TCP Binding Protocol with [SOAP1.
 value of the transport attribute of the soap:binding element [WSDL] to
 http://schemas.microsoft.com/soap/tcp.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description
 Language as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS-2ED]. Although this specification associates a specific XML namespace prefix for each XML
@@ -769,19 +681,19 @@ http://schemas.xmlsoap.org/wsdl/
 
 [WSDL]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common XML Schema message definitions.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 This specification does not define any common XML Schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML Schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML Schema simple type definitions.
 
@@ -792,15 +704,16 @@ Release: March 13, 2019
 
 10 / 24
 
-2.2.6  Attributes
+
+#### 2.2.6 Attributes
 
 This specification does not define any common XML Schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML Schema attribute group definitions.
 
@@ -811,7 +724,8 @@ Release: March 13, 2019
 
 11 / 24
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 A participant in this protocol can behave in one of two roles:
 
@@ -825,9 +739,9 @@ An initiator initiates the process by establishing a TCP connection, as specifie
 3.4, to a receiver. The resulting TCP connection is used as the transport for performing the .NET
 Message Framing Protocol [MC-NMF].
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 A net.tcp URI identifies a resource that listens for TCP connections and assumes the receiver role of
 this protocol.
@@ -904,32 +818,33 @@ transport session.<5>
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 If the communication mode is Singleton-Unsized, as defined in [MC-NMF] section 2.2.3.2, then the
 encoding specified by the TPCO MUST NOT be Binary with in-band dictionary [MC-NBFSE]. The
 transport in this mode uses a transport session.<6>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 A TPCO with an uninitialized transport is made available to the protocol as part of a higher-layer
 triggered event.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This specification does not define any common XML Schema operation definitions.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
-3.1.6.1  TCP Connection Aborted
+##### 3.1.6.1 TCP Connection Aborted
 
 If the TCP connection is aborted at any time, then the protocol MUST:
 
@@ -941,18 +856,18 @@ If the TCP connection is aborted at any time, then the protocol MUST:
 
 Terminate
 
-3.1.6.2  Higher-Layer Triggered Events
+##### 3.1.6.2 Higher-Layer Triggered Events
 
-3.1.6.2.1 Abort the TCP Connection
+###### 3.1.6.2.1 Abort the TCP Connection
 
 The protocol MUST abort the TCP connection.
 
 The protocol MUST discard any state associated with the TCP connection and framing session and then
 terminate.
 
-3.2  Initiator Details
+### 3.2 Initiator Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The initiator role MUST maintain the following data elements for each TCP connection (in addition to
 the TPCO):
@@ -970,7 +885,8 @@ Release: March 13, 2019
 
 13 / 24
 
-3.2.1.1  CONNECTED State
+
+##### 3.2.1.1 CONNECTED State
 
 CONNECTED is the initial state. The following events are processed in the CONNECTED state:
 
@@ -978,7 +894,7 @@ CONNECTED is the initial state. The following events are processed in the CONNEC
 
   Abort the TCP connection, as specified in section 3.1.6.2.1
 
-3.2.1.2  BUSY State
+##### 3.2.1.2 BUSY State
 
 The following events are processed in the BUSY state:
 
@@ -988,26 +904,26 @@ End the framing session, as specified in section 3.2.6.1
 
   Abort the TCP connection, as specified in section 3.1.6.2.1
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When a new TCP connection is created, the Connection State for the TCP connection MUST be set to
 CONNECTED.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This specification does not define any XML Schema operation definitions for the initiator role.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
-3.2.6.1  End Framing Session
+##### 3.2.6.1 End Framing Session
 
 The End Framing session event occurs due to one of the following conditions:
 
@@ -1027,9 +943,9 @@ The initiator receives a Fault Record.
 When the framing session, as defined in [MC-NMF] section 1.3, has ended for a given TCP connection,
 the initiator MUST set the Connection State to CONNECTED (see section 3.2.1.1).
 
-3.2.6.2  Higher-Layer Triggered Events
+##### 3.2.6.2 Higher-Layer Triggered Events
 
-3.2.6.2.1 Connect
+###### 3.2.6.2.1 Connect
 
 The initiator MUST establish a TCP connection with the host, as defined in [RFC3986] section 3.2.2,
 that is specified by the authority component of the Via URI from the TPCO. The manner in which the
@@ -1042,7 +958,8 @@ TCP connection is established (for example, by creating a new connection or by r
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-one) is implementation-specific. The initiator MUST NOT reuse a TCP connection in the BUSY
+
+one) is implementation-specific. The initiator MUST NOT reuse a TCP connection in the BUSY
 Connection State (see section 3.2.1.2). Once the TCP connection is established, the initiator MUST
 set the Connection State for that TCP connection to BUSY.
 
@@ -1058,17 +975,17 @@ assume the initiator role, as defined in [MC-NMF] in section 3.2.
 
 The initiator MUST use the TPCO stored for the TCP connection to initialize new framing sessions.
 
-3.3  Receiver Details
+### 3.3 Receiver Details
 
-3.3.1  Abstract Data Model
-
-None.
-
-3.3.2  Timers
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.3  Initialization
+#### 3.3.2 Timers
+
+None.
+
+#### 3.3.3 Initialization
 
 The following initialization requirements are in addition to the initialization requirements specified in
 section 3.1.3.
@@ -1084,17 +1001,17 @@ The receiver MUST use the TPCO to initialize new sessions.
 If the receiver fails to start listening for TCP connections, then the receiver MUST notify the higher
 layer of the error and terminate.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 This specification does not define any XML Schema operation definitions for the receiver role.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 None.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
-3.3.6.1  End Framing Session
+##### 3.3.6.1 End Framing Session
 
 The End Framing session event occurs due to one of the following conditions:
 
@@ -1105,7 +1022,8 @@ The End Framing session event occurs due to one of the following conditions:
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -1129,7 +1047,8 @@ Release: March 13, 2019
 
 16 / 24
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The protocol is initialized with the following TPCO:
 
@@ -1170,13 +1089,14 @@ Release: March 13, 2019
 
 17 / 24
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1187,7 +1107,8 @@ Release: March 13, 2019
 
 18 / 24
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 The following WSDL specifies the WSDL 1.1 binding extension transport URI with the version of
 SOAP as indicated.
@@ -1237,7 +1158,8 @@ Release: March 13, 2019
 
 19 / 24
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1303,7 +1225,8 @@ Release: March 13, 2019
 
 20 / 24
 
-<7> Section 3.2.6.2.1: The Windows implementation of this protocol aborts the TCP connection if the
+
+<7> Section 3.2.6.2.1: The Windows implementation of this protocol aborts the TCP connection if the
 connection is in the CONNECTED state for longer than two minutes, or if a connection in the
 CONNECTED state has existed for longer than five minutes.
 
@@ -1314,7 +1237,8 @@ Release: March 13, 2019
 
 21 / 24
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1351,7 +1275,8 @@ Release: March 13, 2019
 
 22 / 24
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -1485,7 +1410,8 @@ O
 
 23 / 24
 
-   simple 10
+
+   simple 10
 
 V
 

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 21
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 21
 
-Date
+
+Date
 
 Revision
 History
@@ -526,7 +528,8 @@ Release: April 23, 2024
 
 3 / 21
 
-Date
+
+Date
 
 Revision
 History
@@ -603,164 +606,73 @@ Release: April 23, 2024
 
 4 / 21
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 WWW-Authenticate Response Header](#221-www-authenticate-response-header)
+    - [2.2.2 Authorization Request Header](#222-authorization-request-header)
+    - [2.2.3 Proxy-Authenticate Response Header](#223-proxy-authenticate-response-header)
+    - [2.2.4 Proxy-Authorization Request Header](#224-proxy-authorization-request-header)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Unexpected Messages](#3151-unexpected-messages)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Proxy Details](#34-proxy-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Server Examples](#41-server-examples)
+  - [4.2 Proxy Examples](#42-proxy-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-WWW-Authenticate Response Header ............................................................ 10
-Authorization Request Header ...................................................................... 10
-Proxy-Authenticate Response Header ............................................................ 11
-Proxy-Authorization Request Header ............................................................. 11
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-3.2
-
-3.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3  Protocol Details ..................................................................................................... 12
-Common Details .............................................................................................. 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Message Processing Events and Sequencing Rules .......................................... 12
-Unexpected Messages............................................................................ 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-Server Details .................................................................................................. 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-Client Details ................................................................................................... 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-Proxy Details ................................................................................................... 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-3.4.6
-3.4.7
-
-3.4
-
-3.3
-
-[MS-NTHT] - v20240423
-NTLM Over HTTP Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 21
-
-4  Protocol Examples ................................................................................................. 15
-Server Examples .............................................................................................. 15
-Proxy Examples ............................................................................................... 16
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 17
-Security Considerations for Implementers ........................................................... 17
-Index of Security Parameters ............................................................................ 17
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 18
-
-7  Change Tracking .................................................................................................... 19
-
-8  Index ..................................................................................................................... 20
-
-[MS-NTHT] - v20240423
-NTLM Over HTTP Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 21
-
-1  Introduction
+## 1 Introduction
 
 Microsoft provides support for NT LAN Manager (NTLM) (as specified in [MS-NLMP]) authentication in
 Microsoft Internet Explorer and Microsoft Internet Information Services (IIS) that uses the HTTP
@@ -777,7 +689,7 @@ Microsoft implementation from what is specified in [RFC4559], where applicable.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -801,14 +713,14 @@ back responses (see [RFC2616] section 1.3).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -829,7 +741,8 @@ NTLM Over HTTP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC2617] Franks, J., Hallam-Baker, P., Hostetler, J., et al., "HTTP Authentication: Basic and Digest
+
+[RFC2617] Franks, J., Hallam-Baker, P., Hostetler, J., et al., "HTTP Authentication: Basic and Digest
 Access Authentication", RFC 2617, June 1999, https://www.rfc-editor.org/info/rfc2617
 
 [RFC4178] Zhu, L., Leach, P., Jaganathan, K., and Ingersoll, W., "The Simple and Protected Generic
@@ -839,11 +752,11 @@ Security Service Application Program Interface (GSS-API) Negotiation Mechanism",
 [RFC4559] Jaganathan, K., Zhu, L., and Brezak, J., "SPNEGO-based Kerberos and NTLM HTTP
 Authentication in Microsoft Windows", RFC 4559, June 2006, https://www.rfc-editor.org/info/rfc4559
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The NTLM over HTTP Protocol authentication variant is similar to the SPNEGO HTTP (as specified in
 [RFC4559]) authentication mechanism. Both are used to authenticate a web client to a web server.
@@ -851,14 +764,14 @@ Although SPNEGO HTTP (as specified in [RFC4559]) works with both Kerberos and NT
 authentication, the NTLM over HTTP Protocol authentication variant only works with NTLM. The
 Kerberos protocol is not supported.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This document is a companion to the SPNEGO HTTP authentication document, as specified in
 [RFC4559]. It uses the augmented Backus-Naur Form (BNF), as specified in [RFC4559] section 4,
 and relies on both the non-terminals defined in that document and other aspects of the specification
 HTTP/1.1, as specified in [RFC2617]. For more information, see [RFC2616].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 NTLM over HTTP Protocol authentication assumes the following in addition to any assumptions
 specified in [MS-NLMP].
@@ -870,18 +783,18 @@ those users.
 2.  The web client has implemented the NT LAN Manager (NTLM) Authentication Protocol, as
 specified in [MS-NLMP], so that it can participate in user authentication to the web server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 NTLM HTTP authentication is used in environments where SPNEGO-based Kerberos and NTLM HTTP
 authentication, as specified in [RFC4559], are not available, and the web client and server support
 NTLM authentication, as specified in [MS-NLMP].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Versioning and capability negotiation is handled by the HTTP protocols specified in [RFC2617] (for
 more information, see [RFC2616]). This protocol has no additional versioning or capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -892,7 +805,8 @@ Release: April 23, 2024
 
 8 / 21
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -911,20 +825,21 @@ Release: April 23, 2024
 
 9 / 21
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 NTLM over HTTP Protocol messages are carried in the HTTP authentication exchanges as
 authentication data (auth-data), as specified in [RFC4559] sections 4.1 and 4.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The use of NTLM over HTTP Protocol authentication is indicated by an HTTP authentication scheme
 (auth-scheme) NTLM. The authentication parameters (auth-params) that are exchanged are base64-
 encoded messages. For more details about auth-scheme and auth-params, see [RFC2617] section 1.2.
 
-2.2.1  WWW-Authenticate Response Header
+#### 2.2.1 WWW-Authenticate Response Header
 
 If the server receives a request for an access-protected object and an acceptable Authorization
 Request Header has not been sent, the server MUST respond with a "401 Unauthorized" status code
@@ -944,7 +859,7 @@ The NTLM scheme operates as follows.
 The ntlm-data directive contains the base64 encoding of a CHALLENGE_MESSAGE, as specified in [MS-
 NLMP] section 2.2.1.2.
 
-2.2.2  Authorization Request Header
+#### 2.2.2 Authorization Request Header
 
 Upon receipt of the response containing a WWW-Authenticate header from the server, the client is
 expected to retry the HTTP request with the authorization header, per the framework in [RFC2616] in
@@ -969,12 +884,13 @@ Release: April 23, 2024
 
 10 / 21
 
-Any return code other than a client error HTTP 401 status code (for more information, see [RFC2616]
+
+Any return code other than a client error HTTP 401 status code (for more information, see [RFC2616]
 section 10.4.2), represents successful authentication. If the client is not able to access the requested
 resource and the response status code is not HTTP 401, the problem is HTTP protocol-specific (for
 more information, see [RFC2616] section 10).
 
-2.2.3  Proxy-Authenticate Response Header
+#### 2.2.3 Proxy-Authenticate Response Header
 
 If the client must authenticate itself to a proxy and an acceptable proxy-authorization header has not
 been sent, the proxy MUST respond with a "407 Proxy Authentication Required" status code (for more
@@ -994,7 +910,7 @@ The meanings of the values of the directives used above are as follows:
 The ntlm-data directive contains the base64 encoding of a CHALLENGE_MESSAGE, as specified in [MS-
 NLMP] section 2.2.1.2.
 
-2.2.4  Proxy-Authorization Request Header
+#### 2.2.4 Proxy-Authorization Request Header
 
 Upon receipt of the response containing a proxy-authenticate header from the proxy, the client is
 expected to retry the HTTP request with the proxy-authorization header, per the framework in
@@ -1024,27 +940,28 @@ Release: April 23, 2024
 
 11 / 21
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 The abstract data model follows the specifications in [RFC4559].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The WWW-Authenticate header is only sent from the server. The Authorization header is only sent by
 the client. (For details, see [RFC2617] and also see [RFC2616] sections 14.47 and 14.8.) Clients,
@@ -1054,7 +971,7 @@ The Proxy-Authenticate header is only sent from the proxy. The Proxy-Authorizati
 sent by the client. (For more information, see [RFC2617] and [RFC2616] sections 14.33 and 14.34.)
 Clients, servers, and proxies MUST be compliant with [RFC2617] and [RFC2616].
 
-3.1.5.1  Unexpected Messages
+##### 3.1.5.1 Unexpected Messages
 
 Unexpected messages cause the authentication to fail.
 
@@ -1066,17 +983,17 @@ If the server receives an unexpected message, it sends an HTTP 401 message to th
 
 If the client receives an unexpected message, it does not send a new request to the server.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no local events other than those specified in [RFC4559].
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model follows the specifications in [RFC4559].
 
@@ -1087,19 +1004,20 @@ Release: April 23, 2024
 
 12 / 21
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The WWW-Authenticate header is only sent from the server. The Authorization header is only sent by
 the client. (For more information, see [RFC2617] and [RFC2616] section 14.47.) Servers MUST be
@@ -1109,33 +1027,33 @@ The Proxy-Authenticate header is only sent from the proxy. The Proxy-Authorizati
 sent by the client. (For more information, see [RFC2617] and [RFC2616] sections 14.33 and 14.34.)
 Servers MUST be compliant with [RFC2617] and [RFC2616].
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no local events other than those specified in [RFC4559].
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The abstract data model follows the specifications in [RFC4559].
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 The WWW-Authenticate header is only sent from the server. The Authorization header is only sent by
 the client. (For more information, see [RFC2617] and [RFC2616] section 14.47.) Servers MUST be
@@ -1148,37 +1066,38 @@ NTLM Over HTTP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Proxy-Authenticate header is only sent from the proxy. The Proxy-Authorization header is only
+
+The Proxy-Authenticate header is only sent from the proxy. The Proxy-Authorization header is only
 sent by the client. (For more information, see [RFC2617] and [RFC2616] sections 14.33 and 14.34.)
 Servers MUST be compliant with [RFC2617] and [RFC2616].
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 There are no local events other than those specified in [RFC4559].
 
-3.4  Proxy Details
+### 3.4 Proxy Details
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 The abstract data model follows the specifications in [RFC4559].
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 None.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 None.
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
 The WWW-Authenticate header is only sent from the server. The Authorization header is only sent by
 the client. (For more information, see [RFC2617] and [RFC2616] section 14.47.) Servers MUST be
@@ -1188,11 +1107,11 @@ The Proxy-Authenticate header is only sent from the proxy. The Proxy-Authorizati
 sent by the client. (For more information, see [RFC2617] and [RFC2616] sections 14.33 and 14.34.)
 Servers MUST be compliant with [RFC2617] and [RFC2616].
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 There are no local events other than those specified in [RFC4559].
 
@@ -1203,9 +1122,10 @@ Release: April 23, 2024
 
 14 / 21
 
-4  Protocol Examples
 
-4.1  Server Examples
+## 4 Protocol Examples
+
+### 4.1 Server Examples
 
 This scenario shows the messages exchanged when a web client requests an access-protected
 document from a web server using a GET method request at the URL:
@@ -1258,7 +1178,8 @@ Release: April 23, 2024
 
 15 / 21
 
-4.2  Proxy Examples
+
+### 4.2 Proxy Examples
 
 This scenario shows the messages that are exchanged when a web client requests an access-
 protected document from a proxy using a GET method request at the URL:
@@ -1311,15 +1232,16 @@ Release: April 23, 2024
 
 16 / 21
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The NTLM Authentication Protocol (see [MS-NLMP]) does not provide any facilities for mutual
 authentication; therefore, server identities cannot be verified. Other security considerations are as
 specified in [RFC4559] section 6.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1330,7 +1252,8 @@ Release: April 23, 2024
 
 17 / 21
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1392,7 +1315,8 @@ Release: April 23, 2024
 
 18 / 21
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1436,7 +1360,8 @@ Release: April 23, 2024
 
 19 / 21
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1583,7 +1508,8 @@ section 3.4.4 14)
 
 20 / 21
 
-   timers (section 3.1.2 12, section 3.4.2 14)
+
+   timers (section 3.1.2 12, section 3.4.2 14)
 Proxy-Authenticate response header 11
 Proxy-Authenticate Response Header message 11
 Proxy-authorization request header 11

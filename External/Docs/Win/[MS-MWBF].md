@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 72
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 72
 
-Date
+
+Date
 
 Revision
 History
@@ -528,7 +530,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -594,384 +597,161 @@ Release: April 23, 2024
 
 4 / 72
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-Versioning ................................................................................................. 15
-Capability Negotiation ................................................................................. 15
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 15
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-1.7.1
-1.7.2
-
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.4.1
-2.2.4.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Message Syntax ............................................................................................... 16
-Common Syntax for Request Messages ......................................................... 17
-Common Syntax for Response Messages ....................................................... 17
-wsignin1.0 Request Message ........................................................................ 17
-wsignin1.0 Response Message ...................................................................... 19
-High-Level Format of wresult Parameter .................................................. 19
-Security Token Format........................................................................... 19
-Assertion Statements ....................................................................... 20
-Authentication Statements .......................................................... 20
-Attribute Statements .................................................................. 20
-Subject Element ........................................................................ 21
-Security Token Signature ................................................................. 21
-wsignout1.0 Request Message ...................................................................... 21
-wsignoutcleanup1.0 Request Message ........................................................... 22
-Directory Service Schema Elements ................................................................... 22
-
-2.2.4.2.1.1
-2.2.4.2.1.2
-2.2.4.2.1.3
-
-2.2.5
-2.2.6
-
-2.2.4.2.1
-
-2.2.4.2.2
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.5.1
-3.1.1.5.2
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3  Protocol Details ..................................................................................................... 23
-Common Details for Requestor IP/STS and Relying Party Roles .............................. 23
-Abstract Data Model .................................................................................... 23
-Security Token ..................................................................................... 23
-User Authentication Context ................................................................... 23
-Federation Partner ................................................................................ 24
-Claim .................................................................................................. 25
-Federation Partner Session Lists for Web Browser Requestors ..................... 27
-Requestor IP/STS Web Browser Requestor Sessions List ....................... 27
-Relying Party Web Browser Requestor Sessions List ............................. 27
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 28
-Processing Events and Sequencing Rules ....................................................... 28
-Determining Message Type .................................................................... 29
-Error Handling ...................................................................................... 29
-Requesting a Security Token by Issuing a wsignin1.0 Request Message ....... 29
-Protocol Activation ........................................................................... 29
-Parameter Marshaling ...................................................................... 29
-Requestor IP/STS Security Realm Discovery ....................................... 30
-Message Transmission ..................................................................... 30
-Issuing a Security Token by Responding to a wsignin1.0 Request Message ... 30
-
-3.1.5.3.1
-3.1.5.3.2
-3.1.5.3.3
-3.1.5.3.4
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.4
-
-[MS-MWBF] - v20240423
-Microsoft Web Browser Federated Sign-On Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 72
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.2.5.1
-3.2.5.2
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-
-3.2.5.3
-
-3.2.5.3.1
-3.2.5.3.2
-3.2.5.3.3
-3.2.5.3.4
-
-3.1.5.4.1
-3.1.5.4.2
-3.1.5.4.3
-3.1.5.4.4
-3.1.5.4.5
-3.1.5.4.6
-3.1.5.4.7
-
-Protocol Activation ........................................................................... 31
-Message Validation .......................................................................... 31
-User Identification and Authentication ................................................ 31
-User Attribute Retrieval .................................................................... 31
-Claim Mapping ................................................................................ 31
-SAML Assertion Construction ............................................................. 32
-Response Message Processing ........................................................... 32
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-Requestor IP/STS Details .................................................................................. 32
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 33
-Higher-Layer Triggered Events ..................................................................... 33
-Processing Events and Sequencing Rules ....................................................... 33
-Issuing a Security Token by Responding to a wsignin1.0 Request Message ... 33
-Inbound wsignout1.0 Request Message Processing .................................... 34
-Protocol Activation ........................................................................... 34
-Clean-Up Processing ........................................................................ 34
-Response Message Processing ........................................................... 34
-Outbound wsignoutcleanup1.0 Request Message Processing ....................... 34
-Protocol Activation ........................................................................... 34
-Relying Party Security Realm Discovery .............................................. 34
-Clean-Up Processing ........................................................................ 34
-Message Transmission ..................................................................... 35
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-Relying Party Details ........................................................................................ 35
-Abstract Data Model .................................................................................... 35
-Resource IP/STS Abstract Data Model Extensions ...................................... 35
-WS Resource Abstract Data Model Extensions ........................................... 36
-Timers ...................................................................................................... 36
-Initialization ............................................................................................... 36
-Higher-Layer Triggered Events ..................................................................... 36
-Processing Events and Sequencing Rules ....................................................... 36
-Requesting a Security Token by Sending a wsignin1.0 Request Message ...... 37
-Protocol Activation ........................................................................... 37
-Parameter Marshaling ...................................................................... 37
-Receiving a Security Token by Processing a wsignin1.0 Response Message .. 37
-Protocol Activation ........................................................................... 38
-Message Validation .......................................................................... 38
-User Identification and Authentication ................................................ 38
-User Attribute Retrieval .................................................................... 38
-Claim Mapping ................................................................................ 38
-Resource Access Control ................................................................... 38
-Outbound wsignout1.0 Request Message Processing .................................. 38
-Protocol Activation ........................................................................... 38
-Parameter Marshaling ...................................................................... 38
-Requestor IP/STS Security Realm Discovery ....................................... 39
-Message Transmission ..................................................................... 39
-Inbound wsignoutcleanup1.0 Request Message Processing ......................... 39
-Protocol Activation ........................................................................... 39
-Clean-Up Processing ........................................................................ 39
-Relying Party Security Realm Discovery .............................................. 39
-Message Transmission ..................................................................... 39
-Response Message Processing ........................................................... 39
-Timer Events .............................................................................................. 40
-Other Local Events ...................................................................................... 40
-
-3.3.5.2.1
-3.3.5.2.2
-3.3.5.2.3
-3.3.5.2.4
-3.3.5.2.5
-3.3.5.2.6
-
-3.3.5.3.1
-3.3.5.3.2
-3.3.5.3.3
-3.3.5.3.4
-
-3.3.5.4.1
-3.3.5.4.2
-3.3.5.4.3
-3.3.5.4.4
-3.3.5.4.5
-
-3.3.5.1
-
-3.3.5.1.1
-3.3.5.1.2
-
-3.3.5.2
-
-3.3.1.1
-3.3.1.2
-
-3.3.5.3
-
-3.3.5.4
-
-3.3.6
-3.3.7
-
-[MS-MWBF] - v20240423
-Microsoft Web Browser Federated Sign-On Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 72
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-3.4.6
-3.4.7
-
-Web Browser Requestor Details ......................................................................... 40
-Abstract Data Model .................................................................................... 40
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Processing Events and Sequencing Rules ....................................................... 40
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-
-4.3
-
-4.1
-4.2
-
-4.2.1
-4.2.2
-4.2.3
-4.2.4
-
-4  Protocol Examples ................................................................................................. 42
-Message Flows ................................................................................................. 42
-XML Examples ................................................................................................. 48
-Example RSTR ............................................................................................ 48
-Example SAML Attribute Element .................................................................. 48
-Using the X509Certificate Element ................................................................ 48
-Using the X509SKI Element ......................................................................... 49
-Raw Message Examples .................................................................................... 49
-Original GET to WS Resource ....................................................................... 49
-HTTP Redirect to Resource IP/STS ................................................................ 49
-HTTP GET To Resource IP/STS ..................................................................... 49
-HTTP Redirect to Requestor IP/STS ............................................................... 50
-HTTP GET to Requestor IP/STS ..................................................................... 50
-Receive Security Token from Requestor IP/STS in HTML Form .......................... 50
-HTTP POST Security Token to Resource IP/STS .............................................. 52
-Receive Security Token from Resource IP/STS in HTML Form ........................... 54
-HTTP POST Security Token to WS Resource ................................................... 55
-Final HTTP 200 OK Response from WS Resource ............................................. 57
-
-4.3.1
-4.3.2
-4.3.3
-4.3.4
-4.3.5
-4.3.6
-4.3.7
-4.3.8
-4.3.9
-4.3.10
-
-5.1
-
-5  Security ................................................................................................................. 58
-Security Considerations for Implementers ........................................................... 58
-Security Token Integrity .............................................................................. 58
-Certificate Validation ................................................................................... 58
-Confidentiality ............................................................................................ 58
-Replay Attack ............................................................................................. 58
-Privacy ...................................................................................................... 58
-Identifiers .................................................................................................. 59
-Cookies ..................................................................................................... 59
-Index of Security Parameters ............................................................................ 59
-
-5.1.1
-5.1.2
-5.1.3
-5.1.4
-5.1.5
-5.1.6
-5.1.7
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 60
-
-7  Change Tracking .................................................................................................... 69
-
-8  Index ..................................................................................................................... 70
-
-[MS-MWBF] - v20240423
-Microsoft Web Browser Federated Sign-On Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 72
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 Versioning](#171-versioning)
+    - [1.7.2 Capability Negotiation](#172-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Syntax for Request Messages](#221-common-syntax-for-request-messages)
+    - [2.2.2 Common Syntax for Response Messages](#222-common-syntax-for-response-messages)
+    - [2.2.3 wsignin1.0 Request Message](#223-wsignin10-request-message)
+    - [2.2.4 wsignin1.0 Response Message](#224-wsignin10-response-message)
+      - [2.2.4.1 High-Level Format of wresult Parameter](#2241-high-level-format-of-wresult-parameter)
+      - [2.2.4.2 Security Token Format](#2242-security-token-format)
+        - [2.2.4.2.1 Assertion Statements](#22421-assertion-statements)
+          - [2.2.4.2.1.1 Authentication Statements](#224211-authentication-statements)
+          - [2.2.4.2.1.2 Attribute Statements](#224212-attribute-statements)
+          - [2.2.4.2.1.3 Subject Element](#224213-subject-element)
+        - [2.2.4.2.2 Security Token Signature](#22422-security-token-signature)
+    - [2.2.5 wsignout1.0 Request Message](#225-wsignout10-request-message)
+    - [2.2.6 wsignoutcleanup1.0 Request Message](#226-wsignoutcleanup10-request-message)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details for Requestor IP/STS and Relying Party Roles](#31-common-details-for-requestor-ipsts-and-relying-party-roles)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Security Token](#3111-security-token)
+      - [3.1.1.2 User Authentication Context](#3112-user-authentication-context)
+      - [3.1.1.3 Federation Partner](#3113-federation-partner)
+      - [3.1.1.4 Claim](#3114-claim)
+      - [3.1.1.5 Federation Partner Session Lists for Web Browser Requestors](#3115-federation-partner-session-lists-for-web-browser-requestors)
+        - [3.1.1.5.1 Requestor IP/STS Web Browser Requestor Sessions List](#31151-requestor-ipsts-web-browser-requestor-sessions-list)
+        - [3.1.1.5.2 Relying Party Web Browser Requestor Sessions List](#31152-relying-party-web-browser-requestor-sessions-list)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Determining Message Type](#3151-determining-message-type)
+      - [3.1.5.2 Error Handling](#3152-error-handling)
+      - [3.1.5.3 Requesting a Security Token by Issuing a wsignin1.0 Request Message](#3153-requesting-a-security-token-by-issuing-a-wsignin10-request-message)
+        - [3.1.5.3.1 Protocol Activation](#31531-protocol-activation)
+        - [3.1.5.3.2 Parameter Marshaling](#31532-parameter-marshaling)
+        - [3.1.5.3.3 Requestor IP/STS Security Realm Discovery](#31533-requestor-ipsts-security-realm-discovery)
+        - [3.1.5.3.4 Message Transmission](#31534-message-transmission)
+      - [3.1.5.4 Issuing a Security Token by Responding to a wsignin1.0 Request Message](#3154-issuing-a-security-token-by-responding-to-a-wsignin10-request-message)
+        - [3.1.5.4.1 Protocol Activation](#31541-protocol-activation)
+        - [3.1.5.4.2 Message Validation](#31542-message-validation)
+        - [3.1.5.4.3 User Identification and Authentication](#31543-user-identification-and-authentication)
+        - [3.1.5.4.4 User Attribute Retrieval](#31544-user-attribute-retrieval)
+        - [3.1.5.4.5 Claim Mapping](#31545-claim-mapping)
+        - [3.1.5.4.6 SAML Assertion Construction](#31546-saml-assertion-construction)
+        - [3.1.5.4.7 Response Message Processing](#31547-response-message-processing)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Requestor IP/STS Details](#32-requestor-ipsts-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Issuing a Security Token by Responding to a wsignin1.0 Request Message](#3251-issuing-a-security-token-by-responding-to-a-wsignin10-request-message)
+      - [3.2.5.2 Inbound wsignout1.0 Request Message Processing](#3252-inbound-wsignout10-request-message-processing)
+        - [3.2.5.2.1 Protocol Activation](#32521-protocol-activation)
+        - [3.2.5.2.2 Clean-Up Processing](#32522-clean-up-processing)
+        - [3.2.5.2.3 Response Message Processing](#32523-response-message-processing)
+      - [3.2.5.3 Outbound wsignoutcleanup1.0 Request Message Processing](#3253-outbound-wsignoutcleanup10-request-message-processing)
+        - [3.2.5.3.1 Protocol Activation](#32531-protocol-activation)
+        - [3.2.5.3.2 Relying Party Security Realm Discovery](#32532-relying-party-security-realm-discovery)
+        - [3.2.5.3.3 Clean-Up Processing](#32533-clean-up-processing)
+        - [3.2.5.3.4 Message Transmission](#32534-message-transmission)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Relying Party Details](#33-relying-party-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Resource IP/STS Abstract Data Model Extensions](#3311-resource-ipsts-abstract-data-model-extensions)
+      - [3.3.1.2 WS Resource Abstract Data Model Extensions](#3312-ws-resource-abstract-data-model-extensions)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Requesting a Security Token by Sending a wsignin1.0 Request Message](#3351-requesting-a-security-token-by-sending-a-wsignin10-request-message)
+        - [3.3.5.1.1 Protocol Activation](#33511-protocol-activation)
+        - [3.3.5.1.2 Parameter Marshaling](#33512-parameter-marshaling)
+      - [3.3.5.2 Receiving a Security Token by Processing a wsignin1.0 Response Message](#3352-receiving-a-security-token-by-processing-a-wsignin10-response-message)
+        - [3.3.5.2.1 Protocol Activation](#33521-protocol-activation)
+        - [3.3.5.2.2 Message Validation](#33522-message-validation)
+        - [3.3.5.2.3 User Identification and Authentication](#33523-user-identification-and-authentication)
+        - [3.3.5.2.4 User Attribute Retrieval](#33524-user-attribute-retrieval)
+        - [3.3.5.2.5 Claim Mapping](#33525-claim-mapping)
+        - [3.3.5.2.6 Resource Access Control](#33526-resource-access-control)
+      - [3.3.5.3 Outbound wsignout1.0 Request Message Processing](#3353-outbound-wsignout10-request-message-processing)
+        - [3.3.5.3.1 Protocol Activation](#33531-protocol-activation)
+        - [3.3.5.3.2 Parameter Marshaling](#33532-parameter-marshaling)
+        - [3.3.5.3.3 Requestor IP/STS Security Realm Discovery](#33533-requestor-ipsts-security-realm-discovery)
+        - [3.3.5.3.4 Message Transmission](#33534-message-transmission)
+      - [3.3.5.4 Inbound wsignoutcleanup1.0 Request Message Processing](#3354-inbound-wsignoutcleanup10-request-message-processing)
+        - [3.3.5.4.1 Protocol Activation](#33541-protocol-activation)
+        - [3.3.5.4.2 Clean-Up Processing](#33542-clean-up-processing)
+        - [3.3.5.4.3 Relying Party Security Realm Discovery](#33543-relying-party-security-realm-discovery)
+        - [3.3.5.4.4 Message Transmission](#33544-message-transmission)
+        - [3.3.5.4.5 Response Message Processing](#33545-response-message-processing)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Web Browser Requestor Details](#34-web-browser-requestor-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Processing Events and Sequencing Rules](#345-processing-events-and-sequencing-rules)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Message Flows](#41-message-flows)
+  - [4.2 XML Examples](#42-xml-examples)
+    - [4.2.1 Example RSTR](#421-example-rstr)
+    - [4.2.2 Example SAML Attribute Element](#422-example-saml-attribute-element)
+    - [4.2.3 Using the X509Certificate Element](#423-using-the-x509certificate-element)
+    - [4.2.4 Using the X509SKI Element](#424-using-the-x509ski-element)
+  - [4.3 Raw Message Examples](#43-raw-message-examples)
+    - [4.3.1 Original GET to WS Resource](#431-original-get-to-ws-resource)
+    - [4.3.2 HTTP Redirect to Resource IP/STS](#432-http-redirect-to-resource-ipsts)
+    - [4.3.3 HTTP GET To Resource IP/STS](#433-http-get-to-resource-ipsts)
+    - [4.3.4 HTTP Redirect to Requestor IP/STS](#434-http-redirect-to-requestor-ipsts)
+    - [4.3.5 HTTP GET to Requestor IP/STS](#435-http-get-to-requestor-ipsts)
+    - [4.3.6 Receive Security Token from Requestor IP/STS in HTML Form](#436-receive-security-token-from-requestor-ipsts-in-html-form)
+    - [4.3.7 HTTP POST Security Token to Resource IP/STS](#437-http-post-security-token-to-resource-ipsts)
+    - [4.3.8 Receive Security Token from Resource IP/STS in HTML Form](#438-receive-security-token-from-resource-ipsts-in-html-form)
+    - [4.3.9 HTTP POST Security Token to WS Resource](#439-http-post-security-token-to-ws-resource)
+    - [4.3.10 Final HTTP 200 OK Response from WS Resource](#4310-final-http-200-ok-response-from-ws-resource)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Security Token Integrity](#511-security-token-integrity)
+    - [5.1.2 Certificate Validation](#512-certificate-validation)
+    - [5.1.3 Confidentiality](#513-confidentiality)
+    - [5.1.4 Replay Attack](#514-replay-attack)
+    - [5.1.5 Privacy](#515-privacy)
+    - [5.1.6 Identifiers](#516-identifiers)
+    - [5.1.7 Cookies](#517-cookies)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Microsoft Web Browser Federated Sign-On Protocol is primarily a restriction of the protocol
 specified in [WSFederation1.2] section 13. The restrictions are designed to enable greater
@@ -986,7 +766,7 @@ This protocol is based on the Web Service (WS) Federation Protocol described in 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1040,7 +820,8 @@ Release: April 23, 2024
 
 8 / 72
 
-requestor IP/STS: An IP/STS in the same security realms as the web browser requestor.
+
+requestor IP/STS: An IP/STS in the same security realms as the web browser requestor.
 The requestor IP/STS has an existing relationship with the user that enables it to issue
 security tokens containing user information.
 
@@ -1115,20 +896,21 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-using this protocol. The WS resource is a relying party in the context of this protocol. For
+
+using this protocol. The WS resource is a relying party in the context of this protocol. For
 more information, see [WSFederation1.2].
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1181,7 +963,8 @@ Release: April 23, 2024
 
 10 / 72
 
-[RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
+
+[RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
 2616, June 1999, https://www.rfc-editor.org/info/rfc2616
 
 [RFC2822] Resnick, P., Ed., "Internet Message Format", RFC 2822, April 2001, https://www.rfc-
@@ -1246,7 +1029,8 @@ Release: April 23, 2024
 
 11 / 72
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [FIPS180] FIPS PUBS, "Secure Hash Standard", FIPS PUB 180-1, April 1995,
 https://www.niatec.iri.isu.edu/GetFile.aspx?pid=63
@@ -1287,7 +1071,7 @@ Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 Recommendation 16 August 2006, edited in place 29 September 2006,
 http://www.w3.org/TR/2006/REC-xml-20060816/
 
-1.3  Overview
+### 1.3 Overview
 
 The requestor profile described in [WSFederation1.2] section 13 is designed to address two problems
 related to communicating user information to web service (WS) resources.
@@ -1313,7 +1097,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-issues security tokens that contain information about the user. When accessing a WS resource, the
+
+issues security tokens that contain information about the user. When accessing a WS resource, the
 user's web browser requestor presents a security token obtained from an IP/STS to the WS
 resource application. The signature of the security token allows the WS resource to verify its validity,
 and the content of the security token contains claims about the authentication with the IP/STS as well
@@ -1357,7 +1142,7 @@ and [SAMLCore]) to enable interoperable communications of security tokens. The r
 wresult parameter are specified in sections 2.2.4.1 and 2.2.4.2. The semantics and protocol details of
 these changes are addressed in section 3.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol uses standard web protocols. To use this document effectively, the reader has to be
 familiar with the following IETF specifications:
@@ -1391,7 +1176,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  XML Schema Part 1: Structures Second Edition, as specified in [XMLSCHEMA1].
+
+  XML Schema Part 1: Structures Second Edition, as specified in [XMLSCHEMA1].
 
   XML Schema Part 2: Datatypes Second Edition, as specified in [XMLSCHEMA2].
 
@@ -1437,7 +1223,7 @@ on communicating a user name across security realms. The Microsoft Web Browser F
 On Protocol is also intended to enable XML web service standards-based interoperability, while the
 Passport Protocol is not based on XML web service standards.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 For a relying party to verify information from an IP/STS, it must have the key material necessary to
 verify the digital signature on the message being communicated. The details of IP/STS configuration
@@ -1461,27 +1247,28 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Microsoft Web Browser Federated Sign-On Protocol is used when a web browser requestor
 needs to communicate user information from one security realm to one or more HTTP WS
 resources in other security realms while avoiding repeated requests for authentication. This protocol
 is not applicable for non-HTTP-based applications.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
-1.7.1  Versioning
+#### 1.7.1 Versioning
 
 This specification defers all versioning issues to the specifications [WSFederation], [WSFederation1.2]
 section 13, and [SAMLCore]. No additional versioning mechanisms are introduced in this specification.
 
-1.7.2  Capability Negotiation
+#### 1.7.2 Capability Negotiation
 
 This specification defers all capability negotiation to the specifications [WSFederation],
 [WSFederation1.2] section 13, [SAMLCore], and [RFC2616]. No additional capability negotiation
 mechanisms are introduced in this specification.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 As specified in section 2, the Microsoft Web Browser Federated Sign-On Protocol uses the SAML 1.1
 token format, as specified in [SAMLCore], for security tokens. Vendors can extend the SAML Advice
@@ -1495,7 +1282,7 @@ described in that specification, new URL parameters can be used to communicate e
 information as part of the protocol. There is no process for guaranteeing that URL parameters added
 to the protocol by individual vendors are uniquely named across multiple vendors.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for this protocol beyond those specified in [WSFederation1.2]
 section 13, [WSTrust], and [SAMLCore].
@@ -1507,7 +1294,8 @@ Release: April 23, 2024
 
 15 / 72
 
-2  Messages
+
+## 2 Messages
 
 This section specifies the transport and syntax of request and response messages in normative detail.
 References to section 3 are included when knowledge of the protocol details are necessary to
@@ -1515,7 +1303,7 @@ understand the context of message transport or syntax.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The wsignin1.0 (section 2.2.3), wsignout1.0 (section 2.2.5), and wsignoutcleanup1.0 (section 2.2.6)
 requests MUST be transmitted using the GET method; they MUST NOT be transmitted using the POST
@@ -1541,7 +1329,7 @@ not addressed in this protocol. It is assumed here that the user's identity is v
 the IP/STS. Requests for wsignout1.0 and wsignoutcleanup1.0, as depicted in the diagram of
 [WSFederation1.2] section 13.1.2, are not required<5> to be authenticated.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Implementations conforming to this protocol MUST support the following messages from
 [WSFederation1.2].
@@ -1581,12 +1369,13 @@ Release: April 23, 2024
 
 16 / 72
 
-The following sections define the message syntax for the protocol, starting with common syntax for
+
+The following sections define the message syntax for the protocol, starting with common syntax for
 requests and responses. All parameters for protocol request and response messages MUST use HTTP
 encoding rules, as specified in [RFC2616].<7> For processing semantics on messages with
 parameters not specified in this document, see section 3.1.5.2.
 
-2.2.1  Common Syntax for Request Messages
+#### 2.2.1 Common Syntax for Request Messages
 
 [WSFederation1.2] sections 13.2.1 and 13.2.2 specify the common syntax for requesting security
 tokens. For processing guidance on handling unsupported parameters, see section 3.1.5.2.
@@ -1612,7 +1401,7 @@ HTTP GET) the relying party's request.
 If an implementation chooses to support these parameters (in addition to supporting the full protocol),
 it will still be compliant with the Microsoft Web Browser Federated Sign-On Protocol.
 
-2.2.2  Common Syntax for Response Messages
+#### 2.2.2 Common Syntax for Response Messages
 
 [WSFederation1.2] section 13.2.3 specifies the common mechanisms for returning security tokens.
 For processing guidance on handling unsupported parameters, see section 3.1.5.2. To simplify
@@ -1637,7 +1426,7 @@ GET) the security token service's response.
 If an implementation chooses to support this parameter (in addition to supporting the full protocol), it
 will still be compliant with the Microsoft Web Browser Federated Sign-On Protocol.
 
-2.2.3  wsignin1.0 Request Message
+#### 2.2.3 wsignin1.0 Request Message
 
 The wsignin1.0 request message is sent to the IP/STS to request that a security token be issued for
 a specific user to allow access to resources managed by the relying party. For normative
@@ -1654,7 +1443,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  wtrealm: This parameter MUST be included in a request message to a different security realm
+
+  wtrealm: This parameter MUST be included in a request message to a different security realm
 
 from the relying party. If present, this value MUST be a URI that the requestor IP/STS and the
 relying party have agreed to use to identify the security realm of the relying party in messages to
@@ -1732,7 +1522,8 @@ Release: April 23, 2024
 
 18 / 72
 
-2.2.4  wsignin1.0 Response Message
+
+#### 2.2.4 wsignin1.0 Response Message
 
 The wsignin1.0 response message is sent to the relying party that requested the security token to
 be issued. For normative descriptions and specifications on this response message, see
@@ -1750,7 +1541,7 @@ further in section 2.2.4.1.
 
 included in the request by the relying party.<22>
 
-2.2.4.1  High-Level Format of wresult Parameter
+##### 2.2.4.1 High-Level Format of wresult Parameter
 
 The syntax for successful wsignin1.0 response message requires that the wresult parameter contain a
 security token that MUST be encoded as an RSTR element, as specified in [WSTrust] section 6.2.
@@ -1772,7 +1563,7 @@ Implementations that conform to this protocol MAY<24> include other optional ele
 in the RSTR. Such elements are informative to the requestor to indicate how the issuer processed the
 request. For further specification, see the RSTR example in section 4.2.1.
 
-2.2.4.2  Security Token Format
+##### 2.2.4.2 Security Token Format
 
 As stated, the security token contained in the RequestedSecurityToken element, specified in section
 2.2.4.1, MUST be formatted as an Assertion element, as specified in [SAMLCore] section 2.3.2, with
@@ -1806,7 +1597,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1826,7 +1618,7 @@ specifies the URI of the relying party.
 The Advice element, specified in [SAMLCore] section 2.3.2.2, MAY<25> be present in assertions
 conforming to this specification.
 
-2.2.4.2.1 Assertion Statements
+###### 2.2.4.2.1 Assertion Statements
 
 The following restriction is laced on the SAML statements used in the SAML assertion:
 
@@ -1834,7 +1626,7 @@ The following restriction is laced on the SAML statements used in the SAML asser
 the AttributeStatement (specified in [SAMLCore] section 2.4.4) MUST NOT be placed in the SAML
 assertion.
 
-2.2.4.2.1.1  Authentication Statements
+###### 2.2.4.2.1.1 Authentication Statements
 
 The following restrictions are placed on the SAML AuthenticationStatement used in the SAML
 assertion:
@@ -1865,7 +1657,7 @@ The optional AuthenticationStatement elements SubjectLocality (specified in [SAM
 2.4.3.1) and AuthorityBinding (specified in [SAMLCore] section 2.4.3.2) MUST NOT be present in
 the security token.
 
-2.2.4.2.1.2  Attribute Statements
+###### 2.2.4.2.1.2 Attribute Statements
 
 The following restrictions are placed on a SAML AttributeStatement used in the SAML assertion:
 
@@ -1905,7 +1697,8 @@ Release: April 23, 2024
 
 20 / 72
 
-
+
+
 
 The Attribute element MUST have AttributeName and the corresponding AttributeNamespace
 attributes specified. These attributes are specified in [SAMLCore] section 2.4.4.1. The
@@ -1921,7 +1714,7 @@ For more information, an example of a SAML attribute can be found in section 4.2
 AttributeName attribute that correspond to claims are specified in the abstract data model in section
 3.
 
-2.2.4.2.1.3  Subject Element
+###### 2.2.4.2.1.3 Subject Element
 
 The Subject element is used in both the AuthenticationStatement and the AttributeStatement. The
 Subject element MAY<28> specify the NameIdentifier element, as specified in [SAMLCore] section
@@ -1934,7 +1727,7 @@ The NameQualifier attribute of the NameIdentifier element, as specified in [SAML
 2.4.2.2, MUST NOT be present. For more details, the schema of a NameIdentifier can be found in
 [SAMLASchema].
 
-2.2.4.2.2 Security Token Signature
+###### 2.2.4.2.2 Security Token Signature
 
 The security token MUST contain an enveloped XML digital signature, as specified in [XMLDSig].
 The signature MUST be performed over exclusively canonicalized XML, as specified in [Excl-C14N]. All
@@ -1954,7 +1747,7 @@ found in sections 4.2.3 and 4.2.4.
 Note that the message format of the security token does not incorporate encryption beyond the
 encryption provided by SSL/TLS.
 
-2.2.5  wsignout1.0 Request Message
+#### 2.2.5 wsignout1.0 Request Message
 
 The wsignout1.0 request message is specified in [WSFederation1.2] section 13.2.4.1 and is a request
 to a requestor IP/STS to delete the cached session state for a specific user. The protocol does not
@@ -1975,7 +1768,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.6  wsignoutcleanup1.0 Request Message
+
+#### 2.2.6 wsignoutcleanup1.0 Request Message
 
 The wsignoutcleanup1.0 request message is specified in [WSFederation1.2] section 13.2.4.2 and is a
 request to a relying party to delete the cached session state for a specific user. The
@@ -1993,7 +1787,7 @@ The wsignoutcleanup1.0 message is an instruction to relying parties by a request
 the cached session state for the specified user. The protocol does not specify a response back to the
 requestor IP/STS initiating the wsignoutcleanup1.0 message.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol accesses the following Directory Service schema classes and attributes listed in the
 following table.
@@ -2014,7 +1808,8 @@ Release: April 23, 2024
 
 22 / 72
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section addresses the message processing model for the protocol. It includes related information
 required by an implementation to successfully emit or consume protocol messages, such as an
@@ -2026,7 +1821,7 @@ browser requestor roles are described in separate subsections. To improve readab
 section is included at the beginning that describes common details for the requestor IP/STS and
 relying party roles.
 
-3.1  Common Details for Requestor IP/STS and Relying Party Roles
+### 3.1 Common Details for Requestor IP/STS and Relying Party Roles
 
 The requestor IP/STS and relying party roles share some common message processing behavior,
 and they need the same kind of configuration data. This section describes that shared information and
@@ -2035,7 +1830,7 @@ separate components, which are defined in the glossary (section 1.1) as a resour
 WS resource. Throughout this section, the generic term relying party is used unless it is necessary to
 distinguish that a topic applies only to a resource IP/STS or only to a WS resource.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Proper operation of the protocol requires that a requestor IP/STS and a relying party maintain
 configuration information that describes the entities with which they exchange protocol messages.
@@ -2049,7 +1844,7 @@ this model as long as their external behavior is consistent with that described 
 Note  The conceptual data model can be implemented using a variety of techniques. Windows
 behavior is described for each data item at the end of the appropriate subsection.
 
-3.1.1.1  Security Token
+##### 3.1.1.1 Security Token
 
 The primary protocol data unit transported by this protocol is a security token constructed as a
 subset of the SAML 1.1 assertion element syntax, as specified in section 2.2.4.2. Because this is the
@@ -2062,7 +1857,7 @@ If a security token returned by this protocol is not formatted as required in se
 relying party MUST return an HTTP 1.1 status code 500 server error to the web browser
 requestor.
 
-3.1.1.2  User Authentication Context
+##### 3.1.1.2 User Authentication Context
 
 When a requestor IP/STS or a resource IP/STS issues a security token, it MUST authenticate the
 user to obtain the data required to construct a security token. How the user is authenticated is
@@ -2078,7 +1873,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-system to make access control decisions. This is implementation-specific and not addressed in this
+
+system to make access control decisions. This is implementation-specific and not addressed in this
 protocol. It is useful here to define an abstract data model to record the data returned from the user
 authentication process. The following is a potential representation to organize this data:<33>
 
@@ -2104,7 +1900,7 @@ that are returned by the AuthMethod.
 AuthClaim (optional): This record holds a claim from a security token, as defined in section 3.1.1.4.
 There MUST be one claim per AuthClaim record; thus multiple records can be present.
 
-3.1.1.3  Federation Partner
+##### 3.1.1.3 Federation Partner
 
 A federation partner is a generic term used to refer to a security realm that operates either a
 requestor IP/STS or a relying party service (or both), capable of performing the mandatory
@@ -2149,7 +1945,8 @@ Release: April 23, 2024
 
 24 / 72
 
-requestor IP/STS and relying party values present, or it MAY be represented by two separate
+
+requestor IP/STS and relying party values present, or it MAY be represented by two separate
 records with different values for the Role field.<35>
 
   URL: A field indicating the URL to which all protocol messages that are intended for the federation
@@ -2194,7 +1991,7 @@ every claim is an implementation-specific detail that is not addressed in this p
 recommended that a security token be issued and the relying party be allowed to decide if it has
 sufficient information about the user to grant access to the protected resource in question.<39>
 
-3.1.1.4  Claim
+##### 3.1.1.4 Claim
 
 A security token MAY<40> contain an AttributeStatement, with one or more Attribute elements,
 each of which contains a single claim, as specified in section 2.2.4.2. A claim is uniquely identified by
@@ -2222,7 +2019,8 @@ Release: April 23, 2024
 
 25 / 72
 
-
+
+
 
 The <AttributeValue> element content MUST conform to "addr-spec", as specified in [RFC2822].
 The value MUST be unique within the security realm of the requestor IP/STS that issued the
@@ -2316,12 +2114,13 @@ Release: April 23, 2024
 
 26 / 72
 
-
+
+
 
 The <AttributeValue> element content MAY be an arbitrary data type per agreement between
 federation partners.
 
-3.1.1.5  Federation Partner Session Lists for Web Browser Requestors
+##### 3.1.1.5 Federation Partner Session Lists for Web Browser Requestors
 
 The protocol wsignout1.0 request message and wsignoutcleanup1.0 messages do not explicitly identify
 the user who has triggered the sign-out operation. The web browser requestor that transports
@@ -2342,7 +2141,7 @@ web browser requestor session. A relying party MUST maintain the list in terms o
 using the value of the Issuer element from each security token received during the web browser
 requestor session.
 
-3.1.1.5.1 Requestor IP/STS Web Browser Requestor Sessions List
+###### 3.1.1.5.1 Requestor IP/STS Web Browser Requestor Sessions List
 
 The following is a potential representation for a requestor IP/STS to organize the data for tracking
 web browser requestor sessions to support processing of a wsignout1.0 request and a
@@ -2368,7 +2167,7 @@ first security token is issued for a particular web browser requestor session.
 security token. A Session Entry is added to the record when a security token is issued for the web
 browser requestor session.
 
-3.1.1.5.2 Relying Party Web Browser Requestor Sessions List
+###### 3.1.1.5.2 Relying Party Web Browser Requestor Sessions List
 
 The following is a potential representation for a relying party to organize the data for tracking web
 browser requestor sessions to support processing of wsignout1.0 and wsignoutcleanup1.0
@@ -2385,7 +2184,8 @@ Release: April 23, 2024
 
 27 / 72
 
-Inbound Sessions List: This data element marks the beginning of the list of web browser requestor
+
+Inbound Sessions List: This data element marks the beginning of the list of web browser requestor
 sessions.
 
 WebBrowserRequestorSession: This record holds the list of security tokens received for a particular
@@ -2400,7 +2200,7 @@ first security token is received for a particular web browser requestor session.
 security token. A Session Entry is added to the record when a security token is received for the
 web browser requestor session.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 This protocol does not require timers beyond those that might be used by the underlying transport to
 transmit and receive messages over HTTP and SSL/TLS.
@@ -2421,13 +2221,13 @@ Implementations MAY<47> use a timer to indicate when the validity interval of a 
 Authentication Context expires to control maintenance operations (for example, flushing caches), but
 the protocol does not require the use of a timer.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Requestor IP/STSs and relying parties MUST exchange metadata and initialize federation partner
 records in local configuration data, as specified in section 3.1.1.3. There is no protocol-specific
 initialization required for a web browser requestor.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Administrative actions starting or stopping the requestor IP/STS or relying party services, or
 changing service configuration data do not trigger protocol message exchanges. Protocol request
@@ -2450,12 +2250,13 @@ Release: April 23, 2024
 
 28 / 72
 
-3.1.5  Processing Events and Sequencing Rules
+
+#### 3.1.5 Processing Events and Sequencing Rules
 
 This section describes message processing functionality that is common to federation partners,
 regardless of the specific role they play.
 
-3.1.5.1  Determining Message Type
+##### 3.1.5.1 Determining Message Type
 
 A requestor IP/STS and a relying party process several different types of messages. Upon receipt
 of a message, they determine its type by inspection of the wa parameter. The wa parameter MUST be
@@ -2469,7 +2270,7 @@ they SHOULD<48> be ignored.
 A web browser requestor is not required to understand the types or content of the protocol
 messages it transports between a requestor IP/STS and a relying party.<49>
 
-3.1.5.2  Error Handling
+##### 3.1.5.2 Error Handling
 
 If a protocol message is received that includes an optional parameter that is not supported by an
 implementation, or a parameter that is not specified by this protocol, a requestor IP/STS MAY<50>
@@ -2488,7 +2289,7 @@ response to a protocol request message. This protocol is designed to rely on the
 user to notice when a web browser requestor operation has failed and to manually retry the operation
 that triggered the protocol.
 
-3.1.5.3  Requesting a Security Token by Issuing a wsignin1.0 Request Message
+##### 3.1.5.3 Requesting a Security Token by Issuing a wsignin1.0 Request Message
 
 This section describes the generic message processing performed by a relying party when requesting
 a security token. The purpose is to authenticate a user by requesting a security token to be issued
@@ -2509,7 +2310,7 @@ Parameter Marshaling (section 3.1.5.3.2)
 
   Message Transmission (section 3.1.5.3.4)
 
-3.1.5.3.1 Protocol Activation
+###### 3.1.5.3.1 Protocol Activation
 
 [MS-MWBF] - v20240423
 Microsoft Web Browser Federated Sign-On Protocol
@@ -2518,17 +2319,18 @@ Release: April 23, 2024
 
 29 / 72
 
-For a relying party, the protocol is triggered when a web browser requestor attempts to access a
+
+For a relying party, the protocol is triggered when a web browser requestor attempts to access a
 WS resource that requires users to be authenticated, and an Authentication Context does not exist
 for the users.
 
-3.1.5.3.2 Parameter Marshaling
+###### 3.1.5.3.2 Parameter Marshaling
 
 The relying party MUST set all the required query string parameters for a wsignin1.0 request
 message, as specified in section 2.2.3. It MUST set the wtrealm value from the configuration data. It
 SHOULD<52> store the original application URL provided by WS resource in wctx.
 
-3.1.5.3.3 Requestor IP/STS Security Realm Discovery
+###### 3.1.5.3.3 Requestor IP/STS Security Realm Discovery
 
 Because the user has not yet been authenticated, the relying party might not know where to send a
 wsignin1.0 request message. The relying party MUST obtain the security realm identifier for the
@@ -2544,7 +2346,7 @@ record in configuration data and obtain the requestor IP/STS URL for protocol me
 obtained, the security realm identifier MAY<54> be preserved for subsequent sessions by writing an
 HTTP persistent cookie (for more information, see [RFC2965]) to the web browser requestor.
 
-3.1.5.3.4 Message Transmission
+###### 3.1.5.3.4 Message Transmission
 
 The relying party sends a wsignin1.0 request message by returning an HTTP 302 response to the
 web browser requestor with the Location field set to the URL of the requestor IP/STS.
@@ -2574,7 +2376,7 @@ Note  Support for the prompt parameter depends on the AD FS behavior level and t
 version. See section 2.2.3 for support information. If the parameter is not supported by the AD FS
 server, it is ignored.
 
-3.1.5.4  Issuing a Security Token by Responding to a wsignin1.0 Request Message
+##### 3.1.5.4 Issuing a Security Token by Responding to a wsignin1.0 Request Message
 
 This section describes the generic message processing performed by either a requestor IP/STS or a
 resource IP/STS (a component of a relying party specified in section 3.3) when issuing a security
@@ -2586,7 +2388,8 @@ Release: April 23, 2024
 
 30 / 72
 
-token. IP/STS is used generically to see either a requestor IP/STS or a resource IP/STS in the
+
+token. IP/STS is used generically to see either a requestor IP/STS or a resource IP/STS in the
 following subsections.
 
 The generic processing model for responding to a wsignin1.0 message is specified to consist of the
@@ -2608,13 +2411,13 @@ Protocol Activation (section 3.1.5.4.1)
 
   Response Message Processing (section 3.1.5.4.7)
 
-3.1.5.4.1 Protocol Activation
+###### 3.1.5.4.1 Protocol Activation
 
 The protocol is triggered by receipt of a wsignin1.0 request message. The syntax MUST be validated
 by ensuring that all required parameters are present and contain the correct type of data. For further
 specifications, see section 2.2.3.
 
-3.1.5.4.2 Message Validation
+###### 3.1.5.4.2 Message Validation
 
 The syntax MUST be validated by ensuring that all required parameters are present and contain the
 correct type of data. For further specifications, see section 2.2.3.
@@ -2627,7 +2430,7 @@ federation partner configuration data (as specified in section 3.1.1.2). <55>
 
 The wauth parameter, which is described in section 2.2.3, MAY<56> be used.
 
-3.1.5.4.3 User Identification and Authentication
+###### 3.1.5.4.3 User Identification and Authentication
 
 The user's identity is not conveyed explicitly in the wsignin1.0 request message. The IP/STS MUST
 establish this by initiating a message exchange with the web browser requestor that will cause the
@@ -2646,7 +2449,7 @@ in section 3.1.1.2.
 If the user cannot successfully authenticate, the IP/STS MUST abort processing the request and return
 an error message to the user.
 
-3.1.5.4.4 User Attribute Retrieval
+###### 3.1.5.4.4 User Attribute Retrieval
 
 [MS-MWBF] - v20240423
 Microsoft Web Browser Federated Sign-On Protocol
@@ -2655,18 +2458,19 @@ Release: April 23, 2024
 
 31 / 72
 
-If additional claims are required by a ClaimsOut entry for the relying party, as specified in section
+
+If additional claims are required by a ClaimsOut entry for the relying party, as specified in section
 3.1.1.2, the IP/STS MUST retrieve the correct values that correspond to the authenticated identity of
 the user. How this is performed is implementation-specific and not addressed in this protocol. The
 IP/STS SHOULD<58> retrieve the data from an authoritative user attribute authority based on the
 value of the AuthIdentity element from the user's Authentication Context.
 
-3.1.5.4.5 Claim Mapping
+###### 3.1.5.4.5 Claim Mapping
 
 If additional claims are required by a ClaimsOut entry for the relying party, the IP/STS MUST map
 user attributes retrieved in the previous step to their corresponding claims.
 
-3.1.5.4.6 SAML Assertion Construction
+###### 3.1.5.4.6 SAML Assertion Construction
 
 Having assembled the required set of claims, the IP/STS constructs a security token according to
 the SAML 1.1 assertion syntax specified in section 2.2.4.2. The relying party's identity MUST be used
@@ -2680,13 +2484,13 @@ As specified in section 2.2.4.1, the security token MUST be encoded as a
 wst:RequestSecurityTokenResponse and returned in the wresult parameter of the wsignin1.0 response
 message. The IP/STS MAY encrypt the security token as described in section 2.2.4.1.
 
-3.1.5.4.7 Response Message Processing
+###### 3.1.5.4.7 Response Message Processing
 
 All required parameters for a wsignin1.0 response message MUST be set correctly. The completed
 response message MUST be returned in an HTTP POST, as specified in section 2.1, to the URL
 designated for the relying party that sent the request.<59>
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 There are no protocol-specific timer events that MUST be serviced by an implementation. This protocol
 does not require timers beyond those that might be used by the underlying transport to transmit and
@@ -2697,14 +2501,14 @@ Security tokens and Authentication Contexts do have validity intervals, as speci
 Implementations MAY<60> use a timer to indicate when the validity interval of a security token or an
 Authentication Context expires, but the protocol does not require the use of a timer.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 This protocol does not have dependencies on other protocols other than HTTP 1.1 and SSL/TLS to
 transport protocol messages. This protocol relies on this transport mechanism for the correct and
 timely delivery of protocol messages. The protocol does not take action in response to any changes or
 failure in machine state or network communications.
 
-3.2  Requestor IP/STS Details
+### 3.2 Requestor IP/STS Details
 
 This section describes details of protocol processing that must be understood, in addition to the
 information in section 3.1, to implement a requestor IP/STS that can correctly perform its role in
@@ -2717,17 +2521,18 @@ Release: April 23, 2024
 
 32 / 72
 
-3.2.1  Abstract Data Model
+
+#### 3.2.1 Abstract Data Model
 
 A requestor IP/STS does not require additions to the abstract data model (section 3.1.1).
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 A requestor IP/STS does not depend on timers beyond those that might be used by the underlying
 transport to transmit and receive messages over HTTP and SSL/TLS or those specified in section
 3.1.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Before any protocol messages can be exchanged, a requestor IP/STS MUST exchange metadata
 with relying parties and initialize federation partner records for them in local configuration data, as
@@ -2742,13 +2547,13 @@ identity and optional attributes necessary for constructing a security token.
 
 The protocol does not require specific initialization on receipt of a protocol message.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 In addition to user-triggered events (see section 3.1.4), a requestor IP/STS is triggered on receipt
 of a protocol message to process that message and respond to the federation partner that sent it
 (see section 3.2.5).
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 This section describes the logical steps performed by a requestor IP/STS when processing the
 following protocol messages:
@@ -2759,7 +2564,7 @@ following protocol messages:
 
   wsignoutcleanup1.0
 
-3.2.5.1  Issuing a Security Token by Responding to a wsignin1.0 Request Message
+##### 3.2.5.1 Issuing a Security Token by Responding to a wsignin1.0 Request Message
 
 This message is received by a requestor IP/STS from a relying party. The generic model for
 responding to a wsignin1.0 message is specified to consist of the following steps (from section
@@ -2784,7 +2589,8 @@ Release: April 23, 2024
 
 33 / 72
 
-  SAML Assertion Construction (section 3.1.5.4.6)
+
+  SAML Assertion Construction (section 3.1.5.4.6)
 
   Response Message Processing (section 3.1.5.4.7)
 
@@ -2797,18 +2603,18 @@ It is not possible for a requestor IP/STS to authenticate the user by using this
 IP/STS in another security realm because the user account is managed in the security realm of
 the requestor IP/STS.
 
-3.2.5.2  Inbound wsignout1.0 Request Message Processing
+##### 3.2.5.2 Inbound wsignout1.0 Request Message Processing
 
 This message is used to request that a requestor IP/STS initiate clean-up operations for cached
 session state, if any exists, for the user who triggered the request.
 
-3.2.5.2.1 Protocol Activation
+###### 3.2.5.2.1 Protocol Activation
 
 The protocol is triggered by receipt of a wsignout1.0 request message. The request MUST be validated
 by ensuring that all required parameters are present and contain the correct type of data (as specified
 in section 2.2.3).
 
-3.2.5.2.2 Clean-Up Processing
+###### 3.2.5.2.2 Clean-Up Processing
 
 A requestor IP/STS SHOULD delete any session state that has been locally cached for the web
 browser requestor that delivered the wsignout1.0 request message. A requestor IP/STS SHOULD
@@ -2816,31 +2622,31 @@ send a wsignoutcleanup1.0 message to each relying party to which a security toke
 issued for the web browser requestor that delivered the wsignout1.0 request message, as specified in
 section 3.2.5.3.<61>
 
-3.2.5.2.3 Response Message Processing
+###### 3.2.5.2.3 Response Message Processing
 
 If a wreply parameter was included in the request, as specified in section 2.2.5, the requestor
 IP/STS SHOULD redirect the web browser requestor to the specified URL when it has completed
 clean-up operations.<62>
 
-3.2.5.3  Outbound wsignoutcleanup1.0 Request Message Processing
+##### 3.2.5.3 Outbound wsignoutcleanup1.0 Request Message Processing
 
 This message is used to request that a relying party initiate clean-up operations for cached session
 state, if any exists, for the user who triggered the request.
 
-3.2.5.3.1 Protocol Activation
+###### 3.2.5.3.1 Protocol Activation
 
 The protocol is triggered either when a user requests that the user's session be terminated, possibly
 by clicking a sign-out button, or when a wsignout1.0 request message is received from a relying
 party.
 
-3.2.5.3.2 Relying Party Security Realm Discovery
+###### 3.2.5.3.2 Relying Party Security Realm Discovery
 
 As specified in section 3.1.1.5.1, a requestor IP/STS MAY store a session identifier for the web
 browser requestor in an HTTP session cookie (for more information, see [RFC2965]). It uses this
 identifier and its Outbound Sessions List to develop the list of relying parties to which it
 SHOULD<63> send wsignoutcleanup1.0 request messages.
 
-3.2.5.3.3 Clean-Up Processing
+###### 3.2.5.3.3 Clean-Up Processing
 
 [MS-MWBF] - v20240423
 Microsoft Web Browser Federated Sign-On Protocol
@@ -2849,7 +2655,8 @@ Release: April 23, 2024
 
 34 / 72
 
-Because the protocol does not guarantee a response to a wsignoutcleanup1.0 message, a requestor
+
+Because the protocol does not guarantee a response to a wsignoutcleanup1.0 message, a requestor
 IP/STS SHOULD clean up the locally cached session state that it maintains before sending
 wsignoutcleanup1.0 messages. For example, as specified in section 3.1.1.5.1, the
 WebBrowserRequestorSession record SHOULD be deleted from the Outbound Sessions List. As each
@@ -2857,7 +2664,7 @@ wsignoutcleanup1.0 message is sent, the requestor IP/STS SHOULD delete the corre
 Entry from the record. When the last Session Entry is deleted, the WebBrowserRequestorSession
 SHOULD be deleted from the Outbound Sessions List.<64>
 
-3.2.5.3.4 Message Transmission
+###### 3.2.5.3.4 Message Transmission
 
 The requestor IP/STS SHOULD send a wsignoutcleanup1.0 request message to each relying party
 using an explicit HTTP GET method because the protocol does not support chaining
@@ -2865,24 +2672,24 @@ wsignoutcleanup1.0 messages using the HTTP 1.1 redirection facilities. How these
 is implementation-specific and not addressed in this protocol. The requestor IP/STS MAY walk the list
 of relying parties and issue the requests individually.<65>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 A requestor IP/STS does not need to interact with any timers, or service any timer events, beyond
 those that might be used by the underlying transport to transmit and receive messages over HTTP and
 SSL/TLS, or those specified in section 3.1.6.<66>
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 A requestor IP/STS does not have dependencies on local events beyond what is specified in section
 3.1.7.
 
-3.3  Relying Party Details
+### 3.3 Relying Party Details
 
 This section describes details of protocol processing that must be understood, in addition to the
 information from section 3.1, to implement a relying party that can correctly perform its role in the
 protocol message exchange.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 A relying party performs two distinct functions. It processes protocol messages and the security
 tokens it receives, and it controls user access to protected resources based on the contents of those
@@ -2898,7 +2705,7 @@ without requiring a requestor IP/STS to have interior knowledge of the relying p
 implementation-approach is supported by the following extensions of the abstract data model for a
 federation partner, as specified in section 3.1.1.3.
 
-3.3.1.1  Resource IP/STS Abstract Data Model Extensions
+##### 3.3.1.1 Resource IP/STS Abstract Data Model Extensions
 
 The following is a potential representation for a resource IP/STS to organize the data that
 represents its federation partners. The federation partner record is used, as specified in section
@@ -2911,7 +2718,8 @@ Release: April 23, 2024
 
 35 / 72
 
-Identifier: For a requestor IP/STS from another security realm, it MUST be the wtrealm value, as
+
+Identifier: For a requestor IP/STS from another security realm, it MUST be the wtrealm value, as
 specified in section 3.1.1.3. For a WS resource, it MUST be an identifier that is unique within the
 security realm such as a web server or web application URL or URI.
 
@@ -2927,7 +2735,7 @@ can be reliably passed in using the wreply parameter.<70>
 Certificate (optional): If the Role field contains requestor IP/STS, the Certificate field MUST contain
 a certificate, as specified in section 3.1.1.3. Otherwise, this field does not apply.
 
-3.3.1.2  WS Resource Abstract Data Model Extensions
+##### 3.3.1.2 WS Resource Abstract Data Model Extensions
 
 Following is a potential representation for a WS resource to organize the data that represents its
 federation partners. The federation partner record is used, as specified in section 3.1.1.3, with the
@@ -2937,13 +2745,13 @@ following restrictions on the range of values for the Role field:
 protocol messages that it can send or receive. The only possible value for this field is resource
 IP/STS.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 A relying party does not depend on timers beyond those that might be used by the underlying
 transport to transmit and receive messages over HTTP and SSL/TLS, or those specified in section
 3.1.2.<71>
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Before protocol messages can be exchanged, a relying party MUST exchange metadata with
 requestor IP/STSs and initialize federation partner records for them in local configuration data, as
@@ -2959,7 +2767,7 @@ federation partners for the purpose of validating security token signatures, as 
 
 The protocol does not require specific initialization upon receipt of a protocol message.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 In addition to the user-triggered events discussed in section 3.1.4, a relying party is triggered upon
 receipt of a protocol message to process that message and respond to the federation partner that
@@ -2972,7 +2780,8 @@ Release: April 23, 2024
 
 36 / 72
 
-3.3.5  Processing Events and Sequencing Rules
+
+#### 3.3.5 Processing Events and Sequencing Rules
 
 This section describes the logical steps performed by a relying party when processing the following
 protocol messages:
@@ -2986,7 +2795,7 @@ protocol messages:
 Message processing by the relying party is described separately for the resource IP/STS and WS
 resource components that were introduced in the revised abstract data model (section 3.3.1).
 
-3.3.5.1  Requesting a Security Token by Sending a wsignin1.0 Request Message
+##### 3.3.5.1 Requesting a Security Token by Sending a wsignin1.0 Request Message
 
 This message is sent by a relying party to a requestor IP/STS to request that a security token be
 issued for a specific user with the relying party as the audience. The generic model for sending a
@@ -3016,7 +2825,7 @@ Protocol Activation (section 3.3.5.1.1)
 
 Parameter Marshaling (Message Validation (section 3.3.5.2.2))
 
-3.3.5.1.1 Protocol Activation
+###### 3.3.5.1.1 Protocol Activation
 
 When a relying party is factored into resource IP/STS and WS resource components, the protocol
 is triggered differently for the components. For the WS resource component, the protocol is triggered
@@ -3028,7 +2837,7 @@ web browser requestor to the resource IP/STS to deliver the security token reque
 authentication requests are communicated between the components of a relying party is
 implementation-specific and not addressed in this protocol.<73>
 
-3.3.5.1.2 Parameter Marshaling
+###### 3.3.5.1.2 Parameter Marshaling
 
 A resource IP/STS that sends a wsignin1.0 request message to a security token service in a
 different security realm MUST set the wtrealm parameter, as specified in Common Syntax for
@@ -3043,7 +2852,8 @@ Release: April 23, 2024
 
 37 / 72
 
-3.3.5.2  Receiving a Security Token by Processing a wsignin1.0 Response Message
+
+##### 3.3.5.2 Receiving a Security Token by Processing a wsignin1.0 Response Message
 
 This message is received by a resource IP/STS from a requestor IP/STS. The purpose is to accept
 a security token that was issued for a specific user, with the resource IP/STS as the audience, in
@@ -3065,34 +2875,34 @@ Protocol Activation (section 3.3.5.2.1)
 
   Resource Access Control (section 3.3.5.2.6)
 
-3.3.5.2.1 Protocol Activation
+###### 3.3.5.2.1 Protocol Activation
 
 The protocol is triggered by receipt of a wsignin1.0 response messages.
 
-3.3.5.2.2 Message Validation
+###### 3.3.5.2.2 Message Validation
 
 The syntax MUST be validated by ensuring that all required parameters are present and contain the
 correct type of data. For further specifications, see section wsiginin1.0 response message.<75>
 
-3.3.5.2.3 User Identification and Authentication
+###### 3.3.5.2.3 User Identification and Authentication
 
 The user's identity and related authentication data from the requestor IP/STS are passed in a
 security token. The resource IP/STS MUST create an Authentication Context record using the
 appropriate data from the AuthenticationStatement in the security token.
 
-3.3.5.2.4 User Attribute Retrieval
+###### 3.3.5.2.4 User Attribute Retrieval
 
 A relying party MAY<76> maintain local identities for all users to control access to WS resources.
 If so, the requestor IP/STS (or the WS resource) MUST retrieve the local identity and use it to
 replace the AuthIdentity in the user's Authentication Context.
 
-3.3.5.2.5 Claim Mapping
+###### 3.3.5.2.5 Claim Mapping
 
 If additional claims are required by a ClaimsIn entry for the requestor IP/STS, the resource
 IP/STS MUST retrieve them from the AttributeStatement in the security token and store them in
 the claims field of the user's Authentication Context.
 
-3.3.5.2.6 Resource Access Control
+###### 3.3.5.2.6 Resource Access Control
 
 The user's Authentication Context MUST be conveyed to the WS resource that the user originally
 tried to access. The location of the WS resource MUST be retrieved from the wctx parameter in the
@@ -3108,46 +2918,47 @@ Release: April 23, 2024
 
 38 / 72
 
-3.3.5.3  Outbound wsignout1.0 Request Message Processing
+
+##### 3.3.5.3 Outbound wsignout1.0 Request Message Processing
 
 This message is used to request that a requestor IP/STS initiate clean-up operations for cached
 session state, if any exist, for the user who triggered the request.
 
-3.3.5.3.1 Protocol Activation
+###### 3.3.5.3.1 Protocol Activation
 
 The protocol is triggered when a user requests that the user's session be terminated, possibly by
 clicking a Sign-Out button. The WS resource MUST notify the resource IP/STS to issue a
 wsignout1.0 request. If the components are located on separate servers, this SHOULD be performed
 by sending a wsignout1.0 request message to the resource IP/STS using an HTTP 302 redirect.
 
-3.3.5.3.2 Parameter Marshaling
+###### 3.3.5.3.2 Parameter Marshaling
 
 For more information about parameter marshaling, see Appendix A: Windows Behavior.<78>
 
-3.3.5.3.3 Requestor IP/STS Security Realm Discovery
+###### 3.3.5.3.3 Requestor IP/STS Security Realm Discovery
 
 As specified in Relying Party Web Browser Requestor Sessions List (section 3.1.1.5.2), resource
 IP/STS MAY store a session identifier for the web browser requestor in an HTTP session cookie (for
 more information, see [RFC2965]). It SHOULD use this identifier and its Inbound Sessions List to look
 up the correct requestor IP/STS.<79>
 
-3.3.5.3.4 Message Transmission
+###### 3.3.5.3.4 Message Transmission
 
 The resource IP/STS sends a wsignout1.0 Request Message by returning an HTTP 302 response to
 the web browser requestor with Location set to the URL of the requestor IP/STS. All the query
 string parameters required for the protocol MUST be set properly, as specified in wsignout1.0 Request
 Message.
 
-3.3.5.4  Inbound wsignoutcleanup1.0 Request Message Processing
+##### 3.3.5.4 Inbound wsignoutcleanup1.0 Request Message Processing
 
 This message is used to request that a resource IP/STS initiate clean-up operations for cached
 session state, if any exist, for the user who triggered the request.
 
-3.3.5.4.1 Protocol Activation
+###### 3.3.5.4.1 Protocol Activation
 
 The protocol is triggered by receipt of a wsignoutcleanup1.0 message from a requestor IP/STS.
 
-3.3.5.4.2 Clean-Up Processing
+###### 3.3.5.4.2 Clean-Up Processing
 
 A resource IP/STS SHOULD send wsignoutcleanup1.0 messages to WS resources for which
 security tokens have been issued. Because the protocol does not guarantee a response to a
@@ -3155,7 +2966,7 @@ wsignoutcleanup1.0 message, a resource IP/STS SHOULD delete any session state th
 locally cached for the web browser requestor before sending wsignoutcleanup1.0 messages to WS
 resources.<80>
 
-3.3.5.4.3 Relying Party Security Realm Discovery
+###### 3.3.5.4.3 Relying Party Security Realm Discovery
 
 As specified in section Relying Party Web Browser Requestor Sessions List (section 3.1.1.5.2), a
 resource IP/STS MAY store a session identifier for the web browser requestor in an HTTP session
@@ -3163,7 +2974,7 @@ cookie (for more information, see [RFC2965]). It SHOULD use this identifier and 
 Sessions List to develop the list of WS resources to which it SHOULD send wsignoutcleanup1.0
 request messages.<81>
 
-3.3.5.4.4 Message Transmission
+###### 3.3.5.4.4 Message Transmission
 
 [MS-MWBF] - v20240423
 Microsoft Web Browser Federated Sign-On Protocol
@@ -3172,42 +2983,43 @@ Release: April 23, 2024
 
 39 / 72
 
-The resource IP/STS MUST send a wsignoutcleanup1.0 request message to each WS resource
+
+The resource IP/STS MUST send a wsignoutcleanup1.0 request message to each WS resource
 using an explicit HTTP GET method because the protocol does not support chaining
 wsignoutcleanup1.0 messages using the HTTP 1.1 redirection facilities. How these messages are sent
 is implementation-specific and is not addressed in this protocol. The resource IP/STS MAY<82> walk
 the list of WS resources and issue the requests individually.
 
-3.3.5.4.5 Response Message Processing
+###### 3.3.5.4.5 Response Message Processing
 
 When clean-up processing is complete, the relying party SHOULD return any relying party specific
 data (such as a string indicating that clean up is complete) to the web browser requestor. If the
 wreply parameter, as specified in section 2.2.6, was included with the wsignoutcleanup1.0 message,
 the response SHOULD be sent to the URL specified by wreply.<83>
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 A requestor IP/STS does not need to interact with any timers, or service any timer events, beyond
 those that might be used by the underlying transport to transmit and receive messages over HTTP and
 SSL/TLS, or those specified in Timer Events (section 3.1.6).<84>
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 A relying party does not have dependencies on local events beyond what is specified in section
 3.1.7.
 
-3.4  Web Browser Requestor Details
+### 3.4 Web Browser Requestor Details
 
 This section discusses how the web browser requestor is used to transport protocol messages.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 A web browser requestor does is not required to understand any protocol-specific data for the
 correct operation of the protocol. It MUST be able to support HTTP query string and POST body
 parameterization. To provide the best end-user experience, it SHOULD<85> be able to support HTTP
 cookies (for more information, see [RFC2965]).
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 A web browser requestor does not depend on timers beyond those that are used by the underlying
 transport to transmit and receive messages over HTTP and SSL/TLS, as specified in section 3.1.2.
@@ -3215,14 +3027,14 @@ transport to transmit and receive messages over HTTP and SSL/TLS, as specified i
 A web browser requestor is not required to be aware of an implementation's use of timers to
 determine when the validity intervals of security tokens and Authentication Contexts expire.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 There is no protocol-specific initialization for a web browser requestor. It simply needs to be ready
 to perform the standard HTTP 1.1 methods required for accessing WS resources. Specifically, it
 MUST support HTTP GET and POST methods and properly respond to HTTP 1.1 redirection and error
 responses.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 Protocol messages are exchanged between a requestor IP/STS and a relying party. The only
 function of the web browser requestor with respect to the protocol is to transport these messages.
@@ -3235,10 +3047,11 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-HTTP/1.1 302 message found that includes a location directive, or an HTTP/1.1 200 OK that includes a
+
+HTTP/1.1 302 message found that includes a location directive, or an HTTP/1.1 200 OK that includes a
 form with method set to POST.
 
-3.4.5  Processing Events and Sequencing Rules
+#### 3.4.5 Processing Events and Sequencing Rules
 
 A web browser requestor plays a passive role in the operation of the protocol. Its only function is to
 transport protocol message requests and responses between a requestor IP/STS and one or more
@@ -3247,13 +3060,13 @@ relying parties. It is not required to understand the types or content of these 
 The web browser requestor SHOULD transport all protocol message requests and responses between a
 requestor IP/STS and a relying party without changing the messages.<86>
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 A web browser requestor is not required to interact with any timers, or service any timer events,
 beyond those that are used by the underlying transport to transmit and receive messages over HTTP
 and SSL/TLS, or those specified in section 3.1.6.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 A web browser requestor does not have dependencies on local events beyond what is specified in
 section 3.1.7.
@@ -3265,12 +3078,13 @@ Release: April 23, 2024
 
 41 / 72
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section contains an example scenario for the protocol similar to the scenario specified in section
 1.3. This section also includes sample XML sections for the wsignin1.0 response parameters.
 
-4.1  Message Flows
+### 4.1 Message Flows
 
 This section describes an example flow of messages among a web browser requestor, a WS
 resource, a resource IP/STS, and a requestor IP/STS, including example messages.
@@ -3337,7 +3151,8 @@ Release: April 23, 2024
 
 42 / 72
 
-1.  The returned [HTML] contains a hidden form that contains a wsignin1.0 response and
+
+1.  The returned [HTML] contains a hidden form that contains a wsignin1.0 response and
 
 JavaScript, which causes the form to POST immediately (optionally the form can have a visible
 Submit button). The form's target is the resource IP/STS URL.
@@ -3414,7 +3229,8 @@ Release: April 23, 2024
 
 43 / 72
 
-&lt;/saml:AttributeValue>
+
+&lt;/saml:AttributeValue>
 &lt;/saml:Attribute>
 &lt;saml:Attribute AttributeName=&quot;Group&quot;
 AttributeNamespace=&quot;http://schemas.xmlsoap.org/claims&quot;>
@@ -3491,7 +3307,8 @@ Release: April 23, 2024
 
 44 / 72
 
-http://schemas.xmlsoap.org/ws/2004/09/policy&quot;>
+
+http://schemas.xmlsoap.org/ws/2004/09/policy&quot;>
 &lt;wsa:EndpointReference xmlns:wsa=&quot;
 http://schemas.xmlsoap.org/ws/2004/08/addressing&quot;>
 &lt;wsa:Address>urn:federation:treyCrazyResearch
@@ -3567,7 +3384,8 @@ Release: April 23, 2024
 
 45 / 72
 
-        &lt;/saml:Conditions>
+
+        &lt;/saml:Conditions>
         &lt;saml:Advice>
           &lt;adfs:ClaimSource xmlns:adfs=&quot;urn:
 microsoft:federation&quot;>
@@ -3644,7 +3462,8 @@ Release: April 23, 2024
 
 46 / 72
 
-http://www.w3.org/2000/09/xmldsig#sha1&quot; />
+
+http://www.w3.org/2000/09/xmldsig#sha1&quot; />
               &lt;DigestValue>
                 iLxgLs5ZLZZePFwiGqrGBddqtUI=
               &lt;/DigestValue>
@@ -3720,18 +3539,19 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The WS resource authorizes a user's request based on attributes from the SAML token.
+
+1.  The WS resource authorizes a user's request based on attributes from the SAML token.
 
 11. The web browser requestor continues to browse the application at the WS resource, which results
 
 in additional traffic.
 
-4.2  XML Examples
+### 4.2 XML Examples
 
 This section describes some XML examples of data found in the wsignin1.0 response wresult
 parameter.
 
-4.2.1  Example RSTR
+#### 4.2.1 Example RSTR
 
 The following is an example of the shell of a properly constructed RSTR with the optional
 wsp:AppliesTo element containing sample content.
@@ -3749,7 +3569,7 @@ wsp:AppliesTo element containing sample content.
        </wst:RequestedSecurityToken>
  </wst:RequestSecurityTokenResponse>
 
-4.2.2  Example SAML Attribute Element
+#### 4.2.2 Example SAML Attribute Element
 
 The following is an example of the SAML Attribute element with sample data. Based on the content,
 this attribute contains a group claim of Purchasing Agent.
@@ -3761,7 +3581,7 @@ this attribute contains a group claim of Purchasing Agent.
        </saml:AttributeValue>
  </saml:Attribute>
 
-4.2.3  Using the X509Certificate Element
+#### 4.2.3 Using the X509Certificate Element
 
 The following is an example of the KeyInfo element, as specified in [XMLDSig]. This KeyInfo element
 is using the X509Certificate element to directly include the X.509 certificate, as recommended. For
@@ -3781,7 +3601,8 @@ Release: April 23, 2024
 
 48 / 72
 
-4.2.4  Using the X509SKI Element
+
+#### 4.2.4 Using the X509SKI Element
 
 The following is an example of the KeyInfo element, as specified in [XMLDSig]. This KeyInfo element
 is using the optional X509SKI element to reference the X.509 certificate without copying the entire
@@ -3794,13 +3615,13 @@ Signature (section 2.2.4.2.2).
      </X509Data>
  </KeyInfo>
 
-4.3  Raw Message Examples
+### 4.3 Raw Message Examples
 
 This section shows messages that represent sample HTTP encoded wsignin1.0 requests and responses
 involving a WS resource, resource IP/STS, and requestor IP/STS for one user accessing a WS
 resource.
 
-4.3.1  Original GET to WS Resource
+#### 4.3.1 Original GET to WS Resource
 
  GET /claims/ HTTP/1.1
  Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg,
@@ -3814,7 +3635,7 @@ resource.
  Host: treyws-test
  Connection: Keep-Alive
 
-4.3.2  HTTP Redirect to Resource IP/STS
+#### 4.3.2 HTTP Redirect to Resource IP/STS
 
  HTTP/1.1 302 Found
  Cache-Control: private
@@ -3836,7 +3657,7 @@ resource.
  https%3a%2f%2ftreyws-test%2fclaims%2fDefault.aspx">here</a>.</h2>
  </body></html>
 
-4.3.3  HTTP GET To Resource IP/STS
+#### 4.3.3 HTTP GET To Resource IP/STS
 
  GET /adfs/ls/?wa=wsignin1.0&wreply=
  https%3a%2f%2ftreyws-test%2fclaims%2f&wct=2006-07-13T07%3a13%3a22Z&
@@ -3849,7 +3670,8 @@ Release: April 23, 2024
 
 49 / 72
 
- Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg,
+
+ Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg,
  application/vnd.ms-excel, application/vnd.ms-powerpoint,
  application/msword, application/x-shockwave-flash, */*
  Accept-Language: en-us
@@ -3860,7 +3682,7 @@ Release: April 23, 2024
  Connection: Keep-Alive
  Host: treysts-7
 
-4.3.4  HTTP Redirect to Requestor IP/STS
+#### 4.3.4 HTTP Redirect to Requestor IP/STS
 
  HTTP/1.1 302 Found
  Date: Thu, 13 Jul 2006 07:13:22 GMT
@@ -3885,7 +3707,7 @@ Release: April 23, 2024
  here</a>.</h2>
  </body></html>
 
-4.3.5  HTTP GET to Requestor IP/STS
+#### 4.3.5 HTTP GET to Requestor IP/STS
 
  GET /adfs/ls/?wa=wsignin1.0&wtrealm=urn%3afederation%3atrey+research&
  wct=2006-07-13T07%3a13%3a22Z&wctx=https%3a%2f%2ftreyws-test%2fclaims
@@ -3901,7 +3723,7 @@ Release: April 23, 2024
  Connection: Keep-Alive
  Host: adatumsts-7
 
-4.3.6  Receive Security Token from Requestor IP/STS in HTML Form
+#### 4.3.6 Receive Security Token from Requestor IP/STS in HTML Form
 
  HTTP/1.1 200 OK
  Date: Thu, 13 Jul 2006 07:13:32 GMT
@@ -3920,7 +3742,8 @@ Release: April 23, 2024
 
 50 / 72
 
- lp+rw==
+
+ lp+rw==
  X-AspNet-Version: 2.0.50727
  Cache-Control: no-cache
  Pragma: no-cache
@@ -3997,7 +3820,8 @@ Release: April 23, 2024
 
 51 / 72
 
- 09Data>&lt;
+
+ 09Data>&lt;
  X509Certificate>MIID1DCCArygAwIBAgIKG3gmFQAAAAAExTANBgkqhkiG9w0BA
  QUFADAZMRcwFQYDVQQDEw5UaGlyZFBhcnR5Um9vdDAeFw0wNjA3MTIyMTAwMDNaFw
  0wNzA3MTIyMTEwMDNaMBYxFDASBgNVBAMTC2FkYXR1bXN0cy03MIGfMA0GCSqGSIb
@@ -4035,7 +3859,7 @@ Release: April 23, 2024
  window.setTimeout('document.forms[0].submit()',0);
  </script></body></html>
 
-4.3.7  HTTP POST Security Token to Resource IP/STS
+#### 4.3.7 HTTP POST Security Token to Resource IP/STS
 
  POST /adfs/ls/ HTTP/1.1
  Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg,
@@ -4072,7 +3896,8 @@ Release: April 23, 2024
 
 52 / 72
 
- %3A13%3A32Z%22+NotOnOrAfter%3D%222006-07-13T08%3A13%3A32Z%22%3E
+
+ %3A13%3A32Z%22+NotOnOrAfter%3D%222006-07-13T08%3A13%3A32Z%22%3E
  %3Csaml%3AAudienceRestrictionCondition%3E%3Csaml%3AAudience%3Eurn
  %3Afederation%3Atrey+research%3C%2Fsaml%3AAudience%3E%3C%2Fsaml%3A
  AudienceRestrictionCondition%3E%3C%2Fsaml%3AConditions%3E%3Csaml%3A
@@ -4149,7 +3974,8 @@ Release: April 23, 2024
 
 53 / 72
 
- K9cQLM2dGbZJZk%2Fku1a2CUI7GfPx4dKm1CGnboMcmk3ifhCMmoRojeSiADcF%
+
+ K9cQLM2dGbZJZk%2Fku1a2CUI7GfPx4dKm1CGnboMcmk3ifhCMmoRojeSiADcF%
  2Bs89kbHtffYIITuFdb3SS9kwu2FsA8J3HHm2O%2FvM8YyDq5xVnZmP5sREumUF
  no%2FnqO502X%2FGzR63hn6nqoWWr4UcVkkq9FCo8ygEGm6yjefu%3C%2FX
  509Certificate%3E%3C%2FX509Data%3E%3C%2FKeyInfo%3E%3C%2F
@@ -4164,7 +3990,7 @@ Release: April 23, 2024
  %3E&wctx=https%3A%2F%2Ftreyws-test%2Fclaims%2F%5Chttps
  %3A%2F%2Ftreyws-test%2Fclaims%2FDefault.aspx
 
-4.3.8  Receive Security Token from Resource IP/STS in HTML Form
+#### 4.3.8 Receive Security Token from Resource IP/STS in HTML Form
 
  HTTP/1.1 200 OK
  Date: Thu, 13 Jul 2006 07:13:35 GMT
@@ -4224,7 +4050,8 @@ Release: April 23, 2024
 
 54 / 72
 
-  AttributeNamespace=&quot;http://schemas.xmlsoap.org/claims&quot;>
+
+  AttributeNamespace=&quot;http://schemas.xmlsoap.org/claims&quot;>
  &lt;saml:AttributeValue>Form Submitter&lt;/saml:AttributeValue>&lt;
  /saml:Attribute>&lt;/saml:AttributeStatement>&lt;Signature xmlns=
  &quot;http://www.w3.org/2000/09/xmldsig#&quot;>&lt;SignedInfo>&lt;
@@ -4278,7 +4105,7 @@ Release: April 23, 2024
  window.setTimeout('document.forms[0].submit()',0);</script>
  </body></html>
 
-4.3.9  HTTP POST Security Token to WS Resource
+#### 4.3.9 HTTP POST Security Token to WS Resource
 
  POST /claims/ HTTP/1.1
  Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg,
@@ -4299,7 +4126,8 @@ Release: April 23, 2024
 
 55 / 72
 
- Host: treyws-test
+
+ Host: treyws-test
  Content-Length: 5609
  Connection: Keep-Alive
  Cache-Control: no-cache
@@ -4376,7 +4204,8 @@ Release: April 23, 2024
 
 56 / 72
 
- BnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAurI6nUCAigHhQ%2ByPwBP
+
+ BnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAurI6nUCAigHhQ%2ByPwBP
  kCeYTFUAsO%2FF%2BIyntOz%2F1HAqT%2BNuaG8v4oMn8ryMLTIZ9KUevLM
  FVO8azyl%2BtBeiOKMcWLVOJXHOt%2FnwWcjX5PFncdHQnWJ%2B2HhMrIbf
  RuUuzfb0uLTQKqveXYdfLJpKAay%2BxQqE6b5foxcVXu6NBJvUCAwEAAaOC
@@ -4408,7 +4237,7 @@ Release: April 23, 2024
  %2Fwst%3ARequestSecurityTokenResponse%3E&wctx=https
  %3A%2F%2Ftreyws-test%2Fclaims%2FDefault.aspx
 
-4.3.10 Final HTTP 200 OK Response from WS Resource
+#### 4.3.10 Final HTTP 200 OK Response from WS Resource
 
 This message is an internal implementation detail of the WS-Resource and is shown here for
 completeness only. This message is not necessary for interoperability. The WS-Resource is not
@@ -4438,14 +4267,15 @@ Release: April 23, 2024
 
 57 / 72
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The security considerations specified in [WSFederation1.2] section 16 that are relevant to passive
 requestors also apply to this protocol. Specific concerns are highlighted in this section.
 
-5.1.1  Security Token Integrity
+#### 5.1.1 Security Token Integrity
 
 The integrity of a security token is compromised when the security token is modified. A digital
 signature on the digest of a security token enables the recipient of the security token to determine
@@ -4456,7 +4286,7 @@ that it issues, allowing the relying party to check for changes that might have 
 The strength of the digital signature depends on the signature algorithm used and the key sizes
 involved.<87>
 
-5.1.2  Certificate Validation
+#### 5.1.2 Certificate Validation
 
 When X.509 [X509] certificates are used, relying parties should validate the X.509 certificate that
 corresponds to the key used to sign the security token.<88> X.509 certificates might expire, might
@@ -4465,20 +4295,20 @@ certificates and to check the revocation status of an X.509 certificate are spec
 Implementers have to pay special attention to [RFC3280] section 9 for security considerations
 involving usage of X.509 certificates.
 
-5.1.3  Confidentiality
+#### 5.1.3 Confidentiality
 
 Security tokens contain information about users and can contain sensitive data. This protocol
 requires the use of SSL/TLS, as specified in Transport (section 2.1). The use of SSL/TLS prevents the
 exposure of user information outside the services participating in the protocol, as well as helping to
 prevent replay attack.<89>
 
-5.1.4  Replay Attack
+#### 5.1.4 Replay Attack
 
 [WSFederation1.2] section 16 specifies that security tokens can be replayed. SSL/TLS is the primary
 defense against replay, but implementers are to also understand that appropriate settings for the
 validity period of the token help to constrain the time that a security token can be replayed.<90>
 
-5.1.5  Privacy
+#### 5.1.5 Privacy
 
 Privacy is a concern whenever the transmission of user information occurs. [WSFederation1.2] section
 16 addresses some of the privacy issues, such as obtaining user permission for transmission of user
@@ -4501,11 +4331,12 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-account information to third parties requesting information about the requestor (subject to policy and
+
+account information to third parties requesting information about the requestor (subject to policy and
 authorization restrictions). For more information, see [WSFederation1.2] sections 1.6 and 13. Note
 that the use of the term "sign on" or "sign-on" is based on [WSFederation1.2].
 
-5.1.6  Identifiers
+#### 5.1.6 Identifiers
 
 Claim (section 3.1.1.4) specifies the use of UPN and EmailAddress identifiers for users. The relying
 party will depend on the identifier being unique so collisions have to be avoided. Collisions can be
@@ -4514,7 +4345,7 @@ names used in the UPN or EmailAddress claim of the security token issued by a se
 IP/STS. This prevents a malicious IP/STS from enabling its users to impersonate users from another
 IP/STS.<92>
 
-5.1.7  Cookies
+#### 5.1.7 Cookies
 
 For more information on the HTTP cookie state management mechanism, see [RFC2965]. Cookies can
 be used to store state information about a user in the user's web browser requestor and to
@@ -4522,7 +4353,7 @@ optimize the user experience. Because cookies can be used to identify a user's s
 user information, special care has to be taken with the use of cookies. As specified in
 [WSFederation1.2] section 16, all cookies are to be set as secure.<93>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -4543,7 +4374,8 @@ Release: April 23, 2024
 
 59 / 72
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4612,7 +4444,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<10> Section 2.2.2: This parameter is not supported. For the protocol behavior of Windows for this
+
+<10> Section 2.2.2: This parameter is not supported. For the protocol behavior of Windows for this
 parameter, see section 3.1.5.1.
 
 <11> Section 2.2.3: On Windows Server 2003 R2, Windows Server 2008, and Windows Server 2008
@@ -4690,7 +4523,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<21> Section 2.2.3:  Even though AD_FS_BEHAVIOR_LEVEL_3 is supported on Windows Server 2016,
+
+<21> Section 2.2.3:  Even though AD_FS_BEHAVIOR_LEVEL_3 is supported on Windows Server 2016,
 the mfa_max_age parameter is supported on Windows Server 2016 only if [MSKB-4088889] is
 installed.
 
@@ -4761,7 +4595,8 @@ Release: April 23, 2024
 
 62 / 72
 
-<35> Section 3.1.1.3: Two separate records are used for a federation partner that is capable of
+
+<35> Section 3.1.1.3: Two separate records are used for a federation partner that is capable of
 playing both roles.
 
 <36> Section 3.1.1.3: Both configurations are supported. If a requestor IP/STS is configured as a
@@ -4829,7 +4664,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-error message. With the exception of Windows Server 2003 R2, all applicable Windows Server
+
+error message. With the exception of Windows Server 2003 R2, all applicable Windows Server
 releases return an HTTP 500 error message if they receive such messages. Any parameters that are
 not specified in section 2.2 or in the protocol extension specified in [MS-MWBE] are ignored by
 Windows.
@@ -4906,7 +4742,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  When emitting wsignin1.0 responses, Windows includes the wsp:AppliesTo element.
+
+  When emitting wsignin1.0 responses, Windows includes the wsp:AppliesTo element.
 
   When emitting wsignin1.0 response messages, Windows does not include any other optional
 
@@ -4979,7 +4816,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<68> Section 3.3.1: A relying party is factored into separate resource IP/STS and WS resource
+
+<68> Section 3.3.1: A relying party is factored into separate resource IP/STS and WS resource
 components even if the components are located on the same server. Interactions between the
 resource IP/STS and WS resource are not exposed to requestor IP/STSs in other security realms.
 
@@ -5051,7 +4889,8 @@ Microsoft Web Browser Federated Sign-On Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<75> Section 3.3.5.2.2: The following Windows behaviors apply when validating wsignin1.0 response
+
+<75> Section 3.3.5.2.2: The following Windows behaviors apply when validating wsignin1.0 response
 messages:
 
   Windows processes wsp:AppliesTo messages according to the message syntax requirements
@@ -5123,7 +4962,8 @@ Release: April 23, 2024
 
 67 / 72
 
-<82> Section 3.3.5.4.4: An HTML page that contains a set of iframes (as specified in [HTML] section
+
+<82> Section 3.3.5.4.4: An HTML page that contains a set of iframes (as specified in [HTML] section
 16.5), one for each WS resource, is returned to the web browser requestor. Processing of the iframes
 by the web browser requestor causes the wsignoutcleanup1.0 messages to be sent in parallel.
 
@@ -5180,7 +5020,8 @@ Release: April 23, 2024
 
 68 / 72
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5232,7 +5073,8 @@ Release: April 23, 2024
 
 69 / 72
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -5392,7 +5234,8 @@ IP/STS
 
 70 / 72
 
-L
+
+L
 
 Local events
    relying party (section 3.1.7 32, section 3.3.7 40)
@@ -5570,7 +5413,8 @@ Resource IP/STS abstract data model extensions 35
 
 71 / 72
 
-Response message (section 3.1.5.4.7 32, section
+
+Response message (section 3.1.5.4.7 32, section
 
 3.2.5.2.3 34, section 3.3.5.4.5 39)
 

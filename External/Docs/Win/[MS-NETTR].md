@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -298,7 +299,8 @@ Release: March 13, 2019
 
 2 / 26
 
-Date
+
+Date
 
 Revision
 History
@@ -462,124 +464,59 @@ Release: March 13, 2019
 
 3 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Common Data Types](#222-common-data-types)
+    - [2.2.3 SOAP ActivityId Header Block Syntax](#223-soap-activityid-header-block-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Sample SOAP Messages](#41-sample-soap-messages)
+  - [4.2 Sample Activity Traces](#42-sample-activity-traces)
+    - [4.2.1 Activity Trace Emitted for Request Sent at the Client](#421-activity-trace-emitted-for-request-sent-at-the-client)
+    - [4.2.2 Activity Trace Emitted for Request Received at the Server](#422-activity-trace-emitted-for-request-received-at-the-server)
+    - [4.2.3 Activity Trace Emitted for Reply Sent at the Server](#423-activity-trace-emitted-for-reply-sent-at-the-server)
+    - [4.2.4 Activity Trace Emitted for Reply Received at the Client](#424-activity-trace-emitted-for-reply-received-at-the-client)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Namespaces ................................................................................................ 9
-Common Data Types ................................................................................... 10
-SOAP ActivityId Header Block Syntax ............................................................ 10
-
-2.2.1
-2.2.2
-2.2.3
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 11
-Server Details .................................................................................................. 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Processing Events and Sequencing Rules ....................................................... 11
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 14
-Client Details ................................................................................................... 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4.1
-4.2
-
-4  Protocol Examples ................................................................................................. 17
-Sample SOAP Messages .................................................................................... 17
-Sample Activity Traces ...................................................................................... 18
-Activity Trace Emitted for Request Sent at the Client ....................................... 18
-Activity Trace Emitted for Request Received at the Server ............................... 19
-Activity Trace Emitted for Reply Sent at the Server ......................................... 20
-Activity Trace Emitted for Reply Received at the Client .................................... 21
-
-4.2.1
-4.2.2
-4.2.3
-4.2.4
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-NETTR] - v20190313
-.NET Tracing Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 26
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the .NET Tracing Protocol, which defines a SOAP message header for
 correlating sets of messages together.
@@ -595,7 +532,7 @@ applications.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -621,14 +558,14 @@ be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -646,7 +583,8 @@ assist you in finding the relevant information.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[RFC4122] Leach, P., Mealling, M., and Salz, R., "A Universally Unique Identifier (UUID) URN
+
+[RFC4122] Leach, P., Mealling, M., and Salz, R., "A Universally Unique Identifier (UUID) URN
 Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 
 [SOAP1.2-1/2007] Gudgin, M., Hadley, M., Mendelsohn, N., et al., "SOAP Version 1.2 Part 1:
@@ -663,11 +601,11 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 As distributed applications become increasingly complex, so does the problem of diagnosing errors
 within them. To diagnose an error in a distributed application, a user isolates the problem to a
@@ -695,7 +633,7 @@ relationships between messages. This information can also be used to determine t
 that led up to an error and the set of messages that resulted from the error. This process is specified
 in section 3.1.5.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The .NET Tracing Protocol supports only SOAP-formatted messages. The communication protocol
 between the client and the server needs to use a SOAP-supported transport protocol, such as TCP/IP
@@ -708,13 +646,14 @@ Release: March 13, 2019
 
 6 / 26
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-NETTR].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
 Figure 1: Dependency stack for the .NET Tracing Protocol
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The .NET Tracing Protocol assumes the following:
 
@@ -727,11 +666,11 @@ The .NET Tracing Protocol is not dependent on any specific transport protocol.
 The communication protocol between the client and the server uses a SOAP-supported transport
 protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The .NET Tracing Protocol can be used to help with tracing or debugging a distributed application.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -762,12 +701,13 @@ the special XML element <ActivityId /> with the specific namespace
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-An implementation is not compliant with this specification if it fails to satisfy one or more
+
+An implementation is not compliant with this specification if it fails to satisfy one or more
 requirements defined herein. A SOAP node cannot use the
 "http://schemas.microsoft.com/2004/09/ServiceModel/Diagnostics" XML Namespace identifier
 within SOAP Envelopes unless it is compliant with this specification.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The .NET Tracing Protocol does not specify any extensions or extensible fields by default. However,
 vendors and implementers can choose to extend the protocol by including additional attributes. An
@@ -775,7 +715,7 @@ extension or implementation has to provide the basic and default behavior specif
 document when the service does not understand a specific extension, to maintain compatibility with
 implementations that do not understand a specific extension.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -786,9 +726,10 @@ Release: March 13, 2019
 
 8 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The .NET Tracing Protocol enables correlated activity tracing between client and server endpoints,
 even across different application domains for a single unit of processing, such as request or reply. For
@@ -826,9 +767,9 @@ ActivityId Header Block is not included in the response, even if the request is 
 This specification does not specify how to process any custom third-party extensions or attributes to
 this protocol when they are processed by a client or a server.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -854,13 +795,14 @@ Release: March 13, 2019
 
 9 / 26
 
-2.2.2  Common Data Types
+
+#### 2.2.2 Common Data Types
 
 GUID strings: This protocol makes use of the string representation of a GUID specified in [MS-
 DTYP] section 2.3.4.3. This string representation is in the form of a universally unique
 identifier (UUID) as specified in [RFC4122] section 3.
 
-2.2.3  SOAP ActivityId Header Block Syntax
+#### 2.2.3 SOAP ActivityId Header Block Syntax
 
 To enable activity tracing, a special XML element called the SOAP ActivityId Header Block MUST be
 placed within the SOAP header of each message exchanged. The schema for this XML element is as
@@ -900,15 +842,16 @@ Release: March 13, 2019
 
 10 / 26
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-NETTR].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 ActivityId: When a request is received by a server and it contains a SOAP ActivityId Header Block,
 the server has to process the header block and store the ActivityId contained in the header. The
@@ -920,19 +863,19 @@ server is configured to participate in correlated tracing. It includes the clien
 XML element in the SOAP header. If set to FALSE, Correlation Mode is disabled and the
 ActivityId is not inserted.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 When the server receives a request that contains a SOAP ActivityId Header Block, the server MUST
 process the header block and save the ActivityId contained in the header. The server MUST echo the
@@ -950,7 +893,8 @@ Release: March 13, 2019
 
 11 / 26
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-NETTR].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -978,7 +922,8 @@ ActivityId element MUST be a newly generated unique GUID string.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-NETTR].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -994,7 +939,7 @@ tracing.
 Figure 4: State of a server sending a response when participating in correlated activity
 tracing
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
@@ -1005,13 +950,14 @@ Release: March 13, 2019
 
 13 / 26
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 ActivityId: When a request is sent by a client and Correlation Mode is enabled, the client
 
@@ -1024,19 +970,19 @@ is configured to participate in correlated tracing. It sends the appropriate Act
 correlated set the current message is a part of. If set to FALSE, Correlation Mode is disabled
 and the ActivityId is not inserted.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Every client participating in generating correlated tracing using the .NET Tracing Protocol MUST
 implement processing to send and receive the SOAP ActivityId Header Block. Participation can be
@@ -1050,7 +996,8 @@ Release: March 13, 2019
 
 14 / 26
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-NETTR].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1074,11 +1021,12 @@ Release: March 13, 2019
 
 15 / 26
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1089,7 +1037,8 @@ Release: March 13, 2019
 
 16 / 26
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 By inserting the SOAP ActivityId Header Block into the SOAP header, activity traces can be correlated
 across client and server. Correlated activity traces provide the user with direct correlation of error
@@ -1097,7 +1046,7 @@ traces for the same unit of processing across application endpoints, such as a r
 at different endpoints for the same unit of processing are grouped in the same activity, even across
 process or machine boundaries.
 
-4.1  Sample SOAP Messages
+### 4.1 Sample SOAP Messages
 
 The following examples depict two SOAP messages that contain the SOAP ActivityId Header Block in
 the SOAP header. The SOAP messages are request and response messages associated with a request-
@@ -1156,7 +1105,8 @@ Release: March 13, 2019
 
 17 / 26
 
-     </MyOperationResponse>
+
+     </MyOperationResponse>
    </s:Body>
  </s:Envelope>
 
@@ -1164,7 +1114,7 @@ The activity trace generated at the client and server ends for the request and r
 maintain a correlation with the value of ActivityId ("43ffa660-a0c6-4249-bb36-648b73a06213").
 Section 4.2 provides examples of traces with such a correlation.
 
-4.2  Sample Activity Traces
+### 4.2 Sample Activity Traces
 
 The following examples discuss a sample use of the .NET Tracing Protocol to generate a correlated
 activity trace. The .NET Tracing Protocol does not prescribe the usage of ActivityId, CorrelationId, and
@@ -1181,7 +1131,7 @@ E2ETraceEvent\ApplicationData\TraceData\DataItem\TraceRecord\ExtendedData\Messag
 vityId). For illustration purposes, the sample traces discussed later are defined as if they were
 generated for the request-response messages discussed in section 4.1.
 
-4.2.1  Activity Trace Emitted for Request Sent at the Client
+#### 4.2.1 Activity Trace Emitted for Request Sent at the Client
 
 The following is a sample trace generated at the client end when sending a request message. The
 ActivityId attribute associated with the XML element <Correlation> is the same as specified in the
@@ -1225,7 +1175,8 @@ xmlns="http://schemas.microsoft.com/2006/08/ServiceModel/MessageTraceRecord">
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-               <AllowOutputBatching>False</AllowOutputBatching>
+
+               <AllowOutputBatching>False</AllowOutputBatching>
                <Via>http://localhost/MySample/service.svc/basic</Via>
              </MessageProperties>
              <MessageHeaders>
@@ -1240,7 +1191,7 @@ bb36-648b73a06213</ActivityId>
    </ApplicationData>
  </E2ETraceEvent>
 
-4.2.2  Activity Trace Emitted for Request Received at the Server
+#### 4.2.2 Activity Trace Emitted for Request Received at the Server
 
 The following is a sample trace generated at the server end when the request message is received.
 The ActivityId attribute associated with the XML element <Correlation> is the same as specified in the
@@ -1297,7 +1248,8 @@ xmlns:d4p1="http://schemas.xmlsoap.org/soap/envelope/"
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-xmlns="http://schemas.microsoft.com/ws/2005/05/addressing/none">http://tempuri.org/IServer/My
+
+xmlns="http://schemas.microsoft.com/ws/2005/05/addressing/none">http://tempuri.org/IServer/My
 Operation</Action>
              </MessageHeaders>
            </ExtendedData>
@@ -1307,7 +1259,7 @@ Operation</Action>
    </ApplicationData>
  </E2ETraceEvent>
 
-4.2.3  Activity Trace Emitted for Reply Sent at the Server
+#### 4.2.3 Activity Trace Emitted for Reply Sent at the Server
 
 The following is a sample trace generated at the server end when sending a response message. The
 ActivityId attribute associated with the XML element <Correlation> is the same as specified in the
@@ -1357,7 +1309,7 @@ bb36-648b73a06213</ActivityId>
    </ApplicationData>
  </E2ETraceEvent>
 
-4.2.4  Activity Trace Emitted for Reply Received at the Client
+#### 4.2.4 Activity Trace Emitted for Reply Received at the Client
 
 The following is a sample trace generated at the client end when the response message is received.
 The ActivityId attribute associated with the XML element <Correlation> is the same as specified in the
@@ -1369,7 +1321,8 @@ The ActivityId attribute associated with the XML element <Correlation> is the sa
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-message samples discussed earlier ("43ffa660-a0c6-4249-bb36-648b73a06213"). The SOAP ActivityId
+
+message samples discussed earlier ("43ffa660-a0c6-4249-bb36-648b73a06213"). The SOAP ActivityId
 Header Block associated with the request message is also part of the trace. Other parts of the sample
 trace will not be discussed and are not relevant to this example.
 
@@ -1429,9 +1382,10 @@ Release: March 13, 2019
 
 21 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The .NET Tracing Protocol does not carry any security considerations. A vendor can extend the
 protocol to provide additional security considerations as long as the default and basic correlated
@@ -1442,7 +1396,7 @@ server) in the correlated tracing does not support the additional security exten
 A vendor can extend the protocol to provide additional security considerations provided that the
 default and basic correlated tracing scenarios contained in this specification function as expected.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1453,7 +1407,8 @@ Release: March 13, 2019
 
 22 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1501,7 +1456,8 @@ Release: March 13, 2019
 
 23 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1538,7 +1494,8 @@ Release: March 13, 2019
 
 24 / 26
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1668,7 +1625,8 @@ Relationship to other protocols 6
 
 25 / 26
 
-S
+
+S
 
 Sample SOAP messages example 17
 Security

@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 31
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: June 1, 2017
 
 2 / 31
 
-Date
+
+Date
 
 Revision
 History
@@ -515,7 +517,8 @@ Release: June 1, 2017
 
 3 / 31
 
-Date
+
+Date
 
 Revision
 History
@@ -566,150 +569,67 @@ Release: June 1, 2017
 
 4 / 31
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 MSBMSGBASE](#221-msbmsgbase)
+    - [2.2.2 MSB_MSG_RES_PING](#222-msbmsgresping)
+    - [2.2.3 MSB_MSG_REQ_PING](#223-msbmsgreqping)
+    - [2.2.4 MSB_MSG_REQ_STREAMINFO](#224-msbmsgreqstreaminfo)
+    - [2.2.5 MSB_MSG_RES_STREAMINFO](#225-msbmsgresstreaminfo)
+    - [2.2.6 MSB_MSG_IND_STREAMINFO](#226-msbmsgindstreaminfo)
+    - [2.2.7 MSB_MSG_REQ_CONNECT](#227-msbmsgreqconnect)
+    - [2.2.8 MSB_MSG_RES_CONNECT](#228-msbmsgresconnect)
+    - [2.2.9 MSB_MSG_IND_EOS](#229-msbmsgindeos)
+    - [2.2.10 MSB_MSG_IND_PACKET](#2210-msbmsgindpacket)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving an MSB_MSG_REQ_CONNECT Packet](#3151-receiving-an-msbmsgreqconnect-packet)
+      - [3.1.5.2 Receiving an MSB_MSG_REQ_STREAMINFO Packet](#3152-receiving-an-msbmsgreqstreaminfo-packet)
+      - [3.1.5.3 Reaching the End of the Stream](#3153-reaching-the-end-of-the-stream)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving an MSB_MSG_REQ_PING Packet](#3251-receiving-an-msbmsgreqping-packet)
+      - [3.2.5.2 Receiving an MSB_MSG_IND_STREAMINFO Packet](#3252-receiving-an-msbmsgindstreaminfo-packet)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Example](#4-protocol-example)
+  - [4.1 General MSBD Sequence](#41-general-msbd-sequence)
+  - [4.2 Using MSBD for Server-Side Playlist Streaming](#42-using-msbd-for-server-side-playlist-streaming)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-MSBMSGBASE ............................................................................................ 10
-2.2.1
-MSB_MSG_RES_PING ................................................................................. 11
-2.2.2
-MSB_MSG_REQ_PING ................................................................................. 11
-2.2.3
-MSB_MSG_REQ_STREAMINFO ...................................................................... 12
-2.2.4
-MSB_MSG_RES_STREAMINFO ...................................................................... 12
-2.2.5
-MSB_MSG_IND_STREAMINFO ...................................................................... 14
-2.2.6
-MSB_MSG_REQ_CONNECT ........................................................................... 16
-2.2.7
-MSB_MSG_RES_CONNECT ........................................................................... 16
-2.2.8
-2.2.9
-MSB_MSG_IND_EOS ................................................................................... 17
-2.2.10  MSB_MSG_IND_PACKET .............................................................................. 18
-
-3.1
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 19
-Server Details .................................................................................................. 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 20
-Receiving an MSB_MSG_REQ_CONNECT Packet ........................................ 20
-Receiving an MSB_MSG_REQ_STREAMINFO Packet ................................... 20
-Reaching the End of the Stream .............................................................. 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Client Details ................................................................................................... 20
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 22
-Receiving an MSB_MSG_REQ_PING Packet ............................................... 22
-Receiving an MSB_MSG_IND_STREAMINFO Packet .................................... 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-
-3.2.6
-3.2.7
-
-3.1.6
-3.1.7
-
-3.2
-
-4  Protocol Example................................................................................................... 23
-General MSBD Sequence ................................................................................... 23
-Using MSBD for Server-Side Playlist Streaming .................................................... 24
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 26
-Security Considerations for Implementers ........................................................... 26
-
-5.1
-
-5 / 31
-
-[MS-MSBD] - v20170601
-Media Stream Broadcast Distribution (MSBD) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5.2
-
-Index of Security Parameters ............................................................................ 26
-
-6  Appendix A: Product Behavior ............................................................................... 27
-
-7  Change Tracking .................................................................................................... 28
-
-8  Index ..................................................................................................................... 29
-
-[MS-MSBD] - v20170601
-Media Stream Broadcast Distribution (MSBD) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 31
-
-1  Introduction
+## 1 Introduction
 
 The Media Stream Broadcast Distribution (MSBD) Protocol is a protocol that is used for transferring an
 audio-visual content stream from a server to a single client or multiple clients.
@@ -717,7 +637,7 @@ audio-visual content stream from a server to a single client or multiple clients
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -747,14 +667,14 @@ Present bit set to 1 in the ASF data packet header.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -777,14 +697,15 @@ Media Stream Broadcast Distribution (MSBD) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The MSBD Protocol is used for transferring a live stream of audio-visual content from a server to a
 single client or to multiple clients. For example, the MSBD Protocol might be used when transmitting
@@ -797,19 +718,19 @@ server installation to another. Certain versions of Windows Media Player<1> also
 Protocol and can use it to monitor a live stream by connecting to a server that is running Windows
 Media Services or by connecting directly to a real-time encoder.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 MSBD packets are encapsulated in TCP. However, one MSBD packet type, MSB_MSG_IND_PACKET,
 can also be encapsulated in the User Datagram Protocol (UDP). UDP encapsulation mode is only used
 for transmitting packets to an IPv4 multicast group.<2>
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The MSBD Protocol does not provide a mechanism for a client to discover the URL to the server.
 Therefore, it is a prerequisite that the client obtain a URL to the server before this protocol can be
 used.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The MSBD Protocol can be used to distribute Advanced Systems Format (ASF) packets over an IP-
 based network. The MSBD Protocol is designed for distribution of content between servers or from an
@@ -821,7 +742,7 @@ data packets. Large ASF data packets can cause the UDP packets to be fragmented 
 datagrams, and fragmentation of IP datagrams might be undesirable. When the content uses these
 large packets, TCP is the recommended encapsulation mode.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The MSBD Protocol does not support negotiation of versioning or capabilities. However, server
 implementations of the MSBD Protocol are not required to support delivery of MSB_MSG_IND_PACKET
@@ -835,13 +756,14 @@ Release: June 1, 2017
 
 8 / 31
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF]. Vendors can define their own HRESULT
 values, provided that they set the C bit (0x20000000) for each vendor-defined value, indicating that
 the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The MSBD Protocol has no applicable standards assignments.
 
@@ -852,14 +774,15 @@ Release: June 1, 2017
 
 9 / 31
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how MSBD Protocol messages are transported and give details on MSBD
 Protocol message syntax.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 MSB_MSG_IND_PACKET packets are encapsulated in UDP packets if IP multicasting is used to deliver
 those packets. Otherwise, the MSB_MSG_IND_PACKET packets are encapsulated in TCP. All other
@@ -869,7 +792,7 @@ encapsulated in the IP version 4 (IPv4).
 There is no officially assigned TCP port for the MSBD Protocol; however, MSBD servers often listen on
 TCP port 7007 for client requests.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All 16-bit and 32-bit integer fields MUST be transmitted in little-endian byte order, unless otherwise
 specified.
@@ -880,7 +803,7 @@ otherwise specified.
 All fields that are unsigned 32-bit integers have valid ranges from 0x00000000 to 0x0000FFFF,
 inclusive, unless otherwise specified.
 
-2.2.1  MSBMSGBASE
+#### 2.2.1 MSBMSGBASE
 
 The MSBMSGBASE header defines the packet header.
 
@@ -925,7 +848,8 @@ Release: June 1, 2017
 
 10 / 31
 
-Value  Meaning
+
+Value  Meaning
 
 0x0001  Designates an MSB_MSG_REQ_PING packet.
 
@@ -954,7 +878,7 @@ hr (4 bytes): An unsigned 32-bit integer field representing the status of an ope
 
 MUST be set to an HRESULT code. For HRESULT codes, see [MS-ERREF] section 2.1.
 
-2.2.2  MSB_MSG_RES_PING
+#### 2.2.2 MSB_MSG_RES_PING
 
 The client MUST respond with the MSB_MSG_RES_PING packet to the MSB_MSG_REQ_PING packet
 that is sent by the server. This packet informs the server that the client is still active.
@@ -980,7 +904,7 @@ Header (16 bytes): An MSBMSGBASE packet that defines the packet header. The wMes
 
 MUST be set to 0x0002.
 
-2.2.3  MSB_MSG_REQ_PING
+#### 2.2.3 MSB_MSG_REQ_PING
 
 The server MAY send an MSB_MSG_REQ_PING packet to confirm that the client is still active. It is
 recommended that the server send this packet approximately every 2 minutes. If active, the client
@@ -1008,13 +932,14 @@ Release: June 1, 2017
 
 11 / 31
 
-...
+
+...
 
 Header (16 bytes): An MSBMSGBASE packet that defines the packet header. The wMessageId field
 
 MUST be set to 0x0001.
 
-2.2.4  MSB_MSG_REQ_STREAMINFO
+#### 2.2.4 MSB_MSG_REQ_STREAMINFO
 
 The client MAY send the MSB_MSG_REQ_STREAMINFO packet to request information about the media
 stream. This request is optional because the server always sends the stream information in an
@@ -1042,7 +967,7 @@ Header (16 bytes): An MSBMSGBASE packet that defines the packet header. The wMes
 
 MUST be set to 0x0003.
 
-2.2.5  MSB_MSG_RES_STREAMINFO
+#### 2.2.5 MSB_MSG_RES_STREAMINFO
 
 The server MUST respond with an MSB_MSG_RES_STREAMINFO packet to a client
 MSB_MSG_REQ_STREAMINFO packet that requests media stream information. The structure and
@@ -1086,7 +1011,8 @@ Release: June 1, 2017
 
 12 / 31
 
-cbDescription
+
+cbDescription
 
 cbLink
 
@@ -1157,7 +1083,8 @@ Media Stream Broadcast Distribution (MSBD) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-as specified in [ASF] section 2, and the stream header is an ASF header. In the case of an ASF
+
+as specified in [ASF] section 2, and the stream header is an ASF header. In the case of an ASF
 Header, the value of the cbHeader field is the size of the entire ASF Header Object, as described
 in [ASF] section 3.1, plus 50 bytes (which represents the fixed initial portion of the ASF Data
 Object, as described in [ASF] section 5.1). The value of the cbHeader field MUST be in the range
@@ -1173,7 +1100,7 @@ impose a restriction on the values that the cbTitle, cbDescription, cbLink, and 
 can assume. For example, cbTitle and cbDescription cannot both have a value of 0x8000 at the
 same time.
 
-2.2.6  MSB_MSG_IND_STREAMINFO
+#### 2.2.6 MSB_MSG_IND_STREAMINFO
 
 The server MUST send the MSB_MSG_IND_STREAMINFO packet, which describes the media stream, in
 the following circumstances:
@@ -1233,7 +1160,8 @@ Release: June 1, 2017
 
 14 / 31
 
-...
+
+...
 
 Header (16 bytes): An MSBMSGBASE packet that defines the packet header. The wMessageId field
 
@@ -1306,14 +1234,15 @@ Media Stream Broadcast Distribution (MSBD) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-and outside the scope of this documentation. The size of the bBinaryData field is equal to the
+
+and outside the scope of this documentation. The size of the bBinaryData field is equal to the
 sum of the values of the cbTitle, cbDescription, cbLink, and cbHeader fields. The size of the
 bBinaryData field MUST be in the range of 0 to 65,487 bytes. Note that these requirements
 impose a restriction on the values that the cbTitle, cbDescription, cbLink, and cbHeader fields
 can assume. For example, cbTitle and cbDescription cannot both have a value of 0x8000 at the
 same time.
 
-2.2.7  MSB_MSG_REQ_CONNECT
+#### 2.2.7 MSB_MSG_REQ_CONNECT
 
 The client sends an MSB_MSG_REQ_CONNECT packet to request a media stream from the server.
 
@@ -1364,7 +1293,7 @@ the cbMessage field in the packet header MSBMSGBASE. The size of the szChannel f
 be between 0 and 65,514 bytes. Because the szChannel field consists of a Unicode character
 string, the size of the field must be an even number of bytes.
 
-2.2.8  MSB_MSG_RES_CONNECT
+#### 2.2.8 MSB_MSG_RES_CONNECT
 
 The server MUST send the MSB_MSG_RES_CONNECT packet in response to the
 MSB_MSG_REQ_CONNECT packet that is sent by the client.
@@ -1376,7 +1305,8 @@ Release: June 1, 2017
 
 16 / 31
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1442,7 +1372,7 @@ sin_zero (8 bytes): An array of 8 bytes. Each byte in the array SHOULD be set to
 
 ignored on receipt.
 
-2.2.9  MSB_MSG_IND_EOS
+#### 2.2.9 MSB_MSG_IND_EOS
 
 The server MUST send the MSB_MSG_IND_EOS packet to indicate the end of the media stream. This
 packet always precedes an empty MSB_MSG_IND_STREAMINFO packet.
@@ -1454,7 +1384,8 @@ Release: June 1, 2017
 
 17 / 31
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1475,7 +1406,7 @@ Header (16 bytes): An MSBMSGBASE packet that defines the packet header. The wMes
 
 MUST be set to 0x0009.
 
-2.2.10 MSB_MSG_IND_PACKET
+#### 2.2.10 MSB_MSG_IND_PACKET
 
 The server transmits the media stream by using MSB_MSG_IND_PACKET packets. Each ASF data
 packet in the media stream MUST be encapsulated in a separate MSB_MSG_IND_PACKET packet. The
@@ -1538,7 +1469,8 @@ Media Stream Broadcast Distribution (MSBD) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-wStreamId field MUST be in the range 0x0000 to 0x07FF, inclusive, or in the range 0x8000 to
+
+wStreamId field MUST be in the range 0x0000 to 0x07FF, inclusive, or in the range 0x8000 to
 0x87FF, inclusive.
 
 wPacketSize (2 bytes): An unsigned 16-bit integer that contains the size, in bytes, of the bPayload
@@ -1560,32 +1492,33 @@ Release: June 1, 2017
 
 19 / 31
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-MSBD].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The following sections specify details of the MSBD Protocol, including abstract data models and
 message processing rules for both server and client.
 
-3.1  Server Details
+### 3.1 Server Details
 
 This section specifies details for server implementations of the MSBD Protocol. The state machine for
 MSBD on a server is depicted in the following diagram.
 
 Figure 1: State machine for MSBD on a server
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Not applicable for this protocol specification.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 An implementation of the MSBD Protocol on a server can use a timer to schedule the transmission of
 MSB_MSG_REQ_PING packets.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 If a timer is used to schedule the transmission of MSB_MSG_REQ_PING packets, that timer cannot be
 running initially.
@@ -1603,13 +1536,14 @@ Release: June 1, 2017
 
 20 / 31
 
-3.1.4  Higher-Layer Triggered Events
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 Not applicable for this protocol specification.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving an MSB_MSG_REQ_CONNECT Packet
+##### 3.1.5.1 Receiving an MSB_MSG_REQ_CONNECT Packet
 
 If the value of the dwFlags field in the MSB_MSG_REQ_CONNECT packet is 0x0002 and the server
 does not support delivery of MSB_MSG_IND_PACKET packets over UDP, then the server MUST reject
@@ -1627,11 +1561,11 @@ MSB_MSG_RES_CONNECT packet.
 If the connection is accepted, then the server transmits the stream as a sequence of
 MSB_MSG_IND_PACKET packets.
 
-3.1.5.2  Receiving an MSB_MSG_REQ_STREAMINFO Packet
+##### 3.1.5.2 Receiving an MSB_MSG_REQ_STREAMINFO Packet
 
 The server MUST send an MSB_MSG_RES_STREAMINFO packet.
 
-3.1.5.3  Reaching the End of the Stream
+##### 3.1.5.3 Reaching the End of the Stream
 
 When the server transmits the last MSB_MSG_IND_PACKET packet for a stream, the server MUST
 send an MSB_MSG_IND_EOS packet that is followed by an MSB_MSG_IND_STREAMINFO packet. The
@@ -1641,18 +1575,18 @@ MUST be "empty". In an empty MSB_MSG_IND_STREAMINFO packet, the size of the bBin
 field MUST be 0 bytes, and the hr field SHOULD be set to 0xC00D0033. The server SHOULD set all the
 remaining fields in the empty MSB_MSG_IND_STREAMINFO packet to 0.<4>
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 If the server uses a timer to schedule the transmission of the MSB_MSG_REQ_PING packets, when
 that timer expires, the server SHOULD send an MSB_MSG_REQ_PING packet. If after sending an
 MSB_MSG_REQ_PING packet, the server does not receive an MSB_MSG_RES_PING packet within 2
 minutes, the server SHOULD end the session by closing the TCP connection to the client.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 Not applicable for this protocol specification.
 
-3.2  Client Details
+### 3.2 Client Details
 
 This section specifies details for client implementations of the MSBD Protocol. The state machine for
 MSBD on a client is depicted in the following diagram.
@@ -1664,21 +1598,22 @@ Release: June 1, 2017
 
 21 / 31
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-MSBD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
 Figure 2: State machine for MSBD on a client
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Not applicable for this protocol specification.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Not applicable for this protocol specification.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client initializes an MSBD streaming session by establishing a TCP connection to the TCP port that
 the server reserves for communication by using the MSBD Protocol. The client and server MUST agree
@@ -1688,7 +1623,7 @@ MSBD packet.
 
 After the TCP connection is established, the client MUST send an MSB_MSG_REQ_CONNECT packet.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
  Not applicable for this protocol specification.
 
@@ -1699,22 +1634,23 @@ Release: June 1, 2017
 
 22 / 31
 
-3.2.5  Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving an MSB_MSG_REQ_PING Packet
+#### 3.2.5 Message Processing Events and Sequencing Rules
+
+##### 3.2.5.1 Receiving an MSB_MSG_REQ_PING Packet
 
 The client MUST send an MSB_MSG_RES_PING packet.
 
-3.2.5.2  Receiving an MSB_MSG_IND_STREAMINFO Packet
+##### 3.2.5.2 Receiving an MSB_MSG_IND_STREAMINFO Packet
 
 If the client receives an "empty" MSB_MSG_IND_STREAMINFO packet (as specified in section 3.1.5.3),
 the portion of the packet that does not include the Header field MUST be ignored.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 Not applicable for this protocol specification.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 Not applicable for this protocol specification.
 
@@ -1725,16 +1661,17 @@ Release: June 1, 2017
 
 23 / 31
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-MSBD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
-4  Protocol Example
+## 4 Protocol Example
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the MSBD Protocol.
 
-4.1  General MSBD Sequence
+### 4.1 General MSBD Sequence
 
 The following diagram shows a typical communication sequence between the client and server.
 
@@ -1765,14 +1702,15 @@ Media Stream Broadcast Distribution (MSBD) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-MSBD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
 an MSB_MSG_RES_PING packet, the server closes the TCP connection. In other cases, the client is
 responsible for ending the session by closing the TCP connection.
 
-4.2  Using MSBD for Server-Side Playlist Streaming
+### 4.2 Using MSBD for Server-Side Playlist Streaming
 
 The following diagram shows a typical communication sequence between a client and server when
 streaming content from a server-side playlist.
@@ -1792,7 +1730,8 @@ Media Stream Broadcast Distribution (MSBD) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.  The server responds with an MSB_MSG_RES_CONNECT packet followed by an
+
+2.  The server responds with an MSB_MSG_RES_CONNECT packet followed by an
 
 MSB_MSG_IND_STREAMINFO packet that describes the media stream.
 
@@ -1828,11 +1767,12 @@ Release: June 1, 2017
 
 26 / 31
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the MSBD Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 For any packet that contains fields that specify other field lengths, implementers ensure that the
 length values do not exceed the size of the packet itself. For example, MSB_MSG_IND_STREAMINFO is
@@ -1842,7 +1782,7 @@ Implementers do not assume that the ASF data in the MSB_MSG_IND_STREAMINFO and
 MSB_MSG_IND_PACKET packets can be trusted. Use caution when parsing variable-length fields,
 ensuring that length information, if any, does not cause the size of buffers to be exceeded.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The MSBD Protocol has no applicable security parameters.
 
@@ -1853,7 +1793,8 @@ Release: June 1, 2017
 
 27 / 31
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1894,7 +1835,8 @@ Release: June 1, 2017
 
 28 / 31
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1906,7 +1848,8 @@ Release: June 1, 2017
 
 29 / 31
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2040,7 +1983,8 @@ O
 
 30 / 31
 
-Transport – message 10
+
+Transport – message 10
 Triggered events – higher layer
    client 21
    server 19

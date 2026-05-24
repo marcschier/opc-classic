@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 43
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: June 1, 2017
 
 2 / 43
 
-Date
+
+Date
 
 Revision
 History
@@ -512,218 +514,93 @@ Release: June 1, 2017
 
 3 / 43
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 RPC Transport](#211-rpc-transport)
+    - [2.1.2 Mailslots](#212-mailslots)
+    - [2.1.3 SMB](#213-smb)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Data Types](#221-data-types)
+      - [2.2.1.1 MSGSVC_HANDLE](#2211-msgsvchandle)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.1 MSG_INFO_0](#2221-msginfo0)
+      - [2.2.2.2 MSG_INFO_1](#2222-msginfo1)
+      - [2.2.2.3 MSG_INFO_0_CONTAINER](#2223-msginfo0container)
+      - [2.2.2.4 MSG_INFO_1_CONTAINER](#2224-msginfo1container)
+      - [2.2.2.5 MSG_ENUM_STRUCT](#2225-msgenumstruct)
+      - [2.2.2.6 MSG_INFO](#2226-msginfo)
+    - [2.2.3 SMB Message Delivery Protocol](#223-smb-message-delivery-protocol)
+      - [2.2.3.1 SMB_COM_SEND_MESSAGE Request and Response Messages](#2231-smbcomsendmessage-request-and-response-messages)
+        - [2.2.3.1.1 SMB_COM_SEND_MESSAGE Request Message](#22311-smbcomsendmessage-request-message)
+        - [2.2.3.1.2 SMB_COM_SEND_MESSAGE Response Message](#22312-smbcomsendmessage-response-message)
+      - [2.2.3.2 SMB_COM_SEND_START_MB_MESSAGE Request and Response Messages](#2232-smbcomsendstartmbmessage-request-and-response-messages)
+        - [2.2.3.2.1 SMB_COM_SEND_START_MB_MESSAGE Request Message](#22321-smbcomsendstartmbmessage-request-message)
+        - [2.2.3.2.2 SMB_COM_SEND_START_MB_MESSAGE Response Message](#22322-smbcomsendstartmbmessage-response-message)
+      - [2.2.3.3 SMB_COM_SEND_TEXT_MB_MESSAGE Request and Response Messages](#2233-smbcomsendtextmbmessage-request-and-response-messages)
+        - [2.2.3.3.1 SMB_COM_SEND_TEXT_MB_MESSAGE Request Message](#22331-smbcomsendtextmbmessage-request-message)
+        - [2.2.3.3.2 SMB_COM_SEND_TEXT_MB_MESSAGE Response Message](#22332-smbcomsendtextmbmessage-response-message)
+      - [2.2.3.4 SMB_COM_SEND_END_MB_MESSAGE Request and Response Messages](#2234-smbcomsendendmbmessage-request-and-response-messages)
+        - [2.2.3.4.1 SMB_COM_SEND_END_MB_MESSAGE Request Message](#22341-smbcomsendendmbmessage-request-message)
+        - [2.2.3.4.2 SMB_COM_SEND_END_MB_MESSAGE Response Message](#22342-smbcomsendendmbmessage-response-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Name Management Protocol](#31-name-management-protocol)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing and Sequencing Rules](#314-message-processing-and-sequencing-rules)
+      - [3.1.4.1 NetrMessageNameAdd (Opnum 0)](#3141-netrmessagenameadd-opnum-0)
+      - [3.1.4.2 NetrMessageNameEnum (Opnum 1)](#3142-netrmessagenameenum-opnum-1)
+      - [3.1.4.3 NetrMessageNameGetInfo (Opnum 2)](#3143-netrmessagenamegetinfo-opnum-2)
+      - [3.1.4.4 NetrMessageNameDel (Opnum 3)](#3144-netrmessagenamedel-opnum-3)
+      - [3.1.4.5 Sending NetrMessageNameAdd](#3145-sending-netrmessagenameadd)
+      - [3.1.4.6 Receiving NetrMessageNameAdd](#3146-receiving-netrmessagenameadd)
+      - [3.1.4.7 Sending NetrMessageNameEnum](#3147-sending-netrmessagenameenum)
+      - [3.1.4.8 Receiving NetrMessageNameEnum](#3148-receiving-netrmessagenameenum)
+      - [3.1.4.9 Sending NetrMessageNameGetInfo](#3149-sending-netrmessagenamegetinfo)
+      - [3.1.4.10 Receiving NetrMessageNameGetInfo](#31410-receiving-netrmessagenamegetinfo)
+      - [3.1.4.11 Sending NetrMessageNameDel](#31411-sending-netrmessagenamedel)
+      - [3.1.4.12 Receiving NetrMessageNameDel](#31412-receiving-netrmessagenamedel)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Messaging Protocol](#32-messaging-protocol)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing and Sequencing Rules](#324-message-processing-and-sequencing-rules)
+      - [3.2.4.1 NetrSendMessage (Opnum 0)](#3241-netrsendmessage-opnum-0)
+      - [3.2.4.2 Sending NetrSendMessage](#3242-sending-netrsendmessage)
+      - [3.2.4.3 Receiving NetrSendMessage](#3243-receiving-netrsendmessage)
+      - [3.2.4.4 Sending Mailslot Messages or SMB Messages](#3244-sending-mailslot-messages-or-smb-messages)
+      - [3.2.4.5 Receiving Mailslot Messages or SMB Messages](#3245-receiving-mailslot-messages-or-smb-messages)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+  - [6.1 Appendix A.1: msgsvcsend.idl](#61-appendix-a1-msgsvcsendidl)
+  - [6.2 Appendix A.2: msgsvc.idl](#62-appendix-a2-msgsvcidl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-
-2.2
-
-2.2.2
-
-2.2.1
-
-2.2.1.1
-
-2.1.1
-2.1.2
-2.1.3
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-RPC Transport ............................................................................................ 11
-Mailslots .................................................................................................... 11
-SMB .......................................................................................................... 11
-Message Syntax ............................................................................................... 12
-Data Types ................................................................................................ 12
-MSGSVC_HANDLE ................................................................................. 12
-Structures ................................................................................................. 12
-MSG_INFO_0 ........................................................................................ 12
-MSG_INFO_1 ........................................................................................ 13
-MSG_INFO_0_CONTAINER ..................................................................... 13
-MSG_INFO_1_CONTAINER ..................................................................... 14
-MSG_ENUM_STRUCT ............................................................................. 14
-MSG_INFO ........................................................................................... 14
-SMB Message Delivery Protocol .................................................................... 15
-SMB_COM_SEND_MESSAGE Request and Response Messages .................... 15
-SMB_COM_SEND_MESSAGE Request Message .................................... 15
-SMB_COM_SEND_MESSAGE Response Message .................................. 16
-SMB_COM_SEND_START_MB_MESSAGE Request and Response Messages ... 16
-SMB_COM_SEND_START_MB_MESSAGE Request Message ................... 16
-SMB_COM_SEND_START_MB_MESSAGE Response Message ................. 17
-SMB_COM_SEND_TEXT_MB_MESSAGE Request and Response Messages ..... 18
-SMB_COM_SEND_TEXT_MB_MESSAGE Request Message ..................... 18
-SMB_COM_SEND_TEXT_MB_MESSAGE Response Message ................... 19
-SMB_COM_SEND_END_MB_MESSAGE Request and Response Messages ...... 19
-SMB_COM_SEND_END_MB_MESSAGE Request Message ...................... 19
-SMB_COM_SEND_END_MB_MESSAGE Response Message .................... 19
-
-2.2.3.2.1
-2.2.3.2.2
-
-2.2.3.4.1
-2.2.3.4.2
-
-2.2.3.1.1
-2.2.3.1.2
-
-2.2.3.3.1
-2.2.3.3.2
-
-2.2.3.1
-
-2.2.3.2
-
-2.2.3.3
-
-2.2.3.4
-
-2.2.3
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 21
-Name Management Protocol .............................................................................. 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Message Processing and Sequencing Rules .................................................... 21
-NetrMessageNameAdd (Opnum 0) .......................................................... 22
-NetrMessageNameEnum (Opnum 1) ........................................................ 22
-NetrMessageNameGetInfo (Opnum 2) ..................................................... 23
-NetrMessageNameDel (Opnum 3) ........................................................... 24
-Sending NetrMessageNameAdd ............................................................... 25
-Receiving NetrMessageNameAdd ............................................................. 25
-Sending NetrMessageNameEnum ............................................................ 26
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-
-[MS-MSRP] - v20170601
-Messenger Service Remote Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 43
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-
-Receiving NetrMessageNameEnum .......................................................... 26
-Sending NetrMessageNameGetInfo ......................................................... 27
-Receiving NetrMessageNameGetInfo ....................................................... 27
-Sending NetrMessageNameDel ............................................................... 28
-Receiving NetrMessageNameDel ............................................................. 28
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-Messaging Protocol ........................................................................................... 29
-Abstract Data Model .................................................................................... 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Message Processing and Sequencing Rules .................................................... 29
-NetrSendMessage (Opnum 0) ................................................................. 30
-Sending NetrSendMessage ..................................................................... 31
-Receiving NetrSendMessage ................................................................... 31
-Sending Mailslot Messages or SMB Messages ............................................ 31
-Receiving Mailslot Messages or SMB Messages .......................................... 32
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-
-3.2.5
-3.2.6
-
-4  Protocol Examples ................................................................................................. 34
-
-5  Security ................................................................................................................. 35
-Security Considerations for Implementers ........................................................... 35
-Index of Security Parameters ............................................................................ 35
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 36
-Appendix A.1: msgsvcsend.idl ........................................................................... 36
-Appendix A.2: msgsvc.idl .................................................................................. 36
-
-6.1
-6.2
-
-7  Appendix B: Product Behavior ............................................................................... 38
-
-8  Change Tracking .................................................................................................... 41
-
-9  Index ..................................................................................................................... 42
-
-[MS-MSRP] - v20170601
-Messenger Service Remote Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 43
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Messenger Service Remote Protocol. The Messenger Service Remote
 Protocol is a set of remote procedure call (RPC) interfaces that instruct a server (referred to in this
@@ -741,7 +618,7 @@ protocol, as described in section 5.1.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -798,7 +675,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-of request-and-response message exchanges between computers (the RPC exchange); and the
+
+of request-and-response message exchanges between computers (the RPC exchange); and the
 single message from an RPC exchange (the RPC message).  For more information, see [C706].
 
 RPC dynamic endpoint: A network-specific server address that is requested and assigned at run
@@ -846,14 +724,14 @@ be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -871,7 +749,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-[MS-CIFS] Microsoft Corporation, "Common Internet File System (CIFS) Protocol".
+
+[MS-CIFS] Microsoft Corporation, "Common Internet File System (CIFS) Protocol".
 
 [MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
@@ -900,14 +779,14 @@ editor.org/info/rfc1002
 [RFC768] Postel, J., "User Datagram Protocol", STD 6, RFC 768, August 1980, https://www.rfc-
 editor.org/info/rfc768
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSKB-330904] Microsoft Corporation, "Messenger Service Window That Contains an Internet
 Advertisement Appears", February 2007, http://support.microsoft.com/kb/330904
 
 [PIPE] Microsoft Corporation, "Named Pipes", http://msdn.microsoft.com/en-us/library/aa365590.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Messenger Service Remote Protocol suite is designed to perform the following functions:
 
@@ -939,10 +818,11 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-message server (recipient) of the messages often being the workstation machine and the message
+
+message server (recipient) of the messages often being the workstation machine and the message
 client (sender) being a server-class machine.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Messenger Service Remote Protocol suite is dependent on RPC (as specified in [C706]), the
 Server Message Block (SMB) Protocol (as specified in [MS-SMB]), and the mailslot datagram delivery
@@ -951,7 +831,7 @@ service (as specified in [MS-MAIL]), which are its transports.
 The Messenger Service Remote Protocol uses NetBIOS names (as specified in [RFC1001] section 14
 and [RFC1002] section 4.1) to identify message recipients.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The messenger service name management protocol is an RPC interface and, as a result, has the
 prerequisites specified in [MS-RPCE] as being common to RPC interfaces. Both the message client
@@ -963,13 +843,13 @@ messages to remote machines, and, therefore, it depends on this mailslot deliver
 operational before the messenger service begins operation. For mailslot operational requirements, see
 [MS-MAIL] section1.5. For the mailslot delivery mechanism, see [MS-CIFS] section2.2.5.12.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The messenger service name management protocol is suitable only for managing simple NetBIOS
 names. The messenger service messaging protocol is suitable only for short, human-readable
 messages that require no security and have no delivery guarantees.<1>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -986,11 +866,11 @@ Protocol version: This protocol's RPC interfaces have a version number of 1.0.
 
   Capability negotiation: None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Messenger Service Remote Protocol does not include any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments directly associated with this protocol.
 
@@ -1009,7 +889,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-This protocol does use NetBIOS for message delivery in some cases. If NetBIOS is used on a TCP/IP
+
+This protocol does use NetBIOS for message delivery in some cases. If NetBIOS is used on a TCP/IP
 network, UDP port 138 can be used, and NetBIOS might need to perform other functions such as
 name resolution on other ports (as specified in [RFC1001] and [RFC1002]) to support this protocol.
 
@@ -1029,14 +910,15 @@ Release: June 1, 2017
 
 10 / 43
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol suite has a variety of transports, the use of which is detailed in the following sections.
 Implementations MAY use any one of the transports.
 
-2.1.1  RPC Transport
+#### 2.1.1 RPC Transport
 
 The Messenger Service Remote Protocol MUST use either the RPC over UDP protocol sequence
 (NCADG_IP_UDP) or the RPC over Named Pipes (NCACN_NP) protocol sequence, as specified in [MS-
@@ -1063,7 +945,7 @@ caller that made the method call, as specified in [MS-RPCE]. The message server 
 identity to perform method-specific access checks, as specified in section 3.1.4.5. When using UDP as
 the RPC transport, the protocol does not perform authentication.
 
-2.1.2  Mailslots
+#### 2.1.2 Mailslots
 
 This protocol MUST use the mailslot datagram delivery server, as specified in [MS-MAIL]. Mailslot
 messages, specified in sections 3.2.4.4 and 3.2.4.5, MUST be sent to the following mailslot:
@@ -1076,7 +958,7 @@ message server before it can receive messages for that recipient.
 
 When using mailslots to transport messages, the protocol does not perform authentication.
 
-2.1.3  SMB
+#### 2.1.3 SMB
 
 The Messenger Service Remote Protocol MUST use the SMB server, as specified in [MS-SMB]. SMB
 messages are specified in sections 3.2.4.4 and 3.2.4.5.
@@ -1092,14 +974,15 @@ Release: June 1, 2017
 
 11 / 43
 
-2.2  Message Syntax
+
+### 2.2 Message Syntax
 
 In addition to RPC base types, the following sections use the definition of DWORD, as specified in
 [MS-DTYP].
 
-2.2.1  Data Types
+#### 2.2.1 Data Types
 
-2.2.1.1  MSGSVC_HANDLE
+##### 2.2.1.1 MSGSVC_HANDLE
 
 MSGSVC_HANDLE is a null-terminated string that MUST denote the NetBIOS name (as specified in
 [RFC1001] section 14 and [RFC1002] section 4.1) or the fully qualified domain name (FQDN) of
@@ -1112,9 +995,9 @@ This type is declared as follows:
 
  typedef [handle] wchar_t* MSGSVC_HANDLE;
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
-2.2.2.1  MSG_INFO_0
+##### 2.2.2.1 MSG_INFO_0
 
 MSG_INFO_0 is a data structure that contains a string that specifies the recipient name to which a
 message is to be sent.
@@ -1153,11 +1036,12 @@ Release: June 1, 2017
 
 12 / 43
 
-2.  It is returned in the InfoStruct parameter of NetrMessageNameEnum (section 3.1.4.2) in which it
+
+2.  It is returned in the InfoStruct parameter of NetrMessageNameEnum (section 3.1.4.2) in which it
 was retrieved from the message table in section 3.1.1, the NetBIOS suffix and any trailing
 spaces removed, and the remaining characters converted to UTF-16.
 
-2.2.2.2  MSG_INFO_1
+##### 2.2.2.2 MSG_INFO_1
 
 MSG_INFO_1 is a data structure that contains a string that specifies the recipient name to which a
 message is to be sent.
@@ -1200,7 +1084,7 @@ msgi1_forward_flag:  MUST be set to zero when sent and ignored on receipt.
 
 msgi1_forward:  MUST be NULL and ignored on receipt.
 
-2.2.2.3  MSG_INFO_0_CONTAINER
+##### 2.2.2.3 MSG_INFO_0_CONTAINER
 
 MSG_INFO_0_CONTAINER is a container structure that holds one or more MSG_INFO_0 structures.
 
@@ -1218,11 +1102,12 @@ Release: June 1, 2017
 
 13 / 43
 
-EntriesRead:  A 32-bit value that MUST denote the number of entries in Buffer.
+
+EntriesRead:  A 32-bit value that MUST denote the number of entries in Buffer.
 
 Buffer:  Pointer to a buffer that MUST contain one or more MSG_INFO_0 structures.
 
-2.2.2.4  MSG_INFO_1_CONTAINER
+##### 2.2.2.4 MSG_INFO_1_CONTAINER
 
 MSG_INFO_1_CONTAINER is a container structure that holds one or more MSG_INFO_1 structures.
 
@@ -1237,7 +1122,7 @@ EntriesRead:  A 32-bit value that MUST denote the number of entries in Buffer.
 
 Buffer:  A pointer to a variable-size buffer that MUST contain one or more MSG_INFO_1 structures.
 
-2.2.2.5  MSG_ENUM_STRUCT
+##### 2.2.2.5 MSG_ENUM_STRUCT
 
 MSG_ENUM_STRUCT is a container structure holding either one MSG_INFO_0_CONTAINER container
 or one MSG_INFO_1_CONTAINER container. The structure also has a member to indicate what type of
@@ -1266,7 +1151,7 @@ Level0:  If Level is 0, MsgInfo MUST contain an MSG_INFO_0_CONTAINER named Level
 
 Level1:  If Level is 1, MsgInfo MUST contain an MSG_INFO_1_CONTAINER named Level1.
 
-2.2.2.6  MSG_INFO
+##### 2.2.2.6 MSG_INFO
 
 MSG_INFO is a data structure that contains either an MSG_INFO_0 or an MSG_INFO_1 structure.
 
@@ -1286,14 +1171,15 @@ Release: June 1, 2017
 
 14 / 43
 
-  *PMSG_INFO,
+
+  *PMSG_INFO,
   *LPMSG_INFO;
 
 MsgInfo0:  A pointer to a variable-size buffer that MUST contain an MSG_INFO_0 data structure.
 
 MsgInfo1:  A pointer to a variable-size buffer that MUST contain an MSG_INFO_1 data structure.
 
-2.2.3  SMB Message Delivery Protocol
+#### 2.2.3 SMB Message Delivery Protocol
 
 Text messages MAY be delivered by SMB to a message server. The SMB messages used for text
 message delivery are defined in this section.
@@ -1304,12 +1190,12 @@ IPX transport, or the NetBEUI transport, as specified in [RFC1001] and [MS-SMB].
 
 Unless otherwise specified, numerical fields in these messages are in little-endian byte order.
 
-2.2.3.1  SMB_COM_SEND_MESSAGE Request and Response Messages
+##### 2.2.3.1 SMB_COM_SEND_MESSAGE Request and Response Messages
 
 The following two sections describe how to implement and interpret SMB_COM_SEND_MESSAGE
 request messages and response messages.
 
-2.2.3.1.1 SMB_COM_SEND_MESSAGE Request Message
+###### 2.2.3.1.1 SMB_COM_SEND_MESSAGE Request Message
 
 The SMB_COM_SEND_MESSAGE message is used to send an entire text message in which the length
 of the message is 128 bytes or less.
@@ -1366,7 +1252,8 @@ Release: June 1, 2017
 
 15 / 43
 
-ByteCount (2 bytes): A 16-bit value that MUST denote the total size of all of the fields that follow, in
+
+ByteCount (2 bytes): A 16-bit value that MUST denote the total size of all of the fields that follow, in
 
 bytes.
 
@@ -1407,7 +1294,7 @@ character. This buffer MUST NOT be more than 128 bytes in size.<4>
 
 The response message to SMB_COM_SEND_MESSAGE is specified in section 2.2.3.1.2.
 
-2.2.3.1.2 SMB_COM_SEND_MESSAGE Response Message
+###### 2.2.3.1.2 SMB_COM_SEND_MESSAGE Response Message
 
 The payload of the SMB_COM_SEND_MESSAGE response message is specified as follows.
 
@@ -1432,12 +1319,12 @@ ByteCount (2 bytes): A 16-bit value that MUST be zero for this message.
 
 The request message to SMB_COM_SEND_MESSAGE is specified in section 2.2.3.1.1.
 
-2.2.3.2  SMB_COM_SEND_START_MB_MESSAGE Request and Response Messages
+##### 2.2.3.2 SMB_COM_SEND_START_MB_MESSAGE Request and Response Messages
 
 The following two sections describe how to implement and interpret
 SMB_COM_SEND_START_MB_MESSAGE request messages and response messages.
 
-2.2.3.2.1 SMB_COM_SEND_START_MB_MESSAGE Request Message
+###### 2.2.3.2.1 SMB_COM_SEND_START_MB_MESSAGE Request Message
 
 [MS-MSRP] - v20170601
 Messenger Service Remote Protocol
@@ -1446,7 +1333,8 @@ Release: June 1, 2017
 
 16 / 43
 
-The SMB_COM_SEND_START_MB_MESSAGE message is used to signal that a new text message is
+
+The SMB_COM_SEND_START_MB_MESSAGE message is used to signal that a new text message is
 being sent and to carry the strings that contain the names of the sender and the intended recipient of
 the text message.
 
@@ -1514,7 +1402,7 @@ than 15 characters (bytes) long (with the trailing null character, this field MA
 
 The response message to SMB_COM_SEND_START_MB_MESSAGE is specified in section 2.2.3.2.2.
 
-2.2.3.2.2 SMB_COM_SEND_START_MB_MESSAGE Response Message
+###### 2.2.3.2.2 SMB_COM_SEND_START_MB_MESSAGE Response Message
 
 The payload of the SMB_COM_SEND_START_MB_MESSAGE response message is specified as follows.
 
@@ -1542,7 +1430,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-...
+
+...
 
 WordCount (1 byte): An 8-bit value that MUST be set to one (0x1) for this message.
 
@@ -1554,12 +1443,12 @@ ByteCount (2 bytes): A 16-bit value that MUST be zero for this message.
 
 The request message to SMB_COM_SEND_START_MB_MESSAGE is specified in section 2.2.3.2.1.
 
-2.2.3.3  SMB_COM_SEND_TEXT_MB_MESSAGE Request and Response Messages
+##### 2.2.3.3 SMB_COM_SEND_TEXT_MB_MESSAGE Request and Response Messages
 
 The following two sections describe how to implement and interpret
 SMB_COM_SEND_TEXT_MB_MESSAGE request messages and response messages.
 
-2.2.3.3.1 SMB_COM_SEND_TEXT_MB_MESSAGE Request Message
+###### 2.2.3.3.1 SMB_COM_SEND_TEXT_MB_MESSAGE Request Message
 
 The SMB_COM_SEND_TEXT_MB_MESSAGE message is used to transmit a block of text from a text
 message when the text message is larger than 128 bytes.
@@ -1627,12 +1516,13 @@ Release: June 1, 2017
 
 18 / 43
 
-characters (CRLF or LFCR) MUST be converted into a single 0x14 character. This buffer MUST NOT
+
+characters (CRLF or LFCR) MUST be converted into a single 0x14 character. This buffer MUST NOT
 be more than 128 bytes in size.<7>
 
 The response message to SMB_COM_SEND_TEXT_MB_MESSAGE is specified in section 2.2.3.3.2.
 
-2.2.3.3.2 SMB_COM_SEND_TEXT_MB_MESSAGE Response Message
+###### 2.2.3.3.2 SMB_COM_SEND_TEXT_MB_MESSAGE Response Message
 
 The payload of the SMB_COM_SEND_TEXT_MB_MESSAGE response message is specified as follows.
 
@@ -1659,12 +1549,12 @@ ByteCount (2 bytes): A 16-bit value that MUST be zero for this message.
 
 The request message to SMB_COM_SEND_TEXT_MB_MESSAGE is specified in section 2.2.3.3.1.
 
-2.2.3.4  SMB_COM_SEND_END_MB_MESSAGE Request and Response Messages
+##### 2.2.3.4 SMB_COM_SEND_END_MB_MESSAGE Request and Response Messages
 
 The following two sections describe how to implement and interpret
 SMB_COM_SEND_END_MB_MESSAGE request messages and response messages.
 
-2.2.3.4.1 SMB_COM_SEND_END_MB_MESSAGE Request Message
+###### 2.2.3.4.1 SMB_COM_SEND_END_MB_MESSAGE Request Message
 
 The SMB_COM_SEND_END_MB_MESSAGE message is used to indicate that transmission of a
 multiblock text message is complete.
@@ -1706,7 +1596,7 @@ ByteCount (2 bytes): A 16-bit value that MUST be 0 for this message.
 
 The response message to SMB_COM_SEND_END_MB_MESSAGE is specified in section 2.2.3.4.2.
 
-2.2.3.4.2 SMB_COM_SEND_END_MB_MESSAGE Response Message
+###### 2.2.3.4.2 SMB_COM_SEND_END_MB_MESSAGE Response Message
 
 The payload of the SMB_COM_SEND_END_MB_MESSAGE response message is specified as follows.
 
@@ -1717,7 +1607,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1747,19 +1638,20 @@ Release: June 1, 2017
 
 20 / 43
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 As noted in section 1.3, there are two protocols that form the Messenger Service Remote Protocol
 suite. The first, the name management protocol, allows the invoker to control the names to which the
 message server responds. The second, the messaging protocol, contains the methods by which a
 message client can send a text message to the message server.
 
-3.1  Name Management Protocol
+### 3.1 Name Management Protocol
 
 The purpose of the name management protocol of the Messenger Service Remote Protocol suite is to
 manage the name table.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -1772,21 +1664,21 @@ name of the machine and the names of the users who are currently using the machi
 MUST be a valid NetBIOS name with a NetBIOS suffix value of 0x03. The message server MUST only
 listen for NetBIOS names with suffix value 0x03, which specifies a message alias type.<9>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Timers are used to retry some name management operations that might initially fail due to contention
 issues with a name table. This behavior is specified in section 3.1.4.6. Timers are used by RPC to
 implement resiliency to network outages, as specified in [MS-RPCE]. Timers are present in NetBIOS
 name operations, as specified in [RFC1001] section 15 and [RFC1002] section 4.2.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The message server side MUST register the endpoint (as specified in section 2.1.1) with RPC (as
 specified in [MS-RPCE]) using default security settings and dynamic endpoints. The server SHOULD
 register the local machine name as if it had received NetrMessageNameAdd, as specified in section
 3.1.4.6.
 
-3.1.4  Message Processing and Sequencing Rules
+#### 3.1.4 Message Processing and Sequencing Rules
 
 Methods in RPC Opnum Order
 
@@ -1815,7 +1707,8 @@ Release: June 1, 2017
 
 21 / 43
 
-3.1.4.1  NetrMessageNameAdd (Opnum 0)
+
+##### 3.1.4.1 NetrMessageNameAdd (Opnum 0)
 
 The NetrMessageNameAdd (Opnum 0) interface is used to configure the message server to listen for
 messages sent to an additional NetBIOS name.
@@ -1892,7 +1785,7 @@ The name specified is already in use as a message alias on the network.
 
 NERR_DuplicateName
 
-3.1.4.2  NetrMessageNameEnum (Opnum 1)
+##### 3.1.4.2 NetrMessageNameEnum (Opnum 1)
 
 The NetrMessageNameEnum (Opnum 1) interface is used to enumerate the NetBIOS names for
 which the message server is currently listening for messages.
@@ -1904,7 +1797,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- NET_API_STATUS NET_API_FUNCTION NetrMessageNameEnum(
+
+ NET_API_STATUS NET_API_FUNCTION NetrMessageNameEnum(
    [in, string, unique] MSGSVC_HANDLE ServerName,
    [in, out] LPMSG_ENUM_STRUCT InfoStruct,
    [in] DWORD PrefMaxLen,
@@ -1975,7 +1869,7 @@ NERR_BufTooSmall
 
 The API return buffer is too small.
 
-3.1.4.3  NetrMessageNameGetInfo (Opnum 2)
+##### 3.1.4.3 NetrMessageNameGetInfo (Opnum 2)
 
 The NetrMessageNameGetInfo (Opnum 2) interface is used to retrieve information from the message
 server on a NetBIOS name for which the message server is currently listening for messages.
@@ -1987,7 +1881,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- NET_API_STATUS NET_API_FUNCTION NetrMessageNameGetInfo(
+
+ NET_API_STATUS NET_API_FUNCTION NetrMessageNameGetInfo(
    [in, string, unique] MSGSVC_HANDLE ServerName,
    [in, string] wchar_t* MsgName,
    [in] DWORD Level,
@@ -2055,7 +1950,7 @@ NERR_NotLocalName
 
 The name is not on the local computer.
 
-3.1.4.4  NetrMessageNameDel (Opnum 3)
+##### 3.1.4.4 NetrMessageNameDel (Opnum 3)
 
 The NetrMessageNameDel (Opnum 3) interface is used to configure the message server to stop
 listening for messages for a particular NetBIOS name.
@@ -2071,7 +1966,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- );
+
+ );
 
 ServerName: A pointer to a null-terminated string that MUST denote the NetBIOS name (as specified
 in [RFC1001] section 5.2) or the fully qualified domain name (FQDN) of the remote computer
@@ -2134,7 +2030,7 @@ The message alias was not successfully deleted from all networks.
 
 NERR_IncompleteDel
 
-3.1.4.5  Sending NetrMessageNameAdd
+##### 3.1.4.5 Sending NetrMessageNameAdd
 
 The message client MUST select a message server for the Messenger Service Remote Protocol by
 means outside the protocol, and MUST set ServerName to the NetBIOS name or the fully qualified
@@ -2143,7 +2039,7 @@ domain name (FQDN) of the message server.
 The message client MUST select a recipient name by means outside the protocol, and it MUST set
 MsgName to the NetBIOS name of the recipient to add.<11>
 
-3.1.4.6  Receiving NetrMessageNameAdd
+##### 3.1.4.6 Receiving NetrMessageNameAdd
 
 On receipt of this message, the message server SHOULD check an internal access control list
 (ACL) to determine whether the message client is authorized to access the name list. If the ACL
@@ -2157,7 +2053,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Next, the message server MUST convert MsgName to a valid NetBIOS name, as specified in
+
+Next, the message server MUST convert MsgName to a valid NetBIOS name, as specified in
 [RFC1001] section 5.2 and [RFC1002] section 4.1. If MsgName is not valid, the message server MUST
 return ERROR_INVALID_NAME. The process for conversion is as follows:
 
@@ -2203,7 +2100,7 @@ return NERR_InternalError.
 If the message server successfully added MsgName to all LANAs, the message server MUST return
 ERROR_SUCCESS.
 
-3.1.4.7  Sending NetrMessageNameEnum
+##### 3.1.4.7 Sending NetrMessageNameEnum
 
 The message client MUST select a message server for this protocol by means outside the protocol,
 and MUST set ServerName to the NetBIOS name or the fully qualified domain name (FQDN) of
@@ -2218,7 +2115,7 @@ this is not the first call in a sequence of calls for a specific request, the me
 ResumeHandle to the value of ResumeHandle returned by the message server in the last call to
 NetrMessageNameEnum.
 
-3.1.4.8  Receiving NetrMessageNameEnum
+##### 3.1.4.8 Receiving NetrMessageNameEnum
 
 On receipt of this message, the message server SHOULD check an internal access control list
 (ACL) to determine whether the message client is authorized to access the name list. If the ACL
@@ -2230,7 +2127,8 @@ Release: June 1, 2017
 
 26 / 43
 
-authorization check is performed, and the message client is not authorized to perform the operation,
+
+authorization check is performed, and the message client is not authorized to perform the operation,
 the message server MUST return ERROR_ACCESS_DENIED.<14>
 
 Next, the message server MUST validate that the level passed in InfoStruct is either 0 or 1. If the level
@@ -2266,7 +2164,7 @@ If the last registered name is copied into the buffer, the message server MUST:
 
   Return NERR_Success.
 
-3.1.4.9  Sending NetrMessageNameGetInfo
+##### 3.1.4.9 Sending NetrMessageNameGetInfo
 
 The message client MUST select a message server for this protocol by means outside the protocol,
 and MUST set ServerName to the NetBIOS name or the fully qualified domain name (FQDN) of
@@ -2278,9 +2176,9 @@ it MUST set MsgName to that name.<16>
 The message client MUST select the information Level that is wanted, either 0 or 1, by means outside
 the protocol, and it MUST set Level accordingly.
 
-3.1.4.10
+##### 3.1.4.10 Receiving NetrMessageNameGetInfo
 
-Receiving NetrMessageNameGetInfo
+
 
 On receipt of this message, the message server SHOULD check an internal ACL to determine
 whether the message client is authorized to access the name list. If the ACL authorization check is
@@ -2300,7 +2198,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Server MUST truncate MsgName to 15 characters if MsgName is longer than 15 characters.
+
+  Server MUST truncate MsgName to 15 characters if MsgName is longer than 15 characters.
 
   Server MUST pad MsgName to 15 characters with the ASCII space character if MsgName is shorter
 
@@ -2328,9 +2227,9 @@ as Unicode UTF-16 strings.
 If the structure is successfully allocated and populated, the message server MUST return
 NERR_Success and return a pointer to the structure as InfoStruct.
 
-3.1.4.11
+##### 3.1.4.11 Sending NetrMessageNameDel
 
-Sending NetrMessageNameDel
+
 
 The message client MUST select a message server for this protocol by means outside the protocol,
 and it MUST set ServerName to the NetBIOS name or the fully qualified domain name (FQDN) of
@@ -2339,9 +2238,9 @@ the message server.
 The message client MUST select a recipient name by means outside the protocol, and it MUST set
 MsgName to the name of the recipient to delete.<18>
 
-3.1.4.12
+##### 3.1.4.12 Receiving NetrMessageNameDel
 
-Receiving NetrMessageNameDel
+
 
 On receipt of this message, the message server SHOULD check an internal ACL to determine
 whether the message client is authorized to access the name list. If the ACL authorization check is
@@ -2374,7 +2273,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If MsgName is the name of the computer, the message server MUST return
+
+If MsgName is the name of the computer, the message server MUST return
 NERR_DelComputerName.<20>
 
 The message server MUST check the name table on each LANA to verify whether MsgName is in the
@@ -2392,30 +2292,30 @@ NERR_IncompleteDel.
 
 If the deletion is successful, the message server MUST return NERR_Success.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 There are no timer events for this protocol.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 There are no other local events for this protocol.
 
-3.2  Messaging Protocol
+### 3.2 Messaging Protocol
 
 The messaging protocol is used for the actual transmission of the text messages from the message
 client to the message server.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The messaging protocol relies on the name tables maintained by the name management protocol, as
 specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no timers in the transmission of the text messages. The messages are unreliable when sent
 by datagram. They are reliable when sent by SMB, as specified in [MS-SMB].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The message server MUST register the RPC endpoint for messaging, as specified in section 2.1.1.
 Also, the message server MUST register the names from the name table on each LANA as NetBIOS
@@ -2425,7 +2325,7 @@ The message server SHOULD also register the NetBIOS name of the computer on whic
 NetBIOS name of type Messenger (NetBIOS suffix value 0x03) in the name table on each LANA to
 which it listens.
 
-3.2.4  Message Processing and Sequencing Rules
+#### 3.2.4 Message Processing and Sequencing Rules
 
 Methods in RPC Opnum Order
 
@@ -2436,13 +2336,14 @@ Release: June 1, 2017
 
 29 / 43
 
-Method
+
+Method
 
 Description
 
 NetrSendMessage  Opnum: 0
 
-3.2.4.1  NetrSendMessage (Opnum 0)
+##### 3.2.4.1 NetrSendMessage (Opnum 0)
 
 The NetrSendMessage (Opnum 0) method is used to send a text message to a message server.
 
@@ -2522,7 +2423,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2570,13 +2472,13 @@ A duplicate message alias exists on the network.
 
 NERR_DuplicateName
 
-3.2.4.2  Sending NetrSendMessage
+##### 3.2.4.2 Sending NetrSendMessage
 
 The message client MUST select a message server for this protocol by means outside the protocol.
 After the name of the message server is selected, the message client MUST compose a primitive
 binding handle, as specified in [C706], for RPC over UDP.<23>
 
-3.2.4.3  Receiving NetrSendMessage
+##### 3.2.4.3 Receiving NetrSendMessage
 
 When the message server receives a NetrSendMessage message, it MUST check the table of names
 it is maintaining for each LANA to see if the name supplied in the To parameter matches one of the
@@ -2585,7 +2487,7 @@ parameter. The method of displaying the message is implementation-specific. A me
 impose security or other policies that control whether the message is displayed, the maximum length
 of a message, and so on.<24>
 
-3.2.4.4  Sending Mailslot Messages or SMB Messages
+##### 3.2.4.4 Sending Mailslot Messages or SMB Messages
 
 Although this protocol has no methods for constructing or sending mailslot messages or SMB
 messages, the message server MUST be able to receive such messages. Therefore, it is necessary to
@@ -2607,7 +2509,8 @@ Release: June 1, 2017
 
 31 / 43
 
-The sender MAY send the message to the mailslot \\recipient name\MAILSLOT\MESSNGR on all
+
+The sender MAY send the message to the mailslot \\recipient name\MAILSLOT\MESSNGR on all
 LANAs.
 
 The sender MAY send the message as a directed SMB on each LANA, as defined in the following.
@@ -2694,7 +2597,7 @@ response message.
   After sending the last segment of Text, the sender MUST send an
 SMB_COM_SEND_END_MB_MESSAGE request message.<25>
 
-3.2.4.5  Receiving Mailslot Messages or SMB Messages
+##### 3.2.4.5 Receiving Mailslot Messages or SMB Messages
 
 When the message server receives a mailslot message, it MUST check the table of names it is
 maintaining for each LANA to see whether the name supplied in the To parameter matches one of the
@@ -2706,7 +2609,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-names in the table. If there is a match, the message server SHOULD display the message in the Text
+
+names in the table. If there is a match, the message server SHOULD display the message in the Text
 parameter. The method of displaying the message is implementation-specific. A message server MAY
 impose security or other policies that control whether the message is displayed, the maximum length
 of a message, and so on.<26>
@@ -2780,11 +2684,11 @@ return SMB_ERR_NO_ROOM to the message client in an appropriate SMB reply message
 to successfully buffer the message, it MUST return SMB_ERR_SUCCESS to the message client in an
 appropriate SMB reply message.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -2795,12 +2699,13 @@ Release: June 1, 2017
 
 33 / 43
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-MSRP].images/page034-img01.png)
 ![Extracted image 2 from page 34]([MS-MSRP].images/page034-img02.png)
 <!-- /Extracted images from page 34 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 Consider two computers, PRINTSERVER (a print server) and WORKSTATION (a user's desktop).
 WORKSTATION has only one network interface card, which is on a physical network that is remote to
@@ -2840,12 +2745,13 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-5  Security
+
+## 5 Security
 
 Some interfaces in this protocol do not support remote authentication or authorization, and can
 potentially be abused to interfere with or cause spurious message delivery.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 Because some interfaces of this protocol are unauthenticated and do not perform authorization, a
 service that receives and acts on messages in this protocol can be used by an attacker to cause
@@ -2854,7 +2760,7 @@ unwanted notifications to a console user. This occurred in the Windows implement
 that acted on the protocol messages. It is recommended that this protocol not be implemented due to
 the lack of security features in the protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters associated with this protocol.
 
@@ -2865,11 +2771,12 @@ Release: June 1, 2017
 
 35 / 43
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 The Messenger Service Remote protocol uses two IDL files, msgsvcsend.idl and msgsvc.idl.
 
-6.1  Appendix A.1: msgsvcsend.idl
+### 6.1 Appendix A.1: msgsvcsend.idl
 
 The msgsvcsend.idl file appears as follows.
 
@@ -2890,7 +2797,7 @@ The msgsvcsend.idl file appears as follows.
          );
  }
 
-6.2  Appendix A.2: msgsvc.idl
+### 6.2 Appendix A.2: msgsvc.idl
 
 The msgsvc.idl file appears as follows.
 
@@ -2933,7 +2840,8 @@ Release: June 1, 2017
 
 36 / 43
 
-     } MSG_INFO_0_CONTAINER, *PMSG_INFO_0_CONTAINER,
+
+     } MSG_INFO_0_CONTAINER, *PMSG_INFO_0_CONTAINER,
        *LPMSG_INFO_0_CONTAINER;
 
      typedef struct _MSG_INFO_1_CONTAINER {
@@ -2992,7 +2900,8 @@ Release: June 1, 2017
 
 37 / 43
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3059,7 +2968,8 @@ Messenger Service Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<11> Section 3.1.4.5: Windows XP and Windows Server 2003 both limit the MsgName parameter to
+
+<11> Section 3.1.4.5: Windows XP and Windows Server 2003 both limit the MsgName parameter to
 16 characters, including the terminating null character, when calling NetrMessageNameAdd(). If the
 MsgName is longer than 16 characters, the server returns ERROR_INVALID_PARAMETER. Windows
 2000 does not check the length of the MsgName parameter when calling NetrMessageNameAdd() but
@@ -3125,7 +3035,8 @@ Release: June 1, 2017
 
 39 / 43
 
-The Windows implementation of the message client for the protocols defined in this document rejects
+
+The Windows implementation of the message client for the protocols defined in this document rejects
 messages sent to the recipient name *.
 
  For recipient names that end in an asterisk, Windows attempts to deliver the message through
@@ -3155,7 +3066,8 @@ Release: June 1, 2017
 
 40 / 43
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -3167,7 +3079,8 @@ Release: June 1, 2017
 
 41 / 43
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3310,7 +3223,8 @@ R
 
 42 / 43
 
-References 7
+
+References 7
    informative 8
    normative 7
 Relationship to other protocols 9

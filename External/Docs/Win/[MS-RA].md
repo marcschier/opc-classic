@@ -63,7 +63,8 @@ Release: January 13, 2026
 
 1 / 90
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: January 13, 2026
 
 2 / 90
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: January 13, 2026
 
 3 / 90
 
-Date
+
+Date
 
 Revision
 History
@@ -588,454 +591,209 @@ Release: January 13, 2026
 
 4 / 90
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Session Initialization](#131-session-initialization)
+    - [1.3.2 File Transfer](#132-file-transfer)
+    - [1.3.3 Share Control](#133-share-control)
+    - [1.3.4 Chat](#134-chat)
+    - [1.3.5 VoIP Control](#135-voip-control)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Session Initialization Messages](#221-session-initialization-messages)
+      - [2.2.1.1 REMOTEDESKTOP_CHANNELBUFHEADER](#2211-remotedesktopchannelbufheader)
+      - [2.2.1.2 REMOTEDESKTOP_CTL_PACKETHEADER](#2212-remotedesktopctlpacketheader)
+      - [2.2.1.3 REMOTEDESKTOP_CTL_BUFHEADER](#2213-remotedesktopctlbufheader)
+      - [2.2.1.4 REMOTEDESKTOP_CTL_AUTHENTICATE_PACKET](#2214-remotedesktopctlauthenticatepacket)
+      - [2.2.1.5 REMOTEDESKTOP_CTL_DISCONNECT_PACKET](#2215-remotedesktopctldisconnectpacket)
+      - [2.2.1.6 REMOTEDESKTOP_CTL_ISCONNECTED_PACKET](#2216-remotedesktopctlisconnectedpacket)
+      - [2.2.1.7 REMOTEDESKTOP_CTL_SERVER_ANNOUNCE](#2217-remotedesktopctlserverannounce)
+      - [2.2.1.8 REMOTEDESKTOP_CTL_VERSIONINFO_PACKET](#2218-remotedesktopctlversioninfopacket)
+      - [2.2.1.9 REMOTEDESKTOP_CTL_REMOTE_CONTROL_DESKTOP_PACKET](#2219-remotedesktopctlremotecontroldesktoppacket)
+      - [2.2.1.10 REMOTEDESKTOP_CTL_RESULT_PACKET](#22110-remotedesktopctlresultpacket)
+      - [2.2.1.11 REMOTEDESKTOP_CTL_VERIFY_PASSWORD_PACKET](#22111-remotedesktopctlverifypasswordpacket)
+      - [2.2.1.12 REMOTEDESKTOP_EXPERT_ON_VISTA](#22112-remotedesktopexpertonvista)
+      - [2.2.1.13 REMOTEDESKTOP_CTL_RANOVICE_NAME](#22113-remotedesktopctlranovicename)
+      - [2.2.1.14 REMOTEDESKTOP_CTL_RAEXPERT_NAME](#22114-remotedesktopctlraexpertname)
+      - [2.2.1.15 REMOTEDESKTOP_CTL_TOKEN_PACKET](#22115-remotedesktopctltokenpacket)
+    - [2.2.2 Session Control (RCCOMMAND)](#222-session-control-rccommand)
+    - [2.2.3 File Transfer Commands](#223-file-transfer-commands)
+    - [2.2.4 Session Authorization Token](#224-session-authorization-token)
+    - [2.2.5 Remote Assistance Contact Information](#225-remote-assistance-contact-information)
+    - [2.2.6 Remote Assistance Error Codes](#226-remote-assistance-error-codes)
+    - [2.2.7 Extensions to the Remote Desktop Protocol](#227-extensions-to-the-remote-desktop-protocol)
+      - [2.2.7.1 Fast-Path Update Wrapper (MSRA_FP_UPDATE_WRAPPER)](#2271-fast-path-update-wrapper-msrafpupdatewrapper)
+      - [2.2.7.2 Client Info PDU](#2272-client-info-pdu)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Establishing a Remote Assistance Connection - Expert Details](#31-establishing-a-remote-assistance-connection-expert-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Establishing a Remote Assistance Connection - Novice Details](#32-establishing-a-remote-assistance-connection-novice-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Session Initialization Using the Expert (Client) Implementing Only Version 1](#33-session-initialization-using-the-expert-client-implementing-only-version-1)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Session Initialization Using the Novice (Server) Implementing Only Version 1](#34-session-initialization-using-the-novice-server-implementing-only-version-1)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+  - [3.5 Session Initialization Using the Expert (Client) Implementing Version 1 and](#35-session-initialization-using-the-expert-client-implementing-version-1-and)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Higher-Layer Triggered Events](#354-higher-layer-triggered-events)
+    - [3.5.5 Message Processing Events and Sequencing Rules](#355-message-processing-events-and-sequencing-rules)
+    - [3.5.6 Timer Events](#356-timer-events)
+    - [3.5.7 Other Local Events](#357-other-local-events)
+  - [3.6 Session Initialization Using the Novice (Server) Implementing Version 1 and](#36-session-initialization-using-the-novice-server-implementing-version-1-and)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Higher-Layer Triggered Events](#364-higher-layer-triggered-events)
+    - [3.6.5 Message Processing Events and Sequencing Rules](#365-message-processing-events-and-sequencing-rules)
+    - [3.6.6 Timer Events](#366-timer-events)
+    - [3.6.7 Other Local Events](#367-other-local-events)
+  - [3.7 Session Initialization Using the Expert (Client) Implementing Version 1, Version](#37-session-initialization-using-the-expert-client-implementing-version-1-version)
+    - [3.7.1 Abstract Data Model](#371-abstract-data-model)
+    - [3.7.2 Timers](#372-timers)
+    - [3.7.3 Initialization](#373-initialization)
+    - [3.7.4 Higher-Layer Triggered Events](#374-higher-layer-triggered-events)
+    - [3.7.5 Message Processing Events and Sequencing Rules](#375-message-processing-events-and-sequencing-rules)
+    - [3.7.6 Timer Events](#376-timer-events)
+    - [3.7.7 Other Local Events](#377-other-local-events)
+  - [3.8 Session Initialization Using the Novice (Server) Implementing Version 1, Version](#38-session-initialization-using-the-novice-server-implementing-version-1-version)
+    - [3.8.1 Abstract Data Model](#381-abstract-data-model)
+    - [3.8.2 Timers](#382-timers)
+    - [3.8.3 Initialization](#383-initialization)
+    - [3.8.4 Higher-Layer Triggered Events](#384-higher-layer-triggered-events)
+    - [3.8.5 Message Processing Events and Sequencing Rules](#385-message-processing-events-and-sequencing-rules)
+    - [3.8.6 Timer Events](#386-timer-events)
+    - [3.8.7 Other Local Events](#387-other-local-events)
+  - [3.9 File Transfer Sender Details](#39-file-transfer-sender-details)
+    - [3.9.1 Abstract Data Model](#391-abstract-data-model)
+    - [3.9.2 Timers](#392-timers)
+    - [3.9.3 Initialization](#393-initialization)
+    - [3.9.4 Higher-Layer Triggered Events](#394-higher-layer-triggered-events)
+    - [3.9.5 Message Processing Events and Sequencing Rules](#395-message-processing-events-and-sequencing-rules)
+    - [3.9.6 Timer Events](#396-timer-events)
+    - [3.9.7 Other Local Events](#397-other-local-events)
+  - [3.10 File Transfer Receiver Details](#310-file-transfer-receiver-details)
+    - [3.10.1 Abstract Data Model](#3101-abstract-data-model)
+    - [3.10.2 Timers](#3102-timers)
+    - [3.10.3 Initialization](#3103-initialization)
+    - [3.10.4 Higher-Layer Triggered Events](#3104-higher-layer-triggered-events)
+    - [3.10.5 Message Processing Events and Sequencing Rules](#3105-message-processing-events-and-sequencing-rules)
+    - [3.10.6 Timer Events](#3106-timer-events)
+    - [3.10.7 Other Local Events](#3107-other-local-events)
+  - [3.11 Chat (Text) Sender Details](#311-chat-text-sender-details)
+    - [3.11.1 Abstract Data Model](#3111-abstract-data-model)
+    - [3.11.2 Timers](#3112-timers)
+    - [3.11.3 Initialization](#3113-initialization)
+    - [3.11.4 Higher-Layer Triggered Events](#3114-higher-layer-triggered-events)
+    - [3.11.5 Message Processing Events and Sequencing Rules](#3115-message-processing-events-and-sequencing-rules)
+    - [3.11.6 Timer Events](#3116-timer-events)
+    - [3.11.7 Other Local Events](#3117-other-local-events)
+  - [3.12 Chat (Text) Receiver Details](#312-chat-text-receiver-details)
+    - [3.12.1 Abstract Data Model](#3121-abstract-data-model)
+    - [3.12.2 Timers](#3122-timers)
+    - [3.12.3 Initialization](#3123-initialization)
+    - [3.12.4 Higher-Layer Triggered Events](#3124-higher-layer-triggered-events)
+    - [3.12.5 Message Processing Events and Sequencing Rules](#3125-message-processing-events-and-sequencing-rules)
+    - [3.12.6 Timer Events](#3126-timer-events)
+    - [3.12.7 Other Local Events](#3127-other-local-events)
+  - [3.13 Setting Announcement Sender Details](#313-setting-announcement-sender-details)
+    - [3.13.1 Abstract Data Model](#3131-abstract-data-model)
+    - [3.13.2 Timers](#3132-timers)
+    - [3.13.3 Initialization](#3133-initialization)
+    - [3.13.4 Higher-Layer Triggered Events](#3134-higher-layer-triggered-events)
+    - [3.13.5 Message Processing Events and Sequencing Rules](#3135-message-processing-events-and-sequencing-rules)
+    - [3.13.6 Timer Events](#3136-timer-events)
+    - [3.13.7 Other Local Events](#3137-other-local-events)
+  - [3.14 Setting Announcement Receiver Details](#314-setting-announcement-receiver-details)
+    - [3.14.1 Abstract Data Model](#3141-abstract-data-model)
+    - [3.14.2 Timers](#3142-timers)
+    - [3.14.3 Initialization](#3143-initialization)
+    - [3.14.4 Higher-Layer Triggered Events](#3144-higher-layer-triggered-events)
+    - [3.14.5 Message Processing Events and Sequencing Rules](#3145-message-processing-events-and-sequencing-rules)
+    - [3.14.6 Timer Events](#3146-timer-events)
+    - [3.14.7 Other Local Events](#3147-other-local-events)
+  - [3.15 Share Control Remote Assistance Expert (Client) Details](#315-share-control-remote-assistance-expert-client-details)
+    - [3.15.1 Abstract Data Model](#3151-abstract-data-model)
+    - [3.15.2 Timers](#3152-timers)
+    - [3.15.3 Initialization](#3153-initialization)
+    - [3.15.4 Higher-Layer Triggered Events](#3154-higher-layer-triggered-events)
+    - [3.15.5 Message Processing Events and Sequencing Rules](#3155-message-processing-events-and-sequencing-rules)
+    - [3.15.6 Timer Events](#3156-timer-events)
+    - [3.15.7 Other Local Events](#3157-other-local-events)
+  - [3.16 Share Control Remote Assistance Novice (Server) Details](#316-share-control-remote-assistance-novice-server-details)
+    - [3.16.1 Abstract Data Model](#3161-abstract-data-model)
+    - [3.16.2 Timers](#3162-timers)
+    - [3.16.3 Initialization](#3163-initialization)
+    - [3.16.4 Higher-Layer Triggered Events](#3164-higher-layer-triggered-events)
+    - [3.16.5 Message Processing Events and Sequencing Rules](#3165-message-processing-events-and-sequencing-rules)
+    - [3.16.6 Timer Events](#3166-timer-events)
+    - [3.16.7 Other Local Events](#3167-other-local-events)
+  - [3.17 Voice Expert (Client) Details](#317-voice-expert-client-details)
+    - [3.17.1 Abstract Data Model](#3171-abstract-data-model)
+    - [3.17.2 Timers](#3172-timers)
+    - [3.17.3 Initialization](#3173-initialization)
+    - [3.17.4 Higher-Layer Triggered Events](#3174-higher-layer-triggered-events)
+    - [3.17.5 Message Processing Events and Sequencing Rules](#3175-message-processing-events-and-sequencing-rules)
+    - [3.17.6 Timer Events](#3176-timer-events)
+    - [3.17.7 Other Local Events](#3177-other-local-events)
+  - [3.18 Voice Novice (Server) Details](#318-voice-novice-server-details)
+    - [3.18.1 Abstract Data Model](#3181-abstract-data-model)
+    - [3.18.2 Timers](#3182-timers)
+    - [3.18.3 Initialization](#3183-initialization)
+    - [3.18.4 Higher-Layer Triggered Events](#3184-higher-layer-triggered-events)
+    - [3.18.5 Message Processing Events and Sequencing Rules](#3185-message-processing-events-and-sequencing-rules)
+    - [3.18.6 Timer Events](#3186-timer-events)
+    - [3.18.7 Other Local Events](#3187-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example of a VOIPGO Message](#41-example-of-a-voipgo-message)
+  - [4.2 Example of a FILEXFER Message](#42-example-of-a-filexfer-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 11
-Session Initialization ................................................................................... 12
-File Transfer ............................................................................................... 12
-Share Control ............................................................................................. 12
-Chat.......................................................................................................... 12
-VoIP Control .............................................................................................. 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 14
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-2.2.1.10
-2.2.1.11
-2.2.1.12
-2.2.1.13
-2.2.1.14
-2.2.1.15
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-Session Initialization Messages ..................................................................... 15
-REMOTEDESKTOP_CHANNELBUFHEADER ................................................. 15
-REMOTEDESKTOP_CTL_PACKETHEADER .................................................. 15
-REMOTEDESKTOP_CTL_BUFHEADER ....................................................... 16
-REMOTEDESKTOP_CTL_AUTHENTICATE_PACKET ...................................... 17
-REMOTEDESKTOP_CTL_DISCONNECT_PACKET ......................................... 18
-REMOTEDESKTOP_CTL_ISCONNECTED_PACKET ....................................... 18
-REMOTEDESKTOP_CTL_SERVER_ANNOUNCE ............................................ 19
-REMOTEDESKTOP_CTL_VERSIONINFO_PACKET ........................................ 19
-REMOTEDESKTOP_CTL_REMOTE_CONTROL_DESKTOP_PACKET .................. 20
-REMOTEDESKTOP_CTL_RESULT_PACKET ................................................. 20
-REMOTEDESKTOP_CTL_VERIFY_PASSWORD_PACKET ................................ 21
-REMOTEDESKTOP_EXPERT_ON_VISTA .................................................... 22
-REMOTEDESKTOP_CTL_RANOVICE_NAME ................................................ 22
-REMOTEDESKTOP_CTL_RAEXPERT_NAME ................................................ 23
-REMOTEDESKTOP_CTL_TOKEN_PACKET .................................................. 23
-Session Control (RCCOMMAND) .................................................................... 24
-File Transfer Commands .............................................................................. 28
-Session Authorization Token ........................................................................ 28
-Remote Assistance Contact Information ......................................................... 29
-Remote Assistance Error Codes .................................................................... 29
-Extensions to the Remote Desktop Protocol ................................................... 32
-Fast-Path Update Wrapper (MSRA_FP_UPDATE_WRAPPER) ........................ 32
-Client Info PDU ..................................................................................... 33
-
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-2.2.7.1
-2.2.7.2
-
-3.1
-
-3  Protocol Details ..................................................................................................... 34
-Establishing a Remote Assistance Connection - Expert Details ............................... 36
-Abstract Data Model .................................................................................... 36
-Timers ...................................................................................................... 36
-Initialization ............................................................................................... 36
-Higher-Layer Triggered Events ..................................................................... 36
-Message Processing Events and Sequencing Rules .......................................... 36
-Timer Events .............................................................................................. 36
-Other Local Events ...................................................................................... 36
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-[MS-RA] - v20260113
-Remote Assistance Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 13, 2026
-
-5 / 90
-
-3.2
-
-3.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-3.4.6
-3.4.7
-
-3.5
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-3.5.5
-3.5.6
-3.5.7
-
-3.6
-
-3.6.1
-3.6.2
-3.6.3
-3.6.4
-3.6.5
-3.6.6
-3.6.7
-
-3.7
-
-3.7.1
-3.7.2
-3.7.3
-3.7.4
-3.7.5
-3.7.6
-3.7.7
-
-3.8
-
-3.8.1
-3.8.2
-3.8.3
-3.8.4
-3.8.5
-
-Establishing a Remote Assistance Connection - Novice Details ............................... 36
-Abstract Data Model .................................................................................... 36
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Higher-Layer Triggered Events ..................................................................... 37
-Message Processing Events and Sequencing Rules .......................................... 37
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-Session Initialization Using the Expert (Client) Implementing Only Version 1 Details  37
-Abstract Data Model .................................................................................... 38
-Timers ...................................................................................................... 39
-Initialization ............................................................................................... 39
-Higher-Layer Triggered Events ..................................................................... 39
-Message Processing Events and Sequencing Rules .......................................... 39
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-Session Initialization Using the Novice (Server) Implementing Only Version 1 Details 42
-Abstract Data Model .................................................................................... 43
-Timers ...................................................................................................... 43
-Initialization ............................................................................................... 43
-Higher-Layer Triggered Events ..................................................................... 43
-Message Processing Events and Sequencing Rules .......................................... 43
-Timer Events .............................................................................................. 44
-Other Local Events ...................................................................................... 44
-
-Session Initialization Using the Expert (Client) Implementing Version 1 and Version 2
-Details ............................................................................................................ 44
-Abstract Data Model .................................................................................... 45
-Timers ...................................................................................................... 46
-Initialization ............................................................................................... 46
-Higher-Layer Triggered Events ..................................................................... 46
-Message Processing Events and Sequencing Rules .......................................... 46
-Timer Events .............................................................................................. 48
-Other Local Events ...................................................................................... 48
-Session Initialization Using the Novice (Server) Implementing Version 1 and Version 2
-Details ............................................................................................................ 48
-Abstract Data Model .................................................................................... 49
-Timers ...................................................................................................... 50
-Initialization ............................................................................................... 50
-Higher-Layer Triggered Events ..................................................................... 50
-Message Processing Events and Sequencing Rules .......................................... 50
-Timer Events .............................................................................................. 51
-Other Local Events ...................................................................................... 51
-Session Initialization Using the Expert (Client) Implementing Version 1, Version 2, and
-Version 3 Details .............................................................................................. 51
-Abstract Data Model .................................................................................... 52
-Timers ...................................................................................................... 52
-Initialization ............................................................................................... 52
-Higher-Layer Triggered Events ..................................................................... 53
-Message Processing Events and Sequencing Rules .......................................... 53
-Timer Events .............................................................................................. 53
-Other Local Events ...................................................................................... 54
-Session Initialization Using the Novice (Server) Implementing Version 1, Version 2, and
-Version 3 Details .............................................................................................. 54
-Abstract Data Model .................................................................................... 55
-Timers ...................................................................................................... 55
-Initialization ............................................................................................... 55
-Higher-Layer Triggered Events ..................................................................... 56
-Message Processing Events and Sequencing Rules .......................................... 56
-
-[MS-RA] - v20260113
-Remote Assistance Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 13, 2026
-
-6 / 90
-
-3.9
-
-3.10
-
-3.8.6
-3.8.7
-
-3.9.1
-3.9.2
-3.9.3
-3.9.4
-3.9.5
-3.9.6
-3.9.7
-
-Timer Events .............................................................................................. 56
-Other Local Events ...................................................................................... 56
-File Transfer Sender Details ............................................................................... 56
-Abstract Data Model .................................................................................... 57
-Timers ...................................................................................................... 57
-Initialization ............................................................................................... 57
-Higher-Layer Triggered Events ..................................................................... 57
-Message Processing Events and Sequencing Rules .......................................... 58
-Timer Events .............................................................................................. 59
-Other Local Events ...................................................................................... 59
-File Transfer Receiver Details ............................................................................. 59
-Abstract Data Model .................................................................................... 60
-3.10.1
-Timers ...................................................................................................... 60
-3.10.2
-3.10.3
-Initialization ............................................................................................... 60
-3.10.4  Higher-Layer Triggered Events ..................................................................... 61
-3.10.5  Message Processing Events and Sequencing Rules .......................................... 61
-Timer Events .............................................................................................. 62
-3.10.6
-3.10.7  Other Local Events ...................................................................................... 62
-Chat (Text) Sender Details ................................................................................ 62
-Abstract Data Model .................................................................................... 63
-3.11.1
-Timers ...................................................................................................... 63
-3.11.2
-3.11.3
-Initialization ............................................................................................... 63
-3.11.4  Higher-Layer Triggered Events ..................................................................... 63
-3.11.5  Message Processing Events and Sequencing Rules .......................................... 63
-3.11.6
-Timer Events .............................................................................................. 63
-3.11.7  Other Local Events ...................................................................................... 63
-Chat (Text) Receiver Details .............................................................................. 63
-Abstract Data Model .................................................................................... 63
-3.12.1
-Timers ...................................................................................................... 63
-3.12.2
-Initialization ............................................................................................... 64
-3.12.3
-3.12.4  Higher-Layer Triggered Events ..................................................................... 64
-3.12.5  Message Processing Events and Sequencing Rules .......................................... 64
-3.12.6
-Timer Events .............................................................................................. 64
-3.12.7  Other Local Events ...................................................................................... 64
-Setting Announcement Sender Details ................................................................ 64
-Abstract Data Model .................................................................................... 64
-3.13.1
-Timers ...................................................................................................... 64
-3.13.2
-3.13.3
-Initialization ............................................................................................... 64
-3.13.4  Higher-Layer Triggered Events ..................................................................... 64
-3.13.5  Message Processing Events and Sequencing Rules .......................................... 65
-3.13.6
-Timer Events .............................................................................................. 65
-3.13.7  Other Local Events ...................................................................................... 65
-Setting Announcement Receiver Details .............................................................. 65
-Abstract Data Model .................................................................................... 65
-3.14.1
-Timers ...................................................................................................... 65
-3.14.2
-3.14.3
-Initialization ............................................................................................... 66
-3.14.4  Higher-Layer Triggered Events ..................................................................... 66
-3.14.5  Message Processing Events and Sequencing Rules .......................................... 66
-Timer Events .............................................................................................. 66
-3.14.6
-3.14.7  Other Local Events ...................................................................................... 66
-Share Control Remote Assistance Expert (Client) Details ....................................... 67
-Abstract Data Model .................................................................................... 67
-3.15.1
-Timers ...................................................................................................... 67
-3.15.2
-3.15.3
-Initialization ............................................................................................... 68
-3.15.4  Higher-Layer Triggered Events ..................................................................... 68
-3.15.5  Message Processing Events and Sequencing Rules .......................................... 68
-3.15.6
-Timer Events .............................................................................................. 69
-3.15.7  Other Local Events ...................................................................................... 69
-
-3.11
-
-3.12
-
-3.13
-
-3.14
-
-3.15
-
-[MS-RA] - v20260113
-Remote Assistance Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 13, 2026
-
-7 / 90
-
-3.16
-
-Share Control Remote Assistance Novice (Server) Details ..................................... 70
-Abstract Data Model .................................................................................... 70
-3.16.1
-Timers ...................................................................................................... 70
-3.16.2
-3.16.3
-Initialization ............................................................................................... 71
-3.16.4  Higher-Layer Triggered Events ..................................................................... 71
-3.16.5  Message Processing Events and Sequencing Rules .......................................... 71
-Timer Events .............................................................................................. 72
-3.16.6
-3.16.7  Other Local Events ...................................................................................... 72
-Voice Expert (Client) Details .............................................................................. 72
-Abstract Data Model .................................................................................... 74
-3.17.1
-Timers ...................................................................................................... 74
-3.17.2
-Initialization ............................................................................................... 74
-3.17.3
-3.17.4  Higher-Layer Triggered Events ..................................................................... 75
-3.17.5  Message Processing Events and Sequencing Rules .......................................... 75
-3.17.6
-Timer Events .............................................................................................. 76
-3.17.7  Other Local Events ...................................................................................... 76
-Voice Novice (Server) Details ............................................................................ 76
-Abstract Data Model .................................................................................... 78
-3.18.1
-Timers ...................................................................................................... 78
-3.18.2
-3.18.3
-Initialization ............................................................................................... 79
-3.18.4  Higher-Layer Triggered Events ..................................................................... 79
-3.18.5  Message Processing Events and Sequencing Rules .......................................... 79
-3.18.6
-Timer Events .............................................................................................. 80
-3.18.7  Other Local Events ...................................................................................... 80
-
-3.17
-
-3.18
-
-4  Protocol Examples ................................................................................................. 81
-Example of a VOIPGO Message .......................................................................... 81
-Example of a FILEXFER Message ........................................................................ 81
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 82
-Security Considerations for Implementers ........................................................... 82
-Index of Security Parameters ............................................................................ 82
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 83
-
-7  Change Tracking .................................................................................................... 86
-
-8  Index ..................................................................................................................... 87
-
-[MS-RA] - v20260113
-Remote Assistance Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 13, 2026
-
-8 / 90
-
-1  Introduction
+## 1 Introduction
 
 This document describes the Remote Assistance Protocol. This protocol is used after a Remote
 Assistance connection is established between two computers. The protocol used to establish the
@@ -1047,7 +805,7 @@ The functions supported by the Remote Assistance Protocol are session initializa
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1107,7 +865,8 @@ Release: January 13, 2026
 
 9 / 90
 
-Unicode string: A Unicode 8-bit string is an ordered sequence of 8-bit units, a Unicode 16-bit
+
+Unicode string: A Unicode 8-bit string is an ordered sequence of 8-bit units, a Unicode 16-bit
 string is an ordered sequence of 16-bit code units, and a Unicode 32-bit string is an ordered
 sequence of 32-bit code units. In some cases, it could be acceptable not to terminate with a
 terminating null character. Unless otherwise specified, all Unicode strings follow the UTF-16LE
@@ -1125,14 +884,14 @@ intranets, extranets, and the Internet.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1171,7 +930,8 @@ Release: January 13, 2026
 
 10 / 90
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MSDN-RTC] Microsoft Corporation, "RTC Overview", http://msdn.microsoft.com/en-
 us/library/ms775938.aspx
@@ -1209,7 +969,7 @@ https://www.catalog.update.microsoft.com/Search.aspx?q=5073724
 [MSKB-5074109] Microsoft Corporation, "January 2026 - 5074109", January 2026,
 https://www.catalog.update.microsoft.com/Search.aspx?q=5074109
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Assistance Protocol is used after a Remote Assistance connection is established to
 facilitate different capabilities used during the connection. This protocol supports six capabilities: basic
@@ -1245,7 +1005,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-1.3.1  Session Initialization
+
+#### 1.3.1 Session Initialization
 
 The session initialization capability supported by the Remote Assistance Protocol allows control
 messages to be exchanged between the novice and the expert. This exchange has to be completed
@@ -1254,7 +1015,7 @@ successfully for the Remote Assistance session to be established.
 Once the Remote Assistance session is established, the expert can view the novice's screen, and other
 Remote Assistance (RA) capabilities can be initiated.
 
-1.3.2  File Transfer
+#### 1.3.2 File Transfer
 
 The file transfer capability supported by the Remote Assistance Protocol enables files to be copied
 from one computer to another. Both computers have to be in a Remote Assistance session to
@@ -1268,7 +1029,7 @@ established, control messages and data messages are sent through the virtual cha
 the transfer. The data messages contain the data that is in the file, and the control messages
 synchronize the file transfer between the two computers and confirm successful transfer.
 
-1.3.3  Share Control
+#### 1.3.3 Share Control
 
 The share control capability supported by the Remote Assistance Protocol is used to control and
 synchronize the state of the Remote Assistance session between two computers. When a Remote
@@ -1282,7 +1043,7 @@ and it is used to exchange share control messages between the two computers. The
 virtual channel persists for the duration of the Remote Assistance connection. Only control messages
 are sent through the session control virtual channel.
 
-1.3.4  Chat
+#### 1.3.4 Chat
 
 The chat capability supported by the Remote Assistance Protocol allows the exchange of text
 messages between two computers that are in a Remote Assistance session. A chat virtual channel
@@ -1293,7 +1054,7 @@ Once the chat virtual channel is created, text messages can be transported in a 
 between the two computers. All the messages that are sent through a chat virtual channel are text
 messages. The chat virtual channel does not have any control messages.
 
-1.3.5  VoIP Control
+#### 1.3.5 VoIP Control
 
 The VoIP (Voice over Internet Protocol) capability is used to control the audio communications
 between two computers in a Remote Assistance session. The VoIP control virtual channel is created
@@ -1308,7 +1069,8 @@ Release: January 13, 2026
 
 12 / 90
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The Remote Assistance Protocol assumes that a Remote Assistance connection string between two
 computers has been transferred using the Remote Assistance Initiation [MS-RAI] or Remote
@@ -1321,7 +1083,7 @@ Transmission Control Protocol (TCP) ([RFC793]).
 
 No other protocol is dependent on the Remote Assistance Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 See section 1.7 for the definitions of versions 1, 2, and 3 of the protocol.
 
@@ -1340,12 +1102,12 @@ The novice uses either version 1 or 2 of the protocol when the Remote Assistance
 specified, any reference to the Remote Assistance Connection String refers to both the Remote
 Assistance Connection String 1 and the Remote Assistance Connection String 2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is used to establish the basic Remote Assistance connection, initialize the Remote
 Assistance (RA) session and accomplish file transfer, share control, chat, and VoIP control.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There are three versions of the Remote Assistance protocol.
 
@@ -1363,7 +1125,7 @@ Implementations support either version 1, version 1 and version 2, or version 1,
 version 3. The negotiation of the protocol between the expert and the novice is described in section 3
 of this document.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields in the Remote Assistance Protocol.
 
@@ -1374,7 +1136,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 The Remote Assistance Protocol does not use any standards assignments.
 
@@ -1385,9 +1148,10 @@ Release: January 13, 2026
 
 14 / 90
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 When the Remote Assistance connection is started, it MUST create three virtual channels:
 
@@ -1407,17 +1171,17 @@ These three virtual channels MUST persist for the duration of the Remote Assista
 
 A separate virtual channel for file transfer MUST be created dynamically when needed.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 In addition to the data types in the following sections, this protocol references commonly used data
 types as defined in [MS-DTYP].
 
-2.2.1  Session Initialization Messages
+#### 2.2.1 Session Initialization Messages
 
 All of these messages MUST be sent and received over the session initialization (RC_CTL) virtual
 channel.
 
-2.2.1.1  REMOTEDESKTOP_CHANNELBUFHEADER
+##### 2.2.1.1 REMOTEDESKTOP_CHANNELBUFHEADER
 
 The REMOTEDESKTOP_CHANNELBUFHEADER data structure provides information about the size of the
 channel name and message data in a Remote Assistance (RA) virtual channel packet. This data
@@ -1442,7 +1206,7 @@ ChannelNameLen (4 bytes): Length of the virtual channel name in bytes. This is a
 
 DataLen (4 bytes): Length in bytes of the packet data. This is a DWORD.
 
-2.2.1.2  REMOTEDESKTOP_CTL_PACKETHEADER
+##### 2.2.1.2 REMOTEDESKTOP_CTL_PACKETHEADER
 
 The REMOTEDESKTOP_CTL_PACKETHEADER is the <control message packet> header.
 
@@ -1466,7 +1230,8 @@ Release: January 13, 2026
 
 15 / 90
 
-...
+
+...
 
 ChannelName (variable)
 
@@ -1519,7 +1284,7 @@ Specifies a file transfer. This is used by either novice or expert under version
 
 Data immediately follows the ChannelName field and is transferred as a Unicode string.
 
-2.2.1.3  REMOTEDESKTOP_CTL_BUFHEADER
+##### 2.2.1.3 REMOTEDESKTOP_CTL_BUFHEADER
 
 The REMOTEDESKTOP_CTL_BUFHEADER describes the type of a Remote Assistance channel
 message.
@@ -1562,7 +1327,8 @@ Release: January 13, 2026
 
 16 / 90
 
-Name
+
+Name
 
 Value
 
@@ -1600,7 +1366,7 @@ REMOTEDESKTOP_CTL_RAEXPERT_NAME
 
 REMOTEDESKTOP_CTL_TOKEN (This attribute is only supported by version 3.)  12
 
-2.2.1.4  REMOTEDESKTOP_CTL_AUTHENTICATE_PACKET
+##### 2.2.1.4 REMOTEDESKTOP_CTL_AUTHENTICATE_PACKET
 
 The REMOTEDESKTOP_CTL_AUTHENTICATE_PACKET is the expert authentication response packet.
 The expert sends this packet that includes the Remote Assistance connection string to the novice
@@ -1653,7 +1419,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-expertBlob (variable): A NULL-terminated, variable-length, semicolon-delimited, Unicode-based
+
+expertBlob (variable): A NULL-terminated, variable-length, semicolon-delimited, Unicode-based
 set of PropertyName, PropertyValue pairs. Each pair is also prefixed with the length of the
 characters in the pair, including the equal (=) sign. For example, if PropertyName is "NAME", and
 PropertyValue is "John", the value of expertBlob is "9;NAME=John". This is a mechanism to
@@ -1664,7 +1431,7 @@ making a connection with a Remote Assistance Invitation File. The PASS property 
 that contains the result of encrypting the PassStub in the Remote Assistance Invitation File with
 the password. For more details, see [MS-RAI] section 6.
 
-2.2.1.5  REMOTEDESKTOP_CTL_DISCONNECT_PACKET
+##### 2.2.1.5 REMOTEDESKTOP_CTL_DISCONNECT_PACKET
 
 The REMOTEDESKTOP_CTL_DISCONNECT_PACKET indicates that the sender has disconnected.
 
@@ -1699,7 +1466,7 @@ It is possible that a disconnected client or server will not send this packet. T
 REMOTEDESKTOP_CTL_ISCONNECTED_PACKET packet can be used to track the connection state.
 There is no other additional data.
 
-2.2.1.6  REMOTEDESKTOP_CTL_ISCONNECTED_PACKET
+##### 2.2.1.6 REMOTEDESKTOP_CTL_ISCONNECTED_PACKET
 
 The REMOTEDESKTOP_CTL_ISCONNECTED_PACKET indicates that the sender is present and is used in
 version 1 only.
@@ -1734,13 +1501,14 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-bufHeader (4 bytes): The REMOTEDESKTOP_CTL_BUFHEADER part of the packet. The packet type
+
+bufHeader (4 bytes): The REMOTEDESKTOP_CTL_BUFHEADER part of the packet. The packet type
 
 MUST be set to REMOTEDESKTOP_CTL_ISCONNECTED.
 
 There is no additional data beyond this.
 
-2.2.1.7  REMOTEDESKTOP_CTL_SERVER_ANNOUNCE
+##### 2.2.1.7 REMOTEDESKTOP_CTL_SERVER_ANNOUNCE
 
 The REMOTEDESKTOP_CTL_SERVER_ANNOUNCE packet is sent from the server to the client to begin
 the Remote Assistance session connection sequence.
@@ -1772,7 +1540,7 @@ bufHeader (4 bytes): The REMOTEDESKTOP_CTL_BUFHEADER part of the packet. The pac
 
 MUST be set to REMOTEDESKTOP_CTL_SERVER_ANNOUNCE.
 
-2.2.1.8  REMOTEDESKTOP_CTL_VERSIONINFO_PACKET
+##### 2.2.1.8 REMOTEDESKTOP_CTL_VERSIONINFO_PACKET
 
 The REMOTEDESKTOP_CTL_VERSIONINFO_PACKET indicates the version of the Remote Desktop
 Protocol to be used by the novice and the expert. It includes a major and a minor version. This
@@ -1816,7 +1584,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-versionMajor (4 bytes): Major version number of the Remote Desktop Protocol implemented by the
+
+versionMajor (4 bytes): Major version number of the Remote Desktop Protocol implemented by the
 
 sender as a DWORD.
 
@@ -1829,7 +1598,7 @@ respectively. If this is not the case, the version 1 novice and version 1 expert
 keep compatibility with version 1 and version 2, clients send this message but do not take any action
 upon receiving the message. In version 3, this message is not sent and is ignored when it is received.
 
-2.2.1.9  REMOTEDESKTOP_CTL_REMOTE_CONTROL_DESKTOP_PACKET
+##### 2.2.1.9 REMOTEDESKTOP_CTL_REMOTE_CONTROL_DESKTOP_PACKET
 
 The REMOTEDESKTOP_CTL_REMOTE_CONTROL_DESKTOP_PACKET is sent by the expert to the
 novice to request a view of the novice screen. This packet is sent only in version 1.
@@ -1869,9 +1638,9 @@ raConnectionString (variable): A variable-length string containing a Remote Assi
 
 String, as defined in [MS-RAI] sections 2.2.1 and 2.2.2.
 
-2.2.1.10
+##### 2.2.1.10 REMOTEDESKTOP_CTL_RESULT_PACKET
 
-REMOTEDESKTOP_CTL_RESULT_PACKET
+
 
 The REMOTEDESKTOP_CTL_RESULT_PACKET indicates the result of a client request.
 
@@ -1901,7 +1670,8 @@ Release: January 13, 2026
 
 20 / 90
 
-result
+
+result
 
 packetHeader (72 bytes): The REMOTEDESKTOP_CTL_PACKETHEADER part of the packet. The
 
@@ -1913,9 +1683,9 @@ MUST be set to REMOTEDESKTOP_CTL_RESULT.
 
 result (4 bytes): One of the values from the Remote Assistance Error Codes, as a DWORD.
 
-2.2.1.11
+##### 2.2.1.11 REMOTEDESKTOP_CTL_VERIFY_PASSWORD_PACKET
 
-REMOTEDESKTOP_CTL_VERIFY_PASSWORD_PACKET
+
 
 The REMOTEDESKTOP_CTL_VERIFY_PASSWORD_PACKET contains the encrypted password. This
 packet is sent by the expert to the novice. This packet is applicable only for version 2.
@@ -1973,9 +1743,10 @@ Release: January 13, 2026
 
 21 / 90
 
-2.2.1.12
 
-REMOTEDESKTOP_EXPERT_ON_VISTA
+##### 2.2.1.12 REMOTEDESKTOP_EXPERT_ON_VISTA
+
+
 
 The REMOTEDESKTOP_EXPERT_ON_VISTA is an announcement that expert is running Windows Vista
 operating system.
@@ -2018,9 +1789,9 @@ Encrypted Password (variable): Encrypted Password string included in the message
 defined in [MS-DTYP] section 2.2.5. For the password encryption flow diagram, refer to [MS-RAI]
 section 6.
 
-2.2.1.13
+##### 2.2.1.13 REMOTEDESKTOP_CTL_RANOVICE_NAME
 
-REMOTEDESKTOP_CTL_RANOVICE_NAME
+
 
 The REMOTEDESKTOP_CTL_RANOVICE_NAME packet is an optional packet that contains the novice
 name. This message is sent by the novice and is applicable to version 2 only.
@@ -2055,7 +1826,8 @@ Release: January 13, 2026
 
 22 / 90
 
-packetHeader (72 bytes): The REMOTEDESKTOP_CTL_PACKETHEADER part of the packet. The
+
+packetHeader (72 bytes): The REMOTEDESKTOP_CTL_PACKETHEADER part of the packet. The
 
 virtual channel name MUST be set to "RC_CTL".
 
@@ -2067,9 +1839,9 @@ RANovice Name (variable): Novice name string that is sent either from the expert
 
 or vice versa, as a BSTR.
 
-2.2.1.14
+##### 2.2.1.14 REMOTEDESKTOP_CTL_RAEXPERT_NAME
 
-REMOTEDESKTOP_CTL_RAEXPERT_NAME
+
 
 The REMOTEDESKTOP_CTL_RAEXPERT_NAME packet is an optional packet that contains the expert
 name. This message is sent by the expert and is applicable to version 2 only.
@@ -2109,9 +1881,9 @@ RAEXPERT NAME (variable): The expert name string is sent either from the expert 
 
 or vice versa, as a BSTR.
 
-2.2.1.15
+##### 2.2.1.15 REMOTEDESKTOP_CTL_TOKEN_PACKET
 
-REMOTEDESKTOP_CTL_TOKEN_PACKET
+
 
 The REMOTEDESKTOP_CTL_TOKEN_PACKET is used to send a token to the remote machine for mutual
 identification. This packet is sent from the expert to the novice or vice versa. Depending on the
@@ -2142,7 +1914,8 @@ Release: January 13, 2026
 
 23 / 90
 
-bufHeader
+
+bufHeader
 
 token (variable)
 
@@ -2160,7 +1933,7 @@ token (variable): The authorization token that is used to verify the sender's kn
 
 password, of type BSTR.
 
-2.2.2  Session Control (RCCOMMAND)
+#### 2.2.2 Session Control (RCCOMMAND)
 
 Session Control (<RCCOMMAND>) messages are XML formatted messages that are used for share
 control, file transfer initialization, and VoIP control. They MUST be sent and received over virtual
@@ -2227,7 +2000,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Attribute
+
+Attribute
 
 Type
 
@@ -2334,7 +2108,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Attribute
+
+Attribute
 
 Type
 
@@ -2437,7 +2212,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Attribute
+
+Attribute
 
 Type
 
@@ -2526,9 +2302,10 @@ Release: January 13, 2026
 
 27 / 90
 
-Can be empty  Yes
 
-2.2.3  File Transfer Commands
+Can be empty  Yes
+
+#### 2.2.3 File Transfer Commands
 
 The following values specify file transfer commands. They are sent across as a Unicode string on the
 virtual channel on which the file data is sent.
@@ -2551,7 +2328,7 @@ FILEXFERREJECT
 Indicates that either the file transfer was canceled or an error occurred and the transmission
 was terminated. This value can be sent by the sender or receiver of the file.
 
-2.2.4  Session Authorization Token
+#### 2.2.4 Session Authorization Token
 
 The session authorization token is used only in version 3 and is used to prove that the creator of the
 token has the full connection string and password when the connection is established. To create an
@@ -2599,9 +2376,10 @@ Release: January 13, 2026
 
 28 / 90
 
-Here ABCDEF is the password, and the token is being created to validate the novice.
 
-2.2.5  Remote Assistance Contact Information
+Here ABCDEF is the password, and the token is being created to validate the novice.
+
+#### 2.2.5 Remote Assistance Contact Information
 
 Remote Assistance Contact Information is used only in version 3. After the Remote Assistance
 session is established, the expert and the novice can exchange information with each other to allow
@@ -2653,7 +2431,7 @@ TYPE: Currently not used; always set to 1.
 
 TIME: The date and time that this contact information was created or modified.
 
-2.2.6  Remote Assistance Error Codes
+#### 2.2.6 Remote Assistance Error Codes
 
 The following Remote Assistance error codes MUST be returned as part of
 REMOTEDESKTOP_CTL_RESULT.
@@ -2688,7 +2466,8 @@ Connection disconnected by local user.
 
 29 / 90
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2819,7 +2598,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2949,7 +2729,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2998,13 +2779,13 @@ Remote control of the user session has ended.
 
 SAFERROR_SHADOWEND_UNKNOWN
 
-2.2.7  Extensions to the Remote Desktop Protocol
+#### 2.2.7 Extensions to the Remote Desktop Protocol
 
 As discussed in section 1.4, the Remote Assistance Protocol leverages the Remote Desktop Protocol
 (as specified in [MS-RDPBCGR] and [MS-RDPEGDI]). This section describes extensions to [MS-
 RDPBCGR] that are used in the context of a Remote Assistance connection.
 
-2.2.7.1  Fast-Path Update Wrapper (MSRA_FP_UPDATE_WRAPPER)
+##### 2.2.7.1 Fast-Path Update Wrapper (MSRA_FP_UPDATE_WRAPPER)
 
 The MSRA_FP_UPDATE_WRAPPER structure is used to wrap all Fast-Path Update structures specified
 in [MS-RDPBCGR] sections 2.2.9.1.2.1.1 to 2.2.9.1.2.1.9 and [MS-RDPEGDI] section 2.2.2.2.
@@ -3043,7 +2824,8 @@ Release: January 13, 2026
 
 32 / 90
 
-2.2.7.2  Client Info PDU
+
+##### 2.2.7.2 Client Info PDU
 
 When used in context of the Remote Assistance protocol, the following variables in the infoPacket
 field of Client Info PDU, as specified in [MS-RDPBCGR] section 2.2.1.11.1, need to be replaced. The
@@ -3074,7 +2856,8 @@ Release: January 13, 2026
 
 33 / 90
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Remote Assistance Protocol, including basic Remote
 Assistance connection establishment, session initialization, file transfer, chat, share control, and
@@ -3198,7 +2981,8 @@ Release: January 13, 2026
 
 34 / 90
 
-1.  Version 2 of the protocol is used if the novice receives REMOTEDESKTOP_EXPERT_ON_VISTA
+
+1.  Version 2 of the protocol is used if the novice receives REMOTEDESKTOP_EXPERT_ON_VISTA
 
 packet from the expert during session initialization.
 
@@ -3282,29 +3066,30 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Once the novice and expert determine the version of the protocol to use, it cannot be changed for the
+
+Once the novice and expert determine the version of the protocol to use, it cannot be changed for the
 rest of the Remote Assistance Connection. Also, when a novice or an expert receives a message from
 a version it does not implement, the message MUST be dropped without returning any error code.
 
-3.1  Establishing a Remote Assistance Connection - Expert Details
+### 3.1 Establishing a Remote Assistance Connection - Expert Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 No data model is associated with this portion of the Remote Assistance Protocol.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are used in this portion of the Remote Assistance Protocol.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 This section of the protocol assumes relevant TCP initializations are done.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 This portion of the Remote Assistance Protocol does not utilize any external higher-layer events.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The expert MUST extract Port and IP Address information from the Remote Assistance Connection
 String (Section 2.2 of [MS-RAI]) to establish a TCP Connection. When more than one pair of Port and
@@ -3320,17 +3105,17 @@ Upon completion of the Remote Desktop Connection, depending on the negotiated Re
 protocol version, the Remote Assistance session MUST be established as described in sections 3.3,
 3.5, and 3.7.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 This section of the Remote Assistance Protocol has no timer events.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 The Remote Assistance Protocol has no interaction with other local events.
 
-3.2  Establishing a Remote Assistance Connection - Novice Details
+### 3.2 Establishing a Remote Assistance Connection - Novice Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 No data model is associated with this portion of the Remote Assistance Protocol.
 
@@ -3341,19 +3126,20 @@ Release: January 13, 2026
 
 36 / 90
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 No timers are used in this portion of the Remote Assistance Protocol.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 This section of the protocol assumes relevant TCP initializations are done.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 This portion of the Remote Assistance Protocol does not utilize any external higher-layer events.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The novice starts listening on all IP Address and port pairs for an incoming TCP connection from the
 expert machine and generates a Remote Assistance Connection String (section 2.2 of [MS-RAI]).
@@ -3366,15 +3152,15 @@ Upon completion of Remote Desktop Connection, depending on the negotiated Remote
 protocol version, a Remote Assistance Session MUST be established as described in sections 3.4, 3.6
 and 3.8.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 This section of the Remote Assistance Protocol has no timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 The Remote Assistance Protocol has no interaction with other local events.
 
-3.3  Session Initialization Using the Expert (Client) Implementing Only Version 1
+### 3.3 Session Initialization Using the Expert (Client) Implementing Only Version 1
 
 Details
 
@@ -3405,7 +3191,8 @@ Release: January 13, 2026
 
 37 / 90
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-RA].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -3415,7 +3202,7 @@ using protocol version 1.
 Figure 1: Remote Assistance session initialization state diagram (from the expert/client
 perspective)
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The message signaling that takes place in the session initialization protocol is to complete the Remote
 Assistance session; that is, to change the state from the basic Remote Assistance connection
@@ -3433,24 +3220,25 @@ Release: January 13, 2026
 
 38 / 90
 
-3.3.2  Timers
+
+#### 3.3.2 Timers
 
 Upon initialization of a Remote Assistance session, the Connection Heartbeat timer MAY be started
 to send the REMOTEDESKTOP_CTL_ISCONNECTED packet every 30 seconds to indicate a connected
 state.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The Remote Assistance Protocol sends the session initialization messages on the RC_CTL virtual
 channel. A virtual channel named "RC_CTL" MUST be opened before any session initialization
 messages can be sent or received.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The messages and events described here have no other dependent events or messages from a higher
 layer.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 This section describes the sequence of the session initialization messages that the expert receives as
 well as the session initialization messages with which the expert responds.
@@ -3462,7 +3250,8 @@ Release: January 13, 2026
 
 39 / 90
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-RA].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -3490,7 +3279,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-REMOTEDESKTOP_CTL_RESULT (section 2.2.1.10) packet to the novice.<5> If the version numbers
+
+REMOTEDESKTOP_CTL_RESULT (section 2.2.1.10) packet to the novice.<5> If the version numbers
 are correct, the expert MUST remain silent, returning no messages to the novice, and MUST wait for
 the novice to return SAFERROR_NOERROR, as described in the following step.
 
@@ -3545,14 +3335,14 @@ The expert MAY send the expert's IP address to the novice in a <Session Control>
 2.2.2) with the <NAME> containing the EXPERTIP value. This IP address could be used by the novice
 for logging purposes.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 The REMOTEDESKTOP_CTL_ISCONNECTED packet MAY be used to track the state of a Remote
 Assistance connection. When used, both the expert and the novice MAY send this packet once
 every 30 seconds to indicate a connected state. No action is taken by either the expert or the novice
 on either receipt or nonreceipt of this packet.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 The Remote Assistance Protocol does not have external event dependencies.
 
@@ -3563,11 +3353,12 @@ Release: January 13, 2026
 
 41 / 90
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-RA].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
-3.4  Session Initialization Using the Novice (Server) Implementing Only Version 1
+### 3.4 Session Initialization Using the Novice (Server) Implementing Only Version 1
 
 Details
 
@@ -3594,10 +3385,11 @@ Release: January 13, 2026
 
 42 / 90
 
-Figure 3: Remote Assistance session initialization state diagram (from the novice /server
+
+Figure 3: Remote Assistance session initialization state diagram (from the novice /server
 perspective)
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 The message signaling that takes place in the session initialization protocol is to establish the Remote
 Assistance session; that is, to change the state from the basic Remote Assistance connection state
@@ -3607,24 +3399,24 @@ the view of the novice screen.
 When the Remote Assistance connection has completed successfully, or if there was an error during
 connection, the novice is responsible for keeping track of this state change.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 Upon initialization of a Remote Assistance session, the Connection Heartbeat timer MAY be started
 to send the REMOTEDESKTOP_CTL_ISCONNECTED packet every 30 seconds to indicate a connected
 state.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 The Remote Assistance Protocol sends the session initialization messages on the RC_CTL virtual
 channel. Therefore, a virtual channel with the name RC_CTL MUST be created before any session
 initialization messages can be sent or received.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 The messages and events described in this specification have no other dependent events or messages
 from a higher layer.
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
 This section describes the session initialization messages that the novice receives and the session
 initialization messages that the novice responds with.
@@ -3659,7 +3451,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-not the expert is connecting with the correct Remote Assistance Connection String, as specified in
+
+not the expert is connecting with the correct Remote Assistance Connection String, as specified in
 [MS-RAI] Appendix A. If the Remote Assistance Connection String is not valid,
 SAFERROR_INVALIDPASSWORD MUST be returned to the expert. If the Remote Assistance
 ConnectionString is valid, the expertBlob MUST be extracted. Also, the success code
@@ -3708,18 +3501,18 @@ The novice MAY receive the expert's IP address from the expert in a <Session Con
 (section 2.2.2) with the <NAME> containing the EXPERTIP value. This IP address could be used for
 maintaining a log of connecting experts.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 The REMOTEDESKTOP_CTL_ISCONNECTED packet MAY be used to track the state of a Remote
 Assistance connection. When used, both the expert and the novice MAY send this packet once
 every 30 seconds to indicate a connected state. No action is taken by either the expert or the novice
 on either receipt or nonreceipt of this packet.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 This protocol does not have external event dependencies.
 
-3.5  Session Initialization Using the Expert (Client) Implementing Version 1 and
+### 3.5 Session Initialization Using the Expert (Client) Implementing Version 1 and
 
 Version 2 Details
 
@@ -3733,7 +3526,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-RA].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
@@ -3751,7 +3545,7 @@ expert using protocol version 2.
 Figure 4: Remote Assistance session initialization version 2 state diagram (from the
 expert/client perspective)
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 The message signaling that takes place in the session initialization protocol is to complete the Remote
 Assistance connection; that is, to change the state from the basic Remote Assistance connection
@@ -3763,29 +3557,30 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-state in which the expert does not have the view of the novice screen, to the state in which the
+
+state in which the expert does not have the view of the novice screen, to the state in which the
 expert has the view of the novice screen.
 
 When the control message arrives to the expert indicating that a Remote Assistance connection has
 completed successfully or that there was an error during connection, the expert is responsible for
 keeping track of this state change.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 There are no timers associated with this section of the protocol.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 The Remote Assistance Protocol sends control message packets on the RC_CTL virtual channel. A
 virtual channel named "RC_CTL" MUST be opened before any control messages can be sent or
 received.
 
-3.5.4  Higher-Layer Triggered Events
+#### 3.5.4 Higher-Layer Triggered Events
 
 The messages and events described here have no other dependent events or messages from a higher
 layer.
 
-3.5.5  Message Processing Events and Sequencing Rules
+#### 3.5.5 Message Processing Events and Sequencing Rules
 
 This section describes the sequence of the control packets that the expert receives, as well as the
 control message packets with which the expert responds.
@@ -3797,7 +3592,8 @@ Release: January 13, 2026
 
 46 / 90
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-RA].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -3833,7 +3629,8 @@ Release: January 13, 2026
 
 47 / 90
 
-On receiving the TS_UD_SC_SEC1 from the server, the client calculates the hash of the public key,
+
+On receiving the TS_UD_SC_SEC1 from the server, the client calculates the hash of the public key,
 and compares its base64-encoded string against the value of the key hash parameter of the Auth
 String Node <A>. The hashing algorithm is determined by the key hash parameter in the Auth String
 Node <A> as specified in [MS-RAI] section 2.2.2. The validation is successful if they are an exact
@@ -3883,15 +3680,15 @@ REMOTEDESKTOP_CTL_RANOVICE_NAME (section 2.2.1.13) and
 REMOTEDESKTOP_CTL_RAEXPERT_NAME (section 2.2.1.14) packets with each other to update their
 respective user interfaces.
 
-3.5.6  Timer Events
+#### 3.5.6 Timer Events
 
 There are no timer events associated with this section of the protocol.
 
-3.5.7  Other Local Events
+#### 3.5.7 Other Local Events
 
 The Remote Assistance Protocol does not have external event dependencies.
 
-3.6  Session Initialization Using the Novice (Server) Implementing Version 1 and
+### 3.6 Session Initialization Using the Novice (Server) Implementing Version 1 and
 
 Version 2 Details
 
@@ -3906,7 +3703,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-RA].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3926,7 +3724,7 @@ REMOTEDESKTOP_CTL_RESULT over the RC_CTL channel.
 Figure 6: Remote Assistance session initialization state diagram (from the novice/server
 perspective)
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 The message signaling that takes place in the session initialization protocol is to complete the Remote
 Assistance connection; that is, to change the state from the basic Remote Assistance connection
@@ -3938,28 +3736,29 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-state in which the expert does not have the view of the novice screen to the state in which the
+
+state in which the expert does not have the view of the novice screen to the state in which the
 expert has the view of the novice screen.
 
 When the Remote Assistance connection has completed successfully, or if there was an error during
 connection, the novice is responsible for keeping track of this state change.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 There are no timers associated with this section of the protocol.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 The Remote Assistance Protocol sends session initialization messages on the RC_CTL virtual channel.
 Therefore, a virtual channel with the name RC_CTL MUST be created before any session initialization
 messages can be sent or received.
 
-3.6.4  Higher-Layer Triggered Events
+#### 3.6.4 Higher-Layer Triggered Events
 
 The messages and events described in this specification have no other dependent events or messages
 from a higher layer.
 
-3.6.5  Message Processing Events and Sequencing Rules
+#### 3.6.5 Message Processing Events and Sequencing Rules
 
 This section describes the control message packets that the novice receives and the control message
 packets responses from the novice.
@@ -4010,21 +3809,22 @@ Release: January 13, 2026
 
 50 / 90
 
-After the novice receives a REMOTEDESKTOP_CTL_RESULT (section 2.2.1.10) packet with
+
+After the novice receives a REMOTEDESKTOP_CTL_RESULT (section 2.2.1.10) packet with
 SAFERROR_NOERROR, the novice starts desktop shadowing. The expert and novice MAY exchange
 REMOTEDESKTOP_CTL_RANOVICE_NAME (section 2.2.1.13) and
 REMOTEDESKTOP_CTL_RAEXPERT_NAME (section 2.2.1.14) packets with each other to update their
 respective user interfaces.
 
-3.6.6  Timer Events
+#### 3.6.6 Timer Events
 
 There are no timer events associated with this section of the protocol.
 
-3.6.7  Other Local Events
+#### 3.6.7 Other Local Events
 
 This protocol does not have external event dependencies.
 
-3.7  Session Initialization Using the Expert (Client) Implementing Version 1, Version
+### 3.7 Session Initialization Using the Expert (Client) Implementing Version 1, Version
 
 2, and Version 3 Details
 
@@ -4052,11 +3852,12 @@ Release: January 13, 2026
 
 51 / 90
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-RA].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
-3.7.1  Abstract Data Model
+#### 3.7.1 Abstract Data Model
 
 Figure 7: Token authorization
 
@@ -4068,11 +3869,11 @@ which the expert has the view of the novice screen.
 When the Remote Assistance connection has completed successfully, or if there was an error during
 connection, the novice is responsible for keeping track of this state change.
 
-3.7.2  Timers
+#### 3.7.2 Timers
 
 No timers are associated with token-based session initialization on the expert.
 
-3.7.3  Initialization
+#### 3.7.3 Initialization
 
 The Remote Assistance Protocol sends control message packets on the RC_CTL virtual channel.
 Therefore, a virtual channel with the name RC_CTL MUST be created before any control messages can
@@ -4085,16 +3886,17 @@ Release: January 13, 2026
 
 52 / 90
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-RA].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
-3.7.4  Higher-Layer Triggered Events
+#### 3.7.4 Higher-Layer Triggered Events
 
 The messages and events described in this specification have no other dependent events or messages
 from a higher layer.
 
-3.7.5  Message Processing Events and Sequencing Rules
+#### 3.7.5 Message Processing Events and Sequencing Rules
 
 This section describes the sequence of the control packets that the expert receives as well as the
 control message packets with which the expert responds.
@@ -4121,7 +3923,7 @@ receiving permission from the user to allow the connection.
 If either side cannot confirm that the two tokens match, or if the user does not grant permission to
 view the desktop, the Remote Assistance connection MUST be terminated.
 
-3.7.6  Timer Events
+#### 3.7.6 Timer Events
 
 No timer events are associated with token-based session initialization in this protocol.
 
@@ -4132,11 +3934,12 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-3.7.7  Other Local Events
+
+#### 3.7.7 Other Local Events
 
 There are no local events that are associated with this portion of the Remote Assistance Protocol.
 
-3.8  Session Initialization Using the Novice (Server) Implementing Version 1, Version
+### 3.8 Session Initialization Using the Novice (Server) Implementing Version 1, Version
 
 2, and Version 3 Details
 
@@ -4165,11 +3968,12 @@ Release: January 13, 2026
 
 54 / 90
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-RA].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
-3.8.1  Abstract Data Model
+#### 3.8.1 Abstract Data Model
 
 Figure 9: Token authorization
 
@@ -4181,11 +3985,11 @@ has the view of the novice screen.
 When the Remote Assistance connection has completed successfully, or if there was an error during
 connection, the novice is responsible for keeping track of this state change.
 
-3.8.2  Timers
+#### 3.8.2 Timers
 
 No timers are associated with token-based session initialization on the expert.
 
-3.8.3  Initialization
+#### 3.8.3 Initialization
 
 The Remote Assistance Protocol sends control message packets on the RC_CTL virtual channel.
 Therefore, a virtual channel with the name RC_CTL MUST be created before any control messages can
@@ -4198,12 +4002,13 @@ Release: January 13, 2026
 
 55 / 90
 
-3.8.4  Higher-Layer Triggered Events
+
+#### 3.8.4 Higher-Layer Triggered Events
 
 The messages and events described in this specification have no other dependent events or messages
 from a higher layer.
 
-3.8.5  Message Processing Events and Sequencing Rules
+#### 3.8.5 Message Processing Events and Sequencing Rules
 
 If the Remote Assistance Initiation protocol is used to transfer the Remote Assistance Connection
 String, the novice MUST use either the version 1 or 2 protocol (as specified in section 3.6). If the
@@ -4226,15 +4031,15 @@ user to allow the connection before granting a view of the desktop.
 If either side cannot confirm that the two tokens match, or if the user does not grant permission to
 view the desktop, the Remote Assistance connection MUST be terminated.
 
-3.8.6  Timer Events
+#### 3.8.6 Timer Events
 
 No timer events are associated with token-based session initialization in this protocol.
 
-3.8.7  Other Local Events
+#### 3.8.7 Other Local Events
 
 No local events are associated with this portion of the Remote Assistance Protocol.
 
-3.9  File Transfer Sender Details
+### 3.9 File Transfer Sender Details
 
 File transfer in a Remote Assistance session is initiated by the sender of the file; there is no
 mechanism for the receiver of a file to request the transfer to begin.<7> This section will focus only
@@ -4250,28 +4055,29 @@ Release: January 13, 2026
 
 56 / 90
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-RA].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
 Figure 10: Session-state diagram from the file sender perspective
 
-3.9.1  Abstract Data Model
+#### 3.9.1 Abstract Data Model
 
 No data model is needed to maintain internal state.
 
-3.9.2  Timers
+#### 3.9.2 Timers
 
 No timers or time-out periods are associated with file transfer.
 
-3.9.3  Initialization
+#### 3.9.3 Initialization
 
 The virtual channel used to receive the signal for file transfer (RCCOMMAND NAME="FILEXFER") is
 initialized when the Remote Assistance connection is first established. The virtual channel that is
 used to transfer the file data MUST be opened by the sender before sending the FILEXFER message.
 The name of this virtual channel is specified by the sender as an attribute in the FILEXFER message.
 
-3.9.4  Higher-Layer Triggered Events
+#### 3.9.4 Higher-Layer Triggered Events
 
 The messages and events described in this specification have no other dependent events or messages
 from a higher layer.
@@ -4283,7 +4089,8 @@ Release: January 13, 2026
 
 57 / 90
 
-3.9.5  Message Processing Events and Sequencing Rules
+
+#### 3.9.5 Message Processing Events and Sequencing Rules
 
 Two virtual channels are involved during file transfer. The virtual channel 71 is used to initiate file
 transfer through an <RCCOMMAND> message, and a second dynamically created virtual channel is
@@ -4338,21 +4145,22 @@ Release: January 13, 2026
 
 58 / 90
 
-<!-- Extracted images from page 59 -->
+
+<!-- Extracted images from page 59 -->
 ![Extracted image 1 from page 59]([MS-RA].images/page059-img01.png)
 <!-- /Extracted images from page 59 -->
 
 Figure 11: File transfer packet sequencing
 
-3.9.6  Timer Events
+#### 3.9.6 Timer Events
 
 No timer events are associated with file transfer in this protocol.
 
-3.9.7  Other Local Events
+#### 3.9.7 Other Local Events
 
 The Remote Assistance Protocol does not have external event dependencies.
 
-3.10  File Transfer Receiver Details
+### 3.10 File Transfer Receiver Details
 
 File transfer in a Remote Assistance session is initiated by the sender of the file; there is no
 mechanism for the receiver of a file to request the transfer to begin. The method employed to transfer
@@ -4370,21 +4178,22 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-RA].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
 Figure 12: Session-state diagram (file receiver perspective)
 
-3.10.1 Abstract Data Model
+#### 3.10.1 Abstract Data Model
 
  There is no internal state that needs to be maintained that requires abstract data models.
 
-3.10.2 Timers
+#### 3.10.2 Timers
 
 No timers are associated with file transfer.
 
-3.10.3 Initialization
+#### 3.10.3 Initialization
 
 The virtual channel used to receive the signal for file transfer (RCCOMAND NAME="FILEXFER") is
 initialized when the Remote Assistance connection is first established. The FILEXFERACK message
@@ -4403,11 +4212,12 @@ Release: January 13, 2026
 
 60 / 90
 
-3.10.4 Higher-Layer Triggered Events
+
+#### 3.10.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are addressed by this portion of the Remote Assistance Protocol.
 
-3.10.5 Message Processing Events and Sequencing Rules
+#### 3.10.5 Message Processing Events and Sequencing Rules
 
 For the file receiver, several messages can arrive during the entire process. (See section 2.2.3.) When
 a message arrives, a string comparison can be used to determine the type of message that has
@@ -4458,21 +4268,22 @@ Release: January 13, 2026
 
 61 / 90
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MS-RA].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
 Figure 13: File transfer process during a Remote Assistance session
 
-3.10.6 Timer Events
+#### 3.10.6 Timer Events
 
 No timer events are associated with file transfer in this protocol.
 
-3.10.7 Other Local Events
+#### 3.10.7 Other Local Events
 
 No local events have an impact on this portion of the Remote Assistance Protocol.
 
-3.11  Chat (Text) Sender Details
+### 3.11 Chat (Text) Sender Details
 
 After the Remote Assistance connection is established, the application SHOULD open the virtual
 channel 70 to send and receive chat messages. Because there are only two computers involved in the
@@ -4489,25 +4300,26 @@ Release: January 13, 2026
 
 62 / 90
 
-3.11.1 Abstract Data Model
+
+#### 3.11.1 Abstract Data Model
 
 No data model is used in this portion of the Remote Assistance Protocol.
 
-3.11.2 Timers
+#### 3.11.2 Timers
 
 No timers are associated with this portion of the Remote Assistance Protocol.
 
-3.11.3 Initialization
+#### 3.11.3 Initialization
 
 The virtual channel that allows chat messages to be exchanged is initialized immediately after the
 Remote Assistance connection is established. The virtual channel name is 70, and it is used solely
 to transfer Unicode strings as chat messages between the two connected computers.
 
-3.11.4 Higher-Layer Triggered Events
+#### 3.11.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events affect this portion of the Remote Assistance Protocol.
 
-3.11.5 Message Processing Events and Sequencing Rules
+#### 3.11.5 Message Processing Events and Sequencing Rules
 
 A chat message MUST be sent on virtual channel 70 as a NULL-terminated Unicode string. The sent
 string MUST NOT exceed 1,024 bytes in size (including NULL termination) for versions 2 and 3 of the
@@ -4515,15 +4327,15 @@ protocol. Version 1 can send messages longer than 1,024 bytes. Chat messages gre
 bytes are not sent by versions 2 or 3, but they can receive messages longer than 1,024 bytes from
 version 1 clients. There is no expected response from the receiving side.
 
-3.11.6 Timer Events
+#### 3.11.6 Timer Events
 
  No timer events are associated with sending chat messages.
 
-3.11.7 Other Local Events
+#### 3.11.7 Other Local Events
 
 None.
 
-3.12  Chat (Text) Receiver Details
+### 3.12 Chat (Text) Receiver Details
 
 After the Remote Assistance connection is established, the application SHOULD open virtual
 channel 70 to send and receive chat messages. Because there are only two computers involved in the
@@ -4533,11 +4345,11 @@ header information, and each block of data received on the channel is conceptual
 distinct message from the other user. To send a chat message, the message formatted as a NULL-
 terminated Unicode string can be sent on virtual channel 70.
 
-3.12.1 Abstract Data Model
+#### 3.12.1 Abstract Data Model
 
 No data model is associated with this portion of the Remote Assistance Protocol.
 
-3.12.2 Timers
+#### 3.12.2 Timers
 
 No timers are required for the chat portion of the Remote Assistance Protocol.
 
@@ -4548,17 +4360,18 @@ Release: January 13, 2026
 
 63 / 90
 
-3.12.3 Initialization
+
+#### 3.12.3 Initialization
 
 The virtual channel that allows chat messages to be exchanged is initialized immediately after the
 Remote Assistance connection is established. The virtual channel name is 70 and is used solely to
 transfer Unicode strings as chat messages between the two connected computers.
 
-3.12.4 Higher-Layer Triggered Events
+#### 3.12.4 Higher-Layer Triggered Events
 
 No events are used in this section of the Remote Assistance Protocol.
 
-3.12.5 Message Processing Events and Sequencing Rules
+#### 3.12.5 Message Processing Events and Sequencing Rules
 
 When a message arrives on the virtual channel reserved for chat, it is always assumed to be a NULL-
 terminated Unicode string. Because there can be only one possible sender, the message has no
@@ -4569,15 +4382,15 @@ expected or sent in response to receiving a chat message. Chat messages of a len
 bytes. Chat messages of a length greater than 1,024 bytes are not sent by versions 2 or 3, but they
 can receive messages longer than 1,024 bytes from version 1 clients.
 
-3.12.6 Timer Events
+#### 3.12.6 Timer Events
 
 No timers are associated with this portion of the Remote Assistance Protocol.
 
-3.12.7 Other Local Events
+#### 3.12.7 Other Local Events
 
 No events are associated with this portion of the Remote Assistance Protocol.
 
-3.13  Setting Announcement Sender Details
+### 3.13 Setting Announcement Sender Details
 
 After the Remote Assistance session has begun, settings concerning the Remote Assistance session
 can be exchanged with the remote computer. The expert SHOULD initiate an exchange of settings by
@@ -4585,21 +4398,21 @@ sending out the local value for a setting that is considered relevant to the Rem
 that has begun. In version 3(only), the novice sends the local value of a setting in response to
 receiving a setting announcement.
 
-3.13.1 Abstract Data Model
+#### 3.13.1 Abstract Data Model
 
 No data model is associated with this portion of the Remote Assistance Protocol.
 
-3.13.2 Timers
+#### 3.13.2 Timers
 
  No timers are required for this portion of the Remote Assistance Protocol.
 
-3.13.3 Initialization
+#### 3.13.3 Initialization
 
 The virtual channel that allows setting announcement messages to be exchanged is initialized
 immediately after the Remote Assistance connection is established. The virtual channel name is
 "71", used to send session initialization and control messages.
 
-3.13.4 Higher-Layer Triggered Events
+#### 3.13.4 Higher-Layer Triggered Events
 
 None.
 
@@ -4610,7 +4423,8 @@ Release: January 13, 2026
 
 64 / 90
 
-3.13.5 Message Processing Events and Sequencing Rules
+
+#### 3.13.5 Message Processing Events and Sequencing Rules
 
 To send a Setting Announce message, the sender MUST use the session control message
 <RCCOMMAND> and SHOULD use the following attributes exclusively. The NAME attribute MUST be
@@ -4625,15 +4439,15 @@ An example of a valid Setting Announce message would be:
 In version 3 (only), this message can be sent by the expert to initiate a setting exchange, and by the
 novice in response to receiving the expert's setting announcement.
 
-3.13.6 Timer Events
+#### 3.13.6 Timer Events
 
 None.
 
-3.13.7 Other Local Events
+#### 3.13.7 Other Local Events
 
 None.
 
-3.14  Setting Announcement Receiver Details
+### 3.14 Setting Announcement Receiver Details
 
  After the Remote Assistance session has begun, settings concerning the Remote Assistance
 session can be exchanged with the remote computer. The expert SHOULD initiate an exchange of
@@ -4657,11 +4471,11 @@ ADDRESS attribute of the RAINVITATIONITEM node. The image used for the contact a
 key from peer identity are converted from binary into base64 strings and used to populate AVATAR
 and PUBLICKEY respectively.
 
-3.14.1 Abstract Data Model
+#### 3.14.1 Abstract Data Model
 
 No data model is associated with this portion of the Remote Assistance Protocol.
 
-3.14.2 Timers
+#### 3.14.2 Timers
 
 No timers are required for this portion of the Remote Assistance Protocol.
 
@@ -4672,27 +4486,28 @@ Release: January 13, 2026
 
 65 / 90
 
-3.14.3 Initialization
+
+#### 3.14.3 Initialization
 
 The virtual channel that allows setting announcement messages to be exchanged is initialized
 immediately after the Remote Assistance connection is established. The virtual channel name is
 "71", used to send session initialization and control messages.
 
-3.14.4 Higher-Layer Triggered Events
+#### 3.14.4 Higher-Layer Triggered Events
 
 None.
 
-3.14.5 Message Processing Events and Sequencing Rules
+#### 3.14.5 Message Processing Events and Sequencing Rules
 
  After receiving a Setting Announce message, a novice SHOULD respond with the matching local
 setting. Either the expert or the novice MAY modify the Remote Assistance session or send
 additional messages in reaction to receiving this message.
 
-3.14.6 Timer Events
+#### 3.14.6 Timer Events
 
 None.
 
-3.14.7 Other Local Events
+#### 3.14.7 Other Local Events
 
 None.
 
@@ -4703,11 +4518,12 @@ Release: January 13, 2026
 
 66 / 90
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-RA].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
-3.15  Share Control Remote Assistance Expert (Client) Details
+### 3.15 Share Control Remote Assistance Expert (Client) Details
 
 Figure 14: Desktop sharing session life cycle (expert/client perspective)
 
@@ -4719,7 +4535,7 @@ denied, and/or finally revoked or given up. The state machine shown in the prece
 the messages involved in the exchange between expert and novice. Details provided in this section
 describe what is expected from the point-of-view of the expert.
 
-3.15.1 Abstract Data Model
+#### 3.15.1 Abstract Data Model
 
 The message exchanging that occurs in this section of the Remote Assistance Protocol is used to
 synchronize the state of the desktop sharing. In response to a share control request from the expert,
@@ -4729,7 +4545,7 @@ send a message indicating that desktop sharing has been stopped. When share cont
 the expert, the expert MUST send a message indicating this action. When the novice receives this
 message, the novice MUST disable share control of the screen.
 
-3.15.2 Timers
+#### 3.15.2 Timers
 
 No timers are associated with this portion of the Remote Assistance Protocol.
 
@@ -4740,17 +4556,18 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-3.15.3 Initialization
+
+#### 3.15.3 Initialization
 
 The virtual channel used to send messages described in this section of the protocol (<RCCOMMAND>)
 is initialized when the Remote Assistance connection is first established. All <RCCOMMAND>
 messages are sent on the virtual channel named 71.
 
-3.15.4 Higher-Layer Triggered Events
+#### 3.15.4 Higher-Layer Triggered Events
 
 This section of the Remote Assistance Protocol does not depend on higher-layer triggered events.
 
-3.15.5 Message Processing Events and Sequencing Rules
+#### 3.15.5 Message Processing Events and Sequencing Rules
 
 For the expert, there are several messages that are sent or that can arrive during the entire process
 of requesting control (see section 2.2.2). When a message arrives, a string comparison can be used to
@@ -4805,17 +4622,18 @@ Release: January 13, 2026
 
 68 / 90
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-RA].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
 Figure 15: Remote control packet sequencing
 
-3.15.6 Timer Events
+#### 3.15.6 Timer Events
 
 None.
 
-3.15.7 Other Local Events
+#### 3.15.7 Other Local Events
 
 None.
 
@@ -4826,11 +4644,12 @@ Release: January 13, 2026
 
 69 / 90
 
-<!-- Extracted images from page 70 -->
+
+<!-- Extracted images from page 70 -->
 ![Extracted image 1 from page 70]([MS-RA].images/page070-img01.png)
 <!-- /Extracted images from page 70 -->
 
-3.16  Share Control Remote Assistance Novice (Server) Details
+### 3.16 Share Control Remote Assistance Novice (Server) Details
 
 Figure 16: Desktop sharing session (novice/server perspective)
 
@@ -4842,13 +4661,13 @@ denied, and/or finally revoked or given up. The state machine shown in the prece
 the messages involved in the exchange between expert and novice. Details provided in this section
 describe what is expected from the novice's point of view.
 
-3.16.1 Abstract Data Model
+#### 3.16.1 Abstract Data Model
 
 The application that implements this portion of the Remote Assistance Protocol SHOULD track the
 current permissions granted to the expert to be able to process the received messages. Messages
 that fall outside the state diagram previously shown SHOULD be ignored.
 
-3.16.2 Timers
+#### 3.16.2 Timers
 
 None.
 
@@ -4859,18 +4678,19 @@ Release: January 13, 2026
 
 70 / 90
 
-3.16.3 Initialization
+
+#### 3.16.3 Initialization
 
 The virtual channel used to send messages described in this section of the Remote Assistance
 Protocol (<RCCOMMAND>) is initialized when the Remote Assistance connection is first
 established. All <RCCOMMAND> messages are sent on the virtual channel named 71.
 
-3.16.4 Higher-Layer Triggered Events
+#### 3.16.4 Higher-Layer Triggered Events
 
 This portion of the Remote Assistance Protocol is not associated with any higher-layer triggered
 events.
 
-3.16.5 Message Processing Events and Sequencing Rules
+#### 3.16.5 Message Processing Events and Sequencing Rules
 
 For the novice, there are several messages that are sent or can arrive during the entire process of
 requesting control (see section 2.2.2). When a message arrives, a string comparison can be used to
@@ -4923,21 +4743,22 @@ Release: January 13, 2026
 
 71 / 90
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-RA].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
 Figure 17: Expert-requested desktop control (in Remote Assistance session)
 
-3.16.6 Timer Events
+#### 3.16.6 Timer Events
 
 None.
 
-3.16.7 Other Local Events
+#### 3.16.7 Other Local Events
 
 None.
 
-3.17  Voice Expert (Client) Details
+### 3.17 Voice Expert (Client) Details
 
 Voice communication while in a Remote Assistance connection is implemented using real-time
 communications (RTC) (for more information, see [MSDN-RTC]) to transmit and receive audio signals
@@ -4955,7 +4776,8 @@ Release: January 13, 2026
 
 72 / 90
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MS-RA].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
@@ -4968,23 +4790,24 @@ Release: January 13, 2026
 
 73 / 90
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-RA].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
 Figure 19: Remote Assistance request (novice)
 
-3.17.1 Abstract Data Model
+#### 3.17.1 Abstract Data Model
 
 An implementation of this portion of the Remote Assistance Protocol SHOULD maintain the VoIP
 connection status as it transitions from inactive to active, and then back to inactive again. The states
 can be represented by an enumeration and follow the states shown in the diagrams in section 3.17.
 
-3.17.2 Timers
+#### 3.17.2 Timers
 
 None.
 
-3.17.3 Initialization
+#### 3.17.3 Initialization
 
 Initialization of the virtual channel for VoIP messages occurs when the Remote Assistance
 connection begins. All messages described in this section are sent on the virtual channel named 71
@@ -4997,11 +4820,12 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-3.17.4 Higher-Layer Triggered Events
+
+#### 3.17.4 Higher-Layer Triggered Events
 
  The protocol does not make use of any higher-layer triggered events.
 
-3.17.5 Message Processing Events and Sequencing Rules
+#### 3.17.5 Message Processing Events and Sequencing Rules
 
 The first category of messages deals with the quality of the voice transmission or the capability of the
 remote computer that has the hardware configured to make and receive audio signals. Real-time
@@ -5064,7 +4888,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-<!-- Extracted images from page 76 -->
+
+<!-- Extracted images from page 76 -->
 ![Extracted image 1 from page 76]([MS-RA].images/page076-img01.png)
 <!-- /Extracted images from page 76 -->
 
@@ -5073,15 +4898,15 @@ session.
 
 Figure 20: Remote Assistance VoIP session message exchange
 
-3.17.6 Timer Events
+#### 3.17.6 Timer Events
 
 None.
 
-3.17.7 Other Local Events
+#### 3.17.7 Other Local Events
 
 None.
 
-3.18  Voice Novice (Server) Details
+### 3.18 Voice Novice (Server) Details
 
 Voice communication while in a Remote Assistance connection is implemented using RTC to
 transmit and receive audio signals from the remote computer. The Remote Assistance Protocol has
@@ -5098,7 +4923,8 @@ Release: January 13, 2026
 
 76 / 90
 
-<!-- Extracted images from page 77 -->
+
+<!-- Extracted images from page 77 -->
 ![Extracted image 1 from page 77]([MS-RA].images/page077-img01.png)
 <!-- /Extracted images from page 77 -->
 
@@ -5111,19 +4937,20 @@ Release: January 13, 2026
 
 77 / 90
 
-<!-- Extracted images from page 78 -->
+
+<!-- Extracted images from page 78 -->
 ![Extracted image 1 from page 78]([MS-RA].images/page078-img01.png)
 <!-- /Extracted images from page 78 -->
 
 Figure 22: Remote Assistance session diagram (initiated by novice/server)
 
-3.18.1 Abstract Data Model
+#### 3.18.1 Abstract Data Model
 
 An implementation of this portion of the Remote Assistance Protocol SHOULD maintain the VoIP
 connection status as it transitions from inactive to active, and then back to inactive again. The states
 can be represented by an enumeration and follow the states shown in the diagram in section 3.18.
 
-3.18.2 Timers
+#### 3.18.2 Timers
 
 None.
 
@@ -5134,17 +4961,18 @@ Release: January 13, 2026
 
 78 / 90
 
-3.18.3 Initialization
+
+#### 3.18.3 Initialization
 
 Initialization of the virtual channel for VoIP messages occurs when the Remote Assistance
 connection begins. All messages described in this section are sent on the virtual channel named 71
 and follow the format shown in the section concerning <RCCOMMAND>.
 
-3.18.4 Higher-Layer Triggered Events
+#### 3.18.4 Higher-Layer Triggered Events
 
 None.
 
-3.18.5 Message Processing Events and Sequencing Rules
+#### 3.18.5 Message Processing Events and Sequencing Rules
 
 The first category of messages deals with the quality of the voice transmission or the capability of the
 remote computer that has the hardware configured to make and receive audio signals. RTC allows for
@@ -5200,7 +5028,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-RA].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
@@ -5214,11 +5043,11 @@ message when finished.
 
 Figure 23: Remote Assistance VoIP session initialization sequence
 
-3.18.6 Timer Events
+#### 3.18.6 Timer Events
 
 None.
 
-3.18.7 Other Local Events
+#### 3.18.7 Other Local Events
 
 None.
 
@@ -5229,7 +5058,8 @@ Release: January 13, 2026
 
 80 / 90
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections provide examples of how the Remote Assistance Protocol operates in common
 scenarios.
@@ -5239,7 +5069,7 @@ transfer initialization. For the full extent of messages that can be sent in the
 see section 2.2.2. Sample messages are shown with scenarios of where the message would be sent or
 received.
 
-4.1  Example of a VOIPGO Message
+### 4.1 Example of a VOIPGO Message
 
 The last message that the novice (acting as the RTC server) sends to the expert (acting as the
 client) is the IP and encryption key to use when making the RTC connection. The message is a NULL-
@@ -5254,7 +5084,7 @@ attribute specifies what kind of message this is. The VOIPVER attribute SHOULD a
 VOIPVER. The VOIPGOKEY attribute is set by the server (novice) for use as an encryption key. The
 VOIPIPLIST shows one IP address and port that the client (expert) can try to connect on.
 
-4.2  Example of a FILEXFER Message
+### 4.2 Example of a FILEXFER Message
 
 The first message the file sender sends is the FILEXFER message. This message contains information
 on the file to be sent such as original filename (so it can be suggested on the receiving side as the
@@ -5278,16 +5108,17 @@ Release: January 13, 2026
 
 81 / 90
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for implementers of the Remote Assistance Protocol because all
 static virtual channel traffic is secured by the underlying core Remote Desktop Protocol. For versions
 2 and 3, all Remote Assistance network traffic is compressed and encrypted. An overview of the
 implemented security-related mechanisms is as specified in [MS-RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for the Remote Assistance Protocol.
 
@@ -5298,7 +5129,8 @@ Release: January 13, 2026
 
 82 / 90
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5363,7 +5195,8 @@ Release: January 13, 2026
 
 83 / 90
 
-Windows Version
+
+Windows Version
 
 Update
 
@@ -5460,7 +5293,8 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Remote Assistance connection. The 64-bit implementations of Windows XP and Windows Server
+
+Remote Assistance connection. The 64-bit implementations of Windows XP and Windows Server
 2003 respond to the initial message for voice communications as if the hardware configuration does
 not allow for voice communications (RCCOMMAND NAME="DISABLEVOICE"). Windows Vista and later
 and Windows Server 2008 and later do not respond to the voice request at all.
@@ -5472,7 +5306,8 @@ Release: January 13, 2026
 
 85 / 90
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5531,7 +5366,8 @@ Release: January 13, 2026
 
 86 / 90
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -5672,7 +5508,8 @@ Initialization
 
 87 / 90
 
-   Chat (Text) Receiver 64
+
+   Chat (Text) Receiver 64
    Chat (Text) Sender 63
    File Transfer Receiver 60
    File Transfer Sender 57
@@ -5851,7 +5688,8 @@ Security
 
 88 / 90
 
-   parameter index 82
+
+   parameter index 82
 Sequencing rules
    Chat (Text) Receiver 64
    Chat (Text) Sender 63
@@ -6020,7 +5858,8 @@ Voice Expert (Client)
 
 89 / 90
 
-   timer events 76
+
+   timer events 76
    timers 74
 Voice Novice (Server)
    abstract data model 78

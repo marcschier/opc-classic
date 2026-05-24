@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 67
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -300,7 +301,8 @@ Release: April 23, 2024
 
 2 / 67
 
-Date
+
+Date
 
 Revision
 History
@@ -492,230 +494,110 @@ Release: April 23, 2024
 
 3 / 67
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Properties and Property Sets](#132-properties-and-property-sets)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 PropertyIdentifier](#21-propertyidentifier)
+  - [2.2 PropertyType](#22-propertytype)
+  - [2.3 CURRENCY (Packet Version)](#23-currency-packet-version)
+  - [2.4 DATE (Packet Version)](#24-date-packet-version)
+  - [2.5 CodePageString](#25-codepagestring)
+  - [2.6 DECIMAL (Packet Version)](#26-decimal-packet-version)
+  - [2.7 UnicodeString](#27-unicodestring)
+  - [2.8 FILETIME (Packet Version)](#28-filetime-packet-version)
+  - [2.9 BLOB](#29-blob)
+  - [2.10 IndirectPropertyName](#210-indirectpropertyname)
+  - [2.11 ClipboardData](#211-clipboarddata)
+  - [2.12 GUID (Packet Version)](#212-guid-packet-version)
+  - [2.13 VersionedStream](#213-versionedstream)
+  - [2.14 Vector and Array Property Types](#214-vector-and-array-property-types)
+    - [2.14.1 Property Types in Variable-Typed Vectors and Arrays](#2141-property-types-in-variable-typed-vectors-and-arrays)
+    - [2.14.2 VectorHeader](#2142-vectorheader)
+    - [2.14.3 ArrayDimension](#2143-arraydimension)
+    - [2.14.4 ArrayHeader](#2144-arrayheader)
+  - [2.15 TypedPropertyValue](#215-typedpropertyvalue)
+  - [2.16 DictionaryEntry](#216-dictionaryentry)
+  - [2.17 Dictionary](#217-dictionary)
+  - [2.18 Special Properties](#218-special-properties)
+    - [2.18.1 Dictionary Property](#2181-dictionary-property)
+    - [2.18.2 CodePage Property](#2182-codepage-property)
+    - [2.18.3 Locale Property](#2183-locale-property)
+    - [2.18.4 Behavior Property](#2184-behavior-property)
+  - [2.19 PropertyIdentifierAndOffset](#219-propertyidentifierandoffset)
+  - [2.20 PropertySet](#220-propertyset)
+  - [2.21 PropertySetStream](#221-propertysetstream)
+  - [2.22 Non-Simple Property Set Storage Format](#222-non-simple-property-set-storage-format)
+  - [2.23 Property Set Stream and Storage Names](#223-property-set-stream-and-storage-names)
+  - [2.24 Standard Bindings](#224-standard-bindings)
+    - [2.24.1 Compound File Binding](#2241-compound-file-binding)
+    - [2.24.2 Alternate Stream Binding](#2242-alternate-stream-binding)
+    - [2.24.3 Control Stream](#2243-control-stream)
+    - [2.24.4 Simple Property Set Stream](#2244-simple-property-set-stream)
+    - [2.24.5 Non-Simple Property Set Storage](#2245-non-simple-property-set-storage)
+  - [2.25 Well-Known Property Set Formats](#225-well-known-property-set-formats)
+    - [2.25.1 SummaryInformation](#2251-summaryinformation)
+    - [2.25.2 PropertyBag](#2252-propertybag)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 SummaryInformation Property Set](#31-summaryinformation-property-set)
+    - [3.1.1 CodePage Property](#311-codepage-property)
+    - [3.1.2 PIDSI_TITLE](#312-pidsititle)
+    - [3.1.3 PIDSI_SUBJECT](#313-pidsisubject)
+    - [3.1.4 PIDSI_AUTHOR](#314-pidsiauthor)
+    - [3.1.5 PIDSI_KEYWORDS](#315-pidsikeywords)
+    - [3.1.6 PIDSI_COMMENTS](#316-pidsicomments)
+    - [3.1.7 PIDSI_TEMPLATE](#317-pidsitemplate)
+    - [3.1.8 PIDSI_LASTAUTHOR](#318-pidsilastauthor)
+    - [3.1.9 PIDSI_REVNUMBER](#319-pidsirevnumber)
+    - [3.1.10 PIDSI_APPNAME](#3110-pidsiappname)
+    - [3.1.11 PIDSI_EDITTIME](#3111-pidsiedittime)
+    - [3.1.12 PIDSI_LASTPRINTED](#3112-pidsilastprinted)
+    - [3.1.13 PIDSI_CREATE_DTM](#3113-pidsicreatedtm)
+    - [3.1.14 PIDSI_LASTSAVE_DTM](#3114-pidsilastsavedtm)
+    - [3.1.15 PIDSI_PAGECOUNT](#3115-pidsipagecount)
+    - [3.1.16 PIDSI_WORDCOUNT](#3116-pidsiwordcount)
+    - [3.1.17 PIDSI_CHARCOUNT](#3117-pidsicharcount)
+    - [3.1.18 PIDSI_DOC_SECURITY](#3118-pidsidocsecurity)
+  - [3.2 PropertyBag Property Set](#32-propertybag-property-set)
+    - [3.2.1 Control Stream ("{4c8cc155-6c1e-11d1-8e41-00c04fb9386d}")](#321-control-stream-4c8cc155-6c1e-11d1-8e41-00c04fb9386d)
+    - [3.2.2 PropertyBag Stream ("Docf_\005Bagaaqy23kudbhchAaq5u2chNd")](#322-propertybag-stream-docf005bagaaqy23kudbhchaaq5u2chnd)
+      - [3.2.2.1 "CONTENTS" Stream](#3221-contents-stream)
+        - [3.2.2.1.1 CodePage](#32211-codepage)
+        - [3.2.2.1.2 Locale](#32212-locale)
+        - [3.2.2.1.3 Behavior](#32213-behavior)
+        - [3.2.2.1.4 Dictionary](#32214-dictionary)
+          - [3.2.2.1.4.1 Dictionary Entry 0](#322141-dictionary-entry-0)
+          - [3.2.2.1.4.2 Dictionary Entry 1](#322142-dictionary-entry-1)
+          - [3.2.2.1.4.3 Dictionary Entry 2](#322143-dictionary-entry-2)
+          - [3.2.2.1.4.4 Dictionary Entry 3](#322144-dictionary-entry-3)
+          - [3.2.2.1.4.5 Dictionary Entry 4](#322145-dictionary-entry-4)
+          - [3.2.2.1.4.6 Dictionary Entry 5](#322146-dictionary-entry-5)
+        - [3.2.2.1.5 DisplayColour](#32215-displaycolour)
+        - [3.2.2.1.6 MyStream](#32216-mystream)
+        - [3.2.2.1.7 Price(GBP)](#32217-pricegbp)
+        - [3.2.2.1.8 MyStorage](#32218-mystorage)
+        - [3.2.2.1.9 CaseSensitive Mixed Case](#32219-casesensitive-mixed-case)
+        - [3.2.2.1.10 CASESENSITIVE All Uppercase](#322110-casesensitive-all-uppercase)
+      - [3.2.2.2 "prop6" Stream](#3222-prop6-stream)
+      - [3.2.2.3 "prop12" Storage](#3223-prop12-storage)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Background ................................................................................................. 8
-Properties and Property Sets .......................................................................... 9
-Relationship to Protocols and Other Structures ...................................................... 9
-Applicability Statement ....................................................................................... 9
-Versioning and Localization ................................................................................. 9
-Vendor-Extensible Fields ................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-
-1.3.1
-1.3.2
-
-2.14.1
-2.14.2
-2.14.3
-2.14.4
-
-2  Structures ............................................................................................................. 11
-PropertyIdentifier ............................................................................................. 11
-2.1
-PropertyType ................................................................................................... 11
-2.2
-CURRENCY (Packet Version) .............................................................................. 16
-2.3
-DATE (Packet Version) ...................................................................................... 16
-2.4
-CodePageString ............................................................................................... 16
-2.5
-DECIMAL (Packet Version) ................................................................................. 17
-2.6
-UnicodeString .................................................................................................. 17
-2.7
-FILETIME (Packet Version) ................................................................................ 17
-2.8
-BLOB .............................................................................................................. 18
-2.9
-IndirectPropertyName ....................................................................................... 18
-2.10
-2.11
-ClipboardData .................................................................................................. 18
-2.12  GUID (Packet Version) ...................................................................................... 19
-VersionedStream ............................................................................................. 19
-2.13
-Vector and Array Property Types ........................................................................ 20
-2.14
-Property Types in Variable-Typed Vectors and Arrays ...................................... 20
-VectorHeader ............................................................................................. 21
-ArrayDimension .......................................................................................... 21
-ArrayHeader .............................................................................................. 22
-2.15
-TypedPropertyValue ......................................................................................... 22
-2.16  DictionaryEntry ................................................................................................ 26
-2.17  Dictionary ....................................................................................................... 26
-Special Properties ............................................................................................ 27
-2.18
-2.18.1  Dictionary Property ..................................................................................... 27
-CodePage Property ..................................................................................... 27
-2.18.2
-Locale Property .......................................................................................... 28
-2.18.3
-Behavior Property ....................................................................................... 28
-2.18.4
-PropertyIdentifierAndOffset ............................................................................... 28
-2.19
-PropertySet ..................................................................................................... 28
-2.20
-2.21
-PropertySetStream ........................................................................................... 29
-2.22  Non-Simple Property Set Storage Format ............................................................ 31
-Property Set Stream and Storage Names ............................................................ 32
-2.23
-Standard Bindings ............................................................................................ 33
-2.24
-2.24.1
-Compound File Binding ................................................................................ 33
-2.24.2
-Alternate Stream Binding ............................................................................. 33
-2.24.3
-Control Stream ........................................................................................... 33
-Simple Property Set Stream ......................................................................... 34
-2.24.4
-2.24.5  Non-Simple Property Set Storage ................................................................. 34
-2.25  Well-Known Property Set Formats ...................................................................... 34
-SummaryInformation .................................................................................. 34
-PropertyBag ............................................................................................... 36
-
-2.25.1
-2.25.2
-
-[MS-OLEPS] - v20240423
-Object Linking and Embedding (OLE) Property Set Data Structures
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 67
-
-3.1
-
-3.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-3.1.8
-3.1.9
-3.1.10
-3.1.11
-3.1.12
-3.1.13
-3.1.14
-3.1.15
-3.1.16
-3.1.17
-3.1.18
-
-3  Structure Examples ............................................................................................... 37
-SummaryInformation Property Set ..................................................................... 37
-CodePage Property ..................................................................................... 39
-PIDSI_TITLE .............................................................................................. 39
-PIDSI_SUBJECT .......................................................................................... 40
-PIDSI_AUTHOR .......................................................................................... 41
-PIDSI_KEYWORDS ...................................................................................... 41
-PIDSI_COMMENTS ...................................................................................... 42
-PIDSI_TEMPLATE ........................................................................................ 42
-PIDSI_LASTAUTHOR ................................................................................... 43
-PIDSI_REVNUMBER..................................................................................... 43
-PIDSI_APPNAME ......................................................................................... 44
-PIDSI_EDITTIME ........................................................................................ 44
-PIDSI_LASTPRINTED ................................................................................... 45
-PIDSI_CREATE_DTM ................................................................................... 45
-PIDSI_LASTSAVE_DTM ................................................................................ 46
-PIDSI_PAGECOUNT ..................................................................................... 46
-PIDSI_WORDCOUNT ................................................................................... 46
-PIDSI_CHARCOUNT .................................................................................... 47
-PIDSI_DOC_SECURITY ................................................................................ 47
-PropertyBag Property Set .................................................................................. 48
-Control Stream ("{4c8cc155-6c1e-11d1-8e41-00c04fb9386d}") ...................... 48
-PropertyBag Stream ("Docf_\005Bagaaqy23kudbhchAaq5u2chNd") .................. 48
-"CONTENTS" Stream ............................................................................. 49
-CodePage ....................................................................................... 51
-Locale ............................................................................................ 51
-Behavior ........................................................................................ 52
-Dictionary ....................................................................................... 52
-Dictionary Entry 0 ...................................................................... 53
-Dictionary Entry 1 ...................................................................... 54
-Dictionary Entry 2 ...................................................................... 54
-Dictionary Entry 3 ...................................................................... 55
-Dictionary Entry 4 ...................................................................... 55
-Dictionary Entry 5 ...................................................................... 56
-DisplayColour .................................................................................. 56
-MyStream ....................................................................................... 57
-Price(GBP) ...................................................................................... 58
-MyStorage ...................................................................................... 58
-CaseSensitive Mixed Case ................................................................. 59
-CASESENSITIVE All Uppercase .......................................................... 60
-"prop6" Stream .................................................................................... 61
-"prop12" Storage .................................................................................. 61
-
-3.2.2.1.4.1
-3.2.2.1.4.2
-3.2.2.1.4.3
-3.2.2.1.4.4
-3.2.2.1.4.5
-3.2.2.1.4.6
-
-3.2.2.1.5
-3.2.2.1.6
-3.2.2.1.7
-3.2.2.1.8
-3.2.2.1.9
-3.2.2.1.10
-
-3.2.2.1.1
-3.2.2.1.2
-3.2.2.1.3
-3.2.2.1.4
-
-3.2.2.2
-3.2.2.3
-
-3.2.1
-3.2.2
-
-3.2.2.1
-
-4  Security Considerations ......................................................................................... 62
-
-5  Appendix A: Product Behavior ............................................................................... 63
-
-6  Change Tracking .................................................................................................... 66
-
-7  Index ..................................................................................................................... 67
-
-[MS-OLEPS] - v20240423
-Object Linking and Embedding (OLE) Property Set Data Structures
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 67
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Object Linking and Embedding (OLE) Property Set Data Structures
 (OLEPS), a generic persistence format for sets of properties typically used to associate simple typed
@@ -731,7 +613,7 @@ application-specific portions of the file format.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -789,7 +671,8 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-property name: A string that, in combination with a property set, identifies a named property.
+
+property name: A string that, in combination with a property set, identifies a named property.
 
 property set: A set of properties, along with an FMTID, identifying the property set format and an
 associated class identifier (CLSID). The CLSID is used to identify the application or component
@@ -829,14 +712,14 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -860,7 +743,8 @@ Release: April 23, 2024
 
 7 / 67
 
-[MS-OAUT] Microsoft Corporation, "OLE Automation Protocol".
+
+[MS-OAUT] Microsoft Corporation, "OLE Automation Protocol".
 
 [MS-UCODEREF] Microsoft Corporation, "Windows Protocols Unicode Reference".
 
@@ -870,7 +754,7 @@ Release: April 23, 2024
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-COM] Microsoft Corporation, "Component Object Model", http://msdn.microsoft.com/en-
 us/library/aa286559.aspx
@@ -878,7 +762,7 @@ us/library/aa286559.aspx
 [MSDN-FileStreams] Microsoft Corporation, "File Streams", http://msdn.microsoft.com/en-
 us/library/aa364404.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Object Linking and Embedding (OLE) Property Set Data Structures (OLEPS) enable applications to
 write metadata in a manner that is discoverable to other software. A property set consists of a set of
@@ -912,7 +796,7 @@ that provide such a feature. An example of a file system that provides alternate
 
 The specifications for the well-known property set formats, PropertyIdentifier and PropertyBag.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 A stream is a sequence of bytes that typically encodes application data. An example of a stream is
 the data contents of an ordinary file. A stream container is a software-provided location for a
@@ -931,7 +815,8 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-storage (2) is recursive. For example, a storage (2) can contain another storage (2), which can in turn
+
+storage (2) is recursive. For example, a storage (2) can contain another storage (2), which can in turn
 contain a third storage, and so on. In addition to its elements, a storage also has an associated class
 identifier (CLSID), which is a GUID value typically used to identify the application or component that
 created the storage. For example, an application that implements a Component Object Model (COM)
@@ -945,7 +830,7 @@ The specification for standard property set stream and storage names in section 
 storage containers provide element-naming that is case-insensitive for at least the characters A-Z/a-z.
 Compound files have this property.
 
-1.3.2  Properties and Property Sets
+#### 1.3.2 Properties and Property Sets
 
 A property is a typed value associated with a numerical identifier, known as the property identifier.
 OLEPS also enables a property to be optionally associated with a string known as the property name.
@@ -970,18 +855,18 @@ property set, whereas these types are not valid in a simple property set. Additi
 for simple property set is a stream format, whereas the specification for non-simple property sets is
 a storage format.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The OLEPS protocol enables property sets to be stored in a compound file (for details, see [MS-
 CFB]).
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 OLEPS is appropriate for writing simple metadata to a file, especially when this metadata needs to be
 discoverable by other software. It is most appropriate when the file format itself does not provide a
 format-specific mechanism for writing typed property.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This document covers versioning issues in the following areas:
 
@@ -996,7 +881,8 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Localization: The encoding of strings in the CodePageString and PropertyIdentifier packets is
+
+  Localization: The encoding of strings in the CodePageString and PropertyIdentifier packets is
 
 dependent on a property set's CodePage property. Property sets optionally have an informational
 Locale property to identify the language for strings in the property set. Localization-dependent
@@ -1010,7 +896,7 @@ possible for a file to contain both version 0 and version 1 property sets.
 For maximum interoperability, it is recommended that implementations write property sets as version
 0 unless they make use of features only supported in version 1.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 Vendors are free to define new property set formats. The FMTIDs of these formats are GUIDs that
 are generated using the mechanism specified in [C706] section A.2.5.
@@ -1022,7 +908,8 @@ Release: April 23, 2024
 
 10 / 67
 
-2  Structures
+
+## 2 Structures
 
 Field types in packet diagrams are defined by the packet diagram and the field descriptions. All fields
 in packet diagrams use little endian byte ordering unless otherwise stated.
@@ -1061,7 +948,7 @@ VARIANT_BOOL
 
 [MS-OAUT] section 2.2.27
 
-2.1  PropertyIdentifier
+### 2.1 PropertyIdentifier
 
 The PropertyIdentifier data type represents the property identifier of a property in a property set.
 
@@ -1103,7 +990,7 @@ property identifier for the Behavior property.
 
 0x80000003
 
-2.2  PropertyType
+### 2.2 PropertyType
 
 The PropertyType enumeration represents the type of a property in a property set. The set of types
 supported depends on the version of the property set, which is indicated by the Version field of the
@@ -1115,7 +1002,8 @@ Release: April 23, 2024
 
 11 / 67
 
-PropertySetStream packet. In addition, the property types not supported in simple property sets
+
+PropertySetStream packet. In addition, the property types not supported in simple property sets
 are specified as such. PropertyType is an enumeration, which MUST be one of the following values:
 
 This type is declared as follows:
@@ -1235,7 +1123,8 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x0014
 
@@ -1368,7 +1257,8 @@ Release: April 23, 2024
 
 13 / 67
 
-Value
+
+Value
 
 Meaning
 
@@ -1498,7 +1388,8 @@ Release: April 23, 2024
 
 14 / 67
 
-Value
+
+Value
 
 Meaning
 
@@ -1621,7 +1512,8 @@ Release: April 23, 2024
 
 15 / 67
 
-2.3  CURRENCY (Packet Version)
+
+### 2.3 CURRENCY (Packet Version)
 
 The CURRENCY (Packet Version) packet represents a CURRENCY as specified in [MS-OAUT] section
 2.2.24.
@@ -1643,7 +1535,7 @@ int64
 
 int64 (8 bytes): The value of the int64 field specified in [MS-OAUT] section 2.2.24.
 
-2.4  DATE (Packet Version)
+### 2.4 DATE (Packet Version)
 
 The DATE (Packet Version) packet represents a DATE as specified in[MS-OAUT] section 2.2.25.
 
@@ -1666,7 +1558,7 @@ Value (8 bytes): The value of the DATE is an 8-byte IEEE floating-point number, 
 
 OAUT] section 2.2.25.
 
-2.5  CodePageString
+### 2.5 CodePageString
 
 The CodePageString packet represents a string whose encoding depends on the value of the property
 set's CodePage property.
@@ -1709,12 +1601,13 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-strings with embedded or additional trailing null characters are presented by the implementation
+
+strings with embedded or additional trailing null characters are presented by the implementation
 to an application is implementation-specific.<1> For maximum interoperability, an OLEPS
 implementation SHOULD NOT write strings with embedded or trailing null characters unless
 specifically requested to do so by an application.
 
-2.6  DECIMAL (Packet Version)
+### 2.6 DECIMAL (Packet Version)
 
 The DECIMAL (Packet Version) packet represents a DECIMAL as specified in [MS-OAUT] section
 2.2.26.
@@ -1754,7 +1647,7 @@ Hi32 (4 bytes): The value of the Hi32 field specified in [MS-OAUT] section 2.2.2
 
 Lo64 (8 bytes): The value of the Lo64 field specified in [MS-OAUT] section 2.2.26.
 
-2.7  UnicodeString
+### 2.7 UnicodeString
 
 The UnicodeString packet represents a Unicode string.
 
@@ -1785,7 +1678,7 @@ nonzero, this field MUST be a null-terminated array of 16-bit Unicode characters
 padding to a multiple of 4 bytes. The string represented by this field SHOULD NOT contain
 embedded or additional trailing null characters.
 
-2.8  FILETIME (Packet Version)
+### 2.8 FILETIME (Packet Version)
 
 The FILETIME (Packet Version) packet represents a FILETIME structure ([MS-DTYP] section 2.3.3).
 
@@ -1796,7 +1689,8 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1819,7 +1713,7 @@ dwHighDateTime (4 bytes): The value of the dwHighDateTime field specified in [MS
 
 section 2.3.3.
 
-2.9  BLOB
+### 2.9 BLOB
 
 The BLOB packet represents binary data.
 
@@ -1844,7 +1738,7 @@ Size (4 bytes): The size in bytes of the Bytes field, not including padding (if 
 
 Bytes (variable): MUST be an array of bytes, followed by zero padding to a multiple of 4 bytes.
 
-2.10  IndirectPropertyName
+### 2.10 IndirectPropertyName
 
 The IndirectPropertyName packet represents the name of a stream or storage as used in the
 representation of the following property types in a non-simple property set: VT_STREAM (0x0042),
@@ -1859,7 +1753,7 @@ Where PropertyIdentifier is the decimal string representation of the property id
 identifier MUST be a valid PropertyIdentifier value and MUST NOT be the property identifier for any of
 the special properties specified in section 2.18.
 
-2.11  ClipboardData
+### 2.11 ClipboardData
 
 The ClipboardData packet represents clipboard data.
 
@@ -1883,7 +1777,8 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Format
+
+Format
 
 Data (variable)
 
@@ -1895,7 +1790,7 @@ Format (4 bytes): An application-specific identifier for the format of the data 
 
 Data (variable): MUST be an array of bytes, followed by zero padding to a multiple of 4 bytes.
 
-2.12  GUID (Packet Version)
+### 2.12 GUID (Packet Version)
 
 The GUID (Packet Version) packet represents a GUID.
 
@@ -1928,7 +1823,7 @@ Data3 (2 bytes): The value of the Data3 field specified in [MS-DTYP] section 2.3
 
 Data4 (8 bytes): The value of the Data4 field specified in [MS-DTYP] section 2.3.4.
 
-2.13  VersionedStream
+### 2.13 VersionedStream
 
 The VersionedStream packet represents a stream with an application-specific version GUID.
 
@@ -1962,9 +1857,10 @@ Release: April 23, 2024
 
 19 / 67
 
-StreamName (variable): MUST be an IndirectPropertyName.
 
-2.14  Vector and Array Property Types
+StreamName (variable): MUST be an IndirectPropertyName.
+
+### 2.14 Vector and Array Property Types
 
 Several property types are defined to be a vector or an array of another property type, known as the
 property's scalar type. Vector types, indicated by a PropertyType value with the VT_VECTOR
@@ -1977,7 +1873,7 @@ scalar values.
 
 The following sections provide details on the representation of vector and array property types.
 
-2.14.1 Property Types in Variable-Typed Vectors and Arrays
+#### 2.14.1 Property Types in Variable-Typed Vectors and Arrays
 
 The property types VT_VECTOR | VT_VARIANT (0x100C) and VT_ARRAY | VT_VARIANT
 (0x200C) are variable-typed sequences in which each scalar value has its own type. The types of the
@@ -2103,7 +1999,8 @@ Release: April 23, 2024
 
 20 / 67
 
- Value
+
+ Value
 
  Allowed in VT_VECTOR | VT_VARIANT
 property?
@@ -2137,7 +2034,7 @@ VT_CLSID (0x0048)
 
 Yes
 
-2.14.2 VectorHeader
+#### 2.14.2 VectorHeader
 
 Yes
 
@@ -2168,7 +2065,7 @@ Length
 
 Length (4 bytes): An unsigned integer indicating the number of scalar values following the header.
 
-2.14.3 ArrayDimension
+#### 2.14.3 ArrayDimension
 
 The ArrayDimension packet represents the size and index offset of a dimension of an array property
 type.
@@ -2216,7 +2113,8 @@ Release: April 23, 2024
 
 21 / 67
 
-2.14.4 ArrayHeader
+
+#### 2.14.4 ArrayHeader
 
 The ArrayHeader packet represents the type and dimensions of an array property type.
 
@@ -2260,7 +2158,7 @@ Dimension 0 (variable): MUST be a sequence of ArrayDimension packets.
 The number of scalar values in an array property can be calculated from the ArrayHeader packet
 as the product of the Size fields of each of the ArrayDimension packets.
 
-2.15  TypedPropertyValue
+### 2.15 TypedPropertyValue
 
 The TypedPropertyValue structure represents the typed value of a property in a property set.
 
@@ -2296,7 +2194,8 @@ Release: April 23, 2024
 
 22 / 67
 
-Value  Meaning
+
+Value  Meaning
 
 0
 
@@ -2425,7 +2324,8 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Type
+
+ Type
 
  Format
 
@@ -2557,7 +2457,8 @@ Release: April 23, 2024
 
 24 / 67
 
- Type
+
+ Type
 
  Format
 
@@ -2678,7 +2579,8 @@ Release: April 23, 2024
 
 25 / 67
 
- Type
+
+ Type
 
  Format
 
@@ -2709,7 +2611,7 @@ VT_ARRAY | VT_UINT
 MUST be an ArrayHeader followed by a sequence of 4-byte unsigned
 integers.
 
-2.16  DictionaryEntry
+### 2.16 DictionaryEntry
 
 The DictionaryEntry packet represents a mapping between a property identifier and a property
 name.
@@ -2749,7 +2651,7 @@ MUST be a null-terminated array of 16-bit Unicode characters, followed by zero p
 multiple of 4 bytes. Otherwise, MUST be a null-terminated array of 8-bit characters from the code
 page identified by the CodePage property and MUST NOT be padded.
 
-2.17  Dictionary
+### 2.17 Dictionary
 
 The Dictionary packet represents all mappings between property identifiers and property names in
 a property set.
@@ -2761,7 +2663,8 @@ Release: April 23, 2024
 
 26 / 67
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2800,12 +2703,12 @@ required to appear in any particular order.
 
 Padding (variable): Padding, if necessary, to a total length that is a multiple of 4 bytes.
 
-2.18  Special Properties
+### 2.18 Special Properties
 
 The following sections provide additional information on properties that have special representation,
 usage, or restrictions.
 
-2.18.1 Dictionary Property
+#### 2.18.1 Dictionary Property
 
 The Dictionary property, if present, MUST have a property identifier of 0x00000000 and MUST NOT
 have a property name. Unlike other properties, which are represented as TypedPropertyValue
@@ -2817,7 +2720,7 @@ entries with the same property name. Property names MUST be compared in a case-i
 manner unless the property set has a Behavior property with the value 0x00000001, in which case
 property names MUST be compared in a case-sensitive manner.
 
-2.18.2 CodePage Property
+#### 2.18.2 CodePage Property
 
 The CodePage property MUST have the property identifier 0x00000001, MUST NOT have a property
 name, and MUST have type VT_I2 (0x0002). Every property set MUST have a CodePage property and
@@ -2831,19 +2734,20 @@ Release: April 23, 2024
 
 27 / 67
 
-The CodePage property of a property set affects the representation of the CodePageString and
+
+The CodePage property of a property set affects the representation of the CodePageString and
 DictionaryEntry packets. The value CP_WINUNICODE (0x04B0) indicates that the strings in these
 packets are encoded as arrays of 16-bit Unicode characters. Any other value indicates that the
 strings in these packets are encoded as arrays of 8-bit characters from the code page identified.
 
-2.18.3 Locale Property
+#### 2.18.3 Locale Property
 
 The Locale property, if present, MUST have the property identifier 0x80000000, MUST NOT have a
 property name, and MUST have type VT_UI4 (0x0013). If present, its value MUST be a valid
 language code identifier as specified in [MS-LCID]. Its value is selected in an implementation-specific
 manner.<3>
 
-2.18.4 Behavior Property
+#### 2.18.4 Behavior Property
 
 The Behavior property, if present, MUST have the property identifier 0x80000003, MUST NOT have a
 property name, and MUST have type VT_UI4 (0x0013). A version 0 property set, indicated by the
@@ -2860,7 +2764,7 @@ If the Behavior property is present, it MUST have one of the following values.
 
 0x00000001  Property names are case-sensitive.
 
-2.19  PropertyIdentifierAndOffset
+### 2.19 PropertyIdentifierAndOffset
 
 The PropertyIdentifierAndOffset packet is used in the PropertySet packet to represent a property
 identifier and the byte offset of the property in the PropertySet packet.
@@ -2891,7 +2795,7 @@ Offset (4 bytes): An unsigned integer representing the offset in bytes from the 
 PropertySet packet to the beginning of the Property field for the property represented. MUST be
 a multiple of 4 bytes.
 
-2.20  PropertySet
+### 2.20 PropertySet
 
 The PropertySet packet represents a property set.
 
@@ -2902,7 +2806,8 @@ Release: April 23, 2024
 
 28 / 67
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2949,7 +2854,7 @@ Property 0 (variable): Each Property field is a sequence of property values, eac
 represented by a TypedPropertyValue packet or a Dictionary packet in the special case of the
 Dictionary property.
 
-2.21  PropertySetStream
+### 2.21 PropertySetStream
 
 The PropertySetStream packet specifies the stream format for simple property sets and the
 stream format for the CONTENTS stream in the Non-Simple Property Set Storage Format. A simple
@@ -2984,7 +2889,8 @@ Release: April 23, 2024
 
 29 / 67
 
-SystemIdentifier
+
+SystemIdentifier
 
 CLSID (16 bytes)
 
@@ -3047,7 +2953,8 @@ Release: April 23, 2024
 
 30 / 67
 
-If the property set does not use any of these features, this field SHOULD be set to 0x0000 for
+
+If the property set does not use any of these features, this field SHOULD be set to 0x0000 for
 maximum interoperability.
 
 Value  Meaning
@@ -3109,7 +3016,7 @@ Padding (variable): Contains additional padding added by the implementation. If 
 
 MUST be zeroes and MUST be ignored.
 
-2.22  Non-Simple Property Set Storage Format
+### 2.22 Non-Simple Property Set Storage Format
 
 A non-simple property set MUST be represented by a storage. This storage MUST have a stream
 element with the name "CONTENTS", which MUST contain a PropertySetStream packet. The CLSID of
@@ -3125,7 +3032,8 @@ Release: April 23, 2024
 
 31 / 67
 
- Property Type
+
+ Property Type
 
  Element Type
 
@@ -3151,7 +3059,7 @@ stream
 
 Each of these elements MUST have the name specified in the property's IndirectPropertyName packet.
 
-2.23  Property Set Stream and Storage Names
+### 2.23 Property Set Stream and Storage Names
 
 A stream or storage representing a property set might be an element of a storage. For example, the
 standard binding for property set streams or storages in a compound file requires each to be an
@@ -3215,7 +3123,8 @@ Release: April 23, 2024
 
 32 / 67
 
-1.  Start with the 128-bit GUID (Packet Version) representation of the FMTID and append 2 zero bits
+
+1.  Start with the 128-bit GUID (Packet Version) representation of the FMTID and append 2 zero bits
 
 for a total of 130 bits.
 
@@ -3327,7 +3236,7 @@ f
 
 this mapping.
 
-2.24  Standard Bindings
+### 2.24 Standard Bindings
 
 The following sections specify standard bindings that can be used to associate property sets with a
 file, so that property sets stored in this manner are discoverable to other implementations. An OLEPS
@@ -3335,20 +3244,20 @@ implementation SHOULD support the Compound File binding for compound files. An i
 MAY<9> additionally support the alternate stream binding if the file system supports alternate
 streams, but this binding MUST NOT be used for compound files.
 
-2.24.1 Compound File Binding
+#### 2.24.1 Compound File Binding
 
 To associate a property set with a compound file, the stream or storage representing the property
 set MUST be an element of the compound file's root storage and MUST have the standard name
 specified in section 2.23.
 
-2.24.2 Alternate Stream Binding
+#### 2.24.2 Alternate Stream Binding
 
 Some file systems provide a feature where a file can have alternate, named streams in addition to the
 main data stream of the file. For example, NTFS has such a feature (see [MSDN-FileStreams] for
 more information). The alternate stream binding enables property sets to be stored in these
 alternate streams, such that property sets can be associated with a file that is not a compound file.
 
-2.24.3 Control Stream
+#### 2.24.3 Control Stream
 
 A file that has one or more property sets associated with it through the alternate stream binding
 MUST have a control stream, which is an alternate stream with the name "{4c8cc155-6c1e-11d1-
@@ -3361,7 +3270,8 @@ Release: April 23, 2024
 
 33 / 67
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3395,12 +3305,12 @@ CLSID (16 bytes): An application-provided value that MUST NOT be interpreted by 
 
 implementation. If the application did not provide a value, it SHOULD be absent.
 
-2.24.4 Simple Property Set Stream
+#### 2.24.4 Simple Property Set Stream
 
 A simple property set MUST be represented by an alternate stream with the standard name
 specified in section 2.23. This stream MUST contain a PropertySetStream packet.
 
-2.24.5 Non-Simple Property Set Storage
+#### 2.24.5 Non-Simple Property Set Storage
 
 A non-simple property set MUST be represented by an alternate stream with a name derived
 from the standard name specified in section 2.23 according to the following ABNF [RFC4234] syntax.
@@ -3412,12 +3322,12 @@ This stream's contents MUST be in the format of a compound file (see [MS-CFB] fo
 root storage of this compound file MUST conform to the non-simple property set storage format as
 specified in section 2.22.
 
-2.25  Well-Known Property Set Formats
+### 2.25 Well-Known Property Set Formats
 
 The following sections specify the well-known property set formats PropertyIdentifier and
 PropertyBag.
 
-2.25.1 SummaryInformation
+#### 2.25.1 SummaryInformation
 
 The SummaryInformation property set format, identified by FMTID_SummaryInformation ({F29F85E0-
 4FF9-1068-AB91-08002B27B3D9}), represents generic properties  of a document. The properties
@@ -3432,7 +3342,8 @@ Release: April 23, 2024
 
 34 / 67
 
- Property identifier
+
+ Property identifier
 
  Type
 
@@ -3606,7 +3517,8 @@ Release: April 23, 2024
 
 35 / 67
 
-2.25.2 PropertyBag
+
+#### 2.25.2 PropertyBag
 
 The PropertyBag property set format, identified by FMTID_PropertyBag ({20001801-5DE6-11D1-
 8E38-00C04FB9386D}), is used in applications that persist an object as a property set, typically by
@@ -3621,9 +3533,10 @@ Release: April 23, 2024
 
 36 / 67
 
-3  Structure Examples
 
-3.1  SummaryInformation Property Set
+## 3 Structure Examples
+
+### 3.1 SummaryInformation Property Set
 
 The following table shows the binary contents of a stream representing a SummaryInformation
 Property Set. This is a simple property set, as the SummaryInformation format does not require
@@ -4441,7 +4354,8 @@ Release: April 23, 2024
 
 37 / 67
 
- Stream contents
+
+ Stream contents
 
  19x   40
 
@@ -4598,7 +4512,8 @@ Release: April 23, 2024
 
 38 / 67
 
- PropertyIdentifier
+
+ PropertyIdentifier
 
 PIDSI_TEMPLATE (0x00000007)
 
@@ -4656,7 +4571,7 @@ packets, as described in the following sections (3.1.1 through 3.1.18).
 
 PropertySet 1: Absent, as required for a PropertySetStream with only one property set.
 
-3.1.1  CodePage Property
+#### 3.1.1 CodePage Property
 
 The CodePage property is an instance of the TypedPropertyValue structure defined in section 2.15.
 
@@ -4682,7 +4597,7 @@ Value (4 bytes at offset 204): The 2-byte signed integer 0x04E4 (decimal 1252) f
 bytes of zero padding as required. Indicates that CodePageString packets in this property set
 are encoded with code page 1252 (Latin 1).
 
-3.1.2  PIDSI_TITLE
+#### 3.1.2 PIDSI_TITLE
 
 The PIDSI_TITLE property is an instance of the TypedPropertyValue structure defined in section
 2.15.
@@ -4694,7 +4609,8 @@ Release: April 23, 2024
 
 39 / 67
 
-Property identifier: 0x00000002
+
+Property identifier: 0x00000002
 
 Property offset: 0x00000030 + 0x000000A0 = 0x000000D0 (decimal 208)
 
@@ -4774,7 +4690,7 @@ Characters (16 bytes at offset 216): The null-terminated sequence of 8-bit chara
 
 "Joe's document", padded to a total length of 16 bytes.
 
-3.1.3  PIDSI_SUBJECT
+#### 3.1.3 PIDSI_SUBJECT
 
 The PIDSI_SUBJECT property is an instance of the TypedPropertyValue structure defined in section
 2.15.
@@ -4824,7 +4740,8 @@ Release: April 23, 2024
 
 40 / 67
 
-3.1.4  PIDSI_AUTHOR
+
+#### 3.1.4 PIDSI_AUTHOR
 
 The PIDSI_AUTHOR property is an instance of the TypedPropertyValue structure defined in section
 2.15.
@@ -4865,7 +4782,7 @@ Size (4 bytes at offset 248): 0x000004.
 
 Characters (4 bytes at offset 252): The null-terminated sequence of 8-bit characters, "Joe".
 
-3.1.5  PIDSI_KEYWORDS
+#### 3.1.5 PIDSI_KEYWORDS
 
 The PIDSI_KEYWORDS property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -4903,7 +4820,8 @@ Release: April 23, 2024
 
 41 / 67
 
-3.1.6  PIDSI_COMMENTS
+
+#### 3.1.6 PIDSI_COMMENTS
 
 The PIDSI_COMMENTS property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -4934,7 +4852,7 @@ Characters (4 bytes at offset 276): A null-terminated sequence of 8-bit characte
 
 string itself consists entirely of null characters.
 
-3.1.7  PIDSI_TEMPLATE
+#### 3.1.7 PIDSI_TEMPLATE
 
 The PIDSI_TEMPLATE property is an instance of the TypedPropertyValue structure defined in section
 2.15.
@@ -5018,11 +4936,12 @@ Release: April 23, 2024
 
 42 / 67
 
-Characters (12 bytes at offset 288): The null-terminated sequence of 8-bit characters,
+
+Characters (12 bytes at offset 288): The null-terminated sequence of 8-bit characters,
 
 "Normal.dotm".
 
-3.1.8  PIDSI_LASTAUTHOR
+#### 3.1.8 PIDSI_LASTAUTHOR
 
 The PIDSI_LASTAUTHOR property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -5089,7 +5008,7 @@ Characters (12 bytes at offset 308): The null-terminated sequence of 8-bit chara
 
 "Cornelius", padded to a total length of 12 bytes.
 
-3.1.9  PIDSI_REVNUMBER
+#### 3.1.9 PIDSI_REVNUMBER
 
 The PIDSI_REVNUMBER property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -5127,7 +5046,8 @@ Release: April 23, 2024
 
 43 / 67
 
-Value: A CodePageString packet with the following subfields:
+
+Value: A CodePageString packet with the following subfields:
 
 Size (4 bytes at offset 324): 0x000004.
 
@@ -5135,7 +5055,7 @@ Characters (4 bytes at offset 328): The null-terminated sequence of 8-bit charac
 
 "66", followed by an additional null character.
 
-3.1.10 PIDSI_APPNAME
+#### 3.1.10 PIDSI_APPNAME
 
 The PIDSI_APPNAME property is an instance of the TypedPropertyValue structure defined in section
 2.15.
@@ -5244,7 +5164,7 @@ Characters (24 bytes at offset 340): The null-terminated sequence of 8-bit chara
 
 "Microsoft Office Word", followed by two additional null characters.
 
-3.1.11 PIDSI_EDITTIME
+#### 3.1.11 PIDSI_EDITTIME
 
 The PIDSI_EDITTIME property is an instance of the TypedPropertyValue structure defined in section
 2.15.
@@ -5274,7 +5194,8 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Padding (2 bytes at offset 366): Set to zero, as required.
+
+Padding (2 bytes at offset 366): Set to zero, as required.
 
 Value (8 bytes at offset 368): A FILETIME packet that, when interpreted as a 64-bit unsigned
 
@@ -5282,7 +5203,7 @@ integer, as is appropriate for the PIDSI_EDITTIME property, has the value
 0x00000042A2D96E00 (decimal 286,200,000,000). This value is in 100-nanosecond increments
 and is equal to 7 hours, 57 minutes.
 
-3.1.12 PIDSI_LASTPRINTED
+#### 3.1.12 PIDSI_LASTPRINTED
 
 The PIDSI_LASTPRINTED property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -5311,7 +5232,7 @@ Value (8 bytes at offset 380): A FILETIME packet with the value June 12, 2006 6:
 
 coordinated universal time (UTC).
 
-3.1.13 PIDSI_CREATE_DTM
+#### 3.1.13 PIDSI_CREATE_DTM
 
 The PIDSI_CREATE_DTM property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -5351,7 +5272,8 @@ Release: April 23, 2024
 
 45 / 67
 
-3.1.14 PIDSI_LASTSAVE_DTM
+
+#### 3.1.14 PIDSI_LASTSAVE_DTM
 
 The PIDSI_LASTSAVE_DTM property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -5382,7 +5304,7 @@ Padding (2 bytes at offset 402): Set to zero, as required.
 
 Value (8 bytes at offset 404): A FILETIME packet with the value March 8, 2008 5:30 A.M. UTC.
 
-3.1.15 PIDSI_PAGECOUNT
+#### 3.1.15 PIDSI_PAGECOUNT
 
 The PIDSI_PAGECOUNT property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -5407,7 +5329,7 @@ Padding (2 bytes at offset 414): Set to zero, as required.
 
 Value (4 bytes at offset 416): The 32-bit signed integer 0x0000000E (decimal 14).
 
-3.1.16 PIDSI_WORDCOUNT
+#### 3.1.16 PIDSI_WORDCOUNT
 
 The PIDSI_WORDCOUNT property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -5425,7 +5347,8 @@ Release: April 23, 2024
 
 46 / 67
 
-Structure contents
+
+Structure contents
 
 x0  x1  x2  x3  x4  x5
 
@@ -5441,7 +5364,7 @@ Padding (2 bytes at offset 422): Set to zero, as required.
 
 Value (4 bytes at offset 424): The 32-bit signed integer 0x00000DE5 (decimal 3,557).
 
-3.1.17 PIDSI_CHARCOUNT
+#### 3.1.17 PIDSI_CHARCOUNT
 
 The PIDSI_CHARCOUNT property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -5466,7 +5389,7 @@ Padding (2 bytes at offset 430): Set to zero, as required.
 
 Value (4 bytes at offset 432): The 32-bit signed integer 0x00004F38 (decimal 20,280).
 
-3.1.18 PIDSI_DOC_SECURITY
+#### 3.1.18 PIDSI_DOC_SECURITY
 
 The PIDSI_DOC_SECURITY property is an instance of the TypedPropertyValue structure defined in
 section 2.15.
@@ -5496,11 +5419,12 @@ Release: April 23, 2024
 
 47 / 67
 
-Value (4 bytes at offset 440): The 32-bit signed integer 0x00000000, indicating that no access
+
+Value (4 bytes at offset 440): The 32-bit signed integer 0x00000000, indicating that no access
 
 control is suggested by the application used to create the document.
 
-3.2  PropertyBag Property Set
+### 3.2 PropertyBag Property Set
 
 This section demonstrates the usage of some of the capabilities of OLEPS that are not used in
 SummaryInformation property sets (as described in section 3.1). The example is a PropertyBag
@@ -5511,7 +5435,7 @@ Stream Binding.
 The file with which the property set is associated has two alternate streams: "{4c8cc155-6c1e-
 11d1-8e41-00c04fb9386d}" and "Docf_\005Bagaaqy23kudbhchAaq5u2chNd".
 
-3.2.1  Control Stream ("{4c8cc155-6c1e-11d1-8e41-00c04fb9386d}")
+#### 3.2.1 Control Stream ("{4c8cc155-6c1e-11d1-8e41-00c04fb9386d}")
 
 The following table shows the binary contents of the control stream, which is required for a file
 containing one or more property sets stored using the alternate stream binding. This stream is
@@ -5577,7 +5501,7 @@ provide a value.
 
 CLSID (0 bytes): Absent, indicating that the application did not provide a value.
 
-3.2.2  PropertyBag Stream ("Docf_\005Bagaaqy23kudbhchAaq5u2chNd")
+#### 3.2.2 PropertyBag Stream ("Docf_\005Bagaaqy23kudbhchAaq5u2chNd")
 
 This stream contains the non-simple property set storage format representing the PropertyBag
 property set (as described in section 3.2). The FMTID of the property set, FMTID_PropertyBag
@@ -5606,7 +5530,8 @@ Release: April 23, 2024
 
 48 / 67
 
-3.2.2.1  "CONTENTS" Stream
+
+##### 3.2.2.1 "CONTENTS" Stream
 
 The following table shows the binary contents of the "CONTENTS" stream.
 
@@ -6555,7 +6480,8 @@ Release: April 23, 2024
 
 49 / 67
 
- Stream contents
+
+ Stream contents
 
  1Dx   03
 
@@ -6746,7 +6672,8 @@ Release: April 23, 2024
 
 50 / 67
 
- PropertyIdentifier
+
+ PropertyIdentifier
 
  Offset
 
@@ -6788,7 +6715,7 @@ Property 0–9 (496 bytes total at offset 136): A sequence of 10 TypedPropertyVa
 packets, except the Dictionary property, which is a Dictionary packet, as described in
 section 3.2.2.1.4.
 
-3.2.2.1.1 CodePage
+###### 3.2.2.1.1 CodePage
 
 The CodePage property is an instance of the TypedPropertyValue structure defined in section 2.15.
 
@@ -6860,7 +6787,7 @@ bytes of zero padding as required. This value is CP_WINUNICODE, which indicates 
 CodePageString packets in this property set are encoded as arrays of 16-bit Unicode
 characters.
 
-3.2.2.1.2 Locale
+###### 3.2.2.1.2 Locale
 
 The Locale property is an instance of the TypedPropertyValue structure defined in section 2.15.
 
@@ -6877,7 +6804,8 @@ Release: April 23, 2024
 
 51 / 67
 
-Structure contents
+
+Structure contents
 
  x0
 
@@ -6937,7 +6865,7 @@ Value (4 bytes at offset 148): The 4-byte unsigned integer 0x08090000. This valu
 Language ID 0x0809 (en-GB) and Sort ID 0x0 (SORT_DEFAULT), as specified in [MS-LCID]
 section 2.2.
 
-3.2.2.1.3 Behavior
+###### 3.2.2.1.3 Behavior
 
 The Behavior property is an instance of the TypedPropertyValue structure defined in section 2.15.
 
@@ -7007,7 +6935,7 @@ Value (4 bytes at offset 156): The 4-byte unsigned integer 0x00000001, indicatin
 
 property names are case-sensitive.
 
-3.2.2.1.4 Dictionary
+###### 3.2.2.1.4 Dictionary
 
 The Dictionary property is an instance of the Dictionary structure defined in section 2.17.
 
@@ -7182,7 +7110,8 @@ Release: April 23, 2024
 
 52 / 67
 
-Structure contents
+
+Structure contents
 
  04x   00
 
@@ -7509,7 +7438,7 @@ Note that two of these properties have names that are equal when compared in a m
 case sensitivity ("CaseSensitive" and "CASESENSITIVE"). This equality is valid because the Dictionary
 property set's Behavior property has the value 0x00000001; otherwise, this would be invalid.
 
-3.2.2.1.4.1  Dictionary Entry 0
+###### 3.2.2.1.4.1 Dictionary Entry 0
 
 Entry 0 of the Dictionary (section 3.2.2.1.4) property is an instance of the DictionaryEntry structure
 defined in section 2.16.
@@ -7591,7 +7520,8 @@ Release: April 23, 2024
 
 53 / 67
 
- Structure contents
+
+ Structure contents
 
  00x   6C
 
@@ -7667,7 +7597,7 @@ Name (28 bytes at offset 172): The null-terminated sequence of 16-bit Unicode ch
 
 "DisplayColour".
 
-3.2.2.1.4.2  Dictionary Entry 1
+###### 3.2.2.1.4.2 Dictionary Entry 1
 
 Entry 1 of the Dictionary (section 3.2.2.1.4) property is an instance of the DictionaryEntry structure
 defined in section 2.16.
@@ -7786,7 +7716,7 @@ Name (20 bytes at offset 208): The null-terminated sequence of 16-bit Unicode ch
 
 "MyStream", padded with zeroes to a multiple of 4 bytes.
 
-3.2.2.1.4.3  Dictionary Entry 2
+###### 3.2.2.1.4.3 Dictionary Entry 2
 
 Entry 2 of the Dictionary (section 3.2.2.1.4) property is an instance of the DictionaryEntry structure
 defined in section 2.16.
@@ -7836,7 +7766,8 @@ Release: April 23, 2024
 
 54 / 67
 
- Structure contents
+
+ Structure contents
 
  00x   07
 
@@ -7930,7 +7861,7 @@ Name (24 bytes at offset 236): The null-terminated sequence of 16-bit Unicode ch
 
 "Price(GBP)", padded with zeroes to a multiple of 4 bytes.
 
-3.2.2.1.4.4  Dictionary Entry 3
+###### 3.2.2.1.4.4 Dictionary Entry 3
 
 Entry 3 of the Dictionary (section 3.2.2.1.4) property is an instance of the DictionaryEntry structure
 defined in section 2.16.
@@ -8053,7 +7984,7 @@ Name (20 bytes at offset 268): The null-terminated sequence of 16-bit Unicode ch
 
 "MyStorage".
 
-3.2.2.1.4.5  Dictionary Entry 4
+###### 3.2.2.1.4.5 Dictionary Entry 4
 
 Entry 4 of the Dictionary (section 3.2.2.1.4) property is an instance of the DictionaryEntry structure
 defined in section 2.16.
@@ -8135,7 +8066,8 @@ Release: April 23, 2024
 
 55 / 67
 
-Structure contents
+
+Structure contents
 
  00x   53
 
@@ -8211,7 +8143,7 @@ Name (28 bytes at offset 296): The null-terminated sequence of 16-bit Unicode ch
 
 "CaseSensitive".
 
-3.2.2.1.4.6  Dictionary Entry 5
+###### 3.2.2.1.4.6 Dictionary Entry 5
 
 Entry 5 of the Dictionary (section 3.2.2.1.4) property is an instance of the DictionaryEntry structure
 defined in section 2.16.
@@ -8360,7 +8292,7 @@ Name (28 bytes at offset 332): The null-terminated sequence of 16-bit Unicode ch
 
 "CASESENSITIVE".
 
-3.2.2.1.5 DisplayColour
+###### 3.2.2.1.5 DisplayColour
 
 The DisplayColour property is an instance of the TypedPropertyValue structure defined in section
 2.15.
@@ -8378,7 +8310,8 @@ Release: April 23, 2024
 
 56 / 67
 
-Structure contents
+
+Structure contents
 
  x0
 
@@ -8474,7 +8407,7 @@ Characters (12 bytes at offset 368): The null-terminated sequence of 16-bit Unic
 
 characters, "Grey", padded with zeroes to a multiple of 4 bytes.
 
-3.2.2.1.6 MyStream
+###### 3.2.2.1.6 MyStream
 
 The MyStream property is an instance of the TypedPropertyValue structure defined in section 2.15.
 
@@ -8617,10 +8550,11 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note that the TypedPropertyValue packet representing this property does not contain the complete
+
+Note that the TypedPropertyValue packet representing this property does not contain the complete
 property value. The remainder of the property value is contained in the stream, "prop6".
 
-3.2.2.1.7 Price(GBP)
+###### 3.2.2.1.7 Price(GBP)
 
 The Price(GBP) property is an instance of the TypedPropertyValue structure defined in section 2.15.
 
@@ -8698,7 +8632,7 @@ Value (8 bytes at offset 420): A CURRENCY packet with the value 133.1200 (presum
 
 £133.12 based on the name of the property).
 
-3.2.2.1.8 MyStorage
+###### 3.2.2.1.8 MyStorage
 
 The MyStorage property is an instance of the TypedPropertyValue structure defined in section 2.15.
 
@@ -8823,10 +8757,11 @@ Release: April 23, 2024
 
 58 / 67
 
-Note that the TypedPropertyValue packet representing this property does not contain the property
+
+Note that the TypedPropertyValue packet representing this property does not contain the property
 value. The property value is contained in the storage, "prop12".
 
-3.2.2.1.9 CaseSensitive Mixed Case
+###### 3.2.2.1.9 CaseSensitive Mixed Case
 
 The CaseSensitive property is an instance of the TypedPropertyValue structure defined in section
 2.15.
@@ -9094,7 +9029,8 @@ Release: April 23, 2024
 
 59 / 67
 
- Scalar values 0-14 (16 bytes total at offset 480): The total number of scalar
+
+ Scalar values 0-14 (16 bytes total at offset 480): The total number of scalar
 
 values in the array property is 3×5 = 15.
 
@@ -9183,9 +9119,9 @@ Dimension 0
  Dimension 0
 (index 1)
 
-3.2.2.1.10
+###### 3.2.2.1.10 CASESENSITIVE All Uppercase
 
-CASESENSITIVE All Uppercase
+
 
 The CASESENSITIVE All Uppercase property is an instance of the TypedPropertyValue structure
 defined in section 2.15.
@@ -9359,7 +9295,8 @@ Release: April 23, 2024
 
 60 / 67
 
- Type (2 bytes at offset 504): The type of property represented in the packet; the type is
+
+ Type (2 bytes at offset 504): The type of property represented in the packet; the type is
 
 identified as the PropertyType enumeration value VT_UI1 (0x0011).
 
@@ -9437,12 +9374,12 @@ identified as the PropertyType enumeration value VT_I8 (0x0014).
 
 -7201218164792360791).
 
-3.2.2.2  "prop6" Stream
+##### 3.2.2.2 "prop6" Stream
 
 This stream contains the stream portion of the VT_VERSIONED_STREAM property, "MyStream"
 (PropertyIdentifier 0x00000006). For brevity, the contents of the stream are omitted here.
 
-3.2.2.3  "prop12" Storage
+##### 3.2.2.3 "prop12" Storage
 
 This storage contains the value of the VT_STORED_OBJECT property, "MyStorage" (PropertyIdentifier
 0x0000000C). This storage contains an application-specific representation of an object. For brevity,
@@ -9455,7 +9392,8 @@ Release: April 23, 2024
 
 61 / 67
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 None.
 
@@ -9466,7 +9404,8 @@ Release: April 23, 2024
 
 62 / 67
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -9534,7 +9473,8 @@ Release: April 23, 2024
 
 63 / 67
 
-<2> Section 2.18.2: Windows enables applications creating a property set to select whether a
+
+<2> Section 2.18.2: Windows enables applications creating a property set to select whether a
 property set is Unicode, in which case the CodePage property is CP_WINUNICODE (0x04B0).
 Alternatively, it can select ANSI, in which case the CodePage property is the current ANSI code page
 identifier for the system.
@@ -9628,7 +9568,8 @@ Object Linking and Embedding (OLE) Property Set Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Windows version  SystemIdentifier
+
+Windows version  SystemIdentifier
 
 Windows Vista
 
@@ -9657,7 +9598,8 @@ Release: April 23, 2024
 
 65 / 67
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -9701,7 +9643,8 @@ Release: April 23, 2024
 
 66 / 67
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 9

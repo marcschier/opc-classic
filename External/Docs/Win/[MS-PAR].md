@@ -63,7 +63,8 @@ Release: August 11, 2025
 
 1 / 129
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: August 11, 2025
 
 2 / 129
 
-Date
+
+Date
 
 Revision
 History
@@ -534,7 +536,8 @@ Release: August 11, 2025
 
 3 / 129
 
-Date
+
+Date
 
 Revision
 History
@@ -583,344 +586,68 @@ Release: August 11, 2025
 
 4 / 129
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Management of the Print System](#131-management-of-the-print-system)
+    - [1.3.2 Communication of Print Job Data](#132-communication-of-print-job-data)
+    - [1.3.3 Notification of Print System Changes](#133-notification-of-print-system-changes)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 EPrintPropertyType](#221-eprintpropertytype)
+    - [2.2.2 RpcPrintPropertyValue](#222-rpcprintpropertyvalue)
+    - [2.2.3 RpcPrintNamedProperty](#223-rpcprintnamedproperty)
+    - [2.2.4 RpcPrintPropertiesCollection](#224-rpcprintpropertiescollection)
+    - [2.2.5 RMTNTFY_HANDLE](#225-rmtntfyhandle)
+    - [2.2.6 NOTIFY_OPTIONS_CONTAINER](#226-notifyoptionscontainer)
+    - [2.2.7 NOTIFY_REPLY_CONTAINER](#227-notifyreplycontainer)
+    - [2.2.8 CORE_PRINTER_DRIVER](#228-coreprinterdriver)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IRemoteWinspool Server Details](#31-iremotewinspool-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.4 Port monitor management](#3144-port-monitor-management)
+      - [3.1.4.5 Form management](#3145-form-management)
+      - [3.1.4.10 Branch office print](#31410-branch-office-print)
+      - [3.1.4.11 Print System Asynchronous Remote Protocol](#31411-print-system-asynchronous-remote-protocol)
+        - [3.1.4.11.1 RpcAsyncLogJobInfoForBranchOffice (Opnum 74)](#314111-rpcasynclogjobinfoforbranchoffice-opnum-74)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 IRemoteWinspool Client Details](#32-iremotewinspool-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Adding a Printer to a Server](#41-adding-a-printer-to-a-server)
+  - [4.2 Adding a Printer Driver to a Server](#42-adding-a-printer-driver-to-a-server)
+  - [4.3 Enumerating Printers on a Server](#43-enumerating-printers-on-a-server)
+  - [4.4 Enumerating Print Jobs on a Server](#44-enumerating-print-jobs-on-a-server)
+  - [4.5 Receiving Notifications from a Server](#45-receiving-notifications-from-a-server)
+- [5 Security Considerations](#5-security-considerations)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 12
-Normative References ................................................................................. 13
-Informative References ............................................................................... 13
-Overview ........................................................................................................ 14
-Management of the Print System .................................................................. 14
-Communication of Print Job Data .................................................................. 15
-Notification of Print System Changes ............................................................. 16
-Relationship to Other Protocols .......................................................................... 18
-Prerequisites/Preconditions ............................................................................... 18
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 19
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 20
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-1.3.3
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 21
-Transport ........................................................................................................ 21
-Common Data Types ........................................................................................ 21
-EPrintPropertyType ..................................................................................... 22
-RpcPrintPropertyValue ................................................................................. 23
-RpcPrintNamedProperty ............................................................................... 23
-RpcPrintPropertiesCollection ......................................................................... 24
-RMTNTFY_HANDLE ...................................................................................... 25
-NOTIFY_OPTIONS_CONTAINER .................................................................... 25
-NOTIFY_REPLY_CONTAINER ......................................................................... 25
-CORE_PRINTER_DRIVER.............................................................................. 26
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.4.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 27
-IRemoteWinspool Server Details ........................................................................ 27
-Abstract Data Model .................................................................................... 27
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-Printer Management Methods ................................................................. 35
-RpcAsyncOpenPrinter (Opnum 0) ...................................................... 38
-RpcAsyncAddPrinter (Opnum 1) ........................................................ 38
-RpcAsyncDeletePrinter (Opnum 7) ..................................................... 38
-RpcAsyncSetPrinter (Opnum 8) ......................................................... 39
-RpcAsyncGetPrinter (Opnum 9) ......................................................... 39
-RpcAsyncGetPrinterData (Opnum 16)................................................. 40
-RpcAsyncGetPrinterDataEx (Opnum 17) ............................................. 40
-RpcAsyncSetPrinterData (Opnum 18) ................................................. 41
-RpcAsyncSetPrinterDataEx (Opnum 19) ............................................. 41
-RpcAsyncClosePrinter (Opnum 20) .................................................... 42
-RpcAsyncEnumPrinterData (Opnum 27) ............................................. 42
-RpcAsyncEnumPrinterDataEx (Opnum 28) .......................................... 43
-RpcAsyncEnumPrinterKey (Opnum 29) ............................................... 43
-RpcAsyncDeletePrinterData (Opnum 30) ............................................ 44
-RpcAsyncDeletePrinterDataEx (Opnum 31) ......................................... 44
-RpcAsyncDeletePrinterKey (Opnum 32) .............................................. 45
-RpcAsyncSendRecvBidiData (Opnum 34) ............................................ 45
-RpcAsyncCreatePrinterIC (Opnum 35) ................................................ 46
-RpcAsyncPlayGdiScriptOnPrinterIC (Opnum 36) .................................. 46
-RpcAsyncDeletePrinterIC (Opnum 37) ................................................ 47
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-3.1.4.1.6
-3.1.4.1.7
-3.1.4.1.8
-3.1.4.1.9
-3.1.4.1.10
-3.1.4.1.11
-3.1.4.1.12
-3.1.4.1.13
-3.1.4.1.14
-3.1.4.1.15
-3.1.4.1.16
-3.1.4.1.17
-3.1.4.1.18
-3.1.4.1.19
-3.1.4.1.20
-
-[MS-PAR] - v20250811
-Print System Asynchronous Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-5 / 129
-
-3.1.4.2
-
-3.1.4.1.21
-3.1.4.1.22
-3.1.4.1.23
-3.1.4.1.24
-3.1.4.1.25
-
-3.1.4.2.1
-3.1.4.2.2
-3.1.4.2.3
-3.1.4.2.4
-3.1.4.2.5
-3.1.4.2.6
-3.1.4.2.7
-3.1.4.2.8
-3.1.4.2.9
-3.1.4.2.10
-3.1.4.2.11
-3.1.4.2.12
-
-3.1.4.3
-
-3.1.4.3.1
-3.1.4.3.2
-3.1.4.3.3
-3.1.4.3.4
-
-3.1.4.4
-
-3.1.4.4.1
-3.1.4.4.2
-3.1.4.4.3
-3.1.4.4.4
-3.1.4.4.5
-
-3.1.4.5
-
-3.1.4.5.1
-3.1.4.5.2
-3.1.4.5.3
-
-3.1.4.6
-
-3.1.4.6.1
-3.1.4.6.2
-3.1.4.6.3
-3.1.4.6.4
-3.1.4.6.5
-
-3.1.4.7
-
-3.1.4.7.1
-3.1.4.7.2
-3.1.4.7.3
-3.1.4.7.4
-3.1.4.7.5
-
-3.1.4.8
-
-3.1.4.8.1
-3.1.4.8.2
-3.1.4.8.3
-3.1.4.8.4
-3.1.4.8.5
-3.1.4.8.6
-3.1.4.8.7
-
-3.1.4.9.1
-3.1.4.9.2
-3.1.4.9.3
-3.1.4.9.4
-
-3.1.4.9
-
-RpcAsyncEnumPrinters (Opnum 38) ................................................... 47
-RpcAsyncAddPerMachineConnection (Opnum 55) ................................ 48
-RpcAsyncDeletePerMachineConnection (Opnum 56) ............................. 48
-RpcAsyncEnumPerMachineConnections (Opnum 57) ............................ 49
-RpcAsyncResetPrinter (Opnum 69) .................................................... 49
-Printer-Driver Management Methods ....................................................... 50
-RpcAsyncGetPrinterDriver (Opnum 26) .............................................. 51
-RpcAsyncAddPrinterDriver (Opnum 39) .............................................. 51
-RpcAsyncEnumPrinterDrivers (Opnum 40) .......................................... 52
-RpcAsyncGetPrinterDriverDirectory (Opnum 41) .................................. 52
-RpcAsyncDeletePrinterDriver (Opnum 42) .......................................... 53
-RpcAsyncDeletePrinterDriverEx (Opnum 43) ....................................... 53
-RpcAsyncInstallPrinterDriverFromPackage (Opnum 62) ........................ 54
-RpcAsyncUploadPrinterDriverPackage (Opnum 63) .............................. 56
-RpcAsyncGetCorePrinterDrivers (Opnum 64) ....................................... 58
-RpcAsyncCorePrinterDriverInstalled (Opnum 65) ................................. 59
-RpcAsyncGetPrinterDriverPackagePath (Opnum 66) ............................. 61
-RpcAsyncDeletePrinterDriverPackage (Opnum 67) ............................... 62
-Printer-Port Management Methods .......................................................... 63
-RpcAsyncXcvData (Opnum 33) .......................................................... 64
-RpcAsyncEnumPorts (Opnum 47) ...................................................... 64
-RpcAsyncAddPort (Opnum 49) .......................................................... 65
-RpcAsyncSetPort (Opnum 50) ........................................................... 65
-Print-Processor Management Methods ..................................................... 66
-RpcAsyncAddPrintProcessor (Opnum 44) ............................................ 66
-RpcAsyncEnumPrintProcessors (Opnum 45) ........................................ 67
-RpcAsyncGetPrintProcessorDirectory (Opnum 46) ................................ 67
-RpcAsyncDeletePrintProcessor (Opnum 53) ........................................ 68
-RpcAsyncEnumPrintProcessorDatatypes (Opnum 54) ........................... 68
-Port Monitor Management Methods ......................................................... 69
-RpcAsyncEnumMonitors (Opnum 48) ................................................. 69
-RpcAsyncAddMonitor (Opnum 51) ..................................................... 70
-RpcAsyncDeleteMonitor (Opnum 52) .................................................. 70
-Form Management Methods ................................................................... 71
-RpcAsyncAddForm (Opnum 21) ......................................................... 71
-RpcAsyncDeleteForm (Opnum 22) ..................................................... 72
-RpcAsyncGetForm (Opnum 23) ......................................................... 72
-RpcAsyncSetForm (Opnum 24) ......................................................... 73
-RpcAsyncEnumForms (Opnum 25) ..................................................... 73
-Job Management Methods ...................................................................... 74
-RpcAsyncSetJob (Opnum 2) .............................................................. 74
-RpcAsyncGetJob (Opnum 3) ............................................................. 75
-RpcAsyncEnumJobs (Opnum 4) ......................................................... 75
-RpcAsyncAddJob (Opnum 5) ............................................................. 76
-RpcAsyncScheduleJob (Opnum 6) ...................................................... 76
-Job Printing Methods ............................................................................. 77
-RpcAsyncStartDocPrinter (Opnum 10) ................................................ 77
-RpcAsyncStartPagePrinter (Opnum 11) .............................................. 78
-RpcAsyncWritePrinter (Opnum 12)..................................................... 78
-RpcAsyncEndPagePrinter (Opnum 13) ................................................ 79
-RpcAsyncEndDocPrinter (Opnum 14) ................................................. 79
-RpcAsyncAbortPrinter (Opnum 15) .................................................... 79
-RpcAsyncReadPrinter (Opnum 68) ..................................................... 80
-Printing-Related Notification Methods ...................................................... 80
-RpcSyncRegisterForRemoteNotifications (Opnum 58) ........................... 81
-RpcSyncUnRegisterForRemoteNotifications (Opnum 59) ....................... 82
-RpcSyncRefreshRemoteNotifications (Opnum 60) ................................ 83
-RpcAsyncGetRemoteNotifications (Opnum 61) .................................... 83
-
-[MS-PAR] - v20250811
-Print System Asynchronous Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-6 / 129
-
-3.1.4.11
-
-3.1.4.10
-
-3.1.4.11.1
-
-3.1.4.10.1
-3.1.4.10.2
-3.1.4.10.3
-3.1.4.10.4
-
-Job Named Property Management Methods .............................................. 85
-RpcAsyncGetJobNamedPropertyValue (Opnum 70) .............................. 85
-RpcAsyncSetJobNamedProperty (Opnum 71) ...................................... 86
-RpcAsyncDeleteJobNamedProperty (Opnum 72) .................................. 86
-RpcAsyncEnumJobNamedProperties (Opnum 73) ................................. 86
-Branch Office Print Remote Logging Methods ............................................ 87
-RpcAsyncLogJobInfoForBranchOffice (Opnum 74) ................................ 87
-Timer Events .............................................................................................. 88
-Other Local Events ...................................................................................... 88
-IRemoteWinspool Client Details ......................................................................... 88
-Abstract Data Model .................................................................................... 88
-Timers ...................................................................................................... 88
-Initialization ............................................................................................... 88
-Message Processing Events and Sequencing Rules .......................................... 89
-Timer Events .............................................................................................. 89
-Other Local Events ...................................................................................... 89
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.2
-
-4  Protocol Examples ................................................................................................. 90
-Adding a Printer to a Server .............................................................................. 90
-Adding a Printer Driver to a Server ..................................................................... 91
-Enumerating Printers on a Server ....................................................................... 91
-Enumerating Print Jobs on a Server .................................................................... 92
-Receiving Notifications from a Server ................................................................. 93
-
-4.1
-4.2
-4.3
-4.4
-4.5
-
-5  Security Considerations ......................................................................................... 97
-
-6  Appendix A: Full IDL .............................................................................................. 98
-
-7  Appendix B: Product Behavior ............................................................................. 121
-
-8  Change Tracking .................................................................................................. 126
-
-9  Index ................................................................................................................... 127
-
-[MS-PAR] - v20250811
-Print System Asynchronous Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-7 / 129
-
-1  Introduction
+## 1 Introduction
 
 The Print System Asynchronous Remote Protocol supports printing and spooling operations between a
 client and server, including print job control and print system management. It is designed to be
@@ -933,7 +660,7 @@ functionality is parallel to the Print System Remote Protocol [MS-RPRN], which i
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -991,7 +718,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-domain: A set of users and computers sharing a common namespace and management
+
+domain: A set of users and computers sharing a common namespace and management
 
 infrastructure. At least one computer member of the set has to act as a domain controller (DC)
 and host a member list that identifies all members of the domain, as well as optionally hosting
@@ -1064,7 +792,8 @@ Release: August 11, 2025
 
 9 / 129
 
-monitor module: An executable object that provides a communication path between the print
+
+monitor module: An executable object that provides a communication path between the print
 
 system and the printers on a server.
 
@@ -1144,7 +873,8 @@ Release: August 11, 2025
 
 10 / 129
 
-printer driver: The interface component between the operating system and the printer device. It
+
+printer driver: The interface component between the operating system and the printer device. It
 is responsible for processing the application data into a page description language (PDL)
 that can be interpreted by the printer device.
 
@@ -1217,7 +947,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-security provider: A pluggable security module that is specified by the protocol layer above the
+
+security provider: A pluggable security module that is specified by the protocol layer above the
 
 remote procedure call (RPC) layer, and will cause the RPC layer to use this module to secure
 messages in a communication session with the server. The security provider is sometimes
@@ -1278,7 +1009,7 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1290,10 +1021,11 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1321,7 +1053,7 @@ Extension".
 [RFC2781] Hoffman, P., and Yergeau, F., "UTF-16, an encoding of ISO 10646", RFC 2781, February
 2000, https://www.rfc-editor.org/info/rfc2781
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DEVMODE] Microsoft Corporation, "DEVMODE structure", http://msdn.microsoft.com/en-
 us/library/dd183565(VS.85).aspx
@@ -1357,7 +1089,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-[MSDN-UINF] Microsoft Corporation, "Using INF Files", http://msdn.microsoft.com/en-
+
+[MSDN-UINF] Microsoft Corporation, "Using INF Files", http://msdn.microsoft.com/en-
 us/library/Aa741213.aspx
 
 [MSDN-XMLP] Microsoft Corporation, "A First Look at APIs For Creating XML Paper Specification
@@ -1372,7 +1105,7 @@ Note The 2006 archive is located further down the page.
 2021-1678", January 2021, https://support.microsoft.com/en-us/topic/managing-deployment-of-
 printer-rpc-binding-changes-for-cve-2021-1678-12a69652-30b9-3d61-d9f7-7201623a8b25
 
-1.3  Overview
+### 1.3 Overview
 
 The Print System Asynchronous Remote Protocol provides the following functions:
 
@@ -1406,7 +1139,7 @@ the print server.
 
 The following sections give an overview of these functions.
 
-1.3.1  Management of the Print System
+#### 1.3.1 Management of the Print System
 
 A client can use this protocol to perform remote management operations on a print server. With
 server access credentials, client applications can manipulate the print server state and print server
@@ -1431,7 +1164,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-PAR].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1449,7 +1183,7 @@ The following diagram illustrates this interaction using the scenario of adding 
 
 Figure 1: Adding a new printer
 
-1.3.2  Communication of Print Job Data
+#### 1.3.2 Communication of Print Job Data
 
 Communication of print job data enables a client to print to devices that are hosted by the print
 server.
@@ -1461,7 +1195,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-PAR].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1484,7 +1219,7 @@ The following diagram illustrates this interaction.
 
 Figure 2: Communication of print job data
 
-1.3.3  Notification of Print System Changes
+#### 1.3.3 Notification of Print System Changes
 
 This protocol also provides the methods that the client can use to register for incremental change
 notifications. These notifications enable the client application to maintain an accurate local view of the
@@ -1499,7 +1234,8 @@ Release: August 11, 2025
 
 16 / 129
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-PAR].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1526,7 +1262,8 @@ Release: August 11, 2025
 
 17 / 129
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-PAR].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1543,7 +1280,7 @@ the client can retrieve the complete configuration and update its view of the se
 client retrieves the complete configuration by using the functions for Management of the Print
 System (section 1.3.1).
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Print System Asynchronous Remote Protocol is dependent on RPC [MS-RPCE] running on TCP/IP.
 These protocol relationships are shown in the following figure:
@@ -1562,7 +1299,7 @@ protocol can be used to transfer files between client and server, as in driver d
 
 No protocols are dependent on the Print System Asynchronous Remote Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Print System Asynchronous Remote Protocol is a remote procedure call (RPC) interface, and
 therefore it has the prerequisites that are specified in [MS-RPCE] section 1.5, as common to RPC
@@ -1578,7 +1315,8 @@ Release: August 11, 2025
 
 18 / 129
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Print System Asynchronous Remote Protocol is applicable only for printing operations between a
 system functioning as a client and a system functioning as a print server. This protocol scales from
@@ -1586,7 +1324,7 @@ home use; to print device sharing between computers; to an enterprise-use scenar
 multiple print servers that are employed in a cluster configuration and client configurations that are
 managed by a directory access protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -1626,7 +1364,7 @@ information levels ([MS-RPRN] section 2.2.1). On connection to a server, a clien
 information level. If the level is supported by the server, the request is processed; otherwise, the
 server returns an error, and the client repeats the request with a lower level.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The methods defined in the Print System Asynchronous Remote Protocol return either HRESULT
 values ([MS-ERREF] section 2.1) or DWORD Win32 values ([MS-ERREF] section 2.2).
@@ -1644,7 +1382,8 @@ Release: August 11, 2025
 
 19 / 129
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1669,9 +1408,10 @@ Release: August 11, 2025
 
 20 / 129
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Print System Asynchronous Remote Protocol specifies the following transport requirements:
 
@@ -1717,7 +1457,7 @@ Packet authentication level ([MS-RPCE] section 3).
 
   A server of this protocol SHOULD<4> impersonate the client while processing a method.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to the remote procedure call (RPC) base types and definitions that are specified in
 [C706] and [MS-DTYP], additional data types are defined in this section.
@@ -1750,7 +1490,8 @@ Release: August 11, 2025
 
 21 / 129
 
-  All strings that are defined in this protocol consist of characters encoded in Unicode UTF-16LE,
+
+  All strings that are defined in this protocol consist of characters encoded in Unicode UTF-16LE,
 and MUST be null terminated. Each UTF-16 code point in a string, including null terminating
 characters, occupies 16 bits. The details of these strings are as specified in [RFC2781] section 2.1.
 
@@ -1773,7 +1514,7 @@ by another parameter or member MUST be zero if the pointer parameter or member i
 
 The term "empty string" means a "string" containing only the terminating null character.
 
-2.2.1  EPrintPropertyType
+#### 2.2.1 EPrintPropertyType
 
 The EPrintPropertyType enumeration defines the data types for different printing properties.
 
@@ -1825,7 +1566,8 @@ Release: August 11, 2025
 
 22 / 129
 
-2.2.2  RpcPrintPropertyValue
+
+#### 2.2.2 RpcPrintPropertyValue
 
 The RpcPrintPropertyValue structure specifies a data type and its value. Data types are members of
 the enumeration EPrintPropertyType, specified in section 2.2.1.
@@ -1882,7 +1624,7 @@ propertyReplyContainer: A NOTIFY_REPLY_CONTAINER, specified in section 2.2.7.
 
 propertyOptionsContainer: A NOTIFY_OPTIONS_CONTAINER, specified in section 2.2.6.
 
-2.2.3  RpcPrintNamedProperty
+#### 2.2.3 RpcPrintNamedProperty
 
 The RpcPrintNamedProperty structure specifies a name/typed-value pair that defines a single
 property.
@@ -1897,7 +1639,8 @@ Release: August 11, 2025
 
 23 / 129
 
-   RpcPrintPropertyValue propertyValue;
+
+   RpcPrintPropertyValue propertyValue;
  } RpcPrintNamedProperty;
 
 propertyName: A pointer to a string that specifies the name of the property.
@@ -1979,7 +1722,7 @@ kPropertyTypeInt32
 
 Same as dwColor ([MS-RPRN] section 3.2.4.1.4).
 
-2.2.4  RpcPrintPropertiesCollection
+#### 2.2.4 RpcPrintPropertiesCollection
 
 The RpcPrintPropertiesCollection structure holds a collection of name/typed-value pairs.
 
@@ -2000,7 +1743,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-propertiesCollection: A pointer to an array of RpcPrintNamedProperty structures (section 2.2.3).
+
+propertiesCollection: A pointer to an array of RpcPrintNamedProperty structures (section 2.2.3).
 
 When used as input to specify notification filter settings, the following properties MUST be present in
 the collection pointed to by the propertiesCollection member:
@@ -2036,7 +1780,7 @@ collection pointed to by the propertiesCollection member:
 
 "RemoteNotifyData Color"
 
-2.2.5  RMTNTFY_HANDLE
+#### 2.2.5 RMTNTFY_HANDLE
 
 The RMTNTFY_HANDLE serves as a remote procedure call (RPC) context handle for methods that
 take an RMTNTFY_HANDLE parameter. RPC context handles are specified in [C706] sections 2 and
@@ -2049,7 +1793,7 @@ This type is declared as follows:
 The RMTNTFY_HANDLE context handle is returned by RpcSyncRegisterForRemoteNotifications
 (section 3.1.4.9.1).
 
-2.2.6  NOTIFY_OPTIONS_CONTAINER
+#### 2.2.6 NOTIFY_OPTIONS_CONTAINER
 
 The NOTIFY_OPTIONS_CONTAINER structure encapsulates an RPC_V2_NOTIFY_OPTIONS
 structure ([MS-RPRN] section 2.2.1.13.1), which specifies options for a change notification object that
@@ -2061,7 +1805,7 @@ monitors a printer or print server for changes in state.
 
 pOptions: A pointer to an RPC_V2_NOTIFY_OPTIONS.
 
-2.2.7  NOTIFY_REPLY_CONTAINER
+#### 2.2.7 NOTIFY_REPLY_CONTAINER
 
 The NOTIFY_REPLY_CONTAINER structure encapsulates an RPC_V2_NOTIFY_INFO structure
 ([MS-RPRN] section 2.2.1.13.3), which provides printer information members and current data for
@@ -2077,11 +1821,12 @@ Release: August 11, 2025
 
 25 / 129
 
- } NOTIFY_REPLY_CONTAINER;
+
+ } NOTIFY_REPLY_CONTAINER;
 
 pInfo: A pointer to an RPC_V2_NOTIFY_INFO.
 
-2.2.8  CORE_PRINTER_DRIVER
+#### 2.2.8 CORE_PRINTER_DRIVER
 
 The CORE_PRINTER_DRIVER structure specifies information that identifies a specific core printer
 driver. See the RpcAsyncGetCorePrinterDrivers method (section 3.1.4.2.9) for an example of its
@@ -2118,16 +1863,17 @@ Release: August 11, 2025
 
 26 / 129
 
-3  Protocol Details
 
-3.1  IRemoteWinspool Server Details
+## 3 Protocol Details
+
+### 3.1 IRemoteWinspool Server Details
 
 The Print System Asynchronous Remote protocol server interface, IRemoteWinspool (section 6), is
 identified by UUID 76F03F96-CDFD-44FC-A22C-64950A001209. The server implementation MUST
 only accept remote procedure call (RPC) method calls with the object UUID 9940CA8E-512F-
 4C58-88A9-61098D6896BD and reject all other method calls.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 might need to maintain in order to participate in this protocol. The organization that is described in
@@ -2187,16 +1933,17 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Note  The previous conceptual data can be implemented using a variety of techniques. A print server
+
+Note  The previous conceptual data can be implemented using a variety of techniques. A print server
 can implement such data as needed.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required on the server other than those that are used internally by remote
 procedure call (RPC) to implement resiliency to network outages, as specified in [MS-RPCE] section
 3.2.3.2.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 
 
@@ -2207,7 +1954,7 @@ procedure call (RPC) interface. The server uses packet privacy
 
 For details, see section 2.1.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 An implementation of the Print System Asynchronous Remote Protocol MUST indicate the following to
 the remote procedure call (RPC) runtime ([MS-RPCE] section 3).
@@ -2254,15 +2001,15 @@ Methods for discovering and communicating with printer ports.
 
 Print-processor management  Methods for discovering and manipulating print-processor objects.
 
-3.1.4.4
+##### 3.1.4.4 Port monitor management
 
-Port monitor management
+
 
 Methods for discovering and installation of port monitor modules.
 
-3.1.4.5
+##### 3.1.4.5 Form management
 
-Form management
+
 
 Methods for discovering and configuring printer forms.
 
@@ -2290,22 +2037,23 @@ Named Properties (section 3.1.1).<9>
 
 3.1.4.9
 
-3.1.4.10
+##### 3.1.4.10 Branch office print
 
-Branch office print
+
 
 Methods for processing Branch Office Print Remote Log Entries
 
-3.1.4.11
+##### 3.1.4.11 Print System Asynchronous Remote Protocol
 
 28 / 129
 
 [MS-PAR] - v20250811
-Print System Asynchronous Remote Protocol
+
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Functional category
+
+Functional category
 
 Description
 
@@ -2416,7 +2164,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Method
+
+Method
 
 Description
 
@@ -2523,7 +2272,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Method
+
+Method
 
 RpcAsyncGetForm
 
@@ -2632,7 +2382,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Method
+
+Method
 
 Description
 
@@ -2739,7 +2490,8 @@ Release: August 11, 2025
 
 32 / 129
 
-Method
+
+Method
 
 Description
 
@@ -2847,7 +2599,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Method
+
+Method
 
 Description
 
@@ -2950,7 +2703,8 @@ Release: August 11, 2025
 
 34 / 129
 
-Method
+
+Method
 
 Description
 
@@ -3044,7 +2798,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-[MS-PAR] method
+
+[MS-PAR] method
 
 Description
 
@@ -3181,7 +2936,8 @@ Release: August 11, 2025
 
 36 / 129
 
-[MS-PAR] method
+
+[MS-PAR] method
 
 Description
 
@@ -3315,7 +3071,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-The counterpart of this method in the Print System Remote Protocol is RpcOpenPrinterEx. All
+
+The counterpart of this method in the Print System Remote Protocol is RpcOpenPrinterEx. All
 parameters not defined below are specified in [MS-RPRN] section 3.1.4.2.14.
 
  DWORD RpcAsyncOpenPrinter(
@@ -3383,7 +3140,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-The client MUST call RpcAsyncClosePrinter (section 3.1.4.1.10) with the PRINTER_HANDLE ([MS-
+
+The client MUST call RpcAsyncClosePrinter (section 3.1.4.1.10) with the PRINTER_HANDLE ([MS-
 RPRN] section 2.2.1.1.4) represented by the hPrinter parameter after calling
 RpcAsyncDeletePrinter.
 
@@ -3450,7 +3208,8 @@ Release: August 11, 2025
 
 39 / 129
 
- DWORD RpcAsyncGetPrinter(
+
+ DWORD RpcAsyncGetPrinter(
    [in] PRINTER_HANDLE hPrinter,
    [in] DWORD Level,
    [in, out, unique, size_is(cbBuf)]
@@ -3519,7 +3278,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- DWORD RpcAsyncGetPrinterDataEx(
+
+ DWORD RpcAsyncGetPrinterDataEx(
    [in] PRINTER_HANDLE hPrinter,
    [in, string] const wchar_t* pKeyName,
    [in, string] const wchar_t* pValueName,
@@ -3588,7 +3348,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- DWORD RpcAsyncSetPrinterDataEx(
+
+ DWORD RpcAsyncSetPrinterDataEx(
    [in] PRINTER_HANDLE hPrinter,
    [in, string] const wchar_t* pKeyName,
    [in, string] const wchar_t* pValueName,
@@ -3656,7 +3417,8 @@ Release: August 11, 2025
 
 42 / 129
 
-   [in] DWORD cbValueName,
+
+   [in] DWORD cbValueName,
    [out] DWORD* pcbValueName,
    [out] DWORD* pType,
    [out, size_is(cbData)] unsigned char* pData,
@@ -3725,7 +3487,8 @@ Release: August 11, 2025
 
 43 / 129
 
-   [in] PRINTER_HANDLE hPrinter,
+
+   [in] PRINTER_HANDLE hPrinter,
    [in, string] const wchar_t* pKeyName,
    [out, size_is(cbSubkey/sizeof(wchar_t))]
      wchar_t* pSubkey,
@@ -3793,7 +3556,8 @@ Release: August 11, 2025
 
 44 / 129
 
- );
+
+ );
 
 hPrinter: A handle to a printer object that has been opened using either RpcAsyncOpenPrinter
 
@@ -3859,7 +3623,8 @@ Release: August 11, 2025
 
 45 / 129
 
-hPrinter: A handle to a printer object that has been opened using either RpcAsyncOpenPrinter
+
+hPrinter: A handle to a printer object that has been opened using either RpcAsyncOpenPrinter
 
 (section 3.1.4.1.1) or RpcAsyncAddPrinter (section 3.1.4.1.2).
 
@@ -3927,7 +3692,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
+
+Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
 code ([MS-ERREF] section 2.2) to indicate failure. The client MUST treat any nonzero return value as a
 fatal error.
 
@@ -3994,7 +3760,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Exceptions Thrown: This method MUST NOT throw any exceptions other than those that are thrown
+
+Exceptions Thrown: This method MUST NOT throw any exceptions other than those that are thrown
 by the underlying RPC protocol [MS-RPCE].
 
 This method MUST adhere to the parameter validation, processing, and response requirements that
@@ -4062,7 +3829,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-This method MUST adhere to the parameter validation, processing, and response requirements that
+
+This method MUST adhere to the parameter validation, processing, and response requirements that
 are specified in [MS-RPRN] section 3.1.4.2.25.
 
 3.1.4.1.24  RpcAsyncEnumPerMachineConnections (Opnum 57)
@@ -4129,7 +3897,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-This method MUST adhere to the parameter validation, processing, and response requirements that
+
+This method MUST adhere to the parameter validation, processing, and response requirements that
 are specified in [MS-RPRN] section 3.1.4.2.13.
 
 3.1.4.2  Printer-Driver Management Methods
@@ -4248,7 +4017,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-[MS-PAR] method
+
+[MS-PAR] method
 
 Description
 
@@ -4334,7 +4104,8 @@ Release: August 11, 2025
 
 51 / 129
 
-   [in] handle_t hRemoteBinding,
+
+   [in] handle_t hRemoteBinding,
    [in, string, unique] wchar_t* pName,
    [in] DRIVER_CONTAINER* pDriverContainer,
    [in] DWORD dwFileCopyFlags
@@ -4400,7 +4171,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- DWORD RpcAsyncGetPrinterDriverDirectory(
+
+ DWORD RpcAsyncGetPrinterDriverDirectory(
    [in] handle_t hRemoteBinding,
    [in, string, unique] wchar_t* pName,
    [in, string, unique] wchar_t* pEnvironment,
@@ -4466,7 +4238,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- DWORD RpcAsyncDeletePrinterDriverEx(
+
+ DWORD RpcAsyncDeletePrinterDriverEx(
    [in] handle_t hRemoteBinding,
    [in, string, unique] wchar_t* pName,
    [in, string] wchar_t* pEnvironment,
@@ -4540,7 +4313,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -4620,7 +4394,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-same, the currently installed printer driver does not have a newer manufacturer-provided driver
+
+same, the currently installed printer driver does not have a newer manufacturer-provided driver
 version number.
 
   Validate that if the currently installed printer driver has a driver version of 0x00000004, there are
@@ -4692,7 +4467,8 @@ Release: August 11, 2025
 
 56 / 129
 
-   [in, string, unique] const wchar_t* pszServer,
+
+   [in, string, unique] const wchar_t* pszServer,
    [in, string] const wchar_t* pszInfPath,
    [in, string] const wchar_t* pszEnvironment,
    [in] DWORD dwFlags,
@@ -4777,7 +4553,8 @@ Release: August 11, 2025
 
 57 / 129
 
-On output, the variable to which this parameter points receives the size, in characters, of the path
+
+On output, the variable to which this parameter points receives the size, in characters, of the path
 string. The path string includes the terminating null character that was written into the buffer
 referenced by the pszDestInfPath parameter.
 
@@ -4858,7 +4635,8 @@ Release: August 11, 2025
 
 58 / 129
 
-   [in] handle_t hRemoteBinding,
+
+   [in] handle_t hRemoteBinding,
    [in, string, unique] const wchar_t* pszServer,
    [in, string] const wchar_t* pszEnvironment,
    [in] DWORD cchCoreDrivers,
@@ -4933,7 +4711,8 @@ Release: August 11, 2025
 
 59 / 129
 
-   [in] handle_t hRemoteBinding,
+
+   [in] handle_t hRemoteBinding,
    [in, string, unique] const wchar_t* pszServer,
    [in, string] const wchar_t* pszEnvironment,
    [in] GUID CoreDriverGUID,
@@ -5015,7 +4794,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-  Returning a response that contains the output parameters mentioned above and the status of the
+
+  Returning a response that contains the output parameters mentioned above and the status of the
 
 operation.
 
@@ -5087,7 +4867,8 @@ Release: August 11, 2025
 
 61 / 129
 
-Parameter Validation Requirements: Upon receiving this method call, the server MUST validate
+
+Parameter Validation Requirements: Upon receiving this method call, the server MUST validate
 parameters as follows:
 
 
@@ -5165,7 +4946,8 @@ Release: August 11, 2025
 
 62 / 129
 
-pszEnvironment: A non-NULL pointer to a string that specifies the environment name for which the
+
+pszEnvironment: A non-NULL pointer to a string that specifies the environment name for which the
 
 driver will be deleted. For rules governing environment names, see [MS-RPRN] section 2.2.4.4.
 
@@ -5255,7 +5037,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-[MS-PAR] method
+
+[MS-PAR] method
 
 Description
 
@@ -5330,7 +5113,8 @@ Release: August 11, 2025
 
 64 / 129
 
-hRemoteBinding: An RPC explicit binding handle.
+
+hRemoteBinding: An RPC explicit binding handle.
 
 Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
 code ([MS-ERREF] section 2.2) to indicate failure. Aside from the specific nonzero return values
@@ -5395,7 +5179,8 @@ Release: August 11, 2025
 
 65 / 129
 
-Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
+
+Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
 code ([MS-ERREF] section 2.2) to indicate failure. The client MUST treat any nonzero return value as a
 fatal error.
 
@@ -5493,7 +5278,8 @@ Release: August 11, 2025
 
 66 / 129
 
-   [in, string] wchar_t* pPrintProcessorName
+
+   [in, string] wchar_t* pPrintProcessorName
  );
 
 hRemoteBinding: An RPC explicit binding handle.
@@ -5560,7 +5346,8 @@ Release: August 11, 2025
 
 67 / 129
 
-   [in] DWORD Level,
+
+   [in] DWORD Level,
    [in, out, unique, size_is(cbBuf)]
      unsigned char* pPrintProcessorDirectory,
    [in] DWORD cbBuf,
@@ -5627,7 +5414,8 @@ Release: August 11, 2025
 
 68 / 129
 
-   [in, out, unique, size_is(cbBuf)]
+
+   [in, out, unique, size_is(cbBuf)]
      unsigned char* pDatatypes,
    [in] DWORD cbBuf,
    [out] DWORD* pcbNeeded,
@@ -5710,7 +5498,8 @@ Release: August 11, 2025
 
 69 / 129
 
-   [in] DWORD Level,
+
+   [in] DWORD Level,
    [in, out, unique, size_is(cbBuf)]
      unsigned char* pMonitor,
    [in] DWORD cbBuf,
@@ -5776,7 +5565,8 @@ Release: August 11, 2025
 
 70 / 129
 
- );
+
+ );
 
 hRemoteBinding: An RPC explicit binding handle.
 
@@ -5867,7 +5657,8 @@ Release: August 11, 2025
 
 71 / 129
 
-hPrinter: A handle to a printer object or server object that has been opened by using either
+
+hPrinter: A handle to a printer object or server object that has been opened by using either
 
 RpcAsyncOpenPrinter (section 3.1.4.1.1) or RpcAsyncAddPrinter (section 3.1.4.1.2).
 
@@ -5935,7 +5726,8 @@ Release: August 11, 2025
 
 72 / 129
 
-Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
+
+Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
 code ([MS-ERREF] section 2.2) to indicate failure. Aside from the specific nonzero return values
 documented in section 3.1.4, the client MUST treat any nonzero return value as a fatal error.
 
@@ -6004,7 +5796,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Exceptions Thrown: This method MUST NOT throw any exceptions other than those that are thrown
+
+Exceptions Thrown: This method MUST NOT throw any exceptions other than those that are thrown
 by the underlying RPC protocol [MS-RPCE].
 
 This method MUST adhere to the parameter validation, processing, and response requirements that
@@ -6097,7 +5890,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
+
+Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
 code ([MS-ERREF] section 2.2) to indicate failure. The client MUST treat any nonzero return value as a
 fatal error.
 
@@ -6164,7 +5958,8 @@ Release: August 11, 2025
 
 75 / 129
 
-hPrinter: A handle to a printer object that has been opened by using either RpcAsyncOpenPrinter
+
+hPrinter: A handle to a printer object that has been opened by using either RpcAsyncOpenPrinter
 
 (section 3.1.4.1.1) or RpcAsyncAddPrinter (section 3.1.4.1.2).
 
@@ -6230,7 +6025,8 @@ Release: August 11, 2025
 
 76 / 129
 
-3.1.4.8  Job Printing Methods
+
+3.1.4.8  Job Printing Methods
 
 The Job Printing methods support the adding of documents, pages, and text to print jobs. The
 following table presents a list of job printing methods and their counterparts in the Print System
@@ -6335,7 +6131,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
+
+Return Values: This method returns zero to indicate successful completion or a nonzero Win32 error
 code ([MS-ERREF] section 2.2) to indicate failure. The client MUST treat any nonzero return value as a
 fatal error.
 
@@ -6401,7 +6198,8 @@ Release: August 11, 2025
 
 78 / 129
 
-Exceptions Thrown: This method MUST NOT throw any exceptions other than those that are thrown
+
+Exceptions Thrown: This method MUST NOT throw any exceptions other than those that are thrown
 by the underlying RPC protocol [MS-RPCE].
 
 This method MUST adhere to the parameter validation, processing, and response requirements that
@@ -6469,7 +6267,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-The counterpart of this method in the Print System Remote Protocol is RpcAbortPrinter. All
+
+The counterpart of this method in the Print System Remote Protocol is RpcAbortPrinter. All
 parameters not defined below are specified in [MS-RPRN] section 3.1.4.9.5.
 
  DWORD RpcAsyncAbortPrinter(
@@ -6532,7 +6331,8 @@ Release: August 11, 2025
 
 80 / 129
 
- [MS-PAR] method
+
+ [MS-PAR] method
 
 Description
 
@@ -6622,7 +6422,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-
+
+
 
 
 
@@ -6699,7 +6500,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-3.1.4.9.3 RpcSyncRefreshRemoteNotifications (Opnum 60)
+
+3.1.4.9.3 RpcSyncRefreshRemoteNotifications (Opnum 60)
 
 RpcSyncRefreshRemoteNotifications gets notification information for all requested members. This
 SHOULD be called by a client if the "RemoteNotifyData Flags" key in the
@@ -6775,7 +6577,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-A print client uses RpcAsyncGetRemoteNotifications to poll the print server for specified change
+
+A print client uses RpcAsyncGetRemoteNotifications to poll the print server for specified change
 notifications. A call to this method is suspended until the server has a new change notification for the
 client. Subsequently, the client calls this method again to poll for additional notifications from the
 server.
@@ -6850,7 +6653,8 @@ Release: August 11, 2025
 
 84 / 129
 
-3.1.4.10
+
+3.1.4.10
 
 Job Named Property Management Methods
 
@@ -6942,7 +6746,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-3.1.4.10.2  RpcAsyncSetJobNamedProperty (Opnum 71)
+
+3.1.4.10.2  RpcAsyncSetJobNamedProperty (Opnum 71)
 
 RpcAsyncSetJobNamedProperty creates a new Job Named Property (section 3.1.1), or changes
 the value of an existing Job Named Property for the specified print job.<32>
@@ -7008,7 +6813,8 @@ Release: August 11, 2025
 
 86 / 129
 
-RpcAsyncEnumJobNamedProperties enumerates the Job Named Property (section 3.1.1) for the
+
+RpcAsyncEnumJobNamedProperties enumerates the Job Named Property (section 3.1.1) for the
 specified print job.<34>
 
 The counterpart of this method in the Print System Remote Protocol is
@@ -7066,7 +6872,7 @@ channels.
 
 Opnum: 74
 
-3.1.4.11.1  RpcAsyncLogJobInfoForBranchOffice (Opnum 74)
+###### 3.1.4.11.1 RpcAsyncLogJobInfoForBranchOffice (Opnum 74)
 
 RpcAsyncLogJobInfoForBranchOffice processes one or more Branch Office Print Remote Log
 Entries (section 3.1.1).<35>
@@ -7084,7 +6890,8 @@ Release: August 11, 2025
 
 87 / 129
 
-   [in] PRINTER_HANDLE hPrinter,
+
+   [in] PRINTER_HANDLE hPrinter,
    [in, ref] RPC_BranchOfficeJobDataContainer* pBranchOfficeJobDataContainer
  );
 
@@ -7102,28 +6909,28 @@ by the underlying RPC protocol specified in [MS-RPCE].
 This method MUST adhere to the parameter validation, processing, and response requirements that
 are specified in [MS-RPRN] section 3.1.4.13.1.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No protocol timer events are required on the server other than the timers that are required in the
 underlying RPC protocol.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No local events are maintained on the server other than the events that are maintained in the
 underlying RPC protocol.
 
-3.2  IRemoteWinspool Client Details
+### 3.2 IRemoteWinspool Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required on the client—other than the timers that are required in the
 underlying RPC protocol.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The Print System Asynchronous Remote client MUST perform the following initialization actions:
 
@@ -7151,7 +6958,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-MAY<36> choose to support server names that are not identical to the server name used to create
+
+MAY<36> choose to support server names that are not identical to the server name used to create
 the RPC binding handle and, as a result, effectively route the call to another server.
 
 The client uses packet privacy (RPC_C_AUTHN_LEVEL_PKT_PRIVACY) authentication level ([MS-
@@ -7178,7 +6986,7 @@ Either reuse an existing authenticated RPC binding handle in the cases described
 an authenticated RPC binding handle using the SPNEGO security provider ([MS-SPNG]) and packet
 authentication ([MS-RPCE] section 2.2.1.1.8), as specified in section 2.1.<38>
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The Print System Asynchronous Remote Protocol MUST indicate the following to the RPC runtime
 ([MS-RPCE] section 3):
@@ -7196,12 +7004,12 @@ server, but SHOULD notify the application invoker of the error received in the h
 no special message processing is required on the client except for what is required in the underlying
 RPC protocol.<39>
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No protocol timer events are required on the client other than the timers that are required in the
 underlying RPC protocol.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 No local events are maintained on the client other than the events that are maintained in the
 underlying RPC protocol.
@@ -7213,11 +7021,12 @@ Release: August 11, 2025
 
 89 / 129
 
-<!-- Extracted images from page 90 -->
+
+<!-- Extracted images from page 90 -->
 ![Extracted image 1 from page 90]([MS-PAR].images/page090-img01.png)
 <!-- /Extracted images from page 90 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 Examples 4.1 through 4.4 are functionally equivalent to examples 4.1 through 4.4 in [MS-RPRN],
 respectively, and therefore are not duplicated here in detail. Only the sequence diagrams with
@@ -7225,7 +7034,7 @@ substituted method names are contained here.
 
 Example 4.5 is different, and details are contained in this document.
 
-4.1  Adding a Printer to a Server
+### 4.1 Adding a Printer to a Server
 
 A client adds a printer to a server by following the steps shown below, which are described in [MS-
 RPRN] section 4.1; and by applying the parameter substitutions that are specified in [MS-RPRN]
@@ -7240,11 +7049,12 @@ Release: August 11, 2025
 
 90 / 129
 
-<!-- Extracted images from page 91 -->
+
+<!-- Extracted images from page 91 -->
 ![Extracted image 1 from page 91]([MS-PAR].images/page091-img01.png)
 <!-- /Extracted images from page 91 -->
 
-4.2  Adding a Printer Driver to a Server
+### 4.2 Adding a Printer Driver to a Server
 
 A client adds a printer driver to a server by following the steps shown below, which are described in
 [MS-RPRN] section 4.2; and by applying the parameter substitutions that are specified in [MS-RPRN]
@@ -7252,7 +7062,7 @@ section 3.1.4.1.
 
 Figure 6: Adding a printer driver to a server
 
-4.3  Enumerating Printers on a Server
+### 4.3 Enumerating Printers on a Server
 
 A client enumerates printers on a server by following the steps shown below, which are described in
 [MS-RPRN] section 4.3; and by applying the parameter substitutions that are specified in [MS-RPRN]
@@ -7265,13 +7075,14 @@ Release: August 11, 2025
 
 91 / 129
 
-<!-- Extracted images from page 92 -->
+
+<!-- Extracted images from page 92 -->
 ![Extracted image 1 from page 92]([MS-PAR].images/page092-img01.png)
 <!-- /Extracted images from page 92 -->
 
 Figure 7: Enumerating printers on a server and accessing information about one of them
 
-4.4  Enumerating Print Jobs on a Server
+### 4.4 Enumerating Print Jobs on a Server
 
 The client enumerates print jobs on a server by following the steps shown below, which are described
 in [MS-RPRN] section 4.4; and by applying the parameter substitutions that are specified in [MS-
@@ -7284,13 +7095,14 @@ Release: August 11, 2025
 
 92 / 129
 
-<!-- Extracted images from page 93 -->
+
+<!-- Extracted images from page 93 -->
 ![Extracted image 1 from page 93]([MS-PAR].images/page093-img01.png)
 <!-- /Extracted images from page 93 -->
 
 Figure 8: Enumerating jobs on a server and modifying one of them
 
-4.5  Receiving Notifications from a Server
+### 4.5 Receiving Notifications from a Server
 
 A client ("TESTCLT") receives notifications from a server ("CORPSERV") about changes in the states of
 printers, print servers, and print jobs by following these steps:
@@ -7326,7 +7138,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- RPC_V2_NOTIFY_OPTIONS notifyOptions = {0x00000002,0x00000000,1,notifyTypes};
+
+ RPC_V2_NOTIFY_OPTIONS notifyOptions = {0x00000002,0x00000000,1,notifyTypes};
 
  notifyFilter.numberOfProperties = 4;
  notifyFilter.propertiesCollection = property;
@@ -7404,7 +7217,8 @@ Release: August 11, 2025
 
 94 / 129
 
- property[0].propertyName = L"RemoteNotifyData Flags";
+
+ property[0].propertyName = L"RemoteNotifyData Flags";
  property[0].propertyValue.ePropertyType = kPropertyTypeInt32;
  property[0].propertyValue.propertyInt32 = 0x00000100; /* PRINTER_CHANGE_ADD_JOB */
 
@@ -7485,7 +7299,8 @@ Release: August 11, 2025
 
 95 / 129
 
-<!-- Extracted images from page 96 -->
+
+<!-- Extracted images from page 96 -->
 ![Extracted image 1 from page 96]([MS-PAR].images/page096-img01.png)
 <!-- /Extracted images from page 96 -->
 
@@ -7498,7 +7313,8 @@ Release: August 11, 2025
 
 96 / 129
 
-5  Security Considerations
+
+## 5 Security Considerations
 
 Security considerations for both authenticated and unauthenticated RPC are specified in [C706]
 sections 2 and 13.
@@ -7515,7 +7331,8 @@ Release: August 11, 2025
 
 97 / 129
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation the full IDL for the IRemoteWinspool interface (section 3.1.4) is
 provided below. The syntax uses IDL syntax extensions defined in [MS-RPCE]. Some of the data types
@@ -7590,7 +7407,8 @@ Release: August 11, 2025
 
 98 / 129
 
-     long cy;
+
+     long cy;
  } SIZE;
 
  typedef struct {
@@ -7667,7 +7485,8 @@ Release: August 11, 2025
 
 99 / 129
 
-     [string] wchar_t* pDriverPath;
+
+     [string] wchar_t* pDriverPath;
      [string] wchar_t* pDataFile;
      [string] wchar_t* pConfigFile;
  } DRIVER_INFO_2;
@@ -7744,7 +7563,8 @@ Release: August 11, 2025
 
 100 / 129
 
-     [string] wchar_t* pHelpFile;
+
+     [string] wchar_t* pHelpFile;
      [string] wchar_t* pMonitorName;
      [string] wchar_t* pDefaultDataType;
      DWORD cchDependentFiles;
@@ -7821,7 +7641,8 @@ Release: August 11, 2025
 
 101 / 129
 
-     [string] wchar_t* pUserName;
+
+     [string] wchar_t* pUserName;
      [string] wchar_t* pDocument;
      [string] wchar_t* pNotifyName;
      [string] wchar_t* pDatatype;
@@ -7897,7 +7718,8 @@ Release: August 11, 2025
 
 102 / 129
 
- typedef struct _PORT_INFO_2 {
+
+ typedef struct _PORT_INFO_2 {
      [string] wchar_t* pPortName;
      [string] wchar_t* pMonitorName;
      [string] wchar_t* pDescription;
@@ -7974,7 +7796,8 @@ Release: August 11, 2025
 
 103 / 129
 
-     [string] wchar_t* pPrintProcessor;
+
+     [string] wchar_t* pPrintProcessor;
      [string] wchar_t* pDatatype;
      [string] wchar_t* pParameters;
      SECURITY_DESCRIPTOR* pSecurityDescriptor;
@@ -8051,7 +7874,8 @@ Release: August 11, 2025
 
 104 / 129
 
-     DWORD dwBuildNum;
+
+     DWORD dwBuildNum;
      DWORD dwMajorVersion;
      DWORD dwMinorVersion;
      unsigned short wProcessorArchitecture;
@@ -8128,7 +7952,8 @@ Release: August 11, 2025
 
 105 / 129
 
-         MONITOR_INFO_2* pMonitorInfo2;
+
+         MONITOR_INFO_2* pMonitorInfo2;
      } MonitorInfo;
  } MONITOR_CONTAINER;
 
@@ -8205,7 +8030,8 @@ Release: August 11, 2025
 
 106 / 129
 
-     } u;
+
+     } u;
  } RPC_BIDI_DATA;
 
  typedef struct _RPC_BIDI_REQUEST_DATA {
@@ -8282,7 +8108,8 @@ Release: August 11, 2025
 
 107 / 129
 
-     DWORD Count;
+
+     DWORD Count;
      [size_is(Count), unique] RPC_V2_NOTIFY_OPTIONS_TYPE* pTypes;
  } RPC_V2_NOTIFY_OPTIONS;
 
@@ -8359,7 +8186,8 @@ Release: August 11, 2025
 
 108 / 129
 
-     DWORD             TotalPages;
+
+     DWORD             TotalPages;
      DWORD             PrintedPages;
      [string] wchar_t* pMachineName;
      [string] wchar_t* pJobError;
@@ -8435,7 +8263,8 @@ Release: August 11, 2025
 
 109 / 129
 
-     [switch_type(EPrintPropertyType), switch_is(ePropertyType)]
+
+     [switch_type(EPrintPropertyType), switch_is(ePropertyType)]
      union {
          [case(kPropertyTypeString)]
               [string] wchar_t*        propertyString;
@@ -8512,7 +8341,8 @@ Release: August 11, 2025
 
 110 / 129
 
-    [in, string, unique] wchar_t* pDatatype,
+
+    [in, string, unique] wchar_t* pDatatype,
     [in] DEVMODE_CONTAINER* pDevModeContainer,
     [in] DWORD AccessRequired,
     [in] SPLCLIENT_CONTAINER* pClientInfo
@@ -8589,7 +8419,8 @@ Release: August 11, 2025
 
 111 / 129
 
-    [in] PRINTER_HANDLE hPrinter,
+
+    [in] PRINTER_HANDLE hPrinter,
     [in] PRINTER_CONTAINER* pPrinterContainer,
     [in] DEVMODE_CONTAINER* pDevModeContainer,
     [in] SECURITY_CONTAINER* pSecurityContainer,
@@ -8666,7 +8497,8 @@ Release: August 11, 2025
 
 112 / 129
 
-    [out] DWORD* pcbNeeded
+
+    [out] DWORD* pcbNeeded
  );
 
  DWORD
@@ -8743,7 +8575,8 @@ Release: August 11, 2025
 
 113 / 129
 
-    [in, unique, string] wchar_t* pEnvironment,
+
+    [in, unique, string] wchar_t* pEnvironment,
     [in] DWORD Level,
     [in, out, unique, size_is(cbBuf)] unsigned char* pDriver,
     [in] DWORD cbBuf,
@@ -8820,7 +8653,8 @@ Release: August 11, 2025
 
 114 / 129
 
-    [in] DWORD cbOutputData,
+
+    [in] DWORD cbOutputData,
     [out] DWORD* pcbOutputNeeded,
     [in, out] DWORD* pdwStatus
  );
@@ -8897,7 +8731,8 @@ Release: August 11, 2025
 
 115 / 129
 
-    [in, string, unique] wchar_t* pName,
+
+    [in, string, unique] wchar_t* pName,
     [in, unique, string] wchar_t* pEnvironment,
     [in] DWORD Level,
     [in, out, unique, size_is(cbBuf)] unsigned char* pDriverDirectory,
@@ -8974,7 +8809,8 @@ Release: August 11, 2025
 
 116 / 129
 
- );
+
+ );
 
  DWORD
  RpcAsyncEnumMonitors(
@@ -9051,7 +8887,8 @@ Release: August 11, 2025
 
 117 / 129
 
-    [in, string] const wchar_t* pPrinterName,
+
+    [in, string] const wchar_t* pPrinterName,
     [in, string] const wchar_t* pPrintServer,
     [in, string] const wchar_t* pProvider
  );
@@ -9127,7 +8964,8 @@ Release: August 11, 2025
 
 118 / 129
 
- HRESULT
+
+ HRESULT
  RpcAsyncGetCorePrinterDrivers(
     [in]                       handle_t  hRemoteBinding,
     [in, string, unique] const wchar_t*  pszServer,
@@ -9204,7 +9042,8 @@ Release: August 11, 2025
 
 119 / 129
 
- RpcAsyncSetJobNamedProperty(
+
+ RpcAsyncSetJobNamedProperty(
      [in] PRINTER_HANDLE         hPrinter,
      [in] DWORD                  JobId,
      [in] RPC_PrintNamedProperty *pProperty
@@ -9239,7 +9078,8 @@ Release: August 11, 2025
 
 120 / 129
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -9306,7 +9146,8 @@ Release: August 11, 2025
 
 121 / 129
 
-<4> Section 2.1: Windows print servers impersonate clients when processing methods, and they
+
+<4> Section 2.1: Windows print servers impersonate clients when processing methods, and they
 register SPNEGO [MS-SPNG] security providers.
 
 <5> Section 2.2.8: For Windows implementations, the driver version is matched to the version portion
@@ -9375,7 +9216,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-<22> Section 3.1.4.2.9: All Windows versions: The IDs are the GUIDString representations of 128-
+
+<22> Section 3.1.4.2.9: All Windows versions: The IDs are the GUIDString representations of 128-
 bit GUIDs.
 
 <23> Section 3.1.4.2.10: All Windows versions: The driver date is matched to the date portion of the
@@ -9441,7 +9283,8 @@ Release: August 11, 2025
 
 123 / 129
 
-<38> Section 3.2.3: In the Windows implementation, the client creates the binding handle, verifies
+
+<38> Section 3.2.3: In the Windows implementation, the client creates the binding handle, verifies
 the security capability of the remote server, and invokes the Print System Asynchronous Remote
 method.
 
@@ -9509,7 +9352,8 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-When the caller opens a PRINTER_HANDLE structure for a specific printing resource, it specifies the
+
+When the caller opens a PRINTER_HANDLE structure for a specific printing resource, it specifies the
 access that is needed for the operations for which the handle is being opened, such as "administrate
 printer or server"; "use printer or print server for printing"; or "read, write, or administrate job". If the
 caller has the requested permissions, the print handle is created and can be used in subsequent calls.
@@ -9527,7 +9371,8 @@ Release: August 11, 2025
 
 125 / 129
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -9571,7 +9416,8 @@ Release: August 11, 2025
 
 126 / 129
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -9708,7 +9554,8 @@ Methods
 
 127 / 129
 
-   Job Printing Methods 77
+
+   Job Printing Methods 77
    Port Monitor Management Methods 69
    Printer Management Methods 35
    Printer-Driver Management Methods 50
@@ -9848,7 +9695,8 @@ Security - implementer considerations 97
 
 128 / 129
 
-Sequencing rules
+
+Sequencing rules
    client 89
    server 28
 Server

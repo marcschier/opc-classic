@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 17
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -206,113 +207,53 @@ Release: April 23, 2024
 
 2 / 17
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 SAE_Started](#221-saestarted)
+    - [2.2.2 SAE_VolumeChange](#222-saevolumechange)
+    - [2.2.3 SAE_RemoteConnect](#223-saeremoteconnect)
+    - [2.2.4 SADLE_Started](#224-sadlestarted)
+    - [2.2.5 SADLE_SerializedCache](#225-sadleserializedcache)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Audio Level Protocol Initialization](#3131-audio-level-protocol-initialization)
+      - [3.1.3.2 Drive Letter Protocol Initialization](#3132-drive-letter-protocol-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Audio Level Protocol Events](#3141-audio-level-protocol-events)
+      - [3.1.4.2 Drive Letter Protocol Events](#3142-drive-letter-protocol-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Audio Level Protocol initialization and change](#41-audio-level-protocol-initialization-and-change)
+  - [4.2 Drive Letter Protocol initialization and change](#42-drive-letter-protocol-initialization-and-change)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Message Syntax ................................................................................................. 7
-SAE_Started ................................................................................................ 7
-SAE_VolumeChange ...................................................................................... 7
-SAE_RemoteConnect ..................................................................................... 8
-SADLE_Started ............................................................................................. 8
-SADLE_SerializedCache ................................................................................. 9
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-
-3.1
-
-3.1.3.1
-3.1.3.2
-
-3.1.1
-3.1.2
-3.1.3
-
-3  Protocol Details ..................................................................................................... 11
-Common Details .............................................................................................. 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Audio Level Protocol Initialization ............................................................ 11
-Drive Letter Protocol Initialization ........................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Audio Level Protocol Events .................................................................... 11
-Drive Letter Protocol Events ................................................................... 12
-Message Processing Events and Sequencing Rules .......................................... 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-
-3.1.5
-3.1.6
-3.1.7
-
-3.1.4.1
-3.1.4.2
-
-3.1.4
-
-4  Protocol Examples ................................................................................................. 13
-Audio Level Protocol initialization and change ...................................................... 13
-Drive Letter Protocol initialization and change ...................................................... 13
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 14
-Security Considerations for Implementers ........................................................... 14
-Index of Security Parameters ............................................................................ 14
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 15
-
-7  Change Tracking .................................................................................................... 16
-
-8  Index ..................................................................................................................... 17
-
-[MS-RDPADRV] - v20240423
-Remote Desktop Protocol: Audio Level and Drive Letter Persistence Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 17
-
-1  Introduction
+## 1 Introduction
 
 This document describes an extension to the RDP dynamic virtual channel protocol that is used
 exclusively in the context of Windows Multipoint Server scenarios. The RDP dynamic virtual channel
@@ -330,7 +271,7 @@ client behavior similar to the behavior of a standalone Windows client PC.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -356,14 +297,14 @@ over a main data connection, in 1600-byte chunks, as specified in Static Virtual
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -379,13 +320,14 @@ Release: April 23, 2024
 
 4 / 17
 
-[MSDN-EDataFlow] Microsoft Corporation, "EDataFlow enumeration", http://msdn.microsoft.com/en-
+
+[MSDN-EDataFlow] Microsoft Corporation, "EDataFlow enumeration", http://msdn.microsoft.com/en-
 us/library/windows/desktop/dd370828(v=vs.85).aspx
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CoreAudioInterfaces] Microsoft Corporation, "Core Audio Interfaces",
 https://msdn.microsoft.com/en-us/library/windows/desktop/dd370805(v=vs.85).aspx
@@ -393,7 +335,7 @@ https://msdn.microsoft.com/en-us/library/windows/desktop/dd370805(v=vs.85).aspx
 [MSDN-IAudioEndpointVolume] Microsoft Corporation, "IAudioEndPointVolume interface",
 https://msdn.microsoft.com/en-us/library/windows/desktop/dd370892(v=vs.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This extension to the RDP virtual channels protocol allows an RDP (remote desktop connection) client
 device's behavior, with respect to audio levels and drive letters, to mimic a Windows client PC
@@ -431,7 +373,7 @@ back on. With this extension to the virtual channel protocol, the drive letter s
 storage device will be remembered on the client, and each time the device connects to a remote
 session, the drive letter will keep its preset value.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Audio Level and Drive Letter Persistence Virtual Channel Extension is implemented over RDP
 Dynamic Virtual Channels, as defined in [MS-RDPEDYC].
@@ -443,23 +385,24 @@ Release: April 23, 2024
 
 5 / 17
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable to scenarios where the implementation is required to persist audio volume
 settings and drive letter mappings for RDP sessions on a per client basis, as opposed to a per user
 basis.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -470,9 +413,10 @@ Release: April 23, 2024
 
 6 / 17
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol is designed to operate over a dynamic virtual channel, as specified in [MS-RDPEDYC].
 The virtual channel name for audio levels is "WMSAud" and for drive letters is "WMSDL". The
@@ -480,12 +424,12 @@ Remote Desktop Protocol layer manages the creation, setup, and transmission of d
 channel. These virtual channels MUST be used to establish connections and exchange audio level or
 drive letter information.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections contain Remote Desktop Protocol: Audio Level and Drive Letter Persistence
 Virtual Channel Extension message syntax.
 
-2.2.1  SAE_Started
+#### 2.2.1 SAE_Started
 
 The SAE_Started message is sent from the server to the client to initiate the protocol. It signals that
 the server is initializing a new RDP session and requires the initial audio volume settings for the
@@ -509,7 +453,7 @@ eEvent(4 bytes):   A 32-bit unsigned integer that specifies message type.  The v
 
 SAE_Started is 0x00000001.
 
-2.2.2  SAE_VolumeChange
+#### 2.2.2 SAE_VolumeChange
 
 When sent from the client to the server, the SAE_VolumeChange message indicates a request to set
 the volume setting for a specific dataflow (as defined in [MSDN-EDataFlow]) to the specified level.
@@ -550,7 +494,8 @@ Release: April 23, 2024
 
 7 / 17
 
-Value
+
+Value
 
 Meaning
 
@@ -585,7 +530,7 @@ TRUE0x00000001
 
 The specified dataflow is disabled.
 
-2.2.3  SAE_RemoteConnect
+#### 2.2.3 SAE_RemoteConnect
 
 The SAE_RemoteConnect message is sent from the server to the client to initiate the protocol. It
 signals that the server has reconnected to an existing RDP session and requires the initial audio
@@ -609,7 +554,7 @@ eEvent(4 bytes):   A 32-bit unsigned integer that specifies message type.  The v
 
 SAE_RemoteConnect is 0x00000003.
 
-2.2.4  SADLE_Started
+#### 2.2.4 SADLE_Started
 
 The SADLE_Started message is sent from the server to the client to initiate the protocol. It signals
 that the server is initializing an RDP session and requires the drive letter mapping settings for the
@@ -640,7 +585,8 @@ Release: April 23, 2024
 
 8 / 17
 
-2.2.5  SADLE_SerializedCache
+
+#### 2.2.5 SADLE_SerializedCache
 
 The SADLE_SerializedCache message is sent from the client to the server in response to a
 SADLE_Started message to restore persisted drive letter mappings for use in an RDP session.  This
@@ -709,7 +655,8 @@ Release: April 23, 2024
 
 9 / 17
 
-cbNameValueData (4 bytes):   An unsigned integer that specifies the size of the name-value data,
+
+cbNameValueData (4 bytes):   An unsigned integer that specifies the size of the name-value data,
 which MUST match the value of cbMessageData. The cbMessageData and cbNameValueData
 fields contain the same value to allow verification that the data sizes from two sources (the
 registry and the protocol payload) match.
@@ -791,28 +738,29 @@ Release: April 23, 2024
 
 10 / 17
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 The protocol is designed to allow an RDP client to be notified of changes to session configuration
 settings so that those settings can be persisted across sessions and allowed to restore those settings
 while the session is initializing.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The protocol initializes after an RDP client/server session has been established and the required
 virtual channel transport has been created.
 
-3.1.3.1  Audio Level Protocol Initialization
+##### 3.1.3.1 Audio Level Protocol Initialization
 
 The server MUST send an SAE_Started message to the client if the RDP session is being initially
 created, or it MUST send an SAE_RemoteConnect message if connecting to an existing RDP session.
@@ -820,7 +768,7 @@ Upon receipt of either of these messages, the RDP client SHOULD reply with an SA
 message containing the same information as the last received SAE_VolumeChange message.  If the
 RDP client has no persisted configuration data, then no response is sent.
 
-3.1.3.2  Drive Letter Protocol Initialization
+##### 3.1.3.2 Drive Letter Protocol Initialization
 
 The server MUST create a volatile Windows registry key where changes will be stored
 (HKCU\Software\Microsoft\Terminal Server\[session id]\Drive Letter Cache, where [session id] is the
@@ -833,12 +781,12 @@ RDP client has no persisted configuration data, then the RDP client SHOULD NOT s
 RDP client MUST make no attempt to redirect USB Mass Storage devices prior to the protocol being
 initialized.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The server MUST monitor the settings for changes and notify the client by sending the appropriate
 configuration message.
 
-3.1.4.1  Audio Level Protocol Events
+##### 3.1.4.1 Audio Level Protocol Events
 
 The server MUST monitor the master volume level for changes, which can be made via core audio
 APIs [MSDN-CoreAudioInterfaces] such as the IAudioEndpointVolume interface [MSDN-
@@ -852,7 +800,8 @@ Release: April 23, 2024
 
 11 / 17
 
-3.1.4.2  Drive Letter Protocol Events
+
+##### 3.1.4.2 Drive Letter Protocol Events
 
 The server MUST monitor the Windows registry key HKCU\Software\Microsoft\Terminal
 Server\[session id]\Drive Letter Cache for changes (where [session id] is the decimal RDP session ID).
@@ -860,7 +809,7 @@ When the key changes, all DWORD Registry Values contained in the key MUST be enu
 value name/DWORD value pairs are stored packed into a single contiguous block, which is then sent
 to the RDP client using a SADLE_SerializedCache message.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The protocol has two classes of messages, protocol initialization messages, and data transmission
 messages.  Protocol initialization messages are always sent from the RDP server session to the RDP
@@ -873,11 +822,11 @@ message to the client every time the data is changed in the RDP session.  When t
 data transmission message, it MUST discard any old cached copy of the data and cache the current
 data.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -888,9 +837,10 @@ Release: April 23, 2024
 
 12 / 17
 
-4  Protocol Examples
 
-4.1  Audio Level Protocol initialization and change
+## 4 Protocol Examples
+
+### 4.1 Audio Level Protocol initialization and change
 
 1.  An RDP client that has persisted audio level data for both the render and capture dataflows (as
 
@@ -924,7 +874,7 @@ message.
 
 message.
 
-4.2  Drive Letter Protocol initialization and change
+### 4.2 Drive Letter Protocol initialization and change
 
 1.  An RDP client that has persisted drive letter data creates a new session with ID 3 on an RDP
 
@@ -965,13 +915,14 @@ Release: April 23, 2024
 
 13 / 17
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -982,7 +933,8 @@ Release: April 23, 2024
 
 14 / 17
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1026,7 +978,8 @@ Release: April 23, 2024
 
 15 / 17
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1070,7 +1023,8 @@ Release: April 23, 2024
 
 16 / 17
 
-   informative 5
+
+   informative 5
    normative 4
 Relationship to other protocols 5
 
@@ -1097,7 +1051,7 @@ V
 
 Vendor-extensible fields 6
 
-8  Index
+## 8 Index
 A
 
 Applicability 6

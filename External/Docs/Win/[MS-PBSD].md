@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 18
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -235,70 +236,35 @@ Release: April 23, 2024
 
 2 / 18
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Namespaces](#21-namespaces)
+  - [2.2 Computer Information](#22-computer-information)
+  - [2.3 Resource](#23-resource)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Publication Services Data with no Listed Services](#31-publication-services-data-with-no-listed-services)
+  - [3.2 Publication Services Data with Listed Resources](#32-publication-services-data-with-listed-resources)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index Of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Full XML Schema](#5-appendix-a-full-xml-schema)
+- [6 Appendix B: Product Behavior](#6-appendix-b-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Protocols and Other Structures ...................................................... 6
-Applicability Statement ....................................................................................... 6
-Versioning and Localization ................................................................................. 6
-Vendor-Extensible Fields ..................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2  Structures ............................................................................................................... 7
-Namespaces ...................................................................................................... 7
-Computer Information ........................................................................................ 7
-Resource ........................................................................................................... 8
-
-2.1
-2.2
-2.3
-
-3  Structure Examples ................................................................................................. 9
-Publication Services Data with no Listed Services ................................................... 9
-Publication Services Data with Listed Resources ................................................... 10
-
-3.1
-3.2
-
-4  Security ................................................................................................................. 14
-Security Considerations for Implementers ........................................................... 14
-Index Of Security Fields .................................................................................... 14
-
-4.1
-4.2
-
-5  Appendix A: Full XML Schema ................................................................................ 15
-
-6  Appendix B: Product Behavior ............................................................................... 16
-
-7  Change Tracking .................................................................................................... 17
-
-8  Index ..................................................................................................................... 18
-
-[MS-PBSD] - v20240423
-Publication Services Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 18
-
-1  Introduction
+## 1 Introduction
 
 Publication Services enables computers to advertise (that is, publish) their presence and their
 resources as Web services over IP-based networks. By doing so, other computers can find (that is,
@@ -310,7 +276,7 @@ and the resources that are being offered.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -344,14 +310,14 @@ interaction over a network, using XML-based standards and open transport protoco
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -364,7 +330,8 @@ Release: April 23, 2024
 
 4 / 18
 
-[DPWS] Chans, S., Conti, D., Schlimmer, J., et al., "Devices Profile for Web Services", February 2006,
+
+[DPWS] Chans, S., Conti, D., Schlimmer, J., et al., "Devices Profile for Web Services", February 2006,
 http://specs.xmlsoap.org/ws/2006/02/devprof/devicesprofile.pdf
 
 [MS-DPWSSN] Microsoft Corporation, "Devices Profile for Web Services (DPWS): Size Negotiation
@@ -387,7 +354,7 @@ Discovery)", April 2005, http://specs.xmlsoap.org/ws/2005/04/discovery/ws-discov
 [XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
 W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-20091208/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-DPWSRP] Microsoft Corporation, "Devices Profile for Web Services (DPWS): Shared Resource
 Publishing Data Structure".
@@ -403,7 +370,7 @@ us/library/bb756908.aspx
 [WSADDR] Gudgin, M., Hadley, M., and Rogers, T., "Web Services Addressing (WS-Addressing) 1.0",
 W3C Recommendation, May 2006, http://www.w3.org/2005/08/addressing
 
-1.3  Overview
+### 1.3 Overview
 
 The Devices Profile for Web Services (DPWS), as defined in [DPWS], specifies a well-structured
 messaging model that provides basic functionality such as discovery of an endpoint [WSADDR],
@@ -429,11 +396,12 @@ Release: April 23, 2024
 
 5 / 18
 
-For additional explanatory information about DPWS, see [MSDN-DPWS]. For information about the
+
+For additional explanatory information about DPWS, see [MSDN-DPWS]. For information about the
 Microsoft implementation of DPWS, which is called Web Services for Devices (WSD), see [MSDN-
 WSD].
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The Publication Services data structure is built on [DPWS] and relies on the Microsoft
 implementation of DPWS. For more information, see [MSDN-WSD].
@@ -447,7 +415,7 @@ advertising and publishing of content between machines in a home environment, an
 Publishing data structure [MS-DPWSRP] use the Publication Services data structure to advertise their
 content and resources.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 Use of this data structure is suitable for clients if:
 
@@ -475,11 +443,11 @@ The service will represent itself as a DPWS-compliant computer on the network.
 The service supports the Size Negotiation Extension [MS-DPWSSN] and can send messages longer
 than 32767 octets.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This data structure is not versioned and it does not explicitly support localization.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 This data structure does not define any additional vendor-extensible fields.
 
@@ -490,9 +458,10 @@ Release: April 23, 2024
 
 6 / 18
 
-2  Structures
 
-2.1  Namespaces
+## 2 Structures
+
+### 2.1 Namespaces
 
 This document defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Even though this document associates a specific XML namespace prefix for each XML
@@ -533,7 +502,7 @@ http://www.w3.org/2001/XMLSchema
 
 [W3C-XSD]
 
-2.2  Computer Information
+### 2.2 Computer Information
 
 The Publication Services Data Structure advertises three pieces of information about a computer:
 
@@ -587,14 +556,15 @@ Release: April 23, 2024
 
 7 / 18
 
-  Otherwise:
+
+  Otherwise:
 
  <NetBIOS_Computer_Name>\NotJoined
 
 Note  The pub:Computer element replaces the <any> element wildcard of the HostServiceType
 complex type, which is instantiated through the <Host> element of the DPWS schema.
 
-2.3  Resource
+### 2.3 Resource
 
 Each resource to be advertised by a Publication Services device host as a service consists of two
 fields:
@@ -643,9 +613,10 @@ Release: April 23, 2024
 
 8 / 18
 
-3  Structure Examples
 
-3.1  Publication Services Data with no Listed Services
+## 3 Structure Examples
+
+### 3.1 Publication Services Data with no Listed Services
 
 This section contains an example of the Publication Services data associated with a computer (that
 is, a device). The example data indicates that there are no services being advertised by the
@@ -714,10 +685,11 @@ Publication Services Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- ...
+
+ ...
            <pub:Computer>D-HAMILTON-1/Domain:CONTOSO_DOMAIN1</pub:Computer>
 
-3.2  Publication Services Data with Listed Resources
+### 3.2 Publication Services Data with Listed Resources
 
 This section contains an example of the Publication Services data associated with a computer (that
 is, a device) along with one service that is being advertised by that computer.
@@ -788,7 +760,8 @@ Publication Services Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-VauR2b3NHXMlmYyFmcpV2ccR0bjVXbl5Gdz5CbpJmchJXet02c88Cc+0gCgACIgACIgACPzxmPNJUQBFURBZ0QBFUQBFU
+
+VauR2b3NHXMlmYyFmcpV2ccR0bjVXbl5Gdz5CbpJmchJXet02c88Cc+0gCgACIgACIgACPzxmPNJUQBFURBZ0QBFUQBFU
 QBFERBFUQBFUQBl1anFUQEJ0ZBFUQBF0YwgUbYJmb3NWQwZWYvg0KL1UTIFlT0MzLoZ3QEpnQ4QzRBFUQBFUQBFkQBFUQ
 BFUQBFUQBFUQBFUQBFUQBF0dJFUQBFESBFUQBNUQBFUQBFUQBFUQBFUQBF0YBFUQBFVRBFUQBtUQBFUQDFUQBFUUCFUQB
 FUQBFUQBFUQnFUQ3ZEWIlDMT5kVrRVSOZlUNpVRYZlTWJ1UOZUQuljMhRnVtJ2YGV0Y3JVVZBjRHh1U5cVW0xWbi5GeWR
@@ -866,7 +839,8 @@ Publication Services Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-jJjYyFzVaVnQBFkNBF0QBFVQBZ3Nyl3KrJnWLdja31GcDFUQBdGaBFUQBFUQnFUQBFUQBFUQBFUQBFUQBFUQBFUQB5mQ3
+
+jJjYyFzVaVnQBFkNBF0QBFVQBZ3Nyl3KrJnWLdja31GcDFUQBdGaBFUQBFUQnFUQBFUQBFUQBFUQBFUQBFUQBFUQB5mQ3
 JWQzdUQ0JUUaFENHFUQBdmRBlkRBhXQBFUQBFUQLdDR21mSCFkQCh0YFZ0RkhmQBBVQnFUQFF0d3sSczBVNh1WercncaF
 XQBFUQFpUQBFUQBFUSBFUQBFUQBFUQBFUQBFUQBFUQBFUURFUQIF0dCFkUBV0RBBjQRlVQBFUQXF0ZVFUREFUQBFUQBd2
 cQZ3MGVUQJFjYoFzVhVHZHFEOBF0QBFVQBZ3Nyl3KrJnWLdDV11GcDFUQBd2aBFUQBFUQnFUQBFUQBFUQBFUQBFUQBFUQ
@@ -944,7 +918,8 @@ Publication Services Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-FkNBF0QBFVQBZ3Nyl3KrJnWLdja31GcDFUQBdGaBFUQBFUQnFUQBFUQBFUQBFUQBFUQBFUQBFUQB5mQ3JWQzdUQ0JUUaF
+
+FkNBF0QBFVQBZ3Nyl3KrJnWLdja31GcDFUQBdGaBFUQBFUQnFUQBFUQBFUQBFUQBFUQBFUQBFUQB5mQ3JWQzdUQ0JUUaF
 ENHFUQBdmRBlkRBhXQBFUQBFUQLdDR21mSCFkQCh0YFZ0RkhmQBBVQnFUQFF0d3sSczBVNh1WercncaFXQBFUQFpUQBFU
 QBFUSBFUQBFUQBFUQBFUQBFUQBFUQBFUURFUQIF0dCFkUBV0RBBjQRlVQBFUQXF0ZVFUREFUQBFUQBd2cQZ3MGVUQJFjY
 oFzVhVHZHFEOBF0QBFVQBZ3Nyl3KrJnWLdDV11GcDFUQBd2aBFUQBFUQnFUQBFUQBFUQBFUQBFUQBFUQBFUQBNlQ3JWQF
@@ -1006,15 +981,16 @@ Release: April 23, 2024
 
 13 / 18
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 Publication Services does not provide any security to protect the data that is being advertised or to
 ensure its authenticity. Applications that need to secure their advertised resources typically implement
 their security policy on top of Publication Service data structures.
 
-4.2  Index Of Security Fields
+### 4.2 Index Of Security Fields
 
 None.
 
@@ -1025,7 +1001,8 @@ Release: April 23, 2024
 
 14 / 18
 
-5  Appendix A: Full XML Schema
+
+## 5 Appendix A: Full XML Schema
 
 For ease of implementation, the following is the full XML schema for this protocol.
 
@@ -1056,7 +1033,8 @@ Release: April 23, 2024
 
 15 / 18
 
-6  Appendix B: Product Behavior
+
+## 6 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1112,7 +1090,8 @@ Release: April 23, 2024
 
 16 / 18
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1156,7 +1135,8 @@ Release: April 23, 2024
 
 17 / 18
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 6

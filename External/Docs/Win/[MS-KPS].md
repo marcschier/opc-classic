@@ -169,7 +169,7 @@ Release: April 23, 2024
   - [2.2 Common Data Types](#22-common-data-types)
     - [2.2.1 HTTP Methods](#221-http-methods)
       - [2.2.1.1 Description](#2211-description)
-      - [2.2.1.2 GetMetaData](#2212-getmetadata)
+      - [2.2.1.2 Returns the metadata content](#2212-returns-the-metadata-content)
     - [2.2.2 Complex Types](#222-complex-types)
       - [2.2.2.1 RollTransportKeyResponse](#2221-rolltransportkeyresponse)
       - [2.2.2.2 Protector](#2222-protector)
@@ -401,9 +401,9 @@ transport keys to the caller.
 
 GetMetaData
 
-2.2.1.2
+##### 2.2.1.2 Returns the metadata content
 
-Returns the metadata content
+
 containing the guardian
 information to the client.
 

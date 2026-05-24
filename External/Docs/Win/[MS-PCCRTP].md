@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 21
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -294,7 +295,8 @@ Release: April 23, 2024
 
 2 / 21
 
-Date
+
+Date
 
 Revision
 History
@@ -441,111 +443,52 @@ Release: April 23, 2024
 
 3 / 21
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 HTTP/1.1 Client Details](#31-http11-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a Response of a PeerDist-Supporting Request](#3151-receiving-a-response-of-a-peerdist-supporting-request)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 HTTP/1.1 Server Details](#32-http11-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a PeerDist-Supporting Request](#3251-receiving-a-peerdist-supporting-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-
-2.1
-2.2
-
-3.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 11
-HTTP/1.1 Client Details ..................................................................................... 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Message Processing Events and Sequencing Rules .......................................... 11
-Receiving a Response of a PeerDist-Supporting Request ............................ 11
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-HTTP/1.1 Server Details .................................................................................... 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Message Processing Events and Sequencing Rules .......................................... 12
-Receiving a PeerDist-Supporting Request ................................................. 12
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 14
-
-5  Security ................................................................................................................. 16
-Security Considerations for Implementers ........................................................... 16
-Index of Security Parameters ............................................................................ 16
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 17
-
-7  Change Tracking .................................................................................................... 19
-
-8  Index ..................................................................................................................... 20
-
-[MS-PCCRTP] - v20240423
-Peer Content Caching and Retrieval: Hypertext Transfer Protocol (HTTP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 21
-
-1  Introduction
+## 1 Introduction
 
 The Peer Content Caching and Retrieval: HTTP Extensions Protocol is a set of extensions to the
 Hypertext Transfer Protocol (HTTP) 1.1 that allows an HTTP/1.1 client and an HTTP/1.1 server to
@@ -567,7 +510,7 @@ hosted caches in place of peer-based caching.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -616,7 +559,8 @@ Peer Content Caching and Retrieval: Hypertext Transfer Protocol (HTTP) Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Transmission Control Protocol (TCP): A protocol used with the Internet Protocol (IP) to send
+
+Transmission Control Protocol (TCP): A protocol used with the Internet Protocol (IP) to send
 data in the form of message units between computers over the Internet. TCP handles keeping
 track of the individual units of data (called packets) that a message is divided into for efficient
 routing through the Internet.
@@ -624,14 +568,14 @@ routing through the Internet.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -648,14 +592,14 @@ assist you in finding the relevant information.
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-BUP] Microsoft Corporation, "Background Intelligent Transfer Service (BITS) Upload Protocol".
 
 [MSDN-BITS] Microsoft Corporation, "Background Intelligent Transfer Service",
 http://msdn.microsoft.com/en-us/library/bb968799(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 Peer Content Caching and Retrieval: HTTP Extensions specify PeerDist Content Encoding used in
 HTTP/1.1, a client/server-based protocol. The purpose of PeerDist content encoding is to enable
@@ -680,7 +624,8 @@ Release: April 23, 2024
 
 6 / 21
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-PCCRTP].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -690,7 +635,7 @@ server is shown following.
 Figure 1: Sequence diagram describing the communication between the HTTP/1.1 client
 and the HTTP/1.1 server
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The PeerDist Content Encoding defined in this document is intended to be used for HTTP/1.1.
 
@@ -700,11 +645,11 @@ content caching and retrieval.
 The PeerDist content encoding uses the Content Information Data Structure defined in [MS-
 PCCRC] section 2.3.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Advertising PeerDist Content Encoding capability is applicable for an HTTP/1.0 client or HTTP/1.1
 client (only) if it is able to participate in peer content caching and retrieval.<1>
@@ -720,7 +665,8 @@ Release: April 23, 2024
 
 7 / 21
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 The PeerDist Content Encoding defined in this document uses a version parameter that the
 HTTP/1.1 client sets to specify the maximum version of PeerDist content encoding that the client
@@ -730,11 +676,11 @@ The PeerDist content encoding defined in this document uses a version parameter 
 server sets to specify the version of PeerDist content encoding that is used for the HTTP
 response.<3>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -745,14 +691,15 @@ Release: April 23, 2024
 
 8 / 21
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This document defines PeerDist, a new content encoding that can be used in HTTP/1.1. HTTP/1.1 is
 the transport for all messages used by the PeerDist Content Encoding.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 HTTP/1.1 [RFC2616] defines the syntax of HTTP/1.1 messages.
 
@@ -804,7 +751,8 @@ Release: April 23, 2024
 
 9 / 21
 
-The content-len parameter contains the length of the entity-body, defined in [RFC2616] section 1.3,
+
+The content-len parameter contains the length of the entity-body, defined in [RFC2616] section 1.3,
 in octets, before the PeerDist content encoding is applied to it.
 
 The missing-data-request parameter is used by the HTTP/1.1 client and is set to true to indicate to the
@@ -845,23 +793,24 @@ Release: April 23, 2024
 
 10 / 21
 
-3  Protocol Details
 
-3.1  HTTP/1.1 Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 HTTP/1.1 Client Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
+
+None.
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 An HTTP/1.0 or an HTTP/1.1 client MAY<4> include the PeerDist content encoding in its Accept-
 Encoding header field value of its HTTP request that it sends, as shown in the following example.
@@ -882,9 +831,9 @@ Content Information structure that the client supports.
 
  X-P2P-PeerDistEx: MinContentInformation=1.0, MaxContentInformation=2.0
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving a Response of a PeerDist-Supporting Request
+##### 3.1.5.1 Receiving a Response of a PeerDist-Supporting Request
 
 When an HTTP/1.1 client sends an HTTP request with the PeerDist content encoding listed in its
 Accept-Encoding header, the HTTP/1.1 server MAY send an HTTP response with a Connection
@@ -903,17 +852,18 @@ Release: April 23, 2024
 
 11 / 21
 
- X-P2P-PeerDistEx: MinContentInformation=1.0, MaxContentInformation=2.0, HashRequest=true
 
-3.1.6  Timer Events
+ X-P2P-PeerDistEx: MinContentInformation=1.0, MaxContentInformation=2.0, HashRequest=true
 
-None.
-
-3.1.7  Other Local Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.2  HTTP/1.1 Server Details
+#### 3.1.7 Other Local Events
+
+None.
+
+### 3.2 HTTP/1.1 Server Details
 
 When the HTTP/1.1 request indicates that the client supports the PeerDist content encoding, then if
 the response contains an ETag header field, a Last-Modified header field, or both header fields, the
@@ -923,29 +873,29 @@ encoding usage.
 The HTTP/1.1 server MAY use the PeerDist content encoding in its response to an HTTP/1.0 request if
 the HTTP/1.0 request includes an Accept-Encoding header field containing PeerDist.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The server constructs, for the requested content, a Content Information Data Structure defined in
 [MS-PCCRC] section 2.3 using the algorithms described in [MS-PCCRC] sections 2.1 and 2.2 and
 places such a structure in the response message as an encoded entity body.
 
-3.2.5.1  Receiving a PeerDist-Supporting Request
+##### 3.2.5.1 Receiving a PeerDist-Supporting Request
 
 If the HTTP/1.1 server uses the PeerDist content encoding for its response, then the server MUST
 construct for the requested content, a Content Information Data Structure as specified in [MS-
@@ -964,7 +914,8 @@ Release: April 23, 2024
 
 12 / 21
 
-2.2, the server MUST not generate and respond with a Content Information Data Structure, and
+
+2.2, the server MUST not generate and respond with a Content Information Data Structure, and
 MUST respond with another client-supported encoding as defined in [RFC2616]. If no X-P2P-
 PeerDistEx extension header was present, then the server MUST respond with a version 1.0 Content
 Information Data Structure.
@@ -996,11 +947,11 @@ to use the same connection for future HTTP requests. The HTTP/1.1 server SHOULD 
 Connection header field in its response if the HTTP/1.1 client is known to be unable to handle the
 Connection header field gracefully, as specified in section 3.1.5.1.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1011,7 +962,8 @@ Release: April 23, 2024
 
 13 / 21
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 When the HTTP client uses the PeerDist Content Encoding, it specifies PeerDist in the Accept-
 Encoding header field, as shown in the following example.
@@ -1075,7 +1027,8 @@ Release: April 23, 2024
 
 14 / 21
 
-In response to the previous message, the client sends a hash request with the X-P2P-PeerDistEx
+
+In response to the previous message, the client sends a hash request with the X-P2P-PeerDistEx
 header and HashRequest set to true as shown in the following example.
 
  GET /welcome.png HTTP/1.1
@@ -1090,13 +1043,14 @@ Release: April 23, 2024
 
 15 / 21
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1107,7 +1061,8 @@ Release: April 23, 2024
 
 16 / 21
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1175,7 +1130,8 @@ Release: April 23, 2024
 
 17 / 21
 
-<4> Section 3.1.4: In Windows HTTP/1.0 and HTTP/1.1 clients use the PeerDist content encoding for
+
+<4> Section 3.1.4: In Windows HTTP/1.0 and HTTP/1.1 clients use the PeerDist content encoding for
 GET requests only.
 
 <5> Section 3.2: In applicable Windows Server releases, the HTTP/1.1 server sends a PeerDist-
@@ -1205,7 +1161,8 @@ Release: April 23, 2024
 
 18 / 21
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1249,7 +1206,8 @@ Release: April 23, 2024
 
 19 / 21
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1387,7 +1345,8 @@ Peer Content Caching and Retrieval: Hypertext Transfer Protocol (HTTP) Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   other local events 13
+
+   other local events 13
    overview 12
    sequencing rules 12
       overview 12

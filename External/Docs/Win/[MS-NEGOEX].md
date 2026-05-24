@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 36
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -124,186 +125,80 @@ Release: April 23, 2024
 
 2 / 36
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 NEGOEX Message Flow](#131-negoex-message-flow)
+    - [1.3.2 NEGOEX Message Processing](#132-negoex-message-processing)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+    - [1.9.1 Use of Constants Assigned Elsewhere](#191-use-of-constants-assigned-elsewhere)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Numbers](#221-numbers)
+    - [2.2.2 GUID typedefs](#222-guid-typedefs)
+    - [2.2.3 Constants](#223-constants)
+    - [2.2.4 Random array](#224-random-array)
+    - [2.2.5 Structures](#225-structures)
+      - [2.2.5.1 Constructed types](#2251-constructed-types)
+        - [2.2.5.1.1 ALERT](#22511-alert)
+        - [2.2.5.1.2 ALERT_PULSE](#22512-alertpulse)
+        - [2.2.5.1.3 CHECKSUM](#22513-checksum)
+        - [2.2.5.1.4 EXTENSION](#22514-extension)
+      - [2.2.5.2 Vector types](#2252-vector-types)
+        - [2.2.5.2.1 ALERT_VECTOR](#22521-alertvector)
+        - [2.2.5.2.2 AUTH_SCHEME_VECTOR](#22522-authschemevector)
+        - [2.2.5.2.3 BYTE_VECTOR](#22523-bytevector)
+        - [2.2.5.2.4 EXTENSION_VECTOR](#22524-extensionvector)
+    - [2.2.6 Messages](#226-messages)
+      - [2.2.6.1 MESSAGE_TYPE](#2261-messagetype)
+      - [2.2.6.2 MESSAGE_HEADER](#2262-messageheader)
+      - [2.2.6.3 NEGO_MESSAGE](#2263-negomessage)
+      - [2.2.6.4 EXCHANGE_MESSAGE](#2264-exchangemessage)
+      - [2.2.6.5 VERIFY_MESSAGE](#2265-verifymessage)
+      - [2.2.6.6 ALERT_MESSAGE](#2266-alertmessage)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 NEGOEX Supported Security Mechanisms](#3151-negoex-supported-security-mechanisms)
+      - [3.1.5.2 ConversationID](#3152-conversationid)
+      - [3.1.5.3 Cryptographic Computations](#3153-cryptographic-computations)
+      - [3.1.5.4 Generation of the Initiator Initial Token](#3154-generation-of-the-initiator-initial-token)
+      - [3.1.5.5 Receipt of the Initial Initiator Token and Generation of the Initial Acceptor](#3155-receipt-of-the-initial-initiator-token-and-generation-of-the-initial-acceptor)
+      - [3.1.5.6 Receipt of the Acceptor Initial Response and Completion of Authentication](#3156-receipt-of-the-acceptor-initial-response-and-completion-of-authentication)
+      - [3.1.5.7 Finalizing Negotiation](#3157-finalizing-negotiation)
+      - [3.1.5.8 Supporting GSS-API Extensions](#3158-supporting-gss-api-extensions)
+        - [3.1.5.8.1 GSS_Query_meta_data](#31581-gssquerymetadata)
+        - [3.1.5.8.2 GSS_Exchange_meta_data](#31582-gssexchangemetadata)
+        - [3.1.5.8.3 GSS_Query_mechanism_info](#31583-gssquerymechanisminfo)
+        - [3.1.5.8.4 GSS_Inquire_context](#31584-gssinquirecontext)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full NEGOEX](#6-appendix-a-full-negoex)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 7
-NEGOEX Message Flow .................................................................................. 7
-NEGOEX Message Processing ......................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-Use of Constants Assigned Elsewhere ............................................................ 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.9.1
-
-2.1
-2.2
-
-2.2.5.1
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-
-2.2.5.1.1
-2.2.5.1.2
-2.2.5.1.3
-2.2.5.1.4
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Numbers ................................................................................................... 11
-GUID typedefs ............................................................................................ 12
-Constants .................................................................................................. 12
-Random array ............................................................................................ 13
-Structures ................................................................................................. 13
-Constructed types ................................................................................. 13
-ALERT ............................................................................................ 13
-ALERT_PULSE ................................................................................. 13
-CHECKSUM ..................................................................................... 13
-EXTENSION .................................................................................... 14
-Vector types ......................................................................................... 14
-ALERT_VECTOR ............................................................................... 14
-AUTH_SCHEME_VECTOR .................................................................. 15
-BYTE_VECTOR ................................................................................ 15
-EXTENSION_VECTOR ....................................................................... 15
-Messages ................................................................................................... 16
-MESSAGE_TYPE .................................................................................... 16
-MESSAGE_HEADER ............................................................................... 17
-NEGO_MESSAGE ................................................................................... 17
-EXCHANGE_MESSAGE ........................................................................... 18
-VERIFY_MESSAGE ................................................................................. 18
-ALERT_MESSAGE .................................................................................. 19
-
-2.2.6.1
-2.2.6.2
-2.2.6.3
-2.2.6.4
-2.2.6.5
-2.2.6.6
-
-2.2.5.2.1
-2.2.5.2.2
-2.2.5.2.3
-2.2.5.2.4
-
-2.2.5.2
-
-2.2.6
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 20
-Common Details .............................................................................................. 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-NEGOEX Supported Security Mechanisms ................................................. 20
-ConversationID ..................................................................................... 21
-Cryptographic Computations .................................................................. 21
-Generation of the Initiator Initial Token ................................................... 21
-Receipt of the Initial Initiator Token and Generation of the Initial Acceptor
-Response ............................................................................................. 22
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-[MS-NEGOEX] - v20240423
-SPNEGO Extended Negotiation (NEGOEX) Security Mechanism
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 36
-
-3.1.5.6
-
-3.1.5.7
-3.1.5.8
-
-Receipt of the Acceptor Initial Response and Completion of Authentication After
-the Negotiation Phrase .......................................................................... 22
-Finalizing Negotiation ............................................................................ 23
-Supporting GSS-API Extensions .............................................................. 24
-GSS_Query_meta_data .................................................................... 24
-GSS_Exchange_meta_data ............................................................... 24
-GSS_Query_mechanism_info ............................................................ 25
-GSS_Inquire_context ....................................................................... 26
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-
-3.1.5.8.1
-3.1.5.8.2
-3.1.5.8.3
-3.1.5.8.4
-
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 27
-
-5  Security ................................................................................................................. 29
-Security Considerations for Implementers ........................................................... 29
-Index of Security Parameters ............................................................................ 29
-
-5.1
-5.2
-
-6  Appendix A: Full NEGOEX ...................................................................................... 30
-
-7  Appendix B: Product Behavior ............................................................................... 33
-
-8  Change Tracking .................................................................................................... 35
-
-9  Index ..................................................................................................................... 36
-
-[MS-NEGOEX] - v20240423
-SPNEGO Extended Negotiation (NEGOEX) Security Mechanism
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 36
-
-1  Introduction
+## 1 Introduction
 
 The SPNEGO Extended Negotiation (NEGOEX) Security Mechanism enhances the capabilities of
 SPNEGO by providing a security mechanism that can be negotiated by the SPNEGO protocol. When the
@@ -313,7 +208,7 @@ selection of a common authentication protocol based on metadata such as trust co
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -379,7 +274,8 @@ SPNEGO Extended Negotiation (NEGOEX) Security Mechanism
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-credentials support a common set of GSS-API security mechanisms, to negotiate different
+
+credentials support a common set of GSS-API security mechanisms, to negotiate different
 options within a given security mechanism or different options from several security
 mechanisms, to select a service, and to establish a security context among themselves using
 that service. SPNEGO is specified in [RFC4178].
@@ -387,14 +283,14 @@ that service. SPNEGO is specified in [RFC4178].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -420,7 +316,7 @@ Extension".
 [RFC3961] Raeburn, K., "Encryption and Checksum Specifications for Kerberos 5", RFC 3961,
 February 2005, https://www.rfc-editor.org/info/rfc3961
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDOCS-CustomSSPs] Microsoft Corporation, "Creating Custom Security Packages",
 https://learn.microsoft.com/en-us/windows/win32/secauthn/creating-custom-security-packages
@@ -443,7 +339,8 @@ Release: April 23, 2024
 
 6 / 36
 
-1.3  Overview
+
+### 1.3 Overview
 
 The SPNEGO Extended Negotiation Security Mechanism (NEGOEX) extends Simple and Protected
 GSS-API Negotiation Mechanism (SPNEGO) described in [RFC4178]. SPNEGO provides a negotiation
@@ -469,7 +366,7 @@ Extension (SPNG) has extended [RFC4178] to allow the server to initiate SPNG mes
 message flow can begin from either the client or the server as the initiator, whereas the receiver is the
 acceptor. See [MS-SPNG] for client/server roles and variations.
 
-1.3.1  NEGOEX Message Flow
+#### 1.3.1 NEGOEX Message Flow
 
 NEGOEX message flow is composed of several messages in which the header contains the type of
 message that is sent. The message types are defined by the MESSAGE_TYPE enumeration, as
@@ -482,7 +379,8 @@ Release: April 23, 2024
 
 7 / 36
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-NEGOEX].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -513,7 +411,8 @@ SPNEGO Extended Negotiation (NEGOEX) Security Mechanism
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.3.2  NEGOEX Message Processing
+
+#### 1.3.2 NEGOEX Message Processing
 The NEGOEX message flow between the initiator and the acceptor is processed as follows:
 
 1.  The initiator proposes a list of security mechanisms in decreasing order of preference. NEGOEX
@@ -563,7 +462,7 @@ mechanism token. If the acceptor's preferred mechanism matches the initiator's p
 and the NEGOEX negotiation protection messages are included with the mechanism token, no
 additional round trips are incurred by using the NEGOEX protocol with SPNEGO.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 NEGOEX cannot work outside of the SPNEGO protocol. Its relationship to other protocols is defined in
 [MS-SPNG] section 1.3.2, which pertains specifically to NEGOEX.
@@ -575,7 +474,8 @@ Release: April 23, 2024
 
 9 / 36
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 When negotiated by SPNEGO, NEGOEX uses the concepts developed in the GSS-API specification
 [RFC2743]. Therefore, the prerequisites/preconditions defined in [MS-SPNG] section 1.5 are applicable
@@ -588,26 +488,26 @@ set at the time of installation<1>.
 The message signing and verification in NEGOEX is based on [RFC3961], which is used as a generic
 framework. A security mechanism has to support [RFC3961] in order to be negotiated by NEGOEX.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Like SPNEGO, NEGOEX can be used in almost any situation where an application protocol uses GSS to
 perform authentication. The protocol has to be connection oriented, as it is not designed to tolerate
 packet loss; datagram-only protocols cannot support negotiation of this form.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Like SPNEGO, NEGOEX does not contain any versioning capacity. Any capability negotiation must be
 performed by the authentication protocols that SPNEGO is using.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
-1.9.1  Use of Constants Assigned Elsewhere
+#### 1.9.1 Use of Constants Assigned Elsewhere
 
 The object identifier (OID) of NEGOEX within SPNEGO has the following value:
 
@@ -621,15 +521,16 @@ Release: April 23, 2024
 
 10 / 36
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Because NEGOEX cannot work outside of SPNEGO, the transport concepts of SPNEGO are applicable
 to NEGOEX, as specified in [MS-SPNG] section 2.1. NEGOEX is transported only when encapsulated in
 an application protocol.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The messages that NEGOEX uses are specified in [IETFDRAFT-NEGOEX-04].<2> NEGOEX uses the
 following message enumeration and message structures, which are documented in the specified
@@ -681,7 +582,7 @@ ALERT_MESSAGE: A structure that is used to indicate that a message needs to be r
 message contains the security mechanism, error codes, and various alert types. This message
 might not always be sent.
 
-2.2.1  Numbers
+#### 2.2.1 Numbers
 
 The numbers that follow are defined in hexadecimal format for use in NEGOEX structures.
 
@@ -692,7 +593,8 @@ SPNEGO Extended Negotiation (NEGOEX) Security Mechanism
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  UCHAR is the data type for a one-octet number, as specified in [MS-DTYP] section 2.2.45.
+
+  UCHAR is the data type for a one-octet number, as specified in [MS-DTYP] section 2.2.45.
 
   ULONG is the data type for a 4-octet number encoded in little-endian, as specified in [MS-DTYP]
 
@@ -710,7 +612,7 @@ DTYP] section 2.2.54.
 
 section 2.3.4.
 
-2.2.2  GUID typedefs
+#### 2.2.2 GUID typedefs
 
 GUID typedefs are used to create more meaningful names for existing types. The following GUID type
 synonyms are defined.
@@ -727,7 +629,7 @@ the context handle to identify the exchange conversation. The initiator generate
 cryptographic-strength 16-byte value, stores it in the ConversationId field of the
 MESSAGE_HEADER structure, as specified in section 2.2.6.2. See section 3.1.5.2.
 
-2.2.3  Constants
+#### 2.2.3 Constants
 
 Constants for various messages are defined as follows.
 
@@ -756,7 +658,8 @@ Release: April 23, 2024
 
 12 / 36
 
-2.2.4  Random array
+
+#### 2.2.4 Random array
 
 The Random array is used in the NEGO_MESSAGE message (section 2.2.6.3) Random field and is
 defined as an array of 32 octets, as follows.
@@ -767,19 +670,19 @@ Random: An array of UCHAR integers as specified in section 2.2.1. The initiator 
 
 secure random number generator.
 
-2.2.5  Structures
+#### 2.2.5 Structures
 
 NEGOEX defines constructed-type and vector-type structures. These two structure types are defined in
 the following sections.
 
-2.2.5.1  Constructed types
+##### 2.2.5.1 Constructed types
 
 Constructed types are structure types that are constructed from primitive types for convenience. Each
 specification declares a new, unique type. The syntax for definition is much like the syntax in the C
 programming language. Structure definitions can be embedded. The following sections define
 constructed types.
 
-2.2.5.1.1 ALERT
+###### 2.2.5.1.1 ALERT
 
 The ALERT structure is used in the ALERT_VECTOR structure, which is used in the Alerts field of the
 ALERT_MESSAGE structure message, as specified in section 2.2.6.6.
@@ -796,7 +699,7 @@ AlertValue: A BYTE_VECTOR structure, as specified in section 2.2.5.2.3, that con
 
 alert values.
 
-2.2.5.1.2 ALERT_PULSE
+###### 2.2.5.1.2 ALERT_PULSE
 
 The ALERT_PULSE structure is used in the ALERT_MESSAGE structure message, as specified in
 section 2.2.6.6.
@@ -813,7 +716,7 @@ Reason: A ULONG that contains the reason code for the heartbeat message ALERT_VE
 
 as specified in section 2.2.3.
 
-2.2.5.1.3 CHECKSUM
+###### 2.2.5.1.3 CHECKSUM
 
 13 / 36
 
@@ -822,7 +725,8 @@ SPNEGO Extended Negotiation (NEGOEX) Security Mechanism
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The CHECKSUM structure is used in the VERIFY_MESSAGE structure (section 2.2.6.5) and is
+
+The CHECKSUM structure is used in the VERIFY_MESSAGE structure (section 2.2.6.5) and is
 defined as follows.
 
  struct
@@ -850,7 +754,7 @@ ChecksumValue: A BYTE_VECTOR structure that contains a sequence of octets comput
 
 to [RFC3961].
 
-2.2.5.1.4 EXTENSION
+###### 2.2.5.1.4 EXTENSION
 
 An EXTENSION structure is used in the EXTENSION_VECTOR structure (section 2.2.5.2.4) as the
 Extensions field in the NEGO_MESSAGE structure, as specified in section 2.2.6.3.
@@ -867,7 +771,7 @@ critical extension, the authentication attempt MUST be rejected.
 
 ExtensionValue: A BYTE_VECTOR structure that contains the extension data.
 
-2.2.5.2  Vector types
+##### 2.2.5.2 Vector types
 
 Vector types are data structures that hold multiple variables of the same data type consecutively, and
 the number of elements is not fixed. A vector contains a fixed-length header followed by a variable-
@@ -876,7 +780,7 @@ payload. In this protocol all the offset fields start from the beginning of the 
 message. The size of each element is specified by the vector type definition. Vector type structures
 are defined in the following sections.
 
-2.2.5.2.1 ALERT_VECTOR
+###### 2.2.5.2.1 ALERT_VECTOR
 
 The ALERT_VECTOR structure contains the alert types and the count of alerts used in the
 ALERT_MESSAGE structure, as specified in section 2.2.6.6.
@@ -890,7 +794,8 @@ Release: April 23, 2024
 
 14 / 36
 
- {
+
+ {
    ULONG AlertArrayOffset;
    USHORT AlertCount;
 } ALERT_VECTOR;
@@ -901,7 +806,7 @@ AlertArrayOffset: A ULONG that contains array of ALERT structures, as specified 
 
 AlertCount: A USHORT that contains the number of alerts in the AlertArrayOffset field.
 
-2.2.5.2.2 AUTH_SCHEME_VECTOR
+###### 2.2.5.2.2 AUTH_SCHEME_VECTOR
 
 The AUTH_SCHEME_VECTOR structure encapsulates a variable-length array of AUTH_SCHEME
 GUIDs that are stored consecutively.
@@ -917,7 +822,7 @@ section 2.2.2, that represents the security mechanism's ID in decreasing order o
 
 AuthSchemeCount: A USHORT that contains the count of AUTH_SCHEME values.
 
-2.2.5.2.3 BYTE_VECTOR
+###### 2.2.5.2.3 BYTE_VECTOR
 
 The BYTE_VECTOR structure encapsulates a variable-length array of octets (or bytes) that are stored
 consecutively. The BYTE_VECTOR structure is used in the following structures:
@@ -938,7 +843,7 @@ ByteArrayOffset: A ULONG type array. Each element contains 1 byte.
 
 ByteArrayLength: A ULONG type that contains the length of the ByteArrayOffset field.
 
-2.2.5.2.4 EXTENSION_VECTOR
+###### 2.2.5.2.4 EXTENSION_VECTOR
 
 The EXTENSION_VECTOR structure encapsulates a variable-length array of EXTENSION structures
 (section 2.2.5.1.4) that are stored consecutively. The EXTENSION_VECTOR structure is used in the
@@ -956,7 +861,8 @@ Release: April 23, 2024
 
 15 / 36
 
- } EXTENSION_VECTOR;
+
+ } EXTENSION_VECTOR;
 
 ExtensionArrayOffset: A ULONG type array. Each element contains an EXTENSION structure, as
 
@@ -964,7 +870,7 @@ specified in section 2.2.5.1.4.
 
 ExtensionCount: A USHORT that contains the count of elements in the ExtensionArrayOffset field.
 
-2.2.6  Messages
+#### 2.2.6 Messages
 
 Each NEGOEX message has a type that is indicated with a value from the MESSAGE_TYPE
 enumeration (section 2.2.6.1) that is in the MessageType field of the MESSAGE_HEADER structure
@@ -972,7 +878,7 @@ enumeration (section 2.2.6.1) that is in the MessageType field of the MESSAGE_HE
 enumeration, MESSAGE_HEADER structure, and NEGOEX messages are defined in the following
 sections.
 
-2.2.6.1  MESSAGE_TYPE
+##### 2.2.6.1 MESSAGE_TYPE
 
 The MESSAGE_TYPE enumeration defines the types of messages sent in the MESSAGE_HEADER
 structure MessageType field in every message, as specified in section 2.2.6.2.
@@ -1026,11 +932,12 @@ Release: April 23, 2024
 
 16 / 36
 
-MESSAGE_TYPE_ALERT: Used in ALERT_MESSAGE, as specified in section 2.2.6.6, to indicate that
+
+MESSAGE_TYPE_ALERT: Used in ALERT_MESSAGE, as specified in section 2.2.6.6, to indicate that
 the message needs to be resent. Contains the security mechanism, error codes, and various alert
 types.
 
-2.2.6.2  MESSAGE_HEADER
+##### 2.2.6.2 MESSAGE_HEADER
 
 The MESSAGE_HEADER structure is a member of other message structures and is used to provide
 metadata about each message. The fields are common for all the NEGOEX messages in a conversation
@@ -1070,7 +977,7 @@ the acceptor use as a context handle to identify an exchange conversation. The
 CONVERSATION_ID is referred to as ConversationID (section 3.1.5.2). The ConversationID
 MUST remain the same throughout the entire exchange.
 
-2.2.6.3  NEGO_MESSAGE
+##### 2.2.6.3 NEGO_MESSAGE
 
 The NEGO_MESSAGE structure message is used to begin and exchange negotiation of security
 mechanisms. This message is sent from the initiator to the acceptor with the message type set to
@@ -1097,7 +1004,8 @@ Release: April 23, 2024
 
 17 / 36
 
-} NEGO_MESSAGE;
+
+} NEGO_MESSAGE;
 
 Header: A MESSAGE_HEADER structure, as specified in section 2.2.6.2. Its MessageType field can
 
@@ -1122,7 +1030,7 @@ Extensions: All negative extension types are critical (the highest bit is set to
 
 not understand a critical extension, the authentication attempt MUST be rejected.
 
-2.2.6.4  EXCHANGE_MESSAGE
+##### 2.2.6.4 EXCHANGE_MESSAGE
 
 The EXCHANGE_MESSAGE structure message is used to encapsulate context tokens of the
 negotiated security mechanism for either the initiator or the acceptor.
@@ -1151,7 +1059,7 @@ Exchange: A BYTE_VECTOR structure, specified in section 2.2.5.2.3, that contains
 
 handshake message for the client authentication scheme.
 
-2.2.6.5  VERIFY_MESSAGE
+##### 2.2.6.5 VERIFY_MESSAGE
 
 A VERIFY_MESSAGE structure message is produced using the required checksum mechanism per
 [RFC3961] and is included in the output token.
@@ -1169,7 +1077,8 @@ Release: April 23, 2024
 
 18 / 36
 
- } VERIFY_MESSAGE;
+
+ } VERIFY_MESSAGE;
 
 Header: A MESSAGE_HEADER structure, as specified in section 2.2.6.2. The header’s message type
 MUST be set to the MESSAGE_TYPE_VERIFY value from the MESSAGE_TYPE enumeration, as
@@ -1184,7 +1093,7 @@ Checksum: A CHECKSUM structure, specified in section 2.2.5.1.3, that contains th
 the previously exchanged messages in the order they were sent in the conversation. The
 checksum is calculated based on [RFC3961].
 
-2.2.6.6  ALERT_MESSAGE
+##### 2.2.6.6 ALERT_MESSAGE
 
 The ALERT_MESSAGE structure message is sent by the initiator or the acceptor requesting that the
 peer resend the message. The ALERT_MESSAGE might not always be sent.
@@ -1218,14 +1127,15 @@ Release: April 23, 2024
 
 19 / 36
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 The following sections specify common variations for both client and server processing in the NEGOEX
 extension, as specified in [IETFDRAFT-NEGOEX-04].
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1242,23 +1152,23 @@ mechanism-independent token format specified in [RFC2743] section 3.1.
 
 The object identifier of the NEGOEX within SPNEGO is specified in section 1.9.1.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The following sections specify how the initiator and the acceptor process and return messages.
 
-3.1.5.1  NEGOEX Supported Security Mechanisms
+##### 3.1.5.1 NEGOEX Supported Security Mechanisms
 
 NEGOEX maintains an ordered list of supported security mechanism names to determine the priority
 of the security mechanisms. A security mechanism negotiable by NEGOEX is identified by an identifier
@@ -1278,7 +1188,8 @@ Release: April 23, 2024
 
 20 / 36
 
-3.1.5.2  ConversationID
+
+##### 3.1.5.2 ConversationID
 
 ConversationID hereafter refers to CONVERSATION_ID, as specified in section 2.2.2, as a GUID that
 MUST be used by both the initiator and the acceptor to maintain protocol state. The
@@ -1287,7 +1198,7 @@ is used to set the MESSAGE_HEADER structure ConversationId field to that value, 
 section 2.2.6.2. The ConversationID in subsequent NEGOEX messages MUST remain the same for the
 duration of the exchange.
 
-3.1.5.3  Cryptographic Computations
+##### 3.1.5.3 Cryptographic Computations
 
 The message signing and verification in NEGOEX is based on [RFC3961], which is used as a generic
 framework. This application is not Kerberos specific. A security mechanism MUST support [RFC3961]
@@ -1299,7 +1210,7 @@ The initiator generates a random, cryptographic-strength 16-byte CONVERSATION_ID
 NEGO_MESSAGE message and stores it for the context handle to be used in successive message
 headers.
 
-3.1.5.4  Generation of the Initiator Initial Token
+##### 3.1.5.4 Generation of the Initiator Initial Token
 
 The GSS_API initiator makes the first call to GSS_Init_sec_context() (specified in [RFC2743]
 section 2.2.1) without any input token. The output token will be a NEGO_MESSAGE message with
@@ -1356,7 +1267,8 @@ Release: April 23, 2024
 
 21 / 36
 
-
+
+
 
 
 
@@ -1372,7 +1284,7 @@ context token in a MESSAGE_TYPE_AP_REQUEST type message.
 The MESSAGE_TYPE_INITIATOR_META_DATA and MESSAGE_TYPE_AP_REQUEST message types
 are instances of the EXCHANGE_MESSAGE structure with various message type values.
 
-3.1.5.5  Receipt of the Initial Initiator Token and Generation of the Initial Acceptor
+##### 3.1.5.5 Receipt of the Initial Initiator Token and Generation of the Initial Acceptor
 
 Response
 
@@ -1429,7 +1341,7 @@ included in the NEGOEX reply.
 
 mechanism from the set of authentication schemes to be negotiated.
 
-3.1.5.6  Receipt of the Acceptor Initial Response and Completion of Authentication
+##### 3.1.5.6 Receipt of the Acceptor Initial Response and Completion of Authentication
 
 After the Negotiation Phrase
 
@@ -1443,7 +1355,8 @@ Release: April 23, 2024
 
 22 / 36
 
-
+
+
 
 
 
@@ -1485,7 +1398,7 @@ EXCHANGE_MESSAGE message. If a context token is from the initiator, the
 EXCHANGE_MESSAGE message has the MESSAGE_TYPE_AP_REQUEST message type;
 otherwise, it has the MESSAGE_TYPE_CHALLENGE message type.
 
-3.1.5.7  Finalizing Negotiation
+##### 3.1.5.7 Finalizing Negotiation
 
 After the security mechanism has been selected, the initiator and the acceptor can use
 GSS_Inquire_context() to obtain the Negoex_Verify_key, as defined in section 3.1.5.8.4, to
@@ -1529,12 +1442,13 @@ Release: April 23, 2024
 
 23 / 36
 
-3.1.5.8  Supporting GSS-API Extensions
+
+##### 3.1.5.8 Supporting GSS-API Extensions
 
 This section defines the GSS-API function extensions required by NEGOEX, which MUST be supported
 by security mechanisms to be usable with NEGOEX.<5>
 
-3.1.5.8.1 GSS_Query_meta_data
+###### 3.1.5.8.1 GSS_Query_meta_data
 
 The GSS_Query_meta_data function is used to retrieve a security mechanism’s metadata. The
 major_status codes are specified in [RFC2743].<6>
@@ -1603,7 +1517,7 @@ operation.
 
 API level. Return values other than major_status and minor_status are undefined.
 
-3.1.5.8.2 GSS_Exchange_meta_data
+###### 3.1.5.8.2 GSS_Exchange_meta_data
 
 The GSS_Exchange_meta_data function is used to provide the metadata to each security
 mechanism. The major_status codes are specified in [RFC2743].<7>
@@ -1617,7 +1531,8 @@ SPNEGO Extended Negotiation (NEGOEX) Security Mechanism
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Inputs:
+
+Inputs:
 
 
 
@@ -1676,7 +1591,7 @@ via this credential handle.
 
 API level. Return values other than major_status and minor_status are undefined.
 
-3.1.5.8.3 GSS_Query_mechanism_info
+###### 3.1.5.8.3 GSS_Query_mechanism_info
 
 The GSS_Query_mechanism_info function returns a security mechanism's authentication scheme
 value. The major_status codes are specified in [RFC2743].<8>
@@ -1708,7 +1623,8 @@ SPNEGO Extended Negotiation (NEGOEX) Security Mechanism
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5.8.4 GSS_Inquire_context
+
+###### 3.1.5.8.4 GSS_Inquire_context
 
 The GSS_Inquire_context function is used to get the information about the context, as specified in
 [RFC2743] section 2.2.6.<9> The following output is added to GSS_Inquire_context.
@@ -1721,11 +1637,11 @@ Outputs:
 
 This output is the key that NEGOEX uses for the VERIFY_MESSAGE message (section 2.2.6.5).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1736,11 +1652,12 @@ Release: April 23, 2024
 
 26 / 36
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-NEGOEX].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following figure shows the network trace of the NEGOEX protocol having the INITIATOR_NEGO
 (short for MESSAGE_TYPE_INITIATOR_NEGO) message type that is sent via the NEGO_MESSAGE
@@ -1790,7 +1707,8 @@ Release: April 23, 2024
 
 27 / 36
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-NEGOEX].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -1826,15 +1744,16 @@ Release: April 23, 2024
 
 28 / 36
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The security mechanism SHOULD support providing Negoex_Verify_Key for the VERIFY_MESSAGE
 message, as specified in section 3.1.5.7. This ensures that VERIFY_MESSAGE messages, as specified
 in section 2.2.6.5, are generated to make NEGOEX safe from downgrade attacks.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security field
 
@@ -1851,7 +1770,8 @@ Release: April 23, 2024
 
 29 / 36
 
-6  Appendix A: Full NEGOEX
+
+## 6 Appendix A: Full NEGOEX
 
 For ease of implementation, the following is the full NEGOEX version 4 syntax for this protocol, as
 defined in [IETFDRAFT-NEGOEX-04].
@@ -1926,7 +1846,8 @@ Release: April 23, 2024
 
 30 / 36
 
-   ULONG cbHeaderLength;
+
+   ULONG cbHeaderLength;
      // the header length of this message, including
      // the message specific header, excluding the payload
    ULONG cbMessageLength; // the length of this message
@@ -2002,7 +1923,8 @@ Release: April 23, 2024
 
 31 / 36
 
- struct
+
+ struct
  {
    MESSAGE_HEADER Header;
    AUTH_SCHEME AuthScheme;
@@ -2017,7 +1939,8 @@ Release: April 23, 2024
 
 32 / 36
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2085,7 +2008,8 @@ Release: April 23, 2024
 
 33 / 36
 
-API functions, which are found in the NT Security Package header ntsecpkg.h, see [MSDOCS-
+
+API functions, which are found in the NT Security Package header ntsecpkg.h, see [MSDOCS-
 NTSECPKG-H].
 
 <6> Section 3.1.5.8.1: The Win32 API SSP function is either SpQueryMetaData or
@@ -2111,7 +2035,8 @@ Release: April 23, 2024
 
 34 / 36
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2155,7 +2080,8 @@ Release: April 23, 2024
 
 35 / 36
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model

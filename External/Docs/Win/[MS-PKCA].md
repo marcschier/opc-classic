@@ -64,7 +64,8 @@ Release: March 9, 2026
 
 1 / 29
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: March 9, 2026
 
 2 / 29
 
-Date
+
+Date
 
 Revision
 History
@@ -531,7 +533,8 @@ Release: March 9, 2026
 
 3 / 29
 
-Date
+
+Date
 
 Revision
 History
@@ -642,126 +645,59 @@ Release: March 9, 2026
 
 4 / 29
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 PA-PK-AS-REP_OLD 1](#221-pa-pk-as-repold-1)
+    - [2.2.2 PA-PK-AS-REP_OLD 2](#222-pa-pk-as-repold-2)
+    - [2.2.3 PA-PK-AS-REQ](#223-pa-pk-as-req)
+    - [2.2.4 PA-PK-AS-REP](#224-pa-pk-as-rep)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Client](#3151-client)
+      - [3.1.5.2 KDC](#3152-kdc)
+        - [3.1.5.2.1 Certificate Mapping](#31521-certificate-mapping)
+          - [3.1.5.2.1.1 SAN DNSName field](#315211-san-dnsname-field)
+          - [3.1.5.2.1.2 SAN UPN field](#315212-san-upn-field)
+          - [3.1.5.2.1.3 Explicit Mapping](#315213-explicit-mapping)
+          - [3.1.5.2.1.4 Key Trust](#315214-key-trust)
+          - [3.1.5.2.1.5 Mapping Strength](#315215-mapping-strength)
+          - [3.1.5.2.1.6 SID](#315216-sid)
+        - [3.1.5.2.2 Smart-card-only Account Password Reset](#31522-smart-card-only-account-password-reset)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Interactive Logon Using Smart Cards](#41-interactive-logon-using-smart-cards)
+  - [4.2 Network Logon Using Smart Cards](#42-network-logon-using-smart-cards)
+  - [4.3 Non-RFC Kerberos Clients during AS-REQ](#43-non-rfc-kerberos-clients-during-as-req)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-PA-PK-AS-REP_OLD 1 ................................................................................. 11
-PA-PK-AS-REP_OLD 2 ................................................................................. 12
-PA-PK-AS-REQ ........................................................................................... 13
-PA-PK-AS-REP ............................................................................................ 14
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 15
-Common Details .............................................................................................. 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Client .................................................................................................. 15
-KDC .................................................................................................... 16
-Certificate Mapping .......................................................................... 16
-SAN DNSName field ................................................................... 16
-SAN UPN field ............................................................................ 16
-Explicit Mapping......................................................................... 16
-Key Trust .................................................................................. 17
-Mapping Strength ...................................................................... 17
-SID .......................................................................................... 18
-Smart-card-only Account Password Reset ........................................... 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-
-3.1.5.2.1.1
-3.1.5.2.1.2
-3.1.5.2.1.3
-3.1.5.2.1.4
-3.1.5.2.1.5
-3.1.5.2.1.6
-
-3.1.6
-3.1.7
-
-3.1.5.2.2
-
-3.1.5.2.1
-
-4  Protocol Examples ................................................................................................. 19
-Interactive Logon Using Smart Cards .................................................................. 19
-Network Logon Using Smart Cards ..................................................................... 21
-Non-RFC Kerberos Clients during AS-REQ ........................................................... 22
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 23
-Security Considerations for Implementers ........................................................... 23
-Index of Security Parameters ............................................................................ 23
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 24
-
-7  Change Tracking .................................................................................................... 28
-
-8  Index ..................................................................................................................... 29
-
-[MS-PKCA] - v20260309
-Public Key Cryptography for Initial Authentication (PKINIT) in Kerberos Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-5 / 29
-
-1  Introduction
+## 1 Introduction
 
 The Public Key Cryptography for Initial Authentication in Kerberos (PKINIT) protocol [RFC4556]
 enables the use of public key cryptography in the initial authentication exchange (that is, in the
@@ -784,7 +720,7 @@ sent to the client.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -832,7 +768,8 @@ Public Key Cryptography for Initial Authentication (PKINIT) in Kerberos Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-integrated into the domain controller role. It is a network service that supplies tickets to clients
+
+integrated into the domain controller role. It is a network service that supplies tickets to clients
 for use in authenticating to services.
 
 object identifier (OID): In the context of a directory service, a number identifying an object
@@ -904,14 +841,15 @@ Release: March 9, 2026
 
 7 / 29
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -970,7 +908,8 @@ Release: March 9, 2026
 
 8 / 29
 
-[RFC3852] Housley, R., "Cryptographic Message Syntax (CMS)", RFC 3852, July 2004,
+
+[RFC3852] Housley, R., "Cryptographic Message Syntax (CMS)", RFC 3852, July 2004,
 https://www.rfc-editor.org/info/rfc3852
 
 [RFC4120] Neuman, C., Yu, T., Hartman, S., and Raeburn, K., "The Kerberos Network Authentication
@@ -1000,7 +939,7 @@ in Kerberos (PKINIT)", https://www.rfc-editor.org/info/rfc8070
 and Attribute Certificate Frameworks", Recommendation X.509, August 2005,
 http://www.itu.int/rec/T-REC-X.509/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-CVE-2021-33764] Microsoft Corporation, "Windows Key Distribution Center Information
 Disclosure Vulnerability", CVE-2021-33764 July 13, 2021, https://msrc.microsoft.com/update-
@@ -1016,7 +955,7 @@ https://www.catalog.update.microsoft.com/Search.aspx?q=5060841
 Initial Authentication in Kerberos (PKINIT)", RFC 8636, July 2019, https://www.rfc-
 editor.org/rfc/rfc8636.html
 
-1.3  Overview
+### 1.3 Overview
 
 The PKINIT protocol is a security protocol that authenticates entities on a network using public key
 cryptography. Kerberos is a security protocol that mutually authenticates entities on a network and
@@ -1033,11 +972,12 @@ Release: March 9, 2026
 
 9 / 29
 
-This specification describes the extensions to PKINIT that enable the use of public key cryptography in
+
+This specification describes the extensions to PKINIT that enable the use of public key cryptography in
 the initial authentication exchanges of the Kerberos protocol (Authentication Service (AS) exchange)
 [RFC4120].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 PKCA is defined as a Kerberos pre-authentication extension ([RFC4120] section 3.1.1). This
 extension is used in the Kerberos AS exchange [RFC4556], and therefore PKCA relies on a working
@@ -1050,7 +990,7 @@ that do not support Kerberos authentication, when PKCA is used, the KDC returns 
 one-way function (OWF) in the privilege attribute certificate (PAC) PAC_CREDENTIAL_INFO
 buffer ([MS-PAC] section 2.6.1).
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 PKCA assumes the following, in addition to any assumptions specified in [MS-KILE]:
 
@@ -1070,22 +1010,22 @@ are specified in [RFC4556] Appendix C.
 
 Details about general Kerberos assumptions are specified in [RFC4120] section 1.6.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 PKCA is used only in environments that use Kerberos, and it requires the deployment of a Public Key
 Infrastructure (PKI) for issuing [X509] certificates.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 PKCA does not have explicit versioning; it is tied to the Kerberos protocol [MS-KILE] versioning
 mechanisms, as specified in [RFC4120] section 7.5.6. Capability negotiation is as specified in
 [RFC4556] sections 3.3 and 3.4.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments in PKCA beyond what is specified in [RFC4556] and [RFC5349].
 
@@ -1096,14 +1036,15 @@ Release: March 9, 2026
 
 10 / 29
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Messages are carried in the Kerberos AS exchange as pre-authentication data, as specified in
 [RFC4120] section 5.2.7.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The message syntax SHOULD<2> be as specified in [RFC4556] section 3.2.
 
@@ -1135,7 +1076,7 @@ ECPRGF384Random | groupP-384 | secp384r1
 
 ECPRGF521Random | groupP-521 | secp521r1
 
-2.2.1  PA-PK-AS-REP_OLD 1
+#### 2.2.1 PA-PK-AS-REP_OLD 1
 
 The data for the PA-PK-AS-REP_OLD pre-authentication data identifiers is based on an earlier draft
 of [RFC4556]; therefore, there are some differences in the message format. The ASN.1 [ITUX680]
@@ -1172,7 +1113,8 @@ Release: March 9, 2026
 
 11 / 29
 
- --
+
+ --
  PA-PK-AS-REQ ::= SEQUENCE {
  -- PA TYPE 15
  signedAuthPack [0] IMPLICIT OCTET STRING
@@ -1237,7 +1179,7 @@ PKAuthenticator, as specified in [RFC4556] section 3.2.1.
 nonce: Contains the same content of the corresponding, identically named field in the type
 PKAuthenticator, as specified in [RFC4556] section 3.2.1.
 
-2.2.2  PA-PK-AS-REP_OLD 2
+#### 2.2.2 PA-PK-AS-REP_OLD 2
 
 The data for the PA-PK-AS-REP_OLD pre-authentication data identifiers is based on an earlier draft
 of [RFC4556]; therefore, there are some differences in the message format. The ASN.1 [ITUX680]
@@ -1253,7 +1195,8 @@ Release: March 9, 2026
 
 12 / 29
 
- -- KERB-REPLY-KEY-PACKAGE - Different from [RFC4556]
+
+ -- KERB-REPLY-KEY-PACKAGE - Different from [RFC4556]
  -- Appendix A, ReplyKeyPack
  --
  KERB-REPLY-KEY-PACKAGE ::= SEQUENCE {
@@ -1282,7 +1225,7 @@ However, if the AS-REQ message contains a padata of type KRB5-PADATA-AS-CHECKSUM
 no corresponding data field (padata-value is an empty OCTET STRING), then the PA-PK-AS-REP_OLD
 pre-authentication data contains the same data as specified in [RFC4556] section 3.2.3.2.
 
-2.2.3  PA-PK-AS-REQ
+#### 2.2.3 PA-PK-AS-REQ
 
 The PA-PK-AS-REQ message format is specified in [RFC4556] section 3.2.1.<10>
 
@@ -1333,7 +1276,8 @@ Release: March 9, 2026
 
 13 / 29
 
-Name
+
+Name
 
 OID
 
@@ -1343,7 +1287,7 @@ SHA-512
 
 SHA-2 family OIDs are defined in [RFC5754]. The SHA-1 OID is defined in [RFC3370].
 
-2.2.4  PA-PK-AS-REP
+#### 2.2.4 PA-PK-AS-REP
 
 The PA-PK-AS-REP message format is specified in [RFC4556] section 3.2.3.<12> The returned ticket
 does not include the AD-INITIAL-VERIFIED-CAS type in the authorization data. The content of the
@@ -1358,11 +1302,12 @@ Release: March 9, 2026
 
 14 / 29
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1372,20 +1317,20 @@ document.
 
 The abstract data model follows what is specified in [RFC4556].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 During initialization, the [FIPS140]-compliant random-number generator for keys and nonces is
 initialized.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 In addition to the required ([RFC4556] section 3.1.1) and recommended ([RFC4556] section 3.1.2)
 algorithms, an implementer MUST<13> specify des-ede3-cbc ([RFC4556] section 3.1.2) as the default
@@ -1395,7 +1340,7 @@ PKCA does not implement the id-pkinit-san algorithm ([RFC4556] section 3.2.2).
 
 PKCA SHOULD<14> support the PKINIT Freshness Extension [RFC8070].
 
-3.1.5.1  Client
+##### 3.1.5.1 Client
 
 The Kerberos client SHOULD<15> <16> send only a PA-PK-AS-REQ pre-authentication data
 identifier.
@@ -1427,7 +1372,8 @@ Release: March 9, 2026
 
 15 / 29
 
-
+
+
 
 The KDC certificate contains:
 
@@ -1439,7 +1385,7 @@ EKU: id-pkinit-KPkdc (1.3.6.1.5.2.3.5)
 
 See [RFC4120] for descriptions of possible errors.
 
-3.1.5.2  KDC
+##### 3.1.5.2 KDC
 
 If the KDC receives both a PA-PK-AS-REQ and PA-PK-AS-REQ_OLD, the KDC MUST return
 KRB_ERROR_GENERIC.
@@ -1452,7 +1398,7 @@ NTLM_SUPPLEMENTAL_CREDENTIAL buffer ([MS-PAC] section 2.6.4).
 
 See [RFC4120] for descriptions of possible errors.
 
-3.1.5.2.1 Certificate Mapping
+###### 3.1.5.2.1 Certificate Mapping
 
 The KDC SHOULD look up the account using the cname. If the account is not found and the cname
 name-type is NT-X500-PRINCIPAL, the KDC locates the account in the account database using the
@@ -1470,7 +1416,7 @@ mapping.
 
 If the account is not found, the KDC returns KDC_ERR_C_PRINCIPAL_UNKNOWN.
 
-3.1.5.2.1.1  SAN DNSName field
+###### 3.1.5.2.1.1 SAN DNSName field
 
 The KDC MUST confirm that the name of the account found matches the computer name in the
 DNSName field of the certificate terminated with "$" and that the DNS domain name in the
@@ -1479,13 +1425,13 @@ PKCA KDCs which use Active Directory for the account database MUST use the sAMAc
 attribute ([MS-ADA3] section 2.222) for the computer name. If they do not match, the KDC SHOULD
 return KDC_ERR_CLIENT_NAME_MISMATCH.
 
-3.1.5.2.1.2  SAN UPN field
+###### 3.1.5.2.1.2 SAN UPN field
 
 The KDC MUST confirm that the account found matches that the account found when using the UPN in
 the UPN field of the certificate. If they do not match, the KDC SHOULD return
 KDC_ERR_CLIENT_NAME_MISMATCH.
 
-3.1.5.2.1.3  Explicit Mapping
+###### 3.1.5.2.1.3 Explicit Mapping
 
 The KDC MUST confirm the explicit mapping of the account to a certificate. Implementations of PKCA
 KDCs which use Active Directory for the account database MUST confirm that the
@@ -1499,7 +1445,8 @@ Release: March 9, 2026
 
 16 / 29
 
-1.  Subject and Issuer Name fields: "X509:<I>" + Issuer Name field with "\r" and "\n" replaced with
+
+1.  Subject and Issuer Name fields: "X509:<I>" + Issuer Name field with "\r" and "\n" replaced with
 
 "," + "<S>" + Subject field with "\r" and "\n" replaced with ",".
 
@@ -1521,7 +1468,7 @@ Release: March 9, 2026
 
 If they do not match, the KDC SHOULD return KDC_ERR_CLIENT_NAME_MISMATCH.
 
-3.1.5.2.1.4  Key Trust
+###### 3.1.5.2.1.4 Key Trust
 
 The KDC SHOULD<23> look the account up using the public key. If an account is found with the
 public key that is trusted for the account, then the KDC SHOULD:
@@ -1539,7 +1486,7 @@ Implementations of PKCA KDCs that use Active Directory for the account database 
 that the msDS-KeyCredentialLink attribute ([MS-ADA2] section 2.358) contains the same public key.
 See [MS-ADTS] section 2.2.20.5.1 for how the 2048-bit RSA [RFC8017] public key is stored.
 
-3.1.5.2.1.5  Mapping Strength
+###### 3.1.5.2.1.5 Mapping Strength
 
 The KDC SHOULD<24> map a certificate to a user using one of the following mappings. These
 methods of mapping a certificate to a user are classified as strong or weak based on whether they
@@ -1582,7 +1529,8 @@ Release: March 9, 2026
 
 17 / 29
 
-
+
+
 
 
 
@@ -1600,7 +1548,7 @@ mapped via one of the specified mapping types. Supported MappingTypes are Issuer
 to the altSecurityIdentities Issuer Name and Subject Name above) and UPNSuffix=<domainname>
 (referring to the SAN UPNName above, scoped to UPNs ending in "@<domainname>").
 
-3.1.5.2.1.6  SID
+###### 3.1.5.2.1.6 SID
 
 If a Key Distribution Center (KDC) has exhausted all other mapping types for a certificate and
 found a weak mapping without finding a strong mapping, it SHOULD<28> check if the certificate
@@ -1620,7 +1568,7 @@ tag:microsoft.com,2022-09-14:sid:<string-sid>
 If the certificate is weakly mapped to a user and the SID matches that user, the certificate is to be
 considered strongly mapped.
 
-3.1.5.2.2 Smart-card-only Account Password Reset
+###### 3.1.5.2.2 Smart-card-only Account Password Reset
 
 When processing an AS-REQ request (section 2.2.3) the PKCA KDC MUST trigger a
 ResetSmartCardAccountPassword request ([MS-SAMS] section 3.2.4.7) when the following conditions
@@ -1643,11 +1591,11 @@ past.
 Upon successful completion of the ResetSmartCardAccountPassword request, the PKCA KDC MUST
 restart processing of the original request.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no local events other than what is specified in [RFC4556].
 
@@ -1658,15 +1606,16 @@ Release: March 9, 2026
 
 18 / 29
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-PKCA].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe three common scenarios to illustrate the function of the KILE.
 
-4.1  Interactive Logon Using Smart Cards
+### 4.1 Interactive Logon Using Smart Cards
 
 Figure 1: Interactive logon
 
@@ -1696,7 +1645,8 @@ Public Key Cryptography for Initial Authentication (PKINIT) in Kerberos Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The client validates the TGS-REP ([MS-KILE] section 3.3.4). If the TGS-REP is valid, the service ticket
+
+The client validates the TGS-REP ([MS-KILE] section 3.3.4). If the TGS-REP is valid, the service ticket
 is then interpreted by the Kerberos runtime within the local workstation.
 
 The following fields from the KERB_VALIDATION_INFO field of the PAC ([MS-PAC] Section 2.5) are
@@ -1764,11 +1714,12 @@ Release: March 9, 2026
 
 20 / 29
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-PKCA].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
-4.2  Network Logon Using Smart Cards
+### 4.2 Network Logon Using Smart Cards
 
 Figure 2: Network logon
 
@@ -1804,7 +1755,8 @@ Public Key Cryptography for Initial Authentication (PKINIT) in Kerberos Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-4.3  Non-RFC Kerberos Clients during AS-REQ
+
+### 4.3 Non-RFC Kerberos Clients during AS-REQ
 
 PKCA clients developed prior to finalizing RFC 4556 support a PKInit pre-authentication data based
 on an earlier draft of [RFC4556].
@@ -1828,14 +1780,15 @@ Release: March 9, 2026
 
 22 / 29
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 PKCA security considerations are specified in [RFC4556]. PA-PK-AS-REP_OLD is the earlier version of
 PA-PK-AS-REQ and PA-PK-AS-REP, and has the same security considerations.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 PKCA security parameters are specified in [RFC4556].
 
@@ -1856,7 +1809,8 @@ Release: March 9, 2026
 
 23 / 29
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1927,7 +1881,8 @@ Release: March 9, 2026
 
 24 / 29
 
-<2> Section 2.2: [RFC4556] message syntax is not supported in Windows 2000, Windows XP, and
+
+<2> Section 2.2: [RFC4556] message syntax is not supported in Windows 2000, Windows XP, and
 Windows Server 2003.
 
 <3> Section 2.2: Windows 2000, Windows XP, and Windows Server 2003 sent PA-PK-AS-REP_OLD
@@ -1995,7 +1950,8 @@ Release: March 9, 2026
 
 25 / 29
 
-<10> Section 2.2.3: The PA-PK-AS-REQ message format is not supported in Windows 2000, Windows
+
+<10> Section 2.2.3: The PA-PK-AS-REQ message format is not supported in Windows 2000, Windows
 XP, and Windows Server 2003.
 
 <11> Section 2.2.3: The extension of PKAuthenticator in PA-PK-AS-REQ applies to Windows Server
@@ -2064,7 +2020,8 @@ Release: March 9, 2026
 
 26 / 29
 
-Windows 10 through Windows 11, version 25H2 operating system and Windows Server 2016 through
+
+Windows 10 through Windows 11, version 25H2 operating system and Windows Server 2016 through
 Windows Server 2025 clients fail when Credential Guard is enabled and the KDC does not set the
 optional nonce field.
 
@@ -2112,7 +2069,8 @@ Release: March 9, 2026
 
 27 / 29
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2156,7 +2114,8 @@ Release: March 9, 2026
 
 28 / 29
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 10

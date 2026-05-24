@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 18
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: April 23, 2024
 
 2 / 18
 
-Date
+
+Date
 
 Revision
 History
@@ -517,7 +519,8 @@ Release: April 23, 2024
 
 3 / 18
 
-Date
+
+Date
 
 Revision
 History
@@ -542,113 +545,54 @@ Release: April 23, 2024
 
 4 / 18
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Server Advertisement](#221-server-advertisement)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 RAS Server Details](#31-ras-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Listener Details](#32-listener-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example 1](#41-example-1)
+  - [4.2 Example 2](#42-example-2)
+  - [4.3 Examples Sequence Diagram](#43-examples-sequence-diagram)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Server Advertisement ................................................................................... 8
-
-2.1
-2.2
-
-2.2.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ....................................................................................................... 9
-RAS Server Details ............................................................................................. 9
-Abstract Data Model ...................................................................................... 9
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-Higher-Layer Triggered Events ....................................................................... 9
-Message Processing Events and Sequencing Rules ............................................ 9
-Timer Events ................................................................................................ 9
-Other Local Events ........................................................................................ 9
-Listener Details .................................................................................................. 9
-Abstract Data Model ...................................................................................... 9
-Timers ........................................................................................................ 9
-Initialization ............................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Message Processing Events and Sequencing Rules .......................................... 10
-Timer Events .............................................................................................. 10
-Other Local Events ...................................................................................... 10
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 11
-Example 1 ....................................................................................................... 11
-Example 2 ....................................................................................................... 11
-Examples Sequence Diagram ............................................................................. 11
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 13
-Security Considerations for Implementers ........................................................... 13
-Index of Security Parameters ............................................................................ 13
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 14
-
-7  Change Tracking .................................................................................................... 15
-
-8  Index ..................................................................................................................... 16
-
-[MS-RASA] - v20240423
-Remote Access Server Advertisement (RASADV) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 18
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Remote Access Server Advertisement (RASADV) Protocol, by which
 Remote Access Service (RAS) servers advertise their presence within a local network, which
@@ -658,7 +602,7 @@ providing external access to their network.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -692,14 +636,14 @@ the transport layer in the ISO/OSI reference model.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -715,7 +659,8 @@ Release: April 23, 2024
 
 6 / 18
 
-[IANAPORT] IANA, "Service Name and Transport Protocol Port Number Registry",
+
+[IANAPORT] IANA, "Service Name and Transport Protocol Port Number Registry",
 https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
@@ -727,11 +672,11 @@ editor.org/info/rfc768
 [RFC791] Postel, J., Ed., "Internet Protocol: DARPA Internet Program Protocol Specification", RFC 791,
 September 1981, https://www.rfc-editor.org/info/rfc791
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The RASADV Protocol is a simple, unidirectional, multicast protocol. The sender is a RAS server,
 which puts its machine name in a message and periodically multicasts it on its local network.<1> The
@@ -739,29 +684,29 @@ receiver listens for periodic messages and passes the message content (the sende
 and the source address to an application.<2> A typical application using the listener side of this
 protocol displays the information to the user.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The RASADV Protocol depends on the User Datagram Protocol (UDP), as specified in [RFC768], as
 a transport. No other protocols depend on the RASADV Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The RASADV Protocol applies only to detecting intentional or accidental configuration and deployment
 of servers over time. It does not apply to detecting malicious configuration and deployment. It also
 does not apply if an administrator requires the ability to quickly detect such servers on demand,
 because it relies on a periodic broadcast mechanism.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The RASADV Protocol has no versioning or capability negotiation capabilities.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol has no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The RASADV Protocol uses the following standards assignments.
 
@@ -788,29 +733,31 @@ Release: April 23, 2024
 
 7 / 18
 
-[MS-RASA] - v20240423
+
+[MS-RASA] - v20240423
 Remote Access Server Advertisement (RASADV) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
 8 / 18
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how RASADV Protocol messages are transported and common RASADV
 Protocol data types.
 
-2.1  Transport
+### 2.1 Transport
 
 All messages MUST be sent over UDP, as specified in [RFC768], with the UDP destination port set to
 9753 and the IP destination address set to 239.255.2.2. The IP Time to Live (TTL), as specified in
 [RFC791] section 3.1, SHOULD be set to 15.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The RASADV Protocol has a single message type.
 
-2.2.1  Server Advertisement
+#### 2.2.1 Server Advertisement
 
 The UDP message MUST be one of the following:
 
@@ -832,14 +779,15 @@ Release: April 23, 2024
 
 9 / 18
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the RASADV Protocol, including abstract data models and
 message processing rules.
 
-3.1  RAS Server Details
+### 3.1 RAS Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -849,36 +797,36 @@ document.
 
  Host Name: The host name of the RAS server.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Advertisement Timer:  A periodic timer used to multicast a server advertisement. It SHOULD have a
 period of 1 hour.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When a RAS server starts, it MUST immediately send a server advertisement, as specified in section
 2.2.1, and start its Advertisement Timer.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 This protocol has no higher-layer triggered events.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The RAS server role has no message processing events or sequencing rules.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 When the Advertisement Timer expires, the RAS server MUST send a server advertisement, as
 specified in section 2.2.1, and restart its Advertisement Timer.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 This protocol has no other local events.
 
-3.2  Listener Details
+### 3.2 Listener Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The listener role has no abstract data model.
 
@@ -889,29 +837,30 @@ Release: April 23, 2024
 
 10 / 18
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 The listener role has no timers.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When a listener starts, it MUST start listening for UDP messages on port 9753 and join the IPv4
 multicast group 239.255.2.2.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 This protocol has no higher-layer triggered events.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 When a message arrives, the listener MUST deliver the message text and the source IP address to the
 application.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 The listener role has no timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 This protocol has no other local events.
 
@@ -922,16 +871,17 @@ Release: April 23, 2024
 
 11 / 18
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RASA].images/page012-img01.png)
 ![Extracted image 2 from page 12]([MS-RASA].images/page012-img02.png)
 <!-- /Extracted images from page 12 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 Following are two examples where a RAS server broadcasts its advertisement on the local network.
 
-4.1  Example 1
+### 4.1 Example 1
 
 The network administrator starts a listener tool. The tool begins listening on the RASADV port and the
 multicast address. Later, the user configures a RAS server on the local network, on a computer
@@ -939,7 +889,7 @@ named "myserver", which is not a member of a domain. When the RAS server starts,
 thereafter, it sends a Server Advertisement message containing the string "Hostname=myserver"
 followed by a line feed (0x0A) and a null character (0x00).
 
-4.2  Example 2
+### 4.2 Example 2
 
 The network administrator starts a listener tool. The tool begins listening on the RASADV port and the
 multicast address. Later, the user configures a RAS server on the local network, on a computer
@@ -955,11 +905,12 @@ Release: April 23, 2024
 
 12 / 18
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-RASA].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
-4.3  Examples Sequence Diagram
+### 4.3 Examples Sequence Diagram
 
 The following sequence diagram illustrates the UDP messages corresponding to the examples
 mentioned previously.
@@ -973,16 +924,17 @@ Release: April 23, 2024
 
 13 / 18
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the RASADV Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 RASADV assumes that servers advertise themselves in order to be detected, and therefore does not
 provide any security or the ability to detect malicious servers.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol has no security parameters.
 
@@ -993,7 +945,8 @@ Release: April 23, 2024
 
 14 / 18
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1060,7 +1013,8 @@ Release: April 23, 2024
 
 15 / 18
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1104,7 +1058,8 @@ Release: April 23, 2024
 
 16 / 18
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1234,7 +1189,8 @@ Release: April 23, 2024
 
 17 / 18
 
-Syntax 8
+
+Syntax 8
 
 T
 

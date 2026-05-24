@@ -64,7 +64,8 @@ Release: September 20, 2022
 
 1 / 33
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -83,114 +84,53 @@ Release: September 20, 2022
 
 2 / 33
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Generic Routing Encapsulation Abstract](#131-generic-routing-encapsulation-abstract)
+    - [1.3.2 Minimizing Data Center Challenges with NVGRE](#132-minimizing-data-center-challenges-with-nvgre)
+      - [1.3.2.1 Defining the Control Messages](#1321-defining-the-control-messages)
+    - [1.3.3 Network Virtualization Endpoint (NVE)](#133-network-virtualization-endpoint-nve)
+    - [1.3.4 Summary](#134-summary)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 REDIRECT Message](#221-redirect-message)
+    - [2.2.2 UNREACHABLE Message](#222-unreachable-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Role Details](#31-server-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 NVGRE Encapsulation Frame Format](#3151-nvgre-encapsulation-frame-format)
+      - [3.1.5.2 NVGRE Extension Messages and NVE Roles](#3152-nvgre-extension-messages-and-nve-roles)
+      - [3.1.5.3 REDIRECT Message Processing](#3153-redirect-message-processing)
+      - [3.1.5.4 UNREACHABLE Message Processing](#3154-unreachable-message-processing)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Generic Routing Encapsulation Abstract ........................................................... 6
-Minimizing Data Center Challenges with NVGRE ................................................ 7
-Defining the Control Messages .................................................................. 8
-Network Virtualization Endpoint (NVE) ............................................................. 8
-Summary .................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3
-1.3.4
-
-1.3.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-REDIRECT Message ..................................................................................... 11
-UNREACHABLE Message .............................................................................. 17
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 23
-Server Role Details ........................................................................................... 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-Higher-Layer Triggered Events ..................................................................... 23
-Message Processing Events and Sequencing Rules .......................................... 23
-NVGRE Encapsulation Frame Format........................................................ 23
-NVGRE Extension Messages and NVE Roles .............................................. 24
-REDIRECT Message Processing ............................................................... 25
-UNREACHABLE Message Processing ......................................................... 26
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 27
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 28
-
-5  Security ................................................................................................................. 30
-Security Considerations for Implementers ........................................................... 30
-Index of Security Parameters ............................................................................ 30
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 31
-
-7  Change Tracking .................................................................................................... 32
-
-8  Index ..................................................................................................................... 33
-
-[MS-NVGREE] - v20220920
-Network Virtualization using Generic Routing Encapsulation (NVGRE) Extensions
-Copyright © 2022 Microsoft Corporation
-Release: September 20, 2022
-
-3 / 33
-
-1  Introduction
+## 1 Introduction
 
 The Network Virtualization Generic Routing Encapsulation (NVGRE) Extensions protocol adds support
 to the NVGRE protocol by defining two new extension-control messages. The REDIRECT message
@@ -207,7 +147,7 @@ control messages, and the processes that are initiated by them.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -241,7 +181,7 @@ gateways.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -255,7 +195,8 @@ Release: September 20, 2022
 
 4 / 33
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -279,7 +220,7 @@ editor.org/info/rfc4443
 [RFC792] Postel, J., "Internet Control Message Protocol", RFC 792, September 1981, https://www.rfc-
 editor.org/info/rfc792
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IETFDRAFT-NVGRE-EXT-04] Balasubramanian, P., Garg, P., Sridharan, M., Wang, Y., "NVGRE-EXT:
 Network Virtualization using Generic Routing Encapsulation Extensions", draft-sridharan-virtualization-
@@ -304,7 +245,7 @@ Encapsulation", RFC 7637, September 2015, https://www.rfc-editor.org/info/rfc763
 [RFC8446] Rescorla, E., "The Transport Layer Security (TLS) Protocol Version 1.3", RFC 8446, August
 2018, https://www.rfc-editor.org/info/rfc8446
 
-1.3  Overview
+### 1.3 Overview
 
 The Network Virtualization Generic Routing Encapsulation Extension (NVGREE) protocol adds two new
 control messages to the encapsulation framework of NVGRE to help simplify common tasks in a
@@ -319,7 +260,8 @@ Release: September 20, 2022
 
 5 / 33
 
-  REDIRECT — triggered by detection of a new Target NVE address at the Receiver NVE, as
+
+  REDIRECT — triggered by detection of a new Target NVE address at the Receiver NVE, as
 
 transmitted from the Sender NVE, to indicate that a virtual machine (VM) has moved from a
 network virtualization endpoint (NVE) to a new NVE and requires redirection of traffic.
@@ -333,7 +275,7 @@ the above tasks. A 24-bit field value known as the Virtual Subnet Identifier (VS
 header and is used to locate the target virtual network via the NVE that is acting as a gateway to the
 VM that moved within the virtual network.
 
-1.3.1  Generic Routing Encapsulation Abstract
+#### 1.3.1 Generic Routing Encapsulation Abstract
 
 In data center applications, there can be a requirement for encapsulation of one protocol over another
 protocol, for example, in transporting IP over IP for the application of policy. Generic routing
@@ -370,13 +312,14 @@ Release: September 20, 2022
 
 6 / 33
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-NVGREE].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
 Figure 1 NVGRE packet encapsulation
 
-1.3.2  Minimizing Data Center Challenges with NVGRE
+#### 1.3.2 Minimizing Data Center Challenges with NVGRE
 
 Data centers can face challenges in maximizing network utilization and can encounter inefficiencies
 that are related to network misconfiguration. Among these challenges are the following:
@@ -427,7 +370,8 @@ Release: September 20, 2022
 
 7 / 33
 
-  Gaining up to 16M virtual subnetworks in the same management domain with the use of a 24-bit
+
+  Gaining up to 16M virtual subnetworks in the same management domain with the use of a 24-bit
 Virtual Subnet Identifier (VSID) versus the 4K that is typically achievable with Virtual Local Area
 Network (VLAN).
 
@@ -435,7 +379,7 @@ Network (VLAN).
 
 Expansion of virtual machine hosting capabilities into public clouds.
 
-1.3.2.1  Defining the Control Messages
+##### 1.3.2.1 Defining the Control Messages
 
 By itself, the NVGRE protocol only defines a data channel for encapsulating packets between network
 virtualization endpoints (NVEs). This provides a virtual network abstraction over a physical network,
@@ -478,7 +422,7 @@ a returned ICMP code, when a moved VM node is unreachable by its former gateway 
 Similarly, other ICMP codes can be used to inform the need to REDIRECT messages to a particular
 host, such as the Target NVE.
 
-1.3.3  Network Virtualization Endpoint (NVE)
+#### 1.3.3 Network Virtualization Endpoint (NVE)
 
 NVEs are the ingress/egress points that lie on the boundary of virtual and physical networks. Any
 physical server or network device can be an NVE. A common deployment is for the NVE to be part of a
@@ -510,7 +454,8 @@ Release: September 20, 2022
 
 8 / 33
 
-1.3.4  Summary
+
+#### 1.3.4 Summary
 
 Windows Network Virtualization enables logical integration of virtual networks and addresses in
 physical network infrastructures — for example, those in use by different tenants in a data center. It
@@ -521,7 +466,7 @@ infrastructure.
 This document describes the traffic control messages and formats of the extension components that
 are sent by the Network Virtualization Generic Encapsulation Extensions (NVGREE) protocol.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The core NVGRE protocol and extensions both rely upon the presence of IPv4 or IPv6 and Ethernet
 protocols for connectivity and to enable creating the required NVGRE encapsulation and decapsulation
@@ -533,7 +478,7 @@ leverages this header to carry the Virtual Subnet ID information contained in ea
 send the control messages and other traffic to the appropriate network virtualization endpoints (NVEs)
 and to thereafter locate the virtual subnet where the target VM has moved.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Prerequisites include the dependencies specified in section 1.4. Other network features described in
 [IETFDRAFT-NVGRE-EXT-04], section 3.0, upon which a dependency may exist, should be factored
@@ -572,23 +517,24 @@ Release: September 20, 2022
 
 9 / 33
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The control messages specified by the extensions of the NVGRE protocol are only for use in networks
 that utilize virtualization with the NVGRE protocol, as specified earlier in this document.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 No version of the Network Virtualization Generic Routing Encapsulation Extension (NVGREE) protocol
 exists other than the version that is described in this specification.
 
 This protocol does not support capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -599,9 +545,10 @@ Release: September 20, 2022
 
 10 / 33
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol passes the extension messages using the IP and Ethernet protocols upon which the
 NVGRE protocol performs encapsulation and decapsulation processes, in an IP-over-IP routing
@@ -617,7 +564,7 @@ For example, the detection of a missing policy version by the Receiver NVE (afte
 migration event) will initiate the destination UNREACHABLE message to be sent to the Sender NVE,
 where the policy stores are cached, to subsequently trigger a policy refresh.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The constituent packets of the traffic REDIRECT and destination UNREACHABLE extension control
 messages are described in this section, which includes the associated Inner Ethernet Header, Inner IP
@@ -631,7 +578,7 @@ across virtual network components in tabular data format.
 Note: A fully encapsulated NVGRE packet is specified in [RFC7637]; and as an example in section 4 of
 this document.
 
-2.2.1  REDIRECT Message
+#### 2.2.1 REDIRECT Message
 
 The REDIRECT message is sent by the Receiver NVE when it receives an NVGRE frame for a VM that
 has moved to a new NVE, as described in section 3.2.2.1. The Inner Ethernet Header, Inner IP
@@ -674,7 +621,8 @@ Release: September 20, 2022
 
 11 / 33
 
-Sender NVE MAC Address (6 bytes): contains the MAC address of the Sender NVE that sends
+
+Sender NVE MAC Address (6 bytes): contains the MAC address of the Sender NVE that sends
 
 encapsulated messages to the Receiver NVE. In addition, the Sender NVE receives REDIRECT
 messages from the Receiver NVE.
@@ -767,7 +715,8 @@ Release: September 20, 2022
 
 12 / 33
 
-ICMP_Data (variable)
+
+ICMP_Data (variable)
 
 ...
 
@@ -841,7 +790,8 @@ Network Virtualization using Generic Routing Encapsulation (NVGRE) Extensions
 Copyright © 2022 Microsoft Corporation
 Release: September 20, 2022
 
-IP_Payload (variable): this field contains as much data as possible from the original NVGRE
+
+IP_Payload (variable): this field contains as much data as possible from the original NVGRE
 
 packet that triggered the REDIRECT message to be sent. This data MUST include at least the
 Inner Ethernet Header, the Inner IP Header, and GRE frame..
@@ -934,7 +884,8 @@ Release: September 20, 2022
 
 14 / 33
 
-Key:Virtual_Subnet_ID (3 bytes): as part of the Key field, this 24-bit value (0xFFFFFF max) is
+
+Key:Virtual_Subnet_ID (3 bytes): as part of the Key field, this 24-bit value (0xFFFFFF max) is
 used to identify NVGRE-based Virtual Layer-2 Networks, where each bit identifies a unique
 virtual subnet location that is populated with one or more VM tenants.
 
@@ -1017,7 +968,8 @@ Network Virtualization using Generic Routing Encapsulation (NVGRE) Extensions
 Copyright © 2022 Microsoft Corporation
 Release: September 20, 2022
 
-Outer IP Header:
+
+Outer IP Header:
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1115,7 +1067,8 @@ Release: September 20, 2022
 
 16 / 33
 
-Header Checksum (2 bytes): this field is set to 0x00 in the source packet, which is the initial
+
+Header Checksum (2 bytes): this field is set to 0x00 in the source packet, which is the initial
 
 reference value. The Header Checksum is calculated again at the destination and compared to
 the initial Header Checksum field value. If there is no corruption, the result of summing the
@@ -1133,7 +1086,7 @@ Target NVE Address (4 bytes): the destination IP address in the outer frame is r
 the provider address (PA) of the Sender NVE. The PA is used to locate the new Target NVE
 that acts as gateway for the moved Receiver VM.
 
-2.2.2  UNREACHABLE Message
+#### 2.2.2 UNREACHABLE Message
 
 The destination UNREACHABLE message is sent by the Receiver NVE to the Sender NVE when the
 former receives a decapsulated NVGRE frame that has a mismatched or missing NVGRE isolation
@@ -1197,7 +1150,8 @@ Network Virtualization using Generic Routing Encapsulation (NVGRE) Extensions
 Copyright © 2022 Microsoft Corporation
 Release: September 20, 2022
 
-before the NVGRE encapsulation is complete. Moreover, the decapsulating Receiver NVE MUST
+
+before the NVGRE encapsulation is complete. Moreover, the decapsulating Receiver NVE MUST
 drop the frame if the Inner Ethernet header contains one or more [IEEE802.1Q] tags.
 
 
@@ -1292,7 +1246,8 @@ Release: September 20, 2022
 
 18 / 33
 
-Flags (4 bits): provides segment information such as identification of fragment status and
+
+Flags (4 bits): provides segment information such as identification of fragment status and
 
 controlling whether or not fragmentation can occur.
 
@@ -1372,7 +1327,8 @@ Release: September 20, 2022
 
 19 / 33
 
-GRE Header:
+
+GRE Header:
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1459,7 +1415,8 @@ Release: September 20, 2022
 
 20 / 33
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1561,7 +1518,8 @@ Network Virtualization using Generic Routing Encapsulation (NVGRE) Extensions
 Copyright © 2022 Microsoft Corporation
 Release: September 20, 2022
 
-HL (4 bits): the length of the header in 32-bit words ([MS-DTYP] section 2.2.11). Minimum value
+
+HL (4 bits): the length of the header in 32-bit words ([MS-DTYP] section 2.2.11). Minimum value
 
 equals 20 bytes and maximum value equals 60 bytes.
 
@@ -1630,9 +1588,10 @@ Release: September 20, 2022
 
 22 / 33
 
-3  Protocol Details
 
-3.1  Server Role Details
+## 3 Protocol Details
+
+### 3.1 Server Role Details
 
 The NVGREE protocol functions in a Server-to-Server role, by passing messages between gateway
 NVEs that interface to network client Sender and Receiver virtual machines (VMs). The NVEs also
@@ -1660,23 +1619,23 @@ Isolation Policy application
 
 Traffic redirection
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Message processing for the NVGRE protocol REDIRECT (section 2.2.1) and UNREACHABLE (section
 2.2.2) extension messages is specified in this section. The NVGRE extensions are used as control
@@ -1691,7 +1650,7 @@ These functions are facilitated across the following NVEs:
 
 Target NVE
 
-3.1.5.1  NVGRE Encapsulation Frame Format
+##### 3.1.5.1 NVGRE Encapsulation Frame Format
 
 The format of the NVGRE encapsulation is described in [RFC7637], section 3.2. An example of a full
 NVGRE encapsulation is also shown in section 4 of this document. The components of the NVGRE
@@ -1705,7 +1664,8 @@ Release: September 20, 2022
 
 23 / 33
 
-reached as the result of data center VM migration operations, the extension messages perform the
+
+reached as the result of data center VM migration operations, the extension messages perform the
 following tasks:
 
   UNREACHABLE — a refresh of isolation policy is triggered by this message after a Receiver VM in
@@ -1750,7 +1710,7 @@ For more detailed information about the extension messages, see [RFC7637] and [R
 The following sections describe the NVGRE extension messages and the processing that occurs when
 NVEs transmit or receive them.
 
-3.1.5.2  NVGRE Extension Messages and NVE Roles
+##### 3.1.5.2 NVGRE Extension Messages and NVE Roles
 
 The REDIRECT and UNREACHABLE extension messages work together to ensure that packet traffic
 is properly directed and maintained, should a Receiver VM move from its Receiver NVE to a (new)
@@ -1780,14 +1740,15 @@ Network Virtualization using Generic Routing Encapsulation (NVGRE) Extensions
 Copyright © 2022 Microsoft Corporation
 Release: September 20, 2022
 
-  Target NVE — serves as the new NVE gateway that manages the Receiver VM as a result of it
+
+  Target NVE — serves as the new NVE gateway that manages the Receiver VM as a result of it
 
 moving to the Target NVE. As stated earlier, the Receiver VM move typically occurs in a data
 center live migration.
 
 For more information about NVEs see [RFC7365].
 
-3.1.5.3  REDIRECT Message Processing
+##### 3.1.5.3 REDIRECT Message Processing
 
 The initial state of packet communications across the network virtualization endpoints (NVEs) and the
 associated VM configurations is specified below. The behavior that facilitates a policy refresh and the
@@ -1835,13 +1796,14 @@ Release: September 20, 2022
 
 25 / 33
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-NVGREE].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
 Figure 2 Redirect and Unreachable message architecture
 
-3.1.5.4  UNREACHABLE Message Processing
+##### 3.1.5.4 UNREACHABLE Message Processing
 
 The processes that follow explain how the UNREACHABLE message is invoked and why it is needed
 to restore packet traffic to a moved Receiver VM:
@@ -1873,7 +1835,8 @@ Release: September 20, 2022
 
 26 / 33
 
-
+
+
 
 If the REDIRECT message is not already sent, it is sent shortly thereafter the policy refresh, to
 ensure traffic is redirected to the new Target NVE and subsequently to the Receiver VM in its new
@@ -1882,11 +1845,11 @@ location.
 The inner and outer Ethernet and IP frames for the UNREACHABLE message are shown in the packet
 diagrams of section 2.2.2.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1897,7 +1860,8 @@ Release: September 20, 2022
 
 27 / 33
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section contains an example of a full NVGREE frame encapsulation that applies to the control
 message extensions REDIRECT and UNREACHABLE.
@@ -2008,7 +1972,8 @@ Release: September 20, 2022
 
 28 / 33
 
-Key:Virtual_Subnet_ID
+
+Key:Virtual_Subnet_ID
 
 Key:FlowID
 
@@ -2104,9 +2069,10 @@ Release: September 20, 2022
 
 29 / 33
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The following security measures should be considered for implementations of this protocol.
 
@@ -2140,7 +2106,7 @@ protect the GRE header and the tunneled payload. Either ESP (Encapsulating Secur
 payload which includes the GRE header. If AH is used, the entire packet other than mutable fields is
 authenticated.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security field or Protocol
 
@@ -2169,7 +2135,8 @@ Release: September 20, 2022
 
 30 / 33
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2217,7 +2184,8 @@ Release: September 20, 2022
 
 31 / 33
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2254,7 +2222,8 @@ Release: September 20, 2022
 
 32 / 33
 
-T
+
+T
 
 Tracking changes 32
 Transport 11
@@ -2268,7 +2237,7 @@ V
 Vendor-extensible fields 10
 Versioning 10
 
-8  Index
+## 8 Index
 A
 
 Applicability 10
