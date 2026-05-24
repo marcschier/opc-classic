@@ -17,11 +17,14 @@ namespace Opc.Classic.Cpx;
 /// <remarks>
 /// OPC Complex Data servers identify a type system, dictionary, and type for
 /// complex DA items. This wrapper keeps the dictionary metadata and its
-/// <see cref="TypeDescription"/> entries AOT-clean; XML/XSD loading and NDR
-/// codec emission are deferred to the Phase 9B follow-up generator work.
+/// <see cref="TypeDescription"/> entries AOT-clean while the CPX XML and
+/// OPCBinary codecs parse and consume type-system dictionaries.
 /// </remarks>
 public sealed record TypeDictionary
 {
+    /// <summary>The OPC DA type-system identifier for XML Schema dictionaries.</summary>
+    public const string XmlSchemaTypeSystemId = "XMLSchema";
+
     /// <summary>The OPC DA type-system identifier for OPCBinary dictionaries.</summary>
     public const string OpcBinaryTypeSystemId = "OPCBinary";
 

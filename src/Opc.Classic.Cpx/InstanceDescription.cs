@@ -16,8 +16,7 @@ namespace Opc.Classic.Cpx;
 /// <remarks>
 /// OPC DA exposes complex metadata via item properties such as
 /// <c>typeSystemID</c>, <c>dictionaryID</c>, and <c>typeID</c>. This record
-/// gathers those identifiers with decoded field values once a future codec has
-/// interpreted the raw item payload.
+/// gathers those identifiers with field values decoded by a CPX type-system codec.
 /// </remarks>
 public sealed record InstanceDescription
 {

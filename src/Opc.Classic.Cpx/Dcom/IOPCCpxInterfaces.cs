@@ -3,8 +3,8 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 // OPC Complex Data (Cpx) DCOM-projection interfaces. Generated proxy coverage
-// starts with string/Guid metadata calls; dictionary object and binary/XML
-// payload shapes remain deferred until dedicated Cpx codecs exist.
+// starts with string/Guid metadata calls; CPX codecs parse dictionary and
+// binary/XML payloads in the managed type-system layer.
 //
 
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCComplexDataItem)
