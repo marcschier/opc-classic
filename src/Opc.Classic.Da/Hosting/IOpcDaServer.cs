@@ -3,9 +3,11 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Da.Dcom;
+using Opc.Classic.Dcom;
 
 namespace Opc.Classic.Da.Hosting;
 
@@ -41,6 +43,59 @@ public interface IOpcDaServer : IOPCServer
         int localeId,
         CancellationToken cancellationToken = default);
 
-    // Future Phase 6F-followup adds: GetGroupByName, CreateGroupEnumerator,
-    // item-level read/write, subscriptions.
+    Task IOPCServer.AddGroupAsync(
+        string name,
+        bool active,
+        int requestedUpdateRate,
+        int clientGroupHandle,
+        int timeBias,
+        float percentDeadband,
+        int localeId,
+        Guid requestedInterfaceId,
+        out int serverGroupHandle,
+        out int revisedUpdateRate,
+        out IOpcInterfaceRef group,
+        CancellationToken cancellationToken)
+    {
+        _ = name;
+        _ = active;
+        _ = requestedUpdateRate;
+        _ = clientGroupHandle;
+        _ = timeBias;
+        _ = percentDeadband;
+        _ = localeId;
+        _ = requestedInterfaceId;
+        _ = cancellationToken;
+        serverGroupHandle = 0;
+        revisedUpdateRate = 0;
+        group = CreateSyntheticInterfaceRef(requestedInterfaceId, 0);
+        return Task.FromException(new NotSupportedException("Override the full IOPCServer.AddGroupAsync signature to return an OPC group interface pointer."));
+    }
+
+    Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, name.GetHashCode(StringComparison.Ordinal)));
+    }
+
+    Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
+    {
+        _ = scope;
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, 0));
+    }
+
+    private static IOpcInterfaceRef CreateSyntheticInterfaceRef(Guid iid, int seed) =>
+        new OpcInterfaceRef(
+            iid,
+            flags: 0,
+            publicRefs: 1,
+            oxid: 1,
+            oid: unchecked((ulong)(uint)seed),
+            ipid: Guid.CreateVersion7(),
+            securityOffset: 0,
+            resolverBindings: Array.Empty<ushort>());
+
+    // Future Phase 6F-followup adds item-level read/write and subscriptions.
 }

@@ -785,7 +785,8 @@ internal sealed class DaEndToEndPipeline
         var errors = new int[itemDefinitions.Length];
         lock (_gate)
         {
-            bool groupFound = _currentGroupHandle != 0 && _groups.TryGetValue(_currentGroupHandle, out DaGroup? group);
+            DaGroup? group = null;
+            bool groupFound = _currentGroupHandle != 0 && _groups.TryGetValue(_currentGroupHandle, out group);
             for (int i = 0; i < itemDefinitions.Length; i++)
             {
                 OpcItemDef item = itemDefinitions[i];
@@ -936,12 +937,7 @@ internal sealed class DaEndToEndPipeline
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            _ = active;
-            _ = timeBias;
-            _ = percentDeadband;
-            _ = localeId;
-            _ = clientGroupHandle;
-            revisedUpdateRate = requestedUpdateRate;
+            revisedUpdateRate = _pipeline.UpdateCurrentGroupState(requestedUpdateRate, active, timeBias, percentDeadband, localeId, clientGroupHandle);
             return Task.CompletedTask;
         }
 
@@ -949,6 +945,7 @@ internal sealed class DaEndToEndPipeline
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             cancellationToken.ThrowIfCancellationRequested();
+            _pipeline.RenameCurrentGroup(name);
             return Task.CompletedTask;
         }
 
@@ -956,7 +953,26 @@ internal sealed class DaEndToEndPipeline
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, name.GetHashCode(StringComparison.Ordinal)));
+            return Task.FromResult(_pipeline.CloneCurrentGroup(name, requestedInterfaceId));
+        }
+    }
+
+    private sealed class GroupState2Impl : IOPCGroupStateMgt2
+    {
+        private readonly DaEndToEndPipeline _pipeline;
+
+        public GroupState2Impl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
+
+        public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(_pipeline.SetCurrentGroupKeepAlive(keepAliveTime));
+        }
+
+        public Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(_pipeline.GetCurrentGroupKeepAlive());
         }
     }
 
@@ -973,8 +989,7 @@ internal sealed class DaEndToEndPipeline
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            addResults = itemDefinitions.Select(static _ => new OpcItemResult(0, VarType.VT_EMPTY, 0, Array.Empty<byte>())).ToArray();
-            errors = itemDefinitions.Select(static _ => OpcResultId.NotImplemented.Code).ToArray();
+            (addResults, errors) = _pipeline.AddItemsToCurrentGroup(itemDefinitions, add: true);
             return Task.CompletedTask;
         }
 
@@ -987,8 +1002,7 @@ internal sealed class DaEndToEndPipeline
         {
             cancellationToken.ThrowIfCancellationRequested();
             _ = blobUpdate;
-            validationResults = itemDefinitions.Select(static _ => new OpcItemResult(0, VarType.VT_EMPTY, 0, Array.Empty<byte>())).ToArray();
-            errors = itemDefinitions.Select(static _ => OpcResultId.Ok.Code).ToArray();
+            (validationResults, errors) = _pipeline.AddItemsToCurrentGroup(itemDefinitions, add: false);
             return Task.CompletedTask;
         }
 
@@ -1007,19 +1021,20 @@ internal sealed class DaEndToEndPipeline
         public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(serverHandles.Select(_ => OpcResultId.Ok.Code).ToArray());
+            return Task.FromResult(_pipeline.SetClientHandles(serverHandles, clientHandles));
         }
 
         public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            _ = requestedDataTypes;
             return Task.FromResult(serverHandles.Select(_ => OpcResultId.Ok.Code).ToArray());
         }
 
         public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, 0x7100));
+            return Task.FromResult(CreateSyntheticInterfaceRef(requestedInterfaceId, _pipeline._currentGroupHandle));
         }
     }
 
@@ -1037,14 +1052,102 @@ internal sealed class DaEndToEndPipeline
         {
             cancellationToken.ThrowIfCancellationRequested();
             _ = dataSource;
-            errors = serverHandles.Select(static _ => OpcResultId.NotImplemented.Code).ToArray();
-            return Task.FromResult(Array.Empty<OpcItemState>());
+            return Task.FromResult(_pipeline.ReadStates(serverHandles, out errors));
         }
 
         public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_pipeline.WriteValues(serverHandles, values));
+        }
+    }
+
+    private sealed class SyncIo2Impl : IOPCSyncIO2
+    {
+        private readonly DaEndToEndPipeline _pipeline;
+
+        public SyncIo2Impl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
+
+        public Task<OpcItemState[]> ReadAsync(int dataSource, int[] serverHandles, out int[] errors, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _ = dataSource;
+            return Task.FromResult(_pipeline.ReadStates(serverHandles, out errors));
+        }
+
+        public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(_pipeline.WriteValues(serverHandles, values));
+        }
+
+        public Task ReadMaxAgeAsync(int[] serverHandles, int[] maxAges, out OpcVariant[] values, out ushort[] qualities, out long[] timestamps, out int[] errors, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _ = maxAges;
+            OpcItemState[] states = _pipeline.ReadStates(serverHandles, out errors);
+            values = states.Select(static state => state.Value).ToArray();
+            qualities = states.Select(static state => state.Quality.RawValue).ToArray();
+            timestamps = states.Select(static state => EndToEndNdr.ToFileTime(state.Timestamp)).ToArray();
+            return Task.CompletedTask;
+        }
+
+        public Task<int[]> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(_pipeline.WriteValues(serverHandles, values.Select(static v => v.Value).ToArray()));
+        }
+    }
+
+    private sealed class AsyncIo2Impl : IOPCAsyncIO2
+    {
+        private readonly DaEndToEndPipeline _pipeline;
+        private int _nextCancelId = 7000;
+
+        public AsyncIo2Impl(DaEndToEndPipeline pipeline) => _pipeline = pipeline;
+
+        public Task<int> ReadAsync(int[] serverHandles, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _ = transactionId;
+            _ = _pipeline.ReadStates(serverHandles, out errors);
+            return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
+        }
+
+        public Task<int> WriteAsync(int[] serverHandles, OpcVariant[] values, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _ = transactionId;
+            errors = _pipeline.WriteValues(serverHandles, values);
+            return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
+        }
+
+        public Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _ = dataSource;
+            _ = transactionId;
+            return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
+        }
+
+        public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _ = cancelId;
+            return Task.CompletedTask;
+        }
+
+        public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _ = enabled;
+            return Task.CompletedTask;
+        }
+
+        public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(true);
         }
     }
 
@@ -1069,6 +1172,16 @@ internal sealed class DaEndToEndPipeline
             return Task.CompletedTask;
         }
 
+        public Task<IOpcInterfaceRef> BrowseOpcItemIdsAsync(int browseFilterType, string filterCriteria, ushort dataTypeFilter, int accessRightsFilter, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _ = browseFilterType;
+            _ = filterCriteria;
+            _ = dataTypeFilter;
+            _ = accessRightsFilter;
+            return Task.FromResult(CreateSyntheticInterfaceRef(OpcGuids.IID_IEnumString, _pipeline._tags.Tags.Count));
+        }
+
         public Task<string> GetItemIdAsync(string itemDataId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -1077,26 +1190,11 @@ internal sealed class DaEndToEndPipeline
             return Task.FromResult(itemId);
         }
 
-        public Task<IOpcInterfaceRef> BrowseOpcItemIdsAsync(
-            int browseFilterType,
-            string filterCriteria,
-            ushort dataTypeFilter,
-            int accessRightsFilter,
-            CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            _ = browseFilterType;
-            _ = filterCriteria;
-            _ = dataTypeFilter;
-            _ = accessRightsFilter;
-            return Task.FromResult(CreateSyntheticInterfaceRef(OpcGuids.IID_IEnumString, 0x7200));
-        }
-
         public Task<IOpcInterfaceRef> BrowseAccessPathsAsync(string itemId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             _ = itemId;
-            return Task.FromResult(CreateSyntheticInterfaceRef(OpcGuids.IID_IEnumString, 0x7201));
+            return Task.FromResult(CreateSyntheticInterfaceRef(OpcGuids.IID_IEnumString, 1));
         }
     }
 

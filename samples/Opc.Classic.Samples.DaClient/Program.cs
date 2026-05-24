@@ -18,6 +18,7 @@ using Opc.Classic;
 using Opc.Classic.Da;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
+using Opc.Classic.Dcom;
 using Opc.Classic.Testing;
 
 namespace Opc.Classic.Samples.DaClient;
@@ -223,6 +224,28 @@ public sealed class LoopbackDaServer : IOpcDaServer
         int handle = Interlocked.Increment(ref _nextGroupHandle);
         _groups[handle] = name;
         return Task.FromResult(handle);
+    }
+
+    public Task AddGroupAsync(
+        string name,
+        bool active,
+        int requestedUpdateRate,
+        int clientGroupHandle,
+        int timeBias,
+        float percentDeadband,
+        int localeId,
+        Guid requestedInterfaceId,
+        out int serverGroupHandle,
+        out int revisedUpdateRate,
+        out IOpcInterfaceRef group,
+        CancellationToken cancellationToken = default)
+    {
+        _ = timeBias; _ = percentDeadband;
+        serverGroupHandle = Interlocked.Increment(ref _nextGroupHandle);
+        revisedUpdateRate = requestedUpdateRate;
+        _groups[serverGroupHandle] = name;
+        group = new OpcInterfaceRef(requestedInterfaceId, 0, 1, 1, unchecked((ulong)(uint)serverGroupHandle), Guid.CreateVersion7(), 0, Array.Empty<ushort>());
+        return Task.CompletedTask;
     }
 
     public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default)

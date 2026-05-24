@@ -5,7 +5,9 @@
 
 #pragma warning disable TUnitAssertions0005 // End-to-end tests assert captured pipeline state.
 
+using Opc.Classic.Da;
 using Opc.Classic.Da.Dcom;
+using Opc.Classic.Dcom;
 using TUnit.Core;
 
 namespace Opc.Classic.Integration.Tests.EndToEnd;
@@ -156,6 +158,100 @@ public sealed class DaEndToEndTests
         await Assert.That(browsed).Contains("Random.Real8");
         await Assert.That(browsed).Contains("Triangle Waves.Real4");
         await Assert.That(browsed.Where(static id => id.StartsWith("Bucket Brigade.", StringComparison.Ordinal)).Count()).IsEqualTo(10);
+    }
+
+
+    [Test, Category("EndToEnd")]
+    public async Task InterfacePointerMethods_Then_ObjrefsFlowBack()
+    {
+        var pipeline = new DaEndToEndPipeline();
+
+        await pipeline.Server.AddGroupAsync(
+            "E2E.DA.InterfaceRefs",
+            active: true,
+            requestedUpdateRate: 1_000,
+            clientGroupHandle: 0x6101,
+            timeBias: 0,
+            percentDeadband: 0.0f,
+            localeId: 0x0409,
+            requestedInterfaceId: IOPCItemMgt.InterfaceId,
+            out int serverHandle,
+            out int revisedRate,
+            out IOpcInterfaceRef addGroupRef,
+            CancellationToken.None);
+        IOpcInterfaceRef byNameRef = await pipeline.Server.GetGroupByNameAsync("E2E.DA.InterfaceRefs", IOPCItemMgt.InterfaceId, CancellationToken.None);
+        IOpcInterfaceRef groupEnumRef = await pipeline.Server.CreateGroupEnumeratorAsync(1, OpcGuids.IID_IEnumUnknown, CancellationToken.None);
+        IOpcInterfaceRef itemEnumRef = await pipeline.ItemMgt.CreateEnumeratorAsync(OpcGuids.IID_IEnumOPCItemAttributes, CancellationToken.None);
+        IOpcInterfaceRef cloneRef = await pipeline.GroupState.CloneGroupAsync("E2E.DA.InterfaceRefs.Clone", IOPCItemMgt.InterfaceId, CancellationToken.None);
+
+        await Assert.That(serverHandle).IsEqualTo(0x6101 + 0x1000);
+        await Assert.That(revisedRate).IsEqualTo(1_000);
+        await Assert.That(addGroupRef.Iid).IsEqualTo(IOPCItemMgt.InterfaceId);
+        await Assert.That(byNameRef.Iid).IsEqualTo(IOPCItemMgt.InterfaceId);
+        await Assert.That(groupEnumRef.Iid).IsEqualTo(OpcGuids.IID_IEnumUnknown);
+        await Assert.That(itemEnumRef.Iid).IsEqualTo(OpcGuids.IID_IEnumOPCItemAttributes);
+        await Assert.That(cloneRef.Iid).IsEqualTo(IOPCItemMgt.InterfaceId);
+        await Assert.That(pipeline.GroupCount).IsEqualTo(2);
+    }
+
+    [Test, Category("EndToEnd")]
+    public async Task MultiOutMethods_Then_ValuesAndErrorsFlowBack()
+    {
+        var pipeline = new DaEndToEndPipeline();
+        int groupHandle = await AddDefaultGroupAsync(pipeline);
+        var definitions = WritableItemRequests()
+            .Select(static item => new OpcItemDef(null, item.ItemId, Active: true, item.ClientHandle, Array.Empty<byte>(), VarType.VT_EMPTY))
+            .ToArray();
+
+        await pipeline.ItemMgt.ValidateItemsAsync(definitions, blobUpdate: false, out OpcItemResult[] validationResults, out int[] validationErrors, CancellationToken.None);
+        await pipeline.GroupState.SetStateAsync(750, active: false, timeBias: -30, percentDeadband: 2.5f, localeId: 0x0407, clientGroupHandle: 0x6202, out int revisedRate, CancellationToken.None);
+        int revisedKeepAlive = await pipeline.GroupState2.SetKeepAliveAsync(30_000, CancellationToken.None);
+        int currentKeepAlive = await pipeline.GroupState2.GetKeepAliveAsync(CancellationToken.None);
+        DaAddItemResult[] items = await pipeline.AddItemsViaWireAsync(groupHandle, WritableItemRequests(), CancellationToken.None);
+        await pipeline.SyncIo2.ReadMaxAgeAsync(
+            items.Select(static item => item.ServerHandle).ToArray(),
+            items.Select(static _ => 1_000).ToArray(),
+            out OpcVariant[] values,
+            out ushort[] qualities,
+            out long[] timestamps,
+            out int[] readErrors,
+            CancellationToken.None);
+        Opc.Classic.Da.OpcGroupState state = await pipeline.GroupState.GetStateAsync(CancellationToken.None);
+
+        await Assert.That(validationResults.Length).IsEqualTo(3);
+        await Assert.That(validationErrors).IsEquivalentTo([OpcResultId.Ok.Code, OpcResultId.Ok.Code, OpcResultId.Ok.Code]);
+        await Assert.That(revisedRate).IsEqualTo(750);
+        await Assert.That(revisedKeepAlive).IsEqualTo(30_000);
+        await Assert.That(currentKeepAlive).IsEqualTo(30_000);
+        await Assert.That(state.Active).IsFalse();
+        await Assert.That(state.UpdateRate).IsEqualTo(750);
+        await Assert.That(state.TimeBias).IsEqualTo(-30);
+        await Assert.That(state.PercentDeadband).IsEqualTo(2.5f);
+        await Assert.That(values[0].AsInt32()).IsEqualTo(0);
+        await Assert.That(qualities.All(static quality => quality == OpcQuality.Good.RawValue)).IsTrue();
+        await Assert.That(timestamps.All(static timestamp => timestamp != 0)).IsTrue();
+        await Assert.That(readErrors.All(static error => error == OpcResultId.Ok.Code)).IsTrue();
+    }
+
+    [Test, Category("EndToEnd")]
+    public async Task AsyncIO2ReadWrite_Then_CancelIdsAndErrorsFlowBack()
+    {
+        var pipeline = new DaEndToEndPipeline();
+        int groupHandle = await AddDefaultGroupAsync(pipeline);
+        DaAddItemResult[] items = await pipeline.AddItemsViaWireAsync(groupHandle, WritableItemRequests(), CancellationToken.None);
+        int[] handles = items.Select(static item => item.ServerHandle).ToArray();
+
+        int readCancelId = await pipeline.AsyncIo2.ReadAsync(handles, transactionId: 0x7001, out int[] readErrors, CancellationToken.None);
+        int writeCancelId = await pipeline.AsyncIo2.WriteAsync(handles, [OpcVariant.FromInt32(9), OpcVariant.FromString("async"), OpcVariant.FromBoolean(true)], transactionId: 0x7002, out int[] writeErrors, CancellationToken.None);
+        DaReadResult[] readBack = await pipeline.ReadViaWireAsync(items, CancellationToken.None);
+
+        await Assert.That(readCancelId).IsGreaterThan(0);
+        await Assert.That(writeCancelId).IsGreaterThan(readCancelId);
+        await Assert.That(readErrors.All(static error => error == OpcResultId.Ok.Code)).IsTrue();
+        await Assert.That(writeErrors.All(static error => error == OpcResultId.Ok.Code)).IsTrue();
+        await Assert.That(readBack[0].Value.AsInt32()).IsEqualTo(9);
+        await Assert.That(readBack[1].Value.AsString()).IsEqualTo("async");
+        await Assert.That(readBack[2].Value.AsBoolean()).IsTrue();
     }
 
     [Test, Category("EndToEnd")]

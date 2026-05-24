@@ -71,6 +71,7 @@ namespace Opc.Classic.Generators
             { "global::System.Double", new CodecEmitter("{Writer}.WriteDouble({Param})", "{Reader}.ReadDouble()") },
             { "global::System.Boolean", new CodecEmitter("{Writer}.WriteInt32({Param} ? -1 : 0)", "({Reader}.ReadInt32() != 0)") },
             { "global::System.Guid", new CodecEmitter("{Writer}.WriteGuid({Param})", "{Reader}.ReadGuid()") },
+            { "global::Opc.Classic.Dcom.IOpcInterfaceRef", new CodecEmitter("global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Write(ref {Writer}, {Param})", "global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref {Reader})") },
             { "global::System.String", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
             { "global::System.String?", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
             { "string", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
@@ -793,7 +794,7 @@ namespace Opc.Classic.Generators
         string responsePayloadLocal,
         string responseSpanLocal)
     {
-        if (isOpcInterface)
+        if (isOpcInterface || IsOpcInterfaceRefType(marshallingType))
         {
             sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ")
                 .Append(FormatInterfaceReadExpression(readerLocal, declaredType)).AppendLine(";");
@@ -848,7 +849,7 @@ namespace Opc.Classic.Generators
     }
 
     private static bool CanReadType(string typeName, bool isOpcInterface, string? declaringNamespace) =>
-        isOpcInterface || TryGetCodec(typeName, declaringNamespace, out _);
+        isOpcInterface || IsOpcInterfaceRefType(typeName) || TryGetCodec(typeName, declaringNamespace, out _);
 
     private static bool CanWriteType(string typeName, bool isOpcInterface, string? declaringNamespace) =>
         !isOpcInterface && TryGetCodec(typeName, declaringNamespace, out _);
@@ -1026,13 +1027,17 @@ namespace Opc.Classic.Generators
     private static string FormatInterfaceReadExpression(string readerLocal, string declaredType)
     {
         string readExpression = "global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref " + readerLocal + ")";
-        if (string.Equals(declaredType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
+        if (IsOpcInterfaceRefType(declaredType))
         {
             return readExpression;
         }
 
         return "(" + declaredType + ")(object)" + readExpression;
     }
+
+    private static bool IsOpcInterfaceRefType(string typeName) =>
+        string.Equals(typeName, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal) ||
+        string.Equals(typeName, "global::Opc.Classic.Dcom.IOpcInterfaceRef?", System.StringComparison.Ordinal);
 
     private static bool TryGetCodec(string typeName, string? declaringNamespace, out CodecEmitter codec)
     {

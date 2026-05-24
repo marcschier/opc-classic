@@ -34,10 +34,35 @@ namespace Opc.Classic.Da.Dcom;
 public partial interface IOPCServer
 {
     /// <summary>
+    /// <c>IOPCServer::AddGroup</c> (opnum 3). Creates a group and returns the requested group interface pointer.
+    /// </summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task AddGroupAsync(
+        string name,
+        bool active,
+        int requestedUpdateRate,
+        int clientGroupHandle,
+        int timeBias,
+        float percentDeadband,
+        int localeId,
+        Guid requestedInterfaceId,
+        out int serverGroupHandle,
+        out int revisedUpdateRate,
+        out IOpcInterfaceRef group,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// <c>IOPCServer::GetErrorString</c> (opnum 4). Returns a localized human-readable string for the given HRESULT.
     /// </summary>
     [OpcMethod(4)]
     Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCServer::GetGroupByName</c> (opnum 5). Returns the requested interface for a named group.
+    /// </summary>
+    [OpcMethod(5)]
+    Task<IOpcInterfaceRef> GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCServer::GetStatus</c> (opnum 6). Returns the server's run-state snapshot.
@@ -51,8 +76,11 @@ public partial interface IOPCServer
     [OpcMethod(7)]
     Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default);
 
-    // AddGroup, GetGroupByName, and CreateGroupEnumerator require out COM interface pointers
-    // or multi-return shapes, so they are deferred until those codecs exist.
+    /// <summary>
+    /// <c>IOPCServer::CreateGroupEnumerator</c> (opnum 8). Returns an <c>IEnumUnknown</c> group enumerator.
+    /// </summary>
+    [OpcMethod(8)]
+    Task<IOpcInterfaceRef> CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCCommon</c> — common DA locale, error-text, and client-name interface (IID_IOPCCommon).</summary>
@@ -147,12 +175,27 @@ public partial interface IOPCBrowseServerAddressSpace
     Task ChangeBrowsePositionAsync(int browseDirection, string browsePosition, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// <c>IOPCBrowseServerAddressSpace::BrowseOPCItemIDs</c> (opnum 5). Returns an <c>IEnumString</c> item-ID enumerator.
+    /// </summary>
+    [OpcMethod(5)]
+    Task<IOpcInterfaceRef> BrowseOpcItemIdsAsync(
+        int browseFilterType,
+        string filterCriteria,
+        ushort dataTypeFilter,
+        int accessRightsFilter,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// <c>IOPCBrowseServerAddressSpace::GetItemID</c> (opnum 6). Resolves a browse data ID to a fully qualified item ID.
     /// </summary>
     [OpcMethod(6)]
     Task<string> GetItemIdAsync(string itemDataId, CancellationToken cancellationToken = default);
 
-    // BrowseOPCItemIDs and BrowseAccessPaths return IEnumString interface pointers.
+    /// <summary>
+    /// <c>IOPCBrowseServerAddressSpace::BrowseAccessPaths</c> (opnum 7). Returns an <c>IEnumString</c> access-path enumerator.
+    /// </summary>
+    [OpcMethod(7)]
+    Task<IOpcInterfaceRef> BrowseAccessPathsAsync(string itemId, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCItemProperties</c> — DA 2.x item-property interface (IID_IOPCItemProperties).</summary>
@@ -323,12 +366,7 @@ public partial interface IOPCItemMgt
         OpcItemDef[] itemDefinitions,
         out OpcItemResult[] addResults,
         out int[] errors,
-        CancellationToken cancellationToken = default)
-    {
-        addResults = default!;
-        errors = default!;
-        throw new NotSupportedException();
-    }
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemMgt::ValidateItems</c> (opnum 4). Validates prospective items without adding them.
@@ -340,12 +378,7 @@ public partial interface IOPCItemMgt
         bool blobUpdate,
         out OpcItemResult[] validationResults,
         out int[] errors,
-        CancellationToken cancellationToken = default)
-    {
-        validationResults = default!;
-        errors = default!;
-        throw new NotSupportedException();
-    }
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemMgt::RemoveItems</c> (opnum 5). Removes server handles and returns one HRESULT per item.
@@ -371,7 +404,11 @@ public partial interface IOPCItemMgt
     [OpcMethod(8)]
     Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default);
 
-    // CreateEnumerator returns an interface pointer.
+    /// <summary>
+    /// <c>IOPCItemMgt::CreateEnumerator</c> (opnum 9). Returns an <c>IEnumOPCItemAttributes</c> enumerator.
+    /// </summary>
+    [OpcMethod(9)]
+    Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCGroupStateMgt</c> — group state (active, rate, deadband, ...) (IID_IOPCGroupStateMgt).</summary>
@@ -390,14 +427,16 @@ public partial interface IOPCGroupStateMgt
     /// <c>IOPCGroupStateMgt::SetState</c> (opnum 4). Updates group state and returns the revised update rate.
     /// </summary>
     [OpcMethod(4)]
-    Task<int> SetStateAsync(
+    [OpcGenerateMultiOutRecord]
+    Task SetStateAsync(
         int requestedUpdateRate,
         bool active,
         int timeBias,
         float percentDeadband,
         int localeId,
         int clientGroupHandle,
-        CancellationToken cancellationToken = default) => throw new NotSupportedException();
+        out int revisedUpdateRate,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCGroupStateMgt::SetName</c> (opnum 5). Renames the group.
@@ -405,13 +444,30 @@ public partial interface IOPCGroupStateMgt
     [OpcMethod(5)]
     Task SetNameAsync(string name, CancellationToken cancellationToken = default);
 
-    // CloneGroup returns a COM interface pointer.
+    /// <summary>
+    /// <c>IOPCGroupStateMgt::CloneGroup</c> (opnum 6). Clones the group and returns the requested interface.
+    /// </summary>
+    [OpcMethod(6)]
+    Task<IOpcInterfaceRef> CloneGroupAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCGroupStateMgt2</c> — DA 3.0 group state with keep-alive (IID_IOPCGroupStateMgt2).</summary>
 [OpcInterface("8E368666-D72E-4F78-87ED-647611C61C9F")]
+[GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCGroupStateMgt2
 {
+    /// <summary>
+    /// <c>IOPCGroupStateMgt2::SetKeepAlive</c> (opnum 7). Sets the group keep-alive period.
+    /// </summary>
+    [OpcMethod(7)]
+    Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCGroupStateMgt2::GetKeepAlive</c> (opnum 8). Returns the group keep-alive period.
+    /// </summary>
+    [OpcMethod(8)]
+    Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCSyncIO</c> — DA 2.x synchronous read/write (IID_IOPCSyncIO).</summary>
@@ -460,12 +516,24 @@ public partial interface IOPCSyncIO2
     Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// <c>IOPCSyncIO2::ReadMaxAge</c> (opnum 5). Reads values with per-item max-age semantics.
+    /// </summary>
+    [OpcMethod(5)]
+    [OpcGenerateMultiOutRecord]
+    Task ReadMaxAgeAsync(
+        int[] serverHandles,
+        int[] maxAges,
+        out OpcVariant[] values,
+        out ushort[] qualities,
+        out long[] timestamps,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// <c>IOPCSyncIO2::WriteVQT</c> (opnum 6). Writes value/quality/timestamp tuples and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(6)]
     Task<int[]> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default);
-
-    // ReadMaxAge has parallel value/quality/timestamp/error outputs.
 }
 
 /// <summary><c>IOPCAsyncIO2</c> — DA 2.05a asynchronous I/O (IID_IOPCAsyncIO2).</summary>

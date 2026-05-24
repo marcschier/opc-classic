@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Opc.Classic;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Ndr;
+using Opc.Classic.Dcom;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
 using TUnit.Core;
@@ -97,7 +98,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         });
 
         var proxy = new IOPCGroupStateMgtClientProxy(channel);
-        int revised = await proxy.SetStateAsync(1000, true, -60, 1.25f, 0x0409, 0x1234, CancellationToken.None);
+        await proxy.SetStateAsync(1000, true, -60, 1.25f, 0x0409, 0x1234, out int revised, CancellationToken.None);
 
         await Assert.That(serverObservedArgs).IsTrue();
         await Assert.That(revised).IsEqualTo(950);
@@ -140,6 +141,30 @@ public sealed class IOPCMissingDaMethodRoundTripTests
     }
 
     [Test]
+    public async Task ItemMgt_CreateEnumerator_and_GroupState_Clone_round_trip_objrefs()
+    {
+        var itemChannel = Channel(IOPCItemMgt.InterfaceId, IOPCItemMgt.Opnums.CreateEnumeratorAsync, (ref NdrReader reader) =>
+        {
+            Ensure(reader.ReadGuid() == OpcGuids.IID_IEnumOPCItemAttributes);
+            return EncodeInterfaceRef(OpcGuids.IID_IEnumOPCItemAttributes, 0x55);
+        });
+        var groupChannel = Channel(IOPCGroupStateMgt.InterfaceId, IOPCGroupStateMgt.Opnums.CloneGroupAsync, (ref NdrReader reader) =>
+        {
+            Ensure(reader.ReadUnicodeStringPtr() == "Clone.A");
+            Ensure(reader.ReadGuid() == IOPCItemMgt.InterfaceId);
+            return EncodeInterfaceRef(IOPCItemMgt.InterfaceId, 0x56);
+        });
+
+        IOpcInterfaceRef itemEnumerator = await new IOPCItemMgtClientProxy(itemChannel)
+            .CreateEnumeratorAsync(OpcGuids.IID_IEnumOPCItemAttributes, CancellationToken.None);
+        IOpcInterfaceRef clone = await new IOPCGroupStateMgtClientProxy(groupChannel)
+            .CloneGroupAsync("Clone.A", IOPCItemMgt.InterfaceId, CancellationToken.None);
+
+        await Assert.That(itemEnumerator.Iid).IsEqualTo(OpcGuids.IID_IEnumOPCItemAttributes);
+        await Assert.That(clone.Iid).IsEqualTo(IOPCItemMgt.InterfaceId);
+    }
+
+    [Test]
     public async Task SyncIO_Read_round_trips_for_DA2_and_DA3_interfaces()
     {
         var state = new OpcItemState(11, DateTimeOffset.UnixEpoch, new OpcQuality(192), OpcVariant.FromInt32(42));
@@ -166,6 +191,31 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         await Assert.That(errors[0]).IsEqualTo(0);
         await Assert.That(states2[0].ClientHandle).IsEqualTo(12);
         await Assert.That(errors2[0]).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task SyncIO2_ReadMaxAge_round_trips_values_qualities_timestamps_and_errors()
+    {
+        var channel = Channel(IOPCSyncIO2.InterfaceId, IOPCSyncIO2.Opnums.ReadMaxAgeAsync, (ref NdrReader reader) =>
+        {
+            Ensure(ReadInt32Array(ref reader)[0] == 777);
+            Ensure(ReadInt32Array(ref reader)[0] == 250);
+            return WritePayload((ref NdrWriter writer) =>
+            {
+                WriteArray(ref writer, new[] { OpcVariant.FromString("fresh") }, NdrVariantExtensions.WriteVariant);
+                WriteUInt16Array(ref writer, 192);
+                WriteInt64Array(ref writer, 1234L);
+                WriteInt32Array(ref writer, 0);
+            });
+        });
+
+        var proxy = new IOPCSyncIO2ClientProxy(channel);
+        await proxy.ReadMaxAgeAsync(new[] { 777 }, new[] { 250 }, out OpcVariant[] values, out ushort[] qualities, out long[] timestamps, out int[] errors, CancellationToken.None);
+
+        await Assert.That(values[0].AsString()).IsEqualTo("fresh");
+        await Assert.That(qualities[0]).IsEqualTo((ushort)192);
+        await Assert.That(timestamps[0]).IsEqualTo(1234L);
+        await Assert.That(errors[0]).IsEqualTo(0);
     }
 
     [Test]
@@ -241,6 +291,59 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         await Assert.That(readErrors[0]).IsEqualTo(0);
         await Assert.That(writeCancel).IsEqualTo(0xDB);
         await Assert.That(writeErrors[0]).IsEqualTo(2);
+    }
+
+    [Test]
+    public async Task BrowseServerAddressSpace_enumstring_methods_round_trip_objrefs()
+    {
+        int calls = 0;
+        var channel = Channel(IOPCBrowseServerAddressSpace.InterfaceId, (int opnum, ref NdrReader reader) =>
+        {
+            calls++;
+            if (opnum == IOPCBrowseServerAddressSpace.Opnums.BrowseOpcItemIdsAsync)
+            {
+                Ensure(reader.ReadInt32() == 2);
+                Ensure(reader.ReadUnicodeStringPtr() == "*");
+                Ensure(reader.ReadUInt16() == (ushort)VarType.VT_EMPTY);
+                Ensure(reader.ReadInt32() == 0x3);
+                return EncodeInterfaceRef(OpcGuids.IID_IEnumString, 0x71);
+            }
+
+            Ensure(opnum == IOPCBrowseServerAddressSpace.Opnums.BrowseAccessPathsAsync);
+            Ensure(reader.ReadUnicodeStringPtr() == "Bucket.Level");
+            return EncodeInterfaceRef(OpcGuids.IID_IEnumString, 0x72);
+        });
+
+        var proxy = new IOPCBrowseServerAddressSpaceClientProxy(channel);
+        IOpcInterfaceRef itemIds = await proxy.BrowseOpcItemIdsAsync(2, "*", (ushort)VarType.VT_EMPTY, 0x3, CancellationToken.None);
+        IOpcInterfaceRef accessPaths = await proxy.BrowseAccessPathsAsync("Bucket.Level", CancellationToken.None);
+
+        await Assert.That(calls).IsEqualTo(2);
+        await Assert.That(itemIds.Iid).IsEqualTo(OpcGuids.IID_IEnumString);
+        await Assert.That(accessPaths.Oid).IsEqualTo((ulong)0x72);
+    }
+
+    [Test]
+    public async Task GroupStateMgt2_keep_alive_round_trips_revised_and_current_values()
+    {
+        var channel = Channel(IOPCGroupStateMgt2.InterfaceId, (int opnum, ref NdrReader reader) =>
+        {
+            if (opnum == IOPCGroupStateMgt2.Opnums.SetKeepAliveAsync)
+            {
+                Ensure(reader.ReadInt32() == 30_000);
+                return EncodeInt32(29_000);
+            }
+
+            Ensure(opnum == IOPCGroupStateMgt2.Opnums.GetKeepAliveAsync);
+            return EncodeInt32(29_000);
+        });
+
+        var proxy = new IOPCGroupStateMgt2ClientProxy(channel);
+        int revised = await proxy.SetKeepAliveAsync(30_000, CancellationToken.None);
+        int current = await proxy.GetKeepAliveAsync(CancellationToken.None);
+
+        await Assert.That(revised).IsEqualTo(29_000);
+        await Assert.That(current).IsEqualTo(29_000);
     }
 
     [Test]
@@ -472,6 +575,12 @@ public sealed class IOPCMissingDaMethodRoundTripTests
 
     private static ReadOnlyMemory<byte> EncodeInt32(int value) =>
         WritePayload((ref NdrWriter writer) => writer.WriteInt32(value));
+
+    private static ReadOnlyMemory<byte> EncodeInterfaceRef(Guid iid, int seed) =>
+        WritePayload((ref NdrWriter writer) => OpcInterfaceRefCodec.Write(ref writer, InterfaceRef(iid, seed)));
+
+    private static IOpcInterfaceRef InterfaceRef(Guid iid, int seed) =>
+        new OpcInterfaceRef(iid, 0, 1, 1, unchecked((ulong)(uint)seed), Guid.CreateVersion7(), 0, Array.Empty<ushort>());
 
     private static ReadOnlyMemory<byte> EncodeItemResults(int serverHandle, int error) =>
         WritePayload((ref NdrWriter writer) =>

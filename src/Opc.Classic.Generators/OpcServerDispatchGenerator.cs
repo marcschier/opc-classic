@@ -67,6 +67,7 @@ namespace Opc.Classic.Generators
             { "global::System.Double", new CodecEmitter("{Writer}.WriteDouble({Param})", "{Reader}.ReadDouble()") },
             { "global::System.Boolean", new CodecEmitter("{Writer}.WriteInt32({Param} ? -1 : 0)", "({Reader}.ReadInt32() != 0)") },
             { "global::System.Guid", new CodecEmitter("{Writer}.WriteGuid({Param})", "{Reader}.ReadGuid()") },
+            { "global::Opc.Classic.Dcom.IOpcInterfaceRef", new CodecEmitter("global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Write(ref {Writer}, {Param})", "global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref {Reader})") },
             { "global::System.String", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
             { "global::System.String?", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()") },
             { "string", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },

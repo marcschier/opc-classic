@@ -4,6 +4,7 @@
 using Microsoft.Extensions.Logging;
 using Opc.Classic;
 using Opc.Classic.Da.Hosting;
+using Opc.Classic.Dcom;
 
 namespace Opc.Classic.Samples.DaServer;
 
@@ -68,6 +69,28 @@ public sealed class SampleDaServer : IOpcDaServer
         return Task.FromResult(unchecked(clientHandle + 0x1000));
     }
 
+    public Task AddGroupAsync(
+        string name,
+        bool active,
+        int requestedUpdateRate,
+        int clientGroupHandle,
+        int timeBias,
+        float percentDeadband,
+        int localeId,
+        Guid requestedInterfaceId,
+        out int serverGroupHandle,
+        out int revisedUpdateRate,
+        out IOpcInterfaceRef group,
+        CancellationToken cancellationToken = default)
+    {
+        _ = timeBias;
+        _ = percentDeadband;
+        serverGroupHandle = clientGroupHandle + 0x1000;
+        revisedUpdateRate = requestedUpdateRate;
+        group = CreateInterfaceRef(requestedInterfaceId, serverGroupHandle);
+        return Task.CompletedTask;
+    }
+
     public Task RemoveGroupAsync(
         int serverGroupHandle,
         bool force,
@@ -84,4 +107,7 @@ public sealed class SampleDaServer : IOpcDaServer
     {
         return Task.FromResult($"Opc.Classic Sample DA error: 0x{errorCode:X8}");
     }
+
+    private static OpcInterfaceRef CreateInterfaceRef(Guid iid, int seed) =>
+        new(iid, 0, 1, 1, unchecked((ulong)(uint)seed), Guid.CreateVersion7(), 0, Array.Empty<ushort>());
 }
