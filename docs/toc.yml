@@ -1,8 +1,0 @@
-- name: Home
-  href: index.md
-- name: Architecture
-  href: ARCHITECTURE.md
-- name: Cookbook
-  href: cookbook/
-- name: API Reference
-  href: api/

@@ -3,22 +3,31 @@
 [![Build](https://github.com/marcschier/opc-classic/actions/workflows/build.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/build.yml)
 [![OPC CTT](https://github.com/marcschier/opc-classic/actions/workflows/opc-ctt.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/opc-ctt.yml)
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
-[![NativeAOT](https://img.shields.io/badge/NativeAOT-clean-brightgreen)](samples/Opc.Classic.Samples.AotCanary/)
+[![Version](https://img.shields.io/badge/version-0.6.0--alpha.1-blue)](CHANGELOG.md)
+[![Next](https://img.shields.io/badge/next-1.0.0--rc.1-purple)](docs/ROADMAP.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**Opc.Classic** is a cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic for client and server workloads. It brings DA, AE, HDA, DX, Complex Data, Batch, Commands, Security, and XML-DA into a modern managed stack that runs on Linux, macOS, and Windows without depending on Windows DCOM automation or legacy COM runtime interop.
+**Opc.Classic** is a cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic for client and server workloads. It provides managed DCOM/MSRPC, XML-DA over HTTP, source-generated proxies and server dispatchers, and modern authentication without relying on Windows COM runtime interop.
 
-> **Status:** pre-1.0 alpha. The public assembly names, package IDs, and namespaces now use the `Opc.Classic.*` dotted form, and the project is licensed under MIT.
+Current release: **0.6.0-alpha.1**. The documentation and release gates are being prepared for **1.0.0-rc.1**.
+
+## What is included
+
+- OPC sub-spec coverage for **DA, AE, HDA, Batch, Commands, Complex Data, DX, Security, and Discovery**, plus XML-DA support.
+- Source-generated client proxies and server dispatchers (**47 dispatchers / 127 opnums**) with AOT-safe call paths.
+- Self-contained NTLMv2, Kerberos packet protection for five encryption types, SPNEGO negotiation, and channel binding token support.
+- Managed DCOM activation through `IRemoteSCMActivator` v5.6 and a real `OpcEnumClient`.
+- NativeAOT and trimming compatibility across source projects.
+- MIT licensing and centralized third-party notices.
+- Validation baseline: **0 build warnings**, **0 build errors**, **1253 passed / 24 skipped / 0 failed** tests.
 
 ## Quick start
 
-Install the DA package from the prerelease feed:
+Install a prerelease package, then use the managed per-spec contracts from `Opc.Classic.*` namespaces:
 
 ```powershell
 dotnet add package Opc.Classic.Da --prerelease
 ```
-
-Read an OPC DA item through the async managed surface once discovery/activation has provided an `IDaServer`:
 
 ```csharp
 using Opc.Classic.Da;
@@ -35,40 +44,34 @@ static async Task ReadOneAsync(IDaServer server, CancellationToken cancellationT
 }
 ```
 
-The alpha connection bootstrap continues to settle around discovery, activation, and generated DCOM proxies; `IDaServer`, `IDaSubscription`, and the per-spec managed contracts are the consumer-facing shape.
+## Documentation
 
-## Why Opc.Classic?
+Start with the [documentation hub](docs/README.md), then use the [roadmap](docs/ROADMAP.md) for forward-looking release gates and known coverage gaps.
 
-- **Cross-platform OPC Classic stack.** The DCOM path is pure managed MSRPC/DCOM over `ncacn_ip_tcp`; XML-DA uses `HttpClient`. No Windows-only `[ComImport]`, RCW activation, or `ole32.dll` dependency is required for the portable stack.
-- **Full OPC Classic family coverage.** Assemblies cover DA, AE, HDA, DX, Complex Data, Batch, Commands, Security, and XML-DA.
-- **Source-generator-driven DCOM proxies.** `[OpcInterface(iid)]`, `[OpcMethod(opnum)]`, and `[GenerateOpcProxy]` emit interface IDs, opnum tables, and client proxies with no runtime reflection dispatch.
-- **NativeAOT-compatible by design.** Runtime source projects are written for trimming and AOT; the canary at [`samples/Opc.Classic.Samples.AotCanary/`](samples/Opc.Classic.Samples.AotCanary/) verifies publish-time cleanliness.
-- **Modern authentication.** NTLMv2 is the default, Kerberos is available through Kerberos.NET, SPNEGO token negotiation is implemented, and channel binding supports Extended Protection for Authentication.
-- **Hardened DCOM defaults.** DCOM traffic defaults to packet integrity, NTLMv2, and NTLM2 session security to align with Microsoft KB5004442 hardening.
-- **License-clean.** The project is MIT licensed and has removed the LGPL `SharpCifs.Std` transitional runtime dependency.
-- **Deep tests.** 700+ TUnit tests span unit, property, snapshot, generator, loopback, and conformance scaffolding across the `tests/` tree, with coverage gates in CI.
+Common entry points:
 
-## Repository layout
-
-| Path | Purpose |
-| --- | --- |
-| [`src/`](src/) | Production assemblies. Shared props enforce .NET 10, analyzer, package metadata, AOT, trimming, and source-generator wiring. |
-| [`tests/`](tests/) | TUnit projects for primitives, DCOM transport/auth, generators, per-spec codecs, hosting, discovery, property tests, and integration loops. |
-| [`samples/`](samples/) | Runnable samples, including the AOT canary and managed DA/AE/HDA server samples. |
-| [`docs/`](docs/) | Architecture notes, release/conformance docs, XML-DA status, and documentation site content. |
-| [`COM/`](COM/) | Preserved OPC Foundation native C++ sample servers used as Windows conformance references. |
-| [`External/`](External/) | Preserved OPC Foundation redistributables and merge modules used by conformance jobs. |
-| [`.github/`](.github/) | GitHub Actions workflows for build, conformance, OPC CTT, release, and repository guidance. |
+- [Architecture overview](docs/ARCHITECTURE.md)
+- [Adoption guide](docs/ADOPTION.md)
+- [Tutorial: build your first DA client](docs/tutorials/01-build-your-first-da-client.md)
+- [Cookbook recipes](docs/cookbook/README.md)
+- [Migration analyzer diagnostics](docs/migration/README.md)
+- [Threat model](docs/security/THREAT_MODEL.md)
+- [OPC CTT conformance](docs/OPC_CTT_CONFORMANCE.md)
+- [Changelog](CHANGELOG.md)
 
 ## Sample apps
 
 | Sample | What it demonstrates |
 | --- | --- |
-| [`samples/Opc.Classic.Samples.AotCanary/`](samples/Opc.Classic.Samples.AotCanary/) | NativeAOT publish verification for consumer applications. CI treats IL2xxx/IL3xxx warnings as regressions. |
+| [`samples/Opc.Classic.Samples.DaServer/`](samples/Opc.Classic.Samples.DaServer/) | Managed DA server with tag tree, browse support, reads, writes, and data-change publishing. |
+| [`samples/Opc.Classic.Samples.AeServer/`](samples/Opc.Classic.Samples.AeServer/) | Managed AE server with areas, sources, condition events, and event-category metadata. |
+| [`samples/Opc.Classic.Samples.HdaServer/`](samples/Opc.Classic.Samples.HdaServer/) | Managed HDA server with historical values, aggregates, annotations, and time-range queries. |
+| [`samples/Opc.Classic.Samples.DaClient/`](samples/Opc.Classic.Samples.DaClient/) | DA client bootstrap, browse, read, write, and subscription flows. |
+| [`samples/Opc.Classic.Samples.AeClient/`](samples/Opc.Classic.Samples.AeClient/) | AE client subscription and event acknowledgement flows. |
+| [`samples/Opc.Classic.Samples.HdaClient/`](samples/Opc.Classic.Samples.HdaClient/) | HDA client reads, aggregates, annotations, and updates. |
+| [`samples/Opc.Classic.Samples.LoopbackDemo/`](samples/Opc.Classic.Samples.LoopbackDemo/) | In-process DA client/server loopback through the managed channel stack. |
 | [`samples/Opc.Classic.Samples.CttServer/`](samples/Opc.Classic.Samples.CttServer/) | Minimal CTT-oriented managed DA server registered as `Opc.Classic.DaSample.1`. |
-| [`samples/Opc.Classic.Samples.DaServer/`](samples/Opc.Classic.Samples.DaServer/) | Full DA server sample with a tag tree, browse support, reads/writes, and data-change publishing. |
-| [`samples/Opc.Classic.Samples.AeServer/`](samples/Opc.Classic.Samples.AeServer/) | AE server sample with area/source hierarchy, condition events, and event-category metadata. |
-| [`samples/Opc.Classic.Samples.HdaServer/`](samples/Opc.Classic.Samples.HdaServer/) | HDA server sample with historical values, aggregates, annotations, and time-range queries. |
+| [`samples/Opc.Classic.Samples.AotCanary/`](samples/Opc.Classic.Samples.AotCanary/) | NativeAOT publish verification for consumer applications. |
 
 ## Build from source
 
@@ -86,18 +89,20 @@ Publish the NativeAOT canary:
 dotnet publish samples\Opc.Classic.Samples.AotCanary -c Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
 ```
 
-## Documentation
+## Repository layout
 
-- [Architecture](docs/ARCHITECTURE.md) — top-down design of transports, NDR codecs, source generators, hosting, auth, discovery, tests, AOT, CI, and roadmap.
-- [Adoption guide](docs/ADOPTION.md) — migration guidance for consumers adopting the alpha packages.
-- [Cookbook](docs/COOKBOOK.md) — recipes for reads, writes, subscriptions, XML-DA, hosting, and conformance workflows.
-- [XML-DA status](docs/XMLDA_STATUS.md) — operation coverage and serializer notes for SOAP-over-HTTP.
-- [Changelog](CHANGELOG.md) — release history from `0.1.0-alpha.1` through the current alpha.
+| Path | Purpose |
+| --- | --- |
+| [`src/`](src/) | Runtime assemblies, generators, shared build props, AOT/trimming settings, and banned API rules. |
+| [`tests/`](tests/) | TUnit projects for primitives, transports, auth, generators, codecs, hosting, discovery, property tests, snapshots, and integration loops. |
+| [`samples/`](samples/) | The nine runnable sample applications listed above. |
+| [`docs/`](docs/) | Plain Markdown documentation hub, tutorials, cookbook, security notes, migration diagnostics, diagrams, conformance docs, and roadmap. |
+| [`COM/`](COM/) | OPC Foundation native C++ sample servers used as Windows conformance references. |
+| [`External/`](External/) | OPC Foundation headers, IDL, redistributables, and specification assets used for conformance and code generation validation. |
+| [`.github/`](.github/) | CI workflows and repository guidance. |
 
-## Contributing and governance
+## Contributing and license
 
-Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request, and report security issues through [SECURITY.md](SECURITY.md). Preserved OPC Foundation material under `COM/` and `External/` retains its original notices; project source is MIT licensed.
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request, and report security issues through [SECURITY.md](SECURITY.md).
 
-## License
-
-Opc.Classic is licensed under the [MIT License](LICENSE).
+Opc.Classic is licensed under the [MIT License](LICENSE). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for dependency and reference-asset notices.

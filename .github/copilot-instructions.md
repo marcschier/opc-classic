@@ -1,70 +1,59 @@
 # Repository: opc-classic
 
-A cross-platform, **NativeAOT-compatible .NET 10** implementation of OPC Classic (DA / AE / HDA / DX / Cpx / Batch / Commands / Security / XML-DA) with both **client** and **server** hosting, secured by **NTLMv2 + Kerberos/SPNEGO** (Kerberos arrives in Phase 3D). The project is mid-refactor — see the implementation plan in `~/.copilot/session-state/<session>/plan.md` for the active roadmap and `todos` SQL table for live status.
+Opc.Classic is a cross-platform, **NativeAOT-compatible .NET 10** implementation of OPC Classic. It covers DA, AE, HDA, Batch, Commands, Complex Data, DX, Security, and Discovery, with XML-DA support over HTTP. The runtime uses managed DCOM/MSRPC, source-generated client proxies and server dispatchers, and self-contained NTLMv2/Kerberos/SPNEGO authentication with channel binding support.
 
 ## Project layout
 
 ```
 opc-classic/
-├── src/                          production source — all `IsAotCompatible=true`
-│   ├── Directory.Build.props     strict net10 + AOT + analyzer setup
+├── src/                          production source; AOT and trim compatible
+│   ├── Directory.Build.props     strict net10, analyzer, package, AOT, and trim setup
 │   ├── Directory.Packages.props  central package version management
-│   ├── BannedSymbols.txt         banned API list (Reflection.Emit, Expression.Compile,
-│                                  MethodInfo.Invoke, Type.GetType(string),
-│                                  Activator.CreateInstance(Type), [ComImport],
-│                                  Marshal.GetObjectForNativeVariant/ReleaseComObject, ...)
-│   └── Opc.Classic.Dcom/          cross-platform pure-managed MSRPC/DCOM stack
-│                                  (managed DCOM stack (legacy code is being modernized)).
-│                                  Currently TRANSITIONAL — see csproj header for relaxations.
-│       └── Crypto/               hand-rolled MD4 + RC4 + BC-API-shaped compat shim
-├── tests/
-│   ├── Directory.Build.props     TUnit on Microsoft.Testing.Platform (NOT VSTest);
-│                                  IsTestProject default-true (opt out with false).
-│                                  Tests are NOT AOT-strict (libs_only scope).
-│   ├── Directory.Packages.props  TUnit 0.13.x, CsCheck, Verify.TUnit, MS Logging.Testing
-│   ├── Opc.Classic.Dcom.Crypto.Tests/   ← first real TUnit project (Phase 11A complete)
-│   │                                     RFC 1320 MD4 + RFC 6229 RC4 vectors, all passing
-│   └── Opc.Classic.Dcom.Tests/    legacy DCOM integration drivers (Phase 11 rewrites)
-│                                  opt out of TUnit via <IsTestProject>false</IsTestProject>.
-├── samples/                      sample apps and the AOT canary (Phase 16D)
-├── docs/                         DocFX site + cookbook (Phase 15)
-├── COM/                          PRESERVED  native C++ OPC sample servers — conformance reference
-├── External/                     PRESERVED  OPC Foundation MSIs + proxy-stub merge modules
-├── .github/workflows/build.yml   Linux/macOS/Windows matrix + AOT-canary gate +
-│                                  Windows conformance job that builds COM/ samples
-├── Opc.Classic.slnx               (.NET 10 XML solution format — NOT a legacy .sln)
+│   ├── BannedSymbols.txt         banned APIs for runtime reflection, dynamic code, and Windows COM interop
+│   ├── Opc.Classic.Dcom/         managed MSRPC/DCOM stack, activation, auth, OBJREF/ORPC, and transports
+│   ├── Opc.Classic.Generators/   source generators for OPC interfaces, proxies, dispatchers, and diagnostics
+│   └── Opc.Classic.*             per-spec runtime assemblies
+├── tests/                        TUnit projects on Microsoft.Testing.Platform
+├── samples/                      9 sample apps: 3 servers, 3 clients, LoopbackDemo, CttServer, AotCanary
+├── docs/                         plain Markdown documentation hub and topic pages
+├── COM/                          OPC Foundation native C++ sample servers used as conformance references
+├── External/                     OPC Foundation IDL, headers, redistributables, and spec assets
+├── .github/workflows/            build, CTT, release, and conformance workflows
+├── Opc.Classic.slnx              .NET 10 XML solution format
 ├── global.json                   pins .NET 10 SDK >= 10.0.100
 ├── LICENSE                       MIT license
 └── README.md
 ```
 
-The legacy `DotNet/`, `Java/`, `COM.Net/`, and the three old `.sln` files were removed in Phase 1A. The `COM/` and `External/` trees are intentionally preserved as the OPC Foundation conformance reference used by the Windows CI job.
+`COM/` and `External/` retain their upstream notices and are used for conformance validation. Project source is MIT licensed.
 
 ## Build / test / run
 
-Requires **.NET 10 SDK** (10.0.100 or later). `global.json` rolls forward to the highest installed `10.0.x`.
+Requires **.NET 10 SDK** (10.0.100 or later). `global.json` rolls forward to compatible .NET 10 feature SDKs.
 
 ```powershell
 dotnet restore Opc.Classic.slnx
 dotnet build Opc.Classic.slnx
-dotnet run --project tests\Opc.Classic.Dcom.Crypto.Tests --no-build
-# Single test: TUnit's MTP runner supports filtering by name
-dotnet run --project tests\Opc.Classic.Dcom.Crypto.Tests --no-build -- --treenode-filter "/*/*/Md4Tests/HashData_MatchesRfc1320Vector"
+dotnet test Opc.Classic.slnx
 ```
 
-`dotnet test Opc.Classic.slnx` also works, but TUnit projects emit an `Exe` and prefer `dotnet run` — the runner is Microsoft.Testing.Platform, not VSTest. Conformance and integration tests against native COM/ servers run only on the Windows CI runner (`OPC COM.sln` builds with VS 2017 build tools; `regserver.cmd` registers the EXEs into the system COM catalog).
+Run a targeted TUnit project:
 
-To verify NativeAOT-cleanliness of the libraries:
+```powershell
+dotnet run --project tests\Opc.Classic.Dcom.Crypto.Tests --no-build
+```
+
+Publish the NativeAOT canary:
 
 ```powershell
 dotnet publish samples\Opc.Classic.Samples.AotCanary -c Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
 ```
 
-Zero `IL2xxx`/`IL3xxx` warnings is the contract. Any warning fails CI. (The canary sample doesn't exist yet — added in Phase 16D.)
+The expected baseline is 0 build warnings and 0 build errors. Tests currently pass with 1253 passed / 24 skipped / 0 failed.
 
-## NativeAOT requirements (cross-cutting, libs_only scope)
+## NativeAOT requirements
 
-Every `src/*` assembly has:
+Every runtime source project inherits:
 
 ```xml
 <IsAotCompatible>true</IsAotCompatible>
@@ -74,40 +63,36 @@ Every `src/*` assembly has:
 <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 ```
 
-inherited from `src/Directory.Build.props`. `src/BannedSymbols.txt` rejects, with build errors:
+`src/BannedSymbols.txt` rejects runtime patterns that would break AOT or cross-platform behavior:
 
-- `System.Reflection.Emit.*` (DynamicMethod, AssemblyBuilder, …)
+- `System.Reflection.Emit.*`
 - `Expression<T>.Compile()`
 - `MethodInfo.Invoke`, `MethodBase.Invoke`
-- `Activator.CreateInstance(Type)`, `Activator.CreateInstance<T>()` (without `[DynamicallyAccessedMembers]`)
-- `Type.GetType(string)` (runtime string-to-type)
-- `[ComImport]` (irrelevant cross-platform; meaningless without Windows COM runtime)
-- `Marshal.GetObjectForNativeVariant`, `GetNativeVariantForObject`, `ReleaseComObject`
+- `Activator.CreateInstance(Type)`, `Activator.CreateInstance<T>()` without proper annotations
+- `Type.GetType(string)`
+- `[ComImport]`
+- Windows COM runtime helpers such as `Marshal.GetObjectForNativeVariant`, `GetNativeVariantForObject`, and `ReleaseComObject`
 
-When you need code that *looks* like one of those patterns — e.g., "given a type, dispatch to its handler" — emit it from a source generator instead. The plan introduces `src/Opc.Classic.Generators` for exactly this in Phase 4A.
-
-**Tests and samples are NOT AOT-strict** (per the `libs_only` decision) — they may use Verify, CsCheck, etc. without breaking the rule.
-
-The `src/Opc.Classic.Dcom/Opc.Classic.Dcom.csproj` is **TRANSITIONAL**: it currently overrides the strict properties to `false` because the legacy Dcom code under it is Java-converter style and is being modernized phase by phase. The csproj header documents which NoWarn entries are temporary and which Phase removes them. **Do not relax the rules for fresh code** — any new file should compile clean under the parent `src/Directory.Build.props` defaults.
+Use source generation for static dispatch tables, proxy methods, and server dispatchers.
 
 ## Conventions
 
-- **C# style** (root `.editorconfig`): file-scoped namespaces (`namespace X;` not `namespace X { … }`), usings outside the namespace block, `_camelCase` for private fields, no `this.` qualification, predefined `int`/`string` over BCL aliases. AOT analyzer codes (IL2xxx/IL3xxx) and `CA1062`/`CA2007`/`CA1031`/`VSTHRD002`/`VSTHRD003`/`VSTHRD100`/`VSTHRD110` are errors in `src/`. The same rules are relaxed inside legacy folders (`COM/`, anywhere under the transitional Opc.Classic.Dcom that opts out).
-- **License headers**: every file in `src/*` carries `SPDX-License-Identifier: MIT`. Files under `COM/` and `External/` carry the OPC Foundation sample-code disclaimer verbatim — don't strip it.
-- **Crypto**: zero crypto NuGet dependencies. MD4 + RC4 are hand-rolled in `src/Opc.Classic.Dcom/Crypto/`; MD5 + HMAC-MD5 + DES come from BCL via `Crypto/BcCompat.cs` (the transitional shim). New code goes against the hand-rolled / BCL primitives directly; the BcCompat shim exists only to bridge the legacy NTLM code through Phase 2.
-- **Tests** use TUnit + `Assert.That(actual).IsEqualTo(expected)` async fluent assertions. `[Arguments]` for parameterized cases. Don't add NSubstitute / Moq / FakeItEasy — they use runtime IL emit. Source-generator mocking (or hand-written test doubles) only.
-- **Solutions**: `Opc.Classic.slnx` is the **.NET 10 XML solution** format, not the legacy `.sln`. `dotnet sln add/remove` modifies it. There is exactly one solution at the repo root.
-- **NuGet**: central package versions live in `src/Directory.Packages.props` and `tests/Directory.Packages.props`. Per-project `<PackageReference Include="X" />` carries no `Version`. Two transitional packages remain in src (`Serilog`, `SharpCifs.Std`) — both scheduled for removal in Phase 2G / 2D respectively.
+- **C# style**: file-scoped namespaces, usings outside namespace declarations, `_camelCase` private fields, predefined C# type aliases, and no broad analyzer suppressions.
+- **IDL names**: OPC/MS-DCOM wire identifiers keep their original casing, underscores, and reserved-word shapes where needed for spec readability.
+- **License headers**: every new `src/` file carries `SPDX-License-Identifier: MIT` and the repository copyright header.
+- **Crypto**: MD4 and RC4 live in `src\Opc.Classic.Dcom\Crypto\`; MD5, HMAC, DES, and AES primitives come from the BCL where available. Do not add new crypto dependencies without a security review.
+- **Tests**: use TUnit, `[Test]`, `[Arguments]`, and `await Assert.That(actual).IsEqualTo(expected)`. Prefer hand-written test doubles over runtime-proxy mocking frameworks.
+- **Solutions**: `Opc.Classic.slnx` is the only root solution and uses the .NET XML solution format.
+- **Packages**: central package versions live in `src\Directory.Packages.props` and `tests\Directory.Packages.props`.
 
 ## Quick task pointers
 
-- **Where does NTLM auth live?** `src/Opc.Classic.Dcom/rpc/Auth/` — NTLMv1 + v2 + Session Security with hand-rolled crypto. SSO returns in Phase 3D via Kerberos.
-- **Where does DCOM activation happen?** `src/Opc.Classic.Dcom/Core/RemActivation.cs` (v5.4) and `RemoteSCMActivator.cs` (v5.6). Default activation flips to v5.6 in Phase 3A.
-- **Where is the server-side callback path?** `src/Opc.Classic.Dcom/Core/LocalCoClass.cs` + `ComOxidRuntime.cs` + `ComOxidRuntimeHelper.cs` + `Transport/ComRuntimeEndpoint.cs`. Reflection-based dispatch today; replaced by source-generated dispatch in Phase 4A.
-- **Where are RC4/MD4?** `src/Opc.Classic.Dcom/Crypto/Md4.cs`, `Rc4.cs`. `BcCompat.cs` is the BouncyCastle-API-shaped wrapper used by legacy callers until Phase 2C rewrites them.
-- **How do I write a new test?** Add a project under `tests/`, file-scoped namespace, `using TUnit.Core;`. The Directory.Build.props auto-wires TUnit + coverlet. Use `[Test]` + `[Arguments]` + `await Assert.That(...).IsEqualTo(...)`.
-- **Why does my `using ole32.dll`/`[ComImport]`/`MethodInfo.Invoke` not compile?** It's banned by `src/BannedSymbols.txt`. Use the cross-platform alternative or a source generator. The plan documents the replacement for each banned pattern.
-
-## Status
-
-Phase 1 (Foundations) and Phase 2E/2F (hand-rolled crypto + SSPI removal) are **done**. Phase 2A/2B (de-Javaify + idiomatic .NET) are **in progress**. The rest is in `~/.copilot/session-state/<session>/plan.md`. Query the `todos` SQL table for live status.
+- **Documentation hub**: `docs\README.md`; forward-looking work belongs in `docs\ROADMAP.md`.
+- **Architecture overview**: `docs\ARCHITECTURE.md`.
+- **Generator diagnostics**: `docs\generators\diagnostics.md` and `src\Opc.Classic.Generators\`.
+- **Migration diagnostics**: `docs\migration\` and `src\Opc.Classic.MigrationAnalyzer\`.
+- **NTLM/Kerberos/SPNEGO auth**: `src\Opc.Classic.Dcom\rpc\Auth\`, `src\Opc.Classic.Dcom.Kerberos\`, and `src\Opc.Classic.Dcom\Spnego\`.
+- **DCOM activation**: `src\Opc.Classic.Dcom\Activation\` and `src\Opc.Classic.Dcom\Core\RemActivation.cs`.
+- **Server dispatch path**: generated dispatchers plus `src\Opc.Classic.Dcom\Transport\ComRuntimeEndpoint.cs` and `src\Opc.Classic.Dcom\Core\ComOxidRuntime*.cs`.
+- **Discovery**: `src\Opc.Classic.Discovery\OpcEnumClient.cs` and `src\Opc.Classic.Discovery\OpcEnumDcomInterfaces.cs`.
+- **Samples**: `samples\Opc.Classic.Samples.*`.

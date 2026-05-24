@@ -128,8 +128,8 @@ indent_size = 2
 [*.{cmd,bat,ps1}]
 end_of_line = crlf
 
-# Legacy folders — relax checks until Phase 1A restructure deletes them
-[{COM,COM.Net,DotNet,Java,External}/**.cs]
+# Reference folders — preserve upstream style and analyzer behavior
+[{COM,External}/**.cs]
 csharp_style_namespace_declarations = block_scoped:silent
 csharp_using_directive_placement = inside_namespace:silent
 dotnet_diagnostic.IL2026.severity = silent
@@ -139,12 +139,12 @@ dotnet_diagnostic.IL3050.severity = silent
 dotnet_diagnostic.CA1062.severity = silent
 dotnet_diagnostic.CA1031.severity = silent
 
-# Opc.Classic.Dcom — legacy runtime + IDL-spec wire types
+# Opc.Classic.Dcom — IDL-spec wire types
 # These types intentionally retain wire-protocol identifier conventions:
 #   - Underscored names (IOPCHDA_Server, OPCHDA_ANNOTATION, ORPC_THIS, etc.) per OPC/MS-DCOM IDL
 #   - Public fields for inline NDR-serialized struct layout (NDR encoding mirrors C struct field order)
 #   - Reserved-keyword method names (Error, Type, Default) — public API surface frozen pre-1.0
-#   - Tracking TODO/HACK comments for cross-referenced gap-analysis findings
+#   - Tracking TODO/HACK comments for cross-referenced roadmap findings
 # Targeted suppressions applied at directory scope; real code-quality issues (CA1852 sealed,
 # CA1848 logger delegates, MA0011 IFormatProvider, etc.) remain enforced.
 [src/Opc.Classic.Dcom/**.cs]
@@ -162,12 +162,10 @@ dotnet_diagnostic.CA1711.severity = none
 dotnet_diagnostic.CA1716.severity = none
 # CA1051: Visible instance fields — NDR struct layout requires public field ordering
 dotnet_diagnostic.CA1051.severity = none
-# MA0026: TODO/HACK comments — used as tracking markers for gap-analysis findings (intentional)
+# MA0026: TODO/HACK comments — used as tracking markers for roadmap findings (intentional)
 dotnet_diagnostic.MA0026.severity = none
 # CA1725: Parameter name in override — IDL parameter names retained for spec readability
 dotnet_diagnostic.CA1725.severity = none
 # RS0030: Banned API — Activator.CreateInstance(Type) banned by src/BannedSymbols.txt;
-# the few remaining residual sites are in transitional helper code that's documented.
-# Track via gap analysis; remove suppression when AOT-clean.
+# documented compatibility helpers are tracked in docs/ROADMAP.md.
 dotnet_diagnostic.RS0030.severity = warning
-

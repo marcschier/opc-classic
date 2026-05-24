@@ -30,7 +30,3 @@
 /**/BuildOutput/**
 # Ignore editor backup files
 *~
-
-# DocFX build output
-_site/
-.docfx-cache/

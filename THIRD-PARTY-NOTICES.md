@@ -101,17 +101,3 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 ### External/Include/ (OPC IDL/header files)
 - Source: OPC Foundation
 - License: OPC Foundation specification (used for IDL definitions only)
-
-## Historical / Archived
-
-### SharpCifs.Std
-- Source: https://github.com/iyasai/SharpCifs.Std
-- License: LGPL-2.1
-- Status: Removed in N7.6; transitional runtime dependency replaced by self-contained in-tree code
-- Formerly used in: Opc.Classic.Dcom
-- Last version: 0.2.13
-
-### DotNet/ (OPC Foundation .NET Framework 4.6.2 API — design reference)
-- Source: OPC Foundation
-- License: OPC Foundation sample license
-- Status: Removed from working tree; type designs migrated under SPDX attribution

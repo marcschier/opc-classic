@@ -1,8 +1,8 @@
 # Contributing
 
-Thank you for helping improve **Opc.Classic**. This repository is an early-stage, NativeAOT-compatible .NET 10 implementation of OPC Classic, with a pure-managed DCOM/MSRPC stack and protocol-specific assemblies for DA, AE, HDA, DX, Cpx, Batch, Commands, Security, and XML-DA.
+Thank you for helping improve **Opc.Classic**. This repository is a NativeAOT-compatible .NET 10 implementation of OPC Classic with managed DCOM/MSRPC, XML-DA, source-generated call paths, and protocol-specific assemblies for DA, AE, HDA, DX, Cpx, Batch, Commands, Security, and Discovery.
 
-Keep contributions small, focused, and aligned with the current `Opc.Classic.*` architecture. Do not introduce the old undotted assembly, namespace, or package naming pattern in new code.
+Keep contributions small, focused, and aligned with the current `Opc.Classic.*` architecture.
 
 ## Quick start
 
@@ -22,14 +22,14 @@ dotnet test Opc.Classic.slnx
 
 | Path | Purpose |
 | --- | --- |
-| `src\` | Production libraries and generators. `src\Directory.Build.props` applies strict .NET 10, nullable, analyzer, package, and NativeAOT settings to source projects. |
-| `tests\` | TUnit and Microsoft.Testing.Platform test projects, including unit, property, snapshot, generator, logging, and integration scaffolds. |
-| `samples\` | Runnable samples: AOT canary, CTT DA server, DA server, AE server, and HDA server. |
-| `docs\` | Architecture, conformance, release, XML-DA, and documentation-site content. |
-| `COM\` | Preserved native C++ OPC sample servers used as conformance references. Do not casually rewrite or relicense them. |
-| `External\` | Preserved OPC Foundation redistributables and headers used as conformance inputs. |
+| `src\` | Production libraries and generators. `src\Directory.Build.props` applies .NET 10, nullable, analyzer, package, NativeAOT, and trimming settings. |
+| `tests\` | TUnit and Microsoft.Testing.Platform test projects, including unit, property, snapshot, generator, logging, conformance, and integration scaffolds. |
+| `samples\` | Nine runnable samples for DA/AE/HDA clients and servers, loopback, CTT, and AOT publishing. |
+| `docs\` | Plain Markdown architecture, adoption, cookbook, tutorials, security, migration, diagrams, conformance, release, and roadmap docs. |
+| `COM\` | OPC Foundation native C++ sample servers used as conformance references. Do not casually rewrite or relicense them. |
+| `External\` | OPC Foundation redistributables, IDL, headers, and specification assets used as conformance inputs. |
 
-The portable stack must not reintroduce Windows-only COM runtime dependencies such as `[ComImport]`, RCW activation, or `ole32.dll` P/Invoke.
+The portable stack must not introduce Windows-only COM runtime dependencies such as `[ComImport]`, RCW activation, or `ole32.dll` P/Invoke.
 
 ## Code style
 
@@ -49,7 +49,7 @@ Follow the style enforced by `.editorconfig` and `src\Directory.Build.props`:
 - Validate public arguments with `ArgumentNullException.ThrowIfNull`.
 - Do not add broad analyzer suppressions. Fix the warning or document a narrow local suppression.
 
-Fresh source code must compile cleanly under strict source-project defaults. Transitional DCOM files may carry temporary relaxations while being modernized; new files should not copy those relaxations.
+Fresh source code must compile cleanly under source-project defaults.
 
 ## NativeAOT requirements
 
@@ -112,7 +112,7 @@ Verify.TUnit golden files live alongside tests under `tests\<ProjectName>.Tests\
 
 ## Coverage
 
-CI gates code coverage at **70% line / 60% branch**. Transitional legacy sections and source generators may be excluded from gating where documented.
+CI gates code coverage at **70% line / 60% branch**. Exclusions must be narrow and documented.
 
 Run coverage locally for a targeted project:
 
@@ -133,11 +133,15 @@ Use samples to demonstrate public APIs, not test-only shortcuts.
 
 | Sample | Purpose |
 | --- | --- |
-| `samples\Opc.Classic.Samples.AotCanary\` | Verifies NativeAOT publish cleanliness for consumer applications. |
-| `samples\Opc.Classic.Samples.CttServer\` | Minimal CTT-compliant managed DA server. |
-| `samples\Opc.Classic.Samples.DaServer\` | Full DA server with tag tree, reads/writes, and data-change publishing. |
-| `samples\Opc.Classic.Samples.AeServer\` | AE server with event tree, categories, and conditions. |
-| `samples\Opc.Classic.Samples.HdaServer\` | HDA server with historical values, aggregates, and annotations. |
+| `samples\Opc.Classic.Samples.DaServer\` | Managed DA server. |
+| `samples\Opc.Classic.Samples.AeServer\` | Managed AE server. |
+| `samples\Opc.Classic.Samples.HdaServer\` | Managed HDA server. |
+| `samples\Opc.Classic.Samples.DaClient\` | Managed DA client. |
+| `samples\Opc.Classic.Samples.AeClient\` | Managed AE client. |
+| `samples\Opc.Classic.Samples.HdaClient\` | Managed HDA client. |
+| `samples\Opc.Classic.Samples.LoopbackDemo\` | In-process client/server loopback. |
+| `samples\Opc.Classic.Samples.CttServer\` | CTT-oriented managed DA server. |
+| `samples\Opc.Classic.Samples.AotCanary\` | NativeAOT publish canary. |
 
 Build or run a sample with the XML solution restored:
 
@@ -151,21 +155,9 @@ Publish the AOT canary:
 dotnet publish samples\Opc.Classic.Samples.AotCanary -c Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
 ```
 
-## Documentation site
+## Documentation
 
-Install DocFX if you need to build the documentation site locally:
-
-```powershell
-dotnet tool install -g docfx
-```
-
-Build and serve:
-
-```powershell
-docfx docfx.json --serve
-```
-
-Then open http://localhost:8080.
+Documentation is plain Markdown under `docs\`. Start at `docs\README.md` and keep new pages linked from the hub or the relevant section index. Do not add documentation-site generators or generated site output.
 
 ## Build quality gates
 
@@ -177,7 +169,7 @@ Before opening a pull request:
 4. Run targeted tests for the area you changed, and run `dotnet test Opc.Classic.slnx` when practical.
 5. Explain behavior changes, compatibility concerns, and any skipped tests in the PR description.
 
-Use clear commit messages. Do not use PowerShell here-strings for commit messages in this repository; write commit messages to a temporary file and commit with `git commit -F`, then remove the temporary file.
+Use clear commit messages. Do not use PowerShell here-strings for commit messages in this repository; write commit messages to a temporary file in the repository root and commit with `git commit -F`, then remove the file.
 
 ## Windows and OPC conformance jobs
 

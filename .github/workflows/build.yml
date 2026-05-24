@@ -187,7 +187,7 @@ jobs:
             Write-Warning "OpcCoreComponents.exe not found - native conformance will soft-skip"
           }
 
-      - name: Build native COM samples (Phase 14B reference)
+      - name: Build native COM samples
         shell: pwsh
         run: |
           $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
@@ -236,27 +236,8 @@ jobs:
         shell: pwsh
         run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category!=NativeConformance" --logger "trx;LogFileName=windows-tests.trx"
 
-      - name: Run native COM conformance tests (Phase 14B)
+      - name: Run native COM conformance tests
         shell: pwsh
         run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category=NativeConformance"
         if: success()
-        continue-on-error: true  # native conformance is opt-in until Phase 14B+14C land
-
-  docfx-build:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          global-json-file: global.json
-      - name: Install DocFX
-        run: dotnet tool install -g docfx
-      - name: Build site
-        run: docfx docfx.json
-      - name: Upload site
-        uses: actions/upload-artifact@v4
-        with:
-          name: docfx-site
-          path: _site
+        continue-on-error: true  # native conformance is opt-in until runner assets are available
