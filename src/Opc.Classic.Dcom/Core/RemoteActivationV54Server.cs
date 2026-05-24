@@ -54,21 +54,3 @@ public sealed class RemoteActivationV54Server {
             []));
     }
 }
-
-/// <summary>
-/// Decoded server-side IRemoteActivation::RemoteActivation request fields.
-/// </summary>
-public sealed record RemoteActivationRequest(
-    Guid Clsid,
-    Guid Iid,
-    int DwFlags,
-    IReadOnlyList<int> ProtocolSeqs);
-
-/// <summary>
-/// Server-side IRemoteActivation::RemoteActivation response scaffold.
-/// </summary>
-public sealed record RemoteActivationResponse(
-    int Hresult,
-    Guid Oxid,
-    Guid Ipid,
-    byte[] ObjRef);

@@ -17,7 +17,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 [Serializable]
 internal sealed class OrpcThis {
 
@@ -39,7 +41,7 @@ internal sealed class OrpcThis {
     /// <summary>
     /// Flags
     /// </summary>
-    public int ORPCFlags { set; get; } = 0;
+    public int ORPCFlags { set; get; }
 
     /// <summary>
     /// Extent array

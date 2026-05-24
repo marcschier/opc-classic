@@ -13,6 +13,7 @@ using SharpInterop.Rpc;
 using SharpCifs.Util.Sharpen;
 using System;
 using System.IO;
+using System.Globalization;
 
 namespace SharpInterop.Core; 
 /// <summary>
@@ -27,7 +28,7 @@ internal sealed class RemUnknown2ServerStub : Stub {
         kDefaults.SetProperty("rpc.ntlm.seal", "false");
         kDefaults.SetProperty("rpc.ntlm.keyExchange", "false");
         kDefaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
-        kDefaults.SetProperty("rpc.socketTimeout", 0.ToString());
+        kDefaults.SetProperty("rpc.socketTimeout", 0.ToString(CultureInfo.InvariantCulture));
     }
 
     /// <summary>
@@ -41,7 +42,7 @@ internal sealed class RemUnknown2ServerStub : Stub {
             else {
                 _timeoutModifiedfrom0 = true;
             }
-            Properties.SetProperty("rpc.socketTimeout", value.ToString());
+            Properties.SetProperty("rpc.socketTimeout", value.ToString(CultureInfo.InvariantCulture));
         }
     }
 
@@ -66,7 +67,7 @@ internal sealed class RemUnknown2ServerStub : Stub {
         _session = session;
         TransportFactory = ComTransportFactory.Instance;
         Properties = new PropertyBag(kDefaults);
-        Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
+        Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString(CultureInfo.InvariantCulture));
 
         if (session.NTLMv2Enabled) {
             Properties.SetProperty("rpc.ntlm.ntlmv2", "true");
@@ -184,6 +185,6 @@ internal sealed class RemUnknown2ServerStub : Stub {
 
     private readonly Session _session;
     private readonly string _remunknownIPID;
-    private readonly object _mutex = new object();
+    private readonly System.Threading.Lock _mutex = new();
     private bool _timeoutModifiedfrom0;
 }

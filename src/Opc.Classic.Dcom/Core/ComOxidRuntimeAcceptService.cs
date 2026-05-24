@@ -88,7 +88,7 @@ internal sealed class ComOxidRuntimeAcceptService : BackgroundService, IAsyncDis
         }
 
         try {
-            await foreach (var transport in _endpoint.AcceptConnectionsAsync(stoppingToken).WithCancellation(stoppingToken)) {
+            await foreach (var transport in _endpoint.AcceptConnectionsAsync(stoppingToken).WithCancellation(stoppingToken).ConfigureAwait(false)) {
                 Interlocked.Increment(ref _acceptedConnectionCount);
                 await _connections.Writer.WriteAsync(transport, stoppingToken).ConfigureAwait(false);
                 Interlocked.Increment(ref _queuedConnectionCount);
@@ -109,7 +109,7 @@ internal sealed class ComOxidRuntimeAcceptService : BackgroundService, IAsyncDis
 
     private async Task ProcessConnectionsAsync(CancellationToken cancellationToken) {
         try {
-            await foreach (var transport in _connections.Reader.ReadAllAsync(cancellationToken).WithCancellation(cancellationToken)) {
+            await foreach (var transport in _connections.Reader.ReadAllAsync(cancellationToken).WithCancellation(cancellationToken).ConfigureAwait(false)) {
                 await ProcessConnectionAsync(transport, cancellationToken).ConfigureAwait(false);
             }
         }

@@ -16,7 +16,9 @@ using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// Marshal helper
 /// </summary>
@@ -298,7 +300,7 @@ internal static class MarshalUnMarshalHelper {
 
 
     /// <inheritdoc/>
-    private class PointerImpl : ISerializerDeserializer {
+    private sealed class PointerImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -313,7 +315,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class UIntImpl : ISerializerDeserializer {
+    private sealed class UIntImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -329,7 +331,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class DualStringArrayImpl : ISerializerDeserializer {
+    private sealed class DualStringArrayImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -344,7 +346,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class ByteImpl : ISerializerDeserializer {
+    private sealed class ByteImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -360,7 +362,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class UShortImpl : ISerializerDeserializer {
+    private sealed class UShortImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -376,7 +378,7 @@ internal static class MarshalUnMarshalHelper {
 
 
     /// <inheritdoc/>
-    private class StructImpl : ISerializerDeserializer {
+    private sealed class StructImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -391,7 +393,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class UnionImpl : ISerializerDeserializer {
+    private sealed class UnionImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -406,7 +408,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class ComObjectSerDer : ISerializerDeserializer {
+    private sealed class ComObjectSerDer : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -443,9 +445,9 @@ internal static class MarshalUnMarshalHelper {
                 ((InteropFlags.FLAG_REPRESENTATION_ARRAY & context.Flag) != InteropFlags.FLAG_REPRESENTATION_ARRAY) &&
                 ptr.IsCustomObjRef) {
                 // now we need to ask the session for its marshaller unmarshaller based on the CLSID
-                var customBody = ptr.GetObjectReference(InterfacePointer.OBJREF_CUSTOM) as CustomInterfacePointerBody;
                 var customNdr = ndr;
-                if (customBody != null && customBody.ObjectData.Length > 0) {
+                if (ptr.GetObjectReference(InterfacePointer.OBJREF_CUSTOM) is CustomInterfacePointerBody customBody &&
+                    customBody.ObjectData.Length > 0) {
                     customNdr = new NdrCodec { Buffer = new NdrBuffer(customBody.ObjectData, 0), Format = ndr.Format };
                     customNdr.Buffer.Length = customBody.ObjectData.Length;
                 }
@@ -464,7 +466,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class VariantBodyImpl : ISerializerDeserializer {
+    private sealed class VariantBodyImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -479,7 +481,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class VariantImpl : ISerializerDeserializer {
+    private sealed class VariantImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -502,7 +504,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class CharacterImpl : ISerializerDeserializer {
+    private sealed class CharacterImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -516,7 +518,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class SByteImpl : ISerializerDeserializer {
+    private sealed class SByteImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -530,7 +532,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class ShortImpl : ISerializerDeserializer {
+    private sealed class ShortImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -551,7 +553,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class BooleanImpl : ISerializerDeserializer {
+    private sealed class BooleanImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -589,7 +591,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class IntegerImpl : ISerializerDeserializer {
+    private sealed class IntegerImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -607,7 +609,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class LongImpl : ISerializerDeserializer {
+    private sealed class LongImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -632,7 +634,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class DoubleImpl : ISerializerDeserializer {
+    private sealed class DoubleImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -658,7 +660,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class CurrencyImpl : ISerializerDeserializer {
+    private sealed class CurrencyImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value,
@@ -723,7 +725,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class DateImpl : ISerializerDeserializer {
+    private sealed class DateImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -746,7 +748,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class FloatImpl : ISerializerDeserializer {
+    private sealed class FloatImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -772,7 +774,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class StringImpl : ISerializerDeserializer {
+    private sealed class StringImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -978,7 +980,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class ComStringImpl : ISerializerDeserializer {
+    private sealed class ComStringImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -1004,7 +1006,7 @@ internal static class MarshalUnMarshalHelper {
 
 
     /// <inheritdoc/>
-    private class UUIDImpl : ISerializerDeserializer {
+    private sealed class UUIDImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
@@ -1035,7 +1037,7 @@ internal static class MarshalUnMarshalHelper {
 
 
     /// <inheritdoc/>
-    private class MInterfacePointerImpl : ISerializerDeserializer {
+    private sealed class MInterfacePointerImpl : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>
@@ -1051,7 +1053,7 @@ internal static class MarshalUnMarshalHelper {
     }
 
     /// <inheritdoc/>
-    private class MInterfacePointerImpl2 : ISerializerDeserializer {
+    private sealed class MInterfacePointerImpl2 : ISerializerDeserializer {
 
         /// <inheritdoc/>
         public void SerializeData(NdrCodec ndr, object value, CodecContext context) =>

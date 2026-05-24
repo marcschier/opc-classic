@@ -111,8 +111,8 @@ public class ProgId {
         winreg.CloseKey(handle);
         winreg.CloseConnection();
         // seperate the {}
-        var clsid = Clsid.ValueOf(key.SubstringSpecial(key.IndexOf("{", StringComparison.Ordinal) + 1,
-            key.IndexOf("}", StringComparison.Ordinal)));
+        var clsid = Clsid.ValueOf(key.SubstringSpecial(key.IndexOf('{') + 1,
+            key.IndexOf('}')));
         clsid.UseAutoRegistration = AutoRegistration;
         Interop.Internal_setClsidtoProgId(_progId, clsid.CLSID);
         return clsid;

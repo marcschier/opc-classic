@@ -18,8 +18,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Globalization;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// Thread for Oxid Resolver. Creates and accepts socket
 /// connections for resolving oxids. Gets started once for each instance
@@ -27,7 +30,8 @@ namespace SharpInterop.Core;
 /// Please note that the <b>"Server"</b> Service should be running on the
 /// machine where the COM server is running.
 /// </summary>
-internal sealed class ComOxidRuntime {
+internal sealed class ComOxidRuntime : IDisposable {
+    private static readonly Lock s_instanceLock = new();
     private static ComOxidRuntime _instance;
 
     /// <summary>
@@ -37,7 +41,7 @@ internal sealed class ComOxidRuntime {
         get {
             // TODO N1.2-followup: register ComOxidRuntime as an IServiceProvider singleton
             // and retire this legacy global mutable accessor.
-            lock (typeof(ComOxidRuntime)) {
+            lock (s_instanceLock) {
                 if (_instance == null) {
                     try {
                         _instance = new ComOxidRuntime();
@@ -98,7 +102,7 @@ internal sealed class ComOxidRuntime {
     /// Start resolver
     /// </summary>
     public void StartResolver() {
-        lock (typeof(ComOxidRuntime)) {
+        lock (s_instanceLock) {
             if (_resolverStarted) {
                 return;
             }
@@ -121,7 +125,7 @@ internal sealed class ComOxidRuntime {
     /// Stop resolver
     /// </summary>
     public void StopResolver() {
-        lock (typeof(ComOxidRuntime)) {
+        lock (s_instanceLock) {
             _thread.Interrupt();
             _thread.Join();
             _thread = null;
@@ -606,7 +610,7 @@ internal sealed class ComOxidRuntime {
     /// <summary>
     /// Ping set holder - one per session.
     /// </summary>
-    private class PingSetHolder {
+    private sealed class PingSetHolder {
         internal byte[] SetId { get; set; }
         internal string Username { get; set; }
         internal string Password { get; set; }
@@ -634,7 +638,7 @@ internal sealed class ComOxidRuntime {
     /// <summary>
     /// Oxid resolver thread
     /// </summary>
-    private class OxidResolverThread : SharpCifs.Util.Sharpen.Thread {
+    private sealed class OxidResolverThread : SharpCifs.Util.Sharpen.Thread {
 
         /// <summary>
         /// Create
@@ -657,7 +661,7 @@ internal sealed class ComOxidRuntime {
                     // now create the ComOxidRuntimeHelper Object and start it.
                     var properties = new PropertyBag(_outerInstance._defaults);
                     properties.SetProperty("IID",
-                        "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0".ToUpper()); // IOxidResolver
+                        "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0".ToUpper(CultureInfo.InvariantCulture)); // IOxidResolver
                     var oxidResolver = new ComOxidRuntimeHelper(properties);
                     oxidResolver.StartOxid(socket.GetLocalPort(), socket.GetLocalPort());
                 }
@@ -678,7 +682,7 @@ internal sealed class ComOxidRuntime {
 
     // java client, com server
     private readonly Dictionary<string, ComOxidDetails> _mapOfIPIDVsComponent =
-        new Dictionary<string, ComOxidDetails>();
+        new Dictionary<string, ComOxidDetails>(StringComparer.OrdinalIgnoreCase);
     // java client, com server
     private readonly Dictionary<LocalCoClass, ComOxidDetails> _mapOfLocalVsOxidDetails =
         new Dictionary<LocalCoClass, ComOxidDetails>();
@@ -700,18 +704,23 @@ internal sealed class ComOxidRuntime {
         new Dictionary<Session, PingSetHolder>();
     // java client, com server, so that we don't have to keep doing bind everytime.
     private readonly Dictionary<string, ComOxidStub> _mapOfAddressVsStub =
-        new Dictionary<string, ComOxidStub>();
+        new Dictionary<string, ComOxidStub>(StringComparer.OrdinalIgnoreCase);
     private readonly List<LocalCoClass> _listOfExportedComponents =
         new List<LocalCoClass>();
 
-    internal readonly object Mutex = new object(); // for access to the sockets
+    internal readonly Lock Mutex = new(); // for access to the sockets
     // for access to the maps
-    private readonly object _mapOfOIDVsComponentsLock = new object();
+    private readonly Lock _mapOfOIDVsComponentsLock = new();
     // for access to the AddressVsSession,Stub Map
-    private readonly object _mapOfSessionVsPingSetHolderLock = new object();
+    private readonly Lock _mapOfSessionVsPingSetHolderLock = new();
     // for access to the mapOfAddressVsStub
-    private readonly object _mapOfAddressVsStubLock = new object();
+    private readonly Lock _mapOfAddressVsStubLock = new();
 
+
+    public void Dispose() {
+        _clientPing?.Dispose();
+        _serverPing?.Dispose();
+    }
 
     private readonly PropertyBag _defaults = new PropertyBag();
     private readonly PropertyBag _defaults2 = new PropertyBag();

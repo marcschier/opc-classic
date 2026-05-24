@@ -18,7 +18,7 @@ public class CodecContext {
     /// <summary>
     /// List of deferred pointers
     /// </summary>
-    public List<ComPointer> DefferedPointers { get; set; } = new List<ComPointer>();
+    public IList<ComPointer> DefferedPointers { get; set; } = new List<ComPointer>();
 
     /// <summary>
     /// Special flags
@@ -33,7 +33,7 @@ public class CodecContext {
     /// <summary>
     /// Com objects
     /// </summary>
-    public List<IComObject> ComObjects { get; set; } = new List<IComObject>();
+    public IList<IComObject> ComObjects { get; set; } = new List<IComObject>();
 
     /// <summary>
     /// Decodes the deferred pointers
@@ -52,7 +52,7 @@ public class CodecContext {
             // this should replace the value in the original place.
             listOfDefferedPointers[x].ReplaceSelfWithNewPointer(replacement);
             x++;
-            listOfDefferedPointers.InsertRange(x, DefferedPointers);
+            InsertRange(listOfDefferedPointers, x, DefferedPointers);
         }
     }
 
@@ -111,7 +111,14 @@ public class CodecContext {
                     listOfDefferedPointers[x], this);
             }
             x++; // incrementing index
-            listOfDefferedPointers.InsertRange(x, DefferedPointers);
+            InsertRange(listOfDefferedPointers, x, DefferedPointers);
+        }
+    }
+
+    private static void InsertRange<T>(IList<T> target, int index, IEnumerable<T> values) {
+        foreach (var value in values) {
+            target.Insert(index, value);
+            index++;
         }
     }
 }

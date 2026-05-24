@@ -75,7 +75,7 @@ public static class ObjectFactory {
     public static IComObject NarrowObject(IComObject comObject) {
         if (comObject == null || comObject.LocalReference) {
             throw new System.ArgumentException(
-                Interop.GetLocalizedMessage(ErrorCode.INTEROP_COMFACTORY_ILLEGAL_ARG));
+                Interop.GetLocalizedMessage(ErrorCode.INTEROP_COMFACTORY_ILLEGAL_ARG), nameof(comObject));
         }
         // Will later on add another way to dynamically moving to factories.
         return AutomationFactory.NarrowObject(comObject);

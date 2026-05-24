@@ -14,7 +14,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// This class represents the <code>Struct</code> data type.
 /// for conformant and conformant+varying arrays the maxcount
@@ -36,7 +38,7 @@ public sealed class Struct {
     /// <summary>
     /// Returns all members as java.util.List.
     /// </summary>
-    public List<object> Members { get; } = new List<object>();
+    public IList<object> Members { get; } = new List<object>();
 
     /// <summary>
     /// Length
@@ -334,5 +336,7 @@ public sealed class Struct {
     }
 
     private readonly List<int> _listOfDimensions = new List<int>();
+    public override string ToString() => "[" + string.Join(", ", Members) + "]";
+
     private bool _arrayAdded;
 }

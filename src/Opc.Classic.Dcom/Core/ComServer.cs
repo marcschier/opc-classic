@@ -20,8 +20,12 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using SharpInterop.Rpc.Core;
+using System.Globalization;
+using System.Threading;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// Startup class representing a COM Server.
 /// Sample Usage :
@@ -49,7 +53,7 @@ public sealed class ComServer : Stub {
         kDefaults.SetProperty("rpc.ntlm.keyExchange", "false");
         kDefaults.SetProperty("rpc.ntlm.sso", "false");
         kDefaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
-        kDefaults.SetProperty("rpc.socketTimeout", 0.ToString());
+        kDefaults.SetProperty("rpc.socketTimeout", 0.ToString(CultureInfo.InvariantCulture));
         //        rpc.connectionContext = rpc.security.ntlm.NtlmConnectionContext
         //        rpc.ntlm.sign = false
         //        rpc.ntlm.seal = false
@@ -84,7 +88,7 @@ public sealed class ComServer : Stub {
     /// If this IP is not found then the "machine name" binding will be used. If this param is <code>null</code> then the first binding obtained from the interface pointer is used. </param>
     internal ComServer(Session session, InterfacePointer interfacePointer, string ipAddress) {
         if (interfacePointer == null || session == null) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS), nameof(session));
         }
 
         if (session.Stub != null) {
@@ -97,9 +101,7 @@ public sealed class ComServer : Stub {
 
         //        ipAddress="192.168.1.104";
         if (ipAddress != null && !ipAddress.Trim().Equals("", StringComparison.CurrentCultureIgnoreCase)) {
-            if (!kListOfIps.Contains(ipAddress)) {
-                kListOfIps.Add(ipAddress.ToLower());
-            }
+            kListOfIps.Add(ipAddress);
         }
 
         TransportFactory = ComTransportFactory.Instance;
@@ -108,7 +110,7 @@ public sealed class ComServer : Stub {
         Properties.SetProperty("rpc.security.username", session.UserName);
         Properties.SetProperty("rpc.security.password", session.Password);
         Properties.SetProperty("rpc.ntlm.domain", session.Domain);
-        Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
+        Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString(CultureInfo.InvariantCulture));
         if (session.NTLMv2Enabled) {
             Properties.SetProperty("rpc.ntlm.ntlmv2", "true");
         }
@@ -134,17 +136,17 @@ public sealed class ComServer : Stub {
                     continue;
                 }
                 // get the one with IP address
-                var idx = binding.NetworkAddress.IndexOf(".", StringComparison.Ordinal);
+                var idx = binding.NetworkAddress.IndexOf('.');
                 if (idx != -1) {
                     try {
-                        if (kListOfIps.Contains(binding.NetworkAddress.ToLower())) {
+                        if (kListOfIps.Contains(binding.NetworkAddress)) {
                             nameBinding = null;
                             break;
                         }
 
                         // now check for the one with port
-                        idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); // this contains the port
-                        if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx).ToLower())) {
+                        idx = binding.NetworkAddress.IndexOf('['); // this contains the port
+                        if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx))) {
                             nameBinding = null;
                             break;
                         }
@@ -165,7 +167,7 @@ public sealed class ComServer : Stub {
         // will use this last binding .
         // and currently only TCPIP is supported.
         var address = binding.NetworkAddress;
-        if (address.IndexOf("[", StringComparison.Ordinal) == -1) { // this does not contain the port
+        if (address.IndexOf('[') == -1) { // this does not contain the port
             var addr = Interop.GetIPForHostName(address); // to use the binding supplied by the user.
             if (addr != null) {
                 address = addr;
@@ -174,18 +176,18 @@ public sealed class ComServer : Stub {
             address += "[135]";
         }
         else {
-            var idx = address.IndexOf("[", StringComparison.Ordinal);
+            var idx = address.IndexOf('[');
             var host = binding.NetworkAddress.Substring(0, idx);
             var addr = Interop.GetIPForHostName(host); // to use the binding supplied by the user.
             if (addr != null) {
-                address = addr + address.Substring(idx);
+                address = string.Concat(addr, address.AsSpan(idx));
             }
         }
         Address = "ncacn_ip_tcp:" + address;
         _session = session;
         _session.TargetServer = Address.SubstringSpecial(
-            Address.IndexOf(":", StringComparison.Ordinal) + 1,
-            Address.IndexOf("[", StringComparison.Ordinal));
+            Address.IndexOf(':') + 1,
+            Address.IndexOf('['));
         _oxidResolver = new OxidResolver(((StdObjRef)
             interfacePointer.GetObjectReference(InterfacePointer.OBJREF_STANDARD)).Oxid);
         try {
@@ -229,17 +231,17 @@ public sealed class ComServer : Stub {
                     continue;
                 }
                 // get the one with IP address
-                var idx = binding.NetworkAddress.IndexOf(".", StringComparison.Ordinal);
+                var idx = binding.NetworkAddress.IndexOf('.');
                 if (idx != -1) {
                     try {
-                        if (kListOfIps.Contains(binding.NetworkAddress.ToLower())) {
+                        if (kListOfIps.Contains(binding.NetworkAddress)) {
                             nameBinding = null;
                             break;
                         }
 
                         // now check for the one with port
-                        idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); // this contains the port
-                        if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx).ToLower())) {
+                        idx = binding.NetworkAddress.IndexOf('['); // this contains the port
+                        if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx))) {
                             nameBinding = null;
                             break;
                         }
@@ -268,11 +270,11 @@ public sealed class ComServer : Stub {
         }
 
         address = binding.NetworkAddress; // this will always have the port.
-        var index = address.IndexOf("[", StringComparison.Ordinal);
+        var index = address.IndexOf('[');
         var hostname = binding.NetworkAddress.Substring(0, index);
         var ipAddr = Interop.GetIPForHostName(hostname); // to use the binding supplied by the user.
         if (ipAddr != null) {
-            address = ipAddr + address.Substring(index);
+            address = string.Concat(ipAddr, address.AsSpan(index));
         }
 
         // and currently only TCPIP is supported.
@@ -332,7 +334,7 @@ public sealed class ComServer : Stub {
     public ComServer(ProgId progId, string address, Session session) {
         if (progId == null || address == null || session == null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS));
+                ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS), nameof(session));
         }
         if (session.Stub != null) {
             throw new InteropException(ErrorCode.INTEROP_SESSION_ALREADY_ESTABLISHED);
@@ -340,7 +342,7 @@ public sealed class ComServer : Stub {
 
         if (session.SSOEnabled) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS2));
+                ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS2), nameof(session));
         }
 
         address = address.Trim();
@@ -367,7 +369,7 @@ public sealed class ComServer : Stub {
     public ComServer(Clsid clsid, string address, Session session) {
         if (clsid == null || address == null || session == null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS));
+                ErrorCode.INTEROP_COMSTUB_ILLEGAL_ARGUMENTS), nameof(session));
         }
         if (session.Stub != null) {
             throw new InteropException(ErrorCode.INTEROP_SESSION_ALREADY_ESTABLISHED);
@@ -389,7 +391,7 @@ public sealed class ComServer : Stub {
         TransportFactory = ComTransportFactory.Instance;
         // now read the session and prepare information for the stub.
         Properties = new PropertyBag(kDefaults);
-        Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
+        Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString(CultureInfo.InvariantCulture));
         Address = address;
 
         if (session.NTLMv2Enabled) {
@@ -409,9 +411,9 @@ public sealed class ComServer : Stub {
             Interop.Internal_dumpMap();
         }
 
-        _clsid = clsid.CLSID.ToUpper();
+        _clsid = clsid.CLSID.ToUpper(CultureInfo.InvariantCulture);
         _session = session;
-        _session.TargetServer = address.SubstringSpecial(address.IndexOf(":", StringComparison.Ordinal) + 1, address.IndexOf("[", StringComparison.Ordinal));
+        _session.TargetServer = address.SubstringSpecial(address.IndexOf(':') + 1, address.IndexOf('['));
         try {
             Init();
         }
@@ -497,11 +499,11 @@ public sealed class ComServer : Stub {
                     Init();
                 }
                 else {
-                    throw e;
+                    throw;
                 }
             }
             else {
-                throw e;
+                throw;
             }
         }
 
@@ -520,7 +522,7 @@ public sealed class ComServer : Stub {
 
         var attachcomplete = false;
         try {
-            _syntax = Interfaces.IID_IObjectExporter.ToLower() + ":0.0";
+            _syntax = Interfaces.IID_IObjectExporter.ToLower(CultureInfo.InvariantCulture) + ":0.0";
             Attach();
             // socket to COM server is established
             attachcomplete = true;
@@ -620,10 +622,10 @@ public sealed class ComServer : Stub {
                 continue;
             }
             // get the one with IP address
-            var idx = binding.NetworkAddress.IndexOf(".", StringComparison.Ordinal);
+            var idx = binding.NetworkAddress.IndexOf('.');
             if (idx != -1) {
                 try {
-                    idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); // this contains the port
+                    idx = binding.NetworkAddress.IndexOf('['); // this contains the port
                     if (idx != -1 && binding.NetworkAddress.Substring(0, idx).Equals(targetAddress, StringComparison.CurrentCultureIgnoreCase)) {
                         break;
                     }
@@ -637,7 +639,7 @@ public sealed class ComServer : Stub {
                 // then we are not sure which is the right IP and which might be virtual, refer to
                 // issue faced by Igor.
                 nameBinding = binding;
-                idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); // this contains the port
+                idx = binding.NetworkAddress.IndexOf('['); // this contains the port
                 if (binding.NetworkAddress.Substring(0, idx).Equals(targetAddress, StringComparison.CurrentCultureIgnoreCase)) {
                     break;
                 }
@@ -661,11 +663,11 @@ public sealed class ComServer : Stub {
         }
 
         var address = binding.NetworkAddress; // this will always have the port.
-        var index = address.IndexOf("[", StringComparison.Ordinal);
+        var index = address.IndexOf('[');
         var hostname = binding.NetworkAddress.Substring(0, index);
         var ipAddr = Interop.GetIPForHostName(hostname); // to use the binding supplied by the user.
         if (ipAddr != null) {
-            address = ipAddr + address.Substring(index);
+            address = string.Concat(ipAddr, address.AsSpan(index));
         }
 
         // and currently only TCPIP is supported.
@@ -926,7 +928,7 @@ public sealed class ComServer : Stub {
                 _timeoutModifiedfrom0 = true;
             }
 
-            Properties.SetProperty("rpc.socketTimeout", value.ToString());
+            Properties.SetProperty("rpc.socketTimeout", value.ToString(CultureInfo.InvariantCulture));
         }
     }
 
@@ -936,9 +938,9 @@ public sealed class ComServer : Stub {
     private Session _session;
     private bool _serverInstantiated;
     private string _remunknownIPID;
-    private readonly object _mutex = new object();
+    private readonly Lock _mutex = new();
     private string _syntax;
     private bool _timeoutModifiedfrom0;
     private readonly InterfacePointer _interfacePtrCtor;
-    private static readonly List<string> kListOfIps = new List<string>();
+    private static readonly HashSet<string> kListOfIps = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 }

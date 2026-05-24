@@ -18,8 +18,11 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Globalization;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// Representation of an active session with a COM server.
 /// All interface references being given out by
@@ -186,10 +189,7 @@ public sealed class Session {
     /// <seealso cref="ComServer(Clsid, Session)"> </seealso>
     /// <seealso cref="ComServer(ProgId, Session)"> </seealso>
     public static Session CreateSession(IAuthInfo authInfo) {
-        if (authInfo == null) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_AUTH_NOT_SUPPLIED));
-        }
+        ArgumentNullException.ThrowIfNull(authInfo);
         lock (kMutex) {
             int id;
             do {
@@ -221,10 +221,9 @@ public sealed class Session {
     /// <seealso cref="ComServer(ProgId, Session)"> </seealso>
     public static Session CreateSession(string domain, string username,
         string password) {
-        if (username == null || password == null || domain == null) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_AUTH_NOT_SUPPLIED));
-        }
+        ArgumentNullException.ThrowIfNull(username);
+        ArgumentNullException.ThrowIfNull(password);
+        ArgumentNullException.ThrowIfNull(domain);
         lock (kMutex) {
             int id;
             do {
@@ -275,8 +274,8 @@ public sealed class Session {
     /// <seealso cref="ComServer(Clsid, Session)"></seealso>
     /// <seealso cref="ComServer(ProgId, Session)"></seealso>
     public static Session CreateSession() {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(
+        if (!OperatingSystem.IsWindows()) {
+            throw new PlatformNotSupportedException(Interop.GetLocalizedMessage(
                 ErrorCode.INTEROP_WIN_ONLY));
         }
         lock (kMutex) {
@@ -363,7 +362,7 @@ public sealed class Session {
 
             //now to kill the stub itself
             if (session._stub.ServerInterfacePointer != null) {
-                if (!listOfFreeIPIDs.Contains(session._stub.ServerInterfacePointer.IPID)) {
+                if (!listOfFreeIPIDs.Contains(session._stub.ServerInterfacePointer.IPID, StringComparer.OrdinalIgnoreCase)) {
                     list.Add(session.PrepareForReleaseRef(session._stub.ServerInterfacePointer.IPID));
                     listOfFreeIPIDs.Add(session._stub.ServerInterfacePointer.IPID);
                 }
@@ -425,7 +424,7 @@ public sealed class Session {
     /// <summary>
     /// Session tracking reference
     /// </summary>
-    internal class IPID_SessionID_Holder {
+    internal sealed class IPID_SessionID_Holder {
 
         /// <summary>
         /// Ipid
@@ -465,9 +464,11 @@ public sealed class Session {
         /// <summary>
         /// Finalize
         /// </summary>
+#pragma warning disable MA0055 // Legacy COM reference cleanup uses finalizers until the lifetime model is refactored.
         ~IPID_SessionID_Holder() {
             GcCollectSession(this);
         }
+#pragma warning restore MA0055
     }
 
     /// <summary>
@@ -550,7 +551,7 @@ public sealed class Session {
         }
     }
 
-    private static readonly object kMutex = new object();
+    private static readonly Lock kMutex = new();
     private static readonly Timer kReleaseRefsTimer;
     private static readonly Random kRandomGen = new Random();
     private static readonly Dictionary<WeakReference, Tuple<string, int>> kMapOfObjects =
@@ -558,7 +559,7 @@ public sealed class Session {
     private static readonly Dictionary<Oxid, Session> kMapOfOxidsVsSessions =
         new Dictionary<Oxid, Session>();
     private static readonly IDictionary<string, ComCustomMarshallerUnMarshaller> kMapOfCustomCLSIDs =
-        new Dictionary<string, ComCustomMarshallerUnMarshaller>();
+        new Dictionary<string, ComCustomMarshallerUnMarshaller>(StringComparer.OrdinalIgnoreCase);
     private static readonly Dictionary<int, Session> kMapOfSessionIdsVsSessions =
         new Dictionary<int, Session>();
     private static readonly List<Session> kListOfSessions = new List<Session>();
@@ -581,7 +582,7 @@ public sealed class Session {
     /// <summary>
     /// Returns the <see cref="IAuthInfo"/> (if any) associated with this session.
     /// </summary>
-    public IAuthInfo AuthInfo { get; private set; } = null;
+    public IAuthInfo AuthInfo { get; private set; }
 
     /// <summary>
     /// Returns whether this session is SSO or not.
@@ -668,7 +669,7 @@ public sealed class Session {
     /// <summary>
     /// Destroying
     /// </summary>
-    internal bool SessionInDestroy { get; private set; } = false;
+    internal bool SessionInDestroy { get; private set; }
 
     /// <summary>
     /// Target server
@@ -895,7 +896,7 @@ public sealed class Session {
         Log.Logger.Information("addDereferencedIpids for session : " +
             SessionIdentifier + ", IPID is: " + IPID);
         lock (kMutex) {
-            if (!_listOfDeferencedIpids.Contains(IPID)) {
+            if (!_listOfDeferencedIpids.Contains(IPID, StringComparer.OrdinalIgnoreCase)) {
                 _listOfDeferencedIpids.Add(IPID);
             }
         }
@@ -972,6 +973,7 @@ public sealed class Session {
     /// <summary>
     /// TODO: IDisposable
     /// </summary>
+#pragma warning disable MA0055 // Legacy session cleanup uses finalizers until IDisposable ownership is introduced.
     ~Session() {
         try {
             DestroySession(this);
@@ -980,6 +982,7 @@ public sealed class Session {
             Log.Logger.Verbose("Exception in finalize when destroying session " + e.Message);
         }
     }
+#pragma warning restore MA0055
 
     /// <summary>
     /// Get unreferenced handler
@@ -987,7 +990,7 @@ public sealed class Session {
     /// <param name="ipid"></param>
     /// <returns></returns>
     internal IUnreferenced GetUnreferencedHandler(string ipid) {
-        lock (this) {
+        lock (_unreferencedHandlersLock) {
             return _mapOfUnreferencedHandlers.GetOrDefault(ipid);
         }
     }
@@ -998,7 +1001,7 @@ public sealed class Session {
     /// <param name="ipid"></param>
     /// <param name="unreferenced"></param>
     internal void RegisterUnreferencedHandler(string ipid, IUnreferenced unreferenced) {
-        lock (this) {
+        lock (_unreferencedHandlersLock) {
             _mapOfUnreferencedHandlers.AddOrUpdate(ipid, unreferenced);
         }
     }
@@ -1008,7 +1011,7 @@ public sealed class Session {
     /// </summary>
     /// <param name="ipid"></param>
     internal void UnregisterUnreferencedHandler(string ipid) {
-        lock (this) {
+        lock (_unreferencedHandlersLock) {
             _mapOfUnreferencedHandlers.Remove(ipid);
         }
     }
@@ -1076,7 +1079,7 @@ public sealed class Session {
     /// <param name="customClass"> </param>
     public void RegisterCustomMarshallerUnMarshallerTemplate(string CLSID,
         ComCustomMarshallerUnMarshaller customClass) =>
-        kMapOfCustomCLSIDs.AddOrUpdate(CLSID.ToUpper(), customClass);
+        kMapOfCustomCLSIDs.AddOrUpdate(CLSID.ToUpper(CultureInfo.InvariantCulture), customClass);
 
     /// <summary>
     /// Get template
@@ -1084,7 +1087,7 @@ public sealed class Session {
     /// <param name="CLSID"></param>
     /// <returns></returns>
     internal ComCustomMarshallerUnMarshaller GetCustomMarshallerUnMarshallerTemplate(
-        string CLSID) => kMapOfCustomCLSIDs.GetOrDefault(CLSID.ToUpper());
+        string CLSID) => kMapOfCustomCLSIDs.GetOrDefault(CLSID.ToUpper(CultureInfo.InvariantCulture));
 
     private string _username;
     private string _password;
@@ -1095,10 +1098,11 @@ public sealed class Session {
     private bool _useNTLMv2 = true;
     private readonly List<string> _listOfDeferencedIpids = new List<string>();
     private readonly List<Session> _links = new List<Session>();
+    private readonly Lock _unreferencedHandlersLock = new();
     private readonly Dictionary<string, IUnreferenced> _mapOfUnreferencedHandlers =
-        new Dictionary<string, IUnreferenced>();
+        new Dictionary<string, IUnreferenced>(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, int> _mapOfIPIDsVsRefcounts =
-        new Dictionary<string, int>();
+        new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, int> _mapOfIPIDsVsWeakReferences =
-        new Dictionary<string, int>();
+        new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 }

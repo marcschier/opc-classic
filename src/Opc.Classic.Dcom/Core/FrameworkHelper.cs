@@ -26,9 +26,8 @@ public static class FrameworkHelper {
     /// <param name="src"> </param>
     /// <param name="target"> </param>
     internal static void Link2Sessions(Session src, Session target) {
-        if (src == null || target == null) {
-            throw new NullReferenceException();
-        }
+        ArgumentNullException.ThrowIfNull(src);
+        ArgumentNullException.ThrowIfNull(target);
         Session.LinkTwoSessions(src, target);
     }
 
@@ -38,9 +37,8 @@ public static class FrameworkHelper {
     /// <param name="src"> </param>
     /// <param name="unlinkedSession"> </param>
     internal static void UnLinkSession(Session src, Session unlinkedSession) {
-        if (src == null || unlinkedSession == null) {
-            throw new NullReferenceException();
-        }
+        ArgumentNullException.ThrowIfNull(src);
+        ArgumentNullException.ThrowIfNull(unlinkedSession);
         Session.UnLinkSession(src, unlinkedSession);
     }
 
@@ -83,7 +81,7 @@ public static class FrameworkHelper {
     /// <returns></returns>
     internal static IComObject InstantiateComObject2(Session session, InterfacePointer ptr) {
         if (ptr == null) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_COMFACTORY_ILLEGAL_ARG));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_COMFACTORY_ILLEGAL_ARG), nameof(ptr));
         }
 
         IComObject retval = null;
@@ -185,12 +183,12 @@ public static class FrameworkHelper {
     public static IComObject InstantiateComObject(Session session, IComObject comObject) {
         if (comObject.AssociatedSession != null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_SESSION_ALREADY_ATTACHED));
+                ErrorCode.INTEROP_SESSION_ALREADY_ATTACHED), nameof(comObject));
         }
 
         if (comObject.LocalReference) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COMOBJ_LOCAL_REF));
+                ErrorCode.INTEROP_COMOBJ_LOCAL_REF), nameof(comObject));
         }
 
         return InstantiateComObject(session,
@@ -238,7 +236,7 @@ public static class FrameworkHelper {
             sourceUUID == null ||
             sourceUUID.Equals("", StringComparison.CurrentCultureIgnoreCase)) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_CALLBACK_INVALID_PARAMS));
+                ErrorCode.INTEROP_CALLBACK_INVALID_PARAMS), nameof(sourceUUID));
         }
 
         Log.Logger.Information("Attaching event handler for  comObject: " +

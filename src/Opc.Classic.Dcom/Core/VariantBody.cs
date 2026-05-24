@@ -14,12 +14,14 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System;
 using System.Collections.Generic;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// Variant body
 /// </summary>
 [Serializable]
-internal class VariantBody {
+internal sealed class VariantBody {
 
     public const short VT_PTR = 0x1A;
     public const short VT_SAFEARRAY = 0x1B;
@@ -70,7 +72,7 @@ internal class VariantBody {
 
         IsByRef = isByRef;
         var types = Variant.GetSupportedType(_object, dataType);
-        _type = types | (isByRef ? VariantType.VT_BYREF : 0);
+        _type = types | (isByRef ? VariantType.VT_BYREF : VariantType.VT_EMPTY);
         Log.Logger.Verbose("In VariantBody(Object,bool,int) : dataType is " + dataType +
             ", referent class is " + _object.GetType() + ", byRef is " + isByRef);
         if (dataType == VariantType.VT_NULL) {
@@ -85,9 +87,7 @@ internal class VariantBody {
     /// </summary>
     /// <param name="value"> </param>
     internal VariantBody(Null value) : this(0, false) {
-        if (value == null) {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
         IsNull = true;
         _type = VariantType.VT_NULL;
     }
@@ -642,7 +642,7 @@ internal class VariantBody {
 
         VariantBody variant;
         if ((variantType & VariantType.VT_ARRAY) == VariantType.VT_ARRAY) {
-            var isByRef = (variantType & VariantType.VT_BYREF) != 0;
+            var isByRef = (variantType & VariantType.VT_BYREF) != VariantType.VT_EMPTY;
             // the struct may be null if the array has nothing
             var safeArray = GetDecodedValueAsArray(ndr, variantType & ~VariantType.VT_ARRAY, isByRef, context);
             var type2 = variantType;
@@ -650,7 +650,7 @@ internal class VariantBody {
                 type2 &= ~VariantType.VT_BYREF; // so that actual type can be determined
             }
 
-            type2 &= (VariantType)0x0FFF;
+            type2 &= VariantType.VT_TYPEMASK;
             if (type2 == VariantType.VT_INT) {
                 localContext.Flag |= InteropFlags.FLAG_REPRESENTATION_VT_INT;
             }
@@ -677,9 +677,9 @@ internal class VariantBody {
             variant._flag = localContext.Flag;
         }
         else {
-            var isByRef = (variantType & VariantType.VT_BYREF) != 0;
+            var isByRef = (variantType & VariantType.VT_BYREF) != VariantType.VT_EMPTY;
             variant = new VariantBody(GetDecodedValue(ndr, variantType, isByRef, localContext), isByRef, variantType);
-            var type2 = variantType & (VariantType)0x0FFF;
+            var type2 = variantType & VariantType.VT_TYPEMASK;
             if (type2 == VariantType.VT_INT) {
                 variant._flag = InteropFlags.FLAG_REPRESENTATION_VT_INT;
             }
@@ -735,7 +735,7 @@ internal class VariantBody {
     /// <returns></returns>
     private static Type GetVarClass(VariantType type) {
         // now first to check if this is a pointer or not.
-        type &= (VariantType)0x0FFF; // 0x4XXX & 0x0FFF = real type
+        type &= VariantType.VT_TYPEMASK; // 0x4XXX & 0x0FFF = real type
 
         Type c;
         switch (type) {
@@ -794,7 +794,7 @@ internal class VariantBody {
                 type = VariantType.VT_ARRAY | type;
             }
         }
-        if (IsByRef && type != 0 && !c.Equals(typeof(ComArray))) {
+        if (IsByRef && type != VariantType.VT_EMPTY && !c.Equals(typeof(ComArray))) {
             // then it is a pointer. have to set it correctly
             type |= VariantType.VT_BYREF;
         }
@@ -990,7 +990,7 @@ internal class VariantBody {
                     length = ArrayLengthForVarType * 8;
                 }
                 catch (InteropException e) {
-                    throw new Exception("", e);
+                    throw new InvalidOperationException("Unable to compute VARIANT array length.", e);
                 }
 
                 return length;

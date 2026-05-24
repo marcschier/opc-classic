@@ -22,7 +22,7 @@ public sealed class ComPointer {
     /// <summary>
     /// Deferred
     /// </summary>
-    internal bool Deffered { set; get; } = false;
+    internal bool Deffered { set; get; }
 
     /// <summary>
     /// Returns the referent identifier.

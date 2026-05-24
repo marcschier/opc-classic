@@ -56,7 +56,7 @@ public sealed class ComString {
         }
         else {
             throw new ArgumentException(
-                Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_FLAG_ERROR));
+                Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_FLAG_ERROR), nameof(type));
         }
         Variant = null;
         VariantByRef = null;
@@ -91,7 +91,7 @@ public sealed class ComString {
         }
         else {
             throw new ArgumentException(
-                Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_FLAG_ERROR));
+                Interop.GetLocalizedMessage(ErrorCode.INTEROP_UTIL_FLAG_ERROR), nameof(type));
         }
         _member.SetFlags(type | InteropFlags.FLAG_REPRESENTATION_VALID_STRING);
 

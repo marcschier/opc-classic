@@ -17,8 +17,13 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Security;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// Represents a local <code>COCLASS</code>.
 /// Please refer to MSInternetExplorer, Test_ITestServer2_Impl, SampleTestServer
@@ -57,7 +62,7 @@ public sealed class LocalCoClass {
         set {
             if (value != null) {
                 for (var i = 0; i < value.Count; i++) {
-                    var s = value[i].ToUpper();
+                    var s = value[i].ToUpper(CultureInfo.InvariantCulture);
                     SupportedInterfaces.Add(s);
                     _listOfSupportedEventInterfaces.Add(s);
                     _mapOfIIDsToInterfaceDefinitions.AddOrUpdate(s, InterfaceDefinition);
@@ -81,7 +86,7 @@ public sealed class LocalCoClass {
     /// <summary>
     /// called from com runtime.
     /// </summary>
-    internal byte[] ObjectId { set; get; } = null;
+    internal byte[] ObjectId { set; get; }
 
     /// <summary>
     /// Interface pointer
@@ -90,8 +95,8 @@ public sealed class LocalCoClass {
         set {
             AlreadyExported = true;
             _interfacePointer = new WeakReference(value);
-            var ipid = value.IPID.ToUpper();
-            var iid = value.IID.ToUpper();
+            var ipid = value.IPID.ToUpper(CultureInfo.InvariantCulture);
+            var iid = value.IID.ToUpper(CultureInfo.InvariantCulture);
             _iIDvsIpid.AddOrUpdate(iid, ipid);
             _ipidVsIID.AddOrUpdate(ipid, iid);
         }
@@ -142,7 +147,7 @@ public sealed class LocalCoClass {
     public LocalCoClass(LocalInterfaceDefinition interfaceDefinition, Type type) {
         if (interfaceDefinition == null || type == null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
         _identifier = type.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
         Init(interfaceDefinition, type, null, false);
@@ -170,7 +175,7 @@ public sealed class LocalCoClass {
         bool useInterfaceDefinitionIID) {
         if (interfaceDefinition == null || type == null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
         _identifier = type.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
         Init(interfaceDefinition, type, null, useInterfaceDefinitionIID);
@@ -191,7 +196,7 @@ public sealed class LocalCoClass {
         object instance) {
         if (interfaceDefinition == null || instance == null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
         _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
         Init(interfaceDefinition, null, instance, false);
@@ -219,7 +224,7 @@ public sealed class LocalCoClass {
         object instance, bool useInterfaceDefinitionIID) {
         if (interfaceDefinition == null || instance == null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
         _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
         Init(interfaceDefinition, null, instance, useInterfaceDefinitionIID);
@@ -239,9 +244,9 @@ public sealed class LocalCoClass {
         InterfaceDefinition = interfaceDefinition;
         interfaceDefinition.Type = type;
         interfaceDefinition.Instance = instance;
-        SupportedInterfaces.Add(interfaceDefinition.InterfaceIdentifier.ToUpper());
+        SupportedInterfaces.Add(interfaceDefinition.InterfaceIdentifier.ToUpper(CultureInfo.InvariantCulture));
         _mapOfIIDsToInterfaceDefinitions.AddOrUpdate(
-            interfaceDefinition.InterfaceIdentifier.ToUpper(), interfaceDefinition);
+            interfaceDefinition.InterfaceIdentifier.ToUpper(CultureInfo.InvariantCulture), interfaceDefinition);
         ICoClassUnderRealIID = realIID;
     }
 
@@ -260,10 +265,10 @@ public sealed class LocalCoClass {
         object instance) {
         if (interfaceDefinition == null || instance == null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
         interfaceDefinition.Instance = instance;
-        var s = interfaceDefinition.InterfaceIdentifier.ToUpper();
+        var s = interfaceDefinition.InterfaceIdentifier.ToUpper(CultureInfo.InvariantCulture);
         SupportedInterfaces.Add(s);
         _listOfSupportedEventInterfaces.Add(s);
         _mapOfIIDsToInterfaceDefinitions.AddOrUpdate(s, interfaceDefinition);
@@ -285,10 +290,10 @@ public sealed class LocalCoClass {
         Type type) {
         if (interfaceDefinition == null || type == null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO), nameof(interfaceDefinition));
         }
         interfaceDefinition.Type = type;
-        var s = interfaceDefinition.InterfaceIdentifier.ToUpper();
+        var s = interfaceDefinition.InterfaceIdentifier.ToUpper(CultureInfo.InvariantCulture);
         SupportedInterfaces.Add(s);
         _listOfSupportedEventInterfaces.Add(s);
         _mapOfIIDsToInterfaceDefinitions.AddOrUpdate(s, interfaceDefinition);
@@ -300,18 +305,16 @@ public sealed class LocalCoClass {
     /// <returns> <code>null</code> if no interface definition matching the <code>IID</code>
     /// has been found. </returns>
     public LocalInterfaceDefinition GetInterfaceDefinition(string IID) =>
-        _mapOfIIDsToInterfaceDefinitions.GetOrDefault(IID.ToUpper());
+        _mapOfIIDsToInterfaceDefinitions.GetOrDefault(IID.ToUpper(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Registers a generated dispatch table for an IID.
     /// </summary>
     internal void AddDispatchTable(string IID, IDispatchTable dispatchTable) {
-        if (IID == null || dispatchTable == null) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO));
-        }
+        ArgumentNullException.ThrowIfNull(IID);
+        ArgumentNullException.ThrowIfNull(dispatchTable);
 
-        var key = IID.ToUpper();
+        var key = IID.ToUpper(CultureInfo.InvariantCulture);
         _mapOfIIDsToDispatchTables.AddOrUpdate(key, dispatchTable);
         if (_mapOfIIDsToInterfaceDefinitions.TryGetValue(key, out var interfaceDefinition)) {
             interfaceDefinition.DispatchTable = dispatchTable;
@@ -324,8 +327,8 @@ public sealed class LocalCoClass {
     /// <param name="iid"></param>
     /// <returns></returns>
     internal bool IsIIDPresent(string iid) {
-        iid = iid.ToUpper();
-        return SupportedInterfaces.Contains(iid);
+        iid = iid.ToUpper(CultureInfo.InvariantCulture);
+        return SupportedInterfaces.Contains(iid, StringComparer.OrdinalIgnoreCase);
     }
 
     /// <summary>
@@ -334,10 +337,10 @@ public sealed class LocalCoClass {
     /// <param name="IPID"></param>
     /// <returns></returns>
     internal LocalInterfaceDefinition GetInterfaceDefinitionFromIPID(string IPID) {
-        if (_ipidVsIID.TryGetValue(IPID.ToUpper(), out var iid)) {
+        if (_ipidVsIID.TryGetValue(IPID.ToUpper(CultureInfo.InvariantCulture), out var iid)) {
             return _mapOfIIDsToInterfaceDefinitions.GetOrDefault(iid);
         }
-        throw new ArgumentException(nameof(IPID));
+        throw new ArgumentException("Unknown IPID.", nameof(IPID));
     }
 
     /// <summary>
@@ -346,7 +349,7 @@ public sealed class LocalCoClass {
     /// <param name="uniqueIID"></param>
     /// <returns></returns>
     internal string GetIpidFromIID(string uniqueIID) =>
-        _iIDvsIpid.GetOrDefault(uniqueIID.ToUpper());
+        _iIDvsIpid.GetOrDefault(uniqueIID.ToUpper(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Get iid from ipid helper
@@ -354,7 +357,7 @@ public sealed class LocalCoClass {
     /// <param name="ipid"></param>
     /// <returns></returns>
     internal string GetIIDFromIpid(string ipid) =>
-        _ipidVsIID.GetOrDefault(ipid.ToUpper());
+        _ipidVsIID.GetOrDefault(ipid.ToUpper(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// advances the index...it cannot be reversed.
@@ -362,17 +365,17 @@ public sealed class LocalCoClass {
     /// <param name="uniqueIID"> </param>
     /// <param name="IPID"> </param>
     internal bool ExportInstance(string uniqueIID, string IPID) {
-        lock (this) {
+        lock (_syncRoot) {
             // Object retval = null;
-            IPID = IPID.ToUpper();
+            IPID = IPID.ToUpper(CultureInfo.InvariantCulture);
 
             if (!IsIIDPresent(uniqueIID)) {
                 // not supported IID.
                 return false;
             }
 
-            _iIDvsIpid.AddOrUpdate(uniqueIID.ToUpper(), IPID);
-            _ipidVsIID.AddOrUpdate(IPID, uniqueIID.ToUpper());
+            _iIDvsIpid.AddOrUpdate(uniqueIID.ToUpper(CultureInfo.InvariantCulture), IPID);
+            _ipidVsIID.AddOrUpdate(IPID, uniqueIID.ToUpper(CultureInfo.InvariantCulture));
             return true;
         }
     }
@@ -387,7 +390,7 @@ public sealed class LocalCoClass {
     /// <param name="ndr"></param>
     /// <exception cref="InteropException"> </exception>
     internal object[] InvokeMethod(string IPID, int Opnum, NdrCodec ndr) {
-        IPID = IPID.ToUpper();
+        IPID = IPID.ToUpper(CultureInfo.InvariantCulture);
         // somehow identify the method from the Opnum
         // this will come from the IDL.
 
@@ -484,7 +487,7 @@ public sealed class LocalCoClass {
                     dispParams = (Struct)retresults[4];
                     var ptrToParamsArray = (ComPointer)dispParams.GetMember(0);
 
-                    parameters = new object[0];
+                    parameters = Array.Empty<object>();
                     if (!ptrToParamsArray.IsNull) {
                         // form the real array
                         array = (ComArray)ptrToParamsArray.Referent;
@@ -593,7 +596,7 @@ public sealed class LocalCoClass {
     private bool TryGetDispatcher(LocalInterfaceDefinition interfaceDefinition, Guid iid,
         LocalMethodDescriptor methodDescriptor, out Func<object[], object?> dispatcher,
         out object calleeInstance) {
-        var key = iid.ToString().ToUpper();
+        var key = iid.ToString().ToUpper(CultureInfo.InvariantCulture);
         if (_mapOfIIDsToDispatchTables.TryGetValue(key, out var dispatchTable) &&
             dispatchTable.TryGetDispatcher(iid, methodDescriptor.MethodNum, out dispatcher)) {
             calleeInstance = interfaceDefinition.Instance;
@@ -627,13 +630,14 @@ public sealed class LocalCoClass {
     private readonly int _identifier;
     private WeakReference _interfacePointer;
     private readonly List<string> _listOfSupportedEventInterfaces = new List<string>();
+    private readonly Lock _syncRoot = new();
     private readonly Dictionary<string, LocalInterfaceDefinition> _mapOfIIDsToInterfaceDefinitions =
-        new Dictionary<string, LocalInterfaceDefinition>();
+        new Dictionary<string, LocalInterfaceDefinition>(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, IDispatchTable> _mapOfIIDsToDispatchTables =
-        new Dictionary<string, IDispatchTable>();
+        new Dictionary<string, IDispatchTable>(StringComparer.OrdinalIgnoreCase);
     // will use this to identify which IID is being talked about
     // if it is IDispatch then delegate to it's invoke.
-    private readonly Dictionary<string, string> _ipidVsIID = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> _ipidVsIID = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
     // will use this to identify which IPID is being talked about
-    private readonly Dictionary<string, string> _iIDvsIpid = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> _iIDvsIpid = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 }

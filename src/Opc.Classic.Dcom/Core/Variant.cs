@@ -16,7 +16,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// Class representing the <code>VARIANT</code> datatype. Please use the
 /// <code>byRef</code> flag based constructors for <i>by reference</i>
@@ -153,7 +155,7 @@ public sealed class Variant {
         }
         var c = o.GetType();
         if (c.IsArray) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_VARIANT_ONLY_COMARRAY_EXCEPTED));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_VARIANT_ONLY_COMARRAY_EXCEPTED), nameof(o));
         }
         if (c == typeof(Variant)) {
             return new Variant((Variant)o);
@@ -637,11 +639,11 @@ public sealed class Variant {
     private Variant(bool isByRef, object obj) {
         if (obj != null && obj.GetType().IsArray) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_VARIANT_ONLY_COMARRAY_EXCEPTED));
+                ErrorCode.INTEROP_VARIANT_ONLY_COMARRAY_EXCEPTED), nameof(obj));
         }
         if (obj is InterfacePointer) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_VARIANT_TYPE_INCORRECT));
+                ErrorCode.INTEROP_VARIANT_TYPE_INCORRECT), nameof(obj));
         }
         if (obj is VariantBody) {
             _member = new ComPointer(obj);
@@ -706,7 +708,7 @@ public sealed class Variant {
                 break;
             default:
                 throw new ArgumentException(Interop.GetLocalizedMessage(
-                    ErrorCode.INTEROP_VARIANT_VARARRAYS_2DIMRES));
+                    ErrorCode.INTEROP_VARIANT_VARARRAYS_2DIMRES), nameof(array));
         }
         // should always be conformant since this is part of a safe array.
         var array2 = new ComArray(newArrayObj, true);
@@ -1135,7 +1137,7 @@ public sealed class Variant {
 
 
     // CAUTION NO PTR TYPE SHOULD BE PART OF THIS MAP !!!
-    private static Dictionary<Type, VariantType> _supportedTypes =
+    private static readonly Dictionary<Type, VariantType> _supportedTypes =
         new Dictionary<Type, VariantType> {
             [typeof(object)] = VariantType.VT_VARIANT,
             [typeof(Variant)] = VariantType.VT_VARIANT,
@@ -1159,7 +1161,7 @@ public sealed class Variant {
             [typeof(long)] = VariantType.VT_I8,
             [typeof(ulong)] = VariantType.VT_UI8
         };
-    private static Dictionary<VariantType, Type> _supportedTypes_classes =
+    private static readonly Dictionary<VariantType, Type> _supportedTypes_classes =
         new Dictionary<VariantType, Type> {
             [VariantType.VT_DATE] = typeof(DateTime),
             [VariantType.VT_CY] = typeof(Currency),
@@ -1185,7 +1187,7 @@ public sealed class Variant {
             [VariantType.VT_I8] = typeof(long),
             [VariantType.VT_UI8] = typeof(ulong)
         };
-    private static Dictionary<Type, object> _outTypesMap =
+    private static readonly Dictionary<Type, object> _outTypesMap =
         new Dictionary<Type, object> {
             [typeof(int)] = 0,
             [typeof(short)] = (short)0,

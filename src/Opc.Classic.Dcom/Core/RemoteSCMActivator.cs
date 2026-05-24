@@ -14,8 +14,11 @@ using SharpCifs.Util.Sharpen;
 using System;
 using System.Collections.Generic;
 using Opc.Classic.Dcom.Internal;
+using System.Globalization;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// IRemoteSCMActivator implementation.
 /// </summary>
@@ -29,7 +32,7 @@ internal sealed class RemoteSCMActivator {
     //                [in, unique] MInterfacePointer* pActProperties,
     //                [out] MInterfacePointer** ppActProperties
     //                );
-    internal class RemoteCreateInstance : NdrOp, IServerActivation {
+    internal sealed class RemoteCreateInstance : NdrOp, IServerActivation {
         private readonly string _targetClsid;
         private readonly string _targetServer;
 #pragma warning disable IDE0052 // Remove unread private members
@@ -601,13 +604,13 @@ internal sealed class RemoteSCMActivator {
             var clsidPropsLengths = (int[])((ComArray)((ComPointer)strukt.GetMember(7)).Referent).ArrayInstance;
 
             // using the clsidPropsLengths we can skip the NDR buffer of the properties not needed.
-            IList<string> requiredProps = new List<string> {
-                "000001b6-0000-0000-c000-000000000046".ToUpper(),
-                "00000339-0000-0000-c000-000000000046".ToUpper()
+            HashSet<string> requiredProps = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+                "000001b6-0000-0000-c000-000000000046",
+                "00000339-0000-0000-c000-000000000046"
             };
             // we will go sequentially so if a property is not found we skip that many bytes ahead
             for (var i = 0; i < clsidProps.Length; i++) {
-                if (requiredProps.Contains(clsidProps[i].ToString().ToUpper())) {
+                if (requiredProps.Contains(clsidProps[i].ToString())) {
                     // its present so analyse
                     objectBufferLength = SkipCommonHeader(ndr);
                     startIndex = ndr.Buffer.Index;

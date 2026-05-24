@@ -11,12 +11,15 @@ using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// Oxid ping
 /// </summary>
-internal class ComOxidPingObject : NdrOp {
+internal sealed class ComOxidPingObject : NdrOp {
 
     /// <summary>
     /// Set id

@@ -20,8 +20,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Globalization;
+using System.Linq;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 /// Used to manipulate Oxid details. one instance is created per binding
 /// call to the oxid resolver.
@@ -90,7 +94,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// <summary>
     /// Oxid resolver thread
     /// </summary>
-    private class OxidResolverThread : SharpCifs.Util.Sharpen.Thread {
+    private sealed class OxidResolverThread : SharpCifs.Util.Sharpen.Thread {
 #pragma warning disable RECS0154 // Parameter is never used
         /// <summary>
         /// Create thrad
@@ -131,7 +135,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// <summary>
     /// Listener
     /// </summary>
-    private class RemUnknownListenerThread : SharpCifs.Util.Sharpen.Thread {
+    private sealed class RemUnknownListenerThread : SharpCifs.Util.Sharpen.Thread {
 
         /// <summary>
         /// Create thread
@@ -203,7 +207,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         /// <summary>
         /// Inner thread
         /// </summary>
-        private class RemUnknownThread : SharpCifs.Util.Sharpen.Thread {
+        private sealed class RemUnknownThread : SharpCifs.Util.Sharpen.Thread {
 
             /// <summary>
             /// Create runner
@@ -271,7 +275,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// at a time only 1 read --> write, cycle should happen
     /// it is not multithreaded safe.
     /// </summary>
-    internal class OxidResolverImpl : NdrOp, IComRuntimeWorker {
+    internal sealed class OxidResolverImpl : NdrOp, IComRuntimeWorker {
 
 #pragma warning disable RECS0154 // Parameter is never used
         /// <summary>
@@ -548,11 +552,11 @@ internal sealed class ComOxidRuntimeHelper : Stub {
     /// at a time only 1 read --> write, cycle should happen
     /// it is not multithreaded safe.
     /// </summary>
-    internal class RemUnknownObject : NdrOp, IComRuntimeWorker {
+    internal sealed class RemUnknownObject : NdrOp, IComRuntimeWorker {
 
         internal RemUnknownObject(string ipidOfme, string ipidOfComponent) {
             _selfIPID = ipidOfme;
-            _mapOfIpidsVsRef.AddOrUpdate(ipidOfComponent.ToUpper(), 5);
+            _mapOfIpidsVsRef.AddOrUpdate(ipidOfComponent.ToUpper(CultureInfo.InvariantCulture), 5);
         }
 
         /// <inheritdoc/>
@@ -607,7 +611,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                         // saving the ipids with there references. considering public + private references together for now.
                         var structs = (Struct[])array.ArrayInstance;
                         for (var i = 0; i < length; i++) {
-                            var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper();
+                            var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper(CultureInfo.InvariantCulture);
                             var publicRefs = (int)structs[i].GetMember(1);
                             var privateRefs = (int)structs[i].GetMember(2);
 
@@ -647,7 +651,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                         // saving the ipids with there references. considering public + private references together for now.
                         structs = (Struct[])array.ArrayInstance;
                         for (var i = 0; i < length; i++) {
-                            var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper();
+                            var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper(CultureInfo.InvariantCulture);
                             var publicRefs = (int)structs[i].GetMember(1);
                             var privateRefs = (int)structs[i].GetMember(2);
                             if (!_mapOfIpidsVsRef.Contains(ipidref)) {
@@ -880,7 +884,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
 
                     // now generate the IPID and export a java instance with this.
                     StdObjRef objRef = null;
-                    if (hresult == 0) {
+                    if (hresult == ErrorCode.ERROR_SUCCESS) {
                         objRef = new StdObjRef(ipid2, details.Oxid, details.Oid);
                     }
                     else {
@@ -889,8 +893,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                     objRef.Encode(ndr2);
 
                     // add it to the exported Ipids map
-                    if (hresult == 0) {
-                        _mapOfIpidsVsRef.AddOrUpdate(ipid2.ToUpper(), objRef.PublicRefs);
+                    if (hresult == ErrorCode.ERROR_SUCCESS) {
+                        _mapOfIpidsVsRef.AddOrUpdate(ipid2.ToUpper(CultureInfo.InvariantCulture), objRef.PublicRefs);
                     }
 
                     Log.Logger.Verbose("RemUnknownObject: [QI] for which the stdObjRef is " + objRef);
@@ -903,8 +907,8 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                     Log.Logger.Error(e, "ComOxidRuntimeHelper: QueryInterface");
                 }
 
-                var iidtemp = iid.ToString().ToUpper() + ":0.0";
-                if (!QIedIIDs.Contains(iidtemp)) {
+                var iidtemp = iid.ToString().ToUpper(CultureInfo.InvariantCulture) + ":0.0";
+                if (!QIedIIDs.Contains(iidtemp, StringComparer.OrdinalIgnoreCase)) {
                     QIedIIDs.Add(iidtemp);
                 }
             }
@@ -925,7 +929,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
         private static readonly ComArray kRemInterfaceRefArray =
             new ComArray(kRemInterfaceRef, null, 1, true);
         private readonly Dictionary<string, int> _mapOfIpidsVsRef =
-            new Dictionary<string, int>();
+            new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         private bool _workerOver;
         private NdrBuffer _buffer;
         // component tells you the LocalCoClass to act on, sent via the AlterContext calls

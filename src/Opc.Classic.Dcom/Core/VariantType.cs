@@ -13,6 +13,7 @@ namespace SharpInterop.Core;
 /// <summary>
 /// Variant type
 /// </summary>
+#pragma warning disable MA0062 // VARTYPE combines base values with VT_ARRAY/VT_BYREF modifier bits.
 [Flags]
 public enum VariantType {
     /// <summary> id </summary>
@@ -156,5 +157,6 @@ public enum VariantType {
     /// <summary> id </summary>
     VT_ILLEGALMASKED = 0xfff,
     /// <summary> id </summary>
-    VT_TYPEMASK = 0xfff
+    VT_TYPEMASK = VT_ILLEGALMASKED // COM VARTYPE defines both names for the same mask.
 }
+#pragma warning restore MA0062

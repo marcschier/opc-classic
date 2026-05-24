@@ -64,7 +64,7 @@ public sealed class Union {
             !discriminantClass.Equals(typeof(bool)) &&
             !discriminantClass.Equals(typeof(char))) {
             // has to be from one of these. Rule from IDL.
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UNION_INCORRECT_DISC));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UNION_INCORRECT_DISC), nameof(discriminantClass));
         }
         _discriminantClass = discriminantClass;
     }
@@ -81,7 +81,7 @@ public sealed class Union {
     public void AddMember(object discriminant, object member) {
         if (discriminant == null || member == null) {
             throw new ArgumentException(
-                Interop.GetLocalizedMessage(ErrorCode.INTEROP_UNION_NULL_DISCRMINANT));
+                Interop.GetLocalizedMessage(ErrorCode.INTEROP_UNION_NULL_DISCRMINANT), nameof(discriminant));
         }
         if (!discriminant.GetType().Equals(_discriminantClass)) {
             throw new InteropException(ErrorCode.INTEROP_UNION_DISCRMINANT_MISMATCH);
@@ -106,7 +106,7 @@ public sealed class Union {
     /// is <code>null</code> </exception>
     public void AddMember(object discriminant, Struct member) {
         if (discriminant == null) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UNION_NULL_DISCRMINANT));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_UNION_NULL_DISCRMINANT), nameof(discriminant));
         }
         if (!discriminant.GetType().Equals(_discriminantClass)) {
             throw new InteropException(ErrorCode.INTEROP_UNION_DISCRMINANT_MISMATCH);
@@ -217,7 +217,7 @@ public sealed class Union {
     }
 
     /// <inheritdoc/>
-    public override string ToString() => "[" + Members + "]";
+    public override string ToString() => "[members: " + Members.Count + "]";
 
     private Type _discriminantClass;
 }

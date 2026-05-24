@@ -30,7 +30,7 @@ public sealed class LocalMethodDescriptor {
     /// <summary>
     /// Returns the method name.
     /// </summary>
-    public string MethodName { get; } = null;
+    public string MethodName { get; }
 
     /// <summary>
     /// Gets the <code>DISPID</code> of this method.
@@ -64,7 +64,7 @@ public sealed class LocalMethodDescriptor {
     /// <summary>
     /// In params
     /// </summary>
-    internal Type[] InparametersAsType { get; private set; } = new Type[0];
+    internal Type[] InparametersAsType { get; private set; } = Array.Empty<Type>();
 
     /// <summary>
     /// Creates the method descriptor. The method number is set by the order in 

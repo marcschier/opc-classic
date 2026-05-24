@@ -13,7 +13,9 @@ using System;
 using System.Collections.Generic;
 using SharpInterop.Automation;
 
-namespace SharpInterop.Core; 
+#pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
+
+namespace SharpInterop.Core;
 /// <summary>
 ///<para>Represents a C++ array which can display both <i>conformant and standard</i>
 /// behaviors. Since this class forms a wrapper on the actual array, the developer
@@ -37,19 +39,19 @@ public sealed class ComArray {
     /// </summary>
     /// <returns> array Object which can be type casted based on value
     /// returned by <seealso cref="ArrayType"/>. </returns>
-    public object ArrayInstance { get; private set; } = null;
+    public object ArrayInstance { get; private set; }
 
     /// <summary>
     /// Class of the nested Array.
     /// </summary>
     /// <returns> <code>class</code>  </returns>
-    public Type ArrayType { get; private set; } = null;
+    public Type ArrayType { get; private set; }
 
     /// <summary>
     /// Array of integers depicting highest index for each dimension.
     /// </summary>
     /// <returns> <code>int[]</code> </returns>
-    public int[] UpperBounds { get; private set; } = null;
+    public int[] UpperBounds { get; private set; }
 
     /// <summary>
     /// Returns the dimensions of the Array.
@@ -166,11 +168,11 @@ public sealed class ComArray {
     /// specified types. </exception>
     public ComArray(object template, int[] upperBounds, int dimension, bool isConformant) {
         if (template == null) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_TEMPLATE_NULL));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_TEMPLATE_NULL), nameof(template));
         }
         if (!template.GetType().Equals(typeof(Struct)) && !template.GetType().Equals(typeof(Union)) &&
             !template.GetType().Equals(typeof(ComPointer)) && !template.GetType().Equals(typeof(ComString))) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_INCORRECT_TEMPLATE_PARAM));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_INCORRECT_TEMPLATE_PARAM), nameof(template));
         }
         _template = template;
         ArrayType = template.GetType();
@@ -195,12 +197,12 @@ public sealed class ComArray {
     // for structs, pointers, unions.
     public ComArray(object template, int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
         if (template == null) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_TEMPLATE_NULL));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_TEMPLATE_NULL), nameof(template));
         }
 
         if (!template.GetType().Equals(typeof(Struct)) && !template.GetType().Equals(typeof(Union)) &&
             !template.GetType().Equals(typeof(ComPointer)) && !template.GetType().Equals(typeof(ComString))) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_INCORRECT_TEMPLATE_PARAM));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_ARRAY_INCORRECT_TEMPLATE_PARAM), nameof(template));
         }
 
         if (Interop.COMVersion.MinorVersion == 6 && template.GetType().Equals(typeof(ComPointer))) {
@@ -237,7 +239,7 @@ public sealed class ComArray {
             // have to supply the upperbounds for each dimension, no gaps in between
             if (upperBounds.Length != dimension) {
                 throw new ArgumentException(Interop.GetLocalizedMessage(
-                    ErrorCode.INTEROP_ARRAY_UPPERBNDS_DIM_NOTMATCH));
+                    ErrorCode.INTEROP_ARRAY_UPPERBNDS_DIM_NOTMATCH), nameof(upperBounds));
             }
         }
 
@@ -318,11 +320,11 @@ public sealed class ComArray {
     private void Init(object array) {
         if (!array.GetType().IsArray) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_ARRAY_PARAM_ONLY));
+                ErrorCode.INTEROP_ARRAY_PARAM_ONLY), nameof(array));
         }
         if (array.GetType().IsPrimitive) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_ARRAY_PRIMITIVE_NOTACCEPT));
+                ErrorCode.INTEROP_ARRAY_PRIMITIVE_NOTACCEPT), nameof(array));
         }
 
         // TODO
@@ -334,7 +336,7 @@ public sealed class ComArray {
         // yield results identical to the Java Class.getName method:
         if (array.GetType().ToString().IndexOf("System.Object", StringComparison.Ordinal) != -1) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_ARRAY_TYPE_INCORRECT));
+                ErrorCode.INTEROP_ARRAY_TYPE_INCORRECT), nameof(array));
         }
         ArrayInstance = array;
 
@@ -348,7 +350,7 @@ public sealed class ComArray {
         var name = array.GetType().FullName;
         var subArray = array;
         NumElementsInAllDimensions = 1;
-        while (name.StartsWith("[", StringComparison.Ordinal)) {
+        while (name.StartsWith('[')) {
             name = name.Substring(1);
             var x = ((object[])subArray).Length;
             upperBounds2.Add(x);

@@ -13,9 +13,7 @@ internal sealed class DelegateDispatchTable : IDispatchTable {
 
     public DelegateDispatchTable(
         IEnumerable<(Guid Iid, int Opnum, Func<object[], object?> Dispatcher)> registrations) {
-        if (registrations == null) {
-            throw new ArgumentNullException(nameof(registrations));
-        }
+        ArgumentNullException.ThrowIfNull(registrations);
 
         foreach (var (iid, opnum, dispatcher) in registrations) {
             _dispatchers[(iid, opnum)] = dispatcher ?? throw new ArgumentNullException(nameof(registrations));

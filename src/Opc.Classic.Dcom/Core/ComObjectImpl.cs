@@ -53,7 +53,7 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     /// <inheritdoc/>
     public bool DispatchSupported {
         get {
-            lock (this) {
+            lock (_syncRoot) {
                 CheckLocal();
                 if (!_dualInfo) {
                     // query interface for it and then release it.
@@ -212,10 +212,10 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
 
     /// <inheritdoc/>
     public string SetConnectionInfo(IComObject connectionPoint, int? cookie) {
-        lock (this) {
+        lock (_syncRoot) {
             CheckLocal();
             if (_connectionPointInfo == null) { // lazy creation, since this is used by event callbacks only.
-                _connectionPointInfo = new Dictionary<string, object[]>();
+                _connectionPointInfo = new Dictionary<string, object[]>(StringComparer.Ordinal);
             }
             var uniqueId = /*UUID.randomUUID()*/ Guid.NewGuid().ToString();
             _connectionPointInfo[uniqueId] = new object[] { connectionPoint, cookie };
@@ -225,7 +225,7 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
 
     /// <inheritdoc/>
     public object[] GetConnectionInfo(string identifier) {
-        lock (this) {
+        lock (_syncRoot) {
             CheckLocal();
             return _connectionPointInfo[identifier];
         }
@@ -233,7 +233,7 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
 
     /// <inheritdoc/>
     public object[] RemoveConnectionInfo(string identifier) {
-        lock (this) {
+        lock (_syncRoot) {
             CheckLocal();
             var result = _connectionPointInfo[identifier];
             _connectionPointInfo.Remove(identifier);
@@ -258,7 +258,7 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
     }
 
     /// <inheritdoc/>
-    public override int GetHashCode() => Ipid.GetHashCode();
+    public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Ipid);
 
     /// <summary>
     /// Replace members
@@ -283,6 +283,7 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
         }
     }
 
+    private readonly System.Threading.Lock _syncRoot = new();
     private bool _isDual;
     private bool _dualInfo;
     [NonSerialized] private Session _session;

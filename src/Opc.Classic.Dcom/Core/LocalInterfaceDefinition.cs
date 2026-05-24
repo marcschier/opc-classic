@@ -12,6 +12,7 @@ using SharpCifs.Util.Sharpen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 namespace SharpInterop.Core; 
 /// <summary>
@@ -82,7 +83,7 @@ public sealed class LocalInterfaceDefinition {
     public void AddMethodDescriptor(LocalMethodDescriptor methodDescriptor) {
         if (_nameVsMethodInfo.Contains(methodDescriptor.MethodName)) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_CALLBACK_OVERLOADS_NOTALLOWED));
+                ErrorCode.INTEROP_CALLBACK_OVERLOADS_NOTALLOWED), nameof(methodDescriptor));
         }
         methodDescriptor.MethodNum = _nextNum;
         _nextNum++;
@@ -90,7 +91,7 @@ public sealed class LocalInterfaceDefinition {
         if (DispInterface) {
             if (methodDescriptor.MethodDispID == -1) {
                 throw new ArgumentException(Interop.GetLocalizedMessage(
-                    ErrorCode.INTEROP_METHODDESC_DISPID_MISSING));
+                    ErrorCode.INTEROP_METHODDESC_DISPID_MISSING), nameof(methodDescriptor));
             }
             _dispIdVsMethodInfo.AddOrUpdate(methodDescriptor.MethodDispID, methodDescriptor);
         }
@@ -164,7 +165,7 @@ public sealed class LocalInterfaceDefinition {
     public void RemoveMethodDescriptor(string methodName) {
         var methodDescriptor = _nameVsMethodInfo.GetAndRemove(methodName);
         if (methodDescriptor != null) {
-            _nameVsMethodInfo.Remove(methodDescriptor.MethodNum.ToString());
+            _nameVsMethodInfo.Remove(methodDescriptor.MethodNum.ToString(CultureInfo.InvariantCulture));
         }
     }
 
@@ -173,6 +174,6 @@ public sealed class LocalInterfaceDefinition {
     private readonly Dictionary<int, LocalMethodDescriptor> _dispIdVsMethodInfo =
         new Dictionary<int, LocalMethodDescriptor>();
     private readonly Dictionary<string, LocalMethodDescriptor> _nameVsMethodInfo =
-        new Dictionary<string, LocalMethodDescriptor>();
+        new Dictionary<string, LocalMethodDescriptor>(StringComparer.Ordinal);
     private int _nextNum;
 }

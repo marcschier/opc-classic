@@ -8,6 +8,7 @@
 //
 
 using System;
+using System.Globalization;
 
 namespace SharpInterop.Core; 
 /// <summary>
@@ -37,31 +38,31 @@ public sealed class Currency {
     /// <summary>
     /// Returns the units value.
     /// </summary>
-    public int Units { get; } = 0;
+    public int Units { get; }
 
     /// <summary>
     /// Returns the fractionalUnits value.
     /// </summary>
-    public int FractionalUnits { get; } = 0;
+    public int FractionalUnits { get; }
 
     /// <summary>
     /// Create currency
     /// </summary>
     /// <param name="value"></param>
     public Currency(string value) {
-        if (value.StartsWith(".", StringComparison.Ordinal)) {
+        if (value.StartsWith('.')) {
             value = "0" + value;
         }
 
-        if (value.EndsWith(".", StringComparison.Ordinal)) {
+        if (value.EndsWith('.')) {
             value += "0";
         }
 
         var str = value.Split("\\.", true);
 
-        Units = int.Parse(str[0]);
+        Units = int.Parse(str[0], CultureInfo.InvariantCulture);
         if (str.Length > 1) {
-            FractionalUnits = int.Parse(str[1]);
+            FractionalUnits = int.Parse(str[1], CultureInfo.InvariantCulture);
         }
     }
 

@@ -137,12 +137,8 @@ public /*internal*/ sealed class InterfacePointer {
     /// <param name="target"></param>
     /// <returns></returns>
     public static bool IsOxidEqual(InterfacePointer src, InterfacePointer target) {
-        if (src == null) {
-            throw new ArgumentNullException(nameof(src));
-        }
-        if (target == null) {
-            throw new ArgumentNullException(nameof(target));
-        }
+        ArgumentNullException.ThrowIfNull(src);
+        ArgumentNullException.ThrowIfNull(target);
         return src.OXID.SequenceEqual(target.OXID);
     }
 
