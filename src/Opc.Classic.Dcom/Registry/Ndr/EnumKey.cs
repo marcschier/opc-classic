@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -72,6 +72,7 @@ public class EnumKey : NdrOp {
     }
 
     /// <inheritdoc/>
+#pragma warning disable MA0051 // Legacy NDR decode mirrors the WinReg wire layout.
     public override void Read(NdrCodec ndr) {
         // buffer len, since it is uint16
         ndr.ReadUnsignedShort();
@@ -87,7 +88,7 @@ public class EnumKey : NdrOp {
         ndr.ReadUnsignedLong();
 
         var actuallength = ndr.ReadUnsignedLong(); // actuallength
-        var bytes = new byte[0];
+        var bytes = Array.Empty<byte>();
         if (actuallength != 0) {
             bytes = new byte[actuallength - 1];
         }
@@ -124,7 +125,7 @@ public class EnumKey : NdrOp {
         ndr.ReadUnsignedLong();
 
         actuallength = ndr.ReadUnsignedLong(); // actuallength
-        bytes = new byte[0];
+        bytes = Array.Empty<byte>();
         if (actuallength != 0) {
             bytes = new byte[actuallength - 1];
         }
@@ -152,4 +153,5 @@ public class EnumKey : NdrOp {
             throw new InteropRuntimeException(hresult);
         }
     }
+#pragma warning restore MA0051
 }

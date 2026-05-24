@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -39,7 +39,8 @@ public class RegistryStub : Stub, IRegistry {
     public RegistryStub(IAuthInfo authInfo, string serverName) {
         if (authInfo == null) {
             throw new ArgumentException(
-                Interop.GetLocalizedMessage(ErrorCode.INTEROP_AUTH_NOT_SUPPLIED));
+                Interop.GetLocalizedMessage(ErrorCode.INTEROP_AUTH_NOT_SUPPLIED),
+                nameof(authInfo));
         }
         TransportFactory = new SharpInterop.Rpc.Ncacn_Np.TransportFactory();
         Properties = new PropertyBag();
@@ -338,7 +339,7 @@ public class RegistryStub : Stub, IRegistry {
     public void SetValue(PolicyHandle handle, string valueName, byte[][] data) {
         if (data == null) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_WINREG_EXCEPTION5));
+                ErrorCode.INTEROP_WINREG_EXCEPTION5), nameof(data));
         }
 
         // calculate length of all strings + extra null in the end

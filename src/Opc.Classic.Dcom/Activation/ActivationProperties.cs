@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -7,86 +7,6 @@ using System;
 using System.Collections.Generic;
 
 namespace SharpInterop.Core;
-
-/// <summary>
-/// Identifies one member of the DCOM activation property array carried by
-/// <c>IActivationProperties</c> OBJREFs.
-/// </summary>
-public enum ActivationPropertyId : uint {
-    /// <summary>MS-DCOM SPECIAL_PROPERTIES_DATA.</summary>
-    SpecialProperties = 1,
-
-    /// <summary>Requested class and interface activation data.</summary>
-    InstanceInfo = 2,
-
-    /// <summary>Client/server location and protocol-sequence data.</summary>
-    LocationInfo = 3,
-
-    /// <summary>SCM reply data containing returned interface references.</summary>
-    ScmReplyInfo = 4,
-
-    /// <summary>Authentication, impersonation, and capability data.</summary>
-    SecurityInfo = 5,
-}
-
-/// <summary>DCOM COMVERSION value.</summary>
-public readonly record struct ActivationComVersion(ushort Major, ushort Minor) {
-    /// <summary>DCOM v5.6, used by modern IRemoteSCMActivator activation.</summary>
-    public static ActivationComVersion V5_6 { get; } = new(5, 6);
-}
-
-/// <summary>Managed shadow of SPECIAL_PROPERTIES_DATA.</summary>
-public sealed record SpecialPropertiesData(
-    ActivationComVersion ClientVersion,
-    int Mode,
-    int ClassContext,
-    Guid RequestedIid,
-    IReadOnlyList<int> SpecialProperties) {
-    /// <summary>An empty v5.6 special-properties set.</summary>
-    public static SpecialPropertiesData Empty { get; } = new(
-        ActivationComVersion.V5_6,
-        0,
-        0,
-        Guid.Empty,
-        Array.Empty<int>());
-}
-
-/// <summary>Requested class and interface activation details.</summary>
-public sealed record InstanceInfo(Guid Clsid, Guid RequestedIid, int ClassContext, int Mode);
-
-/// <summary>Location and requested RPC protocol-sequence details.</summary>
-public sealed record LocationInfo(string? MachineName, int ProcessId, IReadOnlyList<int> ProtocolSequences);
-
-/// <summary>Authentication and impersonation details supplied during activation.</summary>
-public sealed record SecurityInfo(int AuthenticationLevel, int ImpersonationLevel, int Capabilities);
-
-/// <summary>SCM activation reply data with the returned OBJREF.</summary>
-public sealed record ScmReplyInfo(int Hresult, Guid Oxid, Guid Oid, Guid Ipid, byte[] ObjRef) {
-    /// <summary>Creates a reply and defensively copies the OBJREF payload.</summary>
-    public ScmReplyInfo(int hresult, Guid oxid, Guid oid, Guid ipid, byte[] objRef, bool copy)
-        : this(hresult, oxid, oid, ipid, copy ? Copy(objRef) : objRef) {
-    }
-
-    private static byte[] Copy(byte[] value) {
-        ArgumentNullException.ThrowIfNull(value);
-        return value.Length == 0 ? Array.Empty<byte>() : (byte[])value.Clone();
-    }
-}
-
-/// <summary>Opaque activation property preserving an unrecognized property payload.</summary>
-public sealed class ActivationProperty {
-    /// <summary>Creates a property and defensively copies the payload.</summary>
-    public ActivationProperty(ActivationPropertyId id, ReadOnlySpan<byte> payload) {
-        Id = id;
-        Payload = payload.Length == 0 ? Array.Empty<byte>() : payload.ToArray();
-    }
-
-    /// <summary>Property identifier.</summary>
-    public ActivationPropertyId Id { get; }
-
-    /// <summary>Raw property payload.</summary>
-    public byte[] Payload { get; }
-}
 
 /// <summary>
 /// Managed representation of the versioned activation property array exchanged by
@@ -163,7 +83,7 @@ public sealed class ActivationProperties {
         return fallback;
     }
 
-    private static IReadOnlyList<ActivationProperty> CopyCustomProperties(IReadOnlyList<ActivationProperty>? properties) {
+    private static ActivationProperty[] CopyCustomProperties(IReadOnlyList<ActivationProperty>? properties) {
         if (properties is null || properties.Count == 0) {
             return Array.Empty<ActivationProperty>();
         }

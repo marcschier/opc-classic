@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -13,6 +13,7 @@ using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using SharpCifs.Util.Sharpen;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -21,7 +22,7 @@ namespace SharpInterop.Transport;
 /// <summary>
 /// Transport
 /// </summary>
-internal sealed class ComTransport : ITransport {
+internal sealed class ComTransport : ITransport, IDisposable {
 
     /// <inheritdoc/>
     public string Protocol => "ncacn_ip_tcp";
@@ -72,12 +73,10 @@ internal sealed class ComTransport : ITransport {
         if (string.IsNullOrEmpty(server)) {
             server = kLOCALHOST;
         }
-        try {
-            _port = int.Parse(address);
-        }
-        catch (Exception) {
+        if (!int.TryParse(address, NumberStyles.Integer, CultureInfo.InvariantCulture, out int port)) {
             throw new ProviderException("Invalid port specifier.");
         }
+        _port = port;
         _host = server;
     }
 
@@ -89,7 +88,7 @@ internal sealed class ComTransport : ITransport {
         try {
             Log.Logger.Verbose("Connecting to " + _host + ":" + _port);
             _client = new TcpClient();
-            var timeout = int.Parse((string)Properties.GetProperty("rpc.socketTimeout", "0"));
+            var timeout = int.Parse((string)Properties.GetProperty("rpc.socketTimeout", "0"), CultureInfo.InvariantCulture);
             if (timeout != 0) {
                 _client.ReceiveTimeout = timeout;
             }
@@ -99,7 +98,7 @@ internal sealed class ComTransport : ITransport {
             _stream = _client.GetStream();
             return new ComEndpoint(this, syntax);
         }
-        catch (IOException ex) {
+        catch (IOException) {
             try {
                 Close();
             }
@@ -107,7 +106,7 @@ internal sealed class ComTransport : ITransport {
             catch (Exception) { // ignored
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
             }
-            throw ex;
+            throw;
         }
     }
 
@@ -125,6 +124,12 @@ internal sealed class ComTransport : ITransport {
             _stream?.Dispose();
             _stream = null;
         }
+    }
+
+    /// <summary>Releases the underlying TCP resources.</summary>
+    public void Dispose() {
+        Close();
+        GC.SuppressFinalize(this);
     }
 
     /// <inheritdoc/>

@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -43,8 +43,9 @@ public sealed class ComRuntimeEndpoint : ConnectionOrientedEndpoint {
     /// <param name="baseIID"></param>
     /// <param name="listOfSupportedInterfaces"></param>
     /// <param name="cancellationToken"></param>
+#pragma warning disable MA0051 // Legacy request loop is deliberately kept as one state machine.
     public void ProcessRequests(IComRuntimeWorker workerObject, string baseIID,
-        List<string> listOfSupportedInterfaces, CancellationToken cancellationToken) {
+        IReadOnlyList<string> listOfSupportedInterfaces, CancellationToken cancellationToken) {
 
         Log.Logger.Information("processRequests: [ComRuntimeEndPoint] started new thread " +
             Thread.CurrentThread.Name);
@@ -176,4 +177,5 @@ public sealed class ComRuntimeEndpoint : ConnectionOrientedEndpoint {
             }
         }
     }
+#pragma warning restore MA0051
 }

@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -9,6 +9,7 @@
 
 using Opc.Classic.Dcom.Internal;
 using SharpInterop.Rpc;
+using System.Threading;
 
 namespace SharpInterop.Transport; 
 /// <summary>
@@ -33,7 +34,7 @@ public sealed class ComRuntimeTransportFactory : TransportFactory {
     public static ComRuntimeTransportFactory Instance {
         get {
             if (_factory == null) {
-                lock (typeof(ComTransportFactory)) {
+                lock (s_factoryLock) {
                     if (_factory == null) {
                         _factory = new ComRuntimeTransportFactory();
                     }
@@ -43,5 +44,6 @@ public sealed class ComRuntimeTransportFactory : TransportFactory {
         }
     }
 
+    private static readonly Lock s_factoryLock = new();
     private static ComRuntimeTransportFactory _factory;
 }

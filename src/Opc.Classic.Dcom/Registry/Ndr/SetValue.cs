@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -30,6 +30,7 @@ public class SetValue : NdrOp {
     public override int Opnum => 22;
 
     /// <inheritdoc/>
+#pragma warning disable MA0051 // Legacy NDR encode mirrors the WinReg wire layout.
     public override void Write(NdrCodec ndr) {
 
         // Write parent handle
@@ -95,7 +96,7 @@ public class SetValue : NdrOp {
                     ndr.WriteUnsignedLong(lengthInBytes);
                     break;
                 case RegValueType.REG_NONE:
-                    data = new byte[0];
+                    data = Array.Empty<byte>();
                     lengthInBytes = 0;
                     goto case RegValueType.REG_BINARY;
                 case RegValueType.REG_BINARY:
@@ -135,6 +136,7 @@ public class SetValue : NdrOp {
             ndr.WriteUnsignedLong(0);
         }
     }
+#pragma warning restore MA0051
 
     /// <inheritdoc/>
     public override void Read(NdrCodec ndr) {

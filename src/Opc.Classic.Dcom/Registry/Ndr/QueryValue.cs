@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -85,6 +85,7 @@ public class QueryValue : NdrOp {
     }
 
     /// <inheritdoc/>
+#pragma warning disable MA0051 // Legacy NDR decode mirrors the WinReg wire layout.
     public override void Read(NdrCodec ndr) {
         var i = 0;
         // pointer
@@ -177,4 +178,5 @@ public class QueryValue : NdrOp {
         }
         // key = buffer.toString();
     }
+#pragma warning restore MA0051
 }

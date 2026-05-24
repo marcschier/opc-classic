@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -9,10 +9,12 @@
 
 using System;
 
-namespace SharpInterop.Registry; 
+namespace SharpInterop.Registry;
+
 /// <summary>
 /// Key access
 /// </summary>
+#pragma warning disable MA0062, CA1069 // WinReg access masks include composite aliases.
 [Flags]
 public enum RegKeyAccess {
 
@@ -67,3 +69,4 @@ public enum RegKeyAccess {
     KEY_WRITE = 0x00020006,
 
 }
+#pragma warning restore MA0062, CA1069

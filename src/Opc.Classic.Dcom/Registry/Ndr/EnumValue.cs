@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -77,7 +77,7 @@ public class EnumValue : NdrOp {
         ndr.ReadUnsignedLong();
 
         var actuallength = ndr.ReadUnsignedLong(); // actuallength
-        var bytes = new byte[0];
+        var bytes = Array.Empty<byte>();
         if (actuallength != 0) {
             bytes = new byte[actuallength - 1];
         }

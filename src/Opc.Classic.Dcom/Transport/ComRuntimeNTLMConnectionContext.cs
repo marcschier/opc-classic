@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -9,6 +9,8 @@
 
 
 using Opc.Classic.Dcom.Internal;
+using System;
+using System.Globalization;
 using System.Collections.Generic;
 using SharpInterop.Rpc.pdu;
 using SharpInterop.Rpc.Auth.ntlm;
@@ -30,15 +32,16 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
         base.Init2(context, properties);
         _properties = properties;
         lock (_listOfInterfacesSupported) { // TODO - find another way...
-            _listOfInterfacesSupported.Add(((string)properties.GetProperty(kIID)).ToUpper());
-            _listOfInterfacesSupported.Add(((string)properties.GetProperty(kIID2)).ToUpper() + ":0.0");
+            _listOfInterfacesSupported.Add(((string)properties.GetProperty(kIID)).ToUpper(CultureInfo.InvariantCulture));
+            _listOfInterfacesSupported.Add(((string)properties.GetProperty(kIID2)).ToUpper(CultureInfo.InvariantCulture) + ":0.0");
         }
         UpdateListOfInterfacesSupported2(
-            (List<string>)properties.GetProperty("LISTOFSUPPORTEDINTERFACES")); // TODO - find another way...
+            (IReadOnlyList<string>)properties.GetProperty("LISTOFSUPPORTEDINTERFACES")); // TODO - find another way...
         return null;
     }
 
     /// <inheritdoc/>
+#pragma warning disable MA0051 // Legacy bind/alter-context state machine kept together.
     public override ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
         ConnectionOrientedPdu reply = null;
         switch (pdu.Type) {
@@ -52,7 +55,7 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
 
                     var contains = false;
                     lock (_listOfInterfacesSupported) {
-                        contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
+                        contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString(), StringComparer.OrdinalIgnoreCase);
                     }
                     if (!contains) {
                         // create a fault PDU stating the syntax is not supported.
@@ -84,7 +87,7 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
                     var presentationContext = presentationContexts[i];
                     var contains = false;
                     lock (_listOfInterfacesSupported) {
-                        contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
+                        contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString(), StringComparer.OrdinalIgnoreCase);
                     }
                     if (!contains) {
                         // create a fault PDU stating the syntax is not supported.
@@ -113,18 +116,19 @@ public sealed class ComRuntimeNtlmConnectionContext : NtlmConnectionContext {
         }
         return reply;
     }
+#pragma warning restore MA0051
 
     /// <summary>
     /// Update interfaces
     /// </summary>
     /// <param name="newList"></param>
-    internal void UpdateListOfInterfacesSupported(List<string> newList) {
+    internal void UpdateListOfInterfacesSupported(IReadOnlyList<string> newList) {
         lock (_listOfInterfacesSupported) {
             _listOfInterfacesSupported.AddRange(newList);
         }
     }
 
-    internal void UpdateListOfInterfacesSupported2(List<string> newList) {
+    internal void UpdateListOfInterfacesSupported2(IReadOnlyList<string> newList) {
         lock (_listOfInterfacesSupported) {
             for (var i = 0; i < newList.Count; i++) {
                 _listOfInterfacesSupported.Add(newList[i] + ":0.0");

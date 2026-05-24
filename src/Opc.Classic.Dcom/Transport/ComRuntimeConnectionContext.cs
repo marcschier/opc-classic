@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -12,6 +12,7 @@ using SharpInterop.Rpc;
 using SharpInterop.Rpc.Core;
 using SharpInterop.Rpc.pdu;
 using System;
+using System.Globalization;
 
 namespace SharpInterop.Transport; 
 /// <summary>
@@ -31,6 +32,7 @@ public sealed class ComRuntimeConnectionContext : BasicConnectionContext {
     }
 
     /// <inheritdoc/>
+#pragma warning disable MA0051 // Legacy bind/alter-context state machine kept together.
     public override ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
         ConnectionOrientedPdu reply = null;
         switch (pdu.Type) {
@@ -41,7 +43,7 @@ public sealed class ComRuntimeConnectionContext : BasicConnectionContext {
                 var result = new PresentationResult[1];
                 for (var i = 0; i < presentationContexts.Length; i++) {
                     var presentationContext = presentationContexts[i];
-                    if (!presentationContext.AbstractSyntax.ToString().ToUpper().Equals(
+                    if (!presentationContext.AbstractSyntax.ToString().ToUpper(CultureInfo.InvariantCulture).Equals(
                         (string)_properties.GetProperty(kIID), StringComparison.CurrentCultureIgnoreCase)) {
                         // create a fault PDU stating the syntax is not supported.
                         result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION,
@@ -69,7 +71,7 @@ public sealed class ComRuntimeConnectionContext : BasicConnectionContext {
                 result = new PresentationResult[1];
                 for (var i = 0; i < presentationContexts.Length; i++) {
                     var presentationContext = presentationContexts[i];
-                    if (!presentationContext.AbstractSyntax.ToString().ToUpper().Equals(
+                    if (!presentationContext.AbstractSyntax.ToString().ToUpper(CultureInfo.InvariantCulture).Equals(
                         (string)_properties.GetProperty(kIID), StringComparison.CurrentCultureIgnoreCase)) {
                         // create a fault PDU stating the syntax is not supported.
                         result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION,
@@ -95,6 +97,7 @@ public sealed class ComRuntimeConnectionContext : BasicConnectionContext {
         }
         return reply;
     }
+#pragma warning restore MA0051
 
     private const string kIID = "IID";
     private bool _established;

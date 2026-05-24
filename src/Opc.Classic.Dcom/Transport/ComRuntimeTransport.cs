@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -19,7 +19,7 @@ namespace SharpInterop.Transport;
 /// <summary>
 /// Transport
 /// </summary>
-internal sealed class ComRuntimeTransport : ITransport {
+internal sealed class ComRuntimeTransport : ITransport, IDisposable {
 
     /// <summary>
     /// Create transport
@@ -74,6 +74,12 @@ internal sealed class ComRuntimeTransport : ITransport {
             _socket = null;
             _stream?.Dispose();
         }
+    }
+
+    /// <summary>Releases the accepted runtime socket resources.</summary>
+    public void Dispose() {
+        Close();
+        GC.SuppressFinalize(this);
     }
 
     /// <inheritdoc/>

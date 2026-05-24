@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -10,6 +10,7 @@
 using SharpInterop.Common;
 using SharpInterop.Registry.Smb;
 using SharpCifs.Util.Sharpen;
+using System.Threading;
 
 namespace SharpInterop.Registry; 
 /// <summary>
@@ -33,7 +34,7 @@ public class RegistryFactory {
     public static RegistryFactory Instance {
         get {
             if (_factory == null) {
-                lock (typeof(RegistryFactory)) {
+                lock (s_factoryLock) {
                     if (_factory == null) {
                         _factory = new RegistryFactory();
                     }
@@ -78,5 +79,6 @@ public class RegistryFactory {
         return null;
     }
 
+    private static readonly Lock s_factoryLock = new();
     private static RegistryFactory _factory;
 }

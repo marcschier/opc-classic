@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -27,7 +27,7 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
     private static readonly Guid IidIClassFactory = Guid.Parse("00000001-0000-0000-C000-000000000046");
     private readonly IClsidRegistry? _metadataRegistry;
     private readonly ClassFactoryRegistry _classFactories;
-    private readonly object _sessionLock = new();
+    private readonly Lock _sessionLock = new();
     private Session? _serverSession;
 
     /// <summary>Initializes an activator backed by managed class factories.</summary>

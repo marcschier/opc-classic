@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -7,36 +7,6 @@ using System;
 using System.Collections.Concurrent;
 
 namespace SharpInterop.Core;
-
-/// <summary>Activation context supplied to registered class factories.</summary>
-public sealed record ClassFactoryActivationContext(
-    Guid Clsid,
-    Guid RequestedIid,
-    ActivationProperties ActivationProperties);
-
-/// <summary>Result produced by a class factory for DCOM export.</summary>
-public sealed class ClassFactoryActivationResult {
-    /// <summary>Creates a result with the managed instance and interface definition to export.</summary>
-    public ClassFactoryActivationResult(object instance, LocalInterfaceDefinition interfaceDefinition) {
-        Instance = instance ?? throw new ArgumentNullException(nameof(instance));
-        InterfaceDefinition = interfaceDefinition ?? throw new ArgumentNullException(nameof(interfaceDefinition));
-    }
-
-    /// <summary>The managed object instance implementing the requested interface.</summary>
-    public object Instance { get; }
-
-    /// <summary>The DCOM interface definition used by <see cref="LocalCoClass" />.</summary>
-    public LocalInterfaceDefinition InterfaceDefinition { get; }
-}
-
-/// <summary>Managed COM class factory used by <see cref="RemoteSCMActivatorServer" />.</summary>
-public interface IClassFactory {
-    /// <summary>Whether this factory can be returned from RemoteGetClassObject.</summary>
-    bool SupportsGetClassObject { get; }
-
-    /// <summary>Creates an instance for RemoteCreateInstance.</summary>
-    ClassFactoryActivationResult CreateInstance(ClassFactoryActivationContext context);
-}
 
 /// <summary>
 /// Thread-safe registry mapping CLSIDs to managed class factories used by the
@@ -76,7 +46,7 @@ public sealed class ClassFactoryRegistry {
     }
 
     /// <summary>Attempts to resolve a CLSID to its factory.</summary>
-    public bool TryResolve(Guid clsid, out IClassFactory factory) => _factories.TryGetValue(clsid, out factory!);
+    public bool TryResolve(Guid clsid, out IClassFactory factory) => _factories.TryGetValue(clsid, out factory);
 
     /// <summary>Removes a registered factory.</summary>
     public bool Unregister(Guid clsid) => _factories.TryRemove(clsid, out _);
@@ -102,7 +72,11 @@ public sealed class ClassFactoryRegistry {
                 return _resultFactory(context) ?? throw new InvalidOperationException("Class factory returned null activation result.");
             }
 
-            object instance = _instanceFactory!(context) ?? throw new InvalidOperationException("Class factory returned null instance.");
+            if (_instanceFactory is null) {
+                throw new InvalidOperationException("Class factory result factory was not configured.");
+            }
+
+            object instance = _instanceFactory(context) ?? throw new InvalidOperationException("Class factory returned null instance.");
             return new ClassFactoryActivationResult(instance, CreateDefaultInterfaceDefinition(context.RequestedIid));
         }
     }

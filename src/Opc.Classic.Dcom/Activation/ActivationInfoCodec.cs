@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -78,18 +78,29 @@ public static class ActivationInfoCodec {
         var reader = new NdrReader(payload);
         uint signature = reader.ReadUInt32();
         if (signature != Signature) {
-            return new ActivationProperties(
-                SpecialPropertiesData.Empty,
-                null,
-                null,
-                null,
-                null,
-                new[] { new ActivationProperty(0, payload) });
+            return FromOpaquePayload(payload);
         }
 
         ushort major = reader.ReadUInt16();
         ushort minor = reader.ReadUInt16();
         uint count = reader.ReadUInt32();
+
+        return DecodeVersionedProperties(ref reader, major, minor, count);
+    }
+
+    private static ActivationProperties FromOpaquePayload(ReadOnlySpan<byte> payload) => new(
+        SpecialPropertiesData.Empty,
+        null,
+        null,
+        null,
+        null,
+        new[] { new ActivationProperty(ActivationPropertyId.Unknown, payload) });
+
+    private static ActivationProperties DecodeVersionedProperties(
+        ref NdrReader reader,
+        ushort major,
+        ushort minor,
+        uint count) {
         if (count > 1024) {
             throw new InvalidOperationException("Activation property count is unreasonably large.");
         }
@@ -102,35 +113,18 @@ public static class ActivationInfoCodec {
         var customProperties = new List<ActivationProperty>();
 
         for (uint i = 0; i < count; i++) {
-            var id = (ActivationPropertyId)reader.ReadUInt32();
-            uint length = reader.ReadUInt32();
-            if (length > int.MaxValue || length > reader.RemainingBytes) {
-                throw new InvalidOperationException("Activation property payload length exceeds the remaining data.");
-            }
-
-            ReadOnlySpan<byte> propertyPayload = reader.ReadRawBytes((int)length);
-            reader.AlignTo(4);
-
-            switch (id) {
-                case ActivationPropertyId.SpecialProperties:
-                    specialProperties = DecodeSpecialProperties(propertyPayload, major, minor);
-                    break;
-                case ActivationPropertyId.InstanceInfo:
-                    instanceInfo = DecodeInstanceInfo(propertyPayload);
-                    break;
-                case ActivationPropertyId.LocationInfo:
-                    locationInfo = DecodeLocationInfo(propertyPayload);
-                    break;
-                case ActivationPropertyId.ScmReplyInfo:
-                    scmReplyInfo = DecodeScmReplyInfo(propertyPayload);
-                    break;
-                case ActivationPropertyId.SecurityInfo:
-                    securityInfo = DecodeSecurityInfo(propertyPayload);
-                    break;
-                default:
-                    customProperties.Add(new ActivationProperty(id, propertyPayload));
-                    break;
-            }
+            ReadPropertyEnvelope(ref reader, out ActivationPropertyId id, out ReadOnlySpan<byte> propertyPayload);
+            DecodeProperty(
+                id,
+                propertyPayload,
+                major,
+                minor,
+                ref specialProperties,
+                ref instanceInfo,
+                ref locationInfo,
+                ref scmReplyInfo,
+                ref securityInfo,
+                customProperties);
         }
 
         return new ActivationProperties(
@@ -140,6 +134,53 @@ public static class ActivationInfoCodec {
             scmReplyInfo,
             securityInfo,
             customProperties);
+    }
+
+    private static void ReadPropertyEnvelope(
+        ref NdrReader reader,
+        out ActivationPropertyId id,
+        out ReadOnlySpan<byte> propertyPayload) {
+        id = (ActivationPropertyId)reader.ReadUInt32();
+        uint length = reader.ReadUInt32();
+        if (length > int.MaxValue || length > reader.RemainingBytes) {
+            throw new InvalidOperationException("Activation property payload length exceeds the remaining data.");
+        }
+
+        propertyPayload = reader.ReadRawBytes((int)length);
+        reader.AlignTo(4);
+    }
+
+    private static void DecodeProperty(
+        ActivationPropertyId id,
+        ReadOnlySpan<byte> propertyPayload,
+        ushort major,
+        ushort minor,
+        ref SpecialPropertiesData? specialProperties,
+        ref InstanceInfo? instanceInfo,
+        ref LocationInfo? locationInfo,
+        ref ScmReplyInfo? scmReplyInfo,
+        ref SecurityInfo? securityInfo,
+        List<ActivationProperty> customProperties) {
+        switch (id) {
+            case ActivationPropertyId.SpecialProperties:
+                specialProperties = DecodeSpecialProperties(propertyPayload, major, minor);
+                break;
+            case ActivationPropertyId.InstanceInfo:
+                instanceInfo = DecodeInstanceInfo(propertyPayload);
+                break;
+            case ActivationPropertyId.LocationInfo:
+                locationInfo = DecodeLocationInfo(propertyPayload);
+                break;
+            case ActivationPropertyId.ScmReplyInfo:
+                scmReplyInfo = DecodeScmReplyInfo(propertyPayload);
+                break;
+            case ActivationPropertyId.SecurityInfo:
+                securityInfo = DecodeSecurityInfo(propertyPayload);
+                break;
+            default:
+                customProperties.Add(new ActivationProperty(id, propertyPayload));
+                break;
+        }
     }
 
     /// <summary>Attempts to decode activation properties without throwing.</summary>

@@ -1,5 +1,9 @@
-﻿
-namespace System.Collections.Generic; 
+//
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Opc.Classic .NET Contributors
+//
+
+namespace System.Collections.Generic;
 
 /// <summary>
 /// Extensions

@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -29,6 +29,7 @@ public class CreateKey : NdrOp {
     public override int Opnum => 6;
 
     /// <inheritdoc/>
+#pragma warning disable MA0051 // Legacy NDR encode mirrors the WinReg wire layout.
     public override void Write(NdrCodec ndr) {
         // Write parent handle
         ndr.WriteOctetArray(parentKey.Handle, 0, 20);
@@ -99,6 +100,7 @@ public class CreateKey : NdrOp {
         ndr.WriteUnsignedLong(new object().GetHashCode());
         ndr.WriteUnsignedLong(0);
     }
+#pragma warning restore MA0051
 
     /// <inheritdoc/>
     public override void Read(NdrCodec ndr) {

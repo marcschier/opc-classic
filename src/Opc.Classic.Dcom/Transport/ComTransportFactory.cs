@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -12,6 +12,7 @@ using SharpInterop.Common;
 using SharpInterop.Rpc;
 using SharpCifs.Util.Sharpen;
 using System.IO;
+using System.Threading;
 
 namespace SharpInterop.Transport; 
 /// <summary>
@@ -34,7 +35,7 @@ public sealed class ComTransportFactory : TransportFactory {
     /// </summary>
     public static ComTransportFactory Instance {
         get {
-            lock (typeof(ComTransportFactory)) {
+            lock (s_factoryLock) {
                 if (_instance == null) {
                     try {
                         _instance = new ComTransportFactory();
@@ -48,5 +49,6 @@ public sealed class ComTransportFactory : TransportFactory {
         }
     }
 
+    private static readonly Lock s_factoryLock = new();
     private static ComTransportFactory _instance;
 }

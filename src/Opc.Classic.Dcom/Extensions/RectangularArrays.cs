@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------
 //    Copyright © 2007 - 2014 Tangible Software Solutions Inc.
 //    This class can be used by anyone provided that the copyright notice remains intact.
 //
@@ -6,6 +6,8 @@
 //    arrays with inner arrays of the same length. A size of -1 indicates unknown length.
 // ----------------------------------------------------------------------------------------
 using SharpInterop.Core;
+
+namespace System;
 
 /// <summary>
 /// Extension
