@@ -5,12 +5,15 @@
 // OPC AE DCOM-projection interfaces. Each [OpcInterface] partial interface is
 // extended by the OpcInterfaceGenerator to carry a compile-time-known
 // InterfaceId. [OpcMethod] declarations drive generated call shims for the
-// IDL shapes currently covered by the primitive, array, and AE complex codecs.
+// IDL shapes currently covered by the primitive, array, AE complex, multi-out,
+// and interface-pointer codecs.
 //
 
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCEventServer not IOpcEventServer)
 #pragma warning disable MA0048 // Multiple interface declarations grouped for readability
+#pragma warning disable OPCGEN104, OPCGEN105 // IFACE pointer responses are decoded by generated client proxies.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Generators;
@@ -27,9 +30,32 @@ public partial interface IOPCEventServer
     [OpcMethod(3)]
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
+    /// <summary><c>IOPCEventServer::CreateEventSubscription</c> (opnum 4). Creates a subscription object.</summary>
+    [OpcMethod(4)]
+    [OpcGenerateMultiOutRecord]
+    Task CreateEventSubscriptionAsync(
+        bool active,
+        int bufferTime,
+        int maxSize,
+        int clientSubscription,
+        Guid requestedInterfaceId,
+        out IOPCEventSubscriptionMgt subscription,
+        out int revisedBufferTime,
+        out int revisedMaxSize,
+        CancellationToken cancellationToken = default);
+
     /// <summary><c>IOPCEventServer::QueryAvailableFilters</c> (opnum 5). Returns the supported filter mask.</summary>
     [OpcMethod(5)]
     Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default);
+
+    /// <summary><c>IOPCEventServer::QueryEventCategories</c> (opnum 6). Returns category IDs and descriptions.</summary>
+    [OpcMethod(6)]
+    [OpcGenerateMultiOutRecord]
+    Task QueryEventCategoriesAsync(
+        int eventType,
+        out int[] eventCategories,
+        out string[] eventCategoryDescriptions,
+        CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::QueryConditionNames</c> (opnum 7). Returns condition names for an event category.</summary>
     [OpcMethod(7)]
@@ -43,32 +69,56 @@ public partial interface IOPCEventServer
     [OpcMethod(9)]
     Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCEventServer::GetConditionState</c> (opnum 10). Returns a condition-state snapshot.</summary>
+    /// <summary><c>IOPCEventServer::QueryEventAttributes</c> (opnum 10). Returns attribute IDs, descriptions, and VARTYPEs.</summary>
     [OpcMethod(10)]
+    [OpcGenerateMultiOutRecord]
+    Task QueryEventAttributesAsync(
+        int eventCategory,
+        out int[] attributeIds,
+        out string[] attributeDescriptions,
+        out ushort[] attributeTypes,
+        CancellationToken cancellationToken = default);
+
+    /// <summary><c>IOPCEventServer::TranslateToItemIDs</c> (opnum 11). Maps event attributes to DA item IDs.</summary>
+    [OpcMethod(11)]
+    [OpcGenerateMultiOutRecord]
+    Task TranslateToItemIDsAsync(
+        string source,
+        int eventCategory,
+        string conditionName,
+        string subconditionName,
+        int[] associatedAttributeIds,
+        out string[] attributeItemIds,
+        out string[] nodeNames,
+        out Guid[] classIds,
+        CancellationToken cancellationToken = default);
+
+    /// <summary><c>IOPCEventServer::GetConditionState</c> (opnum 12). Returns a condition-state snapshot.</summary>
+    [OpcMethod(12)]
     Task<OpcConditionState> GetConditionStateAsync(
         string source,
         string conditionName,
         int[] attributeIds,
         CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCEventServer::EnableConditionByArea</c> (opnum 11). Enables conditions by area.</summary>
-    [OpcMethod(11)]
+    /// <summary><c>IOPCEventServer::EnableConditionByArea</c> (opnum 13). Enables conditions by area.</summary>
+    [OpcMethod(13)]
     Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCEventServer::EnableConditionBySource</c> (opnum 12). Enables conditions by source.</summary>
-    [OpcMethod(12)]
+    /// <summary><c>IOPCEventServer::EnableConditionBySource</c> (opnum 14). Enables conditions by source.</summary>
+    [OpcMethod(14)]
     Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCEventServer::DisableConditionByArea</c> (opnum 13). Disables conditions by area.</summary>
-    [OpcMethod(13)]
+    /// <summary><c>IOPCEventServer::DisableConditionByArea</c> (opnum 15). Disables conditions by area.</summary>
+    [OpcMethod(15)]
     Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCEventServer::DisableConditionBySource</c> (opnum 14). Disables conditions by source.</summary>
-    [OpcMethod(14)]
+    /// <summary><c>IOPCEventServer::DisableConditionBySource</c> (opnum 16). Disables conditions by source.</summary>
+    [OpcMethod(16)]
     Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCEventServer::AckCondition</c> (opnum 15). Acknowledges condition events and returns per-event HRESULTs.</summary>
-    [OpcMethod(15)]
+    /// <summary><c>IOPCEventServer::AckCondition</c> (opnum 17). Acknowledges condition events and returns per-event HRESULTs.</summary>
+    [OpcMethod(17)]
     Task<int[]> AckConditionAsync(
         string acknowledgerId,
         string comment,
@@ -78,32 +128,55 @@ public partial interface IOPCEventServer
         string[] conditionNames,
         CancellationToken cancellationToken = default);
 
-    // CreateEventSubscription/CreateAreaBrowser return COM interface pointers; multi-out catalog queries remain deferred.
+    /// <summary><c>IOPCEventServer::CreateAreaBrowser</c> (opnum 18). Creates an area browser object.</summary>
+    [OpcMethod(18)]
+    Task CreateAreaBrowserAsync(
+        Guid requestedInterfaceId,
+        out IOPCEventAreaBrowser areaBrowser,
+        CancellationToken cancellationToken = default);
 }
 
-/// <summary><c>IOPCEventServer2</c> — AE 1.10 enable-/disable-conditions extensions (IID_IOPCEventServer2).</summary>
+/// <summary><c>IOPCEventServer2</c> — AE 1.10 interface derived from <c>IOPCEventServer</c>; new methods start at opnum 19.</summary>
 [OpcInterface("71BBE88E-9564-4BCD-BCFC-71C558D94F2D")]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IOPCEventServer2
 {
-    /// <summary><c>IOPCEventServer2::EnableConditionByArea2</c> (opnum 16). Enables conditions by area with per-area HRESULTs.</summary>
-    [OpcMethod(16)]
+    /// <summary><c>IOPCEventServer2::EnableConditionByArea2</c> (opnum 19). Enables conditions by area with per-area HRESULTs.</summary>
+    [OpcMethod(19)]
     Task<int[]> EnableConditionByArea2Async(string[] areas, CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCEventServer2::EnableConditionBySource2</c> (opnum 17). Enables conditions by source with per-source HRESULTs.</summary>
-    [OpcMethod(17)]
+    /// <summary><c>IOPCEventServer2::EnableConditionBySource2</c> (opnum 20). Enables conditions by source with per-source HRESULTs.</summary>
+    [OpcMethod(20)]
     Task<int[]> EnableConditionBySource2Async(string[] sources, CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCEventServer2::DisableConditionByArea2</c> (opnum 18). Disables conditions by area with per-area HRESULTs.</summary>
-    [OpcMethod(18)]
+    /// <summary><c>IOPCEventServer2::DisableConditionByArea2</c> (opnum 21). Disables conditions by area with per-area HRESULTs.</summary>
+    [OpcMethod(21)]
     Task<int[]> DisableConditionByArea2Async(string[] areas, CancellationToken cancellationToken = default);
 
-    /// <summary><c>IOPCEventServer2::DisableConditionBySource2</c> (opnum 19). Disables conditions by source with per-source HRESULTs.</summary>
-    [OpcMethod(19)]
+    /// <summary><c>IOPCEventServer2::DisableConditionBySource2</c> (opnum 22). Disables conditions by source with per-source HRESULTs.</summary>
+    [OpcMethod(22)]
     Task<int[]> DisableConditionBySource2Async(string[] sources, CancellationToken cancellationToken = default);
 
-    // GetEnableStateByArea/Source have three correlated out arrays and are deferred until multi-out records are registered.
+    /// <summary><c>IOPCEventServer2::GetEnableStateByArea</c> (opnum 23). Returns direct and effective enable state per area.</summary>
+    [OpcMethod(23)]
+    [OpcGenerateMultiOutRecord]
+    Task GetEnableStateByAreaAsync(
+        string[] areas,
+        out bool[] enabled,
+        out bool[] effectivelyEnabled,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary><c>IOPCEventServer2::GetEnableStateBySource</c> (opnum 24). Returns direct and effective enable state per source.</summary>
+    [OpcMethod(24)]
+    [OpcGenerateMultiOutRecord]
+    Task GetEnableStateBySourceAsync(
+        string[] sources,
+        out bool[] enabled,
+        out bool[] effectivelyEnabled,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCEventSubscriptionMgt</c> — AE event subscription management (IID_IOPCEventSubscriptionMgt).</summary>
@@ -123,6 +196,18 @@ public partial interface IOPCEventSubscriptionMgt
         string[] sources,
         CancellationToken cancellationToken = default);
 
+    /// <summary><c>IOPCEventSubscriptionMgt::GetFilter</c> (opnum 4). Returns the current subscription filter.</summary>
+    [OpcMethod(4)]
+    [OpcGenerateMultiOutRecord]
+    Task GetFilterAsync(
+        out int eventType,
+        out int[] eventCategories,
+        out int lowSeverity,
+        out int highSeverity,
+        out string[] areas,
+        out string[] sources,
+        CancellationToken cancellationToken = default);
+
     /// <summary><c>IOPCEventSubscriptionMgt::SelectReturnedAttributes</c> (opnum 5). Selects attributes returned for a category.</summary>
     [OpcMethod(5)]
     Task SetReturnedAttributesAsync(int eventCategory, int[] attributeIds, CancellationToken cancellationToken = default);
@@ -139,7 +224,27 @@ public partial interface IOPCEventSubscriptionMgt
     [OpcMethod(8)]
     Task CancelRefreshAsync(int connection, CancellationToken cancellationToken = default);
 
-    // GetFilter/GetState/SetState require multi-out result records and are deferred.
+    /// <summary><c>IOPCEventSubscriptionMgt::GetState</c> (opnum 9). Returns active state, buffering, and client handle.</summary>
+    [OpcMethod(9)]
+    [OpcGenerateMultiOutRecord]
+    Task GetStateAsync(
+        out bool active,
+        out int bufferTime,
+        out int maxSize,
+        out int clientSubscription,
+        CancellationToken cancellationToken = default);
+
+    /// <summary><c>IOPCEventSubscriptionMgt::SetState</c> (opnum 10). Updates state and returns revised buffering.</summary>
+    [OpcMethod(10)]
+    [OpcGenerateMultiOutRecord]
+    Task SetStateAsync(
+        bool active,
+        int bufferTime,
+        int maxSize,
+        int clientSubscription,
+        out int revisedBufferTime,
+        out int revisedMaxSize,
+        CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCEventSubscriptionMgt2</c> — AE 1.10 keep-alive extensions (IID_IOPCEventSubscriptionMgt2).</summary>
@@ -167,6 +272,14 @@ public partial interface IOPCEventAreaBrowser
     [OpcMethod(3)]
     Task ChangeBrowsePositionAsync(int browseDirection, string? position, CancellationToken cancellationToken = default);
 
+    /// <summary><c>IOPCEventAreaBrowser::BrowseOPCAreas</c> (opnum 4). Returns an <c>IEnumString</c> over areas or sources.</summary>
+    [OpcMethod(4)]
+    Task BrowseOPCAreasAsync(
+        int browseFilterType,
+        string filterCriteria,
+        out IEnumString enumString,
+        CancellationToken cancellationToken = default);
+
     /// <summary><c>IOPCEventAreaBrowser::GetQualifiedAreaName</c> (opnum 5). Returns a fully-qualified area name.</summary>
     [OpcMethod(5)]
     Task<string> GetQualifiedAreaNameAsync(string areaName, CancellationToken cancellationToken = default);
@@ -174,8 +287,6 @@ public partial interface IOPCEventAreaBrowser
     /// <summary><c>IOPCEventAreaBrowser::GetQualifiedSourceName</c> (opnum 6). Returns a fully-qualified source name.</summary>
     [OpcMethod(6)]
     Task<string> GetQualifiedSourceNameAsync(string sourceName, CancellationToken cancellationToken = default);
-
-    // BrowseOPCAreas returns IEnumString and is deferred until COM interface-pointer returns are supported.
 }
 
 /// <summary><c>IOPCEventSink</c> — AE event-delivery callback sink (IID_IOPCEventSink).</summary>
@@ -192,4 +303,10 @@ public partial interface IOPCEventSink
         bool lastRefresh,
         OpcEventNotification[] events,
         CancellationToken cancellationToken = default);
+}
+
+/// <summary><c>IEnumString</c> — COM string enumerator returned by AE browser methods.</summary>
+[OpcInterface("00000101-0000-0000-C000-000000000046")]
+public partial interface IEnumString
+{
 }
