@@ -7,20 +7,19 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Core {
-    using System;
+using System;
 
-    /// <summary>
-    /// Empty type
-    /// </summary>
-    [Serializable]
+namespace SharpInterop.Core; 
+/// <summary>
+/// Empty type
+/// </summary>
+[Serializable]
 #pragma warning disable RECS0014 // If all fields, properties and methods members are static, the class can be made static.
-    public sealed class Empty {
+public sealed class Empty {
 #pragma warning restore RECS0014 // If all fields, properties and methods members are static, the class can be made static.
 
-        /// <summary>
-        /// Empty value
-        /// </summary>
-        public static Empty Value { get; } = new Empty();
-    }
+    /// <summary>
+    /// Empty value
+    /// </summary>
+    public static Empty Value { get; } = new Empty();
 }

@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,34 +7,33 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc.Core {
-    using Opc.Classic.Dcom.Internal.LegacyNdr;
+using Opc.Classic.Dcom.Internal.LegacyNdr;
+
+namespace SharpInterop.Rpc.Core; 
+/// <summary>
+/// Protocol version
+/// </summary>
+public class ProtocolVersion : NdrOp {
 
     /// <summary>
-    /// Protocol version
+    /// Major version
     /// </summary>
-    public class ProtocolVersion : NdrOp {
+    public int MajorVersion { get; set; }
 
-        /// <summary>
-        /// Major version
-        /// </summary>
-        public int MajorVersion { get; set; }
+    /// <summary>
+    /// Minor version
+    /// </summary>
+    public int MinorVersion { get; set; }
 
-        /// <summary>
-        /// Minor version
-        /// </summary>
-        public int MinorVersion { get; set; }
+    /// <inheritdoc/>
+    public override void Encode(NdrCodec ndr, NdrBuffer dst) {
+        dst.Enc_ndr_small(MajorVersion);
+        dst.Enc_ndr_small(MinorVersion);
+    }
 
-        /// <inheritdoc/>
-        public override void Encode(NdrCodec ndr, NdrBuffer dst) {
-            dst.Enc_ndr_small(MajorVersion);
-            dst.Enc_ndr_small(MinorVersion);
-        }
-
-        /// <inheritdoc/>
-        public override void Decode(NdrCodec ndr, NdrBuffer src) {
-            MajorVersion = src.Dec_ndr_small();
-            MinorVersion = src.Dec_ndr_small();
-        }
+    /// <inheritdoc/>
+    public override void Decode(NdrCodec ndr, NdrBuffer src) {
+        MajorVersion = src.Dec_ndr_small();
+        MinorVersion = src.Dec_ndr_small();
     }
 }

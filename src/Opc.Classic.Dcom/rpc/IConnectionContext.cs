@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,51 +7,50 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
-    using Opc.Classic.Dcom.Internal;
-    using SharpInterop.Rpc.Core;
-    using SharpCifs.Util.Sharpen;
-    using System.IO;
+using Opc.Classic.Dcom.Internal;
+using SharpInterop.Rpc.Core;
+using SharpCifs.Util.Sharpen;
+using System.IO;
+
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Connection context
+/// </summary>
+public interface IConnectionContext {
 
     /// <summary>
-    /// Connection context
+    /// Connectrion
     /// </summary>
-    public interface IConnectionContext {
+    IConnection Connection { get; }
 
-        /// <summary>
-        /// Connectrion
-        /// </summary>
-        IConnection Connection { get; }
+    /// <summary>
+    /// Whether it is established
+    /// </summary>
+    bool Established { get; }
 
-        /// <summary>
-        /// Whether it is established
-        /// </summary>
-        bool Established { get; }
+    /// <summary>
+    /// Initialize
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="properties"></param>
+    /// <exception cref="IOException"></exception>
+    /// <returns></returns>
+    ConnectionOrientedPdu Init(PresentationContext context,
+        PropertyBag properties);
 
-        /// <summary>
-        /// Initialize
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="properties"></param>
-        /// <exception cref="IOException"></exception>
-        /// <returns></returns>
-        ConnectionOrientedPdu Init(PresentationContext context,
-            PropertyBag properties);
+    /// <summary>
+    /// Alter
+    /// </summary>
+    /// <param name="context"></param>
+    /// <exception cref="IOException"></exception>
+    /// <returns></returns>
+    ConnectionOrientedPdu Alter(PresentationContext context);
 
-        /// <summary>
-        /// Alter
-        /// </summary>
-        /// <param name="context"></param>
-        /// <exception cref="IOException"></exception>
-        /// <returns></returns>
-        ConnectionOrientedPdu Alter(PresentationContext context);
-
-        /// <summary>
-        /// Accept
-        /// </summary>
-        /// <param name="pdu"></param>
-        /// <exception cref="IOException"></exception>
-        /// <returns></returns>
-        ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu);
-    }
+    /// <summary>
+    /// Accept
+    /// </summary>
+    /// <param name="pdu"></param>
+    /// <exception cref="IOException"></exception>
+    /// <returns></returns>
+    ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu);
 }

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -27,16 +27,14 @@ namespace Opc.Classic.Dcom.Internal;
 /// Consumers configure the factory via <see cref="ConfigureFactory"/>;
 /// when unconfigured, all log calls become no-ops (NullLoggerFactory).
 /// </summary>
-public static class LogHost
-{
+public static class LogHost {
     private static ILoggerFactory _factory = NullLoggerFactory.Instance;
 
     /// <summary>The current logger factory; defaults to <see cref="NullLoggerFactory"/>.</summary>
     public static ILoggerFactory Factory => _factory;
 
     /// <summary>Installs a new logger factory. Pass <see langword="null"/> to revert to no-op logging.</summary>
-    public static void ConfigureFactory(ILoggerFactory? factory)
-    {
+    public static void ConfigureFactory(ILoggerFactory? factory) {
         _factory = factory ?? NullLoggerFactory.Instance;
     }
 

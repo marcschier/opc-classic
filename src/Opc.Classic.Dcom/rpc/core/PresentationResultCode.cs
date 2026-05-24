@@ -7,25 +7,24 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc.Core {
+namespace SharpInterop.Rpc.Core; 
+/// <summary>
+/// Presentation result code
+/// </summary>
+public enum PresentationResultCode {
+
     /// <summary>
-    /// Presentation result code
+    /// Accept
     /// </summary>
-    public enum PresentationResultCode {
+    ACCEPTANCE = 0,
 
-        /// <summary>
-        /// Accept
-        /// </summary>
-        ACCEPTANCE = 0,
+    /// <summary>
+    /// User rejected
+    /// </summary>
+    USER_REJECTION = 1,
 
-        /// <summary>
-        /// User rejected
-        /// </summary>
-        USER_REJECTION = 1,
-
-        /// <summary>
-        /// Rejected
-        /// </summary>
-        PROVIDER_REJECTION = 2,
-    }
+    /// <summary>
+    /// Rejected
+    /// </summary>
+    PROVIDER_REJECTION = 2,
 }

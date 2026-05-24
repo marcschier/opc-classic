@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -11,8 +11,7 @@ namespace Opc.Classic.Dcom.Kerberos.Spnego;
 /// <summary>
 /// GSS-API MIC provider for SPNEGO sessions that negotiate NTLMSSP.
 /// </summary>
-public sealed class NtlmMicProvider : IGssMicProvider
-{
+public sealed class NtlmMicProvider : IGssMicProvider {
     private readonly byte[] _signingKey;
 
     /// <summary>
@@ -20,10 +19,8 @@ public sealed class NtlmMicProvider : IGssMicProvider
     /// </summary>
     /// <param name="signingKey">The negotiated NTLM signing key.</param>
     /// <param name="sequenceNumber">The NTLM sequence number. SPNEGO mechListMIC uses zero.</param>
-    public NtlmMicProvider(ReadOnlySpan<byte> signingKey, uint sequenceNumber = 0)
-    {
-        if (signingKey.IsEmpty)
-        {
+    public NtlmMicProvider(ReadOnlySpan<byte> signingKey, uint sequenceNumber = 0) {
+        if (signingKey.IsEmpty) {
             throw new ArgumentException("The NTLM signing key must not be empty.", nameof(signingKey));
         }
 

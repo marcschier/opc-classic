@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,47 +7,46 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Transport {
-    using Opc.Classic.Dcom.Internal;
-    using SharpInterop.Common;
-    using SharpInterop.Rpc;
-    using SharpCifs.Util.Sharpen;
-    using System.IO;
+using Opc.Classic.Dcom.Internal;
+using SharpInterop.Common;
+using SharpInterop.Rpc;
+using SharpCifs.Util.Sharpen;
+using System.IO;
+
+namespace SharpInterop.Transport; 
+/// <summary>
+/// Factory for <seealso cref="ComTransport"/>
+/// </summary>
+public sealed class ComTransportFactory : TransportFactory {
 
     /// <summary>
-    /// Factory for <seealso cref="ComTransport"/>
+    /// private constructor
     /// </summary>
-    public sealed class ComTransportFactory : TransportFactory {
+    private ComTransportFactory() {
+    }
 
-        /// <summary>
-        /// private constructor
-        /// </summary>
-        private ComTransportFactory() {
-        }
+    /// <inheritdoc/>
+    public override ITransport CreateTransport(string address, PropertyBag properties) =>
+        new ComTransport(address, properties);
 
-        /// <inheritdoc/>
-        public override ITransport CreateTransport(string address, PropertyBag properties) =>
-            new ComTransport(address, properties);
-
-        /// <summary>
-        /// Singleton
-        /// </summary>
-        public static ComTransportFactory Instance {
-            get {
-                lock (typeof(ComTransportFactory)) {
-                    if (_instance == null) {
-                        try {
-                            _instance = new ComTransportFactory();
-                        }
-                        catch (IOException e) {
-                            throw new InteropException(-1, e);
-                        }
+    /// <summary>
+    /// Singleton
+    /// </summary>
+    public static ComTransportFactory Instance {
+        get {
+            lock (typeof(ComTransportFactory)) {
+                if (_instance == null) {
+                    try {
+                        _instance = new ComTransportFactory();
                     }
-                    return _instance;
+                    catch (IOException e) {
+                        throw new InteropException(-1, e);
+                    }
                 }
+                return _instance;
             }
         }
-
-        private static ComTransportFactory _instance;
     }
+
+    private static ComTransportFactory _instance;
 }

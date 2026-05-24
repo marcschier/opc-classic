@@ -7,27 +7,25 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
+namespace SharpInterop.Rpc; 
+
+/// <summary>
+/// Security constants
+/// </summary>
+public static class Security {
 
     /// <summary>
-    /// Security constants
+    /// User name key
     /// </summary>
-    public static class Security {
+    public const string USERNAME = "rpc.security.username";
 
-        /// <summary>
-        /// User name key
-        /// </summary>
-        public const string USERNAME = "rpc.security.username";
+    /// <summary>
+    /// Password key
+    /// </summary>
+    public const string PASSWORD = "rpc.security.password";
 
-        /// <summary>
-        /// Password key
-        /// </summary>
-        public const string PASSWORD = "rpc.security.password";
-
-        /// <summary>
-        /// No service
-        /// </summary>
-        public const int AUTHENTICATION_SERVICE_NONE = 0;
-    }
-
+    /// <summary>
+    /// No service
+    /// </summary>
+    public const int AUTHENTICATION_SERVICE_NONE = 0;
 }

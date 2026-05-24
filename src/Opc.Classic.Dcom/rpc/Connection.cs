@@ -7,31 +7,29 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Constants
+/// </summary>
+public static class Connection {
+
     /// <summary>
-    /// Constants
+    /// Key to read max fragments
     /// </summary>
-    public static class Connection {
+    public const string MAX_TRANSMIT_FRAGMENT = "rpc.connectionContext.maxTransmitFragment";
 
-        /// <summary>
-        /// Key to read max fragments
-        /// </summary>
-        public const string MAX_TRANSMIT_FRAGMENT = "rpc.connectionContext.maxTransmitFragment";
+    /// <summary>
+    /// Key to read max fragments
+    /// </summary>
+    public const string MAX_RECEIVE_FRAGMENT = "rpc.connectionContext.maxReceiveFragment";
 
-        /// <summary>
-        /// Key to read max fragments
-        /// </summary>
-        public const string MAX_RECEIVE_FRAGMENT = "rpc.connectionContext.maxReceiveFragment";
+    /// <summary>
+    /// Default
+    /// </summary>
+    public const int DEFAULT_MAX_TRANSMIT_FRAGMENT = 4280;
 
-        /// <summary>
-        /// Default
-        /// </summary>
-        public const int DEFAULT_MAX_TRANSMIT_FRAGMENT = 4280;
-
-        /// <summary>
-        /// Default
-        /// </summary>
-        public const int DEFAULT_MAX_RECEIVE_FRAGMENT = 4280;
-    }
-
+    /// <summary>
+    /// Default
+    /// </summary>
+    public const int DEFAULT_MAX_RECEIVE_FRAGMENT = 4280;
 }

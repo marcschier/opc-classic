@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,22 +7,21 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc.Ncacn_Np {
-    using Opc.Classic.Dcom.Internal;
+using Opc.Classic.Dcom.Internal;
+
+namespace SharpInterop.Rpc.Ncacn_Np; 
+/// <summary>
+/// Transport factory
+/// </summary>
+public class TransportFactory : SharpInterop.Rpc.TransportFactory {
 
     /// <summary>
-    /// Transport factory
+    /// Create transport
     /// </summary>
-    public class TransportFactory : SharpInterop.Rpc.TransportFactory {
-
-        /// <summary>
-        /// Create transport
-        /// </summary>
-        /// <param name="address"></param>
-        /// <param name="properties"></param>
-        /// <exception cref="ProviderException"></exception>
-        /// <returns></returns>
-        public override ITransport CreateTransport(string address,
-            PropertyBag properties) => new RpcTransport(address, properties);
-    }
+    /// <param name="address"></param>
+    /// <param name="properties"></param>
+    /// <exception cref="ProviderException"></exception>
+    /// <returns></returns>
+    public override ITransport CreateTransport(string address,
+        PropertyBag properties) => new RpcTransport(address, properties);
 }

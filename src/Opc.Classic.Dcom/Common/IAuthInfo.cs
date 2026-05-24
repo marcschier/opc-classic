@@ -7,26 +7,25 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Common {
+namespace SharpInterop.Common; 
+
+/// <summary>
+/// Interface for setting user credentials.
+/// </summary>
+public interface IAuthInfo {
 
     /// <summary>
-    /// Interface for setting user credentials.
+    /// Returns username.
     /// </summary>
-    public interface IAuthInfo {
+    string UserName { get; }
 
-        /// <summary>
-        /// Returns username.
-        /// </summary>
-        string UserName { get; }
+    /// <summary>
+    /// Returns password.
+    /// </summary>
+    string Password { get; }
 
-        /// <summary>
-        /// Returns password.
-        /// </summary>
-        string Password { get; }
-
-        /// <summary>
-        /// Returns user's domain.
-        /// </summary>
-        string Domain { get; }
-    }
+    /// <summary>
+    /// Returns user's domain.
+    /// </summary>
+    string Domain { get; }
 }

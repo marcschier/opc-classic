@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,11 +15,9 @@ public sealed record ClassFactoryActivationContext(
     ActivationProperties ActivationProperties);
 
 /// <summary>Result produced by a class factory for DCOM export.</summary>
-public sealed class ClassFactoryActivationResult
-{
+public sealed class ClassFactoryActivationResult {
     /// <summary>Creates a result with the managed instance and interface definition to export.</summary>
-    public ClassFactoryActivationResult(object instance, LocalInterfaceDefinition interfaceDefinition)
-    {
+    public ClassFactoryActivationResult(object instance, LocalInterfaceDefinition interfaceDefinition) {
         Instance = instance ?? throw new ArgumentNullException(nameof(instance));
         InterfaceDefinition = interfaceDefinition ?? throw new ArgumentNullException(nameof(interfaceDefinition));
     }
@@ -32,8 +30,7 @@ public sealed class ClassFactoryActivationResult
 }
 
 /// <summary>Managed COM class factory used by <see cref="RemoteSCMActivatorServer" />.</summary>
-public interface IClassFactory
-{
+public interface IClassFactory {
     /// <summary>Whether this factory can be returned from RemoteGetClassObject.</summary>
     bool SupportsGetClassObject { get; }
 
@@ -45,8 +42,7 @@ public interface IClassFactory
 /// Thread-safe registry mapping CLSIDs to managed class factories used by the
 /// server-side IRemoteSCMActivator implementation.
 /// </summary>
-public sealed class ClassFactoryRegistry
-{
+public sealed class ClassFactoryRegistry {
     private readonly ConcurrentDictionary<Guid, IClassFactory> _factories = new();
 
     /// <summary>Number of registered factories.</summary>
@@ -56,8 +52,7 @@ public sealed class ClassFactoryRegistry
     public void Register(
         Guid clsid,
         Func<ClassFactoryActivationContext, object> factory,
-        bool supportsGetClassObject = true)
-    {
+        bool supportsGetClassObject = true) {
         ArgumentNullException.ThrowIfNull(factory);
         Register(clsid, new DelegateClassFactory(factory, supportsGetClassObject));
     }
@@ -66,17 +61,14 @@ public sealed class ClassFactoryRegistry
     public void Register(
         Guid clsid,
         Func<ClassFactoryActivationContext, ClassFactoryActivationResult> factory,
-        bool supportsGetClassObject = true)
-    {
+        bool supportsGetClassObject = true) {
         ArgumentNullException.ThrowIfNull(factory);
         Register(clsid, new DelegateClassFactory(factory, supportsGetClassObject));
     }
 
     /// <summary>Registers or replaces a factory object.</summary>
-    public void Register(Guid clsid, IClassFactory factory)
-    {
-        if (clsid == Guid.Empty)
-        {
+    public void Register(Guid clsid, IClassFactory factory) {
+        if (clsid == Guid.Empty) {
             throw new ArgumentException("CLSID cannot be empty.", nameof(clsid));
         }
 
@@ -89,29 +81,24 @@ public sealed class ClassFactoryRegistry
     /// <summary>Removes a registered factory.</summary>
     public bool Unregister(Guid clsid) => _factories.TryRemove(clsid, out _);
 
-    private sealed class DelegateClassFactory : IClassFactory
-    {
+    private sealed class DelegateClassFactory : IClassFactory {
         private readonly Func<ClassFactoryActivationContext, object>? _instanceFactory;
         private readonly Func<ClassFactoryActivationContext, ClassFactoryActivationResult>? _resultFactory;
 
-        public DelegateClassFactory(Func<ClassFactoryActivationContext, object> factory, bool supportsGetClassObject)
-        {
+        public DelegateClassFactory(Func<ClassFactoryActivationContext, object> factory, bool supportsGetClassObject) {
             _instanceFactory = factory;
             SupportsGetClassObject = supportsGetClassObject;
         }
 
-        public DelegateClassFactory(Func<ClassFactoryActivationContext, ClassFactoryActivationResult> factory, bool supportsGetClassObject)
-        {
+        public DelegateClassFactory(Func<ClassFactoryActivationContext, ClassFactoryActivationResult> factory, bool supportsGetClassObject) {
             _resultFactory = factory;
             SupportsGetClassObject = supportsGetClassObject;
         }
 
         public bool SupportsGetClassObject { get; }
 
-        public ClassFactoryActivationResult CreateInstance(ClassFactoryActivationContext context)
-        {
-            if (_resultFactory is not null)
-            {
+        public ClassFactoryActivationResult CreateInstance(ClassFactoryActivationContext context) {
+            if (_resultFactory is not null) {
                 return _resultFactory(context) ?? throw new InvalidOperationException("Class factory returned null activation result.");
             }
 
@@ -120,8 +107,7 @@ public sealed class ClassFactoryRegistry
         }
     }
 
-    internal static LocalInterfaceDefinition CreateDefaultInterfaceDefinition(Guid requestedIid)
-    {
+    internal static LocalInterfaceDefinition CreateDefaultInterfaceDefinition(Guid requestedIid) {
         Guid iid = requestedIid == Guid.Empty ? Guid.Parse(SharpInterop.Interfaces.IID_IUnknown) : requestedIid;
         return new LocalInterfaceDefinition(iid.ToString(), isDispInterface: false);
     }

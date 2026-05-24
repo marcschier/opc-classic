@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 using System.Buffers.Binary;
@@ -6,12 +6,10 @@ using System.Text;
 
 namespace Opc.Classic.Dcom.Internal.Ntlm;
 
-public sealed class Type2Message : NtlmMessage
-{
+public sealed class Type2Message : NtlmMessage {
     private byte[]? _version;
 
-    public Type2Message()
-    {
+    public Type2Message() {
         Flags = GetDefaultFlags();
         Challenge = new byte[8];
         Context = new byte[8];
@@ -21,8 +19,7 @@ public sealed class Type2Message : NtlmMessage
 
     public Type2Message(byte[] raw) => Parse(raw);
 
-    public Type2Message(NtlmFlags flags, byte[] challenge, string target)
-    {
+    public Type2Message(NtlmFlags flags, byte[] challenge, string target) {
         Flags = flags;
         SetChallenge(challenge);
         Context = new byte[8];
@@ -31,12 +28,10 @@ public sealed class Type2Message : NtlmMessage
     }
 
     public Type2Message(int flags, byte[] challenge, string target)
-        : this(FromInt32(flags), challenge, target)
-    {
+        : this(FromInt32(flags), challenge, target) {
     }
 
-    public Type2Message(Type1Message type1Message)
-    {
+    public Type2Message(Type1Message type1Message) {
         Flags = GetDefaultFlags(type1Message);
         Challenge = new byte[8];
         Context = new byte[8];
@@ -45,8 +40,7 @@ public sealed class Type2Message : NtlmMessage
     }
 
     public Type2Message(Type1Message type1Message, byte[] challenge, string target)
-        : this(GetDefaultFlags(type1Message), challenge, target)
-    {
+        : this(GetDefaultFlags(type1Message), challenge, target) {
     }
 
     public override int MessageType => 2;
@@ -71,8 +65,7 @@ public sealed class Type2Message : NtlmMessage
     public static NtlmFlags GetDefaultFlags(Type1Message type1Message) =>
         type1Message?.GetFlags() ?? GetDefaultFlags();
 
-    public static byte[] GetDefaultTargetInformation()
-    {
+    public static byte[] GetDefaultTargetInformation() {
         var workstationBytes = Encoding.Unicode.GetBytes(Environment.MachineName);
         var targetInformation = new byte[4 + workstationBytes.Length + 4];
         BinaryPrimitives.WriteUInt16LittleEndian(targetInformation.AsSpan(0, 2), 1);
@@ -85,22 +78,18 @@ public sealed class Type2Message : NtlmMessage
 
     public byte[] GetTargetInformation() => CloneOrEmpty(TargetInformation);
 
-    public void SetChallenge(byte[] challenge)
-    {
+    public void SetChallenge(byte[] challenge) {
         ArgumentNullException.ThrowIfNull(challenge);
-        if (challenge.Length != 8)
-        {
+        if (challenge.Length != 8) {
             throw new ArgumentException("NTLM server challenge must be exactly 8 bytes.", nameof(challenge));
         }
 
         Challenge = (byte[])challenge.Clone();
     }
 
-    public void SetContext(byte[] context)
-    {
+    public void SetContext(byte[] context) {
         ArgumentNullException.ThrowIfNull(context);
-        if (context.Length != 8)
-        {
+        if (context.Length != 8) {
             throw new ArgumentException("NTLM context must be exactly 8 bytes.", nameof(context));
         }
 
@@ -109,20 +98,17 @@ public sealed class Type2Message : NtlmMessage
 
     public void SetTarget(string target) => Target = target;
 
-    public void SetTargetInformation(byte[] targetInformation)
-    {
+    public void SetTargetInformation(byte[] targetInformation) {
         ArgumentNullException.ThrowIfNull(targetInformation);
         TargetInformation = (byte[])targetInformation.Clone();
     }
 
-    public override byte[] ToByteArray()
-    {
+    public override byte[] ToByteArray() {
         var flags = Flags;
         var encoding = StringEncoding(flags);
         var targetBytes = string.IsNullOrEmpty(Target) ? Array.Empty<byte>() : encoding.GetBytes(Target);
         var targetInformationBytes = TargetInformation ?? Array.Empty<byte>();
-        if (targetInformationBytes.Length != 0)
-        {
+        if (targetInformationBytes.Length != 0) {
             flags |= NtlmFlags.NtlmsspNegotiateTargetInfo;
         }
 
@@ -137,8 +123,7 @@ public sealed class Type2Message : NtlmMessage
         GetFixedBytes(Challenge, 8, nameof(Challenge)).CopyTo(span.Slice(24, 8));
         GetFixedBytes(Context, 8, nameof(Context)).CopyTo(span.Slice(32, 8));
         WriteFields(span.Slice(40, 8), CheckedLength(targetInformationBytes.Length), (uint)(headerSize + targetBytes.Length));
-        if (includeVersion)
-        {
+        if (includeVersion) {
             (_version ?? DefaultVersion.ToArray()).AsSpan(0, Math.Min(_version?.Length ?? 8, 8)).CopyTo(span.Slice(48, 8));
         }
 
@@ -150,17 +135,14 @@ public sealed class Type2Message : NtlmMessage
     public override string ToString() =>
         $"Type2Message[Flags=0x{(uint)Flags:X8}, Target={Target}, Challenge={Convert.ToHexString(GetChallenge())}]";
 
-    private void Parse(byte[] raw)
-    {
+    private void Parse(byte[] raw) {
         ArgumentNullException.ThrowIfNull(raw);
         var span = raw.AsSpan();
-        if (ReadMessageType(span) != MessageType)
-        {
+        if (ReadMessageType(span) != MessageType) {
             throw new ArgumentException("Not a Type 2 message.", nameof(raw));
         }
 
-        if (span.Length < 48)
-        {
+        if (span.Length < 48) {
             throw new ArgumentException("NTLM Type 2 message too short.", nameof(raw));
         }
 
@@ -169,8 +151,7 @@ public sealed class Type2Message : NtlmMessage
         Challenge = span.Slice(24, 8).ToArray();
         Context = span.Slice(32, 8).ToArray();
         var (targetInformationLength, targetInformationOffset) = ReadFields(span.Slice(40, 8));
-        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != 0 && span.Length >= 56)
-        {
+        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != 0 && span.Length >= 56) {
             _version = span.Slice(48, 8).ToArray();
         }
 
@@ -184,15 +165,12 @@ public sealed class Type2Message : NtlmMessage
     private static byte[] CloneOrEmpty(byte[]? source) =>
         source is null ? Array.Empty<byte>() : (byte[])source.Clone();
 
-    private static byte[] GetFixedBytes(byte[]? source, int expectedLength, string name)
-    {
-        if (source is null)
-        {
+    private static byte[] GetFixedBytes(byte[]? source, int expectedLength, string name) {
+        if (source is null) {
             return new byte[expectedLength];
         }
 
-        if (source.Length != expectedLength)
-        {
+        if (source.Length != expectedLength) {
             throw new InvalidOperationException($"NTLM {name} must be exactly {expectedLength} bytes.");
         }
 

@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,8 +12,7 @@ namespace SharpInterop.Core;
 /// Identifies one member of the DCOM activation property array carried by
 /// <c>IActivationProperties</c> OBJREFs.
 /// </summary>
-public enum ActivationPropertyId : uint
-{
+public enum ActivationPropertyId : uint {
     /// <summary>MS-DCOM SPECIAL_PROPERTIES_DATA.</summary>
     SpecialProperties = 1,
 
@@ -31,8 +30,7 @@ public enum ActivationPropertyId : uint
 }
 
 /// <summary>DCOM COMVERSION value.</summary>
-public readonly record struct ActivationComVersion(ushort Major, ushort Minor)
-{
+public readonly record struct ActivationComVersion(ushort Major, ushort Minor) {
     /// <summary>DCOM v5.6, used by modern IRemoteSCMActivator activation.</summary>
     public static ActivationComVersion V5_6 { get; } = new(5, 6);
 }
@@ -43,8 +41,7 @@ public sealed record SpecialPropertiesData(
     int Mode,
     int ClassContext,
     Guid RequestedIid,
-    IReadOnlyList<int> SpecialProperties)
-{
+    IReadOnlyList<int> SpecialProperties) {
     /// <summary>An empty v5.6 special-properties set.</summary>
     public static SpecialPropertiesData Empty { get; } = new(
         ActivationComVersion.V5_6,
@@ -64,27 +61,22 @@ public sealed record LocationInfo(string? MachineName, int ProcessId, IReadOnlyL
 public sealed record SecurityInfo(int AuthenticationLevel, int ImpersonationLevel, int Capabilities);
 
 /// <summary>SCM activation reply data with the returned OBJREF.</summary>
-public sealed record ScmReplyInfo(int Hresult, Guid Oxid, Guid Oid, Guid Ipid, byte[] ObjRef)
-{
+public sealed record ScmReplyInfo(int Hresult, Guid Oxid, Guid Oid, Guid Ipid, byte[] ObjRef) {
     /// <summary>Creates a reply and defensively copies the OBJREF payload.</summary>
     public ScmReplyInfo(int hresult, Guid oxid, Guid oid, Guid ipid, byte[] objRef, bool copy)
-        : this(hresult, oxid, oid, ipid, copy ? Copy(objRef) : objRef)
-    {
+        : this(hresult, oxid, oid, ipid, copy ? Copy(objRef) : objRef) {
     }
 
-    private static byte[] Copy(byte[] value)
-    {
+    private static byte[] Copy(byte[] value) {
         ArgumentNullException.ThrowIfNull(value);
         return value.Length == 0 ? Array.Empty<byte>() : (byte[])value.Clone();
     }
 }
 
 /// <summary>Opaque activation property preserving an unrecognized property payload.</summary>
-public sealed class ActivationProperty
-{
+public sealed class ActivationProperty {
     /// <summary>Creates a property and defensively copies the payload.</summary>
-    public ActivationProperty(ActivationPropertyId id, ReadOnlySpan<byte> payload)
-    {
+    public ActivationProperty(ActivationPropertyId id, ReadOnlySpan<byte> payload) {
         Id = id;
         Payload = payload.Length == 0 ? Array.Empty<byte>() : payload.ToArray();
     }
@@ -100,8 +92,7 @@ public sealed class ActivationProperty
 /// Managed representation of the versioned activation property array exchanged by
 /// IRemoteSCMActivator v5.6.
 /// </summary>
-public sealed class ActivationProperties
-{
+public sealed class ActivationProperties {
     /// <summary>Empty v5.6 activation property set.</summary>
     public static ActivationProperties Empty { get; } = new();
 
@@ -113,8 +104,7 @@ public sealed class ActivationProperties
             null,
             null,
             null,
-            Array.Empty<ActivationProperty>())
-    {
+            Array.Empty<ActivationProperty>()) {
     }
 
     /// <summary>Creates an activation property set.</summary>
@@ -124,8 +114,7 @@ public sealed class ActivationProperties
         LocationInfo? locationInfo,
         ScmReplyInfo? scmReplyInfo,
         SecurityInfo? securityInfo,
-        IReadOnlyList<ActivationProperty>? customProperties = null)
-    {
+        IReadOnlyList<ActivationProperty>? customProperties = null) {
         SpecialProperties = specialProperties ?? SpecialPropertiesData.Empty;
         InstanceInfo = instanceInfo;
         LocationInfo = locationInfo;
@@ -162,31 +151,25 @@ public sealed class ActivationProperties
         CustomProperties);
 
     /// <summary>Returns the requested IID in activation-priority order.</summary>
-    public Guid GetRequestedIidOr(Guid fallback)
-    {
-        if (InstanceInfo is { RequestedIid: var instanceIid } && instanceIid != Guid.Empty)
-        {
+    public Guid GetRequestedIidOr(Guid fallback) {
+        if (InstanceInfo is { RequestedIid: var instanceIid } && instanceIid != Guid.Empty) {
             return instanceIid;
         }
 
-        if (SpecialProperties.RequestedIid != Guid.Empty)
-        {
+        if (SpecialProperties.RequestedIid != Guid.Empty) {
             return SpecialProperties.RequestedIid;
         }
 
         return fallback;
     }
 
-    private static IReadOnlyList<ActivationProperty> CopyCustomProperties(IReadOnlyList<ActivationProperty>? properties)
-    {
-        if (properties is null || properties.Count == 0)
-        {
+    private static IReadOnlyList<ActivationProperty> CopyCustomProperties(IReadOnlyList<ActivationProperty>? properties) {
+        if (properties is null || properties.Count == 0) {
             return Array.Empty<ActivationProperty>();
         }
 
         var copy = new ActivationProperty[properties.Count];
-        for (int i = 0; i < properties.Count; i++)
-        {
+        for (int i = 0; i < properties.Count; i++) {
             ActivationProperty property = properties[i];
             copy[i] = new ActivationProperty(property.Id, property.Payload);
         }

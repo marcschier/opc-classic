@@ -7,20 +7,19 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
+namespace SharpInterop.Rpc; 
 
-    /// <summary>
-    /// Provider exception
-    /// </summary>
-    public class ProviderException : RpcException {
+/// <summary>
+/// Provider exception
+/// </summary>
+public class ProviderException : RpcException {
 
-        /// <inheritdoc/>
-        public ProviderException() {
-        }
+    /// <inheritdoc/>
+    public ProviderException() {
+    }
 
-        /// <inheritdoc/>
-        public ProviderException(string message) :
-            base(message) {
-        }
+    /// <inheritdoc/>
+    public ProviderException(string message) :
+        base(message) {
     }
 }

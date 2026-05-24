@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,55 +7,54 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc.Core {
-    using Opc.Classic.Dcom.Internal.LegacyNdr;
-    using SharpCifs.Util.Sharpen;
+using Opc.Classic.Dcom.Internal.LegacyNdr;
+using SharpCifs.Util.Sharpen;
+
+namespace SharpInterop.Rpc.Core; 
+/// <summary>
+/// Interface id
+/// </summary>
+public class InterfaceIdentifier : NdrOp {
 
     /// <summary>
-    /// Interface id
+    /// Id
     /// </summary>
-    public class InterfaceIdentifier : NdrOp {
+    public UUID Uuid { get; set; }
 
-        /// <summary>
-        /// Id
-        /// </summary>
-        public UUID Uuid { get; set; }
+    /// <summary>
+    /// Major
+    /// </summary>
+    public int MajorVersion { get; set; }
 
-        /// <summary>
-        /// Major
-        /// </summary>
-        public int MajorVersion { get; set; }
+    /// <summary>
+    /// Minor
+    /// </summary>
+    public int MinorVersion { get; set; }
 
-        /// <summary>
-        /// Minor
-        /// </summary>
-        public int MinorVersion { get; set; }
-
-        /// <summary>
-        /// Create id
-        /// </summary>
-        /// <param name="syntax"></param>
-        public InterfaceIdentifier(string syntax) {
-            var tokenizer = new StringTokenizer(syntax, ":.");
-            Uuid.Parse(tokenizer.NextToken());
-            MajorVersion = int.Parse(tokenizer.NextToken());
-            MinorVersion = int.Parse(tokenizer.NextToken());
-        }
-
-        /// <summary>
-        /// Create id
-        /// </summary>
-        /// <param name="uuid"></param>
-        /// <param name="majorVersion"></param>
-        /// <param name="minorVersion"></param>
-        public InterfaceIdentifier(UUID uuid, int majorVersion,
-            int minorVersion) {
-            Uuid = uuid;
-            MajorVersion = majorVersion;
-            MinorVersion = minorVersion;
-        }
-
-        /// <override/>
-        public override string ToString() => Uuid + ":" + MajorVersion + "." + MinorVersion;
+    /// <summary>
+    /// Create id
+    /// </summary>
+    /// <param name="syntax"></param>
+    public InterfaceIdentifier(string syntax) {
+        var tokenizer = new StringTokenizer(syntax, ":.");
+        Uuid.Parse(tokenizer.NextToken());
+        MajorVersion = int.Parse(tokenizer.NextToken());
+        MinorVersion = int.Parse(tokenizer.NextToken());
     }
+
+    /// <summary>
+    /// Create id
+    /// </summary>
+    /// <param name="uuid"></param>
+    /// <param name="majorVersion"></param>
+    /// <param name="minorVersion"></param>
+    public InterfaceIdentifier(UUID uuid, int majorVersion,
+        int minorVersion) {
+        Uuid = uuid;
+        MajorVersion = majorVersion;
+        MinorVersion = minorVersion;
+    }
+
+    /// <override/>
+    public override string ToString() => Uuid + ":" + MajorVersion + "." + MinorVersion;
 }

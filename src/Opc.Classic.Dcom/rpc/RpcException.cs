@@ -7,20 +7,19 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
-    using System.IO;
+using System.IO;
 
-    /// <summary>
-    /// Base rpc related exception
-    /// </summary>
-    public class RpcException : IOException {
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Base rpc related exception
+/// </summary>
+public class RpcException : IOException {
 
-        /// <inheritdoc/>
-        public RpcException() {
-        }
+    /// <inheritdoc/>
+    public RpcException() {
+    }
 
-        /// <inheritdoc/>
-        public RpcException(string message) : base(message) {
-        }
+    /// <inheritdoc/>
+    public RpcException(string message) : base(message) {
     }
 }

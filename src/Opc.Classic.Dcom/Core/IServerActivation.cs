@@ -7,46 +7,45 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Core {
+namespace SharpInterop.Core; 
+
+/// <summary>
+/// Server activation interface
+/// </summary>
+internal interface IServerActivation {
 
     /// <summary>
-    /// Server activation interface
+    /// Activation successful
     /// </summary>
-    internal interface IServerActivation {
+    bool ActivationSuccessful { get; }
 
-        /// <summary>
-        /// Activation successful
-        /// </summary>
-        bool ActivationSuccessful { get; }
+    /// <summary>
+    /// Dual string array
+    /// </summary>
+    DualStringArray DualStringArrayForOxid { get; }
 
-        /// <summary>
-        /// Dual string array
-        /// </summary>
-        DualStringArray DualStringArrayForOxid { get; }
+    /// <summary>
+    /// Interface pointer
+    /// </summary>
+    InterfacePointer MInterfacePointer { get; }
 
-        /// <summary>
-        /// Interface pointer
-        /// </summary>
-        InterfacePointer MInterfacePointer { get; }
+    /// <summary>
+    /// Pid
+    /// </summary>
+    string IPID { get; }
 
-        /// <summary>
-        /// Pid
-        /// </summary>
-        string IPID { get; }
+    /// <summary>
+    /// Dual interface
+    /// </summary>
+    bool Dual { get; }
 
-        /// <summary>
-        /// Dual interface
-        /// </summary>
-        bool Dual { get; }
+    /// <summary>
+    /// Dispatch id
+    /// </summary>
+    string DispIpid { get; set; }
 
-        /// <summary>
-        /// Dispatch id
-        /// </summary>
-        string DispIpid { get; set; }
-
-        /// <summary>
-        /// Dispatch references
-        /// </summary>
-        int DispRefs { get; }
-    }
+    /// <summary>
+    /// Dispatch references
+    /// </summary>
+    int DispRefs { get; }
 }

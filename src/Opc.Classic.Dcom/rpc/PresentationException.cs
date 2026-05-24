@@ -7,49 +7,48 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
-    using SharpInterop.Rpc.Core;
+using SharpInterop.Rpc.Core;
+
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Presentation exception
+/// </summary>
+public class PresentationException : BindException {
 
     /// <summary>
-    /// Presentation exception
+    /// Create default
     /// </summary>
-    public class PresentationException : BindException {
+    public PresentationException() {
+    }
 
-        /// <summary>
-        /// Create default
-        /// </summary>
-        public PresentationException() {
-        }
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="message"></param>
+    public PresentationException(string message) :
+        base(message) {
+    }
 
-        /// <summary>
-        /// Create
-        /// </summary>
-        /// <param name="message"></param>
-        public PresentationException(string message) :
-            base(message) {
-        }
+    /// <summary>
+    /// Create presentation exception
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="result"></param>
+    public PresentationException(string message, PresentationResult result) :
+        base(ToString(message, result)) {
+    }
 
-        /// <summary>
-        /// Create presentation exception
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="result"></param>
-        public PresentationException(string message, PresentationResult result) :
-            base(ToString(message, result)) {
+    /// <summary>
+    /// Create message
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    private static string ToString(string message, PresentationResult result) {
+        if (result == null) {
+            return message;
         }
-
-        /// <summary>
-        /// Create message
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        private static string ToString(string message, PresentationResult result) {
-            if (result == null) {
-                return message;
-            }
-            return !string.IsNullOrEmpty(message) ? message +
-                " (" + result + ")" : result.ToString();
-        }
+        return !string.IsNullOrEmpty(message) ? message +
+            " (" + result + ")" : result.ToString();
     }
 }

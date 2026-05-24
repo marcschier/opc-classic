@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,32 +7,31 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc.Core {
-    using Opc.Classic.Dcom.Internal.LegacyNdr;
+using Opc.Classic.Dcom.Internal.LegacyNdr;
+
+namespace SharpInterop.Rpc.Core; 
+/// <summary>
+/// Context handle
+/// </summary>
+public class ContextHandle : NdrOp {
 
     /// <summary>
-    /// Context handle
+    /// Attributes
     /// </summary>
-    public class ContextHandle : NdrOp {
+    public int Attributes { get; set; }
 
-        /// <summary>
-        /// Attributes
-        /// </summary>
-        public int Attributes { get; set; }
+    /// <summary>
+    /// id
+    /// </summary>
+    public UUID Uuid { get; set; }
 
-        /// <summary>
-        /// id
-        /// </summary>
-        public UUID Uuid { get; set; }
-
-        /// <summary>
-        /// Create handle
-        /// </summary>
-        /// <param name="attributes"></param>
-        /// <param name="uuid"></param>
-        public ContextHandle(int attributes, UUID uuid) {
-            Attributes = attributes;
-            Uuid = uuid;
-        }
+    /// <summary>
+    /// Create handle
+    /// </summary>
+    /// <param name="attributes"></param>
+    /// <param name="uuid"></param>
+    public ContextHandle(int attributes, UUID uuid) {
+        Attributes = attributes;
+        Uuid = uuid;
     }
 }

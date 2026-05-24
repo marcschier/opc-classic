@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -14,14 +14,12 @@ namespace Opc.Classic.Dcom.Transport;
 /// <summary>
 /// Factory that creates <see cref="DcomCallChannel" /> instances from async transports.
 /// </summary>
-public sealed class DcomCallChannelFactory
-{
+public sealed class DcomCallChannelFactory {
     private readonly IAsyncTransportFactory _transportFactory;
 
     /// <summary>Initializes a new instance of the <see cref="DcomCallChannelFactory" /> class.</summary>
     /// <param name="transportFactory">The transport factory used to connect to remote endpoints.</param>
-    public DcomCallChannelFactory(IAsyncTransportFactory transportFactory)
-    {
+    public DcomCallChannelFactory(IAsyncTransportFactory transportFactory) {
         ArgumentNullException.ThrowIfNull(transportFactory);
 
         _transportFactory = transportFactory;
@@ -37,8 +35,7 @@ public sealed class DcomCallChannelFactory
         EndPoint endpoint,
         Guid clsidToActivate,
         IAuthContext authContext,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(endpoint);
         ArgumentNullException.ThrowIfNull(authContext);
         _ = clsidToActivate;

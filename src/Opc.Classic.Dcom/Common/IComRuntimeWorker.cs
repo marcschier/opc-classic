@@ -7,44 +7,43 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Common {
-    using SharpInterop.Rpc.Core;
-    using System.Collections.Generic;
+using SharpInterop.Rpc.Core;
+using System.Collections.Generic;
+
+namespace SharpInterop.Common; 
+/// <summary>
+/// Framework Internal.
+/// </summary>
+public interface IComRuntimeWorker {
 
     /// <summary>
-    /// Framework Internal.
+    /// Set op number
     /// </summary>
-    public interface IComRuntimeWorker {
+    int Opnum { get; set; }
 
-        /// <summary>
-        /// Set op number
-        /// </summary>
-        int Opnum { get; set; }
+    /// <summary>
+    /// Current iid
+    /// </summary>
+    string CurrentIID { get; set; }
 
-        /// <summary>
-        /// Current iid
-        /// </summary>
-        string CurrentIID { get; set; }
+    /// <summary>
+    /// Current object
+    /// </summary>
+    UUID CurrentObjectID { get; set; }
 
-        /// <summary>
-        /// Current object
-        /// </summary>
-        UUID CurrentObjectID { get; set; }
+    /// <summary>
+    /// Query interface ids
+    /// </summary>
+    List<string> QIedIIDs { get; }
 
-        /// <summary>
-        /// Query interface ids
-        /// </summary>
-        List<string> QIedIIDs { get; }
+    /// <summary>
+    /// Resolver
+    /// </summary>
+    bool Resolver { get; }
 
-        /// <summary>
-        /// Resolver
-        /// </summary>
-        bool Resolver { get; }
-
-        /// <summary>
-        /// Worker
-        /// </summary>
-        /// <returns></returns>
-        bool WorkerOver();
-    }
+    /// <summary>
+    /// Worker
+    /// </summary>
+    /// <returns></returns>
+    bool WorkerOver();
 }

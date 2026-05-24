@@ -7,17 +7,16 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
+namespace SharpInterop.Rpc; 
+
+/// <inheritdoc/>
+public class IntegrityException : RpcException {
 
     /// <inheritdoc/>
-    public class IntegrityException : RpcException {
+    public IntegrityException() {
+    }
 
-        /// <inheritdoc/>
-        public IntegrityException() {
-        }
-
-        /// <inheritdoc/>
-        public IntegrityException(string message) : base(message) {
-        }
+    /// <inheritdoc/>
+    public IntegrityException(string message) : base(message) {
     }
 }

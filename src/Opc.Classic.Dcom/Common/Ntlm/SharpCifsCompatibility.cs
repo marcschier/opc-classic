@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 using System.Collections;
@@ -9,10 +9,8 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
-namespace SharpCifs
-{
-    public sealed class UniAddress
-    {
+namespace SharpCifs {
+    public sealed class UniAddress {
         private UniAddress(string hostName) => HostName = hostName;
 
         public string HostName { get; }
@@ -22,21 +20,17 @@ namespace SharpCifs
         public override string ToString() => HostName;
     }
 
-    public static class Config
-    {
+    public static class Config {
         private static readonly Dictionary<string, string> Properties = new(StringComparer.OrdinalIgnoreCase);
 
         public static string? GetProperty(string key) =>
             Properties.TryGetValue(key, out var value) ? value : Environment.GetEnvironmentVariable(ToEnvironmentName(key));
 
-        public static void SetProperty(string key, string? value)
-        {
-            if (value is null)
-            {
+        public static void SetProperty(string key, string? value) {
+            if (value is null) {
                 Properties.Remove(key);
             }
-            else
-            {
+            else {
                 Properties[key] = value;
             }
         }
@@ -48,10 +42,8 @@ namespace SharpCifs
     }
 }
 
-namespace SharpCifs.Util.Sharpen
-{
-    public abstract class Iterator<T>
-    {
+namespace SharpCifs.Util.Sharpen {
+    public abstract class Iterator<T> {
         public abstract bool HasNext();
 
         public abstract T Next();
@@ -59,12 +51,10 @@ namespace SharpCifs.Util.Sharpen
         public virtual void Remove() => throw new NotSupportedException();
     }
 
-    public sealed class Hashtable : IEnumerable<KeyValuePair<object, object>>
-    {
+    public sealed class Hashtable : IEnumerable<KeyValuePair<object, object>> {
         private readonly Dictionary<object, object> _inner = new();
 
-        public object this[object key]
-        {
+        public object this[object key] {
             get => _inner[key];
             set => _inner[key] = value;
         }
@@ -83,8 +73,7 @@ namespace SharpCifs.Util.Sharpen
 
         public bool TryGetValue(object key, out object? value) => _inner.TryGetValue(key, out value);
 
-        public object? Put(object key, object value)
-        {
+        public object? Put(object key, object value) {
             _inner.TryGetValue(key, out var previous);
             _inner[key] = value;
             return previous;
@@ -97,49 +86,40 @@ namespace SharpCifs.Util.Sharpen
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
-    public sealed class ThreadGroup
-    {
+    public sealed class ThreadGroup {
         private readonly List<Thread> _threads = new();
 
         public ThreadGroup(string name) => Name = name;
 
         public string Name { get; }
 
-        internal void Add(Thread thread)
-        {
-            lock (_threads)
-            {
+        internal void Add(Thread thread) {
+            lock (_threads) {
                 _threads.Add(thread);
             }
         }
 
-        public void Interrupt()
-        {
-            lock (_threads)
-            {
-                foreach (var thread in _threads)
-                {
+        public void Interrupt() {
+            lock (_threads) {
+                foreach (var thread in _threads) {
                     thread.Interrupt();
                 }
             }
         }
     }
 
-    public class Thread
-    {
+    public class Thread {
         private readonly ThreadGroup? _group;
         private readonly string? _name;
         private bool _daemon;
         private System.Threading.Thread? _thread;
 
-        public Thread()
-        {
+        public Thread() {
         }
 
         public Thread(string name) => _name = name;
 
-        public Thread(ThreadGroup group, string name)
-        {
+        public Thread(ThreadGroup group, string name) {
             _group = group;
             _name = name;
         }
@@ -148,22 +128,18 @@ namespace SharpCifs.Util.Sharpen
 
         protected bool IsCanceled => Canceller.IsCancellationRequested;
 
-        public virtual void Run()
-        {
+        public virtual void Run() {
         }
 
         public string GetName() => _name ?? _thread?.Name ?? string.Empty;
 
         public void SetDaemon(bool daemon) => _daemon = daemon;
 
-        public void Start()
-        {
-            _thread = new System.Threading.Thread(Run)
-            {
+        public void Start() {
+            _thread = new System.Threading.Thread(Run) {
                 IsBackground = _daemon
             };
-            if (!string.IsNullOrEmpty(_name))
-            {
+            if (!string.IsNullOrEmpty(_name)) {
                 _thread.Name = _name;
             }
             _group?.Add(this);
@@ -177,8 +153,7 @@ namespace SharpCifs.Util.Sharpen
         public static void Sleep(int millisecondsTimeout) => System.Threading.Thread.Sleep(millisecondsTimeout);
     }
 
-    public sealed class PrintWriter : IDisposable
-    {
+    public sealed class PrintWriter : IDisposable {
         private readonly TextWriter _writer;
 
         public PrintWriter(TextWriter writer) => _writer = writer;
@@ -192,58 +167,44 @@ namespace SharpCifs.Util.Sharpen
         public void Dispose() => _writer.Dispose();
     }
 
-    public sealed class UnknownHostException : Exception
-    {
-        public UnknownHostException()
-        {
+    public sealed class UnknownHostException : Exception {
+        public UnknownHostException() {
         }
 
         public UnknownHostException(string message)
-            : base(message)
-        {
+            : base(message) {
         }
     }
 
-    public sealed class MissingResourceException : Exception
-    {
-        public MissingResourceException()
-        {
+    public sealed class MissingResourceException : Exception {
+        public MissingResourceException() {
         }
     }
 
-    public sealed class NoSuchElementException : Exception
-    {
-        public NoSuchElementException()
-        {
+    public sealed class NoSuchElementException : Exception {
+        public NoSuchElementException() {
         }
     }
 
-    public sealed class UnsupportedEncodingException : Exception
-    {
-        public UnsupportedEncodingException()
-        {
+    public sealed class UnsupportedEncodingException : Exception {
+        public UnsupportedEncodingException() {
         }
     }
 
-    public sealed class InstantiationException : Exception
-    {
-        public InstantiationException()
-        {
+    public sealed class InstantiationException : Exception {
+        public InstantiationException() {
         }
     }
 
-    public sealed class StringTokenizer
-    {
+    public sealed class StringTokenizer {
         private readonly string[] _tokens;
         private int _index;
 
         public StringTokenizer(string value, string delimiters) =>
             _tokens = value.Split(delimiters.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-        public string NextToken()
-        {
-            if (_index >= _tokens.Length)
-            {
+        public string NextToken() {
+            if (_index >= _tokens.Length) {
                 throw new NoSuchElementException();
             }
 
@@ -251,27 +212,22 @@ namespace SharpCifs.Util.Sharpen
         }
     }
 
-    public static class Arrays
-    {
+    public static class Arrays {
         public static bool Equals(byte[]? left, byte[]? right) =>
             left is null ? right is null : right is not null && left.AsSpan().SequenceEqual(right);
     }
 
-    public static class SharpenCompatibilityExtensions
-    {
+    public static class SharpenCompatibilityExtensions {
         public static Iterator<T> Iterator<T>(this IEnumerable<T> source) => new EnumerableIterator<T>(source);
 
-        public static T Remove<T>(this List<T> list, int index)
-        {
+        public static T Remove<T>(this List<T> list, int index) {
             var value = list[index];
             list.RemoveAt(index);
             return value;
         }
 
-        public static void RemoveAll<T>(this List<T> list, IEnumerable<T> values)
-        {
-            foreach (var value in values.ToArray())
-            {
+        public static void RemoveAll<T>(this List<T> list, IEnumerable<T> values) {
+            foreach (var value in values.ToArray()) {
                 list.Remove(value);
             }
         }
@@ -289,11 +245,9 @@ namespace SharpCifs.Util.Sharpen
             socket.RemoteEndPoint is IPEndPoint endpoint ? endpoint.Port : 0;
 
         public static bool RegionMatches(this string value, bool ignoreCase, int toffset,
-            string other, int ooffset, int length)
-        {
+            string other, int ooffset, int length) {
             if (value is null || other is null || toffset < 0 || ooffset < 0 || length < 0 ||
-                toffset + length > value.Length || ooffset + length > other.Length)
-            {
+                toffset + length > value.Length || ooffset + length > other.Length) {
                 return false;
             }
 
@@ -301,29 +255,24 @@ namespace SharpCifs.Util.Sharpen
                 ignoreCase, CultureInfo.InvariantCulture) == 0;
         }
 
-        private sealed class EnumerableIterator<T> : Iterator<T>
-        {
+        private sealed class EnumerableIterator<T> : Iterator<T> {
             private readonly ICollection<T>? _collection;
             private readonly IEnumerator<T> _enumerator;
             private T? _current;
             private bool _canRemove;
 
-            public EnumerableIterator(IEnumerable<T> source)
-            {
+            public EnumerableIterator(IEnumerable<T> source) {
                 ArgumentNullException.ThrowIfNull(source);
                 _collection = source as ICollection<T>;
                 _enumerator = source.GetEnumerator();
             }
 
-            public override bool HasNext()
-            {
-                if (_canRemove)
-                {
+            public override bool HasNext() {
+                if (_canRemove) {
                     return true;
                 }
 
-                if (!_enumerator.MoveNext())
-                {
+                if (!_enumerator.MoveNext()) {
                     return false;
                 }
 
@@ -332,10 +281,8 @@ namespace SharpCifs.Util.Sharpen
                 return true;
             }
 
-            public override T Next()
-            {
-                if (!HasNext())
-                {
+            public override T Next() {
+                if (!HasNext()) {
                     throw new NoSuchElementException();
                 }
 
@@ -343,29 +290,23 @@ namespace SharpCifs.Util.Sharpen
                 return _current!;
             }
 
-            public override void Remove()
-            {
-                if (_collection is null || _current is null)
-                {
+            public override void Remove() {
+                if (_collection is null || _current is null) {
                     return;
                 }
 
-                try
-                {
+                try {
                     _collection.Remove(_current);
                 }
-                catch (NotSupportedException)
-                {
+                catch (NotSupportedException) {
                 }
             }
         }
     }
 }
 
-namespace SharpCifs.Netbios
-{
-    public sealed class NbtAddress
-    {
+namespace SharpCifs.Netbios {
+    public sealed class NbtAddress {
         private readonly string _hostName;
 
         private NbtAddress(string hostName) => _hostName = hostName;
@@ -376,43 +317,33 @@ namespace SharpCifs.Netbios
     }
 }
 
-namespace SharpCifs.Smb
-{
-    public class SmbException : IOException
-    {
-        public SmbException()
-        {
+namespace SharpCifs.Smb {
+    public class SmbException : IOException {
+        public SmbException() {
         }
 
         public SmbException(string message)
-            : base(message)
-        {
+            : base(message) {
         }
 
         public SmbException(string message, Exception innerException)
-            : base(message, innerException)
-        {
+            : base(message, innerException) {
         }
 
         public virtual int GetNtStatus() => HResult;
     }
 
-    public sealed class SmbAuthException : SmbException
-    {
-        public SmbAuthException()
-        {
+    public sealed class SmbAuthException : SmbException {
+        public SmbAuthException() {
         }
 
         public SmbAuthException(string message)
-            : base(message)
-        {
+            : base(message) {
         }
     }
 
-    public sealed class NtlmPasswordAuthentication
-    {
-        public NtlmPasswordAuthentication(string domain, string username, string password)
-        {
+    public sealed class NtlmPasswordAuthentication {
+        public NtlmPasswordAuthentication(string domain, string username, string password) {
             Domain = domain;
             Username = username;
             Password = password;
@@ -425,17 +356,14 @@ namespace SharpCifs.Smb
         public string Password { get; }
     }
 
-    public static class SmbSession
-    {
-        public static void Logon(SharpCifs.UniAddress address, NtlmPasswordAuthentication authentication)
-        {
+    public static class SmbSession {
+        public static void Logon(SharpCifs.UniAddress address, NtlmPasswordAuthentication authentication) {
             ArgumentNullException.ThrowIfNull(address);
             ArgumentNullException.ThrowIfNull(authentication);
         }
     }
 
-    public sealed class SmbNamedPipe
-    {
+    public sealed class SmbNamedPipe {
         public const int PipeTypeDceTransact = 0x0200;
         public const int PIPE_TYPE_RDWR = 0x0003;
         public const int PIPE_TYPE_DCE_TRANSACT = PipeTypeDceTransact;
@@ -443,8 +371,7 @@ namespace SharpCifs.Smb
         private readonly MemoryStream _input = new();
         private readonly MemoryStream _output = new();
 
-        public SmbNamedPipe(string url, int pipeType)
-        {
+        public SmbNamedPipe(string url, int pipeType) {
             Url = url;
             PipeType = pipeType;
         }
@@ -461,10 +388,8 @@ namespace SharpCifs.Smb
     }
 }
 
-namespace SharpCifs.Dcerpc
-{
-    public sealed class Uuid
-    {
+namespace SharpCifs.Dcerpc {
+    public sealed class Uuid {
         public Uuid(string value) => Parse(value);
 
         public int TimeLow { get; set; }
@@ -479,11 +404,9 @@ namespace SharpCifs.Dcerpc
 
         public byte[] Node { get; set; } = new byte[6];
 
-        public void Parse(string value)
-        {
+        public void Parse(string value) {
             var parts = value.Split('-');
-            if (parts.Length != 5 || parts[3].Length != 4 || parts[4].Length != 12)
-            {
+            if (parts.Length != 5 || parts[3].Length != 4 || parts[4].Length != 12) {
                 throw new FormatException("Invalid UUID format.");
             }
 
@@ -493,8 +416,7 @@ namespace SharpCifs.Dcerpc
             ClockSeqHiAndReserved = byte.Parse(parts[3][..2], NumberStyles.HexNumber, CultureInfo.InvariantCulture);
             ClockSeqLow = byte.Parse(parts[3][2..], NumberStyles.HexNumber, CultureInfo.InvariantCulture);
             Node = new byte[6];
-            for (var i = 0; i < Node.Length; i++)
-            {
+            for (var i = 0; i < Node.Length; i++) {
                 Node[i] = byte.Parse(parts[4].Substring(i * 2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
             }
         }

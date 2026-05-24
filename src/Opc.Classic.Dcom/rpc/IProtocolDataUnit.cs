@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,27 +7,26 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
-    using Opc.Classic.Dcom.Internal.LegacyNdr;
+using Opc.Classic.Dcom.Internal.LegacyNdr;
+
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Defines a PDU
+/// </summary>
+public interface IProtocolDataUnit {
 
     /// <summary>
-    /// Defines a PDU
+    /// Major version
     /// </summary>
-    public interface IProtocolDataUnit {
+    int MajorVersion { get; }
 
-        /// <summary>
-        /// Major version
-        /// </summary>
-        int MajorVersion { get; }
+    /// <summary>
+    /// Type
+    /// </summary>
+    int Type { get; }
 
-        /// <summary>
-        /// Type
-        /// </summary>
-        int Type { get; }
-
-        /// <summary>
-        /// Format to use
-        /// </summary>
-        NdrFormat Format { get; set; }
-    }
+    /// <summary>
+    /// Format to use
+    /// </summary>
+    NdrFormat Format { get; set; }
 }

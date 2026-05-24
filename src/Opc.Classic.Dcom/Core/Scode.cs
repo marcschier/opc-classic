@@ -7,40 +7,39 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Core {
-    using SharpInterop.Common;
-    using System;
+using SharpInterop.Common;
+using System;
+
+namespace SharpInterop.Core; 
+/// <summary>
+/// Scode type
+/// </summary>
+[Serializable]
+public sealed class Scode {
 
     /// <summary>
-    /// Scode type
+    /// Null value
     /// </summary>
-    [Serializable]
-    public sealed class Scode {
+    public static Scode Ok { get; } = new Scode(0);
 
-        /// <summary>
-        /// Null value
-        /// </summary>
-        public static Scode Ok { get; } = new Scode(0);
-
-        /// <summary>
-        /// Error code
-        /// </summary>
-        public int ErrorCode { get; }
+    /// <summary>
+    /// Error code
+    /// </summary>
+    public int ErrorCode { get; }
 
 #pragma warning disable RECS0154 // Parameter is never used
-        /// <summary>
-        /// Create error code
-        /// </summary>
-        /// <param name="errorCode"></param>
-        public Scode(int errorCode) => ErrorCode = errorCode;
+    /// <summary>
+    /// Create error code
+    /// </summary>
+    /// <param name="errorCode"></param>
+    public Scode(int errorCode) => ErrorCode = errorCode;
 #pragma warning restore RECS0154 // Parameter is never used
 
-        /// <summary>
-        /// Create error code
-        /// </summary>
-        /// <param name="errorCode"></param>
-        public Scode(ErrorCode errorCode) :
-            this((int)errorCode) {
-        }
+    /// <summary>
+    /// Create error code
+    /// </summary>
+    /// <param name="errorCode"></param>
+    public Scode(ErrorCode errorCode) :
+        this((int)errorCode) {
     }
 }

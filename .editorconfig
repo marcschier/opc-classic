@@ -138,3 +138,36 @@ dotnet_diagnostic.IL2055.severity = silent
 dotnet_diagnostic.IL3050.severity = silent
 dotnet_diagnostic.CA1062.severity = silent
 dotnet_diagnostic.CA1031.severity = silent
+
+# Opc.Classic.Dcom — legacy SharpInterop-derived runtime + IDL-spec wire types
+# These types intentionally retain wire-protocol identifier conventions:
+#   - Underscored names (IOPCHDA_Server, OPCHDA_ANNOTATION, ORPC_THIS, etc.) per OPC/MS-DCOM IDL
+#   - Public fields for inline NDR-serialized struct layout (NDR encoding mirrors C struct field order)
+#   - Reserved-keyword method names (Error, Type, Default) — public API surface frozen pre-1.0
+#   - Tracking TODO/HACK comments for cross-referenced gap-analysis findings
+# Targeted suppressions applied at directory scope; real code-quality issues (CA1852 sealed,
+# CA1848 logger delegates, MA0011 IFormatProvider, etc.) remain enforced.
+[src/Opc.Classic.Dcom/**.cs]
+# CA1707: Identifiers should not contain underscores — IDL-spec wire names (intentional)
+dotnet_diagnostic.CA1707.severity = none
+# CA1712: Enum value should not be prefixed with type name — IDL enum naming convention
+dotnet_diagnostic.CA1712.severity = none
+# CA1720: Identifier contains type name — IDL primitive names (e.g. ResolverId, FloatValue)
+dotnet_diagnostic.CA1720.severity = none
+# CA1715: Identifiers prefixed with letter — IDL interface I* and type T* prefixes
+dotnet_diagnostic.CA1715.severity = none
+# CA1711: Identifier suffix — IDL types ending in _Server, _Client, _Stream are spec-mandated
+dotnet_diagnostic.CA1711.severity = none
+# CA1716: Identifier matches keyword — public surface frozen pre-1.0 (Error/Type methods)
+dotnet_diagnostic.CA1716.severity = none
+# CA1051: Visible instance fields — NDR struct layout requires public field ordering
+dotnet_diagnostic.CA1051.severity = none
+# MA0026: TODO/HACK comments — used as tracking markers for gap-analysis findings (intentional)
+dotnet_diagnostic.MA0026.severity = none
+# CA1725: Parameter name in override — IDL parameter names retained for spec readability
+dotnet_diagnostic.CA1725.severity = none
+# RS0030: Banned API — Activator.CreateInstance(Type) banned by src/BannedSymbols.txt;
+# the few remaining residual sites are in transitional helper code that's documented.
+# Track via gap analysis; remove suppression when AOT-clean.
+dotnet_diagnostic.RS0030.severity = warning
+

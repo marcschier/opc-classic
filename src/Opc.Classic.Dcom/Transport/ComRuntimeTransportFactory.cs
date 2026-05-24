@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,42 +7,41 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Transport {
-    using Opc.Classic.Dcom.Internal;
-    using SharpInterop.Rpc;
+using Opc.Classic.Dcom.Internal;
+using SharpInterop.Rpc;
+
+namespace SharpInterop.Transport; 
+/// <summary>
+/// Transport factory
+/// </summary>
+public sealed class ComRuntimeTransportFactory : TransportFactory {
 
     /// <summary>
-    /// Transport factory
+    /// Private constructor
     /// </summary>
-    public sealed class ComRuntimeTransportFactory : TransportFactory {
+    private ComRuntimeTransportFactory() {
+    }
 
-        /// <summary>
-        /// Private constructor
-        /// </summary>
-        private ComRuntimeTransportFactory() {
-        }
+    /// <inheritdoc/>
+    public override ITransport CreateTransport(string address,
+        PropertyBag properties) =>
+        new ComRuntimeTransport(address, properties);
 
-        /// <inheritdoc/>
-        public override ITransport CreateTransport(string address,
-            PropertyBag properties) =>
-            new ComRuntimeTransport(address, properties);
-
-        /// <summary>
-        /// Singleton
-        /// </summary>
-        public static ComRuntimeTransportFactory Instance {
-            get {
-                if (_factory == null) {
-                    lock (typeof(ComTransportFactory)) {
-                        if (_factory == null) {
-                            _factory = new ComRuntimeTransportFactory();
-                        }
+    /// <summary>
+    /// Singleton
+    /// </summary>
+    public static ComRuntimeTransportFactory Instance {
+        get {
+            if (_factory == null) {
+                lock (typeof(ComTransportFactory)) {
+                    if (_factory == null) {
+                        _factory = new ComRuntimeTransportFactory();
                     }
                 }
-                return _factory;
             }
+            return _factory;
         }
-
-        private static ComRuntimeTransportFactory _factory;
     }
+
+    private static ComRuntimeTransportFactory _factory;
 }

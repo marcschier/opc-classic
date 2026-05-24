@@ -7,41 +7,39 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Protection level
+/// </summary>
+public enum ProtectionLevel {
+
     /// <summary>
-    /// Protection level
+    /// None
     /// </summary>
-    public enum ProtectionLevel {
+    PROTECTION_LEVEL_NONE = 1,
 
-        /// <summary>
-        /// None
-        /// </summary>
-        PROTECTION_LEVEL_NONE = 1,
+    /// <summary>
+    /// Connect
+    /// </summary>
+    PROTECTION_LEVEL_CONNECT = 2,
 
-        /// <summary>
-        /// Connect
-        /// </summary>
-        PROTECTION_LEVEL_CONNECT = 2,
+    /// <summary>
+    /// Call
+    /// </summary>
+    PROTECTION_LEVEL_CALL = 3,
 
-        /// <summary>
-        /// Call
-        /// </summary>
-        PROTECTION_LEVEL_CALL = 3,
+    /// <summary>
+    /// Packet
+    /// </summary>
+    PROTECTION_LEVEL_PACKET = 4,
 
-        /// <summary>
-        /// Packet
-        /// </summary>
-        PROTECTION_LEVEL_PACKET = 4,
+    /// <summary>
+    /// Integrity
+    /// </summary>
+    PROTECTION_LEVEL_INTEGRITY = 5,
 
-        /// <summary>
-        /// Integrity
-        /// </summary>
-        PROTECTION_LEVEL_INTEGRITY = 5,
-
-        /// <summary>
-        /// Privacy
-        /// </summary>
-        PROTECTION_LEVEL_PRIVACY = 6,
-    }
-
+    /// <summary>
+    /// Privacy
+    /// </summary>
+    PROTECTION_LEVEL_PRIVACY = 6,
 }

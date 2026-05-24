@@ -7,28 +7,27 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
-    using System.IO;
+using System.IO;
+
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Connection interface
+/// </summary>
+public interface IConnection {
 
     /// <summary>
-    /// Connection interface
+    /// Transmit
     /// </summary>
-    public interface IConnection {
+    /// <param name="pdu"></param>
+    /// <param name="transport"></param>
+    /// <exception cref="IOException"></exception>
+    void Transmit(ConnectionOrientedPdu pdu, ITransport transport);
 
-        /// <summary>
-        /// Transmit
-        /// </summary>
-        /// <param name="pdu"></param>
-        /// <param name="transport"></param>
-        /// <exception cref="IOException"></exception>
-        void Transmit(ConnectionOrientedPdu pdu, ITransport transport);
-
-        /// <summary>
-        /// Receive
-        /// </summary>
-        /// <param name="transport"></param>
-        /// <returns></returns>
-        /// <exception cref="IOException"></exception>
-        ConnectionOrientedPdu Receive(ITransport transport);
-    }
+    /// <summary>
+    /// Receive
+    /// </summary>
+    /// <param name="transport"></param>
+    /// <returns></returns>
+    /// <exception cref="IOException"></exception>
+    ConnectionOrientedPdu Receive(ITransport transport);
 }

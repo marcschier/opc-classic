@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 using System.Buffers.Binary;
@@ -6,8 +6,7 @@ using System.Text;
 
 namespace Opc.Classic.Dcom.Internal.Ntlm;
 
-public abstract class NtlmMessage
-{
+public abstract class NtlmMessage {
     public const string NtlmSignature = "NTLMSSP";
 
     private static readonly byte[] SignatureBytes = Encoding.ASCII.GetBytes("NTLMSSP\0");
@@ -39,10 +38,8 @@ public abstract class NtlmMessage
 
     internal static int ToInt32(NtlmFlags flags) => unchecked((int)(uint)flags);
 
-    protected static void WriteHeader(Span<byte> dest, int messageType)
-    {
-        if (dest.Length < 12)
-        {
+    protected static void WriteHeader(Span<byte> dest, int messageType) {
+        if (dest.Length < 12) {
             throw new ArgumentException("NTLM message buffer too short.", nameof(dest));
         }
 
@@ -50,25 +47,20 @@ public abstract class NtlmMessage
         BinaryPrimitives.WriteInt32LittleEndian(dest.Slice(8, 4), messageType);
     }
 
-    protected static int ReadMessageType(ReadOnlySpan<byte> raw)
-    {
-        if (raw.Length < 12)
-        {
+    protected static int ReadMessageType(ReadOnlySpan<byte> raw) {
+        if (raw.Length < 12) {
             throw new ArgumentException("NTLM message too short.", nameof(raw));
         }
 
-        if (!raw[..8].SequenceEqual(SignatureBytes))
-        {
+        if (!raw[..8].SequenceEqual(SignatureBytes)) {
             throw new ArgumentException("Bad NTLMSSP signature.", nameof(raw));
         }
 
         return BinaryPrimitives.ReadInt32LittleEndian(raw.Slice(8, 4));
     }
 
-    protected static void WriteFields(Span<byte> dest, ushort length, uint bufferOffset)
-    {
-        if (dest.Length < 8)
-        {
+    protected static void WriteFields(Span<byte> dest, ushort length, uint bufferOffset) {
+        if (dest.Length < 8) {
             throw new ArgumentException("NTLM security buffer too short.", nameof(dest));
         }
 
@@ -77,10 +69,8 @@ public abstract class NtlmMessage
         BinaryPrimitives.WriteUInt32LittleEndian(dest.Slice(4, 4), bufferOffset);
     }
 
-    protected static (ushort Length, uint Offset) ReadFields(ReadOnlySpan<byte> src)
-    {
-        if (src.Length < 8)
-        {
+    protected static (ushort Length, uint Offset) ReadFields(ReadOnlySpan<byte> src) {
+        if (src.Length < 8) {
             throw new ArgumentException("NTLM security buffer too short.", nameof(src));
         }
 
@@ -89,25 +79,20 @@ public abstract class NtlmMessage
         return (len, offset);
     }
 
-    protected static byte[] ReadBytes(ReadOnlySpan<byte> raw, ushort length, uint offset)
-    {
-        if (length == 0)
-        {
+    protected static byte[] ReadBytes(ReadOnlySpan<byte> raw, ushort length, uint offset) {
+        if (length == 0) {
             return Array.Empty<byte>();
         }
 
-        if (offset > (uint)raw.Length || length > raw.Length - (int)offset)
-        {
+        if (offset > (uint)raw.Length || length > raw.Length - (int)offset) {
             throw new ArgumentException("NTLM security buffer points outside the message.", nameof(raw));
         }
 
         return raw.Slice((int)offset, length).ToArray();
     }
 
-    protected static ushort CheckedLength(int length)
-    {
-        if (length > ushort.MaxValue)
-        {
+    protected static ushort CheckedLength(int length) {
+        if (length > ushort.MaxValue) {
             throw new InvalidOperationException("NTLM field length exceeds 65535 bytes.");
         }
 

@@ -7,21 +7,20 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
+namespace SharpInterop.Rpc; 
+
+/// <summary>
+/// Rpc constants
+/// </summary>
+public enum RpcImpersonationLevel {
 
     /// <summary>
-    /// Rpc constants
+    /// identfiy
     /// </summary>
-    public enum RpcImpersonationLevel {
+    RPC_C_IMP_LEVEL_IDENTIFY = 2,
 
-        /// <summary>
-        /// identfiy
-        /// </summary>
-        RPC_C_IMP_LEVEL_IDENTIFY = 2,
-
-        /// <summary>
-        /// Impersonate
-        /// </summary>
-        RPC_C_IMP_LEVEL_IMPERSONATE = 3,
-    }
+    /// <summary>
+    /// Impersonate
+    /// </summary>
+    RPC_C_IMP_LEVEL_IMPERSONATE = 3,
 }

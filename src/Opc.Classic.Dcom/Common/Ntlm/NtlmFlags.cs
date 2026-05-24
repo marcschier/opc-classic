@@ -1,10 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 namespace Opc.Classic.Dcom.Internal.Ntlm;
 
 [System.Flags]
-public enum NtlmFlags : uint
-{
+public enum NtlmFlags : uint {
     None = 0,
     NtlmsspNegotiateUnicode = 0x00000001,
     NtlmsspNegotiateOem = 0x00000002,

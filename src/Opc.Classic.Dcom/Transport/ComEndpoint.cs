@@ -7,29 +7,28 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Transport {
-    using SharpInterop.Rpc;
-    using SharpInterop.Rpc.Core;
-    using System.IO;
+using SharpInterop.Rpc;
+using SharpInterop.Rpc.Core;
+using System.IO;
+
+namespace SharpInterop.Transport; 
+/// <summary>
+/// Endpoint
+/// </summary>
+public sealed class ComEndpoint : ConnectionOrientedEndpoint {
 
     /// <summary>
-    /// Endpoint
+    /// Create endpoint
     /// </summary>
-    public sealed class ComEndpoint : ConnectionOrientedEndpoint {
-
-        /// <summary>
-        /// Create endpoint
-        /// </summary>
-        /// <param name="transport"></param>
-        /// <param name="syntax"></param>
-        internal ComEndpoint(ITransport transport, PresentationSyntax syntax) :
-            base(transport, syntax) {
-        }
-
-        /// <summary>
-        /// Rebind
-        /// </summary>
-        /// <exception cref="IOException"></exception>
-        public void RebindEndPoint() => Rebind();
+    /// <param name="transport"></param>
+    /// <param name="syntax"></param>
+    internal ComEndpoint(ITransport transport, PresentationSyntax syntax) :
+        base(transport, syntax) {
     }
+
+    /// <summary>
+    /// Rebind
+    /// </summary>
+    /// <exception cref="IOException"></exception>
+    public void RebindEndPoint() => Rebind();
 }

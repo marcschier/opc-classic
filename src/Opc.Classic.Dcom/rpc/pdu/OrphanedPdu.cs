@@ -7,16 +7,15 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc.pdu {
-    /// <summary>
-    /// Orphan
-    /// </summary>
-    public class OrphanedPdu : ConnectionOrientedPdu {
+namespace SharpInterop.Rpc.pdu; 
+/// <summary>
+/// Orphan
+/// </summary>
+public class OrphanedPdu : ConnectionOrientedPdu {
 
-        /// <summary> Type info - TODO - move to PduTypes.cs </summary>
-        public const int ORPHANED_TYPE = 0x13;
+    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
+    public const int ORPHANED_TYPE = 0x13;
 
-        /// <inheritdoc/>
-        public override int Type => ORPHANED_TYPE;
-    }
+    /// <inheritdoc/>
+    public override int Type => ORPHANED_TYPE;
 }

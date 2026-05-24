@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -15,8 +15,7 @@ namespace SharpInterop.Core;
 [OpcInterface(SharpInterop.Interfaces.IID_IRemoteSCMActivator)]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
-public partial interface IRemoteSCMActivator
-{
+public partial interface IRemoteSCMActivator {
     /// <summary>IRemoteSCMActivator::RemoteGetClassObject (opnum 3).</summary>
     [OpcMethod(3)]
     Task<int> RemoteGetClassObjectAsync(Guid clsid, Guid requestedIid, CancellationToken cancellationToken = default);
@@ -27,8 +26,7 @@ public partial interface IRemoteSCMActivator
 }
 
 /// <summary>Server-side contract for IRemoteSCMActivator activation handling.</summary>
-public interface IRemoteSCMActivatorServer : IRemoteSCMActivator
-{
+public interface IRemoteSCMActivatorServer : IRemoteSCMActivator {
     /// <summary>Handles a decoded RemoteCreateInstance request.</summary>
     Task<RemoteCreateInstanceResponse> RemoteCreateInstanceAsync(
         RemoteCreateInstanceRequest request,
@@ -44,8 +42,7 @@ public interface IRemoteSCMActivatorServer : IRemoteSCMActivator
 public sealed record RemoteCreateInstanceRequest(
     Guid Clsid,
     Guid RequestedIid,
-    IReadOnlyList<int> ProtocolSequences)
-{
+    IReadOnlyList<int> ProtocolSequences) {
     /// <summary>Decoded activation properties supplied by the client.</summary>
     public ActivationProperties ActivationProperties { get; init; } = ActivationProperties.Empty;
 
@@ -54,8 +51,7 @@ public sealed record RemoteCreateInstanceRequest(
 }
 
 /// <summary>Server-side IRemoteSCMActivator::RemoteCreateInstance response.</summary>
-public sealed record RemoteCreateInstanceResponse(int Hresult, Guid Oxid, Guid Ipid, byte[] ObjRef)
-{
+public sealed record RemoteCreateInstanceResponse(int Hresult, Guid Oxid, Guid Ipid, byte[] ObjRef) {
     /// <summary>Object identifier allocated for the exported object.</summary>
     public Guid Oid { get; init; }
 
@@ -70,8 +66,7 @@ public sealed record RemoteCreateInstanceResponse(int Hresult, Guid Oxid, Guid I
 public sealed record RemoteGetClassObjectRequest(
     Guid Clsid,
     Guid RequestedIid,
-    IReadOnlyList<int> ProtocolSequences)
-{
+    IReadOnlyList<int> ProtocolSequences) {
     /// <summary>Decoded activation properties supplied by the client.</summary>
     public ActivationProperties ActivationProperties { get; init; } = ActivationProperties.Empty;
 
@@ -80,8 +75,7 @@ public sealed record RemoteGetClassObjectRequest(
 }
 
 /// <summary>Server-side IRemoteSCMActivator::RemoteGetClassObject response.</summary>
-public sealed record RemoteGetClassObjectResponse(int Hresult, Guid Oxid, Guid Ipid, byte[] ObjRef)
-{
+public sealed record RemoteGetClassObjectResponse(int Hresult, Guid Oxid, Guid Ipid, byte[] ObjRef) {
     /// <summary>Object identifier allocated for the exported class factory.</summary>
     public Guid Oid { get; init; }
 

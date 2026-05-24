@@ -7,30 +7,29 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Registry {
+namespace SharpInterop.Registry; 
+
+/// <summary>
+/// Policy handle for each key.
+/// </summary>
+public class PolicyHandle {
 
     /// <summary>
-    /// Policy handle for each key.
+    /// Handle to the Key
     /// </summary>
-    public class PolicyHandle {
+    public byte[] Handle { get; }
 
-        /// <summary>
-        /// Handle to the Key
-        /// </summary>
-        public byte[] Handle { get; }
+    /// <summary>
+    /// True, if the key was newly created.
+    /// </summary>
+    public bool NewlyCreated { get; }
 
-        /// <summary>
-        /// True, if the key was newly created.
-        /// </summary>
-        public bool NewlyCreated { get; }
-
-        /// <summary>
-        /// Create handle
-        /// </summary>
-        /// <param name="newlyCreated"> </param>
-        public PolicyHandle(bool newlyCreated) {
-            NewlyCreated = newlyCreated;
-            Handle = new byte[20];
-        }
+    /// <summary>
+    /// Create handle
+    /// </summary>
+    /// <param name="newlyCreated"> </param>
+    public PolicyHandle(bool newlyCreated) {
+        NewlyCreated = newlyCreated;
+        Handle = new byte[20];
     }
 }

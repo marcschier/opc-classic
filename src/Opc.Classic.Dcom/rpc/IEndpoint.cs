@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,40 +7,39 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
-    using Opc.Classic.Dcom.Internal.LegacyNdr;
-    using SharpInterop.Rpc.Core;
-    using System.IO;
+using Opc.Classic.Dcom.Internal.LegacyNdr;
+using SharpInterop.Rpc.Core;
+using System.IO;
+
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Endpoint interface
+/// </summary>
+public interface IEndpoint {
 
     /// <summary>
-    /// Endpoint interface
+    /// Transport
     /// </summary>
-    public interface IEndpoint {
+    ITransport Transport { get; }
 
-        /// <summary>
-        /// Transport
-        /// </summary>
-        ITransport Transport { get; }
+    /// <summary>
+    /// Syntax
+    /// </summary>
+    PresentationSyntax Syntax { get; }
 
-        /// <summary>
-        /// Syntax
-        /// </summary>
-        PresentationSyntax Syntax { get; }
+    /// <summary>
+    /// Call
+    /// </summary>
+    /// <param name="semantics"></param>
+    /// <param name="object"></param>
+    /// <param name="opnum"></param>
+    /// <param name="ndrobj"></param>
+    /// <exception cref="IOException"></exception>
+    void Call(Semantics semantics, UUID @object, int opnum, NdrOp ndrobj);
 
-        /// <summary>
-        /// Call
-        /// </summary>
-        /// <param name="semantics"></param>
-        /// <param name="object"></param>
-        /// <param name="opnum"></param>
-        /// <param name="ndrobj"></param>
-        /// <exception cref="IOException"></exception>
-        void Call(Semantics semantics, UUID @object, int opnum, NdrOp ndrobj);
-
-        /// <summary>
-        /// Detach
-        /// </summary>
-        /// <exception cref="IOException"></exception>
-        void Detach();
-    }
+    /// <summary>
+    /// Detach
+    /// </summary>
+    /// <exception cref="IOException"></exception>
+    void Detach();
 }

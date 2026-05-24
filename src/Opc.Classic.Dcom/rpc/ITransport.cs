@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -7,54 +7,53 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
-    using Opc.Classic.Dcom.Internal;
-    using SharpInterop.Rpc.Core;
-    using Opc.Classic.Dcom.Internal.LegacyNdr;
-    using SharpCifs.Util.Sharpen;
-    using System.IO;
+using Opc.Classic.Dcom.Internal;
+using SharpInterop.Rpc.Core;
+using Opc.Classic.Dcom.Internal.LegacyNdr;
+using SharpCifs.Util.Sharpen;
+using System.IO;
+
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Transport interface
+/// </summary>
+public interface ITransport {
 
     /// <summary>
-    /// Transport interface
+    /// Protocol name
     /// </summary>
-    public interface ITransport {
+    string Protocol { get; }
 
-        /// <summary>
-        /// Protocol name
-        /// </summary>
-        string Protocol { get; }
+    /// <summary>
+    /// Configuration
+    /// </summary>
+    PropertyBag Properties { get; }
 
-        /// <summary>
-        /// Configuration
-        /// </summary>
-        PropertyBag Properties { get; }
+    /// <summary>
+    /// Attach
+    /// </summary>
+    /// <param name="syntax"></param>
+    /// <exception cref="IOException"></exception>
+    /// <returns></returns>
+    IEndpoint Attach(PresentationSyntax syntax);
 
-        /// <summary>
-        /// Attach
-        /// </summary>
-        /// <param name="syntax"></param>
-        /// <exception cref="IOException"></exception>
-        /// <returns></returns>
-        IEndpoint Attach(PresentationSyntax syntax);
+    /// <summary>
+    /// Send
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <exception cref="IOException"></exception>
+    void Send(NdrBuffer buffer);
 
-        /// <summary>
-        /// Send
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <exception cref="IOException"></exception>
-        void Send(NdrBuffer buffer);
+    /// <summary>
+    /// Receive
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <exception cref="IOException"></exception>
+    void Receive(NdrBuffer buffer);
 
-        /// <summary>
-        /// Receive
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <exception cref="IOException"></exception>
-        void Receive(NdrBuffer buffer);
-
-        /// <summary>
-        /// Close
-        /// </summary>
-        /// <exception cref="IOException"></exception>
-        void Close();
-    }
+    /// <summary>
+    /// Close
+    /// </summary>
+    /// <exception cref="IOException"></exception>
+    void Close();
 }

@@ -7,28 +7,27 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace SharpInterop.Rpc {
-    using System;
+using System;
+
+namespace SharpInterop.Rpc; 
+/// <summary>
+/// Endpoint type
+/// </summary>
+[Flags]
+public enum Semantics {
 
     /// <summary>
-    /// Endpoint type
+    /// Maybe
     /// </summary>
-    [Flags]
-    public enum Semantics {
+    MAYBE = 0x01,
 
-        /// <summary>
-        /// Maybe
-        /// </summary>
-        MAYBE = 0x01,
+    /// <summary>
+    /// Idempotent
+    /// </summary>
+    IDEMPOTENT = 0x02,
 
-        /// <summary>
-        /// Idempotent
-        /// </summary>
-        IDEMPOTENT = 0x02,
-
-        /// <summary>
-        /// Broadcast
-        /// </summary>
-        BROADCAST = 0x04,
-    }
+    /// <summary>
+    /// Broadcast
+    /// </summary>
+    BROADCAST = 0x04,
 }

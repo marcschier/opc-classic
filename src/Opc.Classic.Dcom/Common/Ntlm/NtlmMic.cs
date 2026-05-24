@@ -1,17 +1,15 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System;
 using System.Security.Cryptography;
 
 namespace Opc.Classic.Dcom.Internal.Ntlm;
 
-public static class NtlmMic
-{
+public static class NtlmMic {
     public const int MicLength = 16;
 
     public static byte[] Compute(byte[] sessionKey, ReadOnlySpan<byte> negotiate, ReadOnlySpan<byte> challenge,
-        ReadOnlySpan<byte> authenticate)
-    {
+        ReadOnlySpan<byte> authenticate) {
         ArgumentNullException.ThrowIfNull(sessionKey);
 
         var input = new byte[negotiate.Length + challenge.Length + authenticate.Length];
@@ -27,13 +25,11 @@ public static class NtlmMic
     }
 
     public static bool Verify(byte[] sessionKey, ReadOnlySpan<byte> negotiate, ReadOnlySpan<byte> challenge,
-        byte[] authenticate, int micOffset)
-    {
+        byte[] authenticate, int micOffset) {
         ArgumentNullException.ThrowIfNull(sessionKey);
         ArgumentNullException.ThrowIfNull(authenticate);
 
-        if (micOffset < 0 || micOffset > authenticate.Length - MicLength)
-        {
+        if (micOffset < 0 || micOffset > authenticate.Length - MicLength) {
             return false;
         }
 
