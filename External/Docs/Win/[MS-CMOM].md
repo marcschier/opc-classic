@@ -1144,7 +1144,11 @@ Release: April 23, 2024
 
 9 / 73
 
-[MS-WKST] Microsoft Corporation, "Workstation Service Remote Protocol".
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-CMOM].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+[MS-WKST] Microsoft Corporation, "Workstation Service Remote Protocol".
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
@@ -1270,7 +1274,11 @@ Release: April 23, 2024
 
 11 / 73
 
-Figure 2: Setting and enabling a configuration setting
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-CMOM].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: Setting and enabling a configuration setting
 
 1.3.3.2  Subscribing to Transaction Monitoring Information
 
@@ -1297,7 +1305,12 @@ Release: April 23, 2024
 
 12 / 73
 
-Figure 3: Subscribing to transaction monitoring information
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-CMOM].images/page013-img01.png)
+![Extracted image 2 from page 13]([MS-CMOM].images/page013-img02.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 3: Subscribing to transaction monitoring information
 
 1.4  Relationship to Other Protocols
 
@@ -3671,7 +3684,11 @@ Release: April 23, 2024
 
 38 / 73
 
-  Active
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-CMOM].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+  Active
 
 
 
@@ -4437,7 +4454,11 @@ Release: April 23, 2024
 
 47 / 73
 
-Figure 6: Relationship between the CONNTYPE_TXUSER_ DTCUI acceptor states
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-CMOM].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+Figure 6: Relationship between the CONNTYPE_TXUSER_ DTCUI acceptor states
 
 3.3.1.1.1.1
 

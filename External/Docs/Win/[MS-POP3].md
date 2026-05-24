@@ -822,7 +822,11 @@ Release: April 23, 2024
 
 7 / 31
 
-1.2.2  Informative References
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-POP3].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+1.2.2  Informative References
 
 [SSPI] Microsoft Corporation, "SSPI", https://learn.microsoft.com/en-
 us/windows/desktop/SecAuthN/sspi
@@ -1241,7 +1245,11 @@ Release: April 23, 2024
 
 14 / 31
 
-3  Protocol Details
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-POP3].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+3  Protocol Details
 
 3.1  Client Details
 
@@ -1457,7 +1465,11 @@ Release: April 23, 2024
 
 18 / 31
 
-3.2  Server Details
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-POP3].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+3.2  Server Details
 
 3.2.1  Abstract Data Model
 
@@ -1672,7 +1684,11 @@ Release: April 23, 2024
 
 22 / 31
 
-4  Protocol Examples
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-POP3].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+4  Protocol Examples
 
 The following section describes operations used in a common scenario to illustrate the function of the
 Post Office Protocol 3 (POP3).
@@ -1763,7 +1779,11 @@ Release: April 23, 2024
 
 24 / 31
 
-4.2  POP3 Client Unsuccessfully Authenticating to a POP3 Server
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-POP3].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+4.2  POP3 Client Unsuccessfully Authenticating to a POP3 Server
 
 This section illustrates the NTLM POP3 Extension with a scenario in which a POP3 client attempts
 NTLM authentication to a POP3 server and the authentication fails.

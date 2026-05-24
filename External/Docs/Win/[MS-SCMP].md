@@ -3028,7 +3028,11 @@ Release: April 23, 2024
 
 38 / 53
 
-Figure 1: Enumerate Volumes Supporting Shadow Copies
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-SCMP].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 1: Enumerate Volumes Supporting Shadow Copies
 
 4.2  Calculate Shadow Copy Storage Space on a Volume
 
@@ -3107,7 +3111,11 @@ Release: April 23, 2024
 
 40 / 53
 
-Figure 2: Calculate Shadow Copy Storage Space on a Volume
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-SCMP].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 2: Calculate Shadow Copy Storage Space on a Volume
 
 4.3  Store Shadow Copies on a Different Volume
 
@@ -3201,7 +3209,11 @@ Release: April 23, 2024
 
 42 / 53
 
-Figure 3: Store Shadow Copies on a Different Volume
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-SCMP].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 3: Store Shadow Copies on a Different Volume
 
 [MS-SCMP] - v20240423
 Shadow Copy Management Protocol

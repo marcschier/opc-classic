@@ -411,7 +411,11 @@ Release: October 26, 2021
 
 6 / 30
 
-Figure 1: Virtual disk components
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-VSOD].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1: Virtual disk components
 
 Application: The primary actor that triggers this use case.
 
@@ -476,7 +480,11 @@ Release: October 26, 2021
 
 7 / 30
 
-Figure 2: Protocol relationships
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-VSOD].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 2: Protocol relationships
 
 2.4  Coherency Requirements
 
@@ -499,7 +507,11 @@ Release: October 26, 2021
 
 8 / 30
 
-3  Use Cases
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-VSOD].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+3  Use Cases
 
 3.1  Accessing a Virtual Disk File
 
@@ -599,7 +611,11 @@ Release: October 26, 2021
 
 10 / 30
 
-Figure 4: Connecting and opening a virtual disk
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-VSOD].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 4: Connecting and opening a virtual disk
 
 1.  The application requests that the file client open the share as described in [MS-SMB2] section
 
@@ -699,7 +715,11 @@ Virtual Storage Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.  The file server processes the write, as described in [MS-SMB2] section 3.3.5.13.
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-VSOD].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+3.  The file server processes the write, as described in [MS-SMB2] section 3.3.5.13.
 
 Postconditions
 
@@ -796,7 +816,11 @@ Release: October 26, 2021
 
 14 / 30
 
-Figure 6: Disconnecting from a virtual disk
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-VSOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 6: Disconnecting from a virtual disk
 
 The application is required to have a handle to the virtual disk as described in section 3.1.1.
 
@@ -870,7 +894,11 @@ Release: October 26, 2021
 
 16 / 30
 
-Figure 7: Accessing the content of a shared virtual SCSI disk
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-VSOD].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 7: Accessing the content of a shared virtual SCSI disk
 
 3.2.1  Connecting and Opening a Shared Virtual SCSI Disk
 
@@ -962,7 +990,11 @@ Release: October 26, 2021
 
 18 / 30
 
-Figure 8: Connecting and opening a shared virtual SCSI disk
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-VSOD].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 8: Connecting and opening a shared virtual SCSI disk
 
 1.  The RSVD client requests opening a shared virtual SCSI disk as described in [MS-RSVD] section
 3.1.4.2. The RSVD client requests that the file client open the share as described in [MS-SMB2]
@@ -1122,7 +1154,11 @@ Release: October 26, 2021
 
 21 / 30
 
-Figure 9: Interacting with a shared virtual SCSI disk
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-VSOD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 9: Interacting with a shared virtual SCSI disk
 
 The application is required to have a handle to the shared virtual SCSI disk, as described in section
 3.2.1.
@@ -1288,7 +1324,11 @@ Release: October 26, 2021
 
 24 / 30
 
-3.2.3.1  Success Case Example
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-VSOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+3.2.3.1  Success Case Example
 
 The following diagram shows the steps required to close the connection to the shared virtual SCSI
 disk. Optionally, the file client can log off from the share.

@@ -609,7 +609,11 @@ Release: March 13, 2023
 
 8 / 54
 
-Figure 1: Remote Desktop Services overview diagram
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RDSOD].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: Remote Desktop Services overview diagram
 
 An RD Session Host supports the use of external systems, such as directory service (DS), licensing
 services, domain services, and security services. These services use protocols that are not a part of
@@ -1249,7 +1253,11 @@ Release: March 13, 2023
 
 14 / 54
 
-Figure 2: Relationships among Remote Desktop Protocols
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RDSOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: Relationships among Remote Desktop Protocols
 
 [MS-RDSOD] - v20230313
 Remote Desktop Services Protocols Overview
@@ -1390,7 +1398,11 @@ Release: March 13, 2023
 
 17 / 54
 
-2.5.1  Establishing a Secure Connection Between an RDP Client and an RD Session
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-RDSOD].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+2.5.1  Establishing a Secure Connection Between an RDP Client and an RD Session
 
 Host Server Use Cases
 
@@ -1758,7 +1770,11 @@ Release: March 13, 2023
 
 23 / 54
 
-2.5.2  Redirection Functionality Use Cases
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-RDSOD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+2.5.2  Redirection Functionality Use Cases
 
 Figure 4: Redirection functionality use cases diagram
 
@@ -2203,7 +2219,11 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-3.  The RD Session Host contacts the RDP Client to get the authentication data for the specific
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-RDSOD].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+3.  The RD Session Host contacts the RDP Client to get the authentication data for the specific
 
 request.
 
@@ -2452,7 +2472,11 @@ Release: March 13, 2023
 
 35 / 54
 
-Figure 6: Sequence illustrating RDP Client connecting to an RD Session Host
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-RDSOD].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 6: Sequence illustrating RDP Client connecting to an RD Session Host
 
 The connection sequence is described in the following steps.
 
@@ -2559,7 +2583,11 @@ Release: March 13, 2023
 
 37 / 54
 
-Figure 7: Creating an RPC over HTTP (RPC/HTTP) tunnel
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-RDSOD].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 7: Creating an RPC over HTTP (RPC/HTTP) tunnel
 
 [MS-RDSOD] - v20230313
 Remote Desktop Services Protocols Overview
@@ -2568,7 +2596,11 @@ Release: March 13, 2023
 
 38 / 54
 
-Figure 8: Creating an RDP connection through an RD Gateway
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-RDSOD].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 8: Creating an RDP connection through an RD Gateway
 
 A description of the connection sequence using an RD Gateway is as follows:
 
@@ -2662,7 +2694,11 @@ Release: March 13, 2023
 
 40 / 54
 
-3.3  Example 3: Establishing a Dynamic Virtual Channel for Plug and Play Device
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-RDSOD].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+3.3  Example 3: Establishing a Dynamic Virtual Channel for Plug and Play Device
 
 Redirection
 
@@ -2735,7 +2771,11 @@ Release: March 13, 2023
 
 42 / 54
 
-Figure 10: Detailed sequence for redirecting data from a Plug and Play device
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-RDSOD].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 10: Detailed sequence for redirecting data from a Plug and Play device
 
 The following steps describe this sequence:
 
@@ -2818,7 +2858,12 @@ Release: March 13, 2023
 
 44 / 54
 
-Figure 11: Clipboard initialization sequence
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-RDSOD].images/page045-img01.png)
+![Extracted image 2 from page 45]([MS-RDSOD].images/page045-img02.png)
+<!-- /Extracted images from page 45 -->
+
+Figure 11: Clipboard initialization sequence
 
 Figure 12: Data transfer sequence
 
@@ -2919,7 +2964,11 @@ Release: March 13, 2023
 
 46 / 54
 
-The disconnecting sequence is illustrated in the following diagram.
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-RDSOD].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+The disconnecting sequence is illustrated in the following diagram.
 
 Figure 13: Sequence of RDP client logging off from RD Session Host
 
@@ -2972,7 +3021,11 @@ Release: March 13, 2023
 
 47 / 54
 
-Figure 14: Disconnecting an RDP client from an RD Session Host
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-RDSOD].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+Figure 14: Disconnecting an RDP client from an RD Session Host
 
 The following steps describe this sequence:
 
@@ -3019,7 +3072,11 @@ Release: March 13, 2023
 
 48 / 54
 
-Figure 15: Establishing a Multitransport Connection
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-RDSOD].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+Figure 15: Establishing a Multitransport Connection
 
 1.  The RDP server initiates a multitransport connection by sending an Initiate Multitransport Request
 

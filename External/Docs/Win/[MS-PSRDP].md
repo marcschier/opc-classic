@@ -388,7 +388,11 @@ Release: April 23, 2024
 
 5 / 20
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-PSRDP].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+1.4  Relationship to Other Protocols
 
 This protocol depends on PSRP specified in [MS-PSRP] for transport of messages between client and
 server.
@@ -823,7 +827,11 @@ Release: April 23, 2024
 
 14 / 20
 
-4  Protocol Examples
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-PSRDP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+4  Protocol Examples
 
 A common remote debugging sequence is as follows:
 

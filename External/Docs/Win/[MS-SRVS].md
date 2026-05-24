@@ -15374,7 +15374,11 @@ Release: September 16, 2024
 
 179 / 233
 
-4  Protocol Examples
+<!-- Extracted images from page 180 -->
+![Extracted image 1 from page 180]([MS-SRVS].images/page180-img01.png)
+<!-- /Extracted images from page 180 -->
+
+4  Protocol Examples
 
 For most methods, the Server Service Remote Protocol is a simple request-response protocol. For
 every method that the server receives, except the NetrShareDelStart method and the
@@ -15420,7 +15424,11 @@ Release: September 16, 2024
 
 180 / 233
 
-4.2  Two-Phase Share Deletion
+<!-- Extracted images from page 181 -->
+![Extracted image 1 from page 181]([MS-SRVS].images/page181-img01.png)
+<!-- /Extracted images from page 181 -->
+
+4.2  Two-Phase Share Deletion
 
 The following figure shows the protocol message sequence for a two-phase share deletion.
 
@@ -15453,7 +15461,11 @@ Release: September 16, 2024
 
 181 / 233
 
-Figure 3: Message sequence for adding a scoped share with an alias to a server
+<!-- Extracted images from page 182 -->
+![Extracted image 1 from page 182]([MS-SRVS].images/page182-img01.png)
+<!-- /Extracted images from page 182 -->
+
+Figure 3: Message sequence for adding a scoped share with an alias to a server
 
 1.  The client calls NetrServerTransportAddEx (Opnum 41) to bind the server to the transport protocol
 

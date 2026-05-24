@@ -602,7 +602,11 @@ Release: October 26, 2021
 
 9 / 30
 
-2  Functional Description
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-ADFSOD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+2  Functional Description
 
 The AD FS protocols that are described in this document provide the following functionality to support
 AD FS:
@@ -1284,7 +1288,11 @@ Active Directory Federation Services (AD FS) Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-implementations. In addition, some server implementations do not support dynamic renegotiation of
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-ADFSOD].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+implementations. In addition, some server implementations do not support dynamic renegotiation of
 certificates if the client is in possession of multiple keys. The Public Key Authentication Protocol (PKAP)
 [MS-PKAP] provides a way for client applications written on any HTTP client stack to participate in a
 message-based protocol. A client application uses this protocol at the application layer along with
@@ -1318,7 +1326,11 @@ Release: October 26, 2021
 
 18 / 30
 
-3  Use Cases
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-ADFSOD].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+3  Use Cases
 
 3.1  Single Sign-on Using a Security Token Service and WS-Federation
 
@@ -1463,7 +1475,11 @@ Release: October 26, 2021
 
 21 / 30
 
-Figure 4: Sequence diagram for user and relying party in different realms
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-ADFSOD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 4: Sequence diagram for user and relying party in different realms
 
 1.  When the user requests, via a web browser (see [WSFederation1.2] section 13 and [MS-MWBF]),
 access to a web resource, the client sends an HTTP GET to the address of the web resource.
@@ -1597,7 +1613,11 @@ Release: October 26, 2021
 
 24 / 30
 
-Figure 5: Sequence diagram for user and relying party in same realm
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-ADFSOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 5: Sequence diagram for user and relying party in same realm
 
 1.  When the user requests, via a web browser (see [WSFederation1.2] section 13 and [MS-MWBF]),
 access to a Web resource, the client sends an HTTP GET to the address of the web resource.

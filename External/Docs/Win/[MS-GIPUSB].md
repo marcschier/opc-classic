@@ -540,7 +540,11 @@ Release: September 16, 2024
 
 7 / 89
 
-Figure 1: Device to host connect
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-GIPUSB].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: Device to host connect
 
 Process notes follow:
 
@@ -737,7 +741,11 @@ Release: September 16, 2024
 
 11 / 89
 
-different PIDs for each protocol. Note, however, the PID SHOULD remain the same for a protocol
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-GIPUSB].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+different PIDs for each protocol. Note, however, the PID SHOULD remain the same for a protocol
 shared between communication interfaces.
 
   USB Product IDs MUST NOT be reused on future products even if the product is a re-launch of the
@@ -859,7 +867,11 @@ Release: September 16, 2024
 
 13 / 89
 
-Figure 3: GIP controller metadata exchange
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-GIPUSB].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 3: GIP controller metadata exchange
 
 The host will request metadata up to 4 times at 500ms intervals. After that period has expired, the
 host will mark the device for removal. Devices SHOULD promptly reply with a Metadata response
@@ -3779,7 +3791,11 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.11 Audio Initialization
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-GIPUSB].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+2.2.11 Audio Initialization
 
 An audio streaming device is a special case. Audio data is not routed to or from the vendor’s library.
 Instead, it is communicated directly to the host’s audio stack. Special handling is done to ensure
@@ -3887,7 +3903,11 @@ Release: September 16, 2024
 
 36 / 89
 
-2.2.11.2
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-GIPUSB].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+2.2.11.2
 
 Lost Initialization Packets
 
@@ -4378,7 +4398,11 @@ Release: September 16, 2024
 
 40 / 89
 
-Figure 6: GIP device state diagram
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-GIPUSB].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 6: GIP device state diagram
 
 Anytime a GIP device is in the Arrival state it SHOULD only send GIP Hellos at 500 ms intervals until
 the host responds. See Notes on the Hello stage for details.
@@ -4525,7 +4549,11 @@ Release: September 16, 2024
 
 43 / 89
 
-Figure 7: Reliable message ACK process flow
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-GIPUSB].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+Figure 7: Reliable message ACK process flow
 
 3.1.5.2  Reliable Large Message Transmission
 
@@ -9809,7 +9837,11 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-extended volume control messages to the host to avoid the host user interface getting out of sync
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-GIPUSB].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+extended volume control messages to the host to avoid the host user interface getting out of sync
 with the device’s setting.
 
 Figure 8: Audio Control: Volume Extended Message: Volume Exchange

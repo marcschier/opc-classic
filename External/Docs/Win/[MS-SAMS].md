@@ -2402,7 +2402,11 @@ Release: July 29, 2024
 
 29 / 38
 
-4  Protocol Examples
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-SAMS].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+4  Protocol Examples
 
 4.1  SAM Server-to-Server Request Example
 

@@ -2709,7 +2709,12 @@ Release: April 27, 2026
 
 28 / 293
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-SAMR].images/page029-img01.png)
+![Extracted image 2 from page 29]([MS-SAMR].images/page029-img02.png)
+<!-- /Extracted images from page 29 -->
+
+1.4  Relationship to Other Protocols
 
 This protocol depends on the RPC protocol because it uses RPC as a transport.
 

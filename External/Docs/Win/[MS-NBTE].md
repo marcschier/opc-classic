@@ -1334,7 +1334,11 @@ Release: April 23, 2024
 
 18 / 31
 
-4  Protocol Examples
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-NBTE].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+4  Protocol Examples
 
 4.1  NetBIOS Registration Example
 

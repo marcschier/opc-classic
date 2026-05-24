@@ -699,7 +699,11 @@ Release: October 26, 2021
 
 9 / 77
 
-Figure 1: Components interacting with the File Services Management system
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-FSMOD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Components interacting with the File Services Management system
 
 File server, file system, domain controller, and printer services are used by the File Services
 Management system (FSM system).
@@ -810,7 +814,11 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Modifying the file properties: An administrator can set, enumerate, modify, and delete values of
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-FSMOD].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Modifying the file properties: An administrator can set, enumerate, modify, and delete values of
 properties for specific files on the file server by interacting with the FSRM server component.
 
 Configuring the SMB Network Redirector: An administrator can query and configure the SMB
@@ -930,7 +938,11 @@ Release: October 26, 2021
 
 13 / 77
 
-2.1.5  Protocol Relationship
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-FSMOD].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+2.1.5  Protocol Relationship
 
 The following diagram shows the protocol layering relationships for the File Services Management
 system member protocols that use remote procedure call (RPC) as a transport.
@@ -953,7 +965,11 @@ Release: October 26, 2021
 
 14 / 77
 
-Figure 4: Protocol relationship of the Remote Administration Protocol
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-FSMOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 4: Protocol relationship of the Remote Administration Protocol
 
 The Remote Administration Protocol [MS-RAP] is an administrative protocol that is transported by the
 Common Internet File System (CIFS) and the Server Message Block (SMB) Protocol, but not by the
@@ -1186,7 +1202,11 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Domain functionality: For system functionality that requires a domain and directory services, as
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-FSMOD].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Domain functionality: For system functionality that requires a domain and directory services, as
 described in [MS-ADOD], at least one domain controller is configured and accessible. Some
 functionality could require an Active Directory domain as noted in individual technical documents.
 
@@ -1670,7 +1690,11 @@ Release: October 26, 2021
 
 24 / 77
 
-Figure 6: DFS use cases
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-FSMOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 6: DFS use cases
 
 2.5.2.1  Create DFS Standalone Namespace
 
@@ -2145,7 +2169,11 @@ Release: October 26, 2021
 
 31 / 77
 
-Figure 7: DFS-R configuration and monitoring use cases
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-FSMOD].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 7: DFS-R configuration and monitoring use cases
 
 Goal
 
@@ -2407,7 +2435,11 @@ Release: October 26, 2021
 
 35 / 77
 
-The requested Active Directory object is created.
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-FSMOD].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+The requested Active Directory object is created.
 
 Extensions
 
@@ -2711,7 +2743,11 @@ Release: October 26, 2021
 
 40 / 77
 
-Figure 9: Server Management use cases
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-FSMOD].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 9: Server Management use cases
 
 2.5.5.1  Attach an Alias Name to an Existing Server
 
@@ -3259,7 +3295,11 @@ Release: October 26, 2021
 
 48 / 77
 
-Figure 10: Configure SMB Network Redirector use cases
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-FSMOD].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+Figure 10: Configure SMB Network Redirector use cases
 
 2.5.6.1  Enable a Transport Protocol on an SMB Network Redirector
 
@@ -3802,7 +3842,11 @@ Release: October 26, 2021
 
 57 / 77
 
-Figure 11: Sequence diagram for creating an SMB share
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-FSMOD].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+Figure 11: Sequence diagram for creating an SMB share
 
 Sequence of Events
 
@@ -3843,7 +3887,11 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The sequence in this example describes how the application deletes an SMB share from a given server.
+<!-- Extracted images from page 59 -->
+![Extracted image 1 from page 59]([MS-FSMOD].images/page059-img01.png)
+<!-- /Extracted images from page 59 -->
+
+The sequence in this example describes how the application deletes an SMB share from a given server.
 
 Prerequisites
 
@@ -3952,7 +4000,11 @@ Release: October 26, 2021
 
 60 / 77
 
-Figure 13: Sequence diagram for creating and managing a namespace
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MS-FSMOD].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+Figure 13: Sequence diagram for creating and managing a namespace
 
 1.  CreateNamespace: The administrator requests that the admin tool creates a DFS namespace on
 the previously configured SMB share. The admin tool specifies the server, the share name, and
@@ -3991,7 +4043,11 @@ Release: October 26, 2021
 
 61 / 77
 
-NetrDfsManagerGetVersion method ([MS-DFSNM] section 3.1.4.1.2) to determine the enumeration
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MS-FSMOD].images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+NetrDfsManagerGetVersion method ([MS-DFSNM] section 3.1.4.1.2) to determine the enumeration
 method to use. The admin tool calls these enumeration methods multiple times to refresh its list.
 
 Task 1: Creating a DFS Domain Namespace
@@ -4038,7 +4094,12 @@ Release: October 26, 2021
 
 62 / 77
 
-Figure 15: Sequence diagram for adding a DFS link
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-FSMOD].images/page063-img01.png)
+![Extracted image 2 from page 63]([MS-FSMOD].images/page063-img02.png)
+<!-- /Extracted images from page 63 -->
+
+Figure 15: Sequence diagram for adding a DFS link
 
 5.  The admin tool requests the admin client to create the given DFS link in the DFS namespace,
 
@@ -4121,7 +4182,11 @@ Release: October 26, 2021
 
 64 / 77
 
-Figure 17: Sequence diagram for creating an FSRM file screen
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-FSMOD].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+Figure 17: Sequence diagram for creating an FSRM file screen
 
 Sequence of Events
 
@@ -4217,7 +4282,11 @@ Release: October 26, 2021
 
 66 / 77
 
-Figure 18: Sequence diagram for creating an FSRM quota
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-FSMOD].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+Figure 18: Sequence diagram for creating an FSRM quota
 
 Sequence of Events
 
@@ -4271,7 +4340,11 @@ Release: October 26, 2021
 
 67 / 77
 
-A file management job is created and configured on the FSRM server.
+<!-- Extracted images from page 68 -->
+![Extracted image 1 from page 68]([MS-FSMOD].images/page068-img01.png)
+<!-- /Extracted images from page 68 -->
+
+A file management job is created and configured on the FSRM server.
 
 The following sequence diagram shows the steps to create and configure a file management job.
 
@@ -4374,7 +4447,11 @@ Release: October 26, 2021
 
 69 / 77
 
-Figure 20: Sequence diagram for creating and configuring a scheduled report job
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70]([MS-FSMOD].images/page070-img01.png)
+<!-- /Extracted images from page 70 -->
+
+Figure 20: Sequence diagram for creating and configuring a scheduled report job
 
 Sequence of Events
 
@@ -4464,7 +4541,11 @@ Release: October 26, 2021
 
 71 / 77
 
-Figure 21: Sequence diagram for showing an RPC bind operation with a No Response error
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-FSMOD].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+Figure 21: Sequence diagram for showing an RPC bind operation with a No Response error
 message
 
 Sequence of Events

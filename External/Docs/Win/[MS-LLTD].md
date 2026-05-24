@@ -6404,7 +6404,11 @@ Release: April 23, 2024
 
 71 / 113
 
-Figure 1: Possible Responder's Quick Discovery states
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-LLTD].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+Figure 1: Possible Responder's Quick Discovery states
 
 While in Quiescent state, responders only listen to broadcast frames and wait for a Discover frame to
 trigger an association with a mapper (only for topology discovery) or initiate enumeration session.
@@ -6508,7 +6512,11 @@ Release: April 23, 2024
 
 73 / 113
 
-Figure 2: Responder's Quick Discovery Session Table State
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-LLTD].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+Figure 2: Responder's Quick Discovery Session Table State
 
 A session is created for each enumerator and mapper detected on the network, as specified
 in section 3.5.5.1. The Pending state refers to sessions that have not yet acknowledged the
@@ -6810,7 +6818,11 @@ Release: April 23, 2024
 
 78 / 113
 
-3.6  Responder (Topology Discovery) Details
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-LLTD].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+3.6  Responder (Topology Discovery) Details
 
 A responder MAY support multiple network interfaces. If a responder supports multiple network
 interfaces, it MUST create a separate instance of the responder protocol specified in this section for
@@ -6893,7 +6905,11 @@ Release: April 23, 2024
 
 80 / 113
 
-Figure 4: Responder's Topology Discovery state engine
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81]([MS-LLTD].images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+Figure 4: Responder's Topology Discovery state engine
 
   Generation Number: Knowing the correct generation number for a mapping iteration is necessary
 because of the way switches are forced to learn addresses. By the end of quick discovery, at
@@ -7983,7 +7999,11 @@ Release: April 23, 2024
 
 96 / 113
 
-4  Protocol Examples
+<!-- Extracted images from page 97 -->
+![Extracted image 1 from page 97]([MS-LLTD].images/page097-img01.png)
+<!-- /Extracted images from page 97 -->
+
+4  Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of this protocol.
@@ -8010,7 +8030,11 @@ Release: April 23, 2024
 
 97 / 113
 
-Figure 6: Protocol exchange between networked mapper and two responders
+<!-- Extracted images from page 98 -->
+![Extracted image 1 from page 98]([MS-LLTD].images/page098-img01.png)
+<!-- /Extracted images from page 98 -->
+
+Figure 6: Protocol exchange between networked mapper and two responders
 
 The following list describes each step in the protocol exchange:
 
@@ -8181,7 +8205,11 @@ Release: April 23, 2024
 
 100 / 113
 
-Figure 7: Example media server and TV, integrated media player network
+<!-- Extracted images from page 101 -->
+![Extracted image 1 from page 101]([MS-LLTD].images/page101-img01.png)
+<!-- /Extracted images from page 101 -->
+
+Figure 7: Example media server and TV, integrated media player network
 
 The media server is used to stream media content to the TV. The QoS support in this protocol can be
 used to assess the capacity of the connection between the two endpoints to determine if adequate
@@ -8199,7 +8227,11 @@ Release: April 23, 2024
 
 101 / 113
 
-Figure 8: Protocol exchange between media server and TV
+<!-- Extracted images from page 102 -->
+![Extracted image 1 from page 102]([MS-LLTD].images/page102-img01.png)
+<!-- /Extracted images from page 102 -->
+
+Figure 8: Protocol exchange between media server and TV
 
 The following list describes each step in the protocol exchange:
 

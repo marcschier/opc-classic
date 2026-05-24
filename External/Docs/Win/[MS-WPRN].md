@@ -916,7 +916,11 @@ Release: September 16, 2024
 
 9 / 31
 
-Figure 1: Client selection and download of printer driver
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-WPRN].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Client selection and download of printer driver
 
 A Web Point-and-Print Protocol web server maintains a list of printer drivers. A client makes a Driver
 Selection Request (section 2.2.4) to obtain a printer driver of a particular type and for a particular
@@ -1764,7 +1768,11 @@ Release: September 16, 2024
 
 22 / 31
 
-4  Protocol Examples
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-WPRN].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+4  Protocol Examples
 
 4.1  Client/Server Interaction
 

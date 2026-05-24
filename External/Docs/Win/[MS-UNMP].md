@@ -2759,7 +2759,11 @@ Release: April 23, 2024
 
 34 / 73
 
-Figure 1: User Name Mapping Protocol data model: Client
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-UNMP].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 1: User Name Mapping Protocol data model: Client
 
 There are three elements in the model: MapCache, MapRecord, and CurrentVersionToken.
 
@@ -2876,7 +2880,11 @@ Release: April 23, 2024
 
 36 / 73
 
-3.1.6  Timer Events
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-UNMP].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+3.1.6  Timer Events
 
 None.
 

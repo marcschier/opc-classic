@@ -720,7 +720,11 @@ Release: April 23, 2024
 
 7 / 29
 
-1.3  Overview
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-WDSC].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+1.3  Overview
 
 Windows Deployment Services (WDS) Control Protocol is a generic client/server protocol which is used
 to invoke services provided by Service Providers in WDS Server. The WDS Control Protocol is a
@@ -781,7 +785,11 @@ Release: April 23, 2024
 
 8 / 29
 
-Figure 2: Relationship to other protocols
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-WDSC].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 2: Relationship to other protocols
 
 1.5  Prerequisites/Preconditions
 
@@ -923,7 +931,11 @@ Release: April 23, 2024
 
 11 / 29
 
-2.2.1  Messages
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-WDSC].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+2.2.1  Messages
 
 The following diagram illustrates the overall structure of request and reply packets.
 
@@ -1052,7 +1064,11 @@ Release: April 23, 2024
 
 13 / 29
 
-Packet Type
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-WDSC].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Packet Type
 
 Description
 
@@ -1662,7 +1678,11 @@ Release: April 23, 2024
 
 22 / 29
 
-4  Protocol Examples
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-WDSC].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+4  Protocol Examples
 
  The following diagram illustrates a client invoking a service provided by Service Provider on a WDS
 Server:

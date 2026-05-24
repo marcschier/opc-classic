@@ -535,7 +535,11 @@ Tethering Control Channel Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-(MAC) and Physical Layer (PHY) Specifications", IEEE 802.11-2012,
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-TCC].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+(MAC) and Physical Layer (PHY) Specifications", IEEE 802.11-2012,
 https://standards.ieee.org/ieee/802.11/4523/
 
 Note There is a charge to download this document.
@@ -1623,7 +1627,11 @@ Release: April 23, 2024
 
 20 / 32
 
-3  Protocol Details
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-TCC].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+3  Protocol Details
 
 3.1  Client Details
 
@@ -1726,7 +1734,11 @@ Release: April 23, 2024
 
 22 / 32
 
-3.1.7.1  Disconnect Event of Transport Channel
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-TCC].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+3.1.7.1  Disconnect Event of Transport Channel
 
 If the transport channel becomes disconnected, the client indicates to the higher layer that a transport
 failure has occurred and terminates the connection.

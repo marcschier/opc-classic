@@ -660,7 +660,11 @@ Release: June 1, 2017
 
 8 / 47
 
-2  Messages
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-SQMCS].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+2  Messages
 
 2.1  Transport
 
@@ -702,7 +706,12 @@ Release: June 1, 2017
 
 9 / 47
 
-Figure 2: SQM session binary data stream layout (uncompressed)
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-SQMCS].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-SQMCS].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 2: SQM session binary data stream layout (uncompressed)
 
 The following figure illustrates the compressed SQM session binary data stream layout.
 
@@ -790,7 +799,11 @@ Release: June 1, 2017
 
 11 / 47
 
-…
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-SQMCS].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+…
 
 …
 
@@ -920,7 +933,11 @@ Release: June 1, 2017
 
 13 / 47
 
-RawDataLength (4 bytes): A 32-bit unsigned integer specifying the length of the SQM section
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-SQMCS].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+RawDataLength (4 bytes): A 32-bit unsigned integer specifying the length of the SQM section
 
 data before data compression, in bytes. This value MUST be specified if bit zero of the
 InternalFlags field has a value of 0x1.
@@ -1073,7 +1090,11 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-DataPointValue
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-SQMCS].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+DataPointValue
 
 ...
 
@@ -1143,7 +1164,11 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-String (variable): An array of bytes specifying an array of Unicode character values. This value
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-SQMCS].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+String (variable): An array of bytes specifying an array of Unicode character values. This value
 
 MUST be specified. This meaning of this value is defined by the SQM partner.
 
@@ -1368,7 +1393,11 @@ Release: June 1, 2017
 
 19 / 47
 
-Status
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-SQMCS].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+Status
 
 Meaning
 
@@ -1469,7 +1498,11 @@ Release: June 1, 2017
 
 21 / 47
 
-Figure 8: A-SQM Manifest with one or more sections
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-SQMCS].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 8: A-SQM Manifest with one or more sections
 
 2.2.6.3  A-SQM Header
 
@@ -1926,7 +1959,11 @@ Release: June 1, 2017
 
 28 / 47
 
-3  Protocol Details
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-SQMCS].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+3  Protocol Details
 
 3.1  Client Details
 
@@ -2125,7 +2162,11 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- GET https://sqm.microsoft.com/sqm/<SQM-PARTNER-NAMESPACE>/manifests/Sqm<VERSION>.bin
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-SQMCS].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+ GET https://sqm.microsoft.com/sqm/<SQM-PARTNER-NAMESPACE>/manifests/Sqm<VERSION>.bin
 
 The client downloads the A-SQM manifest resource and verifies the A-SQM manifest header
 checksum as specified in section 2.2.6.1. The client and server SHOULD<9> use the same checksum
@@ -2284,7 +2325,11 @@ Release: June 1, 2017
 
 34 / 47
 
-Figure 11: Client upload through a proxy server
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-SQMCS].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 11: Client upload through a proxy server
 
 3.3.1  Abstract Data Model
 
@@ -2452,7 +2497,11 @@ Release: June 1, 2017
 
 38 / 47
 
-Figure 12: SQM header example
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-SQMCS].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 12: SQM header example
 
 4.3  SQM Section Header
 
@@ -2465,7 +2514,11 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-         0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-SQMCS].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+         0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
  0070                         00 00 00 00 00 EC 01 00 00
 
 Figure 13: SQM section header example

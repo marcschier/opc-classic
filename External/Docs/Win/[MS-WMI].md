@@ -1490,7 +1490,11 @@ Release: April 23, 2024
 
 14 / 234
 
-Figure 1: Windows Management Instrumentation Remote Protocol architecture
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-WMI].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 1: Windows Management Instrumentation Remote Protocol architecture
 
 At layer 3, the Providers are designed to interact locally with WMI Management Data Sources.
 Providers implement abstract interface as specified in section 3.1.4.17. Windows Management
@@ -1514,7 +1518,11 @@ Release: April 23, 2024
 
 15 / 234
 
-Figure 2: Clients can be local or remote from the server
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-WMI].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 2: Clients can be local or remote from the server
 
 Windows Management Instrumentation Remote Protocol clients can be local or remote from the
 server, as illustrated in the preceding figure. In either case, the same set of Windows Management
@@ -4653,7 +4661,11 @@ Release: April 23, 2024
 
 56 / 234
 
-Figure 3: Typical protocol sequence
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-WMI].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+Figure 3: Typical protocol sequence
 
 3.1.1  Abstract Data Model
 
@@ -5494,7 +5506,11 @@ Release: April 23, 2024
 
 68 / 234
 
-Figure 4: The IWbemLevel1Login interface
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-WMI].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+Figure 4: The IWbemLevel1Login interface
 
 3.1.4.1.1 IWbemLevel1Login::EstablishPosition (Opnum 3)
 
@@ -6034,7 +6050,11 @@ Release: April 23, 2024
 
 75 / 234
 
-IWbemServices MUST be a DCOM Remote Protocol interface. The interface MUST be uniquely
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MS-WMI].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+IWbemServices MUST be a DCOM Remote Protocol interface. The interface MUST be uniquely
 identified by UUID {9556dc99-828c-11cf-a37e-00aa003240c7}. The object exporting this interface
 also implements the IWbemRefreshingServices interface, as shown in the following diagram.
 
@@ -9708,7 +9728,11 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MS-WMI].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+Method
 
 Description
 
@@ -10653,7 +10677,11 @@ Release: April 23, 2024
 
 132 / 234
 
-Figure 7: The IWbemBackupRestore interface
+<!-- Extracted images from page 133 -->
+![Extracted image 1 from page 133]([MS-WMI].images/page133-img01.png)
+<!-- /Extracted images from page 133 -->
+
+Figure 7: The IWbemBackupRestore interface
 
 3.1.4.10.1
 
@@ -11597,7 +11625,11 @@ Release: April 23, 2024
 
 145 / 234
 
-Figure 8: The IWbemShutdown interface
+<!-- Extracted images from page 146 -->
+![Extracted image 1 from page 146]([MS-WMI].images/page146-img01.png)
+<!-- /Extracted images from page 146 -->
+
+Figure 8: The IWbemShutdown interface
 
 3.1.4.14.1
 
@@ -11644,7 +11676,11 @@ Release: April 23, 2024
 
 146 / 234
 
-Figure 9: The IUnsecuredApartment interface
+<!-- Extracted images from page 147 -->
+![Extracted image 1 from page 147]([MS-WMI].images/page147-img01.png)
+<!-- /Extracted images from page 147 -->
+
+Figure 9: The IUnsecuredApartment interface
 
 3.1.4.15.1
 
@@ -11689,7 +11725,11 @@ Release: April 23, 2024
 
 147 / 234
 
-Figure 10: The IWbemUnsecuredApartment interface
+<!-- Extracted images from page 148 -->
+![Extracted image 1 from page 148]([MS-WMI].images/page148-img01.png)
+<!-- /Extracted images from page 148 -->
+
+Figure 10: The IWbemUnsecuredApartment interface
 
 3.1.4.16.1
 
@@ -12780,7 +12820,11 @@ Release: April 23, 2024
 
 163 / 234
 
-Figure 11: Protocol initialization example
+<!-- Extracted images from page 164 -->
+![Extracted image 1 from page 164]([MS-WMI].images/page164-img01.png)
+<!-- /Extracted images from page 164 -->
+
+Figure 11: Protocol initialization example
 
 4.1.1  Protocol Initialization Trace
 
@@ -12907,7 +12951,11 @@ Release: April 23, 2024
 
 166 / 234
 
-4.2.1  Synchronous Delivery of a Single Result
+<!-- Extracted images from page 167 -->
+![Extracted image 1 from page 167]([MS-WMI].images/page167-img01.png)
+<!-- /Extracted images from page 167 -->
+
+4.2.1  Synchronous Delivery of a Single Result
 
 The IWbemServices::GetObject and IWbemServices::ExecMethod methods support synchronous calls
 returning a single marshaled IWbemClassObject interface pointer.
@@ -12953,7 +13001,11 @@ Release: April 23, 2024
 
 167 / 234
 
-To make a synchronous operation from a client to a server, the client uses the IWbemServices
+<!-- Extracted images from page 168 -->
+![Extracted image 1 from page 168]([MS-WMI].images/page168-img01.png)
+<!-- /Extracted images from page 168 -->
+
+To make a synchronous operation from a client to a server, the client uses the IWbemServices
 interface pointer. The client calls the IWbemServices synchronous methods
 IWbemServices::CreateInstanceEnum, IWbemServices::CreateClassEnum, and
 IWbemServices::ExecQuery. In response to the method executed, the server returns an
@@ -12983,7 +13035,11 @@ Release: April 23, 2024
 
 168 / 234
 
-IEnumWbemClassObject interface pointer. The client then uses the IEnumWbemClassObject::Next
+<!-- Extracted images from page 169 -->
+![Extracted image 1 from page 169]([MS-WMI].images/page169-img01.png)
+<!-- /Extracted images from page 169 -->
+
+IEnumWbemClassObject interface pointer. The client then uses the IEnumWbemClassObject::Next
 method to repeatedly retrieve the IWbemClassObject objects from the query result set.
 
 The call sequence is the same as that in section 4.2.2.1 because in both cases, the client is
@@ -13016,7 +13072,11 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IWbemFetchSmartEnum::GetSmartEnum method to obtain the IWbemWCOSmartEnum interface
+<!-- Extracted images from page 170 -->
+![Extracted image 1 from page 170]([MS-WMI].images/page170-img01.png)
+<!-- /Extracted images from page 170 -->
+
+IWbemFetchSmartEnum::GetSmartEnum method to obtain the IWbemWCOSmartEnum interface
 pointer. The client uses the IWbemWCOSmartEnum::Next method repeatedly to retrieve the
 IWbemClassObject interface pointers that contains the result set. The results are encoded as an
 ObjectArray as specified in section 2.2.14.
@@ -13034,7 +13094,11 @@ Release: April 23, 2024
 
 170 / 234
 
-4.2.2.4  Optimized Client and Unoptimized Server
+<!-- Extracted images from page 171 -->
+![Extracted image 1 from page 171]([MS-WMI].images/page171-img01.png)
+<!-- /Extracted images from page 171 -->
+
+4.2.2.4  Optimized Client and Unoptimized Server
 
 The product versions that exhibit optimized client behavior and unoptimized server behavior are
 referenced in section 4.2.2.
@@ -13567,7 +13631,11 @@ Release: April 23, 2024
 
 180 / 234
 
-Figure 17: Semisynchronous delivery of a single result
+<!-- Extracted images from page 181 -->
+![Extracted image 1 from page 181]([MS-WMI].images/page181-img01.png)
+<!-- /Extracted images from page 181 -->
+
+Figure 17: Semisynchronous delivery of a single result
 
 4.3.2  Semisynchronous Delivery of Result Sets
 
@@ -14163,7 +14231,11 @@ Release: April 23, 2024
 
 191 / 234
 
-Figure 18: Asynchronous delivery of results
+<!-- Extracted images from page 192 -->
+![Extracted image 1 from page 192]([MS-WMI].images/page192-img01.png)
+<!-- /Extracted images from page 192 -->
+
+Figure 18: Asynchronous delivery of results
 
 4.5  Optimized Asynchronous Delivery of Results
 
@@ -14182,7 +14254,11 @@ Release: April 23, 2024
 
 192 / 234
 
-Figure 19: Optimized asynchronous delivery of results
+<!-- Extracted images from page 193 -->
+![Extracted image 1 from page 193]([MS-WMI].images/page193-img01.png)
+<!-- /Extracted images from page 193 -->
+
+Figure 19: Optimized asynchronous delivery of results
 
 4.6  Configuring Refreshing Services
 
@@ -14198,7 +14274,11 @@ Release: April 23, 2024
 
 193 / 234
 
-Figure 20: Configuring refreshing services
+<!-- Extracted images from page 194 -->
+![Extracted image 1 from page 194]([MS-WMI].images/page194-img01.png)
+<!-- /Extracted images from page 194 -->
+
+Figure 20: Configuring refreshing services
 
 4.7  Using the Refresher Interface
 
@@ -14213,7 +14293,11 @@ Release: April 23, 2024
 
 194 / 234
 
-Figure 21: Using the refresher interface
+<!-- Extracted images from page 195 -->
+![Extracted image 1 from page 195]([MS-WMI].images/page195-img01.png)
+<!-- /Extracted images from page 195 -->
+
+Figure 21: Using the refresher interface
 
 [MS-WMI] - v20240423
 Windows Management Instrumentation Remote Protocol

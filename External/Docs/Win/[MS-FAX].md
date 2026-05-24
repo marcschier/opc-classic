@@ -31419,7 +31419,11 @@ Release: April 23, 2024
 
 354 / 413
 
-4  Protocol Examples
+<!-- Extracted images from page 355 -->
+![Extracted image 1 from page 355]([MS-FAX].images/page355-img01.png)
+<!-- /Extracted images from page 355 -->
+
+4  Protocol Examples
 
 4.1  Message Exchanges While Sending a Fax
 
@@ -31493,7 +31497,11 @@ Release: April 23, 2024
 
 356 / 413
 
-4.2  Message Exchanges During Querying Server Configuration
+<!-- Extracted images from page 357 -->
+![Extracted image 1 from page 357]([MS-FAX].images/page357-img01.png)
+<!-- /Extracted images from page 357 -->
+
+4.2  Message Exchanges During Querying Server Configuration
 
 Figure 2: Message exchanges during the querying of server configuration
 
@@ -31532,7 +31540,11 @@ Release: April 23, 2024
 
 357 / 413
 
-4.3  Message Exchanges During Enumerating Fax Jobs
+<!-- Extracted images from page 358 -->
+![Extracted image 1 from page 358]([MS-FAX].images/page358-img01.png)
+<!-- /Extracted images from page 358 -->
+
+4.3  Message Exchanges During Enumerating Fax Jobs
 
 Figure 3: Message exchanges when enumerating fax jobs
 
@@ -31570,7 +31582,11 @@ Release: April 23, 2024
 
 358 / 413
 
-4.4  Message Exchanges During Modifying Fax Jobs
+<!-- Extracted images from page 359 -->
+![Extracted image 1 from page 359]([MS-FAX].images/page359-img01.png)
+<!-- /Extracted images from page 359 -->
+
+4.4  Message Exchanges During Modifying Fax Jobs
 
 Figure 4: Message exchanges when modifying fax jobs
 
@@ -31607,7 +31623,11 @@ Release: April 23, 2024
 
 359 / 413
 
-4.5  Message Exchanges During Adding an Outbound Routing Rule
+<!-- Extracted images from page 360 -->
+![Extracted image 1 from page 360]([MS-FAX].images/page360-img01.png)
+<!-- /Extracted images from page 360 -->
+
+4.5  Message Exchanges During Adding an Outbound Routing Rule
 
 Figure 5: Message exchanges when adding an outbound routing rule
 
@@ -31655,7 +31675,11 @@ Release: April 23, 2024
 
 360 / 413
 
-4.  To end the connection to the fax server, the client calls FAX_ConnectionRefCount (section
+<!-- Extracted images from page 361 -->
+![Extracted image 1 from page 361]([MS-FAX].images/page361-img01.png)
+<!-- /Extracted images from page 361 -->
+
+4.  To end the connection to the fax server, the client calls FAX_ConnectionRefCount (section
 
 3.1.4.1.11) by using the faxHandle parameter that was obtained in step 1 and a value of 0 for the
 dwConnect argument.
@@ -31691,7 +31715,11 @@ Release: April 23, 2024
 
 361 / 413
 
-4.  The fax server sends a notification of events to the client by using the
+<!-- Extracted images from page 362 -->
+![Extracted image 1 from page 362]([MS-FAX].images/page362-img01.png)
+<!-- /Extracted images from page 362 -->
+
+4.  The fax server sends a notification of events to the client by using the
 
 Fax_ClientEventQueue (section 3.2.4.2) method.
 

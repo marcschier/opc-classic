@@ -1001,7 +1001,11 @@ Component Object Model Plus (COM+) Tracker Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-one instance container in any given process. The first instance container created in any given process
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-COMT].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+one instance container in any given process. The first instance container created in any given process
 is known as the distinguished container for that process. A process is identified by a nonzero
 integer, known as the process identifier.
 
@@ -2286,7 +2290,11 @@ Release: April 23, 2024
 
 28 / 41
 
-4  Protocol Examples
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-COMT].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+4  Protocol Examples
 
 The following examples build on the examples in [MS-DCOM] section 4.1.
 
@@ -2331,7 +2339,11 @@ Release: April 23, 2024
 
 29 / 41
 
- );
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-COMT].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+ );
 
 6.  The server returns an array of ComponentData (section 2.2.4) structures in aComponentData and
 

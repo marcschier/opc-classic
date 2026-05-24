@@ -1443,7 +1443,11 @@ Release: April 23, 2024
 
 13 / 176
 
-Figure 1: Typical hierarchical topology of update servers and client computers
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-WSUSSS].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 1: Typical hierarchical topology of update servers and client computers
 
 An update server groups its client computers into target groups. An update server can be configured
 to deploy the updates to its client computers by assigning the updates to the target groups for
@@ -1473,7 +1477,11 @@ Release: April 23, 2024
 
 14 / 176
 
-Figure 2: Relationship of this protocol to other protocols
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-WSUSSS].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: Relationship of this protocol to other protocols
 
 Content download can be accomplished using the Background Intelligent Transfer Service (BITS)
 Upload protocol described in [MC-BUP]. This can also be accomplished using HTTP 1.1 Byte Range
@@ -9025,7 +9033,11 @@ Release: April 23, 2024
 
 111 / 176
 
-Figure 3: Message exchange
+<!-- Extracted images from page 112 -->
+![Extracted image 1 from page 112]([MS-WSUSSS].images/page112-img01.png)
+<!-- /Extracted images from page 112 -->
+
+Figure 3: Message exchange
 
 If the DSS receives a SOAP fault in response to a web service (2) call, it MUST attempt to parse
 the SOAP fault using the format specified in section 2.2.9, and then extract the ErrorCode value. If

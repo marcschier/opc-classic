@@ -701,7 +701,11 @@ Release: April 23, 2024
 
 10 / 23
 
-3  Protocol Details
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPEGT].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+3  Protocol Details
 
 3.1  Common Details
 
@@ -724,7 +728,11 @@ Release: April 23, 2024
 
 11 / 23
 
-Figure 2: Partial window tracking
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPEGT].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: Partial window tracking
 
 3.1.1  Create or Update the Geometry Mapping for a Window
 

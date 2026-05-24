@@ -1118,7 +1118,11 @@ Remote Desktop Protocol: Audio Output Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the client wants to accept data over UDP, the client advertises a port to be used for UDP traffic.
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPEA].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+If the client wants to accept data over UDP, the client advertises a port to be used for UDP traffic.
 Given the client's port, the server attempts to use UDP to send a Training PDU to the client over the
 port. The client in turn attempts to reply with its own Training Confirm PDU. The server then attempts
 to send a private key (using a Crypt Key PDU) to the client, using the audio virtual channels. This key
@@ -1138,7 +1142,12 @@ Release: April 23, 2024
 
 11 / 63
 
-Figure 2: Initialization sequence using virtual channels for data transfer
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPEA].images/page012-img01.png)
+![Extracted image 2 from page 12]([MS-RDPEA].images/page012-img02.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: Initialization sequence using virtual channels for data transfer
 
 1.3.2.2  Data Transfer Sequences
 
@@ -1163,7 +1172,12 @@ Release: April 23, 2024
 
 12 / 63
 
-If the client and server versions are both at least 8, the server sends Wave2 PDU (section 2.2.3.10).
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RDPEA].images/page013-img01.png)
+![Extracted image 2 from page 13]([MS-RDPEA].images/page013-img02.png)
+<!-- /Extracted images from page 13 -->
+
+If the client and server versions are both at least 8, the server sends Wave2 PDU (section 2.2.3.10).
 On consuming the audio data, the client sends back a Wave Confirm PDU (section 2.2.3.8) to the
 server to notify the server that it has consumed the audio data.
 
@@ -1193,7 +1207,11 @@ Release: April 23, 2024
 
 13 / 63
 
-Figure 6: Data transfer sequence over UDP when protocol version is at least 5
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-RDPEA].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 6: Data transfer sequence over UDP when protocol version is at least 5
 
 During the initialization sequence (section 1.3.2.1), the server uses the Crypt Key
 PDU (section 2.2.2.4) to send a 32-byte private key over a virtual channel to the client. Some audio
@@ -2582,7 +2600,11 @@ Release: April 23, 2024
 
 32 / 63
 
-3.1.5  Message Processing Events and Sequencing Rules
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-RDPEA].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+3.1.5  Message Processing Events and Sequencing Rules
 
 Figure 7: State transition diagram
 

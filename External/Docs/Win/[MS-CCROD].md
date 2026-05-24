@@ -882,7 +882,11 @@ Release: April 23, 2024
 
 10 / 63
 
-2  Functional Architecture
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-CCROD].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+2  Functional Architecture
 
 This section describes the basic structure of the system and the interrelationships among its parts,
 consumers, and dependencies.
@@ -924,7 +928,11 @@ Release: April 23, 2024
 
 11 / 63
 
-The member protocols that make up the system are described in section 2.2.
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-CCROD].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+The member protocols that make up the system are described in section 2.2.
 
 2.1.1  System Capabilities
 
@@ -1015,7 +1023,11 @@ Release: April 23, 2024
 
 13 / 63
 
-Figure 3: BITS integration
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-CCROD].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 3: BITS integration
 
 The following sequence shows the steps for a hosted cache configuration:
 
@@ -1096,7 +1108,11 @@ Release: April 23, 2024
 
 15 / 63
 
-Figure 4: SMB 2.1 or 3.x metadata retrieval
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-CCROD].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 4: SMB 2.1 or 3.x metadata retrieval
 
 1.  The client application opens a remote file. During this stage, an SMB 2.1 or 3.x Tree Connect
 
@@ -1129,7 +1145,11 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Discovery Protocol [MS-PCCRD]. If data is found in a peer client, the data is retrieved by using
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-CCROD].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Discovery Protocol [MS-PCCRD]. If data is found in a peer client, the data is retrieved by using
 the Peer Content Caching and Retrieval: Retrieval Protocol [MS-PCCRR].
 
 10. The data is placed in the content cache and delivered to the local cache service driver.
@@ -1202,7 +1222,11 @@ Release: April 23, 2024
 
 18 / 63
 
-Figure 6: Protocol relationships for Content Caching and Retrieval
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-CCROD].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 6: Protocol relationships for Content Caching and Retrieval
 
 2.1.3  Applicability
 
@@ -1818,7 +1842,11 @@ Release: April 23, 2024
 
 25 / 63
 
-Figure 7: Use cases included in the Configuring Content Caching and Retrieval Components
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-CCROD].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 7: Use cases included in the Configuring Content Caching and Retrieval Components
 summary use case
 
 [MS-CCROD] - v20240423
@@ -1828,7 +1856,11 @@ Release: April 23, 2024
 
 26 / 63
 
-Figure 8: Use cases included in the Reading Content summary use case
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-CCROD].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 8: Use cases included in the Reading Content summary use case
 
 2.5.4  Summary Use Case Descriptions
 
@@ -3357,7 +3389,11 @@ Release: April 23, 2024
 
 47 / 63
 
-In either method, the retrieval can be performed from a machine other than the hosted cache server
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-CCROD].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+In either method, the retrieval can be performed from a machine other than the hosted cache server
 and transported to the hosted cache server by using an implementation-specific intermediary format.
 
 Preloading is never necessary because clients automatically retrieve missing content and offer it to the
@@ -3546,7 +3582,11 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-an SMB 2.1 or 3.x server. The activities up to this point are independent of Content Caching and
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-CCROD].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+an SMB 2.1 or 3.x server. The activities up to this point are independent of Content Caching and
 Retrieval; therefore, they are not described in this example.
 
 Figure 10: SMB 2.1 or 3.x read file stages and distributed mode discovery and retrieval
@@ -3728,7 +3768,11 @@ Release: April 23, 2024
 
 53 / 63
 
-  On both content clients (Peer1 and Peer2), the use of Internet Explorer initiates the content
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MS-CCROD].images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+  On both content clients (Peer1 and Peer2), the use of Internet Explorer initiates the content
 
 transfer.
 
@@ -3880,7 +3924,11 @@ Release: April 23, 2024
 
 56 / 63
 
-Figure 12: Content Retrieval (Peer2)
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-CCROD].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+Figure 12: Content Retrieval (Peer2)
 
 F. Metadata retrieval over HTTP
 

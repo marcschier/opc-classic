@@ -2778,7 +2778,11 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-  Software installed on the server to use a transport protocol.
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-WPO].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+  Software installed on the server to use a transport protocol.
 
 The software component of a remote file system on a client computer is referred to in Windows as a
 network redirector because it is responsible for redirecting requests for file operations from local client
@@ -2942,7 +2946,11 @@ Release: June 14, 2022
 
 39 / 61
 
-7  Networking
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-WPO].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+7  Networking
 
 This section provides a high-level description of the Windows networking technologies and the
 Microsoft extensions to networking standards for Windows. The following diagram depicts the
@@ -3216,7 +3224,11 @@ Release: June 14, 2022
 
 43 / 61
 
-Figure 3: DCOM remote protocol stack
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-WPO].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+Figure 3: DCOM remote protocol stack
 
 7.3.3  SOAP
 
@@ -3399,7 +3411,11 @@ Release: June 14, 2022
 
 46 / 61
 
-Figure 4: Windows IPsec architecture
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-WPO].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+Figure 4: Windows IPsec architecture
 
 The Windows extensions to IPsec protocols are as follows.
 

@@ -510,7 +510,11 @@ Release: June 14, 2022
 
 6 / 48
 
-Figure 1: Typical hierarchical topology of update servers and client computers
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-WSUSOD].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1: Typical hierarchical topology of update servers and client computers
 
 An update server groups its client computers into target groups. An update server can be
 configured to deploy the updates to its client computers by assigning the updates to the target groups
@@ -813,7 +817,11 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-At the end of the discovery phase, the update client downloads the installation files from the update
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-WSUSOD].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+At the end of the discovery phase, the update client downloads the installation files from the update
 server to complete the update installation. The update client sends back information about the update
 detection and installation phases as events to the update server.
 
@@ -880,7 +888,11 @@ Release: June 14, 2022
 
 13 / 48
 
-Figure 3: Example of a WSUS topology
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-WSUSOD].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 3: Example of a WSUS topology
 
 An update client synchronizes updates from an update server, which can be a DSS that itself
 synchronizes updates from a USS. Two examples are illustrated in the preceding figure.
@@ -908,7 +920,11 @@ Release: June 14, 2022
 
 14 / 48
 
-2.1.3  Applicability
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-WSUSOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+2.1.3  Applicability
 
 WSUS is appropriate for the management of updates for groups of computers. Additionally, it is
 applicable to situations in which several groups of computers need to be managed separately.
@@ -1162,7 +1178,11 @@ Release: June 14, 2022
 
 18 / 48
 
-Figure 5: Windows Server Update Services use cases
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-WSUSOD].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 5: Windows Server Update Services use cases
 
 2.5.3  Use Case Descriptions
 
@@ -1593,7 +1613,11 @@ Release: June 14, 2022
 
 24 / 48
 
-Figure 6: Configure Update Client use case
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-WSUSOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 6: Configure Update Client use case
 
 Goal: To assign user-specified values to configuration settings that control the client's behavior.
 
@@ -2059,7 +2083,11 @@ Release: June 14, 2022
 
 32 / 48
 
-Figure 7: Sequence diagram for initial update synchronization to the DSS
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-WSUSOD].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 7: Sequence diagram for initial update synchronization to the DSS
 
 The phases in the message flow are described in the following sections.
 
@@ -2144,7 +2172,11 @@ Release: June 14, 2022
 
 34 / 48
 
-Figure 8: Sequence diagram for initial deployment synchronization to a replica DSS
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-WSUSOD].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 8: Sequence diagram for initial deployment synchronization to a replica DSS
 
 The USS provides the list of all target groups and update deployments as part of the GetDeployments
 response during the first synchronization. The response also contains an anchor for use in subsequent
@@ -2174,7 +2206,11 @@ Release: June 14, 2022
 
 35 / 48
 
-Figure 9: Sequence diagram for an initial update synchronization to an update client
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-WSUSOD].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 9: Sequence diagram for an initial update synchronization to an update client
 
 The message flow is as follows:
 
@@ -2265,7 +2301,11 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-The following sequence diagram illustrates the interactions between client and server during this
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-WSUSOD].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+The following sequence diagram illustrates the interactions between client and server during this
 scenario.
 
 Figure 10: Sequence diagram for differential update synchronization to an update client
@@ -2343,7 +2383,11 @@ Release: June 14, 2022
 
 39 / 48
 
-Figure 11: Sequence diagram for rollup of reporting data to USS
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-WSUSOD].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+Figure 11: Sequence diagram for rollup of reporting data to USS
 
 Reporting data synchronization specifies message processing and sequencing for the messages, as
 specified in [MS-WSUSSS] section 3.2.4.5. Because the amount of data to be sent from a DSS to USS
@@ -2374,7 +2418,11 @@ Release: June 14, 2022
 
 40 / 48
 
-Figure 12: Sequence diagram for pointing the update client to a new update server
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-WSUSOD].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 12: Sequence diagram for pointing the update client to a new update server
 
 The message flow is as follows:
 

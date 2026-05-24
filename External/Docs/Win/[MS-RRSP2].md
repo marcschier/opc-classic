@@ -1338,7 +1338,11 @@ Release: June 1, 2017
 
 12 / 171
 
-1.2.2  Informative References
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RRSP2].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+1.2.2  Informative References
 
 None.
 
@@ -1371,7 +1375,11 @@ Release: June 1, 2017
 
 13 / 171
 
-Figure 2: Components
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-RRSP2].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: Components
 
 The following components make up the remaining implementation of the Remote Rendering Protocol
 Version 2 component model.
@@ -1418,7 +1426,11 @@ Release: June 1, 2017
 
 14 / 171
 
-Figure 3: Message sequence
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RRSP2].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 3: Message sequence
 
 1.4  Relationship to Other Protocols
 
@@ -10029,7 +10041,11 @@ Release: June 1, 2017
 
 123 / 171
 
-Figure 4: Server-Side Message Sequence
+<!-- Extracted images from page 124 -->
+![Extracted image 1 from page 124]([MS-RRSP2].images/page124-img01.png)
+<!-- /Extracted images from page 124 -->
+
+Figure 4: Server-Side Message Sequence
 
 3.1.1  Abstract Data Model
 
@@ -12530,7 +12546,11 @@ Release: June 1, 2017
 
 159 / 171
 
-Figure 5: Client-Side Message Sequence
+<!-- Extracted images from page 160 -->
+![Extracted image 1 from page 160]([MS-RRSP2].images/page160-img01.png)
+<!-- /Extracted images from page 160 -->
+
+Figure 5: Client-Side Message Sequence
 
 3.2.1  Abstract Data Model
 

@@ -3339,7 +3339,12 @@ Network Controller Northbound Interface
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-an operationId, which is used to monitor the provisioning state of the operation, including failure
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-NCNBI].images/page029-img01.png)
+![Extracted image 2 from page 29]([MS-NCNBI].images/page029-img02.png)
+<!-- /Extracted images from page 29 -->
+
+an operationId, which is used to monitor the provisioning state of the operation, including failure
 details if a failure occurs.
 
 Figure 1: State diagram for asynchronous PUT operations
@@ -3499,7 +3504,12 @@ Release: January 26, 2026
 
 31 / 855
 
-Figure 3: State diagrams for synchronous operations
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-NCNBI].images/page032-img01.png)
+![Extracted image 2 from page 32]([MS-NCNBI].images/page032-img02.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 3: State diagrams for synchronous operations
 
 1.3.2.6  State Diagrams for Asynchronous Operations
 
@@ -3521,7 +3531,11 @@ Release: January 26, 2026
 
 32 / 855
 
-Figure 5: State diagram for asynchronous DELETE operations
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-NCNBI].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 5: State diagram for asynchronous DELETE operations
 
 Provisioning State changes for Parent/Child resources or dependent resources
 
@@ -3656,7 +3670,11 @@ Network Controller Northbound Interface
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-8.  DELETE of descendant resource cancels PUT of ancestors or PUT/DELETE on itself.
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-NCNBI].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+8.  DELETE of descendant resource cancels PUT of ancestors or PUT/DELETE on itself.
 
 For synchronous operations, the only valid states are Failed or Succeeded. The following diagrams
 show states for synchronous PUT or DELETE operations.
@@ -3699,7 +3717,11 @@ Network Controller Northbound Interface
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-Read-only elements that are a resourceRef to a different resource will indicate that the resource has
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-NCNBI].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Read-only elements that are a resourceRef to a different resource will indicate that the resource has
 a different resource that has taken a dependency on it (for example, GatewayPools has a read-only
 resourceRef to one or more gateways resources).
 

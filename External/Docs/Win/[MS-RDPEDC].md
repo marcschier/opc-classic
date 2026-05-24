@@ -860,7 +860,12 @@ Release: June 1, 2017
 
 8 / 35
 
-Figure 1: Update PDU packet objects
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RDPEDC].images/page009-img01.png)
+![Extracted image 2 from page 9]([MS-RDPEDC].images/page009-img02.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: Update PDU packet objects
 
 The X.224 fast-path header can be replaced by the X.224 header and the MCS Send Data Indication
 header, as specified in [MS-RDPBCGR] section 2.2.8.
@@ -895,7 +900,11 @@ Release: June 1, 2017
 
 9 / 35
 
-1.3.3.2  Redirection Object Lifetime and Association Management
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RDPEDC].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+1.3.3.2  Redirection Object Lifetime and Association Management
 
 Logical surface and redirection surface are two types of objects used by the Desktop Window
 Manager. The objects are allocated on the server, and their handles are sent to the client and used
@@ -927,7 +936,11 @@ Release: June 1, 2017
 
 10 / 35
 
-Figure 4: Sequence of drawing operations on a redirection surface
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPEDC].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 4: Sequence of drawing operations on a redirection surface
 
 Drawing to a redirection surface can happen only after a redirection surface is created and is attached
 to a logical surface.

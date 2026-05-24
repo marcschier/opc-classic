@@ -1118,7 +1118,11 @@ Release: April 23, 2024
 
 14 / 28
 
-3  Protocol Details
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RDPEVOR].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+3  Protocol Details
 
 3.1  Common Details
 

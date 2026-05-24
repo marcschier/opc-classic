@@ -556,7 +556,11 @@ Xpress Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following flowchart shows how the LZ77 phase works.
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-XCA].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+The following flowchart shows how the LZ77 phase works.
 
 Figure 1: LZ77 phase
 
@@ -686,7 +690,11 @@ Release: April 23, 2024
 
 10 / 30
 
-Figure 2: Length-limited canonical Huffman code construction method.
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-XCA].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 2: Length-limited canonical Huffman code construction method.
 
 2.1.4.3  Final Encoding Phase
 

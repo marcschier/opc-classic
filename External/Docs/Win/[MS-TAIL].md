@@ -2217,7 +2217,11 @@ Release: June 1, 2017
 
 24 / 49
 
-4  Protocol Examples
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-TAIL].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+4  Protocol Examples
 
 4.1  N-Client Registration with ILS
 
@@ -2304,7 +2308,11 @@ Release: June 1, 2017
 
 26 / 49
 
-ModifyReqest: Object:c=-, o=Microsoft, mailto:cn=egruber@contoso.com, objectClass=rtPerson The
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-TAIL].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+ModifyReqest: Object:c=-, o=Microsoft, mailto:cn=egruber@contoso.com, objectClass=rtPerson The
 following attributes of the user (rtPerson) are then modified as follows. Note that the name mapping
 in section 2.2.5 applies to the visible LDAP operation, and the attribute names can differ.
 
@@ -2345,7 +2353,11 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.  LDAP Bind
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-TAIL].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+1.  LDAP Bind
 
 2.  LDAP Search
 
@@ -2394,7 +2406,11 @@ Release: June 1, 2017
 
 28 / 49
 
-4.3  N-Client – Find Online User
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-TAIL].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+4.3  N-Client – Find Online User
 
 When one online user wants to collaborate with another online user, they can check the ILS directory
 to discover other users. The directory interface in Microsoft NetMeeting performs an LDAP search on
@@ -2430,7 +2446,11 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-TAIL].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+
 
 cn=%. This is an ILS LDAP variation indicating a wild card search on the cn.
 
@@ -2476,7 +2496,11 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-4.4.3  Unregister – LDAP Unbind Operation
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-TAIL].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+4.4.3  Unregister – LDAP Unbind Operation
 
 On completion of the two prior steps, an LDAP Unbind is the final operation.
 
@@ -2640,7 +2664,11 @@ Release: June 1, 2017
 
 33 / 49
 
-4.5.7  ILS Registration Sequence Diagram
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-TAIL].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+4.5.7  ILS Registration Sequence Diagram
 
 Figure 7: ILS registration sequence
 
@@ -2684,7 +2712,11 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-ModifyRequest: Object: cn=egruber]w2kils.testdomain.int,ou=dynamic,o=IntranetOperation: replace
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-TAIL].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+ModifyRequest: Object: cn=egruber]w2kils.testdomain.int,ou=dynamic,o=IntranetOperation: replace
 
 The following attributes of the user (rtPerson) are then modified as follows:
 
@@ -2887,7 +2919,11 @@ Release: June 1, 2017
 
 37 / 49
 
-The attributes requested are:
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-TAIL].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+The attributes requested are:
 
 
 
@@ -2939,7 +2975,11 @@ Release: June 1, 2017
 
 38 / 49
 
-4.9.2  LDAP Search Operation
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-TAIL].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+4.9.2  LDAP Search Operation
 
 Dialer searches for a list of users on the ILS Server using the following search criteria.
 

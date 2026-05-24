@@ -971,7 +971,11 @@ Release: November 19, 2024
 
 11 / 48
 
-3  Protocol Details
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-FSRVP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+3  Protocol Details
 
 The methods in this RPC interface MUST return ZERO (0x00000000) or a nonerror HRESULT (as
 specified in [MS-ERREF] section 2.1) to indicate success or a nonzero error code as specified in section
@@ -2867,7 +2871,11 @@ Release: November 19, 2024
 
 36 / 48
 
-4  Protocol Examples
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-FSRVP].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+4  Protocol Examples
 
 4.1  Shadow Copy Preparation
 
@@ -2899,7 +2907,11 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-6.  The server processes the method and returns ZERO.
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-FSRVP].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+6.  The server processes the method and returns ZERO.
 
 7.  The client calls StartShadowCopySet (Opnum 2) to initiate a new shadow copy set on the
 
@@ -2939,7 +2951,11 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-5.  The client calls GetShareMapping (Opnum 10) for each share in the shadow copy set to get the
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-FSRVP].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+5.  The client calls GetShareMapping (Opnum 10) for each share in the shadow copy set to get the
 
 shadow copy information.
 

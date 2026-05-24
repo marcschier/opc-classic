@@ -1916,7 +1916,11 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-vData (variable): A vector of marshaled items of a particular type indicated by the vType field of the
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-MCIS].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+vData (variable): A vector of marshaled items of a particular type indicated by the vType field of the
 
 containing CBaseStorageVariant with the bit 0x2000 cleared.
 
@@ -5708,7 +5712,12 @@ Release: June 1, 2017
 
 61 / 114
 
-CTableColumn structures. The calculation of the offsets is thus dependent on the structure
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MS-MCIS].images/page062-img01.png)
+![Extracted image 2 from page 62]([MS-MCIS].images/page062-img02.png)
+<!-- /Extracted images from page 62 -->
+
+CTableColumn structures. The calculation of the offsets is thus dependent on the structure
 specified for the returned rows.
 
 The buffer is filled in from both ends. CRowVariant structures, one for each row, are stored at the
@@ -7424,7 +7433,11 @@ Release: June 1, 2017
 
 79 / 114
 
-Figure 4: Typical message sequence for a simple query from client to remote computer
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-MCIS].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+Figure 4: Typical message sequence for a simple query from client to remote computer
 
 The messages represented in the preceding diagram represent a subset of all of the Content Indexing
 Services Protocol messages used for querying a remote indexing service catalog.
@@ -7445,7 +7458,11 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-An indexing service implementing the Content Indexing Services Protocol MUST maintain the
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81]([MS-MCIS].images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+An indexing service implementing the Content Indexing Services Protocol MUST maintain the
 following abstract data elements:
 
 
@@ -7592,7 +7609,11 @@ Release: June 1, 2017
 
 82 / 114
 
-Some messages are valid only after a previous message has been sent. Typically, an ID or handle
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83]([MS-MCIS].images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+Some messages are valid only after a previous message has been sent. Typically, an ID or handle
 from the earlier message is required as input to the later message. These requirements are detailed in
 the following sections. The following table summarizes the relationship between messages.
 
@@ -7617,7 +7638,12 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-When the server receives a CPMSetCatStateIn message request from the client, the server MUST do
+<!-- Extracted images from page 84 -->
+![Extracted image 1 from page 84]([MS-MCIS].images/page084-img01.png)
+![Extracted image 2 from page 84]([MS-MCIS].images/page084-img02.png)
+<!-- /Extracted images from page 84 -->
+
+When the server receives a CPMSetCatStateIn message request from the client, the server MUST do
 the following:
 
 1.  Check whether the client has administrative access. If the client does not have administrative

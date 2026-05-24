@@ -1141,7 +1141,11 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  Publisher: A node that provides endpoint information to a Resolver
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-PNRP].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+  Publisher: A node that provides endpoint information to a Resolver
 
 In addition, PNRP defines the concept of a "seed server", which is a Publisher known by a PNRP node
 prior to the node joining the cloud.
@@ -1296,7 +1300,11 @@ Release: June 25, 2021
 
 13 / 82
 
-Figure 2: PNRP delegation process
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-PNRP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: PNRP delegation process
 
 As illustrated, the CPA contains a public key other than the one from which the Peer Name was
 derived; for example, the public key of the Peer Identity, which has been delegated permission to
@@ -1321,7 +1329,11 @@ Peer Name Resolution Protocol (PNRP) Version 4.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-ID-to-endpoint mappings (called route entries). A node is required to cache its Leaf Set (the five
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-PNRP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+ID-to-endpoint mappings (called route entries). A node is required to cache its Leaf Set (the five
 PNRP IDs on each side that are numerically closest to each of the node's own PNRP IDs), plus any
 others it knows of. Messages are exchanged between nodes to distribute information about PNRP IDs.
 For purposes of determining numerical closeness, the PNRP ID numbering space is considered to be
@@ -5476,7 +5488,11 @@ Release: June 25, 2021
 
 69 / 82
 
-Figure 4: Node communication with Discovered Node
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70]([MS-PNRP].images/page070-img01.png)
+<!-- /Extracted images from page 70 -->
+
+Figure 4: Node communication with Discovered Node
 
 Note  The FLOOD messages in this conversation are not synchronous; the Discovered Node can send
 a second or third FLOOD message before it has received an ACK message for a previous FLOOD
@@ -5543,7 +5559,11 @@ Release: June 25, 2021
 
 71 / 82
 
-Figure 5: Peer Name resolution
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-PNRP].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+Figure 5: Peer Name resolution
 
 1.  The Resolver, seeking endpoint information for a Peer Name registered by Node 3, creates a
 LOOKUP message. To do so, the Resolver first computes a corresponding PNRP ID (which is
@@ -5633,7 +5653,11 @@ Release: June 25, 2021
 
 73 / 82
 
-4.3  Unregistering a Name
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-PNRP].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+4.3  Unregistering a Name
 
 When a PNRP ID is unregistered, a Revoke CPA is sent to two entries from the Leaf Set of the ID
 being unregistered. One entry is the numerically closest ID greater than the local ID and the other
@@ -5685,7 +5709,11 @@ Release: June 25, 2021
 
 74 / 82
 
-Figure 7: Leaf Set node arrangement example
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-PNRP].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+Figure 7: Leaf Set node arrangement example
 
 The following will now take place.
 

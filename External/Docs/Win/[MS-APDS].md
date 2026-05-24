@@ -1203,7 +1203,11 @@ Release: January 13, 2025
 
 11 / 47
 
-1.5.1  NTLM Logon
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-APDS].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.5.1  NTLM Logon
 
 NTLM interactive logon and NTLM network logon have all of the prerequisites and preconditions
 that are defined in the NT LAN Manager (NTLM) Authentication Protocol [MS-NLMP].
@@ -2901,7 +2905,11 @@ Release: January 13, 2025
 
 35 / 47
 
-4  Protocol Examples
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-APDS].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+4  Protocol Examples
 
 4.1  NTLM Pass-Through Authentication
 
@@ -2934,7 +2942,11 @@ Release: January 13, 2025
 
 36 / 47
 
-4.2  Kerberos PAC Validation
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-APDS].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+4.2  Kerberos PAC Validation
 
 Figure 3: PAC validation
 
@@ -2959,7 +2971,11 @@ Release: January 13, 2025
 
 37 / 47
 
-4.3  Digest Validation Protocol
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-APDS].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+4.3  Digest Validation Protocol
 
 Figure 4: Digest validation protocol
 

@@ -2,7 +2,7 @@
 
 This directory contains markdown conversions of the protocol specification PDFs in `External/Spec/`, produced by `markitdown` (Microsoft) with a `pypdf` fallback for PDFs that markitdown could not handle. Source PDFs remain in `External/Spec/` as the authoritative reference.
 
-**Conversion fidelity is approximate.** Tables, figures, and complex layout may render imperfectly. For exact text and figures, refer to the source PDFs.
+**Conversion fidelity is approximate.** Tables, figures, and complex layout may render imperfectly. Extracted images are provided next to the markdown files when the source PDF contains embedded images; for exact text and figures, refer to the source PDFs.
 
 ## OPC Foundation specifications
 
@@ -46,7 +46,13 @@ Full alphabetical listing of all 424 MS-* specs is in the `Win/` directory; see 
   - `External/Spec/dataaccess-3.00-errata.zip` → applied inline to opc-da-3.00
   - `External/Spec/historical-dataaccess-1.20-errata.zip` → extracted to errata-notes file
   - `External/Spec/opc-common-1.10-specification-20151201.zip` → extracted spec itself
-- Conversion produces text-only markdown; embedded images are NOT extracted by default. For images, refer to source PDFs.
+- Embedded images were extracted separately via PyMuPDF because the markitdown PDF conversion is text-only.
+
+## Extracted images
+
+- Image directories sit adjacent to their markdown files using `{name}.images/page{N}-img{M}.png` (or `.jpg`) naming, for example `opc-dx-1.00-specification.images/page001-img01.png` next to `opc-dx-1.00-specification.md`.
+- Markdown files include generated image references near page boundaries when images could be placed by page.
+- `Win/` images are committed in the repository; their extracted total is below the 200 MB gitignore threshold.
 
 ## Re-running the conversion
 

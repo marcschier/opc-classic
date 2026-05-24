@@ -5759,7 +5759,11 @@ Release: August 11, 2025
 
 62 / 662
 
-Each property value list, in turn, MUST consist of the following elements:
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-CMRP].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+Each property value list, in turn, MUST consist of the following elements:
 
   A property name.
 
@@ -6391,7 +6395,11 @@ Release: August 11, 2025
 
 70 / 662
 
-2.2.3.17
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-CMRP].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+2.2.3.17
 
 CLUSTER_REG_BATCH_UPDATE
 
@@ -36327,7 +36335,11 @@ Release: August 11, 2025
 
 407 / 662
 
-Figure 3: Client-issued registry update
+<!-- Extracted images from page 408 -->
+![Extracted image 1 from page 408]([MS-CMRP].images/page408-img01.png)
+<!-- /Extracted images from page 408 -->
+
+Figure 3: Client-issued registry update
 
 [MS-CMRP] - v20250811
 Failover Cluster: Management API (ClusAPI) Protocol
@@ -36336,7 +36348,11 @@ Release: August 11, 2025
 
 408 / 662
 
-Figure 4: Corresponding change notifications returned by server
+<!-- Extracted images from page 409 -->
+![Extracted image 1 from page 409]([MS-CMRP].images/page409-img01.png)
+<!-- /Extracted images from page 409 -->
+
+Figure 4: Corresponding change notifications returned by server
 
 The server SHOULD accept an ApiGetBatchNotification request if the client's access level is at least
 "Read" (section 3.1.4).
@@ -50323,7 +50339,11 @@ Release: August 11, 2025
 
 583 / 662
 
-Figure 5: Organization of a PROPERTY_LIST structure
+<!-- Extracted images from page 584 -->
+![Extracted image 1 from page 584]([MS-CMRP].images/page584-img01.png)
+<!-- /Extracted images from page 584 -->
+
+Figure 5: Organization of a PROPERTY_LIST structure
 
 The following steps describe connecting to a cluster, opening a cluster resource , determining the size
 of the private PROPERTY_LIST, getting the private PROPERTY_LIST from the resource, and parsing the
@@ -50336,7 +50356,11 @@ Release: August 11, 2025
 
 584 / 662
 
-Figure 6: Message flow: Obtaining PROPERTY_LIST
+<!-- Extracted images from page 585 -->
+![Extracted image 1 from page 585]([MS-CMRP].images/page585-img01.png)
+<!-- /Extracted images from page 585 -->
+
+Figure 6: Message flow: Obtaining PROPERTY_LIST
 
 First, a client initializes an RPC connection to the cluster, as specified in section 3.2.3. Any
 implementation-specific method can be used to locate the cluster.
@@ -50469,7 +50493,11 @@ Release: August 11, 2025
 
 587 / 662
 
-Figure 7: Message flow: Moving a group
+<!-- Extracted images from page 588 -->
+![Extracted image 1 from page 588]([MS-CMRP].images/page588-img01.png)
+<!-- /Extracted images from page 588 -->
+
+Figure 7: Message flow: Moving a group
 
 First, the client initializes an RPC connection to the cluster, as specified in section 3.2.3. The client
 knows the names of the nodes and can use either node to establish the connection.
@@ -50532,7 +50560,11 @@ Release: August 11, 2025
 
 589 / 662
 
-Figure 8: Client/server data organization for a notification port abstraction
+<!-- Extracted images from page 590 -->
+![Extracted image 1 from page 590]([MS-CMRP].images/page590-img01.png)
+<!-- /Extracted images from page 590 -->
+
+Figure 8: Client/server data organization for a notification port abstraction
 
 The following diagram depicts the message flow for this example.
 
@@ -50543,7 +50575,11 @@ Release: August 11, 2025
 
 590 / 662
 
-Figure 9: Message flow: Registering and receiving events from a notification port
+<!-- Extracted images from page 591 -->
+![Extracted image 1 from page 591]([MS-CMRP].images/page591-img01.png)
+<!-- /Extracted images from page 591 -->
+
+Figure 9: Message flow: Registering and receiving events from a notification port
 
 First, the client initializes an RPC connection to the cluster, as specified in section 3.2.3. Any
 implementation-specific method can be used to locate the cluster. The client reserves the
@@ -50727,7 +50763,11 @@ Failover Cluster: Management API (ClusAPI) Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-infrastructure) and the service stores its persistent data on the storage devices. The goal of the
+<!-- Extracted images from page 594 -->
+![Extracted image 1 from page 594]([MS-CMRP].images/page594-img01.png)
+<!-- /Extracted images from page 594 -->
+
+infrastructure) and the service stores its persistent data on the storage devices. The goal of the
 dependency relationship is to keep the database service hosted on this node as long as the cluster
 network name and at least one storage device are online.
 
@@ -50750,7 +50790,11 @@ Release: August 11, 2025
 
 594 / 662
 
-Figure 11: Message flow: Setting a complex dependency relationship for a resource
+<!-- Extracted images from page 595 -->
+![Extracted image 1 from page 595]([MS-CMRP].images/page595-img01.png)
+<!-- /Extracted images from page 595 -->
+
+Figure 11: Message flow: Setting a complex dependency relationship for a resource
 
 First, the client initializes an RPC connection to the cluster, as specified in section 3.2.3. Any
 implementation-specific method can be used to locate the cluster.

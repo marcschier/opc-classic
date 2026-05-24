@@ -1637,7 +1637,11 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RDPERP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+
 
 
 
@@ -1704,7 +1708,11 @@ Release: August 11, 2025
 
 15 / 120
 
-Figure 2: RAIL protocol client synchronization
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-RDPERP].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 2: RAIL protocol client synchronization
 
 The synchronization begins with a Desktop Information Order with the
 WINDOW_ORDER_FIELD_DESKTOP_ARC_BEGAN(0x00000008) flag set in the Hdr field (section
@@ -1755,7 +1763,11 @@ Release: August 11, 2025
 
 16 / 120
 
-whether it supports local move/resize through the Client Capabilities PDU (section 2.2.2.2.2), sent
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-RDPERP].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+whether it supports local move/resize through the Client Capabilities PDU (section 2.2.2.2.2), sent
 after the Virtual Channel handshake sequence. RAIL servers do not have to explicitly report move/size
 support to the client.
 
@@ -1805,7 +1817,11 @@ Release: August 11, 2025
 
 17 / 120
 
-1.3.4  Window Resize Margins
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-RDPERP].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+1.3.4  Window Resize Margins
 
 Window resize margins are supported by RDP 10.2. The dimensions of these margins are defined by
 the server and are to be used by the client to create a transparent hit-testable region around the
@@ -8207,7 +8223,11 @@ Release: August 11, 2025
 
 82 / 120
 
-3  Protocol Details
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83]([MS-RDPERP].images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+3  Protocol Details
 
 3.1  Common Details
 
@@ -9146,7 +9166,11 @@ Release: August 11, 2025
 
 97 / 120
 
-Figure 6: An illustration of the window metrics sent in the Window Information Order
+<!-- Extracted images from page 98 -->
+![Extracted image 1 from page 98]([MS-RDPERP].images/page098-img01.png)
+<!-- /Extracted images from page 98 -->
+
+Figure 6: An illustration of the window metrics sent in the Window Information Order
 
 Window icon orders SHOULD NOT be sent to the client if the
 TS_RAIL_CLIENTSTATUS_SUPPRESS_ICON_ORDERS flag was specified in the Client Information PDU

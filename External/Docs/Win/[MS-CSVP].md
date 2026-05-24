@@ -13034,7 +13034,11 @@ Release: November 21, 2025
 
 157 / 188
 
-4  Protocol Examples
+<!-- Extracted images from page 158 -->
+![Extracted image 1 from page 158]([MS-CSVP].images/page158-img01.png)
+<!-- /Extracted images from page 158 -->
+
+4  Protocol Examples
 
 4.1  A Shared Disk Online
 
@@ -13092,7 +13096,11 @@ Release: November 21, 2025
 
 159 / 188
 
-Figure 2: Message flow: Validating the network configuration
+<!-- Extracted images from page 160 -->
+![Extracted image 1 from page 160]([MS-CSVP].images/page160-img01.png)
+<!-- /Extracted images from page 160 -->
+
+Figure 2: Message flow: Validating the network configuration
 
 1.  The client initializes an RPC connection for the correct interface as specified in section 3.6.3. The
 
@@ -13124,7 +13132,11 @@ Release: November 21, 2025
 
 160 / 188
 
-Figure 3: Message flow: Setting up a cluster
+<!-- Extracted images from page 161 -->
+![Extracted image 1 from page 161]([MS-CSVP].images/page161-img01.png)
+<!-- /Extracted images from page 161 -->
+
+Figure 3: Message flow: Setting up a cluster
 
 1.  The client initializes an RPC connection for the correct interface as specified in section 3.10.3. The
 

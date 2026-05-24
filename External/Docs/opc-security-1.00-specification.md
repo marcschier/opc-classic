@@ -1,3 +1,8 @@
+<!-- Extracted images from page 1 -->
+![Extracted image 1 from page 1](opc-security-1.00-specification.images/page001-img01.png)
+![Extracted image 2 from page 1](opc-security-1.00-specification.images/page001-img02.png)
+<!-- /Extracted images from page 1 -->
+
 OPC Security Custom Interface (Version 1.0)
 
   TM
@@ -10,7 +15,11 @@ October 17, 2000
 
 1
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 2 -->
+![Extracted image 1 from page 2](opc-security-1.00-specification.images/page002-img01.png)
+<!-- /Extracted images from page 2 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 Specification Type
 
@@ -63,7 +72,11 @@ Windows NT 4.0 SP5 or later
 
 2
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 3 -->
+![Extracted image 1 from page 3](opc-security-1.00-specification.images/page003-img01.png)
+<!-- /Extracted images from page 3 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 NON-EXCLUSIVE LICENSE AGREEMENT
 
@@ -119,7 +132,11 @@ AGREEMENT OR ANY USE OF THE OPC MATERIALS.
 
 3
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 4 -->
+![Extracted image 1 from page 4](opc-security-1.00-specification.images/page004-img01.png)
+<!-- /Extracted images from page 4 -->
+
+OPC Security Custom Interface (Version 1.0)
 GENERAL PROVISIONS:
 
 This Agreement and User’s license to the OPC Materials shall be terminated (a) by User ceasing all use of
@@ -151,7 +168,11 @@ prior understanding or agreement (oral or written) relating to, the OPC Material
 
 4
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 5 -->
+![Extracted image 1 from page 5](opc-security-1.00-specification.images/page005-img01.png)
+<!-- /Extracted images from page 5 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 Table of Contents
 
@@ -283,7 +304,11 @@ CLIENT INSTALLATION ............................................................
 
 5
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6](opc-security-1.00-specification.images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+OPC Security Custom Interface (Version 1.0)
 6.  APPENDIX ..........................................................................................................................................29
 
 6.1
@@ -309,7 +334,11 @@ Windows 2000 and Windows NT Considerations......................................
 
 6
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7](opc-security-1.00-specification.images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 1.  Introduction
 
@@ -372,7 +401,11 @@ limited security model.  Third party support is required for DCOM transport.
 
 7
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8](opc-security-1.00-specification.images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 Other Platforms – This specification may apply to other platforms (such as UNIX) based on the
 
@@ -413,7 +446,11 @@ document describes a related OLE Automation interface.
 
 8
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9](opc-security-1.00-specification.images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 2.  Fundamental Concepts
 
@@ -473,7 +510,11 @@ system is typically considered to be secure.  A channel that spans computer syst
 
 9
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10](opc-security-1.00-specification.images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 considered to be insecure, unless specific actions have been taken to secure it.  A channel may be
 secured to one of three levels:
@@ -536,7 +577,11 @@ of OPC Security using private credentials discussed later.
 
 10
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11](opc-security-1.00-specification.images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+OPC Security Custom Interface (Version 1.0)
 2.2.5  Reference Monitor
 
 This specification deals with the following reference monitors:
@@ -605,7 +650,11 @@ which do not have NT Access Tokens, may implement support for both types of acce
 
 11
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12](opc-security-1.00-specification.images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 a client-by-client basis.  This approach provides a transparent security implementation for those clients
 with NT Access Tokens, while providing security for those clients without NT Access Tokens.
@@ -631,7 +680,11 @@ access when attempting to access security objects.
 
 12
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13](opc-security-1.00-specification.images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 3.  OPC Security Quick Reference
 
@@ -695,7 +748,11 @@ Logoff(void);
 
 13
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14](opc-security-1.00-specification.images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.  Custom Reference
 
@@ -754,7 +811,11 @@ call to IOPCSecurityNT::ChangeUser will be invalid and will result in an error r
 
 14
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15](opc-security-1.00-specification.images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.3  IOPCSecurityNT
 
@@ -777,7 +838,11 @@ invocation of ChangeUser(), until the client makes a new call to that method.
 
 15
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16](opc-security-1.00-specification.images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.3.1  IOPCSecurityNT::IsAvailableNT
 HRESULT IsAvailableNT(
@@ -834,7 +899,11 @@ state change depending on which interface is currently being used.
 
 16
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17](opc-security-1.00-specification.images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.3.2  IOPCSecurityNT::QueryMinImpersonationLevel
 HRESULT QueryMinImpersonationLevel(
@@ -900,7 +969,11 @@ See section 6.3.4.5 Impersonation Levels for additional information.
 
 17
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18](opc-security-1.00-specification.images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.3.3  IOPCSecurityNT::ChangeUser
 HRESULT ChangeUser();
@@ -958,7 +1031,11 @@ time of connection to the server.
 
 18
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19](opc-security-1.00-specification.images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.3.4  Use Scenario
 
@@ -1011,7 +1088,11 @@ the caller privileges
 
 19
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20](opc-security-1.00-specification.images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.4  IOPCSecurityPrivate
 
@@ -1026,7 +1107,11 @@ set the bAvailable to FALSE to signal that private credentials are currently dis
 
 20
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21](opc-security-1.00-specification.images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.4.1  IOPCSecurityPrivate::IsAvailablePriv
 HRESULT IsAvailablePriv(
@@ -1081,7 +1166,11 @@ state change depending on which interface is currently being used.
 
 21
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22](opc-security-1.00-specification.images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.4.2  IOPCSecurityPrivate::Logon
 HRESULT Logon(
@@ -1149,7 +1238,11 @@ credentials immediately.
 
 22
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23](opc-security-1.00-specification.images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.4.3  IOPCSecurityPrivate::Logoff
 HRESULT Logoff();
@@ -1183,7 +1276,11 @@ The operation failed.
 
 23
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24](opc-security-1.00-specification.images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.4.4  Use Scenario
 
@@ -1231,7 +1328,11 @@ IOPCSecurityPrivate::Logoff
 
 24
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25](opc-security-1.00-specification.images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 4.5  NT Credential Approach
 
@@ -1294,7 +1395,11 @@ level was set by the client prior to the call.
 
 25
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26](opc-security-1.00-specification.images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 psdAccess in the above code is a security descriptor which holds a list of accepted and denied users and
 or groups (also called an ACL). This security descriptor is typically created from access information
@@ -1357,7 +1462,11 @@ for all methods in one COM interface and remains in effect until the proxy blank
 
 26
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27](opc-security-1.00-specification.images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 The client could implement the following code snippet (again error handling is skipped for brevity):
 
@@ -1416,7 +1525,11 @@ is expected to be extremely rare, no sample code has been implemented.
 
 27
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28](opc-security-1.00-specification.images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 5.  Installation
 
@@ -1437,7 +1550,11 @@ Common Definitions and Interfaces document.
 
 28
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29](opc-security-1.00-specification.images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 6.  Appendix
 
@@ -1507,7 +1624,11 @@ credentials in proxy blanket")
 
 29
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30](opc-security-1.00-specification.images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+OPC Security Custom Interface (Version 1.0)
 HRESULT ChangeUser(void);
 
 };
@@ -1577,7 +1698,11 @@ interface IOPCSecurityPrivate;
 
 30
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31](opc-security-1.00-specification.images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 6.2  OpcErrSec.h
 
@@ -1644,7 +1769,11 @@ Facility Code Assignments:
 
 31
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32](opc-security-1.00-specification.images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 // MessageText:
 //
@@ -1676,7 +1805,11 @@ secured data.
 
 32
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33](opc-security-1.00-specification.images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 6.3  Guidelines
 
@@ -1758,7 +1891,11 @@ RPC_C_IMP_LEVEL_IDENTIFY, NULL, EOAC_NONE, NULL);
 
 33
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34](opc-security-1.00-specification.images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+OPC Security Custom Interface (Version 1.0)
 6.3.1.1.2.1  OPC Security Using NT Credentials and DCOM Security
 
 The DCOM setup should be done both on the client machine and the server machine. The values
@@ -1854,7 +1991,11 @@ referenced Web location.
 
 34
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35](opc-security-1.00-specification.images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 Service Call/API/Functionality
 CoInitializeSecurity
@@ -1959,7 +2100,11 @@ DCOM95/98 supports only TCP connectivity.
 
 35
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36](opc-security-1.00-specification.images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 6.3.2  In-Process Server Considerations
 
@@ -1995,7 +2140,11 @@ CoSetProxyBlanket()).
 
 36
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37](opc-security-1.00-specification.images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 6.3.3  Local/Remote Server Configuration Parameters
 These parameters are not mandatory. This section is only a guideline.
@@ -2054,7 +2203,11 @@ Security.
 
 37
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38](opc-security-1.00-specification.images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 6.3.4  Windows 2000 and Windows NT Considerations
 
@@ -2119,7 +2272,11 @@ AccessCheck()
 
 38
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39](opc-security-1.00-specification.images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+OPC Security Custom Interface (Version 1.0)
 6.3.4.2.1  New valid parameter values in Windows 2000:
 
 CoInitializeSecurity():
@@ -2181,7 +2338,11 @@ token is used. For all future calls, the identity set on the first call is used.
 
 39
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40](opc-security-1.00-specification.images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+OPC Security Custom Interface (Version 1.0)
 
 •  When dynamic cloaking (EOAC_DYNAMIC_CLOAKING) is set, on each call the current thread
 token (if there is a thread token) is used to determine the client's identity. If there is no thread
@@ -2248,7 +2409,11 @@ client. The client sets the impersonation level on the proxy it uses to communic
 
 40
 
-OPC Security Custom Interface (Version 1.0)
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41](opc-security-1.00-specification.images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+OPC Security Custom Interface (Version 1.0)
 6.3.4.6  Special Considerations
 
 Default Authentication

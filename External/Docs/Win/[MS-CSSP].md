@@ -1545,7 +1545,11 @@ Release: April 23, 2024
 
 18 / 27
 
-4  Protocol Examples
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-CSSP].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+4  Protocol Examples
 
 Figure 1: CredSSP negotiation sequence using SPNEGO
 

@@ -1001,7 +1001,11 @@ Group Policy: Deployed Printer Connections Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-computer or user accounts in the Active Directory. Each client uses the Lightweight Directory
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-GPDPC].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+computer or user accounts in the Active Directory. Each client uses the Lightweight Directory
 Access Protocol (LDAP) [RFC2251], to determine which GPOs apply to it, by querying the Active
 Directory objects that correspond to the computer's account and the user accounts of the users who
 log on to the client computer.
@@ -1093,7 +1097,11 @@ Release: April 23, 2024
 
 12 / 32
 
-Figure 2: Group Policy: Deployed Printer Connections dependencies
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-GPDPC].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 2: Group Policy: Deployed Printer Connections dependencies
 
 1.5  Prerequisites/Preconditions
 

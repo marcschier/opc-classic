@@ -967,7 +967,11 @@ Release: April 23, 2024
 
 9 / 47
 
-Figure 1: Relationships between protocols
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RAI].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Relationships between protocols
 
 1.5  Prerequisites/Preconditions
 
@@ -2658,7 +2662,11 @@ Release: April 23, 2024
 
 34 / 47
 
-Figure 2: Password encryption flow
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-RAI].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 2: Password encryption flow
 
 The following is a sample Remote Assistance Invitation File of the second type:<19>
 
@@ -2750,7 +2758,11 @@ Release: April 23, 2024
 
 36 / 47
 
-Figure 3: Password encryption flow
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-RAI].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 3: Password encryption flow
 
 [MS-RAI] - v20240423
 Remote Assistance Initiation Protocol

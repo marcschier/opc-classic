@@ -1155,7 +1155,11 @@ Release: April 23, 2024
 
 17 / 26
 
-4  Protocol Examples
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-VAPR].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+4  Protocol Examples
 
 4.1  GetPackage Sequence
 
@@ -1198,7 +1202,11 @@ Release: April 23, 2024
 
 18 / 26
 
-Figure 2: SetReport message sequence
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-VAPR].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 2: SetReport message sequence
 
 [MS-VAPR] - v20240423
 Virtual Application Publishing and Reporting (App-V) Protocol

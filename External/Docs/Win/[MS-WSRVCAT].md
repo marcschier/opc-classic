@@ -984,7 +984,11 @@ Release: March 13, 2019
 
 9 / 53
 
-The server application parses the message through the AppServer Role and locates a
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-WSRVCAT].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+The server application parses the message through the AppServer Role and locates a
 CoordinationContext Element, but does not locate a Propagation_Token. The server application then
 uses protocols specified in [MS-DTCO] and data types specified in this document to obtain the Uniform
 Resource Identifier (URI) of the Activation Service of a transaction coordinator. The server
@@ -1023,7 +1027,11 @@ Release: March 13, 2019
 
 10 / 53
 
-The participant, which does not support the protocols specified in [MS-DTCO], locates the
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-WSRVCAT].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+The participant, which does not support the protocols specified in [MS-DTCO], locates the
 CoordinationContext Element in the header of the SOAP message and requests activation using the
 flowed CoordinationContext Element, as shown in the following figure.
 
@@ -1057,7 +1065,11 @@ Release: March 13, 2019
 
 11 / 53
 
-Figure 3: Flowing a transaction from a client application to a participant using WS-
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-WSRVCAT].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 3: Flowing a transaction from a client application to a participant using WS-
 AtomicTransaction
 
 1.3.3  Scenario 3: Flowing a Transaction from Client Application to a Server
@@ -1086,7 +1098,11 @@ Release: March 13, 2019
 
 12 / 53
 
-Figure 4: Server Application Using Pull Propagation
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-WSRVCAT].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 4: Server Application Using Pull Propagation
 
 1.3.3.2  Scenario 3b: Server Application Requests Activation Using an Existing
 
@@ -1105,7 +1121,12 @@ Release: March 13, 2019
 
 13 / 53
 
-Figure 5: Server application requesting activation using an existing CoordinationContext
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-WSRVCAT].images/page014-img01.png)
+![Extracted image 2 from page 14]([MS-WSRVCAT].images/page014-img02.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 5: Server application requesting activation using an existing CoordinationContext
 
 1.4  Relationship to Other Protocols
 
@@ -1994,7 +2015,11 @@ Release: March 13, 2019
 
 26 / 53
 
- <xs:schema targetNamespace="http://schemas.microsoft.com/ws/2006/02/tx/oletx"
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-WSRVCAT].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+ <xs:schema targetNamespace="http://schemas.microsoft.com/ws/2006/02/tx/oletx"
        xmlns:oletx="http://schemas.microsoft.com/ws/2006/02/tx/oletx"
        xmlns:wscoor="http://docs.oasis-open.org/ws-tx/wscoor/2006/06"
        xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -2041,7 +2066,12 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The Register Element is a Register element, as specified in [WSC10] and [WSC11], with the
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-WSRVCAT].images/page028-img01.png)
+![Extracted image 2 from page 28]([MS-WSRVCAT].images/page028-img02.png)
+<!-- /Extracted images from page 28 -->
+
+The Register Element is a Register element, as specified in [WSC10] and [WSC11], with the
 additional constraints listed in the following figure.
 
 Figure 8: Register Element constraints
@@ -2076,7 +2106,11 @@ Release: March 13, 2019
 
 28 / 53
 
-Figure 10: FlowTransaction Message
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-WSRVCAT].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 10: FlowTransaction Message
 
 If present, the OleTxTransaction Element (section 2.2.3.1.9) MUST be a header in a SOAP message.
 The mustUnderstand attribute, as specified in [SOAP1.2-1/2003] section 5.2.3, MUST be present,

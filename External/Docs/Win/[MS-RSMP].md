@@ -15349,7 +15349,11 @@ Release: June 1, 2017
 
 169 / 214
 
-4  Protocol Examples
+<!-- Extracted images from page 170 -->
+![Extracted image 1 from page 170]([MS-RSMP].images/page170-img01.png)
+<!-- /Extracted images from page 170 -->
+
+4  Protocol Examples
 
 4.1  Allocation of Media with INtmsMediaServices1
 
@@ -15373,7 +15377,11 @@ Release: June 1, 2017
 
 170 / 214
 
-4.  The server creates a media pool with the name that was passed by the client, and returns a
+<!-- Extracted images from page 171 -->
+![Extracted image 1 from page 171]([MS-RSMP].images/page171-img01.png)
+<!-- /Extracted images from page 171 -->
+
+4.  The server creates a media pool with the name that was passed by the client, and returns a
 
 unique ID (that is, lpPoolId) and indicates success.
 
@@ -15423,7 +15431,11 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-4.  Whenever there is a change in the storage object, the server sends notification to all the clients
+<!-- Extracted images from page 172 -->
+![Extracted image 1 from page 172]([MS-RSMP].images/page172-img01.png)
+<!-- /Extracted images from page 172 -->
+
+4.  Whenever there is a change in the storage object, the server sends notification to all the clients
 
 who are registered with the server for that particular object type. The server sends notification by
 calling the clients' NtmsNotifySink::OnNotify method.
@@ -15448,7 +15460,11 @@ Release: June 1, 2017
 
 172 / 214
 
-2.  The server initializes the session and indicates success.
+<!-- Extracted images from page 173 -->
+![Extracted image 1 from page 173]([MS-RSMP].images/page173-img01.png)
+<!-- /Extracted images from page 173 -->
+
+2.  The server initializes the session and indicates success.
 
 3.  The RSM client calls INtmsObjectManagement1::EnumerateNtmsObject. The dwType parameter is
 

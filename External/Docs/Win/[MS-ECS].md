@@ -5765,7 +5765,11 @@ Release: April 23, 2024
 
 70 / 86
 
-Figure 1: Query user configuration information and detect server changes
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-ECS].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+Figure 1: Query user configuration information and detect server changes
 
 1.  The client sends an HTTP GET request on the Server Discovery resource to enumerate a list of
 
@@ -5995,7 +5999,11 @@ Release: April 23, 2024
 
 74 / 86
 
-4.2  Upload Scenario
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-ECS].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+4.2  Upload Scenario
 
 The following diagram demonstrates the steps taken to upload the data between client and server.
 
@@ -6232,7 +6240,11 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   ContentLength:  0
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-ECS].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+   ContentLength:  0
    HeaderEnd: CRLF
 
 4.3  Download Scenario

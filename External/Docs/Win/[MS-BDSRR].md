@@ -1464,7 +1464,11 @@ Release: September 12, 2018
 
 13 / 166
 
-[MSDN-SPF] Microsoft Corporation, "SharePoint Filter Instructions Schema",
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-BDSRR].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+[MSDN-SPF] Microsoft Corporation, "SharePoint Filter Instructions Schema",
 https://learn.microsoft.com/en-us/windows-hardware/drivers/image/sharepoint-filter-instructions-
 schema
 

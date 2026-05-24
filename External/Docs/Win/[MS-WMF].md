@@ -1563,7 +1563,11 @@ Release: April 23, 2024
 
 16 / 213
 
-Figure 1: Structures of original and placeable Windows metafiles
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-WMF].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 1: Structures of original and placeable Windows metafiles
 
 The META_HEADER Record (section 2.3.2.2) contains information that defines the characteristics of
 the metafile, including:
@@ -16818,7 +16822,11 @@ Release: April 23, 2024
 
 194 / 213
 
-  05 06: Encoded mode, specifying 5 pixels with the value 0x06.
+<!-- Extracted images from page 195 -->
+![Extracted image 1 from page 195]([MS-WMF].images/page195-img01.png)
+<!-- /Extracted images from page 195 -->
+
+  05 06: Encoded mode, specifying 5 pixels with the value 0x06.
 
   00 03 45 56 67 00: Absolute mode, specifying 3 pixels with the values 0x45, 0x56, and 0x67,
 

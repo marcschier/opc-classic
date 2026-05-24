@@ -889,7 +889,11 @@ Release: January 13, 2025
 
 8 / 36
 
-[MSKB-163846] Microsoft Corporation, "SID Values For Default Windows NT Installations", Version
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-SMTPNTLM].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+[MSKB-163846] Microsoft Corporation, "SID Values For Default Windows NT Installations", Version
 2.1, November 2006, http://support.microsoft.com/kb/163846
 
 [SSPI] Microsoft Corporation, "SSPI", https://learn.microsoft.com/en-
@@ -1312,7 +1316,11 @@ Release: January 13, 2025
 
 15 / 36
 
-3  Protocol Details
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-SMTPNTLM].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+3  Protocol Details
 
 3.1  Client Details
 
@@ -1572,7 +1580,11 @@ Release: January 13, 2025
 
 20 / 36
 
-3.2.1.1  SMTP State Model
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-SMTPNTLM].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+3.2.1.1  SMTP State Model
 
 Figure 3: SMTP NTLM authentication server state model
 
@@ -1786,7 +1798,11 @@ Release: January 13, 2025
 
 24 / 36
 
-4  Protocol Examples
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-SMTPNTLM].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+4  Protocol Examples
 
 4.1  SMTP Client Successfully Authenticating to an SMTP Server
 
@@ -1874,7 +1890,11 @@ Release: January 13, 2025
 
 26 / 36
 
-4.2  SMTP Client Not Successfully Authenticating to an SMTP Server
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-SMTPNTLM].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+4.2  SMTP Client Not Successfully Authenticating to an SMTP Server
 
 This section illustrates the NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol
 (SMTP) Extension with an example scenario in which an SMTP client attempts NTLM authentication to

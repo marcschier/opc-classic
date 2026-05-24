@@ -2795,7 +2795,12 @@ Release: June 1, 2017
 
 33 / 43
 
-4  Protocol Examples
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-MSRP].images/page034-img01.png)
+![Extracted image 2 from page 34]([MS-MSRP].images/page034-img02.png)
+<!-- /Extracted images from page 34 -->
+
+4  Protocol Examples
 
 Consider two computers, PRINTSERVER (a print server) and WORKSTATION (a user's desktop).
 WORKSTATION has only one network interface card, which is on a physical network that is remote to

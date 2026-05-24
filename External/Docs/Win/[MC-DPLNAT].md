@@ -1234,7 +1234,11 @@ Release: April 23, 2024
 
 14 / 25
 
-Figure 1: New peer's PATH_TEST during connect attempt from existing peer
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MC-DPLNAT].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 1: New peer's PATH_TEST during connect attempt from existing peer
 
 PATH_TEST messages are used to create mappings in NAT and firewall devices so that inbound
 connect attempts appear to be solicited responses to a previous outbound request through the steps

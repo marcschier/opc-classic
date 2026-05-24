@@ -1289,7 +1289,11 @@ Release: April 23, 2024
 
 12 / 64
 
-  Accepts and processes requests to push a transaction from an OleTx TM to a TIP transaction
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-DTCM].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+  Accepts and processes requests to push a transaction from an OleTx TM to a TIP transaction
 
 manager by using TIP push propagation.
 
@@ -1337,7 +1341,11 @@ Release: April 23, 2024
 
 13 / 64
 
-Figure 2: Actions performed during a TIP push propagation
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-DTCM].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: Actions performed during a TIP push propagation
 
 1.  The higher-layer business logic requests that the TIP interoperability
 
@@ -1384,7 +1392,11 @@ Release: April 23, 2024
 
 14 / 64
 
-When all the preceding operations are complete, there is a superior-to-subordinate relationship
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-DTCM].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+When all the preceding operations are complete, there is a superior-to-subordinate relationship
 between the OleTx TM and the TIP transaction manager.
 
 1.3.2.4.2 TIP Pull Propagation Interactions
@@ -1429,7 +1441,11 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-8.  The TIP interoperability application returns a "Success" result and the identifier of the transaction
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-DTCM].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+8.  The TIP interoperability application returns a "Success" result and the identifier of the transaction
 
 to the higher-layer business logic.
 
@@ -2713,7 +2729,11 @@ Release: April 23, 2024
 
 33 / 64
 
-Figure 5: CONNTYPE_TXUSER_TIPPROXYGATEWAY initiator states
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-DTCM].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+Figure 5: CONNTYPE_TXUSER_TIPPROXYGATEWAY initiator states
 
 3.2.1.1.1 Idle
 
@@ -3160,7 +3180,11 @@ Release: April 23, 2024
 
 40 / 64
 
-Figure 6: CONNTYPE_TXUSER_ TIPPROXYGATEWAY acceptor states
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-DTCM].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 6: CONNTYPE_TXUSER_ TIPPROXYGATEWAY acceptor states
 
 3.3.1.2.1.1
 

@@ -1453,7 +1453,11 @@ Release: June 25, 2021
 
 17 / 47
 
-3  Protocol Details
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-QLPB].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+3  Protocol Details
 
 3.1  Initiator Details
 
@@ -1468,7 +1472,11 @@ Release: June 25, 2021
 
 18 / 47
 
-Figure 2: State machine for initiator role when performing Packet Pair experiment
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-QLPB].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 2: State machine for initiator role when performing Packet Pair experiment
 
 [MS-QLPB] - v20210625
 Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol
@@ -1477,7 +1485,11 @@ Release: June 25, 2021
 
 19 / 47
 
-Figure 3: State machine for initiator role when performing Probegap experiment
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-QLPB].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 3: State machine for initiator role when performing Probegap experiment
 
 Applicable message request/response pairs for this role are defined as follows.
 
@@ -2338,7 +2350,12 @@ Release: June 25, 2021
 
 31 / 47
 
-Figure 4: State machine for sink role from TCP perspective
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-QLPB].images/page032-img01.png)
+![Extracted image 2 from page 32]([MS-QLPB].images/page032-img02.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 4: State machine for sink role from TCP perspective
 
 Figure 5: State machine for sink role from UDP perspective
 
@@ -2761,7 +2778,11 @@ Release: June 25, 2021
 
 38 / 47
 
-4  Protocol Examples
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-QLPB].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+4  Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Quality Windows Audio/Video Experience (qWave): Layer 3 Probing Protocol.
@@ -2790,7 +2811,11 @@ Release: June 25, 2021
 
 39 / 47
 
-Figure 7: Protocol exchange between initiator and sink device
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-QLPB].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+Figure 7: Protocol exchange between initiator and sink device
 
 The following list describes each step in the protocol exchange:
 

@@ -15367,7 +15367,11 @@ Release: November 21, 2025
 
 183 / 251
 
-Figure 1: LSM session enumeration sequence
+<!-- Extracted images from page 184 -->
+![Extracted image 1 from page 184]([MS-TSTS].images/page184-img01.png)
+<!-- /Extracted images from page 184 -->
+
+Figure 1: LSM session enumeration sequence
 
 The sequence of messages for enumerating sessions on the server is as follows:
 
@@ -15761,7 +15765,11 @@ Release: November 21, 2025
 
 189 / 251
 
-  wprintf(L"ERR: RPC Exception %d\n",Result );
+<!-- Extracted images from page 190 -->
+![Extracted image 1 from page 190]([MS-TSTS].images/page190-img01.png)
+<!-- /Extracted images from page 190 -->
+
+  wprintf(L"ERR: RPC Exception %d\n",Result );
  }
  RpcEndExcept
 

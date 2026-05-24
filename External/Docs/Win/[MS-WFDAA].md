@@ -530,7 +530,11 @@ Release: April 23, 2024
 
 7 / 31
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-WFDAA].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+1.4  Relationship to Other Protocols
 
 Figure 1: Relationship of WFDA2A to other protocols
 
@@ -1066,7 +1070,11 @@ Release: April 23, 2024
 
 15 / 31
 
-3  Protocol Details
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-WFDAA].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+3  Protocol Details
 
 This section defines how a device advertises and searches for proximate devices, establishes a
 connection, and confirms the connection. A device MUST follow the specified guidance for all three
@@ -1217,7 +1225,11 @@ Release: April 23, 2024
 
 18 / 31
 
-Figure 3: Messaging sequence between WFDA2A and a proximate device
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-WFDAA].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 3: Messaging sequence between WFDA2A and a proximate device
 
 The message sequence between the WFDA2A and a proximate device is distributed into five steps:
 
@@ -1344,7 +1356,11 @@ Release: April 23, 2024
 
 21 / 31
 
-Figure 4: Messaging sequence for client/server negotiation
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-WFDAA].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 4: Messaging sequence for client/server negotiation
 
 Establish an L3 connection: Two devices set up a client/server relationship based on their
 Connection data exchanged during L2 establishment (see section 3.1.5). To identify the client, the
@@ -1428,7 +1444,11 @@ Release: April 23, 2024
 
 23 / 31
 
-Figure 5: Messaging sequence for client/server negotiation
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-WFDAA].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 5: Messaging sequence for client/server negotiation
 
 Establish an L3 connection: Two devices set up a client/server relationship based on the
 Connection data exchanged during L2 establishment (see section 3.1.5). To identify the client in the

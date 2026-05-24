@@ -263,7 +263,12 @@ Release: April 23, 2024
 
 5 / 20
 
-2  Structures
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-HRL].images/page006-img01.png)
+![Extracted image 2 from page 6]([MS-HRL].images/page006-img02.png)
+<!-- /Extracted images from page 6 -->
+
+2  Structures
 
 2.1  Log File Format
 
@@ -522,7 +527,11 @@ Release: April 23, 2024
 
 9 / 20
 
-Figure 3: Log traversing algorithm
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-HRL].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 3: Log traversing algorithm
 
 2.6  Checksum Algorithm
 

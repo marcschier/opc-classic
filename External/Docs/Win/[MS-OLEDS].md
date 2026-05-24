@@ -867,7 +867,11 @@ Release: April 23, 2024
 
 8 / 50
 
-[MSDN-ProgID] Microsoft Corporation, "<ProgID> Key", http://msdn.microsoft.com/en-
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-OLEDS].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+[MSDN-ProgID] Microsoft Corporation, "<ProgID> Key", http://msdn.microsoft.com/en-
 us/library/ms690196.aspx
 
 1.3  Overview
@@ -933,7 +937,11 @@ Object Linking and Embedding (OLE) Data Structures
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  When using the OLE2.0 Format (section 1.3.3), the embedded object native data is specified in
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-OLEDS].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+  When using the OLE2.0 Format (section 1.3.3), the embedded object native data is specified in
 
 the following two ways, which can be used interchangeably:
 

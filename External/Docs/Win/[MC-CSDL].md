@@ -1230,7 +1230,11 @@ Release: March 13, 2019
 
 14 / 126
 
-
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MC-CSDL].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+
 
 In CSDL 3.0, Schema can contain any number of ValueTerm elements.
 
@@ -1349,7 +1353,11 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MC-CSDL].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+
 
 In CSDL 3.0, EntityType can contain any number of ValueAnnotation elements.
 
@@ -1471,7 +1479,11 @@ Release: March 13, 2019
 
 18 / 126
 
-All child elements are to appear in the order indicated.
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MC-CSDL].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+All child elements are to appear in the order indicated.
 
 A dynamic property follows these rules:
 
@@ -1502,7 +1514,11 @@ Release: March 13, 2019
 
 19 / 126
 
- <NavigationProperty Name="Orders" Relationship="Model1.CustomerOrder" FromRole="Customer"
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MC-CSDL].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+ <NavigationProperty Name="Orders" Relationship="Model1.CustomerOrder" FromRole="Customer"
 ToRole="Order" />
 
 The following rules apply to the NavigationProperty element:
@@ -1554,7 +1570,11 @@ Release: March 13, 2019
 
 20 / 126
 
-2.1.5  Entity Key
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MC-CSDL].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+2.1.5  Entity Key
 
 A Key element describes which Property elements form a key that can uniquely identify instances of
 an EntityType. Any set of non-nullable, immutable, scalar type declared properties can serve as
@@ -1614,7 +1634,11 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-All child elements are to appear in the order indicated.
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MC-CSDL].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+All child elements are to appear in the order indicated.
 
 2.1.7  ComplexType
 
@@ -1669,7 +1693,11 @@ Release: March 13, 2019
 
 22 / 126
 
-
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MC-CSDL].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+
 
 In CSDL 1.1, CSDL 1.2, CSDL 2.0, and CSDL 3.0, ComplexType can have its Abstract attribute
 set to "true". By default, Abstract is set to "false".
@@ -1726,7 +1754,11 @@ Release: March 13, 2019
 
 23 / 126
 
-  Operational behavior: OnDelete Cascade; when an Order with one or more OrderLines is deleted,
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MC-CSDL].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+  Operational behavior: OnDelete Cascade; when an Order with one or more OrderLines is deleted,
 
 the corresponding OrderLines also get deleted.
 
@@ -1778,7 +1810,11 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <End Type="Model1.Customer" Role="Customer" Multiplicity="1" />
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MC-CSDL].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+     <End Type="Model1.Customer" Role="Customer" Multiplicity="1" />
 
 The following rules apply to the Association End element:
 
@@ -1828,7 +1864,11 @@ Release: March 13, 2019
 
 25 / 126
 
-   </Association>
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MC-CSDL].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+   </Association>
 
 The following rules apply to the OnDelete element:
 
@@ -1884,7 +1924,11 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       </Dependent>
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MC-CSDL].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+       </Dependent>
      </ReferentialConstraint>
    </Association>
 
@@ -2003,7 +2047,11 @@ Release: March 13, 2019
 
 28 / 126
 
-All child elements are to appear in the order indicated.
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MC-CSDL].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+All child elements are to appear in the order indicated.
 
 2.1.12.2
 
@@ -2065,7 +2113,11 @@ Release: March 13, 2019
 
 29 / 126
 
-All child elements are to appear in the order indicated.
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MC-CSDL].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+All child elements are to appear in the order indicated.
 
 2.1.13 Using
 
@@ -2112,7 +2164,11 @@ Release: March 13, 2019
 
 30 / 126
 
-All child elements are to appear in the order indicated.
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MC-CSDL].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+All child elements are to appear in the order indicated.
 
 2.1.14 EntityContainer
 
@@ -2168,7 +2224,11 @@ Release: March 13, 2019
 
 31 / 126
 
-
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MC-CSDL].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+
 
 
 
@@ -2303,7 +2363,11 @@ Release: March 13, 2019
 
 33 / 126
 
-All child elements are to appear in the order indicated.
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MC-CSDL].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+All child elements are to appear in the order indicated.
 
 2.1.16 FunctionImport ReturnType
 
@@ -2343,7 +2407,11 @@ Release: March 13, 2019
 
 34 / 126
 
-2.1.17 FunctionImport Parameter
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MC-CSDL].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+2.1.17 FunctionImport Parameter
 
 Functions that are defined in conceptual schema definition language (CSDL) optionally accept
 both in and out Parameter elements. Each Parameter element MUST have an associated Name and
@@ -2400,7 +2468,11 @@ Release: March 13, 2019
 
 35 / 126
 
-All child elements are to appear in the order indicated.
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MC-CSDL].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+All child elements are to appear in the order indicated.
 
 2.1.18 EntitySet
 
@@ -2448,7 +2520,11 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Child elements of EntitySet are to appear in this sequence:  Documentation,
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MC-CSDL].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+  Child elements of EntitySet are to appear in this sequence:  Documentation,
 
 AnnotationElement.
 
@@ -2500,7 +2576,11 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Child elements of AssociationSet are to appear in this sequence: Documentation, End,
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MC-CSDL].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+  Child elements of AssociationSet are to appear in this sequence: Documentation, End,
 
 AnnotationElement.
 
@@ -2554,7 +2634,11 @@ Release: March 13, 2019
 
 38 / 126
 
-All child elements are to appear in the order indicated.
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MC-CSDL].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+All child elements are to appear in the order indicated.
 
 2.1.21 Documentation
 
@@ -2676,7 +2760,11 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-      </Documentation>
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MC-CSDL].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+      </Documentation>
    </End>
    <End Role="Product" Type="Self.Product" Multiplicity="*">
       <Documentation>
@@ -2813,7 +2901,11 @@ Release: March 13, 2019
 
 42 / 126
 
-  A single DefiningExpression element can be defined for a given Function. A
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MC-CSDL].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+  A single DefiningExpression element can be defined for a given Function. A
 
 DefiningExpression is any expression that is intended to be the body of the function. The
 conceptual schema definition language (CSDL) file format does not specify rules and
@@ -2932,7 +3024,11 @@ Release: March 13, 2019
 
 44 / 126
 
-All child elements are to appear in the order indicated. For all child elements within a given choice, the
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MC-CSDL].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
 2.1.25 CollectionType
@@ -2975,7 +3071,11 @@ Release: March 13, 2019
 
 45 / 126
 
-  CollectionType
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MC-CSDL].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+  CollectionType
 
   ReferenceType
 
@@ -3023,7 +3123,11 @@ Release: March 13, 2019
 
 46 / 126
 
-  ComplexType
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MC-CSDL].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+  ComplexType
 
 
 
@@ -3076,7 +3180,11 @@ Release: March 13, 2019
 
 47 / 126
 
- <ReturnType Type="Ref(Model.Person)" />
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MC-CSDL].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+ <ReturnType Type="Ref(Model.Person)" />
 
 The following rules apply to the ReferenceType element:
 
@@ -3132,7 +3240,11 @@ Release: March 13, 2019
 
 48 / 126
 
- </ReturnType>
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MC-CSDL].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+ </ReturnType>
 
 The following rules apply to the RowType element:
 
@@ -3186,7 +3298,11 @@ Release: March 13, 2019
 
 49 / 126
 
-                 <CollectionType>
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MC-CSDL].images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+                 <CollectionType>
              </Property>
          </RowType>
      </CollectionType>
@@ -3297,7 +3413,11 @@ Release: March 13, 2019
 
 51 / 126
 
-All child elements are to appear in the order indicated. For all child elements within a given choice, the
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MC-CSDL].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
 2.1.31 ValueTerm
@@ -3912,7 +4032,11 @@ Release: March 13, 2019
 
 59 / 126
 
-2.1.37 EnumType
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MC-CSDL].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+2.1.37 EnumType
 
 An EnumType element is used in CSDL 3.0 to declare an enumeration type. Enumeration types are
 scalar types.
@@ -3965,7 +4089,11 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Member elements MUST specify a Name attribute that is unique within the EnumType
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MC-CSDL].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+  Member elements MUST specify a Name attribute that is unique within the EnumType
 
 declaration.
 

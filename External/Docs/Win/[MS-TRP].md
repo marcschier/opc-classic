@@ -1799,7 +1799,11 @@ Release: April 23, 2024
 
 17 / 600
 
-Figure 1: Synchronous Completion
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-TRP].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 1: Synchronous Completion
 
   Asynchronous completion is when the RPC function call returns to the client while the request is
 
@@ -1830,7 +1834,11 @@ Release: April 23, 2024
 
 18 / 600
 
-Figure 2: Asynchronous Completion
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-TRP].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 2: Asynchronous Completion
 
 Section 2.2.4 specifies the packets that are sent as part of requests from client to server,
 asynchronous event packets from server to client indicating the completion of the requested
@@ -48708,7 +48716,11 @@ Release: April 23, 2024
 
 571 / 600
 
-4  Protocol Examples
+<!-- Extracted images from page 572 -->
+![Extracted image 1 from page 572]([MS-TRP].images/page572-img01.png)
+<!-- /Extracted images from page 572 -->
+
+4  Protocol Examples
 
  A client can negotiate versions for each device one at a time (NegotiateAPIVersion) or for all devices
 at once (NegotiateAPIVersionForAllDevices). A client can ask the server to use either the remotesp
@@ -48728,7 +48740,11 @@ Telephony Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The Client first calls ClientAttach to establish a binding instance with the server. The method
+<!-- Extracted images from page 573 -->
+![Extracted image 1 from page 573]([MS-TRP].images/page573-img01.png)
+<!-- /Extracted images from page 573 -->
+
+1.  The Client first calls ClientAttach to establish a binding instance with the server. The method
 
 returns 0 on success; otherwise, it returns a nonzero error code.
 
@@ -48777,7 +48793,11 @@ Release: April 23, 2024
 
 573 / 600
 
-1.  The client calls ClientRequest with Close and the specified open line device to close the line. The
+<!-- Extracted images from page 574 -->
+![Extracted image 1 from page 574]([MS-TRP].images/page574-img01.png)
+<!-- /Extracted images from page 574 -->
+
+1.  The client calls ClientRequest with Close and the specified open line device to close the line. The
 server closes the line and returns 0 if it is successful and a negative error number if an error
 occurs.
 
@@ -48816,7 +48836,11 @@ Telephony Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the newly created call, which is then used in packets requiring HCALL. A return value of zero
+<!-- Extracted images from page 575 -->
+![Extracted image 1 from page 575]([MS-TRP].images/page575-img01.png)
+<!-- /Extracted images from page 575 -->
+
+the newly created call, which is then used in packets requiring HCALL. A return value of zero
 indicates that the call was made successfully, or a negative number is returned on error.
 
 4.  When done with the call, the client calls ClientRequest with the Drop packet to terminate the call.
@@ -48855,7 +48879,11 @@ Telephony Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  The client calls the Answer packet to the server to accept the incoming call. The return value is a
+<!-- Extracted images from page 576 -->
+![Extracted image 1 from page 576]([MS-TRP].images/page576-img01.png)
+<!-- /Extracted images from page 576 -->
+
+4.  The client calls the Answer packet to the server to accept the incoming call. The return value is a
 
 positive number that is the request identifier, or a negative number in case of error.
 
@@ -48887,7 +48915,11 @@ Release: April 23, 2024
 
 576 / 600
 
-A client can transfer an existing connected call. Both outgoing calls and incoming calls that are in a
+<!-- Extracted images from page 577 -->
+![Extracted image 1 from page 577]([MS-TRP].images/page577-img01.png)
+<!-- /Extracted images from page 577 -->
+
+A client can transfer an existing connected call. Both outgoing calls and incoming calls that are in a
 connected state can be transferred to another address (phone number). The following steps describe
 transferring an incoming call that has been answered:
 
@@ -48942,7 +48974,11 @@ Release: April 23, 2024
 
 577 / 600
 
-2.
+<!-- Extracted images from page 578 -->
+![Extracted image 1 from page 578]([MS-TRP].images/page578-img01.png)
+<!-- /Extracted images from page 578 -->
+
+2.
 
  The client calls the Forward packet to the server to forward calls on the line address or to modify
 (including cancel) existing forward instructions. The return value is a positive number that is the
@@ -48977,7 +49013,12 @@ Release: April 23, 2024
 
 578 / 600
 
-4.8  Packet Exchanges to Terminate the Management Session
+<!-- Extracted images from page 579 -->
+![Extracted image 1 from page 579]([MS-TRP].images/page579-img01.png)
+![Extracted image 2 from page 579]([MS-TRP].images/page579-img02.png)
+<!-- /Extracted images from page 579 -->
+
+4.8  Packet Exchanges to Terminate the Management Session
 
 Figure 10: Client terminating a management session
 
@@ -49013,7 +49054,12 @@ Release: April 23, 2024
 
 579 / 600
 
-4.10  Packet Exchange for Setting the Server Configuration
+<!-- Extracted images from page 580 -->
+![Extracted image 1 from page 580]([MS-TRP].images/page580-img01.png)
+![Extracted image 2 from page 580]([MS-TRP].images/page580-img02.png)
+<!-- /Extracted images from page 580 -->
+
+4.10  Packet Exchange for Setting the Server Configuration
 
 Figure 12: Client establishing a management session
 
@@ -49058,7 +49104,11 @@ Telephony Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-6.  The server calls the RemoteSPEventProc method of the client with the LINE_REPLY packet, which
+<!-- Extracted images from page 581 -->
+![Extracted image 1 from page 581]([MS-TRP].images/page581-img01.png)
+<!-- /Extracted images from page 581 -->
+
+6.  The server calls the RemoteSPEventProc method of the client with the LINE_REPLY packet, which
 matches the request identifier previously returned for the proxy request packet. A return value of
 0 indicates that the operation was carried out successfully, or a negative number is returned on
 error.

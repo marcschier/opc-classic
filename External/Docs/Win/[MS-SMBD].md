@@ -547,7 +547,11 @@ Release: August 11, 2025
 
 6 / 39
 
-server. Accordingly, the protocol is well-suited to support SMB2 exchanges, which exhibit a mix of
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-SMBD].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+server. Accordingly, the protocol is well-suited to support SMB2 exchanges, which exhibit a mix of
 client and server requests and responses, asynchronous unsolicited messages from server to client,
 unacknowledged requests such as cancellation, and an extremely wide range of sizes.
 
@@ -583,7 +587,11 @@ Release: August 11, 2025
 
 7 / 39
 
-
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-SMBD].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+
 
 
 

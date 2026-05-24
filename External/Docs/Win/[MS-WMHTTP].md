@@ -2656,7 +2656,11 @@ Release: April 23, 2024
 
 35 / 54
 
-Figure 1: General push distribution sequence with a single PushStart request
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-WMHTTP].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 1: General push distribution sequence with a single PushStart request
 
 The timer events in the preceding diagram are as follows.
 
@@ -2742,7 +2746,11 @@ Release: April 23, 2024
 
 37 / 54
 
-Figure 2: General push distribution sequence with $F packets and multiple PushStart
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-WMHTTP].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 2: General push distribution sequence with $F packets and multiple PushStart
 requests
 
 4.3  Push Distribution with AutoDestroy and Template-URL
@@ -2765,7 +2773,11 @@ Release: April 23, 2024
 
 38 / 54
 
-3.  The publishing point specified in the PushSetup request is created by the server, using the same
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-WMHTTP].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+3.  The publishing point specified in the PushSetup request is created by the server, using the same
 
 settings on the server as the existing publishing point specified in the Template_URL.
 
@@ -2803,7 +2815,11 @@ Release: April 23, 2024
 
 39 / 54
 
-1.  The client sends a PushSetup request.
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-WMHTTP].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+1.  The client sends a PushSetup request.
 
 2.  If the server requires the client to be authenticated, the server and client perform HTTP access
 
@@ -2918,7 +2934,11 @@ Release: April 23, 2024
 
 41 / 54
 
-The following figure shows a message sequence with three PushStart requests going through a proxy
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-WMHTTP].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+The following figure shows a message sequence with three PushStart requests going through a proxy
 server. If it is possible for the client to determine that a proxy HTTP server is used when connected to
 the server, then the client sends multiple PushStart requests (as specified in section 3.1.4.2.1).
 
@@ -2936,7 +2956,11 @@ Release: April 23, 2024
 
 42 / 54
 
-Figure 6: Server push state diagram
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-WMHTTP].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 6: Server push state diagram
 
 All requests illustrated in the diagram are sent by the client to the server in the context of an HTTP
 request message using the POST method. All server responses are in the context of an HTTP response
@@ -2960,7 +2984,11 @@ Release: April 23, 2024
 
 43 / 54
 
-After receiving the PushStart request, the server responds with an error or it loads the state that has a
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-WMHTTP].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+After receiving the PushStart request, the server responds with an error or it loads the state that has a
 Push-ID variable with the same value as the value of the push-id (section 2.2.1.3.1). If there are no
 errors, the server begins to process the received packets.
 
@@ -2998,7 +3026,11 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the server receives an $E packet with the Reason field equal to 0x00000001, the server will expect
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-WMHTTP].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+If the server receives an $E packet with the Reason field equal to 0x00000001, the server will expect
 to receive either a $C, $E, or $F packet. Information on processing the $E packets can be found in
 section 3.2.5.5.
 
@@ -3026,7 +3058,11 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the response received by the client is a 401 or 407, then authentication is required as specified in
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-WMHTTP].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+If the response received by the client is a 401 or 407, then authentication is required as specified in
 section 3.1.5.2. When the client is ready, the client shall resubmit the HTTP request with the
 authentication credentials that the server requested. In the event the HTTP response indicates an
 error other than 401 or 407, the session ends.

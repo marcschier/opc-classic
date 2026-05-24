@@ -1645,7 +1645,12 @@ Release: April 23, 2024
 
 15 / 195
 
-Figure 1: Generic Automation call
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-OAUT].images/page016-img01.png)
+![Extracted image 2 from page 16]([MS-OAUT].images/page016-img02.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 1: Generic Automation call
 
 This automation call response can be optimized if the automation client knows the DISPIDs associated
 with an automation server's method at compile time, and forgoes the initial call to GetIDsOfNames:
@@ -1673,7 +1678,12 @@ Release: April 23, 2024
 
 16 / 195
 
-Figure 3: Generic query for type information
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-OAUT].images/page017-img01.png)
+![Extracted image 2 from page 17]([MS-OAUT].images/page017-img02.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 3: Generic query for type information
 
 To support exposing type information related to COM servers, the OLE Automation Protocol specifies
 the set of types that are used to encapsulate semantic information associated with a COM server, with
@@ -11782,7 +11792,11 @@ Release: April 23, 2024
 
 145 / 195
 
-The call to the server must be structured as in the following figure.
+<!-- Extracted images from page 146 -->
+![Extracted image 1 from page 146]([MS-OAUT].images/page146-img01.png)
+<!-- /Extracted images from page 146 -->
+
+The call to the server must be structured as in the following figure.
 
 Figure 5: Call to server
 
@@ -11808,7 +11822,11 @@ OLE Automation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 6: Getting the value of a property
+<!-- Extracted images from page 147 -->
+![Extracted image 1 from page 147]([MS-OAUT].images/page147-img01.png)
+<!-- /Extracted images from page 147 -->
+
+Figure 6: Getting the value of a property
 
 Note  For brevity, the Invoke method's dispid, riid, and lcid parameters are not shown.
 
@@ -11835,7 +11853,11 @@ Release: April 23, 2024
 
 147 / 195
 
-Figure 7: Setting the value of a property
+<!-- Extracted images from page 148 -->
+![Extracted image 1 from page 148]([MS-OAUT].images/page148-img01.png)
+<!-- /Extracted images from page 148 -->
+
+Figure 7: Setting the value of a property
 
 Note  For brevity, the Invoke method's dispid, riid, and lcid parameters are not shown.
 
@@ -11865,7 +11887,11 @@ OLE Automation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 8: Calling a method with Byref and optional arguments
+<!-- Extracted images from page 149 -->
+![Extracted image 1 from page 149]([MS-OAUT].images/page149-img01.png)
+<!-- /Extracted images from page 149 -->
+
+Figure 8: Calling a method with Byref and optional arguments
 
 Note  For brevity, the Invoke method's dispid, riid, and lcid parameters are not shown.
 
@@ -11893,7 +11919,11 @@ Release: April 23, 2024
 
 149 / 195
 
-In all the examples that follow, the client can use either the _NewEnum method or the QueryInterface
+<!-- Extracted images from page 150 -->
+![Extracted image 1 from page 150]([MS-OAUT].images/page150-img01.png)
+<!-- /Extracted images from page 150 -->
+
+In all the examples that follow, the client can use either the _NewEnum method or the QueryInterface
 method on the automation server object to get the IEnumVARIANT implementation.
 
 In the examples, an array is maintained as a collection by the server, and the variable current shows
@@ -11922,7 +11952,12 @@ Release: April 23, 2024
 
 150 / 195
 
-Figure 10: Call to IEnumVARIANT::Next
+<!-- Extracted images from page 151 -->
+![Extracted image 1 from page 151]([MS-OAUT].images/page151-img01.png)
+![Extracted image 2 from page 151]([MS-OAUT].images/page151-img02.png)
+<!-- /Extracted images from page 151 -->
+
+Figure 10: Call to IEnumVARIANT::Next
 
 4.7.2  IEnumVARIANT Skip() Example
 
@@ -11939,7 +11974,11 @@ Release: April 23, 2024
 
 151 / 195
 
-4.7.3  IEnumVARIANT Reset() Example
+<!-- Extracted images from page 152 -->
+![Extracted image 1 from page 152]([MS-OAUT].images/page152-img01.png)
+<!-- /Extracted images from page 152 -->
+
+4.7.3  IEnumVARIANT Reset() Example
 
 The following diagram illustrates a call to IEnumVARIANT::Reset for a server that manages a
 collection of seven elements. Before the call, the current position is 2. The call to Reset() causes the
@@ -11962,7 +12001,11 @@ Release: April 23, 2024
 
 152 / 195
 
-Figure 13: Call to IEnumVARIANT::Clone
+<!-- Extracted images from page 153 -->
+![Extracted image 1 from page 153]([MS-OAUT].images/page153-img01.png)
+<!-- /Extracted images from page 153 -->
+
+Figure 13: Call to IEnumVARIANT::Clone
 
 4.8  Reading Type Information
 

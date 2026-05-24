@@ -578,7 +578,11 @@ Release: November 19, 2024
 
 6 / 47
 
-Figure 1: Witness clients communicating with Witness servers
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-SWN].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1: Witness clients communicating with Witness servers
 
 1.4  Relationship to Other Protocols
 
@@ -2792,7 +2796,11 @@ Release: November 19, 2024
 
 35 / 47
 
-4  Protocol Examples
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-SWN].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+4  Protocol Examples
 
 The following section describes common scenarios that indicate normal traffic flow in order to illustrate
 the function of the Service Witness Protocol.

@@ -843,7 +843,11 @@ Release: March 13, 2019
 
 8 / 46
 
-Figure 1: Message flow with replay
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-WSRVCRR].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: Message flow with replay
 
 1.4  Relationship to Other Protocols
 
@@ -1320,7 +1324,11 @@ Release: March 13, 2019
 
 16 / 46
 
-Figure 2: State diagram for the RMS role
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-WSRVCRR].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 2: State diagram for the RMS role
 
 3.1.1.1  INITIALIZED State
 
@@ -1867,7 +1875,11 @@ Release: March 13, 2019
 
 24 / 46
 
-Figure 3: State diagram for the RMD role
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-WSRVCRR].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 3: State diagram for the RMD role
 
 3.2.1.1  INITIALIZED State
 

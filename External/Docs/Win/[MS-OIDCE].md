@@ -608,7 +608,11 @@ Release: February 10, 2025
 
 7 / 28
 
-Figure 1: Protocol dependency
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-OIDCE].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: Protocol dependency
 
 1.5  Prerequisites/Preconditions
 

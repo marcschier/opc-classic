@@ -497,7 +497,11 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-authentication certificates to be issued by CA administrators who have visually verified the user's
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-CERSOD].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+authentication certificates to be issued by CA administrators who have visually verified the user's
 identity.
 
 Policy-controlling certificate issuance can be restricted in two ways; the administrator decides to
@@ -552,7 +556,11 @@ Release: October 26, 2021
 
 6 / 63
 
-1.1.6  Certificate Transparency
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-CERSOD].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+1.1.6  Certificate Transparency
 
 Certificate Transparency processing enabled on a certificate authority (CA) server allows digital
 certificates to be issued by the server to clients while also allowing a compliant operator to monitor
@@ -1048,7 +1056,11 @@ Release: October 26, 2021
 
 14 / 63
 
-Figure 3: Certificate Services protocols functional architecture in enterprise mode
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-CERSOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 3: Certificate Services protocols functional architecture in enterprise mode
 
 2.1.1  Purpose
 
@@ -1067,7 +1079,11 @@ Release: October 26, 2021
 
 15 / 63
 
-2.1.2  Components
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-CERSOD].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+2.1.2  Components
 
 The Certificate Services system has two main components:
 
@@ -1108,7 +1124,12 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The CA consists of two distinct groups. One group of components is responsible for the certificate
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-CERSOD].images/page017-img01.png)
+![Extracted image 2 from page 17]([MS-CERSOD].images/page017-img02.png)
+<!-- /Extracted images from page 17 -->
+
+The CA consists of two distinct groups. One group of components is responsible for the certificate
 enrollment and the other for CA system administration. The two groups communicate through
 shared data and the interaction between them is defined in [MS-WCCE] and [MS-CSRA].
 
@@ -1194,7 +1215,11 @@ Release: October 26, 2021
 
 18 / 63
 
-Direct enrollment applications are those that might be written by third parties to interact directly with
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-CERSOD].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Direct enrollment applications are those that might be written by third parties to interact directly with
 the CA for certificate enrollment. How these applications handle the certificates after they have been
 issued is completely dependent upon the design and development of the application.
 
@@ -1235,7 +1260,11 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-For the use of XCEP/WSTEP, the Web service address has to be configured out-of-band, for example,
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-CERSOD].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+For the use of XCEP/WSTEP, the Web service address has to be configured out-of-band, for example,
 manually or by Group Policy.
 
 Certificate enrollment clients can use Group Policy, specifically the GPREG protocol, to obtain policy
@@ -1255,7 +1284,11 @@ Release: October 26, 2021
 
 20 / 63
 
-Figure 9: Deployment of certificate enrollment
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-CERSOD].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 9: Deployment of certificate enrollment
 
 In this case, the client computer is a member of a domain where a PKI administrator has configured
 a CEP by defining some templates and installing an enterprise CA, XCEP server, and WSTEP server.
@@ -1285,7 +1318,11 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-storage and renews an already issued certificate or enrolls for new certificates as required, based on a
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-CERSOD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+storage and renews an already issued certificate or enrolls for new certificates as required, based on a
 predefined policy that is encoded in the form of CEPs.
 
 Figure 10: The autoenrollment process executing on a computer that is joined to a domain
@@ -1623,7 +1660,11 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Certificate enrollment with CA administrator approval interrupts the automatic flow of the
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-CERSOD].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+  Certificate enrollment with CA administrator approval interrupts the automatic flow of the
 
 certificate enrollment to allow the administrator to modify the request itself, modify the resulting
 certificate, or approve or deny the request.
@@ -1737,7 +1778,11 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-by the CA, it requires CA administrator approval before issuance, as specified in [MS-CSRA]. In
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-CERSOD].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+by the CA, it requires CA administrator approval before issuance, as specified in [MS-CSRA]. In
 the case of a request requiring administrator approval, the CA holds the request in a pending state
 until a CA administrator approves the request. After it is approved, the certificate is issued.
 
@@ -2294,7 +2339,11 @@ Release: October 26, 2021
 
 36 / 63
 
-Figure 13: Basic enrollment
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-CERSOD].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 13: Basic enrollment
 
 The message flow represented in the preceding figure is as follows:
 
@@ -2350,7 +2399,11 @@ Release: October 26, 2021
 
 37 / 63
 
-Figure 14: Basic enrollment with Certificate Transparency enabled
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-CERSOD].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 14: Basic enrollment with Certificate Transparency enabled
 
 The message flow represented in the preceding figure is as follows:
 
@@ -2459,7 +2512,12 @@ Release: October 26, 2021
 
 39 / 63
 
-Figure 15: Query for available certificate templates from the Active Directory server
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-CERSOD].images/page040-img01.png)
+![Extracted image 2 from page 40]([MS-CERSOD].images/page040-img02.png)
+<!-- /Extracted images from page 40 -->
+
+Figure 15: Query for available certificate templates from the Active Directory server
 
 1.  Upon startup, the CA-WCCE server requests the Active Directory server for certificate template
 
@@ -2496,7 +2554,11 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-6.  The CA checks the policy that is defined in the certificate template and concludes that it is
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-CERSOD].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+6.  The CA checks the policy that is defined in the certificate template and concludes that it is
 
 appropriate to issue the certificate (see [MS-WCCE] section 3.2.2.6.2.1.4). The CA constructs a
 new certificate, as defined by the certificate template (see [MS-WCCE] section 3.2.2.6.2.1.4), and
@@ -2566,7 +2628,11 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.  The XCEP server responds with the certificate enrollment policy information.
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-CERSOD].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+2.  The XCEP server responds with the certificate enrollment policy information.
 
 B. Request for a certificate
 
@@ -2626,7 +2692,11 @@ Release: October 26, 2021
 
 42 / 63
 
-The sequence of the steps for this example is organized into the following sections:
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-CERSOD].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+The sequence of the steps for this example is organized into the following sections:
 
 A. Query for available certificate templates from the Active Directory server
 
@@ -2670,7 +2740,12 @@ Release: October 26, 2021
 
 43 / 63
 
-Figure 20: Request for a certificate
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-CERSOD].images/page044-img01.png)
+![Extracted image 2 from page 44]([MS-CERSOD].images/page044-img02.png)
+<!-- /Extracted images from page 44 -->
+
+Figure 20: Request for a certificate
 
 6.  The end entity, by using the WCCE client, creates a PKCS#10 request based on one of the
 
@@ -2694,7 +2769,11 @@ Release: October 26, 2021
 
 44 / 63
 
-8.  The CA administrator, by using an implementation that has a CSRA client component, queries the
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-CERSOD].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+8.  The CA administrator, by using an implementation that has a CSRA client component, queries the
 CA database to obtain information about pending requests by calling the OpenView method, as
 specified in [MS-CSRA] section 3.1.4.1.12.
 
@@ -2816,7 +2895,12 @@ Release: October 26, 2021
 
 46 / 63
 
-Figure 23: Query for available certificate templates
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-CERSOD].images/page047-img01.png)
+![Extracted image 2 from page 47]([MS-CERSOD].images/page047-img02.png)
+<!-- /Extracted images from page 47 -->
+
+Figure 23: Query for available certificate templates
 
 1.  Upon startup, the CA-WCCE server requests the certificate template data from the Active
 Directory server via an LDAP search request, as described in [MS-WCCE] section 3.2.2.1.
@@ -2855,7 +2939,11 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-associated with the signature has the required EKUs, as specified in [MS-WCCE] section
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-CERSOD].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+associated with the signature has the required EKUs, as specified in [MS-WCCE] section
 3.2.2.6.2.1.2.1.2. When validation is completed, the CA issues the certificate and sends it to
 the enrollment agent.
 
@@ -2912,7 +3000,11 @@ Release: October 26, 2021
 
 48 / 63
 
-Initial System State and Prerequisites
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-CERSOD].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+Initial System State and Prerequisites
 
 This example of Key Archival and Recovery is based on the following additional assumption in addition
 to ones that are described in the example in section 3.3:
@@ -2963,7 +3055,12 @@ Release: October 26, 2021
 
 49 / 63
 
-Figure 27: Configure the CA to use a KRA certificate
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MS-CERSOD].images/page050-img01.png)
+![Extracted image 2 from page 50]([MS-CERSOD].images/page050-img02.png)
+<!-- /Extracted images from page 50 -->
+
+Figure 27: Configure the CA to use a KRA certificate
 
 4.  The CA administrator configures the CA by using the CSRA client to use the KRA certificates when
 
@@ -3001,7 +3098,11 @@ Release: October 26, 2021
 
 50 / 63
 
-10. The client constructs a CMS request that includes the CMC request and sends it to the CA, as
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-CERSOD].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+10. The client constructs a CMS request that includes the CMC request and sends it to the CA, as
 
 specified in [MS-WCCE] section 3.1.1.4.3.6.
 
@@ -3065,7 +3166,12 @@ Release: October 26, 2021
 
 51 / 63
 
-C. Revoke the certificate
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-CERSOD].images/page052-img01.png)
+![Extracted image 2 from page 52]([MS-CERSOD].images/page052-img02.png)
+<!-- /Extracted images from page 52 -->
+
+C. Revoke the certificate
 
 A. Query for available certificate templates from the Active Directory server
 
@@ -3103,7 +3209,11 @@ Release: October 26, 2021
 
 52 / 63
 
-6.  The end entity, by using the WCCE client, creates a PKCS#10 request that is based on one of the
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-CERSOD].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+6.  The end entity, by using the WCCE client, creates a PKCS#10 request that is based on one of the
 certificate templates and submits it to the CA by calling the Request method specified in [MS-
 WCCE] section 3.1.2.4.2.
 
@@ -3146,7 +3256,11 @@ Release: October 26, 2021
 
 53 / 63
 
-14. The CA administrator closes the CA database view by calling the CloseView method, as specified
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MS-CERSOD].images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+14. The CA administrator closes the CA database view by calling the CloseView method, as specified
 
 in [MS-CSRA] section 3.1.4.1.14.
 
@@ -3203,7 +3317,11 @@ Release: October 26, 2021
 
 54 / 63
 
-2.  The Active Directory server processes the request and responds with certificate template data in
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-CERSOD].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+2.  The Active Directory server processes the request and responds with certificate template data in
 
 the format that is specified in [MS-WCCE] section 3.2.2.1.1.
 
@@ -3257,7 +3375,11 @@ Release: October 26, 2021
 
 55 / 63
 
-server rejects the request. Later, after the directory is synchronized, the client submits another
+<!-- Extracted images from page 56 -->
+![Extracted image 1 from page 56]([MS-CERSOD].images/page056-img01.png)
+<!-- /Extracted images from page 56 -->
+
+server rejects the request. Later, after the directory is synchronized, the client submits another
 request that results in the certificate being issued.
 
 Initial System state and Prerequisites
@@ -3312,7 +3434,12 @@ Release: October 26, 2021
 
 56 / 63
 
-B. Modify certificate templates with new policies
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-CERSOD].images/page057-img01.png)
+![Extracted image 2 from page 57]([MS-CERSOD].images/page057-img02.png)
+<!-- /Extracted images from page 57 -->
+
+B. Modify certificate templates with new policies
 
 Figure 36: Modify certificate templates after Directory replication
 
@@ -3353,7 +3480,12 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-D. DRSR Directory Replication
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-CERSOD].images/page058-img01.png)
+![Extracted image 2 from page 58]([MS-CERSOD].images/page058-img02.png)
+<!-- /Extracted images from page 58 -->
+
+D. DRSR Directory Replication
 
 Figure 38: DRSR Directory Replication
 

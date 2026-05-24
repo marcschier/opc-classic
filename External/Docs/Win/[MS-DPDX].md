@@ -1275,7 +1275,11 @@ Release: April 23, 2024
 
 13 / 83
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-DPDX].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+1.4  Relationship to Other Protocols
 
 The DirectPlay DXDiag Usage Protocol has a dependency on UDP, or other similar datagram-oriented,
 connectionless protocol such as IPX, for the transport layer. As a native Windows protocol, no other
@@ -1437,7 +1441,11 @@ Release: April 23, 2024
 
 16 / 83
 
-Figure 2: TRANS_USERDATA_DESTROY_PLAYER packet prefixed with the
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-DPDX].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 2: TRANS_USERDATA_DESTROY_PLAYER packet prefixed with the
 _MESSAGE_HEADER header
 
 0  1  2  3  4  5  6  7  8  9
@@ -6080,7 +6088,11 @@ Release: April 23, 2024
 
 73 / 83
 
-Figure 3: Sequence diagram for a new client joining a game session with an existing client
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-DPDX].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+Figure 3: Sequence diagram for a new client joining a game session with an existing client
 
 Note  In the diagram, different line styles are used to distinguish between message types, including
 query/response, TRANS_COMMAND, TRANS_USERDATA, and SESS_PATH_TEST.

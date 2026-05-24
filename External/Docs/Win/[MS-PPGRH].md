@@ -931,7 +931,11 @@ Release: June 25, 2021
 
 10 / 95
 
-Figure 1: Example of a graph
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-PPGRH].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 1: Example of a graph
 
 1.3.2  Connecting and Disconnecting
 
@@ -1241,7 +1245,11 @@ Release: June 25, 2021
 
 15 / 95
 
-Figure 2: P2P Graphing relationship to other protocols
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-PPGRH].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 2: P2P Graphing relationship to other protocols
 
 1.5  Prerequisites/Preconditions
 
@@ -3822,7 +3830,11 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  OUT_CONN_STATE_SOCKET: The outgoing socket has been successfully set up.
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-PPGRH].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+  OUT_CONN_STATE_SOCKET: The outgoing socket has been successfully set up.
 
   OUT_CONN_STATE_SOCK_CONNECTED: The outgoing socket is connected.
 
@@ -4747,7 +4759,15 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  Friendly Name Offset MUST be greater than Peer ID Offset.
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-PPGRH].images/page060-img01.png)
+![Extracted image 2 from page 60]([MS-PPGRH].images/page060-img02.png)
+![Extracted image 3 from page 60]([MS-PPGRH].images/page060-img03.png)
+![Extracted image 4 from page 60]([MS-PPGRH].images/page060-img04.png)
+![Extracted image 5 from page 60]([MS-PPGRH].images/page060-img05.png)
+<!-- /Extracted images from page 60 -->
+
+  Friendly Name Offset MUST be greater than Peer ID Offset.
 
   Friendly Name Offset MUST be no greater than Message Size.
 
@@ -5471,7 +5491,12 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-The Record Expiration Timer MUST also be reset every time it fires, with a duration calculated as the
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-PPGRH].images/page069-img01.png)
+![Extracted image 2 from page 69]([MS-PPGRH].images/page069-img02.png)
+<!-- /Extracted images from page 69 -->
+
+The Record Expiration Timer MUST also be reset every time it fires, with a duration calculated as the
 value timerdelay as specified below:
 
 where:
@@ -5968,7 +5993,14 @@ Release: June 25, 2021
 
 74 / 95
 
-3.1.7.11
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-PPGRH].images/page075-img01.png)
+![Extracted image 2 from page 75]([MS-PPGRH].images/page075-img02.png)
+![Extracted image 3 from page 75]([MS-PPGRH].images/page075-img03.png)
+![Extracted image 4 from page 75]([MS-PPGRH].images/page075-img04.png)
+<!-- /Extracted images from page 75 -->
+
+3.1.7.11
 
 Signature Calculation
 
@@ -6207,7 +6239,11 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.1.7.21
+<!-- Extracted images from page 78 -->
+![Extracted image 1 from page 78]([MS-PPGRH].images/page078-img01.png)
+<!-- /Extracted images from page 78 -->
+
+3.1.7.21
 
 Expired Contact Record Found
 
@@ -6289,7 +6325,11 @@ Release: June 25, 2021
 
 78 / 95
 
-Figure 3: State transitions when setting up a connection
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-PPGRH].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+Figure 3: State transitions when setting up a connection
 
 To establish a connection to a remote node, the local node MUST take the following steps:
 
@@ -6391,7 +6431,11 @@ Release: June 25, 2021
 
 80 / 95
 
-Figure 4: State transitions when accepting an incoming message
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81]([MS-PPGRH].images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+Figure 4: State transitions when accepting an incoming message
 
 When a connection is established to the local node, the following steps MUST be taken by the node in
 order to accept the connection:
@@ -6713,14 +6757,22 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-[MS-PPGRH] - v20210625
+<!-- Extracted images from page 85 -->
+![Extracted image 1 from page 85]([MS-PPGRH].images/page085-img01.png)
+<!-- /Extracted images from page 85 -->
+
+[MS-PPGRH] - v20210625
 Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
 85 / 95
 
-4  Protocol Examples
+<!-- Extracted images from page 86 -->
+![Extracted image 1 from page 86]([MS-PPGRH].images/page086-img01.png)
+<!-- /Extracted images from page 86 -->
+
+4  Protocol Examples
 
 4.1  Establishing a Connection
 
@@ -6758,7 +6810,11 @@ Release: June 25, 2021
 
 86 / 95
 
-Figure 6: Example of a Sync All message exchange
+<!-- Extracted images from page 87 -->
+![Extracted image 1 from page 87]([MS-PPGRH].images/page087-img01.png)
+<!-- /Extracted images from page 87 -->
+
+Figure 6: Example of a Sync All message exchange
 
 Performing a Sync All includes the following steps:
 
@@ -6799,7 +6855,11 @@ Release: June 25, 2021
 
 87 / 95
 
-Figure 7: Example of a Hash-based Sync message exchange
+<!-- Extracted images from page 88 -->
+![Extracted image 1 from page 88]([MS-PPGRH].images/page088-img01.png)
+<!-- /Extracted images from page 88 -->
+
+Figure 7: Example of a Hash-based Sync message exchange
 
 Performing a Hash-based Sync includes the following steps:
 
@@ -6845,7 +6905,11 @@ Peer-to-Peer Graphing Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-to find a Node that it is not already connected to. Node 3 establishes a connection to Node 1, as
+<!-- Extracted images from page 89 -->
+![Extracted image 1 from page 89]([MS-PPGRH].images/page089-img01.png)
+<!-- /Extracted images from page 89 -->
+
+to find a Node that it is not already connected to. Node 3 establishes a connection to Node 1, as
 above. At this point, all three nodes are interconnected.
 
 4.4  Record Flooding

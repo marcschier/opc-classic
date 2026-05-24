@@ -1072,7 +1072,11 @@ Release: April 23, 2024
 
 10 / 60
 
-Figure 1: Protocol relationships
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-MQQP].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 1: Protocol relationships
 
 This protocol has been deprecated by the RemoteRead RPC interface, as specified in [MS-MQRR].
 
@@ -4141,7 +4145,11 @@ Release: April 23, 2024
 
 47 / 60
 
-4  Protocol Examples
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-MQQP].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+4  Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Message Queuing (MSMQ): Queue Manager to Queue Manager Protocol.
@@ -4178,7 +4186,11 @@ Release: April 23, 2024
 
 48 / 60
 
-3.  The supporting server indicates that the message was successfully received by calling
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-MQQP].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+3.  The supporting server indicates that the message was successfully received by calling
 
 RemoteQMEndReceive, specifying RR_ACK (0x00000002) for dwAck.
 

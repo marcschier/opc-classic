@@ -572,7 +572,11 @@ Release: April 23, 2024
 
 7 / 29
 
-[MSFT-TEMPLATES] Microsoft Corporation, "Implementing and Administering Certificate Templates in
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-OTPCE].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+[MSFT-TEMPLATES] Microsoft Corporation, "Implementing and Administering Certificate Templates in
 Windows Server 2003", July 2004, http://technet.microsoft.com/en-us/library/c25f57b0-5459-4c17-
 bb3f-2f657bd23f78
 
@@ -614,7 +618,11 @@ One-Time Password Certificate Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  The DirectAccess server signs the certificate enrollment request with a dedicated signing
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-OTPCE].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+3.  The DirectAccess server signs the certificate enrollment request with a dedicated signing
 
 certificate only the DirectAccess server possesses. After that, the signed certificate request and
 the name of the CA (from which the DirectAccess client enrolls the short-lived smart card logon
@@ -643,7 +651,11 @@ Release: April 23, 2024
 
 9 / 29
 
-Figure 3: Typical sequence of a certificate enrollment with erroneous credentials
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-OTPCE].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 3: Typical sequence of a certificate enrollment with erroneous credentials
 
 The following figure shows the use of the OTPCE protocol in Windows DirectAccess OTP authentication.
 
@@ -654,7 +666,11 @@ Release: April 23, 2024
 
 10 / 29
 
-Figure 4: DirectAccess OTP authentication end to end flow
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-OTPCE].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 4: DirectAccess OTP authentication end to end flow
 
 1.4  Relationship to Other Protocols
 

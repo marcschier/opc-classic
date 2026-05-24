@@ -1758,7 +1758,11 @@ Release: April 23, 2024
 
 18 / 267
 
-Figure 1: Relationship between objects in the catalog
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-COMA].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 1: Relationship between objects in the catalog
 
 A component is an indivisible unit of software functionality. Examples of components include DCOM
 object classes [MS-DCOM] and event classes described in [MS-COMEV]. Each component known to
@@ -1786,7 +1790,11 @@ Component Object Model Plus (COM+) Remote Administration Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-resources such as compensating resource managers (section 3.1.1.1.1) and queue listeners (section
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-COMA].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+resources such as compensating resource managers (section 3.1.1.1.1) and queue listeners (section
 3.1.1.1.5). Some conglomeration-level configuration properties might not apply to all component
 configuration entries, as explained in more detail in the sections that follow.
 
@@ -1840,7 +1848,11 @@ Release: April 23, 2024
 
 20 / 267
 
-1.3.3  Catalog Versions and Partition Support
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-COMA].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+1.3.3  Catalog Versions and Partition Support
 
 This document specifies three catalog versions, which correspond to changes in the configuration
 state model. Version 3.00 is the initial catalog version. Version 4.00 supports new types of
@@ -2023,7 +2035,11 @@ Release: April 23, 2024
 
 23 / 267
 
-The following UML diagram summarizes the relationships between components, component
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-COMA].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+The following UML diagram summarizes the relationships between components, component
 configuration entries, conglomerations, component instances, and instance containers.
 
 Figure 4: Relationships between static and run-time objects
@@ -6116,7 +6132,11 @@ Release: April 23, 2024
 
 72 / 267
 
-specific transport protocols or transport protocols with specific characteristics. This section covers
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MS-COMA].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+specific transport protocols or transport protocols with specific characteristics. This section covers
 these configuration properties.
 
 If the ORB provides a facility for exposing components via SOAP [SOAP1.1] or an extension
@@ -20296,7 +20316,11 @@ Release: April 23, 2024
 
 206 / 267
 
-4  Protocol Examples
+<!-- Extracted images from page 207 -->
+![Extracted image 1 from page 207]([MS-COMA].images/page207-img01.png)
+<!-- /Extracted images from page 207 -->
+
+4  Protocol Examples
 
 4.1  Catalog Session and Capabilities Initialization
 
@@ -20397,7 +20421,11 @@ Release: April 23, 2024
 
 208 / 267
 
-
+<!-- Extracted images from page 209 -->
+![Extracted image 1 from page 209]([MS-COMA].images/page209-img01.png)
+<!-- /Extracted images from page 209 -->
+
+
 
 The COMA server determines whether it supports non-native bitness. In this case, it does not, so
 it sets pbSupportsMultipleBitness to 0x00000000 and returns S_OK.
@@ -20961,7 +20989,11 @@ Release: April 23, 2024
 
 214 / 267
 
-4.3  Writing to a Table
+<!-- Extracted images from page 215 -->
+![Extracted image 1 from page 215]([MS-COMA].images/page215-img01.png)
+<!-- /Extracted images from page 215 -->
+
+4.3  Writing to a Table
 
 Figure 8: Writing to a table
 
@@ -21330,7 +21362,11 @@ Release: April 23, 2024
 
 217 / 267
 
-     [in] DWORD tableFlags = {unchanged},
+<!-- Extracted images from page 218 -->
+![Extracted image 1 from page 218]([MS-COMA].images/page218-img01.png)
+<!-- /Extracted images from page 218 -->
+
+     [in] DWORD tableFlags = {unchanged},
      [in, size_is(cbQueryCellArray), unique] char*
                        pQueryCellArray = {unchanged},
      [in] ULONG cbQueryCellArray = {unchanged},

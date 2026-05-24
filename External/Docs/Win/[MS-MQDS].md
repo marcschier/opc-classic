@@ -1510,7 +1510,11 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The Message Queuing (MSMQ): Directory Service Protocol includes a method for RPC endpoint port
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-MQDS].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+The Message Queuing (MSMQ): Directory Service Protocol includes a method for RPC endpoint port
 negotiation. Through this, the client can determine the RPC endpoint port to use for this protocol.
 
 Generally, for methods that create, update, or delete information in the directory service, the Message
@@ -6772,7 +6776,11 @@ Release: June 1, 2017
 
 78 / 238
 
-implementations. The following diagram shows the concept of ownership between these directory
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-MQDS].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+implementations. The following diagram shows the concept of ownership between these directory
 service object types.
 
 Figure 2: Directory service object type ownership
@@ -17478,7 +17486,11 @@ Release: June 1, 2017
 
 184 / 238
 
-Figure 3: Protocol exchange complete
+<!-- Extracted images from page 185 -->
+![Extracted image 1 from page 185]([MS-MQDS].images/page185-img01.png)
+<!-- /Extracted images from page 185 -->
+
+Figure 3: Protocol exchange complete
 
 4.2  S_DSQMGetObjectSecurity and
 
@@ -17504,7 +17516,11 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-machine that owns the queue; otherwise, the private key is the private key associated with the
+<!-- Extracted images from page 186 -->
+![Extracted image 1 from page 186]([MS-MQDS].images/page186-img01.png)
+<!-- /Extracted images from page 186 -->
+
+machine that owns the queue; otherwise, the private key is the private key associated with the
 directory service object. This signed hash is returned to the server in the abCallengeResponce
 parameter.
 
@@ -17526,7 +17542,11 @@ Release: June 1, 2017
 
 186 / 238
 
-4.3  S_DSLookupBegin, S_DSLookupNext, and S_DSLookupEnd
+<!-- Extracted images from page 187 -->
+![Extracted image 1 from page 187]([MS-MQDS].images/page187-img01.png)
+<!-- /Extracted images from page 187 -->
+
+4.3  S_DSLookupBegin, S_DSLookupNext, and S_DSLookupEnd
 
 Collectively, the methods S_DSLookupBegin, S_DSLookupNext, and S_DSLookupEnd allow the client
 to perform ad-hoc queries against the directory service.
@@ -17548,7 +17568,11 @@ Release: June 1, 2017
 
 187 / 238
 
-4.4  S_DSBeginDeleteNotification, S_DSNotifyDelete, and S_DSEndDeleteNotification
+<!-- Extracted images from page 188 -->
+![Extracted image 1 from page 188]([MS-MQDS].images/page188-img01.png)
+<!-- /Extracted images from page 188 -->
+
+4.4  S_DSBeginDeleteNotification, S_DSNotifyDelete, and S_DSEndDeleteNotification
 
 Collectively, the S_DSBeginDeleteNotification, S_DSNotifyDelete, and S_DSEndDeleteNotification
 methods are used by the client to notify the server that a queue or machine has been deleted by the

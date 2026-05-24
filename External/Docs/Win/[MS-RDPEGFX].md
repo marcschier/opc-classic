@@ -1163,7 +1163,11 @@ Release: May 11, 2026
 
 10 / 145
 
-Figure 1: Overview of the blit commands
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPEGFX].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 1: Overview of the blit commands
 
 For more details regarding the graphics protocol behavior, sequencing, and processing rules, see
 section 3.
@@ -7815,7 +7819,11 @@ Release: May 11, 2026
 
 87 / 145
 
-3.2.5.21
+<!-- Extracted images from page 88 -->
+![Extracted image 1 from page 88]([MS-RDPEGFX].images/page088-img01.png)
+<!-- /Extracted images from page 88 -->
+
+3.2.5.21
 
 Processing an RDPGFX_QOE_FRAME_ACKNOWLEDGE_PDU message
 
@@ -7868,7 +7876,11 @@ Release: May 11, 2026
 
 88 / 145
 
-When this encoding path is compared to [MS-RDPRFX] section 3.1.8.1, differencing has been
+<!-- Extracted images from page 89 -->
+![Extracted image 1 from page 89]([MS-RDPEGFX].images/page089-img01.png)
+<!-- /Extracted images from page 89 -->
+
+When this encoding path is compared to [MS-RDPRFX] section 3.1.8.1, differencing has been
 removed, sub-band diffing has been added, and progressive encoding has been incorporated into the
 entropy encoder.
 
@@ -7924,7 +7936,11 @@ Release: May 11, 2026
 
 89 / 145
 
-The second-pass DWT takes the 33 low-frequency results from the first pass and performs a DWT with
+<!-- Extracted images from page 90 -->
+![Extracted image 1 from page 90]([MS-RDPEGFX].images/page090-img01.png)
+<!-- /Extracted images from page 90 -->
+
+The second-pass DWT takes the 33 low-frequency results from the first pass and performs a DWT with
 normal mirroring, producing in turn 17 low-frequency elements and 16 high-frequency elements.
 
 Finally, the third-pass DWT takes the 17 low-frequency results and produces (using the same
@@ -7939,7 +7955,11 @@ Release: May 11, 2026
 
 90 / 145
 
-Figure 3: Bands resulting from the Reduce-Extrapolate DWT Method
+<!-- Extracted images from page 91 -->
+![Extracted image 1 from page 91]([MS-RDPEGFX].images/page091-img01.png)
+<!-- /Extracted images from page 91 -->
+
+Figure 3: Bands resulting from the Reduce-Extrapolate DWT Method
 
 3.2.8.1.3 Quantization and Linearization
 
@@ -7969,7 +7989,13 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-A tile that is being encoded for the first time is always sent as an original tile.
+<!-- Extracted images from page 92 -->
+![Extracted image 1 from page 92]([MS-RDPEGFX].images/page092-img01.png)
+![Extracted image 2 from page 92]([MS-RDPEGFX].images/page092-img02.png)
+![Extracted image 3 from page 92]([MS-RDPEGFX].images/page092-img03.png)
+<!-- /Extracted images from page 92 -->
+
+A tile that is being encoded for the first time is always sent as an original tile.
 
 The calculation to determine the difference is performed on all three color components. Each of the
 1024 coefficients from the tile contained in the reference bits are subtracted from each of the 1024
@@ -8019,7 +8045,12 @@ Release: May 11, 2026
 
 92 / 145
 
-Each time a progressive pass is performed, DRS is reduced by the current DTS, and DAS is increased
+<!-- Extracted images from page 93 -->
+![Extracted image 1 from page 93]([MS-RDPEGFX].images/page093-img01.png)
+![Extracted image 2 from page 93]([MS-RDPEGFX].images/page093-img02.png)
+<!-- /Extracted images from page 93 -->
+
+Each time a progressive pass is performed, DRS is reduced by the current DTS, and DAS is increased
 by the current DTS for the next pass.
 
 3.2.8.1.5.1  Performing the First Progressive Pass
@@ -8666,7 +8697,11 @@ Release: May 11, 2026
 
 102 / 145
 
-Figure 4: Decompressing a bitmap using ClearCodec Bitmap Compression
+<!-- Extracted images from page 103 -->
+![Extracted image 1 from page 103]([MS-RDPEGFX].images/page103-img01.png)
+<!-- /Extracted images from page 103 -->
+
+Figure 4: Decompressing a bitmap using ClearCodec Bitmap Compression
 
 3.3.8.2  RemoteFX Progressive Codec Compression
 
@@ -8681,7 +8716,11 @@ Release: May 11, 2026
 
 103 / 145
 
-Figure 5: RemoteFX Progressive Codec decoding stages
+<!-- Extracted images from page 104 -->
+![Extracted image 1 from page 104]([MS-RDPEGFX].images/page104-img01.png)
+<!-- /Extracted images from page 104 -->
+
+Figure 5: RemoteFX Progressive Codec decoding stages
 
 When compared to [MS-RDPRFX] section 3.1.8.2, the codec now maintains state. "Current frame"
 contains the DWT coefficients of the tiles, and "Persistent progressive state" is used to maintain
@@ -8794,7 +8833,12 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-3.3.8.2.2 Inverse DWT
+<!-- Extracted images from page 106 -->
+![Extracted image 1 from page 106]([MS-RDPEGFX].images/page106-img01.png)
+![Extracted image 2 from page 106]([MS-RDPEGFX].images/page106-img02.png)
+<!-- /Extracted images from page 106 -->
+
+3.3.8.2.2 Inverse DWT
 
 The inverse discrete wavelet transform (IDWT) is based on the equations specified in [MS-
 RDPRFX] section 3.1.8.2.4. However, as described in section 3.2.8.1.2, the associated forward
@@ -8841,7 +8885,11 @@ Release: May 11, 2026
 
 106 / 145
 
-3.3.8.3.2 YUV420p Stream Combination for YUV444 mode
+<!-- Extracted images from page 107 -->
+![Extracted image 1 from page 107]([MS-RDPEGFX].images/page107-img01.png)
+<!-- /Extracted images from page 107 -->
+
+3.3.8.3.2 YUV420p Stream Combination for YUV444 mode
 
 The RFX_AVC444_BITMAP_STREAM structure (section 2.2.4.5) encapsulates two
 RFX_AVC420_BITMAP_STREAM structures (section 2.2.4.4). These two YUV420p streams MUST be
@@ -8864,7 +8912,11 @@ Release: May 11, 2026
 
 107 / 145
 
-Figure 7: A representation of a YUV444 macroblock as two YUV420p macroblocks
+<!-- Extracted images from page 108 -->
+![Extracted image 1 from page 108]([MS-RDPEGFX].images/page108-img01.png)
+<!-- /Extracted images from page 108 -->
+
+Figure 7: A representation of a YUV444 macroblock as two YUV420p macroblocks
 
 The areas marked as B1 to B7 make up the Y, U, and V planes of the two YUV420p macroblocks
 representing the main (luma) and auxiliary (chroma) views. These areas are related to Y444, U444, and
@@ -8877,7 +8929,12 @@ Release: May 11, 2026
 
 108 / 145
 
-Color conversion MUST occur as follows in each case:
+<!-- Extracted images from page 109 -->
+![Extracted image 1 from page 109]([MS-RDPEGFX].images/page109-img01.png)
+![Extracted image 2 from page 109]([MS-RDPEGFX].images/page109-img02.png)
+<!-- /Extracted images from page 109 -->
+
+Color conversion MUST occur as follows in each case:
 
 For macroblocks that are in rectangles in a received luma subframe (refer to the regionRects field of
 the corresponding RFX_AVC420_METABLOCK (section 2.2.4.4.1)), color conversion MUST be
@@ -8908,7 +8965,12 @@ Release: May 11, 2026
 
 109 / 145
 
-3.3.8.3.3 YUV420p Stream Combination for YUV444v2 mode
+<!-- Extracted images from page 110 -->
+![Extracted image 1 from page 110]([MS-RDPEGFX].images/page110-img01.png)
+![Extracted image 2 from page 110]([MS-RDPEGFX].images/page110-img02.png)
+<!-- /Extracted images from page 110 -->
+
+3.3.8.3.3 YUV420p Stream Combination for YUV444v2 mode
 
 The RFX_AVC444V2_BITMAP_STREAM structure (section 2.2.4.6) encapsulates two
 RFX_AVC420_BITMAP_STREAM structures (section 2.2.4.4). These two YUV420p streams MUST be
@@ -8934,7 +8996,11 @@ Release: May 11, 2026
 
 110 / 145
 
-Figure 9: A representation of a YUV444 frame as two YUV420p frames
+<!-- Extracted images from page 111 -->
+![Extracted image 1 from page 111]([MS-RDPEGFX].images/page111-img01.png)
+<!-- /Extracted images from page 111 -->
+
+Figure 9: A representation of a YUV444 frame as two YUV420p frames
 
 The areas marked as B1 to B9 make up the Y, U, and V planes of the two YUV420p macroblocks
 representing the main (luma) and auxiliary (chroma) views. These areas are related to Y444, U444, and
@@ -8947,7 +9013,12 @@ Release: May 11, 2026
 
 111 / 145
 
-Color conversion MUST occur as follows in each case:
+<!-- Extracted images from page 112 -->
+![Extracted image 1 from page 112]([MS-RDPEGFX].images/page112-img01.png)
+![Extracted image 2 from page 112]([MS-RDPEGFX].images/page112-img02.png)
+<!-- /Extracted images from page 112 -->
+
+Color conversion MUST occur as follows in each case:
 
 For macroblocks that are in rectangles in a received luma subframe (refer to the regionRects field of
 the corresponding RFX_AVC420_METABLOCK (section 2.2.4.4.1)), color conversion MUST be
@@ -8978,7 +9049,11 @@ Release: May 11, 2026
 
 112 / 145
 
-[MS-RDPEGFX] - v20260511
+<!-- Extracted images from page 113 -->
+![Extracted image 1 from page 113]([MS-RDPEGFX].images/page113-img01.png)
+<!-- /Extracted images from page 113 -->
+
+[MS-RDPEGFX] - v20260511
 Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
@@ -9329,7 +9404,11 @@ Remote Desktop Protocol: Graphics Pipeline Extension
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- ...
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MS-RDPEGFX].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+ ...
  ff ff ff -> 15th pixel at position (0, 14) = (blue = 0xff, green = 0xff, red = 0xff)
 
 The Short V-Bar Storage (section 3.3.1.12) ADM element at the Short V-Bar Storage Cursor (section
@@ -9387,7 +9466,12 @@ Release: May 11, 2026
 
 119 / 145
 
-Figure 11: A 2 x 8 glyph
+<!-- Extracted images from page 120 -->
+![Extracted image 1 from page 120]([MS-RDPEGFX].images/page120-img01.png)
+![Extracted image 2 from page 120]([MS-RDPEGFX].images/page120-img02.png)
+<!-- /Extracted images from page 120 -->
+
+Figure 11: A 2 x 8 glyph
 
 The decoded linear stream of pixels is stored within the Decompressor Glyph Storage ADM element
 in the slot specified by the glyphIndex field of the encapsulating CLEARCODEC_BITMAP_STREAM
@@ -9415,7 +9499,11 @@ Release: May 11, 2026
 
 120 / 145
 
-Figure 13: An 8 x 2 glyph
+<!-- Extracted images from page 121 -->
+![Extracted image 1 from page 121]([MS-RDPEGFX].images/page121-img01.png)
+<!-- /Extracted images from page 121 -->
+
+Figure 13: An 8 x 2 glyph
 
 In effect, a linear stream of pixels stored in a slot in the Decompressor Glyph Storage ADM element
 can be blitted into a number of rectangular configurations, as long as all of the pixels are used in the

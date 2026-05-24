@@ -3775,7 +3775,11 @@ Directory Replication Service (DRS) Remote Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-pmsgOut. On subsequent calls to this method with the same InfoType, the client sets the input
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-DRSR].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+pmsgOut. On subsequent calls to this method with the same InfoType, the client sets the input
 dwEnumerationContext in pmsgIn to the last value of that field returned from the server. The
 purpose of this field is to allow the client to gather all the requested information, but in more than
 one server call. The final call is identified when the method returns ERROR_NO_MORE_ITEMS. See
@@ -27448,7 +27452,11 @@ Release: March 9, 2026
 
 343 / 600
 
-Figure 2: Site graph for a nontransitive network
+<!-- Extracted images from page 344 -->
+![Extracted image 1 from page 344]([MS-DRSR].images/page344-img01.png)
+<!-- /Extracted images from page 344 -->
+
+Figure 2: Site graph for a nontransitive network
 
 VERTEX  ARC
 
@@ -27985,7 +27993,11 @@ Release: March 9, 2026
 
 350 / 600
 
-
+<!-- Extracted images from page 351 -->
+![Extracted image 1 from page 351]([MS-DRSR].images/page351-img01.png)
+<!-- /Extracted images from page 351 -->
+
+
 
 rgCostInfo[2]:  DRS_MSG_QUERYSITESREPLYELEMENT_V1
 

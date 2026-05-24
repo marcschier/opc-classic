@@ -1077,7 +1077,11 @@ Release: April 23, 2024
 
 10 / 84
 
-Figure 1: Components that use the Group Policy: IPsec Protocol Extension
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-GPIPSEC].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 1: Components that use the Group Policy: IPsec Protocol Extension
 
 The components in the protocol are as follows:
 
@@ -1110,7 +1114,12 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 2: IPsec policy creation
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-GPIPSEC].images/page012-img01.png)
+![Extracted image 2 from page 12]([MS-GPIPSEC].images/page012-img02.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: IPsec policy creation
 
 The IPsec policy modification (for example, when changing an IPsec policy object name or reference
 GUID) uses the LDAP "modify" mechanism, as specified in [RFC2251] section 4.6. For details, see
@@ -1150,7 +1159,11 @@ Release: April 23, 2024
 
 12 / 84
 
-Figure 4: IPsec policy retrieval
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-GPIPSEC].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 4: IPsec policy retrieval
 
 Note  Processing instructions for the first LDAP Search/Response pair is specified in section 3.2.5.3.
 Processing instructions for the second LDAP Search/Response pair is specified in section 3.2.5.4.
@@ -1178,7 +1191,11 @@ Release: April 23, 2024
 
 13 / 84
 
-Figure 5: Protocol relationship diagram
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-GPIPSEC].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 5: Protocol relationship diagram
 
 1.5  Prerequisites/Preconditions
 
@@ -1301,7 +1318,11 @@ Release: April 23, 2024
 
 16 / 84
 
-Figure 6: IPsec policy storage
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-GPIPSEC].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 6: IPsec policy storage
 
 The actual IPsec policy creation and modification protocol consists of writing a series of messages that
 create or modify the ipsecPolicy, ipsecISAKMPPolicy, ipsecNFA, ipsecNegotiationPolicy, and ipsecFilter
@@ -1323,7 +1344,11 @@ Release: April 23, 2024
 
 17 / 84
 
-Figure 7: Individual policy objects stored in the IP Security container
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-GPIPSEC].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 7: Individual policy objects stored in the IP Security container
 
 IPsec policy creation MUST use the addRequest when adding the policy. The individual values are
 specified in the data descriptions that follow in sections 2.2.1.1, 2.2.1.2, 2.2.1.3, 2.2.1.4, and 2.2.1.5.
@@ -1345,7 +1370,11 @@ Release: April 23, 2024
 
 18 / 84
 
-The individual items are all stored in the "IP Security" container, and the relationships shown are
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-GPIPSEC].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+The individual items are all stored in the "IP Security" container, and the relationships shown are
 logical, not physical. A logical relationship is formed by an attribute of one item having as a value the
 name of another item.
 
@@ -1383,7 +1412,11 @@ Release: April 23, 2024
 
 19 / 84
 
-Figure 9: Multiple ipsecNFA objects per ipsecPolicy
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-GPIPSEC].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 9: Multiple ipsecNFA objects per ipsecPolicy
 
 Note  Multiple ipsecPolicy objects can be stored in the "IP Security" container. Separate policies
 (ipsecPolicy objects) are often assigned as active policy to particular GPOs, so that a specific IPsec
@@ -1425,7 +1458,11 @@ Release: April 23, 2024
 
 20 / 84
 
-Figure 10: IPsec policy object
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-GPIPSEC].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 10: IPsec policy object
 
 IPsec policy creation MUST use the LDAP add functionality in conformance with [RFC2251] section 4.7.
 
@@ -1626,7 +1663,11 @@ Release: April 23, 2024
 
 23 / 84
 
-Figure 11: ISAKMP policy object
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-GPIPSEC].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 11: ISAKMP policy object
 
  The ipsecISAKMPPolicy object creation MUST use the LDAP add functionality in conformance with
 [RFC2251] section 4.7.
@@ -2363,7 +2404,11 @@ Release: April 23, 2024
 
 31 / 84
 
-Figure 12: NFA policy object
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-GPIPSEC].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 12: NFA policy object
 
 The ipsecNFA object creation MUST use the LDAP add functionality in conformance with [RFC2251]
 section 4.7.
@@ -2903,7 +2948,11 @@ Release: April 23, 2024
 
 38 / 84
 
-Figure 13: Negotiation policy object
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-GPIPSEC].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 13: Negotiation policy object
 
  The ipsecNegotiationPolicy object creation MUST use the LDAP add functionality in conformance
 with [RFC2251] section 4.7.
@@ -3321,7 +3370,11 @@ Release: April 23, 2024
 
 43 / 84
 
-Value
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-GPIPSEC].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+Value
 
 Meaning
 
@@ -4253,7 +4306,11 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Filter-Flags (4 bytes): The flags that specify optional additional behavior. This SHOULD<29> be a
+<!-- Extracted images from page 56 -->
+![Extracted image 1 from page 56]([MS-GPIPSEC].images/page056-img01.png)
+<!-- /Extracted images from page 56 -->
+
+Filter-Flags (4 bytes): The flags that specify optional additional behavior. This SHOULD<29> be a
 
 word value and be one of the following values.
 

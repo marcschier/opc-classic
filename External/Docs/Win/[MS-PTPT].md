@@ -746,7 +746,11 @@ Point-to-Point Tunneling Protocol (PPTP) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 1: Relationship of parallel components to PPTP
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-PTPT].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: Relationship of parallel components to PPTP
 
 1.5  Prerequisites/Preconditions
 

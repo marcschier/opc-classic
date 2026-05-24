@@ -844,7 +844,12 @@ SQL Server Resolution Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-determining the communication endpoint information of a particular database instance, whereas the
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MC-SQLR].images/page009-img01.png)
+![Extracted image 2 from page 9]([MC-SQLR].images/page009-img02.png)
+<!-- /Extracted images from page 9 -->
+
+determining the communication endpoint information of a particular database instance, whereas the
 second case is used for enumeration of database instances in the network and to obtain the endpoint
 information of each instance.
 
@@ -874,7 +879,11 @@ SQL Server Resolution Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MC-SQLR].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+1.4  Relationship to Other Protocols
 
 The SQL Server Resolution Protocol (SSRP) depends on the UDP Transport Protocol to communicate
 with the database server machine or to broadcast/multicast its request to the network. The types of
@@ -1406,7 +1415,11 @@ Release: October 31, 2025
 
 16 / 30
 
-3  Protocol Details
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MC-SQLR].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+3  Protocol Details
 
 This section describes the important elements of the client software and the server software necessary
 to support the SQL Server Resolution Protocol.
@@ -1516,7 +1529,11 @@ Release: October 31, 2025
 
 18 / 30
 
-Figure 5: SQL Server Resolution Protocol client state machine
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MC-SQLR].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 5: SQL Server Resolution Protocol client state machine
 
 3.2.1  Abstract Data Model
 

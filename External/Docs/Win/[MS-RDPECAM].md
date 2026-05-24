@@ -653,7 +653,12 @@ Release: April 23, 2024
 
 8 / 54
 
-Device Control sequence: The server uses this sequence to control device properties of the video
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RDPECAM].images/page009-img01.png)
+![Extracted image 2 from page 9]([MS-RDPECAM].images/page009-img02.png)
+<!-- /Extracted images from page 9 -->
+
+Device Control sequence: The server uses this sequence to control device properties of the video
 capture device.
 
 1.3.1  Version Negotiation sequence
@@ -686,7 +691,12 @@ Release: April 23, 2024
 
 9 / 54
 
-1.3.3  Device Removal sequence
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RDPECAM].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-RDPECAM].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+1.3.3  Device Removal sequence
 
 This sequence occurs on the device enumeration channel. If a redirected video capture device
 becomes unavailable on the client, the client sends a Device Removed Notification (section 2.2.2.4) to
@@ -714,7 +724,11 @@ Release: April 23, 2024
 
 10 / 54
 
-Figure 4: Device Initialization sequence
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPECAM].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 4: Device Initialization sequence
 
 1.3.5  Video Capture sequence
 
@@ -749,7 +763,12 @@ Release: April 23, 2024
 
 11 / 54
 
-Figure 6: Device Control Initialization sequence
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPECAM].images/page012-img01.png)
+![Extracted image 2 from page 12]([MS-RDPECAM].images/page012-img02.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 6: Device Control Initialization sequence
 
 1.3.7  Device Control sequence
 

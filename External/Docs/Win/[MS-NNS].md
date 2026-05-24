@@ -1107,7 +1107,11 @@ Release: March 13, 2019
 
 12 / 35
 
-3  Protocol Details
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-NNS].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+3  Protocol Details
 
 3.1  Client Details
 
@@ -1466,7 +1470,11 @@ Closed. The application MUST be notified that the server has closed the connecti
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.2  Server Details
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-NNS].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+3.2  Server Details
 
 The following figure represents the server state machine for the .NET NegotiateStream Protocol. The
 remainder of this section will discuss the state machine in depth.
@@ -1784,7 +1792,11 @@ Release: March 13, 2019
 
 24 / 35
 
-4  Protocol Examples
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-NNS].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+4  Protocol Examples
 
 Figure 3: Protocol sequence example
 
@@ -1848,7 +1860,11 @@ Release: March 13, 2019
 
 26 / 35
 
-Figure 4: Protocol sequence example
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-NNS].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 4: Protocol sequence example
 
 The previous figure gives another simple example of handshake, data transfer, and closing of the
 connection when the client and server negotiate a security mechanism that authenticates only the
@@ -1873,7 +1889,11 @@ AuthPayload field of a HandShakeInProgress message, and sends this message to th
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.  The client receives the HandshakeInProgress message, and passes the token in the AuthPayload
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-NNS].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+3.  The client receives the HandshakeInProgress message, and passes the token in the AuthPayload
 to GSS_Init_sec_context. In this example, the return code of GSS_Init_sec_context indicates
 that the handshake is complete. The client takes the token returned from
 GSS_Init_sec_context, and places it in the AuthPayload field of a HandshakeDone message.

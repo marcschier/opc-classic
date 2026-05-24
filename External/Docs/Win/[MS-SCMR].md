@@ -2280,7 +2280,11 @@ Release: August 11, 2025
 
 26 / 178
 
-     PSERVICE_CONTROL_STATUS_REASON_OUT_PARAMS psrOutParams;
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-SCMR].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+     PSERVICE_CONTROL_STATUS_REASON_OUT_PARAMS psrOutParams;
  } SC_RPC_SERVICE_CONTROL_OUT_PARAMSW,
   *PSC_RPC_SERVICE_CONTROL_OUT_PARAMSW;
 
@@ -2580,7 +2584,11 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-  *PSERVICE_CONTROL_STATUS_REASON_IN_PARAMSW;
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-SCMR].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+  *PSERVICE_CONTROL_STATUS_REASON_IN_PARAMSW;
 
 dwReason:  The reason associated with the SERVICE_CONTROL_STOP control. This member MUST
 
@@ -4210,7 +4218,11 @@ Release: August 11, 2025
 
 48 / 178
 
-3  Protocol Details
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-SCMR].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+3  Protocol Details
 
 The following sections specify details of the Service Control Manager Remote Protocol, including
 abstract data models, interface method syntax, and message processing rules.

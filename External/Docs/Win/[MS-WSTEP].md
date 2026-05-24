@@ -881,7 +881,12 @@ Release: April 23, 2024
 
 8 / 43
 
-WSTEP provides for issuance, renewal, and delayed-issuance scenarios for X.509v3 digital certificates.
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-WSTEP].images/page009-img01.png)
+![Extracted image 2 from page 9]([MS-WSTEP].images/page009-img02.png)
+<!-- /Extracted images from page 9 -->
+
+WSTEP provides for issuance, renewal, and delayed-issuance scenarios for X.509v3 digital certificates.
 The server is known in WS-Trust [WSTrust1.3] terminology as a Security Token Service (STS).
 
 The WS-Trust protocol [WSTrust1.3] definition provides the framework for the STS and for enrollment
@@ -906,7 +911,12 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In some circumstances, the client request could be rejected. In these instances, the STS responds
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-WSTEP].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-WSTEP].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+In some circumstances, the client request could be rejected. In these instances, the STS responds
 with a SOAP fault. The following figure shows the typical sequence.
 
 Figure 3: Typical sequence for a rejected certificate renewal request
@@ -928,7 +938,11 @@ Release: April 23, 2024
 
 10 / 43
 
-Figure 5: WSTEP Protocol stack diagram
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-WSTEP].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 5: WSTEP Protocol stack diagram
 
 The WSTEP protocol specification is a profile of the WS-Trust Protocol [WSTrust1.3] and makes use of
 the SOAP and Hypertext Transfer Protocol over Secure Sockets Layer (HTTPS) protocols for
@@ -1075,7 +1089,11 @@ Release: April 23, 2024
 
 14 / 43
 
-3  Protocol Details
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-WSTEP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+3  Protocol Details
 
 The client side of this protocol is a simple pass-through. No additional timers or other state is required
 on the client side of this protocol. Calls made by the higher-layer protocol or application are passed

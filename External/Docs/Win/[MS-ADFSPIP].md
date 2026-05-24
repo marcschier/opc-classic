@@ -1349,7 +1349,11 @@ Release: November 19, 2024
 
 13 / 83
 
-Figure 1: ADFSPIP System components
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-ADFSPIP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 1: ADFSPIP System components
 
 The following components are part of the Active Directory Federation Services and Proxy system:
 
@@ -1391,7 +1395,11 @@ Release: November 19, 2024
 
 14 / 83
 
-Figure 2: Protocols related to the Active Directory Federation Services and Proxy
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-ADFSPIP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: Protocols related to the Active Directory Federation Services and Proxy
 Integration Protocol
 
 This protocol uses TCP [RFC793] as its transport.

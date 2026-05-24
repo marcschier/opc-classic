@@ -941,7 +941,11 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  REST server role: Executes the create, read, update, and delete operations on the objects that are
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-WMOD].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+  REST server role: Executes the create, read, update, and delete operations on the objects that are
 
 not exposed by CIMOM.
 
@@ -1025,7 +1029,11 @@ Release: October 26, 2021
 
 14 / 58
 
-Figure 2: WM protocols stack
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-WMOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: WM protocols stack
 
 2.1.5  Protocol Communications
 
@@ -1062,7 +1070,11 @@ Release: October 26, 2021
 
 15 / 58
 
-Figure 3: WM protocol communications
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-WMOD].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 3: WM protocol communications
 
 The following protocol specifications define requests and responses for each WM protocol:
 
@@ -1457,7 +1469,11 @@ Release: October 26, 2021
 
 20 / 58
 
-The following sections provide an overview for each of the use case groups and detailed descriptions
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-WMOD].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+The following sections provide an overview for each of the use case groups and detailed descriptions
 for each of the use cases for each group. Because some use cases are common across two or more
 use case groups, the use case group overviews are described first, followed by the use case details.
 
@@ -1490,7 +1506,11 @@ Release: October 26, 2021
 
 21 / 58
 
-2.5.1.2  Setup, Configuration, and Update
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-WMOD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+2.5.1.2  Setup, Configuration, and Update
 
 An IT administrator has to be able to set up and configure the computers for use. After a computer
 becomes a part of the corporate network, it has to be updated with the required software applications,
@@ -1523,7 +1543,11 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-monitoring activity inherently collects dynamic data, either in real time or after storage and
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-WMOD].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+monitoring activity inherently collects dynamic data, either in real time or after storage and
 aggregation on the local computers.
 
 Monitoring is a one-to-many operation with one WM application and many managed entities. The
@@ -1557,7 +1581,11 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Figure 7: Diagnosis and troubleshooting use cases
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-WMOD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 7: Diagnosis and troubleshooting use cases
 
 The following sections describe each use case for all use case groups.
 
@@ -2189,7 +2217,11 @@ Release: October 26, 2021
 
 32 / 58
 
-Figure 8: Security configuration settings
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-WMOD].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 8: Security configuration settings
 
 2.9.1  Security Configuration Per Protocol
 
@@ -2478,7 +2510,11 @@ Release: October 26, 2021
 
 37 / 58
 
-Figure 9: Communication flow in a single request/response operation
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-WMOD].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 9: Communication flow in a single request/response operation
 
 The following steps describe this sequence of events:
 
@@ -2629,7 +2665,11 @@ Release: October 26, 2021
 
 40 / 58
 
-Figure 10: Communication flow in an enumeration operation
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-WMOD].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 10: Communication flow in an enumeration operation
 
 The following steps describe this sequence of events.
 
@@ -2852,7 +2892,11 @@ Release: October 26, 2021
 
 44 / 58
 
-Figure 11: Communication flow of subscription and event delivery with pull subscriptions
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-WMOD].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+Figure 11: Communication flow of subscription and event delivery with pull subscriptions
 
 The following steps describe this sequence of events:
 
@@ -3015,7 +3059,11 @@ Release: October 26, 2021
 
 47 / 58
 
-Figure 12: Communication flow of subscription and event delivery with push subscriptions
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-WMOD].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+Figure 12: Communication flow of subscription and event delivery with push subscriptions
 
 The following steps describe this sequence of events:
 
@@ -3170,7 +3218,11 @@ Release: October 26, 2021
 
 50 / 58
 
-Figure 13: Communication flow of subscription and event delivery with publisher-initiated
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-WMOD].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+Figure 13: Communication flow of subscription and event delivery with publisher-initiated
 subscriptions
 
 The following steps describe this sequence of events.
@@ -3274,7 +3326,11 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-For details about the exact message content and format, see [MS-WSMV] section 3.1.4.1.30.
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-WMOD].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+For details about the exact message content and format, see [MS-WSMV] section 3.1.4.1.30.
 
 3.6  Example 6: Create and Invoke a Pipeline
 

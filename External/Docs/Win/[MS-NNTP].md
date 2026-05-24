@@ -805,7 +805,11 @@ Release: June 1, 2017
 
 7 / 32
 
-1.3  Overview
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-NNTP].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+1.3  Overview
 
 Client applications that connect to the Network News Transport Protocol (NNTP) service that is
 included in Windows 2000 Server operating system and Windows Server 2003 operating system can
@@ -1234,7 +1238,11 @@ Release: June 1, 2017
 
 14 / 32
 
-3  Protocol Details
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-NNTP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+3  Protocol Details
 
  The following sections specify details of the NTLM Authentication: NNTP Extension, including abstract
 data models and message processing rules.
@@ -1462,7 +1470,11 @@ Release: June 1, 2017
 
 18 / 32
 
-3.2  Server Details
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-NNTP].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+3.2  Server Details
 
 3.2.1  Abstract Data Model
 
@@ -1674,7 +1686,11 @@ Release: June 1, 2017
 
 22 / 32
 
-4  Protocol Examples
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-NNTP].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+4  Protocol Examples
 
 The following sections describe operations that are used in a common scenario to illustrate the
 function of the NTLM Authentication: NNTP Extension.
@@ -1767,7 +1783,11 @@ Release: June 1, 2017
 
 24 / 32
 
- 0x00000050  2D 00 63 00 6C 00 69 00 2D 00 36 00 36 00 74 00   -.c.l.i.-.6.6.t.
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-NNTP].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+ 0x00000050  2D 00 63 00 6C 00 69 00 2D 00 36 00 36 00 74 00   -.c.l.i.-.6.6.t.
  0x00000060  65 00 73 00 74 00 45 00 58 00 43 00 48 00 2D 00   e.s.t.E.X.C.H.-.
  0x00000070  43 00 4C 00 49 00 2D 00 36 00 36 00 D2 28 EF 91   C.L.I.-.6.6.R(o_
  0x00000080  08 84 97 BA 00 00 00 00 00 00 00 00 00 00 00 00   .__:............

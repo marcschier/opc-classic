@@ -847,7 +847,12 @@ Release: June 1, 2017
 
 9 / 52
 
-Figure 1: SAMLPR SOAP over TCP layer diagram
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-SAMLPR].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-SAMLPR].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: SAMLPR SOAP over TCP layer diagram
 
 The Security Assertion Markup Language (SAML) Proxy Request Signing Protocol (SAMLPR) uses SOAP
 over HTTPS for remote connections, as shown in the following layering diagram:

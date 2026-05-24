@@ -508,7 +508,11 @@ Release: April 23, 2024
 
 6 / 29
 
-Figure 1: Data sharing sequence
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-NFPS].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1: Data sharing sequence
 
 1.4  Relationship to Other Protocols
 
@@ -522,7 +526,11 @@ Release: April 23, 2024
 
 7 / 29
 
-Figure 2: Relationship to other protocols
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-NFPS].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 2: Relationship to other protocols
 
 The Near Field Proximity: Sharing Protocol uses the Near Field Proximity: Bidirectional Services
 Protocol [MS-NFPB] to establish a session between a share source and share target. That session is
@@ -1034,7 +1042,11 @@ Release: April 23, 2024
 
 15 / 29
 
-Figure 3: Share sender state transitions
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-NFPS].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 3: Share sender state transitions
 
 SymmetricKey:  A 128-bit Advanced Encryption Standard (AES) key derived by taking the
 
@@ -1166,7 +1178,11 @@ Near Field Proximity: Sharing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-6.  Gracefully close the Socket.
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-NFPS].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+6.  Gracefully close the Socket.
 
 3.3  Share Receiver Details
 

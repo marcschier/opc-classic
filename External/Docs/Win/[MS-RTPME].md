@@ -862,7 +862,11 @@ Release: June 1, 2017
 
 9 / 28
 
-RTPME specifies extensions to RTP as specified in [RFC3550] and [RFC3551]. RTP extensions define
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RTPME].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+RTPME specifies extensions to RTP as specified in [RFC3550] and [RFC3551]. RTP extensions define
 packet formats to convey additional information and behavioral changes to enhance host security.
 These extensions include the following:
 
@@ -1421,7 +1425,11 @@ Release: June 1, 2017
 
 17 / 28
 
-Figure 2: Bandwidth estimation
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-RTPME].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 2: Bandwidth estimation
 
 RTCP packet pairs SHOULD be sent as specified in this document. If packet pairs are not sent, the
 receiver MAY never send a bandwidth estimate back. Bandwidth estimates SHOULD be sent through
@@ -1575,7 +1583,11 @@ Release: June 1, 2017
 
 20 / 28
 
-4  Protocol Examples
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-RTPME].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+4  Protocol Examples
 
 In the following examples, only the fields relevant to the extension exemplified are shown.
 Synchronization Source (SSRC) are shown as 1, 2, 3, and 1000, and sequence numbers are shown
@@ -1603,7 +1615,11 @@ Release: June 1, 2017
 
 21 / 28
 
-Figure 4: Exchange of messages between two hosts
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-RTPME].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 4: Exchange of messages between two hosts
 
 On receipt of the first RTCP packet pair, Host2 would normally be able to calculate the bandwidth from
 the initial packet pair; however, its particular statistical method needs a second pair to converge.

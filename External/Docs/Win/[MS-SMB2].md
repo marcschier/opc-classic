@@ -2713,7 +2713,11 @@ Release: April 13, 2026
 
 24 / 499
 
-  Allowing a client to retrieve hashes for a particular region of a file for use in branch cache
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-SMB2].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+  Allowing a client to retrieve hashes for a particular region of a file for use in branch cache
 
 retrieval, as specified in [MS-PCCRC] section 2.4.
 
@@ -2819,7 +2823,11 @@ Release: April 13, 2026
 
 26 / 499
 
-Figure 2: Relationship to other protocols
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-SMB2].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 2: Relationship to other protocols
 
 The diagram shows the following:
 
@@ -3049,7 +3057,11 @@ Release: April 13, 2026
 
 29 / 499
 
-Figure 3: Connection.NegotiateDialect state transitions in an SMB 2 Protocol server
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-SMB2].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 3: Connection.NegotiateDialect state transitions in an SMB 2 Protocol server
 
 1.8  Vendor-Extensible Fields
 
@@ -15828,7 +15840,11 @@ Release: April 13, 2026
 
 174 / 499
 
-Figure 4: The client MUST follow the steps outlined in this chart
+<!-- Extracted images from page 175 -->
+![Extracted image 1 from page 175]([MS-SMB2].images/page175-img01.png)
+<!-- /Extracted images from page 175 -->
+
+Figure 4: The client MUST follow the steps outlined in this chart
 
 3.2.4.2.1 Connecting to the Target Server
 
@@ -18675,7 +18691,11 @@ Release: April 13, 2026
 
 206 / 499
 
-Figure 5: Application requesting a server-side data copy
+<!-- Extracted images from page 207 -->
+![Extracted image 1 from page 207]([MS-SMB2].images/page207-img01.png)
+<!-- /Extracted images from page 207 -->
+
+Figure 5: Application requesting a server-side data copy
 
 The method for requesting the key to the source file and for requesting the server-side copy of data
 ranges is outlined in the following sections.
@@ -24413,7 +24433,11 @@ Release: April 13, 2026
 
 273 / 499
 
-Once the server receives the client certificate chain, the server MUST go through each certificate and
+<!-- Extracted images from page 274 -->
+![Extracted image 1 from page 274]([MS-SMB2].images/page274-img01.png)
+<!-- /Extracted images from page 274 -->
+
+Once the server receives the client certificate chain, the server MUST go through each certificate and
 compute the SHA256 hash and obtain the issuer name for each certificate. Certificates are identified
 for access control purposes using their SHA256 hash or issuer property.
 
@@ -33909,7 +33933,11 @@ Release: April 13, 2026
 
 394 / 499
 
-4  Protocol Examples
+<!-- Extracted images from page 395 -->
+![Extracted image 1 from page 395]([MS-SMB2].images/page395-img01.png)
+<!-- /Extracted images from page 395 -->
+
+4  Protocol Examples
 
 The following sections describe common scenarios that indicate normal traffic flow in order to illustrate
 the function of the SMB 2 Protocol.
@@ -34283,7 +34311,11 @@ Release: April 13, 2026
 
 400 / 499
 
-Figure 7: Client negotiating SMB 2.1 dialect with SMB-style negotiate
+<!-- Extracted images from page 401 -->
+![Extracted image 1 from page 401]([MS-SMB2].images/page401-img01.png)
+<!-- /Extracted images from page 401 -->
+
+Figure 7: Client negotiating SMB 2.1 dialect with SMB-style negotiate
 
 1.  The client sends an SMB negotiate packet with the string "SMB 2.???" in the dialect string list,
 
@@ -34558,7 +34590,11 @@ Release: April 13, 2026
 
 404 / 499
 
- Reserved2: 0 (0x0)
+<!-- Extracted images from page 405 -->
+![Extracted image 1 from page 405]([MS-SMB2].images/page405-img01.png)
+<!-- /Extracted images from page 405 -->
+
+ Reserved2: 0 (0x0)
  securityBlob:
 
 4.3  Connecting to a Share by Using an SMB2 Negotiate
@@ -34871,7 +34907,11 @@ Release: April 13, 2026
 
 409 / 499
 
-4.4  Executing an Operation on a Named Pipe
+<!-- Extracted images from page 410 -->
+![Extracted image 1 from page 410]([MS-SMB2].images/page410-img01.png)
+<!-- /Extracted images from page 410 -->
+
+4.4  Executing an Operation on a Named Pipe
 
 The following diagram demonstrates the steps taken to execute transactions over a named pipe using
 both individual reads and writes, and the transact named pipe operation. Assume that this sequence
@@ -35371,7 +35411,11 @@ Release: April 13, 2026
 
 417 / 499
 
-Figure 10: Reading from a remote file
+<!-- Extracted images from page 418 -->
+![Extracted image 1 from page 418]([MS-SMB2].images/page418-img01.png)
+<!-- /Extracted images from page 418 -->
+
+Figure 10: Reading from a remote file
 
 1.  The client sends an SMB2 CREATE Request for the file "testfile.txt".
 
@@ -35695,7 +35739,11 @@ Release: April 13, 2026
 
 422 / 499
 
-Figure 11: Writing to a remote file
+<!-- Extracted images from page 423 -->
+![Extracted image 1 from page 423]([MS-SMB2].images/page423-img01.png)
+<!-- /Extracted images from page 423 -->
+
+Figure 11: Writing to a remote file
 
 1.  The client sends an SMB2 CREATE Request for the file "test.dat".
 
@@ -36231,7 +36279,11 @@ Release: April 13, 2026
 
 430 / 499
 
- Hidden:     (..............................0.) Not Hidden
+<!-- Extracted images from page 431 -->
+![Extracted image 1 from page 431]([MS-SMB2].images/page431-img01.png)
+<!-- /Extracted images from page 431 -->
+
+ Hidden:     (..............................0.) Not Hidden
  System:     (.............................0..) Not System
  Reserverd3: 0 (0x0)
  Directory:  (...........................0....) File
@@ -36380,7 +36432,11 @@ Release: April 13, 2026
 
 433 / 499
 
-Figure 13: Establishing an alternate channel
+<!-- Extracted images from page 434 -->
+![Extracted image 1 from page 434]([MS-SMB2].images/page434-img01.png)
+<!-- /Extracted images from page 434 -->
+
+Figure 13: Establishing an alternate channel
 
 1.  The client sends an SMB2 NEGOTIATE Request with dialect 0x300 in the Dialects array, and
 
@@ -36961,7 +37017,11 @@ Release: April 13, 2026
 
 442 / 499
 
-Figure 14: Replay Create Request on an alternate channel
+<!-- Extracted images from page 443 -->
+![Extracted image 1 from page 443]([MS-SMB2].images/page443-img01.png)
+<!-- /Extracted images from page 443 -->
+
+Figure 14: Replay Create Request on an alternate channel
 
 1.  The client establishes an alternate channel for a session as described in section 4.8
 
@@ -37217,7 +37277,11 @@ Release: April 13, 2026
 
 446 / 499
 
-Figure 15: Negotiating Transport Level Encryption
+<!-- Extracted images from page 447 -->
+![Extracted image 1 from page 447]([MS-SMB2].images/page447-img01.png)
+<!-- /Extracted images from page 447 -->
+
+Figure 15: Negotiating Transport Level Encryption
 
 1.  The client establishes a QUIC transport connection to the server. On successful QUIC connection,
 the client starts communicating to the server using SMB2 protocol over QUIC transport. All SMB2

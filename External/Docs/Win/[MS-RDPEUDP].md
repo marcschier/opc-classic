@@ -674,7 +674,11 @@ Release: November 21, 2025
 
 6 / 46
 
-[RFC4340] Kohler, E., Handley, M., and Floyd, S., "Datagram Congestion Control Protocol (DCCP)",
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-RDPEUDP].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+[RFC4340] Kohler, E., Handley, M., and Floyd, S., "Datagram Congestion Control Protocol (DCCP)",
 RFC 4340, March 2006, http://www.ietf.org/rfc/rfc4340.txt
 
 [RFC5681] Allman, M., Paxson, V., and Blanton, E., "TCP Congestion Control", RFC 5681, September
@@ -719,7 +723,11 @@ Release: November 21, 2025
 
 7 / 46
 
-1.3.1  RDP-UDP Protocol
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-RDPEUDP].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+1.3.1  RDP-UDP Protocol
 
 The Remote Desktop Protocol: UDP Transport Extension Protocol has two distinct phases of operation.
 The initial phase, UDP Connection Initialization (section 1.3.2.1), occurs when a UDP connection is
@@ -762,7 +770,12 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The terminal client initiates the connection by sending a SYN datagram. The terminal client also
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RDPEUDP].images/page009-img01.png)
+![Extracted image 2 from page 9]([MS-RDPEUDP].images/page009-img02.png)
+<!-- /Extracted images from page 9 -->
+
+The terminal client initiates the connection by sending a SYN datagram. The terminal client also
 determines the mode of operation, RDP-UDP-R or RDP-UDP-L, as described in section 1.3.1. The
 terminal server responds with a datagram with the SYN flag set, along with an ACK flag, to
 acknowledge the receipt of the SYN datagram. The terminal client acknowledges the SYN datagram by
@@ -1566,7 +1579,11 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The receiver marks a datagram as lost only when it receives three other datagrams after its original
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-RDPEUDP].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+The receiver marks a datagram as lost only when it receives three other datagrams after its original
 transmission, with sequence numbers greater than the original datagram. Similarly, the sender marks
 a packet as lost only when it receives an acknowledgment (section 3.1.1.4) for any three packets that
 have a sequence number greater than the lost packet.
@@ -1621,7 +1638,13 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Figure 6: Addition and subtraction example
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-RDPEUDP].images/page021-img01.png)
+![Extracted image 2 from page 21]([MS-RDPEUDP].images/page021-img02.png)
+![Extracted image 3 from page 21]([MS-RDPEUDP].images/page021-img03.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 6: Addition and subtraction example
 
 In a finite field of GF(2n), such as GF(256), addition and subtraction are equivalent operations.
 
@@ -1738,7 +1761,12 @@ Release: November 21, 2025
 
 22 / 46
 
-Figure 9: Source Packet and FEC Packet representation
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-RDPEUDP].images/page023-img01.png)
+![Extracted image 2 from page 23]([MS-RDPEUDP].images/page023-img02.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 9: Source Packet and FEC Packet representation
 
 The FEC Packet is generated with the following equation.
 
@@ -1791,7 +1819,11 @@ Release: November 21, 2025
 
 23 / 46
 
-                                              CoEfficientArray[2],
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-RDPEUDP].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+                                              CoEfficientArray[2],
                                               CoEfficientArray[3],
                                               CoEfficientArray[4]);
 
@@ -1854,7 +1886,11 @@ Release: November 21, 2025
 
 24 / 46
 
-Not all matrices have an inverse, and in some cases, Cd’ doesn’t exist. For such operations, the FEC
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-RDPEUDP].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Not all matrices have an inverse, and in some cases, Cd’ doesn’t exist. For such operations, the FEC
 Packet cannot be used to recover from that particular Source Packet. Thus, not all FEC operations are
 reversible, and not being able to decode a FEC Packet is not fatal. The missing Source Packet is always
 retransmitted in RDP-UDP-R mode (section 3.1.1.7), and can be ignored for RDP-UDP-L mode (section
@@ -2102,7 +2138,11 @@ Release: November 21, 2025
 
 28 / 46
 
-Figure 13: State diagram for the terminal server and terminal client states
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-RDPEUDP].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 13: State diagram for the terminal server and terminal client states
 
 The states are described as follows:
 

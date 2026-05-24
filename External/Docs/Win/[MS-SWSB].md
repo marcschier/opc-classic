@@ -474,7 +474,11 @@ Release: June 25, 2021
 
 5 / 18
 
-  Defines two new HTTP headers ('soap-content-type' and 'microsoft-binary-transfer-mode') that
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-SWSB].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+  Defines two new HTTP headers ('soap-content-type' and 'microsoft-binary-transfer-mode') that
 
 are used by the client during the initial WebSocket handshake to indicate the SOAP content-type
 and the transfer-mode of the subsequent messages.

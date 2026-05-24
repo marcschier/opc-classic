@@ -330,7 +330,11 @@ Release: October 26, 2021
 
 3 / 54
 
-1  Introduction
+<!-- Extracted images from page 4 -->
+![Extracted image 1 from page 4]([MS-MSSOD].images/page004-img01.png)
+<!-- /Extracted images from page 4 -->
+
+1  Introduction
 
 The Media Streaming Server system is a platform for streaming audio and video content to clients
 over the Internet or an intranet. These clients can be other computers or devices that play back the
@@ -473,7 +477,11 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-load on a media server because the client content requests are distributed to several servers on the
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-MSSOD].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+load on a media server because the client content requests are distributed to several servers on the
 network. Publishing via distribution servers is illustrated in the following figure.
 
 Figure 2: Publishing via distribution servers
@@ -508,7 +516,11 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Transparent proxy server: A transparent proxy server is a server that transmits data between
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-MSSOD].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+Transparent proxy server: A transparent proxy server is a server that transmits data between
 
 the server and the client without any modification of the data. It is a forwarding service that the
 client is unaware of.
@@ -572,7 +584,11 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Advanced fast start is used only by clients that connect to a unicast stream and is supported only by
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-MSSOD].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Advanced fast start is used only by clients that connect to a unicast stream and is supported only by
 the Windows Media HTTP Streaming Protocol (WMSP) and the Real-Time Streaming Protocol (RTSP)
 Windows Media Extensions (RTSP-WME).
 
@@ -604,7 +620,11 @@ Release: October 26, 2021
 
 8 / 54
 
-Figure 5: Multicast streaming
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-MSSOD].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 5: Multicast streaming
 
 Core transport protocols: The Media Streaming Server system includes a number of individual
 protocols that rely on the User Datagram Protocol (UDP) to transport protocol packets. UDP is an
@@ -830,7 +850,11 @@ Release: October 26, 2021
 
 12 / 54
 
-Figure 6: Media Streaming Server system components diagram
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-MSSOD].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 6: Media Streaming Server system components diagram
 
 Roles that use the Media Streaming Server (MSS) system protocols are as follows:
 
@@ -923,7 +947,11 @@ Release: October 26, 2021
 
 14 / 54
 
-Figure 7: Integrated media streaming protocols
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-MSSOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 7: Integrated media streaming protocols
 
 Encoder push client: The Push Encoder uses the Windows Media HTTP Push Distribution Protocol
 (WMHTTP) to push media streams to the media server.
@@ -1660,7 +1688,11 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Use case
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-MSSOD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Use case
 group
 
 Use cases
@@ -1798,7 +1830,11 @@ Release: October 26, 2021
 
 25 / 54
 
-4.  The encoder and server then exchange messages that allow the server to pull the multimedia
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-MSSOD].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+4.  The encoder and server then exchange messages that allow the server to pull the multimedia
 
 stream to the media server.
 
@@ -1843,7 +1879,11 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Stakeholders
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-MSSOD].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Stakeholders
 
 
 
@@ -1982,7 +2022,11 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The media player client receives the content stream sent by the media server.
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-MSSOD].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+The media player client receives the content stream sent by the media server.
 
 Extensions
 
@@ -2107,7 +2151,11 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Rendering logs: The rendering log describes playback of content by a client and is submitted to
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-MSSOD].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+  Rendering logs: The rendering log describes playback of content by a client and is submitted to
 
 the media server or a web server when the client ends playback.
 
@@ -2215,7 +2263,11 @@ Release: October 26, 2021
 
 32 / 54
 
-Figure 13: Use case diagram for discovering media server URLs
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-MSSOD].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 13: Use case diagram for discovering media server URLs
 
 Goal: To provide media server content URLs by using a web server.
 
@@ -2483,7 +2535,11 @@ Release: October 26, 2021
 
 36 / 54
 
-Figure 14: General push distribution sequence with a single PushStart request
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-MSSOD].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 14: General push distribution sequence with a single PushStart request
 
 The following sequence occurs between a client and a server during a general push distribution.
 
@@ -2523,7 +2579,11 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.2  Example 2: Media Server Pull Content from Encoder
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-MSSOD].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+3.2  Example 2: Media Server Pull Content from Encoder
 
 The Media Streaming Server system also supports pull distribution for getting content from an
 encoder. While push distribution only uses the Windows Media HTTP Push Distribution Protocol
@@ -2679,7 +2739,11 @@ Release: October 26, 2021
 
 40 / 54
 
-Figure 16: Unicast playback communication flow using RTSP-WME
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-MSSOD].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 16: Unicast playback communication flow using RTSP-WME
 
 1.  Content request: The trigger for the unicast playback is the media player application providing the
 content URL to the media player client. The media player client uses the content URL to initiate
@@ -2751,7 +2815,11 @@ Release: October 26, 2021
 
 42 / 54
 
-Figure 17: Unicast playback communication flow using WMSP
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-MSSOD].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 17: Unicast playback communication flow using WMSP
 
 1.  Content request: The trigger for the unicast playback is the media player application providing the
 content URL to the media player client. The media player client uses the content URL to initiate
@@ -2784,7 +2852,11 @@ Media Streaming Server Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-layer to select a specific stream during the Play request in step 9. For examples of the exact
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-MSSOD].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+layer to select a specific stream during the Play request in step 9. For examples of the exact
 message content and format, see [MS-WMSP] sections 3.1.5.7 and 3.1.5.8.
 
 5.  Play request: As part of the Play request, the media player client specifies which stream to play.
@@ -2879,7 +2951,11 @@ Release: October 26, 2021
 
 45 / 54
 
-Figure 19: Integrating DRM communication flow
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-MSSOD].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+Figure 19: Integrating DRM communication flow
 
 1.  Server and encoder negotiate: The Media Streaming Server (MSS) server establishes a connection
 
@@ -2980,7 +3056,11 @@ Release: October 26, 2021
 
 47 / 54
 
-Figure 20: Logging communication flow
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-MSSOD].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+Figure 20: Logging communication flow
 
 1. Client/server negotiate and select a stream for playback: The media player application requests
 the media player client to play a specified URL. As described in section 3.3, the media player client

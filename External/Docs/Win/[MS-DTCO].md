@@ -4332,7 +4332,11 @@ Release: July 29, 2024
 
 36 / 475
 
-Figure 1: Transaction tree
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-DTCO].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 1: Transaction tree
 
 Eventually, the root application that began the transaction determines that no more work is to be
 performed under the transaction. When that occurs, the application sends a Commit request to
@@ -4369,7 +4373,11 @@ MSDTC Connection Manager: OleTx Transaction Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Otherwise, after completion notifications are received from all Phase Zero participants:
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-DTCO].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Otherwise, after completion notifications are received from all Phase Zero participants:
 
 
 
@@ -4413,7 +4421,11 @@ MSDTC Connection Manager: OleTx Transaction Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-a vote polls the transaction tree from the root transaction manager down to the leaf
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-DTCO].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+a vote polls the transaction tree from the root transaction manager down to the leaf
 participants. When a subordinate transaction manager receives a request for a vote, it will first
 issue that request to all its immediate subordinates and process their votes before voting itself.
 
@@ -4473,7 +4485,11 @@ Release: July 29, 2024
 
 40 / 475
 
-Figure 4: Transaction manager Phase Two flow
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-DTCO].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 4: Transaction manager Phase Two flow
 
 1.3.2  Additional Considerations
 
@@ -4491,7 +4507,11 @@ Release: July 29, 2024
 
 41 / 475
 
-1.3.2.1  Unilateral Abort
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-DTCO].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+1.3.2.1  Unilateral Abort
 
 Until a participant votes on the outcome of the transaction, any participant can decide to
 unilaterally stop the transaction by issuing an Abort request to its transaction manager. This
@@ -4532,7 +4552,11 @@ MSDTC Connection Manager: OleTx Transaction Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-There is a possible disadvantage to this optimization: if the transaction manager loses contact with
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-DTCO].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+There is a possible disadvantage to this optimization: if the transaction manager loses contact with
 the subordinate participant after sending the Single-Phase Commit request but before receiving
 an outcome notification, it has no reliable mechanism for recovering the actual outcome of the
 transaction. Consequently, the transaction manager sends an In Doubt outcome to any
@@ -4577,7 +4601,11 @@ MSDTC Connection Manager: OleTx Transaction Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-that are required by the other two. For example, it is possible to implement a transactional resource
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-DTCO].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+that are required by the other two. For example, it is possible to implement a transactional resource
 manager without building a transaction manager or a transaction-aware application.
 
 The following graphic depicts the transaction roles.
@@ -4737,7 +4765,11 @@ Release: July 29, 2024
 
 46 / 475
 
-Figure 8: Transaction manager facets
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-DTCO].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+Figure 8: Transaction manager facets
 
 1.3.3.3.1 Core Transaction Manager Facet
 
@@ -5053,7 +5085,11 @@ Release: July 29, 2024
 
 51 / 475
 
-Figure 9: Transaction manager pull propagation
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-DTCO].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+Figure 9: Transaction manager pull propagation
 
 1.3.5.2  Push Propagation
 
@@ -5086,7 +5122,11 @@ Release: July 29, 2024
 
 52 / 475
 
-3.  The source transaction manager contacts the destination transaction manager by using the
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-DTCO].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+3.  The source transaction manager contacts the destination transaction manager by using the
 provided contact information and informs it of the existence and details of the transaction. This
 inter–transaction manager handshake is the export operation of push propagation.
 
@@ -5119,7 +5159,11 @@ Release: July 29, 2024
 
 53 / 475
 
-Figure 10: Transaction manager push propagation
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MS-DTCO].images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+Figure 10: Transaction manager push propagation
 
 1.4  Relationship to Other Protocols
 
@@ -14951,7 +14995,11 @@ Release: July 29, 2024
 
 166 / 475
 
-
+<!-- Extracted images from page 167 -->
+![Extracted image 1 from page 167]([MS-DTCO].images/page167-img01.png)
+<!-- /Extracted images from page 167 -->
+
+
 
 
 
@@ -14972,7 +15020,11 @@ Release: July 29, 2024
 
 167 / 475
 
-Figure 13: Transaction manager states and events (Phase One)
+<!-- Extracted images from page 168 -->
+![Extracted image 1 from page 168]([MS-DTCO].images/page168-img01.png)
+<!-- /Extracted images from page 168 -->
+
+Figure 13: Transaction manager states and events (Phase One)
 
 3.2.1.3.1 Idle
 
@@ -17920,7 +17972,11 @@ Release: July 29, 2024
 
 201 / 475
 
-Figure 14: CONNTYPE_TXUSER_BEGINNER initiator states
+<!-- Extracted images from page 202 -->
+![Extracted image 1 from page 202]([MS-DTCO].images/page202-img01.png)
+<!-- /Extracted images from page 202 -->
+
+Figure 14: CONNTYPE_TXUSER_BEGINNER initiator states
 
 3.3.1.1.1 Idle
 
@@ -18011,7 +18067,11 @@ Release: July 29, 2024
 
 203 / 475
 
-Figure 15: CONNTYPE_TXUSER_BEGIN2 initiator states
+<!-- Extracted images from page 204 -->
+![Extracted image 1 from page 204]([MS-DTCO].images/page204-img01.png)
+<!-- /Extracted images from page 204 -->
+
+Figure 15: CONNTYPE_TXUSER_BEGIN2 initiator states
 
 3.3.1.2.1 Idle
 
@@ -18109,7 +18169,11 @@ Release: July 29, 2024
 
 205 / 475
 
-Figure 16: CONNTYPE_TXUSER_PROMOTE initiator states
+<!-- Extracted images from page 206 -->
+![Extracted image 1 from page 206]([MS-DTCO].images/page206-img01.png)
+<!-- /Extracted images from page 206 -->
+
+Figure 16: CONNTYPE_TXUSER_PROMOTE initiator states
 
 3.3.1.3.1 Idle
 
@@ -18200,7 +18264,11 @@ Release: July 29, 2024
 
 207 / 475
 
-Figure 17: CONNTYPE_TXUSER_ASSOCIATE initiator states
+<!-- Extracted images from page 208 -->
+![Extracted image 1 from page 208]([MS-DTCO].images/page208-img01.png)
+<!-- /Extracted images from page 208 -->
+
+Figure 17: CONNTYPE_TXUSER_ASSOCIATE initiator states
 
 3.3.1.4.1 Idle
 
@@ -18237,7 +18305,11 @@ Release: July 29, 2024
 
 208 / 475
 
-3.3.1.5  CONNTYPE_TXUSER_EXTENDWHEREABOUTS Initiator States
+<!-- Extracted images from page 209 -->
+![Extracted image 1 from page 209]([MS-DTCO].images/page209-img01.png)
+<!-- /Extracted images from page 209 -->
+
+3.3.1.5  CONNTYPE_TXUSER_EXTENDWHEREABOUTS Initiator States
 
 The application MUST act as an initiator for the
 CONNTYPE_TXUSER_EXTENDEDWHEREABOUTS (section 2.2.8.2.2.1) connection type. In this role,
@@ -18315,7 +18387,11 @@ Release: July 29, 2024
 
 210 / 475
 
-Figure 19: CONNTYPE_TXUSER_IMPORT initiator states
+<!-- Extracted images from page 211 -->
+![Extracted image 1 from page 211]([MS-DTCO].images/page211-img01.png)
+<!-- /Extracted images from page 211 -->
+
+Figure 19: CONNTYPE_TXUSER_IMPORT initiator states
 
 3.3.1.6.1 Idle
 
@@ -18388,7 +18464,11 @@ Release: July 29, 2024
 
 212 / 475
 
-Figure 20: CONNTYPE_TXUSER_IMPORT2 initiator states
+<!-- Extracted images from page 213 -->
+![Extracted image 1 from page 213]([MS-DTCO].images/page213-img01.png)
+<!-- /Extracted images from page 213 -->
+
+Figure 20: CONNTYPE_TXUSER_IMPORT2 initiator states
 
 3.3.1.7.1 Idle
 
@@ -18463,7 +18543,11 @@ Release: July 29, 2024
 
 214 / 475
 
-Figure 21: CONNTYPE_TXUSER_EXPORT initiator states
+<!-- Extracted images from page 215 -->
+![Extracted image 1 from page 215]([MS-DTCO].images/page215-img01.png)
+<!-- /Extracted images from page 215 -->
+
+Figure 21: CONNTYPE_TXUSER_EXPORT initiator states
 
 3.3.1.8.1 Idle
 
@@ -18544,7 +18628,11 @@ Release: July 29, 2024
 
 216 / 475
 
-Figure 22: CONNTYPE_TXUSER_EXPORT2 initiator states
+<!-- Extracted images from page 217 -->
+![Extracted image 1 from page 217]([MS-DTCO].images/page217-img01.png)
+<!-- /Extracted images from page 217 -->
+
+Figure 22: CONNTYPE_TXUSER_EXPORT2 initiator states
 
 3.3.1.9.1 Idle
 
@@ -18621,7 +18709,11 @@ Release: July 29, 2024
 
 218 / 475
 
-Figure 23: CONNTYPE_TXUSER_GETTXDETAILS initiator states
+<!-- Extracted images from page 219 -->
+![Extracted image 1 from page 219]([MS-DTCO].images/page219-img01.png)
+<!-- /Extracted images from page 219 -->
+
+Figure 23: CONNTYPE_TXUSER_GETTXDETAILS initiator states
 
 3.3.1.10.1
 
@@ -18659,7 +18751,11 @@ MSDTC Connection Manager: OleTx Transaction Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+<!-- Extracted images from page 220 -->
+![Extracted image 1 from page 220]([MS-DTCO].images/page220-img01.png)
+<!-- /Extracted images from page 220 -->
+
+
 
 Idle
 
@@ -18768,7 +18864,11 @@ Release: July 29, 2024
 
 221 / 475
 
-Figure 25: CONNTYPE_TXUSER_SETTXTTIMEOUT initiator states
+<!-- Extracted images from page 222 -->
+![Extracted image 1 from page 222]([MS-DTCO].images/page222-img01.png)
+<!-- /Extracted images from page 222 -->
+
+Figure 25: CONNTYPE_TXUSER_SETTXTTIMEOUT initiator states
 
 3.3.1.12.1
 
@@ -18809,7 +18909,11 @@ MSDTC Connection Manager: OleTx Transaction Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+<!-- Extracted images from page 223 -->
+![Extracted image 1 from page 223]([MS-DTCO].images/page223-img01.png)
+<!-- /Extracted images from page 223 -->
+
+
 
 Idle
 
@@ -18855,7 +18959,11 @@ Release: July 29, 2024
 
 223 / 475
 
-This is the final state.
+<!-- Extracted images from page 224 -->
+![Extracted image 1 from page 224]([MS-DTCO].images/page224-img01.png)
+<!-- /Extracted images from page 224 -->
+
+This is the final state.
 
 3.3.1.14
 
@@ -18937,7 +19045,11 @@ Release: July 29, 2024
 
 225 / 475
 
-Figure 28: CONNTYPE_TXUSER_GETSECURITYFLAGS initiator states
+<!-- Extracted images from page 226 -->
+![Extracted image 1 from page 226]([MS-DTCO].images/page226-img01.png)
+<!-- /Extracted images from page 226 -->
+
+Figure 28: CONNTYPE_TXUSER_GETSECURITYFLAGS initiator states
 
 3.3.1.15.1
 
@@ -21786,7 +21898,11 @@ Release: July 29, 2024
 
 259 / 475
 
-Figure 29: CONNTYPE_TXUSER_BEGINNER Acceptor States
+<!-- Extracted images from page 260 -->
+![Extracted image 1 from page 260]([MS-DTCO].images/page260-img01.png)
+<!-- /Extracted images from page 260 -->
+
+Figure 29: CONNTYPE_TXUSER_BEGINNER Acceptor States
 
 3.4.1.1.1 Idle
 
@@ -21877,7 +21993,11 @@ Release: July 29, 2024
 
 261 / 475
 
-Figure 30: CONNTYPE_TXUSER_BEGIN2 Acceptor States
+<!-- Extracted images from page 262 -->
+![Extracted image 1 from page 262]([MS-DTCO].images/page262-img01.png)
+<!-- /Extracted images from page 262 -->
+
+Figure 30: CONNTYPE_TXUSER_BEGIN2 Acceptor States
 
 3.4.1.2.1 Idle
 
@@ -21974,7 +22094,11 @@ Release: July 29, 2024
 
 263 / 475
 
-Figure 31: CONNTYPE_TXUSER_PROMOTE Acceptor States
+<!-- Extracted images from page 264 -->
+![Extracted image 1 from page 264]([MS-DTCO].images/page264-img01.png)
+<!-- /Extracted images from page 264 -->
+
+Figure 31: CONNTYPE_TXUSER_PROMOTE Acceptor States
 
 3.4.1.3.1 Idle
 
@@ -22065,7 +22189,11 @@ Release: July 29, 2024
 
 265 / 475
 
-Figure 32: CONNTYPE_TXUSER_ASSOCIATE Acceptor States
+<!-- Extracted images from page 266 -->
+![Extracted image 1 from page 266]([MS-DTCO].images/page266-img01.png)
+<!-- /Extracted images from page 266 -->
+
+Figure 32: CONNTYPE_TXUSER_ASSOCIATE Acceptor States
 
 3.4.1.4.1 Idle
 
@@ -22168,7 +22296,11 @@ Release: July 29, 2024
 
 267 / 475
 
-Figure 33: CONNTYPE_TXUSER_EXTENDEDWHEREABOUTS Acceptor States
+<!-- Extracted images from page 268 -->
+![Extracted image 1 from page 268]([MS-DTCO].images/page268-img01.png)
+<!-- /Extracted images from page 268 -->
+
+Figure 33: CONNTYPE_TXUSER_EXTENDEDWHEREABOUTS Acceptor States
 
 3.4.1.5.1 Idle
 
@@ -22198,7 +22330,11 @@ MSDTC Connection Manager: OleTx Transaction Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+<!-- Extracted images from page 269 -->
+![Extracted image 1 from page 269]([MS-DTCO].images/page269-img01.png)
+<!-- /Extracted images from page 269 -->
+
+
 
 
 
@@ -22315,7 +22451,11 @@ Release: July 29, 2024
 
 270 / 475
 
-The following figure shows the relationship between the CONNTYPE_TXUSER_IMPORT2 acceptor
+<!-- Extracted images from page 271 -->
+![Extracted image 1 from page 271]([MS-DTCO].images/page271-img01.png)
+<!-- /Extracted images from page 271 -->
+
+The following figure shows the relationship between the CONNTYPE_TXUSER_IMPORT2 acceptor
 states.
 
 Figure 35: CONNTYPE_TXUSER_IMPORT2 Acceptor States
@@ -22415,7 +22555,11 @@ Release: July 29, 2024
 
 272 / 475
 
-Figure 36: CONNTYPE_TXUSER_EXPORT Acceptor States
+<!-- Extracted images from page 273 -->
+![Extracted image 1 from page 273]([MS-DTCO].images/page273-img01.png)
+<!-- /Extracted images from page 273 -->
+
+Figure 36: CONNTYPE_TXUSER_EXPORT Acceptor States
 
 3.4.1.8.1 Idle
 
@@ -22495,7 +22639,11 @@ Release: July 29, 2024
 
 274 / 475
 
-Figure 37: CONNTYPE_TXUSER_EXPORT2 Acceptor States
+<!-- Extracted images from page 275 -->
+![Extracted image 1 from page 275]([MS-DTCO].images/page275-img01.png)
+<!-- /Extracted images from page 275 -->
+
+Figure 37: CONNTYPE_TXUSER_EXPORT2 Acceptor States
 
 3.4.1.9.1 Idle
 
@@ -22571,7 +22719,11 @@ Release: July 29, 2024
 
 276 / 475
 
-Figure 38: CONNTYPE_TXUSER_GETTXDETAILS Acceptor States
+<!-- Extracted images from page 277 -->
+![Extracted image 1 from page 277]([MS-DTCO].images/page277-img01.png)
+<!-- /Extracted images from page 277 -->
+
+Figure 38: CONNTYPE_TXUSER_GETTXDETAILS Acceptor States
 
 3.4.1.10.1
 
@@ -22609,7 +22761,11 @@ MSDTC Connection Manager: OleTx Transaction Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+<!-- Extracted images from page 278 -->
+![Extracted image 1 from page 278]([MS-DTCO].images/page278-img01.png)
+<!-- /Extracted images from page 278 -->
+
+
 
 
 
@@ -22719,7 +22875,11 @@ Release: July 29, 2024
 
 279 / 475
 
-Figure 40: CONNTYPE_TXUSER_SETTXTTIMEOUT Acceptor States
+<!-- Extracted images from page 280 -->
+![Extracted image 1 from page 280]([MS-DTCO].images/page280-img01.png)
+<!-- /Extracted images from page 280 -->
+
+Figure 40: CONNTYPE_TXUSER_SETTXTTIMEOUT Acceptor States
 
 3.4.1.12.1
 
@@ -22782,7 +22942,11 @@ Release: July 29, 2024
 
 281 / 475
 
-Figure 41: CONNTYPE_TXUSER_SETTXTTIMEOUT2 Acceptor States
+<!-- Extracted images from page 282 -->
+![Extracted image 1 from page 282]([MS-DTCO].images/page282-img01.png)
+<!-- /Extracted images from page 282 -->
+
+Figure 41: CONNTYPE_TXUSER_SETTXTTIMEOUT2 Acceptor States
 
 3.4.1.13.1
 
@@ -22803,7 +22967,11 @@ Release: July 29, 2024
 
 282 / 475
 
-This is a transient state that is assumed during the synchronous processing of a request to set a
+<!-- Extracted images from page 283 -->
+![Extracted image 1 from page 283]([MS-DTCO].images/page283-img01.png)
+<!-- /Extracted images from page 283 -->
+
+This is a transient state that is assumed during the synchronous processing of a request to set a
 transaction time-out. No events are processed in this state.
 
 3.4.1.13.3
@@ -22894,7 +23062,11 @@ Release: July 29, 2024
 
 284 / 475
 
-Figure 43: CONNTYPE_TXUSER_GETSECURITYFLAGS Acceptor States
+<!-- Extracted images from page 285 -->
+![Extracted image 1 from page 285]([MS-DTCO].images/page285-img01.png)
+<!-- /Extracted images from page 285 -->
+
+Figure 43: CONNTYPE_TXUSER_GETSECURITYFLAGS Acceptor States
 
 3.4.1.15.1
 
@@ -26003,7 +26175,11 @@ Release: July 29, 2024
 
 321 / 475
 
-3.5.1.1  CONNTYPE_TXUSER_RESOURCEMANAGER Initiator States
+<!-- Extracted images from page 322 -->
+![Extracted image 1 from page 322]([MS-DTCO].images/page322-img01.png)
+<!-- /Extracted images from page 322 -->
+
+3.5.1.1  CONNTYPE_TXUSER_RESOURCEMANAGER Initiator States
 
 The resource manager MUST act as an initiator for the
 CONNTYPE_TXUSER_RESOURCEMANAGER (section 2.2.10.1.1) connection type. In this role, the
@@ -26109,7 +26285,11 @@ Release: July 29, 2024
 
 323 / 475
 
-Figure 45: CONNTYPE_TXUSER_RESOURCEMANAGERINTERNAL initiator states
+<!-- Extracted images from page 324 -->
+![Extracted image 1 from page 324]([MS-DTCO].images/page324-img01.png)
+<!-- /Extracted images from page 324 -->
+
+Figure 45: CONNTYPE_TXUSER_RESOURCEMANAGERINTERNAL initiator states
 
 3.5.1.2.1 Idle
 
@@ -26195,7 +26375,11 @@ Release: July 29, 2024
 
 325 / 475
 
-Figure 46: CONNTYPE_TXUSER_PHASE0 Initiator States
+<!-- Extracted images from page 326 -->
+![Extracted image 1 from page 326]([MS-DTCO].images/page326-img01.png)
+<!-- /Extracted images from page 326 -->
+
+Figure 46: CONNTYPE_TXUSER_PHASE0 Initiator States
 
 3.5.1.3.1 Idle
 
@@ -26288,7 +26472,11 @@ Release: July 29, 2024
 
 327 / 475
 
-Figure 47: CONNTYPE_TXUSER_ENLISTMENT Initiator States
+<!-- Extracted images from page 328 -->
+![Extracted image 1 from page 328]([MS-DTCO].images/page328-img01.png)
+<!-- /Extracted images from page 328 -->
+
+Figure 47: CONNTYPE_TXUSER_ENLISTMENT Initiator States
 
 3.5.1.4.1 Idle
 
@@ -26397,7 +26585,11 @@ MSDTC Connection Manager: OleTx Transaction Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Figure 48: CONNTYPE_TXUSER_REENLIST Initiator States
+<!-- Extracted images from page 330 -->
+![Extracted image 1 from page 330]([MS-DTCO].images/page330-img01.png)
+<!-- /Extracted images from page 330 -->
+
+Figure 48: CONNTYPE_TXUSER_REENLIST Initiator States
 
 3.5.1.5.1 Idle
 
@@ -26462,7 +26654,11 @@ Release: July 29, 2024
 
 331 / 475
 
-Figure 49: CONNTYPE_TXUSER_VOTER Initiator States
+<!-- Extracted images from page 332 -->
+![Extracted image 1 from page 332]([MS-DTCO].images/page332-img01.png)
+<!-- /Extracted images from page 332 -->
+
+Figure 49: CONNTYPE_TXUSER_VOTER Initiator States
 
 3.5.1.6.1 Idle
 
@@ -27786,7 +27982,11 @@ Release: July 29, 2024
 
 349 / 475
 
-The transaction manager communicating with a resource manager MUST provide the states as
+<!-- Extracted images from page 350 -->
+![Extracted image 1 from page 350]([MS-DTCO].images/page350-img01.png)
+<!-- /Extracted images from page 350 -->
+
+The transaction manager communicating with a resource manager MUST provide the states as
 specified in the following sections for its supported connection types. Section 2.2.1.1.3 defines the
 connection types that a transaction manager communicating with a resource manager MUST provide
 for each supported protocol version.
@@ -27887,7 +28087,11 @@ Release: July 29, 2024
 
 351 / 475
 
-Figure 51: CONNTYPE_TXUSER_RESOURCEMANAGERINTERNAL acceptor states
+<!-- Extracted images from page 352 -->
+![Extracted image 1 from page 352]([MS-DTCO].images/page352-img01.png)
+<!-- /Extracted images from page 352 -->
+
+Figure 51: CONNTYPE_TXUSER_RESOURCEMANAGERINTERNAL acceptor states
 
 3.6.1.2.1 Idle
 
@@ -27962,7 +28166,11 @@ Release: July 29, 2024
 
 353 / 475
 
-Figure 52: CONNTYPE_TXUSER_PHASE0 acceptor states
+<!-- Extracted images from page 354 -->
+![Extracted image 1 from page 354]([MS-DTCO].images/page354-img01.png)
+<!-- /Extracted images from page 354 -->
+
+Figure 52: CONNTYPE_TXUSER_PHASE0 acceptor states
 
 3.6.1.3.1 Idle
 
@@ -28054,7 +28262,11 @@ Release: July 29, 2024
 
 355 / 475
 
-Figure 53: CONNTYPE_TXUSER_ENLISTMENT acceptor states (processing enlistment
+<!-- Extracted images from page 356 -->
+![Extracted image 1 from page 356]([MS-DTCO].images/page356-img01.png)
+<!-- /Extracted images from page 356 -->
+
+Figure 53: CONNTYPE_TXUSER_ENLISTMENT acceptor states (processing enlistment
 request)
 
 [MS-DTCO] - v20240729
@@ -28064,7 +28276,11 @@ Release: July 29, 2024
 
 356 / 475
 
-Figure 54: CONNTYPE_TXUSER_ENLISTMENT acceptor states (active)
+<!-- Extracted images from page 357 -->
+![Extracted image 1 from page 357]([MS-DTCO].images/page357-img01.png)
+<!-- /Extracted images from page 357 -->
+
+Figure 54: CONNTYPE_TXUSER_ENLISTMENT acceptor states (active)
 
 3.6.1.4.1 Idle
 
@@ -28164,7 +28380,11 @@ Release: July 29, 2024
 
 358 / 475
 
-
+<!-- Extracted images from page 359 -->
+![Extracted image 1 from page 359]([MS-DTCO].images/page359-img01.png)
+<!-- /Extracted images from page 359 -->
+
+
 
 Ended (section 3.6.1.5.3)
 
@@ -28232,7 +28452,11 @@ Release: July 29, 2024
 
 360 / 475
 
-Figure 56: CONNTYPE_TXUSER_VOTER acceptor states
+<!-- Extracted images from page 361 -->
+![Extracted image 1 from page 361]([MS-DTCO].images/page361-img01.png)
+<!-- /Extracted images from page 361 -->
+
+Figure 56: CONNTYPE_TXUSER_VOTER acceptor states
 
 3.6.1.6.1 Idle
 
@@ -30013,7 +30237,11 @@ Release: July 29, 2024
 
 382 / 475
 
-Figure 57: CONNTYPE_PARTNERTM_PROPAGATE initiator states
+<!-- Extracted images from page 383 -->
+![Extracted image 1 from page 383]([MS-DTCO].images/page383-img01.png)
+<!-- /Extracted images from page 383 -->
+
+Figure 57: CONNTYPE_PARTNERTM_PROPAGATE initiator states
 
 3.7.1.1.1 Idle
 
@@ -30160,7 +30388,11 @@ Release: July 29, 2024
 
 385 / 475
 
-Figure 58: CONNTYPE_PARTNERTM_BRANCH acceptor states
+<!-- Extracted images from page 386 -->
+![Extracted image 1 from page 386]([MS-DTCO].images/page386-img01.png)
+<!-- /Extracted images from page 386 -->
+
+Figure 58: CONNTYPE_PARTNERTM_BRANCH acceptor states
 
 3.7.1.2.1 Idle
 
@@ -30304,7 +30536,11 @@ Release: July 29, 2024
 
 388 / 475
 
-Figure 59: CONNTYPE_PARTNERTM_REDELIVERCOMMIT initiator states
+<!-- Extracted images from page 389 -->
+![Extracted image 1 from page 389]([MS-DTCO].images/page389-img01.png)
+<!-- /Extracted images from page 389 -->
+
+Figure 59: CONNTYPE_PARTNERTM_REDELIVERCOMMIT initiator states
 
 3.7.1.3.1 Idle
 
@@ -30337,7 +30573,11 @@ Release: July 29, 2024
 
 389 / 475
 
-3.7.1.4  CONNTYPE_PARTNERTM_CHECKABORT Acceptor States
+<!-- Extracted images from page 390 -->
+![Extracted image 1 from page 390]([MS-DTCO].images/page390-img01.png)
+<!-- /Extracted images from page 390 -->
+
+3.7.1.4  CONNTYPE_PARTNERTM_CHECKABORT Acceptor States
 
 The superior transaction manager MUST act as an acceptor for the
 CONNTYPE_PARTNERTM_CHECKABORT (section 2.2.9.2.1.1) connection type. In this role, the
@@ -31661,7 +31901,11 @@ Release: July 29, 2024
 
 406 / 475
 
-Figure 61: CONNTYPE_PARTERTM_PROPAGATE acceptor states
+<!-- Extracted images from page 407 -->
+![Extracted image 1 from page 407]([MS-DTCO].images/page407-img01.png)
+<!-- /Extracted images from page 407 -->
+
+Figure 61: CONNTYPE_PARTERTM_PROPAGATE acceptor states
 
 3.8.1.1.1 Idle
 
@@ -31818,7 +32062,11 @@ Release: July 29, 2024
 
 409 / 475
 
-Figure 62: CONNTYPE_PARTNERTM_BRANCH initiator states
+<!-- Extracted images from page 410 -->
+![Extracted image 1 from page 410]([MS-DTCO].images/page410-img01.png)
+<!-- /Extracted images from page 410 -->
+
+Figure 62: CONNTYPE_PARTNERTM_BRANCH initiator states
 
 3.8.1.2.1 Idle
 
@@ -31983,7 +32231,11 @@ Release: July 29, 2024
 
 412 / 475
 
-Figure 63: CONNTYPE_PARTNERTM_REDELIVERCOMMIT acceptor states
+<!-- Extracted images from page 413 -->
+![Extracted image 1 from page 413]([MS-DTCO].images/page413-img01.png)
+<!-- /Extracted images from page 413 -->
+
+Figure 63: CONNTYPE_PARTNERTM_REDELIVERCOMMIT acceptor states
 
 3.8.1.3.1 Idle
 
@@ -32008,7 +32260,11 @@ Release: July 29, 2024
 
 413 / 475
 
-3.8.1.4  CONNTYPE_PARTNERTM_CHECKABORT Initiator States
+<!-- Extracted images from page 414 -->
+![Extracted image 1 from page 414]([MS-DTCO].images/page414-img01.png)
+<!-- /Extracted images from page 414 -->
+
+3.8.1.4  CONNTYPE_PARTNERTM_CHECKABORT Initiator States
 
 The Subordinate Transaction Manager Facet (section 1.3.3.3.5) MUST act as an initiator for the
 CONNTYPE_PARTNERTM_CHECKABORT (section 2.2.9.2.1.1) connection type. In this role, the

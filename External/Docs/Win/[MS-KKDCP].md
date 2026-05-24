@@ -476,7 +476,11 @@ Release: April 23, 2024
 
 5 / 22
 
-1.3  Overview
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-KKDCP].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+1.3  Overview
 
 Kerberos V5 [RFC4120] requires client connectivity to the Key Distribution Center (KDC) for
 authentication. Kerberos Key Distribution Center (KDC) Proxy Protocol (KKDCP) provides a mechanism
@@ -811,7 +815,11 @@ Release: April 23, 2024
 
 12 / 22
 
-4  Protocol Examples
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-KKDCP].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+4  Protocol Examples
 
 The following sections describe two common scenarios to illustrate the function of the KKDCP.
 
@@ -880,7 +888,11 @@ Release: April 23, 2024
 
 14 / 22
 
-4.2  Obtaining a Service Ticket with Password Change
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-KKDCP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+4.2  Obtaining a Service Ticket with Password Change
 
 Figure 3: Obtaining a service ticket with password change
 

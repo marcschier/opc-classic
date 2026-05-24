@@ -905,7 +905,11 @@ Release: April 23, 2024
 
 10 / 17
 
-4  Protocol Examples
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-GSSA].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+4  Protocol Examples
 
 Examples that clarify the difference between a strict interpretation of the relevant RFCs and the
 Microsoft implementation are included in the figures in this section.
@@ -920,7 +924,11 @@ Release: April 23, 2024
 
 11 / 17
 
-Figure 2: Example of Message #2 input to the GSS_GetMIC TSIG generation function
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-GSSA].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: Example of Message #2 input to the GSS_GetMIC TSIG generation function
 
 [MS-GSSA] - v20240423
 Generic Security Service Algorithm for Secret Key Transaction Authentication for DNS (GSS-TSIG) Protocol
@@ -930,7 +938,11 @@ Release: April 23, 2024
 
 12 / 17
 
-Figure 3: Example of Message #2, as it appears on the wire
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-GSSA].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 3: Example of Message #2, as it appears on the wire
 
 [MS-GSSA] - v20240423
 Generic Security Service Algorithm for Secret Key Transaction Authentication for DNS (GSS-TSIG) Protocol

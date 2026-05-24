@@ -1159,7 +1159,11 @@ Release: June 1, 2017
 
 11 / 69
 
-network access server (NAS) and the RADIUS server to authenticate and authorize connection
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RNAP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+network access server (NAS) and the RADIUS server to authenticate and authorize connection
 requests, as well as to configure the level of network access provided by the NAS, and account for
 usage.
 
@@ -4371,7 +4375,11 @@ Release: June 1, 2017
 
 52 / 69
 
-4  Protocol Examples
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-RNAP].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+4  Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of this protocol.
@@ -4423,7 +4431,11 @@ Release: June 1, 2017
 
 53 / 69
 
-  Attribute 1: MS-Quarantine-Session-Timeout = Time in seconds
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MS-RNAP].images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+  Attribute 1: MS-Quarantine-Session-Timeout = Time in seconds
 
   Attribute 2: MS-Quarantine-IPFilter = List of IPv4 traffic filters
 
@@ -4476,7 +4488,11 @@ Release: June 1, 2017
 
 54 / 69
 
-This is forwarded to the RADIUS server where the RADIUS server authenticates and authorizes the
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-RNAP].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+This is forwarded to the RADIUS server where the RADIUS server authenticates and authorizes the
 request. Based on the RADIUS server configuration, it responds with an Access-Accept packet with the
 following attributes:
 
@@ -4529,7 +4545,11 @@ Release: June 1, 2017
 
 55 / 69
 
-  Attribute 2: MS-Quarantine-User-Class = User class
+<!-- Extracted images from page 56 -->
+![Extracted image 1 from page 56]([MS-RNAP].images/page056-img01.png)
+<!-- /Extracted images from page 56 -->
+
+  Attribute 2: MS-Quarantine-User-Class = User class
 
 4.4  VPN NAP
 

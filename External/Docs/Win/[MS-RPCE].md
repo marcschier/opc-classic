@@ -2777,7 +2777,11 @@ Release: September 16, 2024
 
 27 / 179
 
-The ExtendedError Remote Data Structure specified in [MS-EERR] is built on top of these extensions
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-RPCE].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+The ExtendedError Remote Data Structure specified in [MS-EERR] is built on top of these extensions
 and provides extended error information to an RPC client.
 
 Name services as described in [C706] are specified in [MS-RPCL] (this is a legacy protocol that has
@@ -4063,7 +4067,11 @@ Release: September 16, 2024
 
 44 / 179
 
-These extensions redefine the rpc_mgmt_inq_princ_name method, as specified in [C706] Appendix Q,
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-RPCE].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+These extensions redefine the rpc_mgmt_inq_princ_name method, as specified in [C706] Appendix Q,
 by adding a range attribute to the princ_name_size parameter. This change affects compatibility with
 the definition in [C706].
 
@@ -4587,7 +4595,11 @@ Release: September 16, 2024
 
 51 / 179
 
-Figure 3: PDU structure with verification trailer
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-RPCE].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+Figure 3: PDU structure with verification trailer
 
 Client implementations MAY<39> send stub padding octets after the stub data. To maximize
 interoperability, server implementations SHOULD NOT assume that the verification trailer immediately
@@ -4613,7 +4625,11 @@ Release: September 16, 2024
 
 52 / 179
 
-Figure 4: Verification trailer header and commands
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-RPCE].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+Figure 4: Verification trailer header and commands
 
 The verification trailer commands can come in any order after the header. If more than one command
 is present, the next command MUST be placed immediately after the previous one. Each command
@@ -5042,7 +5058,11 @@ Release: September 16, 2024
 
 57 / 179
 
-2.2.3.1  PDU Segments
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-RPCE].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+2.2.3.1  PDU Segments
 
 A PDU can be viewed as having several different segments. These segments are as follows:
 
@@ -5523,7 +5543,12 @@ Release: September 16, 2024
 
 64 / 179
 
-2.2.5.2  NDR64 Simple Data Types
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-RPCE].images/page065-img01.png)
+![Extracted image 2 from page 65]([MS-RPCE].images/page065-img02.png)
+<!-- /Extracted images from page 65 -->
+
+2.2.5.2  NDR64 Simple Data Types
 
 NDR64 supports all simple types defined by NDR (as specified in [C706] section 14.2) with the same
 alignment requirements except for enumerated types, which MUST be represented as signed long
@@ -5576,7 +5601,13 @@ Remote Procedure Call Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Figure 8: Conformant varying arrays
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MS-RPCE].images/page066-img01.png)
+![Extracted image 2 from page 66]([MS-RPCE].images/page066-img02.png)
+![Extracted image 3 from page 66]([MS-RPCE].images/page066-img03.png)
+<!-- /Extracted images from page 66 -->
+
+Figure 8: Conformant varying arrays
 
 2.2.5.3.2.4  Multidimensional Arrays
 
@@ -5622,7 +5653,13 @@ Release: September 16, 2024
 
 66 / 179
 
-2.2.5.3.4.1  Structure with Trailing Gap
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-RPCE].images/page067-img01.png)
+![Extracted image 2 from page 67]([MS-RPCE].images/page067-img02.png)
+![Extracted image 3 from page 67]([MS-RPCE].images/page067-img03.png)
+<!-- /Extracted images from page 67 -->
+
+2.2.5.3.4.1  Structure with Trailing Gap
 
 NDR64 represents a structure as an ordered sequence of representations of the structure members.
 The trailing gap from the last nonconformant and nonvarying field to the alignment of the structure
@@ -5668,7 +5705,12 @@ Release: September 16, 2024
 
 67 / 179
 
-In NDR64, a pipe element can be of any NDR primitive or constructed type except the following:
+<!-- Extracted images from page 68 -->
+![Extracted image 1 from page 68]([MS-RPCE].images/page068-img01.png)
+![Extracted image 2 from page 68]([MS-RPCE].images/page068-img02.png)
+<!-- /Extracted images from page 68 -->
+
+In NDR64, a pipe element can be of any NDR primitive or constructed type except the following:
 
 
 
@@ -7818,7 +7860,11 @@ Remote Procedure Call Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Figure 16: State transitions
+<!-- Extracted images from page 96 -->
+![Extracted image 1 from page 96]([MS-RPCE].images/page096-img01.png)
+<!-- /Extracted images from page 96 -->
+
+Figure 16: State transitions
 
 Note  The preceding conceptual data can be implemented by using a variety of techniques.
 
@@ -8482,7 +8528,11 @@ Release: September 16, 2024
 
 105 / 179
 
-Figure 17: State diagram for server call
+<!-- Extracted images from page 106 -->
+![Extracted image 1 from page 106]([MS-RPCE].images/page106-img01.png)
+<!-- /Extracted images from page 106 -->
+
+Figure 17: State diagram for server call
 
 Note  The preceding conceptual data can be implemented by using a variety of techniques. Any data
 structure that stores the preceding conceptual data can be used in the implementation.
@@ -9771,7 +9821,11 @@ Release: September 16, 2024
 
 123 / 179
 
-3.3.1.7  Other Local Events
+<!-- Extracted images from page 124 -->
+![Extracted image 1 from page 124]([MS-RPCE].images/page124-img01.png)
+<!-- /Extracted images from page 124 -->
+
+3.3.1.7  Other Local Events
 
 There are no other local events that are common between a connection-oriented client and a
 connection-oriented server.
@@ -9893,7 +9947,11 @@ Remote Procedure Call Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-State
+<!-- Extracted images from page 126 -->
+![Extracted image 1 from page 126]([MS-RPCE].images/page126-img01.png)
+<!-- /Extracted images from page 126 -->
+
+State
 
 Description
 
@@ -10181,7 +10239,11 @@ Release: September 16, 2024
 
 130 / 179
 
-As specified, [C706] does not make it explicit what security information needs to be applied to
+<!-- Extracted images from page 131 -->
+![Extracted image 1 from page 131]([MS-RPCE].images/page131-img01.png)
+<!-- /Extracted images from page 131 -->
+
+As specified, [C706] does not make it explicit what security information needs to be applied to
 requests from the client to the endpoint mapper to resolve the endpoint for an interface. These
 extensions prescribe that clients MAY use security for making requests to the endpoint mapper. If they
 do, the authentication type SHOULD be the same as the authentication type for the partial binding
@@ -10353,7 +10415,11 @@ Release: September 16, 2024
 
 133 / 179
 
-Figure 21: Server call state
+<!-- Extracted images from page 134 -->
+![Extracted image 1 from page 134]([MS-RPCE].images/page134-img01.png)
+<!-- /Extracted images from page 134 -->
+
+Figure 21: Server call state
 
 Server Call: The server call data structure maintains state and property information relating to a
 server call, as specified in [C706] section 9.3.4. [C706] section 2.3.3.1 specifies a client binding
@@ -10705,7 +10771,11 @@ Release: September 16, 2024
 
 140 / 179
 
-4  Protocol Examples
+<!-- Extracted images from page 141 -->
+![Extracted image 1 from page 141]([MS-RPCE].images/page141-img01.png)
+<!-- /Extracted images from page 141 -->
+
+4  Protocol Examples
 
 The following sections describe protocol examples for both connection-oriented RPC and
 connectionless RPC scenarios.
@@ -10801,7 +10871,11 @@ Remote Procedure Call Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-not been tampered with. Then it unmarshals the application data from the octet stream in the stub
+<!-- Extracted images from page 143 -->
+![Extracted image 1 from page 143]([MS-RPCE].images/page143-img01.png)
+<!-- /Extracted images from page 143 -->
+
+not been tampered with. Then it unmarshals the application data from the octet stream in the stub
 data and returns the data to the client application.
 
 4.2  Packet Sequence for Secure, Connection-Oriented RPC Using NTLM as Security
@@ -10900,7 +10974,11 @@ Release: September 16, 2024
 
 144 / 179
 
-Figure 24: Packet exchange
+<!-- Extracted images from page 145 -->
+![Extracted image 1 from page 145]([MS-RPCE].images/page145-img01.png)
+<!-- /Extracted images from page 145 -->
+
+Figure 24: Packet exchange
 
 REQUEST 0: A request PDU for the client's first call. The activity ID in the header is the newly formed
 client activity ID, and the sequence number is zero. Because the client does not know the server's
@@ -10946,7 +11024,11 @@ Remote Procedure Call Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-4.4  Connectionless RPCs With and Without a Delayed ACK
+<!-- Extracted images from page 146 -->
+![Extracted image 1 from page 146]([MS-RPCE].images/page146-img01.png)
+<!-- /Extracted images from page 146 -->
+
+4.4  Connectionless RPCs With and Without a Delayed ACK
 
 The following example illustrates the client sending an ACK packet.
 
@@ -10971,7 +11053,11 @@ Release: September 16, 2024
 
 146 / 179
 
-Figure 26: Connectionless client issuing a sequence of calls
+<!-- Extracted images from page 147 -->
+![Extracted image 1 from page 147]([MS-RPCE].images/page147-img01.png)
+<!-- /Extracted images from page 147 -->
+
+Figure 26: Connectionless client issuing a sequence of calls
 
 Initially, the client has no knowledge of the server's actual endpoint, so the first request PDU (packet
 #1) is sent to the endpoint mapper port for UDP, which is port 135.

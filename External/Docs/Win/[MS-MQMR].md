@@ -1098,7 +1098,11 @@ Release: April 23, 2024
 
 10 / 37
 
-
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-MQMR].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+
 
 Pausing the sending of messages from a computer. The queue manager will not send messages to
 the applicable destination queue until a resume action is initiated.
@@ -2547,7 +2551,11 @@ Release: April 23, 2024
 
 26 / 37
 
-
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-MQMR].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+
 
 If lpwszAction EQUALS "PAUSE" then generate a Pause Queue event with following inputs:
 
@@ -2647,7 +2655,11 @@ Release: April 23, 2024
 
 28 / 37
 
-4  Protocol Examples
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-MQMR].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+4  Protocol Examples
 
 The following example pseudocode demonstrates how to pause a public queue by using the
 R_QMMgmtAction method.

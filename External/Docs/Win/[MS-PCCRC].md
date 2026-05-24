@@ -914,7 +914,11 @@ Release: April 23, 2024
 
 10 / 30
 
-Figure 1: Calculation of hashes
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-PCCRC].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 1: Calculation of hashes
 
 Notation:
 

@@ -896,7 +896,11 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-The following diagram shows typical SMP communication flow for an arbitrary session.
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MC-SMP].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+The following diagram shows typical SMP communication flow for an arbitrary session.
 
 Figure 1: Example of a communication flow in SMP
 
@@ -917,7 +921,11 @@ Release: October 31, 2025
 
 9 / 35
 
-Figure 2: Protocol relationship
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MC-SMP].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 2: Protocol relationship
 
 1.5  Prerequisites/Preconditions
 
@@ -1807,7 +1815,11 @@ Release: October 31, 2025
 
 22 / 35
 
-Figure 3: Session Multiplex Protocol server state machine
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MC-SMP].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 3: Session Multiplex Protocol server state machine
 
 3.2.1  Initialization
 
@@ -1867,7 +1879,11 @@ Release: October 31, 2025
 
 24 / 35
 
-Figure 4: Session Multiplex Protocol client state machine
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MC-SMP].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 4: Session Multiplex Protocol client state machine
 
 3.3.1  Initialization
 

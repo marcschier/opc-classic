@@ -1657,7 +1657,11 @@ Release: April 23, 2024
 
 17 / 139
 
-Figure 1: Queues and queue managers
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-MQQB].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 1: Queues and queue managers
 
 The preceding diagram shows the relationship between the branch office laptop and the head office
 server. Messages containing orders are transferred from the outgoing queue on the laptop to the
@@ -1676,7 +1680,11 @@ Release: April 23, 2024
 
 18 / 139
 
-This protocol uses shared state and processing rules defined in Message Queuing (MSMQ): Common
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-MQQB].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+This protocol uses shared state and processing rules defined in Message Queuing (MSMQ): Common
 Data Model and Processing Rules [MS-MQDMPR].
 
 The protocol relies upon the Binary Reliable Message Routing Algorithm specified in [MS-MQBR] to
@@ -3004,7 +3012,11 @@ Release: April 23, 2024
 
 36 / 139
 
-Figure 3: Initiator session state
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-MQQB].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 3: Initiator session state
 
 3.1.1.1.1.2  Session State - Acceptor
 
@@ -3015,7 +3027,11 @@ Release: April 23, 2024
 
 37 / 139
 
-Figure 4: Acceptor session state
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-MQQB].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 4: Acceptor session state
 
 3.1.1.1.1.3  Express Message State - Sender
 
@@ -3026,7 +3042,11 @@ Release: April 23, 2024
 
 38 / 139
 
-Figure 5: Sender express message state
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-MQQB].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 5: Sender express message state
 
 3.1.1.1.1.4  Express Message State - Receiver
 
@@ -3037,7 +3057,11 @@ Release: April 23, 2024
 
 39 / 139
 
-Figure 6: Receiver express message state
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-MQQB].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+Figure 6: Receiver express message state
 
 3.1.1.1.1.5  Recoverable Message State - Sender
 
@@ -3048,7 +3072,11 @@ Release: April 23, 2024
 
 40 / 139
 
-Figure 7: Sender recoverable message state
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-MQQB].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 7: Sender recoverable message state
 
 3.1.1.1.1.6  Recoverable Message State - Receiver
 
@@ -3059,7 +3087,11 @@ Release: April 23, 2024
 
 41 / 139
 
-Figure 8: Receiver recoverable message state
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-MQQB].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+Figure 8: Receiver recoverable message state
 
 3.1.1.1.1.7  Transactional Message State - Sender
 
@@ -3070,7 +3102,11 @@ Release: April 23, 2024
 
 42 / 139
 
-Figure 9: Sender transactional message state
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-MQQB].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 9: Sender transactional message state
 
 3.1.1.1.1.8  Transactional Message State - Receiver
 
@@ -3081,7 +3117,11 @@ Release: April 23, 2024
 
 43 / 139
 
-Figure 10: Receiver transactional message state
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-MQQB].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+Figure 10: Receiver transactional message state
 
 3.1.1.1.1.9  Ping Mechanism State - Initiator
 
@@ -3092,7 +3132,11 @@ Release: April 23, 2024
 
 44 / 139
 
-Figure 11: Initiator ping mechanism state
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-MQQB].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+Figure 11: Initiator ping mechanism state
 
 3.1.1.2  Shared Data Elements
 
@@ -3900,7 +3944,11 @@ Message Queuing (MSMQ): Message Queuing Binary Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.1.7.1 Session Initialization
+<!-- Extracted images from page 56 -->
+![Extracted image 1 from page 56]([MS-MQQB].images/page056-img01.png)
+<!-- /Extracted images from page 56 -->
+
+3.1.1.7.1 Session Initialization
 
 The following sequence diagram demonstrates session initialization.
 
@@ -3929,7 +3977,11 @@ Release: April 23, 2024
 
 56 / 139
 
-Figure 13: Sequence for express messages
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-MQQB].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+Figure 13: Sequence for express messages
 
 The sender sends three express UserMessage Packets ([MS-MQMQ] section 2.2.20) to the receiver.
 The receiver acknowledges receipt of the UserMessage Packets by sending a SessionAck
@@ -3950,7 +4002,11 @@ Release: April 23, 2024
 
 57 / 139
 
-Figure 14: Sequence for transactional messages
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-MQQB].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+Figure 14: Sequence for transactional messages
 
 The sender sends a transactional UserMessage Packet ([MS-MQMQ] section 2.2.20) to the receiver
 with positive source journaling enabled. The receiver responds by sending an OrderAck
@@ -9127,7 +9183,11 @@ Release: April 23, 2024
 
 116 / 139
 
-4  Protocol Examples
+<!-- Extracted images from page 117 -->
+![Extracted image 1 from page 117]([MS-MQQB].images/page117-img01.png)
+<!-- /Extracted images from page 117 -->
+
+4  Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Message Queuing (MSMQ): Message Queuing Binary Protocol.

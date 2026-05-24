@@ -1057,7 +1057,11 @@ Release: April 23, 2024
 
 10 / 54
 
-Figure 1: Protocol relationships
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-SNTP].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 1: Protocol relationships
 
 The W32Time Remote Protocol, as specified in [MS-W32T], is an RPC interface protocol used for
 controlling and monitoring the Windows implementation of NTP. The protocol relationship between the
@@ -2242,7 +2246,11 @@ Release: April 23, 2024
 
 25 / 54
 
-Figure 2: Authentication request generation
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-SNTP].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 2: Authentication request generation
 
 If the ExtendedAuthenticatorSupported ADM element is false, the client MUST construct a Client
 NTP Request message. The Client NTP Request message length is 68 bytes. The client sets the
@@ -2294,7 +2302,11 @@ Release: April 23, 2024
 
 27 / 54
 
-Figure 3: Authentication response processing
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-SNTP].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+Figure 3: Authentication response processing
 
 The response message length MUST be either 68 or 120 bytes. If the message length does not meet
 this requirement, the authentication fails.
@@ -2394,7 +2406,11 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note  In authenticated NTP, all state transitions are triggered by timer expiry. On expiration of the
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-SNTP].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Note  In authenticated NTP, all state transitions are triggered by timer expiry. On expiration of the
 client polling timer, an authenticated NTP client attempts an authenticated NTP exchange with the NTP
 server. Based on the success or failure of that attempt, it updates state elements and transitions to
 the next state. The labels on the following arcs indicate the trigger of authentication success or failure
@@ -2432,7 +2448,11 @@ Release: April 23, 2024
 
 30 / 54
 
-Figure 5: Client spike evaluation and processing
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-SNTP].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+Figure 5: Client spike evaluation and processing
 
 During initialization, the client sets the HoldCount element to zero.
 
@@ -2942,7 +2962,11 @@ Release: April 23, 2024
 
 37 / 54
 
-Figure 6: Authentication request processing
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-SNTP].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 6: Authentication request processing
 
 The server prepares the Server NTP Response or Server ExtendedAuthenticator NTP Response
 message in the same way as for the base protocol, which is described in [RFC1305] section 3.4.3.
@@ -3209,7 +3233,11 @@ Release: April 23, 2024
 
 41 / 54
 
-4  Protocol Examples
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-SNTP].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+4  Protocol Examples
 
 The following example shows a successful authenticated time synchronization sequence using the NTP
 Authentication Extensions between a client and a server.

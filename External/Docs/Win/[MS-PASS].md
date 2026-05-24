@@ -1580,7 +1580,11 @@ Release: April 23, 2024
 
 20 / 39
 
-Figure 1: Message processing at the client part A
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-PASS].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 1: Message processing at the client part A
 
 [MS-PASS] - v20240423
 Passport Server Side Include (SSI) Version 1.4 Protocol
@@ -1589,7 +1593,11 @@ Release: April 23, 2024
 
 21 / 39
 
-Figure 2: Message processing at the client part B (continued)
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-PASS].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 2: Message processing at the client part B (continued)
 
 3.1.5.1  Processing Partner Server Challenge Messages
 
@@ -1736,7 +1744,11 @@ Release: April 23, 2024
 
 24 / 39
 
-Figure 3: Message processing at partner server
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-PASS].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 3: Message processing at partner server
 
 3.2.5.1  Processing First Authenticated Request Messages
 
@@ -1808,7 +1820,11 @@ Release: April 23, 2024
 
 26 / 39
 
-Figure 4: Message processing at authentication server
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-PASS].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 4: Message processing at authentication server
 
 3.3.5.1  Processing Sign-in Request Messages
 
@@ -1972,7 +1988,11 @@ Release: April 23, 2024
 
 29 / 39
 
-4  Protocol Examples
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-PASS].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+4  Protocol Examples
 
 This example illustrates how a user obtains access to a restricted resource using the Passport SSI
 Version 1.4 Protocol.

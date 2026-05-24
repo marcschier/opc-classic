@@ -896,7 +896,11 @@ Release: April 23, 2024
 
 9 / 58
 
-1.3  Overview
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-WDSOSD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+1.3  Overview
 
 The deployment agent uses the WDS OS Deployment Protocol (WDSOSD) to request information
 concerning deployment of an OS image on the client system. This information includes instructions

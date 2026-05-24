@@ -3700,7 +3700,11 @@ Release: November 21, 2025
 
 36 / 722
 
-Figure 1: CIFS transaction messages over connectionless transport
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-CIFS].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 1: CIFS transaction messages over connectionless transport
 
 When the last transaction request has been received by the server, the server MUST respond with a
 final response message, as described in section 3.2.4.1.5. However, if the there are multiple final
@@ -3726,7 +3730,11 @@ Release: November 21, 2025
 
 37 / 722
 
-When the transaction has been completed, the client MUST send another sequenced command to the
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-CIFS].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+When the transaction has been completed, the client MUST send another sequenced command to the
 server. This indicates to the server that all of the transaction final response messages have been
 received and that the parameter and data transfer is complete. Resources allocated to the transaction
 command can then be released by the server.
@@ -55046,7 +55054,11 @@ Release: November 21, 2025
 
 485 / 722
 
-Like SMB messages, transactions are a rudimentary form of remote procedure call. Transaction
+<!-- Extracted images from page 486 -->
+![Extracted image 1 from page 486]([MS-CIFS].images/page486-img01.png)
+<!-- /Extracted images from page 486 -->
+
+Like SMB messages, transactions are a rudimentary form of remote procedure call. Transaction
 subcommands identify operations to be performed, the parameters to pass to the operation, and raw
 data upon which to operate. The response also includes parameters and data.
 
@@ -55095,7 +55107,11 @@ Release: November 21, 2025
 
 486 / 722
 
-1.  The CIFS client MUST send a primary request that indicates that more messages are to follow. The
+<!-- Extracted images from page 487 -->
+![Extracted image 1 from page 487]([MS-CIFS].images/page487-img01.png)
+<!-- /Extracted images from page 487 -->
+
+1.  The CIFS client MUST send a primary request that indicates that more messages are to follow. The
 client indicates that the transaction request is incomplete by setting the ParameterCount value
 less than the TotalParameterCount, or by setting the DataCount value less than the
 TotalDataCount, or both. After sending the primary request, the client MUST set the
@@ -55129,7 +55145,11 @@ Release: November 21, 2025
 
 487 / 722
 
-Figure 5: Transaction response with multiple SMB response messages
+<!-- Extracted images from page 488 -->
+![Extracted image 1 from page 488]([MS-CIFS].images/page488-img01.png)
+<!-- /Extracted images from page 488 -->
+
+Figure 5: Transaction response with multiple SMB response messages
 
 The number of SMB messages needed to transfer a transaction request is independent of the number
 of messages that can be returned. A single-part request can generate a single response or a multi-
@@ -55219,7 +55239,11 @@ Release: November 21, 2025
 
 489 / 722
 
-Figure 6: Application that connects to a share on a server
+<!-- Extracted images from page 490 -->
+![Extracted image 1 from page 490]([MS-CIFS].images/page490-img01.png)
+<!-- /Extracted images from page 490 -->
+
+Figure 6: Application that connects to a share on a server
 
 To complete a successful share connect, the client MUST have an established SMB connection, an
 authenticated SMB session for the user initiating the call, and a tree connect to the target share.
@@ -55475,7 +55499,11 @@ Release: November 21, 2025
 
 493 / 722
 
-If Client.Connection.IsSigningActive becomes TRUE as a result of the authentication
+<!-- Extracted images from page 494 -->
+![Extracted image 1 from page 494]([MS-CIFS].images/page494-img01.png)
+<!-- /Extracted images from page 494 -->
+
+If Client.Connection.IsSigningActive becomes TRUE as a result of the authentication
 process, Client.Connection.SigningSessionKey and
 Client.Connection.SigningChallengeResponse MUST be set as specified in section 3.2.5.3.
 
@@ -56948,7 +56976,11 @@ Release: November 21, 2025
 
 509 / 722
 
-
+<!-- Extracted images from page 510 -->
+![Extracted image 1 from page 510]([MS-CIFS].images/page510-img01.png)
+<!-- /Extracted images from page 510 -->
+
+
 
 If the client experiences a transport layer error, all bytes of the message MUST be received and
 discarded. There is no mechanism to inform the server of the transport error. The client is
@@ -57207,7 +57239,11 @@ Release: November 21, 2025
 
 513 / 722
 
-
+<!-- Extracted images from page 514 -->
+![Extracted image 1 from page 514]([MS-CIFS].images/page514-img01.png)
+<!-- /Extracted images from page 514 -->
+
+
 
 
 
@@ -57294,7 +57330,11 @@ Release: November 21, 2025
 
 515 / 722
 
-Figure 9: Multiplexed Write request/response message flow
+<!-- Extracted images from page 516 -->
+![Extracted image 1 from page 516]([MS-CIFS].images/page516-img01.png)
+<!-- /Extracted images from page 516 -->
+
+Figure 9: Multiplexed Write request/response message flow
 
 At the time of the request, the client designates the number of data bytes to be sent and passes this
 information to the server in TotalByteCount field of the request. The server MAY use this information
@@ -66407,7 +66447,11 @@ Release: November 21, 2025
 
 634 / 722
 
-4  Protocol Examples
+<!-- Extracted images from page 635 -->
+![Extracted image 1 from page 635]([MS-CIFS].images/page635-img01.png)
+<!-- /Extracted images from page 635 -->
+
+4  Protocol Examples
 
 The following sections describe common scenarios that indicate normal traffic flow on the wire in order
 to illustrate the function of the CIFS Protocol.
@@ -66436,7 +66480,11 @@ Release: November 21, 2025
 
 635 / 722
 
-Figure 11: Disconnecting from a share
+<!-- Extracted images from page 636 -->
+![Extracted image 1 from page 636]([MS-CIFS].images/page636-img01.png)
+<!-- /Extracted images from page 636 -->
+
+Figure 11: Disconnecting from a share
 
 The share used here was served from Windows NT Server 4.0 SP6a. It was mapped as drive Y: on a
 Windows 98 client.
@@ -66456,7 +66504,11 @@ Release: November 21, 2025
 
 636 / 722
 
-Figure 12: Message signing when connecting to a share
+<!-- Extracted images from page 637 -->
+![Extracted image 1 from page 637]([MS-CIFS].images/page637-img01.png)
+<!-- /Extracted images from page 637 -->
+
+Figure 12: Message signing when connecting to a share
 
 The example is a result of configuring a server running Windows NT Server 4.0 SP6a both to allow and
 require message signing (see [ENSIGN] for information on configuring the registry for this feature),
@@ -66513,7 +66565,11 @@ Release: November 21, 2025
 
 638 / 722
 
-Figure 13: Getting file attributes information
+<!-- Extracted images from page 639 -->
+![Extracted image 1 from page 639]([MS-CIFS].images/page639-img01.png)
+<!-- /Extracted images from page 639 -->
+
+Figure 13: Getting file attributes information
 
 The share used here was served from Windows NT Server 4.0 SP6a. It was mapped as drive Y: on a
 Windows 98 client. The following operation was performed in an MS-DOS window:
@@ -66532,7 +66588,11 @@ Release: November 21, 2025
 
 639 / 722
 
-Figure 14: Setting file attribute information
+<!-- Extracted images from page 640 -->
+![Extracted image 1 from page 640]([MS-CIFS].images/page640-img01.png)
+<!-- /Extracted images from page 640 -->
+
+Figure 14: Setting file attribute information
 
 The share used here was served from Windows NT Server 4.0 SP6a. It was mapped as drive Y: on a
 Windows 98 client. The operation performed was in an MS-DOS window:
@@ -66546,7 +66606,11 @@ Release: November 21, 2025
 
 640 / 722
 
-4.6  Copy File from Share Example
+<!-- Extracted images from page 641 -->
+![Extracted image 1 from page 641]([MS-CIFS].images/page641-img01.png)
+<!-- /Extracted images from page 641 -->
+
+4.6  Copy File from Share Example
 
 This example illustrates the process of copying a file from a share to a client (downloading). An SMB
 connection and an SMB session are already assumed to have been successfully completed.
@@ -66565,7 +66629,11 @@ Release: November 21, 2025
 
 641 / 722
 
-4.7  Copy File to Share Example
+<!-- Extracted images from page 642 -->
+![Extracted image 1 from page 642]([MS-CIFS].images/page642-img01.png)
+<!-- /Extracted images from page 642 -->
+
+4.7  Copy File to Share Example
 
 This example illustrates the process of copying a file from the client to a share (uploading). An SMB
 connection and an SMB session are already assumed to have been successfully completed.

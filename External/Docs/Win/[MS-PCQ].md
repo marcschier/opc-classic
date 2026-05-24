@@ -2446,7 +2446,11 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-PCQ].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Return value/code
 
 Description
 
@@ -2648,7 +2652,11 @@ Release: April 23, 2024
 
 31 / 58
 
-Figure 2: PerflibV2QueryCounterSetRegistrationInfo return if RequestCode = 0x00000005
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-PCQ].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 2: PerflibV2QueryCounterSetRegistrationInfo return if RequestCode = 0x00000005
 
 The following diagram illustrates data size, alignment, and endianness. In this example, the names of
 two performance counters are returned (STRING_BUFFER_HEADER.dwCounters == 2). The name of
@@ -2798,7 +2806,11 @@ Release: April 23, 2024
 
 33 / 58
 
-dwInSize: The size, in bytes, of the buffer.
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-PCQ].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+dwInSize: The size, in bytes, of the buffer.
 
 pdwOutSize: The total size, in bytes, of the data that is returned and written to the buffer.
 
@@ -2942,7 +2954,11 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwInSize: The size, in bytes, of the buffer.
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-PCQ].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+dwInSize: The size, in bytes, of the buffer.
 
 pdwOutSize: The size, in bytes, of the data that is written to the buffer.
 
@@ -3139,7 +3155,11 @@ Release: April 23, 2024
 
 38 / 58
 
-Figure 5: PerflibV2QueryCounterData return
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-PCQ].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 5: PerflibV2QueryCounterData return
 
 The following diagram illustrates data size, alignment, and endianness.
 
@@ -3187,7 +3207,11 @@ Release: April 23, 2024
 
 39 / 58
 
-_PERF_DATA_HEADER (row 14, SystemTime)
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-PCQ].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+_PERF_DATA_HEADER (row 14, SystemTime)
 
 _PERF_DATA_HEADER (row 15, SystemTime)
 
@@ -3251,7 +3275,11 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the elements in the array of counter IDs MUST be the same as the order of the corresponding
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-PCQ].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+the elements in the array of counter IDs MUST be the same as the order of the corresponding
 performance counter values. The number of _PERF_COUNTER_DATA structures and the length of
 the performance counter ID array MUST be equal to the dwCounters field of the
 _PERF_MULTI_COUNTERS structure.
@@ -3304,7 +3332,11 @@ Performance Counter Query Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-_PERF_INSTANCE_HEADER blocks. Each _PERF_INSTANCE_HEADER block MUST contain a
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-PCQ].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+_PERF_INSTANCE_HEADER blocks. Each _PERF_INSTANCE_HEADER block MUST contain a
 _PERF_INSTANCE_HEADER structure that is followed by a _PERF_COUNTER_DATA structure and
 then followed by the performance counter value. The number of _PERF_INSTANCE_HEADER blocks
 MUST be equal to the dwInstances field of the _PERF_MULTI_INSTANCES structure.
@@ -3347,7 +3379,11 @@ Release: April 23, 2024
 
 42 / 58
 
-Unicode string of Instance Name (row 1)
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-PCQ].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Unicode string of Instance Name (row 1)
 
 Instance Name (row 2)
 
@@ -3730,7 +3766,11 @@ Release: April 23, 2024
 
 48 / 58
 
-4  Protocol Examples
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-PCQ].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+4  Protocol Examples
 
 The following example demonstrates the usage of the Performance Counter Query Protocol. The client
 queries the value of certain performance counters that are organized into one counterset that is

@@ -508,7 +508,12 @@ Device Registration Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 1: Device discovery sequence
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-DVRD].images/page007-img01.png)
+![Extracted image 2 from page 7]([MS-DVRD].images/page007-img02.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1: Device discovery sequence
 
 1.4  Relationship to Other Protocols
 

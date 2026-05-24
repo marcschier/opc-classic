@@ -1143,7 +1143,11 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-[SOAP1.1] Box, D., Ehnebuske, D., Kakivaya, G., et al., "Simple Object Access Protocol (SOAP) 1.1",
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-ADTG].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+[SOAP1.1] Box, D., Ehnebuske, D., Kakivaya, G., et al., "Simple Object Access Protocol (SOAP) 1.1",
 W3C Note, May 2000, https://www.w3.org/TR/2000/NOTE-SOAP-20000508/
 
 1.3  Overview
@@ -8297,7 +8301,11 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-   )
+<!-- Extracted images from page 102 -->
+![Extracted image 1 from page 102]([MS-ADTG].images/page102-img01.png)
+<!-- /Extracted images from page 102 -->
+
+   )
 
 This example assumes that the data store contains an Employee table with EmpID and EmpName
 columns, and a Projects table with EmpID and ProjectName columns. It also assumes that these

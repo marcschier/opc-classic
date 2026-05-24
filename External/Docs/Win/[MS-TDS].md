@@ -1551,7 +1551,11 @@ Release: March 30, 2026
 
 14 / 232
 
-Figure 1: Communication flow in the TDS protocol
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-TDS].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 1: Communication flow in the TDS protocol
 
 The following example is a high-level description of the messages exchanged between the client and
 the server to execute a simple client request such as the execution of a SQL statement. It is
@@ -1585,7 +1589,11 @@ Release: March 30, 2026
 
 15 / 232
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-TDS].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+1.4  Relationship to Other Protocols
 
 The Tabular Data Stream (TDS) protocol depends upon a network transport connection being
 established prior to a TDS conversation occurring (the choice of transport protocol is not important to
@@ -11213,7 +11221,11 @@ Release: March 30, 2026
 
 127 / 232
 
-Figure 3: Pre-login to post-login sequence that is used in TDS 7.x
+<!-- Extracted images from page 128 -->
+![Extracted image 1 from page 128]([MS-TDS].images/page128-img01.png)
+<!-- /Extracted images from page 128 -->
+
+Figure 3: Pre-login to post-login sequence that is used in TDS 7.x
 
 [MS-TDS] - v20260330
 Tabular Data Stream Protocol
@@ -11222,7 +11234,11 @@ Release: March 30, 2026
 
 128 / 232
 
-Figure 4: Pre-login to post-login sequence that is used in TDS 8.0
+<!-- Extracted images from page 129 -->
+![Extracted image 1 from page 129]([MS-TDS].images/page129-img01.png)
+<!-- /Extracted images from page 129 -->
+
+Figure 4: Pre-login to post-login sequence that is used in TDS 8.0
 
 [MS-TDS] - v20260330
 Tabular Data Stream Protocol
@@ -11231,7 +11247,11 @@ Release: March 30, 2026
 
 129 / 232
 
-Figure 5: Pre-login to post-login sequence with federated authentication that uses a client
+<!-- Extracted images from page 130 -->
+![Extracted image 1 from page 130]([MS-TDS].images/page130-img01.png)
+<!-- /Extracted images from page 130 -->
+
+Figure 5: Pre-login to post-login sequence with federated authentication that uses a client
 library that requires additional information from a server to generate a federated
 authentication token that is used in TDS 7.x
 
@@ -11242,7 +11262,11 @@ Release: March 30, 2026
 
 130 / 232
 
-Figure 6: Pre-login to post-login sequence with federated authentication that uses a client
+<!-- Extracted images from page 131 -->
+![Extracted image 1 from page 131]([MS-TDS].images/page131-img01.png)
+<!-- /Extracted images from page 131 -->
+
+Figure 6: Pre-login to post-login sequence with federated authentication that uses a client
 library that requires additional information from a server to generate a federated
 authentication token that is used in TDS 8.0
 
@@ -11253,7 +11277,11 @@ Release: March 30, 2026
 
 131 / 232
 
-Figure 7: SQL command and RPC sequence
+<!-- Extracted images from page 132 -->
+![Extracted image 1 from page 132]([MS-TDS].images/page132-img01.png)
+<!-- /Extracted images from page 132 -->
+
+Figure 7: SQL command and RPC sequence
 
 [MS-TDS] - v20260330
 Tabular Data Stream Protocol
@@ -11262,7 +11290,11 @@ Release: March 30, 2026
 
 132 / 232
 
-Figure 8: Transaction manager request sequence
+<!-- Extracted images from page 133 -->
+![Extracted image 1 from page 133]([MS-TDS].images/page133-img01.png)
+<!-- /Extracted images from page 133 -->
+
+Figure 8: Transaction manager request sequence
 
 [MS-TDS] - v20260330
 Tabular Data Stream Protocol
@@ -11271,7 +11303,11 @@ Release: March 30, 2026
 
 133 / 232
 
-Figure 9: Bulk insert sequence
+<!-- Extracted images from page 134 -->
+![Extracted image 1 from page 134]([MS-TDS].images/page134-img01.png)
+<!-- /Extracted images from page 134 -->
+
+Figure 9: Bulk insert sequence
 
 3.1.6  Timer Events
 
@@ -11291,7 +11327,11 @@ Release: March 30, 2026
 
 134 / 232
 
-3.2  Client Details
+<!-- Extracted images from page 135 -->
+![Extracted image 1 from page 135]([MS-TDS].images/page135-img01.png)
+<!-- /Extracted images from page 135 -->
+
+3.2  Client Details
 
 The following state machine diagrams describe TDS on the client side.
 
@@ -11304,7 +11344,11 @@ Release: March 30, 2026
 
 135 / 232
 
-Figure 11: TDS client state machine that is used in TDS 8.0
+<!-- Extracted images from page 136 -->
+![Extracted image 1 from page 136]([MS-TDS].images/page136-img01.png)
+<!-- /Extracted images from page 136 -->
+
+Figure 11: TDS client state machine that is used in TDS 8.0
 
 3.2.1  Abstract Data Model
 
@@ -11889,7 +11933,11 @@ Release: March 30, 2026
 
 144 / 232
 
-Figure 12: TDS server state machine if the first packet received is PRELOGIN
+<!-- Extracted images from page 145 -->
+![Extracted image 1 from page 145]([MS-TDS].images/page145-img01.png)
+<!-- /Extracted images from page 145 -->
+
+Figure 12: TDS server state machine if the first packet received is PRELOGIN
 
 [MS-TDS] - v20260330
 Tabular Data Stream Protocol
@@ -11898,7 +11946,11 @@ Release: March 30, 2026
 
 145 / 232
 
-Figure 13: TDS server state machine if the first packet received is TLS ClientHello
+<!-- Extracted images from page 146 -->
+![Extracted image 1 from page 146]([MS-TDS].images/page146-img01.png)
+<!-- /Extracted images from page 146 -->
+
+Figure 13: TDS server state machine if the first packet received is TLS ClientHello
 
 3.3.1  Abstract Data Model
 

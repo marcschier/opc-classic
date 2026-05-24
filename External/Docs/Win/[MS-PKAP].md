@@ -484,7 +484,11 @@ Release: April 23, 2024
 
 6 / 26
 
-
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-PKAP].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+
 
 It is not convenient to use SSL/TLS client authentication when the service needs to validate proof
 of possession of multiple keys. With SSL/TLS client authentication, a dynamic renegotiation of

@@ -5682,7 +5682,11 @@ Release: April 23, 2024
 
 71 / 87
 
-4  Protocol Examples
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-DFSRH].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+4  Protocol Examples
 
 4.1  Example of Messages Between a Client and Server
 

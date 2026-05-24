@@ -345,7 +345,11 @@ Release: June 1, 2017
 
 4 / 43
 
-Figure 1: IETF architecture for network access
+<!-- Extracted images from page 5 -->
+![Extracted image 1 from page 5]([MS-NAPOD].images/page005-img01.png)
+<!-- /Extracted images from page 5 -->
+
+Figure 1: IETF architecture for network access
 
 NAP is a minor extension of the IETF network access architecture. The primary extension is the
 introduction of client health evaluation as part of the process of determining network access. NAP uses
@@ -387,7 +391,11 @@ Release: June 1, 2017
 
 5 / 43
 
-Figure 2: NAP extension to IETF architecture for network access
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-NAPOD].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+Figure 2: NAP extension to IETF architecture for network access
 
 NAP introduces the primary NAP protocol, the Protocol Bindings for SoH [TNC-IF-TNCCSPBSoH], which
 operates between the NAP client and the NAP policy server. The client determines its state of health
@@ -412,7 +420,11 @@ Release: June 1, 2017
 
 6 / 43
 
-Figure 3: NAP components
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-NAPOD].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 3: NAP components
 
 Network Access Protection provides access control to networks based on an extensible list of
 constraints. The constraints come from an enterprise network administrator's policy for the network.
@@ -471,7 +483,11 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-In each scenario, the client uses data link protocols that are specific to the network configuration. A
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-NAPOD].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+In each scenario, the client uses data link protocols that are specific to the network configuration. A
 client can have more than one simultaneous network configuration. The authentication and
 authorization phase for the base network access protocol for the scenario is extended to perform a
 Network Access Protection authorization where the client and NPS have an end-to-end statement of
@@ -521,7 +537,11 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If the NPS determines that the client requires remediation, the NEP can install IP filters to allow the
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-NAPOD].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+If the NPS determines that the client requires remediation, the NEP can install IP filters to allow the
 client to access network resources required for remediation, such as software distribution servers,
 Group Policy servers, or configuration file servers. After remediation, the client can retry gaining full
 access to the network to remove filtering.
@@ -567,7 +587,11 @@ Release: June 1, 2017
 
 9 / 43
 
-Figure 6: NAP deployment with DHCP server
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-NAPOD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 6: NAP deployment with DHCP server
 
 Some enterprise networks control network access at Layer Three by controlling IP address assignment
 with DHCP ([RFC2131]). In this scenario, the SoH/SoHR is transported from the client to the DHCP
@@ -595,7 +619,11 @@ Release: June 1, 2017
 
 10 / 43
 
-Figure 7: NAP deployment with IPsec-protected networks
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-NAPOD].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 7: NAP deployment with IPsec-protected networks
 
 Internet Protocol security (IPsec) provides for fine-grained end-to-end protection among clients
 and network server resources, such as web, file, print, and application servers in an enterprise
@@ -634,7 +662,11 @@ Release: June 1, 2017
 
 11 / 43
 
-1.2.5  Terminal Services Networks
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-NAPOD].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.2.5  Terminal Services Networks
 
 The following diagram shows how NAP is deployed with Remote Desktop networks.
 
@@ -968,7 +1000,11 @@ Release: June 1, 2017
 
 17 / 43
 
-2  Functional Architecture
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-NAPOD].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+2  Functional Architecture
 
 NAP provides network management and control services for the following tasks:
 
@@ -1005,7 +1041,12 @@ Release: June 1, 2017
 
 18 / 43
 
-Figure 10: Client component relationship
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-NAPOD].images/page019-img01.png)
+![Extracted image 2 from page 19]([MS-NAPOD].images/page019-img02.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 10: Client component relationship
 
 The NAP data link protocol controls client access to the network by operating between the client
 and a NEP. All system and user application networking on the client can be affected by the NAP data
@@ -1109,7 +1150,11 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-NAPOD].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+
 
 
 
@@ -1160,7 +1205,11 @@ Release: June 1, 2017
 
 21 / 43
 
-
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-NAPOD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+
 
 
 
@@ -1204,7 +1253,11 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-external services, such as authentication services and Active Directory services. NAP-related policies
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-NAPOD].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+external services, such as authentication services and Active Directory services. NAP-related policies
 can be stored in Active Directory or in files.
 
 The following figure depicts the server-side NAP architecture for an NPS.
@@ -1526,7 +1579,11 @@ Release: June 1, 2017
 
 26 / 43
 
-2.5.1  Health Validation
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-NAPOD].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+2.5.1  Health Validation
 
 Figure 15: Client Computer Health Validation use case
 
@@ -1582,7 +1639,11 @@ Release: June 1, 2017
 
 27 / 43
 
-2.  The NPS validates the Client computer's health and sends the success SoHR message.
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-NAPOD].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+2.  The NPS validates the Client computer's health and sends the success SoHR message.
 
 Extensions: None.
 
@@ -1635,7 +1696,11 @@ Release: June 1, 2017
 
 28 / 43
 
-A NEP controls a Client computer's network access. A NEP uses the NAP services from a Network
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-NAPOD].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+A NEP controls a Client computer's network access. A NEP uses the NAP services from a Network
 policy server to determine whether or not the client is sufficiently healthy to have network access.
 
 Stakeholders: None.
@@ -1859,7 +1924,11 @@ Release: June 1, 2017
 
 32 / 43
 
-Figure 18: Sequence diagram detail for Task 1
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-NAPOD].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 18: Sequence diagram detail for Task 1
 
 Sequence of Events
 
@@ -1908,7 +1977,11 @@ Release: June 1, 2017
 
 33 / 43
 
-This task explains the message exchange between the NAP client, the HRA, the NPS, and the
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-NAPOD].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+This task explains the message exchange between the NAP client, the HRA, the NPS, and the
 remediation server when a non-compliant NAP client requests a health certificate.
 
 Figure 19: Sequence diagram details for Task 2
@@ -2024,7 +2097,11 @@ Release: June 1, 2017
 
 35 / 43
 
-1.  Request and obtain an IPv4 address for network access.
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-NAPOD].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+1.  Request and obtain an IPv4 address for network access.
 
 2.  Request and obtain an IPv4 address after remediation.
 
@@ -2070,7 +2147,11 @@ Network Access Protection Protocols Overview
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-7.  The DHCP server assigns the client computer a complete IPv4 address configuration. The client
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-NAPOD].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+7.  The DHCP server assigns the client computer a complete IPv4 address configuration. The client
 computer is given an IPv4 address that has access to the enterprise network, as defined by the
 group policy.
 

@@ -851,7 +851,11 @@ Release: May 30, 2019
 
 10 / 65
 
-[WSS] OASIS, "Web Services Security: SOAP Message Security 1.1 (WS-Security 2004)", February
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-NETOD].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+[WSS] OASIS, "Web Services Security: SOAP Message Security 1.1 (WS-Security 2004)", February
 2006, https://www.oasis-open.org/committees/download.php/16790/wss-v1.1-spec-os-
 SOAPMessageSecurity.pdf
 
@@ -1068,7 +1072,11 @@ Release: May 30, 2019
 
 14 / 65
 
-Figure 2: Workflow protocol relationships
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-NETOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: Workflow protocol relationships
 
 The Workflow Instance Management Protocol [MS-WFIM] defines a set of SOAP messages for the
 management of durable program instances, such as suspending, resuming, or canceling an instance of
@@ -1178,7 +1186,11 @@ Release: May 30, 2019
 
 16 / 65
 
-Figure 3: The protocol stack of Windows Communication Foundation
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-NETOD].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 3: The protocol stack of Windows Communication Foundation
 
 The various components in the preceding diagram are described in the following paragraphs.
 
@@ -1221,7 +1233,11 @@ Release: May 30, 2019
 
 18 / 65
 
-Figure 4: [MC-NMF] and related protocols
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-NETOD].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 4: [MC-NMF] and related protocols
 
 Message framing is the breaking up of a stream of data into demarcated units that are called
 messages. Some protocols such as HTTP natively include a notion of message framing. Other
@@ -1280,7 +1296,11 @@ Release: May 30, 2019
 
 20 / 65
 
-Figure 5: Security and policy extensions
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-NETOD].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 5: Security and policy extensions
 
 Policy
 
@@ -1369,7 +1389,11 @@ Release: May 30, 2019
 
 22 / 65
 
-Figure 6: Relationship of the Peer Channel Protocol to other protocols
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-NETOD].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 6: Relationship of the Peer Channel Protocol to other protocols
 
 Discovery and Addressing
 
@@ -1383,7 +1407,11 @@ Release: May 30, 2019
 
 23 / 65
 
-Figure 7: Discovery and addressing stack
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-NETOD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 7: Discovery and addressing stack
 
 Discovery Options
 
@@ -1460,7 +1488,11 @@ Release: May 30, 2019
 
 25 / 65
 
-Figure 8: Interactions among Users, Relying Parties, and Identity Providers
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-NETOD].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 8: Interactions among Users, Relying Parties, and Identity Providers
 
 The following steps are involved in CardSpace communication:
 
@@ -1522,7 +1554,11 @@ Release: May 30, 2019
 
 27 / 65
 
-Figure 9: Data access protocol relationships
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-NETOD].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+Figure 9: Data access protocol relationships
 
 2.1.5  ASP.NET
 
@@ -1544,7 +1580,11 @@ Release: May 30, 2019
 
 28 / 65
 
-2.1.6  .NET Remoting
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-NETOD].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+2.1.6  .NET Remoting
 
 The following diagram shows the typical architecture of a distributed application that is built by using
 the .NET remoting framework.
@@ -1596,7 +1636,11 @@ Release: May 30, 2019
 
 29 / 65
 
-Figure 11: Protocol stack of the .NET remoting infrastructure
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-NETOD].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 11: Protocol stack of the .NET remoting infrastructure
 
 The .NET remoting framework supports two transport protocols, namely TCP and HTTP, but a user
 can add any transport to the .NET remoting stack.
@@ -1641,7 +1685,11 @@ Release: May 30, 2019
 
 30 / 65
 
-The .NET NegotiateStream Protocol provides mutually authenticated and confidential communication
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-NETOD].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+The .NET NegotiateStream Protocol provides mutually authenticated and confidential communication
 as specified in [MS-NNS].
 
 A key benefit is that authentication in [MS-NNS] is accomplished without the use of digital certificates.
@@ -2227,7 +2275,11 @@ Release: May 30, 2019
 
 36 / 65
 
-A sponsor object specifies whether the Server Object's Time-To-Live (TTL) has to be extended; it
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-NETOD].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+A sponsor object specifies whether the Server Object's Time-To-Live (TTL) has to be extended; it
 also specifies the duration of the extension.
 
 2.5.3  WCF Use Cases
@@ -2627,7 +2679,11 @@ Release: May 30, 2019
 
 42 / 65
 
-2.5.4  .NET Remoting Use Cases
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-NETOD].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+2.5.4  .NET Remoting Use Cases
 
 2.5.4.1  Use Case Diagrams
 
@@ -2832,7 +2888,11 @@ Release: May 30, 2019
 
 45 / 65
 
-3.  The client application registers a Sponsor object by using the Register method of the returned
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-NETOD].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+3.  The client application registers a Sponsor object by using the Register method of the returned
 
 Lease Object.
 
@@ -2938,7 +2998,11 @@ Release: May 30, 2019
 
 47 / 65
 
-3  Examples
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-NETOD].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+3  Examples
 
 3.1  Example 1 (.NET Remoting): Two-Way Method Invocation Using SOAP Over HTTP
 
@@ -2989,7 +3053,11 @@ Release: May 30, 2019
 
 48 / 65
 
- }
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-NETOD].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+ }
 
 The server implementation returns the string "Hello World!!" when the client sends the sayHello
 message with "World!!" as its input argument.
@@ -3168,7 +3236,11 @@ Release: May 30, 2019
 
 51 / 65
 
-Figure 18: Reliable messaging with TCP as transport
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-NETOD].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+Figure 18: Reliable messaging with TCP as transport
 
 1.  The RM Source (RMS) sends a CreateSequence message, as specified in [WSRM1-1] section 3.4,
 
@@ -3340,7 +3412,11 @@ Release: May 30, 2019
 
 54 / 65
 
-3.4.1  Initial System State
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-NETOD].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+3.4.1  Initial System State
 
 The general requirements, as specified in [MS-WSRVCRM] section 1.5.
 
@@ -3635,7 +3711,11 @@ Release: May 30, 2019
 
 59 / 65
 
-Figure 20: Retrieval of a single entity by using the JSON format
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-NETOD].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+Figure 20: Retrieval of a single entity by using the JSON format
 
 The request and response messages are described in [MS-ODATA] section 4.2.3.
 

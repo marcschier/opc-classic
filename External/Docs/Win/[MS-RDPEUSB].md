@@ -927,7 +927,11 @@ Release: April 23, 2024
 
 9 / 71
 
-1.3  Protocol Overview (Synopsis)
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RDPEUSB].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+1.3  Protocol Overview (Synopsis)
 
 The Remote Desktop Protocol: USB Devices Virtual Channel Extension enables redirection of client
 USB devices to the server. The client indicates which USB devices to make available to the server
@@ -975,7 +979,11 @@ Release: April 23, 2024
 
 10 / 71
 
-When a USB device is plugged in, the client sends to the server the Add Virtual Channel  Message as
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPEUSB].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+When a USB device is plugged in, the client sends to the server the Add Virtual Channel  Message as
 described in section 1.3.1.2. The server in response sends the Channel Create Message described in
 section 2.2.5.1 and waits for the same message to arrive from the client. The server then creates a
 USB driver stack that will represent the device to the system. Immediately after the client has sent
@@ -1019,7 +1027,12 @@ Release: April 23, 2024
 
 11 / 71
 
-1.3.1.2  New Device Sequence
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPEUSB].images/page012-img01.png)
+![Extracted image 2 from page 12]([MS-RDPEUSB].images/page012-img02.png)
+<!-- /Extracted images from page 12 -->
+
+1.3.1.2  New Device Sequence
 
 The client uses the new device sequence to notify the server about a new device. It first notifies the
 server to create a new instance of the USB Redirection virtual channel. Once the new virtual channel is
@@ -3846,7 +3859,11 @@ Release: April 23, 2024
 
 47 / 71
 
-3  Protocol Details
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-RDPEUSB].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+3  Protocol Details
 
 3.1  Common Details
 

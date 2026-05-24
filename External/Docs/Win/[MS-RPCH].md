@@ -1795,7 +1795,11 @@ Release: July 29, 2024
 
 15 / 154
 
-1.2.2  Informative References
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-RPCH].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+1.2.2  Informative References
 
 [IANAPORT] IANA, "Service Name and Transport Protocol Port Number Registry",
 https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
@@ -1861,7 +1865,11 @@ Release: July 29, 2024
 
 16 / 154
 
-Figure 1: RPC over HTTP v1 roles
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-RPCH].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 1: RPC over HTTP v1 roles
 
 RPC over HTTP v2 works in a more complex topology and defines the roles of a client, a server, an
 inbound RPC over HTTP proxy, and an outbound RPC over HTTP proxy. RPC over HTTP v2 proxies do
@@ -1901,7 +1909,11 @@ Release: July 29, 2024
 
 17 / 154
 
-Note  In the figure above, the arrows indicate direction in which the PDU flow through the various
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-RPCH].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Note  In the figure above, the arrows indicate direction in which the PDU flow through the various
 roles.
 
 1.3.3  HTTP Proxy Use
@@ -1963,7 +1975,11 @@ Remote Procedure Call over HTTP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-  How an implementation maps an unbounded number of PDUs from a stream onto a number of
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-RPCH].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+  How an implementation maps an unbounded number of PDUs from a stream onto a number of
 HTTP requests and responses, each of which is bounded by its content length. This is done
 through a process called channel recycling, specified in section 3.2.
 
@@ -1997,7 +2013,12 @@ Remote Procedure Call over HTTP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Figure 6: Protocol layering on server-facing proxy
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-RPCH].images/page020-img01.png)
+![Extracted image 2 from page 20]([MS-RPCH].images/page020-img02.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 6: Protocol layering on server-facing proxy
 
 The server uses the protocol layering shown in the following diagram.
 
@@ -2169,7 +2190,11 @@ Release: July 29, 2024
 
 22 / 154
 
-The RPC connect request is an HTTP request that MUST have the following HTTP header fields.
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-RPCH].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+The RPC connect request is an HTTP request that MUST have the following HTTP header fields.
 
 Method: MUST be set to "RPC_CONNECT".
 
@@ -2228,7 +2253,11 @@ Remote Procedure Call over HTTP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-the RPC connect response. This protocol specifically allows for sending and receiving a potentially
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-RPCH].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+the RPC connect response. This protocol specifically allows for sending and receiving a potentially
 unbounded number of PDUs in the message body of the RPC connect request.
 
 The PDUs are sent in the message body as they are generated for unplugged channel mode. In this
@@ -2624,7 +2653,12 @@ Release: July 29, 2024
 
 29 / 154
 
-Figure 10: IN channel message PDU stream
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-RPCH].images/page030-img01.png)
+![Extracted image 2 from page 30]([MS-RPCH].images/page030-img02.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 10: IN channel message PDU stream
 
 Each PDU is encoded as a variable-sized BLOB containing its length inside the PDU; therefore, no
 delimiters are necessary between the BLOBs. The length of the RPC PDUs is specified in [C706]
@@ -3518,7 +3552,11 @@ Remote Procedure Call over HTTP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-2.2.3.6  RTS PDU Structure
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-RPCH].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+2.2.3.6  RTS PDU Structure
 
 The RTS PDU MUST be composed of exactly one header and zero, one or more RTS commands
 defined in section 2.2.3.5 in the RTS PDU body. The following diagram illustrates the structure.
@@ -6518,7 +6556,11 @@ Release: July 29, 2024
 
 79 / 154
 
-Figure 13: Client state machine
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-RPCH].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+Figure 13: Client state machine
 
 3.1.1.1  Abstract Data Model
 
@@ -6621,7 +6663,11 @@ Release: July 29, 2024
 
 81 / 154
 
-Figure 14: Proxy state machine
+<!-- Extracted images from page 82 -->
+![Extracted image 1 from page 82]([MS-RPCH].images/page082-img01.png)
+<!-- /Extracted images from page 82 -->
+
+Figure 14: Proxy state machine
 
 3.1.2.1  Abstract Data Model
 
@@ -6656,7 +6702,11 @@ Remote Procedure Call over HTTP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-3.1.2.5.1 RPC Connect Request Received
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83]([MS-RPCH].images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+3.1.2.5.1 RPC Connect Request Received
 
 When a mixed proxy receives an RPC connect request, it MUST retrieve the server name and server
 port from the URI of the RPC connect request as specified in section 2.2.2. It MUST establish a TCP
@@ -6829,7 +6879,11 @@ Release: July 29, 2024
 
 85 / 154
 
-Figure 16: Virtual connection hierarchy
+<!-- Extracted images from page 86 -->
+![Extracted image 1 from page 86]([MS-RPCH].images/page086-img01.png)
+<!-- /Extracted images from page 86 -->
+
+Figure 16: Virtual connection hierarchy
 
 Each IN channel and OUT channel instance is identified uniquely among a client, one or more inbound
 proxies, one or more outbound proxies, and a server using an RTS cookie known as a "channel
@@ -7461,7 +7515,11 @@ Release: July 29, 2024
 
 94 / 154
 
-Figure 17: Connection establishment protocol sequence
+<!-- Extracted images from page 95 -->
+![Extracted image 1 from page 95]([MS-RPCH].images/page095-img01.png)
+<!-- /Extracted images from page 95 -->
+
+Figure 17: Connection establishment protocol sequence
 
 The references for the PDUs used in this protocol sequence are as follows.
 
@@ -7525,7 +7583,11 @@ Release: July 29, 2024
 
 95 / 154
 
-Note  In an effort to improve readability, the establishments of TCP connections are not shown in the
+<!-- Extracted images from page 96 -->
+![Extracted image 1 from page 96]([MS-RPCH].images/page096-img01.png)
+<!-- /Extracted images from page 96 -->
+
+Note  In an effort to improve readability, the establishments of TCP connections are not shown in the
 figure.
 
 3.2.1.5.3.2
@@ -7586,7 +7648,11 @@ Release: July 29, 2024
 
 96 / 154
 
- Diagram label
+<!-- Extracted images from page 97 -->
+![Extracted image 1 from page 97]([MS-RPCH].images/page097-img01.png)
+<!-- /Extracted images from page 97 -->
+
+ Diagram label
 
  PDU name and reference section
 
@@ -7655,7 +7721,11 @@ Release: July 29, 2024
 
 97 / 154
 
- Diagram label
+<!-- Extracted images from page 98 -->
+![Extracted image 1 from page 98]([MS-RPCH].images/page098-img01.png)
+<!-- /Extracted images from page 98 -->
+
+ Diagram label
 
  PDU name and reference section
 
@@ -7787,7 +7857,11 @@ Release: July 29, 2024
 
 99 / 154
 
-Figure 21: OUT channel recycling 2 protocol sequence
+<!-- Extracted images from page 100 -->
+![Extracted image 1 from page 100]([MS-RPCH].images/page100-img01.png)
+<!-- /Extracted images from page 100 -->
+
+Figure 21: OUT channel recycling 2 protocol sequence
 
 The references for the PDUs used in this protocol sequence are as follows.
 
@@ -7852,7 +7926,12 @@ Release: July 29, 2024
 
 100 / 154
 
-The processing rules for this protocol sequence are specified in sections 3.2.2 through 3.2.5 of this
+<!-- Extracted images from page 101 -->
+![Extracted image 1 from page 101]([MS-RPCH].images/page101-img01.png)
+![Extracted image 2 from page 101]([MS-RPCH].images/page101-img02.png)
+<!-- /Extracted images from page 101 -->
+
+The processing rules for this protocol sequence are specified in sections 3.2.2 through 3.2.5 of this
 specification.
 
 Note  In an effort to improve readability, the establishments of TCP connections are not shown in the
@@ -7897,7 +7976,13 @@ Release: July 29, 2024
 
 101 / 154
 
-Figure 24: Virtual connection open
+<!-- Extracted images from page 102 -->
+![Extracted image 1 from page 102]([MS-RPCH].images/page102-img01.png)
+![Extracted image 2 from page 102]([MS-RPCH].images/page102-img02.png)
+![Extracted image 3 from page 102]([MS-RPCH].images/page102-img03.png)
+<!-- /Extracted images from page 102 -->
+
+Figure 24: Virtual connection open
 
 For more details on establishing a virtual connection, see sections 3.2.1.5.3.1 and 3.2.2.4.1.2.
 
@@ -8632,7 +8717,11 @@ Release: July 29, 2024
 
 112 / 154
 
-Figure 27: Inbound proxy state machine
+<!-- Extracted images from page 113 -->
+![Extracted image 1 from page 113]([MS-RPCH].images/page113-img01.png)
+<!-- /Extracted images from page 113 -->
+
+Figure 27: Inbound proxy state machine
 
 The inbound proxy state machine is used when the inbound proxy is processing messages and PDUs
 coming from the network. When the state machine transitions to "Use Matching Channel State
@@ -9177,7 +9266,11 @@ Release: July 29, 2024
 
 120 / 154
 
-Figure 28: Outbound proxy state machine
+<!-- Extracted images from page 121 -->
+![Extracted image 1 from page 121]([MS-RPCH].images/page121-img01.png)
+<!-- /Extracted images from page 121 -->
+
+Figure 28: Outbound proxy state machine
 
 The outbound proxy state machine is used when the outbound proxy is processing messages and
 PDUs coming from the network. When the state machine transitions to "Use Matching Channel State
@@ -9778,7 +9871,11 @@ Release: July 29, 2024
 
 129 / 154
 
-Figure 29: Server state machine
+<!-- Extracted images from page 130 -->
+![Extracted image 1 from page 130]([MS-RPCH].images/page130-img01.png)
+<!-- /Extracted images from page 130 -->
+
+Figure 29: Server state machine
 
 The server state machine is used when the server is processing messages and PDUs coming from the
 network. The following description of the state machine is provided as an aid to understanding the

@@ -13146,7 +13146,11 @@ Release: September 16, 2024
 
 139 / 342
 
-Figure 1: Relationships between VDS remote protocol objects
+<!-- Extracted images from page 140 -->
+![Extracted image 1 from page 140]([MS-VDS].images/page140-img01.png)
+<!-- /Extracted images from page 140 -->
+
+Figure 1: Relationships between VDS remote protocol objects
 
 Service Loader and Service: The first interface the client obtains is the IVdsServiceLoader interface.
 The client invokes IVdsServiceLoader::LoadService to load the VDS service on the specified machine.
@@ -22901,7 +22905,11 @@ Release: September 16, 2024
 
 269 / 342
 
-Figure 2: Client starting a VDS session by retrieving an instance of the VDS service object
+<!-- Extracted images from page 270 -->
+![Extracted image 1 from page 270]([MS-VDS].images/page270-img01.png)
+<!-- /Extracted images from page 270 -->
+
+Figure 2: Client starting a VDS session by retrieving an instance of the VDS service object
 
 1.  The client requests the creation of a VDS session by calling CoCreateInstanceEx (see [MSDN-
 
@@ -22998,7 +23006,12 @@ Release: September 16, 2024
 
 271 / 342
 
-Figure 3: Client ending a VDS session
+<!-- Extracted images from page 272 -->
+![Extracted image 1 from page 272]([MS-VDS].images/page272-img01.png)
+![Extracted image 2 from page 272]([MS-VDS].images/page272-img02.png)
+<!-- /Extracted images from page 272 -->
+
+Figure 3: Client ending a VDS session
 
 1.  The client releases the reference to the IVdsService interface by invoking IVdsService::Release.
 
@@ -23027,7 +23040,12 @@ Virtual Disk Service (VDS) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-4.2.2  Receiving Notifications
+<!-- Extracted images from page 273 -->
+![Extracted image 1 from page 273]([MS-VDS].images/page273-img01.png)
+![Extracted image 2 from page 273]([MS-VDS].images/page273-img02.png)
+<!-- /Extracted images from page 273 -->
+
+4.2.2  Receiving Notifications
 
 The following figure shows an example of what happens when one or more VDS events are triggered.
 
@@ -23079,7 +23097,11 @@ Release: September 16, 2024
 
 274 / 342
 
-Figure 7: Client enumerating volume objects belonging to a disk pack
+<!-- Extracted images from page 275 -->
+![Extracted image 1 from page 275]([MS-VDS].images/page275-img01.png)
+<!-- /Extracted images from page 275 -->
+
+Figure 7: Client enumerating volume objects belonging to a disk pack
 
 1.  The client initiates the enumeration of volumes by calling the IVdsPack::QueryVolumes method.
 
@@ -23104,7 +23126,11 @@ Release: September 16, 2024
 
 275 / 342
 
-5.  Assuming the server returned a zero HRESULT, the client invokes the interface's
+<!-- Extracted images from page 276 -->
+![Extracted image 1 from page 276]([MS-VDS].images/page276-img01.png)
+<!-- /Extracted images from page 276 -->
+
+5.  Assuming the server returned a zero HRESULT, the client invokes the interface's
 
 IUnknown::QueryInterface method to request for the object's IVdsVolume interface.
 
@@ -23159,7 +23185,11 @@ Virtual Disk Service (VDS) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.  After successful execution of IVdsVolume::GetProperties, the server returns the properties of the
+<!-- Extracted images from page 277 -->
+![Extracted image 1 from page 277]([MS-VDS].images/page277-img01.png)
+<!-- /Extracted images from page 277 -->
+
+2.  After successful execution of IVdsVolume::GetProperties, the server returns the properties of the
 volume, which includes its VDS object ID in the client-provided VDS_VOLUME_PROP structure.
 
 After successful execution of the IVdsVolume::GetProperties request, which returns a filled

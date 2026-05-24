@@ -1245,7 +1245,11 @@ Release: April 23, 2024
 
 13 / 50
 
-The BackupKey Remote Protocol consists of a single RPC method. This method takes a parameter that
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-BKRP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+The BackupKey Remote Protocol consists of a single RPC method. This method takes a parameter that
 specifies the operation requested. This parameter has four possible values, as specified in section
 3.1.4.1. These values are used to identify the messages in the call flows that follow.
 
@@ -1286,7 +1290,12 @@ Release: April 23, 2024
 
 14 / 50
 
-Figure 2: Recovering a server-side wrapped secret
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-BKRP].images/page015-img01.png)
+![Extracted image 2 from page 15]([MS-BKRP].images/page015-img02.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: Recovering a server-side wrapped secret
 
 1.3.1.2  ClientWrap Subprotocol
 
@@ -1309,7 +1318,11 @@ Release: April 23, 2024
 
 15 / 50
 
-Figure 4: Recovering a client-side wrapped secret
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-BKRP].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 4: Recovering a client-side wrapped secret
 
 1.4  Relationship to Other Protocols
 

@@ -3162,7 +3162,11 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-IKEE].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+
 
 [RFC4306] section 2.7: "This hierarchical structure was designed to efficiently encode proposals
 for cryptographic suites when the number of supported suites is large because multiple values are
@@ -3318,7 +3322,11 @@ Release: September 16, 2024
 
 38 / 102
 
-Figure 2: IKE phase 1 exchange
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-IKEE].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 2: IKE phase 1 exchange
 
 The description in this section uses the message numbers from the protocol sequence diagram.
 
@@ -3584,7 +3592,11 @@ Release: September 16, 2024
 
 42 / 102
 
-Figure 3: IKE phase 1 exchange using certificates
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-IKEE].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 3: IKE phase 1 exchange using certificates
 
 The CGA Authentication Protocol extension uses the same exchanges as an IKE phase 1 certificate
 exchange. The description in this section uses the message numbers from the protocol sequence
@@ -3756,7 +3768,11 @@ Release: September 16, 2024
 
 45 / 102
 
-Then, the host MUST construct message #6 by using the procedure for constructing message #5, as
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-IKEE].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+Then, the host MUST construct message #6 by using the procedure for constructing message #5, as
 specified in section 3.4.5.4.
 
 3.4.5.6  Receiving Message #6
@@ -3961,7 +3977,11 @@ Release: September 16, 2024
 
 49 / 102
 
-Figure 5: IKE phase 1 (MM) exchange
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MS-IKEE].images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+Figure 5: IKE phase 1 (MM) exchange
 
 The description in this section uses the MM message numbers from the protocol sequence diagram.
 
@@ -3976,7 +3996,11 @@ Release: September 16, 2024
 
 50 / 102
 
-Figure 6: IKE phase 2 (QM) exchange
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-IKEE].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+Figure 6: IKE phase 2 (QM) exchange
 
 The description in this section uses the quick mode message numbers from the protocol sequence
 diagram.
@@ -3988,7 +4012,11 @@ Release: September 16, 2024
 
 51 / 102
 
-Figure 7: Negotiation discovery of a TCP connection between two IPsec-capable peers
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-IKEE].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+Figure 7: Negotiation discovery of a TCP connection between two IPsec-capable peers
 
 The TCP packet exchanges happen in parallel with the IKE exchanges that are described in the first
 two figures of this section ("IKE phase 1 (MM) exchange" and "IKE phase 2 (QM) exchange"). The
@@ -4003,7 +4031,11 @@ Release: September 16, 2024
 
 52 / 102
 
-Figure 8: Negotiation discovery of a TCP connection between an IPsec-capable peer and a
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-IKEE].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+Figure 8: Negotiation discovery of a TCP connection between an IPsec-capable peer and a
 non-IPsec-capable peer.
 
 The TCP packet exchanges happen in parallel with the IKE exchanges that are described in the first
@@ -4283,7 +4315,11 @@ Release: September 16, 2024
 
 56 / 102
 
-Flag 0x00000001 (IKE_EXCHANGE_INFO_ND_BOUNDARY) MUST be set if the corresponding rule
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-IKEE].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+Flag 0x00000001 (IKE_EXCHANGE_INFO_ND_BOUNDARY) MUST be set if the corresponding rule
 in the SPD has the Boundary flag set.
 
 This notification payload MUST be constructed as specified in section 2.2.6.
@@ -4513,7 +4549,11 @@ Release: September 16, 2024
 
 60 / 102
 
-Figure 10: IKE using the DoS Protection extension
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MS-IKEE].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+Figure 10: IKE using the DoS Protection extension
 
 The description in this section uses the message numbers from the protocol sequence diagram.
 
@@ -4686,7 +4726,12 @@ Release: September 16, 2024
 
 63 / 102
 
-3.10.4 Higher-Layer Triggered Events
+<!-- Extracted images from page 64 -->
+![Extracted image 1 from page 64]([MS-IKEE].images/page064-img01.png)
+![Extracted image 2 from page 64]([MS-IKEE].images/page064-img02.png)
+<!-- /Extracted images from page 64 -->
+
+3.10.4 Higher-Layer Triggered Events
 
 None.
 
@@ -4776,7 +4821,11 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-HDR, SK {IDr, [CERT,] AUTH, CP(CFG_REPLY), SAr2, TSi, TSr}
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MS-IKEE].images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+HDR, SK {IDr, [CERT,] AUTH, CP(CFG_REPLY), SAr2, TSi, TSr}
 
 3.11.1 Abstract Data Model
 
@@ -4825,7 +4874,11 @@ Release: September 16, 2024
 
 66 / 102
 
-Figure 14: IKEv2 Configuration payload exchange with EAP
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-IKEE].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+Figure 14: IKEv2 Configuration payload exchange with EAP
 
 3.11.5.1
 
@@ -5018,7 +5071,11 @@ Release: September 16, 2024
 
 69 / 102
 
-3.13.3 Initialization
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70]([MS-IKEE].images/page070-img01.png)
+<!-- /Extracted images from page 70 -->
+
+3.13.3 Initialization
 
 For Xbox multiplayer gaming, secure connections can be of various types. This type information is
 stored in the XBox IKEv2 Negotiation Type ADM element discussed in section 3.13.1. The significance
@@ -5070,7 +5127,11 @@ Release: September 16, 2024
 
 70 / 102
 
-3.13.7 Other Local Events
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-IKEE].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+3.13.7 Other Local Events
 
 None.
 
@@ -5108,7 +5169,11 @@ Release: September 16, 2024
 
 71 / 102
 
-Figure 16: Sending Security Realm ID Vendor ID in IKE_SA_INIT and IKE_SA_AUTH
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-IKEE].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+Figure 16: Sending Security Realm ID Vendor ID in IKE_SA_INIT and IKE_SA_AUTH
 messages
 
 IKE initiators can send the Security Realm ID vendor ID in the IKE_SA_INIT and IKE_SA_AUTH
@@ -5189,7 +5254,11 @@ Release: September 16, 2024
 
 73 / 102
 
-Figure 18: IKEv2 fragmentation sequence
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-IKEE].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+Figure 18: IKEv2 fragmentation sequence
 
 3.15.1 Abstract Data Model
 
@@ -5392,7 +5461,11 @@ Release: September 16, 2024
 
 77 / 102
 
-4  Protocol Examples
+<!-- Extracted images from page 78 -->
+![Extracted image 1 from page 78]([MS-IKEE].images/page078-img01.png)
+<!-- /Extracted images from page 78 -->
+
+4  Protocol Examples
 
 4.1  Negotiation Discovery Examples
 
@@ -5412,7 +5485,11 @@ Release: September 16, 2024
 
 78 / 102
 
-In the second example, the server requires all inbound traffic to be protected.
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-IKEE].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+In the second example, the server requires all inbound traffic to be protected.
 
 Figure 20: Negotiation discovery between client and server, all inbound traffic protected
 

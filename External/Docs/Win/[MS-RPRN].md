@@ -2544,7 +2544,11 @@ Print System Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-to perform layout and to make device-specific choices about paper formats, resolution, and color
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-RPRN].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+to perform layout and to make device-specific choices about paper formats, resolution, and color
 handling. After the client connects to a printer, this protocol provides the methods that the client can
 use to query these settings.
 
@@ -2582,7 +2586,11 @@ Release: August 11, 2025
 
 26 / 449
 
-Figure 2: Communication of print job data
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-RPRN].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 2: Communication of print job data
 
 1.3.3  Notification of Print System Changes
 
@@ -2608,7 +2616,11 @@ Print System Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-The following diagram illustrates this interaction. For more information, see section 3.2.4.2.4.
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-RPRN].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+The following diagram illustrates this interaction. For more information, see section 3.2.4.2.4.
 
 Figure 3: Notification of print system changes
 
@@ -2630,7 +2642,11 @@ Print System Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-this identifier to change. The print client can query this change identifier by using the
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-RPRN].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+this identifier to change. The print client can query this change identifier by using the
 RpcGetPrinterData (section 3.1.4.2.7) method that is defined in this protocol and calling it with the
 pValueName parameter pointing to the string "ChangeID".
 
@@ -29784,7 +29800,11 @@ Release: August 11, 2025
 
 344 / 449
 
-Figure 5: Adding a printer to a server
+<!-- Extracted images from page 345 -->
+![Extracted image 1 from page 345]([MS-RPRN].images/page345-img01.png)
+<!-- /Extracted images from page 345 -->
+
+Figure 5: Adding a printer to a server
 
 4.2  Adding a Printer Driver to a Server
 
@@ -29820,7 +29840,11 @@ Print System Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- pDataFile = "\\\\CORPSERV\\C$\\DRIVERSTAGING\\OEMDATA.DLL";
+<!-- Extracted images from page 346 -->
+![Extracted image 1 from page 346]([MS-RPRN].images/page346-img01.png)
+<!-- /Extracted images from page 346 -->
+
+ pDataFile = "\\\\CORPSERV\\C$\\DRIVERSTAGING\\OEMDATA.DLL";
  pConfigFile = "\\\\CORPSERV\\C$\\DRIVERSTAGING\\OEMUI.DLL";
 
 
@@ -30006,7 +30030,11 @@ Release: August 11, 2025
 
 348 / 449
 
-Figure 7: Enumerating and managing printers on a server
+<!-- Extracted images from page 349 -->
+![Extracted image 1 from page 349]([MS-RPRN].images/page349-img01.png)
+<!-- /Extracted images from page 349 -->
+
+Figure 7: Enumerating and managing printers on a server
 
 4.4  Enumerating Jobs and Modifying Job Settings
 
@@ -30114,7 +30142,11 @@ Release: August 11, 2025
 
 350 / 449
 
-Figure 8: Enumerating jobs and modifying job settings
+<!-- Extracted images from page 351 -->
+![Extracted image 1 from page 351]([MS-RPRN].images/page351-img01.png)
+<!-- /Extracted images from page 351 -->
+
+Figure 8: Enumerating jobs and modifying job settings
 
 4.5  Receiving Notifications on Printing Events
 

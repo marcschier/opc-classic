@@ -430,7 +430,11 @@ Release: September 2, 2022
 
 4 / 83
 
-1  Introduction
+<!-- Extracted images from page 5 -->
+![Extracted image 1 from page 5]([MS-MQOD].images/page005-img01.png)
+<!-- /Extracted images from page 5 -->
+
+1  Introduction
 
 Microsoft Message Queuing (MSMQ) is a communications service that temporally decouples
 message send operations from message receive operations. The functionality enables applications
@@ -477,7 +481,11 @@ Release: September 2, 2022
 
 5 / 83
 
-Figure 2: Queues hosted by queue manager service
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-MQOD].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+Figure 2: Queues hosted by queue manager service
 
 Message Queuing can optionally interact with other components to provide richer functionality to
 applications. These components include the Directory Service and the Transaction Coordinator.
@@ -512,7 +520,12 @@ Release: September 2, 2022
 
 6 / 83
 
-Figure 3: Participating components in a Message Queuing System
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-MQOD].images/page007-img01.png)
+![Extracted image 2 from page 7]([MS-MQOD].images/page007-img02.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 3: Participating components in a Message Queuing System
 
 A queue is a temporary placeholder for messages that are shared between applications. The simplest
 Message Queuing deployment involves two applications and a single queue that is accessible to both
@@ -542,7 +555,11 @@ Release: September 2, 2022
 
 7 / 83
 
-Figure 5: MSMQ deployment where applications do not share the same queue
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-MQOD].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 5: MSMQ deployment where applications do not share the same queue
 
 In the deployment topology that is shown in the preceding figure, the sending application puts a
 message in the queue [1]. This source queue works as the temporary placeholder for the message
@@ -593,7 +610,11 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-  Optionally, there can be other queue managers between the send and the receive queue
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-MQOD].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+  Optionally, there can be other queue managers between the send and the receive queue
 
 managers. This approach facilitates efficient message routing between the source and the
 destination queues. These interim queue managers store incoming messages and route them to
@@ -1198,7 +1219,11 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-2.1.2.3  Message Security
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-MQOD].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+2.1.2.3  Message Security
 
 The MSMQ protocols enable secure messaging between applications by supporting a variety of
 security features that include user authentication, authorization, message integrity, and message
@@ -1234,7 +1259,12 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-The queue manager optionally interacts with an external Transaction Coordinator to provide
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-MQOD].images/page019-img01.png)
+![Extracted image 2 from page 19]([MS-MQOD].images/page019-img02.png)
+<!-- /Extracted images from page 19 -->
+
+The queue manager optionally interacts with an external Transaction Coordinator to provide
 transactional capabilities while sending or receiving messages to or from individual queues.
 Applications can create external transactions from the Transaction Coordinator and can pass them
 on to MSMQ protocols to atomically perform certain messaging operations. The external Transaction
@@ -1282,7 +1312,11 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-through the client side of the MQMR protocol and the client side of the management interfaces of the
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-MQOD].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+through the client side of the MQMR protocol and the client side of the management interfaces of the
 MQAC protocol. The following figure shows this deployment mode.
 
 Figure 10: Queue manager as Management Server
@@ -1414,7 +1448,11 @@ Release: September 2, 2022
 
 21 / 83
 
-Figure 11: Transaction boundaries in end-to-end message exchange
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-MQOD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 11: Transaction boundaries in end-to-end message exchange
 
 The MSMQ protocol set specifies a lightweight internal Transaction Coordinator to avoid the overhead
 of external transactions. MSMQ can dispense an internal transaction to an application, and this
@@ -1438,7 +1476,11 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-destination queue, the queue manager places the message in the designated dead-letter queue for
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-MQOD].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+destination queue, the queue manager places the message in the designated dead-letter queue for
 the sending application to perform application-specific error handling.
 
 2.1.3.3  Message Queuing and Directory Service
@@ -1489,7 +1531,11 @@ Release: September 2, 2022
 
 23 / 83
 
-Figure 13: Enterprise deployment of MSMQ with routing
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-MQOD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 13: Enterprise deployment of MSMQ with routing
 
 The preceding figure illustrates MSMQ deployment in an enterprise environment over a complex
 deployment topology. The MSMQ routing functionality allows applications deployed on one part of the
@@ -1893,7 +1939,11 @@ Release: September 2, 2022
 
 28 / 83
 
-Figure 14: Interactions between Message Queuing protocols
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-MQOD].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 14: Interactions between Message Queuing protocols
 
 The links in the preceding figure represent interactions between external entities, MSMQ protocol set
 components, and MSMQ protocol set roles.
@@ -1960,7 +2010,11 @@ Release: September 2, 2022
 
 30 / 83
 
-Figure 15: MSMQ internal architecture
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-MQOD].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+Figure 15: MSMQ internal architecture
 
 The abstract data model and processing rules shared by the different facets of the queue manager are
 described in [MS-MQDMPR] section 3. This common model describes the abstract data model (ADM)
@@ -2556,7 +2610,11 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-The application is the direct actor for all use cases of the MSMQ protocols. The Directory Service is the
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-MQOD].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+The application is the direct actor for all use cases of the MSMQ protocols. The Directory Service is the
 supporting actor for all use cases of the MSMQ protocols. The Transaction Coordinator is the
 supporting actor for the use cases that require transacted work.
 
@@ -3573,7 +3631,11 @@ Release: September 2, 2022
 
 51 / 83
 
-Figure 17: Component storage and communications
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-MQOD].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+Figure 17: Component storage and communications
 
 The communications between two queue managers (1: internal communication) and between a queue
 manager and an external entity (2, 3, 4: external communication) are shown in the preceding figure.
@@ -3911,7 +3973,11 @@ Release: September 2, 2022
 
 56 / 83
 
-Figure 18: Message layer security sequences
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-MQOD].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+Figure 18: Message layer security sequences
 
 2.9.5  Internal Security and External Security
 
@@ -4041,7 +4107,11 @@ Release: September 2, 2022
 
 59 / 83
 
-One queue, the order queue, is configured on the central office server computer, and the network
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-MQOD].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+One queue, the order queue, is configured on the central office server computer, and the network
 address of the central office server computer is provided to the Order Entry application.
 
 Final System State
@@ -4230,7 +4300,11 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Figure 20: Sequence diagram for Example 2
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-MQOD].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+Figure 20: Sequence diagram for Example 2
 
 1.  The web client transmits the customer order to the web server application using the Transmission
 
@@ -4337,7 +4411,11 @@ Release: September 2, 2022
 
 64 / 83
 
-The following figure shows the sequence of events for modifying a public queue.
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-MQOD].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+The following figure shows the sequence of events for modifying a public queue.
 
 Figure 21: Sequence diagram modifying a public queue
 
@@ -4383,7 +4461,11 @@ Release: September 2, 2022
 
 65 / 83
 
-
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MS-MQOD].images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+
 
 
 
@@ -4526,7 +4608,11 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Final System State
+<!-- Extracted images from page 68 -->
+![Extracted image 1 from page 68]([MS-MQOD].images/page068-img01.png)
+<!-- /Extracted images from page 68 -->
+
+Final System State
 
 The final state of the Message Queuing System in the company HQ contains the sales data sent from
 the branch office server. The final states for all other Message Queuing Systems in this example are
@@ -4693,7 +4779,11 @@ Release: September 2, 2022
 
 70 / 83
 
-Figure 24: Sequence diagram for Example 6
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-MQOD].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+Figure 24: Sequence diagram for Example 6
 
 1.  The order entry application creates a new unique transactional unit of work identifier XACTUOW
 ([MS-MQMQ] section 2.2.18.1.8) structure, encapsulates an order in an MSMQ message, and
@@ -4798,7 +4888,11 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Sequence of Events
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MS-MQOD].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+Sequence of Events
 
 The following figure shows the sequence of events for the server farm messages.
 
@@ -4912,7 +5006,11 @@ Message Queuing Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: September 2, 2022
 
-Sequence of Events
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-MQOD].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+Sequence of Events
 
 The sequence of events for the stock ticker example is shown in the following figure.
 
@@ -5010,7 +5108,11 @@ Release: September 2, 2022
 
 76 / 83
 
-Figure 27: Sequence diagram for Example 9
+<!-- Extracted images from page 77 -->
+![Extracted image 1 from page 77]([MS-MQOD].images/page077-img01.png)
+<!-- /Extracted images from page 77 -->
+
+Figure 27: Sequence diagram for Example 9
 
 1.  The customer's supply-chain management software sends a status report request to the
 

@@ -924,7 +924,11 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Instance Management Protocol to control the execution of instances of the expense approval
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-WFIM].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Instance Management Protocol to control the execution of instances of the expense approval
 workflows. Using the Abandon, Cancel, Terminate, Suspend, and Unsuspend operations defined
 in this protocol, the tooling enables the administrator to perform tasks, such as terminating a
 particular Instance or temporarily suspending its execution.
@@ -1165,7 +1169,11 @@ Release: March 13, 2019
 
 13 / 62
 
-3  Protocol Details
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-WFIM].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+3  Protocol Details
 
 The client side of this protocol is simply a pass-through mechanism. That is, no additional timers or
 other state is required on the client side of this protocol. Calls made by the higher-layer protocol or
@@ -1216,7 +1224,11 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.1.1.2  Suspended State
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-WFIM].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+3.1.1.2  Suspended State
 
 In the suspended state, the durable program instance MUST NOT execute.
 

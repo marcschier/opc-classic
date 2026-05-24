@@ -1349,7 +1349,11 @@ Release: April 23, 2024
 
 11 / 86
 
-1.3  Overview
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPEXPS].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.3  Overview
 
 In a typical terminal server scenario, the physical printer device is located on the client computer,
 while applications are running on the terminal server. Clients often need to print documents using the
@@ -1491,7 +1495,11 @@ Release: April 23, 2024
 
 14 / 86
 
-Figure 2: Initializing printer sequence
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RDPEXPS].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: Initializing printer sequence
 
 [MS-RDPEXPS] - v20240423
 Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
@@ -1500,7 +1508,11 @@ Release: April 23, 2024
 
 15 / 86
 
-Figure 3: Printing a document sequence
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-RDPEXPS].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 3: Printing a document sequence
 
 1.3.2.3.1 Printer Driver Interface Initialization Messages
 
@@ -1522,7 +1534,11 @@ Release: April 23, 2024
 
 16 / 86
 
-1.3.2.3.3 User Interface Messages
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-RDPEXPS].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+1.3.2.3.3 User Interface Messages
 
 Every printer driver is responsible for displaying two custom user interfaces: one for document
 properties and one for printer properties. Because a custom UI is difficult to negotiate over a network,
@@ -1542,7 +1558,11 @@ Release: April 23, 2024
 
 17 / 86
 
-Figure 5: Open and cancel document properties UI
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-RDPEXPS].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 5: Open and cancel document properties UI
 
 1.4  Relationship to Other Protocols
 
@@ -1570,7 +1590,11 @@ Release: April 23, 2024
 
 18 / 86
 
-Figure 6: Relationships among protocols
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-RDPEXPS].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 6: Relationships among protocols
 
 1.5  Prerequisites/Preconditions
 

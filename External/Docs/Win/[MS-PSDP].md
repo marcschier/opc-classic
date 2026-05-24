@@ -874,7 +874,11 @@ Release: April 23, 2024
 
 8 / 27
 
-Figure 1: PSDP client/server communication
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-PSDP].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: PSDP client/server communication
 
 The preceding diagram illustrates the relationship between a service-bearing device, which is an AP or
 ad hoc network station, as specified in [IEEE802.11-2007], and the client that acts as a station, as
@@ -1079,7 +1083,11 @@ Release: April 23, 2024
 
 12 / 27
 
-3  Protocol Details
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-PSDP].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+3  Protocol Details
 
 The following sections specify details of the Proximity Service Discovery Protocol, including semantics
 of the conceptual service primitives for the client and server.
@@ -1116,7 +1124,12 @@ Proximity Service Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following figure is a top-level state diagram for the server. In the Enabled state, the server is
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-PSDP].images/page014-img01.png)
+![Extracted image 2 from page 14]([MS-PSDP].images/page014-img02.png)
+<!-- /Extracted images from page 14 -->
+
+The following figure is a top-level state diagram for the server. In the Enabled state, the server is
 configured with discovery data for one or more format identifiers.
 
 Figure 3: High-level diagram of the server states
@@ -1273,7 +1286,11 @@ Release: April 23, 2024
 
 16 / 27
 
-3.2  Client Details
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-PSDP].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+3.2  Client Details
 
 The client SHOULD<6> regularly scan its radio spectrum for beacons. When a beacon is received, the
 client SHOULD examine it for the presence of discovery information elements, and if any are
@@ -1293,7 +1310,11 @@ Release: April 23, 2024
 
 17 / 27
 
-Figure 6: State diagram for the registration of a format identifier at the client
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-PSDP].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 6: State diagram for the registration of a format identifier at the client
 
 3.2.1  Abstract Data Model
 
@@ -1458,7 +1479,11 @@ Release: April 23, 2024
 
 21 / 27
 
-Figure 7: Example of the vendor extension IE
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-PSDP].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 7: Example of the vendor extension IE
 
 [MS-PSDP] - v20240423
 Proximity Service Discovery Protocol

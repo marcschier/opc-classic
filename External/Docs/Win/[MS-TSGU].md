@@ -1803,7 +1803,12 @@ Release: April 23, 2024
 
 17 / 173
 
-Figure 1: Message sequence between the RDG client and RDG server during connection
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-TSGU].images/page018-img01.png)
+![Extracted image 2 from page 18]([MS-TSGU].images/page018-img02.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 1: Message sequence between the RDG client and RDG server during connection
 setup phase
 
 1.3.1.1.2 Data Transfer Phase
@@ -1834,7 +1839,11 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-sequence. This method can be called only once per channel; however, data is sent from the RDG
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-TSGU].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+sequence. This method can be called only once per channel; however, data is sent from the RDG
 server to the RDG client multiple times.
 
   Data transfer from the RDG client to the target server via the RDG server by using an RPC call:
@@ -1860,7 +1869,11 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Channel shutdown: Channel shutdown can be performed only after a channel has been
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-TSGU].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+  Channel shutdown: Channel shutdown can be performed only after a channel has been
 
 successfully created. A channel shutdown closes the RPC out pipe created in the data transfer
 phase and prevents any further use of the channel. The closing of a channel can be initiated either
@@ -1895,7 +1908,11 @@ Release: April 23, 2024
 
 20 / 173
 
-1.3.2  HTTP Transport
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-TSGU].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+1.3.2  HTTP Transport
 
 The RDGHTTP Protocol uses the HTTP transport by creating two HTTP 1.1 connections for use as
 communication channels to and from the RDG server. Each channel is protected by SSL (HTTPS).<4>
@@ -1942,7 +1959,11 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-TSGU].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+
 
 Exchange version and capability negotiation information.
 
@@ -1974,7 +1995,12 @@ Release: April 23, 2024
 
 22 / 173
 
-In the data and server message exchange phase, the RDG client and RDG server send data using the
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-TSGU].images/page023-img01.png)
+![Extracted image 2 from page 23]([MS-TSGU].images/page023-img02.png)
+<!-- /Extracted images from page 23 -->
+
+In the data and server message exchange phase, the RDG client and RDG server send data using the
 IN channel and OUT channels as necessary, and keep-alive messages flow between the RDG server
 and RDG client. The RDG server sends periodic service messages or reauthentication requests as
 required.
@@ -2062,7 +2088,11 @@ Release: April 23, 2024
 
 24 / 173
 
-Figure 9: Message sequence between RDG client and RDG server during DTLS handshake
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-TSGU].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 9: Message sequence between RDG client and RDG server during DTLS handshake
 phase
 
 An optional UDP_CORRELATION_INFO structure (section 2.2.11.9) can be appended to the ClientHello
@@ -2099,7 +2129,12 @@ Release: April 23, 2024
 
 25 / 173
 
-Figure 10: Message sequence between RDG client and RDG server during connection setup
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-TSGU].images/page026-img01.png)
+![Extracted image 2 from page 26]([MS-TSGU].images/page026-img02.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 10: Message sequence between RDG client and RDG server during connection setup
 phase
 
 1.3.3.1.3 Data Transfer Phase
@@ -2126,7 +2161,11 @@ Release: April 23, 2024
 
 26 / 173
 
-Figure 12: Message sequence between the RDG client and RDG server during shutdown
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-TSGU].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 12: Message sequence between the RDG client and RDG server during shutdown
 phase
 
 1.4  Relationship to Other Protocols
@@ -6914,7 +6953,11 @@ Release: April 23, 2024
 
 84 / 173
 
-Figure 13: State transition diagram
+<!-- Extracted images from page 85 -->
+![Extracted image 1 from page 85]([MS-TSGU].images/page085-img01.png)
+<!-- /Extracted images from page 85 -->
+
+Figure 13: State transition diagram
 
 Start: By default, the protocol starts in a disconnected state.
 
@@ -9323,7 +9366,11 @@ Release: April 23, 2024
 
 112 / 173
 
-Figure 14: RDG HTTP server tunnel state machine
+<!-- Extracted images from page 113 -->
+![Extracted image 1 from page 113]([MS-TSGU].images/page113-img01.png)
+<!-- /Extracted images from page 113 -->
+
+Figure 14: RDG HTTP server tunnel state machine
 
 The following figure shows the channel state machine RDG server. The channel exists inside the tunnel
 only when the tunnel is in TUNNEL_STATE_AUTHORIZED state.
@@ -9335,7 +9382,11 @@ Release: April 23, 2024
 
 113 / 173
 
-Figure 15: RDG HTTP server channel state machine
+<!-- Extracted images from page 114 -->
+![Extracted image 1 from page 114]([MS-TSGU].images/page114-img01.png)
+<!-- /Extracted images from page 114 -->
+
+Figure 15: RDG HTTP server channel state machine
 
 3.3.2  Abstract Data Model
 
@@ -9367,7 +9418,11 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-After the RDG client and the RDG server have successfully created an IN channel and an OUT channel,
+<!-- Extracted images from page 115 -->
+![Extracted image 1 from page 115]([MS-TSGU].images/page115-img01.png)
+<!-- /Extracted images from page 115 -->
+
+After the RDG client and the RDG server have successfully created an IN channel and an OUT channel,
 the Keep-alive Timer (section 3.3.6.4) is started.
 
 3.3.5  Message Processing Events and Sequencing Rules
@@ -9432,7 +9487,11 @@ Release: April 23, 2024
 
 116 / 173
 
-Figure 17: IN channel tunnel and channel setup
+<!-- Extracted images from page 117 -->
+![Extracted image 1 from page 117]([MS-TSGU].images/page117-img01.png)
+<!-- /Extracted images from page 117 -->
+
+Figure 17: IN channel tunnel and channel setup
 
 5.  The RDG client sends a request for creating an IN channel with the custom command
 
@@ -9508,7 +9567,11 @@ Release: April 23, 2024
 
 118 / 173
 
-Figure 18: Data flow and connection close
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MS-TSGU].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+Figure 18: Data flow and connection close
 
 3.3.5.3  NTLM Extended Authentication
 
@@ -9824,7 +9887,11 @@ Release: April 23, 2024
 
 123 / 173
 
-Figure 19: UDP to RDG server states
+<!-- Extracted images from page 124 -->
+![Extracted image 1 from page 124]([MS-TSGU].images/page124-img01.png)
+<!-- /Extracted images from page 124 -->
+
+Figure 19: UDP to RDG server states
 
 3.4.2  Initialization
 
@@ -9860,7 +9927,11 @@ Release: April 23, 2024
 
 124 / 173
 
-3.4.3.2  Connection Setup Phase
+<!-- Extracted images from page 125 -->
+![Extracted image 1 from page 125]([MS-TSGU].images/page125-img01.png)
+<!-- /Extracted images from page 125 -->
+
+3.4.3.2  Connection Setup Phase
 
 Figure 20: The RDGUDP client server connection
 
@@ -10586,7 +10657,11 @@ Release: April 23, 2024
 
 134 / 173
 
-Figure 21: RDG HTTP client channel state machine
+<!-- Extracted images from page 135 -->
+![Extracted image 1 from page 135]([MS-TSGU].images/page135-img01.png)
+<!-- /Extracted images from page 135 -->
+
+Figure 21: RDG HTTP client channel state machine
 
 3.7.1  Abstract Data Model
 

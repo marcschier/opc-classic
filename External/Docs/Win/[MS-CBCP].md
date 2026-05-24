@@ -706,7 +706,12 @@ Release: April 23, 2024
 
 8 / 37
 
-Figure 1: Callback message exchanges
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-CBCP].images/page009-img01.png)
+![Extracted image 2 from page 9]([MS-CBCP].images/page009-img02.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: Callback message exchanges
 
 1.4  Relationship to Other Protocols
 
@@ -1406,7 +1411,11 @@ Release: April 23, 2024
 
 17 / 37
 
-Callback type  Description
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-CBCP].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Callback type  Description
 
 3
 
@@ -1776,7 +1785,11 @@ Release: April 23, 2024
 
 23 / 37
 
-Figure 4: Callback state diagram--answerer states
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-CBCP].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 4: Callback state diagram--answerer states
 
 The answerer state machine has the following states as represented by the Current State variable.
 

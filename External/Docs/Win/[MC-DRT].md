@@ -4947,7 +4947,11 @@ Release: June 25, 2021
 
 61 / 74
 
-Figure 1: Node Communication with Discovered Node
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MC-DRT].images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+Figure 1: Node Communication with Discovered Node
 
 Note  The FLOOD messages in this conversation are not synchronous; the discovered node can send a
 second or third FLOOD message before it has received an ACK message for a previous FLOOD
@@ -5013,7 +5017,11 @@ Release: June 25, 2021
 
 63 / 74
 
-Figure 2: Key resolution
+<!-- Extracted images from page 64 -->
+![Extracted image 1 from page 64]([MC-DRT].images/page064-img01.png)
+<!-- /Extracted images from page 64 -->
+
+Figure 2: Key resolution
 
 1.  The Resolver, seeking endpoint information for a key registered by Node 3, creates a LOOKUP
 
@@ -5111,7 +5119,11 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Figure 3: DRT Name Revocation Process
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MC-DRT].images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+Figure 3: DRT Name Revocation Process
 
 1.  The unregistering node (Node 6) creates a Revoke CPA for the Key. The R field of the CPA is set
 to indicate that this is a Revoke CPA. It puts the Revoke CPA in a FLOOD message and sends it
@@ -5152,7 +5164,11 @@ Release: June 25, 2021
 
 66 / 74
 
-Figure 4: Leaf Set Node arrangement example
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MC-DRT].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+Figure 4: Leaf Set Node arrangement example
 
 Note  This sequence illustrates the cascading flood activity when a new ID is discovered. Prior to any
 node propagating a FLOOD message, the node will send an INQUIRE message to the newly discovered

@@ -1005,7 +1005,11 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-8.  The Group Policy: Firewall and Advanced Security Data Structure client parses the Firewall and
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-GPFAS].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+8.  The Group Policy: Firewall and Advanced Security Data Structure client parses the Firewall and
 Advanced Security settings from the Software\Policies\Microsoft\WindowsFirewall\ registry key.
 The client then passes these settings to the Group Policy: Firewall and Advanced Security Data
 Structure server for enforcement by invoking the SetGroupPolicyRSoPStore abstract interface, as

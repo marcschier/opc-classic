@@ -33279,7 +33279,11 @@ Release: April 23, 2024
 
 401 / 472
 
-Figure 1: Flow diagram for query enumeration
+<!-- Extracted images from page 402 -->
+![Extracted image 1 from page 402]([MS-FSRM].images/page402-img01.png)
+<!-- /Extracted images from page 402 -->
+
+Figure 1: Flow diagram for query enumeration
 
 4.2  Retrieving Properties of File Server Resource Manager Protocol File Screens
 
@@ -33329,7 +33333,11 @@ Release: April 23, 2024
 
 403 / 472
 
-Figure 2: Flow diagram for querying file screen properties
+<!-- Extracted images from page 404 -->
+![Extracted image 1 from page 404]([MS-FSRM].images/page404-img01.png)
+<!-- /Extracted images from page 404 -->
+
+Figure 2: Flow diagram for querying file screen properties
 
 4.3  Modifying File Server Resource Manager Protocol Directory Quota Properties
 
@@ -33404,7 +33412,11 @@ Release: April 23, 2024
 
 405 / 472
 
-Figure 3: Flow diagram for modifying directory quota properties
+<!-- Extracted images from page 406 -->
+![Extracted image 1 from page 406]([MS-FSRM].images/page406-img01.png)
+<!-- /Extracted images from page 406 -->
+
+Figure 3: Flow diagram for modifying directory quota properties
 
 4.4  Scheduling File Server Resource Manager Protocol Storage Reports
 
@@ -33464,7 +33476,11 @@ Release: April 23, 2024
 
 407 / 472
 
-Figure 4: Flow diagram of scheduling storage reports
+<!-- Extracted images from page 408 -->
+![Extracted image 1 from page 408]([MS-FSRM].images/page408-img01.png)
+<!-- /Extracted images from page 408 -->
+
+Figure 4: Flow diagram of scheduling storage reports
 
 4.5  Modifying File Server Resource Manager Protocol Global Settings
 
@@ -33567,7 +33583,11 @@ Release: April 23, 2024
 
 409 / 472
 
-Figure 5: Flow diagram for query enumeration
+<!-- Extracted images from page 410 -->
+![Extracted image 1 from page 410]([MS-FSRM].images/page410-img01.png)
+<!-- /Extracted images from page 410 -->
+
+Figure 5: Flow diagram for query enumeration
 
 4.7  Adding Classification Rules
 
@@ -33586,7 +33606,11 @@ File Server Resource Manager Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  The server returns a reference to the IFsrmClassificationManager interface.
+<!-- Extracted images from page 411 -->
+![Extracted image 1 from page 411]([MS-FSRM].images/page411-img01.png)
+<!-- /Extracted images from page 411 -->
+
+2.  The server returns a reference to the IFsrmClassificationManager interface.
 
 3.  The client calls the method IFsrmClassificationManager::CreateRule (section 3.2.4.2.45.16) with
 
@@ -33676,7 +33700,11 @@ Release: April 23, 2024
 
 412 / 472
 
-Figure 7: Flow diagram for File Management Job modification
+<!-- Extracted images from page 413 -->
+![Extracted image 1 from page 413]([MS-FSRM].images/page413-img01.png)
+<!-- /Extracted images from page 413 -->
+
+Figure 7: Flow diagram for File Management Job modification
 
 4.9  Updating Property Values for a File
 
@@ -33759,7 +33787,11 @@ Release: April 23, 2024
 
 414 / 472
 
-Figure 8: Flow diagram for enumerating classification properties on a file and updating one
+<!-- Extracted images from page 415 -->
+![Extracted image 1 from page 415]([MS-FSRM].images/page415-img01.png)
+<!-- /Extracted images from page 415 -->
+
+Figure 8: Flow diagram for enumerating classification properties on a file and updating one
 
 [MS-FSRM] - v20240423
 File Server Resource Manager Protocol

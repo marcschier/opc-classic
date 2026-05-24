@@ -957,7 +957,11 @@ Release: March 13, 2019
 
 9 / 44
 
-Figure 1: Typical use of the .NET Context Exchange Protocol
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MC-NETCEX].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Typical use of the .NET Context Exchange Protocol
 
 Each message that is exchanged between client and server is an application-specific message. This
 protocol is a header-based protocol that composes into client and server messages:
@@ -1049,7 +1053,11 @@ Release: March 13, 2019
 
 11 / 44
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MC-NETCEX].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.4  Relationship to Other Protocols
 
 The .NET Context Exchange Protocol can be used with HTTP [RFC2616] or SOAP-formatted messages
 [SOAP1.2-1/2007] [SOAP1.1]. The following figure shows a protocol stack.
@@ -1119,7 +1127,12 @@ Release: March 13, 2019
 
 13 / 44
 
-2  Messages
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MC-NETCEX].images/page014-img01.png)
+![Extracted image 2 from page 14]([MC-NETCEX].images/page014-img02.png)
+<!-- /Extracted images from page 14 -->
+
+2  Messages
 
 2.1  Transport
 
@@ -1171,7 +1184,12 @@ Participating Message; or
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  An HTTP Server Message Header as an HTTP header in an HTTP response message to form a
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MC-NETCEX].images/page015-img01.png)
+![Extracted image 2 from page 15]([MC-NETCEX].images/page015-img02.png)
+<!-- /Extracted images from page 15 -->
+
+  An HTTP Server Message Header as an HTTP header in an HTTP response message to form a
 
 Server Context Establishing Message.
 
@@ -1435,7 +1453,11 @@ Release: March 13, 2019
 
 19 / 44
 
-Figure 7: State diagram for the client role
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MC-NETCEX].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 7: State diagram for the client role
 
 3.1.1.1  IDLE State
 
@@ -1721,7 +1743,11 @@ possible values:
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  WAIT_CM
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MC-NETCEX].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+  WAIT_CM
 
 
 
@@ -1955,7 +1981,11 @@ Release: March 13, 2019
 
 26 / 44
 
-3.3  Callback Context Exchange Client Role Details
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MC-NETCEX].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+3.3  Callback Context Exchange Client Role Details
 
 In this section, "client role" refers to the client role for callback context exchange.
 
@@ -2180,7 +2210,11 @@ Release: March 13, 2019
 
 29 / 44
 
-The server role MUST maintain the following data elements:
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MC-NETCEX].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+The server role MUST maintain the following data elements:
 
   Endpoint Reference Store: A data element that is capable of holding an instance of an
 

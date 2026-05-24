@@ -525,7 +525,11 @@ Release: April 23, 2024
 
 6 / 30
 
-[XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-RDWR].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+[XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
 1.2.2  Informative References

@@ -482,7 +482,11 @@ Release: April 23, 2024
 
 7 / 36
 
-Figure 1: The NEGOEX message flow
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-NEGOEX].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: The NEGOEX message flow
 
 1.  The initiator sends a MESSAGE_TYPE_INITIATOR_NEGO type message to the acceptor, which can
 
@@ -1732,7 +1736,11 @@ Release: April 23, 2024
 
 26 / 36
 
-4  Protocol Examples
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-NEGOEX].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+4  Protocol Examples
 
 The following figure shows the network trace of the NEGOEX protocol having the INITIATOR_NEGO
 (short for MESSAGE_TYPE_INITIATOR_NEGO) message type that is sent via the NEGO_MESSAGE
@@ -1782,7 +1790,11 @@ Release: April 23, 2024
 
 27 / 36
 
-  ConversationID: The ID GUID of the conversation stored in the ConversationId field (as
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-NEGOEX].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+  ConversationID: The ID GUID of the conversation stored in the ConversationId field (as
 defined in section 3.1.5.2), which remains the same between the initiator and the acceptor
 throughout the negotiation process.
 

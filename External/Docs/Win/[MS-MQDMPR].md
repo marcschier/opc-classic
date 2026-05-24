@@ -1335,7 +1335,11 @@ Release: April 23, 2024
 
 14 / 138
 
-Figure 1: Relationships between MSMQ protocols and the shared abstract data model
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-MQDMPR].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 1: Relationships between MSMQ protocols and the shared abstract data model
 defined in this specification
 
 In addition, these protocol implementations can generate the internal events specified in section
@@ -1445,7 +1449,11 @@ Release: April 23, 2024
 
 18 / 138
 
-Figure 2: UML static class diagram for the queue manager abstract data model
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-MQDMPR].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 2: UML static class diagram for the queue manager abstract data model
 
 DirectoryObject: An ADM element that is used as a base class for ADM elements that can be
 
@@ -10764,7 +10772,11 @@ Release: April 23, 2024
 
 119 / 138
 
-3.2.1  Abstract Data Model
+<!-- Extracted images from page 120 -->
+![Extracted image 1 from page 120]([MS-MQDMPR].images/page120-img01.png)
+<!-- /Extracted images from page 120 -->
+
+3.2.1  Abstract Data Model
 
 3.2.1.1  State Diagram
 

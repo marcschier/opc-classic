@@ -888,7 +888,11 @@ Release: April 23, 2024
 
 9 / 32
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-PCCRD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+1.4  Relationship to Other Protocols
 
 The PCCR Discovery Protocol uses the Web Services Dynamic Discovery protocol (WS-Discovery)
 [WS-Discovery], which uses SOAP-over-UDP [SOAP-UDP] [RFC768] as its network transport. In the

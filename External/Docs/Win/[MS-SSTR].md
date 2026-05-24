@@ -773,7 +773,11 @@ Release: November 19, 2024
 
 8 / 65
 
-Figure 1: Typical communication sequence for the Smooth Streaming Transport Protocol
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-SSTR].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: Typical communication sequence for the Smooth Streaming Transport Protocol
 
 The first message in the communication pattern is a Manifest Request, to which the server replies with
 a Manifest Response. The client then makes one or more Fragment Requests, and the server replies to
@@ -792,7 +796,11 @@ Release: November 19, 2024
 
 9 / 65
 
-Figure 2: Typical communication pattern of requests for the same fragment
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-SSTR].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 2: Typical communication pattern of requests for the same fragment
 
 1.4  Relationship to Other Protocols
 
@@ -3158,7 +3166,11 @@ Release: November 19, 2024
 
 42 / 65
 
-3  Protocol Details
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-SSTR].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+3  Protocol Details
 
 3.1  Client Details
 
@@ -4086,7 +4098,11 @@ Release: November 19, 2024
 
 54 / 65
 
-Figure 4: Live Encoder state machine diagram
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-SSTR].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+Figure 4: Live Encoder state machine diagram
 
 The main data elements that are required by any implementation are:
 

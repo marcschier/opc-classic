@@ -985,7 +985,11 @@ Release: October 26, 2021
 
 11 / 94
 
-Figure 1: GSS-style authentication model
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-AUTHSOD].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 1: GSS-style authentication model
 
 As shown in the preceding diagram, the client application contacts the local Authentication Client
 through a generic interface that abstracts the underlying authentication protocols for creating a
@@ -1683,7 +1687,11 @@ Release: October 26, 2021
 
 21 / 94
 
-2  Functional Architecture
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-AUTHSOD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+2  Functional Architecture
 
 The Authentication Services protocols provide authentication services through the following methods:
 
@@ -1840,7 +1848,11 @@ Release: October 26, 2021
 
 24 / 94
 
-Figure 3: Abstract view of interactive domain logon authentication
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-AUTHSOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 3: Abstract view of interactive domain logon authentication
 
 2.1.1.2  Protocol Interactions
 
@@ -1867,7 +1879,11 @@ Release: October 26, 2021
 
 25 / 94
 
-Figure 4: Protocol interactions for interactive domain logon authentication
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-AUTHSOD].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 4: Protocol interactions for interactive domain logon authentication
 
 If the user credentials consist of a user name and password pair, the domain logon authentication
 process first tries the Kerberos Authentication Protocol ([MS-KILE]). If Kerberos fails, the
@@ -1902,7 +1918,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.1.2  Network Logon Authentication
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-AUTHSOD].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+2.1.2  Network Logon Authentication
 
 The network logon authentication section with its subsections describe the process and the methods
 by which authentication protocols work in conjunction to prove the user's identity. Network logon
@@ -1985,7 +2005,11 @@ Release: October 26, 2021
 
 28 / 94
 
-Figure 6: GSS-API authentication process
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-AUTHSOD].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 6: GSS-API authentication process
 
 2.1.2.2  Protocol Interactions
 
@@ -1998,7 +2022,11 @@ Release: October 26, 2021
 
 29 / 94
 
-Figure 7: Protocol interactions for network logon authentication
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-AUTHSOD].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 7: Protocol interactions for network logon authentication
 
 As the preceding diagram shows, Authentication Services includes the following authentication and
 auxiliary protocols.
@@ -2237,7 +2265,11 @@ Release: October 26, 2021
 
 33 / 94
 
-Figure 8: Authentication protocol standards in the enterprise environment
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-AUTHSOD].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+Figure 8: Authentication protocol standards in the enterprise environment
 
 The preceding diagram shows that network traffic conforms to the file access services protocols that
 are used between the file system client and the file system server. The file access services protocols
@@ -2267,7 +2299,11 @@ Release: October 26, 2021
 
 34 / 94
 
-Figure 9: Credential delegation through the CredSSP Protocol
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-AUTHSOD].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 9: Credential delegation through the CredSSP Protocol
 
 The preceding diagram shows that RDP and the Web Services Management Protocol trigger the
 CredSSP Protocol to delegate the user's credentials. For more details about how and when these
@@ -2302,7 +2338,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-messages to the KDC proxy server. The KDC proxy server locates the KDC, sends these messages to
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-AUTHSOD].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+messages to the KDC proxy server. The KDC proxy server locates the KDC, sends these messages to
 the located KDC, and returns the received replies via HTTPS to the client.
 
 Figure 10: KKDCP deployment environment
@@ -2332,7 +2372,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-token in processing the request. This task focuses on the HTTP server side of the authentication
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-AUTHSOD].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+token in processing the request. This task focuses on the HTTP server side of the authentication
 exchange.
 
 HTTP authentication [RFC2617] contains specification details on two forms of authentication: Basic
@@ -2365,7 +2409,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-When a web browser uses the SSL/TLS [MS-TLSP] protocols to provide an X.509 certificate, if the
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-AUTHSOD].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+When a web browser uses the SSL/TLS [MS-TLSP] protocols to provide an X.509 certificate, if the
 user's account information is not available locally, the web server uses the Remote Certificate Mapping
 Protocol [MS-RCMP] to authenticate the certificate with the DC that contains the user's account.
 
@@ -2464,7 +2512,11 @@ Release: October 26, 2021
 
 39 / 94
 
-2.1.4.1  Kerberos Protocols
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-AUTHSOD].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+2.1.4.1  Kerberos Protocols
 
 Figure 13: Relationships between Kerberos protocol and Microsoft extensions
 
@@ -2501,7 +2553,11 @@ Release: October 26, 2021
 
 40 / 94
 
-Public Key Cryptography for Initial Authentication [MS-PKCA] specifies Microsoft extensions to
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-AUTHSOD].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Public Key Cryptography for Initial Authentication [MS-PKCA] specifies Microsoft extensions to
 [RFC4556] and [RFC5349], and normatively documents behavior from an earlier draft of [RFC4556].
 
 Kerberos Protocol Extensions: Service for User and Constrained Delegation Protocol Specification [MS-
@@ -2541,7 +2597,11 @@ Release: October 26, 2021
 
 41 / 94
 
-2.1.4.3  SSL/TLS Protocols
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-AUTHSOD].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+2.1.4.3  SSL/TLS Protocols
 
     Figure 15: Relationships between SSL/TLS protocol standards and Microsoft extensions
 
@@ -3059,7 +3119,11 @@ Release: October 26, 2021
 
 47 / 94
 
-Figure 16: Interactive domain logon - service ticket for client computer use case
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-AUTHSOD].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+Figure 16: Interactive domain logon - service ticket for client computer use case
 
 Goal: To get the service ticket for a client computer.
 
@@ -3253,7 +3317,11 @@ Release: October 26, 2021
 
 50 / 94
 
-Figure 17: Client authentication use case
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-AUTHSOD].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+Figure 17: Client authentication use case
 
 Goal: To verify the identity of the client application.
 
@@ -3465,7 +3533,11 @@ Release: October 26, 2021
 
 53 / 94
 
-Figure 18: Server authentication use case
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MS-AUTHSOD].images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+Figure 18: Server authentication use case
 
 Goal: To verify the identity of the server application.
 
@@ -3516,7 +3588,11 @@ Release: October 26, 2021
 
 54 / 94
 
-4.  The server application decrypts the premaster key with the private key of the certificate,
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-AUTHSOD].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+4.  The server application decrypts the premaster key with the private key of the certificate,
 
 constructs a key and signs all the previous messages with it, and sends the signature to the
 client.
@@ -3641,7 +3717,11 @@ Release: October 26, 2021
 
 56 / 94
 
-The second method of delegation overcomes the difficulty with using proxy tickets. It allows the client
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-AUTHSOD].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+The second method of delegation overcomes the difficulty with using proxy tickets. It allows the client
 to give the front-end server a TGT that the front-end server can use to request service tickets for the
 back-end server as they are required. Service tickets that are obtained in this way—with credentials
 forwarded by a client—are called forwarded tickets. The Kerberos policy that an administrator sets for
@@ -3914,7 +3994,11 @@ Release: October 26, 2021
 
 60 / 94
 
-Figure 21: Credential delegation use case
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MS-AUTHSOD].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+Figure 21: Credential delegation use case
 
 Goal: To securely delegate the user's credentials from a client application to the target server
 
@@ -4036,7 +4120,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Figure 22: Client authentication use case
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-AUTHSOD].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+Figure 22: Client authentication use case
 
 Goal: To verify the identity of the client application.
 
@@ -4140,7 +4228,11 @@ Release: October 26, 2021
 
 64 / 94
 
-DNS: The Domain Name System (DNS).
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-AUTHSOD].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+DNS: The Domain Name System (DNS).
 
 2.5.4.3.1 Client Authentication
 
@@ -4245,7 +4337,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-client that plays the role of the Authentication Client initiates this use case with the goal of
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-AUTHSOD].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+client that plays the role of the Authentication Client initiates this use case with the goal of
 authenticating user/computer identity to the Authentication Authority (AA): the KDC, specifically
 the Kerberos Authentication Server (AS).
 
@@ -4375,7 +4471,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-authentication, the LSA has obtained the credential information from the user (for example, by
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-AUTHSOD].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+authentication, the LSA has obtained the credential information from the user (for example, by
 using a logon UI).
 
 Minimal Guarantees: If the identity of the user or computer cannot be proven to the AA by using
@@ -4494,7 +4594,11 @@ Release: October 26, 2021
 
 70 / 94
 
-Figure 26: The front-end server obtains service ticket to itself by using the S4U2self
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-AUTHSOD].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+Figure 26: The front-end server obtains service ticket to itself by using the S4U2self
 mechanism
 
 Goal: To get a service ticket for a service application on the front-end server.
@@ -4551,7 +4655,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Trigger: When the client application attempts to access protected resources or services on the
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-AUTHSOD].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+Trigger: When the client application attempts to access protected resources or services on the
 
 front-end server by proving its identity through the use of a non-Kerberos protocol, the front-
 end server has to get a service ticket to itself on behalf of the identity of the client application to
@@ -4681,7 +4789,11 @@ Release: October 26, 2021
 
 73 / 94
 
-Figure 28: Data confidentiality (sealing) use case
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-AUTHSOD].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+Figure 28: Data confidentiality (sealing) use case
 
 Goal: To exchange application data securely so that no unauthorized actor can learn or alter its
 contents (confidentiality and data origin guarantee). The receiver processes messages in the
@@ -4975,7 +5087,11 @@ Release: October 26, 2021
 
 78 / 94
 
-Figure 29: GSS authentication process with underlying authentication protocol messages
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-AUTHSOD].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+Figure 29: GSS authentication process with underlying authentication protocol messages
 
 Step 1: The Stock Quote Client calls the Authentication Client's GSS-API GSS_Init_sec_context
 function ([RFC2743] section 2.2.1) to obtain the security token with the acquired credential handle
@@ -5147,7 +5263,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Final System State
+<!-- Extracted images from page 82 -->
+![Extracted image 1 from page 82]([MS-AUTHSOD].images/page082-img01.png)
+<!-- /Extracted images from page 82 -->
+
+Final System State
 
 
 
@@ -5198,7 +5318,11 @@ Release: October 26, 2021
 
 82 / 94
 
-Step 6: The KDC validates the TGT and the authenticator. If these are valid, the KDC returns a service
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83]([MS-AUTHSOD].images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+Step 6: The KDC validates the TGT and the authenticator. If these are valid, the KDC returns a service
 ticket for a client computer in a KRB_TGS_REP message with user logon information.
 
 The client validates the KRB_TGS_REP message ([MS-KILE] section 3.3.4). If KRB_TGS_REP is
@@ -5318,7 +5442,11 @@ Release: October 26, 2021
 
 84 / 94
 
-Figure 32: Connecting to an SMB2 share with [MS-KILE] as the authentication protocol
+<!-- Extracted images from page 85 -->
+![Extracted image 1 from page 85]([MS-AUTHSOD].images/page085-img01.png)
+<!-- /Extracted images from page 85 -->
+
+Figure 32: Connecting to an SMB2 share with [MS-KILE] as the authentication protocol
 
 Negotiating an Authentication Protocol (see section 2.5.5.2)
 
@@ -5471,7 +5599,11 @@ Release: October 26, 2021
 
 87 / 94
 
-Figure 33: Connecting to an SMB2 share with [MS-NLMP] as the authentication protocol
+<!-- Extracted images from page 88 -->
+![Extracted image 1 from page 88]([MS-AUTHSOD].images/page088-img01.png)
+<!-- /Extracted images from page 88 -->
+
+Figure 33: Connecting to an SMB2 share with [MS-NLMP] as the authentication protocol
 
 The SMB2 client and the SMB2 server negotiate the authentication protocol by using the SPNEGO
 protocol [MS-SPNG] and [MS-NEGOEX].

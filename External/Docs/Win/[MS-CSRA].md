@@ -1794,7 +1794,11 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-1.3  Overview
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-CSRA].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+1.3  Overview
 
 The Certificate Services Remote Administration Protocol consists of a set of DCOM interfaces, as
 specified in [MS-DCOM], that allow administrative tools to configure the state and policy of a CA on a
@@ -1978,7 +1982,11 @@ Release: January 13, 2026
 
 20 / 193
 
-Remote Protocol to select authentication settings. The specific parameters passed from the Certificate
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-CSRA].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Remote Protocol to select authentication settings. The specific parameters passed from the Certificate
 Services Remote Administration Protocol to the DCOM Remote Protocol are specified in section 2.1.
 
 Using input from a higher-layer protocol or application, the DCOM Remote Protocol negotiates its
@@ -12416,7 +12424,11 @@ Release: January 13, 2026
 
 137 / 193
 
-4  Protocol Examples
+<!-- Extracted images from page 138 -->
+![Extracted image 1 from page 138]([MS-CSRA].images/page138-img01.png)
+<!-- /Extracted images from page 138 -->
+
+4  Protocol Examples
 
 Figure 3: Backing up a CA database
 

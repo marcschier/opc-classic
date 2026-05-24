@@ -671,7 +671,11 @@ Release: April 23, 2024
 
 8 / 62
 
-1.3.1  Session Factory Service Activation
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-NFPB].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+1.3.1  Session Factory Service Activation
 
 Either peer can choose to activate the remote peer's Session Factory service in order to establish a
 single-instanced session between an application running locally and another instance of the same
@@ -704,7 +708,12 @@ Release: April 23, 2024
 
 9 / 62
 
-Figure 2: Connection validation
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-NFPB].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-NFPB].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 2: Connection validation
 
 1.4  Relationship to Other Protocols
 
@@ -2633,7 +2642,12 @@ Release: April 23, 2024
 
 35 / 62
 
-Figure 4: OOB Connector state transitions: Connector role
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-NFPB].images/page036-img01.png)
+![Extracted image 2 from page 36]([MS-NFPB].images/page036-img02.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 4: OOB Connector state transitions: Connector role
 
 For the listener role, the state can be one of the following.
 
@@ -2672,7 +2686,11 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the Service Activation header (section 2.2.7) of the received OOB Connector Service
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-NFPB].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+the Service Activation header (section 2.2.7) of the received OOB Connector Service
 Activation message.
 
 OOBConnectorID:  For the connector, this is randomly generated and used in the OOB
@@ -2742,7 +2760,12 @@ Near Field Proximity: Bidirectional Services Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ReferenceCount (Public Write):  A count of references to the Session Factory object by either
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-NFPB].images/page038-img01.png)
+![Extracted image 2 from page 38]([MS-NFPB].images/page038-img02.png)
+<!-- /Extracted images from page 38 -->
+
+ReferenceCount (Public Write):  A count of references to the Session Factory object by either
 
 the client application or KeepAlive timers.
 

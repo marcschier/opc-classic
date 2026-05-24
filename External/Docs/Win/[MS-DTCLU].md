@@ -1917,7 +1917,11 @@ Release: April 23, 2024
 
 16 / 199
 
-1.3  Overview
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-DTCLU].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+1.3  Overview
 
 The MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
 (DTCLU) is used between an implementation of Logical Unit type 6.2 (LU 6.2) and a transaction
@@ -1965,7 +1969,11 @@ Release: April 23, 2024
 
 17 / 199
 
-1.3.1.1  Enlistment and Completion
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-DTCLU].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+1.3.1.1  Enlistment and Completion
 
 The following sequence diagram is a schematic of the interactions that take place between a
 transaction program, a local LU, a transaction manager, and a remote LU when a logical unit of
@@ -2034,7 +2042,11 @@ Release: April 23, 2024
 
 19 / 199
 
-Figure 3: MS-DTCLU recovery
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-DTCLU].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 3: MS-DTCLU recovery
 
 All the exchanges depicted are notional, and are not intended to provide an accurate representation of
 any concrete protocol. The protocols involved are specified as follows:
@@ -2124,7 +2136,11 @@ Release: April 23, 2024
 
 21 / 199
 
-Figure 4: Protocol layering for MS-DTCLU
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-DTCLU].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 4: Protocol layering for MS-DTCLU
 
 1.5  Prerequisites/Preconditions
 
@@ -5464,7 +5480,11 @@ Release: April 23, 2024
 
 62 / 199
 
-Figure 5: CONNTYPE_TXUSER_DTCLUCONFIGURE initiator states
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-DTCLU].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+Figure 5: CONNTYPE_TXUSER_DTCLUCONFIGURE initiator states
 
 3.2.1.1.1 Idle
 
@@ -5539,7 +5559,11 @@ Release: April 23, 2024
 
 64 / 199
 
-Figure 6: CONNTYPE_TXUSER_DTCLURECOVERY initiator states
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-DTCLU].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+Figure 6: CONNTYPE_TXUSER_DTCLURECOVERY initiator states
 
 3.2.1.2.1 Idle
 
@@ -5624,7 +5648,11 @@ Release: April 23, 2024
 
 66 / 199
 
-Figure 7: CONNTYPE_TXUSER_DTCLURMENLISTMENT initiator states
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-DTCLU].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+Figure 7: CONNTYPE_TXUSER_DTCLURMENLISTMENT initiator states
 
 3.2.1.3.1 Idle
 
@@ -5803,7 +5831,11 @@ Release: April 23, 2024
 
 69 / 199
 
-The following figure shows the relationship between the
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70]([MS-DTCLU].images/page070-img01.png)
+<!-- /Extracted images from page 70 -->
+
+The following figure shows the relationship between the
 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC initiator states.
 
 Figure 8: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC initiator states, part 1
@@ -5815,7 +5847,11 @@ Release: April 23, 2024
 
 70 / 199
 
-Figure 9: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC initiator states, part 2
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-DTCLU].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+Figure 9: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC initiator states, part 2
 
 3.2.1.4.1 Idle
 
@@ -6090,7 +6126,11 @@ Release: April 23, 2024
 
 74 / 199
 
-Figure 10: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU initiator states
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-DTCLU].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+Figure 10: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU initiator states
 
 3.2.1.5.1 Idle
 
@@ -8760,7 +8800,11 @@ Release: April 23, 2024
 
 107 / 199
 
-The following figure shows the relationship between the CONNTYPE_TXUSER_DTCLUCONFIGURE
+<!-- Extracted images from page 108 -->
+![Extracted image 1 from page 108]([MS-DTCLU].images/page108-img01.png)
+<!-- /Extracted images from page 108 -->
+
+The following figure shows the relationship between the CONNTYPE_TXUSER_DTCLUCONFIGURE
 acceptor states.
 
 Figure 11: CONNTYPE_TXUSER_DTCLUCONFIGURE acceptor states
@@ -8804,7 +8848,11 @@ Release: April 23, 2024
 
 108 / 199
 
-3.3.1.3.3 Registered
+<!-- Extracted images from page 109 -->
+![Extracted image 1 from page 109]([MS-DTCLU].images/page109-img01.png)
+<!-- /Extracted images from page 109 -->
+
+3.3.1.3.3 Registered
 
 The following event is processed in this state:
 
@@ -8964,7 +9012,11 @@ Release: April 23, 2024
 
 111 / 199
 
-Figure 13: CONNTYPE_TXUSER_DTCLURMENLISTMENT acceptor states
+<!-- Extracted images from page 112 -->
+![Extracted image 1 from page 112]([MS-DTCLU].images/page112-img01.png)
+<!-- /Extracted images from page 112 -->
+
+Figure 13: CONNTYPE_TXUSER_DTCLURMENLISTMENT acceptor states
 
 3.3.1.5  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC Acceptor States
 
@@ -9291,7 +9343,11 @@ Release: April 23, 2024
 
 116 / 199
 
-Figure 14: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC, Part 1
+<!-- Extracted images from page 117 -->
+![Extracted image 1 from page 117]([MS-DTCLU].images/page117-img01.png)
+<!-- /Extracted images from page 117 -->
+
+Figure 14: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC, Part 1
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -9300,7 +9356,11 @@ Release: April 23, 2024
 
 117 / 199
 
-Figure 15: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC, Part 2
+<!-- Extracted images from page 118 -->
+![Extracted image 1 from page 118]([MS-DTCLU].images/page118-img01.png)
+<!-- /Extracted images from page 118 -->
+
+Figure 15: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC, Part 2
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -9309,7 +9369,11 @@ Release: April 23, 2024
 
 118 / 199
 
-Figure 16: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC, Part 3
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MS-DTCLU].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+Figure 16: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC, Part 3
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -9318,7 +9382,11 @@ Release: April 23, 2024
 
 119 / 199
 
-Figure 17: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC, Part 4
+<!-- Extracted images from page 120 -->
+![Extracted image 1 from page 120]([MS-DTCLU].images/page120-img01.png)
+<!-- /Extracted images from page 120 -->
+
+Figure 17: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC, Part 4
 
 3.3.1.6  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU Acceptor States
 
@@ -9470,7 +9538,11 @@ Release: April 23, 2024
 
 122 / 199
 
-Figure 18: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU acceptor states
+<!-- Extracted images from page 123 -->
+![Extracted image 1 from page 123]([MS-DTCLU].images/page123-img01.png)
+<!-- /Extracted images from page 123 -->
+
+Figure 18: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU acceptor states
 
 3.3.2  Timers
 

@@ -807,7 +807,11 @@ Release: April 7, 2021
 
 8 / 30
 
-DS that supports LDAP-paged searches could choose to save the portion of the search result that has
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-DSML].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+DS that supports LDAP-paged searches could choose to save the portion of the search result that has
 not yet been returned to the client.
 
 SSE does not specify how soon its state will be discarded after a session is terminated. Moreover,

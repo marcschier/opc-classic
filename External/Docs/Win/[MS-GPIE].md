@@ -955,7 +955,11 @@ Release: June 1, 2017
 
 9 / 55
 
-  A client with a client-side plug-in and a version of Internet Explorer.
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-GPIE].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+  A client with a client-side plug-in and a version of Internet Explorer.
 
 The administrator can specify configuration information through a user interface provided by the
 administrative tool plug-in. The administrative tool plug-in then encodes the configuration information
@@ -1063,7 +1067,11 @@ Release: June 1, 2017
 
 12 / 55
 
-Figure 2: SYSVOL structure for Group Policy: Internet Explorer Maintenance Extension
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-GPIE].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 2: SYSVOL structure for Group Policy: Internet Explorer Maintenance Extension
 protocol
 
 [MS-GPIE] - v20170601

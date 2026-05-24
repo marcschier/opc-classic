@@ -995,7 +995,11 @@ Release: November 19, 2024
 
 9 / 49
 
-amount of metadata can be reduced by conveying implicit information through special record
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-NRBF].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+amount of metadata can be reduced by conveying implicit information through special record
 types and by sharing metadata across records.
 
   Array records contain Array instances. There is a general record type for Array that can represent
@@ -3848,7 +3852,11 @@ Release: November 19, 2024
 
 39 / 49
 
-3  Structure Examples
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-NRBF].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+3  Structure Examples
 
 This sample illustrates the message exchanged when a Remote Method is invoked as specified in
 [MS-NRTP] section 3.3.4.2. The data model is used to describe the information to perform the Remote

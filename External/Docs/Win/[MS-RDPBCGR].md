@@ -2810,7 +2810,11 @@ Release: March 9, 2026
 
 23 / 444
 
-1.3.1  Message Flows
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-RDPBCGR].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+1.3.1  Message Flows
 
 1.3.1.1  Connection Sequence
 
@@ -2831,7 +2835,11 @@ Release: March 9, 2026
 
 24 / 444
 
-1.  Connection Initiation: The client initiates the connection by sending the server a Class 0 X.224
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-RDPBCGR].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+1.  Connection Initiation: The client initiates the connection by sending the server a Class 0 X.224
 
 Connection Request PDU (section 2.2.1.1). The server responds with a Class 0 X.224 Connection
 Confirm PDU (section 2.2.1.2).
@@ -2856,7 +2864,11 @@ Release: March 9, 2026
 
 25 / 444
 
-Figure 3: MCS Connect Response PDU
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-RDPBCGR].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 3: MCS Connect Response PDU
 
 3.  Channel Connection: The client sends an MCS Erect Domain Request PDU (section 2.2.1.5),
 
@@ -3252,7 +3264,11 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-sending graphics data for a period of time (perhaps when the client is minimized). These two tasks are
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-RDPBCGR].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+sending graphics data for a period of time (perhaps when the client is minimized). These two tasks are
 accomplished by having the client send the Refresh Rect PDU and Suppress Output PDUs,
 respectively.
 
@@ -3519,7 +3535,11 @@ Release: March 9, 2026
 
 35 / 444
 
-The following protocol tunnels [MS-RDPBCGR]:
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-RDPBCGR].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+The following protocol tunnels [MS-RDPBCGR]:
 
   Gateway Server Protocol [MS-TSGU]
 
@@ -24643,7 +24663,11 @@ Release: March 9, 2026
 
 262 / 444
 
-Figure 6: Operation of the bulk compressor
+<!-- Extracted images from page 263 -->
+![Extracted image 1 from page 263]([MS-RDPBCGR].images/page263-img01.png)
+<!-- /Extracted images from page 263 -->
+
+Figure 6: Operation of the bulk compressor
 
 3.1.8.2.3 Data Compression Example
 
@@ -27735,7 +27759,11 @@ Release: March 9, 2026
 
 303 / 444
 
-An overview of the reassembly process is presented in the figure titled "Reassembly of a fragmented
+<!-- Extracted images from page 304 -->
+![Extracted image 1 from page 304]([MS-RDPBCGR].images/page304-img01.png)
+<!-- /Extracted images from page 304 -->
+
+An overview of the reassembly process is presented in the figure titled "Reassembly of a fragmented
 update".
 
 Figure 7: Reassembly of a fragmented update
@@ -35515,7 +35543,11 @@ Release: March 9, 2026
 
 409 / 444
 
-5  Security
+<!-- Extracted images from page 410 -->
+![Extracted image 1 from page 410]([MS-RDPBCGR].images/page410-img01.png)
+<!-- /Extracted images from page 410 -->
+
+5  Security
 
 5.1  Security Considerations for Implementers
 
@@ -35834,7 +35866,11 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-certificate for starting chain validation. The last certificate is the certificate of the server; the second-
+<!-- Extracted images from page 415 -->
+![Extracted image 1 from page 415]([MS-RDPBCGR].images/page415-img01.png)
+<!-- /Extracted images from page 415 -->
+
+certificate for starting chain validation. The last certificate is the certificate of the server; the second-
 to-last is the license server's certificate, and so forth. More details on the structure of the chain and
 the component certificates are in [MS-RDPELE] section 2.2.1.4.2.
 
@@ -36373,7 +36409,11 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- TempKey128 = MD5(InitialEncryptKey + Pad2 + SHAComponent)
+<!-- Extracted images from page 423 -->
+![Extracted image 1 from page 423]([MS-RDPBCGR].images/page423-img01.png)
+<!-- /Extracted images from page 423 -->
+
+ TempKey128 = MD5(InitialEncryptKey + Pad2 + SHAComponent)
 
 If the key strength is 128 bits, then the temporary key (TempKey128) is used to reinitialize the
 associated RC4 substitution table. (For more information on RC4 substitution table initialization, see
@@ -36427,7 +36467,12 @@ Release: March 9, 2026
 
 423 / 444
 
-Figure 10: Slow-path packet layout
+<!-- Extracted images from page 424 -->
+![Extracted image 1 from page 424]([MS-RDPBCGR].images/page424-img01.png)
+![Extracted image 2 from page 424]([MS-RDPBCGR].images/page424-img02.png)
+<!-- /Extracted images from page 424 -->
+
+Figure 10: Slow-path packet layout
 
 The Security Header essentially contains flags and a MAC signature taken over the encrypted data
 (section 5.3.6 for details on the MAC generation). In FIPS scenarios, the header also includes the
@@ -36554,7 +36599,11 @@ Release: March 9, 2026
 
 425 / 444
 
-Figure 13: Negotiation-based security-enhanced connection sequence
+<!-- Extracted images from page 426 -->
+![Extracted image 1 from page 426]([MS-RDPBCGR].images/page426-img01.png)
+<!-- /Extracted images from page 426 -->
+
+Figure 13: Negotiation-based security-enhanced connection sequence
 
 Because both the RDP Negotiation Request and RDP Negotiation Response are initially exchanged in
 the clear, they are re-exchanged in the reverse direction after the External Security Protocol
@@ -36587,7 +36636,11 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The RDP Negotiation Request (section 2.2.1.1.1) MUST be appended to the X.224 Connection Request
+<!-- Extracted images from page 427 -->
+![Extracted image 1 from page 427]([MS-RDPBCGR].images/page427-img01.png)
+<!-- /Extracted images from page 427 -->
+
+The RDP Negotiation Request (section 2.2.1.1.1) MUST be appended to the X.224 Connection Request
 PDU (section 2.2.1.1) and the requested protocol list MUST contain the PROTOCOL_HYBRID
 (0x00000002) flag identifying the CredSSP protocol (section 2.2.1.1.1). If this is not the case, the
 server will append an RDP Negotiation Failure (section 2.2.1.2.2) to the X.224 Connection Confirm
@@ -36624,7 +36677,12 @@ Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-will encrypt them. For this reason, the SEC_LICENSE_ENCRYPT_CS (0x0200) and
+<!-- Extracted images from page 428 -->
+![Extracted image 1 from page 428]([MS-RDPBCGR].images/page428-img01.png)
+![Extracted image 2 from page 428]([MS-RDPBCGR].images/page428-img02.png)
+<!-- /Extracted images from page 428 -->
+
+will encrypt them. For this reason, the SEC_LICENSE_ENCRYPT_CS (0x0200) and
 SEC_LICENSE_ENCRYPT_SC (0x0200) flags (section 2.2.8.1.1.2.1) do not need to be set in the
 Security Header that is always attached to licensing packets.
 
@@ -36769,7 +36827,11 @@ Release: March 9, 2026
 
 429 / 444
 
-5.4.5.3.1 RDSTLS Connection Sequence
+<!-- Extracted images from page 430 -->
+![Extracted image 1 from page 430]([MS-RDPBCGR].images/page430-img01.png)
+<!-- /Extracted images from page 430 -->
+
+5.4.5.3.1 RDSTLS Connection Sequence
 
 The RDSTLS connection sequence only takes place in the context of the Negotiation-Based Approach
 (section 5.4.2.1) of the security-enhanced connection sequence.
@@ -36831,7 +36893,11 @@ Release: March 9, 2026
 
 431 / 444
 
-Figure 18 The RDS AAD Auth connection sequence
+<!-- Extracted images from page 432 -->
+![Extracted image 1 from page 432]([MS-RDPBCGR].images/page432-img01.png)
+<!-- /Extracted images from page 432 -->
+
+Figure 18 The RDS AAD Auth connection sequence
 
 1.  The client and the server negotiate RDS AAD Auth (section 5.4.2.1). The client MUST set the
 

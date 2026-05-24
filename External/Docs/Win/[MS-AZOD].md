@@ -412,7 +412,11 @@ Release: June 14, 2022
 
 4 / 60
 
-1  Introduction
+<!-- Extracted images from page 5 -->
+![Extracted image 1 from page 5]([MS-AZOD].images/page005-img01.png)
+<!-- /Extracted images from page 5 -->
+
+1  Introduction
 
 1.1  Conceptual Overview
 
@@ -563,7 +567,11 @@ Release: June 14, 2022
 
 6 / 60
 
-1.1.1.2  Security Identifiers (SIDs)
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-AZOD].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+1.1.1.2  Security Identifiers (SIDs)
 
 The security identifier (SID), as specified in [MS-DTYP] section 2.4.2, is an account identifier. It is
 variable in length and encapsulates the hierarchical notion of issuer and identifier. It consists of a 6-
@@ -604,7 +612,11 @@ Release: June 14, 2022
 
 7 / 60
 
-Figure 3: SID with account association
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-AZOD].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 3: SID with account association
 
 For most uses, the SID can be treated as a single long identifier for an account. By the time a specific
 SID is associated with a resource or logged in a file, it is effectively just a single entity. For some
@@ -653,7 +665,11 @@ Release: June 14, 2022
 
 8 / 60
 
-Figure 4: Abstract representation of security descriptor
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-AZOD].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 4: Abstract representation of security descriptor
 
 The Owner is a SID that specifies the owner of the resource. The Group SID specifies the group
 associated with the resource. The Group SID field is not evaluated by Windows components; it exists
@@ -694,7 +710,11 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-When access is requested to an Active Directory object, the Local Security Authority (LSA) compares
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-AZOD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+When access is requested to an Active Directory object, the Local Security Authority (LSA) compares
 the access token of the account that is requesting access to the object to the DACL. The security
 protocols check the object's DACL, searching for ACEs that apply to the user and group SIDs that are
 referenced in the user's access token. The security protocols then step through the DACL until they
@@ -883,7 +903,11 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Figure 6: Access token abstract representation
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-AZOD].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 6: Access token abstract representation
 
 For descriptions of access token structure fields, see [MS-DTYP] section 2.5.2, and for more
 information about tokens in Windows, see [MSDN-ACCTOKENS].
@@ -1020,7 +1044,11 @@ Release: June 14, 2022
 
 15 / 60
 
-Figure 7: AzMan RBAC permissions access workflow
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-AZOD].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 7: AzMan RBAC permissions access workflow
 
 In the AzMan RBAC model, the role is the interface that an administrator uses to manage permissions
 and assignments. For example, a company can create a role called "Engineer" that is defined in terms
@@ -1577,7 +1605,11 @@ Release: June 14, 2022
 
 23 / 60
 
-The following diagram shows the protocol interactions when using Kerberos Protocol Extensions (KILE)
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-AZOD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+The following diagram shows the protocol interactions when using Kerberos Protocol Extensions (KILE)
 (see [MS-KILE]) or Public Key Cryptography for Initial Authentication (PKCA) (see [MS-PKCA]) as the
 authentication protocol.
 
@@ -1674,7 +1706,11 @@ Release: June 14, 2022
 
 25 / 60
 
-2.1.4.2  Internal Components
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-AZOD].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+2.1.4.2  Internal Components
 
 The following diagram shows the internal components of the DAC system.
 
@@ -1702,7 +1738,11 @@ Release: June 14, 2022
 
 26 / 60
 
-Figure 10: CBAC architecture
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-AZOD].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 10: CBAC architecture
 
 The CBAC architecture consists of the following components:
 
@@ -1815,7 +1855,11 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-The following diagram shows the protocol interactions when Kerberos is the authentication protocol.
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-AZOD].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+The following diagram shows the protocol interactions when Kerberos is the authentication protocol.
 
 Figure 11: Protocol communications when Kerberos is the authentication protocol
 
@@ -1838,7 +1882,11 @@ Release: June 14, 2022
 
 29 / 60
 
-Figure 12: Protocol communications when NTLM is the authentication protocol
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-AZOD].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 12: Protocol communications when NTLM is the authentication protocol
 
 2.1.4.3.2 Claims Transformation
 
@@ -1893,7 +1941,11 @@ Release: June 14, 2022
 
 31 / 60
 
-Figure 13: Authorization Manager architecture
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-AZOD].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 13: Authorization Manager architecture
 
 The Authorization Manager centralized access policy database can be kept either on an Active
 Directory server, a file server, or a SQL server. The Authorization Manager (AzMan) Policy File
@@ -2325,7 +2377,11 @@ Release: June 14, 2022
 
 36 / 60
 
-Figure 14: File server authorization use cases
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-AZOD].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 14: File server authorization use cases
 
 2.5.1.1.1 Actors
 
@@ -2638,7 +2694,11 @@ Release: June 14, 2022
 
 41 / 60
 
-Figure 15: Active Directory authorization use cases
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-AZOD].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+Figure 15: Active Directory authorization use cases
 
 2.5.1.2.1 Actors
 
@@ -2993,7 +3053,11 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-AZOD].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+
 
 
 
@@ -3114,7 +3178,11 @@ Release: June 14, 2022
 
 48 / 60
 
-Figure 17: Verify AzMan RBAC authorization use case
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-AZOD].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+Figure 17: Verify AzMan RBAC authorization use case
 
 2.5.2.1  AzMan RBAC Model
 
@@ -3381,7 +3449,11 @@ Release: June 14, 2022
 
 52 / 60
 
-Figure 18: Reading from a file on a remote CBAC-aware SMB2 share configured with user
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-AZOD].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+Figure 18: Reading from a file on a remote CBAC-aware SMB2 share configured with user
 and device claims
 
 1.  The client sends an SMB2 TREE_CONNECT request, (see [MS-SMB2] section 2.2.9) , with the
@@ -3493,7 +3565,11 @@ Release: June 14, 2022
 
 54 / 60
 
-Figure 19: Reading from a file on a remote CBAC-aware SMB2 share configured with only
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-AZOD].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+Figure 19: Reading from a file on a remote CBAC-aware SMB2 share configured with only
 user claims
 
 1.  The file server service uses the Service for User to Self (S4U2self) extension to retrieve a user

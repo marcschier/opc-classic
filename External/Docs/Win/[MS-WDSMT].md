@@ -851,7 +851,11 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2.2  Informative References
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-WDSMT].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+1.2.2  Informative References
 
 None.
 
@@ -941,7 +945,11 @@ Release: April 23, 2024
 
 9 / 69
 
-2  Messages
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-WDSMT].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+2  Messages
 
 2.1  Transport
 
@@ -2590,7 +2598,11 @@ Release: April 23, 2024
 
 29 / 69
 
-3  Protocol Details
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-WDSMT].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+3  Protocol Details
 
 3.1  Server Details
 

@@ -447,7 +447,11 @@ Release: April 23, 2024
 
 4 / 46
 
-1  Introduction
+<!-- Extracted images from page 5 -->
+![Extracted image 1 from page 5]([MS-CFB].images/page005-img01.png)
+<!-- /Extracted images from page 5 -->
+
+1  Introduction
 
 This document specifies a new structure that is called the Microsoft Compound File Binary (CFB) file
 format, also known as the Object Linking and Embedding (OLE) or Component Object Model (COM)
@@ -484,7 +488,11 @@ Release: April 23, 2024
 
 5 / 46
 
-Figure 2: Structured storage compound file hierarchy that contains nested storage objects
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-CFB].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+Figure 2: Structured storage compound file hierarchy that contains nested storage objects
 and stream objects
 
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
@@ -749,7 +757,11 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 3: Example of a structured storage compound file
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-CFB].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 3: Example of a structured storage compound file
 
 A compound file consists of the root storage object with optional child storage objects and stream
 objects in a nested hierarchy. Stream objects can contain user-defined data that is stored as an array
@@ -786,7 +798,12 @@ Release: April 23, 2024
 
 10 / 46
 
-Figure 4: Example of a compound file showing equal-length sector divisions
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-CFB].images/page011-img01.png)
+![Extracted image 2 from page 11]([MS-CFB].images/page011-img02.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 4: Example of a compound file showing equal-length sector divisions
 
 A compound file is divided into equal-length sectors. The first sector contains the compound file
 header. Subsequent sectors are identified by a 32-bit nonnegative integer number, called the sector
@@ -896,7 +913,12 @@ Release: April 23, 2024
 
 12 / 46
 
-2  Structures
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-CFB].images/page013-img01.png)
+![Extracted image 2 from page 13]([MS-CFB].images/page013-img02.png)
+<!-- /Extracted images from page 13 -->
+
+2  Structures
 
 This document references commonly used data types as defined in [MS-DTYP].
 
@@ -962,7 +984,11 @@ Release: April 23, 2024
 
 13 / 46
 
-The mini FAT is structurally equivalent to the FAT, but it is used in a different way. The sector size for
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-CFB].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+The mini FAT is structurally equivalent to the FAT, but it is used in a different way. The sector size for
 objects that are represented in mini FAT is 64 bytes, instead of the 512 bytes or 4,096 bytes for
 normal sectors. The space for these objects comes from a special stream that is called the mini
 stream. The mini stream is an internal stream object that is divided into equal-length mini sectors.
@@ -1015,7 +1041,11 @@ Release: April 23, 2024
 
 14 / 46
 
-Figure 9: Summary of compound file internal streams and connections to user-defined data
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-CFB].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 9: Summary of compound file internal streams and connections to user-defined data
 streams
 
 This diagram summarizes the compound file main internal streams and how they are linked to user-
@@ -1084,7 +1114,11 @@ Release: April 23, 2024
 
 15 / 46
 
-Sector type
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-CFB].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Sector type
 
 Array entry
 length
@@ -1407,7 +1441,11 @@ Release: April 23, 2024
 
 19 / 46
 
-2.3  Compound File FAT Sectors
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-CFB].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+2.3  Compound File FAT Sectors
 
 The FAT is the main allocator for space within a compound file. Every sector in the file is represented
 within the FAT in some fashion, including those sectors that are unallocated (free). The FAT is a
@@ -1476,7 +1514,11 @@ Release: April 23, 2024
 
 20 / 46
 
-Value
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-CFB].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Value
 
 Meaning
 
@@ -1552,7 +1594,11 @@ Release: April 23, 2024
 
 21 / 46
 
-Next Sector in Chain (variable): This field specifies the next sector number in a chain of sectors.
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-CFB].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Next Sector in Chain (variable): This field specifies the next sector number in a chain of sectors.
 
 
 
@@ -1623,7 +1669,11 @@ Release: April 23, 2024
 
 22 / 46
 
-Next DIFAT Sector Location
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-CFB].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Next DIFAT Sector Location
 
 FAT Sector Location (variable): This field specifies the FAT sector number in a DIFAT.
 
@@ -2107,7 +2157,11 @@ Release: April 23, 2024
 
 28 / 46
 
-All sibling objects within a storage object (all immediate child objects in one level of the hierarchy)
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-CFB].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+All sibling objects within a storage object (all immediate child objects in one level of the hierarchy)
 MUST have unique names in the Directory Entry Name field, where uniqueness is determined by the
 sorting relationship.
 
@@ -2181,7 +2235,11 @@ Release: April 23, 2024
 
 30 / 46
 
-3  Structure Examples
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-CFB].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+3  Structure Examples
 
 This section contains a hexadecimal dump of a structured storage compound file to clarify the binary
 file format. This compound file consists of the header sector plus five sectors that are numbered as

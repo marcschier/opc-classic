@@ -1552,7 +1552,11 @@ Release: March 13, 2019
 
 14 / 290
 
-The OData protocol also uses message formats that are defined by other industry standard
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-ODATA].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+The OData protocol also uses message formats that are defined by other industry standard
 specifications, such as the Multipurpose Internet Mail Extensions (MIME) format [RFC2046] and the
 JavaScript Object Notation (JSON) format [RFC4627].
 

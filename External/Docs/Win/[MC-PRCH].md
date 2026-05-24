@@ -1051,7 +1051,11 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MC-PRCH].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
@@ -2777,7 +2781,11 @@ Release: March 13, 2019
 
 32 / 75
 
-Figure 2: Flow chart of connection process for responding node
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MC-PRCH].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 2: Flow chart of connection process for responding node
 
 3.1.5.3  Welcome
 
@@ -3136,7 +3144,11 @@ Release: March 13, 2019
 
 38 / 75
 
-Figure 3: Flow chart of the processing of a flood (application) message
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MC-PRCH].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 3: Flow chart of the processing of a flood (application) message
 
 Throttling: Because all unique messages (either originating at the node or received by the node from
 its neighbors) must be forwarded to its neighbors, there is a possibility of too many buffers being
@@ -3267,7 +3279,11 @@ Release: March 13, 2019
 
 41 / 75
 
-Figure 4: Flow chart of the maintenance procedure
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MC-PRCH].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+Figure 4: Flow chart of the maintenance procedure
 
 3.1.6.4.2 Pruning Algorithm
 
@@ -3287,7 +3303,11 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.  Determine the node's least useful neighbor. This MUST be defined as the neighbor with the lowest
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MC-PRCH].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+3.  Determine the node's least useful neighbor. This MUST be defined as the neighbor with the lowest
 LinkUtilityIndex that has sent at least 32 messages. If such a neighbor exists, the node MUST
 close the connection with this neighbor and then go to step 2. Otherwise, the node MUST exit the
 algorithm.
@@ -3382,7 +3402,11 @@ Release: March 13, 2019
 
 44 / 75
 
-The following diagram identifies the state transitions of a neighbor-to-neighbor connection in
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MC-PRCH].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+The following diagram identifies the state transitions of a neighbor-to-neighbor connection in
 Password-Based Security mode.
 
 Figure 6: Neighbor connection handshake using password-based security
@@ -3430,7 +3454,11 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MC-PRCH].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+
 
 
 
@@ -3459,7 +3487,11 @@ Release: March 13, 2019
 
 46 / 75
 
-Figure 8: State transitions of node during connection process
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MC-PRCH].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+Figure 8: State transitions of node during connection process
 
 3.1.7  Other Local Events
 

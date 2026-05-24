@@ -771,7 +771,11 @@ Release: October 26, 2021
 
 9 / 54
 
-Figure 1: Major components interacting with RMS
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RMSOD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Major components interacting with RMS
 
 The purpose of RMS is to:
 
@@ -815,7 +819,11 @@ Release: October 26, 2021
 
 10 / 54
 
-2.1.2  Functional Overview
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RMSOD].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+2.1.2  Functional Overview
 
 This section describes the relationships between RMS and external components, RMS dependencies,
 and other components that are influenced by RMS.
@@ -844,7 +852,11 @@ Release: October 26, 2021
 
 11 / 54
 
-Figure 3: Distributed communication within RMS
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RMSOD].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 3: Distributed communication within RMS
 
 The RMS server maintains RMS configuration, logging, and directory services databases. Additionally,
 certificates, such as an RMS account certificate (RAC), are stored in the database. A directory
@@ -869,7 +881,11 @@ Release: October 26, 2021
 
 12 / 54
 
-Figure 4: RMS white box diagram
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RMSOD].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 4: RMS white box diagram
 
 Client-to-server interfaces
 
@@ -1582,7 +1598,11 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Figure 5: Preparing RMS clients and servers to participate in RMS
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-RMSOD].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 5: Preparing RMS clients and servers to participate in RMS
 
 [MS-RMSOD] - v20211026
 Rights Management Services Protocols Overview
@@ -1591,7 +1611,11 @@ Release: October 26, 2021
 
 23 / 54
 
-Figure 6: Protect content by using RMS; consume content that has been protected by using
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-RMSOD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 6: Protect content by using RMS; consume content that has been protected by using
 RMS
 
 [MS-RMSOD] - v20211026
@@ -1601,7 +1625,11 @@ Release: October 26, 2021
 
 24 / 54
 
-Figure 7: Access the server for advanced scenarios
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-RMSOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 7: Access the server for advanced scenarios
 
 2.5.4  Use Case Descriptions
 
@@ -2958,7 +2986,11 @@ Release: October 26, 2021
 
 43 / 54
 
-Figure 8: Message flow for protecting content by using offline publishing
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-RMSOD].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+Figure 8: Message flow for protecting content by using offline publishing
 
 Note  In the preceding diagram, the Certify and FindServiceLocationsForUser calls are
 interchangeable. It is possible to call FindServiceLocationsForUser (to get the service location for
@@ -3044,7 +3076,11 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-client computer is not required to be activated, and the client user is not required to be bootstrapped.
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-RMSOD].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+client computer is not required to be activated, and the client user is not required to be bootstrapped.
 This example describes a typical scenario using online publishing, assuming rights policy templates
 are used in the publishing process.
 
@@ -3079,7 +3115,11 @@ Release: October 26, 2021
 
 46 / 54
 
-3.3.2.3  Sign the Publishing License
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-RMSOD].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+3.3.2.3  Sign the Publishing License
 
 The final step in online publishing is to sign the publishing license (PL). This step is performed by
 the RMS client application by making an AcquireIssuanceLicense request to the RMS server. In the

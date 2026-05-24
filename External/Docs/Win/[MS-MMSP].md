@@ -6166,7 +6166,11 @@ Release: June 1, 2017
 
 79 / 103
 
-4  Protocol Examples
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-MMSP].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+4  Protocol Examples
 
 4.1  Client States
 
@@ -6243,7 +6247,11 @@ Release: June 1, 2017
 
 81 / 103
 
-Figure 2: Server States
+<!-- Extracted images from page 82 -->
+![Extracted image 1 from page 82]([MS-MMSP].images/page082-img01.png)
+<!-- /Extracted images from page 82 -->
+
+Figure 2: Server States
 
 The following describes the preceding diagram:
 
@@ -6290,7 +6298,11 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-UDP.  If Data packets are sent over TCP, then the server remains in STREAMING state and sends
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83]([MS-MMSP].images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+UDP.  If Data packets are sent over TCP, then the server remains in STREAMING state and sends
 the new ASF File Header to the client, as described in sections 3.2.4.2 and 3.2.5.8.1.
 
   While in any state, if the server receives a LinkViewerToMacCloseFile message, the state machine
@@ -6398,7 +6410,11 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-When UDP is used, the following sequence applies.
+<!-- Extracted images from page 85 -->
+![Extracted image 1 from page 85]([MS-MMSP].images/page085-img01.png)
+<!-- /Extracted images from page 85 -->
+
+When UDP is used, the following sequence applies.
 
 Figure 4: Sequence for UDP connections
 
@@ -6425,7 +6441,11 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-5.  The client sends a LinkViewerToMacConnectFunnel message.
+<!-- Extracted images from page 86 -->
+![Extracted image 1 from page 86]([MS-MMSP].images/page086-img01.png)
+<!-- /Extracted images from page 86 -->
+
+5.  The client sends a LinkViewerToMacConnectFunnel message.
 
 6.  The server sends a LinkMacToViewerReportConnectedFunnel message.
 
@@ -6509,7 +6529,11 @@ Release: June 1, 2017
 
 87 / 103
 
-Figure 6: Sequencing during playback--new position of seek bar
+<!-- Extracted images from page 88 -->
+![Extracted image 1 from page 88]([MS-MMSP].images/page088-img01.png)
+<!-- /Extracted images from page 88 -->
+
+Figure 6: Sequencing during playback--new position of seek bar
 
 1.  The client sends the LinkViewerToMacStopPlaying message, followed by a
 
@@ -6536,7 +6560,11 @@ Release: June 1, 2017
 
 88 / 103
 
-Figure 7: Sequencing during playback--fast forward and rewind buttons
+<!-- Extracted images from page 89 -->
+![Extracted image 1 from page 89]([MS-MMSP].images/page089-img01.png)
+<!-- /Extracted images from page 89 -->
+
+Figure 7: Sequencing during playback--fast forward and rewind buttons
 
 1.  The client sends the LinkViewerToMacStopPlaying message followed by a LinkViewerToMacLogging
 
@@ -6563,7 +6591,11 @@ Release: June 1, 2017
 
 89 / 103
 
-Figure 8: Sequencing during playback--server changes streams
+<!-- Extracted images from page 90 -->
+![Extracted image 1 from page 90]([MS-MMSP].images/page090-img01.png)
+<!-- /Extracted images from page 90 -->
+
+Figure 8: Sequencing during playback--server changes streams
 
 1.  The server sends a LinkMacToViewerReportStreamChange message between two consecutive
 
@@ -6606,7 +6638,11 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-4.6  Authentication Sequence
+<!-- Extracted images from page 91 -->
+![Extracted image 1 from page 91]([MS-MMSP].images/page091-img01.png)
+<!-- /Extracted images from page 91 -->
+
+4.6  Authentication Sequence
 
 Streaming media content can be made accessible only to authorized clients. The authentication
 sequences supported by the MMS Protocol are based on a Basic and NTLM sequence. Both sequences
@@ -6643,7 +6679,11 @@ Release: June 1, 2017
 
 91 / 103
 
-3.  The client sends a LinkViewerToMacSecurityResponse message to the server that contains the
+<!-- Extracted images from page 92 -->
+![Extracted image 1 from page 92]([MS-MMSP].images/page092-img01.png)
+<!-- /Extracted images from page 92 -->
+
+3.  The client sends a LinkViewerToMacSecurityResponse message to the server that contains the
 
 username and password. If the credentials are correct, the server responds with a
 LinkMacToViewerReportOpenFile message. Otherwise, the server responds with a

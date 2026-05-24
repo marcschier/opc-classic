@@ -885,7 +885,11 @@ Release: April 23, 2024
 
 8 / 39
 
-Figure 1: Messages used to manage two connections between partners
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-CMP].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: Messages used to manage two connections between partners
 
 As the first message of the preceding figure depicts, to initiate a connection, either partner sends a
 Connect message (MTAG_CONNECTION_REQ) to the other partner over their session.
@@ -911,7 +915,11 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-As depicted in the preceding figure, a Connect message is assumed to succeed. If the receiving
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-CMP].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+As depicted in the preceding figure, a Connect message is assumed to succeed. If the receiving
 partner does not want to accept the connection, it sends a not-acknowledged message
 (MTAG_CONNECTION_REQ_DENIED).
 

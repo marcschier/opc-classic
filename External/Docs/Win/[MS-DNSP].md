@@ -2204,7 +2204,11 @@ Domain Name Service (DNS) Server Management Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-When the DNS server is directory server-integrated, some client requests can require or trigger
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-DNSP].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+When the DNS server is directory server-integrated, some client requests can require or trigger
 Lightweight Directory Access Protocol (LDAP) requests from the DNS server to the local
 directory server or another directory server.
 
@@ -2264,7 +2268,12 @@ Domain Name Service (DNS) Server Management Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Figure 2: How the DNS Server Management Protocol uses RPC
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-DNSP].images/page024-img01.png)
+![Extracted image 2 from page 24]([MS-DNSP].images/page024-img02.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 2: How the DNS Server Management Protocol uses RPC
 
 The DNS server relies on the LDAP protocol [RFC4511] to retrieve and modify DNS information when
 it is stored in a directory server. In this case, the DNS server is the client of the LDAP protocol,
@@ -2288,7 +2297,11 @@ Release: March 9, 2026
 
 24 / 403
 
-Figure 4: Relationship between DNS Server Management Protocol Clients, DNS Servers, and
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-DNSP].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 4: Relationship between DNS Server Management Protocol Clients, DNS Servers, and
 Directory Servers
 
 1.5  Prerequisites/Preconditions
@@ -7557,7 +7570,11 @@ Release: March 9, 2026
 
 85 / 403
 
-In the DNS_RPC_ZONE_DOTNET structure all fields have same definition as specified in section
+<!-- Extracted images from page 86 -->
+![Extracted image 1 from page 86]([MS-DNSP].images/page086-img01.png)
+<!-- /Extracted images from page 86 -->
+
+In the DNS_RPC_ZONE_DOTNET structure all fields have same definition as specified in section
 DNS_RPC_ZONE_W2K (section 2.2.5.2.1.1), with the following exceptions:
 
  typedef struct _DnssrvRpcZoneDotNet {

@@ -1035,7 +1035,11 @@ Release: January 17, 2020
 
 12 / 19
 
-4  Protocol Examples
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MC-CCFG].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+4  Protocol Examples
 
 The following example builds on the example that is provided in [MS-DCOM] section 4.1.
 

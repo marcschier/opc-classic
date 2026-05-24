@@ -1585,7 +1585,11 @@ Release: April 23, 2024
 
 19 / 30
 
-4  Protocol Examples
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-MSB].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+4  Protocol Examples
 
 4.1  General MSB Sequence
 
@@ -1624,7 +1628,11 @@ Release: April 23, 2024
 
 20 / 30
 
-Figure 2: Server-side playlist sequence during client/server communication
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-MSB].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 2: Server-side playlist sequence during client/server communication
 
 1.  The client retrieves an .nsc file (see section 2.2.1) by some means, such as by retrieving it from
 
@@ -1721,7 +1729,12 @@ Release: April 23, 2024
 
 22 / 30
 
-Figure 3: Unicode character string encoding
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-MSB].images/page023-img01.png)
+![Extracted image 2 from page 23]([MS-MSB].images/page023-img02.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 3: Unicode character string encoding
 
 Consider the NSC Format Version property from the preceding .nsc file example. If the value "3.0"
 that is associated with the property is expressed as a Unicode string, the following bit array would
@@ -1745,7 +1758,11 @@ Release: April 23, 2024
 
 23 / 30
 
-Figure 5: Bit array
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-MSB].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 5: Bit array
 
 As specified in section 2.2.1.1, the resulting ASCII character string is preceded with "02"; therefore,
 the property and Unicode-based string NSC Format Version=3.0 is encoded and transformed to

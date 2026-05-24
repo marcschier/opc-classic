@@ -2849,7 +2849,11 @@ Release: September 16, 2024
 
 31 / 91
 
-3  Protocol Details
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-AIPS].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+3  Protocol Details
 
 3.1  Common Details
 
@@ -2884,7 +2888,11 @@ Release: September 16, 2024
 
 32 / 91
 
-Figure 2: Authentication retry state (initiator and responder)
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-AIPS].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 2: Authentication retry state (initiator and responder)
 
 In processing the protocol error transition, the peer encountering the error MUST send a notify
 message of type NOTIFY_STATUS containing the error code corresponding to the error to the peer.
@@ -2897,7 +2905,11 @@ Release: September 16, 2024
 
 33 / 91
 
-Figure 3: Authentication retry state (negotiation)
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-AIPS].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+Figure 3: Authentication retry state (negotiation)
 
 Analyze the figure "Authentication retry state (negotiation)" in combination with the figure
 "Authentication retry state (initiator and responder)". The "Local first failure", "GSS-API started", and
@@ -3755,7 +3767,11 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-version (IPv4 or IPv6) and the protocol (TCP/UDP, ICMP, or protocol-only) of the new connection.
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-AIPS].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+version (IPv4 or IPv6) and the protocol (TCP/UDP, ICMP, or protocol-only) of the new connection.
 When an entry is created for a non-TCP connection, a per-connection timer MUST be set, as specified
 in section 3.10.4. The IsImpersonatedConnection flag MUST be set to FALSE. ImpersonationHandle
 MUST be set to a locally unique ID value that represents the user who initiated the connection. This ID
@@ -3871,7 +3887,11 @@ Release: September 16, 2024
 
 47 / 91
 
-Figure 5: Main Mode First Exchange Response packet
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-AIPS].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+Figure 5: Main Mode First Exchange Response packet
 
 On receiving a packet when initiator is in the Main Mode First Generalized Packet Sent state, the
 initiator MUST verify that the exchange type in the ISAKMP header of the response indicates that
@@ -3970,7 +3990,11 @@ Release: September 16, 2024
 
 49 / 91
 
-Figure 6: Main Mode First Exchange packet
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MS-AIPS].images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+Figure 6: Main Mode First Exchange packet
 
 On receiving a packet in Start state the responder MUST verify that message #1 is formatted as
 specified in the preceding diagram, and constructed as follows:
@@ -4024,7 +4048,11 @@ Release: September 16, 2024
 
 50 / 91
 
-Figure 7: Main Mode First Exchange Response packet
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-AIPS].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+Figure 7: Main Mode First Exchange Response packet
 
 The responder MUST construct this message as follows:
 
@@ -4143,7 +4171,11 @@ Release: September 16, 2024
 
 52 / 91
 
-3.4.5  Processing Events and Sequencing Rules
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-AIPS].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+3.4.5  Processing Events and Sequencing Rules
 
 3.4.5.1  Quick Mode First Exchange Response
 
@@ -4258,7 +4290,12 @@ Release: September 16, 2024
 
 54 / 91
 
-Figure 9: Quick Mode Synchronize Notify packet
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-AIPS].images/page055-img01.png)
+![Extracted image 2 from page 55]([MS-AIPS].images/page055-img02.png)
+<!-- /Extracted images from page 55 -->
+
+Figure 9: Quick Mode Synchronize Notify packet
 
 3.4.5.2  Quick Mode Second Exchange Response
 
@@ -4278,7 +4315,11 @@ Release: September 16, 2024
 
 55 / 91
 
-The QM SA keys MUST be computed at this stage by using the key material generation algorithm from
+<!-- Extracted images from page 56 -->
+![Extracted image 1 from page 56]([MS-AIPS].images/page056-img01.png)
+<!-- /Extracted images from page 56 -->
+
+The QM SA keys MUST be computed at this stage by using the key material generation algorithm from
 section 3.1. The first ipsechashLength bytes of IPSecEncryptKey MUST be used as the QM SA
 authentication key and the last ipseccryptLength bytes MUST be used as the QM SA encryption key.
 
@@ -4320,7 +4361,11 @@ Release: September 16, 2024
 
 56 / 91
 
-Figure 12: Quick Mode Rekey ACK notify packet
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-AIPS].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+Figure 12: Quick Mode Rekey ACK notify packet
 
 The message MUST be constructed as follows:
 
@@ -4369,7 +4414,11 @@ Release: September 16, 2024
 
 57 / 91
 
-3.4.7.2  QM SA Byte Lifetime Expiration
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-AIPS].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+3.4.7.2  QM SA Byte Lifetime Expiration
 
 When the number of bytes transmitted over the SA exceeds the byte lifetime of the QM SA, as
 specified in the SAD, the initiator or responder MUST transition into Quick Mode Rekey Requested
@@ -4489,7 +4538,11 @@ Release: September 16, 2024
 
 59 / 91
 
-Figure 14: Quick Mode Acquire Notify packet
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-AIPS].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+Figure 14: Quick Mode Acquire Notify packet
 
 The message MUST be constructed as follows:
 
@@ -4526,7 +4579,11 @@ Release: September 16, 2024
 
 60 / 91
 
-3.5.5  Processing Events and Sequencing Rules
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MS-AIPS].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+3.5.5  Processing Events and Sequencing Rules
 
 3.5.5.1  Received Quick Mode First Exchange Request
 
@@ -4573,7 +4630,11 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-the first quick mode exchange under this main mode or 244 (quick mode exchange type) for
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MS-AIPS].images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+the first quick mode exchange under this main mode or 244 (quick mode exchange type) for
 any subsequent quick mode exchange. The Encrypted flag MUST be set.
 
 
@@ -4621,7 +4682,11 @@ Release: September 16, 2024
 
 62 / 91
 
-3.5.5.2  Received Quick Mode Second Exchange Request
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-AIPS].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+3.5.5.2  Received Quick Mode Second Exchange Request
 
 Figure 17: Quick Mode Synchronize Notify packet
 
@@ -4668,7 +4733,11 @@ Release: September 16, 2024
 
 63 / 91
 
-Figure 18: Quick Mode Synchronize Notify Response packet
+<!-- Extracted images from page 64 -->
+![Extracted image 1 from page 64]([MS-AIPS].images/page064-img01.png)
+<!-- /Extracted images from page 64 -->
+
+Figure 18: Quick Mode Synchronize Notify Response packet
 
 If either the ImpersonationActiveMM or ImpersonationActive EM flag is TRUE for the MM SA
 corresponding to the QM SA, then the ImpersonationHandle value from the MM SA MUST be copied
@@ -4709,7 +4778,11 @@ Release: September 16, 2024
 
 64 / 91
 
-3.6.4  Higher Layer Triggered Events
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-AIPS].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+3.6.4  Higher Layer Triggered Events
 
 None.
 
@@ -4749,7 +4822,11 @@ Release: September 16, 2024
 
 65 / 91
 
-3.6.5.2  Received Extended Mode Final Exchange Response
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MS-AIPS].images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+3.6.5.2  Received Extended Mode Final Exchange Response
 
 Figure 20: Extended Mode Final Exchange Response packet
 
@@ -4795,7 +4872,11 @@ Release: September 16, 2024
 
 66 / 91
 
-3.6.7  Other Local Events
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-AIPS].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+3.6.7  Other Local Events
 
 3.6.7.1  Transition Quick Mode Initiator Done
 
@@ -4835,7 +4916,11 @@ Release: September 16, 2024
 
 67 / 91
 
-Figure 22: Extended Mode Initiator final exchange packet
+<!-- Extracted images from page 68 -->
+![Extracted image 1 from page 68]([MS-AIPS].images/page068-img01.png)
+<!-- /Extracted images from page 68 -->
+
+Figure 22: Extended Mode Initiator final exchange packet
 
 The initiator MUST construct the packet as follows:
 
@@ -4882,7 +4967,11 @@ Release: September 16, 2024
 
 68 / 91
 
-3.7.5  Processing Events and Sequencing Rules
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-AIPS].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+3.7.5  Processing Events and Sequencing Rules
 
 3.7.5.1  Received Extended Mode First Exchange Request
 
@@ -4937,7 +5026,12 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-with multiple authentication methods, the responder MUST put the methods in its Auth payload in
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70]([MS-AIPS].images/page070-img01.png)
+![Extracted image 2 from page 70]([MS-AIPS].images/page070-img02.png)
+<!-- /Extracted images from page 70 -->
+
+with multiple authentication methods, the responder MUST put the methods in its Auth payload in
 the same order as they were in the initiator payload.
 
   GSS_ID: This payload MUST have identical format to the GSS_ID payload sent as part of the MM
@@ -4968,7 +5062,11 @@ Release: September 16, 2024
 
 70 / 91
 
-  Compute Auth3, as specified in section 3.1.7.4.
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-AIPS].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+  Compute Auth3, as specified in section 3.1.7.4.
 
   Verify that the HAuth3 payload contains the computed Auth3 value.
 
@@ -5023,7 +5121,11 @@ Release: September 16, 2024
 
 71 / 91
 
-3.7.6  Timer Events
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-AIPS].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+3.7.6  Timer Events
 
 See section 3.1.6.
 
@@ -5067,7 +5169,11 @@ Release: September 16, 2024
 
 72 / 91
 
-If the responder is not in GSS-API Request Sent state when it receives the above packet, it MUST
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MS-AIPS].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+If the responder is not in GSS-API Request Sent state when it receives the above packet, it MUST
 tear down the corresponding main if it can match the packet to an existing main mode, or silently
 discard the packet otherwise.
 
@@ -5115,7 +5221,11 @@ Release: September 16, 2024
 
 73 / 91
 
-  HDR: The ISAKMP header MUST have identical format to the first IKE phase 2 initiator packet
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-AIPS].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+  HDR: The ISAKMP header MUST have identical format to the first IKE phase 2 initiator packet
 (as specified in [RFC2409] section 5.5), except that the exchange type MUST be 243 (MM
 exchange type). The Encrypted flag SHOULD NOT be set.<20>
 
@@ -5162,7 +5272,11 @@ Release: September 16, 2024
 
 74 / 91
 
-corresponding main mode if it can match the packet to an existing main mode, or silently discard the
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-AIPS].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+corresponding main mode if it can match the packet to an existing main mode, or silently discard the
 packet otherwise.
 
 When either in Main Mode First Exchange Done state or Extended Mode Responder First Exchange
@@ -5428,7 +5542,11 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-4  Protocol Examples
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-AIPS].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+4  Protocol Examples
 
 4.1  Main Mode - No Extended Mode
 
@@ -5465,7 +5583,11 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-selectors (IDi, IDr) for the traffic to be secure on the wire, proposals for encryption or integrity in the
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-AIPS].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+selectors (IDi, IDr) for the traffic to be secure on the wire, proposals for encryption or integrity in the
 QM SA payload, and a nonce.
 
 Message #6: The responder verifies HAuth1 and generates a similar HAuth2. The responder looks up
@@ -5510,7 +5632,11 @@ Release: September 16, 2024
 
 80 / 91
 
-4.3  Extended Mode Authentication Retry
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81]([MS-AIPS].images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+4.3  Extended Mode Authentication Retry
 
 In extended mode (EM), failures are handled by retrying the authentication, if possible. The
 following example shows an authentication retry.

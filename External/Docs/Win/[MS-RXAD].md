@@ -743,7 +743,11 @@ Release: June 1, 2017
 
 8 / 41
 
-As specified in [UPNPARCH1] section 3.1.1, each action of the protocol results in a pair of SOAP
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RXAD].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+As specified in [UPNPARCH1] section 3.1.1, each action of the protocol results in a pair of SOAP
 request and response messages in the network.
 
 The following diagram illustrates a flow of Remote Experience Advertisement Protocol messages
@@ -763,7 +767,11 @@ Release: June 1, 2017
 
 9 / 41
 
-Figure 2: Protocol message sequence diagram (Inhibit action)
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RXAD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 2: Protocol message sequence diagram (Inhibit action)
 
 1.4  Relationship to Other Protocols
 
@@ -777,7 +785,11 @@ Release: June 1, 2017
 
 10 / 41
 
-Figure 3: Protocol layering diagram
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RXAD].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 3: Protocol layering diagram
 
 1.5  Prerequisites/Preconditions
 
@@ -925,7 +937,11 @@ Release: June 1, 2017
 
 13 / 41
 
-3  Protocol Details
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-RXAD].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+3  Protocol Details
 
 3.1  Server Details
 

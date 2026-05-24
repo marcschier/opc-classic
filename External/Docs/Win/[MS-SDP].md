@@ -1473,7 +1473,11 @@ Release: June 1, 2017
 
 17 / 25
 
-4  Protocol Examples
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-SDP].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+4  Protocol Examples
 
 4.1  Peer Clients Require Encryption
 
@@ -1575,7 +1579,11 @@ Release: June 1, 2017
 
 19 / 25
 
-Figure 2: Alice requires encryption
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-SDP].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 2: Alice requires encryption
 
 An example of SDP signaling in the INVITE that is sent across the wire is as follows.
 

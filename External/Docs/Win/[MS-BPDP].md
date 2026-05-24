@@ -976,7 +976,11 @@ Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Discovery Prot
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-A host implementing the client or server role of the BITS Peer-Caching: Peer Discovery Protocol
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-BPDP].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+A host implementing the client or server role of the BITS Peer-Caching: Peer Discovery Protocol
 typically also implements the same role of the BITS Peer-Caching: Content Retrieval Protocol, as a
 higher level protocol.
 

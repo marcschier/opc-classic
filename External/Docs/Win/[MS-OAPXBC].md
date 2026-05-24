@@ -688,7 +688,11 @@ Release: April 14, 2026
 
 7 / 42
 
-1.3  Overview
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-OAPXBC].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+1.3  Overview
 
 The OAuth 2.0 Protocol Extensions for Broker Clients (OAPXBC) specify extensions to the OAuth 2.0
 Authorization Framework defined in [RFC6749]. These extensions allow a high privilege broker client

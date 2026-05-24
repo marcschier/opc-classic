@@ -849,7 +849,11 @@ Release: November 19, 2024
 
 11 / 94
 
-When an update collision takes place, it is detected on both sides. On the client side, an update
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPETXT].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+When an update collision takes place, it is detected on both sides. On the client side, an update
 notification is received while there are one or more items in the pending operations list. On the server
 side, the operation sent from the client arrives while the count of outstanding notifications is greater
 than 0.
@@ -1000,7 +1004,11 @@ Release: November 19, 2024
 
 14 / 94
 
-Figure 2: Text request for paging in three scenarios
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RDPETXT].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: Text request for paging in three scenarios
 
 In the figure above, scenario A shows a relatively large selection in a relatively small document (note
 that when a text request extends beyond the end of a document, text to the end of the document will
@@ -1027,7 +1035,11 @@ Release: November 19, 2024
 
 15 / 94
 
-Figure 3: Paging in text for a text change notification
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-RDPETXT].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 3: Paging in text for a text change notification
 
 Note in the figure above that block A and block D cannot be included in the send regions if they were
 previously cached and have not been removed. Blocks B and C will always be provided in the send

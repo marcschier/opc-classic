@@ -1205,7 +1205,11 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Clearing house: Activates license servers and supplies CALs to license servers.
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPELE].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+  Clearing house: Activates license servers and supplies CALs to license servers.
 
   Active Directory: Stores licenses issued to users.
 
@@ -1303,7 +1307,11 @@ Release: April 23, 2024
 
 13 / 85
 
-Figure 2: Licensing PDU flows in Terminal Server
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-RDPELE].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: Licensing PDU flows in Terminal Server
 
 This flow chart describes the logic for the following cases:
 
@@ -1325,7 +1333,12 @@ Release: April 23, 2024
 
 14 / 85
 
-1.3.3.1  New License Flow
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RDPELE].images/page015-img01.png)
+![Extracted image 2 from page 15]([MS-RDPELE].images/page015-img02.png)
+<!-- /Extracted images from page 15 -->
+
+1.3.3.1  New License Flow
 
 When the Remote Desktop client does not have a license in its license store, the message flow is
 as shown in the following diagram.
@@ -2970,7 +2983,11 @@ Release: April 23, 2024
 
 36 / 85
 
-A more detailed reason for the error MAY be passed by using the bbErrorInfo BLOB. The BLOB type
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-RDPELE].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+A more detailed reason for the error MAY be passed by using the bbErrorInfo BLOB. The BLOB type
 MUST be BB_ERROR_BLOB (see [MS-RDPBCGR] sections 2.2.1.12.1.2 and 2.2.1.12.1.3). This BLOB is
 empty if no detailed reason for the error is passed.
 
@@ -3009,7 +3026,11 @@ Release: April 23, 2024
 
 37 / 85
 
-Figure 6: Server state transition
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-RDPELE].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 6: Server state transition
 
 3.1.6  Timer Events
 
@@ -5746,7 +5767,11 @@ Release: April 23, 2024
 
 76 / 85
 
-5  Security
+<!-- Extracted images from page 77 -->
+![Extracted image 1 from page 77]([MS-RDPELE].images/page077-img01.png)
+<!-- /Extracted images from page 77 -->
+
+5  Security
 
 5.1  Security Considerations for Implementers
 

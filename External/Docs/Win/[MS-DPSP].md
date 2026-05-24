@@ -1187,7 +1187,11 @@ Release: April 23, 2024
 
 14 / 23
 
-4  Protocol Examples
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-DPSP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+4  Protocol Examples
 
 The following diagram and procedural steps describe a common scenario to illustrate the function of
 the Digest Protocol Extensions.

@@ -1051,7 +1051,11 @@ Release: June 1, 2017
 
 10 / 42
 
-Figure 1: Deployment environment for the Health Certificate Enrollment Protocol
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-HCEP].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 1: Deployment environment for the Health Certificate Enrollment Protocol
 
 In this example, the flow is as follows:
 
@@ -1090,7 +1094,11 @@ Release: June 1, 2017
 
 11 / 42
 
-If the health state of the client is compliant, the payload of the response contains a statement of
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-HCEP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+If the health state of the client is compliant, the payload of the response contains a statement of
 health response (SoHR) (as specified in [TNC-IF-TNCCSPBSoH]) and a PKCS #7 message (as
 specified in [RFC2315]) with an X.509 certificate (for more information, see [X509]), as specified
 in [RFC3280].
@@ -1576,7 +1584,11 @@ Release: June 1, 2017
 
 20 / 42
 
-3  Protocol Details
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-HCEP].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+3  Protocol Details
 
 The Health Certificate Enrollment Protocol is a simple request-response protocol. The Health Certificate
 Enrollment Protocol allows a network endpoint to obtain digital certificates. These certificates are

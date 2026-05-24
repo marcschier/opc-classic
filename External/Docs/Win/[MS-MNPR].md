@@ -1207,7 +1207,11 @@ Release: June 1, 2017
 
 11 / 186
 
-Figure 1: NetMeeting protocol stack
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-MNPR].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 1: NetMeeting protocol stack
 
 1.4  Relationship to Other Protocols
 
@@ -1254,7 +1258,11 @@ Release: June 1, 2017
 
 12 / 186
 
-1.7  Versioning and Capability Negotiation
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-MNPR].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+1.7  Versioning and Capability Negotiation
 
 The host advertises its capabilities in an S20_CREATE PDU message sent to the client.  The client in
 turn will advertise its capabilities back to the host using an S20_RESPOND PDU.  In addition, a client
@@ -14943,7 +14951,11 @@ Release: June 1, 2017
 
 158 / 186
 
-Figure 3: NetMeeting Protocol standard connection establishment
+<!-- Extracted images from page 159 -->
+![Extracted image 1 from page 159]([MS-MNPR].images/page159-img01.png)
+<!-- /Extracted images from page 159 -->
+
+Figure 3: NetMeeting Protocol standard connection establishment
 
 The Standard Connection Establishment sequence can be divided into three phases:
 
@@ -15005,7 +15017,11 @@ Release: June 1, 2017
 
 160 / 186
 
-Figure 4: Sequencing as a host creates a session
+<!-- Extracted images from page 161 -->
+![Extracted image 1 from page 161]([MS-MNPR].images/page161-img01.png)
+<!-- /Extracted images from page 161 -->
+
+Figure 4: Sequencing as a host creates a session
 
 A typical sequence for a client that takes control of a session is as follows.
 
@@ -15016,7 +15032,11 @@ Release: June 1, 2017
 
 161 / 186
 
-Figure 5: Sequencing as a client takes control of a session
+<!-- Extracted images from page 162 -->
+![Extracted image 1 from page 162]([MS-MNPR].images/page162-img01.png)
+<!-- /Extracted images from page 162 -->
+
+Figure 5: Sequencing as a client takes control of a session
 
 The following table shows the detailed descriptions of the layer packet.
 
@@ -15338,7 +15358,11 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The diagram in figure 5 illustrates the control flow of these seven transitions. Note that any requests
+<!-- Extracted images from page 166 -->
+![Extracted image 1 from page 166]([MS-MNPR].images/page166-img01.png)
+<!-- /Extracted images from page 166 -->
+
+The diagram in figure 5 illustrates the control flow of these seven transitions. Note that any requests
 sent out of order (for example, S20_JOIN while in the Share State) are ignored and discarded.
 
 Figure 6: S20 protocol control state transitions
@@ -15425,7 +15449,11 @@ Release: June 1, 2017
 
 167 / 186
 
-Figure 7: Typical sequencing during the arrival of a joiner.
+<!-- Extracted images from page 168 -->
+![Extracted image 1 from page 168]([MS-MNPR].images/page168-img01.png)
+<!-- /Extracted images from page 168 -->
+
+Figure 7: Typical sequencing during the arrival of a joiner.
 
 In addition, other NetMeeting Object Manager events might take place during this operation. For
 example, an OMNET_LOCK_DENY or OMNET_LOCK_NOTIFY can be issued in response to the
@@ -15517,7 +15545,11 @@ Release: June 1, 2017
 
 169 / 186
 
-Figure 8: Typical sequencing during the arrival of a late joiner
+<!-- Extracted images from page 170 -->
+![Extracted image 1 from page 170]([MS-MNPR].images/page170-img01.png)
+<!-- /Extracted images from page 170 -->
+
+Figure 8: Typical sequencing during the arrival of a late joiner
 
 In addition, other NetMeeting Object Manager events might take place during this operation. For
 example, an OMNET_LOCK_DENY or OMENT_LOCK_NOTIFY can be issued in response to the
@@ -15600,7 +15632,12 @@ Release: June 1, 2017
 
 171 / 186
 
-Figure 9: NetMeeting Chat Protocol communication method
+<!-- Extracted images from page 172 -->
+![Extracted image 1 from page 172]([MS-MNPR].images/page172-img01.png)
+![Extracted image 2 from page 172]([MS-MNPR].images/page172-img02.png)
+<!-- /Extracted images from page 172 -->
+
+Figure 9: NetMeeting Chat Protocol communication method
 
 3.1.5.7  NetMeeting File Transfer Protocol
 
@@ -15617,7 +15654,11 @@ Release: June 1, 2017
 
 172 / 186
 
-3.1.5.8  NetMeeting Whiteboard Protocol
+<!-- Extracted images from page 173 -->
+![Extracted image 1 from page 173]([MS-MNPR].images/page173-img01.png)
+<!-- /Extracted images from page 173 -->
+
+3.1.5.8  NetMeeting Whiteboard Protocol
 
 Microsoft NetMeeting Protocol peers engage in whiteboard data-sharing by exchanging International
 Telecommunications Union (ITU) T.126 data, as specified in [T126], with the exception of the

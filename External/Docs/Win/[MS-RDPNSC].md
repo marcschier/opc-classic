@@ -534,7 +534,11 @@ Remote Desktop Protocol: NSCodec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-RDPNSC].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+[MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting".
 
 [MS-RDPEGDI] Microsoft Corporation, "Remote Desktop Protocol: Graphics Device Interface (GDI)
@@ -1103,7 +1107,11 @@ Release: April 23, 2024
 
 14 / 31
 
-3  Protocol Details
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RDPNSC].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+3  Protocol Details
 
 3.1  Common Details
 
@@ -1371,7 +1379,11 @@ Release: April 23, 2024
 
 19 / 31
 
-Figure 3: Encoding data by using NSCodec run-length encoding (RLE)
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-RDPNSC].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 3: Encoding data by using NSCodec run-length encoding (RLE)
 
 3.1.8.2  Padding the Red, Green, and Blue Color Planes
 
@@ -1393,7 +1405,11 @@ Release: April 23, 2024
 
 20 / 31
 
-For example, if the original image width is 500, the padded plane width is 504. If the original
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-RDPNSC].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+For example, if the original image width is 500, the padded plane width is 504. If the original
 image height is 200, the padded plane height is 200.
 
 2.  Color space conversion, subsampling, and color loss reduction of the padded color planes are
@@ -1425,7 +1441,11 @@ Release: April 23, 2024
 
 21 / 31
 
-Figure 5: Compressing a bitmap
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-RDPNSC].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 5: Compressing a bitmap
 
 3.1.8.4  Decompressing a Bitmap
 
@@ -1439,7 +1459,11 @@ Release: April 23, 2024
 
 22 / 31
 
-Figure 6: Decompressing a bitmap
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-RDPNSC].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 6: Decompressing a bitmap
 
 Execution of the flowchart tasks relies on concepts and techniques introduced in this document and
 [MS-RDPEGDI].

@@ -392,7 +392,12 @@ Release: April 23, 2024
 
 6 / 38
 
-Figure 1: Logical layout
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-VHDX].images/page007-img01.png)
+![Extracted image 2 from page 7]([MS-VHDX].images/page007-img02.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1: Logical layout
 
 Figure 2: File layout example
 
@@ -527,7 +532,11 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 3: Header section layout
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-VHDX].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 3: Header section layout
 
 2.2.1  File Type Identifier
 
@@ -888,7 +897,11 @@ Release: April 23, 2024
 
 14 / 38
 
-The log is a single circular buffer stored contiguously at a location that is specified in the VHDX
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-VHDX].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+The log is a single circular buffer stored contiguously at a location that is specified in the VHDX
 header. It consists of an ordered sequence of variable-sized entries, each of which represents a set of
 4-KB sector updates that need to be performed to the VHDX structures.
 
@@ -934,7 +947,11 @@ Release: April 23, 2024
 
 15 / 38
 
-Figure 5: Log Entry Structure Layout Example
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-VHDX].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 5: Log Entry Structure Layout Example
 
 The preceding figure shows a log entry that contains four descriptors. The layout contains, in the first
 4-KB descriptor sector, a log header with a descriptor count of 4 and associated descriptor sectors,
@@ -1274,7 +1291,12 @@ Release: April 23, 2024
 
 20 / 38
 
-2.4  Blocks
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-VHDX].images/page021-img01.png)
+![Extracted image 2 from page 21]([MS-VHDX].images/page021-img02.png)
+<!-- /Extracted images from page 21 -->
+
+2.4  Blocks
 
 There are two types of Blocks: payload and sector bitmap. Payload blocks contain virtual disk payload
 data, while sector bitmap blocks contain parts of the sector bitmap.
@@ -1325,7 +1347,14 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The BAT region MUST be at least large enough to contain as many entries as required to describe the
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-VHDX].images/page022-img01.png)
+![Extracted image 2 from page 22]([MS-VHDX].images/page022-img02.png)
+![Extracted image 3 from page 22]([MS-VHDX].images/page022-img03.png)
+![Extracted image 4 from page 22]([MS-VHDX].images/page022-img04.png)
+<!-- /Extracted images from page 22 -->
+
+The BAT region MUST be at least large enough to contain as many entries as required to describe the
 possible blocks for a given virtual disk size (see section 2.6.2.2 for more information on
 VirtualDiskSize).
 
@@ -1664,7 +1693,11 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-metadata items represent both user and system metadata, which are distinguished by a bit in the
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-VHDX].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+metadata items represent both user and system metadata, which are distinguished by a bit in the
 table.
 
 Figure 7: Metadata region layout example

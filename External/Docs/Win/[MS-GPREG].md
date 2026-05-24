@@ -1071,7 +1071,11 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  In processing the Policy Application portion of Group Policy: Registry Extension Encoding, the
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-GPREG].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+3.  In processing the Policy Application portion of Group Policy: Registry Extension Encoding, the
 
 client parses the file of settings, and then saves the settings in a user-specific portion of the
 generic settings database (registry) on the local computer.
@@ -2993,7 +2997,11 @@ Release: April 23, 2024
 
 36 / 81
 
-4  Protocol Examples
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-GPREG].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+4  Protocol Examples
 
 4.1  Registry Policy Application Message
 
@@ -3034,7 +3042,11 @@ Release: April 23, 2024
 
 37 / 81
 
-1.  Perform a remote File Open for the file <gpo path>\User\Registry.pol. The remote File Open
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-GPREG].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+1.  Perform a remote File Open for the file <gpo path>\User\Registry.pol. The remote File Open
 
 requests Exclusive Write permission and requests that if the file does not exist it be created. If the
 Open request returns a failure status, the update process is terminated.

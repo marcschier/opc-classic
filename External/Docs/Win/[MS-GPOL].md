@@ -1687,7 +1687,11 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  DFS: Referral Protocol, specified in [MS-DFSC], to provide location-independent access to the
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-GPOL].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+  DFS: Referral Protocol, specified in [MS-DFSC], to provide location-independent access to the
 
 Group Policy server for clients during policy application and policy administration.
 

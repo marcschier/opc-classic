@@ -900,7 +900,11 @@ Release: April 23, 2024
 
 10 / 29
 
-3  Protocol Details
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RAIOP].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+3  Protocol Details
 
 3.1  Unsecured Peer Name - Publisher Details
 
@@ -1276,7 +1280,11 @@ Remote Assistance Initiation over PNRP Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  Decrypt the payload (obtained in section 3.2.5.2) by using the cipher key from step 2 and the
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-RAIOP].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+3.  Decrypt the payload (obtained in section 3.2.5.2) by using the cipher key from step 2 and the
 
 AES_128 algorithm to obtain the Unicode Remote Assistance Connection String.
 

@@ -616,7 +616,11 @@ Release: April 23, 2024
 
 8 / 48
 
-Figure 1: A Miracast over Infrastructure session
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-MICE].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: A Miracast over Infrastructure session
 
 [MS-MICE] - v20240423
 Miracast over Infrastructure Connection Establishment Protocol
@@ -1822,7 +1826,11 @@ Release: April 23, 2024
 
 23 / 48
 
-3  Protocol Details
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-MICE].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+3  Protocol Details
 
 A Miracast over Infrastructure session consists of three phases: device discovery, host name
 resolution, and projection, as shown in the following diagram.
@@ -1885,7 +1893,11 @@ Release: April 23, 2024
 
 25 / 48
 
-Figure 3: Projection setup phase
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-MICE].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 3: Projection setup phase
 
 The Sink is expected to be listening for messages on TCP port 7250. The Sink listens for Source Ready
 messages (section 2.2.1). If the Sink supports stream encryption, it also listens for Security
@@ -1988,7 +2000,11 @@ Release: April 23, 2024
 
 28 / 48
 
-Figure 4: State diagram
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-MICE].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 4: State diagram
 
 [MS-MICE] - v20240423
 Miracast over Infrastructure Connection Establishment Protocol
@@ -2286,7 +2302,11 @@ Release: April 23, 2024
 
 34 / 48
 
-Figure 5: Connection Sequence
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-MICE].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 5: Connection Sequence
 
 [MS-MICE] - v20240423
 Miracast over Infrastructure Connection Establishment Protocol

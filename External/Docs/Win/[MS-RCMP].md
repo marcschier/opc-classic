@@ -870,7 +870,11 @@ Remote Certificate Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Second, the issuer and subject names can be taken together as a key, again in the database
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RCMP].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+2.  Second, the issuer and subject names can be taken together as a key, again in the database
 
 sense, to locate the account record.
 
@@ -1496,7 +1500,11 @@ Release: April 23, 2024
 
 18 / 24
 
-4  Protocol Examples
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-RCMP].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+4  Protocol Examples
 
 Figure 2: Obtaining a PAC that corresponds to an X.509 certificate
 

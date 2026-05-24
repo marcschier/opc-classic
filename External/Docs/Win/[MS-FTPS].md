@@ -950,7 +950,11 @@ Release: April 23, 2024
 
 13 / 20
 
-4  Protocol Examples
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-FTPS].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+4  Protocol Examples
 
 4.1  Control Connection Negotiation with Implicit FTPS
 

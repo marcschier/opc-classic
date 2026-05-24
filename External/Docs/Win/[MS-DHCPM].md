@@ -1884,7 +1884,12 @@ Release: September 16, 2024
 
 19 / 537
 
-Figure 1: Relationship of DHCP Server Management Protocol to RPC
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-DHCPM].images/page020-img01.png)
+![Extracted image 2 from page 20]([MS-DHCPM].images/page020-img02.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 1: Relationship of DHCP Server Management Protocol to RPC
 
 A typical application of this protocol involves the client querying or setting the configuration
 parameters of the DHCP server. The client also enumerates the list of subnets serviced by the DHCPv4
@@ -1931,7 +1936,11 @@ Release: September 16, 2024
 
 20 / 537
 
-messages, as specified in [MS-DHCPE], by setting or modifying DHCP server configurations. DHCPM
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-DHCPM].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+messages, as specified in [MS-DHCPE], by setting or modifying DHCP server configurations. DHCPM
 also affects the content of the Dynamic Host Configuration Protocol Extensions for Network Access
 Protection (DHCPN) messages, as specified in [MS-DHCPN], by configuring DHCP Network Access
 Protection (NAP) enforcement settings<1> and DHCP options.
@@ -1951,7 +1960,11 @@ Release: September 16, 2024
 
 21 / 537
 
-Figure 4: Server-side interaction with related protocols
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-DHCPM].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 4: Server-side interaction with related protocols
 
 The following is the relationship between DHCPM ADM elements and the elements defined by
 [RFC2131] and [RFC3315], which are extended by DHCPE ([MS-DHCPE]).

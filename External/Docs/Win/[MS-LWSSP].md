@@ -936,7 +936,11 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[WSTrust], [WSTrust1.3], [WSSC], and [WSSC1.3] specify additional security elements as well as
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-LWSSP].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+[WSTrust], [WSTrust1.3], [WSSC], and [WSSC1.3] specify additional security elements as well as
 message exchange patterns used to create and exchange security tokens in SOAP messages. These
 documents are referred to as Token Exchange protocols.
 

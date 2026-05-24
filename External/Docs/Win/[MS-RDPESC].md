@@ -1372,7 +1372,11 @@ Release: April 23, 2024
 
 12 / 92
 
-[PCSC5] PC/SC Workgroup, "Interoperability Specification for ICCs and Personal Computer Systems -
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RDPESC].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+[PCSC5] PC/SC Workgroup, "Interoperability Specification for ICCs and Personal Computer Systems -
 Part 5: ICC Resource Manager Definition", September 2005,
 http://pcscworkgroup.com/Download/Specifications/pcsc5_v2.01.01.pdf
 
@@ -1417,7 +1421,12 @@ Release: April 23, 2024
 
 13 / 92
 
-Figure 2: High-level protocol sequence
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-RDPESC].images/page014-img01.png)
+![Extracted image 2 from page 14]([MS-RDPESC].images/page014-img02.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: High-level protocol sequence
 
 The following figure specifies how the messages are encoded and routed from a TS client to a TS
 server. The following numbered list details corresponding actions related to the pictured protocol flow.
@@ -6320,7 +6329,11 @@ Release: April 23, 2024
 
 72 / 92
 
-4  Protocol Examples
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MS-RDPESC].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+4  Protocol Examples
 
 This example shows the messages sent to perform a simple querying of a card in the TS client
 machine. It assumes that a channel has already been set up on the between the TS client and the TS

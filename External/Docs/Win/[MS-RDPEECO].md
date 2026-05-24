@@ -415,7 +415,11 @@ Release: April 23, 2024
 
 4 / 15
 
-1.3  Overview
+<!-- Extracted images from page 5 -->
+![Extracted image 1 from page 5]([MS-RDPEECO].images/page005-img01.png)
+<!-- /Extracted images from page 5 -->
+
+1.3  Overview
 
 The sequence of messages exchanged by the Remote Desktop Protocol: Virtual Channel Echo
 Extension is described in the following figure. The messages exchanged in this diagram are strictly

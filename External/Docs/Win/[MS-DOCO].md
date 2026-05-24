@@ -982,7 +982,11 @@ Release: June 14, 2022
 
 12 / 125
 
-Figure 1: Relationships among documents
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-DOCO].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 1: Relationships among documents
 
 As shown in the diagram, the technical specifications of the Windows protocols documentation set are
 categorized according to technical area. Within a technical area, a technology overview and related
@@ -2575,7 +2579,11 @@ Release: June 14, 2022
 
 33 / 125
 
-3  Navigating the Documentation Set
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-DOCO].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+3  Navigating the Documentation Set
 
 This section describes ways to navigate within the online Microsoft Docs library to find components of
 the Windows protocols documentation set. The subsections that follow describe the following paths to
@@ -2620,7 +2628,11 @@ Release: June 14, 2022
 
 34 / 125
 
-Document Programs: This node describes the technical documents made available in the following
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-DOCO].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+Document Programs: This node describes the technical documents made available in the following
 document programs; however, Microsoft is no longer updating this content regularly. See section 1.6
 for more information.
 
@@ -2663,7 +2675,11 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Technical Specifications Landing Page: The technical specifications landing page is described in section
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-DOCO].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Technical Specifications Landing Page: The technical specifications landing page is described in section
 3.1.1.2.
 
 Reference Documents Landing Page: The reference documents landing page is described in section
@@ -2687,7 +2703,11 @@ Release: June 14, 2022
 
 36 / 125
 
-Figure 5: Overview documents landing page
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-DOCO].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 5: Overview documents landing page
 
 3.1.1.1.1 Overview Documents
 
@@ -2702,7 +2722,11 @@ Release: June 14, 2022
 
 37 / 125
 
-Figure 6: Overview document landing page
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-DOCO].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 6: Overview document landing page
 
 The following types of files are available for download from this page:
 
@@ -2734,7 +2758,11 @@ Release: June 14, 2022
 
 38 / 125
 
-3.1.1.2  Technical Specifications Landing Page
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-DOCO].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+3.1.1.2  Technical Specifications Landing Page
 
 The Technical Specifications Landing Page node can be reached from the Windows Protocols node as
 shown in section 3.1.1. From this node it is possible to navigate to the nodes shown in the following
@@ -2752,7 +2780,11 @@ Release: June 14, 2022
 
 39 / 125
 
-Figure 8: Technical specifications landing page
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-DOCO].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+Figure 8: Technical specifications landing page
 
 3.1.1.2.1 Technical Specifications
 
@@ -2767,7 +2799,11 @@ Release: June 14, 2022
 
 40 / 125
 
-Figure 9: Technical specification landing page
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-DOCO].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 9: Technical specification landing page
 
 The following types of files are available for download from this page:
 
@@ -2801,7 +2837,11 @@ Release: June 14, 2022
 
 41 / 125
 
-Figure 10: Reference documents landing page nodes
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-DOCO].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+Figure 10: Reference documents landing page nodes
 
 The reference documents landing page node links to the landing pages for all reference documents in
 the Windows protocols documentation set. It is shown below.
@@ -2813,7 +2853,11 @@ Release: June 14, 2022
 
 42 / 125
 
-Figure 11: Reference documents landing page
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-DOCO].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 11: Reference documents landing page
 
 3.1.1.3.1 Reference Documents
 
@@ -2828,7 +2872,11 @@ Release: June 14, 2022
 
 43 / 125
 
-Figure 12: Reference document landing page
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-DOCO].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+Figure 12: Reference document landing page
 
 The following types of files are available for download from this page:
 
@@ -2862,7 +2910,11 @@ Release: June 14, 2022
 
 44 / 125
 
-Figure 13: Windows WordPad standards support node
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-DOCO].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+Figure 13: Windows WordPad standards support node
 
 These documents describe support for the following standards, which are implemented in the Windows
 WordPad application.
@@ -2913,7 +2965,11 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Figure 14: Overview documents
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-DOCO].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+Figure 14: Overview documents
 
 Overview Documents Landing Page: This node contains links to the landing pages of individual
 overview documents, as described in section 3.1.1.1.
@@ -2930,7 +2986,11 @@ Release: June 14, 2022
 
 46 / 125
 
-Figure 15: Technical specifications
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-DOCO].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+Figure 15: Technical specifications
 
 The nodes shown in the diagram contain links to technical specifications, as follows:
 
@@ -2966,7 +3026,11 @@ Release: June 14, 2022
 
 47 / 125
 
-Figure 16: Reference documents
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-DOCO].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+Figure 16: Reference documents
 
 Reference Documents Landing Page: This node contains links to the landing page of the following
 informative reference document:
@@ -2988,7 +3052,11 @@ Release: June 14, 2022
 
 48 / 125
 
-Figure 17: Citations in the Windows protocols documentation set
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-DOCO].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+Figure 17: Citations in the Windows protocols documentation set
 
 The connections represented in this figure can be summarized as follows:
 
@@ -16848,7 +16916,11 @@ Release: June 14, 2022
 
 122 / 125
 
-5  Appendix B: Open Specifications Site Map
+<!-- Extracted images from page 123 -->
+![Extracted image 1 from page 123]([MS-DOCO].images/page123-img01.png)
+<!-- /Extracted images from page 123 -->
+
+5  Appendix B: Open Specifications Site Map
 
 Figure 18: Open Specifications site map
 

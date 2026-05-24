@@ -509,7 +509,11 @@ Release: October 26, 2021
 
 5 / 182
 
-Figure 1: Example of directory organization
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-ADOD].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+Figure 1: Example of directory organization
 
 The Active Directory system can operate in two distinct modes: as Active Directory Lightweight
 Directory Services (AD LDS) and as Active Directory Domain Services (AD DS).
@@ -1642,7 +1646,11 @@ Release: October 26, 2021
 
 22 / 182
 
-Figure 2: Active Directory system components
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-ADOD].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 2: Active Directory system components
 
 2.2  Relevant Standards
 
@@ -1712,7 +1720,11 @@ Release: October 26, 2021
 
 24 / 182
 
-2.3  Protocol Relationships
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-ADOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+2.3  Protocol Relationships
 
 Figure 3: Active Directory protocol grouping
 
@@ -1776,7 +1788,11 @@ Release: October 26, 2021
 
 26 / 182
 
-Figure 4: Protocol relationships
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-ADOD].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 4: Protocol relationships
 
 2.4  Protocol Summary
 
@@ -1951,7 +1967,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-ADOD].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Protocol name
 
 Description
 
@@ -2362,7 +2382,11 @@ Release: October 26, 2021
 
 33 / 182
 
-Figure 6: Use cases for object management
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-ADOD].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+Figure 6: Use cases for object management
 
 2.7.1.1  Create a Directory Object - Client Application
 
@@ -2385,7 +2409,11 @@ Release: October 26, 2021
 
 34 / 182
 
-An administrator wants to create a new directory object in an existing application NC.
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-ADOD].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+An administrator wants to create a new directory object in an existing application NC.
 
 Figure 7: Use case diagram for creating a directory object on an application NC
 
@@ -2560,7 +2588,11 @@ Release: October 26, 2021
 
 37 / 182
 
-Figure 8: Use case diagram for searching for a directory object
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-ADOD].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 8: Use case diagram for searching for a directory object
 
 Actors
 
@@ -2678,7 +2710,11 @@ Release: October 26, 2021
 
 39 / 182
 
-2.7.1.3  Modify a Directory Object - Client Application
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-ADOD].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+2.7.1.3  Modify a Directory Object - Client Application
 
 A common activity for an administrator is to modify objects. Timely updates on these directory
 objects ensure that the data in the system is current, which enables the Active Directory system to
@@ -2795,7 +2831,11 @@ Release: October 26, 2021
 
 41 / 182
 
-2.7.1.4  Delete a Directory Object - Client Application
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-ADOD].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+2.7.1.4  Delete a Directory Object - Client Application
 
 An administrator can perform maintenance on an Active Directory system by removing objects that
 are no longer needed by the applications on the client. To achieve this, an administrator launches the
@@ -2916,7 +2956,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-ADOD].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+
 
 If the client application attempted to delete a directory object that is owned by the system ([MS-
 ADTS] section 3.1.1.5.5.3):
@@ -3089,7 +3133,11 @@ Release: October 26, 2021
 
 46 / 182
 
-Figure 12: Use case diagram for performing a cross-domain move
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-ADOD].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+Figure 12: Use case diagram for performing a cross-domain move
 
 Actors
 
@@ -3190,7 +3238,11 @@ Release: October 26, 2021
 
 48 / 182
 
-Figure 13: Use cases for identity lifecycle management
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-ADOD].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+Figure 13: Use cases for identity lifecycle management
 
 2.7.2.1  Create a New Account - Client Application
 
@@ -3209,7 +3261,11 @@ Release: October 26, 2021
 
 49 / 182
 
-Context of Use
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MS-ADOD].images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+Context of Use
 
 An administrator wants to create a new account in the directory.
 
@@ -3380,7 +3436,11 @@ Release: October 26, 2021
 
 52 / 182
 
-Figure 15: Use case diagram for resetting the password of an existing account
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-ADOD].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+Figure 15: Use case diagram for resetting the password of an existing account
 
 Actors
 
@@ -3500,7 +3560,11 @@ Release: October 26, 2021
 
 54 / 182
 
-
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-ADOD].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+
 
 If the password that was supplied through the client application does not satisfy the password
 constraints described in [MS-SAMR] section 3.1.1.7.1:
@@ -3686,7 +3750,11 @@ Release: October 26, 2021
 
 57 / 182
 
-Figure 17: Use case diagram for changing the password of an existing account (DC)
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-ADOD].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+Figure 17: Use case diagram for changing the password of an existing account (DC)
 
 Actors
 
@@ -3838,7 +3906,11 @@ Release: October 26, 2021
 
 60 / 182
 
-Figure 18: Use case diagram for changing the password of an existing account (RODC)
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MS-ADOD].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+Figure 18: Use case diagram for changing the password of an existing account (RODC)
 
 Actors
 
@@ -3955,7 +4027,11 @@ Release: October 26, 2021
 
 62 / 182
 
-The account's password is changed, and it is updated in the writable NC replica of the DC.
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-ADOD].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+The account's password is changed, and it is updated in the writable NC replica of the DC.
 
 2.7.2.6  User Logon to Domain Services by Using an RODC and Updating the User
 
@@ -4079,7 +4155,11 @@ Release: October 26, 2021
 
 64 / 182
 
-An administrator wants to retrieve or use group membership of a directory object.
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-ADOD].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+An administrator wants to retrieve or use group membership of a directory object.
 
 Figure 20: Use case diagram for querying the group membership of an account
 
@@ -4199,7 +4279,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Figure 21: Use case diagram for deleting an account
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-ADOD].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+Figure 21: Use case diagram for deleting an account
 
 Actors
 
@@ -4315,7 +4399,11 @@ Release: October 26, 2021
 
 68 / 182
 
-Figure 22: Use case diagram for creating a security group
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-ADOD].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+Figure 22: Use case diagram for creating a security group
 
 Actors
 
@@ -4439,7 +4527,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-6. The directory server sends a response to the client application that the specified group name is
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-ADOD].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+6. The directory server sends a response to the client application that the specified group name is
 already in use by an existing group.
 
 2.7.2.10
@@ -4562,7 +4654,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-1-4. Same as Main Success Scenario.
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MS-ADOD].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+1-4. Same as Main Success Scenario.
 
 5. The directory server sends a response to the client application that the supplied credentials
 have insufficient access-control rights to modify the member list of the group.
@@ -4685,7 +4781,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Extensions
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-ADOD].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+Extensions
 
 
 
@@ -4731,7 +4831,11 @@ Release: October 26, 2021
 
 75 / 182
 
-The client application adds a new class to the schema of the Active Directory system.
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MS-ADOD].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+The client application adds a new class to the schema of the Active Directory system.
 
 Context of Use
 
@@ -4904,7 +5008,11 @@ Release: October 26, 2021
 
 78 / 182
 
-Figure 27: Use case diagram for adding a new attribute to the Active Directory schema
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-ADOD].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+Figure 27: Use case diagram for adding a new attribute to the Active Directory schema
 
 Actors
 
@@ -5072,7 +5180,11 @@ Release: October 26, 2021
 
 81 / 182
 
-Figure 28: Use case diagram for adding an attribute to an existing class
+<!-- Extracted images from page 82 -->
+![Extracted image 1 from page 82]([MS-ADOD].images/page082-img01.png)
+<!-- /Extracted images from page 82 -->
+
+Figure 28: Use case diagram for adding an attribute to an existing class
 
 Actors
 
@@ -5201,7 +5313,11 @@ Release: October 26, 2021
 
 83 / 182
 
-7. The directory server sends a response to the client application indicating that the attribute or
+<!-- Extracted images from page 84 -->
+![Extracted image 1 from page 84]([MS-ADOD].images/page084-img01.png)
+<!-- /Extracted images from page 84 -->
+
+7. The directory server sends a response to the client application indicating that the attribute or
 the class is not defined in the schema.
 
 
@@ -5256,7 +5372,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Goal
+<!-- Extracted images from page 85 -->
+![Extracted image 1 from page 85]([MS-ADOD].images/page085-img01.png)
+<!-- /Extracted images from page 85 -->
+
+Goal
 
 Translate an object's SID to or from another format or type of name.
 
@@ -5435,7 +5555,11 @@ Release: October 26, 2021
 
 87 / 182
 
-Figure 31: Use cases for directory replication
+<!-- Extracted images from page 88 -->
+![Extracted image 1 from page 88]([MS-ADOD].images/page088-img01.png)
+<!-- /Extracted images from page 88 -->
+
+Figure 31: Use cases for directory replication
 
 2.7.5.1  Replicate Changes Within a Domain - Domain Controller
 
@@ -5465,7 +5589,11 @@ Release: October 26, 2021
 
 88 / 182
 
-Figure 32: Use case diagram for replicating changes in domain data
+<!-- Extracted images from page 89 -->
+![Extracted image 1 from page 89]([MS-ADOD].images/page089-img01.png)
+<!-- /Extracted images from page 89 -->
+
+Figure 32: Use case diagram for replicating changes in domain data
 
 Actors
 
@@ -5577,7 +5705,11 @@ Release: October 26, 2021
 
 90 / 182
 
-Figure 33: Use case diagram for replicating changes in a full replica to a GC or a partial
+<!-- Extracted images from page 91 -->
+![Extracted image 1 from page 91]([MS-ADOD].images/page091-img01.png)
+<!-- /Extracted images from page 91 -->
+
+Figure 33: Use case diagram for replicating changes in a full replica to a GC or a partial
 replica
 
 Actors
@@ -5686,7 +5818,11 @@ Release: October 26, 2021
 
 92 / 182
 
-Figure 34: Use case diagram for transferring a FSMO role
+<!-- Extracted images from page 93 -->
+![Extracted image 1 from page 93]([MS-ADOD].images/page093-img01.png)
+<!-- /Extracted images from page 93 -->
+
+Figure 34: Use case diagram for transferring a FSMO role
 
 Actors
 
@@ -5737,7 +5873,11 @@ Release: October 26, 2021
 
 93 / 182
 
-5.  DC2 determines the current owner of the FSMO role, which in this case is DC1, and invokes an
+<!-- Extracted images from page 94 -->
+![Extracted image 1 from page 94]([MS-ADOD].images/page094-img01.png)
+<!-- /Extracted images from page 94 -->
+
+5.  DC2 determines the current owner of the FSMO role, which in this case is DC1, and invokes an
 
 extended operation request ([MS-DRSR] section 4.1.10.4.3) against DC1 to request transfer of the
 FSMO role ownership.
@@ -5781,7 +5921,11 @@ Release: October 26, 2021
 
 94 / 182
 
-Figure 36: Use case diagram for creating a trust between domains or forests
+<!-- Extracted images from page 95 -->
+![Extracted image 1 from page 95]([MS-ADOD].images/page095-img01.png)
+<!-- /Extracted images from page 95 -->
+
+Figure 36: Use case diagram for creating a trust between domains or forests
 
 Actors
 
@@ -5832,7 +5976,11 @@ Release: October 26, 2021
 
 95 / 182
 
-The trust is created between the two domains.
+<!-- Extracted images from page 96 -->
+![Extracted image 1 from page 96]([MS-ADOD].images/page096-img01.png)
+<!-- /Extracted images from page 96 -->
+
+The trust is created between the two domains.
 
 Extensions
 
@@ -5861,7 +6009,11 @@ Release: October 26, 2021
 
 96 / 182
 
-Figure 38: Join a domain by creating a new account
+<!-- Extracted images from page 97 -->
+![Extracted image 1 from page 97]([MS-ADOD].images/page097-img01.png)
+<!-- /Extracted images from page 97 -->
+
+Figure 38: Join a domain by creating a new account
 
 Goal
 
@@ -5974,7 +6126,11 @@ Release: October 26, 2021
 
 98 / 182
 
-2.7.7.2  Unjoin from the Domain - Domain Client
+<!-- Extracted images from page 99 -->
+![Extracted image 1 from page 99]([MS-ADOD].images/page099-img01.png)
+<!-- /Extracted images from page 99 -->
+
+2.7.7.2  Unjoin from the Domain - Domain Client
 
 In this use case, a client administrator wants to unjoin a domain client from the domain that it is
 currently part of, usually to repurpose or decommission the client computer.
@@ -6095,7 +6251,11 @@ Release: October 26, 2021
 
 100 / 182
 
-Figure 40: Use case diagram for locating a domain controller
+<!-- Extracted images from page 101 -->
+![Extracted image 1 from page 101]([MS-ADOD].images/page101-img01.png)
+<!-- /Extracted images from page 101 -->
+
+Figure 40: Use case diagram for locating a domain controller
 
 Actors
 
@@ -7177,7 +7337,11 @@ Release: October 26, 2021
 
 114 / 182
 
-This task can be performed by using one or both of two possible approaches: DNS-based location or
+<!-- Extracted images from page 115 -->
+![Extracted image 1 from page 115]([MS-ADOD].images/page115-img01.png)
+<!-- /Extracted images from page 115 -->
+
+This task can be performed by using one or both of two possible approaches: DNS-based location or
 NetBIOS-based location. If the FQDN of the domain is available, the DNS-based location is performed.
 If only the NetBIOS name of the domain is available, or if the DNS-based location is unsuccessful, the
 NetBIOS-based location is performed.
@@ -7214,7 +7378,11 @@ Release: October 26, 2021
 
 115 / 182
 
-4.  The domain client receives the IP address that was resolved from the SRV record in an A/AAAA
+<!-- Extracted images from page 116 -->
+![Extracted image 1 from page 116]([MS-ADOD].images/page116-img01.png)
+<!-- /Extracted images from page 116 -->
+
+4.  The domain client receives the IP address that was resolved from the SRV record in an A/AAAA
 
 DNS response.
 
@@ -7308,7 +7476,11 @@ Release: October 26, 2021
 
 117 / 182
 
-Figure 43: Message flow to join a domain by creating a new account via SAMR
+<!-- Extracted images from page 118 -->
+![Extracted image 1 from page 118]([MS-ADOD].images/page118-img01.png)
+<!-- /Extracted images from page 118 -->
+
+Figure 43: Message flow to join a domain by creating a new account via SAMR
 
 1.  If the domain controller (DC) was not located earlier, the client locates a domain controller, as
 
@@ -7519,7 +7691,11 @@ Release: October 26, 2021
 
 121 / 182
 
-Figure 44: Message flow to join a domain by creating a new account via LDAP
+<!-- Extracted images from page 122 -->
+![Extracted image 1 from page 122]([MS-ADOD].images/page122-img01.png)
+<!-- /Extracted images from page 122 -->
+
+Figure 44: Message flow to join a domain by creating a new account via LDAP
 
 1.  If the domain controller was not located earlier, the client locates a domain controller, as
 
@@ -7701,7 +7877,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Sequence of Events
+<!-- Extracted images from page 125 -->
+![Extracted image 1 from page 125]([MS-ADOD].images/page125-img01.png)
+<!-- /Extracted images from page 125 -->
+
+Sequence of Events
 
 The following sequence diagram shows the message flow that is associated with this example.
 
@@ -7893,7 +8073,11 @@ Release: October 26, 2021
 
 127 / 182
 
-The new user object has been provisioned in the directory with the specified attributes.
+<!-- Extracted images from page 128 -->
+![Extracted image 1 from page 128]([MS-ADOD].images/page128-img01.png)
+<!-- /Extracted images from page 128 -->
+
+The new user object has been provisioned in the directory with the specified attributes.
 
 Sequence of Events
 
@@ -8092,7 +8276,11 @@ Release: October 26, 2021
 
 131 / 182
 
-Figure 47: Message flow for provisioning a user account by using the SAMR protocol
+<!-- Extracted images from page 132 -->
+![Extracted image 1 from page 132]([MS-ADOD].images/page132-img01.png)
+<!-- /Extracted images from page 132 -->
+
+Figure 47: Message flow for provisioning a user account by using the SAMR protocol
 
 Unless otherwise noted, all responses that include a return code contain a return code that indicates
 that the operation was successfully performed.
@@ -8259,7 +8447,11 @@ Release: October 26, 2021
 
 134 / 182
 
-The following sequence diagram depicts the message flow that is associated with this example.
+<!-- Extracted images from page 135 -->
+![Extracted image 1 from page 135]([MS-ADOD].images/page135-img01.png)
+<!-- /Extracted images from page 135 -->
+
+The following sequence diagram depicts the message flow that is associated with this example.
 
 Figure 48: Message flow for provisioning a user account by using the SAMR protocol
 
@@ -8413,7 +8605,11 @@ Release: October 26, 2021
 
 137 / 182
 
-Figure 49: Message flow for changing a user account's password
+<!-- Extracted images from page 138 -->
+![Extracted image 1 from page 138]([MS-ADOD].images/page138-img01.png)
+<!-- /Extracted images from page 138 -->
+
+Figure 49: Message flow for changing a user account's password
 
 Unless otherwise noted, all responses that include a return code contain a return code that indicates
 that the operation was performed successfully.
@@ -8587,7 +8783,11 @@ Release: October 26, 2021
 
 140 / 182
 
-None.
+<!-- Extracted images from page 141 -->
+![Extracted image 1 from page 141]([MS-ADOD].images/page141-img01.png)
+<!-- /Extracted images from page 141 -->
+
+None.
 
 Final System State
 
@@ -8740,7 +8940,11 @@ Release: October 26, 2021
 
 143 / 182
 
-Figure 51: User lastLogonTimeStamp update message flow
+<!-- Extracted images from page 144 -->
+![Extracted image 1 from page 144]([MS-ADOD].images/page144-img01.png)
+<!-- /Extracted images from page 144 -->
+
+Figure 51: User lastLogonTimeStamp update message flow
 
 Unless otherwise noted, all responses that include a return code contain a return code that indicates
 that the operation was performed successfully.
@@ -8817,7 +9021,11 @@ Release: October 26, 2021
 
 145 / 182
 
-Figure 52: Message flow for determining the group membership of a user
+<!-- Extracted images from page 146 -->
+![Extracted image 1 from page 146]([MS-ADOD].images/page146-img01.png)
+<!-- /Extracted images from page 146 -->
+
+Figure 52: Message flow for determining the group membership of a user
 
 Unless otherwise noted, all responses that include a return code contain a return code that indicates
 that the operation was performed successfully.
@@ -8948,7 +9156,11 @@ Release: October 26, 2021
 
 148 / 182
 
-Figure 53: Message flow for deleting a user account
+<!-- Extracted images from page 149 -->
+![Extracted image 1 from page 149]([MS-ADOD].images/page149-img01.png)
+<!-- /Extracted images from page 149 -->
+
+Figure 53: Message flow for deleting a user account
 
 Unless otherwise noted, all responses that include a return code contain a return code that indicates
 that the operation was performed successfully.
@@ -9028,7 +9240,11 @@ Release: October 26, 2021
 
 150 / 182
 
-Figure 54: Communication flow for obtaining a list of user accounts by using the Web
+<!-- Extracted images from page 151 -->
+![Extracted image 1 from page 151]([MS-ADOD].images/page151-img01.png)
+<!-- /Extracted images from page 151 -->
+
+Figure 54: Communication flow for obtaining a list of user accounts by using the Web
 Services protocols
 
 The client application uses the net.tcp transport to establish a connection to the directory service. In
@@ -9122,7 +9338,11 @@ Release: October 26, 2021
 
 152 / 182
 
-Figure 55: Message flow for obtaining a list of user accounts using LDAP
+<!-- Extracted images from page 153 -->
+![Extracted image 1 from page 153]([MS-ADOD].images/page153-img01.png)
+<!-- /Extracted images from page 153 -->
+
+Figure 55: Message flow for obtaining a list of user accounts using LDAP
 
 Unless otherwise noted, all responses that include a return code contain a return code that indicates
 that the operation was successfully performed.
@@ -9194,7 +9414,11 @@ Release: October 26, 2021
 
 154 / 182
 
-Figure 56: Communication flow to manage groups and their memberships
+<!-- Extracted images from page 155 -->
+![Extracted image 1 from page 155]([MS-ADOD].images/page155-img01.png)
+<!-- /Extracted images from page 155 -->
+
+Figure 56: Communication flow to manage groups and their memberships
 
 Unless otherwise noted, all responses that include a return code contain a return code that indicates
 that the operation was successfully performed.
@@ -9362,7 +9586,11 @@ Release: October 26, 2021
 
 157 / 182
 
-The security group object is successfully converted into a tombstone or deleted-object, depending
+<!-- Extracted images from page 158 -->
+![Extracted image 1 from page 158]([MS-ADOD].images/page158-img01.png)
+<!-- /Extracted images from page 158 -->
+
+The security group object is successfully converted into a tombstone or deleted-object, depending
 upon whether the Recycle Bin optional feature is enabled, as described in [MS-ADTS] sections
 3.1.1.5.5.1.1 and 3.1.1.5.5.1.2.
 
@@ -9405,7 +9633,11 @@ Release: October 26, 2021
 
 158 / 182
 
-3.2.13 Example 13: Extend the Schema to Support an Application by Adding a New
+<!-- Extracted images from page 159 -->
+![Extracted image 1 from page 159]([MS-ADOD].images/page159-img01.png)
+<!-- /Extracted images from page 159 -->
+
+3.2.13 Example 13: Extend the Schema to Support an Application by Adding a New
 
 Class
 
@@ -9513,7 +9745,11 @@ Release: October 26, 2021
 
 160 / 182
 
-Figure 59: Message flow for extending the schema by adding an attribute
+<!-- Extracted images from page 161 -->
+![Extracted image 1 from page 161]([MS-ADOD].images/page161-img01.png)
+<!-- /Extracted images from page 161 -->
+
+Figure 59: Message flow for extending the schema by adding an attribute
 
 The sequence of events is described in the following steps.
 
@@ -9555,7 +9791,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-directory server that owns the Schema Master FSMO role in the Active Directory system. The client
+<!-- Extracted images from page 162 -->
+![Extracted image 1 from page 162]([MS-ADOD].images/page162-img01.png)
+<!-- /Extracted images from page 162 -->
+
+directory server that owns the Schema Master FSMO role in the Active Directory system. The client
 application adds an attribute to a class using LDAP.
 
 This example uses LDAP.
@@ -9654,7 +9894,11 @@ Release: October 26, 2021
 
 163 / 182
 
-Figure 61: Message flow for partitioning directory data
+<!-- Extracted images from page 164 -->
+![Extracted image 1 from page 164]([MS-ADOD].images/page164-img01.png)
+<!-- /Extracted images from page 164 -->
+
+Figure 61: Message flow for partitioning directory data
 
 Unless otherwise noted, all responses that include a return code contain a return code that indicates
 that the operation was performed successfully.
@@ -9744,7 +9988,11 @@ Release: October 26, 2021
 
 165 / 182
 
-Figure 62: Message flow for storing application data in the directory
+<!-- Extracted images from page 166 -->
+![Extracted image 1 from page 166]([MS-ADOD].images/page166-img01.png)
+<!-- /Extracted images from page 166 -->
+
+Figure 62: Message flow for storing application data in the directory
 
 Unless otherwise noted, all responses that include a return code contain a return code that indicates
 that the operation was successfully performed.
@@ -9826,7 +10074,11 @@ Release: October 26, 2021
 
 167 / 182
 
-Figure 63: Message flow to manage access control on a directory object
+<!-- Extracted images from page 168 -->
+![Extracted image 1 from page 168]([MS-ADOD].images/page168-img01.png)
+<!-- /Extracted images from page 168 -->
+
+Figure 63: Message flow to manage access control on a directory object
 
 Unless otherwise noted, all responses that include a return code contain a return code indicating that
 the operation was successfully performed. There is no dependency between LDAP and LSAT messages
@@ -9862,7 +10114,11 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-and then sends an LsarOpenPolicy<7> request ([MS-LSAT] section 3.1.4.2) with the
+<!-- Extracted images from page 169 -->
+![Extracted image 1 from page 169]([MS-ADOD].images/page169-img01.png)
+<!-- /Extracted images from page 169 -->
+
+and then sends an LsarOpenPolicy<7> request ([MS-LSAT] section 3.1.4.2) with the
 DesiredAccess parameter set to POLICY_LOOKUP_NAMES ([MS-LSAD] section 2.2.1.1.2) to the
 server to retrieve a context handle that it can later use to request name/SID translations.
 
@@ -9929,7 +10185,11 @@ Release: October 26, 2021
 
 169 / 182
 
-This example covers the use case in section 2.7.1.3, "Modify Directory Object - Client Application".
+<!-- Extracted images from page 170 -->
+![Extracted image 1 from page 170]([MS-ADOD].images/page170-img01.png)
+<!-- /Extracted images from page 170 -->
+
+This example covers the use case in section 2.7.1.3, "Modify Directory Object - Client Application".
 
 Prerequisites
 
@@ -10032,7 +10292,11 @@ Release: October 26, 2021
 
 171 / 182
 
-Figure 66: Message flow for replication changes within a domain
+<!-- Extracted images from page 172 -->
+![Extracted image 1 from page 172]([MS-ADOD].images/page172-img01.png)
+<!-- /Extracted images from page 172 -->
+
+Figure 66: Message flow for replication changes within a domain
 
 1.  DC1 and DC2 use Kerberos ([MS-DRSR] section 2.2.3.2) to perform mutual authentication.
 
@@ -10129,7 +10393,11 @@ Release: October 26, 2021
 
 173 / 182
 
-Figure 67: Message flow for transferring FSMO roles
+<!-- Extracted images from page 174 -->
+![Extracted image 1 from page 174]([MS-ADOD].images/page174-img01.png)
+<!-- /Extracted images from page 174 -->
+
+Figure 67: Message flow for transferring FSMO roles
 
 1.  DC1 uses Kerberos ([MS-DRSR] section 2.2.3.2) to perform mutual authentication with DC2.
 
@@ -10233,7 +10501,11 @@ Release: October 26, 2021
 
 175 / 182
 
-27. DC1 sends an IDL_DRSUnbind request to DC3, which destroys the context handle that was
+<!-- Extracted images from page 176 -->
+![Extracted image 1 from page 176]([MS-ADOD].images/page176-img01.png)
+<!-- /Extracted images from page 176 -->
+
+27. DC1 sends an IDL_DRSUnbind request to DC3, which destroys the context handle that was
 
 previously created by the IDL_DRSBind request ([MS-DRSR] section 4.1.25).
 

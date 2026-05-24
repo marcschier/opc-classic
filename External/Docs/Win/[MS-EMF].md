@@ -1720,7 +1720,11 @@ Release: April 23, 2024
 
 17 / 282
 
-  Extension 1: The second version and first extension added a pixel format record and support for
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-EMF].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+  Extension 1: The second version and first extension added a pixel format record and support for
 
 OpenGL commands, enhancing the device independence and flexibility of EMF.
 
@@ -1837,7 +1841,11 @@ Release: April 23, 2024
 
 19 / 282
 
-  Enhanced metafile format plus extensions (EMF+) records ([MS-EMFPLUS] section 2.3) can
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-EMF].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+  Enhanced metafile format plus extensions (EMF+) records ([MS-EMFPLUS] section 2.3) can
 
 contain Windows metafile format (WMF) records ([MS-WMF] section 2.3).
 
@@ -9633,7 +9641,11 @@ Release: April 23, 2024
 
 118 / 282
 
-Figure 3: Header type determination algorithm
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MS-EMF].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+Figure 3: Header type determination algorithm
 
 After applying the algorithm, consider the value of HeaderSize field:
 
@@ -18154,7 +18166,11 @@ Release: April 23, 2024
 
 217 / 282
 
-Because metafiles are developed and written on little-endian computers, playback performs this
+<!-- Extracted images from page 218 -->
+![Extracted image 1 from page 218]([MS-EMF].images/page218-img01.png)
+<!-- /Extracted images from page 218 -->
+
+Because metafiles are developed and written on little-endian computers, playback performs this
 computation on computers that are big-endian.
 
 3.2  EMF Metafile Example

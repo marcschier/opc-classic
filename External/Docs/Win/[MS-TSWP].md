@@ -908,7 +908,11 @@ Release: April 23, 2024
 
 8 / 53
 
-[XMLSCHEMA1/2] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-TSWP].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+[XMLSCHEMA1/2] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema
 Part 1: Structures Second Edition", W3C Recommendation, October 2004,
 https://www.w3.org/TR/2004/REC-xmlschema-1-20041028/
 
@@ -2286,7 +2290,11 @@ Release: April 23, 2024
 
 28 / 53
 
-3.1.3  Initialization
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-TSWP].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+3.1.3  Initialization
 
 None.
 
@@ -2353,7 +2361,11 @@ Release: April 23, 2024
 
 30 / 53
 
-Figure 3: Message flow between TSWPP client and TSWPP server on first connection with
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-TSWP].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+Figure 3: Message flow between TSWPP client and TSWPP server on first connection with
 content negotiation
 
 The message flow proceeds as in section 3.1.5.1 until the final round of communication between the
@@ -2379,7 +2391,12 @@ Release: April 23, 2024
 
 31 / 53
 
-Figure 4: Message flow between TSWPP client and TSWPP server on subsequent requests
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-TSWP].images/page032-img01.png)
+![Extracted image 2 from page 32]([MS-TSWP].images/page032-img02.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 4: Message flow between TSWPP client and TSWPP server on subsequent requests
 without content negotiation
 
 In the preceding figure, the TSWPP client has already obtained the .ASPXAUTH cookie shown in
@@ -2408,7 +2425,11 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In the preceding figure, the TSWPP client has already obtained the .ASPXAUTH cookie as shown in
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-TSWP].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+In the preceding figure, the TSWPP client has already obtained the .ASPXAUTH cookie as shown in
 section 3.1.5.2.1. This cookie is set in the HTTP request header (section 2.2.3) and the XML file
 containing the resource list is requested.
 

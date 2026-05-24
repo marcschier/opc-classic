@@ -1079,7 +1079,11 @@ Release: April 23, 2024
 
 11 / 37
 
-This document specifies the behavior of the administrative plug-in mentioned in step 1. The operation
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-GPEF].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+This document specifies the behavior of the administrative plug-in mentioned in step 1. The operation
 of the Group Policy: Core Protocol in step 2 is specified in [MS-GPOL] section 3.2. The process of
 retrieving the settings in step 3 is specified in [MS-GPREG] section 3.2. Step 4 and step 5 are specific
 to EFS and are not specified.

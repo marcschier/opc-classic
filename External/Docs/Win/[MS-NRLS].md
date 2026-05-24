@@ -967,7 +967,11 @@ and can use it to create a Proxy to invoke methods on the CAO.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-An example of a client activating an instance and invoking a Remote Method, increment(), is shown in
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-NRLS].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+An example of a client activating an instance and invoking a Remote Method, increment(), is shown in
 the following figure.
 
 Figure 1: Client activating a server object
@@ -1002,7 +1006,12 @@ removed from the Server Object Table, making it unavailable to clients.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-An example of a client managing the lifetime of a Server Object is shown in the following examples.
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-NRLS].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-NRLS].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+An example of a client managing the lifetime of a Server Object is shown in the following examples.
 
 The client invokes a Remote Method on the Server Object, as follows.
 
@@ -1021,7 +1030,11 @@ Release: March 13, 2019
 
 10 / 50
 
-Figure 4: Registering a Sponsor
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-NRLS].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 4: Registering a Sponsor
 
 For more information about how leases and Sponsors are exposed in Windows, see [MSDN-
 RemotingLifetime].
@@ -1037,7 +1050,11 @@ Release: March 13, 2019
 
 11 / 50
 
-Figure 5: Client timed out or unresponsive
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-NRLS].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 5: Client timed out or unresponsive
 
 1.3.4  Notational Conventions
 
@@ -1061,7 +1078,11 @@ methods for activation and lifetime management.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The protocol layering of the related protocols is as follows.
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-NRLS].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+The protocol layering of the related protocols is as follows.
 
 Figure 6: NRLS protocol stack
 
@@ -1726,7 +1747,11 @@ Release: March 13, 2019
 
 22 / 50
 
- Method
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-NRLS].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+ Method
 
  Description
 
@@ -2324,7 +2349,11 @@ Release: March 13, 2019
 
 32 / 50
 
-4  Protocol Examples
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-NRLS].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+4  Protocol Examples
 
 The following sections provide common scenarios to illustrate the function of the .NET Remoting:
 Lifetime Services Extension.
@@ -2912,7 +2941,11 @@ Release: March 13, 2019
 
 40 / 50
 
-       BinaryHeaderEnum: BinaryObjectString (0x06)
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-NRLS].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+       BinaryHeaderEnum: BinaryObjectString (0x06)
        ObjectId: 16 (0x10)
        Length: 25 (0x19)
        Value: tcp://172.30.184.185:8080
@@ -2947,7 +2980,11 @@ Release: March 13, 2019
 
 41 / 50
 
-4.3  Incrementing TTL of a Server Object
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-NRLS].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+4.3  Incrementing TTL of a Server Object
 
 The client does not need to register a Sponsor to manage the lifetime of the remote Server Object.
 

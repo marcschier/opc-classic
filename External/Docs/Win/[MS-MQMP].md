@@ -1245,7 +1245,11 @@ Release: April 23, 2024
 
 12 / 134
 
-Figure 1: Protocol relationships
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-MQMP].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 1: Protocol relationships
 
 Additionally, the MSDTC Connection Manager: OleTx Transaction Protocol [MS-DTCO] is used by
 applications to orchestrate external transaction scenarios for this protocol.
@@ -8825,7 +8829,11 @@ Release: April 23, 2024
 
 99 / 134
 
-4  Protocol Examples
+<!-- Extracted images from page 100 -->
+![Extracted image 1 from page 100]([MS-MQMP].images/page100-img01.png)
+<!-- /Extracted images from page 100 -->
+
+4  Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Message Queuing (MSMQ): Queue Manager Client Protocol.
@@ -8856,7 +8864,11 @@ Release: April 23, 2024
 
 100 / 134
 
-4.  The application performs operations utilizing the local queue handle, such as send, receive, peek,
+<!-- Extracted images from page 101 -->
+![Extracted image 1 from page 101]([MS-MQMP].images/page101-img01.png)
+<!-- /Extracted images from page 101 -->
+
+4.  The application performs operations utilizing the local queue handle, such as send, receive, peek,
 
 or purge.
 
@@ -8952,7 +8964,11 @@ Release: April 23, 2024
 
 102 / 134
 
-Figure 4: Creating and closing a local cursor
+<!-- Extracted images from page 103 -->
+![Extracted image 1 from page 103]([MS-MQMP].images/page103-img01.png)
+<!-- /Extracted images from page 103 -->
+
+Figure 4: Creating and closing a local cursor
 
 1.  The application creates a local cursor using the qmcomm2 interface.
 
@@ -8972,7 +8988,11 @@ Release: April 23, 2024
 
 103 / 134
 
-Figure 5: Creating and closing a remote cursor
+<!-- Extracted images from page 104 -->
+![Extracted image 1 from page 104]([MS-MQMP].images/page104-img01.png)
+<!-- /Extracted images from page 104 -->
+
+Figure 5: Creating and closing a remote cursor
 
 1.  The application begins the process of creating a cursor by calling the rpc_ACCreateCursorEx
 
@@ -9045,7 +9065,11 @@ Release: April 23, 2024
 
 105 / 134
 
-Figure 6: Using server resource manager for internal transaction
+<!-- Extracted images from page 106 -->
+![Extracted image 1 from page 106]([MS-MQMP].images/page106-img01.png)
+<!-- /Extracted images from page 106 -->
+
+Figure 6: Using server resource manager for internal transaction
 
 1.  Prior to invoking R_QMEnlistInternalTransaction (section 3.1.4.14), the application creates a new
 unique transactional unit of work identifier XACTUOW ([MS-MQMQ] section 2.2.18.1.8).<78>

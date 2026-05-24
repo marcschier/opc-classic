@@ -3030,7 +3030,11 @@ Release: April 23, 2024
 
 33 / 42
 
-4  Protocol Examples
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-MQCN].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+4  Protocol Examples
 
 4.1  Management Client Update Profile
 

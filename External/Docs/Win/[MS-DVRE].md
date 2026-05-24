@@ -589,7 +589,11 @@ Release: April 23, 2024
 
 7 / 37
 
-[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-DVRE].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
@@ -626,7 +630,11 @@ Release: April 23, 2024
 
 8 / 37
 
-Figure 2: Device Registration Enrollment protocol stack
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-DVRE].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 2: Device Registration Enrollment protocol stack
 
 The Device Registration Enrollment protocol makes use of the Hypertext Transfer Protocol over
 Secure Sockets Layer (HTTPS) and SOAP protocols for messaging and security.
@@ -966,7 +974,11 @@ Release: April 23, 2024
 
 14 / 37
 
-Figure 3: State model for security token service
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-DVRE].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 3: State model for security token service
 
 The items of information that are communicated between the server and the directory server are
 specified in subsequent sections of this document.

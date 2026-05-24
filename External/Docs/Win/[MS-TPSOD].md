@@ -454,7 +454,11 @@ Release: October 26, 2021
 
 5 / 71
 
-  Single-Phase Commit (section 1.1.4)
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-TPSOD].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+  Single-Phase Commit (section 1.1.4)
 
   Core and Optional Protocols (section 1.1.5)
 
@@ -944,7 +948,11 @@ Release: October 26, 2021
 
 13 / 71
 
-Figure 2: Components interacting with the transaction processing services
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-TPSOD].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: Components interacting with the transaction processing services
 
 Applications, application services, resource managers, external applications, external application
 services, external resource managers, and external transaction managers use a set of system
@@ -1001,7 +1009,11 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-background, they can use transaction processing services to fulfill the required transaction
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-TPSOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+background, they can use transaction processing services to fulfill the required transaction
 coordination semantics. This way, the complexity of interacting with the transaction processing
 services is minimized.
 
@@ -1081,7 +1093,11 @@ Release: October 26, 2021
 
 16 / 71
 
-Figure 4: Distributed communication between the roles as defined in the transaction
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-TPSOD].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 4: Distributed communication between the roles as defined in the transaction
 lifecycle
 
 As shown in the previous diagram, the system uses various facets to enable communication between
@@ -1107,7 +1123,11 @@ Release: October 26, 2021
 
 17 / 71
 
-Figure 5: Transaction processing services protocol dependencies
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-TPSOD].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 5: Transaction processing services protocol dependencies
 
 This section describes the roles played by each member protocol in the overall function of the system:
 
@@ -1717,7 +1737,11 @@ Release: October 26, 2021
 
 24 / 71
 
-Figure 6: Use case diagram for performing transaction work
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-TPSOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 6: Use case diagram for performing transaction work
 
 Goal: To perform transaction work between a root transaction manager and one or more remote
 
@@ -1814,7 +1838,11 @@ Release: October 26, 2021
 
 26 / 71
 
-2.5.2  Complete a Transaction – Application
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-TPSOD].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+2.5.2  Complete a Transaction – Application
 
 In this use case, the application either commits or aborts the transaction and completes the
 transaction on all transaction participants.
@@ -1864,7 +1892,11 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Main success scenario:
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-TPSOD].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+Main success scenario:
 
 1.  Trigger: The application triggers the root transaction manager.
 
@@ -1916,7 +1948,11 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Application: The application is a program that performs transactions in a distributed computed
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-TPSOD].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Application: The application is a program that performs transactions in a distributed computed
 
 network that creates a transaction, and therefore, only that application has the right to commit
 the transaction.
@@ -2054,7 +2090,11 @@ Release: October 26, 2021
 
 30 / 71
 
-2.5.5  Transaction Recovery - Remote Transaction Manager
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-TPSOD].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+2.5.5  Transaction Recovery - Remote Transaction Manager
 
 This use case shows how the transaction manager drives recovery where a connection to a
 subordinate transaction manager breaks down during the two-phase commit protocol, as
@@ -2671,7 +2711,11 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.9  Security
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-TPSOD].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+2.9  Security
 
 This section documents the system-wide security issues that are not otherwise described in the
 specifications for the member protocols. It does not duplicate what is already in the member protocol
@@ -2926,7 +2970,11 @@ Release: October 26, 2021
 
 43 / 71
 
-Figure 12: Example of performing a transaction with two transaction managers
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-TPSOD].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+Figure 12: Example of performing a transaction with two transaction managers
 
 The following steps describe the sequence:
 
@@ -3104,7 +3152,11 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The messages that are exchanged in this example are contained within the two-phase commit
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-TPSOD].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+The messages that are exchanged in this example are contained within the two-phase commit
 notifications action between the system and participating roles.
 
 Figure 13: Example of committing a transaction
@@ -3201,7 +3253,11 @@ Release: October 26, 2021
 
 48 / 71
 
-The diagram of the transaction tree for this example is shown in Example 1, as described in section
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-TPSOD].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+The diagram of the transaction tree for this example is shown in Example 1, as described in section
 3.1.
 
 Prerequisites:
@@ -3326,7 +3382,11 @@ Release: October 26, 2021
 
 50 / 71
 
-Final System State
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-TPSOD].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+Final System State
 
 Recovers the transaction after the breakdown of the remote transaction manager.
 
@@ -3480,7 +3540,11 @@ Release: October 26, 2021
 
 53 / 71
 
-Figure 16: Example of a resource manager connection breakdown during a two-phase
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MS-TPSOD].images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+Figure 16: Example of a resource manager connection breakdown during a two-phase
 commit
 
 The message flow that is shown in this example is as follows:
@@ -3671,7 +3735,11 @@ Release: October 26, 2021
 
 56 / 71
 
-
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-TPSOD].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+
 
 Precursory Message Exchange (section 3.6.1)
 
@@ -3834,7 +3902,11 @@ Release: October 26, 2021
 
 59 / 71
 
-3.6.2  Application-Driven Transactional Message Exchange
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-TPSOD].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+3.6.2  Application-Driven Transactional Message Exchange
 
 Figure 18: Transactional message exchange before a two-phase commit in a distributed
 transaction
@@ -4028,7 +4100,11 @@ Release: October 26, 2021
 
 63 / 71
 
-Figure 19: Two-phase commit protocol message exchange in a distributed transaction
+<!-- Extracted images from page 64 -->
+![Extracted image 1 from page 64]([MS-TPSOD].images/page064-img01.png)
+<!-- /Extracted images from page 64 -->
+
+Figure 19: Two-phase commit protocol message exchange in a distributed transaction
 
 The following steps describe this sequence:
 

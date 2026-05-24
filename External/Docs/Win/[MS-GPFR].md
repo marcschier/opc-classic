@@ -1009,7 +1009,11 @@ Release: April 23, 2024
 
 10 / 34
 
-1.3.3  Folder Redirection Administrative-Side Plug-In
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-GPFR].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+1.3.3  Folder Redirection Administrative-Side Plug-In
 
 The Folder Redirection Administrative-Side Plug-in determines (through the Group Policy Protocol, as
 specified in [MS-GPOL]) the path of a file containing the Folder Redirection protocol data. Given the

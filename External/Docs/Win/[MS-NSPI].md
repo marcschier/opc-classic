@@ -1034,7 +1034,11 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-NLMP] Microsoft Corporation, "NT LAN Manager (NTLM) Authentication Protocol".
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-NSPI].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+[MS-NLMP] Microsoft Corporation, "NT LAN Manager (NTLM) Authentication Protocol".
 
 [MS-OXCDATA] Microsoft Corporation, "Data Structures".
 
@@ -2759,7 +2763,11 @@ Name Service Provider Interface (NSPI) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-is otherwise unchanged from the AndRestriction and OrRestriction data structures, as context
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-NSPI].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+is otherwise unchanged from the AndRestriction and OrRestriction data structures, as context
 dictates.
 
  typedef struct _AndOrRestriction_r {
@@ -6637,7 +6645,11 @@ Release: April 23, 2024
 
 82 / 103
 
-4  Protocol Examples
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83]([MS-NSPI].images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+4  Protocol Examples
 
 This section illustrates the call sequence of obtaining the address book hierarchy table at the NSPI
 layer. It further illustrates how a messaging client can use this table to retrieve properties of the

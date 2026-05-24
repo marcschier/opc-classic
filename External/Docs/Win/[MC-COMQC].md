@@ -888,7 +888,11 @@ Release: April 23, 2024
 
 8 / 31
 
-1.3  Overview
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MC-COMQC].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+1.3  Overview
 
 The Component Object Model Plus (COM+) Queued Components Protocol enables a client  to
 asynchronously invoke methods on a server in scenarios of limited or intermittent connectivity. It does
@@ -1048,7 +1052,12 @@ Release: April 23, 2024
 
 11 / 31
 
-Figure 2: Header ordering
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MC-COMQC].images/page012-img01.png)
+![Extracted image 2 from page 12]([MC-COMQC].images/page012-img02.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: Header ordering
 
 A method header group contains all state of a single method call to be made on the server. Every
 message MUST contain one or more method header groups. The default method header group is
@@ -1072,7 +1081,13 @@ Release: April 23, 2024
 
 12 / 31
 
-Figure 4: Short method optimization
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MC-COMQC].images/page013-img01.png)
+![Extracted image 2 from page 13]([MC-COMQC].images/page013-img02.png)
+![Extracted image 3 from page 13]([MC-COMQC].images/page013-img03.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 4: Short method optimization
 
 If the security properties do not match the security context of the immediately preceding method
 call but do match the security context of a different previous method call, the optimization defined in
@@ -1830,7 +1845,11 @@ Release: April 23, 2024
 
 24 / 31
 
-4  Protocol Examples
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MC-COMQC].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+4  Protocol Examples
 
 This section describes an example of a common use of the COMQC where a client application running
 on a roaming computer with intermittent access to a network wants to send data to a server
@@ -1869,7 +1888,11 @@ Release: April 23, 2024
 
 25 / 31
 
-Figure 8: Server-side exchange
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MC-COMQC].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 8: Server-side exchange
 
 The COMQC server is notified by MSMQ that a message arrived. The server receives the message
 from MSMQ and validates it.

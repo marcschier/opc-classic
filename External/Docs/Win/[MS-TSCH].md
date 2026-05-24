@@ -10730,7 +10730,11 @@ Release: April 23, 2024
 
 122 / 149
 
-4  Protocol Examples
+<!-- Extracted images from page 123 -->
+![Extracted image 1 from page 123]([MS-TSCH].images/page123-img01.png)
+<!-- /Extracted images from page 123 -->
+
+4  Protocol Examples
 
 The following sections provide several examples that illustrate the most complex Task Scheduler
 Remoting Protocol operation: task creation by the Scheduling Agent.
@@ -10765,7 +10769,11 @@ Release: April 23, 2024
 
 123 / 149
 
-Figure 2: Example of task creation with ITaskSchedulerService protocol
+<!-- Extracted images from page 124 -->
+![Extracted image 1 from page 124]([MS-TSCH].images/page124-img01.png)
+<!-- /Extracted images from page 124 -->
+
+Figure 2: Example of task creation with ITaskSchedulerService protocol
 
 The client binds to the server, as specified in section 3.1.3. Next, the client inquires about the highest
 task version supported by the server to which a ITaskScheduler compliant server will reply with the
@@ -10842,7 +10850,11 @@ Release: April 23, 2024
 
 125 / 149
 
-Figure 3: SASec operation flow
+<!-- Extracted images from page 126 -->
+![Extracted image 1 from page 126]([MS-TSCH].images/page126-img01.png)
+<!-- /Extracted images from page 126 -->
+
+Figure 3: SASec operation flow
 
 Server_Bind: Client binds to the server, as specified in section 3.1.3.
 
@@ -10869,7 +10881,11 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Set_Task_Account_Failed: Server returns an error indicating that the requested account could not
+<!-- Extracted images from page 127 -->
+![Extracted image 1 from page 127]([MS-TSCH].images/page127-img01.png)
+<!-- /Extracted images from page 127 -->
+
+Set_Task_Account_Failed: Server returns an error indicating that the requested account could not
 
 be resolved.
 

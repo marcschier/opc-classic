@@ -672,7 +672,11 @@ Release: October 26, 2021
 
 9 / 51
 
-Figure 1: Relationships of Storage Services protocols with external components
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-STOROD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Relationships of Storage Services protocols with external components
 
 The main external components that interact with the Storage Services protocols are as follows:
 
@@ -701,7 +705,11 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-set of attributes, also called properties, which describe the file or the data within the file. The creation
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-STOROD].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+set of attributes, also called properties, which describe the file or the data within the file. The creation
 time of a file is an example of a file attribute.
 
 The dotted line in the diagram "Relationships of Storage Services protocols with external components"
@@ -865,7 +873,11 @@ Release: October 26, 2021
 
 13 / 51
 
-Figure 3: Relationship between the Storage Services protocols
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-STOROD].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 3: Relationship between the Storage Services protocols
 
 The EFSR Protocol uses the interfaces, described in [MS-WCCE], for certificate enrollment, which in
 turn uses DCOM, as described in [MS-DCOM], as the transport. For all other operations, EFSR directly
@@ -1105,7 +1117,11 @@ Release: October 26, 2021
 
 16 / 51
 
-Figure 4: Manage Disks and Volumes use case diagram
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-STOROD].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 4: Manage Disks and Volumes use case diagram
 
 The following sections describe each use case for the Manage Disks and Volumes use case group.
 
@@ -1442,7 +1458,11 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Postcondition
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-STOROD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Postcondition
 
 The required configuration of an HBA port and an iSCSI initiator has finished successfully.
 
@@ -1735,7 +1755,11 @@ Release: October 26, 2021
 
 26 / 51
 
-Figure 6: Manage Removable Media use case diagram
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-STOROD].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 6: Manage Removable Media use case diagram
 
 2.5.3.1  Create and Delete a Media Pool
 
@@ -1999,7 +2023,11 @@ Release: October 26, 2021
 
 30 / 51
 
-The following use case diagram shows the functionality for encrypted file access control and
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-STOROD].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+The following use case diagram shows the functionality for encrypted file access control and
 encryption.
 
 Figure 7: Encrypted file access control and encryption use case diagram
@@ -2475,7 +2503,11 @@ Release: October 26, 2021
 
 37 / 51
 
-Figure 8: Example of making an offline disk into an online disk
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-STOROD].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 8: Example of making an offline disk into an online disk
 
 The following steps describe this sequence:
 
@@ -2528,7 +2560,11 @@ Release: October 26, 2021
 
 38 / 51
 
-Figure 9: Configuring an iSCSI drive
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-STOROD].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 9: Configuring an iSCSI drive
 
 The following steps describe this sequence:
 
@@ -2582,7 +2618,11 @@ Release: October 26, 2021
 
 39 / 51
 
-Figure 10: Creating a shadow copy
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-STOROD].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+Figure 10: Creating a shadow copy
 
 The following steps describe this sequence:
 
@@ -2623,7 +2663,11 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.4  Example 4: Create and Delete a Media Pool
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-STOROD].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+3.4  Example 4: Create and Delete a Media Pool
 
 This example demonstrates creating and deleting a media pool as described in section 2.5.3.1.
 
@@ -2681,7 +2725,11 @@ Release: October 26, 2021
 
 41 / 51
 
-3.5  Example 5: Encrypt a File
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-STOROD].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+3.5  Example 5: Encrypt a File
 
 This example demonstrates encrypting a file as described in section 2.5.4.2.
 
@@ -2742,7 +2790,11 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.6  Example 6: Decrypting an Encrypted File
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-STOROD].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+3.6  Example 6: Decrypting an Encrypted File
 
 This example demonstrates decrypting an encrypted file as described in section 2.5.4.3.
 
@@ -2831,7 +2883,11 @@ Release: October 26, 2021
 
 44 / 51
 
-Figure 14: Perform backup of a file share
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-STOROD].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+Figure 14: Perform backup of a file share
 
 The following steps describe this sequence:
 

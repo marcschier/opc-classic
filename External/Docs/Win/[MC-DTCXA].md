@@ -2020,7 +2020,11 @@ MSDTC Connection Manager: OleTx XA Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[XOPEN-DTP]. A third-party TM communicates with the OleTx Transaction Manager using the
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MC-DTCXA].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+[XOPEN-DTP]. A third-party TM communicates with the OleTx Transaction Manager using the
 extensions provided in this document, and the OleTx Transaction Manager communicates with the
 OleTx Resource Manager via the OleTx Transaction Protocol specified in [MS-DTCO]. This scenario
 is further discussed in 1.3.1.1.
@@ -2070,7 +2074,11 @@ Release: April 23, 2024
 
 17 / 252
 
-Figure 2: OleTx Resource Managers enlisting with XA Transaction Managers topology
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MC-DTCXA].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 2: OleTx Resource Managers enlisting with XA Transaction Managers topology
 
 The following sections illustrate the interactions that take place between these components in a
 common scenario drawn from each of the following areas of distributed transaction processing:
@@ -2092,7 +2100,11 @@ Release: April 23, 2024
 
 18 / 252
 
-The following sequence diagram is a schematic of the interaction that takes place between the various
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MC-DTCXA].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+The following sequence diagram is a schematic of the interaction that takes place between the various
 software components involved in the usage scenario when an OleTx Resource Manager is enlisted in
 a transaction coordinated by an XA Transaction Manager, and the transaction is committed.
 
@@ -2162,7 +2174,11 @@ Release: April 23, 2024
 
 20 / 252
 
-Figure 4: XA Superior Transaction recovery
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MC-DTCXA].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 4: XA Superior Transaction recovery
 
 The protocols involved are specified as follows:
 
@@ -2211,7 +2227,11 @@ Release: April 23, 2024
 
 22 / 252
 
-Figure 5: XA Resource Managers enlisting with Transaction Managers topology (two-pipe
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MC-DTCXA].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 5: XA Resource Managers enlisting with Transaction Managers topology (two-pipe
 model)
 
 [MC-DTCXA] - v20240423
@@ -2221,7 +2241,11 @@ Release: April 23, 2024
 
 23 / 252
 
-Figure 6: XA Resource Managers enlisting with Transaction Managers topology (one-pipe
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MC-DTCXA].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 6: XA Resource Managers enlisting with Transaction Managers topology (one-pipe
 model)
 
 The following sections illustrate the interactions that take place between these components in a
@@ -2298,7 +2322,11 @@ Release: April 23, 2024
 
 25 / 252
 
-Figure 7: XA Resource Manager Transaction recovery
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MC-DTCXA].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 7: XA Resource Manager Transaction recovery
 
 The protocols involved are specified as follows:
 
@@ -2339,7 +2367,11 @@ Release: April 23, 2024
 
 26 / 252
 
-The following sequence diagram is a schematic of the interactions that take place between the various
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MC-DTCXA].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+The following sequence diagram is a schematic of the interactions that take place between the various
 software components involved in the usage scenario when a Two-Pipe XA Resource Manager is
 registered with a Transaction Manager.
 
@@ -2415,7 +2447,11 @@ Release: April 23, 2024
 
 28 / 252
 
-Figure 9: Two-pipe XA Resource Manager Transaction enlistment and completion
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MC-DTCXA].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 9: Two-pipe XA Resource Manager Transaction enlistment and completion
 
 The protocols involved are specified as follows:
 
@@ -2489,7 +2525,11 @@ Release: April 23, 2024
 
 30 / 252
 
-Figure 10: One-pipe XA Resource Manager registration and unregistration
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MC-DTCXA].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+Figure 10: One-pipe XA Resource Manager registration and unregistration
 
 The protocols involved are specified as follows:
 
@@ -2560,7 +2600,11 @@ Release: April 23, 2024
 
 32 / 252
 
-Figure 11: One-pipe XA Resource Manager transaction enlistment and completion
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MC-DTCXA].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 11: One-pipe XA Resource Manager transaction enlistment and completion
 
 The protocols involved are specified as follows:
 
@@ -5985,7 +6029,11 @@ Release: April 23, 2024
 
 74 / 252
 
-Figure 12: CONNTYPE_XAUSER_CONTROL acceptor states
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MC-DTCXA].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+Figure 12: CONNTYPE_XAUSER_CONTROL acceptor states
 
 3.2.1.3  CONNTYPE_XAUSER_XACT_START Acceptor States
 
@@ -6025,7 +6073,11 @@ Release: April 23, 2024
 
 75 / 252
 
-The following events are processed in this state:
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MC-DTCXA].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+The following events are processed in this state:
 
   Create Superior Enlistment Success (section 3.2.7.2).
 
@@ -6110,7 +6162,11 @@ Release: April 23, 2024
 
 77 / 252
 
-Figure 14: CONNTYPE_XAUSER_XACT_OPEN acceptor states
+<!-- Extracted images from page 78 -->
+![Extracted image 1 from page 78]([MC-DTCXA].images/page078-img01.png)
+<!-- /Extracted images from page 78 -->
+
+Figure 14: CONNTYPE_XAUSER_XACT_OPEN acceptor states
 
 3.2.1.5  CONNTYPE_XAUSER_XACT_MIGRATE Acceptor States
 
@@ -6151,7 +6207,11 @@ MSDTC Connection Manager: OleTx XA Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.1.5.3 Ended
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MC-DTCXA].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+3.2.1.5.3 Ended
 
 This is the final state.
 
@@ -6196,7 +6256,11 @@ Release: April 23, 2024
 
 79 / 252
 
-The following events are processed in this state:
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MC-DTCXA].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+The following events are processed in this state:
 
   Create Superior Enlistment Success (section 3.2.7.2).
 
@@ -6281,7 +6345,11 @@ Release: April 23, 2024
 
 81 / 252
 
-Figure 17: CONNTYPE_ XAUSER_XACT_BRANCH_OPEN acceptor states
+<!-- Extracted images from page 82 -->
+![Extracted image 1 from page 82]([MC-DTCXA].images/page082-img01.png)
+<!-- /Extracted images from page 82 -->
+
+Figure 17: CONNTYPE_ XAUSER_XACT_BRANCH_OPEN acceptor states
 
 3.2.1.8  CONNTYPE_XAUSER_XACT_MIGRATE2 Acceptor States
 
@@ -6318,7 +6386,11 @@ Release: April 23, 2024
 
 82 / 252
 
-This is a transient state that is assumed during the synchronous processing of the
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83]([MC-DTCXA].images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+This is a transient state that is assumed during the synchronous processing of the
 XAUSER_XACT_MTAG_SUSPEND_WITH_MIGRATE or XAUSER_XACT_MTAG_RESUME request. No
 events are processed in this state.
 
@@ -6344,7 +6416,11 @@ Release: April 23, 2024
 
 83 / 252
 
-Figure 19: XA Superior Enlistment Object states
+<!-- Extracted images from page 84 -->
+![Extracted image 1 from page 84]([MC-DTCXA].images/page084-img01.png)
+<!-- /Extracted images from page 84 -->
+
+Figure 19: XA Superior Enlistment Object states
 
 3.2.2  Timers
 
@@ -9081,7 +9157,11 @@ Release: April 23, 2024
 
 116 / 252
 
-Figure 20: Relationships between the CONNTYPE_XAUSER_CONTROL initiator states
+<!-- Extracted images from page 117 -->
+![Extracted image 1 from page 117]([MC-DTCXA].images/page117-img01.png)
+<!-- /Extracted images from page 117 -->
+
+Figure 20: Relationships between the CONNTYPE_XAUSER_CONTROL initiator states
 
 3.3.1.4  CONNTYPE_XAUSER_XACT_START Initiator States
 
@@ -9150,7 +9230,11 @@ Release: April 23, 2024
 
 118 / 252
 
-Figure 21: CONNTYPE_XAUSER_XACT_START initiator states
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MC-DTCXA].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+Figure 21: CONNTYPE_XAUSER_XACT_START initiator states
 
 3.3.1.5  CONNTYPE_XAUSER_XACT_OPEN Initiator States
 
@@ -9259,7 +9343,11 @@ MSDTC Connection Manager: OleTx XA Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.1.5.7 Ended
+<!-- Extracted images from page 121 -->
+![Extracted image 1 from page 121]([MC-DTCXA].images/page121-img01.png)
+<!-- /Extracted images from page 121 -->
+
+3.3.1.5.7 Ended
 
 This is the final state.
 
@@ -9341,7 +9429,11 @@ Release: April 23, 2024
 
 122 / 252
 
-Figure 23: CONNTYPE_ XAUSER_XACT_MIGRATE initiator states
+<!-- Extracted images from page 123 -->
+![Extracted image 1 from page 123]([MC-DTCXA].images/page123-img01.png)
+<!-- /Extracted images from page 123 -->
+
+Figure 23: CONNTYPE_ XAUSER_XACT_MIGRATE initiator states
 
 3.3.1.7  CONNTYPE_XAUSER_XACT_BRANCH_START Initiator States
 
@@ -9382,7 +9474,11 @@ Release: April 23, 2024
 
 123 / 252
 
-  Receiving an XAUSER_XACT_MTAG_START_LOG_FULL Message (section 3.3.5.5.3)
+<!-- Extracted images from page 124 -->
+![Extracted image 1 from page 124]([MC-DTCXA].images/page124-img01.png)
+<!-- /Extracted images from page 124 -->
+
+  Receiving an XAUSER_XACT_MTAG_START_LOG_FULL Message (section 3.3.5.5.3)
 
   Receiving an XAUSER_XACT_MTAG_START_DUPLICATE Message (section 3.3.5.5.4)
 
@@ -9532,7 +9628,11 @@ Release: April 23, 2024
 
 126 / 252
 
-Figure 25: CONNTYPE_XAUSER_XACT_BRANCH_OPEN initiator states
+<!-- Extracted images from page 127 -->
+![Extracted image 1 from page 127]([MC-DTCXA].images/page127-img01.png)
+<!-- /Extracted images from page 127 -->
+
+Figure 25: CONNTYPE_XAUSER_XACT_BRANCH_OPEN initiator states
 
 3.3.1.9  CONNTYPE_XAUSER_XACT_MIGRATE2 Initiator States
 
@@ -9609,7 +9709,11 @@ Release: April 23, 2024
 
 128 / 252
 
-Figure 26: CONNTYPE_ XAUSER_XACT_MIGRATE2 initiator states
+<!-- Extracted images from page 129 -->
+![Extracted image 1 from page 129]([MC-DTCXA].images/page129-img01.png)
+<!-- /Extracted images from page 129 -->
+
+Figure 26: CONNTYPE_ XAUSER_XACT_MIGRATE2 initiator states
 
 3.3.2  Timers
 
@@ -13199,7 +13303,11 @@ Release: April 23, 2024
 
 170 / 252
 
-Figure 27: CONNTYPE_XATM_OPEN acceptor states
+<!-- Extracted images from page 171 -->
+![Extracted image 1 from page 171]([MC-DTCXA].images/page171-img01.png)
+<!-- /Extracted images from page 171 -->
+
+Figure 27: CONNTYPE_XATM_OPEN acceptor states
 
 3.4.1.2  CONNTYPE_XATM_OPENONEPIPE Acceptor States
 
@@ -13272,7 +13380,11 @@ Release: April 23, 2024
 
 172 / 252
 
-Figure 28: CONNTYPE_XATM_OPENONEPIPE acceptor states
+<!-- Extracted images from page 173 -->
+![Extracted image 1 from page 173]([MC-DTCXA].images/page173-img01.png)
+<!-- /Extracted images from page 173 -->
+
+Figure 28: CONNTYPE_XATM_OPENONEPIPE acceptor states
 
 3.4.1.3  CONNTYPE_XATM_ENLIST Acceptor States
 
@@ -13331,7 +13443,11 @@ Release: April 23, 2024
 
 174 / 252
 
-Figure 29: CONNTYPE_XATM_ENLIST acceptor states
+<!-- Extracted images from page 175 -->
+![Extracted image 1 from page 175]([MC-DTCXA].images/page175-img01.png)
+<!-- /Extracted images from page 175 -->
+
+Figure 29: CONNTYPE_XATM_ENLIST acceptor states
 
 3.4.2  Timers
 
@@ -15335,7 +15451,11 @@ Release: April 23, 2024
 
 197 / 252
 
-Figure 30: CONNTYPE_XATM_OPEN initiator states
+<!-- Extracted images from page 198 -->
+![Extracted image 1 from page 198]([MC-DTCXA].images/page198-img01.png)
+<!-- /Extracted images from page 198 -->
+
+Figure 30: CONNTYPE_XATM_OPEN initiator states
 
 3.5.1.2  CONNTYPE_XATM_OPENONEPIPE Initiator States
 
@@ -15417,7 +15537,11 @@ Release: April 23, 2024
 
 199 / 252
 
-Figure 31: CONNTYPE_XATM_OPENONEPIPE initiator states
+<!-- Extracted images from page 200 -->
+![Extracted image 1 from page 200]([MC-DTCXA].images/page200-img01.png)
+<!-- /Extracted images from page 200 -->
+
+Figure 31: CONNTYPE_XATM_OPENONEPIPE initiator states
 
 [MC-DTCXA] - v20240423
 MSDTC Connection Manager: OleTx XA Protocol
@@ -15477,7 +15601,11 @@ Release: April 23, 2024
 
 201 / 252
 
-Figure 32: CONNTYPE_XATM_ENLIST initiator states
+<!-- Extracted images from page 202 -->
+![Extracted image 1 from page 202]([MC-DTCXA].images/page202-img01.png)
+<!-- /Extracted images from page 202 -->
+
+Figure 32: CONNTYPE_XATM_ENLIST initiator states
 
 3.5.2  Timers
 

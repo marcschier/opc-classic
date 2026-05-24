@@ -799,7 +799,11 @@ Release: April 23, 2024
 
 7 / 29
 
-[RFC2818] Rescorla, E., "HTTP Over TLS", RFC 2818, May 2000, https://www.rfc-
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-CER2].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+[RFC2818] Rescorla, E., "HTTP Over TLS", RFC 2818, May 2000, https://www.rfc-
 editor.org/info/rfc2818
 
 [RFC3986] Berners-Lee, T., Fielding, R., and Masinter, L., "Uniform Resource Identifier (URI): Generic
@@ -851,7 +855,12 @@ Release: April 23, 2024
 
 8 / 29
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-CER2].images/page009-img01.png)
+![Extracted image 2 from page 9]([MS-CER2].images/page009-img02.png)
+<!-- /Extracted images from page 9 -->
+
+1.4  Relationship to Other Protocols
 
 This protocol is built on top of the HTTP 1.1 protocol [RFC2616] and has direct dependency on it.
 Depending on the authentication mechanism needed to perform the upload to a URL, this protocol can

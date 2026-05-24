@@ -657,7 +657,11 @@ assist you in finding the relevant information.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MC-NPR].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [SOAP1.1] Box, D., Ehnebuske, D., Kakivaya, G., et al., "Simple Object Access Protocol (SOAP) 1.1",
@@ -707,7 +711,12 @@ Release: March 13, 2019
 
 6 / 18
 
-Figure 2: Circuit routing of SOAP messages
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MC-NPR].images/page007-img01.png)
+![Extracted image 2 from page 7]([MC-NPR].images/page007-img02.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 2: Circuit routing of SOAP messages
 
 1.3.1  Message Type
 
@@ -815,7 +824,11 @@ Release: March 13, 2019
 
 9 / 18
 
-3  Protocol Details
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MC-NPR].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+3  Protocol Details
 
 The client side of the .NET Packet Routing Protocol MUST implement the insertion of the
 PacketRoutable element into the SOAP header of the message for a .NET Packet Routing Protocol
@@ -849,7 +862,11 @@ Release: March 13, 2019
 
 10 / 18
 
-Figure 5: State diagram of the receiving end of a .NET Packet Routing Protocol router
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MC-NPR].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 5: State diagram of the receiving end of a .NET Packet Routing Protocol router
 
 When a .NET Packet Routing Protocol router sends a packet to a destination node, the router MUST
 maintain the PacketRoutable element in the outgoing packet, and it MAY maintain other vendor-
@@ -870,7 +887,11 @@ Release: March 13, 2019
 
 11 / 18
 
-Vendor extensions to the protocol MAY implement retry mechanism for resending a message upon
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MC-NPR].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Vendor extensions to the protocol MAY implement retry mechanism for resending a message upon
 failure. This protocol does not recommend any specific handling of such failures.
 
 Figure 6: State diagram of the sending side of a .NET Packet Routing Protocol router

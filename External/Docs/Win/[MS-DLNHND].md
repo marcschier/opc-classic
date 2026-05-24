@@ -1665,7 +1665,11 @@ Release: April 23, 2024
 
 22 / 58
 
-3  Protocol Details
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-DLNHND].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+3  Protocol Details
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
@@ -1975,7 +1979,11 @@ Release: April 23, 2024
 
 27 / 58
 
-3.2  Digital Media Player Details
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-DLNHND].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+3.2  Digital Media Player Details
 
 The Microsoft Extensions to the DLNA Guidelines do not introduce any new states, state transitions
 or timers to DMP role. Consequently, this section does not provide a complete description of the DMP
@@ -2221,7 +2229,11 @@ Release: April 23, 2024
 
 31 / 58
 
-Figure 3: Digital Media Renderer role
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-DLNHND].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 3: Digital Media Renderer role
 
 The DMR role incorporates the client role defined in section 3.1. This is shown in the preceding figure
 by means of the state labeled Streaming. The Streaming state corresponds to the client state machine
@@ -2325,7 +2337,11 @@ Release: April 23, 2024
 
 33 / 58
 
-The DMR MUST also be prepared to receive a request from the higher layer to shut down the DMR, as
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-DLNHND].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+The DMR MUST also be prepared to receive a request from the higher layer to shut down the DMR, as
 specified in section 3.3.4.2.
 
 3.4  Digital Media Server Details
@@ -3218,7 +3234,11 @@ Release: April 23, 2024
 
 47 / 58
 
-Figure 5: Typical RTSP command sequence
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-DLNHND].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+Figure 5: Typical RTSP command sequence
 
 The DESCRIBE request and response look like this:
 

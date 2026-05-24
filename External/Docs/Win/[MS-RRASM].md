@@ -2849,7 +2849,12 @@ Routing and Remote Access Server (RRAS) Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following two figures respectively show the Client/server message exchange and the RRAS
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-RRASM].images/page031-img01.png)
+![Extracted image 2 from page 31]([MS-RRASM].images/page031-img02.png)
+<!-- /Extracted images from page 31 -->
+
+The following two figures respectively show the Client/server message exchange and the RRAS
 conceptual model.
 
 Figure 1: Client/server message exchange
@@ -4360,7 +4365,11 @@ Release: April 23, 2024
 
 52 / 541
 
-TocEntriesCount (4 bytes): A 32-bit, unsigned integer in network byte order that MUST specify the
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-RRASM].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+TocEntriesCount (4 bytes): A 32-bit, unsigned integer in network byte order that MUST specify the
 
 number of entries. It MUST be greater than 0.
 
@@ -22789,7 +22798,11 @@ Release: April 23, 2024
 
 259 / 541
 
-Figure 4: Relationship between the BGP_CONFIG_HEADER and the entries
+<!-- Extracted images from page 260 -->
+![Extracted image 1 from page 260]([MS-RRASM].images/page260-img01.png)
+<!-- /Extracted images from page 260 -->
+
+Figure 4: Relationship between the BGP_CONFIG_HEADER and the entries
 
 0  1  2  3  4  5  6  7  8  9
 

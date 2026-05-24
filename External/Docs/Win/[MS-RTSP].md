@@ -1920,7 +1920,13 @@ Release: April 23, 2024
 
 18 / 135
 
-The Vandermonde matrix algorithm uses the Reed-Solomon coding technique based on the
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-RTSP].images/page019-img01.png)
+![Extracted image 2 from page 19]([MS-RTSP].images/page019-img02.png)
+![Extracted image 3 from page 19]([MS-RTSP].images/page019-img03.png)
+<!-- /Extracted images from page 19 -->
+
+The Vandermonde matrix algorithm uses the Reed-Solomon coding technique based on the
 Vandermonde matrix for encoding the data. The Reed-Solomon algorithm uses linear algebra
 principles for encoding and decoding the data. For more information on Reed-Solomon codes, see [R-
 SCODES].
@@ -1961,7 +1967,11 @@ Release: April 23, 2024
 
 19 / 135
 
-Figure 4: Vandermonde matrix using GF(n*k)
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-RTSP].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 4: Vandermonde matrix using GF(n*k)
 
 Xi are the elements of the Galois Field GF(pr). As is the case with all Galois Fields, p is a prime
 number, and r is an integer greater than or equal to 0. If all Xi are different, then the determinant of
@@ -4488,7 +4498,11 @@ Release: April 23, 2024
 
 55 / 135
 
-3  Protocol Details
+<!-- Extracted images from page 56 -->
+![Extracted image 1 from page 56]([MS-RTSP].images/page056-img01.png)
+<!-- /Extracted images from page 56 -->
+
+3  Protocol Details
 
 The following sections specify details of RTSP Windows Media Extensions, including abstract data
 models and message processing rules.
@@ -5784,7 +5798,11 @@ Release: April 23, 2024
 
 74 / 135
 
-Figure 6: RTSP state diagram (server perspective)
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-RTSP].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+Figure 6: RTSP state diagram (server perspective)
 
 3.2.1  Abstract Data Model
 
@@ -7755,7 +7773,11 @@ Release: April 23, 2024
 
 103 / 135
 
-Figure 7: RTP packet diagram
+<!-- Extracted images from page 104 -->
+![Extracted image 1 from page 104]([MS-RTSP].images/page104-img01.png)
+<!-- /Extracted images from page 104 -->
+
+Figure 7: RTP packet diagram
 
 4.2  Vandermonde Matrix Algorithm
 
@@ -7771,7 +7793,12 @@ Release: April 23, 2024
 
 104 / 135
 
-Figure 8: Galois fields table in hexadecimal and decimal (log and exp)
+<!-- Extracted images from page 105 -->
+![Extracted image 1 from page 105]([MS-RTSP].images/page105-img01.png)
+![Extracted image 2 from page 105]([MS-RTSP].images/page105-img02.png)
+<!-- /Extracted images from page 105 -->
+
+Figure 8: Galois fields table in hexadecimal and decimal (log and exp)
 
 The following is a 10 * 6 size Vandermonde matrix created from the Galois Field tables.
 
@@ -7784,7 +7811,12 @@ Release: April 23, 2024
 
 105 / 135
 
-It is then reduced to the following identity matrix by using standard linear algebra.
+<!-- Extracted images from page 106 -->
+![Extracted image 1 from page 106]([MS-RTSP].images/page106-img01.png)
+![Extracted image 2 from page 106]([MS-RTSP].images/page106-img02.png)
+<!-- /Extracted images from page 106 -->
+
+It is then reduced to the following identity matrix by using standard linear algebra.
 
 Figure 10: Vandermonde identity matrix table in hexadecimal, using GF28
 
@@ -7814,7 +7846,11 @@ Release: April 23, 2024
 
 106 / 135
 
-Figure 12: Vandermonde-generated data equation using GF28 (implementation)
+<!-- Extracted images from page 107 -->
+![Extracted image 1 from page 107]([MS-RTSP].images/page107-img01.png)
+<!-- /Extracted images from page 107 -->
+
+Figure 12: Vandermonde-generated data equation using GF28 (implementation)
 
 A client that has lost some RTP packets arranges the RTP packets that it received as the result matrix,
 and multiplies it with the inverse of the identity matrix to obtain the source matrix.
@@ -7854,7 +7890,11 @@ Release: April 23, 2024
 
 107 / 135
 
-4.4.2  Packet-Pair Bandwidth Estimation Using UDP
+<!-- Extracted images from page 108 -->
+![Extracted image 1 from page 108]([MS-RTSP].images/page108-img01.png)
+<!-- /Extracted images from page 108 -->
+
+4.4.2  Packet-Pair Bandwidth Estimation Using UDP
 
  The following sequence occurs between a client and server when conducting the packet-pair
 experiment over UDP:
@@ -7970,7 +8010,11 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  The server sends a "200 OK" response with three $P packets in the message body (section
+<!-- Extracted images from page 110 -->
+![Extracted image 1 from page 110]([MS-RTSP].images/page110-img01.png)
+<!-- /Extracted images from page 110 -->
+
+4.  The server sends a "200 OK" response with three $P packets in the message body (section
 
 2.2.7.12).
 
@@ -8196,7 +8240,11 @@ Release: April 23, 2024
 
 113 / 135
 
- End-Of-Playlist-Entry: True
+<!-- Extracted images from page 114 -->
+![Extracted image 1 from page 114]([MS-RTSP].images/page114-img01.png)
+<!-- /Extracted images from page 114 -->
+
+ End-Of-Playlist-Entry: True
 
 2.  The client sends a LogPlay (section 2.2.7.7) request to submit the logging statistics to the server.
 
@@ -8243,7 +8291,11 @@ Release: April 23, 2024
 
 114 / 135
 
-3.  If authentication has succeeded, the server sends a "200 OK:" response that includes the SDP
+<!-- Extracted images from page 115 -->
+![Extracted image 1 from page 115]([MS-RTSP].images/page115-img01.png)
+<!-- /Extracted images from page 115 -->
+
+3.  If authentication has succeeded, the server sends a "200 OK:" response that includes the SDP
 
 record.
 
@@ -8344,7 +8396,11 @@ Release: April 23, 2024
 
 116 / 135
 
-Figure 17: RTSP client-server stream playback sequence with transport operations
+<!-- Extracted images from page 117 -->
+![Extracted image 1 from page 117]([MS-RTSP].images/page117-img01.png)
+<!-- /Extracted images from page 117 -->
+
+Figure 17: RTSP client-server stream playback sequence with transport operations
 
 4.5  Logging and RTSP
 
@@ -8425,7 +8481,11 @@ Release: April 23, 2024
 
 118 / 135
 
- RTSP/1.0 200 OK
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MS-RTSP].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+ RTSP/1.0 200 OK
  Date: Mon, 22 Apr 2002 23:31:33 GMT
  CSeq: 8
  Session: 2828013918854793989;timeout=60
@@ -8456,7 +8516,11 @@ Release: April 23, 2024
 
 119 / 135
 
-Figure 19: RTSP state diagram with caching proxy server (server perspective)
+<!-- Extracted images from page 120 -->
+![Extracted image 1 from page 120]([MS-RTSP].images/page120-img01.png)
+<!-- /Extracted images from page 120 -->
+
+Figure 19: RTSP state diagram with caching proxy server (server perspective)
 
 A proxy server, whether acting as a server or as a client, is largely identical in state to an origin server
 (as specified in diagrams in sections 3.1 and 3.2.) That is, when streaming to a client, the proxy
@@ -8490,7 +8554,11 @@ Release: April 23, 2024
 
 120 / 135
 
-Figure 20: Caching proxy server states
+<!-- Extracted images from page 121 -->
+![Extracted image 1 from page 121]([MS-RTSP].images/page121-img01.png)
+<!-- /Extracted images from page 121 -->
+
+Figure 20: Caching proxy server states
 
 4.6.1  Sequencing for Playlist Content Delivery
 
@@ -8561,7 +8629,11 @@ Release: April 23, 2024
 
 122 / 135
 
-Figure 21: Playlist content delivery
+<!-- Extracted images from page 123 -->
+![Extracted image 1 from page 123]([MS-RTSP].images/page123-img01.png)
+<!-- /Extracted images from page 123 -->
+
+Figure 21: Playlist content delivery
 
 4.6.2  Sequencing for Broadcast Content Delivery
 
@@ -8623,7 +8695,11 @@ Release: April 23, 2024
 
 124 / 135
 
-Figure 22: Broadcast content delivery
+<!-- Extracted images from page 125 -->
+![Extracted image 1 from page 125]([MS-RTSP].images/page125-img01.png)
+<!-- /Extracted images from page 125 -->
+
+Figure 22: Broadcast content delivery
 
 4.6.3  Proxy Server and Origin Server Communication
 

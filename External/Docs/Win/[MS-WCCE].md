@@ -2921,7 +2921,11 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.  Trust module certificate validation where the chain for the client-provided EK certificate ([TCG-
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-WCCE].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+2.  Trust module certificate validation where the chain for the client-provided EK certificate ([TCG-
 Cred] section 3.2) or AIK certificate is built and verified to chain up to an administrator-selected
 list of CAs and root CAs. For processing rules, see section 3.2.2.6.2.1.2.5.1.
 
@@ -3115,7 +3119,11 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-WCCE].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+1.4  Relationship to Other Protocols
 
 The Windows Client Certificate Enrollment Protocol depends on the Distributed Component Object
 Model (DCOM) Remote Protocol [MS-DCOM]. The DCOM Remote Protocol is built on top of the Remote
@@ -16920,7 +16928,11 @@ Release: November 21, 2025
 
 185 / 259
 
-Figure 3: Retrieving ADConnection handle for reading objects under certificate templates
+<!-- Extracted images from page 186 -->
+![Extracted image 1 from page 186]([MS-WCCE].images/page186-img01.png)
+<!-- /Extracted images from page 186 -->
+
+Figure 3: Retrieving ADConnection handle for reading objects under certificate templates
 and enrollment services containers
 
 The preceding figure describes the algorithm used for retrieving an ADConnection handle for reading
@@ -17405,7 +17417,11 @@ Release: November 21, 2025
 
 191 / 259
 
-Figure 4: Retrieving an ADConnection handle for reading user or computer object.
+<!-- Extracted images from page 192 -->
+![Extracted image 1 from page 192]([MS-WCCE].images/page192-img01.png)
+<!-- /Extracted images from page 192 -->
+
+Figure 4: Retrieving an ADConnection handle for reading user or computer object.
 
 The following steps describe the flow of the preceding figure.
 
@@ -17706,7 +17722,11 @@ Release: November 21, 2025
 
 195 / 259
 
-Figure 5: Retrieving an ADConnection handle for reading user or computer object with
+<!-- Extracted images from page 196 -->
+![Extracted image 1 from page 196]([MS-WCCE].images/page196-img01.png)
+<!-- /Extracted images from page 196 -->
+
+Figure 5: Retrieving an ADConnection handle for reading user or computer object with
 provided DC name.
 
 The following steps describe the flow of the preceding figure:
@@ -17989,7 +18009,11 @@ Release: November 21, 2025
 
 199 / 259
 
-Figure 6: Retrieving an ADConnection handle for publishing KRA certificates to AD
+<!-- Extracted images from page 200 -->
+![Extracted image 1 from page 200]([MS-WCCE].images/page200-img01.png)
+<!-- /Extracted images from page 200 -->
+
+Figure 6: Retrieving an ADConnection handle for publishing KRA certificates to AD
 
 The following steps describe the flow of the preceding figure:
 
@@ -18371,7 +18395,11 @@ Release: November 21, 2025
 
 204 / 259
 
-Figure 7: Retrieving an ADConnection handle for publishing issued certificates to a user or
+<!-- Extracted images from page 205 -->
+![Extracted image 1 from page 205]([MS-WCCE].images/page205-img01.png)
+<!-- /Extracted images from page 205 -->
+
+Figure 7: Retrieving an ADConnection handle for publishing issued certificates to a user or
 computer object
 
 The following steps describe the flow of the preceding figure:
@@ -20838,7 +20866,11 @@ Release: November 21, 2025
 
 233 / 259
 
-4  Protocol Examples
+<!-- Extracted images from page 234 -->
+![Extracted image 1 from page 234]([MS-WCCE].images/page234-img01.png)
+<!-- /Extracted images from page 234 -->
+
+4  Protocol Examples
 
 Figure 8: Certificate enrollment
 

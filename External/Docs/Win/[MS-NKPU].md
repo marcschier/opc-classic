@@ -670,7 +670,11 @@ Release: April 23, 2024
 
 8 / 32
 
-4.  The client waits a short time for responses, during which it receives zero or more replies from one
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-NKPU].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+4.  The client waits a short time for responses, during which it receives zero or more replies from one
 or more servers. For each reply, the client attempts to decrypt the client key by using the session
 key. When the client has obtained the client key, it discards all other replies.
 

@@ -911,7 +911,12 @@ Release: April 23, 2024
 
 9 / 28
 
-Figure 1: Enterprise as a set of MSMQ sites and MSMQ routing links
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-MQBR].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-MQBR].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Enterprise as a set of MSMQ sites and MSMQ routing links
 
 Routing link cost provides a mechanism for administrators to enforce one route over another in cases
 where multiple routes exist.
@@ -1005,7 +1010,11 @@ Release: April 23, 2024
 
 12 / 28
 
-3  Protocol Details
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-MQBR].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+3  Protocol Details
 
 3.1  Algorithm Details
 
@@ -1575,7 +1584,11 @@ Release: April 23, 2024
 
 21 / 28
 
-4  Protocol Examples
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-MQBR].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+4  Protocol Examples
 
 The Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm calculates inter-site
 routing based on the routing link costs.

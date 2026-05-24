@@ -5173,7 +5173,11 @@ Release: April 13, 2026
 
 52 / 659
 
-Computers in a network with Active Directory can be put into a state called "domain joined"; when in
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-ADTS].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+Computers in a network with Active Directory can be put into a state called "domain joined"; when in
 this state, the computer can authenticate itself. Section 6.4 specifies both the state in Active Directory
 and the state on a computer required for the domain joined state.
 
@@ -8032,7 +8036,11 @@ Release: April 13, 2026
 
 79 / 659
 
-Figure 2: Nesting of claims structures
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-ADTS].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+Figure 2: Nesting of claims structures
 
 2.2.18.1
 
@@ -10917,7 +10925,11 @@ Release: April 13, 2026
 
 116 / 659
 
-4.  Define F as the set of all DCs that contain full replicas of the given NC. The subgraph of the NC
+<!-- Extracted images from page 117 -->
+![Extracted image 1 from page 117]([MS-ADTS].images/page117-img01.png)
+<!-- /Extracted images from page 117 -->
+
+4.  Define F as the set of all DCs that contain full replicas of the given NC. The subgraph of the NC
 
 replica graph whose vertex set is F is strongly-connected.
 
@@ -43870,7 +43882,11 @@ Release: April 13, 2026
 
 445 / 659
 
-
+<!-- Extracted images from page 446 -->
+![Extracted image 1 from page 446]([MS-ADTS].images/page446-img01.png)
+<!-- /Extracted images from page 446 -->
+
+
 
 Let O be an object of class c, and let A={a1, a2, ...} be the set of attributes that instances of
 class c can contain. For each attribute ai that is an element of A, if ai.attributeSecurityGUID ≠
@@ -52128,7 +52144,11 @@ Release: April 13, 2026
 
 548 / 659
 
-Figure 5: Kerberos protocol usage of keys
+<!-- Extracted images from page 549 -->
+![Extracted image 1 from page 549]([MS-ADTS].images/page549-img01.png)
+<!-- /Extracted images from page 549 -->
+
+Figure 5: Kerberos protocol usage of keys
 
 There is a one-way trust in place. The referral TGT issued by the primary domain is encrypted based
 on the key in trustAuthIncoming, not trustAuthOutgoing. This is non-intuitive but fits the definition of
@@ -58622,7 +58642,11 @@ Release: April 13, 2026
 
 628 / 659
 
-Figure 6: Client activity diagram
+<!-- Extracted images from page 629 -->
+![Extracted image 1 from page 629]([MS-ADTS].images/page629-img01.png)
+<!-- /Extracted images from page 629 -->
+
+Figure 6: Client activity diagram
 
 An ADConnection allows a client to use the connectivity to an Active Directory server for multiple LDAP
 operations, thereby reducing both client- and server-side processing costs and reducing the serialized
@@ -58909,7 +58933,11 @@ Release: April 13, 2026
 
 633 / 659
 
-The interrelationship between these tasks and events is illustrated in the following Task Relationship
+<!-- Extracted images from page 634 -->
+![Extracted image 1 from page 634]([MS-ADTS].images/page634-img01.png)
+<!-- /Extracted images from page 634 -->
+
+The interrelationship between these tasks and events is illustrated in the following Task Relationship
 diagram.
 
 Figure 7: Task relationship diagram

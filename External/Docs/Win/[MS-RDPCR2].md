@@ -12953,7 +12953,13 @@ Remote Desktop Protocol: Composited Remoting V2
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-system of part of a scene graph, similar to the behavior of the transform attribute as specified in
+<!-- Extracted images from page 162 -->
+![Extracted image 1 from page 162]([MS-RDPCR2].images/page162-img01.png)
+![Extracted image 2 from page 162]([MS-RDPCR2].images/page162-img02.png)
+![Extracted image 3 from page 162]([MS-RDPCR2].images/page162-img03.png)
+<!-- /Extracted images from page 162 -->
+
+system of part of a scene graph, similar to the behavior of the transform attribute as specified in
 [SVG1.1] section 7. For example, a line drawn in the default coordinate system from (0, 0) to (10, 10)
 starts at the upper-left corner of the rendering target and ends 10 logical units to the right and 10
 logical units below the top-left corner. If the line drawing instruction is in a visual that references a
@@ -13068,7 +13074,11 @@ Remote Desktop Protocol: Composited Remoting V2
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The most generic type of 3-D Transform is the matrix 3-D transform, which consists of a full 4x4
+<!-- Extracted images from page 164 -->
+![Extracted image 1 from page 164]([MS-RDPCR2].images/page164-img01.png)
+<!-- /Extracted images from page 164 -->
+
+The most generic type of 3-D Transform is the matrix 3-D transform, which consists of a full 4x4
 transformation matrix. The matrix 3-D transform is the only transform specified by this protocol.
 
 Matrix 3-D transform: A full 4x4 matrix. The matrix entries are specified in figure:
@@ -13190,7 +13200,11 @@ Release: June 1, 2017
 
 165 / 216
 
-Figure 5: Example glyph run with two realizations
+<!-- Extracted images from page 166 -->
+![Extracted image 1 from page 166]([MS-RDPCR2].images/page166-img01.png)
+<!-- /Extracted images from page 166 -->
+
+Figure 5: Example glyph run with two realizations
 
 To prepare a glyph run for rendering with a specified font at two different scales (as shown in the
 previous figure), the following steps MUST be performed:
@@ -13351,7 +13365,11 @@ Release: June 1, 2017
 
 168 / 216
 
-Figure 6: Initializing a connection – message flow
+<!-- Extracted images from page 169 -->
+![Extracted image 1 from page 169]([MS-RDPCR2].images/page169-img01.png)
+<!-- /Extracted images from page 169 -->
+
+Figure 6: Initializing a connection – message flow
 
 3.1.4  Higher-Layer Triggered Events
 
@@ -13364,7 +13382,11 @@ Release: June 1, 2017
 
 169 / 216
 
-3.1.5  Processing Events and Sequencing Rules
+<!-- Extracted images from page 170 -->
+![Extracted image 1 from page 170]([MS-RDPCR2].images/page170-img01.png)
+<!-- /Extracted images from page 170 -->
+
+3.1.5  Processing Events and Sequencing Rules
 
 3.1.5.1  Initializing a Connection
 
@@ -13407,7 +13429,11 @@ Release: June 1, 2017
 
 171 / 216
 
-Figure 8: Channel message flow
+<!-- Extracted images from page 172 -->
+![Extracted image 1 from page 172]([MS-RDPCR2].images/page172-img01.png)
+<!-- /Extracted images from page 172 -->
+
+Figure 8: Channel message flow
 
 Most channel messages only require notifications on error conditions that occur while processing the
 message by the client. There are some connection and channel messages that require responses from
@@ -14126,7 +14152,11 @@ Remote Desktop Protocol: Composited Remoting V2
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-A path geometry resource represents a complex geometric shape. Each MILCMD_PATHGEOMETRY
+<!-- Extracted images from page 183 -->
+![Extracted image 1 from page 183]([MS-RDPCR2].images/page183-img01.png)
+<!-- /Extracted images from page 183 -->
+
+A path geometry resource represents a complex geometric shape. Each MILCMD_PATHGEOMETRY
 message contains a MIL_PATHGEOMETRY structure. The MIL_PATHGEOMETRY is defined by a series of
 MIL_PATH_FIGURE structures, which in turn contains a series of segments (it could contain both
 MIL_SEGMENT_LINE and MIL_SEGMENT_POLY).
@@ -15137,7 +15167,11 @@ Remote Desktop Protocol: Composited Remoting V2
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-An optional resource handle referencing a resource of type TYPE_RECTRESOURCE can be provided.
+<!-- Extracted images from page 198 -->
+![Extracted image 1 from page 198]([MS-RDPCR2].images/page198-img01.png)
+<!-- /Extracted images from page 198 -->
+
+An optional resource handle referencing a resource of type TYPE_RECTRESOURCE can be provided.
 This optional resource animates the position and dimensions of the target rectangle geometry
 resource.
 

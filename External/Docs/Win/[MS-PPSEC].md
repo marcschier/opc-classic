@@ -993,7 +993,11 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-the record. If the local Identity's Membership record has not been published, it is published to the
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-PPSEC].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+the record. If the local Identity's Membership record has not been published, it is published to the
 group before the record being secured.
 
 1.3.4.3  Security Records
@@ -1951,7 +1955,11 @@ Peer-to-Peer Grouping Security Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Creator Serial Number (16 bytes): The X.509 certificate serial number [RFC2459] of the GMC of
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-PPSEC].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Creator Serial Number (16 bytes): The X.509 certificate serial number [RFC2459] of the GMC of
 
 the record creator.
 
@@ -3913,7 +3921,11 @@ Release: June 25, 2021
 
 49 / 57
 
-4  Protocol Examples
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MS-PPSEC].images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+4  Protocol Examples
 
 4.1  Establishing a Connection Using GMC Authentication
 
@@ -3958,7 +3970,11 @@ Release: June 25, 2021
 
 50 / 57
 
-Figure 4: Establishing a connection using password authentication
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-PPSEC].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+Figure 4: Establishing a connection using password authentication
 
 To establish the connection, the following steps occur:
 

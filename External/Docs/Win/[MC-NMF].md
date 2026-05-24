@@ -1020,7 +1020,11 @@ messages from the transport stream and deliver them to the appropriate endpoint.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The message properties are typically controlled by the Protocol Configuration Object (PCO). The PCO
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MC-NMF].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+The message properties are typically controlled by the Protocol Configuration Object (PCO). The PCO
 determines the following aspects of a specified instance of the protocol:
 
 
@@ -1398,7 +1402,11 @@ Release: March 13, 2019
 
 14 / 53
 
-As represented in the following figure, the encoding algorithm takes the size of the record payload as
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MC-NMF].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+As represented in the following figure, the encoding algorithm takes the size of the record payload as
 input in little-endian format and generates a stream of octets. The octets MUST be sent in the order
 in which they are generated.
 
@@ -2281,7 +2289,11 @@ Release: March 13, 2019
 
 25 / 53
 
-Figure 3: Singleton Unsized mode
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MC-NMF].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 3: Singleton Unsized mode
 
 3.1.1.1.2 Duplex Mode
 
@@ -2292,7 +2304,11 @@ Release: March 13, 2019
 
 26 / 53
 
-Figure 4: Duplex mode
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MC-NMF].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 4: Duplex mode
 
 In the case illustrated, the initiator sends the End Record first. The protocol allows either participant
 to send the End Record first. After a participant sends the End Record, the participant MUST continue
@@ -2307,7 +2323,12 @@ Release: March 13, 2019
 
 27 / 53
 
-Figure 5: Simplex mode
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MC-NMF].images/page028-img01.png)
+![Extracted image 2 from page 28]([MC-NMF].images/page028-img02.png)
+<!-- /Extracted images from page 28 -->
+
+Figure 5: Simplex mode
 
 3.1.1.1.4 Singleton Sized Mode
 
@@ -2322,7 +2343,11 @@ Release: March 13, 2019
 
 28 / 53
 
-Figure 7: Upgrades
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MC-NMF].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 7: Upgrades
 
 This figure illustrates a stream upgrade that uses the Singleton Unsized mode. The figure would look
 very similar if the stream upgrade used the Duplex mode.
@@ -2340,7 +2365,12 @@ Release: March 13, 2019
 
 29 / 53
 
-Figure 8: Unsupported version
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MC-NMF].images/page030-img01.png)
+![Extracted image 2 from page 30]([MC-NMF].images/page030-img02.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 8: Unsupported version
 
 Figure 9: Upgrade invalid
 
@@ -2351,7 +2381,11 @@ Release: March 13, 2019
 
 30 / 53
 
-Figure 10: Maximum message size exceeded
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MC-NMF].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+Figure 10: Maximum message size exceeded
 
 The preceding exchanges capture some of the scenarios where a Fault Record can be generated.
 
@@ -2529,7 +2563,11 @@ Release: March 13, 2019
 
 33 / 53
 
-Figure 11: Algorithm to decode the size and read the payload
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MC-NMF].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+Figure 11: Algorithm to decode the size and read the payload
 
 3.1.4.2  Handling Receipt of an Unexpected Record Type
 
@@ -3063,7 +3101,12 @@ Release: March 13, 2019
 
 41 / 53
 
-4.1.1  Initiator Receiver: Preamble Message
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MC-NMF].images/page042-img01.png)
+![Extracted image 2 from page 42]([MC-NMF].images/page042-img02.png)
+<!-- /Extracted images from page 42 -->
+
+4.1.1  Initiator Receiver: Preamble Message
 
 Figure 12: Initiator Receiver: Preamble Message
 
@@ -3078,7 +3121,12 @@ Release: March 13, 2019
 
 42 / 53
 
-4.1.3  Receiver Initiator : Preamble Ack Message
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MC-NMF].images/page043-img01.png)
+![Extracted image 2 from page 43]([MC-NMF].images/page043-img02.png)
+<!-- /Extracted images from page 43 -->
+
+4.1.3  Receiver Initiator : Preamble Ack Message
 
 Figure 14: Receiver Initiator : Preamble Ack Message
 
@@ -3093,7 +3141,13 @@ Release: March 13, 2019
 
 43 / 53
 
-4.1.5  Receiver Initiator: Sized Envelope Message
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MC-NMF].images/page044-img01.png)
+![Extracted image 2 from page 44]([MC-NMF].images/page044-img02.png)
+![Extracted image 3 from page 44]([MC-NMF].images/page044-img03.png)
+<!-- /Extracted images from page 44 -->
+
+4.1.5  Receiver Initiator: Sized Envelope Message
 
 Figure 16: Receiver Initiator: Sized Envelope
 

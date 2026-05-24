@@ -3671,7 +3671,11 @@ Release: March 9, 2026
 
 37 / 246
 
-_flK1 (4 bytes): An IEEE 32-bit floating point number [IEEE754] that indicates parameter k1 in
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-WSP].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+_flK1 (4 bytes): An IEEE 32-bit floating point number [IEEE754] that indicates parameter k1 in
 
 formula [1], specified below.
 
@@ -7321,7 +7325,11 @@ Release: March 9, 2026
 
 79 / 246
 
-Figure 2: Effect of _fBwdFetch Parameter
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-WSP].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+Figure 2: Effect of _fBwdFetch Parameter
 
 Notice that the _fBwdFetch argument changes the order in which records are presented for placement
 in the buffer but does not change the order (forward order) in which the buffer itself is filled.
@@ -7499,7 +7507,11 @@ Release: March 9, 2026
 
 82 / 246
 
-Figure 3: Structure of the row buffer
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83]([MS-WSP].images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+Figure 3: Structure of the row buffer
 
 2.2.3.13
 
@@ -24188,7 +24200,11 @@ Release: March 9, 2026
 
 175 / 246
 
-Figure 4: Windows Search Protocol session life cycle
+<!-- Extracted images from page 176 -->
+![Extracted image 1 from page 176]([MS-WSP].images/page176-img01.png)
+<!-- /Extracted images from page 176 -->
+
+Figure 4: Windows Search Protocol session life cycle
 
 The messages represented in the preceding diagram represent a subset of all of the Windows Search
 Protocol messages used for querying a remote GSS catalog.
@@ -24334,7 +24350,11 @@ Release: March 9, 2026
 
 178 / 246
 
-Figure 5: Windows Search Protocol message sequence relationships
+<!-- Extracted images from page 179 -->
+![Extracted image 1 from page 179]([MS-WSP].images/page179-img01.png)
+<!-- /Extracted images from page 179 -->
+
+Figure 5: Windows Search Protocol message sequence relationships
 
 3.1.5.1  Remote Windows Search Service Catalog Management
 

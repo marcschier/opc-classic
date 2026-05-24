@@ -761,7 +761,11 @@ Release: April 23, 2024
 
 7 / 32
 
-mode. The following network stack diagram demonstrates the L2TP relationship with other protocols in
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-L2TPIE].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+mode. The following network stack diagram demonstrates the L2TP relationship with other protocols in
 an IPsec transport mode.
 
 Figure 1: L2TP network stack

@@ -1577,7 +1577,11 @@ Release: May 11, 2026
 
 15 / 330
 
-Figure 1: Read and write operations and their message sequences
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-FASP].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 1: Read and write operations and their message sequences
 
 The server role is represented by the host firewall, which contains the policy and enforces it. The client
 role is represented by the management console (or other user management tool), which sends,
@@ -19670,7 +19674,11 @@ Release: May 11, 2026
 
 235 / 330
 
-4  Protocol Examples
+<!-- Extracted images from page 236 -->
+![Extracted image 1 from page 236]([MS-FASP].images/page236-img01.png)
+<!-- /Extracted images from page 236 -->
+
+4  Protocol Examples
 
 4.1  Opening a Policy Store
 
@@ -19706,7 +19714,11 @@ Release: May 11, 2026
 
 236 / 330
 
-Figure 3: Adding a firewall rule
+<!-- Extracted images from page 237 -->
+![Extracted image 1 from page 237]([MS-FASP].images/page237-img01.png)
+<!-- /Extracted images from page 237 -->
+
+Figure 3: Adding a firewall rule
 
 To add a firewall rule, the client application first fills an FW_RULE structure. The following examples fill
 this structure to represent a rule to allow inbound traffic to port 80 for the
@@ -19758,7 +19770,11 @@ Release: May 11, 2026
 
 237 / 330
 
-    DWORD
+<!-- Extracted images from page 238 -->
+![Extracted image 1 from page 238]([MS-FASP].images/page238-img01.png)
+<!-- /Extracted images from page 238 -->
+
+    DWORD
     RRPC_FWAddFirewallRule(
          [in] FW_CONN_HANDLE          rpcConnHandle = rpcBinding,
          [in] FW_POLICY_STORE_HANDLE  hPolicyStore = hStore,
@@ -19806,7 +19822,11 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Figure 5: Closing a policy store
+<!-- Extracted images from page 239 -->
+![Extracted image 1 from page 239]([MS-FASP].images/page239-img01.png)
+<!-- /Extracted images from page 239 -->
+
+Figure 5: Closing a policy store
 
 To close the handle, the client simply passes the handle to the close method.
 
@@ -19841,7 +19861,11 @@ Release: May 11, 2026
 
 239 / 330
 
-Figure 6: Process to create a MSFT_NetFirewallDynamicKeywordAddress object and
+<!-- Extracted images from page 240 -->
+![Extracted image 1 from page 240]([MS-FASP].images/page240-img01.png)
+<!-- /Extracted images from page 240 -->
+
+Figure 6: Process to create a MSFT_NetFirewallDynamicKeywordAddress object and
 firewall rule
 
 To create a new MSFT_NetFirewallDynamicKeywordAddress object and firewall rule, the

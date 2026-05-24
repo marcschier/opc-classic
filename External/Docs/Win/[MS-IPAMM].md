@@ -3687,7 +3687,11 @@ Release: June 1, 2017
 
 34 / 672
 
-[RFC3315] Droms, R., Bound, J., Volz, B., et al., "Dynamic Host Configuration Protocol for IPv6
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-IPAMM].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+[RFC3315] Droms, R., Bound, J., Volz, B., et al., "Dynamic Host Configuration Protocol for IPv6
 (DHCPv6)", RFC 3315, July 2003, https://www.rfc-editor.org/info/rfc3315
 
 [RFC3330] IANA, "Special-Use IPv4 Addresses", RFC 3330, September 2002, http://www.rfc-
@@ -3735,7 +3739,11 @@ IP Address Management (IPAM) Management Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Figure 2: Protocol Stack Diagram
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-IPAMM].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 2: Protocol Stack Diagram
 
 1.5  Prerequisites/Preconditions
 
@@ -36684,7 +36692,11 @@ Release: June 1, 2017
 
 453 / 672
 
-Figure 3: Enumeration Callback Interaction
+<!-- Extracted images from page 454 -->
+![Extracted image 1 from page 454]([MS-IPAMM].images/page454-img01.png)
+<!-- /Extracted images from page 454 -->
+
+Figure 3: Enumeration Callback Interaction
 
 3.5.1  Abstract Data Model
 
@@ -36705,7 +36717,11 @@ Release: June 1, 2017
 
 454 / 672
 
-Figure 4: IIpamEnumerator - server state machine
+<!-- Extracted images from page 455 -->
+![Extracted image 1 from page 455]([MS-IPAMM].images/page455-img01.png)
+<!-- /Extracted images from page 455 -->
+
+Figure 4: IIpamEnumerator - server state machine
 
 The IIpamEnumerator server is session-based and stateful in nature. The session state variable will
 be used to keep track of the current state for each session and it can have the following states as
@@ -39234,7 +39250,11 @@ Release: June 1, 2017
 
 486 / 672
 
-3.7.1.1  State Machine
+<!-- Extracted images from page 487 -->
+![Extracted image 1 from page 487]([MS-IPAMM].images/page487-img01.png)
+<!-- /Extracted images from page 487 -->
+
+3.7.1.1  State Machine
 
 The following figure shows the state machine of the IIpamEnumeratorCallback server port type.
 
@@ -40109,7 +40129,11 @@ Release: June 1, 2017
 
 499 / 672
 
-3.10.6 Other Local Events
+<!-- Extracted images from page 500 -->
+![Extracted image 1 from page 500]([MS-IPAMM].images/page500-img01.png)
+<!-- /Extracted images from page 500 -->
+
+3.10.6 Other Local Events
 
 See section 3.6.6.
 
@@ -40144,7 +40168,11 @@ Release: June 1, 2017
 
 500 / 672
 
-Figure 7: IIpamAsyncProvision server state machine
+<!-- Extracted images from page 501 -->
+![Extracted image 1 from page 501]([MS-IPAMM].images/page501-img01.png)
+<!-- /Extracted images from page 501 -->
+
+Figure 7: IIpamAsyncProvision server state machine
 
 The IIpamAsyncProvision server is session-based and stateful in nature. The session state variable
 will be used to keep track of the current state for each session and it can have the following states as
@@ -40724,7 +40752,11 @@ Release: June 1, 2017
 
 509 / 672
 
-Figure 8: IIpamAsyncProvisionCallback state machine
+<!-- Extracted images from page 510 -->
+![Extracted image 1 from page 510]([MS-IPAMM].images/page510-img01.png)
+<!-- /Extracted images from page 510 -->
+
+Figure 8: IIpamAsyncProvisionCallback state machine
 
 The IIpamAsyncProvisionCallback server is session-based sharing the same session the management
 client has with the management server using the IIpamAsyncProvision port type. It is also stateful in
@@ -41040,7 +41072,11 @@ IP Address Management (IPAM) Management Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-schema conversion is completed. The schema conversion activity can be a time consuming activity. By
+<!-- Extracted images from page 515 -->
+![Extracted image 1 from page 515]([MS-IPAMM].images/page515-img01.png)
+<!-- /Extracted images from page 515 -->
+
+schema conversion is completed. The schema conversion activity can be a time consuming activity. By
 taking the callback approach, it is possible to perform and complete the activity without running into
 operation timeouts that are managed by the lower layers. The following diagram shows the interaction
 between the management client and the management server to enable the provisioning scenario.
@@ -41068,7 +41104,11 @@ Release: June 1, 2017
 
 515 / 672
 
-Figure 10: IIpamAsyncSchemaConversion server state machine
+<!-- Extracted images from page 516 -->
+![Extracted image 1 from page 516]([MS-IPAMM].images/page516-img01.png)
+<!-- /Extracted images from page 516 -->
+
+Figure 10: IIpamAsyncSchemaConversion server state machine
 
 The IIpamAsyncSchemaConversion server is session-based and stateful in nature. The session state
 variable will be used to keep track of the current state for each session and it can have the following
@@ -41665,7 +41705,11 @@ Release: June 1, 2017
 
 524 / 672
 
-3.17  IIpamAsyncSchemaCallback Server Details
+<!-- Extracted images from page 525 -->
+![Extracted image 1 from page 525]([MS-IPAMM].images/page525-img01.png)
+<!-- /Extracted images from page 525 -->
+
+3.17  IIpamAsyncSchemaCallback Server Details
 
 This port type is implemented by the management client and initialized on the same session used to
 perform operations against the IIpamAsyncSchemaConversion server on the management server. This

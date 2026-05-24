@@ -5078,7 +5078,11 @@ Release: April 23, 2024
 
 45 / 260
 
-fieldFlags (variable): A variable-length, 1-byte to 3-byte field. The optional fieldFlags field is used
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-RDPEGDI].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+fieldFlags (variable): A variable-length, 1-byte to 3-byte field. The optional fieldFlags field is used
 to indicate the presence of an order field in the encoded fields portion of the packet (represented
 by the primaryOrderData field). Each bit in the fieldFlags field functions as a flag and indicates
 if a particular order field is present.
@@ -5528,7 +5532,14 @@ Release: April 23, 2024
 
 50 / 260
 
-BrushHatch (1 byte): An 8-bit, unsigned integer. Holds a brush hatch identifier or a Brush Cache
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-RDPEGDI].images/page051-img01.png)
+![Extracted image 2 from page 51]([MS-RDPEGDI].images/page051-img02.png)
+![Extracted image 3 from page 51]([MS-RDPEGDI].images/page051-img03.png)
+![Extracted image 4 from page 51]([MS-RDPEGDI].images/page051-img04.png)
+<!-- /Extracted images from page 51 -->
+
+BrushHatch (1 byte): An 8-bit, unsigned integer. Holds a brush hatch identifier or a Brush Cache
 
 index, depending on the contents of the BrushStyle field.
 
@@ -5585,7 +5596,12 @@ Release: April 23, 2024
 
 51 / 260
 
-Value
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-RDPEGDI].images/page052-img01.png)
+![Extracted image 2 from page 52]([MS-RDPEGDI].images/page052-img02.png)
+<!-- /Extracted images from page 52 -->
+
+Value
 
 Meaning
 
@@ -13659,7 +13675,11 @@ Release: April 23, 2024
 
 133 / 260
 
-Figure 8: Encoding a logically compressed stream
+<!-- Extracted images from page 134 -->
+![Extracted image 1 from page 134]([MS-RDPEGDI].images/page134-img01.png)
+<!-- /Extracted images from page 134 -->
+
+Figure 8: Encoding a logically compressed stream
 
 Literals are merely encoded using the Huffman Tables HuffCodeLEC (table 2) and HuffLengthLEC
 (table 1). Copy-tuples are encoded using the four lookup tables in table 3 and table 6
@@ -13773,7 +13793,11 @@ Release: April 23, 2024
 
 136 / 260
 
-Figure 9: Decoding a compressed stream
+<!-- Extracted images from page 137 -->
+![Extracted image 1 from page 137]([MS-RDPEGDI].images/page137-img01.png)
+<!-- /Extracted images from page 137 -->
+
+Figure 9: Decoding a compressed stream
 
 Decoded literals are merely placed on to the output stream. However, decoded values representing
 copy-offset and length-of-match items require further processing by using the four lookup tables in
@@ -13961,7 +13985,11 @@ Release: April 23, 2024
 
 140 / 260
 
-Figure 10: Chained compression with the RDP 6.1 and RDP 5.0 bulk compressors
+<!-- Extracted images from page 141 -->
+![Extracted image 1 from page 141]([MS-RDPEGDI].images/page141-img01.png)
+<!-- /Extracted images from page 141 -->
+
+Figure 10: Chained compression with the RDP 6.1 and RDP 5.0 bulk compressors
 
 The flowchart in following figure describes the how the decompressors are chained during
 decompression.
@@ -13973,7 +14001,11 @@ Release: April 23, 2024
 
 141 / 260
 
-Figure 11: Chained decompression with the RDP 6.1 and RDP 5.0 bulk decompressors
+<!-- Extracted images from page 142 -->
+![Extracted image 1 from page 142]([MS-RDPEGDI].images/page142-img01.png)
+<!-- /Extracted images from page 142 -->
+
+Figure 11: Chained decompression with the RDP 6.1 and RDP 5.0 bulk decompressors
 
 3.1.8.2.2 Compressing Data
 
@@ -13996,7 +14028,11 @@ Release: April 23, 2024
 
 142 / 260
 
-Figure 12: The RDP 6.1 bulk compression algorithm
+<!-- Extracted images from page 143 -->
+![Extracted image 1 from page 143]([MS-RDPEGDI].images/page143-img01.png)
+<!-- /Extracted images from page 143 -->
+
+Figure 12: The RDP 6.1 bulk compression algorithm
 
 3.1.8.2.2.1  Data Compression Example
 
@@ -14213,7 +14249,11 @@ Release: April 23, 2024
 
 146 / 260
 
-Figure 13: The RDP 6.1 bulk decompression algorithm
+<!-- Extracted images from page 147 -->
+![Extracted image 1 from page 147]([MS-RDPEGDI].images/page147-img01.png)
+<!-- /Extracted images from page 147 -->
+
+Figure 13: The RDP 6.1 bulk decompression algorithm
 
 3.1.8.2.3.1  Data Decompression Example
 
@@ -14520,7 +14560,11 @@ Release: April 23, 2024
 
 151 / 260
 
-Figure 14: Chroma subsampling and super-sampling
+<!-- Extracted images from page 152 -->
+![Extracted image 1 from page 152]([MS-RDPEGDI].images/page152-img01.png)
+<!-- /Extracted images from page 152 -->
+
+Figure 14: Chroma subsampling and super-sampling
 
 3.1.9.1.4 Color Loss Reduction
 
@@ -14686,7 +14730,11 @@ Release: April 23, 2024
 
 155 / 260
 
-Figure 15: Encoding data using RDP 6.0 Run-Length Encoding (RLE)
+<!-- Extracted images from page 156 -->
+![Extracted image 1 from page 156]([MS-RDPEGDI].images/page156-img01.png)
+<!-- /Extracted images from page 156 -->
+
+Figure 15: Encoding data using RDP 6.0 Run-Length Encoding (RLE)
 
 3.1.9.2.2 Extra Long RUN Sequences
 
@@ -14847,7 +14895,11 @@ Release: April 23, 2024
 
 159 / 260
 
-Figure 16: Compressing a bitmap using RDP 6.0 Bitmap Compression
+<!-- Extracted images from page 160 -->
+![Extracted image 1 from page 160]([MS-RDPEGDI].images/page160-img01.png)
+<!-- /Extracted images from page 160 -->
+
+Figure 16: Compressing a bitmap using RDP 6.0 Bitmap Compression
 
 3.1.9.4  Decompressing a Bitmap
 
@@ -14862,7 +14914,11 @@ Release: April 23, 2024
 
 160 / 260
 
-Figure 17: Decompression of a bitmap compressed with RDP 6.0 Bitmap Compression
+<!-- Extracted images from page 161 -->
+![Extracted image 1 from page 161]([MS-RDPEGDI].images/page161-img01.png)
+<!-- /Extracted images from page 161 -->
+
+Figure 17: Decompression of a bitmap compressed with RDP 6.0 Bitmap Compression
 
 3.2  Client Details
 
@@ -20911,7 +20967,11 @@ Release: April 23, 2024
 
 244 / 260
 
-Figure 18: Expansion of a NineGrid bitmap
+<!-- Extracted images from page 245 -->
+![Extracted image 1 from page 245]([MS-RDPEGDI].images/page245-img01.png)
+<!-- /Extracted images from page 245 -->
+
+Figure 18: Expansion of a NineGrid bitmap
 
 The following diagram illustrates how a source bitmap in the NineGrid Bitmap
 Cache (section 3.1.1.1.6) is clipped and then modified using a NineGrid transformation to produce a
@@ -20924,7 +20984,11 @@ Release: April 23, 2024
 
 245 / 260
 
-Figure 19: Illustration of Draw NineGrid Primary Drawing Order
+<!-- Extracted images from page 246 -->
+![Extracted image 1 from page 246]([MS-RDPEGDI].images/page246-img01.png)
+<!-- /Extracted images from page 246 -->
+
+Figure 19: Illustration of Draw NineGrid Primary Drawing Order
 
 The DrawNineGrid (section 2.2.2.2.1.1.2.21) and MultiDrawNineGrid (section 2.2.2.2.1.1.2.22)
 Primary Drawing Orders are used to render NineGrid bitmaps that have been stored in the NineGrid
@@ -20947,7 +21011,11 @@ Release: April 23, 2024
 
 246 / 260
 
-Figure 20: Illustration of Save Bitmap Primary Drawing Order
+<!-- Extracted images from page 247 -->
+![Extracted image 1 from page 247]([MS-RDPEGDI].images/page247-img01.png)
+<!-- /Extracted images from page 247 -->
+
+Figure 20: Illustration of Save Bitmap Primary Drawing Order
 
 Applying the formulas in section 2.2.2.2.1.1.2.12 (assuming an X granularity of 1 and a Y granularity
 of 20):
@@ -20974,7 +21042,11 @@ Release: April 23, 2024
 
 247 / 260
 
-Hence, the area occupied by the 127-by-134-pixel bitmap in the SaveBitmap is 17,780 pixels. The X
+<!-- Extracted images from page 248 -->
+![Extracted image 1 from page 248]([MS-RDPEGDI].images/page248-img01.png)
+<!-- /Extracted images from page 248 -->
+
+Hence, the area occupied by the 127-by-134-pixel bitmap in the SaveBitmap is 17,780 pixels. The X
 and Y position in the Save Bitmap from which to tile the next bitmap is computed using the formulas
 in section 2.2.2.2.1.1.2.12.
 
@@ -21009,7 +21081,11 @@ Release: April 23, 2024
 
 248 / 260
 
-4.6.2  "p" Character
+<!-- Extracted images from page 249 -->
+![Extracted image 1 from page 249]([MS-RDPEGDI].images/page249-img01.png)
+<!-- /Extracted images from page 249 -->
+
+4.6.2  "p" Character
 
 The following shows glyph image data (1 bpp format) for character "p" extracted from a Cache Glyph
 (Revision 2) (section 2.2.2.2.1.2.6) Secondary Drawing Order.

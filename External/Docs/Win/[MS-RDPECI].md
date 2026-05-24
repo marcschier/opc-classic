@@ -341,7 +341,11 @@ Release: April 23, 2024
 
 5 / 26
 
-server, it is injected into the session associated with the remote user, effectively remoting the
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-RDPECI].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+server, it is injected into the session associated with the remote user, effectively remoting the
 keyboard and mouse input generated at the client.
 An example message flow encapsulating all of the input messages, described in section 2.2.3, and
 protocol phases is presented in the following figure.

@@ -1482,7 +1482,11 @@ Release: September 16, 2024
 
 14 / 119
 
-[MSDN-STGMC] Microsoft Corporation, "STGM Constants", http://msdn.microsoft.com/en-
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-DCOM].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+[MSDN-STGMC] Microsoft Corporation, "STGM Constants", http://msdn.microsoft.com/en-
 us/library/aa380337.aspx
 
 [MSFT-CVE-2022-37978] Microsoft Corporation, "Windows Active Directory Certificate Services
@@ -1513,7 +1517,11 @@ Release: September 16, 2024
 
 15 / 119
 
-Figure 2: DCOM protocol overview
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-DCOM].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 2: DCOM protocol overview
 
 Higher-level applications use the DCOM client to obtain object references and make ORPC calls on the
 object. The DCOM client in turn uses the Remote Procedure Call Protocol Extensions, as specified in
@@ -1606,7 +1614,12 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-parameters are referred to as ORPCTHIS and ORPCTHAT, respectively (see section 2.2.12). The
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-DCOM].images/page018-img01.png)
+![Extracted image 2 from page 18]([MS-DCOM].images/page018-img02.png)
+<!-- /Extracted images from page 18 -->
+
+parameters are referred to as ORPCTHIS and ORPCTHAT, respectively (see section 2.2.12). The
 ORPCTHIS and ORPCTHAT parameters are conceptually and syntactically placed ahead of all other
 values in the RPC PDU body (as specified in [C706] section 12.1).
 
@@ -8068,7 +8081,11 @@ Release: September 16, 2024
 
 93 / 119
 
-4  Protocol Examples
+<!-- Extracted images from page 94 -->
+![Extracted image 1 from page 94]([MS-DCOM].images/page094-img01.png)
+<!-- /Extracted images from page 94 -->
+
+4  Protocol Examples
 
 4.1  Object Activation + ORPC Call + Release Sequence
 
@@ -8084,7 +8101,11 @@ Release: September 16, 2024
 
 94 / 119
 
-SERVERALIVE_REQ: Represents one or more RPC calls to the IObjectExporter::ServerAlive method or
+<!-- Extracted images from page 95 -->
+![Extracted image 1 from page 95]([MS-DCOM].images/page095-img01.png)
+<!-- /Extracted images from page 95 -->
+
+SERVERALIVE_REQ: Represents one or more RPC calls to the IObjectExporter::ServerAlive method or
 the IObjectExporter::ServerAlive2 method to determine server aliveness and suitable protocols. The
 client connects to the remote server name specified by the application or by a higher-layer protocol.
 
@@ -8119,7 +8140,11 @@ Release: September 16, 2024
 
 95 / 119
 
-4.3  Pinging Sequence
+<!-- Extracted images from page 96 -->
+![Extracted image 1 from page 96]([MS-DCOM].images/page096-img01.png)
+<!-- /Extracted images from page 96 -->
+
+4.3  Pinging Sequence
 
 Figure 7: Client-to-server pinging sequence
 
@@ -8139,7 +8164,11 @@ Release: September 16, 2024
 
 96 / 119
 
-4.4  OXID Resolution Sequence
+<!-- Extracted images from page 97 -->
+![Extracted image 1 from page 97]([MS-DCOM].images/page097-img01.png)
+<!-- /Extracted images from page 97 -->
+
+4.4  OXID Resolution Sequence
 
 Figure 8: OXID resolution sequence
 

@@ -396,7 +396,11 @@ Remote Desktop Protocol: Display Update Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2.2  Informative References
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-RDPEDISP].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+1.2.2  Informative References
 
 None.
 

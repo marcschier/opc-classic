@@ -6844,7 +6844,11 @@ Release: November 21, 2025
 
 77 / 96
 
-Figure 1: The client binds to a server and purges a queue.
+<!-- Extracted images from page 78 -->
+![Extracted image 1 from page 78]([MS-MQRR].images/page078-img01.png)
+<!-- /Extracted images from page 78 -->
+
+Figure 1: The client binds to a server and purges a queue.
 
 4.2  Receiving a Message
 
@@ -6867,7 +6871,11 @@ Message Queuing (MSMQ): Queue Manager Remote Read Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-corresponding pending request created by the call to the R_StartReceive method and, because
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-MQRR].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+corresponding pending request created by the call to the R_StartReceive method and, because
 RR_ACK is specified, removes the message from the queue.
 
 Figure 2: The client receives a message.
@@ -6891,7 +6899,11 @@ Release: November 21, 2025
 
 79 / 96
 
-Figure 3: The client receives a message within a transaction.
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-MQRR].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+Figure 3: The client receives a message within a transaction.
 
 1.  The client communicates with the local DTC to create a new transaction, as specified in [MS-
 

@@ -819,7 +819,11 @@ Release: April 23, 2024
 
 7 / 25
 
-Figure 1: Relationship to other protocols
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-BRWSA].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: Relationship to other protocols
 
 
 
@@ -1293,7 +1297,11 @@ Release: April 23, 2024
 
 16 / 25
 
-4  Protocol Examples
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-BRWSA].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+4  Protocol Examples
 
 The method provided by this protocol is a simple request-response. The server receives the request,
 executes the method, and returns a completion. The client simply returns the completion status to

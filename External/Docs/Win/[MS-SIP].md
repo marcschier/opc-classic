@@ -3663,7 +3663,11 @@ Release: June 1, 2017
 
 45 / 93
 
-4  Protocol Examples
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-SIP].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+4  Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of Session Initiation Protocol Extensions.
@@ -3904,7 +3908,11 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-4.2  Registration with NTLM
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MS-SIP].images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+4.2  Registration with NTLM
 
 The following call flow outlines how the NTLM Authentication Protocol authentication mechanism
 works.
@@ -4202,7 +4210,11 @@ Release: June 1, 2017
 
 54 / 93
 
-The epid parameter on the From: header is used by the server to determine how to sign this
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-SIP].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+The epid parameter on the From: header is used by the server to determine how to sign this
 response (find the SA). The signature for this response is carried in the rspauth parameter of the
 Proxy-Authentication-Info: header.
 
@@ -4331,7 +4343,11 @@ Release: June 1, 2017
 
 56 / 93
 
-       <activity aggregate="0" description="" />
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-SIP].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+       <activity aggregate="0" description="" />
        <displayName displayName="User 2" />
      </presentity>
      --e7904a528704417c9a90297d24081f8e
@@ -4384,7 +4400,11 @@ Release: June 1, 2017
 
 57 / 93
 
-   ;tag=DD35C0B2
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-SIP].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+   ;tag=DD35C0B2
    To: <sip:user2@server.contoso.com>
      ;tag=9c4ef27513d24eb9be781420407b2a87;epid=62ccbeb808
      Call-ID: 91c6c88de3c04d5180d9a2e1434a18dd
@@ -4513,7 +4533,11 @@ Release: June 1, 2017
 
 59 / 93
 
-4.6  AddContact Example
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-SIP].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+4.6  AddContact Example
 
 This example demonstrates an AddContact request sent by the client to the server to add a contact to
 its contact list.
@@ -4571,7 +4595,11 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- SIP/2.0 200 OK
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MS-SIP].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+ SIP/2.0 200 OK
  Authentication-Info:
     Kerberos rspauth="602306092A864886F71201020201011100
                       FFFFFFFFF545C705C4485BF958371C44ACFE31E3",
@@ -4628,7 +4656,11 @@ Release: June 1, 2017
 
 61 / 93
 
-         xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MS-SIP].images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+         xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
          <SOAP-ENV:Body>
            <m:deleteContact
              xmlns:m="http://schemas.microsoft.com/winrtc/2002/11/sip">
@@ -4752,7 +4784,11 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Figure 9: DeleteGroup request example
+<!-- Extracted images from page 64 -->
+![Extracted image 1 from page 64]([MS-SIP].images/page064-img01.png)
+<!-- /Extracted images from page 64 -->
+
+Figure 9: DeleteGroup request example
 
 The client sends a SERVICE request with a SOAP envelope/xml envelope in the body. The
 m:deleteGroup element indicates to the server that this request is for deleting a group. The XML
@@ -4810,7 +4846,11 @@ Release: June 1, 2017
 
 64 / 93
 
-   ;tag=c3c995d890e144b2aa7f2bd38c424a51;epid=f540d58d81
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-SIP].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+   ;tag=c3c995d890e144b2aa7f2bd38c424a51;epid=f540d58d81
    To: <sip:user1@server.contoso.com>
      ;tag=5FDD7BA7
      Call-ID: f34928e3852c434a85a1f3c0e1e8a449
@@ -4866,7 +4906,11 @@ Release: June 1, 2017
 
 65 / 93
 
-The server responds to the SERVICE request with a 200 OK to indicate that the AddContact request
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MS-SIP].images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+The server responds to the SERVICE request with a 200 OK to indicate that the AddContact request
 was successful. The 200 OK response does not have a body.
 
  SIP/2.0 200 OK

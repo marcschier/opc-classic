@@ -882,7 +882,11 @@ PPP Over IrDA Dialup Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-PPPI].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+1.4  Relationship to Other Protocols
 
 A preferred alternative to the PPP Over IrDA Dialup Protocol is the IrDA Infrared Communications
 Protocol [IRCOM], which provides emulation of serial and parallel ports over the IrDA TinyTP v1.1
@@ -1602,7 +1606,11 @@ Release: June 25, 2021
 
 20 / 26
 
-Figure 2: Example of PPP Over IrDA Dialup Protocol connection setup, data exchange, and
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-PPPI].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 2: Example of PPP Over IrDA Dialup Protocol connection setup, data exchange, and
 connection teardown
 
 [MS-PPPI] - v20210625

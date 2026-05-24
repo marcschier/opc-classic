@@ -349,7 +349,11 @@ Release: April 23, 2024
 
 5 / 26
 
-1.3  Overview
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-RDPEL].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+1.3  Overview
 
 The Remote Desktop Protocol: Location Virtual Channel Extension (RDPEL), defined in section 2.2,
 adds the ability to redirect the client's location (latitude, longitude and altitude) to a server so that

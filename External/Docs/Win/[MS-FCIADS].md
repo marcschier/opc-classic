@@ -865,7 +865,11 @@ File Classification Infrastructure Alternate Data Stream (ADS) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  A polynomial P(x) is generated such that
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-FCIADS].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+3.  A polynomial P(x) is generated such that
 
 where m is the length of the input message in bits.
 

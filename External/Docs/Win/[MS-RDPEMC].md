@@ -1940,7 +1940,11 @@ Release: April 23, 2024
 
 21 / 41
 
-3  Protocol Details
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-RDPEMC].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+3  Protocol Details
 
 The following sections specify details of the Remote Desktop Protocol: Multiparty Virtual Channel
 Extension, including abstract data models and message processing rules.
@@ -1956,7 +1960,11 @@ Release: April 23, 2024
 
 22 / 41
 
-Figure 2: Participant Handling of GRAPHICS-STREAM-UNPAUSED and GRAPHICS-STREAM-
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-RDPEMC].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 2: Participant Handling of GRAPHICS-STREAM-UNPAUSED and GRAPHICS-STREAM-
 PAUSED PDUs
 
 3.1.1  Abstract Data Model

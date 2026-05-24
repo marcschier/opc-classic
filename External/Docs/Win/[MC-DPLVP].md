@@ -1219,7 +1219,11 @@ Release: June 1, 2017
 
 11 / 55
 
-The preceding scenario generates two voice bursts. The first voice burst is 2 seconds of audio time
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MC-DPLVP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+The preceding scenario generates two voice bursts. The first voice burst is 2 seconds of audio time
 and the second is 3 seconds of audio. The timing within an audio segment is preserved. The 1 second
 between bursts (per the preceding example) is not preserved. As a result, the time between voice
 bursts can end up being 0.8 seconds, or 1.5 seconds, or some other length, depending on network
@@ -1329,7 +1333,11 @@ Release: June 1, 2017
 
 13 / 55
 
-Figure 2: Successful host migration sequence
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MC-DPLVP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: Successful host migration sequence
 
 Host migration needs to be enabled when the protocol is initialized. Voice clients determine that host
 migration is in use if the peer voice session subprotocol is being used and the SessionFlags field in

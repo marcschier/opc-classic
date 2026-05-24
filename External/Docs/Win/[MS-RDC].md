@@ -1779,7 +1779,11 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-difference, and is usually pronounced as the English word "without." For example, {a,b,c} \ {b} =
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-RDC].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+difference, and is usually pronounced as the English word "without." For example, {a,b,c} \ {b} =
 {a,c}.
 
 3.1.5.1  Chunk Generation
@@ -1945,7 +1949,11 @@ Release: April 23, 2024
 
 20 / 70
 
-Figure 2: RDC signature computation
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-RDC].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 2: RDC signature computation
 
 Thus, the set of signatures is specified by the following.
 
@@ -1987,7 +1995,11 @@ Release: April 23, 2024
 
 21 / 70
 
-Figure 3: RDC recursion
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-RDC].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 3: RDC recursion
 
 For an example of recursion, see section 4.4.
 
@@ -2030,7 +2042,11 @@ Remote Differential Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 4: Similarity data calculation
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-RDC].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 4: Similarity data calculation
 
 3.1.5.4.1 Similarity Data Calculation
 
@@ -2132,7 +2148,11 @@ Release: April 23, 2024
 
 24 / 70
 
-Figure 5: Generating the target file
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-RDC].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 5: Generating the target file
 
 The following pseudocode specifies the process of generating the target file. Note that each FOR loop
 iteration is independent of the others, and so can be executed concurrently.
@@ -2186,7 +2206,11 @@ Release: April 23, 2024
 
 26 / 70
 
-4  Protocol Examples
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-RDC].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+4  Protocol Examples
 
 4.1  Example System Architecture
 
@@ -2279,7 +2303,11 @@ Release: April 23, 2024
 
 28 / 70
 
-Figure 7: H3 hash computation
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-RDC].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 7: H3 hash computation
 
 4.3  FilterMax
 
@@ -2293,7 +2321,11 @@ Release: April 23, 2024
 
 29 / 70
 
-Figure 8: Relationship between local maximum and horizon
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-RDC].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 8: Relationship between local maximum and horizon
 
 In the preceding diagram, consider if hvN is the largest in the indicated range of values. Then it
 follows that none of the other values in this range can be a local maximum (because they are smaller
@@ -2310,7 +2342,11 @@ Release: April 23, 2024
 
 30 / 70
 
-Figure 9: Recursion-depth calculation
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-RDC].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+Figure 9: Recursion-depth calculation
 
 A sample network application uses the following steps, which correspond to the preceding figure, to
 transfer data over the network using the RDC algorithm.

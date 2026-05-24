@@ -1155,7 +1155,11 @@ Release: March 30, 2026
 
 11 / 39
 
-1.3.3  Protocol Overview
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-SFU].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.3.3  Protocol Overview
 
 The following figure shows the message sequence for Kerberos delegation with a forwarded ticket-
 granting ticket (TGT). This is background information designed to show the workings of Kerberos
@@ -1245,7 +1249,11 @@ Release: March 30, 2026
 
 13 / 39
 
-Figure 2: S4U2self and S4U2proxy
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-SFU].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: S4U2self and S4U2proxy
 
 S4U2self is described in the top half of the preceding figure. Using this extension, the service receives
 a service ticket to the service itself (a ticket that cannot be used elsewhere).
@@ -1663,7 +1671,11 @@ Release: March 30, 2026
 
 21 / 39
 
-3.1.5  Message Processing Events and Sequencing Rules
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-SFU].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+3.1.5  Message Processing Events and Sequencing Rules
 
 Figure 3: Entities Involved in Service for User (S4U) Protocols
 
@@ -2174,7 +2186,11 @@ Release: March 30, 2026
 
 29 / 39
 
-4  Protocol Examples
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-SFU].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+4  Protocol Examples
 
 4.1  S4U2self Single Realm Example
 
@@ -2217,7 +2233,11 @@ Release: March 30, 2026
 
 30 / 39
 
-In the following figure, TGS A represents the TGS in the service's realm. TGS B represents the TGS in
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-SFU].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+In the following figure, TGS A represents the TGS in the service's realm. TGS B represents the TGS in
 the user's realm.
 
 Figure 5: S4U2self Multiple Realm Example
@@ -2254,7 +2274,11 @@ Release: March 30, 2026
 
 31 / 39
 
-6.  TGS A creates the service ticket for the user to the service and returns it. The PAC returned in
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-SFU].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+6.  TGS A creates the service ticket for the user to the service and returns it. The PAC returned in
 
 this step will contain the appropriate combination of authorization data placed in the PAC by TGS
 B in step 4 and the data from TGS A in step 6, as specified in [MS-PAC] section 4.1.2.1.

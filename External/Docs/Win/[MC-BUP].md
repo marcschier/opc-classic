@@ -1314,7 +1314,11 @@ Release: April 23, 2024
 
 11 / 91
 
-Figure 1: Various messages exchanged among the roles as part of the protocol
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MC-BUP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 1: Various messages exchanged among the roles as part of the protocol
 
 In the preceding diagram, the dotted lines indicate messages that are sent only in some variations of
 the protocol. The following sections describe the message flow for each type of upload, and the
@@ -1410,7 +1414,11 @@ Release: April 23, 2024
 
 13 / 91
 
-1.3.4  Message Flow Optional in Both Modes
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MC-BUP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+1.3.4  Message Flow Optional in Both Modes
 
 1.3.4.1  Canceling an Upload
 
@@ -1455,7 +1463,11 @@ Release: April 23, 2024
 
 14 / 91
 
-Figure 3: BITS Upload Protocol dependency with TLS authentication
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MC-BUP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 3: BITS Upload Protocol dependency with TLS authentication
 
 1.5  Prerequisites/Preconditions
 
@@ -2315,7 +2327,11 @@ Release: April 23, 2024
 
 27 / 91
 
-Figure 4: Possible state transitions
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MC-BUP].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+Figure 4: Possible state transitions
 
 3.1.2  Timers
 
@@ -2943,7 +2959,11 @@ Release: April 23, 2024
 
 37 / 91
 
-Figure 5: Possible state transitions
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MC-BUP].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 5: Possible state transitions
 
 3.2.2  Timers
 
@@ -3379,7 +3399,11 @@ Release: April 23, 2024
 
 44 / 91
 
-Figure 6: Possible state transitions
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MC-BUP].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+Figure 6: Possible state transitions
 
 3.3.2  Timers
 
@@ -3946,7 +3970,11 @@ Release: April 23, 2024
 
 53 / 91
 
-Figure 7: Possible state transitions
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MC-BUP].images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+Figure 7: Possible state transitions
 
 3.6.2  Timers
 

@@ -1408,7 +1408,12 @@ Release: April 23, 2024
 
 13 / 91
 
-Figure 1: Bidirectional communication
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-PAN].images/page014-img01.png)
+![Extracted image 2 from page 14]([MS-PAN].images/page014-img02.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 1: Bidirectional communication
 
 In unidirectional communication mode, multiple clients can register for the same notifications. The
 server sends a given notification to all clients that have registered for it. Because unidirectional
@@ -1457,7 +1462,12 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-user input back to the notification source on the server, or trigger the execution of printer driver code
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-PAN].images/page015-img01.png)
+![Extracted image 2 from page 15]([MS-PAN].images/page015-img02.png)
+<!-- /Extracted images from page 15 -->
+
+user input back to the notification source on the server, or trigger the execution of printer driver code
 on the client computer. The following diagram illustrates the relationship between a notification source
 and an AsyncUI client.
 
@@ -3749,7 +3759,11 @@ Release: April 23, 2024
 
 42 / 91
 
-3  Protocol Details
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-PAN].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+3  Protocol Details
 
 The IRPCAsyncNotify interface is identified by UUID 0b6edbfa-4a24-4fc6-8a23-942b1eca65d1.
 
@@ -3774,7 +3788,11 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-notification channels. The second diagram details the processing of an open channel, including its
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-PAN].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+notification channels. The second diagram details the processing of an open channel, including its
 eventual closure.
 
 Figure 6: Bidirectional message passing mode
@@ -3788,7 +3806,11 @@ Release: April 23, 2024
 
 44 / 91
 
-Figure 7: Processing a single open channel
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-PAN].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+Figure 7: Processing a single open channel
 
 3.1.1.1  Abstract Data Model
 
@@ -5310,7 +5332,11 @@ Release: April 23, 2024
 
 65 / 91
 
-Figure 8: Client registering and receiving notifications of a predetermined notification type
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MS-PAN].images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+Figure 8: Client registering and receiving notifications of a predetermined notification type
 
 Bidirectional message passing mode is illustrated by the following two client state diagrams. The first
 diagram illustrates remote object creation and deletion, client registration, and the opening of
@@ -5324,7 +5350,11 @@ Release: April 23, 2024
 
 66 / 91
 
-Figure 9: Remote object creation and deletion, client registration, and opening of
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-PAN].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+Figure 9: Remote object creation and deletion, client registration, and opening of
 notification channels
 
 The following diagram illustrates the processing of a single open channel.
@@ -5336,7 +5366,11 @@ Release: April 23, 2024
 
 67 / 91
 
-Figure 10: Processing a single open channel
+<!-- Extracted images from page 68 -->
+![Extracted image 1 from page 68]([MS-PAN].images/page068-img01.png)
+<!-- /Extracted images from page 68 -->
+
+Figure 10: Processing a single open channel
 
 3.2.2.1  Abstract Data Model
 
@@ -5414,7 +5448,11 @@ Release: April 23, 2024
 
 69 / 91
 
-Figure 11: Client state diagram when dealing with a single communication channel
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70]([MS-PAN].images/page070-img01.png)
+<!-- /Extracted images from page 70 -->
+
+Figure 11: Client state diagram when dealing with a single communication channel
 
 3.2.3.1  Abstract Data Model
 
@@ -5801,7 +5839,11 @@ Release: April 23, 2024
 
 75 / 91
 
-4  Protocol Examples
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MS-PAN].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+4  Protocol Examples
 
 4.1  Unidirectional Communication Mode
 
@@ -5819,7 +5861,11 @@ Release: April 23, 2024
 
 76 / 91
 
-4.2  AsyncUI Notification in Unidirectional Communication Mode
+<!-- Extracted images from page 77 -->
+![Extracted image 1 from page 77]([MS-PAN].images/page077-img01.png)
+<!-- /Extracted images from page 77 -->
+
+4.2  AsyncUI Notification in Unidirectional Communication Mode
 
 The following diagram illustrates the processing of an AsyncUI notification in unidirectional
 communication mode. In this example, the printer driver uses the notification type identifier
@@ -5844,7 +5890,11 @@ Print System Asynchronous Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  <v1>
+<!-- Extracted images from page 78 -->
+![Extracted image 1 from page 78]([MS-PAN].images/page078-img01.png)
+<!-- /Extracted images from page 78 -->
+
+  <v1>
    <requestOpen>
     <balloonUI iconID="1" resourceDll="IHV.dll">
      <title stringID="1234" resourceDll="IHV.dll" />
@@ -5869,7 +5919,11 @@ Release: April 23, 2024
 
 78 / 91
 
-Figure 14: Bidirectional communication mode
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-PAN].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+Figure 14: Bidirectional communication mode
 
 4.4  AsyncUI Notification in Bidirectional Communication Mode
 

@@ -2040,7 +2040,11 @@ Release: April 23, 2024
 
 18 / 220
 
-Figure 1: Rights management roles
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-RMPR].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 1: Rights management roles
 
 The Rights Management Services (RMS) system involves four active entities: the creator, the
 consumer, the server, and the cloud service.
@@ -2205,7 +2209,11 @@ Release: April 23, 2024
 
 21 / 220
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-RMPR].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+1.4  Relationship to Other Protocols
 
 The RMS: Client-to-Server Protocol uses the SOAP messaging protocol, as specified in [SOAP1.1], for
 formatting requests and responses. It transmits these messages using the HTTP and/or HTTPS
@@ -3219,7 +3227,11 @@ Release: April 23, 2024
 
 35 / 220
 
-Figure 3: Relationships between certificates
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-RMPR].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 3: Relationships between certificates
 
 For version 1 clients, the SPC chain starts at the SPC leaf node certificate, followed by the version 1
 security processor Certification Authority (CA) certificate, followed by the intermediate security
@@ -3260,7 +3272,11 @@ Release: April 23, 2024
 
 37 / 220
 
-Figure 4: Relationships between licenses and certificates
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-RMPR].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 4: Relationships between licenses and certificates
 
 The UL chain starts at the UL leaf node certificate, followed by the SLC, followed by the Enrollment
 Service certificate, followed by the Enrollment CA certificate, terminating at the CA certificate.
@@ -7265,7 +7281,11 @@ Release: April 23, 2024
 
 89 / 220
 
-Figure 5: Protocol operation
+<!-- Extracted images from page 90 -->
+![Extracted image 1 from page 90]([MS-RMPR].images/page090-img01.png)
+<!-- /Extracted images from page 90 -->
+
+Figure 5: Protocol operation
 
 The state data acquired from server bootstrapping previously described in section 3.1.3 MUST be
 retained on the server. Beyond this, no other state data is required on the server. The server MAY
@@ -7714,7 +7734,11 @@ Release: April 23, 2024
 
 95 / 220
 
-3.2.4  Message Processing Events and Sequencing Rules
+<!-- Extracted images from page 96 -->
+![Extracted image 1 from page 96]([MS-RMPR].images/page096-img01.png)
+<!-- /Extracted images from page 96 -->
+
+3.2.4  Message Processing Events and Sequencing Rules
 
 Operation
 
@@ -8054,7 +8078,11 @@ Release: April 23, 2024
 
 100 / 220
 
-3.2.5  Timer Events
+<!-- Extracted images from page 101 -->
+![Extracted image 1 from page 101]([MS-RMPR].images/page101-img01.png)
+<!-- /Extracted images from page 101 -->
+
+3.2.5  Timer Events
 
 None.
 
@@ -8481,7 +8509,11 @@ Release: April 23, 2024
 
 106 / 220
 
-3.3.5  Timer Events
+<!-- Extracted images from page 107 -->
+![Extracted image 1 from page 107]([MS-RMPR].images/page107-img01.png)
+<!-- /Extracted images from page 107 -->
+
+3.3.5  Timer Events
 
 None.
 
@@ -9099,7 +9131,11 @@ Release: April 23, 2024
 
 114 / 220
 
-     <xs:element name="CertificateChain"
+<!-- Extracted images from page 115 -->
+![Extracted image 1 from page 115]([MS-RMPR].images/page115-img01.png)
+<!-- /Extracted images from page 115 -->
+
+     <xs:element name="CertificateChain"
        type="ArrayOfXmlNode"
        minOccurs="0"
        maxOccurs="1"
@@ -9358,7 +9394,11 @@ Release: April 23, 2024
 
 118 / 220
 
-Figure 10: AcquireTemplates message sequence
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MS-RMPR].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+Figure 10: AcquireTemplates message sequence
 
  <wsdl:operation name="AcquireTemplates">
      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return
@@ -9558,7 +9598,11 @@ Release: April 23, 2024
 
 121 / 220
 
-3.4.5  Timer Events
+<!-- Extracted images from page 122 -->
+![Extracted image 1 from page 122]([MS-RMPR].images/page122-img01.png)
+<!-- /Extracted images from page 122 -->
+
+3.4.5  Timer Events
 
 None.
 
@@ -9990,7 +10034,11 @@ Rights Management Services (RMS): Client-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-protected content on behalf of the issuing server. It issues an asymmetric signing key pair that is
+<!-- Extracted images from page 128 -->
+![Extracted image 1 from page 128]([MS-RMPR].images/page128-img01.png)
+<!-- /Extracted images from page 128 -->
+
+protected content on behalf of the issuing server. It issues an asymmetric signing key pair that is
 bound to the RAC.
 
 The client uses the GetClientLicensorCert request to obtain a CLC. The client MUST have a valid RAC
@@ -10369,7 +10417,11 @@ Release: April 23, 2024
 
 132 / 220
 
-3.6.3  Initialization
+<!-- Extracted images from page 133 -->
+![Extracted image 1 from page 133]([MS-RMPR].images/page133-img01.png)
+<!-- /Extracted images from page 133 -->
+
+3.6.3  Initialization
 
 See section common server Initialization (section 3.1.3).
 
@@ -11161,7 +11213,11 @@ Release: April 23, 2024
 
 143 / 220
 
-Figure 14: GetLicensorCertificate sequence
+<!-- Extracted images from page 144 -->
+![Extracted image 1 from page 144]([MS-RMPR].images/page144-img01.png)
+<!-- /Extracted images from page 144 -->
+
+Figure 14: GetLicensorCertificate sequence
 
  <wsdl:operation name="GetLicensorCertificate">
      <wsdl:input message="tns:GetLicensorCertificateSoapIn" />
@@ -11285,7 +11341,11 @@ Release: April 23, 2024
 
 145 / 220
 
-The LicensorCertChain complex type represents a set of certificates that are related to each other by
+<!-- Extracted images from page 146 -->
+![Extracted image 1 from page 146]([MS-RMPR].images/page146-img01.png)
+<!-- /Extracted images from page 146 -->
+
+The LicensorCertChain complex type represents a set of certificates that are related to each other by
 successive issuers. For example, in a LicensorCertChain instance that contains A, B, and C certificates,
 A is issued by B, and B is issued by C.
 
@@ -11692,7 +11752,11 @@ Release: April 23, 2024
 
 151 / 220
 
-Figure 16: GetServerInfo sequence
+<!-- Extracted images from page 152 -->
+![Extracted image 1 from page 152]([MS-RMPR].images/page152-img01.png)
+<!-- /Extracted images from page 152 -->
+
+Figure 16: GetServerInfo sequence
 
 <wsdl:operation name="GetServerInfo">
   <wsdl:input message="tns:GetServerInfoSoapIn" />
@@ -12139,7 +12203,11 @@ Release: April 23, 2024
 
 158 / 220
 
-Figure 17: Common message sequence for the client
+<!-- Extracted images from page 159 -->
+![Extracted image 1 from page 159]([MS-RMPR].images/page159-img01.png)
+<!-- /Extracted images from page 159 -->
+
+Figure 17: Common message sequence for the client
 
 Sequencing rules for the client can be divided into four sections: client bootstrapping, online
 publishing, offline publishing, and licensing.
@@ -12275,7 +12343,11 @@ Release: April 23, 2024
 
 161 / 220
 
-4  Protocol Examples
+<!-- Extracted images from page 162 -->
+![Extracted image 1 from page 162]([MS-RMPR].images/page162-img01.png)
+<!-- /Extracted images from page 162 -->
+
+4  Protocol Examples
 
 4.1  Publishing Usage Policy Example
 
@@ -12312,7 +12384,12 @@ Release: April 23, 2024
 
 162 / 220
 
-In the RMS 1.0 client, the activation stage involved contacting a web service run by Microsoft to
+<!-- Extracted images from page 163 -->
+![Extracted image 1 from page 163]([MS-RMPR].images/page163-img01.png)
+![Extracted image 2 from page 163]([MS-RMPR].images/page163-img02.png)
+<!-- /Extracted images from page 163 -->
+
+In the RMS 1.0 client, the activation stage involved contacting a web service run by Microsoft to
 acquire a binary and some metadata. RMS version 1.0 SP1, 1.0 SP2, and 2.0 clients eliminate the
 need for this step by providing a form of self-activation that does not contact the server.
 
@@ -12342,7 +12419,11 @@ Rights Management Services (RMS): Client-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client first calls the FindServiceLocationsForUser web method, providing the authentication
+<!-- Extracted images from page 164 -->
+![Extracted image 1 from page 164]([MS-RMPR].images/page164-img01.png)
+<!-- /Extracted images from page 164 -->
+
+The client first calls the FindServiceLocationsForUser web method, providing the authentication
 information, to determine at which URL the server that issues CLCs is located. Once this URL is
 obtained, the client calls the GetClientLicensorCert web method at this URL and provides the user
 RAC. A successful response from the server results in a CLC being returned to the client.
@@ -12388,7 +12469,12 @@ Release: April 23, 2024
 
 164 / 220
 
-Figure 21: Local machine activation
+<!-- Extracted images from page 165 -->
+![Extracted image 1 from page 165]([MS-RMPR].images/page165-img01.png)
+![Extracted image 2 from page 165]([MS-RMPR].images/page165-img02.png)
+<!-- /Extracted images from page 165 -->
+
+Figure 21: Local machine activation
 
 Activation is the process by which an SPC is generated on the client machine. The SPC represents
 a pair of keys for the machine that is used to protect the user's keys in a subsequent step.
@@ -12745,7 +12831,11 @@ Rights Management Services (RMS): Client-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.4  Template Acquisition Example
+<!-- Extracted images from page 169 -->
+![Extracted image 1 from page 169]([MS-RMPR].images/page169-img01.png)
+<!-- /Extracted images from page 169 -->
+
+4.4  Template Acquisition Example
 
 Template acquisition is a process by which client machines keep their local copy of templates in sync
 with the server.

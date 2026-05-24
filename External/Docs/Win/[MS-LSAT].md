@@ -1111,7 +1111,11 @@ Release: May 1, 2024
 
 11 / 83
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-LSAT].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.4  Relationship to Other Protocols
 
 Figure 1: The relationships among the LSAT, LSAD, RPC, and SMB protocols
 

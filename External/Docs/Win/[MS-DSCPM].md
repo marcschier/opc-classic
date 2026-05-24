@@ -3627,7 +3627,11 @@ Release: April 23, 2024
 
 47 / 65
 
-4  Protocol Examples
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-DSCPM].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+4  Protocol Examples
 
 4.1  GetConfiguration Sequence
 
@@ -3674,7 +3678,11 @@ Release: April 23, 2024
 
 48 / 65
 
-Figure 2: Message sequence for a single GetModule request
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-DSCPM].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+Figure 2: Message sequence for a single GetModule request
 
 4.3  GetAction Sequence
 
@@ -3701,7 +3709,11 @@ Release: April 23, 2024
 
 49 / 65
 
-Figure 3: Message sequence with a single GetAction request
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MS-DSCPM].images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+Figure 3: Message sequence with a single GetAction request
 
 4.4  SendStatusReport Sequence
 
@@ -3728,7 +3740,11 @@ Release: April 23, 2024
 
 50 / 65
 
-Figure 4: Message sequence with a single SendStatusReport
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-DSCPM].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+Figure 4: Message sequence with a single SendStatusReport
 
 4.5  GetStatusReport Sequence
 
@@ -3755,7 +3771,12 @@ Release: April 23, 2024
 
 51 / 65
 
-Figure 5: Message sequence with a single GetStatusReport
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-DSCPM].images/page052-img01.png)
+![Extracted image 2 from page 52]([MS-DSCPM].images/page052-img02.png)
+<!-- /Extracted images from page 52 -->
+
+Figure 5: Message sequence with a single GetStatusReport
 
 4.6  RegisterDscAgent Sequence
 
@@ -3784,7 +3805,11 @@ Release: April 23, 2024
 
 52 / 65
 
-4.7  SendReport Sequence
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-DSCPM].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+4.7  SendReport Sequence
 
 The following sequence occurs between a client and a server during a SendReport request.
 
@@ -3829,7 +3854,11 @@ Release: April 23, 2024
 
 53 / 65
 
-Figure 8: Message sequence with a single GetDscAction request
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MS-DSCPM].images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+Figure 8: Message sequence with a single GetDscAction request
 
 [MS-DSCPM] - v20240423
 Desired State Configuration Pull Model Protocol

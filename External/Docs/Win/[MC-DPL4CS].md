@@ -1261,7 +1261,11 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DirectPlay flag
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MC-DPL4CS].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+DirectPlay flag
 
 0x00000200
 
@@ -1348,7 +1352,12 @@ Release: April 23, 2024
 
 13 / 103
 
-Once the system player for the client has been created, the game host will transmit the current set of
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MC-DPL4CS].images/page014-img01.png)
+![Extracted image 2 from page 14]([MC-DPL4CS].images/page014-img02.png)
+<!-- /Extracted images from page 14 -->
+
+Once the system player for the client has been created, the game host will transmit the current set of
 game data to the joining nascent game instance and will notify all established game instances about
 the nascent game instance.
 
@@ -7349,7 +7358,11 @@ Release: April 23, 2024
 
 92 / 103
 
-Figure 4: Joining a game
+<!-- Extracted images from page 93 -->
+![Extracted image 1 from page 93]([MC-DPL4CS].images/page093-img01.png)
+<!-- /Extracted images from page 93 -->
+
+Figure 4: Joining a game
 
 A nascent game instance transmits a DPSP_MSG_REQUESTPLAYERID (section 2.2.49) message
 requesting a new system player to the game host.

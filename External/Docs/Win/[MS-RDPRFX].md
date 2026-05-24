@@ -811,7 +811,11 @@ Release: April 23, 2024
 
 8 / 172
 
-Figure 1: Core functional blocks of the RemoteFX codec
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RDPRFX].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: Core functional blocks of the RemoteFX codec
 
 1.3.1.1  Message Flows
 
@@ -836,7 +840,11 @@ Release: April 23, 2024
 
 9 / 172
 
-Figure 2: The RemoteFX message sequence
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RDPRFX].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 2: The RemoteFX message sequence
 
 The client initiates the session by sending a TS_RFX_CAPS Capabilities message (section 2.2.1.1). This
 is the only message sent from the client to the server; it lists the client-side support and preferences
@@ -2502,7 +2510,11 @@ Release: April 23, 2024
 
 29 / 172
 
-Figure 3: Server state diagram
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-RDPRFX].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 3: Server state diagram
 
 State Name
 
@@ -2672,7 +2684,12 @@ Release: April 23, 2024
 
 32 / 172
 
-Figure 4: RemoteFX encoding stages
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-RDPRFX].images/page033-img01.png)
+![Extracted image 2 from page 33]([MS-RDPRFX].images/page033-img02.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 4: RemoteFX encoding stages
 
 3.1.8.1.1 Input Tiling
 
@@ -2716,7 +2733,11 @@ Release: April 23, 2024
 
 33 / 172
 
-Each tile component (Y, Cb, Cr) is individually transformed by a 2-D DWT using a 5/3 wavelet basis.
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-RDPRFX].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+Each tile component (Y, Cb, Cr) is individually transformed by a 2-D DWT using a 5/3 wavelet basis.
 The filter coefficients used for both of the lifting-based implementations are presented in the following
 figure.
 
@@ -2750,7 +2771,12 @@ Release: April 23, 2024
 
 34 / 172
 
-Figure 7: Three-level DWT decomposition
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-RDPRFX].images/page035-img01.png)
+![Extracted image 2 from page 35]([MS-RDPRFX].images/page035-img02.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 7: Three-level DWT decomposition
 
 3.1.8.1.5 Quantization
 
@@ -2774,7 +2800,12 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 9: Raster scan of sub-band coefficients
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-RDPRFX].images/page036-img01.png)
+![Extracted image 2 from page 36]([MS-RDPRFX].images/page036-img02.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 9: Raster scan of sub-band coefficients
 
 Linearization of the sub-bands is conducted in the following sequence: HL1, LH1, HH1, HL2, LH2, HH2,
 HL3, LH3, HH3, and LL3, as shown in the following figure.
@@ -2798,7 +2829,12 @@ Release: April 23, 2024
 
 36 / 172
 
-3.1.8.1.7 RLGR Entropy Encoding
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-RDPRFX].images/page037-img01.png)
+![Extracted image 2 from page 37]([MS-RDPRFX].images/page037-img02.png)
+<!-- /Extracted images from page 37 -->
+
+3.1.8.1.7 RLGR Entropy Encoding
 
 Each 64 x 64-pixel tile contains an array of 4,096 coefficients. This coefficient array is losslessly
 entropy-encoded using the RLGR algorithm ([ARLGR] section 3). The three tile components are
@@ -3342,7 +3378,12 @@ Release: April 23, 2024
 
 44 / 172
 
-Figure 13: RemoteFX decoding stages
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-RDPRFX].images/page045-img01.png)
+![Extracted image 2 from page 45]([MS-RDPRFX].images/page045-img02.png)
+<!-- /Extracted images from page 45 -->
+
+Figure 13: RemoteFX decoding stages
 
 3.1.8.2.1 RLGR Entropy Decoding
 
@@ -3386,7 +3427,12 @@ Release: April 23, 2024
 
 45 / 172
 
-Figure 15: The YCbCr to RGB conversion matrix
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-RDPRFX].images/page046-img01.png)
+![Extracted image 2 from page 46]([MS-RDPRFX].images/page046-img02.png)
+<!-- /Extracted images from page 46 -->
+
+Figure 15: The YCbCr to RGB conversion matrix
 
 3.1.8.2.6 Reconstructed Frame
 
@@ -3436,7 +3482,12 @@ Release: April 23, 2024
 
 46 / 172
 
-The first message in a RemoteFX stream MUST be the TS_RFX_SYNC (section 2.2.2.2.1) message.
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-RDPRFX].images/page047-img01.png)
+![Extracted image 2 from page 47]([MS-RDPRFX].images/page047-img02.png)
+<!-- /Extracted images from page 47 -->
+
+The first message in a RemoteFX stream MUST be the TS_RFX_SYNC (section 2.2.2.2.1) message.
 This message MUST be followed by the TS_RFX_CHANNELS (section 2.2.2.2.3),
 TS_RFX_CODEC_VERSIONS (section 2.2.2.2.2), and TS_RFX_CONTEXT (section 2.2.2.2.4) messages,
 as shown in the figure that follows. It is permissible for these three messages to occur in any order.
@@ -3496,7 +3547,11 @@ Release: April 23, 2024
 
 48 / 172
 
-Figure 19: Update region to tile grid mapping
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-RDPRFX].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+Figure 19: Update region to tile grid mapping
 
 The single monitor configuration results in a TS_RFX_CHANNELS (section 2.2.2.2.3) header message
 that specifies one channel set to 1280 x 1024. For every frame that is encoded due to region updates,
@@ -12331,7 +12386,11 @@ Release: April 23, 2024
 
 166 / 172
 
-Figure 20: Decoded image
+<!-- Extracted images from page 167 -->
+![Extracted image 1 from page 167]([MS-RDPRFX].images/page167-img01.png)
+<!-- /Extracted images from page 167 -->
+
+Figure 20: Decoded image
 
 [MS-RDPRFX] - v20240423
 Remote Desktop Protocol: RemoteFX Codec Extension

@@ -1844,7 +1844,11 @@ Release: September 9, 2025
 
 17 / 262
 
-1.3  Overview
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-UAMG].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+1.3  Overview
 
 The Update Agent Management Protocol defines a set of types and interfaces that allow clients to
 manage an update agent. The protocol implements two primary classes of functionality: (1)
@@ -2810,7 +2814,11 @@ Update Agent Management Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-3  Protocol Details
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-UAMG].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+3  Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or application are
@@ -15691,7 +15699,11 @@ Release: September 9, 2025
 
 190 / 262
 
-4  Protocol Examples
+<!-- Extracted images from page 191 -->
+![Extracted image 1 from page 191]([MS-UAMG].images/page191-img01.png)
+<!-- /Extracted images from page 191 -->
+
+4  Protocol Examples
 
 4.1  Adding a New Update Service
 
@@ -15722,7 +15734,11 @@ Update Agent Management Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Figure 4: Message sequence diagram for adding an update service based on a scan package
+<!-- Extracted images from page 192 -->
+![Extracted image 1 from page 192]([MS-UAMG].images/page192-img01.png)
+<!-- /Extracted images from page 192 -->
+
+Figure 4: Message sequence diagram for adding an update service based on a scan package
 
 4.3  Performing an Update Search and Consuming Results
 
@@ -15767,7 +15783,11 @@ Release: September 9, 2025
 
 192 / 262
 
-Figure 5: Message sequence diagram for performing an update search and processing
+<!-- Extracted images from page 193 -->
+![Extracted image 1 from page 193]([MS-UAMG].images/page193-img01.png)
+<!-- /Extracted images from page 193 -->
+
+Figure 5: Message sequence diagram for performing an update search and processing
 search results
 
 [MS-UAMG] - v20250909

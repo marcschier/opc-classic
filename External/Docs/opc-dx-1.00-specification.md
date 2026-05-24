@@ -1,3 +1,7 @@
+<!-- Extracted images from page 1 -->
+![Extracted image 1 from page 1](opc-dx-1.00-specification.images/page001-img01.png)
+<!-- /Extracted images from page 1 -->
+
 OPC Data eXchange Specification
 
 Version 1.0
@@ -6,7 +10,11 @@ Release
 
 March 5, 2003
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 2 -->
+![Extracted image 1 from page 2](opc-dx-1.00-specification.images/page002-img01.png)
+<!-- /Extracted images from page 2 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -51,7 +59,11 @@ have not been listed here.
 
 Page 2 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 3 -->
+![Extracted image 1 from page 3](opc-dx-1.00-specification.images/page003-img01.png)
+<!-- /Extracted images from page 3 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -111,7 +123,11 @@ OF THE OPC MATERIALS.
 
 Page 3 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 4 -->
+![Extracted image 1 from page 4](opc-dx-1.00-specification.images/page004-img01.png)
+<!-- /Extracted images from page 4 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -146,7 +162,11 @@ understanding or agreement (oral or written) relating to, the OPC Materials.
 
 Page 4 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 5 -->
+![Extracted image 1 from page 5](opc-dx-1.00-specification.images/page005-img01.png)
+<!-- /Extracted images from page 5 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -243,7 +263,11 @@ VendorData .....................................................................
 
 Page 5 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6](opc-dx-1.00-specification.images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -330,7 +354,11 @@ Source Server Services .........................................................
 
 Page 6 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7](opc-dx-1.00-specification.images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -426,7 +454,11 @@ APPENDIX A.  WEB SERVICES IMPLEMENTATION........................................
 
 Page 7 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8](opc-dx-1.00-specification.images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -479,7 +511,11 @@ B.1.
 
 Page 8 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9](opc-dx-1.00-specification.images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -534,7 +570,11 @@ products as possible.
 
 Page 9 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10](opc-dx-1.00-specification.images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -561,7 +601,11 @@ specs, etc, can be found at the W3C Web site.
 
 Page 10 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11](opc-dx-1.00-specification.images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -632,7 +676,11 @@ Figure 2 - Horizontal OPC DX Integration
 
 Page 11 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12](opc-dx-1.00-specification.images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -712,7 +760,11 @@ DX server periodically persists its DX Database for use when restarting (see Sec
 
 Page 12 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13](opc-dx-1.00-specification.images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -770,7 +822,11 @@ Control and Monitoring
 
 Page 13 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14](opc-dx-1.00-specification.images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -820,7 +876,11 @@ configuration attributes to monitor the status of a DXConnection.
 
 Page 14 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15](opc-dx-1.00-specification.images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -878,7 +938,11 @@ Figure 4 below illustrates this model.
 
 Page 15 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16](opc-dx-1.00-specification.images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -955,7 +1019,11 @@ specification.
 
 Page 16 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17](opc-dx-1.00-specification.images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1042,7 +1110,11 @@ error codes appropriate for the item being described.
 
 Page 17 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18](opc-dx-1.00-specification.images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1106,7 +1178,11 @@ None (branch)
 
 Page 18 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19](opc-dx-1.00-specification.images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1168,7 +1244,11 @@ Data Type ID
 
 Page 19 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20](opc-dx-1.00-specification.images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1237,7 +1317,11 @@ ServerState
 
 Page 20 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21](opc-dx-1.00-specification.images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1335,7 +1419,11 @@ unsignedInt
 
 Page 21 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22](opc-dx-1.00-specification.images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1430,7 +1518,11 @@ See Section 5.1.7
 
 Page 22 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23](opc-dx-1.00-specification.images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1500,7 +1592,11 @@ Server data type conversions fully supported.
 
 Page 23 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24](opc-dx-1.00-specification.images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1558,7 +1654,11 @@ None
 
 Page 24 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25](opc-dx-1.00-specification.images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1612,7 +1712,11 @@ Boolean
 
 Page 25 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26](opc-dx-1.00-specification.images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1678,7 +1782,11 @@ Boolean
 
 Page 26 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27](opc-dx-1.00-specification.images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1731,7 +1839,11 @@ subscribe to them to receive notifications when their values change.
 
 Page 27 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28](opc-dx-1.00-specification.images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1787,7 +1899,11 @@ string
 
 Page 28 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29](opc-dx-1.00-specification.images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1842,7 +1958,11 @@ boolean
 
 Page 29 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30](opc-dx-1.00-specification.images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1920,7 +2040,11 @@ Datatype of target item
 
 Page 30 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31](opc-dx-1.00-specification.images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -1974,7 +2098,11 @@ Boolean
 
 Page 31 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32](opc-dx-1.00-specification.images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2054,7 +2182,11 @@ string
 
 Page 32 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33](opc-dx-1.00-specification.images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2107,7 +2239,11 @@ string
 
 Page 33 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34](opc-dx-1.00-specification.images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2163,7 +2299,11 @@ unsignedInt
 
 Page 34 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35](opc-dx-1.00-specification.images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2234,7 +2374,11 @@ possible for the client to omit the read-only components.
 
 Page 35 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36](opc-dx-1.00-specification.images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2244,7 +2388,11 @@ Sections 5.2.1.5 and 5.2.2.6.
 
 Page 36 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37](opc-dx-1.00-specification.images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2272,7 +2420,11 @@ Data Type ID
 
 Page 37 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38](opc-dx-1.00-specification.images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2336,7 +2488,11 @@ Version: 1.0
 
 Page 38 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39](opc-dx-1.00-specification.images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2411,7 +2567,11 @@ The target item could not be located in the DX server
 
 Page 39 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40](opc-dx-1.00-specification.images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2474,7 +2634,11 @@ dateTime
 
 Page 40 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41](opc-dx-1.00-specification.images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2543,7 +2707,11 @@ DXQuality
 
 Page 41 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42](opc-dx-1.00-specification.images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2634,7 +2802,11 @@ See Section 5.1.7
 
 Page 42 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43](opc-dx-1.00-specification.images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2711,7 +2883,11 @@ dateTime
 
 Page 43 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44](opc-dx-1.00-specification.images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2781,7 +2957,11 @@ QName
 
 Page 44 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45](opc-dx-1.00-specification.images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2855,7 +3035,11 @@ string
 
 Page 45 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46](opc-dx-1.00-specification.images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2917,7 +3101,11 @@ unsignedInt
 
 Page 46 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47](opc-dx-1.00-specification.images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -2987,7 +3175,11 @@ boolean
 
 Page 47 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48](opc-dx-1.00-specification.images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3046,7 +3238,11 @@ boolean
 
 Page 48 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49](opc-dx-1.00-specification.images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3111,7 +3307,11 @@ Monitoring clients may subscribe to them to receive notifications when their val
 
 Page 49 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50](opc-dx-1.00-specification.images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3185,7 +3385,11 @@ string
 
 Page 50 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51](opc-dx-1.00-specification.images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3265,7 +3469,11 @@ OPC DA:
 
 Page 51 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52](opc-dx-1.00-specification.images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3295,7 +3503,11 @@ boolean
 
 Page 52 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53](opc-dx-1.00-specification.images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3348,7 +3560,11 @@ Data Type ID
 
 Page 53 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54](opc-dx-1.00-specification.images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3411,7 +3627,11 @@ The DX server is not able to connect to the source server.
 
 Page 54 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55](opc-dx-1.00-specification.images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3494,7 +3714,11 @@ string
 
 Page 55 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 56 -->
+![Extracted image 1 from page 56](opc-dx-1.00-specification.images/page056-img01.png)
+<!-- /Extracted images from page 56 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3567,7 +3791,11 @@ UnsignedInt
 
 Page 56 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57](opc-dx-1.00-specification.images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3625,7 +3853,11 @@ DateTime
 
 Page 57 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58](opc-dx-1.00-specification.images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3662,7 +3894,11 @@ Boolean
 
 Page 58 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 59 -->
+![Extracted image 1 from page 59](opc-dx-1.00-specification.images/page059-img01.png)
+<!-- /Extracted images from page 59 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3723,7 +3959,11 @@ alphabetically.
 
 Page 59 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60](opc-dx-1.00-specification.images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3791,7 +4031,11 @@ the BrowsePath is:
 
 Page 60 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61](opc-dx-1.00-specification.images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -3830,7 +4074,11 @@ When used in responses, all attributes are mandatory if they have values defined
 
 Page 61 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62](opc-dx-1.00-specification.images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -4040,7 +4288,11 @@ See Section 4.3.2.9.
 
 Page 62 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63](opc-dx-1.00-specification.images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -4210,7 +4462,11 @@ request. The order of the results match the order of the items in the request.
 
 Page 63 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 64 -->
+![Extracted image 1 from page 64](opc-dx-1.00-specification.images/page064-img01.png)
+<!-- /Extracted images from page 64 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -4317,7 +4573,11 @@ name of the branch that contains it.
 
 Page 64 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65](opc-dx-1.00-specification.images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -4354,7 +4614,11 @@ Use  Description
 
 Page 65 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66](opc-dx-1.00-specification.images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -4556,7 +4820,11 @@ The target item is already connected or may
 
 Page 66 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67](opc-dx-1.00-specification.images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -4743,7 +5011,11 @@ server definition in service requests and responses, and as a search mask in ser
 
 Page 67 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 68 -->
+![Extracted image 1 from page 68](opc-dx-1.00-specification.images/page068-img01.png)
+<!-- /Extracted images from page 68 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -4835,7 +5107,11 @@ This service has no effect on the DXConnections or on the status/version of the 
 
 Page 68 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69](opc-dx-1.00-specification.images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -4922,7 +5198,11 @@ Section 5.1.3.
 
 Page 69 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70](opc-dx-1.00-specification.images/page070-img01.png)
+<!-- /Extracted images from page 70 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5021,7 +5301,11 @@ required.
 
 Page 70 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71](opc-dx-1.00-specification.images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5142,7 +5426,11 @@ See Section 5.1.7
 
 Page 71 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72](opc-dx-1.00-specification.images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5253,7 +5541,11 @@ See Section 5.1.7
 
 Page 72 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73](opc-dx-1.00-specification.images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5334,7 +5626,11 @@ Table 30 – CopyDefaultServerAttributes Fault Codes
 
 Page 73 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74](opc-dx-1.00-specification.images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5432,7 +5728,11 @@ This service has no effect on the DXConnections or on the status/version of the 
 
 Page 74 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75](opc-dx-1.00-specification.images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5539,7 +5839,11 @@ Table 35 – QueryDXConnections Item Result Codes
 
 Page 75 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76](opc-dx-1.00-specification.images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5646,7 +5950,11 @@ Table 38 – AddDXConnections Item Result Codes
 
 Page 76 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 77 -->
+![Extracted image 1 from page 77](opc-dx-1.00-specification.images/page077-img01.png)
+<!-- /Extracted images from page 77 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5750,7 +6058,11 @@ return an appropriate ErrorID.
 
 Page 77 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 78 -->
+![Extracted image 1 from page 78](opc-dx-1.00-specification.images/page078-img01.png)
+<!-- /Extracted images from page 78 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5840,7 +6152,11 @@ Table 41 – UpdateDXConnections Fault Codes
 
 Page 78 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79](opc-dx-1.00-specification.images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -5978,7 +6294,11 @@ return an appropriate ErrorID.
 
 Page 79 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80](opc-dx-1.00-specification.images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6053,7 +6373,11 @@ Table 45 – ModifyDXConnections Item Result Codes
 
 Page 80 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81](opc-dx-1.00-specification.images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6156,7 +6480,11 @@ To delete a DXConnection, the DX server:
 
 Page 81 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 82 -->
+![Extracted image 1 from page 82](opc-dx-1.00-specification.images/page082-img01.png)
+<!-- /Extracted images from page 82 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6252,7 +6580,11 @@ Table 48 – DeleteDXConnections Fault Codes
 
 Page 82 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83](opc-dx-1.00-specification.images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6370,7 +6702,11 @@ use is specified in the QueryDXConnections service (see Section 5.2.2.1).
 
 Page 83 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 84 -->
+![Extracted image 1 from page 84](opc-dx-1.00-specification.images/page084-img01.png)
+<!-- /Extracted images from page 84 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6467,7 +6803,11 @@ Table 53 – CopyDefaultDXConnectionAttributes Fault Codes
 
 Page 84 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 85 -->
+![Extracted image 1 from page 85](opc-dx-1.00-specification.images/page085-img01.png)
+<!-- /Extracted images from page 85 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6579,7 +6919,11 @@ server attempts to reset the configuration.
 
 Page 85 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 86 -->
+![Extracted image 1 from page 86](opc-dx-1.00-specification.images/page086-img01.png)
+<!-- /Extracted images from page 86 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6663,7 +7007,11 @@ attribute (see Section 4.2.6).
 
 Page 86 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 87 -->
+![Extracted image 1 from page 87](opc-dx-1.00-specification.images/page087-img01.png)
+<!-- /Extracted images from page 87 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6678,7 +7026,11 @@ If the DirtyFlag is set for the configuration the OPC DX Server persists the DX 
 
 Page 87 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 88 -->
+![Extracted image 1 from page 88](opc-dx-1.00-specification.images/page088-img01.png)
+<!-- /Extracted images from page 88 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6742,7 +7094,11 @@ When these modifications occur, the DX server updates the appropriate DX Server 
 
 Page 88 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 89 -->
+![Extracted image 1 from page 89](opc-dx-1.00-specification.images/page089-img01.png)
+<!-- /Extracted images from page 89 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6819,7 +7175,11 @@ RestartPingTimer (PingTime)
 
 Page 89 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 90 -->
+![Extracted image 1 from page 90](opc-dx-1.00-specification.images/page090-img01.png)
+<!-- /Extracted images from page 90 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6895,7 +7255,11 @@ COM DA Groups
 
 Page 90 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 91 -->
+![Extracted image 1 from page 91](opc-dx-1.00-specification.images/page091-img01.png)
+<!-- /Extracted images from page 91 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -6955,7 +7319,11 @@ deleting the source item to/from it to create a new subscription. The new subscr
 
 Page 91 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 92 -->
+![Extracted image 1 from page 92](opc-dx-1.00-specification.images/page092-img01.png)
+<!-- /Extracted images from page 92 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -7015,7 +7383,11 @@ a subscription until the source server is reconnected.
 
 Page 92 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 93 -->
+![Extracted image 1 from page 93](opc-dx-1.00-specification.images/page093-img01.png)
+<!-- /Extracted images from page 93 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -7104,7 +7476,11 @@ Modifying a DXConnection has no effect on other existing DXConnections. They con
 
 Page 93 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 94 -->
+![Extracted image 1 from page 94](opc-dx-1.00-specification.images/page094-img01.png)
+<!-- /Extracted images from page 94 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -7195,7 +7571,11 @@ CopyDefaultDXConnectionAttributes (see Section 5.2.2.6).
 
 Page 94 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 95 -->
+![Extracted image 1 from page 95](opc-dx-1.00-specification.images/page095-img01.png)
+<!-- /Extracted images from page 95 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -7282,7 +7662,11 @@ the following order: OverrideValue, Overriden, TargetItemConnected, SourceItemCo
 
 Page 95 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 96 -->
+![Extracted image 1 from page 96](opc-dx-1.00-specification.images/page096-img01.png)
+<!-- /Extracted images from page 96 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -7397,7 +7781,11 @@ the source item queue as described in Section 6.3.3 and updates the target item 
 
 Page 96 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 97 -->
+![Extracted image 1 from page 97](opc-dx-1.00-specification.images/page097-img01.png)
+<!-- /Extracted images from page 97 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -7470,7 +7858,11 @@ conversion.
 
 Page 97 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 98 -->
+![Extracted image 1 from page 98](opc-dx-1.00-specification.images/page098-img01.png)
+<!-- /Extracted images from page 98 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -7567,7 +7959,11 @@ accessible, TargetErrorID will be cleared.
 
 Page 98 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 99 -->
+![Extracted image 1 from page 99](opc-dx-1.00-specification.images/page099-img01.png)
+<!-- /Extracted images from page 99 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -7833,7 +8229,11 @@ Note 4: When the target is disconnected the DX server writes nothing to the targ
 
 Page 99 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 100 -->
+![Extracted image 1 from page 100](opc-dx-1.00-specification.images/page100-img01.png)
+<!-- /Extracted images from page 100 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -7926,7 +8326,11 @@ could cause an update to the Source Error ID that hides the reason for being in 
 
 Page 100 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 101 -->
+![Extracted image 1 from page 101](opc-dx-1.00-specification.images/page101-img01.png)
+<!-- /Extracted images from page 101 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8001,7 +8405,11 @@ Events that could change the state include:
 
 Page 101 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 102 -->
+![Extracted image 1 from page 102](opc-dx-1.00-specification.images/page102-img01.png)
+<!-- /Extracted images from page 102 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8049,7 +8457,11 @@ therefore for COM-based communication only.
 
 Page 102 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 103 -->
+![Extracted image 1 from page 103](opc-dx-1.00-specification.images/page103-img01.png)
+<!-- /Extracted images from page 103 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8088,7 +8500,11 @@ status is still “OFFLINE”, the server is released again, terminating this at
 
 Page 103 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 104 -->
+![Extracted image 1 from page 104](opc-dx-1.00-specification.images/page104-img01.png)
+<!-- /Extracted images from page 104 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8147,7 +8563,11 @@ expected that the server will return its default locale identifier (RevisedLocal
 
 Page 104 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 105 -->
+![Extracted image 1 from page 105](opc-dx-1.00-specification.images/page105-img01.png)
+<!-- /Extracted images from page 105 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8204,7 +8624,11 @@ IdentifiedResult
 
 Page 105 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 106 -->
+![Extracted image 1 from page 106](opc-dx-1.00-specification.images/page106-img01.png)
+<!-- /Extracted images from page 106 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8251,7 +8675,11 @@ GetServers
 
 Page 106 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 107 -->
+![Extracted image 1 from page 107](opc-dx-1.00-specification.images/page107-img01.png)
+<!-- /Extracted images from page 107 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8303,7 +8731,11 @@ A.2.2.1.3  ModifyServers
 
 Page 107 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 108 -->
+![Extracted image 1 from page 108](opc-dx-1.00-specification.images/page108-img01.png)
+<!-- /Extracted images from page 108 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8359,7 +8791,11 @@ CopyDefaultServerAttributes
 
 Page 108 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 109 -->
+![Extracted image 1 from page 109](opc-dx-1.00-specification.images/page109-img01.png)
+<!-- /Extracted images from page 109 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8394,7 +8830,11 @@ QueryDXConnections
 
 Page 109 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 110 -->
+![Extracted image 1 from page 110](opc-dx-1.00-specification.images/page110-img01.png)
+<!-- /Extracted images from page 110 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8459,7 +8899,11 @@ UpdateDXConnections
 
 Page 110 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 111 -->
+![Extracted image 1 from page 111](opc-dx-1.00-specification.images/page111-img01.png)
+<!-- /Extracted images from page 111 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8518,7 +8962,11 @@ DeleteDXConnections
 
 Page 111 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 112 -->
+![Extracted image 1 from page 112](opc-dx-1.00-specification.images/page112-img01.png)
+<!-- /Extracted images from page 112 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8583,7 +9031,11 @@ A.2.2.3  ResetConfiguration
 
 Page 112 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 113 -->
+![Extracted image 1 from page 113](opc-dx-1.00-specification.images/page113-img01.png)
+<!-- /Extracted images from page 113 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8604,7 +9056,11 @@ Version: 1.0
 
 Page 113 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 114 -->
+![Extracted image 1 from page 114](opc-dx-1.00-specification.images/page114-img01.png)
+<!-- /Extracted images from page 114 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8665,7 +9121,11 @@ B.1.4. IDL
 
 Page 114 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 115 -->
+![Extracted image 1 from page 115](opc-dx-1.00-specification.images/page115-img01.png)
+<!-- /Extracted images from page 115 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8750,7 +9210,11 @@ LPWSTR szServerURL;
 
 Page 115 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 116 -->
+![Extracted image 1 from page 116](opc-dx-1.00-specification.images/page116-img01.png)
+<!-- /Extracted images from page 116 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8835,7 +9299,11 @@ interface IOPCConfiguration : IUnknown
 
 Page 116 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 117 -->
+![Extracted image 1 from page 117](opc-dx-1.00-specification.images/page117-img01.png)
+<!-- /Extracted images from page 117 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -8938,7 +9406,11 @@ uuid(3CA18B30-1088-47d5-8952-0B12B027ED32),
 
 Page 117 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 118 -->
+![Extracted image 1 from page 118](opc-dx-1.00-specification.images/page118-img01.png)
+<!-- /Extracted images from page 118 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -9024,7 +9496,11 @@ const LPCWSTR OPCDX_WRITE_TIMESTAMP                 = L"WriteTimestamp";
 
 Page 118 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119](opc-dx-1.00-specification.images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -9104,7 +9580,11 @@ const LPCWSTR OPCDX_QUALITY_BAD_OUT_OF_SERVICE            = L"badOutOfService";
 
 Page 119 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 120 -->
+![Extracted image 1 from page 120](opc-dx-1.00-specification.images/page120-img01.png)
+<!-- /Extracted images from page 120 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -9203,7 +9683,11 @@ L"targetItemNotFound";
 
 Page 120 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 121 -->
+![Extracted image 1 from page 121](opc-dx-1.00-specification.images/page121-img01.png)
+<!-- /Extracted images from page 121 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 
@@ -9288,7 +9772,11 @@ OpcDxMask_SourceItemQueueSize          = 0x40000,
 
 Page 121 of 122
 
-OPC Data eXchange Specification
+<!-- Extracted images from page 122 -->
+![Extracted image 1 from page 122](opc-dx-1.00-specification.images/page122-img01.png)
+<!-- /Extracted images from page 122 -->
+
+OPC Data eXchange Specification
 
 Version: 1.0
 

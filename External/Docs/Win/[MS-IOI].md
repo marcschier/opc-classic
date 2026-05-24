@@ -847,7 +847,11 @@ IManagedObject Interface Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Component Object Model (COM). The IManagedObject interface allows these objects to be identified
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-IOI].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Component Object Model (COM). The IManagedObject interface allows these objects to be identified
 when they reenter the CLR.
 
 The IManagedObject interface is used specifically for scenarios in which managed code uses COM and
@@ -898,7 +902,11 @@ Release: March 13, 2019
 
 9 / 32
 
-In cases in which the .NET object is in a different process division (different application domain or
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-IOI].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+In cases in which the .NET object is in a different process division (different application domain or
 process), a remoting proxy is used to interact with the .NET object. In such a case, the CCW
 implementing IManagedObject returns a Server Object Identity / AppDomainID from
 IManagedObject::GetObjectIdentity that does not correspond to the current process. The CLR will then
@@ -947,7 +955,11 @@ Release: March 13, 2019
 
 10 / 32
 
-CLR-managed objects can be exposed to COM clients as COM objects. They can implement any
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-IOI].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+CLR-managed objects can be exposed to COM clients as COM objects. They can implement any
 number of COM interfaces, but all such exported objects implement IManagedObject.
 
 The CLR also allows COM objects to be imported and used as managed objects. In this case,
@@ -1598,7 +1610,11 @@ Release: March 13, 2019
 
 20 / 32
 
-4  Protocol Examples
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-IOI].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+4  Protocol Examples
 
 4.1  Using the IManagedObject Interface
 
@@ -1647,7 +1663,11 @@ Release: March 13, 2019
 
 21 / 32
 
-2.  The server receives the call, verifies the parameters, and returns a SAFEARRAY of type VT_BSTR
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-IOI].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+2.  The server receives the call, verifies the parameters, and returns a SAFEARRAY of type VT_BSTR
 
 into the infoArray that contains the URI for the server object instance.
 
@@ -1682,7 +1702,11 @@ Release: March 13, 2019
 
 22 / 32
 
-Figure 6: Call graph on the client side for the given scenario
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-IOI].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 6: Call graph on the client side for the given scenario
 
 1.  The client accepts a call for "Method" taking two parameters a and b.
 
@@ -1719,7 +1743,11 @@ Release: March 13, 2019
 
 23 / 32
 
- 0000001f 00000004 0000006e 00000021  ........n...!...
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-IOI].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+ 0000001f 00000004 0000006e 00000021  ........n...!...
 
 4.  The server receives the call and transforms the incoming BSTR in parameter s into a method call.
 
@@ -1736,7 +1764,11 @@ Release: March 13, 2019
 
 24 / 32
 
-Figure 8: Return call graph on the server side for the given scenario.
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-IOI].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 8: Return call graph on the server side for the given scenario.
 
 6.  The server now takes the return call and packages it again into a byte representation as specified
 
@@ -1767,7 +1799,11 @@ Release: March 13, 2019
 
 25 / 32
 
-Figure 9: Return call graph on the client side for the given scenario.
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-IOI].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 9: Return call graph on the client side for the given scenario.
 
 [MS-IOI] - v20190313
 IManagedObject Interface Protocol

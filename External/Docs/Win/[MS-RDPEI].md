@@ -534,7 +534,11 @@ Release: April 23, 2024
 
 5 / 39
 
-1.3  Overview
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-RDPEI].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+1.3  Overview
 
 An example message flow encapsulating all of the Input Messages, described in section 2.2.3, and
 protocol phases is presented in the following figure.
@@ -2203,7 +2207,11 @@ Release: April 23, 2024
 
 24 / 39
 
-3  Protocol Details
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-RDPEI].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+3  Protocol Details
 
 3.1  Common Details
 
@@ -2566,7 +2574,11 @@ Release: April 23, 2024
 
 31 / 39
 
-4  Protocol Examples
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-RDPEI].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+4  Protocol Examples
 
 4.1  Touch Contact Geometry Examples
 
@@ -2595,7 +2607,12 @@ Release: April 23, 2024
 
 32 / 39
 
-4.1.2  Touch Contact Oriented at 45 Degrees
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-RDPEI].images/page033-img01.png)
+![Extracted image 2 from page 33]([MS-RDPEI].images/page033-img02.png)
+<!-- /Extracted images from page 33 -->
+
+4.1.2  Touch Contact Oriented at 45 Degrees
 
 In this case, the x, y, contact rectangle, and orientation fields of the RDPINPUT_TOUCH_CONTACT
 (section 2.2.3.3.1.1) structure are populated by using the following values:
@@ -2628,7 +2645,11 @@ Release: April 23, 2024
 
 33 / 39
 
-4.1.4  Touch Contact Oriented at 315 Degrees
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-RDPEI].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+4.1.4  Touch Contact Oriented at 315 Degrees
 
 In this case, the x, y, contact rectangle, and orientation fields of the RDPINPUT_TOUCH_CONTACT
 (section 2.2.3.3.1.1)  structure are populated by using the following values:

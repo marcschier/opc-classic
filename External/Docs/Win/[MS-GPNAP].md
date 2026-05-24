@@ -787,7 +787,11 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.  The presence of the registry extension's CSE GUID (as specified in [MS-GPREG] section 1.9) in the
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-GPNAP].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+3.  The presence of the registry extension's CSE GUID (as specified in [MS-GPREG] section 1.9) in the
 GPO instructs the client to invoke a registry extension plug-in component for policy application.
 This component parses the file of settings and saves them in the generic settings database
 (registry) on the local machine.
@@ -1292,7 +1296,11 @@ Release: June 1, 2017
 
 18 / 35
 
-Figure 2: Health certificate server (hcs) groups registry representation
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-GPNAP].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 2: Health certificate server (hcs) groups registry representation
 
 The NAP HRA settings are compounded from multiple registry entries that MUST be represented in the
 machine-specific Registry Policy file as follows:
@@ -2051,7 +2059,11 @@ Release: June 1, 2017
 
 28 / 35
 
-Figure 3: DHCP new lease acquisition process
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-GPNAP].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 3: DHCP new lease acquisition process
 
 When the SoH is sent, the client requests access to a service and, as a precondition for that access, is
 required to prove that it is in good health. When the SoH is received, it is forwarded to an

@@ -1068,7 +1068,11 @@ Release: April 23, 2024
 
 11 / 62
 
-An identity attribute is a collection of one or more identity attribute values. An identity attribute is
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-WSTIM].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+An identity attribute is a collection of one or more identity attribute values. An identity attribute is
 named by an identity attribute type, which is an expression that designates an identity attribute
 within an identity object. The format of the expression is determined by the expression's dialect, as
 described in section 1.3.2. For example, if the identity object corresponds to a directory object, an

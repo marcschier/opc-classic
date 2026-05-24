@@ -1441,7 +1441,11 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Metadata format; however, Windows applications do not manipulate this information. The
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-EFSR].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Metadata format; however, Windows applications do not manipulate this information. The
 following methods are suitable for secure content archival or transferring encrypted data securely
 between servers of the same implementation because they do not require decrypting the data.
 Methods:
@@ -1485,7 +1489,11 @@ Release: September 16, 2024
 
 15 / 94
 
-Figure 2: Message sequence for opening a file
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-EFSR].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 2: Message sequence for opening a file
 
 [MS-EFSR] - v20240916
 Encrypting File System Remote (EFSRPC) Protocol
@@ -1494,7 +1502,11 @@ Release: September 16, 2024
 
 16 / 94
 
-Figure 3: Message sequence for importing a file
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-EFSR].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 3: Message sequence for importing a file
 
 1.4  Relationship to Other Protocols
 
@@ -1522,7 +1534,11 @@ Release: September 16, 2024
 
 17 / 94
 
-Figure 4: Protocol relationships
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-EFSR].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 4: Protocol relationships
 
 1.5  Prerequisites/Preconditions
 

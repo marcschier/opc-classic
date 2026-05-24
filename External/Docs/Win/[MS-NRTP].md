@@ -1484,7 +1484,11 @@ Remoting Protocol. The notation is used in this specification and in [MS-NRLS].
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-This section presents a brief overview of the following:
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-NRTP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+This section presents a brief overview of the following:
 
   Remote Method Invocation Model
 
@@ -1533,7 +1537,11 @@ Serialization Exception.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Remote Method Arguments, Return Value, Call Context, Message Properties, and Exceptions are all
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-NRTP].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Remote Method Arguments, Return Value, Call Context, Message Properties, and Exceptions are all
 represented by Data Values.
 
 1.3.2  Passing Server Objects
@@ -1563,7 +1571,11 @@ Release: March 13, 2019
 
 16 / 93
 
-Figure 3: A Server Object Reference being sent by the client and then used by the server to
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-NRTP].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 3: A Server Object Reference being sent by the client and then used by the server to
 call back the client
 
 1.3.3  Server Object Instantiation and Binding
@@ -1599,7 +1611,11 @@ this protocol to provide additional services, such as .NET Remoting Lifetime Ser
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-defines additional message and semantics to add activation and distributed lifetime management to
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-NRTP].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+defines additional message and semantics to add activation and distributed lifetime management to
 .NET Remoting. User applications are layered on top of this protocol and use its services for
 application-specific purposes.
 
@@ -3331,7 +3347,11 @@ Release: March 13, 2019
 
 39 / 93
 
-ProtocolId (4 bytes): This field contains an Int32 value that identifies the protocol. Its value MUST
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-NRTP].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+ProtocolId (4 bytes): This field contains an Int32 value that identifies the protocol. Its value MUST
 
 be hex 0x54454E2E.
 
@@ -3497,7 +3517,11 @@ LastTrailer (2 bytes): Indicates the end of a chunk. The type of this field is C
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.3.3.3 Frame Headers
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-NRTP].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+2.2.3.3.3 Frame Headers
 
 Message frames SHOULD have one or more frame headers. The last frame header MUST be an
 EndHeader that marks the end of headers. The following diagram describes the layout of headers in a
@@ -4445,7 +4469,11 @@ Method's execution fails there are no Return Values or Output Arguments.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Generic Remote Method
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-NRTP].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+Generic Remote Method
 
 A Generic Remote Method is a Remote Method that is parameterized by one or more Remoting Types.
 The method caller must provide the actual Remoting Types (in addition to the Input Arguments). It
@@ -6048,7 +6076,11 @@ Release: March 13, 2019
 
 71 / 93
 
-Figure 8: A sequence diagram for the preceding message exchange pattern
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-NRTP].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+Figure 8: A sequence diagram for the preceding message exchange pattern
 
 A dump of the request message is as follows.
 

@@ -1004,7 +1004,11 @@ Release: January 26, 2026
 
 11 / 120
 
-1.3  Overview
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-MDE2].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.3  Overview
 
 The Mobile Device Enrollment (MDE) protocol enables a device to be enrolled with a Device
 Management Service (DMS) through an Enrollment Service (ES), including the discovery of the
@@ -1068,7 +1072,11 @@ Release: January 26, 2026
 
 13 / 120
 
-Figure 2: MDE2 device enrollment phases
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-MDE2].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: MDE2 device enrollment phases
 
 For Mobile Application Management (MAM), the server skips the discover, get security token, and get
 policies phases and goes straight to the request security token phase (see MAM product notes section
@@ -1087,7 +1095,11 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-The Mobile Device Management Protocol (MDM) depends on MDE2. A device has to be enrolled in an
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-MDE2].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+The Mobile Device Management Protocol (MDM) depends on MDE2. A device has to be enrolled in an
 MES through the use of MDE2 before the device can be managed using MDM [MS-MDM].
 
 Figure 3: Relationship to other protocols
@@ -1508,21 +1520,33 @@ Release: January 26, 2026
 
 20 / 120
 
-[MS-MDE2] - v20260126
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-MDE2].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+[MS-MDE2] - v20260126
 Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
 21 / 120
 
-[MS-MDE2] - v20260126
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-MDE2].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+[MS-MDE2] - v20260126
 Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
 22 / 120
 
-Figure 4: The CertificateStore configuration service provider management object in tree
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-MDE2].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 4: The CertificateStore configuration service provider management object in tree
 format
 
 Root/System: Defines the certificate store that contains root, or self-signed, certificates. Supported
@@ -1849,14 +1873,22 @@ Release: January 26, 2026
 
 28 / 120
 
-[MS-MDE2] - v20260126
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-MDE2].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+[MS-MDE2] - v20260126
 Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
 29 / 120
 
-Figure 5: The DMClient configuration service provider in tree format
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-MDE2].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 5: The DMClient configuration service provider in tree format
 
 DMClient: Root node for the CSP.
 
@@ -2652,7 +2684,11 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-The following image shows the RootCATrustedCertificates configuration service provider in tree
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-MDE2].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+The following image shows the RootCATrustedCertificates configuration service provider in tree
 format.
 
 [MS-MDE2] - v20260126
@@ -2662,7 +2698,11 @@ Release: January 26, 2026
 
 40 / 120
 
-Figure 6: The RootCACertificate configuration service provider in tree format
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-MDE2].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 6: The RootCACertificate configuration service provider in tree format
 
 Device or User: The root node for the RootCATrustedCertificates configuration service provider. For
 
@@ -2728,7 +2768,11 @@ Release: January 26, 2026
 
 42 / 120
 
-Figure 7: The w7 APPLICATION configuration service provider in tree format
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-MDE2].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 7: The w7 APPLICATION configuration service provider in tree format
 
 APPADDR: This characteristic is used in the w7 APPLICATION characteristic to specify the DM server
 
@@ -3391,7 +3435,11 @@ Release: January 26, 2026
 
 50 / 120
 
-3  Protocol Details
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-MDE2].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+3  Protocol Details
 
 3.1  IDiscoveryService Server Details
 
@@ -3407,7 +3455,11 @@ Release: January 26, 2026
 
 51 / 120
 
-The IDiscoveryService in MDE2 hosts an endpoint to receive messages from the enrollment client.
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-MDE2].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+The IDiscoveryService in MDE2 hosts an endpoint to receive messages from the enrollment client.
 When a Discover request message (section 3.1.4.1.1.1) is received from the client, the server
 processes the request and returns a DiscoverResponse message (section 3.1.4.1.1.2) to the client.
 The response identifies the endpoints to be used by the client to obtain the security tokens and enroll
@@ -3771,7 +3823,11 @@ Release: January 26, 2026
 
 57 / 120
 
-Figure 10: MDE2 device enrollment: requesting and receiving the security token
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-MDE2].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+Figure 10: MDE2 device enrollment: requesting and receiving the security token
 
 After the enrollment client receives the DiscoverResponse message (section 3.1.4.1.1.2), the
 client obtains a security token from the STS specified in the value for the
@@ -3849,7 +3905,11 @@ Release: January 26, 2026
 
 59 / 120
 
-Figure 11: MDE2 device enrollment: getting the certificate policies
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-MDE2].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+Figure 11: MDE2 device enrollment: getting the certificate policies
 
 The X.509 Certificate Enrollment Policy Protocol [MS-XCEP] enables a client to request certificate
 enrollment policies from a server. The communication is initiated by the enrollment client request
@@ -4388,7 +4448,11 @@ Release: January 26, 2026
 
 68 / 120
 
-Figure 12: MDE device enrollment: completing enrollment
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-MDE2].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+Figure 12: MDE device enrollment: completing enrollment
 
 The WS-Trust X509v3 Enrollment Extensions [MS-WSTEP] are extensions of WS-Trust Security 2004
 [WSS] that are used by a system to request that a certificate be issued. MDE2 implements an
@@ -5555,7 +5619,11 @@ Release: January 26, 2026
 
 86 / 120
 
-3.5  Certificate Renewal
+<!-- Extracted images from page 87 -->
+![Extracted image 1 from page 87]([MS-MDE2].images/page087-img01.png)
+<!-- /Extracted images from page 87 -->
+
+3.5  Certificate Renewal
 
 The enrollment client can request to renew an existing certificate. This section defines how the
 RequestSecurityToken message (section 3.5.4.1.1.1) and
@@ -5789,7 +5857,11 @@ Release: January 26, 2026
 
 90 / 120
 
-Figure 14: Enrollment client certificate recovery
+<!-- Extracted images from page 91 -->
+![Extracted image 1 from page 91]([MS-MDE2].images/page091-img01.png)
+<!-- /Extracted images from page 91 -->
+
+Figure 14: Enrollment client certificate recovery
 
 3.6.1  Abstract Data Model
 

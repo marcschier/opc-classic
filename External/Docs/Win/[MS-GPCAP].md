@@ -865,7 +865,11 @@ Release: April 23, 2024
 
 11 / 26
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-GPCAP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.4  Relationship to Other Protocols
 
 The Group Policy: Central Access Policies Extension depends on the Group Policy: Core Protocol
 specified in [MS-GPOL], to provide a list, via LDAP, of GPOs that apply to policy target accounts. This

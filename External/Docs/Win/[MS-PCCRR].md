@@ -945,7 +945,11 @@ Peer Content Caching and Retrieval: Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Retrieval Protocol does not mandate the relationship between these exchanges, as shown in the
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-PCCRR].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+The Retrieval Protocol does not mandate the relationship between these exchanges, as shown in the
 examples. As a result, in the case where they are used in conjunction, the higher-layer applications
 invoking the Retrieval Protocol retain the availability list from the availability query, and use it to
 retrieve part or all of the available content in the subsequent retrieval request(s).
@@ -2716,7 +2720,11 @@ Release: April 23, 2024
 
 34 / 43
 
-4  Protocol Examples
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-PCCRR].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+4  Protocol Examples
 
 4.1  Download with GetBlockList and GetBlocks Exchanges
 
@@ -2753,7 +2761,11 @@ Release: April 23, 2024
 
 35 / 43
 
-The encrypted block and initialization vector are added to the Block message and sent back to
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-PCCRR].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+The encrypted block and initialization vector are added to the Block message and sent back to
 the client-role peer. The requesting peer will be able to decrypt the data only if it knows the
 hash of data of the segment.
 

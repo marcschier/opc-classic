@@ -1894,7 +1894,11 @@ Release: April 7, 2021
 
 21 / 47
 
-3  Protocol Details
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MC-PRCR].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+3  Protocol Details
 
 All interactions between the resolver client and resolver service MUST be initiated by the client,
 and all messages sent by the resolver client (except for Unregister) MUST receive a corresponding
@@ -2338,7 +2342,11 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-4.  "B" receives the ResolveResponse message and extracts PNA_A from message body.
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MC-PRCR].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+4.  "B" receives the ResolveResponse message and extracts PNA_A from message body.
 
 5.  "B" uses PNA_A to set up a direct connection between "A" and "B".
 

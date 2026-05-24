@@ -1249,7 +1249,11 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-receives an SMTP message, the steps are performed in the reverse order, starting with the SMTP Mail
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-SRPL].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+receives an SMTP message, the steps are performed in the reverse order, starting with the SMTP Mail
 Transfer Agent (MTA), and proceeding to obtaining the DRS Replication Data, which is then given to
 the DRS Protocol.
 
@@ -1266,7 +1270,11 @@ Release: November 21, 2025
 
 14 / 48
 
-Figure 2: SMTP message given to the SMTP MTA for delivery to the remote DC
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-SRPL].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: SMTP message given to the SMTP MTA for delivery to the remote DC
 
 The specification of the DRS Protocol Extensions for SMTP depends on the terminology and concepts
 that are specified in [MS-ADTS] and [MS-DRSR]. For illustrative examples, see [MSADRTTR].
@@ -1285,7 +1293,11 @@ Release: November 21, 2025
 
 15 / 48
 
-and schema NC. Changes made to any copy of these NCs, at any DC, are replicated to the copies at all
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-SRPL].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+and schema NC. Changes made to any copy of these NCs, at any DC, are replicated to the copies at all
 other DCs in the forest. DCs also store a domain NC for one or more domains. A DC might be
 configured to have a read/write copy of the domain NC, in which case the DC is a full master for the
 domain, or it might have a read-only copy of the NC, in which case it is a global catalog. As part of
@@ -1317,7 +1329,11 @@ Release: November 21, 2025
 
 16 / 48
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-SRPL].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+1.4  Relationship to Other Protocols
 
 The DRS Protocol Extensions for SMTP are a means of encapsulating serialized DRS RPC messages
 and transporting them inside an SMTP mail message.

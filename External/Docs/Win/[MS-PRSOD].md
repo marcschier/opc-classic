@@ -1126,7 +1126,11 @@ Release: July 29, 2024
 
 14 / 104
 
-Figure 1: Components of printing services
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-PRSOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 1: Components of printing services
 
 2.1.2.2  Relationship of the Components within Print and Administrative Clients and
 
@@ -1147,7 +1151,11 @@ Release: July 29, 2024
 
 15 / 104
 
-Figure 2: Components in print and administrative clients
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-PRSOD].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 2: Components in print and administrative clients
 
 2.1.2.2.2 Print Server
 
@@ -1162,7 +1170,11 @@ Release: July 29, 2024
 
 16 / 104
 
-Figure 3: Components within the print server
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-PRSOD].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 3: Components within the print server
 
 2.1.2.3  Member Protocol Functional Relationships
 
@@ -1175,7 +1187,11 @@ Release: July 29, 2024
 
 17 / 104
 
-Figure 4: Full protocol layering for a print client showing all protocols, including optional
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-PRSOD].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 4: Full protocol layering for a print client showing all protocols, including optional
 protocols
 
 [MS-PRSOD] - v20240729
@@ -1185,7 +1201,11 @@ Release: July 29, 2024
 
 18 / 104
 
-Figure 5: Full protocol layering for a print server showing all protocols, including optional
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-PRSOD].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 5: Full protocol layering for a print server showing all protocols, including optional
 protocols
 
 [MS-PRSOD] - v20240729
@@ -1195,7 +1215,11 @@ Release: July 29, 2024
 
 19 / 104
 
-Figure 6: Optional protocol extensions for a print client
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-PRSOD].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+Figure 6: Optional protocol extensions for a print client
 
 [MS-PRSOD] - v20240729
 Print Services Protocols Overview
@@ -1204,7 +1228,11 @@ Release: July 29, 2024
 
 20 / 104
 
-Figure 7: Optional protocol extensions for a print server to enable a print server to support
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-PRSOD].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 7: Optional protocol extensions for a print server to enable a print server to support
 Internet and LPD print clients
 
 [MS-PRSOD] - v20240729
@@ -1214,7 +1242,11 @@ Release: July 29, 2024
 
 21 / 104
 
-Figure 8: Protocol extensions used by a print server to communicate with printers
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-PRSOD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 8: Protocol extensions used by a print server to communicate with printers
 
 2.1.2.4  System Internal Architecture
 
@@ -1227,7 +1259,11 @@ Release: July 29, 2024
 
 22 / 104
 
-Figure 9: Print Services system internal system architecture
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-PRSOD].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 9: Print Services system internal system architecture
 
 The Windows print client and Windows administrative client are shown in the preceding diagram as a
 single client object, contained by a bolded rectangle. Although they are often separate entities, these
@@ -1315,7 +1351,12 @@ Release: July 29, 2024
 
 24 / 104
 
-Figure 10: Print clients communicating with print server
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-PRSOD].images/page025-img01.png)
+![Extracted image 2 from page 25]([MS-PRSOD].images/page025-img02.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 10: Print clients communicating with print server
 
 2.1.2.5.2 Protocols Supporting Different Print Clients
 
@@ -1343,7 +1384,11 @@ Release: July 29, 2024
 
 25 / 104
 
-These redirector components transparently route file access-specific requests to local calls to the file
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-PRSOD].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+These redirector components transparently route file access-specific requests to local calls to the file
 access services, and they translate print-specific requests to local calls to the print spooler
 component that is implementing the print server role. The redirector components then translate the
 results of these local calls back to the appropriate protocol response.
@@ -1377,7 +1422,11 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Figure 13: Obtaining information about print queues from an LDAP server
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-PRSOD].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 13: Obtaining information about print queues from an LDAP server
 
 2.1.2.6  Translating Application Content to a Print Data Format
 
@@ -2380,7 +2429,11 @@ Release: July 29, 2024
 
 38 / 104
 
-Figure 14: Printing services use cases initiated by an administrative client
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-PRSOD].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 14: Printing services use cases initiated by an administrative client
 
 [MS-PRSOD] - v20240729
 Print Services Protocols Overview
@@ -2389,7 +2442,11 @@ Release: July 29, 2024
 
 39 / 104
 
-Figure 15: Printing services use cases initiated by a print client
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-PRSOD].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+Figure 15: Printing services use cases initiated by a print client
 
 2.5.3  Use Case Descriptions
 
@@ -4630,7 +4687,11 @@ Release: July 29, 2024
 
 67 / 104
 
-Figure 16: Print client locating a print queue in a domain by using LDAP
+<!-- Extracted images from page 68 -->
+![Extracted image 1 from page 68]([MS-PRSOD].images/page068-img01.png)
+<!-- /Extracted images from page 68 -->
+
+Figure 16: Print client locating a print queue in a domain by using LDAP
 
 The message group labeled "Locating a print queue in a domain" in the preceding diagram represents
 the search for a print queue in Active Directory by using the LDAP search option ([RFC4511] section
@@ -4659,7 +4720,11 @@ Release: July 29, 2024
 
 68 / 104
 
-Figure 17: Print client connecting to a print queue, downloading a driver, and registering for
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-PRSOD].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+Figure 17: Print client connecting to a print queue, downloading a driver, and registering for
 notifications
 
 The following table shows the message groups from the preceding diagram and their purpose.
@@ -4847,7 +4912,11 @@ Release: July 29, 2024
 
 71 / 104
 
-Figure 18: Print client submitting a print job to the print queue
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-PRSOD].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+Figure 18: Print client submitting a print job to the print queue
 
 The message group labeled "Submitting a print job and receiving notifications" in the preceding
 diagram shows how the client receives asynchronous notification of changes on the print queue and
@@ -4888,7 +4957,11 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-34. When all print data has been sent, the print client calls the RpcEndDocPrinter method on the
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MS-PRSOD].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+34. When all print data has been sent, the print client calls the RpcEndDocPrinter method on the
 
 print server, and the print server responds with a success code.
 
@@ -5047,7 +5120,11 @@ Release: July 29, 2024
 
 74 / 104
 
-This example applies in the following initial system state.
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-PRSOD].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+This example applies in the following initial system state.
 
 
 
@@ -5139,7 +5216,11 @@ Release: July 29, 2024
 
 76 / 104
 
-Figure 21: Print client establishing a connection and registering for notifications
+<!-- Extracted images from page 77 -->
+![Extracted image 1 from page 77]([MS-PRSOD].images/page077-img01.png)
+<!-- /Extracted images from page 77 -->
+
+Figure 21: Print client establishing a connection and registering for notifications
 
 Message group  Description
 
@@ -5338,7 +5419,11 @@ Release: July 29, 2024
 
 79 / 104
 
-Figure 22: Print client submitting a print job to the print queue
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-PRSOD].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+Figure 22: Print client submitting a print job to the print queue
 
 The message group labeled "Submitting a print job and receiving notifications" in the preceding figure
 shows how the client receives asynchronous notification of changes on a print queue and how it
@@ -5381,7 +5466,11 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-39. The print client calls the RpcClosePrinter method on the print server, and the print server
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81]([MS-PRSOD].images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+39. The print client calls the RpcClosePrinter method on the print server, and the print server
 returns a success code. This step occurs only if the print client does not proceed to the next
 portion of this example.
 
@@ -5515,7 +5604,11 @@ Release: July 29, 2024
 
 82 / 104
 
-Figure 24: Print client receiving notifications
+<!-- Extracted images from page 83 -->
+![Extracted image 1 from page 83]([MS-PRSOD].images/page083-img01.png)
+<!-- /Extracted images from page 83 -->
+
+Figure 24: Print client receiving notifications
 
 The particular messages within the message groups that are shown in the preceding diagram are
 described in [MS-PAN] section 4.2.
@@ -5552,7 +5645,11 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-An administrator with appropriate privileges can view and override print jobs that are submitted by
+<!-- Extracted images from page 84 -->
+![Extracted image 1 from page 84]([MS-PRSOD].images/page084-img01.png)
+<!-- /Extracted images from page 84 -->
+
+An administrator with appropriate privileges can view and override print jobs that are submitted by
 other users. This example illustrates this administrative procedure, by using only the Print System
 Remote Protocol [MS-RPRN].
 
@@ -5755,7 +5852,11 @@ Release: July 29, 2024
 
 86 / 104
 
-Figure 26: Administrative client provisioning a print queue by using the Print System
+<!-- Extracted images from page 87 -->
+![Extracted image 1 from page 87]([MS-PRSOD].images/page087-img01.png)
+<!-- /Extracted images from page 87 -->
+
+Figure 26: Administrative client provisioning a print queue by using the Print System
 Remote Protocol
 
 The following table shows the message groups from the preceding diagram and their purpose.
@@ -5882,7 +5983,11 @@ Print Services Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-PRINTER_INFO_7 structure and by specifying that the print queue be published in the Active
+<!-- Extracted images from page 89 -->
+![Extracted image 1 from page 89]([MS-PRSOD].images/page089-img01.png)
+<!-- /Extracted images from page 89 -->
+
+PRINTER_INFO_7 structure and by specifying that the print queue be published in the Active
 Directory system.
 
 21. The print server uses LDAP [RFC4511], to add the print queue as a new object in the Active
@@ -6073,7 +6178,11 @@ Release: July 29, 2024
 
 91 / 104
 
-Figure 28: Print client sending a print job to an SMB share
+<!-- Extracted images from page 92 -->
+![Extracted image 1 from page 92]([MS-PRSOD].images/page092-img01.png)
+<!-- /Extracted images from page 92 -->
+
+Figure 28: Print client sending a print job to an SMB share
 
 Message groups
 

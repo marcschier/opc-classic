@@ -1756,7 +1756,11 @@ Release: April 23, 2024
 
 22 / 31
 
-4  Protocol Examples
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-PCHC].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+4  Protocol Examples
 
 4.1  Hosted Cache with No Block Hashes
 
@@ -1789,7 +1793,12 @@ Release: April 23, 2024
 
 23 / 31
 
-Figure 2: Hosted cache with block hashes and no data blocks
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-PCHC].images/page024-img01.png)
+![Extracted image 2 from page 24]([MS-PCHC].images/page024-img02.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 2: Hosted cache with block hashes and no data blocks
 
 4.3  Hosted Cache with Block Hashes and Data Blocks
 
@@ -1818,7 +1827,12 @@ Peer Content Caching and Retrieval: Hosted Cache Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Content Caching and Retrieval: Retrieval Protocol (PCCRR) [MS-PCCRR] to retrieve blocks of the
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-PCHC].images/page025-img01.png)
+![Extracted image 2 from page 25]([MS-PCHC].images/page025-img02.png)
+<!-- /Extracted images from page 25 -->
+
+Content Caching and Retrieval: Retrieval Protocol (PCCRR) [MS-PCCRR] to retrieve blocks of the
 segments that are available from the offering client.
 
 Figure 4: Hosted cache with block hashes and no data blocks

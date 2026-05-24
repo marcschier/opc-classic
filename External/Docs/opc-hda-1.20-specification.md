@@ -1546,7 +1546,11 @@ No more entries, awaiting next scan.
 
 13
 
-OPC Historical Data Access
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24](opc-hda-1.20-specification.images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -1622,7 +1626,11 @@ No Data
 
 14
 
-OPC Historical Data Access
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25](opc-hda-1.20-specification.images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -2435,7 +2443,11 @@ No data in intervals
 Value 2- No data in interval
 No data in intervals
 
-OPC Historical Data Access
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31](opc-hda-1.20-specification.images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 

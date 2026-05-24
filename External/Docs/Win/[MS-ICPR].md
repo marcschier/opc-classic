@@ -887,7 +887,11 @@ Release: April 23, 2024
 
 8 / 23
 
-1.2.2  Informative References
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-ICPR].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+1.2.2  Informative References
 
 None.
 

@@ -636,7 +636,11 @@ Release: October 26, 2021
 
 9 / 59
 
-Figure 1: FAS System components and external components
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-FASOD].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: FAS System components and external components
 
 Following are the components that interact with the FAS System.
 
@@ -716,7 +720,11 @@ Release: October 26, 2021
 
 11 / 59
 
-Figure 2: File Access Services System internal architecture
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-FASOD].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: File Access Services System internal architecture
 
 The following table provides additional details about the nature of the communication between the
 components shown in the above diagram.
@@ -1234,7 +1242,11 @@ Release: October 26, 2021
 
 16 / 59
 
-The File Access Services protocol components are typically installed in a distributed environment. The
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-FASOD].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+The File Access Services protocol components are typically installed in a distributed environment. The
 diagram that follows depicts a basic deployment of File Access Services protocol components in a
 distributed environment consisting of two computers.
 
@@ -1253,7 +1265,11 @@ Release: October 26, 2021
 
 17 / 59
 
-Figure 4: File Access Services System distributed environment with five computers
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-FASOD].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 4: File Access Services System distributed environment with five computers
 
 2.3.1  Dependencies on This System
 
@@ -1444,7 +1460,11 @@ Release: October 26, 2021
 
 20 / 59
 
-Figure 5: Use case diagram for Access a file in a workgroup
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-FASOD].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 5: Use case diagram for Access a file in a workgroup
 
 Goal: This use case demonstrates a typical User interaction with the File Access Services System, by
 means of an application, to read, create, delete or modify a file on a file server in a workgroup.
@@ -1557,7 +1577,11 @@ Release: October 26, 2021
 
 22 / 59
 
-2.5.2  Access a File in a Domain
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-FASOD].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+2.5.2  Access a File in a Domain
 
 Context of Use: When the User wants to access a particular file within a domain DFS namespace,
 these access file operations can be implemented.
@@ -1667,7 +1691,11 @@ Release: October 26, 2021
 
 24 / 59
 
-2.5.3  Two Applications Communicate via a Shared File
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-FASOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+2.5.3  Two Applications Communicate via a Shared File
 
 Context of Use: When two Applications, one using NFS Access Protocols and the other using SMB
 Access Protocols, communicate via a shared file.
@@ -1813,7 +1841,11 @@ Release: October 26, 2021
 
 27 / 59
 
-Figure 8: Use case diagram for Access a remote file using WebDAV
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-FASOD].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+Figure 8: Use case diagram for Access a remote file using WebDAV
 
 Goal: This use case demonstrates a typical User interaction with WebDAV to access a file on a file
 server by means of a command line or graphical Application.
@@ -2809,7 +2841,11 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Figure 9: Sequence diagram for Display the list of shares on a file server
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-FASOD].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+Figure 9: Sequence diagram for Display the list of shares on a file server
 
 1.  The file client sends a NetrShareEnum request to the SMB file service (as described in [MS-SRVS]
 
@@ -2871,7 +2907,11 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  A DFS domain namespace is present in the Active Directory domain. This namespace contains at
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-FASOD].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+  A DFS domain namespace is present in the Active Directory domain. This namespace contains at
 
 least one link, whose target contains a file which the User will access.
 
@@ -3007,7 +3047,11 @@ Release: October 26, 2021
 
 44 / 59
 
-A new file has been created in the directory on the object store that backs the NFS file share and SMB
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-FASOD].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+A new file has been created in the directory on the object store that backs the NFS file share and SMB
 file share. This file contains the data from both the NFS user and SMB user.
 
 Sequence of Events
@@ -3061,7 +3105,11 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  The file client returns the directory handle to Application 1. This is described further in [MS-SMB2]
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-FASOD].images/page046-img01.png)
+<!-- /Extracted images from page 46 -->
+
+4.  The file client returns the directory handle to Application 1. This is described further in [MS-SMB2]
 
 section 3.3.5.19.
 
@@ -3094,7 +3142,11 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-5.  The file client sends an LDAP Bind_request to the file service in order to configure the Active
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-FASOD].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+5.  The file client sends an LDAP Bind_request to the file service in order to configure the Active
 
 Directory service, as described in [RFC2251] section 4.2.
 
@@ -3149,7 +3201,11 @@ Release: October 26, 2021
 
 47 / 59
 
-1.  The file client writes the equested file contents, as represented by file_data, by issuing a series of
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-FASOD].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+1.  The file client writes the equested file contents, as represented by file_data, by issuing a series of
 NFS requests to the file service using the NFSPROC3_WRITE message as described in [RFC1813],
 section 3.3.7 to write the provided file data.
 
@@ -3193,7 +3249,11 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-5.  On successful completion of this message, the SMB application receives the updates that
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-FASOD].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+5.  On successful completion of this message, the SMB application receives the updates that
 
 happened in the directory as represented by dir_updates.
 
@@ -3238,7 +3298,11 @@ Release: October 26, 2021
 
 49 / 59
 
-Figure 16: Sequence diagram for Read a file using the NFS protocol
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MS-FASOD].images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+Figure 16: Sequence diagram for Read a file using the NFS protocol
 
 
 
@@ -3282,7 +3346,11 @@ Release: October 26, 2021
 
 50 / 59
 
-Figure 17: Sequence diagram for Access a remote file using WebDAV
+<!-- Extracted images from page 51 -->
+![Extracted image 1 from page 51]([MS-FASOD].images/page051-img01.png)
+<!-- /Extracted images from page 51 -->
+
+Figure 17: Sequence diagram for Access a remote file using WebDAV
 
 1.  The application directs the file client to send a GET request via a WebDAV HTTP request
 
@@ -3322,7 +3390,11 @@ Release: October 26, 2021
 
 51 / 59
 
-Figure 18: Sequence diagram for Open a file in an SMB file share
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-FASOD].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+Figure 18: Sequence diagram for Open a file in an SMB file share
 
 1.  The file client sends an SMB2 Negotiate request to the SMB file services (as described in [MS-
 
@@ -3375,7 +3447,11 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Figure 19: Sequence diagram for Enumerate a directory using SMB
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-FASOD].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+Figure 19: Sequence diagram for Enumerate a directory using SMB
 
 1.  The file client sends an SMB2 QUERY_INFO request (see [MS-SMB2] section 2.2.37) to the SMB
 file service to obtain information such as the label and serial number of the volume hosting the
@@ -3407,7 +3483,12 @@ Release: October 26, 2021
 
 53 / 59
 
-Figure 20: Sequence diagram for Read a file using SMB
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MS-FASOD].images/page054-img01.png)
+![Extracted image 2 from page 54]([MS-FASOD].images/page054-img02.png)
+<!-- /Extracted images from page 54 -->
+
+Figure 20: Sequence diagram for Read a file using SMB
 
 1.  The file client sends an SMB2 READ request (see [MS-SMB2] section 2.2.19) to the SMB file
 

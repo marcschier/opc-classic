@@ -964,7 +964,12 @@ Release: April 23, 2024
 
 9 / 62
 
-Figure 1: Client-side protocol relationships
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-W32T].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-W32T].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Client-side protocol relationships
 
 The following diagram illustrates the W32Time Remote Protocol server-side relationships. The
 W32Time Remote Protocol server-side protocol requires that a client and server implementation of

@@ -708,7 +708,11 @@ Release: March 13, 2019
 
 6 / 26
 
-Figure 1: Dependency stack for the .NET Tracing Protocol
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-NETTR].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1: Dependency stack for the .NET Tracing Protocol
 
 1.5  Prerequisites/Preconditions
 
@@ -896,7 +900,11 @@ Release: March 13, 2019
 
 10 / 26
 
-3  Protocol Details
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-NETTR].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+3  Protocol Details
 
 3.1  Server Details
 
@@ -942,7 +950,11 @@ Release: March 13, 2019
 
 11 / 26
 
-Figure 2: Sequence of a request-reply message exchange
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-NETTR].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: Sequence of a request-reply message exchange
 
 Every server participating in correlated tracing using the .NET Tracing Protocol MUST implement
 processing to receive and send the SOAP ActivityId Header Block. Participation can be externally
@@ -966,7 +978,11 @@ ActivityId element MUST be a newly generated unique GUID string.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-When the server is sending a response for the request that did not include the SOAP ActivityId Header
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-NETTR].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+When the server is sending a response for the request that did not include the SOAP ActivityId Header
 Block and the server is configured to participate in correlated tracing, it MUST insert a SOAP ActivityId
 Header Block into the SOAP header of the response with the value of ActivityId being a newly
 generated unique GUID string. The CorrelationId attribute of the ActivityId element MUST be a
@@ -1034,7 +1050,11 @@ Release: March 13, 2019
 
 14 / 26
 
-Figure 5: State of a client sending a request when participating in correlated activity tracing
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-NETTR].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 5: State of a client sending a request when participating in correlated activity tracing
 
 When a request is sent by a client and the client is configured to participate in correlated tracing, it
 MUST insert a SOAP ActivityId Header Block into the SOAP header of the request. The inserted SOAP

@@ -1431,7 +1431,11 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-connects to a printer on a print server to obtain the information about the printer driver that is
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-PAR].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+connects to a printer on a print server to obtain the information about the printer driver that is
 associated with the printer. If necessary, the client computer can use this information to download the
 printer driver from the print server.
 
@@ -1457,7 +1461,11 @@ Print System Asynchronous Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-In one configuration, a client uses a printer driver that is installed on the client computer in order to
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-PAR].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+In one configuration, a client uses a printer driver that is installed on the client computer in order to
 convert a graphical representation of application content and layout into device-specific page
 description language (PDL) data. It then sends the data, also called RAW data, to the print server
 using methods this protocol provides. The print server can temporarily store the RAW data from the
@@ -1491,7 +1499,11 @@ Release: August 11, 2025
 
 16 / 129
 
-A client can register with the print server to receive notifications of changes in a print queue. As long
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-PAR].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+A client can register with the print server to receive notifications of changes in a print queue. As long
 as the client is connected to the print server, it can poll the print server for the current status after it
 receives a notification.
 
@@ -1514,7 +1526,11 @@ Release: August 11, 2025
 
 17 / 129
 
-In addition to composing and returning the notifications, the print server maintains a change identifier
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-PAR].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+In addition to composing and returning the notifications, the print server maintains a change identifier
 that changes whenever the server-side printing configuration changes; for example, changes to user-
 configurable settings, to print queue items, to print job status, or to the printer driver would cause
 this identifier to change. The client can query this change identifier by calling
@@ -7197,7 +7213,11 @@ Release: August 11, 2025
 
 89 / 129
 
-4  Protocol Examples
+<!-- Extracted images from page 90 -->
+![Extracted image 1 from page 90]([MS-PAR].images/page090-img01.png)
+<!-- /Extracted images from page 90 -->
+
+4  Protocol Examples
 
 Examples 4.1 through 4.4 are functionally equivalent to examples 4.1 through 4.4 in [MS-RPRN],
 respectively, and therefore are not duplicated here in detail. Only the sequence diagrams with
@@ -7220,7 +7240,11 @@ Release: August 11, 2025
 
 90 / 129
 
-4.2  Adding a Printer Driver to a Server
+<!-- Extracted images from page 91 -->
+![Extracted image 1 from page 91]([MS-PAR].images/page091-img01.png)
+<!-- /Extracted images from page 91 -->
+
+4.2  Adding a Printer Driver to a Server
 
 A client adds a printer driver to a server by following the steps shown below, which are described in
 [MS-RPRN] section 4.2; and by applying the parameter substitutions that are specified in [MS-RPRN]
@@ -7241,7 +7265,11 @@ Release: August 11, 2025
 
 91 / 129
 
-Figure 7: Enumerating printers on a server and accessing information about one of them
+<!-- Extracted images from page 92 -->
+![Extracted image 1 from page 92]([MS-PAR].images/page092-img01.png)
+<!-- /Extracted images from page 92 -->
+
+Figure 7: Enumerating printers on a server and accessing information about one of them
 
 4.4  Enumerating Print Jobs on a Server
 
@@ -7256,7 +7284,11 @@ Release: August 11, 2025
 
 92 / 129
 
-Figure 8: Enumerating jobs on a server and modifying one of them
+<!-- Extracted images from page 93 -->
+![Extracted image 1 from page 93]([MS-PAR].images/page093-img01.png)
+<!-- /Extracted images from page 93 -->
+
+Figure 8: Enumerating jobs on a server and modifying one of them
 
 4.5  Receiving Notifications from a Server
 
@@ -7453,7 +7485,11 @@ Release: August 11, 2025
 
 95 / 129
 
-Figure 9: Receiving notifications from a server
+<!-- Extracted images from page 96 -->
+![Extracted image 1 from page 96]([MS-PAR].images/page096-img01.png)
+<!-- /Extracted images from page 96 -->
+
+Figure 9: Receiving notifications from a server
 
 [MS-PAR] - v20250811
 Print System Asynchronous Remote Protocol

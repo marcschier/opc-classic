@@ -838,7 +838,11 @@ Release: April 23, 2024
 
 8 / 40
 
-
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-WSPELD].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+
 
 The controlValue contents.
 

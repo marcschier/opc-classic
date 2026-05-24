@@ -1210,7 +1210,11 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Poke method or the PokeW method, which has the effect of informing the primary that the secondary
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-CMPO].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Poke method or the PokeW method, which has the effect of informing the primary that the secondary
 wants to establish a session. The primary partner begins the handshake series by establishing an RPC
 connection to the secondary partner, and by making a BuildContext call or BuildContextW call to the
 secondary partner. The secondary partner responds to the incoming call by making a corresponding
@@ -1232,7 +1236,11 @@ Release: July 29, 2024
 
 12 / 75
 
-Figure 2: Session initiation by secondary partner
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-CMPO].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 2: Session initiation by secondary partner
 
 1.3.3.2  Negotiating Resources
 
@@ -1255,7 +1263,11 @@ Release: July 29, 2024
 
 13 / 75
 
-1.3.3.4  Terminating a Session
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-CMPO].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+1.3.3.4  Terminating a Session
 
 Termination requires a nested series of RPCs between the IXnRemote interfaces of the two partners.
 Either partner has the option to terminate the session. If the primary partner decides to terminate
@@ -2026,7 +2038,11 @@ Release: July 29, 2024
 
 24 / 75
 
-Figure 4: Primary session state
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-CMPO].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 4: Primary session state
 
 [MS-CMPO] - v20240729
 MSDTC Connection Manager: OleTx Transports Protocol
@@ -2035,7 +2051,11 @@ Release: July 29, 2024
 
 25 / 75
 
-Figure 5: Secondary session state
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-CMPO].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 5: Secondary session state
 
 Note  It is possible to implement the conceptual data defined in this section using a variety of
 techniques. An implementation is at liberty to implement such data in any way it pleases.

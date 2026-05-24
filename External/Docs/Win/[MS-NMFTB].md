@@ -631,7 +631,11 @@ W3C Member Submission, April 2006, http://www.w3.org/Submission/2006/SUBM-wsdl11
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[WSDL] Christensen, E., Curbera, F., Meredith, G., and Weerawarana, S., "Web Services Description
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-NMFTB].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+[WSDL] Christensen, E., Curbera, F., Meredith, G., and Weerawarana, S., "Web Services Description
 Language (WSDL) 1.1", W3C Note, March 2001, https://www.w3.org/TR/2001/NOTE-wsdl-20010315
 
 [XMLNS-2ED] Bray, T., Hollander, D., Layman, A., and Tobin, R., Eds., "Namespaces in XML 1.0

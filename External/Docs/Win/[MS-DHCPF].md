@@ -609,7 +609,11 @@ Release: April 23, 2024
 
 7 / 42
 
-Figure 1: DHCP rebinding operation
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-DHCPF].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: DHCP rebinding operation
 
 The speed of address acquisition and confirmation is a key performance metric for the DHCP protocol
 and the DHCP Failover Protocol is designed to minimize this impact. To achieve this, the original DHCP
@@ -623,7 +627,11 @@ Release: April 23, 2024
 
 8 / 42
 
-Figure 2: Lease synchronization
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-DHCPF].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 2: Lease synchronization
 
 The protocol includes provisions that provide robustness when responding to a failure of the original
 server before the partner server is updated regarding an allocation or a renewal. Either server updates
@@ -662,7 +670,11 @@ Release: April 23, 2024
 
 9 / 42
 
-Figure 3: Connection setup
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-DHCPF].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 3: Connection setup
 
 If the servers have been out of communication, either of the servers can request that its partner send
 it all the binding database information that it has not already received. This task is accomplished by
@@ -680,7 +692,11 @@ Release: April 23, 2024
 
 10 / 42
 
-Figure 4: Recovery
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-DHCPF].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 4: Recovery
 
 Regular binding updates are triggered by the receipt of BNDUPD and BNDACK messages
 corresponding to lease allocations or renewals as indicated in Figure 2. These messages are the
@@ -715,7 +731,11 @@ Release: April 23, 2024
 
 11 / 42
 
-DHCP can be used as one of the enforcement mechanisms defined for Network Access Protection
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-DHCPF].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+DHCP can be used as one of the enforcement mechanisms defined for Network Access Protection
 (NAP) as described in [MSDN-NAP]. The vendor-specific options used for DHCP-based enforcement of
 NAP are defined by the Dynamic Host Configuration Protocol (DHCP) Extensions for Network Access
 Protection (NAP) ([MS-DHCPN] section 1). These extensions affect the contents of DHCP messages
@@ -745,7 +765,11 @@ Release: April 23, 2024
 
 12 / 42
 
-Figure 6: Server-side interaction with related protocols
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-DHCPF].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 6: Server-side interaction with related protocols
 
 1.5  Prerequisites/Preconditions
 
@@ -1366,7 +1390,11 @@ Release: April 23, 2024
 
 22 / 42
 
-Figure 7: Failover state machine
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-DHCPF].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+Figure 7: Failover state machine
 
 The Failover state machine has the states described in [IETF-DHCPFOP-12] section 9.
 

@@ -1116,7 +1116,11 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-EMFSPOOL records contain graphics commands, which specify drawing operations, graphics objects,
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-EMFSPOOL].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+EMFSPOOL records contain graphics commands, which specify drawing operations, graphics objects,
 and properties that define how to render the document, including:
 
 
@@ -1227,7 +1231,11 @@ Release: September 16, 2024
 
 13 / 126
 
-Figure 2: Relationships of metafile record types
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-EMFSPOOL].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: Relationships of metafile record types
 
 EMFSPOOL metafile print jobs are sent to remote print servers by using the Print System Remote
 Protocol [MS-RPRN] or Print System Asynchronous Remote Protocol [MS-PAR].
@@ -2693,7 +2701,11 @@ Release: September 16, 2024
 
 32 / 126
 
-Figure 3: EMFSPOOL metafile example, page 1
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-EMFSPOOL].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 3: EMFSPOOL metafile example, page 1
 
 [MS-EMFSPOOL] - v20240916
 Enhanced Metafile Spool Format
@@ -2702,7 +2714,11 @@ Release: September 16, 2024
 
 33 / 126
 
-Figure 4: EMFSPOOL metafile example, page 2
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-EMFSPOOL].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+Figure 4: EMFSPOOL metafile example, page 2
 
 The contents of this metafile example are shown as follows in hexadecimal bytes. The far-left column
 is the byte count; the far-right characters are the interpretation of the bytes in the Latin-1 ANSI

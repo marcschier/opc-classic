@@ -1310,7 +1310,11 @@ Release: April 23, 2024
 
 12 / 241
 
-3.  In processing the policy application portion of the Group Policy: Preferences Extension, the client
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-GPPREF].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+3.  In processing the policy application portion of the Group Policy: Preferences Extension, the client
 
 parses the file of settings and then saves the settings in the generic settings database (or registry)
 on the local machine.

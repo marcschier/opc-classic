@@ -823,7 +823,11 @@ Release: April 23, 2024
 
 9 / 57
 
-  User code
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-OAPX].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+  User code
 
   Verification URI
 

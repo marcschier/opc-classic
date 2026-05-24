@@ -2110,7 +2110,11 @@ Release: April 23, 2024
 
 18 / 260
 
-Figure 1: Relationship of Server and File Management Web APIs Protocol to industry-
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-SFMWA].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 1: Relationship of Server and File Management Web APIs Protocol to industry-
 standard protocols
 
 1.5  Prerequisites/Preconditions

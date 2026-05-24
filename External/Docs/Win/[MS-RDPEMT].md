@@ -544,7 +544,11 @@ Release: April 23, 2024
 
 6 / 24
 
-1.3.1  Messages and Intersection with Other Protocols
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-RDPEMT].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+1.3.1  Messages and Intersection with Other Protocols
 
 Bootstrapping, creating, securing and finalizing a multitransport connection uses messages from a
 number of protocols. The following sequence diagram presents an overview of these messages and
@@ -614,7 +618,11 @@ Release: April 23, 2024
 
 8 / 24
 
-Figure 2: RDP channels and transport
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RDPEMT].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 2: RDP channels and transport
 
 1.3.3  Connection Termination
 

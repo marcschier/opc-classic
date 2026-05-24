@@ -725,7 +725,11 @@ Release: June 1, 2017
 
 8 / 41
 
-Figure 1: OSI layers and DSLR
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-DSLR].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: OSI layers and DSLR
 
 1.3.1.1  Dispenser (Application Layer)
 
@@ -897,7 +901,11 @@ Release: June 1, 2017
 
 11 / 41
 
-Figure 2: Messages sent from DSLR client to server for a given remote service
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-DSLR].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: Messages sent from DSLR client to server for a given remote service
 
 1.3.2.1  CreateService
 
@@ -1830,7 +1838,11 @@ Release: June 1, 2017
 
 23 / 41
 
-3  Protocol Details
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-DSLR].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+3  Protocol Details
 
 As previously stated, DSLR is direction agnostic. In other words, a machine or a device can be either a
 client (which implements a proxy that makes calls on a remote service) or a server (which
@@ -1980,7 +1992,11 @@ Release: June 1, 2017
 
 26 / 41
 
-Figure 4: CreateService flow diagram
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-DSLR].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 4: CreateService flow diagram
 
 3.1.5.2  Service Requests
 
@@ -1996,7 +2012,11 @@ Release: June 1, 2017
 
 27 / 41
 
-Figure 5: Flow diagram for calling remote functions
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-DSLR].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+Figure 5: Flow diagram for calling remote functions
 
 3.1.5.2.1 One-Way Events
 
@@ -2070,7 +2090,11 @@ Release: June 1, 2017
 
 29 / 41
 
-Figure 6: DSLR server state diagram
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-DSLR].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 6: DSLR server state diagram
 
 Start state: The server is ready to instantiate services. The following message is processed in this
 state:
@@ -2182,7 +2206,11 @@ Release: June 1, 2017
 
 31 / 41
 
-the service GUID at initialization and startup. This new mapping is then used to call local service
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-DSLR].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+the service GUID at initialization and startup. This new mapping is then used to call local service
 functions in response to remote requests.
 
 If the CreateService event occurs while the server is in the Start state, the server moves into the
@@ -2200,7 +2228,11 @@ Release: June 1, 2017
 
 32 / 41
 
-3.2.5.2  Service Requests
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-DSLR].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+3.2.5.2  Service Requests
 
 When the remote service has been instantiated, the server then waits for the client to issue service
 requests on the service. When it receives such requests, the server executes the service requests and
@@ -2270,7 +2302,11 @@ Release: June 1, 2017
 
 34 / 41
 
-4  Protocol Examples
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-DSLR].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+4  Protocol Examples
 
 4.1  Typical DSLR Session
 

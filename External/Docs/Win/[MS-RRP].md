@@ -1005,7 +1005,11 @@ Release: October 21, 2024
 
 9 / 94
 
-Figure 1: Protocol relationship diagram
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RRP].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Protocol relationship diagram
 
 1.5  Prerequisites/Preconditions
 

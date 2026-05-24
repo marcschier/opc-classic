@@ -674,7 +674,11 @@ Release: June 1, 2017
 
 9 / 49
 
-2  Messages
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-SQMCS2].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+2  Messages
 
 2.1  Transport
 
@@ -704,7 +708,11 @@ Release: June 1, 2017
 
 10 / 49
 
-Figure 2: SQM request upload data message with SQM session data payload in the HTTP
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-SQMCS2].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 2: SQM request upload data message with SQM session data payload in the HTTP
 POST body
 
 2.2.1  Namespaces
@@ -1665,7 +1673,11 @@ Release: June 1, 2017
 
 24 / 49
 
-Figure 3: SQM Client to SQM server request upload message and response
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-SQMCS2].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 3: SQM Client to SQM server request upload message and response
 
 Prior to constructing a SQM requpload request, the SQM client determines if any Throttle response
 directive is still in effect and, if so, does not execute a requpload request to the SQM server (see
@@ -1717,7 +1729,11 @@ Release: June 1, 2017
 
 25 / 49
 
-root: The SQM client stops all requests for the throttle period.
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-SQMCS2].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+root: The SQM client stops all requests for the throttle period.
 
 svc: The SQM client stops all requests where the namespace svc attribute equals sqm (see section
 
@@ -1768,7 +1784,11 @@ Release: June 1, 2017
 
 26 / 49
 
-The SQM client uploads SQM session data by creating a data upload message and appending the SQM
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-SQMCS2].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+The SQM client uploads SQM session data by creating a data upload message and appending the SQM
 session data to the XML message in the HTTP upload. The complete XML message MAY contain more
 than one data upload request. There is a one-to-one mapping of data upload command request (req)
 elements to each SQM session binary data package as specified in section 2.2.2.12.
@@ -1803,7 +1823,11 @@ Release: June 1, 2017
 
 27 / 49
 
-The client MAY compress the entire BLOB recording the compressed data length and compression
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-SQMCS2].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+The client MAY compress the entire BLOB recording the compressed data length and compression
 method as illustrated in Figure 6. The compression method MUST be supported by the SQM server.
 
 Figure 6: Concatenated SQM sessions compressed
@@ -1863,7 +1887,11 @@ Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-SQMCS2].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+
 
 The client constructs a cmd element, as a child element of req, as specified in section 2.2.2.16
 with the command dataupload as specified in section 2.2.2.16.2.
@@ -1899,7 +1927,11 @@ Release: June 1, 2017
 
 29 / 49
 
-Figure 8: SQM session data upload (compressed)
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-SQMCS2].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 8: SQM session data upload (compressed)
 
 3.1.5.3.3 Data Upload – Send
 
@@ -1936,7 +1968,11 @@ Release: June 1, 2017
 
 30 / 49
 
-Figure 9: SQM Client to SQM Server query resource message
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-SQMCS2].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+Figure 9: SQM Client to SQM Server query resource message
 
 The SQM client creates a SQM XML message as specified in section 2.2.2 by using the qryrsrc
 command as specified in section 2.2.2.16.3. The SQM client processes the response message for the
@@ -1981,7 +2017,11 @@ Release: June 1, 2017
 
 31 / 49
 
-Figure 10: Server role in the SQM Client-to-Service Version 2 Protocol
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-SQMCS2].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 10: Server role in the SQM Client-to-Service Version 2 Protocol
 
 3.2.1  Abstract Data Model
 
@@ -2089,7 +2129,11 @@ Release: June 1, 2017
 
 33 / 49
 
-When a configured SQM client sends a message to the proxy that contains A SQM data, the proxy
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-SQMCS2].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+When a configured SQM client sends a message to the proxy that contains A SQM data, the proxy
 service opens the payload and adds a data point (see [MS-SQMCS] section 2.2.4.4.1) identifying the
 proxy. The payload is then repackaged and sent to the SQM service. All messages not containing
 payload information are sent by the proxy from the SQM client to the SQM server without

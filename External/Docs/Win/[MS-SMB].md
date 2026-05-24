@@ -1893,7 +1893,11 @@ Release: January 14, 2026
 
 18 / 180
 
-Figure 1: Relationships to other protocols
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-SMB].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 1: Relationships to other protocols
 
 1.5  Prerequisites/Preconditions
 
@@ -9373,7 +9377,11 @@ Release: January 14, 2026
 
 103 / 180
 
-Figure 2: User authentication and session establishment sequence
+<!-- Extracted images from page 104 -->
+![Extracted image 1 from page 104]([MS-SMB].images/page104-img01.png)
+<!-- /Extracted images from page 104 -->
+
+Figure 2: User authentication and session establishment sequence
 
 The diagram illustrates the sequence of events during the protocol negotiation and session
 establishment process. After the initial SMB_COM_NEGOTIATE command exchange has been
@@ -9738,7 +9746,11 @@ Release: January 14, 2026
 
 109 / 180
 
-Figure 3: Server-side data copy of an entire file
+<!-- Extracted images from page 110 -->
+![Extracted image 1 from page 110]([MS-SMB].images/page110-img01.png)
+<!-- /Extracted images from page 110 -->
+
+Figure 3: Server-side data copy of an entire file
 
 3.2.4.11.2.1  Application queries the Copychunk Resume Key of the Source File
 
@@ -11505,7 +11517,11 @@ Release: January 14, 2026
 
 135 / 180
 
-4  Protocol Examples
+<!-- Extracted images from page 136 -->
+![Extracted image 1 from page 136]([MS-SMB].images/page136-img01.png)
+<!-- /Extracted images from page 136 -->
+
+4  Protocol Examples
 
 The following sections describe common scenarios that indicate normal traffic flow on the wire in order
 to illustrate the extensions to CIFS that are specified in this document.
@@ -11652,7 +11668,11 @@ Release: January 14, 2026
 
 138 / 180
 
-Figure 5: Previous file version enumeration sequence
+<!-- Extracted images from page 139 -->
+![Extracted image 1 from page 139]([MS-SMB].images/page139-img01.png)
+<!-- /Extracted images from page 139 -->
+
+Figure 5: Previous file version enumeration sequence
 
 The first step is to enumerate the list of available snapshots on the server by using the
 FSCTL_SRV_ENUMERATE_SNAPSHOT command. The client requests the list of snapshots that are
@@ -11918,7 +11938,11 @@ Release: January 14, 2026
 
 143 / 180
 
-Figure 6: Copy file (remote to local) sequence
+<!-- Extracted images from page 144 -->
+![Extracted image 1 from page 144]([MS-SMB].images/page144-img01.png)
+<!-- /Extracted images from page 144 -->
+
+Figure 6: Copy file (remote to local) sequence
 
 In the preceding diagram, the first frame is to open the remote file for read access. The subsequent
 frames read the data from the file, and then close the file. In between the read and the close, the data
@@ -12082,7 +12106,11 @@ Release: January 14, 2026
 
 146 / 180
 
-Figure 7: Copy file (local to remote) sequence
+<!-- Extracted images from page 147 -->
+![Extracted image 1 from page 147]([MS-SMB].images/page147-img01.png)
+<!-- /Extracted images from page 147 -->
+
+Figure 7: Copy file (local to remote) sequence
 
 In the frames in the preceding figure, the remote file is first created with the
 SMB_COM_NT_CREATE_ANDX request. The data from the local file is then written to the remote file
@@ -12242,7 +12270,11 @@ Release: January 14, 2026
 
 149 / 180
 
-Figure 8: Copy file (from/to same remote server) sequence
+<!-- Extracted images from page 150 -->
+![Extracted image 1 from page 150]([MS-SMB].images/page150-img01.png)
+<!-- /Extracted images from page 150 -->
+
+Figure 8: Copy file (from/to same remote server) sequence
 
 The initial step in the preceding sequence is to open the source and the destination file using
 NT_CREATE_ANDX command. This step is followed by the FSCTL_SRV_REQUEST_RESUME_KEY
@@ -12536,7 +12568,11 @@ Release: January 14, 2026
 
 154 / 180
 
-         SMB: User ID      (Uid) = 2048 (0x800)
+<!-- Extracted images from page 155 -->
+![Extracted image 1 from page 155]([MS-SMB].images/page155-img01.png)
+<!-- /Extracted images from page 155 -->
+
+         SMB: User ID      (Uid) = 2048 (0x800)
          SMB: Multiplex ID (Mid) = 656 (0x290)
 
 4.7  TRANS TRANSACT NMPIPE

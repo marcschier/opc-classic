@@ -668,7 +668,11 @@ WS-Discovery: Termination Criteria Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-information into the Probe message, as specified in this document. The WS-Discovery protocol
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-WSTC].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+information into the Probe message, as specified in this document. The WS-Discovery protocol
 specifies the semantics of the way in which a client sends a Probe message.
 
 When a Target Service host receives the Probe message, it determines which Target Services match

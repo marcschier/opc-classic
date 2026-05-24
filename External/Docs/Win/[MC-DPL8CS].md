@@ -4913,7 +4913,11 @@ Release: April 23, 2024
 
 56 / 91
 
-3  Protocol Details
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MC-DPL8CS].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+3  Protocol Details
 
 3.1  Connect Role Details
 
@@ -4951,7 +4955,11 @@ Release: April 23, 2024
 
 57 / 91
 
-Figure 2: Role of the server when joining the client to the session
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MC-DPL8CS].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+Figure 2: Role of the server when joining the client to the session
 
 The role of the server when responding to a request from a client to be joined to the game session:
 
@@ -4976,7 +4984,11 @@ Release: April 23, 2024
 
 58 / 91
 
-Figure 3: Role of a peer when adding the peer to the session
+<!-- Extracted images from page 59 -->
+![Extracted image 1 from page 59]([MC-DPL8CS].images/page059-img01.png)
+<!-- /Extracted images from page 59 -->
+
+Figure 3: Role of a peer when adding the peer to the session
 
 The role of a peer when attempting to be added to the game session:
 
@@ -5006,7 +5018,11 @@ Release: April 23, 2024
 
 59 / 91
 
-4.  When a DN_SEND_PLAYER_DPNID message is received from an established peer, the nascent
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MC-DPL8CS].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+4.  When a DN_SEND_PLAYER_DPNID message is received from an established peer, the nascent
 peer processes the message. If an established peer is unable to connect to the nascent peer:
 
 
@@ -5127,7 +5143,11 @@ Release: April 23, 2024
 
 61 / 91
 
-3.1.5  Processing Events and Sequencing Rules
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MC-DPL8CS].images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+3.1.5  Processing Events and Sequencing Rules
 
 3.1.5.1  Client/Server Connect Sequence
 
@@ -5178,7 +5198,11 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  Upon receipt of the DN_SEND_CONNECT_INFO message from the server, the client acknowledges
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MC-DPL8CS].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+4.  Upon receipt of the DN_SEND_CONNECT_INFO message from the server, the client acknowledges
 
 the connection by returning:
 
@@ -5291,7 +5315,11 @@ Release: April 23, 2024
 
 64 / 91
 
-10. Upon receiving the DN_INSTRUCTED_CONNECT_FAILED message from any of the existing peers,
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MC-DPL8CS].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+10. Upon receiving the DN_INSTRUCTED_CONNECT_FAILED message from any of the existing peers,
 
 the host will send the connecting peer:
 
@@ -5325,7 +5353,11 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-message is invalid, the client performs cleanup and the message is ignored. Otherwise, the client
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MC-DPL8CS].images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+message is invalid, the client performs cleanup and the message is ignored. Otherwise, the client
 MUST remove itself from the game session.
 
 The role of the server when responding to the instruction to disconnect:
@@ -5362,7 +5394,11 @@ Release: April 23, 2024
 
 66 / 91
 
-Figure 9: Role of the host when performing a peer integrity check
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MC-DPL8CS].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+Figure 9: Role of the host when performing a peer integrity check
 
 The role of the host when responding to a request to check the integrity of a peer in the game
 session:
@@ -5399,7 +5435,11 @@ Release: April 23, 2024
 
 67 / 91
 
-Figure 10: Role of a peer during host migration
+<!-- Extracted images from page 68 -->
+![Extracted image 1 from page 68]([MC-DPL8CS].images/page068-img01.png)
+<!-- /Extracted images from page 68 -->
+
+Figure 10: Role of a peer during host migration
 
 The role of a peer when responding to a request to perform host migration:
 
@@ -5423,7 +5463,11 @@ Release: April 23, 2024
 
 68 / 91
 
-1.  If the host has responded with a DN_HOST_MIGRATE_COMPLETE message (section 2.2.2.11),
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MC-DPL8CS].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+1.  If the host has responded with a DN_HOST_MIGRATE_COMPLETE message (section 2.2.2.11),
 
 the peer processes the message. If an error occurs during message processing, or the
 message is invalid, the peer performs cleanup and the instruction to migrate is ignored.
@@ -5534,7 +5578,12 @@ Release: April 23, 2024
 
 70 / 91
 
-3.2.3  Initialization
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MC-DPL8CS].images/page071-img01.png)
+![Extracted image 2 from page 71]([MC-DPL8CS].images/page071-img02.png)
+<!-- /Extracted images from page 71 -->
+
+3.2.3  Initialization
 
 None.
 
@@ -5579,7 +5628,11 @@ Release: April 23, 2024
 
 71 / 91
 
-The peer receiving the DN_TERMINATE_SESSION MUST disconnect all connections and leave the
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MC-DPL8CS].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+The peer receiving the DN_TERMINATE_SESSION MUST disconnect all connections and leave the
 game session.
 
 2.  The host also issues a message to the remaining connected peers indicating the removal of the
@@ -5626,7 +5679,11 @@ Release: April 23, 2024
 
 72 / 91
 
-3.2.5.4  Peer-to-Peer Host Disconnect (Possible Host Migration)
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MC-DPL8CS].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+3.2.5.4  Peer-to-Peer Host Disconnect (Possible Host Migration)
 
 Figure 15: Peer-to-peer host disconnect (possible host migration)
 
@@ -5671,7 +5728,11 @@ Release: April 23, 2024
 
 73 / 91
 
-6.  After the name table has been brought up-to-date, the new host will respond to all connected
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MC-DPL8CS].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+6.  After the name table has been brought up-to-date, the new host will respond to all connected
 
 peers:
 
@@ -5748,7 +5809,11 @@ Release: April 23, 2024
 
 75 / 91
 
-3.3.5  Processing Events and Sequencing Rules
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MC-DPL8CS].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+3.3.5  Processing Events and Sequencing Rules
 
 3.3.5.1  Client/Server and Peer-to-Peer Send/Receive Communications Sequence
 
@@ -5796,7 +5861,11 @@ Release: April 23, 2024
 
 76 / 91
 
-3.4  Groups Role Details
+<!-- Extracted images from page 77 -->
+![Extracted image 1 from page 77]([MC-DPL8CS].images/page077-img01.png)
+<!-- /Extracted images from page 77 -->
+
+3.4  Groups Role Details
 
 Figure 18: Role of a peer and the host when sending and receiving Group messages
 
@@ -5887,7 +5956,11 @@ Release: April 23, 2024
 
 78 / 91
 
-3.4.4  Higher-Layer Triggered Events
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MC-DPL8CS].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+3.4.4  Higher-Layer Triggered Events
 
 None.
 
@@ -5971,7 +6044,11 @@ Release: April 23, 2024
 
 80 / 91
 
-3.5  Update Information Role Details
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81]([MC-DPL8CS].images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+3.5  Update Information Role Details
 
 Figure 20: Role of a peer/client and the host/server when sending and receiving Update
 Information messages
@@ -5996,7 +6073,11 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  When a DN_REQ_UPDATE_INFO message is received from a peer/client in the session, the
+<!-- Extracted images from page 82 -->
+![Extracted image 1 from page 82]([MC-DPL8CS].images/page082-img01.png)
+<!-- /Extracted images from page 82 -->
+
+  When a DN_REQ_UPDATE_INFO message is received from a peer/client in the session, the
 
 message is processed by the host/server. If the message is invalid, the host/server performs
 cleanup and the message is ignored. Otherwise, the host/server responds by sending a

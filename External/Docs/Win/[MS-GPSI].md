@@ -1264,7 +1264,11 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-GPSI].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+
 
 
 
@@ -1399,7 +1403,11 @@ Release: April 23, 2024
 
 15 / 64
 
-Figure 2: Active Directory GPO structure for software installation
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-GPSI].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 2: Active Directory GPO structure for software installation
 
 2.2.1  Common Messages
 
@@ -4790,7 +4798,11 @@ Release: April 23, 2024
 
 56 / 64
 
-Figure 3: AAS hexadecimal dump
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-GPSI].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+Figure 3: AAS hexadecimal dump
 
 [MS-GPSI] - v20240423
 Group Policy: Software Installation Protocol Extension

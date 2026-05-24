@@ -607,7 +607,11 @@ Release: September 16, 2024
 
 8 / 30
 
-device registration service (DRS) server: The server that implements the REST Web service that
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-DVRJ].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+device registration service (DRS) server: The server that implements the REST Web service that
 accepts and responds to device registration requests using the Device Registration Join Protocol.
 
 client: The entity that creates and sends a request to the server using the Device Registration Join

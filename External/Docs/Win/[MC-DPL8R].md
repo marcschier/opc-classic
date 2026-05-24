@@ -2078,7 +2078,11 @@ Release: April 23, 2024
 
 23 / 43
 
-3  Protocol Details
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MC-DPL8R].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+3  Protocol Details
 
 3.1  Common Details
 

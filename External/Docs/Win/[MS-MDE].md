@@ -710,7 +710,11 @@ Release: April 23, 2024
 
 8 / 52
 
-1.3  Overview
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-MDE].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+1.3  Overview
 
 MDE enables a device to be enrolled with the Device Management Service (DMS) through an
 Enrollment Service (ES), including the discovery of the Management Enrollment Service (MES)
@@ -781,7 +785,11 @@ Release: April 23, 2024
 
 10 / 52
 
-Figure 2: MDE device enrollment phases
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-MDE].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 2: MDE device enrollment phases
 
 1.4  Relationship to Other Protocols
 
@@ -799,7 +807,11 @@ Release: April 23, 2024
 
 11 / 52
 
-Figure 3: Relationship to other protocols
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-MDE].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 3: Relationship to other protocols
 
 1.5  Prerequisites/Preconditions
 
@@ -949,7 +961,11 @@ Release: April 23, 2024
 
 14 / 52
 
-3  Protocol Details
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-MDE].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+3  Protocol Details
 
 3.1  IDiscoveryService Server Details
 
@@ -965,7 +981,11 @@ Release: April 23, 2024
 
 15 / 52
 
-The IDiscoveryService DS in MDE hosts an endpoint to receive messages from the enrollment
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-MDE].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+The IDiscoveryService DS in MDE hosts an endpoint to receive messages from the enrollment
 client. When a Discover request message (section 3.1.4.1.1.1) is received from the client, the server
 processes the request and returns a DiscoverResponse message (section 3.1.4.1.1.2) to the client.
 The response identifies the endpoints to be used by the client to obtain the security tokens and enroll
@@ -1281,7 +1301,11 @@ Release: April 23, 2024
 
 21 / 52
 
-Figure 6: MDE device enrollment: requesting and receiving the security token
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-MDE].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 6: MDE device enrollment: requesting and receiving the security token
 
 After the enrollment client receives the DiscoverResponse message (section 3.1.4.1.1.2), the
 client obtains a security token from the STS specified in the value for the
@@ -1365,7 +1389,11 @@ Release: April 23, 2024
 
 23 / 52
 
-Figure 7: MDE device enrollment: getting the certificate policies
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-MDE].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 7: MDE device enrollment: getting the certificate policies
 
 The X.509 Certificate Enrollment Policy Protocol [MS-XCEP] enables a client to request certificate
 enrollment policies from a server. The communication is initiated by the enrollment client request
@@ -1607,7 +1635,11 @@ Release: April 23, 2024
 
 28 / 52
 
-Figure 8: MDE device enrollment: completing enrollment
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-MDE].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 8: MDE device enrollment: completing enrollment
 
 The WS-Trust X509v3 Enrollment Extensions [MS-WSTEP] are extensions of WS-Trust Security 2004
 [WSS] that are used by a system to request that a certificate be issued. MDE implements an
@@ -1966,7 +1998,11 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-MDE].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
 EncodingType attribute MUST be "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary".
 
@@ -2128,7 +2164,11 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-9Jc3N1aW5nMB4XDTA4MTEyNjAyMDAzMloXDTE0MDMyNjAyMDAzMlowHDEaMBgGA1UEAxMRU0NfT25saW5lX0lzc3Vpbmc
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-MDE].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+9Jc3N1aW5nMB4XDTA4MTEyNjAyMDAzMloXDTE0MDMyNjAyMDAzMlowHDEaMBgGA1UEAxMRU0NfT25saW5lX0lzc3Vpbmc
 wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAM6CkO62YpeXEl8cwkN7ycAfl/L2Z9bdbyfqxGLx89zwSiUBrvoEDtnt
 9fWGkTQ5LVz+lJy/k/TRLiM/3h94FT00QzBkE6yICLq7UCX5z8LRFEHSsGGaBgkotrkPsX3pG6agczNqF2h4Bngq+4BVb
 sA2PMpsXiVtWUtVHt45PD/JAgMBAAGBEQBawy5oQj84R6nsmIFiEHNpghEAWsMuaEI/OEep7JiBYhBzaTAJBgUrDgMCHQ

@@ -1222,7 +1222,11 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.3.1  Protocol Roles
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-TIPP].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+1.3.1  Protocol Roles
 
 This protocol comprises the following self-contained classes of functionality or protocol roles:
 
@@ -1350,7 +1354,11 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Accepts requests to commit or rollback a transaction from the TIP application role and responds
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-TIPP].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+  Accepts requests to commit or rollback a transaction from the TIP application role and responds
 
 with the transaction outcome.
 
@@ -1393,7 +1401,11 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.3.2.2  Pulling a Transaction
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-TIPP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+1.3.2.2  Pulling a Transaction
 
 In this scenario, application A sends a request to application B to pull a local transaction that it
 creates with its TIP transaction manager A, and do some work as part of the pulled transaction.
@@ -1433,7 +1445,11 @@ Release: April 23, 2024
 
 14 / 85
 
-7.  TIP transaction manager A agrees by responding with the PULLED TIP command. At this point,
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-TIPP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+7.  TIP transaction manager A agrees by responding with the PULLED TIP command. At this point,
 TIP transaction manager B has an enlistment in the transaction, and the transaction is bound to
 the TIP connection.
 
@@ -1471,7 +1487,11 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  Application A asks its TIP transaction manager A to push the transaction to TIP transaction
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-TIPP].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+4.  Application A asks its TIP transaction manager A to push the transaction to TIP transaction
 
 manager B.
 
@@ -1516,7 +1536,11 @@ Release: April 23, 2024
 
 16 / 85
 
-subordinate transaction manager facet of TIP transaction manager B, which is enlisted as a
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-TIPP].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+subordinate transaction manager facet of TIP transaction manager B, which is enlisted as a
 subordinate in the transaction.
 
 3.  Assuming the TIP transaction manager B successfully prepares all its enlistments for this

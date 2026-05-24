@@ -1620,7 +1620,11 @@ Release: April 23, 2024
 
 23 / 33
 
-Figure 1: Associating a handle to a logical flow and configuring policy
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-SQOS].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 1: Associating a handle to a logical flow and configuring policy
 
 1.  The client sends an SMB2 CREATE Request to open a remote file.
 
@@ -1724,7 +1728,11 @@ Release: April 23, 2024
 
 25 / 33
 
-Figure 2: Probing policy and querying logical flow status
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-SQOS].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 2: Probing policy and querying logical flow status
 
 1.  The client sends an SMB2 IOCTL Request with a STORAGE_QOS_CONTROL_REQUEST buffer to
 

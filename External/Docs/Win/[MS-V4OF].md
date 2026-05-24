@@ -676,7 +676,11 @@ IPv4 Over IEEE 1394 Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-[RFC2131] Droms, R., "Dynamic Host Configuration Protocol", RFC 2131, March 1997,
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-V4OF].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+[RFC2131] Droms, R., "Dynamic Host Configuration Protocol", RFC 2131, March 1997,
 https://www.rfc-editor.org/info/rfc2131
 
 [RFC2734] Johansson, P., "IPv4 over IEEE 1394", RFC 2734, December 1999,
@@ -734,7 +738,11 @@ Release: June 1, 2017
 
 6 / 19
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-V4OF].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+1.4  Relationship to Other Protocols
 
 IPv4 Over IEEE 1394 (IPo1394) Protocol relates to other protocols only insofar as those protocols run
 over IPv4, which in turn can run over IPo1394. The extensions specified in this document do not affect
@@ -992,7 +1000,11 @@ Release: June 1, 2017
 
 12 / 19
 
-4  Protocol Examples
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-V4OF].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+4  Protocol Examples
 
 The following figure shows a scenario where Device 1 is connected to Bridge 1 via IPo1394. Bridge 1 is
 connected to Bridge 2 via IPo1394, and Bridge 2 is connected to Device 2 via Ethernet.
@@ -1068,7 +1080,11 @@ IPv4 Over IEEE 1394 Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Figure 4: Sequence of packets exchanged
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-V4OF].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 4: Sequence of packets exchanged
 
 [MS-V4OF] - v20170601
 IPv4 Over IEEE 1394 Protocol Extensions

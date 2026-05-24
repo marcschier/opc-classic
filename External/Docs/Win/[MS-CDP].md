@@ -513,7 +513,11 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-CDP].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
 1.2  References

@@ -881,7 +881,11 @@ Release: April 23, 2024
 
 8 / 36
 
-The Telnet: NTLM Authentication Protocol is an extension to the Telnet Authentication Option, as
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-TNAP].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+The Telnet: NTLM Authentication Protocol is an extension to the Telnet Authentication Option, as
 specified in [RFC2941]. While the Telnet Authentication Option specifies how a Telnet server and
 Telnet client can negotiate an authentication scheme, the Telnet: NTLM Authentication Protocol
 Specification specifies how a Telnet client and Telnet server encapsulate NTLM messages in the
@@ -1007,7 +1011,11 @@ Release: April 23, 2024
 
 11 / 36
 
-2  Messages
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-TNAP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+2  Messages
 
 The following sections specify how Telnet: NTLM Authentication Protocol messages are transported
 and give details of message syntax.
@@ -1053,7 +1061,11 @@ Release: April 23, 2024
 
 12 / 36
 
-Figure 3: Relationship between IS and REPLY commands and Telnet: NTLM Authentication
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-TNAP].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 3: Relationship between IS and REPLY commands and Telnet: NTLM Authentication
 packet
 
 The message syntax of a Telnet: NTLM Authentication Protocol message depends on the Telnet
@@ -1288,7 +1300,11 @@ Release: April 23, 2024
 
 15 / 36
 
-3  Protocol Details
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-TNAP].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+3  Protocol Details
 
 The following sections provide a detailed specification of Telnet: NTLM Authentication Protocol
 message computation. Sections 3.1.5 and 3.2.5 specify how the client and server must compute
@@ -1563,7 +1579,11 @@ Release: April 23, 2024
 
 20 / 36
 
-Figure 5: Server activity during Telnet: NTLM Authentication Protocol processing
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-TNAP].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 5: Server activity during Telnet: NTLM Authentication Protocol processing
 
 1.  will_authenticate_not_received (start state): This state indicates that the server has not
 
@@ -1810,7 +1830,11 @@ Release: April 23, 2024
 
 25 / 36
 
-4  Protocol Examples
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-TNAP].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+4  Protocol Examples
 
 The following section describes operations used in a common scenario to illustrate the function of the
 Telnet: NTLM Authentication Protocol.

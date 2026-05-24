@@ -2244,7 +2244,11 @@ Release: September 16, 2024
 
 26 / 77
 
-Figure 1: DFS path resolution – initial steps
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-DFSC].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 1: DFS path resolution – initial steps
 
 [MS-DFSC] - v20240916
 Distributed File System (DFS): Referral Protocol
@@ -2253,7 +2257,11 @@ Release: September 16, 2024
 
 27 / 77
 
-Figure 2: DFS path resolution – connection 2
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-DFSC].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+Figure 2: DFS path resolution – connection 2
 
 [MS-DFSC] - v20240916
 Distributed File System (DFS): Referral Protocol
@@ -2262,7 +2270,12 @@ Release: September 16, 2024
 
 28 / 77
 
-Figure 3: DFS path resolution - connection 3
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-DFSC].images/page029-img01.png)
+![Extracted image 2 from page 29]([MS-DFSC].images/page029-img02.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 3: DFS path resolution - connection 3
 
 Figure 4: DFS path resolution - connection 4
 
@@ -2273,7 +2286,11 @@ Release: September 16, 2024
 
 29 / 77
 
-Figure 5: DFS path resolution - connection 5
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-DFSC].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+Figure 5: DFS path resolution - connection 5
 
 [MS-DFSC] - v20240916
 Distributed File System (DFS): Referral Protocol
@@ -2282,7 +2299,11 @@ Release: September 16, 2024
 
 30 / 77
 
-Figure 6: DFS path resolution - connection 6
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-DFSC].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+Figure 6: DFS path resolution - connection 6
 
 [MS-DFSC] - v20240916
 Distributed File System (DFS): Referral Protocol
@@ -2291,7 +2312,11 @@ Release: September 16, 2024
 
 31 / 77
 
-Figure 7: DFS path resolution - connection 7
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-DFSC].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 7: DFS path resolution - connection 7
 
 [MS-DFSC] - v20240916
 Distributed File System (DFS): Referral Protocol
@@ -2300,7 +2325,11 @@ Release: September 16, 2024
 
 32 / 77
 
-Figure 8: DFS path resolution - connection 8
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-DFSC].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 8: DFS path resolution - connection 8
 
 [MS-DFSC] - v20240916
 Distributed File System (DFS): Referral Protocol
@@ -2309,7 +2338,11 @@ Release: September 16, 2024
 
 33 / 77
 
-Figure 9: DFS path resolution - connection 9
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-DFSC].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+Figure 9: DFS path resolution - connection 9
 
 [MS-DFSC] - v20240916
 Distributed File System (DFS): Referral Protocol
@@ -2318,7 +2351,12 @@ Release: September 16, 2024
 
 34 / 77
 
-Figure 10: DFS path resolution - connection 10
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-DFSC].images/page035-img01.png)
+![Extracted image 2 from page 35]([MS-DFSC].images/page035-img02.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 10: DFS path resolution - connection 10
 
 Figure 11: DFS path resolution - connection 11
 
@@ -2329,7 +2367,13 @@ Release: September 16, 2024
 
 35 / 77
 
-Figure 12: DFS path resolution - connection 12
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-DFSC].images/page036-img01.png)
+![Extracted image 2 from page 36]([MS-DFSC].images/page036-img02.png)
+![Extracted image 3 from page 36]([MS-DFSC].images/page036-img03.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 12: DFS path resolution - connection 12
 
 Figure 13: DFS path resolution - connection 13
 
@@ -3877,7 +3921,11 @@ Release: September 16, 2024
 
 55 / 77
 
-4  Protocol Examples
+<!-- Extracted images from page 56 -->
+![Extracted image 1 from page 56]([MS-DFSC].images/page056-img01.png)
+<!-- /Extracted images from page 56 -->
+
+4  Protocol Examples
 
 4.1  Domain Referral
 
@@ -3906,7 +3954,11 @@ Release: September 16, 2024
 
 56 / 77
 
-4.2  DC Referral
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-DFSC].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+4.2  DC Referral
 
 The following sequence diagram shows a DC referral.
 
@@ -3932,7 +3984,11 @@ Release: September 16, 2024
 
 57 / 77
 
-strings, each of which is a DC name. The DC names returned are in fully qualified domain name
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-DFSC].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+strings, each of which is a DC name. The DC names returned are in fully qualified domain name
 format, because the domain name in the request is also in the fully qualified domain name format.
 
 4.3  Domain-Based DFS Root Referral
@@ -3951,7 +4007,11 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-MaxReferralLevel field of REQ_GET_DFS_REFERRAL. The DFS path specified in the DFS referral
+<!-- Extracted images from page 59 -->
+![Extracted image 1 from page 59]([MS-DFSC].images/page059-img01.png)
+<!-- /Extracted images from page 59 -->
+
+MaxReferralLevel field of REQ_GET_DFS_REFERRAL. The DFS path specified in the DFS referral
 request is \dfsn-dev\testroot1, a domain-based DFS namespace in the DFSN-DEV domain.
 
 2.  The DC's referral response contains two referral entries, each having referral version 2. The
@@ -4002,7 +4062,11 @@ Release: September 16, 2024
 
 60 / 77
 
-Figure 19: REQ_DFS_GET_REFERRAL packet trace
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MS-DFSC].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+Figure 19: REQ_DFS_GET_REFERRAL packet trace
 
 The following figure shows the network packet dump of a domain-based DFS root referral response.
 The referral response consists of the DFS referral header, RESP_GET_DFS_REFERRAL at offset 0x72
@@ -4021,7 +4085,11 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The NetworkAddressOffset field of the first referral entry, containing the offset of the DFS root
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MS-DFSC].images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+The NetworkAddressOffset field of the first referral entry, containing the offset of the DFS root
 target from the start of the referral entry, is at offset 0x8A. It contains 0x94. The first referral entry
 is at offset 0x7A. Hence, the DFS root target that corresponds to the first referral entry is at offset
 0x7A+0x94=0x10E. The null-terminated Unicode string at offset 0x10E in the hexadecimal dump is
@@ -4037,7 +4105,11 @@ Release: September 16, 2024
 
 62 / 77
 
-4.6  Standalone DFS Root Referral
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-DFSC].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+4.6  Standalone DFS Root Referral
 
 The following sequence diagram shows a root referral for a stand-alone DFS namespace.
 

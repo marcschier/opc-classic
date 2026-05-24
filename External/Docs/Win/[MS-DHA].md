@@ -509,7 +509,12 @@ Release: April 23, 2024
 
 7 / 43
 
-Figure 1: Device health attestation
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-DHA].images/page008-img01.png)
+![Extracted image 2 from page 8]([MS-DHA].images/page008-img02.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: Device health attestation
 
 The following is a sequence diagram that describes how the three components interact, during a
 Device Health Attestation session.
@@ -530,7 +535,11 @@ Release: April 23, 2024
 
 8 / 43
 
-Figure 3: Relationship of DHA protocol to industry-standard protocols
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-DHA].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 3: Relationship of DHA protocol to industry-standard protocols
 
 1.5  Prerequisites/Preconditions
 
@@ -897,7 +906,11 @@ Release: April 23, 2024
 
 14 / 43
 
-Figure 4: Device health attestation asynchronous processing flow
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-DHA].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 4: Device health attestation asynchronous processing flow
 
 Following is a brief overview of the Device Health Attestation, synchronous processing flow:
 
@@ -932,7 +945,12 @@ Release: April 23, 2024
 
 15 / 43
 
-8.  The Device Management Server (MDM-Server) adds a "Nonce" to the payload, forwards the DHA-
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-DHA].images/page016-img01.png)
+![Extracted image 2 from page 16]([MS-DHA].images/page016-img02.png)
+<!-- /Extracted images from page 16 -->
+
+8.  The Device Management Server (MDM-Server) adds a "Nonce" to the payload, forwards the DHA-
 
 Validation-Data to DHA-Service
 
@@ -954,7 +972,11 @@ Release: April 23, 2024
 
 16 / 43
 
-Figure 6: Device Health Attestation
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-DHA].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 6: Device Health Attestation
 
 The Device Management Server (MDM-Server) can initiate a request for DHA Data as needed. When
 the Device Management Server (MDM-Server) sends this request: the TPM-compatible device prepares
@@ -1091,7 +1113,11 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5.1.1.3  Processing Details
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-DHA].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+3.1.5.1.1.3  Processing Details
 
 The encrypted BLOB is cached on the client in encrypted format.
 

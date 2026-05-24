@@ -1210,7 +1210,11 @@ Release: September 16, 2024
 
 12 / 67
 
-Figure 1: Relationship to other protocols
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-BRWS].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 1: Relationship to other protocols
 
 The diagram shows the following:
 
@@ -2880,7 +2884,11 @@ Release: September 16, 2024
 
 34 / 67
 
-Figure 2: Browser server state machine
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-BRWS].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 2: Browser server state machine
 
 1.  This transition occurs when a local master browser that is not a domain controller
 
@@ -4358,7 +4366,11 @@ Release: September 16, 2024
 
 54 / 67
 
-
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-BRWS].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+
 
 The potential master browser server sends out a RequestElection frame that contains its own
 election version and criteria values.
@@ -4406,7 +4418,11 @@ Release: September 16, 2024
 
 55 / 67
 
-
+<!-- Extracted images from page 56 -->
+![Extracted image 1 from page 56]([MS-BRWS].images/page056-img01.png)
+<!-- /Extracted images from page 56 -->
+
+
 
 
 

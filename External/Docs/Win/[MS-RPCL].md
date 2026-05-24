@@ -1419,7 +1419,11 @@ Release: June 1, 2017
 
 14 / 77
 
-Figure 1: Active Directory layout
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RPCL].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 1: Active Directory layout
 
 1.4  Relationship to Other Protocols
 
@@ -1440,7 +1444,11 @@ Release: June 1, 2017
 
 15 / 77
 
-3.  Master locators depend on the Remote Mailslot Protocol [MS-MAIL] to broadcast requests for the
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-RPCL].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+3.  Master locators depend on the Remote Mailslot Protocol [MS-MAIL] to broadcast requests for the
 
 queries they receive, as specified in section 3.4.1.5.1. Server locators depend on the Remote
 Mailslot Protocol for responding to broadcast requests, as specified in section 3.2.1.5.
@@ -4780,7 +4788,11 @@ Release: June 1, 2017
 
 62 / 77
 
-4  Protocol Examples
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-RPCL].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+4  Protocol Examples
 
 4.1  Nondirectory Mode Operation
 
@@ -4823,7 +4835,11 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Figure 4: Directory-only mode
+<!-- Extracted images from page 64 -->
+![Extracted image 1 from page 64]([MS-RPCL].images/page064-img01.png)
+<!-- /Extracted images from page 64 -->
+
+Figure 4: Directory-only mode
 
 The sequence is described in the following steps:
 
@@ -4854,7 +4870,11 @@ Release: June 1, 2017
 
 64 / 77
 
-Figure 5: Directory mode
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-RPCL].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+Figure 5: Directory mode
 
 The sequence is described in the following steps:
 

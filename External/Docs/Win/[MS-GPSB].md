@@ -1068,7 +1068,11 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Security policy assignment.
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-GPSB].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+  Security policy assignment.
 
   Security policy distribution.
 

@@ -910,7 +910,11 @@ Release: April 23, 2024
 
 8 / 23
 
-OCSP defined in [RFC2560]. OCSP Extensions specifies the data that needs to be exchanged between
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-OCSP].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+OCSP defined in [RFC2560]. OCSP Extensions specifies the data that needs to be exchanged between
 an application that checks the status of a certificate and the responder that provides the status.
 
 OCSP is a component of a public key infrastructure (PKI). A PKI consists of a system of digital
@@ -1237,7 +1241,11 @@ Release: April 23, 2024
 
 15 / 23
 
-4  Protocol Example
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-OCSP].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+4  Protocol Example
 
 The client determines that it has to validate the revocation status of a certificate. When the client
 invokes the revocation-checking process, the following event sequence occurs:

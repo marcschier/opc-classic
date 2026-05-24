@@ -4352,7 +4352,11 @@ Release: April 23, 2024
 
 41 / 665
 
-[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-WSUSAR].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
@@ -9196,7 +9200,11 @@ Release: April 23, 2024
 
 91 / 665
 
-Figure 2: Sequence for get/set subscription operations in the Subscription category
+<!-- Extracted images from page 92 -->
+![Extracted image 1 from page 92]([MS-WSUSAR].images/page092-img01.png)
+<!-- /Extracted images from page 92 -->
+
+Figure 2: Sequence for get/set subscription operations in the Subscription category
 
 WSDL operation
 
@@ -9347,7 +9355,11 @@ Release: April 23, 2024
 
 93 / 665
 
-Figure 3: Sequence for specified operations in the Local Publishing category
+<!-- Extracted images from page 94 -->
+![Extracted image 1 from page 94]([MS-WSUSAR].images/page094-img01.png)
+<!-- /Extracted images from page 94 -->
+
+Figure 3: Sequence for specified operations in the Local Publishing category
 
 WSDL operation
 
@@ -9401,7 +9413,11 @@ Release: April 23, 2024
 
 94 / 665
 
-The following diagram depicts the sequence that MUST be implemented for the specified operations in
+<!-- Extracted images from page 95 -->
+![Extracted image 1 from page 95]([MS-WSUSAR].images/page095-img01.png)
+<!-- /Extracted images from page 95 -->
+
+The following diagram depicts the sequence that MUST be implemented for the specified operations in
 the Configuration category. All other operations that are not specified by name in the following
 diagram are called as required by the implementation.
 
@@ -41121,7 +41137,11 @@ Release: April 23, 2024
 
 525 / 665
 
-4  Protocol Examples
+<!-- Extracted images from page 526 -->
+![Extracted image 1 from page 526]([MS-WSUSAR].images/page526-img01.png)
+<!-- /Extracted images from page 526 -->
+
+4  Protocol Examples
 
 The following sections assume that the protocol server implementation has been initialized as follows:
 
@@ -41174,7 +41194,11 @@ Release: April 23, 2024
 
 526 / 665
 
- <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+<!-- Extracted images from page 527 -->
+![Extracted image 1 from page 527]([MS-WSUSAR].images/page527-img01.png)
+<!-- /Extracted images from page 527 -->
+
+ <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema">
    <soap:Body>
@@ -41299,7 +41323,11 @@ Release: April 23, 2024
 
 528 / 665
 
-           </GenericReadableRow>
+<!-- Extracted images from page 529 -->
+![Extracted image 1 from page 529]([MS-WSUSAR].images/page529-img01.png)
+<!-- /Extracted images from page 529 -->
+
+           </GenericReadableRow>
          </ArrayOfGenericReadableRow>
        </ExecuteSPSearchComputersResult>
      </ExecuteSPSearchComputersResponse>
@@ -41348,7 +41376,11 @@ Release: April 23, 2024
 
 529 / 665
 
- <?xml version="1.0" encoding="utf-8"?>
+<!-- Extracted images from page 530 -->
+![Extracted image 1 from page 530]([MS-WSUSAR].images/page530-img01.png)
+<!-- /Extracted images from page 530 -->
+
+ <?xml version="1.0" encoding="utf-8"?>
  "?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema">

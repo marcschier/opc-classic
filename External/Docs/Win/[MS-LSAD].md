@@ -2283,7 +2283,11 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-The Active Directory Technical Specification [MS-ADTS] discusses Active Directory, which is used by
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-LSAD].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+The Active Directory Technical Specification [MS-ADTS] discusses Active Directory, which is used by
 this protocol when running on a domain controller.
 
 The server-side protocol relationships for non-domain controller and domain controller configurations
@@ -2298,7 +2302,11 @@ Release: June 10, 2025
 
 23 / 253
 
-Figure 2: Server-side protocol relationships for a domain controller configuration
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-LSAD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 2: Server-side protocol relationships for a domain controller configuration
 
 1.5  Prerequisites/Preconditions
 

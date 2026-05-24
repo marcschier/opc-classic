@@ -1936,7 +1936,11 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-is illustrated by the figure that follows. Note that multiple EMF+ records can be embedded in a single
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-EMFPLUS].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+is illustrated by the figure that follows. Note that multiple EMF+ records can be embedded in a single
 EMF record.
 
 The EMF record in which arbitrary private data can be embedded is called an EMF comment record
@@ -2028,7 +2032,11 @@ Release: April 23, 2024
 
 21 / 262
 
-Byte order  Byte 0  Byte 1  Byte 2  Byte 3
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-EMFPLUS].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Byte order  Byte 0  Byte 1  Byte 2  Byte 3
 
 Big-endian
 
@@ -15851,7 +15859,11 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+<!-- Extracted images from page 180 -->
+![Extracted image 1 from page 180]([MS-EMFPLUS].images/page180-img01.png)
+<!-- /Extracted images from page 180 -->
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15928,7 +15940,11 @@ Release: April 23, 2024
 
 180 / 262
 
-0  1  2  3  4  5  6  7  8  9
+<!-- Extracted images from page 181 -->
+![Extracted image 1 from page 181]([MS-EMFPLUS].images/page181-img01.png)
+<!-- /Extracted images from page 181 -->
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -16278,7 +16294,11 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The EmfPlusObject record (section 2.3.5.1) creates graphics objects of the types defined in the
+<!-- Extracted images from page 186 -->
+![Extracted image 1 from page 186]([MS-EMFPLUS].images/page186-img01.png)
+<!-- /Extracted images from page 186 -->
+
+The EmfPlusObject record (section 2.3.5.1) creates graphics objects of the types defined in the
 ObjectType enumeration (section 2.1.1.21), and the objects themselves are specified in Graphics
 Objects (section 2.2.1). Once created, graphics objects can be reused any number of times in graphics
 operations.
@@ -21391,7 +21411,11 @@ Release: April 23, 2024
 
 251 / 262
 
-Figure 6: EMF+ string drawing example
+<!-- Extracted images from page 252 -->
+![Extracted image 1 from page 252]([MS-EMFPLUS].images/page252-img01.png)
+<!-- /Extracted images from page 252 -->
+
+Figure 6: EMF+ string drawing example
 
 [MS-EMFPLUS] - v20240423
 Enhanced Metafile Format Plus Extensions

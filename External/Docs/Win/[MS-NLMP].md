@@ -1396,7 +1396,11 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Each of these variants has three versions: LM, NTLMv1, and NTLMv2. The message flow for all three is
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-NLMP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Each of these variants has three versions: LM, NTLMv1, and NTLMv2. The message flow for all three is
 the same; the only differences are the function used to compute various response fields from the
 challenge, and which response fields are set. <2>
 
@@ -1442,7 +1446,11 @@ NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-An overview of the connection-oriented and connectionless variants of NTLM is provided in the
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-NLMP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+An overview of the connection-oriented and connectionless variants of NTLM is provided in the
 following sections.
 
 1.3.1.1  NTLM Connection-Oriented Call Flow
@@ -1487,7 +1495,11 @@ Release: March 30, 2026
 
 15 / 99
 
-1.3.1.2  NTLM Connectionless (Datagram-Oriented) Call Flow
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-NLMP].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+1.3.1.2  NTLM Connectionless (Datagram-Oriented) Call Flow
 
 The following illustration shows a typical NTLM connectionless (datagram-oriented) call flow.
 
@@ -5734,7 +5746,11 @@ Release: March 30, 2026
 
 71 / 99
 
-4  Protocol Examples
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-NLMP].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+4  Protocol Examples
 
 4.1  NTLM Over Server Message Block (SMB)
 

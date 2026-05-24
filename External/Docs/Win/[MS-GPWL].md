@@ -1236,7 +1236,11 @@ Release: April 23, 2024
 
 11 / 116
 
-1.3  Overview
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-GPWL].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.3  Overview
 
 The Wireless/Wired Group Policy Protocol depends on the Group Policy: Core Protocol [MS-GPOL].
 Three entities are involved in Group Policy protocol—the administrative-side plug-in, a generic data
@@ -1274,7 +1278,12 @@ Release: April 23, 2024
 
 12 / 116
 
-Figure 2: Logical client/server LDAP modify communication
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-GPWL].images/page013-img01.png)
+![Extracted image 2 from page 13]([MS-GPWL].images/page013-img02.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 2: Logical client/server LDAP modify communication
 
 Similarly, when an administrator uses an administrative tool to read or delete a wireless or wired
 Group Policy within a GPO, the administrative-side plug-in uses appropriate LDAP functionality to read
@@ -1305,7 +1314,11 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Wireless/Wired Group Policy Protocol also depends on LDAP, and on all of the protocols on which
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-GPWL].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+The Wireless/Wired Group Policy Protocol also depends on LDAP, and on all of the protocols on which
 the Group Policy: Core Protocol depends.
 
 The Wireless/Wired Group Policy administrative-side and client-side plug-ins read and write wireless or

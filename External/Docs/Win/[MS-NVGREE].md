@@ -370,7 +370,11 @@ Release: September 20, 2022
 
 6 / 33
 
-Figure 1 NVGRE packet encapsulation
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-NVGREE].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1 NVGRE packet encapsulation
 
 1.3.2  Minimizing Data Center Challenges with NVGRE
 
@@ -1831,7 +1835,11 @@ Release: September 20, 2022
 
 25 / 33
 
-Figure 2 Redirect and Unreachable message architecture
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-NVGREE].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 2 Redirect and Unreachable message architecture
 
 3.1.5.4  UNREACHABLE Message Processing
 

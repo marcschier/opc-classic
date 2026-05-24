@@ -1164,7 +1164,11 @@ Release: September 16, 2024
 
 11 / 133
 
-Figure 1: Relationships to other protocols
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RAP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 1: Relationships to other protocols
 
 1.5  Prerequisites/Preconditions
 
@@ -10641,7 +10645,11 @@ Release: September 16, 2024
 
 114 / 133
 
-4  Protocol Examples
+<!-- Extracted images from page 115 -->
+![Extracted image 1 from page 115]([MS-RAP].images/page115-img01.png)
+<!-- /Extracted images from page 115 -->
+
+4  Protocol Examples
 
 4.1  NetShareEnum
 
@@ -10766,7 +10774,11 @@ Release: September 16, 2024
 
 116 / 133
 
-4.2  NetServerEnum2
+<!-- Extracted images from page 117 -->
+![Extracted image 1 from page 117]([MS-RAP].images/page117-img01.png)
+<!-- /Extracted images from page 117 -->
+
+4.2  NetServerEnum2
 
 The following diagram demonstrates the steps taken to retrieve an enumeration of servers on the
 network from a remote server by using the Remote Administration Protocol. Assume that this
@@ -10899,7 +10911,11 @@ Release: September 16, 2024
 
 118 / 133
 
-     53 54 45 4D 00 00 00 00 31 32 33 34 35 36 37 38   (STEM....12345678)
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MS-RAP].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+     53 54 45 4D 00 00 00 00 31 32 33 34 35 36 37 38   (STEM....12345678)
      39 30 31 32 33 34 35 36 37 38 39 30 31 32 33 34   (9012345678901234)
      35 36 37 38 39 30 31 32 33 34 35 36 37 38 39 30   (5678901234567890)
      31 32 33 34 35 36 37 38 00 00 00                  (12345678...)

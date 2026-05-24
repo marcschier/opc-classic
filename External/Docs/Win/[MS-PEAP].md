@@ -1341,7 +1341,11 @@ Release: September 29, 2025
 
 12 / 77
 
-1.  A new EAP negotiation is initiated by the PEAP server to authenticate the PEAP peer. This new
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-PEAP].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+1.  A new EAP negotiation is initiated by the PEAP server to authenticate the PEAP peer. This new
 "inner method" EAP negotiation is carried inside the TLS records being exchanged between the
 PEAP peer and PEAP server.
 
@@ -1372,7 +1376,11 @@ Release: September 29, 2025
 
 13 / 77
 
-To understand PEAP, it is necessary to understand both EAP and TLS. An overview of EAP is specified
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-PEAP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+To understand PEAP, it is necessary to understand both EAP and TLS. An overview of EAP is specified
 in [RFC3748] section 2, while an overview of TLS is specified in [RFC2246] section 1. For more
 information on security requirements for EAP methods that are used with wireless local area networks
 (WLANs), see [RFC4017].
@@ -1401,7 +1409,11 @@ Release: September 29, 2025
 
 14 / 77
 
-Figure 3: Protocol layering during phase 2 of PEAP
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-PEAP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 3: Protocol layering during phase 2 of PEAP
 
 PEAP, like EAP, can run over any EAP transport that is compliant with [RFC3748], such as PPP (for
 more information, see [RFC1661]).
@@ -3331,7 +3343,11 @@ Release: September 29, 2025
 
 38 / 77
 
-Figure 4: PEAP Peer State Machine
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-PEAP].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 4: PEAP Peer State Machine
 
 3.2.2  Timers
 
@@ -3944,7 +3960,11 @@ Release: September 29, 2025
 
 47 / 77
 
-  WAIT_FOR_CAPABILITIES_RESPONSE
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-PEAP].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+  WAIT_FOR_CAPABILITIES_RESPONSE
 
 
 
@@ -4604,7 +4624,11 @@ Release: September 29, 2025
 
 57 / 77
 
-Figure 6: Successful PEAP phase 1 and 2 negotiation
+<!-- Extracted images from page 58 -->
+![Extracted image 1 from page 58]([MS-PEAP].images/page058-img01.png)
+<!-- /Extracted images from page 58 -->
+
+Figure 6: Successful PEAP phase 1 and 2 negotiation
 
 4.1.2  Successful PEAP Phase 1 with Failed Phase 2 Negotiation
 
@@ -4623,7 +4647,11 @@ Protected Extensible Authentication Protocol (PEAP)
 Copyright © 2025 Microsoft Corporation
 Release: September 29, 2025
 
-Figure 7: Successful PEAP phase 1 with failed phase 2 negotiation
+<!-- Extracted images from page 59 -->
+![Extracted image 1 from page 59]([MS-PEAP].images/page059-img01.png)
+<!-- /Extracted images from page 59 -->
+
+Figure 7: Successful PEAP phase 1 with failed phase 2 negotiation
 
 4.1.3  Successful PEAP Phase 1 with Fast Reconnect
 
@@ -4638,7 +4666,11 @@ Release: September 29, 2025
 
 59 / 77
 
-Figure 8: Successful PEAP phase 1 with fast reconnect
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-PEAP].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+Figure 8: Successful PEAP phase 1 with fast reconnect
 
 4.2  Cryptobinding and SoH Processing Supported on PEAP Server Only
 
@@ -4661,7 +4693,11 @@ Release: September 29, 2025
 
 60 / 77
 
-Figure 9: Successful PEAP phase 1 and 2 negotiation
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MS-PEAP].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+Figure 9: Successful PEAP phase 1 and 2 negotiation
 
 4.3  Cryptobinding and SoH Processing on PEAP Server and PEAP Peer
 
@@ -4678,7 +4714,11 @@ Release: September 29, 2025
 
 61 / 77
 
-4.3.1  Successful PEAP Phase 1 and 2 Negotiation
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MS-PEAP].images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+4.3.1  Successful PEAP Phase 1 and 2 Negotiation
 
 This is similar to the example in section 4.1.1, except that after phase 1, an SoH request is sent by
 the PEAP server and is positively acknowledged by the peer, which sends an SoH
@@ -4694,7 +4734,11 @@ Release: September 29, 2025
 
 62 / 77
 
-4.3.2  Successful PEAP Phase 1 with Fast Reconnect
+<!-- Extracted images from page 63 -->
+![Extracted image 1 from page 63]([MS-PEAP].images/page063-img01.png)
+<!-- /Extracted images from page 63 -->
+
+4.3.2  Successful PEAP Phase 1 with Fast Reconnect
 
 The following diagram depicts a complete and successful PEAP authentication in which fast
 reconnect was used. Note that with fast reconnect, no inner EAP authenticationor capabilities
@@ -4716,7 +4760,11 @@ Release: September 29, 2025
 
 63 / 77
 
-Figure 12: Fallback to full authentication upon a fast reconnect failure
+<!-- Extracted images from page 64 -->
+![Extracted image 1 from page 64]([MS-PEAP].images/page064-img01.png)
+<!-- /Extracted images from page 64 -->
+
+Figure 12: Fallback to full authentication upon a fast reconnect failure
 
 4.4  Sample Cryptobinding TLV Data
 

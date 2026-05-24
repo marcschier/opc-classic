@@ -1058,7 +1058,11 @@ Release: April 23, 2024
 
 12 / 36
 
-Figure 1: Group Policy: Audit Configuration Extension protocol relationship diagram
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-GPAC].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 1: Group Policy: Audit Configuration Extension protocol relationship diagram
 
 1.5  Prerequisites/Preconditions
 

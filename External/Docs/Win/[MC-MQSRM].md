@@ -1696,7 +1696,11 @@ Release: April 23, 2024
 
 17 / 109
 
-Figure 1: A typical message queuing scenario
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MC-MQSRM].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 1: A typical message queuing scenario
 
 1.4  Relationship to Other Protocols
 
@@ -1716,7 +1720,11 @@ Release: April 23, 2024
 
 18 / 109
 
-Figure 2: Protocol layer diagram
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MC-MQSRM].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 2: Protocol layer diagram
 
 This protocol uses shared state and processing rules described in [MS-MQDMPR]. For more
 information, see [MS-MQDMPR] section 1.4 for details about relationships between all MSMQ protocols
@@ -2985,7 +2993,11 @@ Release: April 23, 2024
 
 38 / 109
 
-Figure 3: Regular and durable message state sender
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MC-MQSRM].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+Figure 3: Regular and durable message state sender
 
 3.1.1.1.2.2  Regular and Durable Message State Receiver
 
@@ -2998,7 +3010,11 @@ Release: April 23, 2024
 
 39 / 109
 
-Figure 4: Regular and durable message state receiver
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MC-MQSRM].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+Figure 4: Regular and durable message state receiver
 
 3.1.1.1.2.3  Regular and Durable Message Position Deleted State Receiver
 
@@ -3012,7 +3028,11 @@ Release: April 23, 2024
 
 40 / 109
 
-Figure 5: Regular and durable message position deleted state receiver
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MC-MQSRM].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 5: Regular and durable message position deleted state receiver
 
 3.1.1.1.2.4  Stream Message State Sender
 
@@ -3025,7 +3045,11 @@ Release: April 23, 2024
 
 41 / 109
 
-Figure 6: Stream message state sender
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MC-MQSRM].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+Figure 6: Stream message state sender
 
 3.1.1.1.2.5  Stream Message State Receiver
 
@@ -3038,7 +3062,11 @@ Release: April 23, 2024
 
 42 / 109
 
-Figure 7: Stream message state receiver
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MC-MQSRM].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 7: Stream message state receiver
 
 3.1.1.1.2.6  Stream Message Position Deleted State Receiver
 
@@ -3052,7 +3080,11 @@ Release: April 23, 2024
 
 43 / 109
 
-Figure 8: Stream message position deleted state receiver
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MC-MQSRM].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+Figure 8: Stream message position deleted state receiver
 
 3.1.1.1.3 Shared Data Elements
 
@@ -3430,7 +3462,11 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the sender specifies neither <positiveOnly/> nor <negativeOnly/>, the receiver MUST NOT send a
+<!-- Extracted images from page 50 -->
+![Extracted image 1 from page 50]([MC-MQSRM].images/page050-img01.png)
+<!-- /Extracted images from page 50 -->
+
+If the sender specifies neither <positiveOnly/> nor <negativeOnly/>, the receiver MUST NOT send a
 commitment receipt.
 
 The protocol does not correlate commitment receipts with the original message on the sending side.
@@ -3495,7 +3531,11 @@ Release: April 23, 2024
 
 51 / 109
 
-Figure 10: Stream sequence and receipts
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MC-MQSRM].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+Figure 10: Stream sequence and receipts
 
 3.1.1.4.3 Stream Message and Multiple Receipts
 
@@ -3514,7 +3554,11 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-message (section 3.1.1.3.2) that acknowledges receipt of all stream messages up to the current
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MC-MQSRM].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+message (section 3.1.1.3.2) that acknowledges receipt of all stream messages up to the current
 message. Note that delivery receipts and stream receipts are separate mechanisms that serve
 different purposes.
 

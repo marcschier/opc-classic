@@ -1231,7 +1231,11 @@ Release: June 1, 2017
 
 12 / 72
 
-Figure 1: Web Services Management (WS-Management) Protocol stack
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-WSMAN].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 1: Web Services Management (WS-Management) Protocol stack
 
 1.5  Prerequisites/Preconditions
 
@@ -3646,7 +3650,11 @@ Release: June 1, 2017
 
 47 / 72
 
-[C++]
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-WSMAN].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+[C++]
 
  [abstract]
  class Base

@@ -1658,7 +1658,11 @@ Release: March 9, 2026
 
 18 / 29
 
-4  Protocol Examples
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-PKCA].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+4  Protocol Examples
 
 The following sections describe three common scenarios to illustrate the function of the KILE.
 
@@ -1760,7 +1764,11 @@ Release: March 9, 2026
 
 20 / 29
 
-4.2  Network Logon Using Smart Cards
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-PKCA].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+4.2  Network Logon Using Smart Cards
 
 Figure 2: Network logon
 

@@ -1560,7 +1560,11 @@ Release: June 1, 2017
 
 19 / 31
 
-3  Protocol Details
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-MSBD].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+3  Protocol Details
 
 The following sections specify details of the MSBD Protocol, including abstract data models and
 message processing rules for both server and client.
@@ -1660,7 +1664,11 @@ Release: June 1, 2017
 
 21 / 31
 
-Figure 2: State machine for MSBD on a client
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-MSBD].images/page022-img01.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 2: State machine for MSBD on a client
 
 3.2.1  Abstract Data Model
 
@@ -1717,7 +1725,11 @@ Release: June 1, 2017
 
 23 / 31
 
-4  Protocol Example
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-MSBD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+4  Protocol Example
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the MSBD Protocol.
@@ -1753,7 +1765,11 @@ Media Stream Broadcast Distribution (MSBD) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-an MSB_MSG_RES_PING packet, the server closes the TCP connection. In other cases, the client is
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-MSBD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+an MSB_MSG_RES_PING packet, the server closes the TCP connection. In other cases, the client is
 responsible for ending the session by closing the TCP connection.
 
 4.2  Using MSBD for Server-Side Playlist Streaming

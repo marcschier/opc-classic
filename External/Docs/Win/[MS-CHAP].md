@@ -978,7 +978,11 @@ Release: April 23, 2024
 
 9 / 36
 
-The Extensible Authentication Protocol Method for Microsoft CHAP is typically deployed in an
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-CHAP].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+The Extensible Authentication Protocol Method for Microsoft CHAP is typically deployed in an
 environment such as the one that is shown in the following diagram. The EAP peer mutually
 authenticates with an EAP server through a network access server, for example, a Point-to-Point
 Protocol (PPP) dial-up server, wireless access point, or VPN gateway.
@@ -1092,7 +1096,11 @@ Release: April 23, 2024
 
 11 / 36
 
-2  Messages
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-CHAP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+2  Messages
 
 2.1  Transport
 
@@ -1389,7 +1397,11 @@ Release: April 23, 2024
 
 16 / 36
 
-Figure 3: EAP-CHAP Peer State Machine
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-CHAP].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 3: EAP-CHAP Peer State Machine
 
 3.2.2  Timers
 
@@ -1658,7 +1670,11 @@ Release: April 23, 2024
 
 20 / 36
 
-Figure 4: EAP-CHAP server state machine
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-CHAP].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 4: EAP-CHAP server state machine
 
 3.3.2  Timers
 
@@ -1881,7 +1897,11 @@ Release: April 23, 2024
 
 24 / 36
 
-4  Protocol Examples
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-CHAP].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+4  Protocol Examples
 
 This section presents examples of messages exchanged between a peer and an EAP server during
 the course of various authentication scenarios. Initial EAP Identity exchanges and a pass-through
@@ -1907,7 +1927,12 @@ Release: April 23, 2024
 
 25 / 36
 
-Figure 6: Authentication failure with retry that also fails
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-CHAP].images/page026-img01.png)
+![Extracted image 2 from page 26]([MS-CHAP].images/page026-img02.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 6: Authentication failure with retry that also fails
 
 4.3  Failure Scenario with No Retry
 
@@ -1929,7 +1954,12 @@ Release: April 23, 2024
 
 26 / 36
 
-Figure 8: Failure scenario with no retry followed by a Failure-Response
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-CHAP].images/page027-img01.png)
+![Extracted image 2 from page 27]([MS-CHAP].images/page027-img02.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 8: Failure scenario with no retry followed by a Failure-Response
 
 4.5  Success Scenario with Change-Password-Response
 
@@ -1945,7 +1975,11 @@ Release: April 23, 2024
 
 27 / 36
 
-Figure 9: Success scenario with Change-Password-Response
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-CHAP].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+Figure 9: Success scenario with Change-Password-Response
 
 4.6  Success Scenario on Retry After Challenge-Response Is Recomputed
 
@@ -1967,7 +2001,11 @@ Release: April 23, 2024
 
 28 / 36
 
-Figure 11: Authentication failure at the peer
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-CHAP].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+Figure 11: Authentication failure at the peer
 
 [MS-CHAP] - v20240423
 Extensible Authentication Protocol Method for Microsoft Challenge Handshake Authentication Protocol (CHAP)

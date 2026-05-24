@@ -833,7 +833,11 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Secure Sockets Layer (SSL)/Transport Layer Security (TLS) is required to be on the OMA DM
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-MDM].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Secure Sockets Layer (SSL)/Transport Layer Security (TLS) is required to be on the OMA DM
 server, and it is required to provide server certificate-based authentication, data integrity checking,
 and data encryption. If the certificate is not issued by a commercial certification authority whose root
 certificate is preinstalled in the client, the implementer provisions the company's root certificate in the
@@ -2042,7 +2046,11 @@ Release: April 23, 2024
 
 28 / 48
 
-3  Protocol Details
+<!-- Extracted images from page 29 -->
+![Extracted image 1 from page 29]([MS-MDM].images/page029-img01.png)
+<!-- /Extracted images from page 29 -->
+
+3  Protocol Details
 
 MDM is based on a subset of the OMA-DM protocol (OMA-TS-DM_Protocol-V1_2_1-20080617-A)
 [OMA-DMP1.2.1]. SyncML messages issued by the client to the server and from the server to the

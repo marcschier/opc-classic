@@ -536,7 +536,12 @@ Release: April 23, 2024
 
 6 / 37
 
-Figure 1: Typical protocol scenario
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-TPMVSC].images/page007-img01.png)
+![Extracted image 2 from page 7]([MS-TPMVSC].images/page007-img02.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1: Typical protocol scenario
 
 1.4  Relationship to Other Protocols
 
@@ -1790,7 +1795,11 @@ Release: April 23, 2024
 
 25 / 37
 
-4  Protocol Examples
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-TPMVSC].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+4  Protocol Examples
 
 4.1  Create a VSC without Status Callback
 
@@ -1818,7 +1827,11 @@ Release: April 23, 2024
 
 26 / 37
 
-Figure 4: Create a VSC with status callback
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-TPMVSC].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 4: Create a VSC with status callback
 
 In this example, the requestor returns zero for each call to
 ITpmVirtualSmartCardManagerStatusCallback::ReportProgress. For brevity, these returns are omitted

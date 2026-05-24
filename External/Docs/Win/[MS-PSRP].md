@@ -1538,7 +1538,11 @@ Release: April 23, 2024
 
 14 / 184
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-PSRP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+1.4  Relationship to Other Protocols
 
 The PowerShell Remoting Protocol uses the Web Services Management Protocol Extensions for
 Windows Vista (WSMV) as specified in [MS-WSMV] to establish a connection and to transfer data
@@ -9180,7 +9184,11 @@ PowerShell Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pipelines (section 3.1.4.4) using the pipeline table (section 3.1.1.2.6). If there is a successful
+<!-- Extracted images from page 101 -->
+![Extracted image 1 from page 101]([MS-PSRP].images/page101-img01.png)
+<!-- /Extracted images from page 101 -->
+
+pipelines (section 3.1.4.4) using the pipeline table (section 3.1.1.2.6). If there is a successful
 response (section 3.2.5.3.12), the client changes the RunspacePool state to Closed; otherwise, the
 client changes the state to Broken.
 
@@ -9278,7 +9286,11 @@ Release: April 23, 2024
 
 102 / 184
 
-For details about how pipeline state transition happens on the client side, see the steps involved in
+<!-- Extracted images from page 103 -->
+![Extracted image 1 from page 103]([MS-PSRP].images/page103-img01.png)
+<!-- /Extracted images from page 103 -->
+
+For details about how pipeline state transition happens on the client side, see the steps involved in
 executing a pipeline specified in section 3.1.4.3.
 
 A client can stop an executing pipeline at any time by sending a wxf:Signal message (section 3.1.4.4).
@@ -11377,7 +11389,11 @@ Release: April 23, 2024
 
 130 / 184
 
-Figure 4: Server RunspacePool states and transitions
+<!-- Extracted images from page 131 -->
+![Extracted image 1 from page 131]([MS-PSRP].images/page131-img01.png)
+<!-- /Extracted images from page 131 -->
+
+Figure 4: Server RunspacePool states and transitions
 
 3.2.1.2.3 Defragmentation Data
 
@@ -11482,7 +11498,11 @@ Release: April 23, 2024
 
 132 / 184
 
-For details about how a pipeline state transitions from NotStarted to Running, see section 3.2.5.4.10.
+<!-- Extracted images from page 133 -->
+![Extracted image 1 from page 133]([MS-PSRP].images/page133-img01.png)
+<!-- /Extracted images from page 133 -->
+
+For details about how a pipeline state transitions from NotStarted to Running, see section 3.2.5.4.10.
 
 The server can change the pipeline state from Running to Failed at any time if it determines that there
 is something wrong with the pipeline (such as a network connection getting lost, a corrupted

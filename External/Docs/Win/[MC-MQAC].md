@@ -1942,7 +1942,11 @@ Release: April 23, 2024
 
 19 / 364
 
-signing and encryption to ensure integrity and privacy of message exchange during the message
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MC-MQAC].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+signing and encryption to ensure integrity and privacy of message exchange during the message
 transfer process.
 
   Message Journaling: The message queuing system supports the ability to record copies of
@@ -12845,7 +12849,11 @@ Release: April 23, 2024
 
 140 / 364
 
-Figure 2: MSMQQueue object states
+<!-- Extracted images from page 141 -->
+![Extracted image 1 from page 141]([MC-MQAC].images/page141-img01.png)
+<!-- /Extracted images from page 141 -->
+
+Figure 2: MSMQQueue object states
 
 Any call to any method in the object while it is in the Closed state MUST return
 MQ_ERROR_INVALID_HANDLE (0xC00E0007).
@@ -27333,7 +27341,11 @@ Release: April 23, 2024
 
 298 / 364
 
-4  Protocol Examples
+<!-- Extracted images from page 299 -->
+![Extracted image 1 from page 299]([MC-MQAC].images/page299-img01.png)
+<!-- /Extracted images from page 299 -->
+
+4  Protocol Examples
 
 4.1  Scenario: Retrieving the Count of Messages in a Queue
 
@@ -27368,7 +27380,12 @@ Release: April 23, 2024
 
 299 / 364
 
-Figure 4: Retrieving IncomingTransactionalTransferInfo for an ApplicationQueue
+<!-- Extracted images from page 300 -->
+![Extracted image 1 from page 300]([MC-MQAC].images/page300-img01.png)
+![Extracted image 2 from page 300]([MC-MQAC].images/page300-img02.png)
+<!-- /Extracted images from page 300 -->
+
+Figure 4: Retrieving IncomingTransactionalTransferInfo for an ApplicationQueue
 
 4.3  Scenario: Pausing an OutgoingQueue
 
@@ -27389,7 +27406,11 @@ Release: April 23, 2024
 
 300 / 364
 
-4.4  Scenario: Discovering DirectoryQueues in the Directory
+<!-- Extracted images from page 301 -->
+![Extracted image 1 from page 301]([MC-MQAC].images/page301-img01.png)
+<!-- /Extracted images from page 301 -->
+
+4.4  Scenario: Discovering DirectoryQueues in the Directory
 
 The following diagram depicts the use of MSMQQuery, MSMQQueueInfos, and MSMQQueueInfo to
 discover PublicQueues in the directory according to some search criteria. First, an instance of the
@@ -27422,7 +27443,11 @@ Release: April 23, 2024
 
 301 / 364
 
-Figure 7: Receiving a message from a queue asynchronously via event callbacks
+<!-- Extracted images from page 302 -->
+![Extracted image 1 from page 302]([MC-MQAC].images/page302-img01.png)
+<!-- /Extracted images from page 302 -->
+
+Figure 7: Receiving a message from a queue asynchronously via event callbacks
 
 4.6  Scenario: Sending a Multicast Message
 
@@ -27438,7 +27463,11 @@ Release: April 23, 2024
 
 302 / 364
 
-Figure 8: Sending a multicast message
+<!-- Extracted images from page 303 -->
+![Extracted image 1 from page 303]([MC-MQAC].images/page303-img01.png)
+<!-- /Extracted images from page 303 -->
+
+Figure 8: Sending a multicast message
 
 4.7  Scenario: Sending a Message with an Internal Transaction
 
@@ -27460,7 +27489,11 @@ Release: April 23, 2024
 
 303 / 364
 
-Figure 9: Sending a message with an internal transaction
+<!-- Extracted images from page 304 -->
+![Extracted image 1 from page 304]([MC-MQAC].images/page304-img01.png)
+<!-- /Extracted images from page 304 -->
+
+Figure 9: Sending a message with an internal transaction
 
 4.8  Scenario: Sending a Message with an External Transaction
 
@@ -27482,7 +27515,11 @@ Release: April 23, 2024
 
 304 / 364
 
-Figure 10: Sending a message with an external transaction
+<!-- Extracted images from page 305 -->
+![Extracted image 1 from page 305]([MC-MQAC].images/page305-img01.png)
+<!-- /Extracted images from page 305 -->
+
+Figure 10: Sending a message with an external transaction
 
 4.9  Scenario: Sending a Message to a Queue
 
@@ -27499,7 +27536,11 @@ Release: April 23, 2024
 
 305 / 364
 
-Figure 11: Sending a message to a queue
+<!-- Extracted images from page 306 -->
+![Extracted image 1 from page 306]([MC-MQAC].images/page306-img01.png)
+<!-- /Extracted images from page 306 -->
+
+Figure 11: Sending a message to a queue
 
 [MC-MQAC] - v20240423
 Message Queuing (MSMQ): ActiveX Client Protocol

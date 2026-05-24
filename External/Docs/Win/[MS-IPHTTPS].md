@@ -748,7 +748,11 @@ IP over HTTPS (IP-HTTPS) Tunneling Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  HTTP Over TLS [RFC2818].
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-IPHTTPS].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+  HTTP Over TLS [RFC2818].
 
 
 
@@ -822,7 +826,11 @@ Release: April 23, 2024
 
 9 / 27
 
-2  Messages
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-IPHTTPS].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+2  Messages
 
 2.1  Transport
 
@@ -839,7 +847,11 @@ Release: April 23, 2024
 
 10 / 27
 
-Figure 4: IP-HTTPS server protocol stack when using HTTP encapsulation
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-IPHTTPS].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 4: IP-HTTPS server protocol stack when using HTTP encapsulation
 
 IPv6 packets are carried directly within the HTTP payload. HTTP requests and responses are
 transmitted as described in [RFC2616]. The content type of the HTTP entity body carrying IPv6
@@ -859,7 +871,11 @@ Release: April 23, 2024
 
 11 / 27
 
-3  Protocol Details
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-IPHTTPS].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+3  Protocol Details
 
 The IP-HTTPS Protocol encapsulates IPv6 packets over an HTTPS connection. This is achieved by
 creating a tunneled interface, which provides a symmetric link, with multicast and neighbor discovery
@@ -884,7 +900,11 @@ Release: April 23, 2024
 
 12 / 27
 
-Figure 6: IP-HTTPS client state diagram
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-IPHTTPS].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 6: IP-HTTPS client state diagram
 
 3.1.1  Abstract Data Model
 
@@ -1268,7 +1288,11 @@ Release: April 23, 2024
 
 19 / 27
 
-4  Protocol Examples
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-IPHTTPS].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+4  Protocol Examples
 
 These examples assume HTTPS is used as transport for IP-HTTPS.
 
@@ -1302,7 +1326,11 @@ Release: April 23, 2024
 
 20 / 27
 
- Date: Sun, 10 Aug 2008 03:51:52 GMT \r\n
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-IPHTTPS].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+ Date: Sun, 10 Aug 2008 03:51:52 GMT \r\n
  \r\n
 
 4.2  Attack Scenarios
@@ -1332,7 +1360,12 @@ Release: April 23, 2024
 
 21 / 27
 
-Figure 9: IP-HTTPS server configured not to use client authentication
+<!-- Extracted images from page 22 -->
+![Extracted image 1 from page 22]([MS-IPHTTPS].images/page022-img01.png)
+![Extracted image 2 from page 22]([MS-IPHTTPS].images/page022-img02.png)
+<!-- /Extracted images from page 22 -->
+
+Figure 9: IP-HTTPS server configured not to use client authentication
 
 4.2.3  Unauthorized IP-HTTPS Server Accepting Connections from a Genuine IP-
 

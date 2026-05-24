@@ -1213,7 +1213,11 @@ Release: April 23, 2024
 
 12 / 68
 
-Figure 1: Basic DHCP process
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-DHCPE].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 1: Basic DHCP process
 
 The DHCPv4 client can decline an offer from a DHCPv4 server if it determines that the IP address
 included in the DHCPOFFER message sent by the server is already in use on that network. If so, the
@@ -1301,7 +1305,11 @@ Release: April 23, 2024
 
 14 / 68
 
-Figure 2: Basic DHCPv6 process
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-DHCPE].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: Basic DHCPv6 process
 
 The DHCPv6 client can decline an offer from a DHCPv6 server if it finds that the IPv6 address included
 in the DHCPv6 Advertise message sent by the server is already in use on that network. If so, the
@@ -1341,7 +1349,11 @@ Release: April 23, 2024
 
 15 / 68
 
-1.  A Validating Server sends a broadcast DHCPINFORM message containing a designated vendor-
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-DHCPE].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+1.  A Validating Server sends a broadcast DHCPINFORM message containing a designated vendor-
 
 specific option requesting other Rogue Aware Servers on the network to respond.
 
@@ -1394,7 +1406,11 @@ Release: April 23, 2024
 
 16 / 68
 
-2.  A Rogue Aware Administratively Authorized Server replies to the DHCPv6 Information-request
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-DHCPE].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+2.  A Rogue Aware Administratively Authorized Server replies to the DHCPv6 Information-request
 message by sending a DHCPv6 Reply message containing the corresponding vendor-specific
 option with a NULL-terminated string in the option data.
 
@@ -1446,7 +1462,11 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DHCPv4 can be used as one of the enforcement mechanisms defined for Network Access Protection
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-DHCPE].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+DHCPv4 can be used as one of the enforcement mechanisms defined for Network Access Protection
 (NAP), as described in [MSDN-NAP]. The vendor-specific options used for DHCPv4-based enforcement
 of NAP are defined in [MS-DHCPN] section 1. [MS-DHCPN] affects the contents of DHCPv4 messages
 when NAP is used.
@@ -1473,7 +1493,11 @@ Release: April 23, 2024
 
 18 / 68
 
-Figure 6: Server-side interaction with related protocols
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-DHCPE].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 6: Server-side interaction with related protocols
 
 The following is the relationship between [MS-DHCPM] ADM elements and the elements defined by
 [RFC2131] and [RFC3315] which are extended by this extension.

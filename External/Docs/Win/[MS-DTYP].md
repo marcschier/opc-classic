@@ -1338,7 +1338,11 @@ Release: November 19, 2024
 
 13 / 155
 
-2  Data Types
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-DTYP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+2  Data Types
 
 The following sections describe data types that include common base types, data types, and data
 structures.
@@ -4527,7 +4531,11 @@ attestation property.<44>
 
 51 / 155
 
-2.4.3  ACCESS_MASK
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-DTYP].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+2.4.3  ACCESS_MASK
 
 An ACCESS_MASK is a 32-bit set of flags that are used to encode the user rights to an object. An
 access mask is used both to encode the rights to an object assigned to a principal and to encode the
@@ -7123,7 +7131,11 @@ Release: November 19, 2024
 
 79 / 155
 
-2.4.4.17.9
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-DTYP].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+2.4.4.17.9
 
 Examples: Conditional Expression Binary Representation
 
@@ -7198,7 +7210,11 @@ Release: November 19, 2024
 
 80 / 155
 
-Figure 4: Postfix to memory mapping for "(@User.smartcard == 1 || @Device.managed ==
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81]([MS-DTYP].images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+Figure 4: Postfix to memory mapping for "(@User.smartcard == 1 || @Device.managed ==
 1) && (@Resource.dept Any_of {"Sales","HR"})"
 
 Example 3: RHS Attribute Variables and SID-based Operators
@@ -7213,7 +7229,11 @@ Release: November 19, 2024
 
 81 / 155
 
- (@User.clearanceLevel>=@Resource.requiredClearance) || (Member_of{SID(BA)})
+<!-- Extracted images from page 82 -->
+![Extracted image 1 from page 82]([MS-DTYP].images/page082-img01.png)
+<!-- /Extracted images from page 82 -->
+
+ (@User.clearanceLevel>=@Resource.requiredClearance) || (Member_of{SID(BA)})
 
 SDDL strings encoded into an ApplicationData field MUST be ordered to maintain SDDL precedence
 rules as specified in section 2.5.1.3. The preceding conditional expression can be reordered in postfix
@@ -9023,7 +9043,11 @@ Release: November 19, 2024
 
 99 / 155
 
-2.  Member_of, Not_Member_of, Device_Member_of, Not_Device_Member_of, Member_of_Any,
+<!-- Extracted images from page 100 -->
+![Extracted image 1 from page 100]([MS-DTYP].images/page100-img01.png)
+<!-- /Extracted images from page 100 -->
+
+2.  Member_of, Not_Member_of, Device_Member_of, Not_Device_Member_of, Member_of_Any,
 Not_Member_of_Any, Device_Member_of_Any, Not_Device_Member_of_Any, Contains,
 Not_Contains, Any_of, Not_Any_of, ==, !=, <, <=, >, >=
 
@@ -9165,7 +9189,12 @@ Release: November 19, 2024
 
 101 / 155
 
-Figure 7: Security access control list data example
+<!-- Extracted images from page 102 -->
+![Extracted image 1 from page 102]([MS-DTYP].images/page102-img01.png)
+![Extracted image 2 from page 102]([MS-DTYP].images/page102-img02.png)
+<!-- /Extracted images from page 102 -->
+
+Figure 7: Security access control list data example
 
 The ACL can be further dissected into the ACL header and the individual ACEs. For more information,
 see section 2.4.5.
@@ -9206,7 +9235,12 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Figure 9: ACE owner field offsets example
+<!-- Extracted images from page 103 -->
+![Extracted image 1 from page 103]([MS-DTYP].images/page103-img01.png)
+![Extracted image 2 from page 103]([MS-DTYP].images/page103-img02.png)
+<!-- /Extracted images from page 103 -->
+
+Figure 9: ACE owner field offsets example
 
 Group
 
@@ -10649,7 +10683,11 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-owns the object. The trivial case is not the common case, however, and the security model has
+<!-- Extracted images from page 123 -->
+![Extracted image 1 from page 123]([MS-DTYP].images/page123-img01.png)
+<!-- /Extracted images from page 123 -->
+
+owns the object. The trivial case is not the common case, however, and the security model has
 specific behavior involved in deriving the security descriptor for a new object from the security
 descriptors for existing objects.
 

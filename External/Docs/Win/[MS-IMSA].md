@@ -10422,7 +10422,11 @@ Release: April 23, 2024
 
 117 / 139
 
- If the child paths were successfully retrieved, the client parses the buffer to locate each child path
+<!-- Extracted images from page 118 -->
+![Extracted image 1 from page 118]([MS-IMSA].images/page118-img01.png)
+<!-- /Extracted images from page 118 -->
+
+ If the child paths were successfully retrieved, the client parses the buffer to locate each child path
 string. The client searches for an occurrence of double terminating null characters and, when found,
 processes the child path. The client continues parsing the buffer until the end of the data is reached.
 

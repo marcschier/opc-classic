@@ -451,7 +451,11 @@ Release: April 23, 2024
 
 5 / 20
 
-2  Algorithm Details
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-CTA].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+2  Algorithm Details
 
 2.1  Claims Transformation Algorithm Details
 
@@ -885,7 +889,11 @@ Release: April 23, 2024
 
 11 / 20
 
-Figure 2: Claims transformation state machine
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-CTA].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: Claims transformation state machine
 
 For the purposes of this section, processing is defined as InternalTransformationRules evaluation
 on the InternalEvaluationContext or InternalTransformationRules action taken using Matching

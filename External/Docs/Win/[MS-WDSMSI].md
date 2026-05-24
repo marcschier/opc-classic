@@ -708,7 +708,11 @@ Release: April 23, 2024
 
 7 / 29
 
-Figure 1: Protocol relationships
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-WDSMSI].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: Protocol relationships
 
 1.4.2  Using UDP
 
@@ -723,7 +727,11 @@ Release: April 23, 2024
 
 8 / 29
 
-Figure 2: WDSMSI relationship to UDP
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-WDSMSI].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 2: WDSMSI relationship to UDP
 
 1.5  Prerequisites/Preconditions
 
@@ -1067,7 +1075,11 @@ Release: April 23, 2024
 
 13 / 29
 
-Figure 3: Client security mode flowchart
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-WDSMSI].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 3: Client security mode flowchart
 
 2.2.1.2  Determine Server Security Mode
 
@@ -1081,7 +1093,11 @@ Release: April 23, 2024
 
 14 / 29
 
-Figure 4: Server security mode flowchart
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-WDSMSI].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 4: Server security mode flowchart
 
 2.2.2  Session Initiation Packets for UDP
 

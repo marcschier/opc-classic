@@ -2423,7 +2423,11 @@ Release: February 9, 2026
 
 24 / 300
 
-Figure 1: Pass-through authentication
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-NRPC].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 1: Pass-through authentication
 
 1.3.2  Pass-Through Authentication and Domain Trusts
 
@@ -2453,7 +2457,11 @@ Release: February 9, 2026
 
 25 / 300
 
-Figure 2: Pass-through authentication and domain trusts
+<!-- Extracted images from page 26 -->
+![Extracted image 1 from page 26]([MS-NRPC].images/page026-img01.png)
+<!-- /Extracted images from page 26 -->
+
+Figure 2: Pass-through authentication and domain trusts
 
 In this scenario, the two domains are connected by means of a direct trust relationship. Consider a
 scenario in which the two domains are connected by means of an "intermediate trust partner"; the
@@ -2688,7 +2696,11 @@ Release: February 9, 2026
 
 29 / 300
 
-However, only three were used: Interactive, Network, and Generic. Service type remains an option
+<!-- Extracted images from page 30 -->
+![Extracted image 1 from page 30]([MS-NRPC].images/page030-img01.png)
+<!-- /Extracted images from page 30 -->
+
+However, only three were used: Interactive, Network, and Generic. Service type remains an option
 that can be used by callers, and like all Netlogon pass-through behavior, it is specified by the receiving
 protocol.
 
@@ -4042,7 +4054,12 @@ Netlogon Remote Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-KerberosSupportedEncryptionTypes: The msDS-SupportedEncryptionTypes attribute of the
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-NRPC].images/page047-img01.png)
+![Extracted image 2 from page 47]([MS-NRPC].images/page047-img02.png)
+<!-- /Extracted images from page 47 -->
+
+KerberosSupportedEncryptionTypes: The msDS-SupportedEncryptionTypes attribute of the
 
 client's machine account object in Active Directory, as specified in [MS-ADA2] section 2.481.<22>
 
@@ -4099,7 +4116,11 @@ Netlogon Remote Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-NRPC].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+
 
 The PasswordVersion part of the preceding diagram has the following format:
 
@@ -8868,7 +8889,11 @@ Release: February 9, 2026
 
 110 / 300
 
-Figure 7: Session-key negotiation
+<!-- Extracted images from page 111 -->
+![Extracted image 1 from page 111]([MS-NRPC].images/page111-img01.png)
+<!-- /Extracted images from page 111 -->
+
+Figure 7: Session-key negotiation
 
 Session-key negotiation works as follows.
 
@@ -18281,7 +18306,11 @@ Release: February 9, 2026
 
 228 / 300
 
-3.6  Netlogon NT Replication Details
+<!-- Extracted images from page 229 -->
+![Extracted image 1 from page 229]([MS-NRPC].images/page229-img01.png)
+<!-- /Extracted images from page 229 -->
+
+3.6  Netlogon NT Replication Details
 
 Netlogon replication is a single master replication in which the PDC serves as the replication master.
 <274> The PDC maintains a state for each backup domain controller (BDC) that includes the
@@ -18300,7 +18329,11 @@ Release: February 9, 2026
 
 229 / 300
 
-Figure 9: BDC States
+<!-- Extracted images from page 230 -->
+![Extracted image 1 from page 230]([MS-NRPC].images/page230-img01.png)
+<!-- /Extracted images from page 230 -->
+
+Figure 9: BDC States
 
 3.6.1  Abstract Data Model
 
@@ -18699,7 +18732,11 @@ Release: February 9, 2026
 
 236 / 300
 
-Figure 10: Secure channel execution of NetrLogonSamLogon
+<!-- Extracted images from page 237 -->
+![Extracted image 1 from page 237]([MS-NRPC].images/page237-img01.png)
+<!-- /Extracted images from page 237 -->
+
+Figure 10: Secure channel execution of NetrLogonSamLogon
 
 NetrLogonSamLogon involves the following steps:
 

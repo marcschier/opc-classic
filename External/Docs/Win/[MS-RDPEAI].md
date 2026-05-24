@@ -877,7 +877,11 @@ Release: April 23, 2024
 
 8 / 46
 
-3.  To begin recording audio data.
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RDPEAI].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+3.  To begin recording audio data.
 
 Initially, the server sends a Version PDU to the client within the already established dynamic virtual
 channel. The client will respond with its own Version PDU. Next, the server will send a Sound Formats
@@ -907,7 +911,12 @@ Release: April 23, 2024
 
 9 / 46
 
-Figure 2: Data transfer sequence
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RDPEAI].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-RDPEAI].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 2: Data transfer sequence
 
 1.3.3  Format Change Sequence
 
@@ -1660,7 +1669,11 @@ Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5  Message Processing Events and Sequencing Rules
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-RDPEAI].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+3.1.5  Message Processing Events and Sequencing Rules
 
 The state transition diagram in the following figure summarizes the message sequencing rules for the
 Remote Desktop Protocol: Audio Input Redirection Virtual Channel Extension. Further details on

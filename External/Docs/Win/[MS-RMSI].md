@@ -1043,7 +1043,11 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-rights granted in an issuance license (IL) can be altered by issuing a new IL with the same content
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RMSI].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+rights granted in an issuance license (IL) can be altered by issuing a new IL with the same content
 key as the original.
 
 To accomplish these operations, an application can make requests directly to the RMS server using the
@@ -1069,7 +1073,11 @@ Release: April 23, 2024
 
 10 / 67
 
-Figure 3: Relationships between the application, the RMS client, and the RMS server
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RMSI].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 3: Relationships between the application, the RMS client, and the RMS server
 
 While the RMS: Client-to-Server Protocol [MS-RMPR] supports the most common scenarios for the
 creation and consumption of content by an application in the RMS system, the RMS: ISV Extension
@@ -1177,7 +1185,11 @@ Release: April 23, 2024
 
 12 / 67
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RMSI].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+1.4  Relationship to Other Protocols
 
 The RMS: ISV Extension Protocol uses the SOAP messaging protocol, as specified in [SOAP1.1], for
 formatting requests and responses. It transmits these messages using the HTTP and/or HTTPS
@@ -1664,7 +1676,11 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-explanation of how the protocol behaves. This specification does not mandate that implementations
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-RMSI].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+explanation of how the protocol behaves. This specification does not mandate that implementations
 adhere to this model as long as their external behavior is consistent with that described in this
 specification.
 
@@ -2060,7 +2076,11 @@ Release: April 23, 2024
 
 26 / 67
 
-Figure 6: Precertify operation message sequence
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-RMSI].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 6: Precertify operation message sequence
 
  <wsdl:operation name="Precertify">
    <wsdl:input message="tns:PrecertifySoapIn" />
@@ -2468,7 +2488,11 @@ Release: April 23, 2024
 
 32 / 67
 
-Figure 7: EditIssuanceLicense operation message sequence
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-RMSI].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 7: EditIssuanceLicense operation message sequence
 
  <wsdl:operation name="EditIssuanceLicense">
    <wsdl:input message="tns:EditIssuanceLicenseSoapIn" />
@@ -2898,7 +2922,11 @@ Release: April 23, 2024
 
 38 / 67
 
-3.5.4  Message Processing Events and Sequencing Rules
+<!-- Extracted images from page 39 -->
+![Extracted image 1 from page 39]([MS-RMSI].images/page039-img01.png)
+<!-- /Extracted images from page 39 -->
+
+3.5.4  Message Processing Events and Sequencing Rules
 
 Operation
 
@@ -3256,7 +3284,11 @@ Release: April 23, 2024
 
 44 / 67
 
-4  Protocol Examples
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-RMSI].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+4  Protocol Examples
 
 The following sections describe operations as used in common scenarios to illustrate the function of
 the RMS: ISV Extension Protocol.
@@ -3304,7 +3336,12 @@ Release: April 23, 2024
 
 45 / 67
 
-Figure 10: Roles in the RMS system
+<!-- Extracted images from page 46 -->
+![Extracted image 1 from page 46]([MS-RMSI].images/page046-img01.png)
+![Extracted image 2 from page 46]([MS-RMSI].images/page046-img02.png)
+<!-- /Extracted images from page 46 -->
+
+Figure 10: Roles in the RMS system
 
 The transport or other server application illustrated in figure 8 is responsible for distributing the
 content to the consumer or recipient. This entity can request a use license on behalf of the recipient
@@ -3328,7 +3365,11 @@ Release: April 23, 2024
 
 46 / 67
 
-3.  The transport now extracts the publishing license from the protected content and submits it and
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-RMSI].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+3.  The transport now extracts the publishing license from the protected content and submits it and
 the recipient's public key certificate to the RMS server responsible for issuing use licenses for the
 publishing license. This communication uses the AcquireLicense operation described in the RMS:
 Client-to-Server Protocol Specification [MS-RMPR].

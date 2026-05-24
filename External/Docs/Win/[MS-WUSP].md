@@ -1252,7 +1252,11 @@ Release: February 9, 2026
 
 12 / 191
 
-Figure 1: Relationship between protocols related to this protocol
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-WUSP].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 1: Relationship between protocols related to this protocol
 
 Content download (both update content and self-update content directory) uses HTTP 1.1 HEAD
 and GET (Range) requests (as specified in [RFC2616] sections 9.3 and 9.4).
@@ -5954,7 +5958,11 @@ Release: February 9, 2026
 
 66 / 191
 
-3  Protocol Details
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-WUSP].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+3  Protocol Details
 
 This protocol operates between a client (the initiator) and a server (the responder).
 
@@ -6597,7 +6605,11 @@ Release: February 9, 2026
 
 75 / 191
 
-Figure 3: Message processing sequence of this protocol
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MS-WUSP].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+Figure 3: Message processing sequence of this protocol
 
 Self-update, authorization, and metadata sync MUST always be performed in the sequence illustrated
 in this diagram, although specific steps in the sequence can be omitted as an optimization. Many of
@@ -7551,7 +7563,11 @@ Release: February 9, 2026
 
 87 / 191
 
-3.2.1  Abstract Data Model
+<!-- Extracted images from page 88 -->
+![Extracted image 1 from page 88]([MS-WUSP].images/page088-img01.png)
+<!-- /Extracted images from page 88 -->
+
+3.2.1  Abstract Data Model
 
 This section describes a conceptual model and possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the

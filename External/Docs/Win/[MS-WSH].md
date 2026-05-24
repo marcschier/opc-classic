@@ -1047,7 +1047,11 @@ Release: June 1, 2017
 
 9 / 80
 
-Figure 1: Relationship to other protocols
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-WSH].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Relationship to other protocols
 
 1.4.1  Relationship with the Windows Update Client-Server Protocol
 
@@ -3733,7 +3737,11 @@ Release: June 1, 2017
 
 39 / 80
 
-3  Protocol Details
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-WSH].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+3  Protocol Details
 
 The following sections specify details of the Windows Security Health Agent (WSHA) and Windows
 Security Health Validator (WSHV) Protocol, including abstract data models, state machines, and
@@ -3878,7 +3886,11 @@ Release: June 1, 2017
 
 41 / 80
 
-
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-WSH].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+
 
 For WSHV, the NAPSystemHealthID01 value is set whenever a WSHV SoHR packet is created.
 Creation of the WSHV SoHR packet is triggered during creation of an SoHR, as specified in [TNC-
@@ -5363,7 +5375,11 @@ Release: June 1, 2017
 
 60 / 80
 
-Figure 4: WSHV state
+<!-- Extracted images from page 61 -->
+![Extracted image 1 from page 61]([MS-WSH].images/page061-img01.png)
+<!-- /Extracted images from page 61 -->
+
+Figure 4: WSHV state
 
   When the WSHV is running and the NPS receives an SoH from a client that does not have the
 

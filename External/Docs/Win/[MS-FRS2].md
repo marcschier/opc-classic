@@ -1416,7 +1416,11 @@ Release: April 23, 2024
 
 13 / 123
 
-Figure 1: DFS-R replication sequence
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-FRS2].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 1: DFS-R replication sequence
 
 Sections 2 and 3 specify DFS-R.
 
@@ -3288,7 +3292,11 @@ Release: April 23, 2024
 
 41 / 123
 
-Figure 2: Main components of the DFS-R synchronized core
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-FRS2].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+Figure 2: Main components of the DFS-R synchronized core
 
 The main protocol of DFS-R is initiated by the client, and is used to transfer metadata and data from
 the server (upstream partner) to the client. DFS-R can be configured to replicate in both directions, in
@@ -5810,7 +5818,11 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client uses a credit system to control the number of synchronization instances that it is performing
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MS-FRS2].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+The client uses a credit system to control the number of synchronization instances that it is performing
 at any given time. A state, GetCredits, is included in the following figure to indicate that the client
 manages the number of version vectors that it requests. The client also uses a credit system to control
 the processing of updates that are received but are not yet processed at any given time.
@@ -5833,7 +5845,11 @@ Release: April 23, 2024
 
 73 / 123
 
-Figure 4: File transfer call sequence
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-FRS2].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+Figure 4: File transfer call sequence
 
 The refined synopsis proceeds as a client as follows:
 
@@ -5917,7 +5933,11 @@ Release: April 23, 2024
 
 75 / 123
 
-Figure 5: State machine referred to when DFS-R establishes a connection
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MS-FRS2].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+Figure 5: State machine referred to when DFS-R establishes a connection
 
 3.3.1.2  Replicated Folder Session State Machine
 
@@ -5949,7 +5969,11 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Poll Again: The client has been notified of a version chain vector change by the server and has
+<!-- Extracted images from page 77 -->
+![Extracted image 1 from page 77]([MS-FRS2].images/page077-img01.png)
+<!-- /Extracted images from page 77 -->
+
+  Poll Again: The client has been notified of a version chain vector change by the server and has
 
 registered a request for the server's version chain vector.
 
@@ -5976,7 +6000,11 @@ Release: April 23, 2024
 
 77 / 123
 
-  SlowSyncInit: The client starts a slow sync with the server for a particular replicated folder by
+<!-- Extracted images from page 78 -->
+![Extracted image 1 from page 78]([MS-FRS2].images/page078-img01.png)
+<!-- /Extracted images from page 78 -->
+
+  SlowSyncInit: The client starts a slow sync with the server for a particular replicated folder by
 
 requesting a version chain vector from the server via the RequestVersionVector method, setting
 requestType to REQUEST_SLOW_SYNC.
@@ -6002,7 +6030,11 @@ Release: April 23, 2024
 
 78 / 123
 
-3.3.1.4  Raw File Transfer
+<!-- Extracted images from page 79 -->
+![Extracted image 1 from page 79]([MS-FRS2].images/page079-img01.png)
+<!-- /Extracted images from page 79 -->
+
+3.3.1.4  Raw File Transfer
 
 A direct file transfer (one that does not use RDC) starts by a call to InitializeFileTransferAsync with
 rdcDesired set to 0. The transfer might be fully finished when this call completes, or it might have to
@@ -6040,7 +6072,11 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  A client initializes RDC transfer using InitializeFileTransferAsync, specifying that it wants to
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-FRS2].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+1.  A client initializes RDC transfer using InitializeFileTransferAsync, specifying that it wants to
 
 perform a download using RDC.
 
@@ -7205,7 +7241,11 @@ Release: April 23, 2024
 
 94 / 123
 
-4  Protocol Examples
+<!-- Extracted images from page 95 -->
+![Extracted image 1 from page 95]([MS-FRS2].images/page095-img01.png)
+<!-- /Extracted images from page 95 -->
+
+4  Protocol Examples
 
 4.1  Abstract Protocol Examples
 
@@ -7252,7 +7292,12 @@ Release: April 23, 2024
 
 95 / 123
 
-Figure 11: Sending the version vector to machine B
+<!-- Extracted images from page 96 -->
+![Extracted image 1 from page 96]([MS-FRS2].images/page096-img01.png)
+![Extracted image 2 from page 96]([MS-FRS2].images/page096-img02.png)
+<!-- /Extracted images from page 96 -->
+
+Figure 11: Sending the version vector to machine B
 
 Based on this information, B computes the set difference between its version chain vector, which is
 empty, and the version chain vector {A 2} received from A. The set difference is {A 2}. B then
@@ -7301,7 +7346,12 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-of GVSN values in the other machines vector that are not covered by this example's version chain
+<!-- Extracted images from page 97 -->
+![Extracted image 1 from page 97]([MS-FRS2].images/page097-img01.png)
+![Extracted image 2 from page 97]([MS-FRS2].images/page097-img02.png)
+<!-- /Extracted images from page 97 -->
+
+of GVSN values in the other machines vector that are not covered by this example's version chain
 vector. Values (like B31, in this case) are not processed because the protocol is one way directed (not
 symmetric).
 
@@ -7358,7 +7408,12 @@ Release: April 23, 2024
 
 97 / 123
 
-Figure 14: Version chain vector exchange between machine A and machine B
+<!-- Extracted images from page 98 -->
+![Extracted image 1 from page 98]([MS-FRS2].images/page098-img01.png)
+![Extracted image 2 from page 98]([MS-FRS2].images/page098-img02.png)
+<!-- /Extracted images from page 98 -->
+
+Figure 14: Version chain vector exchange between machine A and machine B
 
 The machines now exchange updates based on the version chain vectors.
 
@@ -7390,7 +7445,12 @@ Release: April 23, 2024
 
 98 / 123
 
-Figure 17: Example of "directory move" file replication sequence between machine A and
+<!-- Extracted images from page 99 -->
+![Extracted image 1 from page 99]([MS-FRS2].images/page099-img01.png)
+![Extracted image 2 from page 99]([MS-FRS2].images/page099-img02.png)
+<!-- /Extracted images from page 99 -->
+
+Figure 17: Example of "directory move" file replication sequence between machine A and
 machine B
 
 4.1.6  Name Conflicts
@@ -7419,7 +7479,12 @@ Release: April 23, 2024
 
 99 / 123
 
-A starts by sending updates to B. B decides that its version supersedes the version of a received from
+<!-- Extracted images from page 100 -->
+![Extracted image 1 from page 100]([MS-FRS2].images/page100-img01.png)
+![Extracted image 2 from page 100]([MS-FRS2].images/page100-img02.png)
+<!-- /Extracted images from page 100 -->
+
+A starts by sending updates to B. B decides that its version supersedes the version of a received from
 A, so it generates a tombstone for A's update.
 
 Figure 19: Machine B database contents after receipt of superseded version of file from
@@ -7444,7 +7509,11 @@ Release: April 23, 2024
 
 100 / 123
 
-Figure 21: Database contents of machine A and machine B, showing tombstone conflict
+<!-- Extracted images from page 101 -->
+![Extracted image 1 from page 101]([MS-FRS2].images/page101-img01.png)
+<!-- /Extracted images from page 101 -->
+
+Figure 21: Database contents of machine A and machine B, showing tombstone conflict
 
 4.2  Examples with Wire-Format Arguments
 
@@ -7771,7 +7840,11 @@ Release: April 23, 2024
 
 104 / 123
 
-Figure 22: DFS-R object hierarchy in Active Directory
+<!-- Extracted images from page 105 -->
+![Extracted image 1 from page 105]([MS-FRS2].images/page105-img01.png)
+<!-- /Extracted images from page 105 -->
+
+Figure 22: DFS-R object hierarchy in Active Directory
 
 [MS-FRS2] - v20240423
 Distributed File System Replication Protocol

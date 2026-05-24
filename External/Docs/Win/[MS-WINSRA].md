@@ -923,7 +923,11 @@ Release: April 23, 2024
 
 8 / 50
 
-1.3  Overview
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-WINSRA].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+1.3  Overview
 
 The Windows Internet Naming Service is the Microsoft implementation of a NetBIOS Name
 Server. An NBNS server resolves NetBIOS names to the IPv4 addresses that have been registered
@@ -2359,7 +2363,11 @@ Release: April 23, 2024
 
 26 / 50
 
-Figure 2: State diagram on name records
+<!-- Extracted images from page 27 -->
+![Extracted image 1 from page 27]([MS-WINSRA].images/page027-img01.png)
+<!-- /Extracted images from page 27 -->
+
+Figure 2: State diagram on name records
 
 All the name records owned by other NBNS servers SHOULD also be examined and processed as
 follows (their state and version are not changed):
@@ -2626,7 +2634,11 @@ Release: April 23, 2024
 
 31 / 50
 
-Figure 3: Flow chart for replication flow control
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-WINSRA].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+Figure 3: Flow chart for replication flow control
 
 [MS-WINSRA] - v20240423
 Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
@@ -2635,7 +2647,11 @@ Release: April 23, 2024
 
 32 / 50
 
-Figure 4: Flow chart C2
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-WINSRA].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 4: Flow chart C2
 
 [MS-WINSRA] - v20240423
 Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
@@ -2644,7 +2660,11 @@ Release: April 23, 2024
 
 33 / 50
 
-Figure 5: Flow chart C3
+<!-- Extracted images from page 34 -->
+![Extracted image 1 from page 34]([MS-WINSRA].images/page034-img01.png)
+<!-- /Extracted images from page 34 -->
+
+Figure 5: Flow chart C3
 
 If the replicated name record is a normal group, a special group, or a multihomed machine name, the
 name conflict is resolved through the following logic.
@@ -2656,7 +2676,11 @@ Release: April 23, 2024
 
 34 / 50
 
-Figure 6: Flow chart for special name conflict resolution
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-WINSRA].images/page035-img01.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 6: Flow chart for special name conflict resolution
 
 [MS-WINSRA] - v20240423
 Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
@@ -2665,7 +2689,11 @@ Release: April 23, 2024
 
 35 / 50
 
-Figure 7: Flow chart C4
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-WINSRA].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 7: Flow chart C4
 
 [MS-WINSRA] - v20240423
 Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
@@ -2674,7 +2702,11 @@ Release: April 23, 2024
 
 36 / 50
 
-Figure 8: Flow chart C5
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-WINSRA].images/page037-img01.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 8: Flow chart C5
 
 3.2.6  Timer Events
 
@@ -3095,7 +3127,11 @@ Release: April 23, 2024
 
 42 / 50
 
-Figure 9: Example of a pull replication without persistent association
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-WINSRA].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 9: Example of a pull replication without persistent association
 
 4.3  Propagation of Push Notification with Persistent Association
 
@@ -3122,7 +3158,11 @@ Release: April 23, 2024
 
 43 / 50
 
-Figure 10: Example of propagation of push notification with persistent association
+<!-- Extracted images from page 44 -->
+![Extracted image 1 from page 44]([MS-WINSRA].images/page044-img01.png)
+<!-- /Extracted images from page 44 -->
+
+Figure 10: Example of propagation of push notification with persistent association
 
 [MS-WINSRA] - v20240423
 Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol

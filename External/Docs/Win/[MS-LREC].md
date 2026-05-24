@@ -546,7 +546,11 @@ Live Remote Event Capture (LREC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-organized in any implementation-specific way, such as the XML schema specified in [MSDN-
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-LREC].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+organized in any implementation-specific way, such as the XML schema specified in [MSDN-
 EvntManifest].
 
 Event providers can define multiple kinds of events. For example, a user logging on could be one kind

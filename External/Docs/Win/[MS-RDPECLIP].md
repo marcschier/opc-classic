@@ -1284,7 +1284,11 @@ Release: April 23, 2024
 
 11 / 85
 
-1.3.1.4  Delayed Rendering of Clipboard Data
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPECLIP].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.3.1.4  Delayed Rendering of Clipboard Data
 
 Delayed rendering is a data transfer principle that makes it possible to keep two clipboards in sync
 while minimizing the network bandwidth required for communication. The underlying premise of
@@ -1328,7 +1332,11 @@ Release: April 23, 2024
 
 12 / 85
 
-2.
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RDPECLIP].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+2.
 
  The server sends a Monitor Ready PDU to the client.
 
@@ -1420,7 +1428,11 @@ Release: April 23, 2024
 
 14 / 85
 
-Figure 3: Interaction of applications, the system clipboards, and virtual channel endpoints
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RDPECLIP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 3: Interaction of applications, the system clipboards, and virtual channel endpoints
 
 The copy phase is performed in steps 1 through 5 and the paste phase is performed in steps 6 through
 15:
@@ -1462,7 +1474,11 @@ Remote Desktop Protocol: Clipboard Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-12. Data is sent to Virtual Channel Endpoint B using a Format Data Response PDU or File Contents
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-RDPECLIP].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+12. Data is sent to Virtual Channel Endpoint B using a Format Data Response PDU or File Contents
 
 Response PDU.
 

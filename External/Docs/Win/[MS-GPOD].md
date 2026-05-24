@@ -1196,7 +1196,11 @@ Release: October 26, 2021
 
 14 / 85
 
-Figure 1: GPO location in Active Directory
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-GPOD].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 1: GPO location in Active Directory
 
 The Group Policy administrator uses the Active Directory container objects for the domain as shown in
 the diagram to manage Group Policy. When Group Policy administrators need to manage GPOs, they
@@ -1781,7 +1785,11 @@ Release: October 26, 2021
 
 23 / 85
 
-2  Functional Architecture
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-GPOD].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+2  Functional Architecture
 
 2.1  Overview
 
@@ -1820,7 +1828,11 @@ Release: October 26, 2021
 
 24 / 85
 
-Figure 3: Group Policy distributed environment
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-GPOD].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 3: Group Policy distributed environment
 
 2.1.1  System Purpose
 
@@ -1985,7 +1997,11 @@ Release: October 26, 2021
 
 27 / 85
 
-Figure 4: Group Policy component protocol communications
+<!-- Extracted images from page 28 -->
+![Extracted image 1 from page 28]([MS-GPOD].images/page028-img01.png)
+<!-- /Extracted images from page 28 -->
+
+Figure 4: Group Policy component protocol communications
 
 Group Policy makes use of several protocols to facilitate communications among its components, as
 illustrated in the preceding diagram:
@@ -2130,7 +2146,11 @@ Release: October 26, 2021
 
 30 / 85
 
-Figure 5: Internal component functions
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-GPOD].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+Figure 5: Internal component functions
 
 The general functions of Group Policy components as follows:
 
@@ -2196,7 +2216,11 @@ Release: October 26, 2021
 
 32 / 85
 
-Figure 6: Group Policy communications architecture
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-GPOD].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 6: Group Policy communications architecture
 
 2.1.2.3.1 Group Policy Server
 
@@ -2376,7 +2400,11 @@ Release: October 26, 2021
 
 35 / 85
 
-Figure 7: Policy application process
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-GPOD].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Figure 7: Policy application process
 
 2.1.3.1.1 Locating a Group Policy Server
 
@@ -2749,7 +2777,11 @@ Release: October 26, 2021
 
 41 / 85
 
-Figure 8: Policy administration editing process
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-GPOD].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+Figure 8: Policy administration editing process
 
 The sections that follow describe the processes that occur when editing GPOs and policy files.
 
@@ -3765,7 +3797,11 @@ Release: October 26, 2021
 
 54 / 85
 
-Figure 9: Group Policy use case diagram
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-GPOD].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+Figure 9: Group Policy use case diagram
 
 2.5.2  Applying Group Policy — Group Policy Client
 
@@ -4235,7 +4271,11 @@ Release: October 26, 2021
 
 61 / 85
 
-The following diagram shows the different components that define the security boundaries of the
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MS-GPOD].images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+The following diagram shows the different components that define the security boundaries of the
 Group Policy protocols on the Group Policy client. Elements that are external to the Group Policy
 protocols are described in [MS-GPOL].
 
@@ -4409,7 +4449,11 @@ Release: October 26, 2021
 
 65 / 85
 
-Figure 11: Group Policy processing internal architecture
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MS-GPOD].images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+Figure 11: Group Policy processing internal architecture
 
 The following table provides document references for the messages in the preceding figure.
 
@@ -4623,7 +4667,11 @@ Release: October 26, 2021
 
 68 / 85
 
-Figure 12: Group Policy client applies policy
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-GPOD].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+Figure 12: Group Policy client applies policy
 
 The message sequence for this example is as follows:
 
@@ -4724,7 +4772,11 @@ Release: October 26, 2021
 
 70 / 85
 
-Note that the Group Policy server (DC) discovery and connection sequence for the Group Policy
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-GPOD].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+Note that the Group Policy server (DC) discovery and connection sequence for the Group Policy
 client and Administrative tool are identical.
 
 
@@ -4844,7 +4896,11 @@ Release: October 26, 2021
 
 72 / 85
 
-Figure 14: Authoring a new policy
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MS-GPOD].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+Figure 14: Authoring a new policy
 
 The message sequence for this example is described fully in the following sections of [MS-GPOL].
 
@@ -4933,7 +4989,11 @@ Release: October 26, 2021
 
 74 / 85
 
-Figure 15: Administrative tool cannot connect with Active Directory
+<!-- Extracted images from page 75 -->
+![Extracted image 1 from page 75]([MS-GPOD].images/page075-img01.png)
+<!-- /Extracted images from page 75 -->
+
+Figure 15: Administrative tool cannot connect with Active Directory
 
 The message sequence for this example is described as follows:
 
@@ -4963,7 +5023,11 @@ Release: October 26, 2021
 
 75 / 85
 
-Figure 16: Administrative tool cannot connect with the Group Policy file share
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MS-GPOD].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+Figure 16: Administrative tool cannot connect with the Group Policy file share
 
 The message sequence for this example is described as follows:
 
@@ -5059,7 +5123,11 @@ Release: October 26, 2021
 
 77 / 85
 
-Figure 17: Querying Active Directory for SOM and version information
+<!-- Extracted images from page 78 -->
+![Extracted image 1 from page 78]([MS-GPOD].images/page078-img01.png)
+<!-- /Extracted images from page 78 -->
+
+Figure 17: Querying Active Directory for SOM and version information
 
 The message sequence for this example is described as follows:
 
@@ -5161,7 +5229,11 @@ Release: October 26, 2021
 
 79 / 85
 
-
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-GPOD].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+
 
 
 
@@ -5224,7 +5296,11 @@ Release: October 26, 2021
 
 80 / 85
 
-Figure 19: Group Policy client applying policy cannot connect with the Group Policy file
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81]([MS-GPOD].images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+Figure 19: Group Policy client applying policy cannot connect with the Group Policy file
 share
 
 The message sequence for this example is described as follows:

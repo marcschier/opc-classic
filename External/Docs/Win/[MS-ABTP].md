@@ -560,7 +560,11 @@ Release: April 23, 2024
 
 7 / 27
 
-Figure 1: Establishing a secure, authenticated Bluetooth connection
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-ABTP].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: Establishing a secure, authenticated Bluetooth connection
 
 1.4  Relationship to Other Protocols
 
@@ -924,7 +928,11 @@ Release: April 23, 2024
 
 14 / 27
 
-Figure 2: Client state diagram
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-ABTP].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 2: Client state diagram
 
 3.1.1  Abstract Data Model
 
@@ -1134,7 +1142,11 @@ Release: April 23, 2024
 
 18 / 27
 
-Figure 3: Server state diagram
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-ABTP].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 3: Server state diagram
 
 3.2.1  Abstract Data Model
 

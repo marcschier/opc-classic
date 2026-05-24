@@ -742,7 +742,11 @@ Release: March 13, 2019
 
 7 / 29
 
-Figure 1: Example message flow diagram between an RMS and an RMD with AFCE to WSRM
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-WSRVCRM].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: Example message flow diagram between an RMS and an RMD with AFCE to WSRM
 
 1.4  Relationship to Other Protocols
 
@@ -837,7 +841,11 @@ Release: March 13, 2019
 
 10 / 29
 
-3  Protocol Details
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-WSRVCRM].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+3  Protocol Details
 
 3.1  RMD Role Details
 
@@ -1027,7 +1035,11 @@ Release: March 13, 2019
 
 13 / 29
 
-Figure 3: State diagram of the AFCE to WSRM on the RMS
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-WSRVCRM].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 3: State diagram of the AFCE to WSRM on the RMS
 
 3.2.1.1  NOT_POLLING
 
@@ -1218,7 +1230,11 @@ Release: March 13, 2019
 
 16 / 29
 
-4  Protocol Examples
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-WSRVCRM].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+4  Protocol Examples
 
 The following is an example of a reliable messaging source (RMS) sending 3 messages to a
 reliable messaging destination (RMD). The RMD is capable of storing a maximum of 2 messages

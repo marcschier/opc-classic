@@ -4219,7 +4219,11 @@ Release: April 23, 2024
 
 32 / 580
 
-The WCF services defined by Provider Framework are described in section 3. The data contracts used
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-WCFESAN].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+The WCF services defined by Provider Framework are described in section 3. The data contracts used
 by these services are described in section 2.2.
 
 1.4  Relationship to Other Protocols
@@ -10281,7 +10285,11 @@ Release: April 23, 2024
 
 108 / 580
 
-       </xs:sequence>
+<!-- Extracted images from page 109 -->
+![Extracted image 1 from page 109]([MS-WCFESAN].images/page109-img01.png)
+<!-- /Extracted images from page 109 -->
+
+       </xs:sequence>
     </xs:complexType>
  </xs:element>
 

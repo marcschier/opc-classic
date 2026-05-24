@@ -1636,7 +1636,11 @@ Release: April 27, 2026
 
 15 / 90
 
-Figure 1: Kerberos V5 Exchanges
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-KILE].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+Figure 1: Kerberos V5 Exchanges
 
 Note   The terms client, server and Key Distribution Center (KDC), as used in this section, refer to
 Kerberos V5 implementations of each entity. Unless explicitly noted, use of these terms in the
@@ -5856,7 +5860,11 @@ Release: April 27, 2026
 
 70 / 90
 
-4  Protocol Examples
+<!-- Extracted images from page 71 -->
+![Extracted image 1 from page 71]([MS-KILE].images/page071-img01.png)
+<!-- /Extracted images from page 71 -->
+
+4  Protocol Examples
 
 The following sections describe four common scenarios to illustrate the function of the KILE.
 
@@ -5899,7 +5907,11 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-  LogonTime
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-KILE].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+  LogonTime
 
   LogoffTime
 
@@ -5992,7 +6004,11 @@ Release: April 27, 2026
 
 73 / 90
 
-Figure 4: Example of RRC with output message with 4 buffers
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-KILE].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+Figure 4: Example of RRC with output message with 4 buffers
 
 The clearhdr is the descriptive header ([RFC4121] section 4.2.6.2). The enchdr is the header
 ([RFC4121] section 4.2.4) for encrypted buffers. GSS_WrapEx() will return an output_message with

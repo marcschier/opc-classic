@@ -1218,7 +1218,11 @@ Release: April 23, 2024
 
 10 / 110
 
-[XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RMPRS].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+[XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
 W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-20091208/
 
 [XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
@@ -1383,7 +1387,11 @@ Release: April 23, 2024
 
 13 / 110
 
-Figure 2: Transport stack for the RMS: Server-Server Protocol
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-RMPRS].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 2: Transport stack for the RMS: Server-Server Protocol
 
 1.5  Prerequisites/Preconditions
 
@@ -5206,7 +5214,11 @@ Release: April 23, 2024
 
 59 / 110
 
-3.2.4.1  FindServiceLocations
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-RMPRS].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+3.2.4.1  FindServiceLocations
 
 The FindServiceLocations operation provides a mechanism for a requestor to retrieve a URL for a
 specified service that is either offered by or known to the responding server.
@@ -5642,7 +5654,11 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SLC chain: An XrML 1.2 [XRML] certificate chain that signs the RMS server's public key into the
+<!-- Extracted images from page 66 -->
+![Extracted image 1 from page 66]([MS-RMPRS].images/page066-img01.png)
+<!-- /Extracted images from page 66 -->
+
+SLC chain: An XrML 1.2 [XRML] certificate chain that signs the RMS server's public key into the
 appropriate certificate hierarchy. The SLC format is specified in RMS: Client-Server Protocol
 Specification ([MS-RMPR] section 2.2.9).
 
@@ -6049,7 +6065,11 @@ Release: April 23, 2024
 
 71 / 110
 
-3.4.3  Initialization
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-RMPRS].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+3.4.3  Initialization
 
 The responding RMS server MUST be bootstrapped in order for the ServerSoap
 (GetLicensorCertificate) port type to function. RMS server bootstrapping is defined in [MS-RMPR]
@@ -6298,7 +6318,11 @@ Release: April 23, 2024
 
 75 / 110
 
-3.5.2  Timers
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MS-RMPRS].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+3.5.2  Timers
 
 None.
 
@@ -6613,7 +6637,11 @@ Release: April 23, 2024
 
 80 / 110
 
-4  Protocol Examples
+<!-- Extracted images from page 81 -->
+![Extracted image 1 from page 81]([MS-RMPRS].images/page081-img01.png)
+<!-- /Extracted images from page 81 -->
+
+4  Protocol Examples
 
 4.1  Accessing Protected Information as a Member of an Authorized Group
 
@@ -6660,7 +6688,11 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-procedure call (RPC). The result of either is a Boolean response indicating if the named user is a
+<!-- Extracted images from page 82 -->
+![Extracted image 1 from page 82]([MS-RMPRS].images/page082-img01.png)
+<!-- /Extracted images from page 82 -->
+
+procedure call (RPC). The result of either is a Boolean response indicating if the named user is a
 member of a named group (or groups).
 
 The server then issues a UL containing a set of usage policies for the user, and signs the UL. The

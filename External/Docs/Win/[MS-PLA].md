@@ -5667,7 +5667,11 @@ Release: April 23, 2024
 
 64 / 234
 
-Figure 1: PLA Protocol object model
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-PLA].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+Figure 1: PLA Protocol object model
 
 The previous figure illustrates the relationship between the different interfaces. Each box represents a
 different interface and lists the properties that return other interfaces, with lines connecting the
@@ -16751,7 +16755,11 @@ Release: April 23, 2024
 
 200 / 234
 
-4  Protocol Examples
+<!-- Extracted images from page 201 -->
+![Extracted image 1 from page 201]([MS-PLA].images/page201-img01.png)
+<!-- /Extracted images from page 201 -->
+
+4  Protocol Examples
 
 To manually create a data collector set with a performance counter data collector:
 
@@ -16778,7 +16786,11 @@ Performance Logs and Alerts Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-7.  The client requests the IPerformanceCounterDataCollector interface of the returned data collector.
+<!-- Extracted images from page 202 -->
+![Extracted image 1 from page 202]([MS-PLA].images/page202-img01.png)
+<!-- /Extracted images from page 202 -->
+
+7.  The client requests the IPerformanceCounterDataCollector interface of the returned data collector.
 
 8.  The server returns a pointer to the IPerformanceCounterDataCollector interface of the data
 
@@ -16831,7 +16843,11 @@ Performance Logs and Alerts Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  The server loads the requested data collector set from storage into memory and replies indicating
+<!-- Extracted images from page 203 -->
+![Extracted image 1 from page 203]([MS-PLA].images/page203-img01.png)
+<!-- /Extracted images from page 203 -->
+
+4.  The server loads the requested data collector set from storage into memory and replies indicating
 
 whether the operation was successful.
 

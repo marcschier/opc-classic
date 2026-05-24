@@ -1218,7 +1218,11 @@ Remote Desktop Protocol: File System Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The next exchange, Server Core Capability Request/Client Core Capability Response, is used to
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPEFS].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+The next exchange, Server Core Capability Request/Client Core Capability Response, is used to
 exchange capabilities between the client and the server to ensure that each side records what kinds of
 packets are supported by the remote side.
 
@@ -1248,7 +1252,11 @@ Release: April 23, 2024
 
 11 / 90
 
-1.3.2  Drive Redirection
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPEFS].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+1.3.2  Drive Redirection
 
 Drives can be announced or deleted at any point in time after the connection has been established.
 For example, Drive redirection sequence shows the sequence for adding and removing a file system
@@ -1290,7 +1298,11 @@ Release: April 23, 2024
 
 12 / 90
 
-channel transport is terminated, no other communication over the Remote Desktop Protocol: File
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RDPEFS].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+channel transport is terminated, no other communication over the Remote Desktop Protocol: File
 System Virtual Channel Extension occurs.
 
 1.6  Applicability Statement
@@ -5893,7 +5905,11 @@ Release: April 23, 2024
 
 68 / 90
 
-4  Protocol Examples
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-RDPEFS].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+4  Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Remote Desktop Protocol: File System Virtual Channel Extension.
@@ -5916,7 +5932,11 @@ Release: April 23, 2024
 
 69 / 90
 
-Figure 5: Packet sequence without the Server User Logged On message
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70]([MS-RDPEFS].images/page070-img01.png)
+<!-- /Extracted images from page 70 -->
+
+Figure 5: Packet sequence without the Server User Logged On message
 
 4.2  Server Device Announce Response
 

@@ -922,7 +922,12 @@ Release: April 23, 2024
 
 11 / 18
 
-4  Protocol Examples
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RASA].images/page012-img01.png)
+![Extracted image 2 from page 12]([MS-RASA].images/page012-img02.png)
+<!-- /Extracted images from page 12 -->
+
+4  Protocol Examples
 
 Following are two examples where a RAS server broadcasts its advertisement on the local network.
 
@@ -950,7 +955,11 @@ Release: April 23, 2024
 
 12 / 18
 
-4.3  Examples Sequence Diagram
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RASA].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+4.3  Examples Sequence Diagram
 
 The following sequence diagram illustrates the UDP messages corresponding to the examples
 mentioned previously.

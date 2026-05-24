@@ -1822,7 +1822,11 @@ Web Services Management Protocol Extensions for Windows Vista
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 1: Message sequence for invoking custom methods with streaming output
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-WSMV].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+Figure 1: Message sequence for invoking custom methods with streaming output
 
 1.3.2  Typical Message Flow for CIM Operations with Prompting
 
@@ -1873,7 +1877,11 @@ ErrorAction
 
 17 / 269
 
-Category
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-WSMV].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Category
 
 Semantics
 
@@ -1928,7 +1936,11 @@ Release: April 23, 2024
 
 18 / 269
 
-For operations that modify server execution but do not require additional client input, the pattern is as
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-WSMV].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+For operations that modify server execution but do not require additional client input, the pattern is as
 follows.
 
 1.  The client sends the CIM Operation Request message, with the appropriate option specified, on
@@ -1971,7 +1983,11 @@ Release: April 23, 2024
 
 19 / 269
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-WSMV].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+1.4  Relationship to Other Protocols
 
 WS-Management Protocol has to use SOAP (as specified in [SOAP1.2-1/2003]) over HTTP or HTTPS
 for communication. WS-Management has to be used as the transport to provide access to CIM data
@@ -7014,7 +7030,11 @@ Release: April 23, 2024
 
 85 / 269
 
-2.2.9.2  Compressed Message Types
+<!-- Extracted images from page 86 -->
+![Extracted image 1 from page 86]([MS-WSMV].images/page086-img01.png)
+<!-- /Extracted images from page 86 -->
+
+2.2.9.2  Compressed Message Types
 
 When delivering events, as specified in [DMTF-DSP0226] section 10.2, the Web Services Management
 Protocol Extensions for Windows Vista can use compression. The SLDC algorithm for
@@ -8575,7 +8595,11 @@ Release: April 23, 2024
 
 106 / 269
 
-Figure 6: Publisher-initiated subscriptions
+<!-- Extracted images from page 107 -->
+![Extracted image 1 from page 107]([MS-WSMV].images/page107-img01.png)
+<!-- /Extracted images from page 107 -->
+
+Figure 6: Publisher-initiated subscriptions
 
 ENUMERATE: In order to support publisher-initiated event subscriptions, the publisher of the event
 (Web Services Management Protocol Extensions for Windows Vista client) MUST send an Enumerate
@@ -8830,7 +8854,11 @@ Web Services Management Protocol Extensions for Windows Vista
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Figure 7: Web Services Management Protocol Extensions for the Windows Vista Remote
+<!-- Extracted images from page 111 -->
+![Extracted image 1 from page 111]([MS-WSMV].images/page111-img01.png)
+<!-- /Extracted images from page 111 -->
+
+Figure 7: Web Services Management Protocol Extensions for the Windows Vista Remote
 Shell message processing sequence
 
 3.1.4.1.31.1  I/O Streams
@@ -12685,7 +12713,11 @@ Release: April 23, 2024
 
 161 / 269
 
-Figure 8: Message sequence for invoking custom methods with stream output parameter
+<!-- Extracted images from page 162 -->
+![Extracted image 1 from page 162]([MS-WSMV].images/page162-img01.png)
+<!-- /Extracted images from page 162 -->
+
+Figure 8: Message sequence for invoking custom methods with stream output parameter
 
 The output messages returned by the WMI provider are formatted as follows.
 
@@ -12876,7 +12908,11 @@ Release: April 23, 2024
 
 164 / 269
 
-Figure 9: Message sequence for options that create additional server output
+<!-- Extracted images from page 165 -->
+![Extracted image 1 from page 165]([MS-WSMV].images/page165-img01.png)
+<!-- /Extracted images from page 165 -->
+
+Figure 9: Message sequence for options that create additional server output
 
 1.  The client sends the CIM Operation Request message with the Verbose option specified.
 
@@ -12916,7 +12952,11 @@ Release: April 23, 2024
 
 165 / 269
 
-Figure 10: Message sequence for options that require additional client input
+<!-- Extracted images from page 166 -->
+![Extracted image 1 from page 166]([MS-WSMV].images/page166-img01.png)
+<!-- /Extracted images from page 166 -->
+
+Figure 10: Message sequence for options that require additional client input
 
 1.  The client sends the CIM Operation Request message, with the Confirm option specified.
 
@@ -13408,7 +13448,11 @@ Release: April 23, 2024
 
 173 / 269
 
- };
+<!-- Extracted images from page 174 -->
+![Extracted image 1 from page 174]([MS-WSMV].images/page174-img01.png)
+<!-- /Extracted images from page 174 -->
+
+ };
 
  class MyClass : Base
  {
@@ -14904,7 +14948,11 @@ Release: April 23, 2024
 
 194 / 269
 
-           <Capability Type="Get" SupportsFragment="true"/>
+<!-- Extracted images from page 195 -->
+![Extracted image 1 from page 195]([MS-WSMV].images/page195-img01.png)
+<!-- /Extracted images from page 195 -->
+
+           <Capability Type="Get" SupportsFragment="true"/>
            <Capability Type="Put" SupportsFragment="true"/>
            <Capability Type="Invoke"/>
            <Capability Type="Enumerate"/>

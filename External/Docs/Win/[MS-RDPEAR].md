@@ -3765,7 +3765,11 @@ Release: April 23, 2024
 
 54 / 70
 
-4  Protocol Examples
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-RDPEAR].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+4  Protocol Examples
 
 4.1  Requesting a Service Ticket
 

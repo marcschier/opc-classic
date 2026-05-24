@@ -894,7 +894,11 @@ Release: June 1, 2017
 
 9 / 29
 
-1.3  Overview
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-BPAU].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+1.3  Overview
 
 The BITS Peer-Caching: Peer Authentication Protocol allows hosts in an Active Directory domain to
 exchange self-signed X.509 certificates with enough information to associate those certificates

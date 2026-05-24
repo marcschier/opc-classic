@@ -994,7 +994,11 @@ Release: June 1, 2017
 
 9 / 54
 
-Figure 1: Black-box diagram of BITS peer-to-peer framework
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-BPCR].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 1: Black-box diagram of BITS peer-to-peer framework
 
 To start, the client initializes the BITS Peer-Caching: Peer Discovery Protocol client role to listen for
 hosts that support the server role of BITS Peer-Caching: Content Retrieval Protocol (for more
@@ -1056,7 +1060,11 @@ Release: June 1, 2017
 
 11 / 54
 
-Figure 2: White-box diagram of protocols in BITS peer-caching framework
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-BPCR].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: White-box diagram of protocols in BITS peer-caching framework
 
 The following gives more detail on the role of protocols participating in the BITS framework:
 
@@ -1083,7 +1091,11 @@ Release: June 1, 2017
 
 12 / 54
 
-protocol is implemented by using Web Services Dynamic Discovery (WS-Discovery), as specified in
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-BPCR].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+protocol is implemented by using Web Services Dynamic Discovery (WS-Discovery), as specified in
 [WS-Discovery]. The primary role of this protocol in the BITS Framework is host discovery.
 
 The p Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Authentication Protocol [MS-
@@ -1714,7 +1726,11 @@ Release: June 1, 2017
 
 23 / 54
 
-Figure 4: Possible state transitions
+<!-- Extracted images from page 24 -->
+![Extracted image 1 from page 24]([MS-BPCR].images/page024-img01.png)
+<!-- /Extracted images from page 24 -->
+
+Figure 4: Possible state transitions
 
 Note  The conceptual data can be implemented by using a variety of techniques. Any data structure
 that stores the conceptual data can be used in the implementation.
@@ -2829,7 +2845,11 @@ Release: June 1, 2017
 
 40 / 54
 
-Figure 5: Sequence diagram for initial download example
+<!-- Extracted images from page 41 -->
+![Extracted image 1 from page 41]([MS-BPCR].images/page041-img01.png)
+<!-- /Extracted images from page 41 -->
+
+Figure 5: Sequence diagram for initial download example
 
 1.  The application requests the BITS Upload Protocol to download the URL. The BITS Upload Protocol
 
@@ -2923,7 +2943,11 @@ Release: June 1, 2017
 
 42 / 54
 
-Figure 6: Sequence diagram for a subsequent URL download
+<!-- Extracted images from page 43 -->
+![Extracted image 1 from page 43]([MS-BPCR].images/page043-img01.png)
+<!-- /Extracted images from page 43 -->
+
+Figure 6: Sequence diagram for a subsequent URL download
 
 1.  The BITS Upload Protocol client proceeds to STATE_SIZE, and sends a HEAD request to the origin
 

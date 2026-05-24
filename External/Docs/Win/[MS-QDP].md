@@ -1553,7 +1553,11 @@ Release: June 25, 2021
 
 19 / 41
 
-3  Protocol Details
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MS-QDP].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+3  Protocol Details
 
 In qWave-WD, a device MAY<2> take on the role of the initiator or the sink. An application that is
 interested in enlisting the services of the qWave-WD Protocol invokes the role of the initiator. The
@@ -1852,7 +1856,11 @@ Release: June 25, 2021
 
 24 / 41
 
-Figure 2: State machine for sink role
+<!-- Extracted images from page 25 -->
+![Extracted image 1 from page 25]([MS-QDP].images/page025-img01.png)
+<!-- /Extracted images from page 25 -->
+
+Figure 2: State machine for sink role
 
 Applicable message request/response pairs for this role are defined as follows.
 
@@ -2266,7 +2274,11 @@ Release: June 25, 2021
 
 31 / 41
 
-4  Protocol Examples
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-QDP].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+4  Protocol Examples
 
 The following sections describe several operations used in common scenarios to illustrate the
 functioning of the qWave-WD protocol.
@@ -2292,7 +2304,11 @@ Release: June 25, 2021
 
 32 / 41
 
-Figure 4: Protocol exchange between the initiator and the wireless sink device
+<!-- Extracted images from page 33 -->
+![Extracted image 1 from page 33]([MS-QDP].images/page033-img01.png)
+<!-- /Extracted images from page 33 -->
+
+Figure 4: Protocol exchange between the initiator and the wireless sink device
 
 The following list describes each step in the protocol exchange:
 
@@ -2380,7 +2396,12 @@ Release: June 25, 2021
 
 34 / 41
 
-Figure 5: Example media server and TV (integrated media player network)
+<!-- Extracted images from page 35 -->
+![Extracted image 1 from page 35]([MS-QDP].images/page035-img01.png)
+![Extracted image 2 from page 35]([MS-QDP].images/page035-img02.png)
+<!-- /Extracted images from page 35 -->
+
+Figure 5: Example media server and TV (integrated media player network)
 
 The media server is used to stream media content to the TV.
 

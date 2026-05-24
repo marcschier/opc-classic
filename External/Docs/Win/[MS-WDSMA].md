@@ -630,7 +630,11 @@ Release: April 23, 2024
 
 6 / 23
 
-1.3  Overview
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-WDSMA].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+1.3  Overview
 
 WDS Multicast Application Protocol uses the WDS Multicast Transport Protocol [MS-WDSMT] to deliver
 all pieces of the content to all clients in a multicast session.
@@ -946,7 +950,11 @@ Release: April 23, 2024
 
 11 / 23
 
-3  Protocol Details
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-WDSMA].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+3  Protocol Details
 
 3.1  Server Details
 
@@ -1286,7 +1294,11 @@ Release: April 23, 2024
 
 17 / 23
 
-4  Protocol Examples
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-WDSMA].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+4  Protocol Examples
 
 The following diagram specifies a server querying 3 clients and sending DATA packets:
 

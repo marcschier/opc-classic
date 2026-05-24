@@ -782,7 +782,11 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-1.4  Relationship to Other Protocols
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-RSVD].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+1.4  Relationship to Other Protocols
 
 This protocol depends on Server Message Block (SMB) Protocol version 3 (SMB3) for its transport, as
 specified in [MS-SMB2].
@@ -7747,7 +7751,11 @@ Release: September 16, 2024
 
 91 / 106
 
-4  Protocol Examples
+<!-- Extracted images from page 92 -->
+![Extracted image 1 from page 92]([MS-RSVD].images/page092-img01.png)
+<!-- /Extracted images from page 92 -->
+
+4  Protocol Examples
 
 The following section describes common scenarios that indicate normal traffic flow in order to illustrate
 the function of the Remote Shared Virtual Disk (RSVD) Protocol.
@@ -7832,7 +7840,11 @@ Release: September 16, 2024
 
 93 / 106
 
-Figure 3: Executing a SCSI command
+<!-- Extracted images from page 94 -->
+![Extracted image 1 from page 94]([MS-RSVD].images/page094-img01.png)
+<!-- /Extracted images from page 94 -->
+
+Figure 3: Executing a SCSI command
 
 1.  The client sends an SMB2 CREATE Request with the SVHDX_OPEN_DEVICE_CONTEXT create
 
@@ -7939,7 +7951,11 @@ Release: September 16, 2024
 
 95 / 106
 
-4.3  Creating a Virtual Machine Snapshot
+<!-- Extracted images from page 96 -->
+![Extracted image 1 from page 96]([MS-RSVD].images/page096-img01.png)
+<!-- /Extracted images from page 96 -->
+
+4.3  Creating a Virtual Machine Snapshot
 
 The following diagram demonstrates the steps taken to open a VHD Set, create a virtual machine
 snapshot, and close it.
@@ -8104,7 +8120,11 @@ Release: September 16, 2024
 
 98 / 106
 
-4.4  Retrieving a VHD Set Snapshot List
+<!-- Extracted images from page 99 -->
+![Extracted image 1 from page 99]([MS-RSVD].images/page099-img01.png)
+<!-- /Extracted images from page 99 -->
+
+4.4  Retrieving a VHD Set Snapshot List
 
 The following diagram demonstrates the steps taken to open a VHD Set, retrieve snapshot IDs of the
 VHD Set, and close it.

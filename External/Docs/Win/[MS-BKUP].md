@@ -1420,7 +1420,11 @@ Release: April 23, 2024
 
 16 / 22
 
-3  Structure Examples
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-BKUP].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+3  Structure Examples
 
 This section presents an example of serializing an input file that has two streams. The unnamed
 stream contains "unnamed stream" in ASCII, and the alternate stream "stream1" contains "This is

@@ -473,7 +473,11 @@ Release: April 23, 2024
 
 6 / 37
 
-Figure 1: The RDP-UDP2 bidirectional endpoints connection
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-RDPEUDP2].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+Figure 1: The RDP-UDP2 bidirectional endpoints connection
 
 Unlike the RDP-UDP protocol however, the RDP-UDP2 transport only supports "Reliable" UDP mode. In
 this mode, the endpoint retransmits datagrams that have been lost by the underlying network fabric.
@@ -501,7 +505,11 @@ Release: April 23, 2024
 
 7 / 37
 
-Figure 2: Relationship between RDP-UDP to RDP-UDP2
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-RDPEUDP2].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 2: Relationship between RDP-UDP to RDP-UDP2
 
 1.3.2  RDP-UDP2 Data Transfer Phase
 
@@ -1373,7 +1381,11 @@ Release: April 23, 2024
 
 20 / 37
 
-Figure 3: Conceptual composition of an RDP-UDP2 implementation stack
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-RDPEUDP2].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+Figure 3: Conceptual composition of an RDP-UDP2 implementation stack
 
 3.1.1.2.1 Sender Window Buffer
 

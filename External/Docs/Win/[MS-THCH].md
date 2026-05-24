@@ -364,7 +364,11 @@ Tracing HTTP Correlation Header Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+<!-- Extracted images from page 5 -->
+![Extracted image 1 from page 5]([MS-THCH].images/page005-img01.png)
+<!-- /Extracted images from page 5 -->
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC

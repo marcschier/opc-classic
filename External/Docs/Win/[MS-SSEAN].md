@@ -474,7 +474,11 @@ Simple Mail Transfer Protocol (SMTP) AUTH Extension for SPNEGO
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-The Simple and Protected Generic Security Service Application Program Interface (GSS-API)
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-SSEAN].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+The Simple and Protected Generic Security Service Application Program Interface (GSS-API)
 Negotiation Mechanism (SPNEGO) [RFC4178] is defined for use by protocols that use GSS-API to
 negotiate security mechanisms. This allows such protocols to negotiate the use of GSS-API
 mechanisms such as Kerberos and NTLM. It does so by exposing itself as a single GSS-API mechanism
@@ -731,7 +735,11 @@ Release: May 30, 2025
 
 10 / 18
 
-4  Protocol Examples
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-SSEAN].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+4  Protocol Examples
 
 4.1  Server Successfully Authenticating Client
 

@@ -577,7 +577,11 @@ Release: September 16, 2024
 
 7 / 27
 
-Figure 1: Sequence diagram for the ADFSOAL Protocol
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-ADFSOAL].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+Figure 1: Sequence diagram for the ADFSOAL Protocol
 
 The above sequence diagram illustrates this flow. Two servers "AD FS server 1" and "AD FS server 2"
 are deployed in an AD FS farm with standalone artifact store configuration. In this scenario, the OAuth
@@ -608,7 +612,11 @@ Release: September 16, 2024
 
 8 / 27
 
-Figure 2: Protocol dependency
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-ADFSOAL].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 2: Protocol dependency
 
 1.5  Prerequisites/Preconditions
 

@@ -866,7 +866,11 @@ Release: March 9, 2026
 
 8 / 48
 
-[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-XCEP].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
@@ -909,7 +913,12 @@ Release: March 9, 2026
 
 9 / 48
 
-Figure 2: Typical sequence when server responds with SOAP fault message
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-XCEP].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-XCEP].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+Figure 2: Typical sequence when server responds with SOAP fault message
 
 1.4  Relationship to Other Protocols
 
@@ -1090,7 +1099,11 @@ Release: March 9, 2026
 
 13 / 48
 
-3  Protocol Details
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-XCEP].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+3  Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or application are

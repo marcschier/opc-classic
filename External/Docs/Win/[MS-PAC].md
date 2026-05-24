@@ -1083,7 +1083,11 @@ Release: June 10, 2024
 
 11 / 54
 
-2  Structures
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-PAC].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+2  Structures
 
 Some of the PAC structures are formatted by using the Distributed Computing Environment (DCE)
 data representation as specified in [C706], and as exposed by the marshaling support in the Remote
@@ -1799,7 +1803,11 @@ Privilege Attribute Certificate Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: June 10, 2024
 
-When this field is not used, it MUST be set to zero.
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-PAC].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+When this field is not used, it MUST be set to zero.
 
 ResourceGroupIds: A pointer to a list of GROUP_MEMBERSHIP structures that contain the RIDs and
 attributes of the account's groups in the resource domain. If this member is not NULL, then the H

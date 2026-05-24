@@ -4093,7 +4093,11 @@ Release: April 23, 2024
 
 47 / 162
 
-Figure 1: Organization of DFS-related LDAP entries in DFS namespaces
+<!-- Extracted images from page 48 -->
+![Extracted image 1 from page 48]([MS-DFSNM].images/page048-img01.png)
+<!-- /Extracted images from page 48 -->
+
+Figure 1: Organization of DFS-related LDAP entries in DFS namespaces
 
 Each domainv1-based DFS namespace has its DFS metadata stored in the directory service as a
 BLOB in the pKT attribute of an LDAP entry.
@@ -10041,7 +10045,11 @@ Release: April 23, 2024
 
 116 / 162
 
-Figure 2: Creating a new domainv1-based DFS namespace
+<!-- Extracted images from page 117 -->
+![Extracted image 1 from page 117]([MS-DFSNM].images/page117-img01.png)
+<!-- /Extracted images from page 117 -->
+
+Figure 2: Creating a new domainv1-based DFS namespace
 
 4.2  Adding a Root Target to an Existing Domainv1-Based DFS Namespace
 
@@ -10062,7 +10070,11 @@ Release: April 23, 2024
 
 117 / 162
 
-3.  The client updates the ACL on the object to permit the new DFS root target CFS-41X-2C03 to
+<!-- Extracted images from page 118 -->
+![Extracted image 1 from page 118]([MS-DFSNM].images/page118-img01.png)
+<!-- /Extracted images from page 118 -->
+
+3.  The client updates the ACL on the object to permit the new DFS root target CFS-41X-2C03 to
 
 update the object.
 
@@ -10158,7 +10170,11 @@ Release: April 23, 2024
 
 119 / 162
 
-Figure 4: Adding a new link to a domainv1-based DFS namespace
+<!-- Extracted images from page 120 -->
+![Extracted image 1 from page 120]([MS-DFSNM].images/page120-img01.png)
+<!-- /Extracted images from page 120 -->
+
+Figure 4: Adding a new link to a domainv1-based DFS namespace
 
 4.4  Creating a New Domainv2-Based DFS Namespace
 
@@ -10211,7 +10227,11 @@ Release: April 23, 2024
 
 121 / 162
 
-Figure 5: Creating a new domainv2-based DFS namespace
+<!-- Extracted images from page 122 -->
+![Extracted image 1 from page 122]([MS-DFSNM].images/page122-img01.png)
+<!-- /Extracted images from page 122 -->
+
+Figure 5: Creating a new domainv2-based DFS namespace
 
 4.5  Adding a Root Target to an Existing Domainv2-Based DFS Namespace
 
@@ -10237,7 +10257,11 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  The client issues a NetrDfsAddRootTarget method to the new DFS root target server CFS-41X-
+<!-- Extracted images from page 123 -->
+![Extracted image 1 from page 123]([MS-DFSNM].images/page123-img01.png)
+<!-- /Extracted images from page 123 -->
+
+5.  The client issues a NetrDfsAddRootTarget method to the new DFS root target server CFS-41X-
 
 2C03.
 
@@ -10334,7 +10358,11 @@ Release: April 23, 2024
 
 124 / 162
 
-Figure 7: Adding a new link to a domainv2-based DFS namespace
+<!-- Extracted images from page 125 -->
+![Extracted image 1 from page 125]([MS-DFSNM].images/page125-img01.png)
+<!-- /Extracted images from page 125 -->
+
+Figure 7: Adding a new link to a domainv2-based DFS namespace
 
 4.7  Enumerating DFS Links in a Domain-Based DFS Namespace
 
@@ -10354,7 +10382,11 @@ Release: April 23, 2024
 
 125 / 162
 
-2.  The DC returns two domain-based DFS namespaces in the domain: \\dfsn-dev\testroot1 and
+<!-- Extracted images from page 126 -->
+![Extracted image 1 from page 126]([MS-DFSNM].images/page126-img01.png)
+<!-- /Extracted images from page 126 -->
+
+2.  The DC returns two domain-based DFS namespaces in the domain: \\dfsn-dev\testroot1 and
 
 \\dfsn-dev\testroot2.
 
@@ -10406,7 +10438,11 @@ Release: April 23, 2024
 
 127 / 162
 
-Figure 9: Hexadecimal dump of the DFS metadata for a domainv1-based DFS namespace
+<!-- Extracted images from page 128 -->
+![Extracted image 1 from page 128]([MS-DFSNM].images/page128-img01.png)
+<!-- /Extracted images from page 128 -->
+
+Figure 9: Hexadecimal dump of the DFS metadata for a domainv1-based DFS namespace
 
 The following table lists elements of the hexadecimal dump.
 

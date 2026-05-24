@@ -8101,7 +8101,11 @@ Release: April 23, 2024
 
 107 / 157
 
-4  Protocol Examples
+<!-- Extracted images from page 108 -->
+![Extracted image 1 from page 108]([MS-WMSP].images/page108-img01.png)
+<!-- /Extracted images from page 108 -->
+
+4  Protocol Examples
 
 4.1  Server States in Non-Pipelined Mode
 
@@ -8192,7 +8196,11 @@ Release: April 23, 2024
 
 109 / 157
 
-Figure 2: WMS HTTP 1.1 caching proxy server states and sequencing
+<!-- Extracted images from page 110 -->
+![Extracted image 1 from page 110]([MS-WMSP].images/page110-img01.png)
+<!-- /Extracted images from page 110 -->
+
+Figure 2: WMS HTTP 1.1 caching proxy server states and sequencing
 
 Understanding the server states diagram:
 
@@ -8295,7 +8303,11 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+<!-- Extracted images from page 112 -->
+![Extracted image 1 from page 112]([MS-WMSP].images/page112-img01.png)
+<!-- /Extracted images from page 112 -->
+
+
 
 
 
@@ -8415,7 +8427,11 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-9.  The server responds to the Log and SelectStream requests.
+<!-- Extracted images from page 114 -->
+![Extracted image 1 from page 114]([MS-WMSP].images/page114-img01.png)
+<!-- /Extracted images from page 114 -->
+
+9.  The server responds to the Log and SelectStream requests.
 
 10. The server continues looping playlist element data packets (step 5) until the end of the playlist is
 
@@ -8503,7 +8519,11 @@ Release: April 23, 2024
 
 115 / 157
 
-Figure 5: Sequencing during normal playlist streaming
+<!-- Extracted images from page 116 -->
+![Extracted image 1 from page 116]([MS-WMSP].images/page116-img01.png)
+<!-- /Extracted images from page 116 -->
+
+Figure 5: Sequencing during normal playlist streaming
 
 4.5.1  Seeking and Skipping in Server-Side Playlists
 
@@ -8574,7 +8594,11 @@ Release: April 23, 2024
 
 117 / 157
 
-Figure 6: Playlist seek-and-skip sequence in pipelined mode
+<!-- Extracted images from page 118 -->
+![Extracted image 1 from page 118]([MS-WMSP].images/page118-img01.png)
+<!-- /Extracted images from page 118 -->
+
+Figure 6: Playlist seek-and-skip sequence in pipelined mode
 
 [MS-WMSP] - v20240423
 Windows Media HTTP Streaming Protocol
@@ -8583,7 +8607,11 @@ Release: April 23, 2024
 
 118 / 157
 
-Figure 7: Playlist seek-and-skip sequence in non-pipelined mode
+<!-- Extracted images from page 119 -->
+![Extracted image 1 from page 119]([MS-WMSP].images/page119-img01.png)
+<!-- /Extracted images from page 119 -->
+
+Figure 7: Playlist seek-and-skip sequence in non-pipelined mode
 
 The following example shows a Stop request for the pipelined mode of the protocol.
 
@@ -8688,7 +8716,11 @@ Release: April 23, 2024
 
 120 / 157
 
-9.  The server terminates the Play request for the previous entry in the playlist, as described in step
+<!-- Extracted images from page 121 -->
+![Extracted image 1 from page 121]([MS-WMSP].images/page121-img01.png)
+<!-- /Extracted images from page 121 -->
+
+9.  The server terminates the Play request for the previous entry in the playlist, as described in step
 
 3.
 
@@ -8768,7 +8800,11 @@ Release: April 23, 2024
 
 122 / 157
 
-Figure 9: Sequencing during single-file streaming
+<!-- Extracted images from page 123 -->
+![Extracted image 1 from page 123]([MS-WMSP].images/page123-img01.png)
+<!-- /Extracted images from page 123 -->
+
+Figure 9: Sequencing during single-file streaming
 
 4.7  Streaming and Stopping Playback by Using Non-Pipelined Mode
 
@@ -8835,7 +8871,11 @@ Release: April 23, 2024
 
 124 / 157
 
-Figure 10: Stream, pause, and resume packet sequencing
+<!-- Extracted images from page 125 -->
+![Extracted image 1 from page 125]([MS-WMSP].images/page125-img01.png)
+<!-- /Extracted images from page 125 -->
+
+Figure 10: Stream, pause, and resume packet sequencing
 
 4.8  Streaming and Stopping Playback by Using Pipelined Mode
 
@@ -8903,7 +8943,11 @@ Release: April 23, 2024
 
 126 / 157
 
-Figure 11: Stream, stop, and resume packet sequencing
+<!-- Extracted images from page 127 -->
+![Extracted image 1 from page 127]([MS-WMSP].images/page127-img01.png)
+<!-- /Extracted images from page 127 -->
+
+Figure 11: Stream, stop, and resume packet sequencing
 
 To prevent an idle connection from being disconnected, the client sends periodic KeepAlive requests to
 the server.
@@ -8964,7 +9008,11 @@ Release: April 23, 2024
 
 128 / 157
 
-Figure 12: Stream, stop, stride, and stop packet sequencing
+<!-- Extracted images from page 129 -->
+![Extracted image 1 from page 129]([MS-WMSP].images/page129-img01.png)
+<!-- /Extracted images from page 129 -->
+
+Figure 12: Stream, stop, stride, and stop packet sequencing
 
 4.10  Stream Selection
 
@@ -8996,7 +9044,11 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The sequencing applies to both the pipelined and the non-pipelined mode of the protocol:
+<!-- Extracted images from page 130 -->
+![Extracted image 1 from page 130]([MS-WMSP].images/page130-img01.png)
+<!-- /Extracted images from page 130 -->
+
+The sequencing applies to both the pipelined and the non-pipelined mode of the protocol:
 
 1.  The client sends a Describe request to retrieve the ASF header.
 
@@ -9080,7 +9132,11 @@ Release: April 23, 2024
 
 131 / 157
 
-Figure 14: Windows Media Encoder to Windows Media server Pull Distribution
+<!-- Extracted images from page 132 -->
+![Extracted image 1 from page 132]([MS-WMSP].images/page132-img01.png)
+<!-- /Extracted images from page 132 -->
+
+Figure 14: Windows Media Encoder to Windows Media server Pull Distribution
 
 The following example shows a typical Describe request in Pull Distribution.
 
@@ -9207,7 +9263,11 @@ Release: April 23, 2024
 
 134 / 157
 
-Figure 15: Caching proxy server states
+<!-- Extracted images from page 135 -->
+![Extracted image 1 from page 135]([MS-WMSP].images/page135-img01.png)
+<!-- /Extracted images from page 135 -->
+
+Figure 15: Caching proxy server states
 
 Other request types have a negligible impact on state of a proxy server. As indicated in the following
 flow diagram, if a proxy server receives a rendering log from a client, it forwards it to the origin server
@@ -9235,7 +9295,11 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-to the client that originated the request. It is important to note that this interaction does not trigger a
+<!-- Extracted images from page 136 -->
+![Extracted image 1 from page 136]([MS-WMSP].images/page136-img01.png)
+<!-- /Extracted images from page 136 -->
+
+to the client that originated the request. It is important to note that this interaction does not trigger a
 state transition; the proxy server will remain in its then current state.
 
 Figure 16: Caching proxy server state flow diagram
@@ -9291,7 +9355,11 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  The cache/proxy server communicates any subscribed-to events (as indicated within the x-wms-
+<!-- Extracted images from page 137 -->
+![Extracted image 1 from page 137]([MS-WMSP].images/page137-img01.png)
+<!-- /Extracted images from page 137 -->
+
+5.  The cache/proxy server communicates any subscribed-to events (as indicated within the x-wms-
 event-subscription directive on the Cache-Control header) to the origin server, as specified in
 SendEvent Request, section 2.2.2.9.
 
@@ -9353,7 +9421,11 @@ Release: April 23, 2024
 
 138 / 157
 
-Figure 18: Broadcast content delivery
+<!-- Extracted images from page 139 -->
+![Extracted image 1 from page 139]([MS-WMSP].images/page139-img01.png)
+<!-- /Extracted images from page 139 -->
+
+Figure 18: Broadcast content delivery
 
 4.12.1.3
 
@@ -9437,7 +9509,11 @@ Release: April 23, 2024
 
 140 / 157
 
-Figure 19: Flow chart for packet processing during initialization
+<!-- Extracted images from page 141 -->
+![Extracted image 1 from page 141]([MS-WMSP].images/page141-img01.png)
+<!-- /Extracted images from page 141 -->
+
+Figure 19: Flow chart for packet processing during initialization
 
 4.13.1 Parsing $M and $H Packets
 
@@ -9452,7 +9528,11 @@ Release: April 23, 2024
 
 141 / 157
 
-Figure 20: Parsing $M and $H packets flow chart
+<!-- Extracted images from page 142 -->
+![Extracted image 1 from page 142]([MS-WMSP].images/page142-img01.png)
+<!-- /Extracted images from page 142 -->
+
+Figure 20: Parsing $M and $H packets flow chart
 
 4.14  Packet Processing During Streaming
 
@@ -9468,7 +9548,11 @@ Release: April 23, 2024
 
 142 / 157
 
-Figure 21: Packet processing rules flow chart
+<!-- Extracted images from page 143 -->
+![Extracted image 1 from page 143]([MS-WMSP].images/page143-img01.png)
+<!-- /Extracted images from page 143 -->
+
+Figure 21: Packet processing rules flow chart
 
 [MS-WMSP] - v20240423
 Windows Media HTTP Streaming Protocol

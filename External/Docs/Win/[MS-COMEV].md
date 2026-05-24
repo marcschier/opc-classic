@@ -5122,7 +5122,11 @@ Release: September 9, 2025
 
 64 / 86
 
-4  Protocol Examples
+<!-- Extracted images from page 65 -->
+![Extracted image 1 from page 65]([MS-COMEV].images/page065-img01.png)
+<!-- /Extracted images from page 65 -->
+
+4  Protocol Examples
 
  The following examples build on the examples given in [MS-DCOM] section 4.1.
 
@@ -5201,7 +5205,11 @@ Release: September 9, 2025
 
 66 / 86
 
-3.  The server verifies the values that are specified in the event class object. In this example, it
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-COMEV].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+3.  The server verifies the values that are specified in the event class object. In this example, it
 
 verifies that the EventClassID is not already in its event class store. If it were, the server would
 update the current entry with a new value for the properties and return S_OK. However, in this
@@ -5302,7 +5310,11 @@ Release: September 9, 2025
 
 69 / 86
 
-4.3  Updating a Subscription
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70]([MS-COMEV].images/page070-img01.png)
+<!-- /Extracted images from page 70 -->
+
+4.3  Updating a Subscription
 
 Figure 3: Updating a subscription
 
@@ -5386,7 +5398,11 @@ Release: September 9, 2025
 
 71 / 86
 
-   );
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-COMEV].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+   );
 
 7.  The server stores the description and returns S_OK.
 

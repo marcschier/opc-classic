@@ -1728,7 +1728,11 @@ Release: June 1, 2017
 
 20 / 29
 
-4  Protocol Examples
+<!-- Extracted images from page 21 -->
+![Extracted image 1 from page 21]([MS-MQSD].images/page021-img01.png)
+<!-- /Extracted images from page 21 -->
+
+4  Protocol Examples
 
 A client broadcasts a TopologyClientRequest packet and receives zero or more TopologyServerReply
 packets.

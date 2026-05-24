@@ -3600,3 +3600,13 @@ Relationship to other protocols 9
 Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
+
+## Extracted images
+
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-XUSBI].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-XUSBI].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->

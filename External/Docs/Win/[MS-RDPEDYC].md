@@ -1060,7 +1060,12 @@ Release: April 23, 2024
 
 9 / 62
 
-environment and for creating individual DVCs. The DVC client manager is responsible for creating and
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RDPEDYC].images/page010-img01.png)
+![Extracted image 2 from page 10]([MS-RDPEDYC].images/page010-img02.png)
+<!-- /Extracted images from page 10 -->
+
+environment and for creating individual DVCs. The DVC client manager is responsible for creating and
 maintaining connections to client-side DVC manager applications.
 
 After the DVC managers are initialized, the DVC server manager can create individual DVCs. These
@@ -1113,7 +1118,12 @@ Release: April 23, 2024
 
 10 / 62
 
-Figure 3: DVC initialization sequence
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPEDYC].images/page011-img01.png)
+![Extracted image 2 from page 11]([MS-RDPEDYC].images/page011-img02.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 3: DVC initialization sequence
 
 The initialization is performed at the completion of the connection sequence ([MS-RDPBCGR] section
 1.3.1.1) using the established static virtual channel session, as specified in [MS-RDPBCGR] section
@@ -1195,7 +1205,11 @@ Release: April 23, 2024
 
 12 / 62
 
-Figure 5: Send data sequence via DVC PDUs
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RDPEDYC].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 5: Send data sequence via DVC PDUs
 
 1.3.3.2.1 Sending Data
 
@@ -1232,7 +1246,11 @@ Release: April 23, 2024
 
 13 / 62
 
-1.3.3.3  Closing a DVC
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-RDPEDYC].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+1.3.3.3  Closing a DVC
 
 Either an application running on the TS server or a listener running on the TS client can request that
 a channel be closed. The following diagram illustrates the sequence of operations involved in closing a
@@ -2607,7 +2625,11 @@ Release: April 23, 2024
 
 30 / 62
 
-3  Protocol Details
+<!-- Extracted images from page 31 -->
+![Extracted image 1 from page 31]([MS-RDPEDYC].images/page031-img01.png)
+<!-- /Extracted images from page 31 -->
+
+3  Protocol Details
 
 The following sections specify details of the Remote Desktop Protocol: Dynamic Virtual Channel
 Extension, including common, client, and server abstract data models and message processing rules.
@@ -2649,7 +2671,11 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Channel create fail event: The response indicated failure, the channel is closed.
+<!-- Extracted images from page 32 -->
+![Extracted image 1 from page 32]([MS-RDPEDYC].images/page032-img01.png)
+<!-- /Extracted images from page 32 -->
+
+Channel create fail event: The response indicated failure, the channel is closed.
 
 Create success event: The channel is ready to send and receive data.
 
@@ -2909,7 +2935,11 @@ Remote Desktop Protocol: Dynamic Channel Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Each channel MUST use a dedicated decompression context for receiving data, as any compressed
+<!-- Extracted images from page 36 -->
+![Extracted image 1 from page 36]([MS-RDPEDYC].images/page036-img01.png)
+<!-- /Extracted images from page 36 -->
+
+Each channel MUST use a dedicated decompression context for receiving data, as any compressed
 data received will refer only to the prior data received on that channel.
 
 3.1.5.2.6 DVC Data Compressed (DYNVC_DATA_COMPRESSED)

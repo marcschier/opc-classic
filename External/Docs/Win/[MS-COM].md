@@ -1400,7 +1400,11 @@ Release: April 23, 2024
 
 12 / 87
 
-Figure 1: Layering of the protocol stack
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-COM].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 1: Layering of the protocol stack
 
 1.3.1  Context Properties
 
@@ -1459,7 +1463,11 @@ Release: April 23, 2024
 
 13 / 87
 
-1.3.1.1.2 Prototype Context Within Activations
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-COM].images/page014-img01.png)
+<!-- /Extracted images from page 14 -->
+
+1.3.1.1.2 Prototype Context Within Activations
 
 The prototype context within the Activation Properties BLOB ([MS-DCOM] section 2.2.22) represents
 the set of context properties of the client that the server needs to add to its object context. While the
@@ -1484,7 +1492,11 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-and influence future client-side behaviors, either in general or specifically with respect to future
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-COM].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+and influence future client-side behaviors, either in general or specifically with respect to future
 communication with the unmarshaled reference.
 
 For example, a marshaled transactional COM+ server object returns a transactional envoy context
@@ -1514,7 +1526,11 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-object can send extra information about the state of the current transaction to a COM+ server
+<!-- Extracted images from page 16 -->
+![Extracted image 1 from page 16]([MS-COM].images/page016-img01.png)
+<!-- /Extracted images from page 16 -->
+
+object can send extra information about the state of the current transaction to a COM+ server
 object.
 
 1.3.1.3.1 Diagram
@@ -1556,7 +1572,11 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.3.2.3  Non-root Transaction Object
+<!-- Extracted images from page 17 -->
+![Extracted image 1 from page 17]([MS-COM].images/page017-img01.png)
+<!-- /Extracted images from page 17 -->
+
+1.3.2.3  Non-root Transaction Object
 
 Non-root transaction objects are objects created by or downstream from the root transaction object,
 and those that share the root transaction object's transaction. There can be multiple non-root objects
@@ -4454,7 +4474,11 @@ Release: April 23, 2024
 
 53 / 87
 
-Figure 6: Flow chart of outgoing ORPC from a transactional object
+<!-- Extracted images from page 54 -->
+![Extracted image 1 from page 54]([MS-COM].images/page054-img01.png)
+<!-- /Extracted images from page 54 -->
+
+Figure 6: Flow chart of outgoing ORPC from a transactional object
 
 3.13.5 Timer Events
 
@@ -5978,7 +6002,11 @@ Release: April 23, 2024
 
 73 / 87
 
-4  Protocol Examples
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-COM].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+4  Protocol Examples
 
 4.1  Client to RootTxn to Non-RootTxn Example
 

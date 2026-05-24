@@ -1184,7 +1184,11 @@ Release: April 23, 2024
 
 10 / 79
 
-Figure 1: Channel setup sequence
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPEV].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 1: Channel setup sequence
 
 1.3.3.2  Presentation Initialization and Termination Sequence
 
@@ -1219,7 +1223,11 @@ Release: April 23, 2024
 
 11 / 79
 
-Figure 2: Presentation initialization and termination sequence
+<!-- Extracted images from page 12 -->
+![Extracted image 1 from page 12]([MS-RDPEV].images/page012-img01.png)
+<!-- /Extracted images from page 12 -->
+
+Figure 2: Presentation initialization and termination sequence
 
 1.3.3.3  Playback State Sequence
 
@@ -1233,7 +1241,11 @@ Release: April 23, 2024
 
 12 / 79
 
-Figure 3: Playback state sequence
+<!-- Extracted images from page 13 -->
+![Extracted image 1 from page 13]([MS-RDPEV].images/page013-img01.png)
+<!-- /Extracted images from page 13 -->
+
+Figure 3: Playback state sequence
 
 1.3.3.4  Data Streaming Sequence
 
@@ -1246,7 +1258,12 @@ Release: April 23, 2024
 
 13 / 79
 
-Figure 4: Data streaming sequence
+<!-- Extracted images from page 14 -->
+![Extracted image 1 from page 14]([MS-RDPEV].images/page014-img01.png)
+![Extracted image 2 from page 14]([MS-RDPEV].images/page014-img02.png)
+<!-- /Extracted images from page 14 -->
+
+Figure 4: Data streaming sequence
 
 1.3.3.5  Geometry Handling Sequence
 
@@ -1268,7 +1285,11 @@ Release: April 23, 2024
 
 14 / 79
 
-Figure 6: Volume handling sequence
+<!-- Extracted images from page 15 -->
+![Extracted image 1 from page 15]([MS-RDPEV].images/page015-img01.png)
+<!-- /Extracted images from page 15 -->
+
+Figure 6: Volume handling sequence
 
 1.3.4  Interface Manipulation Exchange Capabilities Interface Description
 

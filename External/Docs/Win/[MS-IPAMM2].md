@@ -5680,7 +5680,11 @@ Release: April 23, 2024
 
 58 / 1357
 
-[RFC3330] IANA, "Special-Use IPv4 Addresses", RFC 3330, September 2002, http://www.rfc-
+<!-- Extracted images from page 59 -->
+![Extracted image 1 from page 59]([MS-IPAMM2].images/page059-img01.png)
+<!-- /Extracted images from page 59 -->
+
+[RFC3330] IANA, "Special-Use IPv4 Addresses", RFC 3330, September 2002, http://www.rfc-
 editor.org/rfc/rfc3330.txt
 
 [RFC3513] Hinden, R. and Deering, S., "Internet Protocol Version 6 (IPv6) Addressing Architecture",
@@ -5731,7 +5735,11 @@ Release: April 23, 2024
 
 59 / 1357
 
-  Audit the configuration changes in DHCP servers and IPAM server
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-IPAMM2].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+  Audit the configuration changes in DHCP servers and IPAM server
 
 
 
@@ -73086,7 +73094,11 @@ Release: April 23, 2024
 
 909 / 1357
 
-Figure 3: Enumeration Callback Interaction
+<!-- Extracted images from page 910 -->
+![Extracted image 1 from page 910]([MS-IPAMM2].images/page910-img01.png)
+<!-- /Extracted images from page 910 -->
+
+Figure 3: Enumeration Callback Interaction
 
 3.5.1  Abstract Data Model
 
@@ -73107,7 +73119,11 @@ Release: April 23, 2024
 
 910 / 1357
 
-Figure 4: IIpamEnumerator - server state machine
+<!-- Extracted images from page 911 -->
+![Extracted image 1 from page 911]([MS-IPAMM2].images/page911-img01.png)
+<!-- /Extracted images from page 911 -->
+
+Figure 4: IIpamEnumerator - server state machine
 
 The IIpamEnumerator server is session-based and stateful in nature. The session state variable
 will be used to keep track of the current state for each session and it can have the following states as
@@ -77213,7 +77229,11 @@ Release: April 23, 2024
 
 964 / 1357
 
-Figure 5: IIpamEnumeratorCallback state machine
+<!-- Extracted images from page 965 -->
+![Extracted image 1 from page 965]([MS-IPAMM2].images/page965-img01.png)
+<!-- /Extracted images from page 965 -->
+
+Figure 5: IIpamEnumeratorCallback state machine
 
 The IIpamEnumeratorCallback server is session-based, sharing the same session the management
 client has with the management server using the IIpamEnumerator port type. It is also stateful in
@@ -78108,7 +78128,11 @@ Release: April 23, 2024
 
 978 / 1357
 
-Figure 6: Provisioning – protocol interaction
+<!-- Extracted images from page 979 -->
+![Extracted image 1 from page 979]([MS-IPAMM2].images/page979-img01.png)
+<!-- /Extracted images from page 979 -->
+
+Figure 6: Provisioning – protocol interaction
 
 3.11.1 Abstract Data Model
 
@@ -78131,7 +78155,11 @@ Release: April 23, 2024
 
 979 / 1357
 
-Figure 7: IIpamAsyncProvision server state machine
+<!-- Extracted images from page 980 -->
+![Extracted image 1 from page 980]([MS-IPAMM2].images/page980-img01.png)
+<!-- /Extracted images from page 980 -->
+
+Figure 7: IIpamAsyncProvision server state machine
 
 The IIpamAsyncProvision server is session-based and stateful in nature. The session state
 variable will be used to keep track of the current state for each session and it can have the following
@@ -78720,7 +78748,11 @@ Release: April 23, 2024
 
 988 / 1357
 
-3.13.1.1
+<!-- Extracted images from page 989 -->
+![Extracted image 1 from page 989]([MS-IPAMM2].images/page989-img01.png)
+<!-- /Extracted images from page 989 -->
+
+3.13.1.1
 
 State Machine
 
@@ -79044,7 +79076,11 @@ Release: April 23, 2024
 
 993 / 1357
 
-3.14.5 Timer Events
+<!-- Extracted images from page 994 -->
+![Extracted image 1 from page 994]([MS-IPAMM2].images/page994-img01.png)
+<!-- /Extracted images from page 994 -->
+
+3.14.5 Timer Events
 
 None.
 
@@ -79076,7 +79112,11 @@ Release: April 23, 2024
 
 994 / 1357
 
-implementations adhere to this model as long as their external behavior is consistent with that
+<!-- Extracted images from page 995 -->
+![Extracted image 1 from page 995]([MS-IPAMM2].images/page995-img01.png)
+<!-- /Extracted images from page 995 -->
+
+implementations adhere to this model as long as their external behavior is consistent with that
 described in this document.
 
 3.15.1.1
@@ -79736,7 +79776,11 @@ Release: April 23, 2024
 
 1004 / 1357
 
-Figure 11: IIpamAsyncSchemaCallback state machine
+<!-- Extracted images from page 1005 -->
+![Extracted image 1 from page 1005]([MS-IPAMM2].images/page1005-img01.png)
+<!-- /Extracted images from page 1005 -->
+
+Figure 11: IIpamAsyncSchemaCallback state machine
 
 The IIpamAsyncSchemaCallback server is session-based sharing the same session the
 management client has with the management server using the IIpamAsyncSchemaConversion port
@@ -80103,7 +80147,11 @@ Release: April 23, 2024
 
 1010 / 1357
 
-Figure 12: OperationWithProgress interaction
+<!-- Extracted images from page 1011 -->
+![Extracted image 1 from page 1011]([MS-IPAMM2].images/page1011-img01.png)
+<!-- /Extracted images from page 1011 -->
+
+Figure 12: OperationWithProgress interaction
 
 3.19.1 Abstract Data Model
 
@@ -80126,7 +80174,11 @@ Release: April 23, 2024
 
 1011 / 1357
 
-Figure 13: IIpamOperationWithProgress - server state machine
+<!-- Extracted images from page 1012 -->
+![Extracted image 1 from page 1012]([MS-IPAMM2].images/page1012-img01.png)
+<!-- /Extracted images from page 1012 -->
+
+Figure 13: IIpamOperationWithProgress - server state machine
 
 The IIpamOperationWithProgress server is session-based and stateful in nature. The session state
 variable keeps track of the current state for each session, and can have the following states as
@@ -85725,7 +85777,11 @@ Release: April 23, 2024
 
 1079 / 1357
 
-Figure 14: IIpamOperationWithProgressCallback state machine
+<!-- Extracted images from page 1080 -->
+![Extracted image 1 from page 1080]([MS-IPAMM2].images/page1080-img01.png)
+<!-- /Extracted images from page 1080 -->
+
+Figure 14: IIpamOperationWithProgressCallback state machine
 
 The IIpamOperationWithProgressCallback server is session-based, sharing the same session the
 management client has with the management server using the IIpamOperationWithProgress port

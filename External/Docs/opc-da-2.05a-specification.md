@@ -1,3 +1,7 @@
+<!-- Extracted images from page 1 -->
+![Extracted image 1 from page 1](opc-da-2.05a-specification.images/page001-img01.png)
+<!-- /Extracted images from page 1 -->
+
 OPC Data Access Custom Interface Specification 2.04
 
 TM

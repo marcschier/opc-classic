@@ -869,7 +869,11 @@ Release: April 23, 2024
 
 8 / 30
 
-Figure 1: Group Policy: Scripts Extension Encoding entities
+<!-- Extracted images from page 9 -->
+![Extracted image 1 from page 9]([MS-GPSCR].images/page009-img01.png)
+<!-- /Extracted images from page 9 -->
+
+Figure 1: Group Policy: Scripts Extension Encoding entities
 
 Clients can use either or both of the following modes for this protocol because they address different
 issues:
@@ -962,7 +966,11 @@ Release: April 23, 2024
 
 10 / 30
 
-Figure 2: Group Policy: Scripts Extension Encoding protocol relationship diagram
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-GPSCR].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 2: Group Policy: Scripts Extension Encoding protocol relationship diagram
 
 1.5  Prerequisites/Preconditions
 

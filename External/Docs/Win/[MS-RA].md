@@ -3405,7 +3405,11 @@ Release: January 13, 2026
 
 37 / 90
 
-The following state diagram shows the session initialization sequence between the novice and expert
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-RA].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+The following state diagram shows the session initialization sequence between the novice and expert
 using protocol version 1.
 
 Figure 1: Remote Assistance session initialization state diagram (from the expert/client
@@ -3458,7 +3462,11 @@ Release: January 13, 2026
 
 39 / 90
 
-Figure 2: Remote Assistance session initialization sequence diagram for version 1
+<!-- Extracted images from page 40 -->
+![Extracted image 1 from page 40]([MS-RA].images/page040-img01.png)
+<!-- /Extracted images from page 40 -->
+
+Figure 2: Remote Assistance session initialization sequence diagram for version 1
 
 When the expert receives the REMOTEDESKTOP_CTL_SERVER_ANNOUNCE (section 2.2.1.7) session
 initialization messages, it MUST respond with a
@@ -3555,7 +3563,11 @@ Release: January 13, 2026
 
 41 / 90
 
-3.4  Session Initialization Using the Novice (Server) Implementing Only Version 1
+<!-- Extracted images from page 42 -->
+![Extracted image 1 from page 42]([MS-RA].images/page042-img01.png)
+<!-- /Extracted images from page 42 -->
+
+3.4  Session Initialization Using the Novice (Server) Implementing Only Version 1
 
 Details
 
@@ -3721,7 +3733,11 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-the novice using the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting, as
+<!-- Extracted images from page 45 -->
+![Extracted image 1 from page 45]([MS-RA].images/page045-img01.png)
+<!-- /Extracted images from page 45 -->
+
+the novice using the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting, as
 specified in [MS-RDPBCGR]. This basic connection does not allow the expert to view the novice screen.
 Before the expert can view the novice screen, control messages MUST be exchanged between the
 novice and expert. When this exchange is completed successfully, the expert can view the novice
@@ -3781,7 +3797,11 @@ Release: January 13, 2026
 
 46 / 90
 
-Figure 5: Remote Assistance session initialization sequence diagram for version 2
+<!-- Extracted images from page 47 -->
+![Extracted image 1 from page 47]([MS-RA].images/page047-img01.png)
+<!-- /Extracted images from page 47 -->
+
+Figure 5: Remote Assistance session initialization sequence diagram for version 2
 
 After the novice initiates Remote Assistance, the expert can obtain the Remote Assistance
 Connection String in any of the following methods:
@@ -3886,7 +3906,11 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-specified in [MS-RDPBCGR]. This basic connection does not have the Expert View capability; that is,
+<!-- Extracted images from page 49 -->
+![Extracted image 1 from page 49]([MS-RA].images/page049-img01.png)
+<!-- /Extracted images from page 49 -->
+
+specified in [MS-RDPBCGR]. This basic connection does not have the Expert View capability; that is,
 the expert cannot view the novice screen. Before the expert can view the novice screen, there is a
 control message exchange between the novice and the expert. When this exchange is completed
 successfully, the expert is granted a view of the novice screen, and the Remote Assistance session
@@ -4028,7 +4052,11 @@ Release: January 13, 2026
 
 51 / 90
 
-3.7.1  Abstract Data Model
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-RA].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+3.7.1  Abstract Data Model
 
 Figure 7: Token authorization
 
@@ -4057,7 +4085,11 @@ Release: January 13, 2026
 
 52 / 90
 
-3.7.4  Higher-Layer Triggered Events
+<!-- Extracted images from page 53 -->
+![Extracted image 1 from page 53]([MS-RA].images/page053-img01.png)
+<!-- /Extracted images from page 53 -->
+
+3.7.4  Higher-Layer Triggered Events
 
 The messages and events described in this specification have no other dependent events or messages
 from a higher layer.
@@ -4133,7 +4165,11 @@ Release: January 13, 2026
 
 54 / 90
 
-3.8.1  Abstract Data Model
+<!-- Extracted images from page 55 -->
+![Extracted image 1 from page 55]([MS-RA].images/page055-img01.png)
+<!-- /Extracted images from page 55 -->
+
+3.8.1  Abstract Data Model
 
 Figure 9: Token authorization
 
@@ -4214,7 +4250,11 @@ Release: January 13, 2026
 
 56 / 90
 
-Figure 10: Session-state diagram from the file sender perspective
+<!-- Extracted images from page 57 -->
+![Extracted image 1 from page 57]([MS-RA].images/page057-img01.png)
+<!-- /Extracted images from page 57 -->
+
+Figure 10: Session-state diagram from the file sender perspective
 
 3.9.1  Abstract Data Model
 
@@ -4298,7 +4338,11 @@ Release: January 13, 2026
 
 58 / 90
 
-Figure 11: File transfer packet sequencing
+<!-- Extracted images from page 59 -->
+![Extracted image 1 from page 59]([MS-RA].images/page059-img01.png)
+<!-- /Extracted images from page 59 -->
+
+Figure 11: File transfer packet sequencing
 
 3.9.6  Timer Events
 
@@ -4326,7 +4370,11 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Figure 12: Session-state diagram (file receiver perspective)
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-RA].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+Figure 12: Session-state diagram (file receiver perspective)
 
 3.10.1 Abstract Data Model
 
@@ -4410,7 +4458,11 @@ Release: January 13, 2026
 
 61 / 90
 
-Figure 13: File transfer process during a Remote Assistance session
+<!-- Extracted images from page 62 -->
+![Extracted image 1 from page 62]([MS-RA].images/page062-img01.png)
+<!-- /Extracted images from page 62 -->
+
+Figure 13: File transfer process during a Remote Assistance session
 
 3.10.6 Timer Events
 
@@ -4651,7 +4703,11 @@ Release: January 13, 2026
 
 66 / 90
 
-3.15  Share Control Remote Assistance Expert (Client) Details
+<!-- Extracted images from page 67 -->
+![Extracted image 1 from page 67]([MS-RA].images/page067-img01.png)
+<!-- /Extracted images from page 67 -->
+
+3.15  Share Control Remote Assistance Expert (Client) Details
 
 Figure 14: Desktop sharing session life cycle (expert/client perspective)
 
@@ -4749,7 +4805,11 @@ Release: January 13, 2026
 
 68 / 90
 
-Figure 15: Remote control packet sequencing
+<!-- Extracted images from page 69 -->
+![Extracted image 1 from page 69]([MS-RA].images/page069-img01.png)
+<!-- /Extracted images from page 69 -->
+
+Figure 15: Remote control packet sequencing
 
 3.15.6 Timer Events
 
@@ -4766,7 +4826,11 @@ Release: January 13, 2026
 
 69 / 90
 
-3.16  Share Control Remote Assistance Novice (Server) Details
+<!-- Extracted images from page 70 -->
+![Extracted image 1 from page 70]([MS-RA].images/page070-img01.png)
+<!-- /Extracted images from page 70 -->
+
+3.16  Share Control Remote Assistance Novice (Server) Details
 
 Figure 16: Desktop sharing session (novice/server perspective)
 
@@ -4859,7 +4923,11 @@ Release: January 13, 2026
 
 71 / 90
 
-Figure 17: Expert-requested desktop control (in Remote Assistance session)
+<!-- Extracted images from page 72 -->
+![Extracted image 1 from page 72]([MS-RA].images/page072-img01.png)
+<!-- /Extracted images from page 72 -->
+
+Figure 17: Expert-requested desktop control (in Remote Assistance session)
 
 3.16.6 Timer Events
 
@@ -4887,7 +4955,11 @@ Release: January 13, 2026
 
 72 / 90
 
-Figure 18: Remote Assistance request (expert)
+<!-- Extracted images from page 73 -->
+![Extracted image 1 from page 73]([MS-RA].images/page073-img01.png)
+<!-- /Extracted images from page 73 -->
+
+Figure 18: Remote Assistance request (expert)
 
 [MS-RA] - v20260113
 Remote Assistance Protocol
@@ -4896,7 +4968,11 @@ Release: January 13, 2026
 
 73 / 90
 
-Figure 19: Remote Assistance request (novice)
+<!-- Extracted images from page 74 -->
+![Extracted image 1 from page 74]([MS-RA].images/page074-img01.png)
+<!-- /Extracted images from page 74 -->
+
+Figure 19: Remote Assistance request (novice)
 
 3.17.1 Abstract Data Model
 
@@ -4988,7 +5064,11 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-The following diagram show the messages exchanged while setting up and cleaning up after a VoIP
+<!-- Extracted images from page 76 -->
+![Extracted image 1 from page 76]([MS-RA].images/page076-img01.png)
+<!-- /Extracted images from page 76 -->
+
+The following diagram show the messages exchanged while setting up and cleaning up after a VoIP
 session.
 
 Figure 20: Remote Assistance VoIP session message exchange
@@ -5018,7 +5098,11 @@ Release: January 13, 2026
 
 76 / 90
 
-Figure 21: Remote Assistance session diagram (initiated by expert/client)
+<!-- Extracted images from page 77 -->
+![Extracted image 1 from page 77]([MS-RA].images/page077-img01.png)
+<!-- /Extracted images from page 77 -->
+
+Figure 21: Remote Assistance session diagram (initiated by expert/client)
 
 [MS-RA] - v20260113
 Remote Assistance Protocol
@@ -5027,7 +5111,11 @@ Release: January 13, 2026
 
 77 / 90
 
-Figure 22: Remote Assistance session diagram (initiated by novice/server)
+<!-- Extracted images from page 78 -->
+![Extracted image 1 from page 78]([MS-RA].images/page078-img01.png)
+<!-- /Extracted images from page 78 -->
+
+Figure 22: Remote Assistance session diagram (initiated by novice/server)
 
 3.18.1 Abstract Data Model
 
@@ -5112,7 +5200,11 @@ Remote Assistance Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-the PC to PC call model provided by RTC, the expert connects to the novice through RTC and can now
+<!-- Extracted images from page 80 -->
+![Extracted image 1 from page 80]([MS-RA].images/page080-img01.png)
+<!-- /Extracted images from page 80 -->
+
+the PC to PC call model provided by RTC, the expert connects to the novice through RTC and can now
 send and receive audio data.
 
 When either side wants to end the VoIP communications, the message PRESTART MUST be sent, as

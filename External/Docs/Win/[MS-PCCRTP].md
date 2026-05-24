@@ -680,7 +680,11 @@ Release: April 23, 2024
 
 6 / 21
 
-A sequence diagram describing the communication between an HTTP/1.1 client and the HTTP/1.1
+<!-- Extracted images from page 7 -->
+![Extracted image 1 from page 7]([MS-PCCRTP].images/page007-img01.png)
+<!-- /Extracted images from page 7 -->
+
+A sequence diagram describing the communication between an HTTP/1.1 client and the HTTP/1.1
 server is shown following.
 
 Figure 1: Sequence diagram describing the communication between the HTTP/1.1 client

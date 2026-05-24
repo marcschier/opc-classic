@@ -351,7 +351,11 @@ Release: April 23, 2024
 
 5 / 26
 
-
+<!-- Extracted images from page 6 -->
+![Extracted image 1 from page 6]([MS-RDPEMSC].images/page006-img01.png)
+<!-- /Extracted images from page 6 -->
+
+
 
 
 

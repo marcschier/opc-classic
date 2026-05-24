@@ -1055,7 +1055,11 @@ Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-server side. This subprotocol is used to create remote device instances on the server machine that
+<!-- Extracted images from page 10 -->
+![Extracted image 1 from page 10]([MS-RDPEPNP].images/page010-img01.png)
+<!-- /Extracted images from page 10 -->
+
+server side. This subprotocol is used to create remote device instances on the server machine that
 correspond to the physical devices on the client machine. The following illustration shows the PNP
 Device Info Subprotocol message sequence. This subprotocol uses a dynamic virtual channel named
 PNPDR for communication between client and server.
@@ -1082,7 +1086,11 @@ Release: April 23, 2024
 
 10 / 48
 
-Figure 2: PNP Device I/O Subprotocol message sequence
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-RDPEPNP].images/page011-img01.png)
+<!-- /Extracted images from page 11 -->
+
+Figure 2: PNP Device I/O Subprotocol message sequence
 
 For devices redirected using the PNP Device Info Subprotocol, I/O redirection takes place using the
 PNP Device I/O Subprotocol. The server creates a new subchannel within the FileRedirectorChannel

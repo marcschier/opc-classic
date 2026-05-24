@@ -607,7 +607,11 @@ Release: April 23, 2024
 
 7 / 43
 
-1.3  Overview
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-RNAS].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+1.3  Overview
 
 The Remote Authentication Dial-In User Service (RADIUS) Protocol, as specified in [RFC2865],
 provides authentication, authorization, and accounting (AAA) of endpoints in scenarios such as

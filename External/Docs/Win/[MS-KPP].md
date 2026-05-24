@@ -531,7 +531,11 @@ Release: September 16, 2024
 
 7 / 26
 
-1.2.2  Informative References
+<!-- Extracted images from page 8 -->
+![Extracted image 1 from page 8]([MS-KPP].images/page008-img01.png)
+<!-- /Extracted images from page 8 -->
+
+1.2.2  Informative References
 
 None.
 

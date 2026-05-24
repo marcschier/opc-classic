@@ -4890,7 +4890,11 @@ Release: September 16, 2024
 
 51 / 250
 
-Figure 1: Objects linked together by using reference attributes
+<!-- Extracted images from page 52 -->
+![Extracted image 1 from page 52]([MS-FRS1].images/page052-img01.png)
+<!-- /Extracted images from page 52 -->
+
+Figure 1: Objects linked together by using reference attributes
 
 2.3.1.1  NTFRS Settings Object
 
@@ -5506,7 +5510,11 @@ Release: September 16, 2024
 
 59 / 250
 
-Figure 2: SYSVOL replica set hierarchy of objects
+<!-- Extracted images from page 60 -->
+![Extracted image 1 from page 60]([MS-FRS1].images/page060-img01.png)
+<!-- /Extracted images from page 60 -->
+
+Figure 2: SYSVOL replica set hierarchy of objects
 
 2.3.2.1  NTFRS Settings Object
 
@@ -10464,7 +10472,11 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-4.1  Connection Establishment Sequence
+<!-- Extracted images from page 122 -->
+![Extracted image 1 from page 122]([MS-FRS1].images/page122-img01.png)
+<!-- /Extracted images from page 122 -->
+
+4.1  Connection Establishment Sequence
 
 This example shows how a connection is established using two machines:
 
@@ -10572,7 +10584,11 @@ Release: September 16, 2024
 
 123 / 250
 
-Figure 4: Change order handling sequence
+<!-- Extracted images from page 124 -->
+![Extracted image 1 from page 124]([MS-FRS1].images/page124-img01.png)
+<!-- /Extracted images from page 124 -->
+
+Figure 4: Change order handling sequence
 
 At time 1:
 
@@ -10877,7 +10893,11 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The following diagram shows the sequence of packets sent over the wire.
+<!-- Extracted images from page 129 -->
+![Extracted image 1 from page 129]([MS-FRS1].images/page129-img01.png)
+<!-- /Extracted images from page 129 -->
+
+The following diagram shows the sequence of packets sent over the wire.
 
 Figure 5: Sequence of packets over the wire
 

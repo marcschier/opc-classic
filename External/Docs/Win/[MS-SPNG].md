@@ -1078,7 +1078,12 @@ Release: April 27, 2026
 
 10 / 33
 
-1.3.3  Client Initiated SPNG Message Flow
+<!-- Extracted images from page 11 -->
+![Extracted image 1 from page 11]([MS-SPNG].images/page011-img01.png)
+![Extracted image 2 from page 11]([MS-SPNG].images/page011-img02.png)
+<!-- /Extracted images from page 11 -->
+
+1.3.3  Client Initiated SPNG Message Flow
 
 SPNG message flow is composed of the following exchange:
 

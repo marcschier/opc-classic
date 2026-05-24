@@ -2344,7 +2344,11 @@ Active Directory Web Services: Custom Action Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  ChangeOptionalFeature
+<!-- Extracted images from page 23 -->
+![Extracted image 1 from page 23]([MS-ADCAP].images/page023-img01.png)
+<!-- /Extracted images from page 23 -->
+
+  ChangeOptionalFeature
 
   ChangePassword
 

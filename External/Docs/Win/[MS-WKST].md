@@ -1654,7 +1654,11 @@ Release: April 23, 2024
 
 17 / 205
 
-Figure 1: Client-side protocol relationships among the Workstation Service Remote Protocol
+<!-- Extracted images from page 18 -->
+![Extracted image 1 from page 18]([MS-WKST].images/page018-img01.png)
+<!-- /Extracted images from page 18 -->
+
+Figure 1: Client-side protocol relationships among the Workstation Service Remote Protocol
 and supporting protocols
 
 The server-side protocol relationships are illustrated in the following diagram:
@@ -1666,7 +1670,11 @@ Release: April 23, 2024
 
 18 / 205
 
-Figure 2: Server relationships among the Workstation Service Remote Protocol and
+<!-- Extracted images from page 19 -->
+![Extracted image 1 from page 19]([MS-WKST].images/page019-img01.png)
+<!-- /Extracted images from page 19 -->
+
+Figure 2: Server relationships among the Workstation Service Remote Protocol and
 supporting protocols
 
 The server dependency on the Local Security Authority (LSA) (Domain Policy) Remote Protocol
@@ -2942,7 +2950,12 @@ Release: April 23, 2024
 
 36 / 205
 
-Figure 3: EncodedPassword characters
+<!-- Extracted images from page 37 -->
+![Extracted image 1 from page 37]([MS-WKST].images/page037-img01.png)
+![Extracted image 2 from page 37]([MS-WKST].images/page037-img02.png)
+<!-- /Extracted images from page 37 -->
+
+Figure 3: EncodedPassword characters
 
 Then the buffer, EncodedPassword, interpreted as an array of bytes, where each element is depicted
 as a hexadecimal 8-bit value, could be represented graphically as:
@@ -2993,7 +3006,11 @@ Release: April 23, 2024
 
 37 / 205
 
-Figure 5: EncodedPassword complete
+<!-- Extracted images from page 38 -->
+![Extracted image 1 from page 38]([MS-WKST].images/page038-img01.png)
+<!-- /Extracted images from page 38 -->
+
+Figure 5: EncodedPassword complete
 
 2.2.5.18.2
 
@@ -15175,7 +15192,11 @@ Release: April 23, 2024
 
 172 / 205
 
-The following sequence diagram shows the sequence of messages that can be exchanged as a result
+<!-- Extracted images from page 173 -->
+![Extracted image 1 from page 173]([MS-WKST].images/page173-img01.png)
+<!-- /Extracted images from page 173 -->
+
+The following sequence diagram shows the sequence of messages that can be exchanged as a result
 of a NetrJoinDomain2 message sent to the server.
 
 Figure 6: NetrJoinDomain2 sequence

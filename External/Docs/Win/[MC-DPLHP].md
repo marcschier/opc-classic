@@ -1499,7 +1499,11 @@ Release: April 23, 2024
 
 19 / 27
 
-4  Protocol Examples
+<!-- Extracted images from page 20 -->
+![Extracted image 1 from page 20]([MC-DPLHP].images/page020-img01.png)
+<!-- /Extracted images from page 20 -->
+
+4  Protocol Examples
 
 The following diagram shows an example use of the DirectPlay 8 Protocol: Host and Port Enumeration.
 
