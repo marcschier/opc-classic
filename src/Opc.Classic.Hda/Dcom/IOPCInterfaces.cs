@@ -50,8 +50,8 @@ public partial interface IOPCHDA_Server
 }
 
 /// <summary><c>IOPCHDA_Browser</c> — HDA address-space browse (IID_IOPCHDA_Browser).</summary>
-/// <remarks>Uses a hand-written proxy until generator support for <see cref="IOpcInterfaceRef" /> response values lands.</remarks>
 [OpcInterface("1F1217B1-DEE0-11D2-A5E5-000086339399")]
+[GenerateOpcProxy]
 public partial interface IOPCHDA_Browser
 {
     /// <summary><c>IOPCHDA_Browser::GetEnum</c> (opnum 3).</summary>
