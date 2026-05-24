@@ -90,8 +90,8 @@ namespace Opc.Classic.Dcom.Test {
             try {
                 outVal = dispatchActiveSheet.CallMethodA(dispId);
             }
-            catch (InteropException e) {
-                throw e;
+            catch (InteropException) {
+                throw;
             }
         }
 
