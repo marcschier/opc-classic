@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 50
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -310,7 +311,8 @@ Release: April 23, 2024
 
 2 / 50
 
-Date
+
+Date
 
 Revision
 History
@@ -496,211 +498,93 @@ Release: April 23, 2024
 
 3 / 50
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Replication Partner AutoDiscovery Message](#221-replication-partner-autodiscovery-message)
+    - [2.2.2 Common Replication Message Header](#222-common-replication-message-header)
+    - [2.2.3 Association Start Request Message](#223-association-start-request-message)
+    - [2.2.4 Association Start Response Message](#224-association-start-response-message)
+    - [2.2.5 Association Stop Request Message](#225-association-stop-request-message)
+    - [2.2.6 Owner-Version Map Request Message](#226-owner-version-map-request-message)
+    - [2.2.7 Owner-Version Map Response Message](#227-owner-version-map-response-message)
+      - [2.2.7.1 Owner Record](#2271-owner-record)
+    - [2.2.8 Update Notification Message](#228-update-notification-message)
+    - [2.2.9 Name Records Request Message](#229-name-records-request-message)
+    - [2.2.10 Name Records Response Message](#2210-name-records-response-message)
+      - [2.2.10.1 Name Record](#22101-name-record)
+        - [2.2.10.1.1 Address Record for a Special Group or Multihomed Machine](#221011-address-record-for-a-special-group-or-multihomed-machine)
+          - [2.2.10.1.1.1 Owner and Member IPv4 Address](#2210111-owner-and-member-ipv4-address)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Name Record](#3111-name-record)
+      - [3.1.1.2 Version](#3112-version)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Association Setup and Shutdown between Replication Partners](#3151-association-setup-and-shutdown-between-replication-partners)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Pull Partner Details](#32-pull-partner-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Standard Pull Replication](#3251-standard-pull-replication)
+      - [3.2.5.2 Push Notification Triggered Pull Replication](#3252-push-notification-triggered-pull-replication)
+      - [3.2.5.3 Data Verification Pull Replication](#3253-data-verification-pull-replication)
+      - [3.2.5.4 Updating Time Stamps During Pull Replication](#3254-updating-time-stamps-during-pull-replication)
+      - [3.2.5.5 Name Conflict Resolution During Pull Replication](#3255-name-conflict-resolution-during-pull-replication)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Push Partner Details](#33-push-partner-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Sending Push Notifications](#3351-sending-push-notifications)
+      - [3.3.5.2 Processing Pull Replication Requests](#3352-processing-pull-replication-requests)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Replication Partner Autodiscovery Details](#34-replication-partner-autodiscovery-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Processing Events and Sequencing Rules](#345-processing-events-and-sequencing-rules)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Merging Owner-Version Maps from Different Partners](#41-merging-owner-version-maps-from-different-partners)
+  - [4.2 Pull Replication without Persistent Association](#42-pull-replication-without-persistent-association)
+  - [4.3 Propagation of Push Notification with Persistent Association](#43-propagation-of-push-notification-with-persistent-association)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Replication Partner AutoDiscovery Message .................................................... 12
-Common Replication Message Header ........................................................... 13
-Association Start Request Message ............................................................... 13
-Association Start Response Message ............................................................. 14
-Association Stop Request Message ................................................................ 15
-Owner-Version Map Request Message ........................................................... 16
-Owner-Version Map Response Message ......................................................... 16
-Owner Record ....................................................................................... 17
-Update Notification Message ........................................................................ 18
-2.2.8
-2.2.9
-Name Records Request Message ................................................................... 19
-2.2.10  Name Records Response Message ................................................................. 20
-2.2.10.1  Name Record ........................................................................................ 20
-Address Record for a Special Group or Multihomed Machine .................. 23
-2.2.10.1.1.1  Owner and Member IPv4 Address ................................................ 23
-
-2.2.10.1.1
-
-2.2.7.1
-
-3.1
-
-3.1.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 24
-Common Details .............................................................................................. 24
-Abstract Data Model .................................................................................... 24
-Name Record ........................................................................................ 24
-Version ................................................................................................ 24
-Timers ...................................................................................................... 25
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 25
-Processing Events and Sequencing Rules ....................................................... 25
-Association Setup and Shutdown between Replication Partners ................... 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 27
-Pull Partner Details ........................................................................................... 28
-Abstract Data Model .................................................................................... 28
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 28
-Processing Events and Sequencing Rules ....................................................... 28
-Standard Pull Replication ....................................................................... 28
-Push Notification Triggered Pull Replication .............................................. 29
-Data Verification Pull Replication ............................................................. 30
-Updating Time Stamps During Pull Replication .......................................... 30
-Name Conflict Resolution During Pull Replication ....................................... 31
-Timer Events .............................................................................................. 37
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-
-3.2
-
-[MS-WINSRA] - v20240423
-Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 50
-
-3.3.5.1
-3.3.5.2
-
-3.3
-
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.6
-3.3.7
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-3.4.6
-3.4.7
-
-Other Local Events ...................................................................................... 37
-Push Partner Details ......................................................................................... 38
-Abstract Data Model .................................................................................... 38
-Timers ...................................................................................................... 38
-Initialization ............................................................................................... 38
-Higher-Layer Triggered Events ..................................................................... 38
-Processing Events and Sequencing Rules ....................................................... 38
-Sending Push Notifications ..................................................................... 38
-Processing Pull Replication Requests ........................................................ 39
-Timer Events .............................................................................................. 39
-Other Local Events ...................................................................................... 40
-Replication Partner Autodiscovery Details ............................................................ 40
-Abstract Data Model .................................................................................... 40
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Processing Events and Sequencing Rules ....................................................... 40
-Timer Events .............................................................................................. 40
-Other Local Events ...................................................................................... 40
-
-4  Protocol Examples ................................................................................................. 41
-Merging Owner-Version Maps from Different Partners ........................................... 41
-Pull Replication without Persistent Association ..................................................... 42
-Propagation of Push Notification with Persistent Association................................... 43
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 45
-Security Considerations for Implementers ........................................................... 45
-Index of Security Parameters ............................................................................ 45
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 46
-
-7  Change Tracking .................................................................................................... 48
-
-8  Index ..................................................................................................................... 49
-
-[MS-WINSRA] - v20240423
-Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 50
-
-1  Introduction
+## 1 Introduction
 
 Windows Internet Name Service (WINS) is the Microsoft implementation of NetBIOS Name
 Server (NBNS), a name server for NetBIOS names.
@@ -714,7 +598,7 @@ protocol while the [RFC1001] and [RFC1002] specify the NetBT protocol.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -773,7 +657,8 @@ Release: April 23, 2024
 
 6 / 50
 
-multicast interval: The interval for sending NBNS replication partner AutoDiscovery message.
+
+multicast interval: The interval for sending NBNS replication partner AutoDiscovery message.
 
 name record: The NetBIOS name-to-IPv4 address mapping.
 
@@ -855,7 +740,8 @@ Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-group. When a name query is received for such a group, the IPv4 addresses that have not timed
+
+group. When a name query is received for such a group, the IPv4 addresses that have not timed
 out are returned.
 
 static mapping or record: A manually created entry in the database of a NBNS server.
@@ -879,14 +765,14 @@ NBNS server.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -910,7 +796,7 @@ https://www.rfc-editor.org/info/rfc1700
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS04-045] Microsoft Corporation, Security Bulletin MS04-045, "Vulnerability in WINS Could Allow
 Remote Code Execution (870763)", December 2004, https://learn.microsoft.com/en-us/security-
@@ -923,11 +809,12 @@ Release: April 23, 2024
 
 8 / 50
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-WINSRA].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows Internet Naming Service is the Microsoft implementation of a NetBIOS Name
 Server. An NBNS server resolves NetBIOS names to the IPv4 addresses that have been registered
@@ -984,7 +871,8 @@ Release: April 23, 2024
 
 9 / 50
 
-4.  The state of the name record is active or released.
+
+4.  The state of the name record is active or released.
 
 NBNS servers that replicate name records are called replication partners. There are two replication
 mechanisms, pull or push replication. A push partner is an NBNS server that pushes or notifies other
@@ -1038,7 +926,7 @@ for each of the record owners. The NBNS server uses update notification messages
 of changes in the NBNS database, sending an update notification packet to the partner. The update
 notification packet notifies the partner with the information describing its database.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 NBNS server-to-server replication uses TCP as the transport for its replication messages, as specified
 in section 3.1. NBNS also uses UDP as the transport for its discovery messages, as specified in section
@@ -1051,12 +939,13 @@ Release: April 23, 2024
 
 10 / 50
 
-NetBT protocol, as specified in [RFC1001] and [RFC1002], is dependent on the NBNS server-to-server
+
+NetBT protocol, as specified in [RFC1001] and [RFC1002], is dependent on the NBNS server-to-server
 replication protocol for consistent NetBIOS name resolution.
 
 The NBNS replication and AutoDiscovery protocol is only for use by NetBT clients.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for NBNS server-to-server communication to begin are:
 
@@ -1070,14 +959,14 @@ discover each other automatically).
 
 3.  The clients support NetBT.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is appropriate for replicating (NBNS server-to-NBNS server only) name records in a
 multi-NBNS server environment.
 
  The packet fields are transmitted in network-byte order unless otherwise specified.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The NBNS server supports version negotiation via the Association Start Request and Association Start
 Response messages, and implementations can use the communicated version to infer capabilities.
@@ -1091,11 +980,11 @@ implementations is 2. The NBNS server uses the minor version field to negotiate 
 association, as specified in section 3.3.5.1. The lowest version number that needs to be supported by
 all implementations is 1, as specified in section 2.2.3.<1>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1120,25 +1009,26 @@ Release: April 23, 2024
 
 11 / 50
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Windows Internet Naming Service (WINS) Replication and
 Autodiscovery Protocol messages are transported and common WINS data types. This protocol
 references commonly used data types, as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 NBNS replication protocol MUST be transported by TCP. By default NBNS server SHOULD listen on
 port 42, and it MUST be configurable. NBNS replication partner AutoDiscovery MUST be transported
 by UDP. All the NBNS servers to be AutoDiscovered MUST listen on the multicast address 224.0.1.24.
 By default, NBNS servers SHOULD be listening on port 42 for AutoDiscovery messages.<2>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All the integers in the messages are in the network order except where noted. All IPv4 addresses are
 IPv4 addresses in network order except where noted.
 
-2.2.1  Replication Partner AutoDiscovery Message
+#### 2.2.1 Replication Partner AutoDiscovery Message
 
 NBNS Replication Partner AutoDiscovery Message is used to announce that a NBNS server is running
 and functional, or to announce that a NBNS server is shutting down. The following diagram shows the
@@ -1195,7 +1085,8 @@ Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2  Common Replication Message Header
+
+#### 2.2.2 Common Replication Message Header
 
 All the NBNS replication messages in the following sections have the same Common Replication
 Message Header as shown in the diagram below.
@@ -1253,7 +1144,7 @@ Meaning
 Notification Message, Name Records Request Message, and Name Records Response
 Message
 
-2.2.3  Association Start Request Message
+#### 2.2.3 Association Start Request Message
 
 An Association Start Request Message is used to request the establishment of an association. The
 following diagram shows the Association Start Request Message including the Common Replication
@@ -1279,7 +1170,8 @@ Release: April 23, 2024
 
 13 / 50
 
-...
+
+...
 
 ...
 
@@ -1322,7 +1214,7 @@ Reserved (21 bytes): 21 bytes to pad the packet length to 41 bytes. It MUST be i
 
 receipt.
 
-2.2.4  Association Start Response Message
+#### 2.2.4 Association Start Response Message
 
 After receiving an Association Start Request Message, a NBNS server sends back an Association Start
 Response Message if it accepts the association request. The following diagram shows the Association
@@ -1354,7 +1246,8 @@ Release: April 23, 2024
 
 14 / 50
 
-NBNS Major Version
+
+NBNS Major Version
 
 NBNS Minor Version
 
@@ -1388,7 +1281,7 @@ Reserved (21 bytes): 21 bytes to pad the packet length to 41 bytes. It MUST be i
 
 receipt.
 
-2.2.5  Association Stop Request Message
+#### 2.2.5 Association Stop Request Message
 
 An Association Stop Request Message is used to request the shutdown of an association. The following
 diagram shows the Association Stop Request Message.
@@ -1430,7 +1323,8 @@ Release: April 23, 2024
 
 15 / 50
 
-Association Stop Reason (4 bytes):  An unsigned 32-bit integer denoting the reason for stopping
+
+Association Stop Reason (4 bytes):  An unsigned 32-bit integer denoting the reason for stopping
 
 the association.
 
@@ -1449,7 +1343,7 @@ Reserved (24 bytes):  A 24-byte reserved field that SHOULD be set to 0. It MUST 
 
 receipt.<5>
 
-2.2.6  Owner-Version Map Request Message
+#### 2.2.6 Owner-Version Map Request Message
 
 An Owner-Version Map Request Message is used to request the NBNS push partner to send the
 owner-version map to its database. The following diagram shows the Owner-Version Map Request
@@ -1486,7 +1380,7 @@ RplOpCode (1 byte):  The replication operation code for the message. It is an un
 
 that MUST be set to 0x00.
 
-2.2.7  Owner-Version Map Response Message
+#### 2.2.7 Owner-Version Map Response Message
 
 An Owner-Version Map Response Message reports the owner-version map of the NBNS server. The
 following diagram shows the Owner-Version Map Response Message.
@@ -1515,7 +1409,8 @@ Release: April 23, 2024
 
 16 / 50
 
-Reserved1
+
+Reserved1
 
 RplOpCode
 
@@ -1549,7 +1444,7 @@ Reserved2 (4 bytes):  An unsigned 32-bit integer. It MUST be set to 0x00000000 a
 
 receipt.
 
-2.2.7.1  Owner Record
+##### 2.2.7.1 Owner Record
 
 The following diagram shows the format of each Owner Record field. If NBNS changes its IPv4
 address, it SHOULD use the new IPv4 address in Owner-Version Map Response and Update
@@ -1591,7 +1486,8 @@ Release: April 23, 2024
 
 17 / 50
 
-Max Version Number Lo (4 bytes):  The low 32-bit integer of the unsigned 64-bit maximum
+
+Max Version Number Lo (4 bytes):  The low 32-bit integer of the unsigned 64-bit maximum
 
 version number of name record owned by the owner NBNS server.
 
@@ -1607,7 +1503,7 @@ Reserved (4 bytes):  An unsigned 32-bit integer. It MUST be set to 0x00000001 an
 
 receipt.
 
-2.2.8  Update Notification Message
+#### 2.2.8 Update Notification Message
 
  An NBNS push partner sends an Update Notification Message to advertise its owner-version map to
 the NBNS pull partner. The Update Notification Message format is shown in the following diagram.
@@ -1678,7 +1574,8 @@ Release: April 23, 2024
 
 18 / 50
 
-Other values MUST NOT be sent for this message. If received, the packets are silently discarded.
+
+Other values MUST NOT be sent for this message. If received, the packets are silently discarded.
 
 Number of Owners (4 bytes):  An unsigned 32-bit integer that denotes the number of Owner
 
@@ -1693,7 +1590,7 @@ Initiator IPv4 Address (4 bytes):  The Update Notification Message can be propag
 machine to machine. This is the IPv4 address of the NBNS server that generates the original
 Update Notification Message.
 
-2.2.9  Name Records Request Message
+#### 2.2.9 Name Records Request Message
 
  A Name Records Request Message is used to request the name records from an NBNS push
 partner. The following diagram shows the Name Records Request Message.<7>
@@ -1757,7 +1654,8 @@ Release: April 23, 2024
 
 19 / 50
 
-Max Version Number Lo (4 bytes):  The low 32-bit integer of the unsigned 64-bit maximum
+
+Max Version Number Lo (4 bytes):  The low 32-bit integer of the unsigned 64-bit maximum
 
 version number of name records owned by the owner NBNS server.
 
@@ -1773,7 +1671,7 @@ Reserved2 (4 bytes):  An unsigned 32-bit integer. This field is not used and MUS
 
 receipt.
 
-2.2.10 Name Records Response Message
+#### 2.2.10 Name Records Response Message
 
 A Name Records Response Message is used to send the name records to the NBNS pull partner.
 The following diagram shows the Name Records Response Message.
@@ -1823,9 +1721,9 @@ Name Record (variable):  Each Name Record contains the information of one name i
 server database. The length of a name record is variable, but it MUST be 4-byte aligned, as
 specified in section 2.2.10.1.
 
-2.2.10.1
+##### 2.2.10.1 Name Record
 
-Name Record
+
 
 The following diagram shows the format of a Name Record.
 
@@ -1836,7 +1734,8 @@ Release: April 23, 2024
 
 20 / 50
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1932,7 +1831,8 @@ Release: April 23, 2024
 
 21 / 50
 
- Field description
+
+ Field description
 
  Value
 
@@ -2076,7 +1976,8 @@ Release: April 23, 2024
 
 22 / 50
 
-Value
+
+Value
 
 Meaning
 
@@ -2104,7 +2005,7 @@ Reserved3 (4 bytes): An unsigned 32-bit integer. It MUST be set to 0xFFFFFFFF an
 
 ignored upon receipt.
 
-2.2.10.1.1  Address Record for a Special Group or Multihomed Machine
+###### 2.2.10.1.1 Address Record for a Special Group or Multihomed Machine
 
 The following diagram shows the format of the Address Record for a Special Group or Multihomed
 Machine.
@@ -2136,7 +2037,7 @@ Reserved (3 bytes): A 3-byte field. It MUST be ignored upon receipt.
 
 Owner and Member IPv4 Address (variable): An array of Owner and Member IPv4 Address.
 
-2.2.10.1.1.1  Owner and Member IPv4 Address
+###### 2.2.10.1.1.1 Owner and Member IPv4 Address
 
 The following diagram shows the format of the Owner and Member IPv4 Address.
 
@@ -2168,15 +2069,16 @@ Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Windows Internet Naming Service (WINS) Replication and
 Autodiscovery Protocol, including abstract data models, interface method syntax, and message
 processing rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -2201,7 +2103,7 @@ server has to pull records from its partners and if so, the range of records to 
 
 will be given to the next record that will be updated.
 
-3.1.1.1  Name Record
+##### 3.1.1.1 Name Record
 
 Each name record logically contains the following information:
 
@@ -2222,7 +2124,7 @@ Flags, including the state of the record.
 The Flags include the state of the name record. A name record can be in three states: active,
 released, and tombstone.
 
-3.1.1.2  Version
+##### 3.1.1.2 Version
 
 Whenever a name record is updated that needs to be replicated, the NBNS server increments the
 global version counter and updates the version field of the Name Record with the current value of the
@@ -2247,7 +2149,8 @@ Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -2273,13 +2176,13 @@ to the local NBNS server, and are not directly changed unless the client corresp
 updates it at the local NBNS server. When this happens, the record—and in case of a special group or
 multihomed record, the address registered by the client—becomes owned by the local NBNS server.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Scavenger timer: A timer that is used to periodically update the state of the name records. This
 timer uses renewal interval, extinction interval, and extinction timeout values in doing so. These
 values MUST be configurable. <9>
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The replication protocol is initialized when the NBNS service starts up. A TCP socket is opened to
 listen on port 42, as specified in section 2.1.
@@ -2287,13 +2190,13 @@ listen on port 42, as specified in section 2.1.
 And optionally, a UDP socket is opened to listen on port 42 for AutoDiscovery, as specified in section
 3.4.3.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 See the Higher-Layer Triggered Events sections of pull and push role details.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Association Setup and Shutdown between Replication Partners
+##### 3.1.5.1 Association Setup and Shutdown between Replication Partners
 
 Before an NBNS push partner and an NBNS pull partner can exchange replication information, an
 association MUST be set up. An association corresponds to a TCP connection. It can be persistent or
@@ -2318,7 +2221,8 @@ Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-sends it inside an Association Start Request message's Sender Association Handle field. The
+
+sends it inside an Association Start Request message's Sender Association Handle field. The
 receiver machine also generates an association handle, and sends it inside an Association Start
 Response message in the Sender Association Handle field. Now both the machines know the
 association handle value on the other machine. The association handle on the other machine MUST be
@@ -2334,7 +2238,7 @@ TCP socket.
 
 NBNS servers SHOULD accept association from servers that are not configured as replication partners.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 When scavenger timers expire, the name records owned by the local NBNS server are examined:
 
@@ -2363,7 +2267,8 @@ Release: April 23, 2024
 
 26 / 50
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-WINSRA].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -2382,7 +2287,7 @@ is deleted.
 For active name records, they may become stale and thus need to be verified periodically as
 specified in section 3.2.5.3.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -2393,9 +2298,10 @@ Release: April 23, 2024
 
 27 / 50
 
-3.2  Pull Partner Details
 
-3.2.1  Abstract Data Model
+### 3.2 Pull Partner Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2405,7 +2311,7 @@ document.
 
 The abstract data model is the same as in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Pull timer: A timer that is used to periodically perform pull replication from the push partners. This
 
@@ -2418,15 +2324,15 @@ is called the Verify interval.
 The pull timer and data verification timer MUST be used by the pull partners. The timer periods MUST
 be configurable.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is specified in section 3.1.3. No additional initialization for the pull partner is needed.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 NBNS server implementation SHOULD provide a manual mechanism for triggering pull replications.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 A pull replication happens in following situations:
 
@@ -2448,7 +2354,7 @@ Push replication triggered.
 
   Data verification pull replication, as specified in section 3.2.5.3.
 
-3.2.5.1  Standard Pull Replication
+##### 3.2.5.1 Standard Pull Replication
 
 Standard Pull Replication happens via the following steps:
 
@@ -2468,7 +2374,8 @@ Release: April 23, 2024
 
 28 / 50
 
-pull partner does this one by one for all the push partners. If any error happens during the
+
+pull partner does this one by one for all the push partners. If any error happens during the
 process, the association between the pull partner and the push partner is stopped. The pull
 partner just skips this push partner and continues to the next push partner.
 
@@ -2508,7 +2415,7 @@ partner.
 the replicated name records to its local database of name records. In this operation, name
 conflicts can occur. See section 3.2.5.5 for name conflict resolution.
 
-3.2.5.2  Push Notification Triggered Pull Replication
+##### 3.2.5.2 Push Notification Triggered Pull Replication
 
 Push notification triggered pull replication happens in following stages:
 
@@ -2537,7 +2444,8 @@ Release: April 23, 2024
 
 29 / 50
 
-4.  Obtain Name Records: For each owner, the pull partner sends a Name Records Request message
+
+4.  Obtain Name Records: For each owner, the pull partner sends a Name Records Request message
 to the push partner to retrieve the name records. The push partner responds to Name Records
 Request with Name Records Response message. The pull partner adds the returned name records
 to its local database of name records.
@@ -2547,7 +2455,7 @@ to its local database of name records.
 replicated name records to its local database of name records. In this operation, name conflicts
 can occur. See section 3.2.5.5 for name conflict resolution.
 
-3.2.5.3  Data Verification Pull Replication
+##### 3.2.5.3 Data Verification Pull Replication
 
 Data verification pull replication can be initiated manually or via a database verification timer. Data
 verification pull replication happens in the following phases:
@@ -2581,7 +2489,7 @@ expiration of the database verification timer.
 If data verification pull replication is manually initiated, all owner NBNS servers will be verified. The
 data verification is not subject to the maximum number of records limitation.
 
-3.2.5.4  Updating Time Stamps During Pull Replication
+##### 3.2.5.4 Updating Time Stamps During Pull Replication
 
 The timestamps are updated only if the replicated entry is going to replace the existing entry. The
 replicated entry can have only two states: Active or Tombstone.
@@ -2606,7 +2514,8 @@ Release: April 23, 2024
 
 30 / 50
 
-3.2.5.5  Name Conflict Resolution During Pull Replication
+
+##### 3.2.5.5 Name Conflict Resolution During Pull Replication
 
 When the pull partner gets a new name record from the push partner, the same name might already
 exist in the local database. In this case the name conflict has to be resolved. In some cases, an
@@ -2634,7 +2543,8 @@ Release: April 23, 2024
 
 31 / 50
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-WINSRA].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2647,7 +2557,8 @@ Release: April 23, 2024
 
 32 / 50
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-WINSRA].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -2660,7 +2571,8 @@ Release: April 23, 2024
 
 33 / 50
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-WINSRA].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -2676,7 +2588,8 @@ Release: April 23, 2024
 
 34 / 50
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-WINSRA].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2689,7 +2602,8 @@ Release: April 23, 2024
 
 35 / 50
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-WINSRA].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -2702,18 +2616,19 @@ Release: April 23, 2024
 
 36 / 50
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-WINSRA].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
 Figure 8: Flow chart C5
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 When the pull timer expires, a standard pull replication is performed. When the operation completes,
 the pull timer is restarted so that the pull replication is performed periodically.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2724,9 +2639,10 @@ Release: April 23, 2024
 
 37 / 50
 
-3.3  Push Partner Details
 
-3.3.1  Abstract Data Model
+### 3.3 Push Partner Details
+
+#### 3.3.1 Abstract Data Model
 
 This section describes the data organization model for this protocol. The described organization is
 provided to facilitate the explanation of how the protocol behaves. This document does not mandate
@@ -2735,25 +2651,25 @@ described in this document.
 
 The data model is comprised of the name records and the flags described in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The administrator can manually start push replication (for example, sending Update Notification
 messages to pull partners).
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
 A push partner performs two replication tasks. It sends out push notifications, which are Update
 Notification messages, to its pull partners and also processes pull requests from the pull partners.
 
-3.3.5.1  Sending Push Notifications
+##### 3.3.5.1 Sending Push Notifications
 
 Update Notification messages are sent out in the following situations:
 
@@ -2795,7 +2711,8 @@ Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-There are two types of Update Notification messages. One type requests the receiving pull partners to
+
+There are two types of Update Notification messages. One type requests the receiving pull partners to
 propagate the notification to their pull partners. The RplOpCode field is set to 5 (without persistent
 association) or 9 (with persistent association) in the message, as specified in section 2.2.8. The NBNS
 server sends out these message types in situation 1a, 2a, and 3 listed above. The other type of
@@ -2824,7 +2741,7 @@ field in the Update Notification message through the propagation.
 To prevent the push notifications from overwhelming the partners, the server MAY throttle the
 notifications.<11>
 
-3.3.5.2  Processing Pull Replication Requests
+##### 3.3.5.2 Processing Pull Replication Requests
 
 The push partner processes two pull replication request messages: Owner-Version Map Request and
 Name Records Request.
@@ -2847,7 +2764,7 @@ dynamic) in the Name Records Response message. If the request message comes from
 that is not configured as a pull partner, then only dynamic name records are included in the Name
 Records Response message.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
@@ -2858,23 +2775,24 @@ Release: April 23, 2024
 
 39 / 50
 
-3.3.7  Other Local Events
+
+#### 3.3.7 Other Local Events
 
 A push notification is also a result of name record update events and propagation of push notifications
 from other servers. See bullet points 2a, 2b, and 3 in section 3.3.5.1.
 
-3.4  Replication Partner Autodiscovery Details
+### 3.4 Replication Partner Autodiscovery Details
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
  None.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 Multicast timer: A timer that is used to periodically send Replication Partner AutoDiscovery messages.
 The default value of the timer is 40 minutes.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 An NBNS server joins the multicast group address 224.0.1.24 at service startup. It accepts multicast
 messages at the configured UDP port, as specified in section 2.1.
@@ -2882,11 +2800,11 @@ messages at the configured UDP port, as specified in section 2.1.
 An NBNS server supporting replication can be configured as a listener and MUST be a sender of
 AutoDiscovery packets. An NBNS server configured to support AutoDiscovery MUST be a listener.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 None.
 
-3.4.5  Processing Events and Sequencing Rules
+#### 3.4.5 Processing Events and Sequencing Rules
 
 A Replication Partner AutoDiscovery message with an OpCode of 0 is sent to the multicast group at
 the service startup time and also periodically while the NBNS server is running. It announces that the
@@ -2903,12 +2821,12 @@ both pull and push partners. These partners are called self-discovered partners.
 not 0, then any self-discovered partner with an IPv4 address in the message is no longer considered
 as a replication partner.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 The intervals for sending Replication Partner AutoDiscovery messages is controlled by the multicast
 interval. This interval SHOULD be configurable.<12>
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
@@ -2919,12 +2837,13 @@ Release: April 23, 2024
 
 40 / 50
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 functioning of the Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol.
 
-4.1  Merging Owner-Version Maps from Different Partners
+### 4.1 Merging Owner-Version Maps from Different Partners
 
 When an NBNS server has received Owner-Version Map Response messages from its push partners, it
 merges the maps to determine the partner that has the latest version for an owner, and what the
@@ -3027,7 +2946,8 @@ Release: April 23, 2024
 
 41 / 50
 
- Owner IPv4 address
+
+ Owner IPv4 address
 
  Maximum version number
 
@@ -3098,7 +3018,7 @@ Push partner 2
 
 453
 
-4.2  Pull Replication without Persistent Association
+### 4.2 Pull Replication without Persistent Association
 
 The figure in this section shows the sequence of messages of a standard pull replication. It is assumed
 that persistent association is not used so the association needs to be set up and shut down before and
@@ -3127,13 +3047,14 @@ Release: April 23, 2024
 
 42 / 50
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-WINSRA].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
 Figure 9: Example of a pull replication without persistent association
 
-4.3  Propagation of Push Notification with Persistent Association
+### 4.3 Propagation of Push Notification with Persistent Association
 
 The following figure shows the sequence of messages involved in propagating a push notification.
 NBNS server 1 is a push partner of NBNS server 2, which is also a push partner of NBNS server 3. It
@@ -3158,7 +3079,8 @@ Release: April 23, 2024
 
 43 / 50
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-WINSRA].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
@@ -3171,12 +3093,13 @@ Release: April 23, 2024
 
 44 / 50
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Windows Internet
 Naming Service (WINS) Replication and Autodiscovery Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 No security is provided by the Windows Internet Naming Service (WINS) Replication and
 Autodiscovery Protocol. Therefore, there is no guarantee that an NBNS server is talking to a
@@ -3199,7 +3122,7 @@ that are behind that firewall from being attacked.
 
 See [MS04-045] for more information.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol does not have
 security parameters.
@@ -3211,7 +3134,8 @@ Release: April 23, 2024
 
 45 / 50
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3288,7 +3212,8 @@ Release: April 23, 2024
 
 46 / 50
 
-<3> Section 2.2.1: If the last IPv4 address is not complete (that is, its length is smaller than 32-bit)
+
+<3> Section 2.2.1: If the last IPv4 address is not complete (that is, its length is smaller than 32-bit)
 in the received packet, Microsoft NBNS server ignores this last IPv4 address. Microsoft NBNS server
 Windows NT Server 4.0 and later add an IPv4 address 0.0.0.0 to the end of the list of IPv4 addresses.
 
@@ -3359,7 +3284,8 @@ Release: April 23, 2024
 
 47 / 50
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3403,7 +3329,8 @@ Release: April 23, 2024
 
 48 / 50
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3545,7 +3472,8 @@ Windows Internet Naming Service (WINS) Replication and Autodiscovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-T
+
+T
 
 Timer events
    pull partner (section 3.1.6 26, section 3.2.6 37)

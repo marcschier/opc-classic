@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 23
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -286,7 +287,8 @@ Release: April 23, 2024
 
 2 / 23
 
-Date
+
+Date
 
 Revision
 History
@@ -411,159 +413,67 @@ Release: April 23, 2024
 
 3 / 23
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Packet Header](#221-packet-header)
+    - [2.2.2 SRVCIR Packet](#222-srvcir-packet)
+    - [2.2.3 CNTCIR Packet](#223-cntcir-packet)
+      - [2.2.3.1 Range List](#2231-range-list)
+    - [2.2.4 DATA Packet](#224-data-packet)
+    - [2.2.5 PROGRESS Packet](#225-progress-packet)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Query State](#3151-query-state)
+        - [3.1.5.1.1 POLLACK Trigger](#31511-pollack-trigger)
+      - [3.1.5.2 Data State](#3152-data-state)
+        - [3.1.5.2.1 Data Empty Trigger](#31521-data-empty-trigger)
+      - [3.1.5.3 Status Trigger](#3153-status-trigger)
+      - [3.1.5.4 Terminate Trigger](#3154-terminate-trigger)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Query Timer](#3161-query-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 DATA Trigger](#3251-data-trigger)
+      - [3.2.5.2 Query Cache Trigger](#3252-query-cache-trigger)
+      - [3.2.5.3 QCC Trigger](#3253-qcc-trigger)
+      - [3.2.5.4 POLL Trigger](#3254-poll-trigger)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Packet Header .............................................................................................. 9
-SRVCIR Packet ............................................................................................. 9
-CNTCIR Packet ........................................................................................... 10
-Range List ............................................................................................ 10
-DATA Packet .............................................................................................. 10
-PROGRESS Packet ...................................................................................... 11
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.4
-2.2.5
-
-2.2.3.1
-
-3.1
-
-3.1.6
-
-3.1.5.2
-
-3.1.5.1
-
-3.1.5.2.1
-
-3.1.5.1.1
-
-3.1.5.3
-3.1.5.4
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 12
-Server Details .................................................................................................. 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Query State ......................................................................................... 13
-POLLACK Trigger ............................................................................. 13
-Data State ........................................................................................... 14
-Data Empty Trigger ......................................................................... 14
-Status Trigger ...................................................................................... 14
-Terminate Trigger ................................................................................. 14
-Timer Events .............................................................................................. 14
-Query Timer ......................................................................................... 14
-Other Local Events ...................................................................................... 15
-Client Details ................................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 16
-DATA Trigger ........................................................................................ 16
-Query Cache Trigger ............................................................................. 16
-QCC Trigger ......................................................................................... 16
-POLL Trigger ........................................................................................ 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 17
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.1.6.1
-
-3.1.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 18
-
-5  Security ................................................................................................................. 19
-Security Considerations for Implementers ........................................................... 19
-
-5.1
-
-4 / 23
-
-[MS-WDSMA] - v20240423
-Windows Deployment Services Multicast Application Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5.2
-
-Index of Security Parameters ............................................................................ 19
-
-6  Appendix A: Product Behavior ............................................................................... 20
-
-7  Change Tracking .................................................................................................... 21
-
-8  Index ..................................................................................................................... 22
-
-[MS-WDSMA] - v20240423
-Windows Deployment Services Multicast Application Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 23
-
-1  Introduction
+## 1 Introduction
 
 WDS Multicast Application Protocol is a single server, multiple client protocol.
 
@@ -577,7 +487,7 @@ multicast session, and still be able to get all pieces of the content.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -598,14 +508,14 @@ order in which numbers are normally stored in memory for a particular processor.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -619,7 +529,7 @@ Protocol".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -630,11 +540,12 @@ Release: April 23, 2024
 
 6 / 23
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-WDSMA].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
-1.3  Overview
+### 1.3 Overview
 
 WDS Multicast Application Protocol uses the WDS Multicast Transport Protocol [MS-WDSMT] to deliver
 all pieces of the content to all clients in a multicast session.
@@ -659,7 +570,7 @@ WDS Multicast Transport Protocol.
 
 starts over from step 1.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WDS Multicast Application Protocol is established via the WDS Multicast Session Initiation Protocol
 [MS-WDSMSI].
@@ -673,7 +584,7 @@ other protocols:
 Figure 1: Relationship among the WDS Multicast Application Protocol and associated
 protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The protocol relies on the WDS Multicast Session Initiation Protocol [MS-WDSMSI] to provide each
 client with the details of the content and parameters required for the WDS Multicast Transport Protocol
@@ -689,20 +600,21 @@ Windows Deployment Services Multicast Application Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The WDS Multicast Application Protocol is applicable when an application has to download content
 from a server using a multicast session.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol does not have any explicit versioning negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not have any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -713,9 +625,10 @@ Release: April 23, 2024
 
 8 / 23
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The packet contents for the WDS Multicast Application Protocol MUST be specified in network byte
 order unless noted otherwise.
@@ -723,9 +636,9 @@ order unless noted otherwise.
 The WDS Multicast Application Protocol uses the WDS Multicast Transport Protocol [MS-WDSMT] for
 transport of the content to all clients in the multicast session.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Packet Header
+#### 2.2.1 Packet Header
 
 Each packet of the WDS Multicast Application Protocol MUST specify the packet header as follows:
 
@@ -787,7 +700,7 @@ Section 2.2.5
 
 0x04
 
-2.2.2  SRVCIR Packet
+#### 2.2.2 SRVCIR Packet
 
 This packet is sent by the server to all clients using the POLL Trigger provided by the WDS Multicast
 Transport Protocol.
@@ -802,7 +715,8 @@ Windows Deployment Services Multicast Application Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3  CNTCIR Packet
+
+#### 2.2.3 CNTCIR Packet
 
 This packet is sent by the client in response to the SRVCIR Packet (section 2.2.2) and is delivered to
 the server by the POLLACK Trigger from the WDS Multicast Transport Protocol.
@@ -848,7 +762,7 @@ RangeList (variable): MUST be set to the block ranges of content that the client
 specified in section 2.2.3.1. The count of ranges specified MUST match the count specified by the
 RangeCount field.
 
-2.2.3.1  Range List
+##### 2.2.3.1 Range List
 
 This field specifies an array of block ranges of content that the client is missing. Each element of the
 array MUST specify the range as follows:
@@ -880,7 +794,7 @@ EndBlockNo (8 bytes): MUST be set to the ending BlockNumber of the range of bloc
 
 missing for the content.
 
-2.2.4  DATA Packet
+#### 2.2.4 DATA Packet
 
 [MS-WDSMA] - v20240423
 Windows Deployment Services Multicast Application Protocol
@@ -889,7 +803,8 @@ Release: April 23, 2024
 
 10 / 23
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -918,7 +833,7 @@ DataLen (2 bytes): MUST be set to the length in bytes of the payload included in
 
 Data (variable): MUST be set to the data read from the content.
 
-2.2.5  PROGRESS Packet
+#### 2.2.5 PROGRESS Packet
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -950,13 +865,14 @@ Release: April 23, 2024
 
 11 / 23
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-WDSMA].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Server Details
+### 3.1 Server Details
 
 This section specifies the WDS Multicast Application Protocol behavior for the server.
 
@@ -964,7 +880,7 @@ The following state diagram shows the lifetime of the protocol on the server:
 
 Figure 2: Server state diagram
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1006,13 +922,14 @@ Windows Deployment Services Multicast Application Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EndBlockNo: Specifies the ending block number for the missing block range.
+
+EndBlockNo: Specifies the ending block number for the missing block range.
 
 ClientCNTCIRPackets: Specifies the list of CNTCIR packets (section 2.2.3) received from the clients
 
 while the server is in the QueryState.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Timer
 
@@ -1024,15 +941,15 @@ Timer
 The timeout for this timer is provided by the WDS Multicast Transport Protocol in response to POLL
 Trigger.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Server MUST be initialized for QueryState and MUST start processing as specified in section 3.1.5.1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The WDS Multicast Application Protocol drives the processing based on lower-layer triggered events
 generated by the WDS Multicast Transport Protocol [MS-WDSMT].
@@ -1058,7 +975,7 @@ Terminate trigger
 
 Section 3.1.5.4
 
-3.1.5.1  Query State
+##### 3.1.5.1 Query State
 
 Server MUST remove all packets stored in ClientCNTCIRPackets (section 3.1.1).
 
@@ -1066,7 +983,7 @@ Server MUST construct a SRVCIR packet (section 2.2.2) and MUST send the packet u
 Trigger to the WDS Multicast Transport Protocol. The timeout value provided by POLL Trigger MUST
 be used to set the expiry time for the Query Timer.
 
-3.1.5.1.1 POLLACK Trigger
+###### 3.1.5.1.1 POLLACK Trigger
 
 POLLACK Trigger MUST provide the payload received from the client. Server MUST validate that the
 payload specifies a CNTCIR packet as specified in section 2.2.3 and MUST add the packet to
@@ -1079,7 +996,8 @@ Release: April 23, 2024
 
 13 / 23
 
-3.1.5.2  Data State
+
+##### 3.1.5.2 Data State
 
 The server MUST start from the first block number of the first block range specified by
 MissingBlockRanges (section 3.1.1) and MUST process for each block number as specified below:
@@ -1108,7 +1026,7 @@ constructed DATA packet.
 
 Server MUST wait for the Data Empty Trigger from the WDS Multicast Transport Protocol.
 
-3.1.5.2.1 Data Empty Trigger
+###### 3.1.5.2.1 Data Empty Trigger
 
 Server MUST ignore Data Empty Trigger when SessionState (section 3.1.1) is not set to
 DataState.
@@ -1116,18 +1034,18 @@ DataState.
 Otherwise, server MUST change the SessionState (section 3.1.1) to QueryState and MUST continue
 processing as specified in section 3.1.5.1.
 
-3.1.5.3  Status Trigger
+##### 3.1.5.3 Status Trigger
 
 Status Trigger MUST provide the payload received from client. Server MUST validate that the
 payload specifies a PROGRESS packet (section 2.2.5).
 
-3.1.5.4  Terminate Trigger
+##### 3.1.5.4 Terminate Trigger
 
 When Terminate Trigger is received, server MUST shut down the WDS Multicast Application Protocol.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Query Timer
+##### 3.1.6.1 Query Timer
 
 If the ClientCNTCIRPackets (section 3.1.1) is empty, the server MUST continue processing as
 specified in section 3.1.5.1.
@@ -1147,7 +1065,8 @@ Windows Deployment Services Multicast Application Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  Find the CNTCIR packet which has the highest value for the TimeInSession field (section 2.2.3).
+
+1.  Find the CNTCIR packet which has the highest value for the TimeInSession field (section 2.2.3).
 
 2.  Delete all such CNTCIR packets in the ClientCNTCIRPackets (section where the TimeInSession
 
@@ -1161,13 +1080,13 @@ The merged list MUST NOT have any overlapping block ranges and MUST be in ascend
 Server MUST change the SessionState (section 3.1.1) to DataState and MUST disable Query Timer
 and continue processing as specified in section 3.1.5.2.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1196,16 +1115,16 @@ Protocol. The default maximum number of bytes is 2097152.
 
 JoinTime:  MUST be set to local time (in seconds) on initialization.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 On initialization client MUST wait for packets to arrive from the server using the Lower-Layered
 Triggered Events as specified in section 3.2.5.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
@@ -1216,12 +1135,13 @@ Release: April 23, 2024
 
 15 / 23
 
-3.2.5  Message Processing Events and Sequencing Rules
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The client processes the Lower-Layered Triggered Events from the WDS Multicast Transport Protocol,
 as specified in the following sections.
 
-3.2.5.1  DATA Trigger
+##### 3.2.5.1 DATA Trigger
 
 The client MUST validate that the payload provided by the DATA Trigger specifies the DATA packet as
 per section 2.2.4. The client MUST check the value of the bit at the index specified by the
@@ -1234,11 +1154,11 @@ Trigger to the WDS Multicast Transport Protocol [MS-WDSMT] specifying the size o
 The client MUST check whether all bits of MissingBlocksBitmap (section 3.2.1) are now set to one.
 If so then the download of Content has completed and the client MUST terminate.
 
-3.2.5.2  Query Cache Trigger
+##### 3.2.5.2 Query Cache Trigger
 
 The client MUST reply to the trigger by providing the MaxCacheSize value (section 3.2.1).
 
-3.2.5.3  QCC Trigger
+##### 3.2.5.3 QCC Trigger
 
 When the QCC Trigger is received, the client MUST construct the PROGRESS packet (section 2.2.5)
 and set the fields of the packet as specified below:
@@ -1251,7 +1171,7 @@ Progress: MUST be set to the percentage of bits that are set to zero in MissingB
 
 The client MUST provide the constructed packet in reply to the QCC Trigger.
 
-3.2.5.4  POLL Trigger
+##### 3.2.5.4 POLL Trigger
 
 When a POLL Trigger is received, the client MUST construct a CNTCIR packet (section 2.2.3) and set
 the fields of the packet as follows:
@@ -1272,7 +1192,7 @@ RangeCount: MUST be set to the ranges specified by the RangeList.
 
 Client MUST provide the constructed packet in reply to POLL Trigger.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -1283,7 +1203,8 @@ Release: April 23, 2024
 
 16 / 23
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1294,11 +1215,12 @@ Release: April 23, 2024
 
 17 / 23
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-WDSMA].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following diagram specifies a server querying 3 clients and sending DATA packets:
 
@@ -1311,14 +1233,15 @@ Release: April 23, 2024
 
 18 / 23
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The WDS Multicast Application Protocol relies on the WDS Multicast Transport Protocol [MS-WDSMT] to
 provide security.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1329,7 +1252,8 @@ Release: April 23, 2024
 
 19 / 23
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1369,7 +1293,8 @@ Release: April 23, 2024
 
 20 / 23
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1413,7 +1338,8 @@ Release: April 23, 2024
 
 21 / 23
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1544,7 +1470,8 @@ Release: April 23, 2024
 
 22 / 23
 
-Status Trigger 14
+
+Status Trigger 14
 Syntax 9
 
 T

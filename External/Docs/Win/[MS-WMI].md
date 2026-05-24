@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 234
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -310,7 +311,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -541,7 +543,8 @@ Release: April 23, 2024
 
 3 / 234
 
-Date
+
+Date
 
 Revision
 History
@@ -566,590 +569,132 @@ Release: April 23, 2024
 
 4 / 234
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 13
-Normative References ................................................................................. 13
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 14
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 17
-Applicability Statement ..................................................................................... 18
-Versioning and Capability Negotiation ................................................................. 18
-Vendor-Extensible Fields ................................................................................... 18
-Standards Assignments ..................................................................................... 18
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2.2.4.1
-2.2.4.2
-
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 19
-Transport ........................................................................................................ 19
-Common Data Types ........................................................................................ 19
-WQL Query ................................................................................................ 19
-WQL Schema and Data Query ................................................................. 19
-WQL Event Query.................................................................................. 24
-CIM Path and Namespace ............................................................................ 26
-Protocol Return Codes ................................................................................. 27
-IWbemClassObject Interface ........................................................................ 28
-Prototype Result Object ......................................................................... 28
-Extrinsic Events .................................................................................... 29
-WBEM_CHANGE_FLAG_TYPE Enumeration ..................................................... 30
-2.2.5
-WBEM_GENERIC_FLAG_TYPE Enumeration .................................................... 30
-2.2.6
-WBEM_STATUS_TYPE Enumeration ............................................................... 31
-2.2.7
-WBEM_TIMEOUT_TYPE Enumeration ............................................................. 32
-2.2.8
-2.2.9
-WBEM_QUERY_FLAG_TYPE Enumeration ....................................................... 32
-2.2.10  WBEM_BACKUP_RESTORE_FLAGS Enumeration.............................................. 33
-2.2.11  WBEMSTATUS Enumeration ......................................................................... 33
-2.2.12  WBEM_CONNECT_OPTIONS Enumeration ...................................................... 37
-IWbemContext Interface.............................................................................. 37
-2.2.13
-IWbemContextBuffer Marshaling Structure ............................................... 39
-IWbemContextProperty Marshaling Structure ........................................... 39
-IWbemContextString Marshaling Structure ............................................... 41
-IWbemContextArray Marshaling Structure ................................................ 41
-2.2.14  ObjectArray Structure ................................................................................. 42
-2.2.14.1  WBEM_DATAPACKET_OBJECT Structure ................................................... 44
-2.2.14.2  WBEMOBJECT_CLASS Structure .............................................................. 44
-2.2.14.3  WBEMOBJECT_INSTANCE Structure ........................................................ 45
-2.2.14.4  WBEMOBJECT_INSTANCE_NOCLASS Structure ......................................... 45
-2.2.15  WBEM_REFRESHED_OBJECT Structure .......................................................... 46
-2.2.16  WBEM_INSTANCE_BLOB Enumeration ........................................................... 47
-2.2.17  WBEM_INSTANCE_BLOB_TYPE Enumeration .................................................. 47
-RefreshedInstances..................................................................................... 47
-2.2.18
-RefreshedSingleInstance ............................................................................. 48
-2.2.19
-_WBEM_REFRESH_INFO Structure ................................................................ 48
-2.2.20
-_WBEM_REFRESHER_ID Structure ................................................................ 48
-2.2.21
-_WBEM_RECONNECT_INFO Structure ........................................................... 49
-2.2.22
-_WBEM_RECONNECT_RESULTS Structure ...................................................... 49
-2.2.23
-2.2.24
-_WBEM_RECONNECT_TYPE Enumeration ....................................................... 49
-2.2.25  WBEM_REFRESH_TYPE Enumeration ............................................................. 50
-_WBEM_REFRESH_INFO_NON_HIPERF Structure ............................................ 50
-2.2.26
-_WBEM_REFRESH_INFO_REMOTE Structure .................................................. 50
-2.2.27
-
-2.2.13.1
-2.2.13.2
-2.2.13.3
-2.2.13.4
-
-[MS-WMI] - v20240423
-Windows Management Instrumentation Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 234
-
-2.2.28
-_WBEM_REFRESH_INFO_UNION Union .......................................................... 51
-2.2.29  WMI Locale Formats .................................................................................... 51
-__SystemSecurity Class .............................................................................. 51
-2.2.30
-__SystemSecurity::GetSD ..................................................................... 51
-__SystemSecurity::SetSD ...................................................................... 52
-RequiresEncryption ............................................................................... 52
-2.2.31  Default System Classes ............................................................................... 52
-Supported WMI Qualifiers ............................................................................ 53
-2.2.32
-
-2.2.30.1
-2.2.30.2
-2.2.30.3
-
-3.1
-
-3.1.1
-
-3.1.4.3
-
-3.1.4.1
-
-3.1.1.2
-
-3.1.4.2
-
-3.1.1.1
-
-3.1.1.1.3
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.2.1
-3.1.4.2.2
-
-3.1.1.1.1
-3.1.1.1.2
-
-3.1.1.1.2.1
-3.1.1.1.2.2
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-
-3  Protocol Details ..................................................................................................... 56
-Server Details .................................................................................................. 56
-Abstract Data Model .................................................................................... 57
-Delivering Results to Client .................................................................... 61
-Synchronous Calls ........................................................................... 61
-Semisynchronous Calls ..................................................................... 61
-Semisynchronous Operations Returning Multiple Objects ................ 61
-Semisynchronous Operations Returning a Single Object .................. 62
-Asynchronous calls .......................................................................... 63
-Localization Support .............................................................................. 63
-Timers ...................................................................................................... 64
-Initialization ............................................................................................... 65
-Message Processing Events and Sequencing Rules .......................................... 65
-IWbemLevel1Login Interface .................................................................. 68
-IWbemLevel1Login::EstablishPosition (Opnum 3) ................................ 69
-IWbemLevel1Login::RequestChallenge (Opnum 4) .............................. 70
-IWbemLevel1Login::WBEMLogin (Opnum 5) ....................................... 70
-IWbemLevel1Login::NTLMLogin (Opnum 6) ........................................ 71
-IWbemObjectSink Interface Server Details ............................................... 72
-IWbemObjectSink::Indicate (Opnum 3) Server details ......................... 73
-IWbemObjectSink::SetStatus (Opnum 4) Server Details ...................... 73
-IWbemServices Interface ....................................................................... 74
-IWbemServices::OpenNamespace (Opnum 3) ..................................... 76
-IWbemServices::CancelAsyncCall (Opnum 4) ...................................... 78
-IWbemServices::QueryObjectSink (Opnum 5) ..................................... 78
-IWbemServices::GetObject (Opnum 6) .............................................. 79
-IWbemServices::GetObjectAsync (Opnum 7) ...................................... 81
-IWbemServices::PutClass (Opnum 8) ................................................ 83
-IWbemServices::PutClassAsync (Opnum 9) ........................................ 86
-IWbemServices::DeleteClass (Opnum 10) .......................................... 88
-IWbemServices::DeleteClassAsync (Opnum 11) .................................. 90
-IWbemServices::CreateClassEnum (Opnum 12) .................................. 91
-IWbemServices::CreateClassEnumAsync (Opnum 13) .......................... 92
-IWbemServices::PutInstance (Opnum 14) .......................................... 94
-IWbemServices::PutInstanceAsync (Opnum 15) .................................. 97
-IWbemServices::DeleteInstance (Opnum 16) ..................................... 99
-IWbemServices::DeleteInstanceAsync (Opnum 17) ............................ 101
-IWbemServices::CreateInstanceEnum (Opnum 18) ............................ 102
-IWbemServices::CreateInstanceEnumAsync (Opnum 19) .................... 104
-IWbemServices::ExecQuery (Opnum 20) .......................................... 105
-IWbemServices::ExecQueryAsync (Opnum 21) .................................. 109
-IWbemServices::ExecNotificationQuery (Opnum 22) ........................... 111
-IWbemServices::ExecNotificationQueryAsync (Opnum 23) .................. 113
-IWbemServices::ExecMethod (Opnum 24) ......................................... 115
-IWbemServices::ExecMethodAsync (Opnum 25) ................................ 117
-IEnumWbemClassObject Interface ......................................................... 118
-IEnumWbemClassObject::Reset (Opnum 3) ....................................... 119
-IEnumWbemClassObject::Next (Opnum 4) ........................................ 120
-IEnumWbemClassObject::NextAsync (Opnum 5) ................................ 121
-
-3.1.4.3.1
-3.1.4.3.2
-3.1.4.3.3
-3.1.4.3.4
-3.1.4.3.5
-3.1.4.3.6
-3.1.4.3.7
-3.1.4.3.8
-3.1.4.3.9
-3.1.4.3.10
-3.1.4.3.11
-3.1.4.3.12
-3.1.4.3.13
-3.1.4.3.14
-3.1.4.3.15
-3.1.4.3.16
-3.1.4.3.17
-3.1.4.3.18
-3.1.4.3.19
-3.1.4.3.20
-3.1.4.3.21
-3.1.4.3.22
-3.1.4.3.23
-
-3.1.4.4.1
-3.1.4.4.2
-3.1.4.4.3
-
-3.1.4.4
-
-[MS-WMI] - v20240423
-Windows Management Instrumentation Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 234
-
-3.1.4.9
-
-3.1.4.8
-
-3.1.4.7
-
-3.1.4.5
-
-3.1.4.6
-
-3.1.4.12
-
-3.1.4.11
-
-3.1.4.10
-
-3.1.4.9.1
-
-3.1.4.8.1
-
-3.1.4.7.1
-
-3.1.4.6.1
-
-3.1.4.4.4
-3.1.4.4.5
-
-3.1.4.12.1
-3.1.4.12.2
-
-3.1.4.11.1
-3.1.4.11.2
-
-3.1.4.10.1
-3.1.4.10.2
-
-3.1.4.5.1
-3.1.4.5.2
-3.1.4.5.3
-3.1.4.5.4
-
-3.1.4.12.3
-3.1.4.12.4
-3.1.4.12.5
-3.1.4.12.6
-
-IEnumWbemClassObject::Clone (Opnum 6) ....................................... 122
-IEnumWbemClassObject::Skip (Opnum 7) ........................................ 123
-IWbemCallResult Interface .................................................................... 124
-IWbemCallResult::GetResultObject (Opnum 3) .................................. 124
-IWbemCallResult::GetResultString (Opnum 4) ................................... 125
-IWbemCallResult::GetResultServices (Opnum 5) ................................ 126
-IWbemCallResult::GetCallStatus (Opnum 6) ...................................... 127
-IWbemFetchSmartEnum Interface .......................................................... 128
-IWbemFetchSmartEnum::GetSmartEnum (Opnum 3) ......................... 128
-IWbemWCOSmartEnum Interface .......................................................... 129
-IWbemWCOSmartEnum::Next (Opnum 3) ......................................... 129
-IWbemLoginClientID Interface ............................................................... 131
-IWbemLoginClientID::SetClientInfo (Opnum 3) .................................. 131
-IWbemLoginHelper Interface ................................................................. 131
-IWbemLoginHelper::SetEvent (Opnum 3) .......................................... 132
-IWbemBackupRestore Interface ............................................................. 132
-IWbemBackupRestore::Backup (Opnum 3) ........................................ 133
-IWbemBackupRestore::Restore (Opnum 4) ....................................... 134
-IWbemBackupRestoreEx Interface ......................................................... 134
-IWbemBackupRestoreEx::Pause (Opnum 5) ...................................... 135
-IWbemBackupRestoreEx::Resume (Opnum 6) ................................... 135
-IWbemRefreshingServices Interface ....................................................... 136
-IWbemRefreshingServices::AddObjectToRefresher (Opnum 3) ............. 136
-IWbemRefreshingServices::AddObjectToRefresherByTemplate (Opnum 4)
- .................................................................................................... 138
-IWbemRefreshingServices::AddEnumToRefresher (Opnum 5) .............. 139
-IWbemRefreshingServices::RemoveObjectFromRefresher (Opnum 6) ... 140
-IWbemRefreshingServices::GetRemoteRefresher (Opnum 7) ............... 141
-IWbemRefreshingServices::ReconnectRemoteRefresher (Opnum 8) ...... 142
-IWbemRemoteRefresher Interface.......................................................... 143
-IWbemRemoteRefresher::RemoteRefresh (Opnum 3) ......................... 143
-IWbemRemoteRefresher::StopRefreshing (Opnum 4) ......................... 144
-IWbemRemoteRefresher::Opnum5NotUsedOnWire (Opnum 5) ............. 145
-IWbemShutdown Interface .................................................................... 145
-IWbemShutdown::Shutdown (Opnum 3) ........................................... 146
-IUnsecuredApartment Interface ............................................................. 146
-IUnsecuredApartment::CreateObjectStub (Opnum 3) ......................... 147
-IWbemUnsecuredApartment Interface .................................................... 147
-IWbemUnsecuredApartment::CreateSinkStub (Opnum 3) .................... 148
-Abstract Provider Interface .................................................................... 148
-Enumerate Instances of a Given Class ............................................... 149
-3.1.4.17.1
-3.1.4.17.2
-Enumerate the Subclasses of a Given Class ....................................... 149
-3.1.4.17.3  Get Properties Within an Instance of a Class ...................................... 149
-3.1.4.17.4  Get Properties Within a Class ........................................................... 149
-3.1.4.17.5  Update Properties Within an Instance of a Class ................................. 149
-3.1.4.17.6  Update Properties Within a Class ...................................................... 149
-Create an Instance of a Class ........................................................... 150
-3.1.4.17.7
-3.1.4.17.8
-Create a Class ................................................................................ 150
-3.1.4.17.9  Delete an Instance of a Class ........................................................... 150
-3.1.4.17.10  Delete a Class ................................................................................ 150
-3.1.4.17.11  Execute a Provider's Method ............................................................ 150
-3.1.4.17.12  Cancel an Existing Operation ........................................................... 150
-3.1.4.17.13  Subscribe for Event Notification ........................................................ 150
-3.1.4.17.14  Is Dynamic Class Supported ............................................................ 150
-3.1.4.17.15  Execute Query ............................................................................... 151
-3.1.4.18  Namespaces ........................................................................................ 151
-Creating Namespaces ..................................................................... 151
-Reading Namespace Information ...................................................... 151
-
-3.1.4.13.1
-3.1.4.13.2
-3.1.4.13.3
-
-3.1.4.18.1
-3.1.4.18.2
-
-3.1.4.14.1
-
-3.1.4.15.1
-
-3.1.4.16.1
-
-3.1.4.13
-
-3.1.4.14
-
-3.1.4.15
-
-3.1.4.16
-
-3.1.4.17
-
-[MS-WMI] - v20240423
-Windows Management Instrumentation Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 234
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.5
-3.1.6
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-
-3.2.4.1
-
-3.2.4.2
-
-3.2.4.1.1
-3.2.4.1.2
-
-3.1.4.18.3  Updating Namespace Information ..................................................... 151
-3.1.4.18.4  Deleting Namespaces ...................................................................... 152
-Timer Events ............................................................................................. 152
-Other Local Events ..................................................................................... 153
-Indication Event Is Generated ............................................................... 153
-Load Provider ...................................................................................... 153
-Unload Provider ................................................................................... 154
-Client Details .................................................................................................. 154
-Abstract Data Model ................................................................................... 154
-Timers ..................................................................................................... 154
-Initialization .............................................................................................. 154
-Message Processing Events and Sequencing Rules ......................................... 154
-IWbemObjectSink Interface Client Details ............................................... 155
-IWbemObjectSink::Indicate Client Details ......................................... 155
-IWbemObjectSink::SetStatus Client Details ....................................... 156
-IWbemServices Interface Client Details ................................................... 156
-Sending Events to Server ................................................................ 156
-Calling Put Interfaces for CIM Objects with Amended Qualifiers ............ 156
-Deleting Class Objects with Amended Qualifiers ................................. 157
-Invoking Synchronous Methods Returing No Object ............................ 157
-IWbemServices::ExecMethod and IWbemServices::ExecMethodAsync .. 157
-Invoking Synchronous Methods Returning Single Object ...................... 157
-Invoking Semisynchronous Methods That Return a Single Object ......... 158
-Invoking Synchronous and Semisynchronous Operations Returning Multiple
-Objects ......................................................................................... 158
-Invoking Asynchronous Operations ................................................... 159
-IWbemBackupRestore Interface Client Details ......................................... 160
-IWbemBackupRestoreEx Interface Client Details ...................................... 160
-IWbemRefreshingServices Interface Client Details .................................... 160
-
-3.2.4.2.1
-3.2.4.2.2
-3.2.4.2.3
-3.2.4.2.4
-3.2.4.2.5
-3.2.4.2.6
-3.2.4.2.7
-3.2.4.2.8
-
-3.2.4.2.9
-
-IWbemRefreshingServices::AddObjectToRefresher and
-IWbemRefreshingServices::AddObjectToRefresherByTemplate ............. 160
-IWbemRefreshingServices::AddEnumToRefresher .............................. 161
-IWbemRefreshingServices::GetRemoteRefresher ................................ 161
-IWbemRefreshingServices::ReconnectRemoteRefresher ...................... 162
-IUnsecuredApartment Interface Client Details .......................................... 162
-IWbemUnsecuredApartment Interface Client Details ................................. 162
-IWbemShutdown Interface Client Details ................................................ 162
-Timer Events ............................................................................................. 162
-Other Local Events ..................................................................................... 162
-Shutdown ........................................................................................... 162
-
-3.2.4.3
-3.2.4.4
-3.2.4.5
-
-3.2.4.5.1
-
-3.2.4.5.2
-3.2.4.5.3
-3.2.4.5.4
-
-3.2.4.6
-3.2.4.7
-3.2.4.8
-
-3.2.5
-3.2.6
-
-3.2.6.1
-
-4.1
-
-4.2
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ............................................................................................... 163
-Protocol Initialization ....................................................................................... 163
-Protocol Initialization Trace ......................................................................... 164
-Example Captures ...................................................................................... 166
-Synchronous Operations .................................................................................. 166
-Synchronous Delivery of a Single Result ....................................................... 167
-Synchronous Delivery of Result Sets ............................................................ 167
-Unoptimized Client and Unoptimized Server ............................................ 167
-Unoptimized Client and Optimized Server ................................................ 168
-Optimized Client and Optimized Server ................................................... 169
-Optimized Client and Unoptimized Server ................................................ 171
-Synchronous Delivery Traces ...................................................................... 172
-
-4.2.2.1
-4.2.2.2
-4.2.2.3
-4.2.2.4
-
-4.2.1
-4.2.2
-
-4.2.3
-
-4.2.3.1
-
-4.2.3.2
-
-Synchronous Delivery of IWbemServices ExecQuery and ExecMethod
-Operations .......................................................................................... 172
-Synchronous Delivery of IWbemServices PutInstance, DeleteInstance, and
-CreateInstanceEnum Operations ............................................................ 175
-Semisynchronous Operations ............................................................................ 180
-
-4.3
-
-[MS-WMI] - v20240423
-Windows Management Instrumentation Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 234
-
-4.3.1
-4.3.2
-4.3.3
-
-4.3.3.1
-
-4.3.3.2
-
-Semisynchronous Delivery of a Single Result ................................................ 180
-Semisynchronous Delivery of Result Sets ...................................................... 181
-Semisynchronous Delivery Traces ................................................................ 181
-Semisynchronous Delivery of IWbemServices ExecQuery and ExecMethod
-Operations .......................................................................................... 181
-Semisynchronous Delivery of IWbemServices PutInstance, DeleteInstance, and
-CreateInstanceEnum Operations ............................................................ 186
-Asynchronous Delivery of Results ...................................................................... 191
-Optimized Asynchronous Delivery of Results ....................................................... 192
-Configuring Refreshing Services ........................................................................ 193
-Using the Refresher Interface ........................................................................... 194
-
-4.4
-4.5
-4.6
-4.7
-
-5  Security ............................................................................................................... 196
-Security Considerations for Implementers .......................................................... 196
-Index of Security Parameters ........................................................................... 196
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 198
-
-7  Appendix B: Product Behavior ............................................................................. 210
-
-8  Appendix C: Additional Error Codes ..................................................................... 224
-
-9  Appendix D: Enumerating Class Schema .............................................................. 228
-
-10  Change Tracking .................................................................................................. 229
-
-11  Index ................................................................................................................... 230
-
-[MS-WMI] - v20240423
-Windows Management Instrumentation Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 234
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 WQL Query](#221-wql-query)
+      - [2.2.1.1 WQL Schema and Data Query](#2211-wql-schema-and-data-query)
+      - [2.2.1.2 WQL Event Query](#2212-wql-event-query)
+    - [2.2.2 CIM Path and Namespace](#222-cim-path-and-namespace)
+    - [2.2.3 Protocol Return Codes](#223-protocol-return-codes)
+    - [2.2.4 IWbemClassObject Interface](#224-iwbemclassobject-interface)
+      - [2.2.4.1 Prototype Result Object](#2241-prototype-result-object)
+      - [2.2.4.2 Extrinsic Events](#2242-extrinsic-events)
+    - [2.2.5 WBEM_CHANGE_FLAG_TYPE Enumeration](#225-wbemchangeflagtype-enumeration)
+    - [2.2.6 WBEM_GENERIC_FLAG_TYPE Enumeration](#226-wbemgenericflagtype-enumeration)
+    - [2.2.7 WBEM_STATUS_TYPE Enumeration](#227-wbemstatustype-enumeration)
+    - [2.2.8 WBEM_TIMEOUT_TYPE Enumeration](#228-wbemtimeouttype-enumeration)
+    - [2.2.9 WBEM_QUERY_FLAG_TYPE Enumeration](#229-wbemqueryflagtype-enumeration)
+    - [2.2.10 WBEM_BACKUP_RESTORE_FLAGS Enumeration](#2210-wbembackuprestoreflags-enumeration)
+    - [2.2.11 WBEMSTATUS Enumeration](#2211-wbemstatus-enumeration)
+    - [2.2.12 WBEM_CONNECT_OPTIONS Enumeration](#2212-wbemconnectoptions-enumeration)
+    - [2.2.13 IWbemContext Interface](#2213-iwbemcontext-interface)
+      - [2.2.13.1 IWbemContextBuffer Marshaling Structure](#22131-iwbemcontextbuffer-marshaling-structure)
+      - [2.2.13.2 IWbemContextProperty Marshaling Structure](#22132-iwbemcontextproperty-marshaling-structure)
+      - [2.2.13.3 IWbemContextString Marshaling Structure](#22133-iwbemcontextstring-marshaling-structure)
+      - [2.2.13.4 IWbemContextArray Marshaling Structure](#22134-iwbemcontextarray-marshaling-structure)
+    - [2.2.14 ObjectArray Structure](#2214-objectarray-structure)
+      - [2.2.14.1 WBEM_DATAPACKET_OBJECT Structure](#22141-wbemdatapacketobject-structure)
+      - [2.2.14.2 WBEMOBJECT_CLASS Structure](#22142-wbemobjectclass-structure)
+      - [2.2.14.3 WBEMOBJECT_INSTANCE Structure](#22143-wbemobjectinstance-structure)
+      - [2.2.14.4 WBEMOBJECT_INSTANCE_NOCLASS Structure](#22144-wbemobjectinstancenoclass-structure)
+    - [2.2.15 WBEM_REFRESHED_OBJECT Structure](#2215-wbemrefreshedobject-structure)
+    - [2.2.16 WBEM_INSTANCE_BLOB Enumeration](#2216-wbeminstanceblob-enumeration)
+    - [2.2.17 WBEM_INSTANCE_BLOB_TYPE Enumeration](#2217-wbeminstanceblobtype-enumeration)
+    - [2.2.18 RefreshedInstances](#2218-refreshedinstances)
+    - [2.2.19 RefreshedSingleInstance](#2219-refreshedsingleinstance)
+    - [2.2.20 _WBEM_REFRESH_INFO Structure](#2220-wbemrefreshinfo-structure)
+    - [2.2.21 _WBEM_REFRESHER_ID Structure](#2221-wbemrefresherid-structure)
+    - [2.2.22 _WBEM_RECONNECT_INFO Structure](#2222-wbemreconnectinfo-structure)
+    - [2.2.23 _WBEM_RECONNECT_RESULTS Structure](#2223-wbemreconnectresults-structure)
+    - [2.2.24 _WBEM_RECONNECT_TYPE Enumeration](#2224-wbemreconnecttype-enumeration)
+    - [2.2.25 WBEM_REFRESH_TYPE Enumeration](#2225-wbemrefreshtype-enumeration)
+    - [2.2.26 _WBEM_REFRESH_INFO_NON_HIPERF Structure](#2226-wbemrefreshinfononhiperf-structure)
+    - [2.2.27 _WBEM_REFRESH_INFO_REMOTE Structure](#2227-wbemrefreshinforemote-structure)
+    - [2.2.28 _WBEM_REFRESH_INFO_UNION Union](#2228-wbemrefreshinfounion-union)
+    - [2.2.29 WMI Locale Formats](#2229-wmi-locale-formats)
+    - [2.2.30 __SystemSecurity Class](#2230-systemsecurity-class)
+      - [2.2.30.1 __SystemSecurity::GetSD](#22301-systemsecuritygetsd)
+      - [2.2.30.2 __SystemSecurity::SetSD](#22302-systemsecuritysetsd)
+      - [2.2.30.3 RequiresEncryption](#22303-requiresencryption)
+    - [2.2.31 Default System Classes](#2231-default-system-classes)
+    - [2.2.32 Supported WMI Qualifiers](#2232-supported-wmi-qualifiers)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+        - [3.2.4.1.2 for more details.](#32412-for-more-details)
+      - [3.2.4.2 IWbemServices Interface Client Details](#3242-iwbemservices-interface-client-details)
+        - [3.2.4.2.1 Sending Events to Server](#32421-sending-events-to-server)
+        - [3.2.4.2.2 Calling Put Interfaces for CIM Objects with Amended Qualifiers](#32422-calling-put-interfaces-for-cim-objects-with-amended-qualifiers)
+        - [3.2.4.2.3 Deleting Class Objects with Amended Qualifiers](#32423-deleting-class-objects-with-amended-qualifiers)
+        - [3.2.4.2.4 Invoking Synchronous Methods Returing No Object](#32424-invoking-synchronous-methods-returing-no-object)
+        - [3.2.4.2.5 IWbemServices::ExecMethod and IWbemServices::ExecMethodAsync](#32425-iwbemservicesexecmethod-and-iwbemservicesexecmethodasync)
+        - [3.2.4.2.6 Invoking Synchronous Methods Returning Single Object](#32426-invoking-synchronous-methods-returning-single-object)
+        - [3.2.4.2.7 Invoking Semisynchronous Methods That Return a Single Object](#32427-invoking-semisynchronous-methods-that-return-a-single-object)
+        - [3.2.4.2.8 Invoking Synchronous and Semisynchronous Operations Returning Multiple](#32428-invoking-synchronous-and-semisynchronous-operations-returning-multiple)
+        - [3.2.4.2.9 Invoking Asynchronous Operations](#32429-invoking-asynchronous-operations)
+      - [3.2.4.3 IWbemBackupRestore Interface Client Details](#3243-iwbembackuprestore-interface-client-details)
+      - [3.2.4.4 IWbemBackupRestoreEx Interface Client Details](#3244-iwbembackuprestoreex-interface-client-details)
+      - [3.2.4.5 IWbemRefreshingServices Interface Client Details](#3245-iwbemrefreshingservices-interface-client-details)
+        - [3.2.4.5.1 IWbemRefreshingServices::AddObjectToRefresher and](#32451-iwbemrefreshingservicesaddobjecttorefresher-and)
+        - [3.2.4.5.2 IWbemRefreshingServices::AddEnumToRefresher](#32452-iwbemrefreshingservicesaddenumtorefresher)
+        - [3.2.4.5.3 IWbemRefreshingServices::GetRemoteRefresher](#32453-iwbemrefreshingservicesgetremoterefresher)
+        - [3.2.4.5.4 IWbemRefreshingServices::ReconnectRemoteRefresher](#32454-iwbemrefreshingservicesreconnectremoterefresher)
+      - [3.2.4.6 IUnsecuredApartment Interface Client Details](#3246-iunsecuredapartment-interface-client-details)
+      - [3.2.4.7 IWbemUnsecuredApartment Interface Client Details](#3247-iwbemunsecuredapartment-interface-client-details)
+      - [3.2.4.8 IWbemShutdown Interface Client Details](#3248-iwbemshutdown-interface-client-details)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+      - [3.2.6.1 Shutdown](#3261-shutdown)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Protocol Initialization](#41-protocol-initialization)
+    - [4.1.1 Protocol Initialization Trace](#411-protocol-initialization-trace)
+    - [4.1.2 Example Captures](#412-example-captures)
+  - [4.2 Synchronous Operations](#42-synchronous-operations)
+    - [4.2.1 Synchronous Delivery of a Single Result](#421-synchronous-delivery-of-a-single-result)
+    - [4.2.2 Synchronous Delivery of Result Sets](#422-synchronous-delivery-of-result-sets)
+      - [4.2.2.1 Unoptimized Client and Unoptimized Server](#4221-unoptimized-client-and-unoptimized-server)
+      - [4.2.2.2 Unoptimized Client and Optimized Server](#4222-unoptimized-client-and-optimized-server)
+      - [4.2.2.4 explain the call sequences between the newer versions of client and server.](#4224-explain-the-call-sequences-between-the-newer-versions-of-client-and-server)
+    - [4.2.3 Synchronous Delivery Traces](#423-synchronous-delivery-traces)
+      - [4.2.3.1 Synchronous Delivery of IWbemServices ExecQuery and ExecMethod](#4231-synchronous-delivery-of-iwbemservices-execquery-and-execmethod)
+      - [4.2.3.2 Synchronous Delivery of IWbemServices PutInstance, DeleteInstance, and](#4232-synchronous-delivery-of-iwbemservices-putinstance-deleteinstance-and)
+  - [4.3 Semisynchronous Operations](#43-semisynchronous-operations)
+    - [4.3.1 Semisynchronous Delivery of a Single Result](#431-semisynchronous-delivery-of-a-single-result)
+    - [4.3.2 Semisynchronous Delivery of Result Sets](#432-semisynchronous-delivery-of-result-sets)
+    - [4.3.3 Semisynchronous Delivery Traces](#433-semisynchronous-delivery-traces)
+      - [4.3.3.1 Semisynchronous Delivery of IWbemServices ExecQuery and ExecMethod](#4331-semisynchronous-delivery-of-iwbemservices-execquery-and-execmethod)
+      - [4.3.3.2 Semisynchronous Delivery of IWbemServices PutInstance, DeleteInstance,](#4332-semisynchronous-delivery-of-iwbemservices-putinstance-deleteinstance)
+  - [4.4 Asynchronous Delivery of Results](#44-asynchronous-delivery-of-results)
+  - [4.5 Optimized Asynchronous Delivery of Results](#45-optimized-asynchronous-delivery-of-results)
+  - [4.6 Configuring Refreshing Services](#46-configuring-refreshing-services)
+  - [4.7 Using the Refresher Interface](#47-using-the-refresher-interface)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Appendix C: Additional Error Codes](#8-appendix-c-additional-error-codes)
+- [9 Appendix D: Enumerating Class Schema](#9-appendix-d-enumerating-class-schema)
+- [10 Change Tracking](#10-change-tracking)
+- [11 Index](#11-index)
+
+## 1 Introduction
 
 Windows Management Instrumentation (WMI) Remote Protocol is a Distributed Component Object
 Model (DCOM), as specified in [MS-DCOM], a client/server–based framework that provides an open
@@ -1162,7 +707,7 @@ from CIM is specified by a series of classes and associations, and the elements 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1220,7 +765,8 @@ Release: April 23, 2024
 
 10 / 234
 
-class identifier (CLSID): A GUID that identifies a software component; for instance, a DCOM
+
+class identifier (CLSID): A GUID that identifies a software component; for instance, a DCOM
 
 object class or a COM class.
 
@@ -1297,7 +843,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-language code identifier (LCID): A 32-bit number that identifies the user interface human
+
+language code identifier (LCID): A 32-bit number that identifies the user interface human
 
 language dialect or variation that is supported by an application or a client computer.
 
@@ -1376,7 +923,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the Microsoft protocol technical documents (TDs). Interchanging the usage of these terms does
+
+the Microsoft protocol technical documents (TDs). Interchanging the usage of these terms does
 not imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the
 use of this term does not imply or require that the algorithms described in [RFC4122] or [C706]
 has to be used for generating the UUID.
@@ -1395,14 +943,14 @@ rather than tables and returns CIM classes or instances rather than rows.  WQL i
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1442,7 +990,8 @@ Release: April 23, 2024
 
 13 / 234
 
-[MS-WMIO] Microsoft Corporation, "Windows Management Instrumentation Encoding Version 1.0
+
+[MS-WMIO] Microsoft Corporation, "Windows Management Instrumentation Encoding Version 1.0
 Protocol".
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
@@ -1453,7 +1002,7 @@ Protocol".
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-GetSystemDefaultLangID] Microsoft Corporation, "GetSystemDefaultLangID function",
 http://msdn.microsoft.com/en-us/library/dd318120(VS.85).aspx
@@ -1471,7 +1020,7 @@ us/library/aa392902.aspx
 November 2016, https://github.com/microsoft/prot-od-netcaps/tree/master/%5BMS-WMOD%5D-
 captureALL
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows Management Instrumentation (WMI) Remote Protocol is used to communicate
 management data conforming to Common Information Model (CIM), as specified in [DMTF-
@@ -1490,7 +1039,8 @@ Release: April 23, 2024
 
 14 / 234
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-WMI].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1518,7 +1068,8 @@ Release: April 23, 2024
 
 15 / 234
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-WMI].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1545,7 +1096,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Semisynchronous calls
+
+  Semisynchronous calls
 
   Asynchronous calls
 
@@ -1569,7 +1121,7 @@ Instrumentation Remote Protocol document, acquire a working knowledge of the con
 and communication protocols as specified in [MS-DCOM], [DMTF-DSP0004], and [MS-WMIO].
 Namespace security is controlled by using security descriptors, as specified in [MS-DTYP].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Windows Management Instrumentation Remote Protocol uses the DCOM Remote Protocol to
 communicate over the network and to authenticate all requests issued against the infrastructure. The
@@ -1595,7 +1147,7 @@ In addition to DCOM Remote Protocol support, the Windows Management Instrumentat
 Protocol uses a special encoding, as specified in [MS-WMIO], to transfer information as specified in
 [DMTF-DSP0004] over the network.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The client that uses the protocol possesses valid credentials that are recognized by the server
 accepting the client requests. The client uses security providers that recognize such credentials to
@@ -1615,14 +1167,15 @@ Release: April 23, 2024
 
 17 / 234
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Windows Management Instrumentation Remote Protocol implementation is designed for managing
 components that are represented by CIM classes on remote clients and servers. This protocol is
 designed to act as a transport for CIM-compatible management objects and operations on CIM
 objects.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas. The Windows Management
 Instrumentation Remote Protocol does explicit negotiation as follows:
@@ -1644,7 +1197,7 @@ a capability negotiation, as specified in section 3.2.4.1.1.
 The protocol uses return values and parameters to negotiate the locale capabilities of the server
 as specified in section 3.2.3.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 In order to extend the CIM schema using the Windows Management Instrumentation Remote
 Protocol, vendors MUST use operations as specified in section 3.1.4.3.
@@ -1653,7 +1206,7 @@ This protocol uses HRESULT values as specified in [MS-ERREF]. Vendors can define
 HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value, indicating
 that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for this protocol. This protocol uses the following class
 identifiers (CLSIDs) (as specified in [MS-DCOM] section 1.9):
@@ -1703,12 +1256,13 @@ Release: April 23, 2024
 
 18 / 234
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Windows Management Instrumentation Remote Protocol messages
 are transported and specify Windows Management Instrumentation Remote Protocol message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 Windows Management Instrumentation Remote Protocol messages MUST be transported via the DCOM
 Remote Protocol. The Windows Management Instrumentation Remote Protocol objects that are
@@ -1718,9 +1272,9 @@ DCOM activation, as specified in [MS-DCOM] section 3.2.4.1.1.
 The client connection MUST be secured at an authentication level that is negotiated by the DCOM
 Remote Protocol infrastructure.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  WQL Query
+#### 2.2.1 WQL Query
 
 A client has the capability to express a query against a server. This query MUST be expressed in the
 WMI Query Language (WQL). WQL is a subset of the American National Standards Institute
@@ -1746,7 +1300,7 @@ insensitive, contrary to what [DMTF-DSP0004] specifies.
 
 The next section specifies the complete syntax of WQL queries for schema, data, and event queries.
 
-2.2.1.1  WQL Schema and Data Query
+##### 2.2.1.1 WQL Schema and Data Query
 
 The syntax for the WQL schema and data queries is provided in Augmented Backus-Naur Form
 (ABNF).
@@ -1770,7 +1324,8 @@ Release: April 23, 2024
 
 19 / 234
 
-  ("REFERENCES OF {" <OBJECT-REL-PATH> "}" <OPTIONAL-REF-WHERE>)
+
+  ("REFERENCES OF {" <OBJECT-REL-PATH> "}" <OPTIONAL-REF-WHERE>)
 
  PROPERTY-LIST = <PROPERTY-NAME> <PROPERTY-LIST2>
  PROPERTY-LIST2 = [COMMA <PROPERTY-LIST>]
@@ -1845,7 +1400,8 @@ Release: April 23, 2024
 
 20 / 234
 
- STRING-IDENTIFIER = ALPHA *(ALPHA / DIGIT / (*("_") ALPHA / DIGIT))
+
+ STRING-IDENTIFIER = ALPHA *(ALPHA / DIGIT / (*("_") ALPHA / DIGIT))
 
  CLASS-NAME = [DOUBLEUNDERSCORE] <STRING-IDENTIFIER>
  PROPERTY-NAME = [DOUBLEUNDERSCORE] <STRING-IDENTIFIER>
@@ -1939,7 +1495,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Schema objects and
+
+Schema objects and
 keywords
 
 Description
@@ -2041,7 +1598,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Schema objects and
+
+Schema objects and
 keywords
 
 Description
@@ -2157,7 +1715,8 @@ Release: April 23, 2024
 
 23 / 234
 
-Character  Description
+
+Character  Description
 
 characters inside the brackets: the non-caret and the "-" or "=".
 
@@ -2187,7 +1746,7 @@ found anywhere in the class name: SELECT * FROM meta_class WHERE __Class LIKE "%
 Any one character. Any literal underscore used in the query string MUST be escaped by placing it
 inside [] (square brackets).
 
-2.2.1.2  WQL Event Query
+##### 2.2.1.2 WQL Event Query
 
 The following example shows the syntax for WQL event queries in ABNF notation.
 
@@ -2235,7 +1794,8 @@ Release: April 23, 2024
 
 24 / 234
 
- EQUIVALENT-OPERATOR = "=" / "!=" / "<>"
+
+ EQUIVALENT-OPERATOR = "=" / "!=" / "<>"
  COMPARE-OPERATOR = "<=" / ">=" / "<" / ">" / "LIKE"
  IS-OPERATOR = "IS" / "IS NOT"
 
@@ -2325,7 +1885,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Objects and
+
+Objects and
 keywords
 
 Description
@@ -2389,7 +1950,7 @@ EVENT-EXPR
 
  An expression for filtering WMI events.
 
-2.2.2  CIM Path and Namespace
+#### 2.2.2 CIM Path and Namespace
 
 The syntax for CIM path and namespace is provided in ABNF notation.
 
@@ -2416,7 +1977,8 @@ Release: April 23, 2024
 
 26 / 234
 
- PROPERTY-NAME = [__]<STRING-IDENTIFIER>
+
+ PROPERTY-NAME = [__]<STRING-IDENTIFIER>
 
  ; -----------------------------------
  ; NAMESPACE
@@ -2483,7 +2045,7 @@ PROPERTY-NAME
 
 Identifies the name of a property of the CIM class.
 
-2.2.3  Protocol Return Codes
+#### 2.2.3 Protocol Return Codes
 
 Codes that are returned by the protocol are represented as an HRESULT, as specified in [MS-ERREF]
 section 2.1.
@@ -2498,7 +2060,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The severity bit of HRESULT MUST be interpreted as specified in [MS-ERREF] section 2.1. HRESULT
+
+The severity bit of HRESULT MUST be interpreted as specified in [MS-ERREF] section 2.1. HRESULT
 errors are not recoverable by the protocol. HRESULT successes, other than the ones specified in the
 following table, MUST be considered as equal to WBEM_S_NO_ERROR.
 
@@ -2532,7 +2095,7 @@ WBEM_S_NEW_STYLE
 The operation was successful and indicates that the receiver of the call is able to receive
 optimized IWbemObjectSink::Indicate calls.
 
-2.2.4  IWbemClassObject Interface
+#### 2.2.4 IWbemClassObject Interface
 
 The signatures of many methods that are related to the Windows Management Instrumentation
 Remote Protocol include a parameter to specify an IWbemClassObject interface pointer. This
@@ -2563,7 +2126,7 @@ This CLSID MUST represent the unmarshaler CLSID that is supplied by WMI to DCOM
 and MUST be sent over the network by DCOM when custom marshaling is implemented.
 For more information (OBJREF_CUSTOM), see the [MS-DCOM].
 
-2.2.4.1  Prototype Result Object
+##### 2.2.4.1 Prototype Result Object
 
 The prototype result object is an IWbemClassObject (section 2.2.4) that is returned when the lFlags
 parameter of the IWbemServices::ExecQuery (section 3.1.4.3.18) or
@@ -2586,7 +2149,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-in [MS-WMIO] section 2.2.6. If any key property is removed because it is not specified in PROPERTY-
+
+in [MS-WMIO] section 2.2.6. If any key property is removed because it is not specified in PROPERTY-
 LIST, the 0x40 flag is set on ObjectFlags.
 
 If the query specifies ASTERISK, as specified in section 2.2.1.1, the class object is returned with all
@@ -2629,7 +2193,7 @@ query.
 Remaining items are encoded in the same way as the CIM class that represents the CLASS-NAME
 that is specified in the query.
 
-2.2.4.2  Extrinsic Events
+##### 2.2.4.2 Extrinsic Events
 
 Extrinsic events are events generated by a component outside the implementation. In WMI, extrinsic
 events are represented as instances of a class that is derived from the __ExtrinsicEvent class. If any
@@ -2651,7 +2215,8 @@ Release: April 23, 2024
 
 29 / 234
 
- [abstract]
+
+ [abstract]
  class __IndicationRelated : __SystemClass
  {
  };
@@ -2672,7 +2237,7 @@ represents the number of 100-nanosecond intervals since January 1, 1601 (UTC), a
 SECURITY_DESCRIPTOR is a security descriptor, as defined in [MS-DTYP], represented as an array of
 bytes. The security descriptor MUST specify security for events as specified in section 5.2.
 
-2.2.5  WBEM_CHANGE_FLAG_TYPE Enumeration
+#### 2.2.5 WBEM_CHANGE_FLAG_TYPE Enumeration
 
 The WBEM_CHANGE_FLAG_TYPE enumeration is used to indicate and update the type of the flag.
 
@@ -2709,7 +2274,7 @@ classes exist. An example of an update that this flag forces is when a class qua
 child class and the base class tries to add the same qualifier that conflicted with the existing one.
 In force mode, this conflict is resolved by deleting the conflicting qualifier in the child class.
 
-2.2.6  WBEM_GENERIC_FLAG_TYPE Enumeration
+#### 2.2.6 WBEM_GENERIC_FLAG_TYPE Enumeration
 
 The WBEM_GENERIC_FLAG_TYPE enumeration is used to indicate and update the type of the flag.
 
@@ -2720,7 +2285,8 @@ Release: April 23, 2024
 
 30 / 234
 
- typedef [v1_enum] enum tag_WBEM_GENERIC_FLAG_TYPE
+
+ typedef [v1_enum] enum tag_WBEM_GENERIC_FLAG_TYPE
  {
    WBEM_FLAG_RETURN_WBEM_COMPLETE = 0x0,
    WBEM_FLAG_RETURN_IMMEDIATELY = 0x10,
@@ -2782,7 +2348,7 @@ WBEM_FLAG_STRONG_VALIDATION:  This flag MUST NOT be set, and MUST be ignored on
 
 receipt.
 
-2.2.7  WBEM_STATUS_TYPE Enumeration
+#### 2.2.7 WBEM_STATUS_TYPE Enumeration
 
 The WBEM_STATUS_TYPE enumeration gives information about the status of the operation.
 
@@ -2793,7 +2359,8 @@ Release: April 23, 2024
 
 31 / 234
 
- typedef enum tag_WBEM_STATUS_TYPE
+
+ typedef enum tag_WBEM_STATUS_TYPE
  {
    WBEM_STATUS_COMPLETE = 0,
    WBEM_STATUS_REQUIREMENTS = 0x01,
@@ -2809,7 +2376,7 @@ WBEM_STATUS_REQUIREMENTS:  This flag MUST NOT be set, and MUST be ignored on rec
 WBEM_STATUS_PROGRESS:  WMI reports the progress of the operation to
 IWbemObjectSink::SetStatus with flag WBEM_STATUS_PROGRESS.
 
-2.2.8  WBEM_TIMEOUT_TYPE Enumeration
+#### 2.2.8 WBEM_TIMEOUT_TYPE Enumeration
 
 The WBEM_TIMEOUT_TYPE enumeration gives information about the type of time-out for the process.
 
@@ -2827,7 +2394,7 @@ WBEM_INFINITE:  If passed as a time-out parameter to IEnumWbemClassObject::Next,
 
 blocks until objects are available.
 
-2.2.9  WBEM_QUERY_FLAG_TYPE Enumeration
+#### 2.2.9 WBEM_QUERY_FLAG_TYPE Enumeration
 
 The WBEM_QUERY_FLAG_TYPE enumeration gives information about the type of the flag.
 
@@ -2859,7 +2426,8 @@ Release: April 23, 2024
 
 32 / 234
 
-If used in IWbemServices::CreateInstanceEnum or IWbemServices::CreateInstanceEnumAsync,
+
+If used in IWbemServices::CreateInstanceEnum or IWbemServices::CreateInstanceEnumAsync,
 this constant causes the enumeration to return only the instances of this class and excludes all
 instances of subclasses.
 
@@ -2867,7 +2435,7 @@ WBEM_FLAG_PROTOTYPE:  This flag is used for prototyping. It does not run the que
 
 returns the Prototype Result Object as specified in section 2.2.4.1.
 
-2.2.10 WBEM_BACKUP_RESTORE_FLAGS Enumeration
+#### 2.2.10 WBEM_BACKUP_RESTORE_FLAGS Enumeration
 
 The WBEM_BACKUP_RESTORE_FLAGS enumeration gives information about the backup and restore
 state of the process.
@@ -2881,7 +2449,7 @@ WBEM_FLAG_BACKUP_RESTORE_FORCE_SHUTDOWN:  While the CIM database is being
 
 restored, any clients connected to WMI are forcibly disconnected.
 
-2.2.11 WBEMSTATUS Enumeration
+#### 2.2.11 WBEMSTATUS Enumeration
 
 The WBEMSTATUS enumeration gives information about the status of an operation. If the server
 encounters an error condition for which this protocol does not explicitly state an error value, the
@@ -2931,7 +2499,8 @@ Release: April 23, 2024
 
 33 / 234
 
-   WBEM_E_INVALID_CLASS = 0x80041010,
+
+   WBEM_E_INVALID_CLASS = 0x80041010,
    WBEM_E_INVALID_QUERY = 0x80041017,
    WBEM_E_INVALID_QUERY_TYPE = 0x80041018,
    WBEM_E_PROVIDER_NOT_CAPABLE = 0x80041024,
@@ -3007,7 +2576,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WBEM_E_TYPE_MISMATCH:  The server has found an incorrect data type associated with property
+
+WBEM_E_TYPE_MISMATCH:  The server has found an incorrect data type associated with property
 
 or input parameter in client's request.
 
@@ -3087,7 +2657,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WBEM_E_INVALID_QUERY_TYPE:  The query language specified is invalid.
+
+WBEM_E_INVALID_QUERY_TYPE:  The query language specified is invalid.
 
 WBEM_E_PROVIDER_NOT_CAPABLE:  The server does not support the requested operation on the
 
@@ -3170,7 +2741,8 @@ Release: April 23, 2024
 
 36 / 234
 
-WBEM_E_BACKUP_RESTORE_WINMGMT_RUNNING:  A request for backing up or restoring the
+
+WBEM_E_BACKUP_RESTORE_WINMGMT_RUNNING:  A request for backing up or restoring the
 
 CIM database was sent while the server was using it.
 
@@ -3218,7 +2790,7 @@ WBEM_E_REGISTRATION_TOO_PRECISE:  The WQL query for intrinsic events for a class
 
 without a WITHIN clause.
 
-2.2.12 WBEM_CONNECT_OPTIONS Enumeration
+#### 2.2.12 WBEM_CONNECT_OPTIONS Enumeration
 
 The WBEM_CONNECT_OPTIONS enumeration gives information about the type of options of the
 connection.
@@ -3233,7 +2805,7 @@ WBEM_FLAG_CONNECT_REPOSITORY_ONLY:  Reserved for local use.
 
 WBEM_FLAG_CONNECT_PROVIDERS:  Reserved for local use.<2>
 
-2.2.13 IWbemContext Interface
+#### 2.2.13 IWbemContext Interface
 
 The signatures of many methods that are related to the Windows Management Instrumentation
 Remote Protocol include a parameter to specify an IWbemContext interface pointer. The
@@ -3247,7 +2819,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-information to be used by the server. This information MUST be composed of a property list, the
+
+information to be used by the server. This information MUST be composed of a property list, the
 property types, and the assigned property values.
 
 The following properties can be passed as part of any call where IWbemContext is passed as a
@@ -3364,7 +2937,8 @@ Release: April 23, 2024
 
 38 / 234
 
-All scalar types that are encountered in the following structures MUST be stored in little-endian
+
+All scalar types that are encountered in the following structures MUST be stored in little-endian
 format.
 
 The IWbemContext interface is marshaled or unmarshaled by using the following data structures.
@@ -3394,9 +2968,9 @@ protocol.
 The integer formats OCTET, UINT16, and UINT32 are encoded as defined in [MS-WMIO] section
 2.2.72.
 
-2.2.13.1
+##### 2.2.13.1 IWbemContextBuffer Marshaling Structure
 
-IWbemContextBuffer Marshaling Structure
+
 
 The IWbemContextBuffer data structure defines the wire format for buffer data that is used by this
 protocol. Its structure has the following encoding format (defined in ABNF notation as specified in
@@ -3430,9 +3004,9 @@ continuous list without padding between properties, as specified in
 IWbemContextProperty (section 2.2.13.2). The number of IWbemContextProperty properties
 MUST be equal to NumProps.
 
-2.2.13.2
+##### 2.2.13.2 IWbemContextProperty Marshaling Structure
 
-IWbemContextProperty Marshaling Structure
+
 
 The IWbemContextProperty data structure defines the wire format for property data that is used by
 this protocol. The property is a variable-length structure and has the following structure:
@@ -3444,7 +3018,8 @@ Release: April 23, 2024
 
 39 / 234
 
- IWbemContextProperty = PropertyName PropertyFlags PropertyType PropertyValue
+
+ IWbemContextProperty = PropertyName PropertyFlags PropertyType PropertyValue
 
   PropertyName MUST be the name of the property, marshaled as a string in the
 
@@ -3519,7 +3094,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Property types
+
+ Property types
 
  Marshaling
 
@@ -3547,9 +3123,9 @@ VT_ARRAY | VT_*
 
 MUST be marshaled as an IWbemContextArray structure, as specified in 2.2.13.4.
 
-2.2.13.3
+##### 2.2.13.3 IWbemContextString Marshaling Structure
 
-IWbemContextString Marshaling Structure
+
 
 The IWbemContextString data structure defines the wire format for the string data that is used by this
 protocol. Strings (property names and VT_BSTR properties values) MUST be represented as a 32-bit
@@ -3570,9 +3146,9 @@ IWbemContextString has the following structure.
 [UNICODE]. The length of the sequence MUST be equal to StringLength. The string MUST NOT
 have a terminating NIL (0x0000) character.
 
-2.2.13.4
+##### 2.2.13.4 IWbemContextArray Marshaling Structure
 
-IWbemContextArray Marshaling Structure
+
 
 The IWbemContextArray data structure defines the wire format for array data that is used by this
 protocol. IWbemContextArray has the following structure:
@@ -3600,7 +3176,8 @@ Release: April 23, 2024
 
 41 / 234
 
-Type
+
+Type
 
 Marshaling
 
@@ -3640,7 +3217,7 @@ VT_UI2
 
 MUST be marshaled as a 2-byte little-endian format.
 
-2.2.14 ObjectArray Structure
+#### 2.2.14 ObjectArray Structure
 
 The ObjectArray structure MUST be used to encode multiple CIM objects that are returned in
 response to the IWbemWCOSmartEnum::Next (section 3.1.4.7.1) method. This structure is also used
@@ -3692,7 +3269,8 @@ Release: April 23, 2024
 
 42 / 234
 
-...
+
+...
 
 ...
 
@@ -3776,13 +3354,14 @@ Release: April 23, 2024
 
 43 / 234
 
-wbemObjects (variable): The objects array that contains the CIM class definition and CIM
+
+wbemObjects (variable): The objects array that contains the CIM class definition and CIM
 
 instances. These CIM objects MUST be encoded in the WBEM_DATAPACKET_OBJECT structure.
 
-2.2.14.1
+##### 2.2.14.1 WBEM_DATAPACKET_OBJECT Structure
 
-WBEM_DATAPACKET_OBJECT Structure
+
 
 The WBEM_DATAPACKET_OBJECT MUST contain the CIM class definition and CIM instances.
 
@@ -3843,9 +3422,9 @@ Object (variable): The CIM object carried into the WBEM_DATAPACKET_OBJECT, havin
 
 dwSizeOfData bytes. The embedded CIM object MUST match the selector field bObjectType.
 
-2.2.14.2
+##### 2.2.14.2 WBEMOBJECT_CLASS Structure
 
-WBEMOBJECT_CLASS Structure
+
 
 The WBEMOBJECT_CLASS structure MUST contain a complete CIM class definition.
 
@@ -3873,7 +3452,8 @@ Release: April 23, 2024
 
 44 / 234
 
-...
+
+...
 
 dwSizeOfHeader (4 bytes): The size, in bytes, of the header, which MUST be 0x00000008.
 
@@ -3883,9 +3463,9 @@ ObjectData (variable): Contains the string of bytes that represent the CIM class
 
 EncodingUnitObjectBlock, as specified in [MS-WMIO] section 2.2.2.
 
-2.2.14.3
+##### 2.2.14.3 WBEMOBJECT_INSTANCE Structure
 
-WBEMOBJECT_INSTANCE Structure
+
 
 The WBEMOBJECT_INSTANCE structure MUST contain a complete CIM instance.
 
@@ -3924,9 +3504,9 @@ ObjectData (variable): Contains the string of bytes that represent the CIM insta
 
 EncodingUnitObjectBlock, as specified in [MS-WMIO] section 2.2.2.
 
-2.2.14.4
+##### 2.2.14.4 WBEMOBJECT_INSTANCE_NOCLASS Structure
 
-WBEMOBJECT_INSTANCE_NOCLASS Structure
+
 
 The WBEMOBJECT_INSTANCE_NOCLASS structure MUST contain a CIM instance without the CIM
 class definition.
@@ -3955,7 +3535,8 @@ Release: April 23, 2024
 
 45 / 234
 
-...
+
+...
 
 ...
 
@@ -3985,7 +3566,7 @@ EncodingUnitInstanceNoClass. If no matching WBEMOBJECT_INSTANCE is found during 
 MUST be treated as an error. If no matching WBEMOBJECT_INSTANCE is found during encoding, the
 CIM instance MUST be encoded as a WBEMOBJECT_INSTANCE structure.
 
-2.2.15 WBEM_REFRESHED_OBJECT Structure
+#### 2.2.15 WBEM_REFRESHED_OBJECT Structure
 
 The WBEM_REFRESHED_OBJECT structure MUST be used to encode the results of the remote
 refreshing service that is returned by the
@@ -4020,11 +3601,12 @@ Release: April 23, 2024
 
 46 / 234
 
-When m_lBlobType is set to WBEM_BLOB_TYPE_ENUM, it MUST contain the instance information
+
+When m_lBlobType is set to WBEM_BLOB_TYPE_ENUM, it MUST contain the instance information
 that is represented in the WBEM_INSTANCE_BLOB format for several IWbemClassObject interface
 pointers being part of the refreshing result.
 
-2.2.16 WBEM_INSTANCE_BLOB Enumeration
+#### 2.2.16 WBEM_INSTANCE_BLOB Enumeration
 
 The WBEM_INSTANCE_BLOB is used to represent the refreshed object or enumeration in the m_pBlob
 attribute of the WBEM_REFRESHED_OBJECT structure.
@@ -4058,7 +3640,7 @@ Objects (variable): MUST contain a sequence of IWbemClassObjects of count numObj
 
 IWbemClassObject encoded in RefreshedInstances format.
 
-2.2.17 WBEM_INSTANCE_BLOB_TYPE Enumeration
+#### 2.2.17 WBEM_INSTANCE_BLOB_TYPE Enumeration
 
 The WBEM_INSTANCE_BLOB_TYPE enumeration is used to indicate the type of a CIM object.
 
@@ -4075,7 +3657,7 @@ WBEM_BLOB_TYPE_ERROR:  Represents an error condition. In this case the object is
 
 WBEM_BLOB_TYPE_ENUM:  The object is an enumeration of objects of a specific CIM type.
 
-2.2.18 RefreshedInstances
+#### 2.2.18 RefreshedInstances
 
 The RefreshedInstances packet is contained within the WBEM_INSTANCE_BLOB.
 
@@ -4099,7 +3681,8 @@ Release: April 23, 2024
 
 47 / 234
 
-Blob (variable)
+
+Blob (variable)
 
 ...
 
@@ -4109,7 +3692,7 @@ Blob (variable): MUST be a byte stream representing an IWbemClassObject encoded 
 
 RefreshedSingleInstance.
 
-2.2.19 RefreshedSingleInstance
+#### 2.2.19 RefreshedSingleInstance
 
 The RefreshedSingeInstance MUST be encoded as a sequence of bytes representing the following
 elements of the original IWbemClassObject, without any padding:
@@ -4126,7 +3709,7 @@ elements of the original IWbemClassObject, without any padding:
 
 The elements of IWbemClassObject are defined in [MS-WMIO].
 
-2.2.20 _WBEM_REFRESH_INFO Structure
+#### 2.2.20 _WBEM_REFRESH_INFO Structure
 
 The _WBEM_REFRESH_INFO structure MUST be populated by the Windows Management
 Instrumentation Remote Protocol service that provides the refresher information. The structure MUST
@@ -4147,7 +3730,7 @@ m_lCancelId:  MUST be a unique identifier for the refresher object that is being
 refreshing object when the refresher object is using
 IWbemRemoteRefresher::StopRefreshing (section 3.1.4.13.2).
 
-2.2.21 _WBEM_REFRESHER_ID Structure
+#### 2.2.21 _WBEM_REFRESHER_ID Structure
 
 The _WBEM_REFRESHER_ID structure identifies the client that is requesting refreshing services. The
 structure MUST be used to return information from IWbemRefreshingServices (section 3.1.4.12)
@@ -4165,7 +3748,8 @@ Release: April 23, 2024
 
 48 / 234
 
- } _WBEM_REFRESHER_ID;
+
+ } _WBEM_REFRESHER_ID;
 
 m_szMachineName:  MUST be the NetBIOS name of the client machine.
 
@@ -4175,7 +3759,7 @@ context of the client.<7>
 
 m_guidRefresherId:  MUST be a client-generated GUID.
 
-2.2.22 _WBEM_RECONNECT_INFO Structure
+#### 2.2.22 _WBEM_RECONNECT_INFO Structure
 
 The _WBEM_RECONNECT_INFO structure MUST contain the type for the information about the target
 CIM instance.
@@ -4189,7 +3773,7 @@ m_lType:  MUST be one of the WBEM_RECONNECT_TYPE enumeration values.
 
 m_pwcsPath :  MUST be a CIM path to the remote CIM instance to be added to the refresher.
 
-2.2.23 _WBEM_RECONNECT_RESULTS Structure
+#### 2.2.23 _WBEM_RECONNECT_RESULTS Structure
 
 The _WBEM_RECONNECT_RESULTS structure defines the status of a reconnect operation. The
 structure MUST be used to return information from IWbemRefreshingServices (section 3.1.4.12)
@@ -4205,7 +3789,7 @@ using the IWbemRemoteRefresher::StopRefreshing (section 3.1.4.13.2) interface me
 
 m_hr:  MUST be the HRESULT of the reconnect operation.
 
-2.2.24 _WBEM_RECONNECT_TYPE Enumeration
+#### 2.2.24 _WBEM_RECONNECT_TYPE Enumeration
 
 The _WBEM_RECONNECT_TYPE enumeration defines possible types of remote CIM instances. The
 structure MUST be used to return to information from IWbemRefreshingServices (section 3.1.4.12)
@@ -4229,11 +3813,12 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WBEM_RECONNECT_TYPE_LAST:  This member is used only by the server to track the range of
+
+WBEM_RECONNECT_TYPE_LAST:  This member is used only by the server to track the range of
 
 values for this enumeration. It MUST NOT be used by the client.
 
-2.2.25 WBEM_REFRESH_TYPE Enumeration
+#### 2.2.25 WBEM_REFRESH_TYPE Enumeration
 
 The WBEM_REFRESH_TYPE enumeration defines refresh types for the _WBEM_REFRESH_INFO
 structure.
@@ -4257,7 +3842,7 @@ WBEM_REFRESH_TYPE_NON_HIPERF:  The m_Info member of the _WBEM_REFRESH_INFO
 
 structure contains the _WBEM_REFRESH_INFO_NON_HIPERF structure.
 
-2.2.26 _WBEM_REFRESH_INFO_NON_HIPERF Structure
+#### 2.2.26 _WBEM_REFRESH_INFO_NON_HIPERF Structure
 
 The _WBEM_REFRESH_INFO_NON_HIPERF structure MUST be returned by the server when the
 requested CIM instance cannot be part of the refreshing results.
@@ -4274,7 +3859,7 @@ m_pTemplate:  MUST be a pointer to an IWbemClassObject interface, which MUST rep
 instance with all properties set to the default values. Default property values are as specified in
 [MS-WMIO] section 2.2.26.
 
-2.2.27 _WBEM_REFRESH_INFO_REMOTE Structure
+#### 2.2.27 _WBEM_REFRESH_INFO_REMOTE Structure
 
 The _WBEM_REFRESH_INFO_REMOTE structure MUST be used when the client is on a different
 computer than the computer on which the WMI service providing the refreshed information resides.
@@ -4299,11 +3884,12 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-m_Guid:  MUST be a globally unique identifier (GUID) created to identify this
+
+m_Guid:  MUST be a globally unique identifier (GUID) created to identify this
 
 _WBEM_REFRESH_INFO object.
 
-2.2.28 _WBEM_REFRESH_INFO_UNION Union
+#### 2.2.28 _WBEM_REFRESH_INFO_UNION Union
 
 The _WBEM_REFRESH_INFO_UNION union defines a union of one of the following types: m_Remote,
 m_NonHiPerf, or m_hres.
@@ -4325,7 +3911,7 @@ m_NonHiPerf:  An m_NonHiPerf _WBEM_REFRESH_INFO_NON_HIPERF type.
 
 m_hres:  An m_hres HRESULT type.
 
-2.2.29 WMI Locale Formats
+#### 2.2.29 WMI Locale Formats
 
 The client can request data from the WMI server in a client-preferred locale. The format of each locale
 MUST conform to one of the following:
@@ -4340,7 +3926,7 @@ locale as specified in [MS-LCID]. For example, to send LCID 1033 (0x409), the st
 Locale name format as specified in [MS-LCID]. For example, LCID 1033 (0x409) maps to en-US
 and is passed as "en-US" in this representation.
 
-2.2.30 __SystemSecurity Class
+#### 2.2.30 __SystemSecurity Class
 
 The __SystemSecurity class is used to read or modify the security descriptor for a CIM namespace.
 The class is defined by WMI as shown in the following MOF text.
@@ -4352,9 +3938,9 @@ The class is defined by WMI as shown in the following MOF text.
     [Static] uint32 SetSD([in] uint8 sd[]);
  };
 
-2.2.30.1
+##### 2.2.30.1 __SystemSecurity::GetSD
 
-__SystemSecurity::GetSD
+
 
 The GetSD method gets the security descriptor in the NamespaceConnection of the namespace. This
 method is called using the IWbemServices interface as described in section 3.2.4.2.5.
@@ -4370,15 +3956,16 @@ Release: April 23, 2024
 
 51 / 234
 
-sd: Exchanges a byte array containing a self-relative SECURITY_DESCRIPTOR structure, as defined in
+
+sd: Exchanges a byte array containing a self-relative SECURITY_DESCRIPTOR structure, as defined in
 
 [MS-DTYP] (section 2.4.6).
 
 A return value of 0 indicates success. Any nonzero value indicates failure.<8>
 
-2.2.30.2
+##### 2.2.30.2 __SystemSecurity::SetSD
 
-__SystemSecurity::SetSD
+
 
 The SetSD method changes the security descriptor in the NamespaceConnection of the namespace. If
 there is a parent namespace, server MUST add access control entries of the parent to the security
@@ -4417,9 +4004,9 @@ sd: Exchanges a byte array containing a self-relative SECURITY_DESCRIPTOR struct
 
 A return value of 0 indicates success. Any nonzero value indicates failure.<9>
 
-2.2.30.3
+##### 2.2.30.3 RequiresEncryption
 
-RequiresEncryption
+
 
 The RequiresEncryption qualifier has a Boolean data type. If the RequiresEncryption qualifier is
 present and set to TRUE for the __SystemSecurity singleton instance, the server SHOULD set the
@@ -4427,7 +4014,7 @@ RequiresEncryption flag for the containing CIM namespace. If RequiresEncryption 
 server MUST reject the client request with authentication levels that are not equal to
 RPC_C_AUTHN_LEVEL_PKT_PRIVACY.<10>
 
-2.2.31 Default System Classes
+#### 2.2.31 Default System Classes
 
 Classes whose names begin with an underscore are termed system classes. WMI defines certain
 system classes as listed as below. MOF representation of each of the class objects can be obtained by
@@ -4445,7 +4032,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-__IndicationRelated: Serves as a parent class for all event-related classes.
+
+__IndicationRelated: Serves as a parent class for all event-related classes.
 
 __Namespace: Represents a WMI namespace.
 
@@ -4498,7 +4086,7 @@ an interval timer event or an absolute timer event.
 
 __ExtendedStatus: Used to report detailed status and error information.
 
-2.2.32 Supported WMI Qualifiers
+#### 2.2.32 Supported WMI Qualifiers
 
 The CIM standard qualifiers supported by WMI are referenced in [DMTF-DSP0004].
 
@@ -4512,7 +4100,8 @@ Release: April 23, 2024
 
 53 / 234
 
-Qualifier
+
+Qualifier
 
 CIMType
 
@@ -4624,7 +4213,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Qualifier
+
+Qualifier
 
 Description
 
@@ -4637,7 +4227,8 @@ Release: April 23, 2024
 
 55 / 234
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Windows Management Instrumentation Remote Protocol,
 including abstract data models, interface method syntax, and message processing rules. A client in the
@@ -4646,7 +4237,7 @@ Protocol request. The request is issued against a Windows Management Instrumenta
 Protocol server. In this context, a server is a machine that handles the request issued by the client.
 Detailed sequence diagrams are as specified in section 4.
 
-3.1  Server Details
+### 3.1 Server Details
 
 A client in the context of this specification is a machine that issues a Windows Management
 Instrumentation Remote Protocol request. The request is issued against a Windows Management
@@ -4661,13 +4252,14 @@ Release: April 23, 2024
 
 56 / 234
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-WMI].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
 Figure 3: Typical protocol sequence
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Unless otherwise indicated, each of the following elements is maintained in volatile storage.
 
@@ -4683,7 +4275,8 @@ Release: April 23, 2024
 
 57 / 234
 
-The server MUST maintain an EventDropLimit DWORD value that represents the threshold used for
+
+The server MUST maintain an EventDropLimit DWORD value that represents the threshold used for
 dropping the events on the server.
 
 The server MUST maintain a MaxRequestLimit integer value that represents the maximum number
@@ -4760,7 +4353,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PrevInstances: Array of IWbemClassObject objects that are instances of the class in the event
+
+PrevInstances: Array of IWbemClassObject objects that are instances of the class in the event
 
 filter. This information is used in the generation of intrinsic events.
 
@@ -4838,7 +4432,8 @@ Release: April 23, 2024
 
 59 / 234
 
-SupportsDelete: A Boolean value that is TRUE if the abstract interface Delete an Instance of a
+
+SupportsDelete: A Boolean value that is TRUE if the abstract interface Delete an Instance of a
 
 Class (section 3.1.4.17.9) or Delete a Class (section 3.1.4.17.10) is supported by the provider. By
 default, this value is set to FALSE.
@@ -4876,7 +4471,7 @@ CallbackInProgress: A Boolean value that is set to TRUE if there is an
 IWbemObjectSink::Indicate or IWbemObjectSink::SetStatus with a currently-in-progress
 message. The value is set to FALSE if there is no IWbemObjectSink::Indicate and
 IWbemObjectSink::SetStatus in progress for the operation. See sections 3.2.4.1.1 and
-3.2.4.1.2 for more details.
+###### 3.2.4.1.2 for more details.
 
 CallCancelled: A Boolean value that is set to TRUE if the operation is canceled. The initial value of
 
@@ -4916,7 +4511,8 @@ Release: April 23, 2024
 
 60 / 234
 
-The following ADM elements are used to store information about semisynchronous calls returning
+
+The following ADM elements are used to store information about semisynchronous calls returning
 multiple objects (see section 3.2.4.2.8 for a list of multiple-result semisynchronous calls).
 
 SemiSinkResultSetObject: A structure to store the results of multiple-result semisynchronous calls.
@@ -4988,7 +4584,8 @@ Release: April 23, 2024
 
 61 / 234
 
-For the requested operation to begin successfully, the server MUST create and return an object of type
+
+For the requested operation to begin successfully, the server MUST create and return an object of type
 IEnumWbemClassObject for the following methods, and the return value MUST be
 WBEM_S_NO_ERROR, as specified in section 2.2.11. When the client calls the methods of
 IEnumWbemClassObject, the IEnumWbemClassObject method MUST deliver the results of the
@@ -5077,7 +4674,8 @@ Release: April 23, 2024
 
 62 / 234
 
-
+
+
 
 
 
@@ -5150,7 +4748,8 @@ Release: April 23, 2024
 
 63 / 234
 
-which a locale-neutral object exists and the name of the namespace MUST be a locale name in the
+
+which a locale-neutral object exists and the name of the namespace MUST be a locale name in the
 "MS_xxx" format (see section 2.2.29).
 
 When the server updates an existing class, it MUST observe the
@@ -5224,7 +4823,8 @@ Release: April 23, 2024
 
 64 / 234
 
-EventPollingTimer: This timer tracks the polling interval specified by the WITHIN clause of an
+
+EventPollingTimer: This timer tracks the polling interval specified by the WITHIN clause of an
 
 event query. The timer interval is the number of seconds specified in the query. The minimum
 value of the polling interval is 0.001 (equivalent to 1 millisecond) and the maximum value is
@@ -5291,7 +4891,8 @@ Release: April 23, 2024
 
 65 / 234
 
-The errors returned by the server are not actionable unless explicitly specified in this section. The
+
+The errors returned by the server are not actionable unless explicitly specified in this section. The
 server MUST perform an access check against all operations and ensure secure access to the results.
 If the access check fails, the server MUST return WBEM_E_ACCESS_DENIED.
 
@@ -5370,7 +4971,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the server cannot find ProviderEntryPoint, it MUST return WBEM_E_PROVIDER_LOAD_FAILURE. If
+
+If the server cannot find ProviderEntryPoint, it MUST return WBEM_E_PROVIDER_LOAD_FAILURE. If
 the ProviderEntryPoint is found, the server MUST use the abstract interface defined in 3.1.4.17 to
 communicate with the provider.
 
@@ -5439,7 +5041,8 @@ Release: April 23, 2024
 
 67 / 234
 
-
+
+
 
 The WMI server SHOULD<24> indicate to the WMI v2 provider to use this locale to format the
 culture-specific information such as date/time format; otherwise, it MUST indicate the first
@@ -5506,7 +5109,8 @@ Release: April 23, 2024
 
 68 / 234
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-WMI].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
@@ -5554,7 +5158,8 @@ Release: April 23, 2024
 
 69 / 234
 
-Return Values: The server MUST return one of the following values, based on server behavior for the
+
+Return Values: The server MUST return one of the following values, based on server behavior for the
 
 wszPreferredLocale parameter in IWbemLevel1Login::NTLMLogin.
 
@@ -5628,7 +5233,8 @@ Release: April 23, 2024
 
 70 / 234
 
-reserved5: MUST be set to NULL when sent and MUST be ignored on receipt.
+
+reserved5: MUST be set to NULL when sent and MUST be ignored on receipt.
 
 Return value/code  Description
 
@@ -5699,7 +5305,8 @@ Release: April 23, 2024
 
 71 / 234
 
-In response to the IWbemLevel1Login::NTLMLogin method, the server MUST return an IWbemServices
+
+In response to the IWbemLevel1Login::NTLMLogin method, the server MUST return an IWbemServices
 interface that corresponds to the wszNetworkResource parameter.
 
 The server SHOULD enforce a maximum length for the wszNetworkResource parameter, and return
@@ -5772,7 +5379,8 @@ Release: April 23, 2024
 
 72 / 234
 
-3.1.4.2.1 IWbemObjectSink::Indicate (Opnum 3) Server details
+
+3.1.4.2.1 IWbemObjectSink::Indicate (Opnum 3) Server details
 
 When the IWbemObjectSink::Indicate method is called, the apObjArray parameter MUST contain
 additional result objects as an array of an IWbemClassObject, sent by the client to the server. The
@@ -5843,7 +5451,8 @@ Release: April 23, 2024
 
 73 / 234
 
-Value
+
+Value
 
 0x00000002
 
@@ -5933,7 +5542,8 @@ Release: April 23, 2024
 
 74 / 234
 
-Method
+
+Method
 
 Description
 
@@ -6050,7 +5660,8 @@ Release: April 23, 2024
 
 75 / 234
 
-<!-- Extracted images from page 76 -->
+
+<!-- Extracted images from page 76 -->
 ![Extracted image 1 from page 76]([MS-WMI].images/page076-img01.png)
 <!-- /Extracted images from page 76 -->
 
@@ -6105,7 +5716,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Value
 
@@ -6210,7 +5822,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The successful synchronous method execution MUST fill the ppWorkingNamespace parameter with an
+
+The successful synchronous method execution MUST fill the ppWorkingNamespace parameter with an
 IWbemServices interface pointer and MUST return WBEM_S_NO_ERROR.
 
 The semisynchronous method execution MUST follow the rules that are specified in section
@@ -6281,7 +5894,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- HRESULT QueryObjectSink(
+
+ HRESULT QueryObjectSink(
    [in] long lFlags,
    [out] IWbemObjectSink** ppResponseHandler
  );
@@ -6349,7 +5963,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lFlags: Specifies the behavior of the IWbemServices::GetObject method. Flag behavior MUST be
+
+lFlags: Specifies the behavior of the IWbemServices::GetObject method. Flag behavior MUST be
 
 interpreted as specified in the following table.
 
@@ -6471,7 +6086,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flag state
+
+Flag state
 
 Success operation
 
@@ -6555,7 +6171,8 @@ Release: April 23, 2024
 
 81 / 234
 
-strObjectPath: MUST be the CIM path of the CIM object to be retrieved. If this parameter is set to
+
+strObjectPath: MUST be the CIM path of the CIM object to be retrieved. If this parameter is set to
 
 NULL, the server MUST return an empty CIM object.
 
@@ -6645,7 +6262,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-InstanceProviderId is NULL, then the server MUST look up the CIM database and return the CIM
+
+InstanceProviderId is NULL, then the server MUST look up the CIM database and return the CIM
 instance. If InstanceProviderId is not NULL, then the server MUST use the abstract interface
 specified as part of section 3.1.4.18 to communicate with the provider, and find the provider entry
 corresponding to the InstanceProviderId in the ProviderTable.
@@ -6733,7 +6351,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -6843,7 +6462,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The security principal that makes the call MUST have WBEM_REMOTE_ENABLE and WBEM_ENABLE
+
+The security principal that makes the call MUST have WBEM_REMOTE_ENABLE and WBEM_ENABLE
 accesses to the namespace; otherwise,  WBEM_E_ACCESS_DENIED MUST be returned.
 
 The server MUST first determine whether the class is dynamic or static. If the class exists in the
@@ -6918,7 +6538,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.3.7 IWbemServices::PutClassAsync (Opnum 9)
+
+3.1.4.3.7 IWbemServices::PutClassAsync (Opnum 9)
 
 The IWbemServices::PutClassAsync method is the asynchronous version of the
 IWbemServices::PutClass method. The PutClassAsync method creates a new class or updates an
@@ -7016,7 +6637,8 @@ Release: April 23, 2024
 
 86 / 234
 
-Value
+
+Value
 
 Meaning
 
@@ -7089,7 +6711,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If a new class is added or an existing class is updated, ClassTable MUST be updated with the
+
+If a new class is added or an existing class is updated, ClassTable MUST be updated with the
 changes. If pObject property __SUPERCLASS is specified, DerivedClassTable MUST point to the
 entry in the ClassTable representing the SuperClass.
 
@@ -7167,7 +6790,8 @@ Release: April 23, 2024
 
 88 / 234
 
-Flag state
+
+Flag state
 
 Operation Started Successfully
 
@@ -7256,7 +6880,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST generate a __ClassDeletionEvent event object upon successfully deleting the class
+
+The server MUST generate a __ClassDeletionEvent event object upon successfully deleting the class
 information.
 
 The server SHOULD enforce a maximum length for the strClass parameter, and return
@@ -7332,7 +6957,8 @@ Release: April 23, 2024
 
 90 / 234
 
-If successful, the server MUST create a new entry in AsyncOperationTable as specified in section
+
+If successful, the server MUST create a new entry in AsyncOperationTable as specified in section
 3.1.1.1.3.
 
 The following validation occurs asynchronously:
@@ -7410,7 +7036,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -7500,7 +7127,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The IWbemServices::CreateClassEnumAsync method provides an asynchronous class enumeration.
+
+The IWbemServices::CreateClassEnumAsync method provides an asynchronous class enumeration.
 When this method is invoked, the server MUST return all classes that satisfy the selection criteria.
 
  HRESULT CreateClassEnumAsync(
@@ -7587,7 +7215,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following validation occurs before the asynchronous operation starts:
+
+The following validation occurs before the asynchronous operation starts:
 
 The security principal that makes the call MUST have WBEM_REMOTE_ENABLE and WBEM_ENABLE
 accesses to the namespace; otherwise, WBEM_E_ACCESS_DENIED MUST be returned.
@@ -7667,7 +7296,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x00000010
 
@@ -7781,7 +7411,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flag state
+
+Flag state
 
 Operation Started Successfully
 
@@ -7863,7 +7494,8 @@ Release: April 23, 2024
 
 96 / 234
 
-The failed method execution MUST set output parameters to NULL and MUST return an error in the
+
+The failed method execution MUST set output parameters to NULL and MUST return an error in the
 format that is specified in section 2.2.11.
 
 The server SHOULD enforce a maximum length for the __RELPATH system property of the object
@@ -7955,7 +7587,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-a subset of CIM instance properties; a full-instance update modifies all the properties. If NULL,
+
+a subset of CIM instance properties; a full-instance update modifies all the properties. If NULL,
 this parameter indicates that the client application is requesting a full-instance update. When pCtx
 is used to perform a partial-instance update, the IWbemContext interface MUST be completed with
 the properties that are specified in the following table. If the IWbemContext interface object does
@@ -8046,7 +7679,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-have WBEM_FULL_WRITE access to the namespace; otherwise, WBEM_E_ACCESS_DENIED MUST be
+
+have WBEM_FULL_WRITE access to the namespace; otherwise, WBEM_E_ACCESS_DENIED MUST be
 returned.
 
 If the CIM instance being updated is static and if the CIM instance is of a class that does not have a
@@ -8125,7 +7759,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WBEM_FLAG_RETURN_IMMEDIATELY is set). The output parameter MUST be filled according to
+
+WBEM_FLAG_RETURN_IMMEDIATELY is set). The output parameter MUST be filled according to
 the state of the lFlags parameter (whether WBEM_FLAG_RETURN_IMMEDIATELY is set) as listed in
 the following table.
 
@@ -8212,7 +7847,8 @@ Release: April 23, 2024
 
 100 / 234
 
-The server SHOULD enforce a maximum length for the strObjectPath parameter, and return
+
+The server SHOULD enforce a maximum length for the strObjectPath parameter, and return
 WBEM_E_QUOTA_VIOLATION if the limit is exceeded.<44>
 
 The successful synchronous method execution MUST return WBEM_S_NO_ERROR.
@@ -8292,7 +7928,8 @@ Release: April 23, 2024
 
 101 / 234
 
-The server SHOULD enforce a maximum length for the strObjectPath parameter and return
+
+The server SHOULD enforce a maximum length for the strObjectPath parameter and return
 WBEM_E_QUOTA_VIOLATION if the limit is exceeded.<45>
 
 The method MUST fail if strObjectPath does not exist.
@@ -8363,7 +8000,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -8459,7 +8097,8 @@ Release: April 23, 2024
 
 103 / 234
 
-The successful synchronous method execution MUST fill the ppEnum parameter with an
+
+The successful synchronous method execution MUST fill the ppEnum parameter with an
 IEnumWbemClassObject interface pointer after all instances are collected and MUST return
 WBEM_S_NO_ERROR.
 
@@ -8552,7 +8191,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pCtx: MUST be a pointer to an IWbemContext interface, which MUST contain additional information
+
+pCtx: MUST be a pointer to an IWbemContext interface, which MUST contain additional information
 that the client wants to pass to the server. If pCtx is NULL, the parameter MUST be ignored.
 
 pResponseHandler: MUST be a pointer to the IWbemObjectSink interface that is implemented by the
@@ -8626,7 +8266,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST allow any combination of zero or more flags from the following table and MUST
+
+The server MUST allow any combination of zero or more flags from the following table and MUST
 comply with all the restrictions in a flag description. Any other DWORD value that does not match
 a flag condition MUST be treated as not valid.
 
@@ -8721,7 +8362,8 @@ Release: April 23, 2024
 
 106 / 234
 
-QueryPropertyList: A list of properties to be retrieved, from the WQL SELECT query.
+
+QueryPropertyList: A list of properties to be retrieved, from the WQL SELECT query.
 
 QueryWhereFilter: The WHERE clause of the query.
 
@@ -8809,7 +8451,8 @@ Release: April 23, 2024
 
 107 / 234
 
-
+
+
 
 
 
@@ -8897,7 +8540,8 @@ Release: April 23, 2024
 
 108 / 234
 
-
+
+
 
 
 
@@ -8979,7 +8623,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -9070,7 +8715,8 @@ Release: April 23, 2024
 
 110 / 234
 
-If the strQuery is not syntactically valid or one or more elements in <PROPERTY-LIST> contains
+
+If the strQuery is not syntactically valid or one or more elements in <PROPERTY-LIST> contains
 undefined properties, the server MUST return WBEM_E_INVALID_QUERY.
 
 See IWbemServices::ExecQuery (Opnum 20) (section 3.1.4.3.18) for more details on the processing
@@ -9155,7 +8801,8 @@ Release: April 23, 2024
 
 111 / 234
 
-Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
+
+Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
 
 method call. The server MUST return WBEM_S_NO_ERROR (as specified in section 2.2.11) to
 indicate the successful completion of the method.
@@ -9226,7 +8873,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The failed method execution MUST set the value that is referenced by the output parameters to NULL
+
+The failed method execution MUST set the value that is referenced by the output parameters to NULL
 and MUST return an error in the format specified in section 2.2.11.
 
 3.1.4.3.21
@@ -9308,7 +8956,8 @@ Release: April 23, 2024
 
 113 / 234
 
-This method MUST fail if strQueryLanguage or strQuery does not exist.
+
+This method MUST fail if strQueryLanguage or strQuery does not exist.
 
 The server SHOULD enforce a maximum length for the strQuery parameter and return
 WBEM_E_QUOTA_VIOLATION if the limit is exceeded.<54>
@@ -9376,7 +9025,8 @@ Release: April 23, 2024
 
 114 / 234
 
-If either WITHIN or GROUP WITHIN clause is specified, the server MUST query for the instances of the
+
+If either WITHIN or GROUP WITHIN clause is specified, the server MUST query for the instances of the
 underlying CIM class (for which the notifications are requested) in the strQuery and populate
 EventBindingTable.PrevInstances with the list of instances.
 
@@ -9467,7 +9117,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flag state
+
+Flag state
 
 Success operation
 
@@ -9567,7 +9218,8 @@ Release: April 23, 2024
 
 116 / 234
 
-If the strMethodName has "disabled" qualifier set to true, then the server MUST return
+
+If the strMethodName has "disabled" qualifier set to true, then the server MUST return
 WBEM_E_METHOD_DISABLED. If the strMethodName is not implemented by the CIM class as pointed
 by the strObjectPath, the server MUST return WBEM_E_METHOD_NOT_IMPLEMENTED.
 
@@ -9646,7 +9298,8 @@ Release: April 23, 2024
 
 117 / 234
 
-Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
+
+Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
 
 method call. The server MUST return WBEM_S_NO_ERROR (as specified in section 2.2.11) to
 indicate the successful completion of the method.
@@ -9728,7 +9381,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 119 -->
+
+<!-- Extracted images from page 119 -->
 ![Extracted image 1 from page 119]([MS-WMI].images/page119-img01.png)
 <!-- /Extracted images from page 119 -->
 
@@ -9778,7 +9432,8 @@ Release: April 23, 2024
 
 119 / 234
 
-The server MUST validate that the security principal that makes the call is the same as the
+
+The server MUST validate that the security principal that makes the call is the same as the
 ClientSecurityContext of the SemiSinkResultSetObject pointed to by the entry in the
 EnumWbemClassObjectTable; otherwise, WBEM_E_ACCESS_DENIED MUST be returned.
 
@@ -9850,7 +9505,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In response to the IEnumWbemClassObject::Next method call, the server MUST evaluate the uCount
+
+In response to the IEnumWbemClassObject::Next method call, the server MUST evaluate the uCount
 and lTimeout parameters (as specified in this section) and MUST return the requested number of CIM
 objects, if any are available. The server MUST perform the operation within the time allowed by
 lTimeout.
@@ -9918,7 +9574,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST validate that the security principal that makes the call is the same as the
+
+The server MUST validate that the security principal that makes the call is the same as the
 ClientSecurityContext of the SemiSinkResultSetObject pointed to by the entry in the
 EnumWbemClassObjectTable; otherwise, WBEM_E_ACCESS_DENIED MUST be returned.
 
@@ -9991,7 +9648,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST validate that the security principal that makes the call is the same as the
+
+The server MUST validate that the security principal that makes the call is the same as the
 ClientSecurityContext of the SemiSinkResultSetObject pointed to by the entry in
 EnumWbemClassObjectTable; otherwise, WBEM_E_ACCESS_DENIED MUST be returned.
 
@@ -10058,7 +9716,8 @@ Release: April 23, 2024
 
 123 / 234
 
-The server MUST validate that the security principal that makes the call is the same as the
+
+The server MUST validate that the security principal that makes the call is the same as the
 ClientSecurityContext of the SemiSinkResultSetObject pointed to by the entry in
 EnumWbemClassObjectTable; otherwise, WBEM_E_ACCESS_DENIED MUST be returned.
 
@@ -10135,7 +9794,8 @@ Release: April 23, 2024
 
 124 / 234
 
-When the IWbemCallResult::GetResultObject method is called, the server MUST attempt to retrieve a
+
+When the IWbemCallResult::GetResultObject method is called, the server MUST attempt to retrieve a
 CIM object from a previous semisynchronous operation call to the IWbemServices::GetObject
 method or the IWbemServices::ExecMethod method. The entry in WbemCallResultTable with
 WbemCallResultPointer pointing to IWbemCallResult is used to identify the previous
@@ -10204,7 +9864,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When the IWbemCallResult::GetResultString method is called, the server MUST return the assigned
+
+When the IWbemCallResult::GetResultString method is called, the server MUST return the assigned
 CIM path of a CIM instance that was created by the IWbemServices::PutInstance method that
 returned IWbemCallResult in the ppCallResult parameter.
 
@@ -10273,7 +9934,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- HRESULT GetResultServices(
+
+ HRESULT GetResultServices(
    [in] long lTimeout,
    [out] IWbemServices** ppServices
  );
@@ -10339,7 +10001,8 @@ Release: April 23, 2024
 
 127 / 234
 
-lTimeout: MUST be the maximum amount of time, in milliseconds, that the call to GetCallStatus
+
+lTimeout: MUST be the maximum amount of time, in milliseconds, that the call to GetCallStatus
 
 allows to pass before timing out. If the constant WBEM_INFINITE (0xFFFFFFFF) is used, the Skip
 method call waits until the operation succeeds.
@@ -10409,7 +10072,8 @@ Release: April 23, 2024
 
 128 / 234
 
- HRESULT GetSmartEnum(
+
+ HRESULT GetSmartEnum(
    [out] IWbemWCOSmartEnum** ppSmartEnum
  );
 
@@ -10478,7 +10142,8 @@ Release: April 23, 2024
 
 129 / 234
 
-   [out] ULONG* pdwBuffSize,
+
+   [out] ULONG* pdwBuffSize,
    [out, size_is(,*pdwBuffSize)] byte** pBuffer
  );
 
@@ -10548,7 +10213,8 @@ Release: April 23, 2024
 
 130 / 234
 
-3.1.4.8  IWbemLoginClientID Interface
+
+3.1.4.8  IWbemLoginClientID Interface
 
 This interface is not required for the protocol to work.
 
@@ -10615,7 +10281,8 @@ Release: April 23, 2024
 
 131 / 234
 
-3.1.4.9.1 IWbemLoginHelper::SetEvent (Opnum 3)
+
+3.1.4.9.1 IWbemLoginHelper::SetEvent (Opnum 3)
 
 The IWbemLoginHelper::SetEvent MUST return WBEM_S_NO_ERROR. The SetEvent method SHOULD
 NOT perform any action.<57>
@@ -10677,7 +10344,8 @@ Release: April 23, 2024
 
 132 / 234
 
-<!-- Extracted images from page 133 -->
+
+<!-- Extracted images from page 133 -->
 ![Extracted image 1 from page 133]([MS-WMI].images/page133-img01.png)
 <!-- /Extracted images from page 133 -->
 
@@ -10728,7 +10396,8 @@ Release: April 23, 2024
 
 133 / 234
 
-The Backup operation MUST NOT impact the state of the incoming calls. After the Backup operation is
+
+The Backup operation MUST NOT impact the state of the incoming calls. After the Backup operation is
 complete, the server MUST set the BackupInProgress flag to False.
 
 3.1.4.10.2
@@ -10808,7 +10477,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CIM database. The interface MUST be implemented in order to support backup/restore scenarios
+
+CIM database. The interface MUST be implemented in order to support backup/restore scenarios
 without stopping the server. The server SHOULD support this interface.<62>
 
 The IWbemBackupRestoreEx interface is a DCOM Remote Protocol interface (as specified in [MS-
@@ -10877,7 +10547,8 @@ Release: April 23, 2024
 
 135 / 234
 
-Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
+
+Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
 method call. The server MUST return a WBEM_S_NO_ERROR (specified in section 2.2.11) to
 indicate the successful completion of the method.
 
@@ -10965,7 +10636,8 @@ Release: April 23, 2024
 
 136 / 234
 
-   [in, string] LPCWSTR wszPath,
+
+   [in, string] LPCWSTR wszPath,
    [in] long lFlags,
    [in] IWbemContext* pContext,
    [in] DWORD dwClientRefrVersion,
@@ -11037,7 +10709,8 @@ Release: April 23, 2024
 
 137 / 234
 
-In case of failure, the server MUST fill in the _WBEM_REFRESH_INFO structure with 0x0, set its
+
+In case of failure, the server MUST fill in the _WBEM_REFRESH_INFO structure with 0x0, set its
 m_lType member to WBEM_REFRESH_TYPE_INVALID, and return an HRESULT error in the format
 that is specified in section 2.2.11.
 
@@ -11110,7 +10783,8 @@ Release: April 23, 2024
 
 138 / 234
 
-A successful call to IWbemRefreshingServices::AddObjectToRefresherByTemplate MUST return
+
+A successful call to IWbemRefreshingServices::AddObjectToRefresherByTemplate MUST return
 WBEM_S_NO_ERROR and MUST fill the output _WBEM_REFRESH_INFO structure, as specified in this
 section.
 
@@ -11182,7 +10856,8 @@ Release: April 23, 2024
 
 139 / 234
 
-Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
+
+Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
 
 method call. The server MUST return WBEM_S_NO_ERROR (specified in section 2.2.11) to indicate
 the successful completion of the method.
@@ -11254,7 +10929,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwClientRefrVersion: MUST be the version of the client refresher. This value SHOULD<67> be 0x2.
+
+dwClientRefrVersion: MUST be the version of the client refresher. This value SHOULD<67> be 0x2.
 
 The server MUST allow all client versions.
 
@@ -11332,7 +11008,8 @@ Release: April 23, 2024
 
 141 / 234
 
-The security principal that makes the call MUST have WBEM_REMOTE_ENABLE and WBEM_ENABLE
+
+The security principal that makes the call MUST have WBEM_REMOTE_ENABLE and WBEM_ENABLE
 accesses to the namespace; otherwise, WBEM_E_ACCESS_DENIED MUST be returned.
 
 The IWbemRefreshingServices::GetRemoteRefresher method evaluates the pRefresherID parameter
@@ -11407,7 +11084,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WBEM_S_NO_ERROR (0x00)
+
+WBEM_S_NO_ERROR (0x00)
 
 The security principal that makes the call MUST have WBEM_REMOTE_ENABLE and WBEM_ENABLE
 accesses to the namespace; otherwise, WBEM_E_ACCESS_DENIED MUST be returned.
@@ -11485,7 +11163,8 @@ Release: April 23, 2024
 
 143 / 234
 
-   [out, size_is(,*plNumObjects)] WBEM_REFRESHED_OBJECT** paObjects
+
+   [out, size_is(,*plNumObjects)] WBEM_REFRESHED_OBJECT** paObjects
  );
 
 lFlags: This parameter is not used, and its value MUST be 0x0.
@@ -11554,7 +11233,8 @@ Release: April 23, 2024
 
 144 / 234
 
-Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
+
+Return Values: This method MUST return an HRESULT value that MUST indicate the status of the
 method call. In case of success, the server MUST return WBEM_S_NO_ERROR (as specified in
 section 2.2.11) to indicate the successful completion of the method.
 
@@ -11625,7 +11305,8 @@ Release: April 23, 2024
 
 145 / 234
 
-<!-- Extracted images from page 146 -->
+
+<!-- Extracted images from page 146 -->
 ![Extracted image 1 from page 146]([MS-WMI].images/page146-img01.png)
 <!-- /Extracted images from page 146 -->
 
@@ -11676,7 +11357,8 @@ Release: April 23, 2024
 
 146 / 234
 
-<!-- Extracted images from page 147 -->
+
+<!-- Extracted images from page 147 -->
 ![Extracted image 1 from page 147]([MS-WMI].images/page147-img01.png)
 <!-- /Extracted images from page 147 -->
 
@@ -11725,7 +11407,8 @@ Release: April 23, 2024
 
 147 / 234
 
-<!-- Extracted images from page 148 -->
+
+<!-- Extracted images from page 148 -->
 ![Extracted image 1 from page 148]([MS-WMI].images/page148-img01.png)
 <!-- /Extracted images from page 148 -->
 
@@ -11785,7 +11468,8 @@ Release: April 23, 2024
 
 148 / 234
 
-The provider is expected to use those credentials with IMPERSONATE level impersonation for any
+
+The provider is expected to use those credentials with IMPERSONATE level impersonation for any
 necessary local access checks and remote network operations.
 
 The server communicates asynchronously with the provider. The server creates the
@@ -11853,7 +11537,8 @@ Release: April 23, 2024
 
 149 / 234
 
-The server passes Class name, updated class metadata through the IWbemClassObject instance,
+
+The server passes Class name, updated class metadata through the IWbemClassObject instance,
 and a pointer to the IWbemObjectSink object to the provider. The provider applies the changes to
 the managed object and returns success or failure to the server through
 IWbemObjectSink::SetStatus.
@@ -11922,7 +11607,8 @@ Release: April 23, 2024
 
 150 / 234
 
-The server passes the namespace and class name to the provider. The provider returns TRUE to
+
+The server passes the namespace and class name to the provider. The provider returns TRUE to
 indicate that it supports operations on this class, or FALSE if not.
 
 3.1.4.17.15  Execute Query
@@ -11991,7 +11677,8 @@ Release: April 23, 2024
 
 151 / 234
 
-When the server receives a request to put an instance of the __Namespace class, the server MUST
+
+When the server receives a request to put an instance of the __Namespace class, the server MUST
 check for the existence of a child namespace (of the current namespace in the IWbemServices
 interface) with the same name, returning WBEM_E_NOT_FOUND if none matches. The server MUST
 update the namespace information based on the qualifiers of the received instance, just as during
@@ -12065,7 +11752,8 @@ Release: April 23, 2024
 
 152 / 234
 
-EventGroupingTimer: If the timer expires, the server MUST
+
+EventGroupingTimer: If the timer expires, the server MUST
 
 1.  Follow the same procedure followed for EventPollingTimer to create the
 
@@ -12130,7 +11818,8 @@ Release: April 23, 2024
 
 153 / 234
 
-3.1.6.3  Unload Provider
+
+3.1.6.3  Unload Provider
 
 The server removes the entry for the corresponding provider in ProviderTable. The server deletes
 the provider instance created as part of 3.1.6.2. If an error is encountered during the Unload, it will be
@@ -12191,7 +11880,8 @@ Release: April 23, 2024
 
 154 / 234
 
-3.2.4.1  IWbemObjectSink Interface Client Details
+
+3.2.4.1  IWbemObjectSink Interface Client Details
 
 The IWbemObjectSink interface is implemented by the WMI client if the WMI client uses asynchronous
 method calls as specified in section 3.2.4.2.9. In this case, the WMI client acts as an
@@ -12262,7 +11952,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If IWbemObjectSink::Indicate returns an error, the server MUST do the following:
+
+If IWbemObjectSink::Indicate returns an error, the server MUST do the following:
 
 1.  Set CallCancelled to TRUE in AsyncOperationTable for the entry identified by this
 
@@ -12309,9 +12000,9 @@ IWbemObjectSink.
 
 3.  Remove the entry for this operation in AsyncOperationTable.
 
-3.2.4.2  IWbemServices Interface Client Details
+##### 3.2.4.2 IWbemServices Interface Client Details
 
-3.2.4.2.1 Sending Events to Server
+###### 3.2.4.2.1 Sending Events to Server
 
 If the client wants to send the events to the WMI server, the client MUST call the
 IWbemServices::QueryObjectSink method on the IWbemObjectSink interface that is obtained as
@@ -12320,7 +12011,7 @@ interface. The extrinsic events, represented as IWbemClassObject Prototype Resul
 specified in 2.2.4.1, MUST be delivered to the server by calling IWbemObjectSink::Indicate.When the
 client completes delivering the extrinsic events, the client MUST release the IWbemObjectSink.
 
-3.2.4.2.2 Calling Put Interfaces for CIM Objects with Amended Qualifiers
+###### 3.2.4.2.2 Calling Put Interfaces for CIM Objects with Amended Qualifiers
 
 [MS-WMI] - v20240423
 Windows Management Instrumentation Remote Protocol
@@ -12329,7 +12020,8 @@ Release: April 23, 2024
 
 156 / 234
 
-If the client calls the PutClass, PutClassAsync, PutInstance, or PutInstanceAsync method to update or
+
+If the client calls the PutClass, PutClassAsync, PutInstance, or PutInstanceAsync method to update or
 create a CIM Object that contains amended qualifiers, the client SHOULD set the
 WBEM_FLAG_USE_AMENDED_QUALIFIERS flag.
 
@@ -12339,14 +12031,14 @@ Then the client MUST make multiple calls to PutClass or PutClassAsync; one to cr
 neutral class object and one for each supported locale to construct the locale-specific class object. The
 client SHOULD create the locale-neutral object last.
 
-3.2.4.2.3 Deleting Class Objects with Amended Qualifiers
+###### 3.2.4.2.3 Deleting Class Objects with Amended Qualifiers
 
 To delete a class with amended qualifiers, the client MUST delete the locale-neutral class object and
 the locale-specific class object. The client MUST make multiple calls to DeleteClass or
 DeleteClassAsync; one to delete the locale-neutral class object and one for each supported locale to
 delete the locale-specific class object. The client SHOULD delete the locale-neutral object first.
 
-3.2.4.2.4 Invoking Synchronous Methods Returing No Object
+###### 3.2.4.2.4 Invoking Synchronous Methods Returing No Object
 
 If the client wants to invoke following WMI methods synchronously, the client MUST NOT set
 WBEM_FLAG_RETURN_IMMEDIATELY when making method calls. When the method completes, the
@@ -12369,7 +12061,7 @@ IWbemServices::DeleteClass
 
 IWbemServices::DeleteInstance
 
-3.2.4.2.5 IWbemServices::ExecMethod and IWbemServices::ExecMethodAsync
+###### 3.2.4.2.5 IWbemServices::ExecMethod and IWbemServices::ExecMethodAsync
 
 The client MUST create a CIM instance for the input parameter CIM class defined in [MS-WMIO]
 section 2.3.3. The values of the CIM instance properties MUST be set to the values of the input
@@ -12382,7 +12074,7 @@ parameter CIM class as defined in [MS-WMIO] section 2.3.3. Depending on how the 
 invoked, the resultant object is returned in one of the ways as described in sections 3.2.4.2.6,
 3.2.4.2.7, or 3.2.4.2.9.
 
-3.2.4.2.6 Invoking Synchronous Methods Returning Single Object
+###### 3.2.4.2.6 Invoking Synchronous Methods Returning Single Object
 
 If the client wants to invoke any of the following WMI methods synchronously, the client MUST NOT
 set WBEM_FLAG_RETURN_IMMEDIATELY when making method calls. When the method completes
@@ -12416,9 +12108,10 @@ Release: April 23, 2024
 
 157 / 234
 
-When the call to the method fails, the output parameter is NULL.
 
-3.2.4.2.7 Invoking Semisynchronous Methods That Return a Single Object
+When the call to the method fails, the output parameter is NULL.
+
+###### 3.2.4.2.7 Invoking Semisynchronous Methods That Return a Single Object
 
 If the client wants to invoke any of the following WMI methods semisynchronously, the client MUST
 set WBEM_FLAG_RETURN_IMMEDIATELY when it makes the method calls.
@@ -12464,7 +12157,7 @@ the output parameters.
 When the semisynchronous IWbemServices method fails, the output parameter does not have the
 IWbemCallResult interface.
 
-3.2.4.2.8 Invoking Synchronous and Semisynchronous Operations Returning Multiple
+###### 3.2.4.2.8 Invoking Synchronous and Semisynchronous Operations Returning Multiple
 
 Objects
 
@@ -12507,7 +12200,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IWbemFetchSmartEnum, the client MUST call IWbemFetchSmartEnum::GetSmartEnum to obtain
+
+IWbemFetchSmartEnum, the client MUST call IWbemFetchSmartEnum::GetSmartEnum to obtain
 IWbemWCOSmartEnum. The client SHOULD call IWbemWCOSmartEnum::Next method repeatedly to
 retrieve the objects. When IWbemWCOSmartEnum::Next returns WBEM_S_NO_ERROR or
 WBEM_S_TIMEDOUT, the client SHOULD call IEnumWbemClassObject::Next again. If
@@ -12543,7 +12237,7 @@ If the client wants to get some results of the operation asynchronously, the cli
 IEnumWbemClassObject::NextAsync with the uCount, in this case next uCount result objects are
 returned in IWbemObjectSink passed as a parameter to IEnumWbemClassObject::NextAsync.
 
-3.2.4.2.9 Invoking Asynchronous Operations
+###### 3.2.4.2.9 Invoking Asynchronous Operations
 
 The methods providing asynchronous behaviors are as follows:
 
@@ -12594,7 +12288,8 @@ Release: April 23, 2024
 
 159 / 234
 
-If the client wants to invoke any of the above asynchronous methods, the client MUST pass an object
+
+If the client wants to invoke any of the above asynchronous methods, the client MUST pass an object
 implementing IWbemObjectSink interface to the above method calls as a response handler.
 
 When the method invocation succeeds, the client SHOULD wait for the result of the operation to be
@@ -12611,13 +12306,13 @@ to the asynchronous IWbemServices method that is still pending. The client MUST 
 IWbemServices::CancelAsyncCall from within a call to IWbemObjectSink::Indicate or
 IWbemObjectSink::SetStatus.
 
-3.2.4.3  IWbemBackupRestore Interface Client Details
+##### 3.2.4.3 IWbemBackupRestore Interface Client Details
 
 If client wants to invoke methods of IWbemBackupRestore interface, the client MUST activate
 IWbemBackupRestore interface on the target WMI server machine using CLSID {C49E32C6-BC8B-
 11D2-85D4-00105A1F8304} as specified in DCOM remote protocol.
 
-3.2.4.4  IWbemBackupRestoreEx Interface Client Details
+##### 3.2.4.4 IWbemBackupRestoreEx Interface Client Details
 
 If client wants to invoke methods of IWbemBackupRestoreEx interface, the client MUST activate
 IWbemBackupRestoreEx interface on the target WMI server using CLSID {C49E32C6-BC8B-11D2-
@@ -12625,7 +12320,7 @@ IWbemBackupRestoreEx interface on the target WMI server using CLSID {C49E32C6-BC
 IWbemBackupRestoreEx by calling IRemUnknown and IRemUnknown2 interfaces, as specified in [MS-
 DCOM], on IWbemBackupRestore interface obtained as specified in section 3.1.4.10.
 
-3.2.4.5  IWbemRefreshingServices Interface Client Details
+##### 3.2.4.5 IWbemRefreshingServices Interface Client Details
 
 The client MUST obtain IWbemRefreshingServices interface, if the client wants to get updates to the
 objects in an efficient manner. The client MUST obtain IWbemRefreshingServices interface by calling
@@ -12636,7 +12331,7 @@ IWbemRefreshingServices::AddObjectToRefresher,
 IWbemRefreshingServices::AddObjectToRefresherByTemplate or
 IWbemRefreshingServices::AddEnumToRefresher to add multiple objects and enums to the refresher.
 
-3.2.4.5.1 IWbemRefreshingServices::AddObjectToRefresher and
+###### 3.2.4.5.1 IWbemRefreshingServices::AddObjectToRefresher and
 
 IWbemRefreshingServices::AddObjectToRefresherByTemplate
 
@@ -12661,7 +12356,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-structure. The client MUST obtain the IWbemRemoteRefresher from the m_pRefresher in
+
+structure. The client MUST obtain the IWbemRemoteRefresher from the m_pRefresher in
 _WBEM_REFRESH_INFO_REMOTE. The client MUST use the IWbemRemoteRefresher::RemoteRefresh
 method to get the updated object. If the client wants to remove the particular object from the remote
 refresher, the client MUST use m_lCancelId, which is returned in _WBEM_REFRESH_INFO, to invoke
@@ -12676,7 +12372,7 @@ When the IWbemRefreshingServices::AddObjectToRefresher or
 IWbemRefreshingServices::AddObjectToRefresherByTemplate method fails, the server does not return
 the _WBEM_REFRESH_INFO structure.
 
-3.2.4.5.2 IWbemRefreshingServices::AddEnumToRefresher
+###### 3.2.4.5.2 IWbemRefreshingServices::AddEnumToRefresher
 
 The client MUST pass the _WBEM_REFRESHER_ID that is generated as specified in section 2.2.21 to
 the IWbemRefreshingServices::AddEnumToRefresher method.
@@ -12704,7 +12400,7 @@ IWbemServices interface.
 When the IWbemRefreshingServices::AddEnumToRefresher method fails, the client MUST NOT use the
 _WBEM_REFRESH_INFO structure.
 
-3.2.4.5.3 IWbemRefreshingServices::GetRemoteRefresher
+###### 3.2.4.5.3 IWbemRefreshingServices::GetRemoteRefresher
 
 When invoking the methods of the IWbemRemoteRefresher interface, if the connection is lost and
 reported to the client as an RPC disconnect error (as specified in [MS-ERREF]), the client SHOULD try
@@ -12728,7 +12424,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IWbemRefreshingServices::AddObjectToRefresher, or
+
+IWbemRefreshingServices::AddObjectToRefresher, or
 IWbemRefreshingServices::AddObjectToRefresherByTemplate, the client MUST NOT call
 IWbemRefreshingServices::ReconnectRemoteRefresher. The client SHOULD call
 IWbemRemoteRefresher::RemoteRefresh on the IWbemRemoteRefresher interface, which is obtained
@@ -12747,7 +12444,7 @@ call methods on the IWbemRemoteRefresher interface whose connection is lost init
 If the IWbemRefreshingServices::GetRemoteRefresher method call fails, the client SHOULD retry after
 allowing a time-out.
 
-3.2.4.5.4 IWbemRefreshingServices::ReconnectRemoteRefresher
+###### 3.2.4.5.4 IWbemRefreshingServices::ReconnectRemoteRefresher
 
 The client SHOULD call IWbemRefreshingServices::ReconnectRemoteRefresher if the
 IWbemRemoteRefresher method call failed and the client is attempting to reconnect the remote
@@ -12758,27 +12455,27 @@ The client MUST allow all the version numbers that are returned by the server in
 When the method executes successfully, the client MUST validate all _WBEM_RECONNECT_RESULTS
 to see if any object or enumerator has failed to be added to the refresher.
 
-3.2.4.6  IUnsecuredApartment Interface Client Details
+##### 3.2.4.6 IUnsecuredApartment Interface Client Details
 
 The client MUST NOT activate or QueryInterface for the IUnsecuredApartment interface.
 
-3.2.4.7  IWbemUnsecuredApartment Interface Client Details
+##### 3.2.4.7 IWbemUnsecuredApartment Interface Client Details
 
 The client MUST NOT activate or QueryInterface for the IWbemUnsecuredApartment interface.
 
-3.2.4.8  IWbemShutdown Interface Client Details
+##### 3.2.4.8 IWbemShutdown Interface Client Details
 
 The client MUST NOT activate or QueryInterface for the IWbemShutdown interface.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
-3.2.6.1  Shutdown
+##### 3.2.6.1 Shutdown
 
 Set the IsServerShuttingDown flag to True.
 
@@ -12789,12 +12486,13 @@ Release: April 23, 2024
 
 162 / 234
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Windows Management Instrumentation Remote Protocol.
 
-4.1  Protocol Initialization
+### 4.1 Protocol Initialization
 
 The protocol is initiated by the DCOM Remote Protocol activation of the CLSID _IWbemLevel1Login.
 
@@ -12820,13 +12518,14 @@ Release: April 23, 2024
 
 163 / 234
 
-<!-- Extracted images from page 164 -->
+
+<!-- Extracted images from page 164 -->
 ![Extracted image 1 from page 164]([MS-WMI].images/page164-img01.png)
 <!-- /Extracted images from page 164 -->
 
 Figure 11: Protocol initialization example
 
-4.1.1  Protocol Initialization Trace
+#### 4.1.1 Protocol Initialization Trace
 
 This section contains information about the messages exchanged as part of the protocol initialization
 between SAI-NAV009 (client) and SAI-NAV009-2 (server). The specific trace is taken as part of
@@ -12841,7 +12540,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- - DCOM: RemoteCreateInstance Request, DCOM Version=5.7  Causality Id={8E2416FE-0A3F-42BE-
+
+ - DCOM: RemoteCreateInstance Request, DCOM Version=5.7  Causality Id={8E2416FE-0A3F-42BE-
 A9B0-F30624C94619}
    + HeaderReq: DCOM Version=5.7  Causality Id={8E2416FE-0A3F-42BE-A9B0-F30624C94619}
    + AggregationInterface:
@@ -12897,7 +12597,8 @@ Release: April 23, 2024
 
 165 / 234
 
-Client calls EstablishPosition method on IWbemLevel1Login interface pointer to determine supported
+
+Client calls EstablishPosition method on IWbemLevel1Login interface pointer to determine supported
 locales on the server:
 
  - WMI: IWbemLevel1Login:EstablishPosition Request, Reserved1=NULL Reserved2=0
@@ -12935,11 +12636,11 @@ semisynchronous operations on the server:
      ReturnValue: 0x00000000 - WBEM_S_NO_ERROR - Indicates a successful completion to the
 method call.
 
-4.1.2  Example Captures
+#### 4.1.2 Example Captures
 
 None.
 
-4.2  Synchronous Operations
+### 4.2 Synchronous Operations
 
 A synchronous operation completes when the entire result set is ready on the server. The following
 sections describe the different scenarios where synchronous operations are applicable.
@@ -12951,18 +12652,19 @@ Release: April 23, 2024
 
 166 / 234
 
-<!-- Extracted images from page 167 -->
+
+<!-- Extracted images from page 167 -->
 ![Extracted image 1 from page 167]([MS-WMI].images/page167-img01.png)
 <!-- /Extracted images from page 167 -->
 
-4.2.1  Synchronous Delivery of a Single Result
+#### 4.2.1 Synchronous Delivery of a Single Result
 
 The IWbemServices::GetObject and IWbemServices::ExecMethod methods support synchronous calls
 returning a single marshaled IWbemClassObject interface pointer.
 
 Figure 12: Synchronous delivery of a single result
 
-4.2.2  Synchronous Delivery of Result Sets
+#### 4.2.2 Synchronous Delivery of Result Sets
 
 In this context of operation, there are two kinds of client behavior and two kinds of server behavior,
 depending in the product version, resulting in four cases of client-server interaction.
@@ -12989,7 +12691,7 @@ The resulting client-server interactions are defined in the following sections:
 
   Optimized Client and Unoptimized Server (section 4.2.2.4)
 
-4.2.2.1  Unoptimized Client and Unoptimized Server
+##### 4.2.2.1 Unoptimized Client and Unoptimized Server
 
 The product versions that exhibit unoptimized client behavior and unoptimized server behavior are
 referenced in section 4.2.2.
@@ -13001,7 +12703,8 @@ Release: April 23, 2024
 
 167 / 234
 
-<!-- Extracted images from page 168 -->
+
+<!-- Extracted images from page 168 -->
 ![Extracted image 1 from page 168]([MS-WMI].images/page168-img01.png)
 <!-- /Extracted images from page 168 -->
 
@@ -13018,7 +12721,7 @@ An example capture is given on [SysDocCap-WMI] showing a Windows 2000 Server ope
 connecting to a second Windows 2000 Server using wbemtest utility and enumerating the default
 namespace.
 
-4.2.2.2  Unoptimized Client and Optimized Server
+##### 4.2.2.2 Unoptimized Client and Optimized Server
 
 The product versions that exhibit unoptimized client behavior and optimized server behavior are
 referenced in section 4.2.2.
@@ -13035,7 +12738,8 @@ Release: April 23, 2024
 
 168 / 234
 
-<!-- Extracted images from page 169 -->
+
+<!-- Extracted images from page 169 -->
 ![Extracted image 1 from page 169]([MS-WMI].images/page169-img01.png)
 <!-- /Extracted images from page 169 -->
 
@@ -13044,7 +12748,7 @@ method to repeatedly retrieve the IWbemClassObject objects from the query result
 
 The call sequence is the same as that in section 4.2.2.1 because in both cases, the client is
 unoptimized, and therefore still uses the old mechanism for communication. Sections 4.2.2.3 and
-4.2.2.4 explain the call sequences between the newer versions of client and server.
+##### 4.2.2.4 explain the call sequences between the newer versions of client and server.
 
 Figure 14: Unoptimized Client and Optimized Server
 
@@ -13072,7 +12776,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 170 -->
+
+<!-- Extracted images from page 170 -->
 ![Extracted image 1 from page 170]([MS-WMI].images/page170-img01.png)
 <!-- /Extracted images from page 170 -->
 
@@ -13094,7 +12799,8 @@ Release: April 23, 2024
 
 170 / 234
 
-<!-- Extracted images from page 171 -->
+
+<!-- Extracted images from page 171 -->
 ![Extracted image 1 from page 171]([MS-WMI].images/page171-img01.png)
 <!-- /Extracted images from page 171 -->
 
@@ -13121,13 +12827,14 @@ Release: April 23, 2024
 
 171 / 234
 
-An example capture is given on [SysDocCap-WMI] showing a Windows 7 operating system client
+
+An example capture is given on [SysDocCap-WMI] showing a Windows 7 operating system client
 connecting to a Windows 2000 Server using the wbemtest utility and enumerating the default
 namespace
 
-4.2.3  Synchronous Delivery Traces
+#### 4.2.3 Synchronous Delivery Traces
 
-4.2.3.1  Synchronous Delivery of IWbemServices ExecQuery and ExecMethod
+##### 4.2.3.1 Synchronous Delivery of IWbemServices ExecQuery and ExecMethod
 
 Operations
 
@@ -13183,7 +12890,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   + HeaderResp: ORPCFNULL - No additional information in this packet
+
+   + HeaderResp: ORPCFNULL - No additional information in this packet
    + RemqiresultPtr: Pointer To 0x00020000
    + Size: 1 Elements
    + QueryInterfaceResults:
@@ -13243,7 +12951,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   + StrMethodName: Terminate
+
+   + StrMethodName: Terminate
    + Pad: 2 Bytes
      Flags: Unknown
    + Ctx: NULL
@@ -13302,7 +13011,8 @@ Release: April 23, 2024
 
 174 / 234
 
-Server responds with a valid IWbemFetchSmartEnum interface pointer. This means that the server is
+
+Server responds with a valid IWbemFetchSmartEnum interface pointer. This means that the server is
 optimized:
 
  - DCOM: IRemUnknown2:RemQueryInterface Response, ORPCFNULL - No additional information in
@@ -13348,7 +13058,7 @@ server:
 number of returned CIM objects is less than the number requested, or this is the end of an
 enumeration.
 
-4.2.3.2  Synchronous Delivery of IWbemServices PutInstance, DeleteInstance, and
+##### 4.2.3.2 Synchronous Delivery of IWbemServices PutInstance, DeleteInstance, and
 
 CreateInstanceEnum Operations
 
@@ -13362,7 +13072,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-On the server machine, the MOF shown below is compiled and made available to WMI.
+
+On the server machine, the MOF shown below is compiled and made available to WMI.
 
  #pragma namespace("\\\\.\\root\\cimv2\\MyTest")
  Class TestWMI
@@ -13422,7 +13133,8 @@ Release: April 23, 2024
 
 176 / 234
 
- - DCOM: IRemUnknown2:RemQueryInterface Request, DCOM Version=5.7  Causality Id={BD28B839-
+
+ - DCOM: IRemUnknown2:RemQueryInterface Request, DCOM Version=5.7  Causality Id={BD28B839-
 5D20-4435-9852-1FE794070A9C}
    + HeaderReq: DCOM Version=5.7  Causality Id={BD28B839-5D20-4435-9852-1FE794070A9C}
      QueriedObjectIpId: {00026021-06C4-0000-9260-C0BCD4C240B3}
@@ -13481,7 +13193,8 @@ Release: April 23, 2024
 
 177 / 234
 
-Client calls PutInstance operation on IWbemServices interface pointer on one of the TestWMI class
+
+Client calls PutInstance operation on IWbemServices interface pointer on one of the TestWMI class
 instances (x=10, y=15) to update it to (x=10, y=20):
 
  - WMI: IWbemServices:PutInstance Request, Flags=0
@@ -13535,7 +13248,8 @@ Release: April 23, 2024
 
 178 / 234
 
-In response to the method executed above, the server returns an IEnumWbemClassObject interface
+
+In response to the method executed above, the server returns an IEnumWbemClassObject interface
 pointer:
 
  - WMI: IWbemServices:CreateInstanceEnum Response, ReturnValue=WBEM_S_NO_ERROR
@@ -13596,7 +13310,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Server responds with the result set containing 1 TestWMI instance (x=3,y=5). This confirms that the
+
+Server responds with the result set containing 1 TestWMI instance (x=3,y=5). This confirms that the
 other instance with x=10 has been successfully deleted as part of DeleteInstance call.
 
  - WMI: IWbemWCOSmartEnum:Next Response, PuReturned=1 BuffSize=307 ReturnValue=WBEM_S_FALSE
@@ -13609,14 +13324,14 @@ other instance with x=10 has been successfully deleted as part of DeleteInstance
 number of returned CIM objects is less than the number requested, or this is the end of an
 enumeration.
 
-4.3  Semisynchronous Operations
+### 4.3 Semisynchronous Operations
 
 In semisynchronous cases, the call returns before the requested operation completes, and another
 interface is used to retrieve the operation results. The returned interface depends on the
 IWbemServices methods that are invoked by the client. The following sections describe the two
 different behaviors.
 
-4.3.1  Semisynchronous Delivery of a Single Result
+#### 4.3.1 Semisynchronous Delivery of a Single Result
 
 The methods returning a single element such as IWbemServices::OpenNamespace,
 IWbemServices::GetObject, IWbemServices::PutClass, IWbemServices::DeleteClass,
@@ -13631,13 +13346,14 @@ Release: April 23, 2024
 
 180 / 234
 
-<!-- Extracted images from page 181 -->
+
+<!-- Extracted images from page 181 -->
 ![Extracted image 1 from page 181]([MS-WMI].images/page181-img01.png)
 <!-- /Extracted images from page 181 -->
 
 Figure 17: Semisynchronous delivery of a single result
 
-4.3.2  Semisynchronous Delivery of Result Sets
+#### 4.3.2 Semisynchronous Delivery of Result Sets
 
 The semisynchronous operation uses the same sequence as the synchronous calls, as specified in
 section 4.2.2, to request a result set. However, in semisynchronous cases, the
@@ -13648,9 +13364,9 @@ the result set is available on the server. When the client calls the IEnumWbemCl
 method, it specifies a time-out within which the server returns the requested results. When one of the
 previous conditions is satisfied, the call completes.
 
-4.3.3  Semisynchronous Delivery Traces
+#### 4.3.3 Semisynchronous Delivery Traces
 
-4.3.3.1  Semisynchronous Delivery of IWbemServices ExecQuery and ExecMethod
+##### 4.3.3.1 Semisynchronous Delivery of IWbemServices ExecQuery and ExecMethod
 
 Operations
 
@@ -13667,7 +13383,8 @@ Release: April 23, 2024
 
 181 / 234
 
-The client calls ExecQuery method on IwbemServices interface pointer with "select * from
+
+The client calls ExecQuery method on IwbemServices interface pointer with "select * from
 win32_process where Name='calc.exe'" as strQuery. It is assumed that an instance of calc.exe is
 running on the server:
 
@@ -13725,7 +13442,8 @@ Release: April 23, 2024
 
 182 / 234
 
- - WMI: IWbemFetchSmartEnum:GetSmartEnum Response, ReturnValue=WBEM_S_NO_ERROR
+
+ - WMI: IWbemFetchSmartEnum:GetSmartEnum Response, ReturnValue=WBEM_S_NO_ERROR
    + SmartEnum: OBJREFSTANDARD - {423EC01E-2E35-11D2-B604-00104B703EFD}
    + Pad: 2 Bytes
      ReturnValue: 0x00000000 - WBEM_S_NO_ERROR - Indicates a successful completion to the
@@ -13787,7 +13505,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   + Pad: 2 Bytes
+
+   + Pad: 2 Bytes
      ReturnValue: 0x00000000 - WBEM_S_NO_ERROR - Indicates a successful completion to the
 method call.
 
@@ -13846,7 +13565,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     ReturnValue: 0x00000000 - WBEM_S_NO_ERROR - Indicates a successful completion to the
+
+     ReturnValue: 0x00000000 - WBEM_S_NO_ERROR - Indicates a successful completion to the
 method call.
 
 The client uses IRemUnknown and IRemUnknown2, as specified in [MS-DCOM], to obtain an
@@ -13901,7 +13621,8 @@ Release: April 23, 2024
 
 185 / 234
 
-The server responds with the result set this time with no calc.exe instances. (This proves that the
+
+The server responds with the result set this time with no calc.exe instances. (This proves that the
 terminate method was called and has terminated calc.exe process on the server):
 
    - WMI: IWbemWCOSmartEnum:Next Response, PuReturned=0 BuffSize=0 ReturnValue=WBEM_S_FALSE
@@ -13913,7 +13634,7 @@ terminate method was called and has terminated calc.exe process on the server):
 number of returned CIM objects is less than the number requested, or this is the end of an
 enumeration.
 
-4.3.3.2  Semisynchronous Delivery of IWbemServices PutInstance, DeleteInstance,
+##### 4.3.3.2 Semisynchronous Delivery of IWbemServices PutInstance, DeleteInstance,
 
 and CreateInstanceEnum Operations
 
@@ -13963,7 +13684,8 @@ Release: April 23, 2024
 
 186 / 234
 
- - WMI: IWbemCallResult:GetCallStatus Request, Timeout=5000
+
+ - WMI: IWbemCallResult:GetCallStatus Request, Timeout=5000
      Timeout: 5000 ms(0x1388)
 
 Server responds with ReturnValue WBEM_S_NO_ERROR, and the Status as S_OK. This implies that
@@ -14019,7 +13741,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- - DCOM: IRemUnknown2:RemQueryInterface Request, DCOM Version=5.7  Causality Id={84EE6C91-
+
+ - DCOM: IRemUnknown2:RemQueryInterface Request, DCOM Version=5.7  Causality Id={84EE6C91-
 3DF6-4B65-95F1-71E440FE05B7}
    + HeaderReq: DCOM Version=5.7  Causality Id={84EE6C91-3DF6-4B65-95F1-71E440FE05B7}
      QueriedObjectIpId: {0003C027-06EC-0000-6584-686A50EA42DD}
@@ -14077,7 +13800,8 @@ Release: April 23, 2024
 
 188 / 234
 
-     ReturnValue: 0x00000001 - WBEM_S_FALSE - Either no more CIM objects are available, the
+
+     ReturnValue: 0x00000001 - WBEM_S_FALSE - Either no more CIM objects are available, the
 number of returned CIM objects is less than the number requested, or this is the end of an
 enumeration.
 
@@ -14134,7 +13858,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- - WMI: IWbemServices:CreateInstanceEnum Response, ReturnValue=WBEM_S_NO_ERROR
+
+ - WMI: IWbemServices:CreateInstanceEnum Response, ReturnValue=WBEM_S_NO_ERROR
    + Enum: OBJREFSTANDARD - {027947E1-D731-11CE-A357-000000000001}
    + Pad: 2 Bytes
      ReturnValue: 0x00000000 - WBEM_S_NO_ERROR - Indicates a successful completion to the
@@ -14192,7 +13917,8 @@ Release: April 23, 2024
 
 190 / 234
 
-Server responds with the result set containing 1 TestWMI instance (x=3,y=5). This confirms that the
+
+Server responds with the result set containing 1 TestWMI instance (x=3,y=5). This confirms that the
 other instance with x=10 has been successfully deleted as part of DeleteInstance call:
 
  - WMI: IWbemWCOSmartEnum:Next Response, PuReturned=1 BuffSize=307 ReturnValue=WBEM_S_FALSE
@@ -14205,7 +13931,7 @@ other instance with x=10 has been successfully deleted as part of DeleteInstance
 number of returned CIM objects is less than the number requested, or this is the end of an
 enumeration.
 
-4.4  Asynchronous Delivery of Results
+### 4.4 Asynchronous Delivery of Results
 
 An asynchronous method returns before the requested operation completes. The server continues to
 execute the request and delivers the results to the client using a response handler when the results
@@ -14231,13 +13957,14 @@ Release: April 23, 2024
 
 191 / 234
 
-<!-- Extracted images from page 192 -->
+
+<!-- Extracted images from page 192 -->
 ![Extracted image 1 from page 192]([MS-WMI].images/page192-img01.png)
 <!-- /Extracted images from page 192 -->
 
 Figure 18: Asynchronous delivery of results
 
-4.5  Optimized Asynchronous Delivery of Results
+### 4.5 Optimized Asynchronous Delivery of Results
 
 The asynchronous communication is optimized to reduce the network usage by making use of the
 ObjectArray structure as specified in section 2.2.14.
@@ -14254,13 +13981,14 @@ Release: April 23, 2024
 
 192 / 234
 
-<!-- Extracted images from page 193 -->
+
+<!-- Extracted images from page 193 -->
 ![Extracted image 1 from page 193]([MS-WMI].images/page193-img01.png)
 <!-- /Extracted images from page 193 -->
 
 Figure 19: Optimized asynchronous delivery of results
 
-4.6  Configuring Refreshing Services
+### 4.6 Configuring Refreshing Services
 
 When using the refresher mechanism, a client application that is connected to a remote computer
 through an IWbemServices pointer uses the IRemUnknown and IRemUnknown2 interfaces, as
@@ -14274,13 +14002,14 @@ Release: April 23, 2024
 
 193 / 234
 
-<!-- Extracted images from page 194 -->
+
+<!-- Extracted images from page 194 -->
 ![Extracted image 1 from page 194]([MS-WMI].images/page194-img01.png)
 <!-- /Extracted images from page 194 -->
 
 Figure 20: Configuring refreshing services
 
-4.7  Using the Refresher Interface
+### 4.7 Using the Refresher Interface
 
 The IWbemRemoteRefresher interface pointer that is returned from IWbemRefreshingServices is
 used to obtain an updated result set. For the usage of the remote refresher, the client calls the
@@ -14293,7 +14022,8 @@ Release: April 23, 2024
 
 194 / 234
 
-<!-- Extracted images from page 195 -->
+
+<!-- Extracted images from page 195 -->
 ![Extracted image 1 from page 195]([MS-WMI].images/page195-img01.png)
 <!-- /Extracted images from page 195 -->
 
@@ -14306,19 +14036,20 @@ Release: April 23, 2024
 
 195 / 234
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Windows Management
 Instrumentation Remote Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 For all methods, the server MUST enforce that the DCOM security level is at least at the
 RPC_C_AUTHN_LEVEL_CONNECT level, and SHOULD be at the RPC_C_AUTHN_LEVEL_PKT_INTEGRITY
 level; the server MUST also evaluate the security principal rights to open a CIM namespace.<87>
 The server MUST fail the operation if the security requirements are not met.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The server MUST secure access to each CIM namespace by using security descriptors<88> as
 specified in [MS-DTYP].
@@ -14403,7 +14134,8 @@ Release: April 23, 2024
 
 196 / 234
 
-Constants
+
+Constants
 
 Value  Meaning
 
@@ -14431,7 +14163,8 @@ Release: April 23, 2024
 
 197 / 234
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided, where "ms-oaut.idl" is the IDL found in [MS-
 OAUT] Appendix A.
@@ -14506,7 +14239,8 @@ Release: April 23, 2024
 
 198 / 234
 
-     WBEM_STATUS_PROGRESS = 2
+
+     WBEM_STATUS_PROGRESS = 2
  } WBEM_STATUS_TYPE;
 
  typedef [v1_enum] enum tag_WBEM_TIMEOUT_TYPE {
@@ -14583,7 +14317,8 @@ Release: April 23, 2024
 
 199 / 234
 
-     WBEM_E_QUEUE_OVERFLOW = 0x80041061,
+
+     WBEM_E_QUEUE_OVERFLOW = 0x80041061,
      WBEM_E_PRIVILEGE_NOT_HELD = 0x80041062,
      WBEM_E_INVALID_OPERATOR = 0x80041063,
      WBEM_E_CANNOT_BE_ABSTRACT = 0x80041065,
@@ -14656,7 +14391,8 @@ Release: April 23, 2024
 
 200 / 234
 
-         [in, size_is(lObjectCount)]
+
+         [in, size_is(lObjectCount)]
              IWbemClassObject** apObjArray
      );
 
@@ -14731,7 +14467,8 @@ Release: April 23, 2024
 
 201 / 234
 
-         [in]  long lTimeout,
+
+         [in]  long lTimeout,
          [out] BSTR* pstrResultString
      );
 
@@ -14807,7 +14544,8 @@ Release: April 23, 2024
 
 202 / 234
 
-     HRESULT DeleteClass(
+
+     HRESULT DeleteClass(
          [in] const BSTR strClass,
          [in] long lFlags,
          [in] IWbemContext* pCtx,
@@ -14883,7 +14621,8 @@ Release: April 23, 2024
 
 203 / 234
 
-     );
+
+     );
 
      HRESULT ExecQuery(
          [in]  const BSTR strQueryLanguage,
@@ -14960,7 +14699,8 @@ Release: April 23, 2024
 
 204 / 234
 
-     );
+
+     );
  };
 
  [
@@ -15033,7 +14773,8 @@ Release: April 23, 2024
 
 205 / 234
 
- typedef enum
+
+ typedef enum
  {
      WBEM_REFRESH_TYPE_INVALID = 0,
      WBEM_REFRESH_TYPE_REMOTE = 3,
@@ -15110,7 +14851,8 @@ Release: April 23, 2024
 
 206 / 234
 
-         [out] _WBEM_REFRESH_INFO* pInfo,
+
+         [out] _WBEM_REFRESH_INFO* pInfo,
          [out] DWORD* pdwSvrRefrVersion
      );
 
@@ -15186,7 +14928,8 @@ Release: April 23, 2024
 
 207 / 234
 
-     HRESULT GetSmartEnum(
+
+     HRESULT GetSmartEnum(
          [out] IWbemWCOSmartEnum** ppSmartEnum
      );
  };
@@ -15262,7 +15005,8 @@ Release: April 23, 2024
 
 208 / 234
 
- };
+
+ };
 
 [MS-WMI] - v20240423
 Windows Management Instrumentation Remote Protocol
@@ -15271,7 +15015,8 @@ Release: April 23, 2024
 
 209 / 234
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -15340,7 +15085,8 @@ Release: April 23, 2024
 
 210 / 234
 
-also applies to subsequent updates unless otherwise specified. If a product edition appears with the
+
+also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
 
 Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
@@ -15410,7 +15156,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-descriptor definition language (SDDL) format. If no NamespaceSecuritySDDL qualifier is present, the
+
+descriptor definition language (SDDL) format. If no NamespaceSecuritySDDL qualifier is present, the
 server initializes the security descriptor for the namespace to the default value.
 
 The security groups refer to the values defined in [MS-DTYP] section 2.4.2.4.
@@ -15485,7 +15232,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<18> Section 3.1.4: The following Windows versions support ordered array types:
+
+<18> Section 3.1.4: The following Windows versions support ordered array types:
 
   Windows NT operating system
 
@@ -15563,7 +15311,8 @@ Release: April 23, 2024
 
 213 / 234
 
-<29> Section 3.1.4.1.4: In Windows, it is the Windows system locale of the server.
+
+<29> Section 3.1.4.1.4: In Windows, it is the Windows system locale of the server.
 
 <30> Section 3.1.4.1.4: Windows 2000 and later and Windows XP and later fail the call and return
 0x80041008 (WBEM_E_INVALID_PARAMETER) if the locale name does not match one of the WMI
@@ -15631,7 +15380,8 @@ Release: April 23, 2024
 
 214 / 234
 
-The following versions of Windows enforce a query string limit of 4096 characters
+
+The following versions of Windows enforce a query string limit of 4096 characters
 (WBEM_MAX_IDENTIFIER = 0x1000):
 
   Windows Server 2003 SP2 and later
@@ -15700,7 +15450,8 @@ Release: April 23, 2024
 
 215 / 234
 
-<40> Section 3.1.4.3.10: The following Windows versions do not enforce a limit:
+
+<40> Section 3.1.4.3.10: The following Windows versions do not enforce a limit:
 
   Windows NT 4.0
 
@@ -15771,7 +15522,8 @@ Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Windows 2000
+
+  Windows 2000
 
   Windows XP
 
@@ -15841,7 +15593,8 @@ Release: April 23, 2024
 
 217 / 234
 
-  Windows Server 2003 with SP1
+
+  Windows Server 2003 with SP1
 
 These Windows versions enforce a query string limit of 4,096 characters (WBEM_MAX_IDENTIFIER =
 0x1000):
@@ -15912,7 +15665,8 @@ Release: April 23, 2024
 
 218 / 234
 
-  Windows 2000 Server
+
+  Windows 2000 Server
 
   Windows XP
 
@@ -15983,7 +15737,8 @@ Release: April 23, 2024
 
 219 / 234
 
-  Windows Server 2008
+
+  Windows Server 2008
 
   Windows Server 2008 R2
 
@@ -16051,7 +15806,8 @@ Release: April 23, 2024
 
 220 / 234
 
-<74> Section 3.1.4.17:  Windows 2000, Windows XP, Windows Server 2003, Windows Vista, Windows
+
+<74> Section 3.1.4.17:  Windows 2000, Windows XP, Windows Server 2003, Windows Vista, Windows
 Server 2008, and Windows 7 do not use this.
 
 <75> Section 3.1.4.17.11: In Windows XP, Windows Server 2003, Windows Vista, and Windows
@@ -16131,7 +15887,8 @@ Release: April 23, 2024
 
 221 / 234
 
-<80> Section 3.2.4: Windows 2000, Windows XP, Windows Server 2003, Windows Vista, Windows
+
+<80> Section 3.2.4: Windows 2000, Windows XP, Windows Server 2003, Windows Vista, Windows
 Server 2008, and Windows 7 do not set the option. Windows 8 does set the option when WMI C-Client
 APIs are used but not when the IWbemServices COM interface is used.
 
@@ -16211,7 +15968,8 @@ Release: April 23, 2024
 
 222 / 234
 
-<88> Section 5.2: In Windows, local administrators are implicitly granted all rights that are specified
+
+<88> Section 5.2: In Windows, local administrators are implicitly granted all rights that are specified
 in the table in section 5.2.
 
 [MS-WMI] - v20240423
@@ -16221,7 +15979,8 @@ Release: April 23, 2024
 
 223 / 234
 
-8  Appendix C: Additional Error Codes
+
+## 8 Appendix C: Additional Error Codes
 
 The following status codes are defined by WMI, but are either unused or used only in local client
 scenarios:
@@ -16403,7 +16162,8 @@ Release: April 23, 2024
 
 224 / 234
 
-Status Code
+
+Status Code
 
 Value
 
@@ -16562,7 +16322,8 @@ Release: April 23, 2024
 
 225 / 234
 
-Status Code
+
+Status Code
 
 Value
 
@@ -16757,7 +16518,8 @@ Release: April 23, 2024
 
 226 / 234
 
-Status Code
+
+Status Code
 
 Value
 
@@ -16946,7 +16708,8 @@ Release: April 23, 2024
 
 227 / 234
 
-9  Appendix D: Enumerating Class Schema
+
+## 9 Appendix D: Enumerating Class Schema
 
 The following script shows how to enumerate the current class schemas on a Windows machine:
 
@@ -16989,7 +16752,8 @@ Release: April 23, 2024
 
 228 / 234
 
-10  Change Tracking
+
+## 10 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -17050,7 +16814,8 @@ Release: April 23, 2024
 
 229 / 234
 
-11  Index
+
+## 11 Index
 _
 
 __SystemSecurity class 51
@@ -17196,7 +16961,8 @@ Data types
 
 230 / 234
 
-   WBEM_INSTANCE_BLOB_TYPE enumeration 47
+
+   WBEM_INSTANCE_BLOB_TYPE enumeration 47
    WBEM_QUERY_FLAG_TYPE enumeration 32
    WBEM_RECONNECT_INFO structure 49
    WBEM_RECONNECT_RESULTS structure 49
@@ -17348,7 +17114,8 @@ Local events
 
 231 / 234
 
-   client 162
+
+   client 162
    server 153
 Locale formats 51
 
@@ -17499,7 +17266,8 @@ RemoveObjectFromRefresher method 140
 
 232 / 234
 
-RequestChallenge method 70
+
+RequestChallenge method 70
 Reset method 119
 Restore method 134
 Resume method 135
@@ -17647,7 +17415,8 @@ WQL schema and data query 19
 
 233 / 234
 
-[MS-WMI] - v20240423
+
+[MS-WMI] - v20240423
 Windows Management Instrumentation Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024

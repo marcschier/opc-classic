@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 15
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -226,103 +227,50 @@ Release: April 23, 2024
 
 2 / 15
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 4
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 5
-Applicability Statement ....................................................................................... 5
-Versioning and Capability Negotiation ................................................................... 5
-Vendor-Extensible Fields ..................................................................................... 5
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Message Syntax ................................................................................................. 7
-
-2.1
-2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ....................................................................................................... 8
-Client Details ..................................................................................................... 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 8
-Initialization ................................................................................................. 8
-Higher-Layer Triggered Events ....................................................................... 8
-Message Processing Events and Sequencing Rules ............................................ 8
-Timer Events ................................................................................................ 8
-Other Local Events ........................................................................................ 8
-Server Details .................................................................................................... 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-Higher-Layer Triggered Events ....................................................................... 9
-Message Processing Events and Sequencing Rules ............................................ 9
-Timer Events ................................................................................................ 9
-Other Local Events ........................................................................................ 9
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 10
-
-5  Security ................................................................................................................. 11
-Security Considerations for Implementers ........................................................... 11
-Index of Security Parameters ............................................................................ 11
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 12
-
-7  Change Tracking .................................................................................................... 13
-
-8  Index ..................................................................................................................... 14
-
-[MS-WSPE] - v20240423
-WebSocket Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 15
-
-1  Introduction
+## 1 Introduction
 
 The WebSocket Protocol is an Internet Engineering Task Force (IETF) standard protocol designed to
 allow asynchronous bidirectional communication between hosts over a network that might only
@@ -333,7 +281,7 @@ This document specifies extensions to the WebSocket Protocol.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -350,14 +298,14 @@ sandboxed: Deployed into a sandbox.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -372,7 +320,7 @@ assist you in finding the relevant information.
 [RFC6455] Fette, I., and Melnikov, A., "The WebSocket Protocol", RFC 6455, December 2011,
 http://www.ietf.org/rfc/rfc6455.txt
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -383,7 +331,8 @@ Release: April 23, 2024
 
 4 / 15
 
-1.3  Overview
+
+### 1.3 Overview
 
 The WebSocket Protocol [RFC6455] creates an asynchronous, bidirectional communication channel
 that works across existing network intermediaries such as web proxies and firewalls. A client uses
@@ -411,17 +360,17 @@ have serious consequences if a malicious application can bypass the restrictions
 sandbox. However, non-sandboxed applications that can use TCP directly can already perform the
 same actions, and therefore, disabling masking does not introduce additional risk.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WebSocket Protocol Extensions make no modifications to the protocol relationships defined in
 [RFC6455] sections 1.7 and 1.9.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 It is assumed by the implementation that the higher-layer protocol or application recognizes whether
 masking is required prior to using this extension.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 These extensions are not applicable to sandboxed environments that only allow web access, such as
 applications running in a browser.
@@ -432,11 +381,11 @@ These extensions are only applicable to scenarios where an application is permit
 where the intermediaries are well known (such as within a corporate intranet), and security is
 provided by another layer, such as SSL.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -447,7 +396,8 @@ Release: April 23, 2024
 
 5 / 15
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -458,13 +408,14 @@ Release: April 23, 2024
 
 6 / 15
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Message transport for the WebSocket Protocol Extensions is as defined in [RFC6455].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Message syntax for the WebSocket Protocol Extensions is as defined in [RFC6455] section 5.
 
@@ -475,11 +426,12 @@ Release: April 23, 2024
 
 7 / 15
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -490,17 +442,17 @@ document.
 set-mask-to-zero: When set to false, this flag indicates that the mask is to be derived from a strong
 source of entropy as defined in [RFC6455] section 5.3. When set to true, the mask is to be set to zero.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When a WebSocket connection is initialized, the higher-layer protocol or application specifies the
 required value for the set-mask-to-zero ADM element and the client MUST set set-mask-to-zero to
 the specified value. After the connection is initialized, the value of set-mask-to-zero never changes.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 To send a frame, data MUST be framed according to the rules specified in [RFC6455] section 5. If the
 value of the set-mask-to-zero ADM element is false, the behavior is unchanged from that specified
@@ -508,22 +460,22 @@ in [RFC6455] section 5.3. If the value of set-mask-to-zero is true, then the Mas
 defined in [RFC6455] section 4.2) MUST be set to zero instead of being derived from a strong source
 of entropy.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Message processing events and sequencing rules for the WebSocket Protocol Extensions are as defined
 in [RFC6455].
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -536,29 +488,30 @@ WebSocket Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-adhere to this model as long as their external behavior is consistent with that described in this
+
+adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
 accept-unmasked-frame: When set to false, this flag indicates that unmasked frames are to cause
 the connection to be aborted. When set to true, the server is to accept frames regardless of whether
 they are masked.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When a WebSocket connection is initialized, the higher-layer protocol or application specifies the
 required value for the accept-unmasked-frame ADM element and the server MUST set accept-
 unmasked-frame to the specified value. After the connection is initialized, the value of accept-
 unmasked-frame never changes.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Higher-layer triggered events for the WebSocket Protocol Extensions are as defined in [RFC6455].
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The server MUST parse the received frame and extract the value of the frame-masked field
 ([RFC6455] sections 5.2) as specified in [RFC6455] section 45.3. If the value of the accept-
@@ -566,11 +519,11 @@ unmasked-frame ADM element is false, then the behavior is unchanged from that sp
 [RFC6455]. If the value of accept-unmasked-frame is true, the frame MUST be accepted by the
 server even if the Mask bit ([RFC6455] section 4.2) is set to zero.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -581,7 +534,8 @@ Release: April 23, 2024
 
 9 / 15
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In the following example, an application is running in a controlled environment and performance is a
 crucial factor.
@@ -618,9 +572,10 @@ Release: April 23, 2024
 
 10 / 15
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 It is not appropriate to expose these extensions in sandboxed environments that only allow web
 access, such as applications running in a browser, since doing so could allow such applications to
@@ -629,7 +584,7 @@ bypass the security restrictions of the sandbox.
 It is appropriate to allow use of this extension only by higher-layer protocols and applications that are
 already permitted to use TCP.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -648,7 +603,8 @@ Release: April 23, 2024
 
 11 / 15
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -692,7 +648,8 @@ Release: April 23, 2024
 
 12 / 15
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -736,7 +693,8 @@ Release: April 23, 2024
 
 13 / 15
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -866,7 +824,8 @@ Versioning 5
 
 14 / 15
 
-[MS-WSPE] - v20240423
+
+[MS-WSPE] - v20240423
 WebSocket Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024

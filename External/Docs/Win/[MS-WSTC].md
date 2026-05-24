@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 24
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -285,7 +286,8 @@ Release: March 13, 2019
 
 2 / 24
 
-Date
+
+Date
 
 Revision
 History
@@ -387,150 +389,66 @@ Release: March 13, 2019
 
 3 / 24
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+      - [2.2.3.1 <MaxResults>](#2231)
+      - [2.2.3.2 <Duration>](#2232)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Initialization Due to Receipt of a Probe Message](#3131-initialization-due-to-receipt-of-a-probe-message)
+      - [3.1.3.2 Initialization Due to Receipt of a Resolve Message](#3132-initialization-due-to-receipt-of-a-resolve-message)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Probe Operation](#3241-probe-operation)
+      - [3.2.4.2 Resolve Operation](#3242-resolve-operation)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Probe Message Example](#41-probe-message-example)
+  - [4.2 Resolve Message Example](#42-resolve-message-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Appendix C: Protocol Schema](#8-appendix-c-protocol-schema)
+- [9 Change Tracking](#9-change-tracking)
+- [10 Index](#10-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Message Syntax ................................................................................. 10
-Namespaces .............................................................................................. 10
-Messages ................................................................................................... 10
-Elements ................................................................................................... 10
-<MaxResults> ...................................................................................... 10
-<Duration> .......................................................................................... 11
-Complex Types ........................................................................................... 11
-Simple Types ............................................................................................. 11
-Attributes .................................................................................................. 11
-Groups ...................................................................................................... 11
-Attribute Groups ......................................................................................... 11
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-2.2.3.1
-2.2.3.2
-
-3.1
-
-3.1.3.1
-3.1.3.2
-
-3.1.1
-3.1.2
-3.1.3
-
-3.1.4
-3.1.5
-3.1.6
-
-3  Protocol Details ..................................................................................................... 12
-Server Details .................................................................................................. 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Initialization Due to Receipt of a Probe Message ....................................... 12
-Initialization Due to Receipt of a Resolve Message ..................................... 12
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-Client Details ................................................................................................... 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 14
-Probe Operation .................................................................................... 14
-Resolve Operation ................................................................................. 14
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 15
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-
-3.2.5
-3.2.6
-
-3.2
-
-4  Protocol Examples ................................................................................................. 16
-Probe Message Example .................................................................................... 16
-Resolve Message Example ................................................................................. 16
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 18
-Security Considerations for Implementers ........................................................... 18
-Index of Security Parameters ............................................................................ 18
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 19
-
-4 / 24
-
-[MS-WSTC] - v20190313
-WS-Discovery: Termination Criteria Protocol Extensions
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-7  Appendix B: Product Behavior ............................................................................... 20
-
-8  Appendix C: Protocol Schema ................................................................................ 21
-
-9  Change Tracking .................................................................................................... 22
-
-10  Index ..................................................................................................................... 23
-
-[MS-WSTC] - v20190313
-WS-Discovery: Termination Criteria Protocol Extensions
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 24
-
-1  Introduction
+## 1 Introduction
 
 The WS-Discovery: Termination Criteria Protocol Extensions specify an extension to the WS-
 Discovery protocol for sending and receiving a termination criterion as part of WS-Discovery
@@ -542,7 +460,7 @@ saving network bandwidth by not transmitting a response that the client will ign
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -602,14 +520,15 @@ WS-Discovery: Termination Criteria Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -639,11 +558,11 @@ names-20060816/
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies an extension to the WS-Discovery protocol for sending and receiving
 termination criteria as part of the WS-Discovery Probe and Resolve messages. The termination
@@ -668,7 +587,8 @@ WS-Discovery: Termination Criteria Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-WSTC].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -682,7 +602,7 @@ criterion, then it responds back to the client with a Probe Match message contai
 Service that matches the original Probe message. The semantics of the Probe Match message
 transmission are defined in the WS-Discovery protocol.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is an extension of the WS-Discovery protocol. Its dependency is described in the
 following layering diagram. The extension defines XML elements encapsulated in the "extensions"
@@ -692,16 +612,16 @@ it, are not covered in this document.
 
 Figure 1: Layering diagram for the WS-Discovery: Termination Criteria Protocol Extensions
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 In order to implement this protocol extension, an implementation of WS-Discovery, as specified in
 [WS-Discovery1.1] or [WS-Discovery], is required.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 None.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -734,15 +654,16 @@ WS-Discovery: Termination Criteria Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Capability Negotiation: This protocol does not require any specific configurations or interface
+
+  Capability Negotiation: This protocol does not require any specific configurations or interface
 
 versions.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -753,20 +674,21 @@ Release: March 13, 2019
 
 9 / 24
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol extension can be used over any transport protocol allowed by the WS-Discovery
 specification.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This protocol extension defines only elements that are inserted into existing WS-Discovery Probe
 and Resolve messages. The syntax of the message elements defined in this protocol extension uses
 XML schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references two XML namespaces using the mechanisms specified in
 [XMLNS-2ED]. Although this specification associates a specific XML namespace prefix for one XML
@@ -788,11 +710,11 @@ http://www.w3.org/2001/XMLSchema
 This document does not use a prefix for the http://schemas.microsoft.com/ws/2008/06/discovery
 namespace that is defined above.
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 None.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 The following table summarizes the set of common XML schema element definitions defined by this
 specification in the http://schemas.microsoft.com/ws/2008/06/discovery namespace.
@@ -810,7 +732,7 @@ Services a client is looking for.
 This element contains a value of duration type, specifying the maximum amount of time the
 client is willing to wait to get a response for a particular request.
 
-2.2.3.1  <MaxResults>
+##### 2.2.3.1 <MaxResults>
 
  <MaxResults xmlns="http://schemas.microsoft.com/ws/2008/06/discovery">
  xs:positiveInteger
@@ -823,12 +745,13 @@ Release: March 13, 2019
 
 10 / 24
 
-The value of the MaxResults element MUST be greater than 0 and less than or equal to
+
+The value of the MaxResults element MUST be greater than 0 and less than or equal to
 2,147,483,647. A value of MaxResults equal to 2,147,483,647 is treated as a special case, implying an
 infinite number of responses. Client and server implementations handle out of bounds values
 differently. These cases are described in the respective protocol details sections.
 
-2.2.3.2  <Duration>
+##### 2.2.3.2 <Duration>
 
  <Duration xmlns="http://schemas.microsoft.com/ws/2008/06/discovery">
  xs:duration
@@ -840,23 +763,23 @@ P10675199DT2H48M05.4775807S implies an infinite duration. Client and server impl
 handle out-of-bounds values differently. These cases are described in the respective protocol details
 sections.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML schema attribute group definitions.
 
@@ -867,11 +790,12 @@ Release: March 13, 2019
 
 11 / 24
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -886,7 +810,7 @@ MaxResponses: This value indicates the maximum number of Target Services about w
 Target Service host can respond to a client in a Probe Match message. The constraint placed
 by the MaxResponses value is not applicable to Resolve Match messages.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 DurationTimer: This timer regulates the maximum time allocated for the Target Service host to
 
@@ -896,12 +820,12 @@ Match message.
 There is no default value for the DurationTimer. The value is set as defined in the initialization
 (section 3.1.3).
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 If any of the data elements are not conformant to the constraints defined in section 2.2.3, then the
 Target Service MUST drop the incoming message and take no further action.
 
-3.1.3.1  Initialization Due to Receipt of a Probe Message
+##### 3.1.3.1 Initialization Due to Receipt of a Probe Message
 
 Upon receipt of a Probe message, the following initialization MUST occur:
 
@@ -917,7 +841,7 @@ If the <Duration> element is set to P10675199DT2H48M05.4775807S and if the <MaxR
 element is set to 2,147,483,647, then the implementation MUST drop the Probe message; the
 implementation MUST NOT respond to the client.
 
-3.1.3.2  Initialization Due to Receipt of a Resolve Message
+##### 3.1.3.2 Initialization Due to Receipt of a Resolve Message
 
 Upon receipt of a Resolve message, the following initialization MUST occur:
 
@@ -931,14 +855,15 @@ Release: March 13, 2019
 
 12 / 24
 
-If a <Duration> element described in section 2.2.3.2 is specified and is equal to
+
+If a <Duration> element described in section 2.2.3.2 is specified and is equal to
 P10675199DT2H48M05.4775807S, then the DurationTimer MUST NOT be started; this value implies
 an infinite timeout.
 
 Otherwise, the DurationTimer MUST be started with a value equal to the value of the <Duration>
 element.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 If the protocol is initialized due to the receipt of a Probe message and the MaxResponses value is
 set, then the following rules MUST be followed. If any Target Services match the find criteria, then
@@ -955,7 +880,7 @@ message processing events or sequencing rules to follow.
 This protocol extension does not define any new operations beyond those defined in the WS-Discovery
 protocol, as specified in [WS-Discovery1.1] or [WS-Discovery].
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 If the DurationTimer is not set as part of the initialization, then the server does not have any
 constraints placed by this timer; the operation has an infinite amount of time to execute.
@@ -963,19 +888,19 @@ constraints placed by this timer; the operation has an infinite amount of time t
 If the DurationTimer is set and expires, then the Target Service host MUST NOT send any more
 replies to the client.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 A client implementation must maintain the following data elements:
 
 MaxResults: This value indicates the maximum number of Target Services that a client requires.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 DurationTimer: This timer regulates the maximum time a client is willing to wait to get a response
 
@@ -983,7 +908,7 @@ for a particular Probe or Resolve request.
 
 The default value for this timer is 20 seconds.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 An application developer initializes the value of DurationTimer and the value of MaxResults by
 providing these values to appropriate methods that result in the transmission of Probe and Resolve
@@ -996,7 +921,8 @@ WS-Discovery: Termination Criteria Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-If any of the values do not conform to the constraints defined in section 2.2.3, then the client MUST
+
+If any of the values do not conform to the constraints defined in section 2.2.3, then the client MUST
 NOT send the Probe or Resolve message to the receipient.
 
 If a value for DurationTimer is set and is equal to P10675199DT2H48M05.4775807S, then the timer
@@ -1004,9 +930,9 @@ MUST NOT be instantiated; this value implies that the operation has an infinite 
 execute. Otherwise, the DurationTimer is initialized with the value specified by the developer and
 then started.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
-3.2.4.1  Probe Operation
+##### 3.2.4.1 Probe Operation
 
 These message processing and sequencing rules are to be followed when sending a Probe message.
 
@@ -1036,7 +962,7 @@ WS-Discovery.
 
 An example of a Probe message with these elements inserted is provided in section 4.
 
-3.2.4.2  Resolve Operation
+##### 3.2.4.2 Resolve Operation
 
 If a value for DurationTimer is specified by the application developer for a Resolve operation and
 the value is less than P10675199DT2H48M05.4775807S, then the client MUST send this value as part
@@ -1062,19 +988,20 @@ WS-Discovery: Termination Criteria Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-After the client receives a number of responses greater than the value of MaxResults, it MUST ignore
+
+After the client receives a number of responses greater than the value of MaxResults, it MUST ignore
 the remaining responses.
 
 An example of a Resolve message with these elements inserted is provided in section 4.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 If the DurationTimer is not set as part of the initialization, then the server does not have any
 constraints placed by this timer; the operation has an infinite amount of time to execute.
 
 If the DurationTimer is set and expires, then the client MUST ignore any additional responses.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -1085,9 +1012,10 @@ Release: March 13, 2019
 
 15 / 24
 
-4  Protocol Examples
 
-4.1  Probe Message Example
+## 4 Protocol Examples
+
+### 4.1 Probe Message Example
 
 A client performing stock trades needs to locate a Target Service of Type i:StatisticalAnalysis and
 requires that service in the next 5 seconds. Using an implementation of WS-Discovery, it multicasts
@@ -1131,7 +1059,7 @@ for. However, it is limited to responding with a Probe Match containing informat
 Target Service. If it is able to respond within 5 seconds, it replies back to the client with a Probe Match
 message containing information about one such service.
 
-4.2  Resolve Message Example
+### 4.2 Resolve Message Example
 
 A client on a factory floor needs to resolve a tracking service located on a barcode scanning device.
 Since the device is mobile, it is using a universally unique identifier (UUID) for its address. The
@@ -1153,7 +1081,8 @@ WS-Discovery: Termination Criteria Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- (06)    <a:Action>
+
+ (06)    <a:Action>
  (07)      http://schemas.xmlsoap.org/ws/2005/04/discovery/Resolve
  (08)    </a:Action>
  (09)    <a:MessageID>
@@ -1188,13 +1117,14 @@ Release: March 13, 2019
 
 17 / 24
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  None.
 
@@ -1205,7 +1135,8 @@ Release: March 13, 2019
 
 18 / 24
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 This protocol extension does not have a specific WSDL; rather it uses the WSDL declaration of the
 WS-Discovery protocol that it extends.
@@ -1217,7 +1148,8 @@ Release: March 13, 2019
 
 19 / 24
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1253,7 +1185,8 @@ Release: March 13, 2019
 
 20 / 24
 
-8  Appendix C: Protocol Schema
+
+## 8 Appendix C: Protocol Schema
 
 The following is the XSD schema for the http://schemas.microsoft.com/ws/2008/06/discovery
 namespace.
@@ -1271,7 +1204,8 @@ Release: March 13, 2019
 
 21 / 24
 
-9  Change Tracking
+
+## 9 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1308,7 +1242,8 @@ Release: March 13, 2019
 
 22 / 24
 
-10  Index
+
+## 10 Index
 <
 
 <Duration> element 11
@@ -1439,7 +1374,8 @@ Resolve message example 16
 
 23 / 24
 
-S
+
+S
 
 Security
    implementer considerations 18

@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 58
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -286,7 +287,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -404,272 +406,124 @@ Release: April 23, 2024
 
 3 / 58
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 WDS_OP_LOG_INIT](#221-wdsoploginit)
+    - [2.2.2 WDS_OP_LOG_MSG](#222-wdsoplogmsg)
+      - [2.2.2.1 Section](#2221-section)
+      - [2.2.2.2 Section](#2222-section)
+      - [2.2.2.3 Section](#2223-section)
+      - [2.2.2.4 Section](#2224-section)
+      - [2.2.2.5 Section](#2225-section)
+      - [2.2.2.6 This status](#2226-this-status)
+      - [2.2.2.7 Section](#2227-section)
+      - [2.2.2.8 Section](#2228-section)
+      - [2.2.2.9 Section](#2229-section)
+      - [2.2.2.10 Section](#22210-section)
+      - [2.2.2.11 Section](#22211-section)
+      - [2.2.2.12 Section](#22212-section)
+      - [2.2.2.13 Section](#22213-section)
+      - [2.2.2.14 Section](#22214-section)
+      - [2.2.2.15 Message type](#22215-message-type)
+      - [2.2.2.16 WDS_LOG_TYPE_CLIENT_DRIVER_PACKAGE_NOT_ACCESSIBLE](#22216-wdslogtypeclientdriverpackagenotaccessible)
+      - [2.2.2.17 Section](#22217-section)
+      - [2.2.2.18 Section](#22218-section)
+      - [2.2.2.19 WDS_LOG_TYPE_CLIENT_OFFLINE_DRIVER_INJECTION_FAILURE](#22219-wdslogtypeclientofflinedriverinjectionfailure)
+      - [2.2.2.20 Section](#22220-section)
+      - [2.2.2.21 ARCHITECTURE (WDSCPL_VAR_ULONG): MUST be set to the processor architecture of the client](#22221-architecture-wdscplvarulong-must-be-set-to-the-processor-architecture-of-the-client)
+      - [2.2.2.22 WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED3](#22222-wdslogtypeclientimageselected3)
+    - [2.2.3 WDS_OP_GET_CLIENT_UNATTEND](#223-wdsopgetclientunattend)
+    - [2.2.4 WDS_OP_GET_UNATTEND_VARIABLES](#224-wdsopgetunattendvariables)
+    - [2.2.5 WDS_OP_GET_DOMAIN_JOIN_INFORMATION](#225-wdsopgetdomainjoininformation)
+    - [2.2.6 WDS_OP_IMG_ENUMERATE](#226-wdsopimgenumerate)
+    - [2.2.7 DDP_OP_GET_MACHINE_DRIVER_PACKAGES](#227-ddpopgetmachinedriverpackages)
+    - [2.2.8 Architecture](#228-architecture)
+    - [2.2.9 WDSDCMGR_OP_QUERY_METADATA](#229-wdsdcmgropquerymetadata)
+    - [2.2.10 WDS_OP_RESET_BOOT_PROGRAM](#2210-wdsopresetbootprogram)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 WDS Server Configuration](#3111-wds-server-configuration)
+      - [3.1.1.2 Computers in Active Directory Domain](#3112-computers-in-active-directory-domain)
+      - [3.1.1.3 Users in the Active Directory Domain](#3113-users-in-the-active-directory-domain)
+      - [3.1.1.4 Machine Naming Policy](#3114-machine-naming-policy)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 WDS_OP_LOG_INIT](#3151-wdsoploginit)
+      - [3.1.5.2 WDS_OP_LOG_MSG](#3152-wdsoplogmsg)
+      - [3.1.5.3 WDS_OP_GET_CLIENT_UNATTEND](#3153-wdsopgetclientunattend)
+      - [3.1.5.4 WDS_OP_GET_UNATTEND_VARIABLES](#3154-wdsopgetunattendvariables)
+      - [3.1.5.5 WDS_OP_GET_DOMAIN_JOIN_INFORMATION](#3155-wdsopgetdomainjoininformation)
+        - [3.1.5.5.1 Computer Object Exists](#31551-computer-object-exists)
+        - [3.1.5.5.2 Computer Object Does Not Exist](#31552-computer-object-does-not-exist)
+      - [3.1.5.6 WDS_OP_IMG_ENUMERATE](#3156-wdsopimgenumerate)
+        - [3.1.5.6.1 Without CLIENT_CAP_SUPPORT_V2](#31561-without-clientcapsupportv2)
+        - [3.1.5.6.2 With CLIENT_CAP_SUPPORT_V2](#31562-with-clientcapsupportv2)
+        - [3.1.5.6.3 Without CLIENT_CAP_SUPPORT_VHDX](#31563-without-clientcapsupportvhdx)
+        - [3.1.5.6.4 With CLIENT_CAP_SUPPORT_VHDX](#31564-with-clientcapsupportvhdx)
+      - [3.1.5.7 DDP_OP_GET_MACHINE_DRIVER_PACKAGES](#3157-ddpopgetmachinedriverpackages)
+      - [3.1.5.8 WDSDCMGR_OP_QUERY_METADATA](#3158-wdsdcmgropquerymetadata)
+      - [3.1.5.9 WDS_OP_RESET_BOOT_PROGRAM](#3159-wdsopresetbootprogram)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Client Configuration](#3211-client-configuration)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+      - [3.2.3.1 Initialize Logging](#3231-initialize-logging)
+      - [3.2.3.2 Initialize Deployment Agent Metadata](#3232-initialize-deployment-agent-metadata)
+      - [3.2.3.3 Status Message: Client Started](#3233-status-message-client-started)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Getting Unattended Instructions for Deployment Agent](#3251-getting-unattended-instructions-for-deployment-agent)
+      - [3.2.5.2 Getting Credentials](#3252-getting-credentials)
+      - [3.2.5.3 Getting List of Images](#3253-getting-list-of-images)
+      - [3.2.5.4 Transferring Selected OS Image](#3254-transferring-selected-os-image)
+      - [3.2.5.5 Applying Selected OS Image](#3255-applying-selected-os-image)
+      - [3.2.5.6 Driver Injection](#3256-driver-injection)
+      - [3.2.5.7 Deployed OS Unattend and Domain Join](#3257-deployed-os-unattend-and-domain-join)
+        - [3.2.5.7.1 Computer Account Exists](#32571-computer-account-exists)
+        - [3.2.5.7.2 Computer Account Does Not Exist](#32572-computer-account-does-not-exist)
+      - [3.2.5.8 Finishing Up](#3258-finishing-up)
+      - [3.2.5.9 Error Handling](#3259-error-handling)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Getting Transaction ID and Log Level](#41-getting-transaction-id-and-log-level)
+  - [4.2 Client Started Status Message](#42-client-started-status-message)
+  - [4.3 Get Deployment Agent Unattend](#43-get-deployment-agent-unattend)
+  - [4.4 Enumerating OS Images](#44-enumerating-os-images)
+  - [4.5 Getting Unattend Variables For OS Deployment In Unattended Mode](#45-getting-unattend-variables-for-os-deployment-in-unattended-mode)
+  - [4.6 Getting Domain Join Information](#46-getting-domain-join-information)
+  - [4.7 Initializing Deployment Agent Metadata](#47-initializing-deployment-agent-metadata)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Message Syntax ............................................................................................... 13
-WDS_OP_LOG_INIT .................................................................................... 14
-WDS_OP_LOG_MSG .................................................................................... 14
-WDS_LOG_TYPE_CLIENT_ERROR ............................................................ 16
-2.2.2.1
-WDS_LOG_TYPE_CLIENT_STARTED ........................................................ 16
-2.2.2.2
-WDS_LOG_TYPE_CLIENT_FINISHED ........................................................ 17
-2.2.2.3
-WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED ............................................ 17
-2.2.2.4
-WDS_LOG_TYPE_CLIENT_APPLY_STARTED .............................................. 17
-2.2.2.5
-WDS_LOG_TYPE_CLIENT_APPLY_FINISHED ............................................. 17
-2.2.2.6
-WDS_LOG_TYPE_CLIENT_UNATTEND_MODE ............................................ 17
-2.2.2.7
-WDS_LOG_TYPE_CLIENT_TRANSFER_START ............................................ 18
-2.2.2.8
-WDS_LOG_TYPE_CLIENT_TRANSFER_END ............................................... 18
-2.2.2.9
-2.2.2.10  WDS_LOG_TYPE_CLIENT_TRANSFER_DOWNGRADE .................................. 18
-2.2.2.11  WDS_LOG_TYPE_CLIENT_DOMAINJOINERROR ......................................... 18
-2.2.2.12  WDS_LOG_TYPE_CLIENT_POST_ACTIONS_START .................................... 19
-2.2.2.13  WDS_LOG_TYPE_CLIENT_POST_ACTIONS_END ........................................ 19
-2.2.2.14  WDS_LOG_TYPE_CLIENT_APPLY_STARTED_2 ........................................... 19
-2.2.2.15  WDS_LOG_TYPE_CLIENT_APPLY_FINISHED_2 .......................................... 19
-2.2.2.16  WDS_LOG_TYPE_CLIENT_DOMAINJOINERROR2........................................ 19
-2.2.2.17  WDS_LOG_TYPE_CLIENT_DRIVER_PACKAGE_NOT_ACCESSIBLE ................ 20
-2.2.2.18  WDS_LOG_TYPE_CLIENT_OFFLINE_DRIVER_INJECTION_START ................. 20
-2.2.2.19  WDS_LOG_TYPE_CLIENT_OFFLINE_DRIVER_INJECTION_END .................... 20
-2.2.2.20  WDS_LOG_TYPE_CLIENT_OFFLINE_DRIVER_INJECTION_FAILURE .............. 20
-2.2.2.21  WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED2 .......................................... 21
-2.2.2.22  WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED3 .......................................... 21
-WDS_OP_GET_CLIENT_UNATTEND ............................................................... 21
-2.2.3
-WDS_OP_GET_UNATTEND_VARIABLES ......................................................... 22
-2.2.4
-WDS_OP_GET_DOMAIN_JOIN_INFORMATION ................................................ 23
-2.2.5
-WDS_OP_IMG_ENUMERATE ......................................................................... 24
-2.2.6
-DDP_OP_GET_MACHINE_DRIVER_PACKAGES ................................................ 27
-2.2.7
-Architecture ............................................................................................... 31
-2.2.8
-2.2.9
-WDSDCMGR_OP_QUERY_METADATA............................................................. 32
-2.2.10  WDS_OP_RESET_BOOT_PROGRAM ............................................................... 32
-Directory Service Schema Elements ................................................................... 33
-
-2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 34
-Server Details .................................................................................................. 34
-Abstract Data Model .................................................................................... 34
-WDS Server Configuration ...................................................................... 34
-Computers in Active Directory Domain ..................................................... 35
-
-3.1.1.1
-3.1.1.2
-
-3.1.1
-
-[MS-WDSOSD] - v20240423
-Windows Deployment Services Operation System Deployment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 58
-
-3.1.1.3
-3.1.1.4
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3.1.5.5.1
-3.1.5.5.2
-
-3.1.5.6
-
-3.1.5.6.1
-3.1.5.6.2
-3.1.5.6.3
-3.1.5.6.4
-
-3.1.5.7
-3.1.5.8
-3.1.5.9
-
-Users in the Active Directory Domain ....................................................... 36
-Machine Naming Policy .......................................................................... 36
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Higher-Layer Triggered Events ..................................................................... 37
-Message Processing Events and Sequencing Rules .......................................... 37
-WDS_OP_LOG_INIT .............................................................................. 37
-WDS_OP_LOG_MSG .............................................................................. 37
-WDS_OP_GET_CLIENT_UNATTEND ......................................................... 37
-WDS_OP_GET_UNATTEND_VARIABLES .................................................... 38
-WDS_OP_GET_DOMAIN_JOIN_INFORMATION .......................................... 38
-Computer Object Exists .................................................................... 39
-Computer Object Does Not Exist........................................................ 39
-WDS_OP_IMG_ENUMERATE ................................................................... 39
-Without CLIENT_CAP_SUPPORT_V2 ................................................... 40
-With CLIENT_CAP_SUPPORT_V2 ........................................................ 40
-Without CLIENT_CAP_SUPPORT_VHDX ............................................... 40
-With CLIENT_CAP_SUPPORT_VHDX ................................................... 40
-DDP_OP_GET_MACHINE_DRIVER_PACKAGES ........................................... 40
-WDSDCMGR_OP_QUERY_METADATA ....................................................... 40
-WDS_OP_RESET_BOOT_PROGRAM ......................................................... 41
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-Client Details ................................................................................................... 41
-Abstract Data Model .................................................................................... 41
-Client Configuration ............................................................................... 41
-Timers ...................................................................................................... 42
-Initialization ............................................................................................... 42
-Initialize Logging................................................................................... 42
-Initialize Deployment Agent Metadata ...................................................... 42
-Status Message: Client Started ............................................................... 42
-Higher-Layer Triggered Events ..................................................................... 42
-Message Processing Events and Sequencing Rules .......................................... 42
-Getting Unattended Instructions for Deployment Agent .............................. 42
-Getting Credentials ............................................................................... 43
-Getting List of Images ........................................................................... 43
-Transferring Selected OS Image ............................................................. 43
-Applying Selected OS Image .................................................................. 43
-Driver Injection .................................................................................... 44
-Deployed OS Unattend and Domain Join .................................................. 44
-Computer Account Exists .................................................................. 44
-Computer Account Does Not Exist...................................................... 45
-Finishing Up ......................................................................................... 45
-Error Handling ...................................................................................... 45
-Timer Events .............................................................................................. 45
-Other Local Events ...................................................................................... 45
-
-3.2.5.7.1
-3.2.5.7.2
-
-3.2.5.8
-3.2.5.9
-
-3.2.3.1
-3.2.3.2
-3.2.3.3
-
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-
-3.2.6
-3.2.7
-
-3.2.1.1
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2.2
-3.2.3
-
-4  Protocol Examples ................................................................................................. 46
-Getting Transaction ID and Log Level ................................................................. 46
-Client Started Status Message ........................................................................... 46
-Get Deployment Agent Unattend ........................................................................ 46
-Enumerating OS Images ................................................................................... 47
-Getting Unattend Variables For OS Deployment In Unattended Mode ...................... 48
-Getting Domain Join Information ........................................................................ 48
-Initializing Deployment Agent Metadata .............................................................. 49
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5  Security ................................................................................................................. 50
-Security Considerations for Implementers ........................................................... 50
-Index of Security Parameters ............................................................................ 50
-
-5.1
-5.2
-
-5 / 58
-
-[MS-WDSOSD] - v20240423
-Windows Deployment Services Operation System Deployment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6  Appendix A: Product Behavior ............................................................................... 51
-
-7  Change Tracking .................................................................................................... 55
-
-8  Index ..................................................................................................................... 56
-
-[MS-WDSOSD] - v20240423
-Windows Deployment Services Operation System Deployment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 58
-
-1  Introduction
+## 1 Introduction
 
 The Windows Deployment Services (WDS) OS Deployment Protocol specifies services exposed by the
 WDS server which are used by the clients to deploy an operating system (OS) on a machine. It is a
@@ -678,7 +532,7 @@ client/server protocol which uses the Windows Deployment Services Control Protoc
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -745,7 +599,8 @@ Release: April 23, 2024
 
 7 / 58
 
-Endpoint GUID: Set of relevant services provided by a Service Provider are grouped together and
+
+Endpoint GUID: Set of relevant services provided by a Service Provider are grouped together and
 
 as a whole identified by a unique Endpoint GUID.
 
@@ -829,7 +684,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Unicode string: A Unicode 8-bit string is an ordered sequence of 8-bit units, a Unicode 16-bit
+
+Unicode string: A Unicode 8-bit string is an ordered sequence of 8-bit units, a Unicode 16-bit
 string is an ordered sequence of 16-bit code units, and a Unicode 32-bit string is an ordered
 sequence of 32-bit code units. In some cases, it could be acceptable not to terminate with a
 terminating null character. Unless otherwise specified, all Unicode strings follow the UTF-16LE
@@ -849,14 +705,14 @@ WIM Image: An OS image packaged in Windows Imaging (WIM) file format.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -885,7 +741,7 @@ Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 [RFC5234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", STD
 68, RFC 5234, January 2008, https://www.rfc-editor.org/info/rfc5234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -896,11 +752,12 @@ Release: April 23, 2024
 
 9 / 58
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-WDSOSD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The deployment agent uses the WDS OS Deployment Protocol (WDSOSD) to request information
 concerning deployment of an OS image on the client system. This information includes instructions
@@ -935,7 +792,7 @@ domain, and applies the policy depending on the answer.
 packages from the server, and then proceeds to configure the deployed OS using the driver
 package returned by the server.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WDS OS Deployment Protocol relies on the Windows Deployment Services Control Protocol as
 transport. It uses the WDS Control Protocol to send and receive replies.
@@ -952,7 +809,8 @@ Release: April 23, 2024
 
 10 / 58
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 This protocol is implemented on top of the WDS Control Protocol, and therefore has the prerequisites
 identified in [MS-WDSC].
@@ -973,11 +831,11 @@ The deployment agent can process replacement variables for the deployed OS unatt
 The deployment agent is capable of configuring the deployed OS to join a specific Active Directory
 domain, if applicable.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable when an application deploys an OS on a client machine.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1010,7 +868,7 @@ Section
 
 WDS_OP_IMG_ENUMERATE  Section 2.2.6
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Vendors SHOULD reuse
 those values with their indicated meaning. Choosing any other value runs the risk of a collision in the
@@ -1023,7 +881,8 @@ Release: April 23, 2024
 
 11 / 58
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1064,16 +923,17 @@ Release: April 23, 2024
 
 12 / 58
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The protocol MUST use the Endpoint GUIDs as specified in [MS-WDSC], (section 2.1.2).
 
 Each opcode under the Endpoint GUID requires an authenticated and/or unauthenticated client
 request. Opcodes are defined in the section immediately following.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The WDS OS Deployment Protocol MUST support the following opcodes under the OS deployment
 Endpoint GUID.
@@ -1190,7 +1050,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The WDS OS Deployment Protocol MAY<2> support the deployment agent metadata Endpoint GUID.
+
+The WDS OS Deployment Protocol MAY<2> support the deployment agent metadata Endpoint GUID.
 If supported, the deployment agent metadata Endpoint GUID MUST support the following opcodes.
 
 Opcode
@@ -1210,7 +1071,7 @@ Description
 Queries the server for deployment agent
 metadata.
 
-2.2.1  WDS_OP_LOG_INIT
+#### 2.2.1 WDS_OP_LOG_INIT
 
 This opcode is used to initialize logging and to obtain a unique Transaction ID that is used later to
 send status messages generated by the deployment agent to the server.
@@ -1261,7 +1122,7 @@ conditions.
 TRANSACTION_ID (WDSCPL_VAR_WSTRING): MUST be set to the string value that is used by
 the client in WDS_OP_LOG_MSG opcode (section 2.2.2) to send status messages to the server.
 
-2.2.2  WDS_OP_LOG_MSG
+#### 2.2.2 WDS_OP_LOG_MSG
 
 This opcode is used to send a status message to the server. The client MUST log status messages
 that have been requested by the server (section 2.2.1).
@@ -1279,7 +1140,8 @@ Release: April 23, 2024
 
 14 / 58
 
-VERSION (WDSCPL_VAR_ULONG): MUST be set to 1.
+
+VERSION (WDSCPL_VAR_ULONG): MUST be set to 1.
 
 MESSAGE_TYPE (WDSCPL_VAR_ULONG):
 
@@ -1395,58 +1257,59 @@ variables
 section
 
 Section
-2.2.2.1
+##### 2.2.2.1 Section
 
-Section
-2.2.2.2
 
-Section
-2.2.2.3
+##### 2.2.2.2 Section
 
-Section
-2.2.2.4
 
-Section
-2.2.2.5
+##### 2.2.2.3 Section
 
-Section
-2.2.2.6
 
-This status
+##### 2.2.2.4 Section
+
+
+##### 2.2.2.5 Section
+
+
+##### 2.2.2.6 This status
+
+
 message is
 not used by
 the client.
 
 Section
-2.2.2.7
+##### 2.2.2.7 Section
 
-Section
-2.2.2.8
 
-Section
-2.2.2.9
+##### 2.2.2.8 Section
 
-Section
-2.2.2.10
 
-Section
-2.2.2.11
+##### 2.2.2.9 Section
 
-Section
-2.2.2.12
 
-Section
-2.2.2.13
+##### 2.2.2.10 Section
 
-Section
-2.2.2.14
 
-Section
-2.2.2.15
+##### 2.2.2.11 Section
+
+
+##### 2.2.2.12 Section
+
+
+##### 2.2.2.13 Section
+
+
+##### 2.2.2.14 Section
+
+
+##### 2.2.2.15 Message type
 
 15 / 58
 
-Message type
+
+
 
 Log level
 
@@ -1461,9 +1324,9 @@ variables
 section
 
 Section
-2.2.2.16
+##### 2.2.2.16 WDS_LOG_TYPE_CLIENT_DRIVER_PACKAGE_NOT_ACCESSIBLE
 
-WDS_LOG_TYPE_CLIENT_DRIVER_PACKAGE_NOT_ACCESSIBLE
+
 
 WDS_LOG_LEVEL_WARNING  Section
 
@@ -1481,15 +1344,15 @@ WDS_LOG_LEVEL_INFO
 
 0x00000014
 
-2.2.2.17
+##### 2.2.2.17 Section
 
-Section
-2.2.2.18
 
-Section
-2.2.2.19
+##### 2.2.2.18 Section
 
-WDS_LOG_TYPE_CLIENT_OFFLINE_DRIVER_INJECTION_FAILURE
+
+##### 2.2.2.19 WDS_LOG_TYPE_CLIENT_OFFLINE_DRIVER_INJECTION_FAILURE
+
+
 
 WDS_LOG_LEVEL_WARNING  Section
 
@@ -1501,12 +1364,12 @@ WDS_LOG_LEVEL_INFO
 
 0x00000016
 
-2.2.2.20
+##### 2.2.2.20 Section
 
-Section
-2.2.2.21
 
-ARCHITECTURE (WDSCPL_VAR_ULONG): MUST be set to the processor architecture of the client
+##### 2.2.2.21 ARCHITECTURE (WDSCPL_VAR_ULONG): MUST be set to the processor architecture of the client
+
+
 machine as specified in the 2.2.8 section.
 
 CLIENT_ADDRESS (WDSCPL_VAR_WSTRING): MUST be set to the IP address of the network
@@ -1546,7 +1409,8 @@ Release: April 23, 2024
 
 16 / 58
 
-2.2.2.3  WDS_LOG_TYPE_CLIENT_FINISHED
+
+2.2.2.3  WDS_LOG_TYPE_CLIENT_FINISHED
 
 This status message is logged when the client has finished the deployment of the OS on the client
 machine.
@@ -1606,7 +1470,8 @@ Release: April 23, 2024
 
 17 / 58
 
-2.2.2.8  WDS_LOG_TYPE_CLIENT_TRANSFER_START
+
+2.2.2.8  WDS_LOG_TYPE_CLIENT_TRANSFER_START
 
 This status message is logged when the client is starting the download of the files for an OS image
 container that contains the selected OS image. The request packet MUST specify the following
@@ -1675,7 +1540,8 @@ Release: April 23, 2024
 
 18 / 58
 
-The client MUST first try to log the status message using
+
+The client MUST first try to log the status message using
 WDS_LOG_TYPE_CLIENT_DOMAINJOINERROR2 (section 2.2.2.16) and on failure MUST fall back to
 using this status message.
 
@@ -1749,7 +1615,8 @@ Release: April 23, 2024
 
 19 / 58
 
-MACHINE_OU (WDSCPL_VAR_WSTRING): MUST be set to the organizational unit in Active
+
+MACHINE_OU (WDSCPL_VAR_WSTRING): MUST be set to the organizational unit in Active
 Directory that was used to configure the deployed OS image for joining the domain.
 
 ERROR_CODE (WDSCPL_VAR_ULONG): MUST be set to the Win32 error code for the failed
@@ -1820,7 +1687,8 @@ Release: April 23, 2024
 
 20 / 58
 
-2.2.2.21
+
+2.2.2.21
 
 WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED2
 
@@ -1840,9 +1708,9 @@ The WDS server MAY NOT<10> support this status message. The client MUST first tr
 this status message and on failure MUST fall back to using
 WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED (section 2.2.2.4).
 
-2.2.2.22
+##### 2.2.2.22 WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED3
 
-WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED3
+
 
 The status message is logged when the client has selected an OS image for deployment. The
 request packet MUST specify the following variables in addition to variables specified in section 2.2.2.
@@ -1863,7 +1731,7 @@ The WDS server MAY NOT<11> support this status message. The client MUST first tr
 this status message and on failure MUST fall back to using
 WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED2 (section 2.2.2.21).
 
-2.2.3  WDS_OP_GET_CLIENT_UNATTEND
+#### 2.2.3 WDS_OP_GET_CLIENT_UNATTEND
 
 This opcode is used to query for unattended instructions for the deployment agent.
 
@@ -1891,7 +1759,8 @@ Release: April 23, 2024
 
 21 / 58
 
- client-guid = short-mac / dashed-mac / raw-guid / formatted-guid / duid-ll / duid-llt / duid-
+
+ client-guid = short-mac / dashed-mac / raw-guid / formatted-guid / duid-ll / duid-llt / duid-
 uuid / duid
  digit = "0" / "1" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9"
  hex-digit = "a" / "b" / "c" / "d" / "e" / "f" / digit
@@ -1960,7 +1829,7 @@ MUST be set to indicate the client’s active firmware type is EFI or UEFI.
 
 0x00000001
 
-2.2.4  WDS_OP_GET_UNATTEND_VARIABLES
+#### 2.2.4 WDS_OP_GET_UNATTEND_VARIABLES
 
 This opcode is used to retrieve a list of values for unattend variables that MAY be present in
 deployed OS unattend. The returned values are used to replace unattend variables in deployed OS
@@ -1975,7 +1844,8 @@ Release: April 23, 2024
 
 22 / 58
 
-VERSION (WDSCPL_VAR_ULONG): MUST be set to 1.
+
+VERSION (WDSCPL_VAR_ULONG): MUST be set to 1.
 
 CLIENT_MAC (WDSCPL_VAR_WSTRING): MUST be specified in the same manner as defined for
 CLIENT_MAC in WDS_OP_GET_CLIENT_UNATTEND, as specified in section 2.2.3.
@@ -2001,7 +1871,7 @@ ORGNAME (WDSCPL_VAR_WSTRING): MUST be the name of the organization.
 
 TIMEZONE (WDSCPL_VAR_WSTRING): MUST be set to the time zone configured on the server.
 
-2.2.5  WDS_OP_GET_DOMAIN_JOIN_INFORMATION
+#### 2.2.5 WDS_OP_GET_DOMAIN_JOIN_INFORMATION
 
 This opcode is used to query policy for joining the deployed OS to an Active Directory domain.
 
@@ -2061,7 +1931,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flag
+
+Flag
 
 Description
 
@@ -2130,7 +2001,7 @@ LASTNAME (WDSCPL_VAR_WSTRING): This variable is set to the last name of the user
 
 being used to communicate with the WDS server.
 
-2.2.6  WDS_OP_IMG_ENUMERATE
+#### 2.2.6 WDS_OP_IMG_ENUMERATE
 
 This opcode is used to enumerate all OS images available on the server and accessible to the client.
 
@@ -2143,7 +2014,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-VERSION (WDSCPL_VAR_ULONG): MUST be set to 1.
+
+VERSION (WDSCPL_VAR_ULONG): MUST be set to 1.
 
 The request packet MAY<14> include the following:
 
@@ -2241,7 +2113,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flag
+
+Flag
 
 Description
 
@@ -2323,7 +2196,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IL.Path[index] (WDSCPL_VAR_WSTRING): MUST set to the relative path of the OS image
+
+IL.Path[index] (WDSCPL_VAR_WSTRING): MUST set to the relative path of the OS image
 container file on WDS server.<26>
 
 IL.ResPath[index] (WDSCPL_VAR_WSTRING): For OS image containers that have more than one
@@ -2372,7 +2246,7 @@ unique identifier for the OS image.  If this variable is specified, it MUST be a
 GUID that was assigned by the server to the OS image and that uniquely identifies the OS image
 among other OS images in the image store.
 
-2.2.7  DDP_OP_GET_MACHINE_DRIVER_PACKAGES
+#### 2.2.7 DDP_OP_GET_MACHINE_DRIVER_PACKAGES
 
 This opcode is used by the clients to get driver packages that enable the deployed OS to recognize
 and configure devices installed on the client machine.
@@ -2393,7 +2267,8 @@ Release: April 23, 2024
 
 27 / 58
 
-Flag
+
+Flag
 
 Description
 
@@ -2474,7 +2349,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For the following variables, the variable name is generated for each device by replacing the index with
+
+For the following variables, the variable name is generated for each device by replacing the index with
 a value of zero for first device, and incremented for each iteration and new variable names generated
 up to (Mi.D.Cnt - 1).
 
@@ -2542,7 +2418,8 @@ Release: April 23, 2024
 
 29 / 58
 
-Dp.PP[index] (WDSCPL_VAR_WSTRING): MUST be set to the network path for the folder
+
+Dp.PP[index] (WDSCPL_VAR_WSTRING): MUST be set to the network path for the folder
 containing all files required for the driver package.
 
 Dp.CG[index] (WDSCPL_VAR_BLOB): MUST be set to a 128-bit value specifying the class of the
@@ -2620,7 +2497,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Dp.DL[index].DL[drv_index].CID.VL[cid_index] (WDSCPL_VAR_WSTRING): MUST be set to
+
+Dp.DL[index].DL[drv_index].CID.VL[cid_index] (WDSCPL_VAR_WSTRING): MUST be set to
 the list of compatible IDs supported by the driver. The variable names for each compatible ID is
 generated by replacing cid_index with a value of zero for the first compatible ID and incremented for
 each subsequent entry up to (Dp.DL[index].CID.Cnt - 1).
@@ -2644,7 +2522,7 @@ for each file that is required by the driver package. The variable name for each
 replacing the fl_index in the variable name with a value of zero for the first file and incremented for
 subsequent entries up to (Dp.DL[index].FL.Cnt - 1).
 
-2.2.8  Architecture
+#### 2.2.8 Architecture
 
 The processor architecture of the client machine MUST be set to one of the following:
 
@@ -2682,7 +2560,7 @@ MUST be set for processors that support an ARM instruction set.<34>
 
 0x00000005
 
-2.2.9  WDSDCMGR_OP_QUERY_METADATA
+#### 2.2.9 WDSDCMGR_OP_QUERY_METADATA
 
 This opcode is used by the clients to get deployment agent metadata from the server, which is used to
 customize the deployment behavior of the deployment agent.
@@ -2700,7 +2578,8 @@ Release: April 23, 2024
 
 31 / 58
 
-The index in the following variable is a placeholder and is replaced by a value of zero in order to
+
+The index in the following variable is a placeholder and is replaced by a value of zero in order to
 
 generate the variable name for the first variable, and incremented for subsequent variables up to
 (Metadata.Count - 1).  The request packet MUST include Metadata.Count instances of the
@@ -2752,7 +2631,7 @@ Metadata.Entry[index] (WDSCPL_VAR_WSTRING): MUST be a 16-bit little-endian Unico
 
 in the format specified by the preceding ABNF specification.
 
-2.2.10 WDS_OP_RESET_BOOT_PROGRAM
+#### 2.2.10 WDS_OP_RESET_BOOT_PROGRAM
 
 The WDS_OP_RESET_BOOT_PROGRAM opcode is used by the client to notify the server that the
 deployment is complete, and therefore the server SHOULD reset the PXE boot program selected for
@@ -2773,12 +2652,13 @@ Release: April 23, 2024
 
 32 / 58
 
-CLIENT_GUID (WDSCPL_VAR_WSTRING): MUST be specified in the same manner as defined for
+
+CLIENT_GUID (WDSCPL_VAR_WSTRING): MUST be specified in the same manner as defined for
 CLIENT_GUID in WDS_OP_GET_CLIENT_UNATTEND, as specified in section 2.2.3.
 
 There are no additional variables defined for the server's reply.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The protocol accesses the Directory Service schema classes and attributes listed in the following table.
 
@@ -2834,13 +2714,14 @@ Release: April 23, 2024
 
 33 / 58
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
+
+### 3.1 Server Details
 
 This section specifies the WDS OS Deployment Protocol behavior for WDS server.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2890,7 +2771,7 @@ computers in a custom computer data store: Configuration information for each cl
 can be stored in a custom data store remotely on the server machine, or locally on the server
 machine, in a format other than the Active Directory domain.
 
-3.1.1.1  WDS Server Configuration
+##### 3.1.1.1 WDS Server Configuration
 
 The following properties are stored for the WDS server configuration.
 
@@ -2909,7 +2790,8 @@ Release: April 23, 2024
 
 34 / 58
 
-NewMachinesJoinDomain: A Boolean value that, when set to True, specifies that all client machines
+
+NewMachinesJoinDomain: A Boolean value that, when set to True, specifies that all client machines
 
 that do not have a computer object in the Active Directory domain MUST join the Active
 Directory domain. A value of False specifies that such client machines MUST NOT join an Active
@@ -2952,7 +2834,7 @@ instructions for the deployed OS present on the client machine MUST override any
 instructions for the deployed OS provided by the server. When set to False, the unattended
 instructions provided by the server MUST be used.
 
-3.1.1.2  Computers in Active Directory Domain
+##### 3.1.1.2 Computers in Active Directory Domain
 
 The server uses the MAC address or the client machine GUID to find the computer object in Active
 Directory Domain for each client. The server uses the LDAP search filter as follows to search for the
@@ -2982,7 +2864,8 @@ Release: April 23, 2024
 
 35 / 58
 
-set to an empty string, then it MUST be treated as if there is no unattended instruction for the
+
+set to an empty string, then it MUST be treated as if there is no unattended instruction for the
 deployment agent.
 
 JoinDomain: Specifies whether the client machine MUST join an Active Directory domain. The value is
@@ -2992,7 +2875,7 @@ domain; a nonzero value indicates that the client machine MUST join the Active D
 this key is missing from the netbootMirrorDataFile attribute, it MUST be treated as being set to a
 nonzero value.
 
-3.1.1.3  Users in the Active Directory Domain
+##### 3.1.1.3 Users in the Active Directory Domain
 
 The server uses the user name of the authenticated user to find the user object in Active Directory
 domain. The server uses the following LDAP search filter to find the user account.
@@ -3003,7 +2886,7 @@ FirstName: The givenName attribute specifies the first name of the user.
 
 LastName: The sn attribute specifies the last name of the user.
 
-3.1.1.4  Machine Naming Policy
+##### 3.1.1.4 Machine Naming Policy
 
 The machine naming policy is used to generate a unique name for the client machine so that it can
 join an Active Directory domain. A machine naming policy consists of alphanumeric characters, and
@@ -3060,27 +2943,28 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 On initialization, the WDS server MUST register the OS deployment Endpoint GUID as specified in
 section 2.1. The WDS server MAY<37> register the dynamic driver  provisioning Endpoint GUID as
 specified in section 2.1. The WDS server MAY<38> register the deployment agent metadata Endpoint
 GUID as specified in section 2.1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 All request packets received by the WDS server MUST meet the authentication requirement for the
 Endpoint GUID and opcode, as specified in section 2.2.
 
-3.1.5.1  WDS_OP_LOG_INIT
+##### 3.1.5.1 WDS_OP_LOG_INIT
 
 This opcode is used by the client to obtain the Log Level and the unique Transaction ID.
 
@@ -3090,7 +2974,7 @@ The server MUST generate a unique GUID (as defined in [RFC4122]) and return it a
 TRANSACTION_ID after conversion to a Unicode string. The server MUST set the LOGLEVEL
 variable to ClientLoggingLevel as specified in section 3.1.1.1.
 
-3.1.5.2  WDS_OP_LOG_MSG
+##### 3.1.5.2 WDS_OP_LOG_MSG
 
 This opcode is used by the clients to send status messages to the server.
 
@@ -3101,7 +2985,7 @@ ClientLoggingLevel as specified in section 3.1.1.1. The server MUST validate tha
 variables for the status message are specified, and add the status message to the status messages
 log.
 
-3.1.5.3  WDS_OP_GET_CLIENT_UNATTEND
+##### 3.1.5.3 WDS_OP_GET_CLIENT_UNATTEND
 
 This opcode is used to query for unattended instructions for the deployment agent.
 
@@ -3124,7 +3008,8 @@ Release: April 23, 2024
 
 37 / 58
 
-If a computer object is not found or the DeploymentAgentUnattend attribute does not specify a
+
+If a computer object is not found or the DeploymentAgentUnattend attribute does not specify a
 relative path to a file, then the server MUST check the deployment agent unattend store for
 unattended instructions for the architecture specified by the client using the ARCHITECTURE
 variable. If unattended instructions are found, the server MUST set the CLIENT_UNATTEND variable
@@ -3142,7 +3027,7 @@ WdsCliClientUnattendPresent flag.
 If the OSImageUnattendOverride (section 3.1.1.1) is set to TRUE, then the FLAGS variable MUST
 also include the WdsCliClientUnattendOverride flag.
 
-3.1.5.4  WDS_OP_GET_UNATTEND_VARIABLES
+##### 3.1.5.4 WDS_OP_GET_UNATTEND_VARIABLES
 
 This opcode is used to retrieve a list of values for the unattend variables that MAY be present in
 deployed OS unattend. The returned values are used to replace unattend variables in deployed OS
@@ -3166,7 +3051,7 @@ The TIMESIZE variable MUST be set to TimeZone as specified in section 3.1.1.1.
 
 The ORGNAME variable MUST be set to OrganizationName as specified in section 3.1.1.1.
 
-3.1.5.5  WDS_OP_GET_DOMAIN_JOIN_INFORMATION
+##### 3.1.5.5 WDS_OP_GET_DOMAIN_JOIN_INFORMATION
 
 This opcode is used to query policy for joining the deployed OS to an Active Directory domain.
 
@@ -3190,7 +3075,8 @@ Release: April 23, 2024
 
 38 / 58
 
-3.1.5.5.1 Computer Object Exists
+
+###### 3.1.5.5.1 Computer Object Exists
 
 The server MUST set the FLAGS variable as follows:
 
@@ -3221,7 +3107,7 @@ Directory domain.
 Otherwise, the computer object information exists in a custom computer data store, and the values of
 the MACHINEDOMAIN and MACHINEDN MUST be an empty string.
 
-3.1.5.5.2 Computer Object Does Not Exist
+###### 3.1.5.5.2 Computer Object Does Not Exist
 
 The server MUST set the FLAGS variable as follows:
 
@@ -3239,7 +3125,7 @@ The server MUST set the remaining variables as follows:
 
   MUST set MACHINEDN to a null string.
 
-3.1.5.6  WDS_OP_IMG_ENUMERATE
+##### 3.1.5.6 WDS_OP_IMG_ENUMERATE
 
  WDS_OP_IMG_ENUMERATE is used to enumerate all OS images that are available on the server and
 accessible to the client.
@@ -3260,11 +3146,12 @@ Release: April 23, 2024
 
 39 / 58
 
-If the request packet specifies a CC variable, and the CC variable has the CLIENT_CAP_SUPPORT_V2
+
+If the request packet specifies a CC variable, and the CC variable has the CLIENT_CAP_SUPPORT_V2
 flag set, then the request is further processed as specified in section 3.1.5.6.2; otherwise, it is
 processed as specified in section 3.1.5.6.1.
 
-3.1.5.6.1 Without CLIENT_CAP_SUPPORT_V2
+###### 3.1.5.6.1 Without CLIENT_CAP_SUPPORT_V2
 
 The server MUST only return OS images that can be fully described using the version 1.0
 format.<41> The server MUST enumerate all image groups in the image store, and MUST ensure
@@ -3272,7 +3159,7 @@ that the user identity has access to the image group, based on the image group a
 The server MUST enumerate all supported OS images in each image group, and add information for
 each OS image, as described in section 2.2.6.
 
-3.1.5.6.2 With CLIENT_CAP_SUPPORT_V2
+###### 3.1.5.6.2 With CLIENT_CAP_SUPPORT_V2
 
 The server MUST add an SC variable to the reply packet, and include the SERVER_CAP_SUPPORT_V2
 flag. The server MUST return all OS images that can be fully described using the version 2.0 format
@@ -3281,11 +3168,11 @@ identity has access to the image groups, based on the image groups access contro
 MUST enumerate all OS images in each image group, and add information for each, as described in
 section 2.2.6.
 
-3.1.5.6.3 Without CLIENT_CAP_SUPPORT_VHDX
+###### 3.1.5.6.3 Without CLIENT_CAP_SUPPORT_VHDX
 
 The server MUST NOT return any OS images in the VHDX format.
 
-3.1.5.6.4 With CLIENT_CAP_SUPPORT_VHDX
+###### 3.1.5.6.4 With CLIENT_CAP_SUPPORT_VHDX
 
 The server MUST add an SC variable to the reply packet that contains SERVER_CAP_SUPPORT_VHDX
 if and only if the client also specified CLIENT_CAP_SUPPORT_V2.  In this case the server is permitted
@@ -3294,7 +3181,7 @@ image groups in the image store and ensure that the user identity has access to 
 based on the image groups' access control list.  The server MUST enumerate all OS images in each
 image group, and add information for each image, as described in section 2.2.6.
 
-3.1.5.7  DDP_OP_GET_MACHINE_DRIVER_PACKAGES
+##### 3.1.5.7 DDP_OP_GET_MACHINE_DRIVER_PACKAGES
 
 This opcode is used by the clients to get driver packages for devices installed on the client machine.
 
@@ -3306,7 +3193,7 @@ the unmatched device and continue to attempt to match the remaining devices.
 
 The server MUST add details of all matching driver packages to the reply packet.
 
-3.1.5.8  WDSDCMGR_OP_QUERY_METADATA
+##### 3.1.5.8 WDSDCMGR_OP_QUERY_METADATA
 
 This opcode is used by the clients to get deployment agent metadata that can be used to customize
 the behavior of the deployment agent. The server uses the deployment agent metadata store to
@@ -3325,9 +3212,10 @@ Release: April 23, 2024
 
 40 / 58
 
-The server MUST add all required variables to the reply packet.
 
-3.1.5.9  WDS_OP_RESET_BOOT_PROGRAM
+The server MUST add all required variables to the reply packet.
+
+##### 3.1.5.9 WDS_OP_RESET_BOOT_PROGRAM
 
 The WDS_OP_RESET_BOOT_PROGRAM opcode is used by the client to notify the server that the
 deployment is complete, and the server SHOULD therefore reset the PXE boot program selected for
@@ -3342,19 +3230,19 @@ in the custom computer data store.
 The server MUST delete the attribute in the custom computer data store that corresponds to the boot
 program, similar to netbootMachineFilePath in Active Directory.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
 This section specifies the WDS OS Deployment Protocol behavior for clients.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3375,7 +3263,7 @@ Client Metadata: Temporary storage which records the deployment agent metadata i
 response to the WDSDCMGR_OP_QUERY_METADATA opcode. This is a list of strings in the format
 specified by the ABNF grammar given in section 2.2.9. The list is initially empty.
 
-3.2.1.1  Client Configuration
+##### 3.2.1.1 Client Configuration
 
 The following properties are stored for the WDS server configuration.
 
@@ -3394,7 +3282,8 @@ Release: April 23, 2024
 
 41 / 58
 
-UnattendFlags: Specifies a set of flags that are returned by WDS_OP_GET_CLIENT_UNATTEND
+
+UnattendFlags: Specifies a set of flags that are returned by WDS_OP_GET_CLIENT_UNATTEND
 
 (section 2.2.3).
 
@@ -3404,13 +3293,13 @@ WDS_OP_GET_CLIENT_UNATTEND (section 2.2.3).
 
 SelectedOSImage: An OS image that is selected for deployment on the client machine.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
-3.2.3.1  Initialize Logging
+##### 3.2.3.1 Initialize Logging
 
 The client MUST initialize logging using the opcode specified in 2.2.1.
 
@@ -3419,7 +3308,7 @@ The value of the TRANSACTION_ID variable in the reply packet MUST be stored in L
 
 The value of the LOGLEVEL variable in the reply packet MUST be stored in LogLevel (section 3.2.1.1).
 
-3.2.3.2  Initialize Deployment Agent Metadata
+##### 3.2.3.2 Initialize Deployment Agent Metadata
 
 The client MAY<44> initialize deployment agent metadata using the
 WDSDCMGR_OP_QUERY_METADATA opcode, if the server has made the deployment agent metadata
@@ -3431,18 +3320,18 @@ Client Metadata.
 The deployment agent can use the deployment agent metadata in Client Metadata to customize or
 extend the functionality of the deployment agent.
 
-3.2.3.3  Status Message: Client Started
+##### 3.2.3.3 Status Message: Client Started
 
 The client MUST send WDS_LOG_TYPE_CLIENT_STARTED using 2.2.2, if allowed by LogLevel (section
 3.2.1.1).
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Getting Unattended Instructions for Deployment Agent
+##### 3.2.5.1 Getting Unattended Instructions for Deployment Agent
 
 The client MUST query the server for unattended instructions for the deployment agent using the
 WDS_OP_GET_CLIENT_UNATTEND opcode (section 2.2.3).
@@ -3460,7 +3349,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client MUST log the status message as follows if allowed by LogLevel (section 3.2.1.1):
+
+The client MUST log the status message as follows if allowed by LogLevel (section 3.2.1.1):
 
 
 
@@ -3471,13 +3361,13 @@ WDS_LOG_TYPE_CLIENT_UNATTEND_MODE status message.
 
 The client MAY log the same status message when no unattended instructions are provided.<45>
 
-3.2.5.2  Getting Credentials
+##### 3.2.5.2 Getting Credentials
 
 The client MUST get user credentials that are to be used for authentication to the server. If the
 DeploymentAgentUnattend (section 3.2.1.1) specifies user credentials, then the deployment agent
 MUST NOT prompt the user for credentials.
 
-3.2.5.3  Getting List of Images
+##### 3.2.5.3 Getting List of Images
 
 The client MUST query for a list of OS images that are available to the client using
 WDS_OP_IMG_ENUMERATE (section 2.2.6).
@@ -3499,7 +3389,7 @@ MUST try again using the WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED2 status message. If 
 to log fails, the client MUST try again using the WDS_LOG_TYPE_CLIENT_IMAGE_SELECTED status
 message.
 
-3.2.5.4  Transferring Selected OS Image
+##### 3.2.5.4 Transferring Selected OS Image
 
 If LogLevel (section 3.2.1.1) allows logging, the client MUST log a
 WDS_LOG_TYPE_CLIENT_TRANSFER_START status message.
@@ -3515,7 +3405,7 @@ WDS_LOG_TYPE_CLIENT_TRANSFER_DOWNGRADE status message if allowed by LogLevel (se
 If LogLevel (section 3.2.1.1) allows logging, the client MUST log a
 WDS_LOG_TYPE_CLIENT_TRANSFER_END status message when the download has completed.
 
-3.2.5.5  Applying Selected OS Image
+##### 3.2.5.5 Applying Selected OS Image
 
 If LogLevel (section 3.2.1.1) allows logging, the client MUST log a
 WDS_LOG_TYPE_CLIENT_APPLY_STARTED_2 status message. If the attempt to log the message
@@ -3528,14 +3418,15 @@ Release: April 23, 2024
 
 43 / 58
 
-The client MUST process the OS image container files for SelectedOSImage (section 3.2.1.1) and
+
+The client MUST process the OS image container files for SelectedOSImage (section 3.2.1.1) and
 deploy them to the client machine.
 
 When the OS has been deployed, and if LogLevel (section 3.2.1.1) allows logging, the client MUST
 log a WDS_LOG_TYPE_CLIENT_APPLY_FINISHED_2 status message. If the attempt to log the message
 fails, the client MUST log a WDS_LOG_TYPE_CLIENT_APPLY_FINISHED status message.
 
-3.2.5.6  Driver Injection
+##### 3.2.5.6 Driver Injection
 
 If LogLevel (section 3.2.1.1) allows logging, the client MUST log a
 WDS_LOG_TYPE_CLIENT_OFFLINE_DRIVER_INJECTION_START status message.
@@ -3556,7 +3447,7 @@ message if it encounters a failure configuring the deployed OS for the driver pa
 If LogLevel (section 3.2.1.1) allows logging, the client MUST log a
 WDS_LOG_TYPE_CLIENT_OFFLINE_DRIVER_INJECTION_END status message.
 
-3.2.5.7  Deployed OS Unattend and Domain Join
+##### 3.2.5.7 Deployed OS Unattend and Domain Join
 
 If LogLevel (section 3.2.1.1) allows logging, the client MUST log a
 WDS_LOG_TYPE_CLIENT_POST_ACTIONS_START status message.
@@ -3586,7 +3477,7 @@ client MUST also configure the deployed OS to use the unattended instructions.
 If LogLevel allows logging, the client MUST log a
 WDS_LOG_TYPE_CLIENT_POST_ACTIONS_ENDstatus message.
 
-3.2.5.7.1 Computer Account Exists
+###### 3.2.5.7.1 Computer Account Exists
 
 [MS-WDSOSD] - v20240423
 Windows Deployment Services Operation System Deployment Protocol
@@ -3595,7 +3486,8 @@ Release: April 23, 2024
 
 44 / 58
 
-If the FLAGS variable specifies WdsCliFlagResetBootProgram,  the MACHINEDN variable is specified,
+
+If the FLAGS variable specifies WdsCliFlagResetBootProgram,  the MACHINEDN variable is specified,
 and the value of the MACHINEDN variable is not the empty string, the client MUST delete the value
 of the netbootMachineFilePath attribute in the computer object specified by MACHINEDN.
 
@@ -3603,7 +3495,7 @@ If the FLAGS variable specifies WdsCliFlagResetBootProgram, and the MACHINEDN va
 specified or the value of the MACHINEDN variable is the empty string, the client MUST reset the boot
 program by using WDS_OP_RESET_BOOT_PROGRAM.
 
-3.2.5.7.2 Computer Account Does Not Exist
+###### 3.2.5.7.2 Computer Account Does Not Exist
 
 The client MUST generate a unique name for the client machine using the machine naming policy
 (section 3.1.1.4) specified using the MACHINENAME variable, and MUST create a computer object in
@@ -3613,21 +3505,21 @@ If FLAGS variable specifies WdsCliFlagsPrestageUsingMAC, the client MUST set the
 attribute of the computer object to the MAC address of the network interface card being used to
 communicate with server; otherwise this attribute MUST be set to the client machine GUID.
 
-3.2.5.8  Finishing Up
+##### 3.2.5.8 Finishing Up
 
 If LogLevel (section 3.2.1.1) allows logging, the client MUST log a
 WDS_LOG_TYPE_CLIENT_FINISHED status message.
 
-3.2.5.9  Error Handling
+##### 3.2.5.9 Error Handling
 
 When the client encounters a fatal error and is unable to continue, it MUST log a
 WDS_LOG_TYPE_CLIENT_ERROR status message, if allowed by LogLevel (section 3.2.1.1).
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -3638,9 +3530,10 @@ Release: April 23, 2024
 
 45 / 58
 
-4  Protocol Examples
 
-4.1  Getting Transaction ID and Log Level
+## 4 Protocol Examples
+
+### 4.1 Getting Transaction ID and Log Level
 
 The variables required for getting Transaction ID and Log Level are shown in this example.
 
@@ -3656,7 +3549,7 @@ LOGLEVEL (WDSCPL_VAR_ULONG): 0x00000003 (WDS_LOG_LEVEL_INFO)
 
 TRANSACTION_ID (WDSCPL_VAR_WSTRING): 'c990a222-1c8a-420b-9c37-9af1b6971a43'
 
-4.2  Client Started Status Message
+### 4.2 Client Started Status Message
 
 The variables required for a "client started" status message are shown in this example.
 
@@ -3680,7 +3573,7 @@ VER_CLIENT_AUTO (WDSCPL_VAR_WSTRING): '6.0.6001.18000'
 
 VER_OS_AUTO (WDSCPL_VAR_WSTRING): '6.0.6001.18000'
 
-4.3  Get Deployment Agent Unattend
+### 4.3 Get Deployment Agent Unattend
 
 The variables and values required for a get deployment agent unattend transaction are shown in this
 example.
@@ -3706,9 +3599,10 @@ Release: April 23, 2024
 
 46 / 58
 
-FLAGS (WDSCPL_VAR_ULONG): 0x00000000
 
-4.4  Enumerating OS Images
+FLAGS (WDSCPL_VAR_ULONG): 0x00000000
+
+### 4.4 Enumerating OS Images
 
 The enumerating OS images request packet that follows does not include a CC variable, so the reply
 from the server uses v1.00 format to return information for each OS image.
@@ -3776,13 +3670,14 @@ Release: April 23, 2024
 
 47 / 58
 
-NAMESPACE_2 (WDSCPL_VAR_WSTRING): ''
+
+NAMESPACE_2 (WDSCPL_VAR_WSTRING): ''
 
 NAMESPACE_SIZE_2 (WDSCPL_VAR_ULONG64): 0x00000000EF8B56EC
 
 RESOURCEFILEPATH_2 (WDSCPL_VAR_WSTRING): '\Images\Default\install.wim'
 
-4.5  Getting Unattend Variables For OS Deployment In Unattended Mode
+### 4.5 Getting Unattend Variables For OS Deployment In Unattended Mode
 
 The variables required for getting unattend variables for OS deployment in unattended mode are
 shown in this example.
@@ -3807,7 +3702,7 @@ ORGNAME (WDSCPL_VAR_WSTRING): 'Contoso Corp.'
 
 TIMEZONE (WDSCPL_VAR_WSTRING): 'Pacific Standard Time'
 
-4.6  Getting Domain Join Information
+### 4.6 Getting Domain Join Information
 
 The variables required for getting domain join information are shown in this example.
 
@@ -3845,7 +3740,8 @@ Release: April 23, 2024
 
 48 / 58
 
-4.7  Initializing Deployment Agent Metadata
+
+### 4.7 Initializing Deployment Agent Metadata
 
 The variables required for initializing deployment agent metadata are shown in this example.
 
@@ -3882,14 +3778,15 @@ Release: April 23, 2024
 
 49 / 58
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The unattended instructions for the deployment agent MAY contain user credentials. This information
 is transmitted to the client over an unauthenticated channel.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -3904,7 +3801,8 @@ Release: April 23, 2024
 
 50 / 58
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3971,7 +3869,8 @@ Release: April 23, 2024
 
 51 / 58
 
-<8> Section 2.2.2.19: Windows Server 2003 and Windows Server 2008 do not support this status
+
+<8> Section 2.2.2.19: Windows Server 2003 and Windows Server 2008 do not support this status
 message.
 
 <9> Section 2.2.2.20: Windows Server 2003 and Windows Server 2008 do not support this status
@@ -4038,7 +3937,8 @@ Release: April 23, 2024
 
 52 / 58
 
-<27> Section 2.2.6: Windows Server 2008 R2 and later set the IL.ResPath[index] variable to an
+
+<27> Section 2.2.6: Windows Server 2008 R2 and later set the IL.ResPath[index] variable to an
 empty string for VHD images. For WIM images, this variable is set to the path relative to the REMINST
 share on server for WIM image Resource file (if present) or WIM image file (if the WIM image
 Resource file is not present).
@@ -4106,7 +4006,8 @@ Release: April 23, 2024
 
 53 / 58
 
-<46> Section 3.2.5.4: Uses SMB to download the OS image container files.
+
+<46> Section 3.2.5.4: Uses SMB to download the OS image container files.
 
 [MS-WDSOSD] - v20240423
 Windows Deployment Services Operation System Deployment Protocol
@@ -4115,7 +4016,8 @@ Release: April 23, 2024
 
 54 / 58
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4159,7 +4061,8 @@ Release: April 23, 2024
 
 55 / 58
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -4305,7 +4208,8 @@ Windows Deployment Services Operation System Deployment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Index of security parameters 50
+
+Index of security parameters 50
 Informative references 9
 Initialization
    client
@@ -4446,7 +4350,8 @@ Release: April 23, 2024
 
 57 / 58
 
-   without CLIENT_CAP_SUPPORT_V2 40
+
+   without CLIENT_CAP_SUPPORT_V2 40
 WDS_OP_LOG_INIT message 14
 WDS_OP_LOG_INIT opcode (section 2.2.1 14,
 

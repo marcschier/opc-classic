@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 52
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 52
 
-Date
+
+Date
 
 Revision
 History
@@ -517,7 +519,8 @@ Release: April 23, 2024
 
 3 / 52
 
-Date
+
+Date
 
 Revision
 History
@@ -566,234 +569,107 @@ Release: April 23, 2024
 
 4 / 52
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Log Data Fields](#21-log-data-fields)
+    - [2.1.1 audiocodec](#211-audiocodec)
+    - [2.1.2 avgbandwidth](#212-avgbandwidth)
+    - [2.1.3 c-buffercount](#213-c-buffercount)
+    - [2.1.4 c-cpu](#214-c-cpu)
+    - [2.1.5 c-dns](#215-c-dns)
+    - [2.1.6 c-hostexe](#216-c-hostexe)
+    - [2.1.7 c-hostexever](#217-c-hostexever)
+    - [2.1.8 c-ip](#218-c-ip)
+    - [2.1.9 c-max-bandwidth](#219-c-max-bandwidth)
+    - [2.1.10 c-os](#2110-c-os)
+    - [2.1.11 c-osversion](#2111-c-osversion)
+    - [2.1.12 c-pkts-lost-client](#2112-c-pkts-lost-client)
+    - [2.1.13 c-pkts-lost-cont-net](#2113-c-pkts-lost-cont-net)
+    - [2.1.14 c-pkts-lost-net](#2114-c-pkts-lost-net)
+    - [2.1.15 c-pkts-received](#2115-c-pkts-received)
+    - [2.1.16 c-pkts-recovered-ECC](#2116-c-pkts-recovered-ecc)
+    - [2.1.17 c-pkts-recovered-resent](#2117-c-pkts-recovered-resent)
+    - [2.1.18 c-playerid](#2118-c-playerid)
+    - [2.1.19 c-playerlanguage](#2119-c-playerlanguage)
+    - [2.1.20 c-playerversion](#2120-c-playerversion)
+    - [2.1.21 c-quality](#2121-c-quality)
+    - [2.1.22 c-rate](#2122-c-rate)
+    - [2.1.23 c-resendreqs](#2123-c-resendreqs)
+    - [2.1.24 c-starttime](#2124-c-starttime)
+    - [2.1.25 c-status](#2125-c-status)
+      - [2.1.25.1 Status Code 200 (No Error)](#21251-status-code-200-no-error)
+      - [2.1.25.2 Status Code 210 (Client Successfully Reconnected)](#21252-status-code-210-client-successfully-reconnected)
+    - [2.1.26 c-totalbuffertime](#2126-c-totalbuffertime)
+    - [2.1.27 c-channelURL](#2127-c-channelurl)
+    - [2.1.28 c-bytes](#2128-c-bytes)
+    - [2.1.29 cs-media-name](#2129-cs-media-name)
+    - [2.1.30 cs-media-role](#2130-cs-media-role)
+    - [2.1.31 cs-Referer](#2131-cs-referer)
+    - [2.1.32 cs-url](#2132-cs-url)
+    - [2.1.33 cs-uri-stem](#2133-cs-uri-stem)
+    - [2.1.34 cs-User-Agent](#2134-cs-user-agent)
+    - [2.1.35 cs-user-name](#2135-cs-user-name)
+    - [2.1.36 date](#2136-date)
+    - [2.1.37 filelength](#2137-filelength)
+    - [2.1.38 filesize](#2138-filesize)
+    - [2.1.39 protocol](#2139-protocol)
+    - [2.1.40 s-content-path](#2140-s-content-path)
+    - [2.1.41 s-cpu-util](#2141-s-cpu-util)
+    - [2.1.42 s-dns](#2142-s-dns)
+    - [2.1.43 s-ip](#2143-s-ip)
+    - [2.1.44 s-pkts-sent](#2144-s-pkts-sent)
+    - [2.1.45 s-proxied](#2145-s-proxied)
+    - [2.1.46 s-session-id](#2146-s-session-id)
+    - [2.1.47 s-totalclients](#2147-s-totalclients)
+    - [2.1.48 sc-bytes](#2148-sc-bytes)
+    - [2.1.49 time](#2149-time)
+    - [2.1.50 transport](#2150-transport)
+    - [2.1.51 videocodec](#2151-videocodec)
+    - [2.1.52 x-duration](#2152-x-duration)
+  - [2.2 Logging Message: W3C Syntax](#22-logging-message-w3c-syntax)
+    - [2.2.1 Basic Logging Syntax](#221-basic-logging-syntax)
+    - [2.2.2 Extended Logging Syntax](#222-extended-logging-syntax)
+  - [2.3 Logging Messages Sent to Web Servers](#23-logging-messages-sent-to-web-servers)
+  - [2.4 Logging Message: XML Schema](#24-logging-message-xml-schema)
+  - [2.5 Legacy Log](#25-legacy-log)
+    - [2.5.1 Common Definitions](#251-common-definitions)
+    - [2.5.2 Legacy Log in W3C Format](#252-legacy-log-in-w3c-format)
+    - [2.5.3 Legacy Log in XML Format](#253-legacy-log-in-xml-format)
+    - [2.5.4 Legacy Log Sent to a Web Server](#254-legacy-log-sent-to-a-web-server)
+  - [2.6 Streaming Log](#26-streaming-log)
+    - [2.6.1 Common Definitions](#261-common-definitions)
+    - [2.6.2 Streaming Log Sent to Windows Media Services](#262-streaming-log-sent-to-windows-media-services)
+    - [2.6.3 Streaming Log Sent to a Web Server](#263-streaming-log-sent-to-a-web-server)
+  - [2.7 Rendering Log](#27-rendering-log)
+    - [2.7.1 Common Definitions](#271-common-definitions)
+    - [2.7.2 Rendering Log Sent to Windows Media Services](#272-rendering-log-sent-to-windows-media-services)
+    - [2.7.3 Rendering Log Sent to a Web Server](#273-rendering-log-sent-to-a-web-server)
+  - [2.8 Connect-Time Log](#28-connect-time-log)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Legacy Logging Message](#31-legacy-logging-message)
+  - [3.2 Defining Custom Namespaces in an XML Log](#32-defining-custom-namespaces-in-an-xml-log)
+  - [3.3 Example Streaming Log Messages](#33-example-streaming-log-messages)
+  - [3.4 Example Rendering Log Messages](#34-example-rendering-log-messages)
+  - [3.5 Example Connect-Time Log Message](#35-example-connect-time-log-message)
+  - [3.6 Example Log Sent to a Web Server](#36-example-log-sent-to-a-web-server)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Protocols and Other Structures ...................................................... 9
-Applicability Statement ....................................................................................... 9
-Versioning and Localization ................................................................................. 9
-Vendor-Extensible Fields ..................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-2.1.5
-2.1.6
-2.1.7
-2.1.8
-2.1.9
-2.1.10
-2.1.11
-2.1.12
-2.1.13
-2.1.14
-2.1.15
-2.1.16
-2.1.17
-2.1.18
-2.1.19
-2.1.20
-2.1.21
-2.1.22
-2.1.23
-2.1.24
-2.1.25
-
-2  Structures ............................................................................................................. 10
-Log Data Fields ................................................................................................ 10
-audiocodec ................................................................................................ 10
-avgbandwidth ............................................................................................ 11
-c-buffercount ............................................................................................. 11
-c-cpu ........................................................................................................ 11
-c-dns ........................................................................................................ 12
-c-hostexe .................................................................................................. 12
-c-hostexever .............................................................................................. 12
-c-ip ........................................................................................................... 12
-c-max-bandwidth ....................................................................................... 13
-c-os .......................................................................................................... 13
-c-osversion ................................................................................................ 13
-c-pkts-lost-client ........................................................................................ 14
-c-pkts-lost-cont-net .................................................................................... 14
-c-pkts-lost-net ........................................................................................... 14
-c-pkts-received .......................................................................................... 15
-c-pkts-recovered-ECC ................................................................................. 15
-c-pkts-recovered-resent .............................................................................. 15
-c-playerid .................................................................................................. 16
-c-playerlanguage ........................................................................................ 17
-c-playerversion .......................................................................................... 17
-c-quality .................................................................................................... 17
-c-rate ........................................................................................................ 18
-c-resendreqs .............................................................................................. 18
-c-starttime ................................................................................................. 18
-c-status ..................................................................................................... 19
-Status Code 200 (No Error) .................................................................... 19
-Status Code 210 (Client Successfully Reconnected) ................................... 19
-c-totalbuffertime ........................................................................................ 19
-c-channelURL ............................................................................................. 20
-c-bytes ...................................................................................................... 20
-cs-media-name .......................................................................................... 20
-cs-media-role ............................................................................................. 21
-cs-Referer .................................................................................................. 21
-cs-url ........................................................................................................ 22
-cs-uri-stem ................................................................................................ 22
-cs-User-Agent ............................................................................................ 23
-cs-user-name ............................................................................................. 23
-date .......................................................................................................... 24
-filelength ................................................................................................... 24
-filesize ...................................................................................................... 24
-protocol ..................................................................................................... 24
-s-content-path ........................................................................................... 25
-
-2.1.26
-2.1.27
-2.1.28
-2.1.29
-2.1.30
-2.1.31
-2.1.32
-2.1.33
-2.1.34
-2.1.35
-2.1.36
-2.1.37
-2.1.38
-2.1.39
-2.1.40
-
-2.1.25.1
-2.1.25.2
-
-[MS-WMLOG] - v20240423
-Windows Media Log Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 52
-
-2.1.41
-2.1.42
-2.1.43
-2.1.44
-2.1.45
-2.1.46
-2.1.47
-2.1.48
-2.1.49
-2.1.50
-2.1.51
-2.1.52
-
-2.2.1
-2.2.2
-
-2.2
-
-2.3
-2.4
-2.5
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-
-2.6.1
-2.6.2
-2.6.3
-
-2.7.1
-2.7.2
-2.7.3
-
-2.6
-
-2.7
-
-2.8
-
-s-cpu-util ................................................................................................... 25
-s-dns ........................................................................................................ 26
-s-ip ........................................................................................................... 26
-s-pkts-sent ................................................................................................ 26
-s-proxied ................................................................................................... 27
-s-session-id ............................................................................................... 27
-s-totalclients .............................................................................................. 27
-sc-bytes .................................................................................................... 28
-time .......................................................................................................... 28
-transport ................................................................................................... 28
-videocodec................................................................................................. 28
-x-duration ................................................................................................. 29
-Logging Message: W3C Syntax .......................................................................... 29
-Basic Logging Syntax .................................................................................. 30
-Extended Logging Syntax ............................................................................ 30
-Logging Messages Sent to Web Servers .............................................................. 30
-Logging Message: XML Schema ......................................................................... 32
-Legacy Log ...................................................................................................... 33
-Common Definitions .................................................................................... 33
-Legacy Log in W3C Format .......................................................................... 35
-Legacy Log in XML Format ........................................................................... 35
-Legacy Log Sent to a Web Server ................................................................. 35
-Streaming Log ................................................................................................. 35
-Common Definitions .................................................................................... 36
-Streaming Log Sent to Windows Media Services ............................................. 37
-Streaming Log Sent to a Web Server ............................................................ 37
-Rendering Log ................................................................................................. 37
-Common Definitions .................................................................................... 37
-Rendering Log Sent to Windows Media Services .............................................. 39
-Rendering Log Sent to a Web Server ............................................................. 39
-Connect-Time Log ............................................................................................ 39
-
-3  Structure Examples ............................................................................................... 41
-Legacy Logging Message ................................................................................... 41
-Defining Custom Namespaces in an XML Log ....................................................... 42
-Example Streaming Log Messages ...................................................................... 43
-Example Rendering Log Messages ...................................................................... 44
-Example Connect-Time Log Message .................................................................. 45
-Example Log Sent to a Web Server .................................................................... 46
-
-3.1
-3.2
-3.3
-3.4
-3.5
-3.6
-
-4  Security Considerations ......................................................................................... 47
-
-5  Appendix A: Product Behavior ............................................................................... 48
-
-6  Change Tracking .................................................................................................... 50
-
-7  Index ..................................................................................................................... 51
-
-[MS-WMLOG] - v20240423
-Windows Media Log Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 52
-
-1  Introduction
+## 1 Introduction
 
 This specification defines the Windows Media Log Data Structure. The Windows Media Log Data
 Structure is a syntax for logging messages. The logging messages specify information about how a
@@ -803,7 +679,7 @@ specify how many packets were received and how long it took for the client to re
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -867,7 +743,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-stream: (1) A flow of data from one host to another host, or the data that flows between two
+
+stream: (1) A flow of data from one host to another host, or the data that flows between two
 
 hosts.
 
@@ -880,14 +757,14 @@ streaming: The act of transferring content from a sender to a receiver.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -934,19 +811,20 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MS-MMSP] Microsoft Corporation, "Microsoft Media Server (MMS) Protocol".
 
 [W3C-EXLOG] World Wide Web Consortium, "Extended Log File Format", http://www.w3.org/TR/WD-
 logfile.html
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows Media Log Data Structure is a syntax for logging messages. The logging messages
 specify information about how a client received multimedia content from a streaming server.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The logging messages defined in this specification are used by the Windows Media HTTP Streaming
 Protocol described in [MS-WMSP], and the Real-Time Streaming Protocol (RTSP) Windows Media
@@ -960,16 +838,16 @@ two streaming protocols mentioned earlier and when using two other streaming pro
 Microsoft Media Server (MMS) Protocol as described in [MS-MMSP], and the Media Stream Broadcast
 (MSB) Protocol as described in [MS-MSB].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The syntax for logging messages defined by this specification is applicable to implementations of the
 four streaming protocols mentioned in section 1.4.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 None.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 Logging messages in XML format are vendor-extensible. Any logging information added by a vendor
 MUST be encoded using the "client-logging-data" syntax element specified in section 2.4.
@@ -981,7 +859,8 @@ Release: April 23, 2024
 
 9 / 52
 
-2  Structures
+
+## 2 Structures
 
 Section 2.1 defines fields that can appear in a logging message. Not all fields appear in all logging
 messages, however. Section 2.2 defines the syntax of World Wide Web Consortium (W3C)-based
@@ -1015,9 +894,9 @@ Following are some common Augmented Backus-Naur Form (ABNF) constructions, as sp
  ver_major    = 1*2DIGIT
  ver_minor    = 1*2DIGIT ["." 1*4DIGIT "." 1*4DIGIT]
 
-2.1  Log Data Fields
+### 2.1 Log Data Fields
 
-2.1.1  audiocodec
+#### 2.1.1 audiocodec
 
 This field SHOULD specify a list of audio codecs used to decode the audio streams (1) accessed by
 the client. Each codec MUST be listed only once regardless of the number of streams (2) decoded by
@@ -1042,7 +921,8 @@ Release: April 23, 2024
 
 10 / 52
 
-2.1.2  avgbandwidth
+
+#### 2.1.2 avgbandwidth
 
 This field MUST specify the average bandwidth, in bits per second, at which the client received
 content from the server (which can be a proxy), as measured by the client from the start of the
@@ -1064,7 +944,7 @@ Example:
 
  102585
 
-2.1.3  c-buffercount
+#### 2.1.3 c-buffercount
 
 This field MUST specify the number of times the client buffered while playing the content, counted
 from when the client most recently started streaming the content.
@@ -1079,7 +959,7 @@ Example:
 
  1
 
-2.1.4  c-cpu
+#### 2.1.4 c-cpu
 
 This field MUST specify the type of CPU used by the client computer.
 
@@ -1098,7 +978,8 @@ Release: April 23, 2024
 
 11 / 52
 
-2.1.5  c-dns
+
+#### 2.1.5 c-dns
 
 This field SHOULD be set to "-". The field MAY specify the Internet host name of the client sending
 the log.<1>
@@ -1112,7 +993,7 @@ Example:
 
  wmt.test.com
 
-2.1.6  c-hostexe
+#### 2.1.6 c-hostexe
 
 This field specifies the file name of the host application executed on the client. This field MUST NOT
 refer to a .dll, .ocx, or other nonexecutable file.
@@ -1125,7 +1006,7 @@ Example:
 
  wmplayer.exe
 
-2.1.7  c-hostexever
+#### 2.1.7 c-hostexever
 
 This field MUST specify the version number of the host application running on the client.
 
@@ -1137,7 +1018,7 @@ Example:
 
  6.2.5.323
 
-2.1.8  c-ip
+#### 2.1.8 c-ip
 
 When a client creates a logging message, it SHOULD specify the c-ip field as "-" but MAY specify the
 IP address of the client.
@@ -1155,7 +1036,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- c-ip =  "-" | ip_addr
+
+ c-ip =  "-" | ip_addr
 
 Example:
 
@@ -1165,7 +1047,7 @@ Example:
 
  3ffe:2900:d005:f28b:0000:5efe:157.55.145.142
 
-2.1.9  c-max-bandwidth
+#### 2.1.9 c-max-bandwidth
 
 This field MUST be set to "-".
 
@@ -1177,7 +1059,7 @@ Example:
 
  -
 
-2.1.10 c-os
+#### 2.1.10 c-os
 
 This field MUST specify the client's operating system.<2>
 
@@ -1192,7 +1074,7 @@ Example:
 
  Windows
 
-2.1.11 c-osversion
+#### 2.1.11 c-osversion
 
 This field MUST specify the version number of the client's operating system.
 
@@ -1207,11 +1089,12 @@ Release: April 23, 2024
 
 13 / 52
 
-Example:
+
+Example:
 
  6.0.0.6000
 
-2.1.12 c-pkts-lost-client
+#### 2.1.12 c-pkts-lost-client
 
 This field MUST specify the number of Advanced Systems Format (ASF) data packets ([ASF]
 section 5.2) lost during transmission from server to client and not recovered at the client layer
@@ -1228,7 +1111,7 @@ Example:
 
  5
 
-2.1.13 c-pkts-lost-cont-net
+#### 2.1.13 c-pkts-lost-cont-net
 
 This field MUST specify the largest number of ASF data packets that were lost as a consecutive span
 during transmission from server to client and counted from when the client most recently started
@@ -1249,7 +1132,7 @@ Example:
 
  2
 
-2.1.14 c-pkts-lost-net
+#### 2.1.14 c-pkts-lost-net
 
 This field MUST specify the number of ASF data packets lost on the network layer, counted from when
 the client most recently started streaming the content. Packets lost at the network layer can be
@@ -1265,7 +1148,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The value MUST be an integer in the range from 0 through 4,294,967,295.
+
+The value MUST be an integer in the range from 0 through 4,294,967,295.
 
 The syntax of the c-pkts-lost-net field is defined as follows.
 
@@ -1275,7 +1159,7 @@ Example:
 
  2
 
-2.1.15 c-pkts-received
+#### 2.1.15 c-pkts-received
 
 This field MUST specify the number of ASF data packets that have been correctly received by the
 client on the first attempt counted from when the client most recently started streaming the
@@ -1292,7 +1176,7 @@ Example:
 
  523
 
-2.1.16 c-pkts-recovered-ECC
+#### 2.1.16 c-pkts-recovered-ECC
 
 This field MUST specify the number of ASF data packets that were lost at the network layer but were
 subsequently recovered, counted from when the client most recently started streaming the
@@ -1309,7 +1193,7 @@ Example:
 
  1
 
-2.1.17 c-pkts-recovered-resent
+#### 2.1.17 c-pkts-recovered-resent
 
 This field MUST specify the number of ASF data packets that were recovered either because they were
 resent through UDP or because they were received out of order.
@@ -1321,7 +1205,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The value MUST be an integer in the range from 0 through 4,294,967,295.
+
+The value MUST be an integer in the range from 0 through 4,294,967,295.
 
 The syntax of the c-pkts-recovered-resent field is defined as follows.
 
@@ -1331,7 +1216,7 @@ Example:
 
  5
 
-2.1.18 c-playerid
+#### 2.1.18 c-playerid
 
 This field specifies a unique identifier for the client application that originated the request. The
 identifier MUST be a GUID. The GUID is expressed in registry format and is not enclosed in quotation
@@ -1379,7 +1264,8 @@ Release: April 23, 2024
 
 16 / 52
 
-2.1.19 c-playerlanguage
+
+#### 2.1.19 c-playerlanguage
 
 This field MUST specify the language-country code of the client.
 
@@ -1392,7 +1278,7 @@ Example:
 
  en-US
 
-2.1.20 c-playerversion
+#### 2.1.20 c-playerversion
 
 This field MUST specify the version number of the client.
 
@@ -1404,7 +1290,7 @@ Example:
 
  7.0.1024
 
-2.1.21 c-quality
+#### 2.1.21 c-quality
 
 This field MUST specify the percentage of packets that were received by the client, counted from
 when the client most recently started streaming the content.
@@ -1434,9 +1320,10 @@ Release: April 23, 2024
 
 17 / 52
 
- 89
 
-2.1.22 c-rate
+ 89
+
+#### 2.1.22 c-rate
 
 This field MUST specify the rate of streaming or playback as a multiplier of the normal streaming or
 playback rate.
@@ -1460,7 +1347,7 @@ Example:
 
  1
 
-2.1.23 c-resendreqs
+#### 2.1.23 c-resendreqs
 
 This field MUST specify the number of requests made by the client to receive lost ASF data packets,
 counted from when the client most recently started streaming the content. If the client is not using
@@ -1476,7 +1363,7 @@ Example:
 
  5
 
-2.1.24 c-starttime
+#### 2.1.24 c-starttime
 
 This field MUST specify the time offset, in seconds, in the content from which the client started to
 render content. This represents the presentation time of the ASF data packets that the client began
@@ -1491,7 +1378,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The syntax of the c-starttime field is defined as follows.
+
+The syntax of the c-starttime field is defined as follows.
 
  c-starttime= 1*10DIGIT
 
@@ -1499,7 +1387,7 @@ Example:
 
  39
 
-2.1.25 c-status
+#### 2.1.25 c-status
 
 This field MUST specify a numerical code that indicates the status of the client that creates the
 logging message.
@@ -1512,19 +1400,19 @@ Example:
 
  200
 
-2.1.25.1
+##### 2.1.25.1 Status Code 200 (No Error)
 
-Status Code 200 (No Error)
+
 
 This code indicates that the client successfully streamed and submitted the log.
 
-2.1.25.2
+##### 2.1.25.2 Status Code 210 (Client Successfully Reconnected)
 
-Status Code 210 (Client Successfully Reconnected)
+
 
 This code indicates that the client disconnected and then reconnected to the server.<3>
 
-2.1.26 c-totalbuffertime
+#### 2.1.26 c-totalbuffertime
 
 This field MUST specify the total time, in seconds, that the client spent buffering the ASF data packets
 in the content, counted from when the client most recently started streaming the content. If the
@@ -1548,7 +1436,8 @@ Release: April 23, 2024
 
 19 / 52
 
-2.1.27 c-channelURL
+
+#### 2.1.27 c-channelURL
 
 This field MUST specify the URL to the multicast station (.nsc) file, as specified in [MS-MSB], if such a
 file was used by the client. Whenever an .nsc file is used, this field MUST be specified, even if the
@@ -1563,7 +1452,7 @@ Example:
 
  http://server/channel.nsc
 
-2.1.28 c-bytes
+#### 2.1.28 c-bytes
 
 This field MUST specify the number of bytes received by the client from the server, counted from
 when the client most recently started streaming the content.
@@ -1582,7 +1471,7 @@ Example:
 
  28000
 
-2.1.29 cs-media-name
+#### 2.1.29 cs-media-name
 
 The purpose of this field is to specify the file name of the content or server-side playlist entry that
 was streamed or played by the client. For Legacy and Streaming Logs, the value of this field MUST
@@ -1607,7 +1496,8 @@ Release: April 23, 2024
 
 20 / 52
 
-If none of the preceding applies, cs-media-name MUST be specified as "-".
+
+If none of the preceding applies, cs-media-name MUST be specified as "-".
 
 The syntax of the cs-media-name field is defined as follows.
 
@@ -1617,7 +1507,7 @@ Examples:
 
  C:\wmpub\wmroot\MyAd2.asf
 
-2.1.30 cs-media-role
+#### 2.1.30 cs-media-role
 
 The purpose of this field is to specify a value that can be associated with a server-side playlist entry
 to signify the role of the playlist entry. For Legacy and Streaming Logs, the value of this field MUST be
@@ -1644,7 +1534,7 @@ Example:
 
  ADVERTISEMENT
 
-2.1.31 cs-Referer
+#### 2.1.31 cs-Referer
 
 This field SHOULD specify the URL to the web page that the client software application is embedded
 within, except if the client software application was not embedded in a web page. If the client software
@@ -1665,11 +1555,12 @@ Release: April 23, 2024
 
 21 / 52
 
-Examples:
+
+Examples:
 
  http://www.adventure-works.com/default.htm
 
-2.1.32 cs-url
+#### 2.1.32 cs-url
 
 This field MUST specify the URL for the streaming content originally requested by the client.
 
@@ -1692,7 +1583,7 @@ Example 2:
 
  asfm://239.1.2.3:9000
 
-2.1.33 cs-uri-stem
+#### 2.1.33 cs-uri-stem
 
 This field MUST specify the URL actually used by the client. Any query strings MUST be excluded from
 the URL. (This means that the value of the cs-uri-stem field is equal to the URL actually used by the
@@ -1720,7 +1611,8 @@ Release: April 23, 2024
 
 22 / 52
 
-2.1.34 cs-User-Agent
+
+#### 2.1.34 cs-User-Agent
 
 The purpose of this field is to specify information regarding the client application that is sending the
 logging message.
@@ -1753,7 +1645,7 @@ Example 3: proxy:
 
  _via_HTTP/1.0_WMCacheProxy/9.00.00.1234
 
-2.1.35 cs-user-name
+#### 2.1.35 cs-user-name
 
 This field MUST be set to "-".
 
@@ -1772,7 +1664,8 @@ Release: April 23, 2024
 
 23 / 52
 
-2.1.36 date
+
+#### 2.1.36 date
 
 This field MUST specify the current date on the client when the log message is created. The time
 MUST be specified in UTC.
@@ -1785,7 +1678,7 @@ Example:
 
  1997-10-09
 
-2.1.37 filelength
+#### 2.1.37 filelength
 
 This field MUST specify the length of the ASF file, in seconds. For a live broadcast stream (2), the
 value for filelength is undefined and MUST be set to zero.
@@ -1800,7 +1693,7 @@ Example:
 
  60
 
-2.1.38 filesize
+#### 2.1.38 filesize
 
 This field MUST specify the size of the ASF file, in bytes. For a live broadcast stream (2), the value
 for the filesize field is undefined and MUST be set to zero.
@@ -1815,7 +1708,7 @@ Example:
 
  86000
 
-2.1.39 protocol
+#### 2.1.39 protocol
 
 This field MUST specify the protocol used to stream (2) content to the client.
 
@@ -1829,7 +1722,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the RTSP Windows Media Extensions was used, the value of the protocol field MUST be "rtsp", as
+
+If the RTSP Windows Media Extensions was used, the value of the protocol field MUST be "rtsp", as
 specified in [MS-RTSP].
 
 If the MSB Protocol was used, the value of the protocol field MUST be "asfm", as specified in [MS-
@@ -1845,7 +1739,7 @@ Example:
 
  http
 
-2.1.40 s-content-path
+#### 2.1.40 s-content-path
 
 This field MUST be set to "-".
 
@@ -1857,7 +1751,7 @@ Example:
 
  -
 
-2.1.41 s-cpu-util
+#### 2.1.41 s-cpu-util
 
 When a client creates a logging message, it MUST specify the s-cpu-util field as "-".
 
@@ -1883,7 +1777,8 @@ Release: April 23, 2024
 
 25 / 52
 
-2.1.42 s-dns
+
+#### 2.1.42 s-dns
 
 This field SHOULD specify the Internet host name of the proxy if a proxy is forwarding the logging
 message on behalf of a client (which can be another proxy). The proxy MUST replace the value of the
@@ -1902,7 +1797,7 @@ Example:
 
  wmt.adventure-works.com
 
-2.1.43 s-ip
+#### 2.1.43 s-ip
 
 For Legacy and Streaming Logs, this field MUST specify the IP address of the server that the client
 streamed the content from.
@@ -1923,7 +1818,7 @@ Example:
 
  155.12.1.234
 
-2.1.44 s-pkts-sent
+#### 2.1.44 s-pkts-sent
 
 This field MUST be set to "-".
 
@@ -1940,9 +1835,10 @@ Release: April 23, 2024
 
 26 / 52
 
- -
 
-2.1.45 s-proxied
+ -
+
+#### 2.1.45 s-proxied
 
 This field MUST be set to "1" in a logging message that is being forwarded by a proxy. The client that
 creates the logging message MUST set the field to "0", and the proxy MUST change the value to "1"
@@ -1956,7 +1852,7 @@ Example:
 
  1
 
-2.1.46 s-session-id
+#### 2.1.46 s-session-id
 
 This field MUST be set to "-".
 
@@ -1968,7 +1864,7 @@ Example:
 
  -
 
-2.1.47 s-totalclients
+#### 2.1.47 s-totalclients
 
 When a client creates a logging message, it MUST specify the s-totalclients field as "-".
 
@@ -1994,7 +1890,8 @@ Release: April 23, 2024
 
 27 / 52
 
-2.1.48 sc-bytes
+
+#### 2.1.48 sc-bytes
 
 This field MUST be set to "-".
 
@@ -2006,7 +1903,7 @@ Example:
 
  -
 
-2.1.49 time
+#### 2.1.49 time
 
 This field MUST specify the current time on the client when the log message is created. The time
 MUST be specified in UTC.
@@ -2019,7 +1916,7 @@ Example:
 
  15:30:30
 
-2.1.50 transport
+#### 2.1.50 transport
 
 This field MUST specify the transport protocol used to receive the ASF data packets.
 
@@ -2031,7 +1928,7 @@ Example:
 
  UDP
 
-2.1.51 videocodec
+#### 2.1.51 videocodec
 
 This field SHOULD specify a list of video codecs that are used to decode the video streams (2)
 accessed by the client. Each codec MUST be listed only once, regardless of the number of streams
@@ -2049,14 +1946,15 @@ Release: April 23, 2024
 
 28 / 52
 
- codec-name= 1*255VCHAR
+
+ codec-name= 1*255VCHAR
  videocodec=  "-" | ( codec-name *( ";" codec-name ) )
 
 Example:
 
  Microsoft_MPEG-4_Video_Codec_V2
 
-2.1.52 x-duration
+#### 2.1.52 x-duration
 
 For Legacy and Rendering Log messages, this field MUST specify how much of the content has been
 rendered (played) to the end user, specified in seconds. Time spent buffering data MUST NOT be
@@ -2082,7 +1980,7 @@ Example:
 
  31
 
-2.2  Logging Message: W3C Syntax
+### 2.2 Logging Message: W3C Syntax
 
 A W3C format logging message consists of the values of various fields, each value separated from the
 next by a single space character. Logging messages that adhere to this syntax are said to use the
@@ -2109,7 +2007,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A single dash character (which is represented by U+002D and by "-" in ABNF syntax) MUST be used to
+
+A single dash character (which is represented by U+002D and by "-" in ABNF syntax) MUST be used to
 indicate that the value is empty—that is, it is either not available or not applicable.
 
 All spaces embedded within a field value MUST be replaced by an underscore character (which is
@@ -2120,7 +2019,7 @@ Note  Transformations defined in this section are not necessarily reversible. Me
 analyzing, or extracting information from logging messages are implementation-specific and are
 outside the scope of this specification.
 
-2.2.1  Basic Logging Syntax
+#### 2.2.1 Basic Logging Syntax
 
 Most logging messages contain logging information in W3C format, adhering to the syntax specified as
 follows. The logging information consists of either 44 or 47 fields.
@@ -2138,7 +2037,7 @@ follows. The logging information consists of either 44 or 47 fields.
                 s-totalclients SP s-cpu-util
                 [ SP cs-url SP cs-media-name SP cs-media-role ]
 
-2.2.2  Extended Logging Syntax
+#### 2.2.2 Extended Logging Syntax
 
 Certain types of "rendering" log messages (section 2.7) contain logging information in the W3C format
 defined as follows. This logging information consists of 52 fields.
@@ -2157,7 +2056,7 @@ defined as follows. This logging information consists of 52 fields.
                 s-content-path SP cs-url SP cs-media-name SP c-max-bandwidth SP
                 cs-media-role SP s-proxied
 
-2.3  Logging Messages Sent to Web Servers
+### 2.3 Logging Messages Sent to Web Servers
 
 Most of the logging messages defined in this specification can be sent to a HTTP web server. The URL
 for the HTTP web server for which logging messages are submitted can be specified in an .asx file (for
@@ -2174,7 +2073,8 @@ Release: April 23, 2024
 
 30 / 52
 
-The resource that is identified by log-URL MUST be capable of accepting and responding to the HTTP
+
+The resource that is identified by log-URL MUST be capable of accepting and responding to the HTTP
 GET and POST request methods described in this section; however, the methods for doing so are
 implementation-specific.
 
@@ -2226,10 +2126,11 @@ Release: April 23, 2024
 
 31 / 52
 
-For an example of logging URL validation and the subsequent transmission of a logging message to a
+
+For an example of logging URL validation and the subsequent transmission of a logging message to a
 web server, see section 3.6.
 
-2.4  Logging Message: XML Schema
+### 2.4 Logging Message: XML Schema
 
 Logging messages can be represented in XML. This section defines the schema used by all logging
 messages for which an XML representation has been defined with the exception of the Connect-Time
@@ -2297,7 +2198,8 @@ Release: April 23, 2024
 
 32 / 52
 
-   "<cs-Referer>" cs-Referer "<cs-Referer>"
+
+   "<cs-Referer>" cs-Referer "<cs-Referer>"
    "<c-hostexe>" c-hostexe "</c-hostexe>"
    "<c-hostexever>" c-hostexever "</c-hostexever>"
    "<c-os>" c-os "</c-os>"
@@ -2348,13 +2250,13 @@ All spaces embedded within a field value MUST be replaced by an underscore chara
 represented by U+005F and by "_" in ABNF syntax). For example, "MPEG Layer-3" would be
 transformed into "MPEG_Layer-3" in a W3C-format logging message.
 
-2.5  Legacy Log
+### 2.5 Legacy Log
 
 The Legacy Log is also called a combination log because it contains both rendering and streaming
 information. The Legacy Log can be either in W3C format or XML format. A Legacy Log can be sent
 either to Windows Media Services or to a web server.
 
-2.5.1  Common Definitions
+#### 2.5.1 Common Definitions
 
 The following ABNF syntax rules applies to all variants of the Legacy Log.<4>
 
@@ -2367,7 +2269,8 @@ Release: April 23, 2024
 
 33 / 52
 
- c-ip           = "0.0.0.0"
+
+ c-ip           = "0.0.0.0"
  s-dns          = "-"
 
 The values of the following fields MUST be assigned as defined in section 2.1:
@@ -2491,7 +2394,8 @@ Release: April 23, 2024
 
 34 / 52
 
-  date
+
+  date
 
 
 
@@ -2533,7 +2437,7 @@ transport
 
 The Legacy Log SHOULD include the optional fields cs-url, cs-media-name, and cs-media-role.<5>
 
-2.5.2  Legacy Log in W3C Format
+#### 2.5.2 Legacy Log in W3C Format
 
 The ABNF syntax for a Legacy Log in W3C format that is sent to Windows Media Services is defined as
 follows.
@@ -2541,7 +2445,7 @@ follows.
  legacy-log-W3C       = log_data44              ; defined in section 2.2.1
  s-ip                 = "-"
 
-2.5.3  Legacy Log in XML Format
+#### 2.5.3 Legacy Log in XML Format
 
 The ABNF syntax for a Legacy Log in XML format that is sent to Windows Media Services is defined as
 follows.<6>
@@ -2550,7 +2454,7 @@ follows.<6>
  summary-log       = log_data44      ; defined in section  2.2.1
  s-ip              = "-"
 
-2.5.4  Legacy Log Sent to a Web Server
+#### 2.5.4 Legacy Log Sent to a Web Server
 
 The ABNF syntax for a Legacy Log that is submitted to a web server is defined as follows.
 
@@ -2558,7 +2462,7 @@ The ABNF syntax for a Legacy Log that is submitted to a web server is defined as
 
 The value of the s-ip field MUST be assigned as defined in section 2.1.43.
 
-2.6  Streaming Log
+### 2.6 Streaming Log
 
 The Streaming Log specifies how the client received streaming data but not how the client rendered
 the data. A Streaming Log can be sent either to Windows Media Services or to a web server.
@@ -2570,7 +2474,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.6.1  Common Definitions
+
+#### 2.6.1 Common Definitions
 
 The following ABNF syntax rules apply to all variants of the Streaming Log.
 
@@ -2687,7 +2592,8 @@ Release: April 23, 2024
 
 36 / 52
 
-
+
+
 
 
 
@@ -2739,7 +2645,7 @@ transport
 
 The Streaming Log MUST include the optional fields cs-url, cs-media-name, and cs-media-role.
 
-2.6.2  Streaming Log Sent to Windows Media Services
+#### 2.6.2 Streaming Log Sent to Windows Media Services
 
 The Streaming Log sent to Windows Media Services is in XML format and MUST adhere to the following
 ABNF syntax.<7><8>
@@ -2748,7 +2654,7 @@ ABNF syntax.<7><8>
  summary-log       = log_data44       ; defined in section  2.2.1
  s-ip              = "-"
 
-2.6.3  Streaming Log Sent to a Web Server
+#### 2.6.3 Streaming Log Sent to a Web Server
 
 The ABNF syntax for a Streaming Log that is submitted to a web server is defined as follows.
 
@@ -2756,13 +2662,13 @@ The ABNF syntax for a Streaming Log that is submitted to a web server is defined
 
 The value of the s-ip field MUST be assigned as specified in section 2.1.43.
 
-2.7  Rendering Log
+### 2.7 Rendering Log
 
 The Rendering Log describes playback of content by a client and is submitted to the upstream origin
 server (or a configured proxy) when the client ends playback. A Rendering Log can be sent either to
 Windows Media Services or to a web server.
 
-2.7.1  Common Definitions
+#### 2.7.1 Common Definitions
 
 The following ABNF syntax rules apply to all variants of the Rendering Log:
 
@@ -2773,7 +2679,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- avgbandwidth            = "-"
+
+ avgbandwidth            = "-"
  c-buffercount           = "-"
  c-pkts-lost-client      = "-"
  c-pkts-lost-cont-net    = "-"
@@ -2888,7 +2795,8 @@ Release: April 23, 2024
 
 38 / 52
 
-
+
+
 
 
 
@@ -2914,7 +2822,7 @@ time
 
 The Rendering Log MUST include the optional fields cs-url, cs-media-name, and cs-media-role.
 
-2.7.2  Rendering Log Sent to Windows Media Services
+#### 2.7.2 Rendering Log Sent to Windows Media Services
 
 The Rendering Log sent to Windows Media Services is in XML format and MUST adhere to the following
 ABNF syntax.
@@ -2925,7 +2833,7 @@ ABNF syntax.
 The values of the following fields MUST be assigned as defined in section 2.1: c-max-bandwidth, cs-
 user-name, s-content-path, s-ip, s-proxied, and s-session-id.
 
-2.7.3  Rendering Log Sent to a Web Server
+#### 2.7.3 Rendering Log Sent to a Web Server
 
 The ABNF syntax for a Rendering Log that is submitted to a web server is defined as follows.
 
@@ -2934,7 +2842,7 @@ The ABNF syntax for a Rendering Log that is submitted to a web server is defined
 The value of the c-ip field MUST be assigned as defined in section 2.1.8. The value of the s-ip field
 MUST be assigned as defined in section 2.1.43.
 
-2.8  Connect-Time Log
+### 2.8 Connect-Time Log
 
 The purpose of the Connect-Time Log is to specify some minimal amount of logging information about
 the client. It can be useful in cases where a client starts to stream (2) some content but is
@@ -2963,7 +2871,8 @@ Release: April 23, 2024
 
 39 / 52
 
-   "<time>" time "</time>"
+
+   "<time>" time "</time>"
    "<c-cpu>" c-cpu "</c-cpu>"
    "<transport>" transport "</transport>"
  "</XML>"
@@ -3005,9 +2914,10 @@ Release: April 23, 2024
 
 40 / 52
 
-3  Structure Examples
 
-3.1  Legacy Logging Message
+## 3 Structure Examples
+
+### 3.1 Legacy Logging Message
 
  The following is an example of a legacy logging message in W3C format.
 
@@ -3075,7 +2985,8 @@ Release: April 23, 2024
 
 41 / 52
 
- <c-totalbuffertime>0</c-totalbuffertime>
+
+ <c-totalbuffertime>0</c-totalbuffertime>
  <c-quality>100</c-quality>
  <s-ip>-</s-ip>
  <s-dns>-</s-dns>
@@ -3104,7 +3015,7 @@ The following is an example of how a Legacy Log can appear as sent to a web serv
  Windows_2000 5.0.0.2195 Pentium 225 4551684 1528 mms UDP - - - - 29868
  - 4 0 0 0 0 0 0 0 0 100 172.29.237.102 - - -
 
-3.2  Defining Custom Namespaces in an XML Log
+### 3.2 Defining Custom Namespaces in an XML Log
 
 An .asx file (for more information, see [MSDN-WMMETA]) can be used to append log data to the XML
 log structure. Vendors can define any number of custom namespaces and name-value pairs in the
@@ -3142,7 +3053,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <ASX version="3.0">
+
+ <ASX version="3.0">
    <ENTRY>
      <TITLE> My Title </TITLE>
      <Author> My Author </Author>
@@ -3171,7 +3083,7 @@ have been omitted for brevity and clarity).
    </VendorNameSpace>
  </XML>
 
-3.3  Example Streaming Log Messages
+### 3.3 Example Streaming Log Messages
 
 The following is an example of a Streaming Log in XML format.
 
@@ -3209,7 +3121,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <c-hostexever>6.0.2900.2180</c-hostexever>
+
+ <c-hostexever>6.0.2900.2180</c-hostexever>
  <c-os>Windows_XP</c-os>
  <c-osversion>5.1.0.2600</c-osversion>
  <c-cpu>Pentium</c-cpu>
@@ -3250,7 +3163,7 @@ The following is an example of how a Streaming Log can appear as sent to a web s
  - 4 0 0 0 0 0 0 0 0 100 172.29.237.102 - - -
  mmsu://server.example.com/testfile.wma - -
 
-3.4  Example Rendering Log Messages
+### 3.4 Example Rendering Log Messages
 
 The following is an example of a Rendering Log in XML format.
 
@@ -3280,7 +3193,8 @@ Release: April 23, 2024
 
 44 / 52
 
- <c-status>200</c-status>
+
+ <c-status>200</c-status>
  <c-playerid>{3300AD50-2C39-46c0-AE0A-3E0B6EFB86DC}</c-playerid>
  <c-playerversion>10.0.0.3802</c-playerversion>
  <c-playerlanguage>en-US</c-playerlanguage>
@@ -3328,7 +3242,7 @@ The following is an example of how a Rendering Log can appear as sent to a web s
  5.0.0.2195 Pentium 225 4551684 1528 Cache - - - - - 29868 - - - - - - -
  - - - 100 - - - - mms://server.example.com/test.wma - -
 
-3.5  Example Connect-Time Log Message
+### 3.5 Example Connect-Time Log Message
 
 The following is an example of a Connect-Time Log message in XML format.
 
@@ -3351,7 +3265,8 @@ Release: April 23, 2024
 
 45 / 52
 
-3.6  Example Log Sent to a Web Server
+
+### 3.6 Example Log Sent to a Web Server
 
  The following is an example of a client validating a logging URL and subsequently transmitting a
 logging message to the web server.
@@ -3397,7 +3312,8 @@ Release: April 23, 2024
 
 46 / 52
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 A server that receives a logging message validates the syntax of the fields. For example, the server
 checks that logging fields that are supposed to contain numerical data really do so, and that no invalid
@@ -3411,7 +3327,8 @@ Release: April 23, 2024
 
 47 / 52
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3481,7 +3398,8 @@ Windows Media Log Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 2.1.5: Windows Media Player 6.4 specifies the Internet host name in the c-dns field.
@@ -3519,7 +3437,8 @@ Release: April 23, 2024
 
 49 / 52
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3563,7 +3482,8 @@ Release: April 23, 2024
 
 50 / 52
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 9
@@ -3697,7 +3617,8 @@ References 8
 
 51 / 52
 
-Relationship to other protocols 9
+
+Relationship to other protocols 9
 Relationship to protocols and other structures 9
 Rendering log
    common definitions 37

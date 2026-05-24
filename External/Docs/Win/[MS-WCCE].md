@@ -63,7 +63,8 @@ Release: November 21, 2025
 
 1 / 259
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: November 21, 2025
 
 2 / 259
 
-Date
+
+Date
 
 Revision
 History
@@ -551,7 +553,8 @@ Release: November 21, 2025
 
 3 / 259
 
-Date
+
+Date
 
 Revision
 History
@@ -639,1145 +642,356 @@ Release: November 21, 2025
 
 4 / 259
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-1.3.2.4
-1.3.2.5
-
-1  Introduction .......................................................................................................... 14
-Glossary ......................................................................................................... 14
-References ...................................................................................................... 22
-Normative References ................................................................................. 22
-Informative References ............................................................................... 25
-Overview ........................................................................................................ 27
-High-Level Protocol Operations ..................................................................... 28
-Concepts ................................................................................................... 29
-Key Archival ......................................................................................... 29
-Key Attestation ..................................................................................... 29
-Certificate Transparency ........................................................................ 30
-Netscape KEYGEN Tag ........................................................................... 30
-Sanitizing Common Names ..................................................................... 31
-Information for Certificate Templates ............................................................ 31
-Template IDs ........................................................................................ 31
-Implementations Without Templates ....................................................... 32
-Modifying Templates.............................................................................. 32
-Permissions on Templates ...................................................................... 32
-Relationship to Other Protocols .......................................................................... 33
-Prerequisites/Preconditions ............................................................................... 34
-Applicability Statement ..................................................................................... 34
-Versioning and Capability Negotiation ................................................................. 34
-Vendor-Extensible Fields ................................................................................... 34
-Standards Assignments ..................................................................................... 34
-
-1.3.3.1
-1.3.3.2
-1.3.3.3
-1.3.3.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3
-
-2.1
-2.2
-
-2.2.2.3
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-2.2.2.2.4
-2.2.2.2.5
-2.2.2.2.6
-2.2.2.2.7
-
-2  Messages ............................................................................................................... 36
-Transport ........................................................................................................ 36
-Common Data Types ........................................................................................ 37
-BYTE ......................................................................................................... 37
-Common Structures .................................................................................... 37
-CACERTBLOB ........................................................................................ 38
-CERTTRANSBLOB .................................................................................. 39
-Marshaling Unicode Strings in CERTTRANSBLOB .................................. 39
-Marshaling X.509 Certificates in a CERTTRANSBLOB ............................ 39
-Marshaling an X.509 CRL in a CERTTRANSBLOB .................................. 39
-Marshaling CMS in a CERTTRANSBLOB ............................................... 40
-Marshaling CAINFO in CERTTRANSBLOB ............................................. 40
-Marshaling Certificate Requests in a CERTTRANSBLOB ......................... 40
-Marshaling CMC in a CERTTRANSBLOB ............................................... 40
-CATRANSPROP ..................................................................................... 41
-Marshaling CATRANSPROP in a CERTTRANSBLOB ................................ 42
-CAINFO ............................................................................................... 43
-KeyAttestationStatement ....................................................................... 44
-Request Format .................................................................................... 45
-PKCS #10 Request Format ............................................................... 46
-CMS Request Format ....................................................................... 46
-CMC Request Format ....................................................................... 47
-Netscape KEYGEN Tag Request Format .............................................. 47
-CertType ................................................................................... 48
-Relative Distinguished Name ....................................................... 48
-Null Signature ................................................................................. 48
-Certificate Request Attributes ................................................................. 49
-szOID_OS_VERSION ........................................................................ 49
-szOID_ENROLLMENT_CSP_PROVIDER ................................................ 50
-szOID_RENEWAL_CERTIFICATE......................................................... 50
-
-2.2.2.6.1
-2.2.2.6.2
-2.2.2.6.3
-2.2.2.6.4
-
-2.2.2.7.1
-2.2.2.7.2
-2.2.2.7.3
-
-2.2.2.6.4.1
-2.2.2.6.4.2
-
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-2.2.2.6.5
-
-2.2.2.3.1
-
-2.2.2.7
-
-[MS-WCCE] - v20251121
-Windows Client Certificate Enrollment Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-5 / 259
-
-2.2.2.8
-
-2.2.2.8.1
-
-2.2.2.7.4
-2.2.2.7.5
-2.2.2.7.6
-2.2.2.7.7
-
-2.2.2.8.1.1
-2.2.2.8.1.2
-2.2.2.8.1.3
-2.2.2.8.1.4
-
-2.2.2.7.7.1
-2.2.2.7.7.2
-2.2.2.7.7.3
-2.2.2.7.7.4
-
-2.2.2.7.8
-2.2.2.7.9
-2.2.2.7.10
-2.2.2.7.11
-2.2.2.7.12
-2.2.2.7.13
-2.2.2.7.14
-2.2.2.7.15
-
-szOID_REQUEST_CLIENT_INFO......................................................... 50
-szOID_NT_PRINCIPAL_NAME ............................................................ 51
-szOID_NTDS_REPLICATION .............................................................. 51
-szOID_CERT_EXTENSIONS ............................................................... 51
-szOID_ENROLL_CERTTYPE .......................................................... 51
-szOID_CERTIFICATE_TEMPLATE .................................................. 52
-Encoding a Certificate Application Policy Extension ......................... 52
-szOID_NTDS_CA_SECURITY_EXT................................................. 52
-szOID_ARCHIVED_KEY_ATTR ............................................................ 53
-szOID_ENCRYPTED_KEY_HASH ......................................................... 53
-szENROLLMENT_NAME_VALUE_PAIR .................................................. 53
-szOID_ISSUED_CERT_HASH ............................................................. 56
-szOID_ENROLL_ATTESTATION_STATEMENT ....................................... 56
-szOID_ENROLL_EK_INFO ................................................................. 56
-szOID_ENROLL_KSP_NAME .............................................................. 57
-szOID_ENROLL_AIK_INFO ................................................................ 57
-Response Format .................................................................................. 57
-CA Response Attributes .................................................................... 58
-szOID_ENROLL_ATTESTATION_CHALLENGE .................................. 58
-szOID_ENROLL_CAXCHGCERT_HASH ........................................... 58
-szOID_ENROLL_KSP_NAME ......................................................... 59
-szOID_ENROLL_ENCRYPTION_ALGORITHM ................................... 59
-Private Key BLOB .................................................................................. 59
-RSA Private Key BLOB ...................................................................... 59
-BCRYPT RSA Private Key BLOB .......................................................... 61
-ECDH Private Key BLOB ................................................................... 63
-Key Spec ............................................................................................. 64
-Enterprise PKI Data Structures ............................................................... 64
-Certificate Templates Container ......................................................... 64
-Enrollment Services Container .......................................................... 65
-cn Attribute ............................................................................... 65
-displayName Attribute ................................................................ 65
-certificateTemplates Attribute ...................................................... 65
-dNSHostName ........................................................................... 65
-cACertificate Attribute ................................................................ 66
-2.2.2.11.3  NTAuthCertificates Object ................................................................. 66
-Certification Authorities Container ..................................................... 66
-2.2.2.11.4
-cn Attribute ............................................................................... 67
-cACertificate Attribute ................................................................ 67
-Certificate Requirements ............................................................................. 67
-Key Recovery Certificate ........................................................................ 67
-Common Error Codes .................................................................................. 68
-Directory Service Schema Elements ................................................................... 68
-
-2.2.2.11.2.1
-2.2.2.11.2.2
-2.2.2.11.2.3
-2.2.2.11.2.4
-2.2.2.11.2.5
-
-2.2.2.9.1
-2.2.2.9.2
-2.2.2.9.3
-
-2.2.2.11.4.1
-2.2.2.11.4.2
-
-2.2.2.11.1
-2.2.2.11.2
-
-2.2.2.9
-
-2.2.2.10
-2.2.2.11
-
-2.2.3
-
-2.2.4
-
-2.2.3.1
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3  Protocol Details ..................................................................................................... 70
-Client Role ...................................................................................................... 70
-Client Mode: Basic Enrollment ...................................................................... 70
-Abstract Data Model .............................................................................. 70
-Timers ................................................................................................. 70
-Initialization ......................................................................................... 71
-Message Processing Events and Sequencing Rules .................................... 71
-Algorithms ...................................................................................... 71
-Sanitizing Common Names .......................................................... 71
-Hashing Processing Rules ...................................................... 71
-Disallowed Characters ........................................................... 72
-Processing Rules for the pwszAuthority Parameter ............................... 73
-ICertRequestD::Request and ICertRequestD2::Request2 Processing ...... 73
-New Certificate Requests ............................................................ 74
-
-3.1.1.4.1.1.1
-3.1.1.4.1.1.2
-
-3.1.1.4.2
-3.1.1.4.3
-
-3.1.1.4.3.1
-
-3.1.1.4.1.1
-
-3.1.1.4.1
-
-[MS-WCCE] - v20251121
-Windows Client Certificate Enrollment Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-6 / 259
-
-3.1.1.4.3.4.2
-
-3.1.1.4.3.1.1
-3.1.1.4.3.1.2
-
-3.1.1.4.3.5
-
-3.1.1.4.3.5.1
-3.1.1.4.3.5.2
-
-3.1.1.4.3.6
-
-3.1.1.4.3.6.1
-
-3.1.1.4.3.7
-3.1.1.4.3.8
-
-3.1.1.4.3.8.1
-3.1.1.4.3.8.2
-
-3.1.1.4.3.1.3
-3.1.1.4.3.1.4
-
-3.1.1.4.3.2
-
-3.1.1.4.3.2.1
-
-3.1.1.4.3.2.2
-
-3.1.1.4.3.3
-
-3.1.1.4.3.3.1
-3.1.1.4.3.3.2
-
-3.1.1.4.3.3.3
-
-3.1.1.4.3.4
-
-3.1.1.4.3.4.1
-
-3.1.1.4.3.4.2.1
-
-3.1.1.4.3.4.1.1
-3.1.1.4.3.4.1.2
-3.1.1.4.3.4.1.3
-
-New Certificate Request Using PKCS #10 Request Format ......... 75
-New Certificate Request Using CMS and PKCS #10 Request Formats
- 75
-New Certificate Request Using CMS and CMC Request Formats .. 76
-New Certificate Request Using Netscape KEYGEN Request Format76
-Renew Certificate Requests ......................................................... 77
-Renew Certificate Request Using CMS and PKCS #10 Request
-Formats .............................................................................. 77
-Renew Certificate Request Using CMS and CMC Request Formats 77
-Enroll on Behalf of Certificate Requests ......................................... 78
-Abstract Data Model ............................................................. 78
-Enroll on Behalf of Request Using CMS and PKCS #10 Request
-Formats .............................................................................. 79
-Enroll on Behalf of Certificate Request Using CMS and CMC Request
-Formats .............................................................................. 79
-Certificate Request with Key Attestation ....................................... 80
-EK Attestation (Authority and Subject) .................................... 81
-New Certificate Request with Key Attestation Statement ...... 81
-Responding to a CA Challenge Message ............................. 81
-Certificate Request with Challenge Response ...................... 82
-AIK Attestation (Subject Only) ............................................... 82
-New Certificate Request with Key Attestation Statement ...... 82
-Certificate Requests with Certificate Transparency ......................... 82
-New Certificate Request with Certificate Transparency .............. 82
-Signed Certificate Timestamp List Request .............................. 82
-Certificate Requests with Private Key Info ..................................... 83
-Certificate Request with a Private Key Using CMC Request Format83
-Certificate Request for Certificate Retrieval ................................... 84
-Certificate Requests in Pre-sign flow ............................................. 85
-New Certificate Request for Pre-sign Processing ....................... 85
-New Certificate Request After Pre-sign Processing .................... 85
-ICertRequestD::GetCACert Request Processing ................................... 85
-ICertRequestD::Ping and ICertRequestD2::Ping2 Request Processing .... 85
-ICertRequestD2::GetCAProperty Request Processing ........................... 86
-ICertRequestD2::GetCAPropertyInfo Request Processing ...................... 86
-Timer Events ........................................................................................ 86
-Other Local Events ................................................................................ 86
-Retrieving the Pending Certificate Request .......................................... 86
-Submitting Certificate Request .......................................................... 88
-Client Mode: Enrollment Based on Certificate Templates .................................. 90
-Abstract Data Model .............................................................................. 90
-Timers ................................................................................................. 92
-Initialization ......................................................................................... 92
-Message Processing Events and Sequencing Rules .................................... 92
-Algorithms ...................................................................................... 92
-ICertRequestD::Request and ICertRequestD2::Request2 Processing ...... 92
-Choosing Certificate Request Types .............................................. 92
-Certificate Template Processing Rules ........................................... 93
-Processing Rules for Certificate Template Version 1 .................. 93
-Certificate.Template.flags ................................................ 93
-Certificate.Template.pKIExtendedKeyUsage ....................... 94
-Certificate.Template.pKIKeyUsage .................................... 94
-Certificate.Template.pKIMaxIssuingDepth .......................... 94
-Certificate.Template.pKIDefaultKeySpec ............................ 94
-Certificate.Template.pKIDefaultCSPs ................................. 95
-Certificate.Template.pKICriticalExtensions ......................... 96
-Certificate.Template.cn .................................................... 96
-Certificate.Template.revision ............................................ 96
-
-3.1.2.4.2.2.1.1
-3.1.2.4.2.2.1.2
-3.1.2.4.2.2.1.3
-3.1.2.4.2.2.1.4
-3.1.2.4.2.2.1.5
-3.1.2.4.2.2.1.6
-3.1.2.4.2.2.1.7
-3.1.2.4.2.2.1.8
-3.1.2.4.2.2.1.9
-
-3.1.2.4.2.1
-3.1.2.4.2.2
-
-3.1.2.4.2.2.1
-
-3.1.1.4.4
-3.1.1.4.5
-3.1.1.4.6
-3.1.1.4.7
-
-3.1.1.5
-3.1.1.6
-
-3.1.1.6.1
-3.1.1.6.2
-
-3.1.2
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-3.1.2.4
-
-3.1.2.4.1
-3.1.2.4.2
-
-[MS-WCCE] - v20251121
-Windows Client Certificate Enrollment Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-7 / 259
-
-3.2
-
-3.2.1
-
-3.1.2.5
-3.1.2.6
-
-3.1.2.6.1
-
-3.2.1.1
-
-3.2.1.1.1
-
-3.2.1.1.2
-3.2.1.1.3
-3.2.1.1.4
-
-3.2.1.2
-3.2.1.3
-
-3.2.1.3.1
-
-3.2.1.4
-
-3.2.1.4.1
-
-3.1.2.4.2.3
-
-3.1.2.4.2.2.2
-
-3.2.1.1.1.1
-3.2.1.1.1.2
-
-3.1.2.4.2.2.2.1
-3.1.2.4.2.2.2.2
-3.1.2.4.2.2.2.3
-3.1.2.4.2.2.2.4
-3.1.2.4.2.2.2.5
-3.1.2.4.2.2.2.6
-3.1.2.4.2.2.2.7
-3.1.2.4.2.2.2.8
-3.1.2.4.2.2.2.9
-3.1.2.4.2.2.2.10
-
-Processing Rules for Certificate Template Versions 2, 3, and 4 ... 96
-Certificate.Template.msPKI-Minimal-Key-Size .................... 96
-Certificate.Template.pKIDefaultCSPs ................................. 96
-Certificate.Template.msPKI-Template-Cert-Template-OID .... 97
-Certificate.Template.msPKI-Template-Minor-Revision .......... 97
-Certificate.Template.msPKI-RA-Application-Policies ............. 97
-Certificate.Template.msPKI-Certificate-Application-Policy ..... 98
-Certificate.Template.msPKI-Enrollment-Flag....................... 98
-Certificate.Template.msPKI-Private-Key-Flag ..................... 98
-Certificate.Template.msPKI-Certificate-Policy .................... 100
-Certificate.Template.msPKI-Certificate-Name-Flag ............. 100
-Encoding Certificate Template Identifier in the Request ................. 100
-Timer Events ....................................................................................... 101
-Other Local Events ............................................................................... 101
-Creating a Certificate Request Based on a Certificate Template ............ 101
-Server Role .................................................................................................... 103
-Server Mode: Standalone CA ....................................................................... 104
-Abstract Data Model ............................................................................. 104
-Request Table ................................................................................ 105
-Request Table Required Data Elements ........................................ 105
-Request Table Optional Data Elements ........................................ 105
-Signing_Cert Table ......................................................................... 106
-CRL Table ...................................................................................... 107
-Configuration List ........................................................................... 107
-Timers ................................................................................................ 113
-Initialization ........................................................................................ 113
-CRL Partitioning Configuration Checks ............................................... 114
-Message Processing Events and Sequencing Rules ................................... 114
-Algorithms ..................................................................................... 114
-AccountGetInfo Abstract Interface .............................................. 114
-Retrieving Caller Identity Information .......................................... 115
-Retrieving CRLs ........................................................................ 116
-Search Requests for Retrieving CRLs from Active Directory ....... 117
-Search Requests ............................................................ 117
-Bind Requests ............................................................... 118
-ICertRequestD ............................................................................... 120
-ICertRequestD::Request (Opnum 3) ............................................ 120
-Verifying the CA Name ......................................................... 122
-Parsing and Verifying pwszAttributes ..................................... 123
-Requesting Status Inspection ................................................ 125
-Processing a Request ........................................................... 125
-Processing Rules for New Certificate Request .................... 126
-New Certificate Request Using PKCS #10 Request Format
- ............................................................................. 126
-New Certificate Request Using CMS and PKCS #10 Request
-Format ................................................................... 127
-New Certificate Request Using CMS and CMC Request
-Format ................................................................... 128
-New Certificate Request Using KEYGEN Request Format 128
-Processing Rules for Renewing a Certificate Request .......... 129
-Renewing a Certificate Request Using CMS and PKCS #10
-Request Formats ...................................................... 129
-Renewing a Certificate Request Using CMS and CMC
-Request Format ....................................................... 130
-Processing Rules for Certificate Transparency Requests ...... 130
-Initial Certificate Transparency Request ...................... 130
-Signed Certificate Timestamp List .............................. 131
-Storing Request Parameters in the Request Table .............. 131
-
-3.2.1.4.2.1.1
-3.2.1.4.2.1.2
-3.2.1.4.2.1.3
-3.2.1.4.2.1.4
-
-3.2.1.4.2.1.4.3.1
-3.2.1.4.2.1.4.3.2
-
-3.2.1.4.1.1
-3.2.1.4.1.2
-3.2.1.4.1.3
-
-3.2.1.4.1.3.1.1
-3.2.1.4.1.3.1.2
-
-3.2.1.4.2.1.4.1.2
-
-3.2.1.4.2.1.4.1.3
-
-3.2.1.4.2.1.4.1.4
-
-3.2.1.4.2.1.4.2.1
-
-3.2.1.4.2.1.4.2.2
-
-3.2.1.4.2.1.4.1.1
-
-3.2.1.4.2.1.4.4
-
-3.2.1.4.2.1.4.2
-
-3.2.1.4.2.1.4.3
-
-3.2.1.4.2.1.4.1
-
-3.2.1.4.1.3.1
-
-3.2.1.4.2.1
-
-3.2.1.4.2
-
-[MS-WCCE] - v20251121
-Windows Client Certificate Enrollment Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-8 / 259
-
-3.2.1.4.2.2
-
-3.2.1.4.2.1.4.5
-3.2.1.4.2.1.4.6
-
-3.2.1.4.2.1.4.7
-3.2.1.4.2.1.4.8
-
-3.2.1.4.2.1.4.9
-3.2.1.4.2.1.4.10
-
-3.2.1.4.2.1.4.8.1
-3.2.1.4.2.1.4.8.2
-
-3.2.1.4.2.1.4.6.1
-3.2.1.4.2.1.4.6.2
-3.2.1.4.2.1.4.6.3
-3.2.1.4.2.1.4.6.4
-
-CA Policy Algorithm ........................................................ 134
-Generating a Serial Number ............................................ 134
-Default Serial Numbers ............................................. 135
-Serial Numbers Based on Config_High_Serial_Number .. 135
-Serial Numbers Based on Config_High_Serial_String .... 136
-Creating a Serial Number String ................................. 136
-Constructing Certificate .................................................. 136
-Signing and Returning the Issued Certificate ..................... 137
-Returning the Certificate as a CMS Certificate Response 137
-Returning the Certificate as CMC Full PKI Response ...... 138
-CA Exit Algorithm .......................................................... 140
-Processing Rules for Pre-sign Certificate Requests .............. 141
-3.2.1.4.2.1.4.10.1  New Certificate Request with Pre-sign flag ................... 141
-3.2.1.4.2.1.4.10.2  New Certificate Request without Pre-sign flag .............. 141
-ICertRequestD::GetCACert (Opnum 4) ........................................ 141
-GETCERT_CASIGCERT - 0x00000000 ..................................... 144
-3.2.1.4.2.2.1
-GETCERT_CAXCHGCERT - 0x00000001 .................................. 144
-3.2.1.4.2.2.2
-GETCERT_CURRENTCRL - 0x6363726C .................................. 145
-3.2.1.4.2.2.3
-GETCERT_FILEVERSION - 0x66696C65 .................................. 145
-3.2.1.4.2.2.4
-GETCERT_CAINFO - 0x696E666F ........................................... 145
-3.2.1.4.2.2.5
-GETCERT_CANAME - 0x6E616D65 ......................................... 145
-3.2.1.4.2.2.6
-GETCERT_PARENTCONFIG - 0x70617265 ............................... 145
-3.2.1.4.2.2.7
-GETCERT_POLICYVERSION - 0x706F6C69 .............................. 145
-3.2.1.4.2.2.8
-3.2.1.4.2.2.9
-GETCERT_PRODUCTVERSION - 0x70726F64 ........................... 145
-3.2.1.4.2.2.10  GETCERT_SANITIZEDCANAME - 0x73616E69 .......................... 145
-3.2.1.4.2.2.11  GETCERT_SHAREDFOLDER - 0x73686172 .............................. 145
-3.2.1.4.2.2.12  GETCERT_CATYPE - 0x74797065 ........................................... 145
-3.2.1.4.2.2.13  GETCERT_CRLBYINDEX - 0x636C .......................................... 145
-3.2.1.4.2.2.14  GETCERT_CACERTBYINDEX - 0x6374 .................................... 146
-3.2.1.4.2.2.15  GETCERT_EXITVERSIONBYINDEX - 0x6578 ............................ 146
-3.2.1.4.2.2.16  GETCERT_CRLSTATEBYINDEX - 0x736C ................................. 146
-3.2.1.4.2.2.17  GETCERT_CACERTSTATEBYINDEX - 0x7374............................ 146
-ICertRequestD::Ping (Opnum 5) ................................................. 146
-ICertRequestD2.............................................................................. 147
-ICertRequestD2::Request2 (Opnum 6) ........................................ 147
-dwFlags Packed Data Requirements ....................................... 148
-Requesting Status Inspection ................................................ 149
-ICertRequestD2::GetCAProperty (Opnum 7) ................................ 150
-PropID = 0x00000001 (CR_PROP_FILEVERSION) "CA File Version"
- 159
-PropID = 0x00000002 (CR_PROP_PRODUCTVERSION) "CA Product
-Version" ............................................................................. 160
-PropID = 0x00000003 (CR_PROP_EXITCOUNT) "Exit Count" ..... 160
-PropID = 0x00000004 (CR_PROP_EXITDESCRIPTION) "Exit
-Description" ........................................................................ 160
-PropID = 0x00000005 (CR_PROP_POLICYDESCRIPTION) "Policy
-Description" ........................................................................ 160
-PropID = 0x00000006 (CR_PROP_CANAME) "Certification Authority
-Name" ............................................................................... 161
-PropID = 0x00000007 (CR_PROP_SANITIZEDCANAME) "Sanitized
-CA Name" ........................................................................... 161
-PropID = 0x00000008 (CR_PROP_SHAREDFOLDER) "Shared Folder
-Path" ................................................................................. 161
-PropID = 0x00000009 (CR_PROP_PARENTCA) "Parent CA Name"
- 161
-PropID = 0x0000000A (CR_PROP_CATYPE) "CA Type" ............. 161
-PropID = 0x0000000B (CR_PROP_CASIGCERTCOUNT) "CA
-Signature Certificate Count".................................................. 162
-
-3.2.1.4.3.2.10
-3.2.1.4.3.2.11
-
-3.2.1.4.3.1.1
-3.2.1.4.3.1.2
-
-3.2.1.4.3.2.3
-3.2.1.4.3.2.4
-
-3.2.1.4.3.2.5
-
-3.2.1.4.3.2.6
-
-3.2.1.4.3.2.7
-
-3.2.1.4.3.2.8
-
-3.2.1.4.3.2.9
-
-3.2.1.4.3.2.1
-
-3.2.1.4.3.2.2
-
-3.2.1.4.2.3
-
-3.2.1.4.3
-
-3.2.1.4.3.1
-
-3.2.1.4.3.2
-
-[MS-WCCE] - v20251121
-Windows Client Certificate Enrollment Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-9 / 259
-
-3.2.1.4.3.2.12
-
-3.2.1.4.3.2.13
-
-3.2.1.4.3.2.14
-
-3.2.1.4.3.2.15
-
-3.2.1.4.3.2.15.1
-
-3.2.1.4.3.2.16
-
-3.2.1.4.3.2.17
-3.2.1.4.3.2.18
-3.2.1.4.3.2.19
-
-3.2.1.4.3.2.20
-3.2.1.4.3.2.21
-
-3.2.1.4.3.2.22
-
-3.2.1.4.3.2.23
-
-3.2.1.4.3.2.24
-
-3.2.1.4.3.2.25
-
-3.2.1.4.3.2.26
-3.2.1.4.3.2.27
-
-3.2.1.4.3.2.28
-
-3.2.1.4.3.2.29
-
-3.2.1.4.3.2.30
-
-3.2.1.4.3.2.31
-
-3.2.1.4.3.2.32
-
-3.2.1.4.3.2.33
-
-3.2.1.4.3.2.34
-
-3.2.1.4.3.2.35
-
-3.2.1.4.3.2.36
-
-3.2.1.4.3.2.37
-
-3.2.1.4.3.2.38
-
-3.2.1.4.3.2.39
-
-3.2.1.4.3.2.40
-
-3.2.1.4.3.2.41
-
-PropID = 0x0000000C (CR_PROP_CASIGCERT) "CA Signature
-Certificate" ......................................................................... 162
-PropID = 0x0000000D (CR_PROP_CASIGCERTCHAIN) "CA signing
-certificate Chain" ................................................................. 162
-PropID = 0x0000000E (CR_PROP_CAXCHGCERTCOUNT) "CA
-Exchange Certificate Count" .................................................. 162
-PropID = 0x0000000F (CR_PROP_CAXCHGCERT) "CA Exchange
-Certificate" ......................................................................... 163
-Creating a CA Exchange Certificate .................................. 163
-
-PropID = 0x00000010 (CR_PROP_CAXCHGCERTCHAIN) "CA
-Exchange Certificate Chain" .................................................. 169
-PropID = 0x00000011 (CR_PROP_BASECRL) "Base CRL" .......... 170
-PropID = 0x00000012 (CR_PROP_DELTACRL) "Delta CRL" ....... 170
-PropID = 0x00000013 (CR_PROP_CACERTSTATE) "CA Signing
-Certificates State" ............................................................... 171
-PropID = 0x00000014 (CR_PROP_CRLSTATE) "CA CRL State" .. 171
-PropID = 0x00000015 (CR_PROP_CAPROPIDMAX) "Maximum
-Property ID" ....................................................................... 172
-PropID = 0x00000016 (CR_PROP_DNSNAME) "CA Fully Qualified
-DNS" ................................................................................. 172
-PropID = 0x00000017 (CR_PROP_ROLESEPARATIONENABLED)
-"Role Separated Enabled" ..................................................... 172
-PropID = 0x00000018 (CR_PROP_KRACERTUSEDCOUNT) "Count Of
-Required KRAs For Archival" ................................................. 172
-PropID = 0x00000019 (CR_PROP_KRACERTCOUNT) "Count Of
-Registered KRAs" ................................................................ 173
-PropID = 0x0000001A (CR_PROP_KRACERT) "KRA Certificate" . 173
-PropID = 0x0000001B (CR_PROP_KRACERTSTATE) "KRA
-Certificates State" ............................................................... 173
-PropID = 0x0000001C (CR_PROP_ADVANCEDSERVER) "Advanced
-Server" .............................................................................. 174
-PropID = 0x0000001D (CR_PROP_TEMPLATES) "Configured
-Certificate Templates" .......................................................... 174
-PropID = 0x0000001E (CR_PROP_BASECRLPUBLISHSTATUS) "Base
-CRL Publishing Status" ......................................................... 174
-PropID = 0x0000001F (CR_PROP_DELTACRLPUBLISHSTATUS)
-"Delta CRL Publishing State" ................................................. 174
-PropID = 0x00000020 (CR_PROP_CASIGCERTCRLCHAIN) "CA
-Signing Certificate Chain and CRL" ........................................ 175
-PropID = 0x00000021 (CR_PROP_CAXCHGCERTCRLCHAIN) "CA
-Exchange Certificate Chain and CRL" ..................................... 175
-PropID = 0x00000022 (CR_PROP_CACERTSTATUSCODE) "CA
-Signing Certificate Status" .................................................... 176
-PropID = 0x00000023 (CR_PROP_CAFORWARDCROSSCERT) "CA
-Forward Cross Certificate" .................................................... 177
-PropID = 0x00000024 (CR_PROP_CABACKWARDCROSSCERT) "CA
-Backward Cross Certificate" .................................................. 177
-PropID = 0x00000025 (CR_PROP_CAFORWARDCROSSCERTSTATE)
-"CA Forward Cross Certificate State" ...................................... 177
-PropID = 0x00000026
-(CR_PROP_CABACKWARDCROSSCERTSTATE) "CA Backward Cross
-Certificate State" ................................................................. 178
-PropID = 0x00000027 (CR_PROP_CACERTVERSION) "CA Signing
-Certificates Revisions" .......................................................... 179
-PropID = 0x00000028 (CR_PROP_SANITIZEDCASHORTNAME) "CA
-Sanitized Short Name" ......................................................... 180
-PropID = 0x00000029 (CR_PROP_CERTCDPURLS) "CRL Distribution
-Points" ............................................................................... 180
-
-[MS-WCCE] - v20251121
-Windows Client Certificate Enrollment Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-10 / 259
-
-3.2.1.5
-3.2.1.6
-
-3.2.2
-
-3.2.2.1
-
-3.2.2.1.1
-
-3.2.1.4.3.2.42
-
-3.2.1.4.3.2.48
-
-3.2.1.4.3.2.47
-
-3.2.1.4.3.2.46
-
-3.2.1.4.3.2.43
-
-3.2.1.4.3.2.44
-
-3.2.1.4.3.2.45
-
-PropID = 0x0000002A (CR_PROP_CERTAIAURLS) "Authority
-Information Access" ............................................................. 180
-PropID = 0x0000002B (CR_PROP_CERTAIAOCSPRLS) "OCSP URLs"
- 180
-PropID = 0x0000002C (CR_PROP_LOCALENAME) "CA Locale Name"
- 181
-PropID = 0x0000002D (CR_PROP_SUBJECTTEMPLATE_OIDS)
-"Subject Template" .............................................................. 181
-PropID = 0x0000002E (CR_PROP_CRLPARTITIONCOUNT) "CRL
-Partitions Count" ................................................................. 181
-PropID = 0x0000002F (CR_PROP_PARTITIONED_BASECRL)
-"Partitioned Base CRL" ......................................................... 181
-PropID = 0x00000030 (CR_PROP_PARTITIONED_DELTACRL)
-"Partitioned Delta CRL" ........................................................ 182
-PropID = 0x00000031
-(CR_PROP_PARTITIONED_BASECRLPUBLISHSTATUS) "Partitioned
-Base CRL Publishing Status" ................................................. 182
-PropID = 0x00000032 (CR_PROP_
-PARTITIONED_DELTACRLPUBLISHSTATUS) "Partitioned Delta CRL
-Publishing Status" ............................................................... 182
-ICertRequestD2::GetCAPropertyInfo (Opnum 8) ........................... 183
-ICertRequestD2::Ping2 (Opnum 9) ............................................. 184
-Timer Events ....................................................................................... 184
-Other Local Events ............................................................................... 184
-Server Mode: Enterprise CA ........................................................................ 184
-Interaction with Active Directory ............................................................ 184
-
-3.2.1.4.3.2.50
-
-3.2.1.4.3.2.49
-
-3.2.1.4.3.3
-3.2.1.4.3.4
-
-3.2.2.1.1.1
-3.2.2.1.1.2
-
-3.2.2.1.2
-
-3.2.2.1.2.1
-3.2.2.1.2.2
-
-3.2.2.1.3
-
-3.2.2.1.3.1
-3.2.2.1.3.2
-
-3.2.2.1.4
-
-3.2.2.1.4.1
-3.2.2.1.4.2
-
-3.2.2.1.5
-
-3.2.2.1.5.1
-3.2.2.1.5.2
-
-3.2.2.1.6
-3.2.2.1.7
-
-3.2.2.3.1
-
-3.2.2.2
-3.2.2.3
-
-3.2.2.4
-3.2.2.5
-3.2.2.6
-
-3.2.2.6.1
-3.2.2.6.2
-
-Search Requests for Reading Objects under Enrollment Services or
-Certificate Templates Container ....................................................... 184
-Search Requests ....................................................................... 185
-Bind Requests .......................................................................... 190
-Search Requests for Querying End Entity Object Attributes .................. 191
-Search Requests ....................................................................... 191
-Bind Requests .......................................................................... 194
-
-Search Requests for Querying End Entity Object Attributes with an End
-Entity Provided DC Name ................................................................ 195
-Search Requests ....................................................................... 195
-Bind Requests .......................................................................... 198
-Publishing KRA Certificates .............................................................. 199
-Search Requests ....................................................................... 199
-Bind Requests .......................................................................... 203
-Publishing Issued Certificates ........................................................... 204
-Search Requests ....................................................................... 204
-Bind Requests .......................................................................... 207
-Determining DC Support for Signing ................................................. 208
-Converting the LDAP results to HRESULT ........................................... 209
-CA Information in the Active Directory .................................................... 210
-Abstract Data Model ............................................................................. 211
-Certificate Templates Replica Table ................................................... 211
-Timers ................................................................................................ 211
-Initialization ........................................................................................ 212
-Message Processing Events and Sequencing Rules ................................... 212
-Algorithms ..................................................................................... 212
-ICertRequestD ............................................................................... 212
-ICertRequestD::Request (Opnum 3) ............................................ 212
-Parsing and Verifying pwszAttributes ..................................... 213
-Processing a Request ........................................................... 213
-Processing Rules for Request on Behalf of a Different Subject
- ................................................................................... 214
-
-3.2.2.6.2.1
-
-3.2.2.6.2.1.1
-3.2.2.6.2.1.2
-
-3.2.2.6.2.1.2.1
-
-[MS-WCCE] - v20251121
-Windows Client Certificate Enrollment Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-11 / 259
-
-3.2.2.6.2.1.2.1.1
-
-3.2.2.6.2.1.2.1.2
-
-3.2.2.6.2.1.2.2
-
-3.2.2.6.2.1.2.3
-3.2.2.6.2.1.2.4
-3.2.2.6.2.1.2.5
-
-3.2.2.6.2.1.2.5.1
-
-3.2.2.6.2.1.2.5.2
-
-3.2.2.6.2.1.2.6
-
-Request on Behalf of Using CMS and PKCS #10 Request
-Formats .................................................................. 214
-Request on Behalf of Using CMS and CMC Request Format
- ............................................................................. 214
-
-Processing Rules for Requests That Include Private Key
-Information................................................................... 215
-Processing Rules for Renewal Request .............................. 216
-Processing Renewal Request on Behalf of a Different Subject216
-Processing Rules for an Initial Key Attestation Request ....... 217
-Processing Rules for Key Attestation Based on Certificates
- ............................................................................. 217
-Processing Rules for Key Attestation Based on a Key .... 218
-
-3.2.2.6.2.1.2.7
-
-3.2.2.6.2.1.3
-3.2.2.6.2.1.4
-
-3.2.2.6.2.1.4.1
-3.2.2.6.2.1.4.2
-3.2.2.6.2.1.4.3
-3.2.2.6.2.1.4.4
-
-Processing Rules for Providing a Challenge Response to an
-Initial Key Attestation Request ........................................ 218
-Processing Rules for a Challenge Response Request ........... 219
-Storing Request Parameters in the Request Table .................... 219
-CA Policy Algorithm ............................................................. 220
-Verify Configured Certificate Template .............................. 221
-Verify Certificate Template Version .................................. 221
-Verify End Entity Permissions .......................................... 222
-Version 1 Certificate Template Server Processing ............... 222
-Flags ...................................................................... 222
-pKIExpirationPeriod .................................................. 223
-pKIExtendedKeyUsage .............................................. 223
-pKIKeyUsage ........................................................... 223
-pKIMaxIssuingDepth ................................................. 223
-pKICriticalExtensions ................................................ 224
-Version 2, 3, and 4 Certificate Template Server Processing . 224
-msPKI-RA-Signature ................................................. 224
-msPKI-Minimal-Key-Size ........................................... 224
-msPKI-RA-Policies .................................................... 224
-msPKI-RA-Application-Policies.................................... 224
-msPKI-Certificate-Application-Policy ........................... 225
-msPKI-Enrollment-Flag ............................................. 225
-msPKI-Private-Key-Flag ............................................ 227
-msPKI-Certificate-Policy ............................................ 229
-msPKI-Certificate-Name-Flag ..................................... 230
-Additional Processing Rules for Certificate Requests ........... 231
-Enforcing Configured Certificate Templates Issuance .......... 232
-CT_FLAG_PREVIOUS_APPROVAL_VALIDATE_REENROLLMENT
-Enforcement Conditions .................................................. 232
-ICertRequestD2.............................................................................. 232
-ICertRequestD2::GetCAProperty (Opnum 7) ................................ 232
-
-3.2.2.6.2.1.4.4.1
-3.2.2.6.2.1.4.4.2
-3.2.2.6.2.1.4.4.3
-3.2.2.6.2.1.4.4.4
-3.2.2.6.2.1.4.4.5
-3.2.2.6.2.1.4.4.6
-
-3.2.2.6.2.1.4.5
-
-3.2.2.6.2.1.4.5.1
-3.2.2.6.2.1.4.5.2
-3.2.2.6.2.1.4.5.3
-3.2.2.6.2.1.4.5.4
-3.2.2.6.2.1.4.5.5
-3.2.2.6.2.1.4.5.6
-3.2.2.6.2.1.4.5.7
-3.2.2.6.2.1.4.5.8
-3.2.2.6.2.1.4.5.9
-
-3.2.2.6.2.1.4.6
-3.2.2.6.2.1.4.7
-3.2.2.6.2.1.4.8
-
-3.2.2.6.3
-
-3.2.2.6.3.1
-
-3.2.2.6.3.1.1
-
-3.2.2.6.3.1.2
-
-PropID=0x0000001D (CR_PROP_TEMPLATES) "Configured
-Certificate Templates" .......................................................... 233
-PropID=0x0000000A (CR_PROP_CATYPE) "CA Type" ............... 233
-Timer Events ....................................................................................... 233
-Other Local Events ............................................................................... 233
-
-3.2.2.7
-3.2.2.8
-
-4  Protocol Examples ............................................................................................... 234
-
-5.1
-
-5  Security Considerations ....................................................................................... 235
-Security Considerations for Implementers .......................................................... 235
-Keeping Information Secret ........................................................................ 235
-Generating Keys ........................................................................................ 235
-Entropy Sources ........................................................................................ 235
-Name Selection ......................................................................................... 235
-Name Binding ........................................................................................... 236
-Attribute Definition .................................................................................... 236
-
-5.1.1
-5.1.2
-5.1.3
-5.1.4
-5.1.5
-5.1.6
-
-[MS-WCCE] - v20251121
-Windows Client Certificate Enrollment Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-12 / 259
-
-Attribute Binding ....................................................................................... 236
-5.1.7
-Coding Practices ........................................................................................ 236
-5.1.8
-Security Consideration Citations .................................................................. 236
-5.1.9
-5.1.10
-Key Archival Security Considerations ............................................................ 237
-5.1.11  Data Consistency for Certificate Templates ................................................... 238
-
-6  Appendix A: Full IDL ............................................................................................ 239
-
-7  Appendix B: Product Behavior ............................................................................. 241
-
-8  Change Tracking .................................................................................................. 256
-
-9  Index ................................................................................................................... 257
-
-[MS-WCCE] - v20251121
-Windows Client Certificate Enrollment Protocol
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-13 / 259
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 High-Level Protocol Operations](#131-high-level-protocol-operations)
+    - [1.3.2 Concepts](#132-concepts)
+      - [1.3.2.1 Key Archival](#1321-key-archival)
+      - [1.3.2.2 Key Attestation](#1322-key-attestation)
+      - [1.3.2.3 Certificate Transparency](#1323-certificate-transparency)
+      - [1.3.2.4 Netscape KEYGEN Tag](#1324-netscape-keygen-tag)
+      - [1.3.2.5 Sanitizing Common Names](#1325-sanitizing-common-names)
+    - [1.3.3 Information for Certificate Templates](#133-information-for-certificate-templates)
+      - [1.3.3.1 Template IDs](#1331-template-ids)
+      - [1.3.3.2 Implementations Without Templates](#1332-implementations-without-templates)
+      - [1.3.3.3 Modifying Templates](#1333-modifying-templates)
+      - [1.3.3.4 Permissions on Templates](#1334-permissions-on-templates)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 BYTE](#221-byte)
+    - [2.2.2 Common Structures](#222-common-structures)
+      - [2.2.2.1 CACERTBLOB](#2221-cacertblob)
+      - [2.2.2.2 CERTTRANSBLOB](#2222-certtransblob)
+        - [2.2.2.2.1 Marshaling Unicode Strings in CERTTRANSBLOB](#22221-marshaling-unicode-strings-in-certtransblob)
+        - [2.2.2.2.2 Marshaling X.509 Certificates in a CERTTRANSBLOB](#22222-marshaling-x509-certificates-in-a-certtransblob)
+        - [2.2.2.2.3 Marshaling an X.509 CRL in a CERTTRANSBLOB](#22223-marshaling-an-x509-crl-in-a-certtransblob)
+        - [2.2.2.2.4 Marshaling CMS in a CERTTRANSBLOB](#22224-marshaling-cms-in-a-certtransblob)
+        - [2.2.2.2.5 Marshaling CAINFO in CERTTRANSBLOB](#22225-marshaling-cainfo-in-certtransblob)
+        - [2.2.2.2.6 Marshaling Certificate Requests in a CERTTRANSBLOB](#22226-marshaling-certificate-requests-in-a-certtransblob)
+        - [2.2.2.2.7 Marshaling CMC in a CERTTRANSBLOB](#22227-marshaling-cmc-in-a-certtransblob)
+      - [2.2.2.3 CATRANSPROP](#2223-catransprop)
+        - [2.2.2.3.1 Marshaling CATRANSPROP in a CERTTRANSBLOB](#22231-marshaling-catransprop-in-a-certtransblob)
+      - [2.2.2.4 CAINFO](#2224-cainfo)
+      - [2.2.2.5 KeyAttestationStatement](#2225-keyattestationstatement)
+      - [2.2.2.6 Request Format](#2226-request-format)
+        - [2.2.2.6.1 PKCS #10 Request Format](#22261-pkcs-10-request-format)
+        - [2.2.2.6.2 CMS Request Format](#22262-cms-request-format)
+        - [2.2.2.6.3 CMC Request Format](#22263-cmc-request-format)
+        - [2.2.2.6.4 Netscape KEYGEN Tag Request Format](#22264-netscape-keygen-tag-request-format)
+          - [2.2.2.6.4.1 CertType](#222641-certtype)
+          - [2.2.2.6.4.2 Relative Distinguished Name](#222642-relative-distinguished-name)
+        - [2.2.2.6.5 Null Signature](#22265-null-signature)
+      - [2.2.2.7 Certificate Request Attributes](#2227-certificate-request-attributes)
+        - [2.2.2.7.1 szOID_OS_VERSION](#22271-szoidosversion)
+        - [2.2.2.7.2 szOID_ENROLLMENT_CSP_PROVIDER](#22272-szoidenrollmentcspprovider)
+        - [2.2.2.7.3 szOID_RENEWAL_CERTIFICATE](#22273-szoidrenewalcertificate)
+        - [2.2.2.7.4 szOID_REQUEST_CLIENT_INFO](#22274-szoidrequestclientinfo)
+        - [2.2.2.7.5 szOID_NT_PRINCIPAL_NAME](#22275-szoidntprincipalname)
+        - [2.2.2.7.6 szOID_NTDS_REPLICATION](#22276-szoidntdsreplication)
+        - [2.2.2.7.7 szOID_CERT_EXTENSIONS](#22277-szoidcertextensions)
+          - [2.2.2.7.7.1 szOID_ENROLL_CERTTYPE](#222771-szoidenrollcerttype)
+          - [2.2.2.7.7.2 szOID_CERTIFICATE_TEMPLATE](#222772-szoidcertificatetemplate)
+          - [2.2.2.7.7.3 Encoding a Certificate Application Policy Extension](#222773-encoding-a-certificate-application-policy-extension)
+          - [2.2.2.7.7.4 szOID_NTDS_CA_SECURITY_EXT](#222774-szoidntdscasecurityext)
+        - [2.2.2.7.8 szOID_ARCHIVED_KEY_ATTR](#22278-szoidarchivedkeyattr)
+        - [2.2.2.7.9 szOID_ENCRYPTED_KEY_HASH](#22279-szoidencryptedkeyhash)
+        - [2.2.2.7.10 szENROLLMENT_NAME_VALUE_PAIR](#222710-szenrollmentnamevaluepair)
+        - [2.2.2.7.11 szOID_ISSUED_CERT_HASH](#222711-szoidissuedcerthash)
+        - [2.2.2.7.12 szOID_ENROLL_ATTESTATION_STATEMENT](#222712-szoidenrollattestationstatement)
+        - [2.2.2.7.13 szOID_ENROLL_EK_INFO](#222713-szoidenrollekinfo)
+        - [2.2.2.7.14 szOID_ENROLL_KSP_NAME](#222714-szoidenrollkspname)
+        - [2.2.2.7.15 szOID_ENROLL_AIK_INFO](#222715-szoidenrollaikinfo)
+      - [2.2.2.8 Response Format](#2228-response-format)
+        - [2.2.2.8.1 CA Response Attributes](#22281-ca-response-attributes)
+          - [2.2.2.8.1.1 szOID_ENROLL_ATTESTATION_CHALLENGE](#222811-szoidenrollattestationchallenge)
+          - [2.2.2.8.1.2 szOID_ENROLL_CAXCHGCERT_HASH](#222812-szoidenrollcaxchgcerthash)
+          - [2.2.2.8.1.3 szOID_ENROLL_KSP_NAME](#222813-szoidenrollkspname)
+          - [2.2.2.8.1.4 szOID_ENROLL_ENCRYPTION_ALGORITHM](#222814-szoidenrollencryptionalgorithm)
+      - [2.2.2.9 Private Key BLOB](#2229-private-key-blob)
+        - [2.2.2.9.1 RSA Private Key BLOB](#22291-rsa-private-key-blob)
+        - [2.2.2.9.2 BCRYPT RSA Private Key BLOB](#22292-bcrypt-rsa-private-key-blob)
+        - [2.2.2.9.3 ECDH Private Key BLOB](#22293-ecdh-private-key-blob)
+      - [2.2.2.10 Key Spec](#22210-key-spec)
+      - [2.2.2.11 Enterprise PKI Data Structures](#22211-enterprise-pki-data-structures)
+        - [2.2.2.11.1 Certificate Templates Container](#222111-certificate-templates-container)
+        - [2.2.2.11.2 Enrollment Services Container](#222112-enrollment-services-container)
+          - [2.2.2.11.2.1 cn Attribute](#2221121-cn-attribute)
+          - [2.2.2.11.2.2 displayName Attribute](#2221122-displayname-attribute)
+          - [2.2.2.11.2.3 certificateTemplates Attribute](#2221123-certificatetemplates-attribute)
+          - [2.2.2.11.2.4 dNSHostName](#2221124-dnshostname)
+          - [2.2.2.11.2.5 cACertificate Attribute](#2221125-cacertificate-attribute)
+        - [2.2.2.11.3 NTAuthCertificates Object](#222113-ntauthcertificates-object)
+        - [2.2.2.11.4 Certification Authorities Container](#222114-certification-authorities-container)
+          - [2.2.2.11.4.1 cn Attribute](#2221141-cn-attribute)
+          - [2.2.2.11.4.2 cACertificate Attribute](#2221142-cacertificate-attribute)
+    - [2.2.3 Certificate Requirements](#223-certificate-requirements)
+      - [2.2.3.1 Key Recovery Certificate](#2231-key-recovery-certificate)
+    - [2.2.4 Common Error Codes](#224-common-error-codes)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Role](#31-client-role)
+    - [3.1.1 Client Mode: Basic Enrollment](#311-client-mode-basic-enrollment)
+      - [3.1.1.1 Abstract Data Model](#3111-abstract-data-model)
+      - [3.1.1.2 Timers](#3112-timers)
+      - [3.1.1.3 Initialization](#3113-initialization)
+      - [3.1.1.4 Message Processing Events and Sequencing Rules](#3114-message-processing-events-and-sequencing-rules)
+        - [3.1.1.4.1 Algorithms](#31141-algorithms)
+          - [3.1.1.4.1.1 Sanitizing Common Names](#311411-sanitizing-common-names)
+            - [3.1.1.4.1.1.1 Hashing Processing Rules](#3114111-hashing-processing-rules)
+            - [3.1.1.4.1.1.2 Disallowed Characters](#3114112-disallowed-characters)
+        - [3.1.1.4.2 Processing Rules for the pwszAuthority Parameter](#31142-processing-rules-for-the-pwszauthority-parameter)
+        - [3.1.1.4.3 ICertRequestD::Request and ICertRequestD2::Request2 Processing](#31143-icertrequestdrequest-and-icertrequestd2request2-processing)
+          - [3.1.1.4.3.1 New Certificate Requests](#311431-new-certificate-requests)
+            - [3.1.1.4.3.1.1 New Certificate Request Using PKCS #10 Request Format](#3114311-new-certificate-request-using-pkcs-10-request-format)
+            - [3.1.1.4.3.1.2 New Certificate Request Using CMS and PKCS #10 Request Formats](#3114312-new-certificate-request-using-cms-and-pkcs-10-request-formats)
+            - [3.1.1.4.3.1.3 New Certificate Request Using CMS and CMC Request Formats](#3114313-new-certificate-request-using-cms-and-cmc-request-formats)
+            - [3.1.1.4.3.1.4 New Certificate Request Using Netscape KEYGEN Request Format](#3114314-new-certificate-request-using-netscape-keygen-request-format)
+          - [3.1.1.4.3.2 Renew Certificate Requests](#311432-renew-certificate-requests)
+            - [3.1.1.4.3.2.1 Renew Certificate Request Using CMS and PKCS #10 Request Formats](#3114321-renew-certificate-request-using-cms-and-pkcs-10-request-formats)
+            - [3.1.1.4.3.2.2 Renew Certificate Request Using CMS and CMC Request Formats](#3114322-renew-certificate-request-using-cms-and-cmc-request-formats)
+          - [3.1.1.4.3.3 Enroll on Behalf of Certificate Requests](#311433-enroll-on-behalf-of-certificate-requests)
+            - [3.1.1.4.3.3.1 Abstract Data Model](#3114331-abstract-data-model)
+            - [3.1.1.4.3.3.2 Enroll on Behalf of Request Using CMS and PKCS #10 Request Formats](#3114332-enroll-on-behalf-of-request-using-cms-and-pkcs-10-request-formats)
+            - [3.1.1.4.3.3.3 Enroll on Behalf of Certificate Request Using CMS and CMC Request](#3114333-enroll-on-behalf-of-certificate-request-using-cms-and-cmc-request)
+          - [3.1.1.4.3.4 Certificate Request with Key Attestation](#311434-certificate-request-with-key-attestation)
+            - [3.1.1.4.3.4.1 EK Attestation (Authority and Subject)](#3114341-ek-attestation-authority-and-subject)
+              - [3.1.1.4.3.4.1.1 New Certificate Request with Key Attestation Statement](#31143411-new-certificate-request-with-key-attestation-statement)
+              - [3.1.1.4.3.4.1.2 Responding to a CA Challenge Message](#31143412-responding-to-a-ca-challenge-message)
+              - [3.1.1.4.3.4.1.3 Certificate Request with Challenge Response](#31143413-certificate-request-with-challenge-response)
+            - [3.1.1.4.3.4.2 AIK Attestation (Subject Only)](#3114342-aik-attestation-subject-only)
+              - [3.1.1.4.3.4.2.1 New Certificate Request with Key Attestation Statement](#31143421-new-certificate-request-with-key-attestation-statement)
+          - [3.1.1.4.3.5 Certificate Requests with Certificate Transparency](#311435-certificate-requests-with-certificate-transparency)
+            - [3.1.1.4.3.5.1 New Certificate Request with Certificate Transparency](#3114351-new-certificate-request-with-certificate-transparency)
+            - [3.1.1.4.3.5.2 Signed Certificate Timestamp List Request](#3114352-signed-certificate-timestamp-list-request)
+          - [3.1.1.4.3.6 Certificate Requests with Private Key Info](#311436-certificate-requests-with-private-key-info)
+            - [3.1.1.4.3.6.1 Certificate Request with a Private Key Using CMC Request Format](#3114361-certificate-request-with-a-private-key-using-cmc-request-format)
+          - [3.1.1.4.3.7 Certificate Request for Certificate Retrieval](#311437-certificate-request-for-certificate-retrieval)
+          - [3.1.1.4.3.8 Certificate Requests in Pre-sign flow](#311438-certificate-requests-in-pre-sign-flow)
+            - [3.1.1.4.3.8.1 New Certificate Request for Pre-sign Processing](#3114381-new-certificate-request-for-pre-sign-processing)
+            - [3.1.1.4.3.8.2 New Certificate Request After Pre-sign Processing](#3114382-new-certificate-request-after-pre-sign-processing)
+        - [3.1.1.4.4 ICertRequestD::GetCACert Request Processing](#31144-icertrequestdgetcacert-request-processing)
+        - [3.1.1.4.5 ICertRequestD::Ping and ICertRequestD2::Ping2 Request Processing](#31145-icertrequestdping-and-icertrequestd2ping2-request-processing)
+        - [3.1.1.4.6 ICertRequestD2::GetCAProperty Request Processing](#31146-icertrequestd2getcaproperty-request-processing)
+        - [3.1.1.4.7 ICertRequestD2::GetCAPropertyInfo Request Processing](#31147-icertrequestd2getcapropertyinfo-request-processing)
+      - [3.1.1.5 Timer Events](#3115-timer-events)
+      - [3.1.1.6 Other Local Events](#3116-other-local-events)
+        - [3.1.1.6.1 Retrieving the Pending Certificate Request](#31161-retrieving-the-pending-certificate-request)
+        - [3.1.1.6.2 Submitting Certificate Request](#31162-submitting-certificate-request)
+    - [3.1.2 Client Mode: Enrollment Based on Certificate Templates](#312-client-mode-enrollment-based-on-certificate-templates)
+      - [3.1.2.1 Abstract Data Model](#3121-abstract-data-model)
+      - [3.1.2.2 Timers](#3122-timers)
+      - [3.1.2.3 Initialization](#3123-initialization)
+      - [3.1.2.4 Message Processing Events and Sequencing Rules](#3124-message-processing-events-and-sequencing-rules)
+        - [3.1.2.4.1 Algorithms](#31241-algorithms)
+        - [3.1.2.4.2 ICertRequestD::Request and ICertRequestD2::Request2 Processing](#31242-icertrequestdrequest-and-icertrequestd2request2-processing)
+          - [3.1.2.4.2.1 Choosing Certificate Request Types](#312421-choosing-certificate-request-types)
+          - [3.1.2.4.2.2 Certificate Template Processing Rules](#312422-certificate-template-processing-rules)
+            - [3.1.2.4.2.2.1 Processing Rules for Certificate Template Version 1](#3124221-processing-rules-for-certificate-template-version-1)
+              - [3.1.2.4.2.2.1.1 Certificate.Template.flags](#31242211-certificatetemplateflags)
+              - [3.1.2.4.2.2.1.2 Certificate.Template.pKIExtendedKeyUsage](#31242212-certificatetemplatepkiextendedkeyusage)
+              - [3.1.2.4.2.2.1.3 Certificate.Template.pKIKeyUsage](#31242213-certificatetemplatepkikeyusage)
+              - [3.1.2.4.2.2.1.4 Certificate.Template.pKIMaxIssuingDepth](#31242214-certificatetemplatepkimaxissuingdepth)
+              - [3.1.2.4.2.2.1.5 Certificate.Template.pKIDefaultKeySpec](#31242215-certificatetemplatepkidefaultkeyspec)
+              - [3.1.2.4.2.2.1.6 Certificate.Template.pKIDefaultCSPs](#31242216-certificatetemplatepkidefaultcsps)
+              - [3.1.2.4.2.2.1.7 Certificate.Template.pKICriticalExtensions](#31242217-certificatetemplatepkicriticalextensions)
+              - [3.1.2.4.2.2.1.8 Certificate.Template.cn](#31242218-certificatetemplatecn)
+              - [3.1.2.4.2.2.1.9 Certificate.Template.revision](#31242219-certificatetemplaterevision)
+            - [3.1.2.4.2.2.2 Processing Rules for Certificate Template Versions 2, 3, and 4](#3124222-processing-rules-for-certificate-template-versions-2-3-and-4)
+              - [3.1.2.4.2.2.2.1 Certificate.Template.msPKI-Minimal-Key-Size](#31242221-certificatetemplatemspki-minimal-key-size)
+              - [3.1.2.4.2.2.2.2 Certificate.Template.pKIDefaultCSPs](#31242222-certificatetemplatepkidefaultcsps)
+              - [3.1.2.4.2.2.2.3 Certificate.Template.msPKI-Template-Cert-Template-OID](#31242223-certificatetemplatemspki-template-cert-template-oid)
+              - [3.1.2.4.2.2.2.4 Certificate.Template.msPKI-Template-Minor-Revision](#31242224-certificatetemplatemspki-template-minor-revision)
+              - [3.1.2.4.2.2.2.5 Certificate.Template.msPKI-RA-Application-Policies](#31242225-certificatetemplatemspki-ra-application-policies)
+              - [3.1.2.4.2.2.2.6 Certificate.Template.msPKI-Certificate-Application-Policy](#31242226-certificatetemplatemspki-certificate-application-policy)
+              - [3.1.2.4.2.2.2.7 Certificate.Template.msPKI-Enrollment-Flag](#31242227-certificatetemplatemspki-enrollment-flag)
+              - [3.1.2.4.2.2.2.8 Certificate.Template.msPKI-Private-Key-Flag](#31242228-certificatetemplatemspki-private-key-flag)
+              - [3.1.2.4.2.2.2.9 Certificate.Template.msPKI-Certificate-Policy](#31242229-certificatetemplatemspki-certificate-policy)
+              - [3.1.2.4.2.2.2.10 Certificate.Template.msPKI-Certificate-Name-Flag](#312422210-certificatetemplatemspki-certificate-name-flag)
+          - [3.1.2.4.2.3 Encoding Certificate Template Identifier in the Request](#312423-encoding-certificate-template-identifier-in-the-request)
+      - [3.1.2.5 Timer Events](#3125-timer-events)
+      - [3.1.2.6 Other Local Events](#3126-other-local-events)
+        - [3.1.2.6.1 Creating a Certificate Request Based on a Certificate Template](#31261-creating-a-certificate-request-based-on-a-certificate-template)
+  - [3.2 Server Role](#32-server-role)
+          - [3.2.1.4.2.2 and 3.2.1.4.3.2, respectively.](#321422-and-321432-respectively)
+            - [3.2.1.4.2.2.1 GETCERT_CASIGCERT - 0x00000000](#3214221-getcertcasigcert-0x00000000)
+            - [3.2.1.4.2.2.2 GETCERT_CAXCHGCERT - 0x00000001](#3214222-getcertcaxchgcert-0x00000001)
+            - [3.2.1.4.2.2.3 GETCERT_CURRENTCRL - 0x6363726C](#3214223-getcertcurrentcrl-0x6363726c)
+            - [3.2.1.4.2.2.4 GETCERT_FILEVERSION - 0x66696C65](#3214224-getcertfileversion-0x66696c65)
+            - [3.2.1.4.2.2.5 GETCERT_CAINFO - 0x696E666F](#3214225-getcertcainfo-0x696e666f)
+            - [3.2.1.4.2.2.6 GETCERT_CANAME - 0x6E616D65](#3214226-getcertcaname-0x6e616d65)
+            - [3.2.1.4.2.2.7 GETCERT_PARENTCONFIG - 0x70617265](#3214227-getcertparentconfig-0x70617265)
+            - [3.2.1.4.2.2.8 GETCERT_POLICYVERSION - 0x706F6C69](#3214228-getcertpolicyversion-0x706f6c69)
+            - [3.2.1.4.2.2.9 GETCERT_PRODUCTVERSION - 0x70726F64](#3214229-getcertproductversion-0x70726f64)
+            - [3.2.1.4.2.2.10 GETCERT_SANITIZEDCANAME - 0x73616E69](#32142210-getcertsanitizedcaname-0x73616e69)
+            - [3.2.1.4.2.2.11 GETCERT_SHAREDFOLDER - 0x73686172](#32142211-getcertsharedfolder-0x73686172)
+            - [3.2.1.4.2.2.12 GETCERT_CATYPE - 0x74797065](#32142212-getcertcatype-0x74797065)
+            - [3.2.1.4.2.2.13 GETCERT_CRLBYINDEX - 0x636C](#32142213-getcertcrlbyindex-0x636c)
+            - [3.2.1.4.2.2.14 GETCERT_CACERTBYINDEX - 0x6374](#32142214-getcertcacertbyindex-0x6374)
+            - [3.2.1.4.2.2.15 GETCERT_EXITVERSIONBYINDEX - 0x6578](#32142215-getcertexitversionbyindex-0x6578)
+            - [3.2.1.4.2.2.16 GETCERT_CRLSTATEBYINDEX - 0x736C](#32142216-getcertcrlstatebyindex-0x736c)
+            - [3.2.1.4.2.2.17 GETCERT_CACERTSTATEBYINDEX - 0x7374](#32142217-getcertcacertstatebyindex-0x7374)
+          - [3.2.1.4.2.3 ICertRequestD::Ping (Opnum 5)](#321423-icertrequestdping-opnum-5)
+        - [3.2.1.4.3 ICertRequestD2](#32143-icertrequestd2)
+          - [3.2.1.4.3.1 ICertRequestD2::Request2 (Opnum 6)](#321431-icertrequestd2request2-opnum-6)
+            - [3.2.1.4.3.1.1 dwFlags Packed Data Requirements](#3214311-dwflags-packed-data-requirements)
+            - [3.2.1.4.3.1.2 Requesting Status Inspection](#3214312-requesting-status-inspection)
+          - [3.2.1.4.3.2 ICertRequestD2::GetCAProperty (Opnum 7)](#321432-icertrequestd2getcaproperty-opnum-7)
+            - [3.2.1.4.3.2.1 PropID = 0x00000001 (CR_PROP_FILEVERSION) "CA File Version"](#3214321-propid-0x00000001-crpropfileversion-ca-file-version)
+            - [3.2.1.4.3.2.2 PropID = 0x00000002 (CR_PROP_PRODUCTVERSION) "CA Product](#3214322-propid-0x00000002-crpropproductversion-ca-product)
+            - [3.2.1.4.3.2.3 PropID = 0x00000003 (CR_PROP_EXITCOUNT) "Exit Count"](#3214323-propid-0x00000003-crpropexitcount-exit-count)
+            - [3.2.1.4.3.2.4 PropID = 0x00000004 (CR_PROP_EXITDESCRIPTION) "Exit Description"](#3214324-propid-0x00000004-crpropexitdescription-exit-description)
+            - [3.2.1.4.3.2.5 PropID = 0x00000005 (CR_PROP_POLICYDESCRIPTION) "Policy](#3214325-propid-0x00000005-crproppolicydescription-policy)
+            - [3.2.1.4.3.2.6 PropID = 0x00000006 (CR_PROP_CANAME) "Certification Authority](#3214326-propid-0x00000006-crpropcaname-certification-authority)
+            - [3.2.1.4.3.2.7 PropID = 0x00000007 (CR_PROP_SANITIZEDCANAME) "Sanitized CA](#3214327-propid-0x00000007-crpropsanitizedcaname-sanitized-ca)
+            - [3.2.1.4.3.2.8 PropID = 0x00000008 (CR_PROP_SHAREDFOLDER) "Shared Folder](#3214328-propid-0x00000008-crpropsharedfolder-shared-folder)
+            - [3.2.1.4.3.2.9 PropID = 0x00000009 (CR_PROP_PARENTCA) "Parent CA Name"](#3214329-propid-0x00000009-crpropparentca-parent-ca-name)
+            - [3.2.1.4.3.2.10 PropID = 0x0000000A (CR_PROP_CATYPE) "CA Type"](#32143210-propid-0x0000000a-crpropcatype-ca-type)
+            - [3.2.1.4.3.2.11 PropID = 0x0000000B (CR_PROP_CASIGCERTCOUNT) "CA](#32143211-propid-0x0000000b-crpropcasigcertcount-ca)
+            - [3.2.1.4.3.2.12 PropID = 0x0000000C (CR_PROP_CASIGCERT) "CA Signature](#32143212-propid-0x0000000c-crpropcasigcert-ca-signature)
+            - [3.2.1.4.3.2.13 PropID = 0x0000000D (CR_PROP_CASIGCERTCHAIN) "CA signing](#32143213-propid-0x0000000d-crpropcasigcertchain-ca-signing)
+            - [3.2.1.4.3.2.14 PropID = 0x0000000E (CR_PROP_CAXCHGCERTCOUNT) "CA](#32143214-propid-0x0000000e-crpropcaxchgcertcount-ca)
+            - [3.2.1.4.3.2.15 PropID = 0x0000000F (CR_PROP_CAXCHGCERT) "CA Exchange](#32143215-propid-0x0000000f-crpropcaxchgcert-ca-exchange)
+              - [3.2.1.4.3.2.15.1 Creating a CA Exchange Certificate](#321432151-creating-a-ca-exchange-certificate)
+            - [3.2.1.4.3.2.16 PropID = 0x00000010 (CR_PROP_CAXCHGCERTCHAIN) "CA](#32143216-propid-0x00000010-crpropcaxchgcertchain-ca)
+            - [3.2.1.4.3.2.17 PropID = 0x00000011 (CR_PROP_BASECRL) "Base CRL"](#32143217-propid-0x00000011-crpropbasecrl-base-crl)
+            - [3.2.1.4.3.2.18 PropID = 0x00000012 (CR_PROP_DELTACRL) "Delta CRL"](#32143218-propid-0x00000012-crpropdeltacrl-delta-crl)
+            - [3.2.1.4.3.2.19 PropID = 0x00000013 (CR_PROP_CACERTSTATE) "CA Signing](#32143219-propid-0x00000013-crpropcacertstate-ca-signing)
+            - [3.2.1.4.3.2.20 PropID = 0x00000014 (CR_PROP_CRLSTATE) "CA CRL State"](#32143220-propid-0x00000014-crpropcrlstate-ca-crl-state)
+            - [3.2.1.4.3.2.21 PropID = 0x00000015 (CR_PROP_CAPROPIDMAX) "Maximum](#32143221-propid-0x00000015-crpropcapropidmax-maximum)
+            - [3.2.1.4.3.2.22 PropID = 0x00000016 (CR_PROP_DNSNAME) "CA Fully Qualified](#32143222-propid-0x00000016-crpropdnsname-ca-fully-qualified)
+            - [3.2.1.4.3.2.23 PropID = 0x00000017 (CR_PROP_ROLESEPARATIONENABLED)](#32143223-propid-0x00000017-crproproleseparationenabled)
+            - [3.2.1.4.3.2.24 PropID = 0x00000018 (CR_PROP_KRACERTUSEDCOUNT) "Count](#32143224-propid-0x00000018-crpropkracertusedcount-count)
+            - [3.2.1.4.3.2.25 PropID = 0x00000019 (CR_PROP_KRACERTCOUNT) "Count Of](#32143225-propid-0x00000019-crpropkracertcount-count-of)
+            - [3.2.1.4.3.2.26 PropID = 0x0000001A (CR_PROP_KRACERT) "KRA Certificate"](#32143226-propid-0x0000001a-crpropkracert-kra-certificate)
+            - [3.2.1.4.3.2.27 PropID = 0x0000001B (CR_PROP_KRACERTSTATE) "KRA](#32143227-propid-0x0000001b-crpropkracertstate-kra)
+            - [3.2.1.4.3.2.28 PropID = 0x0000001C (CR_PROP_ADVANCEDSERVER) "Advanced](#32143228-propid-0x0000001c-crpropadvancedserver-advanced)
+            - [3.2.1.4.3.2.29 PropID = 0x0000001D (CR_PROP_TEMPLATES) "Configured](#32143229-propid-0x0000001d-crproptemplates-configured)
+            - [3.2.1.4.3.2.30 PropID = 0x0000001E (CR_PROP_BASECRLPUBLISHSTATUS)](#32143230-propid-0x0000001e-crpropbasecrlpublishstatus)
+            - [3.2.1.4.3.2.31 PropID = 0x0000001F (CR_PROP_DELTACRLPUBLISHSTATUS)](#32143231-propid-0x0000001f-crpropdeltacrlpublishstatus)
+            - [3.2.1.4.3.2.32 PropID = 0x00000020 (CR_PROP_CASIGCERTCRLCHAIN) "CA](#32143232-propid-0x00000020-crpropcasigcertcrlchain-ca)
+            - [3.2.1.4.3.2.33 PropID = 0x00000021 (CR_PROP_CAXCHGCERTCRLCHAIN) "CA](#32143233-propid-0x00000021-crpropcaxchgcertcrlchain-ca)
+            - [3.2.1.4.3.2.34 PropID = 0x00000022 (CR_PROP_CACERTSTATUSCODE) "CA](#32143234-propid-0x00000022-crpropcacertstatuscode-ca)
+            - [3.2.1.4.3.2.35 PropID = 0x00000023 (CR_PROP_CAFORWARDCROSSCERT) "CA](#32143235-propid-0x00000023-crpropcaforwardcrosscert-ca)
+            - [3.2.1.4.3.2.36 PropID = 0x00000024 (CR_PROP_CABACKWARDCROSSCERT) "CA](#32143236-propid-0x00000024-crpropcabackwardcrosscert-ca)
+            - [3.2.1.4.3.2.37 PropID = 0x00000025](#32143237-propid-0x00000025)
+            - [3.2.1.4.3.2.38 PropID = 0x00000026](#32143238-propid-0x00000026)
+            - [3.2.1.4.3.2.39 PropID = 0x00000027 (CR_PROP_CACERTVERSION) "CA Signing](#32143239-propid-0x00000027-crpropcacertversion-ca-signing)
+            - [3.2.1.4.3.2.40 PropID = 0x00000028 (CR_PROP_SANITIZEDCASHORTNAME)](#32143240-propid-0x00000028-crpropsanitizedcashortname)
+            - [3.2.1.4.3.2.41 PropID = 0x00000029 (CR_PROP_CERTCDPURLS) "CRL](#32143241-propid-0x00000029-crpropcertcdpurls-crl)
+            - [3.2.1.4.3.2.42 PropID = 0x0000002A (CR_PROP_CERTAIAURLS) "Authority](#32143242-propid-0x0000002a-crpropcertaiaurls-authority)
+            - [3.2.1.4.3.2.43 PropID = 0x0000002B (CR_PROP_CERTAIAOCSPRLS) "OCSP](#32143243-propid-0x0000002b-crpropcertaiaocsprls-ocsp)
+            - [3.2.1.4.3.2.44 PropID = 0x0000002C (CR_PROP_LOCALENAME) "CA Locale](#32143244-propid-0x0000002c-crproplocalename-ca-locale)
+            - [3.2.1.4.3.2.45 PropID = 0x0000002D (CR_PROP_SUBJECTTEMPLATE_OIDS)](#32143245-propid-0x0000002d-crpropsubjecttemplateoids)
+            - [3.2.1.4.3.2.46 PropID = 0x0000002E (CR_PROP_CRLPARTITIONCOUNT) "CRL](#32143246-propid-0x0000002e-crpropcrlpartitioncount-crl)
+            - [3.2.1.4.3.2.47 PropID = 0x0000002F (CR_PROP_PARTITIONED_BASECRL)](#32143247-propid-0x0000002f-crproppartitionedbasecrl)
+            - [3.2.1.4.3.2.48 PropID = 0x00000030 (CR_PROP_PARTITIONED_DELTACRL)](#32143248-propid-0x00000030-crproppartitioneddeltacrl)
+            - [3.2.1.4.3.2.49 PropID = 0x00000031](#32143249-propid-0x00000031)
+            - [3.2.1.4.3.2.50 PropID = 0x00000032 (CR_PROP_](#32143250-propid-0x00000032-crprop)
+          - [3.2.1.4.3.3 ICertRequestD2::GetCAPropertyInfo (Opnum 8)](#321433-icertrequestd2getcapropertyinfo-opnum-8)
+          - [3.2.1.4.3.4 ICertRequestD2::Ping2 (Opnum 9)](#321434-icertrequestd2ping2-opnum-9)
+      - [3.2.1.5 Timer Events](#3215-timer-events)
+      - [3.2.1.6 Other Local Events](#3216-other-local-events)
+    - [3.2.2 Server Mode: Enterprise CA](#322-server-mode-enterprise-ca)
+      - [3.2.2.1 Interaction with Active Directory](#3221-interaction-with-active-directory)
+        - [3.2.2.1.1 Search Requests for Reading Objects under Enrollment Services or Certificate](#32211-search-requests-for-reading-objects-under-enrollment-services-or-certificate)
+          - [3.2.2.1.1.1 Search Requests](#322111-search-requests)
+          - [3.2.2.1.1.2 Bind Requests](#322112-bind-requests)
+        - [3.2.2.1.2 Search Requests for Querying End Entity Object Attributes](#32212-search-requests-for-querying-end-entity-object-attributes)
+          - [3.2.2.1.2.1 Search Requests](#322121-search-requests)
+          - [3.2.2.1.2.2 Bind Requests](#322122-bind-requests)
+        - [3.2.2.1.3 Search Requests for Querying End Entity Object Attributes with an End Entity](#32213-search-requests-for-querying-end-entity-object-attributes-with-an-end-entity)
+          - [3.2.2.1.3.1 Search Requests](#322131-search-requests)
+          - [3.2.2.1.3.2 Bind Requests](#322132-bind-requests)
+        - [3.2.2.1.4 Publishing KRA Certificates](#32214-publishing-kra-certificates)
+          - [3.2.2.1.4.1 Search Requests](#322141-search-requests)
+          - [3.2.2.1.4.2 Bind Requests](#322142-bind-requests)
+        - [3.2.2.1.5 Publishing Issued Certificates](#32215-publishing-issued-certificates)
+          - [3.2.2.1.5.1 Search Requests](#322151-search-requests)
+          - [3.2.2.1.5.2 Bind Requests](#322152-bind-requests)
+        - [3.2.2.1.6 Determining DC Support for Signing](#32216-determining-dc-support-for-signing)
+        - [3.2.2.1.7 Converting the LDAP results to HRESULT](#32217-converting-the-ldap-results-to-hresult)
+      - [3.2.2.2 CA Information in the Active Directory](#3222-ca-information-in-the-active-directory)
+      - [3.2.2.3 Abstract Data Model](#3223-abstract-data-model)
+        - [3.2.2.3.1 Certificate Templates Replica Table](#32231-certificate-templates-replica-table)
+      - [3.2.2.4 Timers](#3224-timers)
+      - [3.2.2.5 Initialization](#3225-initialization)
+      - [3.2.2.6 Message Processing Events and Sequencing Rules](#3226-message-processing-events-and-sequencing-rules)
+        - [3.2.2.6.1 Algorithms](#32261-algorithms)
+        - [3.2.2.6.2 ICertRequestD](#32262-icertrequestd)
+          - [3.2.2.6.2.1 ICertRequestD::Request (Opnum 3)](#322621-icertrequestdrequest-opnum-3)
+            - [3.2.2.6.2.1.1 Parsing and Verifying pwszAttributes](#3226211-parsing-and-verifying-pwszattributes)
+            - [3.2.2.6.2.1.2 Processing a Request](#3226212-processing-a-request)
+              - [3.2.2.6.2.1.2.1 Processing Rules for Request on Behalf of a Different Subject](#32262121-processing-rules-for-request-on-behalf-of-a-different-subject)
+                - [3.2.2.6.2.1.2.1.1 Request on Behalf of Using CMS and PKCS #10 Request Formats](#322621211-request-on-behalf-of-using-cms-and-pkcs-10-request-formats)
+                - [3.2.2.6.2.1.2.1.2 Request on Behalf of Using CMS and CMC Request Format](#322621212-request-on-behalf-of-using-cms-and-cmc-request-format)
+              - [3.2.2.6.2.1.2.2 Processing Rules for Requests That Include Private Key](#32262122-processing-rules-for-requests-that-include-private-key)
+              - [3.2.2.6.2.1.2.3 Processing Rules for Renewal Request](#32262123-processing-rules-for-renewal-request)
+              - [3.2.2.6.2.1.2.4 Processing Renewal Request on Behalf of a Different Subject](#32262124-processing-renewal-request-on-behalf-of-a-different-subject)
+              - [3.2.2.6.2.1.2.5 Processing Rules for an Initial Key Attestation Request](#32262125-processing-rules-for-an-initial-key-attestation-request)
+                - [3.2.2.6.2.1.2.5.1 Processing Rules for Key Attestation Based on Certificates](#322621251-processing-rules-for-key-attestation-based-on-certificates)
+                - [3.2.2.6.2.1.2.5.2 Processing Rules for Key Attestation Based on a Key](#322621252-processing-rules-for-key-attestation-based-on-a-key)
+              - [3.2.2.6.2.1.2.6 Processing Rules for Providing a Challenge Response to an Initial](#32262126-processing-rules-for-providing-a-challenge-response-to-an-initial)
+              - [3.2.2.6.2.1.2.7 Processing Rules for a Challenge Response Request](#32262127-processing-rules-for-a-challenge-response-request)
+            - [3.2.2.6.2.1.3 Storing Request Parameters in the Request Table](#3226213-storing-request-parameters-in-the-request-table)
+            - [3.2.2.6.2.1.4 CA Policy Algorithm](#3226214-ca-policy-algorithm)
+              - [3.2.2.6.2.1.4.1 Verify Configured Certificate Template](#32262141-verify-configured-certificate-template)
+              - [3.2.2.6.2.1.4.2 Verify Certificate Template Version](#32262142-verify-certificate-template-version)
+              - [3.2.2.6.2.1.4.3 Verify End Entity Permissions](#32262143-verify-end-entity-permissions)
+              - [3.2.2.6.2.1.4.4 Version 1 Certificate Template Server Processing](#32262144-version-1-certificate-template-server-processing)
+                - [3.2.2.6.2.1.4.4.1 Flags](#322621441-flags)
+                - [3.2.2.6.2.1.4.4.2 pKIExpirationPeriod](#322621442-pkiexpirationperiod)
+                - [3.2.2.6.2.1.4.4.3 pKIExtendedKeyUsage](#322621443-pkiextendedkeyusage)
+                - [3.2.2.6.2.1.4.4.4 pKIKeyUsage](#322621444-pkikeyusage)
+                - [3.2.2.6.2.1.4.4.5 pKIMaxIssuingDepth](#322621445-pkimaxissuingdepth)
+                - [3.2.2.6.2.1.4.4.6 pKICriticalExtensions](#322621446-pkicriticalextensions)
+              - [3.2.2.6.2.1.4.5 Version 2, 3, and 4 Certificate Template Server Processing](#32262145-version-2-3-and-4-certificate-template-server-processing)
+                - [3.2.2.6.2.1.4.5.1 msPKI-RA-Signature](#322621451-mspki-ra-signature)
+                - [3.2.2.6.2.1.4.5.2 msPKI-Minimal-Key-Size](#322621452-mspki-minimal-key-size)
+                - [3.2.2.6.2.1.4.5.3 msPKI-RA-Policies](#322621453-mspki-ra-policies)
+                - [3.2.2.6.2.1.4.5.4 msPKI-RA-Application-Policies](#322621454-mspki-ra-application-policies)
+                - [3.2.2.6.2.1.4.5.5 msPKI-Certificate-Application-Policy](#322621455-mspki-certificate-application-policy)
+                - [3.2.2.6.2.1.4.5.6 msPKI-Enrollment-Flag](#322621456-mspki-enrollment-flag)
+              - [3.2.2.6.2.1.4.8 are met.](#32262148-are-met)
+        - [3.2.2.6.3 ICertRequestD2](#32263-icertrequestd2)
+          - [3.2.2.6.3.1 ICertRequestD2::GetCAProperty (Opnum 7)](#322631-icertrequestd2getcaproperty-opnum-7)
+            - [3.2.2.6.3.1.1 PropID=0x0000001D (CR_PROP_TEMPLATES) "Configured Certificate](#3226311-propid0x0000001d-crproptemplates-configured-certificate)
+            - [3.2.2.6.3.1.2 PropID=0x0000000A (CR_PROP_CATYPE) "CA Type"](#3226312-propid0x0000000a-crpropcatype-ca-type)
+      - [3.2.2.7 Timer Events](#3227-timer-events)
+      - [3.2.2.8 Other Local Events](#3228-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security Considerations](#5-security-considerations)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Keeping Information Secret](#511-keeping-information-secret)
+    - [5.1.2 Generating Keys](#512-generating-keys)
+    - [5.1.3 Entropy Sources](#513-entropy-sources)
+    - [5.1.4 Name Selection](#514-name-selection)
+    - [5.1.5 Name Binding](#515-name-binding)
+    - [5.1.6 Attribute Definition](#516-attribute-definition)
+    - [5.1.7 Attribute Binding](#517-attribute-binding)
+    - [5.1.8 Coding Practices](#518-coding-practices)
+    - [5.1.9 Security Consideration Citations](#519-security-consideration-citations)
+    - [5.1.10 Key Archival Security Considerations](#5110-key-archival-security-considerations)
+    - [5.1.11 Data Consistency for Certificate Templates](#5111-data-consistency-for-certificate-templates)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Windows Client Certificate Enrollment Protocol consists of a set of DCOM interfaces (as specified
 in [MS-DCOM]) that allow clients to request various services from a certification authority (CA).
@@ -1801,7 +1015,7 @@ concepts, see [MSFT-CRL].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1849,7 +1063,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-attribute: A characteristic of some object or entity, typically encoded as a name/value pair.
+
+attribute: A characteristic of some object or entity, typically encoded as a name/value pair.
 
 autoenrollment: An automated process that performs certificate enrollment and renewal. For
 
@@ -1927,7 +1142,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-complete list of revoked certificates, while delta CRLs maintain only those certificates that have
+
+complete list of revoked certificates, while delta CRLs maintain only those certificates that have
 been revoked since the last issuance of a base CRL. For more information, see [X509] section
 7.3, [MSFT-CRL], and [RFC3280] section 5.
 
@@ -2001,7 +1217,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-used only for authenticators created by asymmetric algorithms.  For more information, see
+
+used only for authenticators created by asymmetric algorithms.  For more information, see
 [SCHNEIER] chapters 2 and 20.
 
 directory: The database that stores information about objects such as users, groups, computers,
@@ -2073,7 +1290,8 @@ Release: November 21, 2025
 
 17 / 259
 
-EK private key (EKPriv): The private key portion of an endorsement key's private/public key
+
+EK private key (EKPriv): The private key portion of an endorsement key's private/public key
 
 pair.
 
@@ -2153,7 +1371,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
+
+[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
 
 Interface Definition Language (IDL): The International Standards Organization (ISO) standard
@@ -2228,7 +1447,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-object identifier (OID): In the Lightweight Directory Access Protocol (LDAP), a sequence of
+
+object identifier (OID): In the Lightweight Directory Access Protocol (LDAP), a sequence of
 
 numbers in a format described by [RFC1778]. In many LDAP directory implementations, an OID
 is the standard internal representation of an attribute. In the directory model used in this
@@ -2298,7 +1518,8 @@ Release: November 21, 2025
 
 20 / 259
 
-relying party (RP): The entity (person or computer) using information from a certificate in order
+
+relying party (RP): The entity (person or computer) using information from a certificate in order
 to make a security decision. Typically, the RP is responsible for guarding some resource and
 applying access control policies based on information learned from a certificate.
 
@@ -2376,7 +1597,8 @@ Release: November 21, 2025
 
 21 / 259
 
-groups to which a particular user belongs. As a noun, a trust is the relationship between two
+
+groups to which a particular user belongs. As a noun, a trust is the relationship between two
 domains described in the previous sentence.
 
 trust root: A collection of root CA keys trusted by the RP. A store within the computer of a relying
@@ -2415,14 +1637,14 @@ Windows registry: The Windows implementation of the registry.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -2447,7 +1669,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-[FIPS186] FIPS PUBS, "Digital Signature Standard (DSS)", FIPS PUB 186-3, June 2009,
+
+[FIPS186] FIPS PUBS, "Digital Signature Standard (DSS)", FIPS PUB 186-3, June 2009,
 https://csrc.nist.gov/csrc/media/publications/fips/186/3/archive/2009-06-25/documents/fips_186-
 3.pdf
 
@@ -2515,7 +1738,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-[RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
+
+[RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
 2616, June 1999, https://www.rfc-editor.org/info/rfc2616
 
 [RFC2631] Rescorla, E., "Diffie-Hellman Key Agreement Method", Proposed Standard, June 1999,
@@ -2580,7 +1804,8 @@ Release: November 21, 2025
 
 24 / 259
 
-[SP800-56A] NIST, "Recommendation for Pair-Wise Key Establishment Schemes Using Discrete
+
+[SP800-56A] NIST, "Recommendation for Pair-Wise Key Establishment Schemes Using Discrete
 Logarithm Cryptography", March 2006, http://csrc.nist.gov/groups/ST/toolkit/documents/SP800-
 56Arev1_3-8-07.pdf
 
@@ -2629,7 +1854,7 @@ IHS
 
 Note There is a charge to download the specification.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [CertTransp] Microsoft Corporation, "Introduction of AD CS Certificate Transparency", April 2018,
 https://mskb.pkisolutions.com/kb/4093260
@@ -2646,7 +1871,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-[MS-CERSOD] Microsoft Corporation, "Certificate Services Protocols Overview".
+
+[MS-CERSOD] Microsoft Corporation, "Certificate Services Protocols Overview".
 
 [MS-EFSR] Microsoft Corporation, "Encrypting File System Remote (EFSRPC) Protocol".
 
@@ -2713,7 +1939,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-http://technet2.microsoft.com/WindowsServer/en/library/091cda67-79ec-481d-8a96-
+
+http://technet2.microsoft.com/WindowsServer/en/library/091cda67-79ec-481d-8a96-
 03e0be7374ed1033.mspx
 
 [MSFT-SHAREDFOLDER] Microsoft Corporation, "Online Enterprise Issuing CAs (CorporateEnt1CA)",
@@ -2736,7 +1963,7 @@ https://www.rfc-editor.org/info/rfc2246
 [SCHNEIER] Schneier, B., "Applied Cryptography, Second Edition", John Wiley and Sons, 1996, ISBN:
 0471117099.
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows Client Certificate Enrollment Protocol is built from two DCOM interfaces: ICertRequestD
 and ICertRequestD2, successive versions. The two DCOM interfaces allow a client to interact with a CA
@@ -2780,7 +2007,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  Manual
+
+  Manual
 
 A policy algorithm that requires human intervention in order to determine whether or not to issue
 a certificate is called a manual policy algorithm. A simple manual policy algorithm accepts the
@@ -2804,7 +2032,7 @@ since standalone CAs do not support the use of certificate templates.
 One aspect of a client subject to variation is whether certificate templates are used to form certificate
 requests.
 
-1.3.1  High-Level Protocol Operations
+#### 1.3.1 High-Level Protocol Operations
 
 The high-level operations performed by the Windows Client Certificate Enrollment Protocol are the
 following:
@@ -2850,12 +2078,13 @@ Release: November 21, 2025
 
 28 / 259
 
-1.3.2  Concepts
+
+#### 1.3.2 Concepts
 
 The following topics specify concepts and technologies used by the Windows Client Certificate
 Enrollment Protocol.
 
-1.3.2.1  Key Archival
+##### 1.3.2.1 Key Archival
 
 The Windows Client Certificate Enrollment Protocol allows clients to archive (escrow) a private key
 with a CA. Enterprise key archival policy is communicated by setting the
@@ -2881,7 +2110,7 @@ parties. How that protection is accomplished is up to the implementer of the CA.
 on security considerations around key archival, see section 5.1.10. For processing rules concerning
 key archival, see section 3.2.2.6.2.1.2.2.
 
-1.3.2.2  Key Attestation
+##### 1.3.2.2 Key Attestation
 
 The trusted platform module (TPM) can be used to create cryptographic public/private key pairs
 in such a way that the private key can never be revealed or used outside the TPM (that is, the key is
@@ -2921,7 +2150,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-WCCE].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2937,7 +2167,7 @@ The Windows Client Certificate Enrollment Protocol allows clients and CAs to per
 attestation.<1> Enterprise key attestation is communicated by setting either of the following flags in
 the certificate template: CT_FLAG_ATTEST_REQUIRED or CT_FLAG_ATTEST_PREFERRED.
 
-1.3.2.3  Certificate Transparency
+##### 1.3.2.3 Certificate Transparency
 
 Per [RFC6962], Certificate Transparency is a scheme that allows digital certificates to be issued in a
 manner that is monitorable and auditable by a compliant operator. Issued certificates are added to
@@ -2951,7 +2181,7 @@ In addition, Windows Server v1803 supports the submission of digital certificate
 Transparency Logs prior to issuance via signed precertificates, as defined in [RFC6962]. For
 processing rules, see sections 3.1.1.4.3.5 and 3.2.1.4.2.1.4.3.
 
-1.3.2.4  Netscape KEYGEN Tag
+##### 1.3.2.4 Netscape KEYGEN Tag
 
 The Netscape browsers implement their own store mechanism for certificates and keys and have
 their own enrollment request syntax, using HTTP and HTML.
@@ -2979,7 +2209,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.  In response to the <KEYGEN> tag, the browser generates a public-private key pair and builds a
+
+2.  In response to the <KEYGEN> tag, the browser generates a public-private key pair and builds a
 
 certificate enrollment request in a format defined by Netscape.
 
@@ -2998,7 +2229,7 @@ section 3.2.2.6.2.1.4).
 
 Note  Only steps 5 and 6 are specified in this document.
 
-1.3.2.5  Sanitizing Common Names
+##### 1.3.2.5 Sanitizing Common Names
 
 Lightweight Directory Access Protocol (LDAP) limits subelements to a maximum of 64
 [UNICODE] characters. Because the Windows Client Certificate Enrollment Protocol uses Active
@@ -3016,7 +2247,7 @@ In the following example, the number sign (#) is replaced by !0023, the percent 
 
 The algorithm for creating a sanitized name is specified in section 3.1.1.4.1.1.
 
-1.3.3  Information for Certificate Templates
+#### 1.3.3 Information for Certificate Templates
 
 When an enterprise operates its CA with certificate issuance that is controlled through certificate
 templates, the CA is bound to issue only those certificates that fit a particular template. Each user
@@ -3027,7 +2258,7 @@ authority can issue certificates.
 
 For information on server processing rules for certificate templates, see section 3.2.2.6.2.1.4.1.
 
-1.3.3.1  Template IDs
+##### 1.3.3.1 Template IDs
 
 Certificate templates are designed to be stored in Active Directory, although any directory
 accessible by LDAP can hold certificate templates.<3>
@@ -3047,7 +2278,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 revision: The template's major revision number
 
@@ -3085,14 +2317,14 @@ In case of template version mismatch between the client and the server, the serv
 refers to a template with a higher version than the server has in its replica. If the server has a higher
 version than the one requested, the server uses the highest version available.
 
-1.3.3.2  Implementations Without Templates
+##### 1.3.3.2 Implementations Without Templates
 
 If a vendor chooses to implement a CA without using templates, as specified in [MS-CRTD], then the
 "template names" and "template version number and OID" (as they are called in this document)
 become merely policy identifiers. It is then up to the vendor of the CA to write the code that maps
 from these policy identifiers to certificate bodies that correspond to those requests.
 
-1.3.3.3  Modifying Templates
+##### 1.3.3.3 Modifying Templates
 
 A set of default templates is documented in [MS-CRTD]. However, a customer is free at any time to
 create new templates, delete existing ones, or modify templates.<5> A template is a normal
@@ -3100,7 +2332,7 @@ directory object accessed through LDAP. Any new or existing software capable of 
 objects can be used. By editing certificate templates, a customer can express custom certificate
 issuance policy.
 
-1.3.3.4  Permissions on Templates
+##### 1.3.3.4 Permissions on Templates
 
 A template object in Active Directory has an ACL, as does every object in Active Directory. A
 customer can set those ACLs so that users (or groups of users) have read permission only for
@@ -3119,11 +2351,12 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-WCCE].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Windows Client Certificate Enrollment Protocol depends on the Distributed Component Object
 Model (DCOM) Remote Protocol [MS-DCOM]. The DCOM Remote Protocol is built on top of the Remote
@@ -3175,7 +2408,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Certificate Enrollment Protocol shares ADM with Certificate Services Remote Administration Protocol
+
+Certificate Enrollment Protocol shares ADM with Certificate Services Remote Administration Protocol
 [MS-CSRA] as specified in sections 3.2.1.1 and 3.2.1.1.3.
 
 The ICertPassage Remote Protocol [MS-ICPR] is another certificate enrollment protocol that is built
@@ -3190,19 +2424,19 @@ Indirectly, as an example, other protocols that rely on certificates for authent
 Transport Layer Security Protocol (TLS), [RFC2246]) can use this protocol for certificate enrollment
 and issuance.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The configuration elements defined in section 3.2.1.1.4 are available. Server implementations that
 also implement the Certificate Services Remote Administration Protocol, specified in [MS-CSRA], or
 the ICertPassage Remote Protocol, specified in [MS-ICPR], use the same configuration data elements,
 defined in section 3.2.1.1.4 as "public", for those implementations.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Windows Client Certificate Enrollment Protocol is applicable to an environment in which clients
 benefit from the capability to interact with the CA in order to enroll or manage [X509] certificates.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas.
 
@@ -3211,14 +2445,14 @@ This document covers versioning issues in the following areas.
 Interface support: The Windows Client Certificate Enrollment Protocol uses DCOM [MS-DCOM]
 to determine interface support, as specified in section 3.1.1.4.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 A vendor that implements a customized CA policy algorithm or CA exit algorithm MUST NOT
 return an implementation description identical to the one implemented by Microsoft: "Windows
 default". The returned value of the implementation description is specified in section 3.2.1.4.3.2.4 and
 3.2.1.4.3.2.5.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 No standards assignments have been received for the Windows Client Certificate Enrollment Protocol
 described in this document. All values used in these extensions are in private ranges.
@@ -3255,7 +2489,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Parameter
+
+Parameter
 
 Value
 
@@ -3279,12 +2514,13 @@ Release: November 21, 2025
 
 35 / 259
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Windows Client Certificate Enrollment Protocol messages are
 transported and their syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 The Distributed Component Object Model (DCOM) Remote Protocol [MS-DCOM] is used as the
 transport protocol.
@@ -3350,7 +2586,8 @@ Release: November 21, 2025
 
 36 / 259
 
-This means the server can use the client's security context while acting on behalf of the client,
+
+This means the server can use the client's security context while acting on behalf of the client,
 to access local resources such as files on the server.
 
   Authentication identity and credentials: NULL.
@@ -3362,9 +2599,9 @@ Default values, as specified in [MS-DCOM], are used for all DCOM inputs not spec
 Security Principal Name (SPN), client and prototype context property buffers, and their context
 property identifiers.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  BYTE
+#### 2.2.1 BYTE
 
 A BYTE is an 8-bit value. This data type maps to the byte base Interface Definition Language
 (IDL) type, as specified in [C706] section 4.2.9.5.
@@ -3373,7 +2610,7 @@ This type is declared as follows:
 
  typedef byte BYTE;
 
-2.2.2  Common Structures
+#### 2.2.2 Common Structures
 
 This section defines the structures used by the Windows Client Certificate Enrollment Protocol. These
 structures are used when a certificate request is submitted to the server and as part of the server's
@@ -3419,7 +2656,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.2.2.1  CACERTBLOB
+
+##### 2.2.2.1 CACERTBLOB
 
 The CACERTBLOB construct consists of serialized elements. Each element is a data structure
 consisting of a header and its value. The element header consists of the following fields.
@@ -3540,7 +2778,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.2.2.2  CERTTRANSBLOB
+
+##### 2.2.2.2 CERTTRANSBLOB
 
 The CERTTRANSBLOB structure defines a byte buffer that is used to store certificates, request
 certificates, transmit responses, manipulate [UNICODE] strings, and marshal property values.
@@ -3562,13 +2801,13 @@ buffer of CERTTRANSBLOB.
 All instances of CERTTRANSBLOB used by this protocol MUST use one of the marshaling rules
 described in the following sections.
 
-2.2.2.2.1 Marshaling Unicode Strings in CERTTRANSBLOB
+###### 2.2.2.2.1 Marshaling Unicode Strings in CERTTRANSBLOB
 
 When a [UNICODE] string is returned in the byte array referenced by the pb field of a
 CERTTRANSBLOB (section 2.2.2.2) structure, each [UNICODE] character MUST be marshaled in little-
 endian format.
 
-2.2.2.2.2 Marshaling X.509 Certificates in a CERTTRANSBLOB
+###### 2.2.2.2.2 Marshaling X.509 Certificates in a CERTTRANSBLOB
 
 The following table specifies how [X509] certificates are to be returned in the byte array referenced
 by the pb field of a CERTTRANSBLOB (section 2.2.2.2) structure.
@@ -3592,7 +2831,7 @@ Data (variable): This field contains the X.509 certificate (as specified in [X50
 
 by using Distinguished Encoding Rules (DER), as specified in [X690].
 
-2.2.2.2.3 Marshaling an X.509 CRL in a CERTTRANSBLOB
+###### 2.2.2.2.3 Marshaling an X.509 CRL in a CERTTRANSBLOB
 
 The following table specifies how an X.509 certificate revocation list (CRL), as specified in
 [RFC3280], is to be returned in the byte array referenced by the pb field of a
@@ -3620,11 +2859,12 @@ Release: November 21, 2025
 
 39 / 259
 
-Data (variable): This field contains an X.509 CRL (as specified in [RFC3280]), which is encoded by
+
+Data (variable): This field contains an X.509 CRL (as specified in [RFC3280]), which is encoded by
 
 using DER, as specified in [X690].
 
-2.2.2.2.4 Marshaling CMS in a CERTTRANSBLOB
+###### 2.2.2.2.4 Marshaling CMS in a CERTTRANSBLOB
 
 The following table specifies how a Cryptographic Message Syntax (CMS), as specified in
 [RFC3852], is to be returned in the byte array that is referenced by the pb field of a
@@ -3649,14 +2889,14 @@ Data (variable): This field is CMS (as specified in [RFC3852]), which is encoded
 
 specified in [X690].
 
-2.2.2.2.5 Marshaling CAINFO in CERTTRANSBLOB
+###### 2.2.2.2.5 Marshaling CAINFO in CERTTRANSBLOB
 
 When a CAINFO (section 2.2.2.4) structure is returned within the pb field of a
 CERTTRANSBLOB (section 2.2.2.2) structure, CAINFO is marshaled by using the same data types and
 structure as those specified in section 2.2.2.4. All fields MUST be marshaled as little-endian. For
 more information on supported values of the fields within that structure, see section 2.2.2.4.
 
-2.2.2.2.6 Marshaling Certificate Requests in a CERTTRANSBLOB
+###### 2.2.2.2.6 Marshaling Certificate Requests in a CERTTRANSBLOB
 
 The following table specifies how a certificate request is to be returned in the byte array that is
 referenced by the pb field of a CERTTRANSBLOB structure.
@@ -3680,7 +2920,7 @@ Data (variable): This field is a CMS (as specified in [RFC3852]), Public-Key Cry
 (PKCS) #10 (as specified in [RFC2986]), or CMC (as specified in [RFC2797]) request certificate
 encoded by using DER, as specified in [X690].
 
-2.2.2.2.7 Marshaling CMC in a CERTTRANSBLOB
+###### 2.2.2.2.7 Marshaling CMC in a CERTTRANSBLOB
 
 The following table specifies how a CMC, as specified in [RFC2797], is to be returned in the byte array
 referenced by the pb field of a CERTTRANSBLOB (section 2.2.2.2) structure.
@@ -3707,11 +2947,12 @@ Release: November 21, 2025
 
 40 / 259
 
-Data (variable): This field is CMC (as specified in [RFC2797]) encoded by using DER, as specified in
+
+Data (variable): This field is CMC (as specified in [RFC2797]) encoded by using DER, as specified in
 
 [X690].
 
-2.2.2.3  CATRANSPROP
+##### 2.2.2.3 CATRANSPROP
 
 The CATRANSPROP structure encapsulates information about a CA property. For a list of CA
 properties, see section 3.2.1.4.3.2. An array of these structures is carried in a
@@ -3825,12 +3066,13 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-the pb field of the containing CERTTRANSBLOB (section 2.2.2.2) structure. The string format
+
+the pb field of the containing CERTTRANSBLOB (section 2.2.2.2) structure. The string format
 MUST be null-terminated [UNICODE]. The offset MUST be DWORD-aligned. For marshaling
 information about this property, see Marshaling CATRANSPROP in a
 CERTTRANSBLOB (section 2.2.2.3.1).
 
-2.2.2.3.1 Marshaling CATRANSPROP in a CERTTRANSBLOB
+###### 2.2.2.3.1 Marshaling CATRANSPROP in a CERTTRANSBLOB
 
 A CERTTRANSBLOB (section 2.2.2.2) structure MUST be used to return an array of
 CATRANSPROP (section 2.2.2.3) structures, where the count of array elements is returned in a
@@ -3908,7 +3150,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-propFlags (2 bytes): These 2 bytes indicate the value of the propFlags field of the first
+
+propFlags (2 bytes): These 2 bytes indicate the value of the propFlags field of the first
 
 CATRANSPROP (section 2.2.2.3) structure that is transferred in the CERTTRANSBLOB (section
 2.2.2.2) structure. Little-endian encoding format MUST be used.
@@ -3926,7 +3169,7 @@ for one property MUST not overlap with another property's data value. Arbitrary 
 added before or after data values. Each data value MUST be encoded as a [UNICODE] null-
 terminated string in little-endian format.
 
-2.2.2.4  CAINFO
+##### 2.2.2.4 CAINFO
 
 The CAINFO structure defines a basic informational block that describes a CA.
 
@@ -4000,7 +3243,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-with the private key used to sign certificates that are issued by the CA. For more information on
+
+with the private key used to sign certificates that are issued by the CA. For more information on
 CA signing certificates, see [MSFT-PKI].
 
 cCAExchangeCerts:  Unsigned integer value that SHOULD contain the count of CA exchange
@@ -4034,7 +3278,7 @@ fAdvancedServer:  Unsigned integer value that SHOULD be set to 0 for standard CA
 
 advanced CA. This value is a Boolean value. The CA SHOULD return 0 or 1.
 
-2.2.2.5  KeyAttestationStatement
+##### 2.2.2.5 KeyAttestationStatement
 
 The KeyAttestationStatement structure is defined as follows:<9>
 
@@ -4077,7 +3321,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  A TPM2B_PUBLIC structure defined in [TCG-Struct-V2] section 12.2.5.
+
+  A TPM2B_PUBLIC structure defined in [TCG-Struct-V2] section 12.2.5.
 
   A TPM2B_CREATION_DATA structure defined in [TCG-Struct-V2] section 15.2.
 
@@ -4128,7 +3373,7 @@ keyBlob:  Contains a CSP-specific opaque format of the attested key.
 
 aikOpaque:  Contains a CSP-specific opaque format of the AIK private key.
 
-2.2.2.6  Request Format
+##### 2.2.2.6 Request Format
 
 The Windows Client Certificate Enrollment Protocol is a simple request-response pattern between the
 client and the server (CA). The client MUST send the certificate request by using one of the following
@@ -4146,7 +3391,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.2.2.6.1 PKCS #10 Request Format
+
+###### 2.2.2.6.1 PKCS #10 Request Format
 
 Clients use PKCS #10 structures, as specified in [RFC2986], to submit a certificate request to a CA.
 A PKCS #10 request can be used by itself or encapsulated within a CMC (as specified in [RFC2797]) or
@@ -4168,7 +3414,7 @@ The following fields are introduced and specified in [RFC2986] section 4 and use
 
 For detailed server processing information, see section 3.1.1.4.3.1.1.
 
-2.2.2.6.2 CMS Request Format
+###### 2.2.2.6.2 CMS Request Format
 
 Clients use CMS structures, as specified in [RFC3852], to submit requests to a CA.
 
@@ -4218,7 +3464,8 @@ Release: November 21, 2025
 
 46 / 259
 
-2.2.2.6.3 CMC Request Format
+
+###### 2.2.2.6.3 CMC Request Format
 
 Clients use CMC structures that are documented (as specified in [RFC2797]) for certificate requests.
 A CMC request consists of a CMS message with CMC content.
@@ -4252,7 +3499,7 @@ converted to an octet string.
 
 For processing rules for these fields, see section 3.2.1.4.2.1.3.
 
-2.2.2.6.4 Netscape KEYGEN Tag Request Format
+###### 2.2.2.6.4 Netscape KEYGEN Tag Request Format
 
 Certificate requests MAY use the Netscape request format, which MUST be the same format that a
 Netscape 3.x or Network 4.x browser would send to a web server in response to an HTML <KEYGEN>
@@ -4284,13 +3531,14 @@ Release: November 21, 2025
 
 47 / 259
 
-2.2.2.6.4.1  CertType
+
+###### 2.2.2.6.4.1 CertType
 
 The CertType attribute is used to specify the type of the requested certificate. The only supported
 value for a KEYGEN certificate request for this attribute is the string "server". For specifications, see
 section 2.2.2.7.
 
-2.2.2.6.4.2  Relative Distinguished Name
+###### 2.2.2.6.4.2 Relative Distinguished Name
 
 The relative distinguished name (RDN), as specified in [MS-ADTS] section 3.1.1.1.4, is used to
 pass the requested values for the Subject field in the issued certificate to the CA.
@@ -4361,7 +3609,7 @@ The RDN MUST be one of the following:
 
  "DeviceSerialNumber" or "2.5.4.5".
 
-2.2.2.6.5 Null Signature
+###### 2.2.2.6.5 Null Signature
 
 In CMS and CMC certificate request formats, the PKCS #10 request specified in the TaggedRequest
 field (see section 3.2.1.4.2.1.4.1.3) can contain only a null signature with the following signature field
@@ -4385,13 +3633,14 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-If the signature validation fails in section 3.2.1.4.2.1.4.1.1, then the CA MUST also check for a null
+
+If the signature validation fails in section 3.2.1.4.2.1.4.1.1, then the CA MUST also check for a null
 signature and return a nonzero error to the client only when null signature validation fails as well. CA
 MUST check for a null signature only when the PKCS#10 request is specified in the CMS and CMC
 request formats as specified in sections 3.2.1.4.2.1.4.1.3, 3.2.1.4.2.1.4.2.2, 3.2.2.6.2.1.2.1.2, and
 3.2.2.6.2.1.2.2.
 
-2.2.2.7  Certificate Request Attributes
+##### 2.2.2.7 Certificate Request Attributes
 
 A certificate request can contain attributes. The client uses these attributes to pass additional
 information to the CA, and the CA uses these attributes when issuing the certificate.
@@ -4431,7 +3680,7 @@ Each attribute has an object identifier (OID) that MUST uniquely identify the at
 The value MUST be an ASN.1 DER-encoded value, as specified in [X690]. The following sections define
 the various attributes for this protocol and define their formats.
 
-2.2.2.7.1 szOID_OS_VERSION
+###### 2.2.2.7.1 szOID_OS_VERSION
 
 OID = 1.3.6.1.4.1.311.13.2.3.
 
@@ -4460,9 +3709,10 @@ Release: November 21, 2025
 
 49 / 259
 
-     } --#public
 
-2.2.2.7.2 szOID_ENROLLMENT_CSP_PROVIDER
+     } --#public
+
+###### 2.2.2.7.2 szOID_ENROLLMENT_CSP_PROVIDER
 
 OID = 1.3.6.1.4.1.311.13.2.2.
 
@@ -4479,7 +3729,7 @@ Format: Following is the ASN.1 format for this attribute.
  signature_BITSTRING
  }
 
-2.2.2.7.3 szOID_RENEWAL_CERTIFICATE
+###### 2.2.2.7.3 szOID_RENEWAL_CERTIFICATE
 
 OID = 1.3.6.1.4.1.311.13.1.
 
@@ -4490,7 +3740,7 @@ request to renew an existing certificate.
 
 Format: The value of the attribute MUST be the DER, as specified in [X690], encoded certificate.
 
-2.2.2.7.4 szOID_REQUEST_CLIENT_INFO
+###### 2.2.2.7.4 szOID_REQUEST_CLIENT_INFO
 
 OID = 1.3.6.1.4.1.311.21.20.
 
@@ -4526,10 +3776,11 @@ Release: November 21, 2025
 
 50 / 259
 
- ProcessName UTF8STRING
+
+ ProcessName UTF8STRING
  }
 
-2.2.2.7.5 szOID_NT_PRINCIPAL_NAME
+###### 2.2.2.7.5 szOID_NT_PRINCIPAL_NAME
 
 OID = 1.3.6.1.4.1.311.20.2.3.
 
@@ -4540,7 +3791,7 @@ name (SAN) extension, as specified in [RFC3280] section 4.2.1.7.
 
 Format: UTF8String.
 
-2.2.2.7.6 szOID_NTDS_REPLICATION
+###### 2.2.2.7.6 szOID_NTDS_REPLICATION
 
 OID = 1.3.6.1.4.1.311.25.1.
 
@@ -4552,7 +3803,7 @@ section 2.3.4) as OtherName in a subject alternative name (SAN) extension, as sp
 
 Format: Octet string.
 
-2.2.2.7.7 szOID_CERT_EXTENSIONS
+###### 2.2.2.7.7 szOID_CERT_EXTENSIONS
 
 OID = 1.3.6.1.4.1.311.2.1.14.
 
@@ -4575,7 +3826,7 @@ specifics on how to encode these extensions.
 
 extension.
 
-2.2.2.7.7.1  szOID_ENROLL_CERTTYPE
+###### 2.2.2.7.7.1 szOID_ENROLL_CERTTYPE
 
 OID = 1.3.6.1.4.1.311.20.2.
 
@@ -4596,11 +3847,12 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
- CertificateTemplateName ::= SEQUENCE {
+
+ CertificateTemplateName ::= SEQUENCE {
     Name            UTF8String
  }
 
-2.2.2.7.7.2  szOID_CERTIFICATE_TEMPLATE
+###### 2.2.2.7.7.2 szOID_CERTIFICATE_TEMPLATE
 
 OID = 1.3.6.1.4.1.311.21.7.
 
@@ -4626,14 +3878,14 @@ Format: The following is the ASN.1 format for this attribute.
          templateMinorVersion    INTEGER (0..4294967295) OPTIONAL
      } --#public
 
-2.2.2.7.7.3  Encoding a Certificate Application Policy Extension
+###### 2.2.2.7.7.3 Encoding a Certificate Application Policy Extension
 
 The OID for the Certificate Application Policy Extension is "1.3.6.1.4.1.311.21.10". The Certificate
 Application Policy Extension is encoded as a Certificate Policies extension (as specified in [RFC3280]
 section 4.2.1.5), with an instance of PolicyInformation for each given OID in which the
 policyIdentifier field is set to the OID and the policyQualifiers field is not present.
 
-2.2.2.7.7.4  szOID_NTDS_CA_SECURITY_EXT
+###### 2.2.2.7.7.4 szOID_NTDS_CA_SECURITY_EXT
 
 OID = 1.3.6.1.4.1.311.25.2.
 
@@ -4661,7 +3913,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.2.2.7.8 szOID_ARCHIVED_KEY_ATTR
+
+###### 2.2.2.7.8 szOID_ARCHIVED_KEY_ATTR
 
 OID = 1.3.6.1.4.1.311.21.13.
 
@@ -4672,7 +3925,7 @@ Description: The value for the attribute MUST be the encrypted private key.
 Format: The format MUST be a CMC certificate request (as specified in [RFC2797]), ASN.1 DER
 encoded, as specified in [X690]. Format for this context is specified in section 3.1.1.4.3.6.1.
 
-2.2.2.7.9 szOID_ENCRYPTED_KEY_HASH
+###### 2.2.2.7.9 szOID_ENCRYPTED_KEY_HASH
 
 OID = 1.3.6.1.4.1.311.21.21.
 
@@ -4683,9 +3936,9 @@ client processing rules, see section 3.1.1.4.3.6.1.
 
 Format: The hash value. This value MUST be encoded as an octet string.
 
-2.2.2.7.10
+###### 2.2.2.7.10 szENROLLMENT_NAME_VALUE_PAIR
 
-szENROLLMENT_NAME_VALUE_PAIR
+
 
 OID = 1.3.6.1.4.1.311.13.2.1
 
@@ -4757,7 +4010,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
- Name
+
+ Name
 
  Values
 
@@ -4901,7 +4155,8 @@ Release: November 21, 2025
 
 54 / 259
 
- Name
+
+ Name
 
 challenge
 
@@ -5028,7 +4283,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
- Format
+
+ Format
 
  Meaning
 
@@ -5072,9 +4328,9 @@ supported.
 
 Details about various string encodings are specified in [X690].
 
-2.2.2.7.11
+###### 2.2.2.7.11 szOID_ISSUED_CERT_HASH
 
-szOID_ISSUED_CERT_HASH
+
 
 OID = 1.3.6.1.4.1.311.21.17.
 
@@ -5084,9 +4340,9 @@ Description: This value MUST be a SHA1 hash of the end entity certificate.
 
 Format: The SHA1 hash value of a certificate. This value MUST be encoded as an octet string.
 
-2.2.2.7.12
+###### 2.2.2.7.12 szOID_ENROLL_ATTESTATION_STATEMENT
 
-szOID_ENROLL_ATTESTATION_STATEMENT
+
 
 OID = 1.3.6.1.4.1.311.21.33
 
@@ -5097,9 +4353,9 @@ Description: This attribute is used to send data BLOBs related to key attestatio
 Format: The value MUST include a KeyAttestationStatement structure (section 2.2.2.5) encoded as
 octet string.
 
-2.2.2.7.13
+###### 2.2.2.7.13 szOID_ENROLL_EK_INFO
 
-szOID_ENROLL_EK_INFO
+
 
 OID = 1.3.6.1.4.1.311.21.23.
 
@@ -5117,7 +4373,8 @@ Release: November 21, 2025
 
 56 / 259
 
-Format: The value of the property is an EnvelopedData CMS structure ([RFC3852] section 6.1) with
+
+Format: The value of the property is an EnvelopedData CMS structure ([RFC3852] section 6.1) with
 one RecipientInfo ([RFC3852] section 6.2). The RecipientInfo is for the CA exchange certificate. The
 EncryptedContent field MUST be the encrypted form of the following ASN.1 structure, DER encoded:
 
@@ -5134,9 +4391,9 @@ individual EKCerts.
 
 The total number of EKCerts cannot exceed three.
 
-2.2.2.7.14
+###### 2.2.2.7.14 szOID_ENROLL_KSP_NAME
 
-szOID_ENROLL_KSP_NAME
+
 
 OID = 1.3.6.1.4.1.311.21.25
 
@@ -5149,9 +4406,9 @@ CMC response used to encrypt the challenge, as specified in section 2.2.2.8.1.1.
 Format: The string value of the cryptographic provider name used by the CA to encrypt the challenge.
 This value MUST be encoded as a Unicode string.
 
-2.2.2.7.15
+###### 2.2.2.7.15 szOID_ENROLL_AIK_INFO
 
-szOID_ENROLL_AIK_INFO
+
 
 OID = 1.3.6.1.4.1.311.21.39
 
@@ -5173,7 +4430,7 @@ If there is an AIKCert available, then the second element contains an AIKCert.
 
 The total number of AIKCerts cannot exceed one.
 
-2.2.2.8  Response Format
+##### 2.2.2.8 Response Format
 
 There are two possible response formats:
 
@@ -5186,7 +4443,8 @@ Release: November 21, 2025
 
 57 / 259
 
-The CA uses the CMS structures, as specified in [RFC3852], to generate responses to a client's
+
+The CA uses the CMS structures, as specified in [RFC3852], to generate responses to a client's
 certificate enrollment requests. When the CA responds to a certificate request, it returns a
 CMS that MUST include the issued certificate and MAY return all of the CA certificates in the
 certificate chain of the issued certificate.
@@ -5225,9 +4483,9 @@ The following fields are specified in [RFC2797] section 3.1 and are used by this
 
 Processing rules for these fields are specified in sections 3.2.1.4.2.1.4.8.1 and 3.2.2.6.2.1.4.
 
-2.2.2.8.1 CA Response Attributes
+###### 2.2.2.8.1 CA Response Attributes
 
-2.2.2.8.1.1  szOID_ENROLL_ATTESTATION_CHALLENGE
+###### 2.2.2.8.1.1 szOID_ENROLL_ATTESTATION_CHALLENGE
 
 OID = 1.3.6.1.4.1.311.21.28
 
@@ -5238,7 +4496,7 @@ EKPub received in the request.
 
 Format: This value is encoded as an octet string.
 
-2.2.2.8.1.2  szOID_ENROLL_CAXCHGCERT_HASH
+###### 2.2.2.8.1.2 szOID_ENROLL_CAXCHGCERT_HASH
 
 OID = 1.3.6.1.4.1.311.21.27
 
@@ -5255,14 +4513,15 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Format: The SHA1 hash value of the entire encoded content of a CA exchange certificate. This value
+
+Format: The SHA1 hash value of the entire encoded content of a CA exchange certificate. This value
 MUST be encoded as an octet string.
 
-2.2.2.8.1.3  szOID_ENROLL_KSP_NAME
+###### 2.2.2.8.1.3 szOID_ENROLL_KSP_NAME
 
 See Section 2.2.2.7.14
 
-2.2.2.8.1.4  szOID_ENROLL_ENCRYPTION_ALGORITHM
+###### 2.2.2.8.1.4 szOID_ENROLL_ENCRYPTION_ALGORITHM
 
 OID = 1.3.6.1.4.1.311.21.29
 
@@ -5276,13 +4535,13 @@ section 2.2.2.7.13.
 Format: The OID identifying the encryption algorithm. This value MUST be encoded as an algorithm
 identifier.
 
-2.2.2.9  Private Key BLOB
+##### 2.2.2.9 Private Key BLOB
 
 During the archival process, the client sends its private key to the CA encrypted to the CA exchange
 key. The CA decrypts the encrypted BLOB and retrieves the private key BLOB. More details are
 specified in section 1.3.2.1.
 
-2.2.2.9.1 RSA Private Key BLOB
+###### 2.2.2.9.1 RSA Private Key BLOB
 
 The following is the diagram of elements in the RSA private key BLOB that MUST be passed to the
 CA.
@@ -5329,7 +4588,8 @@ Release: November 21, 2025
 
 59 / 259
 
-...
+
+...
 
 Dp (variable)
 
@@ -5392,7 +4652,8 @@ Release: November 21, 2025
 
 60 / 259
 
-Modulus (variable): This field MUST be of length ceil(bl/8), where bl is the value of the Bitlen field
+
+Modulus (variable): This field MUST be of length ceil(bl/8), where bl is the value of the Bitlen field
 
 defined in the preceding diagram.
 
@@ -5454,7 +4715,7 @@ The value in this field is the RSA private exponent.
 Note  Ceil(x) is the value of x rounded up to the closest integer. For example, ceil(1.2) = 2 and
 ceil(3) = 3.
 
-2.2.2.9.2 BCRYPT RSA Private Key BLOB
+###### 2.2.2.9.2 BCRYPT RSA Private Key BLOB
 
 The following is the diagram of elements in the RSA private key BLOB that MUST be passed to the
 CA.
@@ -5466,7 +4727,8 @@ Release: November 21, 2025
 
 61 / 259
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5536,7 +4798,8 @@ Release: November 21, 2025
 
 62 / 259
 
-PLength (4 bytes): Length MUST be 4 bytes.
+
+PLength (4 bytes): Length MUST be 4 bytes.
 
 This field MUST be present as an unsigned long in big-endian format.
 
@@ -5564,7 +4827,7 @@ Q (variable): The second prime number of the private key with a length defined b
 
 This field MUST be present as a byte string in big-endian format.
 
-2.2.2.9.3 ECDH Private Key BLOB
+###### 2.2.2.9.3 ECDH Private Key BLOB
 
 Following is the table of elements in the Elliptic Curve Diffie-Hellman (ECDH) private key BLOB that
 MUST be passed to the CA.
@@ -5610,7 +4873,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -5650,9 +4914,9 @@ This field MUST be bytes in little-endian format.
 
 Value MUST be the elliptical curve private exponent.
 
-2.2.2.10
+##### 2.2.2.10 Key Spec
 
-Key Spec
+
 
 Key spec is a flag that specifies how a given private key MUST be used. Key spec must have one of
 the values in the following table.
@@ -5667,16 +4931,16 @@ The key can be used for encryption.
 
 The key can be used for signatures.
 
-2.2.2.11
+##### 2.2.2.11 Enterprise PKI Data Structures
 
-Enterprise PKI Data Structures
+
 
 This section specifies the structure of the Active Directory containers and objects that are related
 to this protocol. The usage of the data that is stored in these data structures is specified in section 3.
 
-2.2.2.11.1
+###### 2.2.2.11.1 Certificate Templates Container
 
-Certificate Templates Container
+
 
 The Certificate Templates container is stored in Active Directory under the following location:
 
@@ -5687,15 +4951,16 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-"CN=Public Key Services, CN=Services, CN=Configuration, DC=..."
+
+"CN=Public Key Services, CN=Services, CN=Configuration, DC=..."
 
 The container contains objects of type pKICertificateTemplate; each of these objects is referred to in
 this protocol specification as a certificate template. The structure and the syntax of the object
 attributes are specified in [MS-CRTD].
 
-2.2.2.11.2
+###### 2.2.2.11.2 Enrollment Services Container
 
-Enrollment Services Container
+
 
 The Enrollment Services container is stored in Active Directory under the following location:
 
@@ -5704,17 +4969,17 @@ The Enrollment Services container is stored in Active Directory under the follow
 The container contains objects of type pKIEnrollmentService. The following attributes of these
 objects are used by the protocol specified in this protocol specification.
 
-2.2.2.11.2.1  cn Attribute
+###### 2.2.2.11.2.1 cn Attribute
 
 The cn attribute contains the value of the cn field in the Subject attribute of the CA signing
 certificate. The value is not sanitized as specified in 3.1.1.4.1.1.
 
-2.2.2.11.2.2  displayName Attribute
+###### 2.2.2.11.2.2 displayName Attribute
 
 The displayName attribute contains the value of the cn field in the Subject attribute of the CA
 signing certificate. The value is not sanitized.
 
-2.2.2.11.2.3  certificateTemplates Attribute
+###### 2.2.2.11.2.3 certificateTemplates Attribute
 
 This attribute contains information for the list of configured certificate templates for the CA
 identified by the signing certificates stored in the cACertificate attribute. Each string in the attribute
@@ -5745,7 +5010,7 @@ isMemberOfPartialAttributeSet: TRUE
 
 systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
-2.2.2.11.2.4  dNSHostName
+###### 2.2.2.11.2.4 dNSHostName
 
 This attribute contains the FQDN of the computer that hosts the CA service:
 
@@ -5756,7 +5021,8 @@ Release: November 21, 2025
 
 65 / 259
 
-cn: DNS-Host-Name
+
+cn: DNS-Host-Name
 
 dapDisplayName: dNSHostName
 
@@ -5784,14 +5050,14 @@ isMemberOfPartialAttributeSet: TRUE
 
 systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
-2.2.2.11.2.5  cACertificate Attribute
+###### 2.2.2.11.2.5 cACertificate Attribute
 
 The cACertificate attribute is a multivalue Octet String attribute that contains the CA signing
 certificate DER encoded.
 
 Specifications on the syntax of this attribute can be found in [MS-ADA1] section 2.95.
 
-2.2.2.11.3  NTAuthCertificates Object
+###### 2.2.2.11.3 NTAuthCertificates Object
 
 The NTAuthCertificate Object is as follows:
 
@@ -5810,9 +5076,9 @@ each one of its value is a DER-encoded CA signing certificate.
 
 Specifications on the syntax of this attribute can be found in [MS-ADA1] section 2.95.
 
-2.2.2.11.4
+###### 2.2.2.11.4 Certification Authorities Container
 
-Certification Authorities Container
+
 
 The Certification Authorities container exists under the following container.
 
@@ -5825,28 +5091,29 @@ Release: November 21, 2025
 
 66 / 259
 
-This container contains an object of type certificationAuthority for each root CA that the enterprise
+
+This container contains an object of type certificationAuthority for each root CA that the enterprise
 trusts.
 
 The following attributes of these objects are used by the protocol.
 
 Specifications on the syntax of this class can be found in [MS-ADSC] section 2.16.
 
-2.2.2.11.4.1  cn Attribute
+###### 2.2.2.11.4.1 cn Attribute
 
 The cn attribute contains the value of the cn of the subject field of the root CA certificate stored in
 the cACertificate attribute, specified in the following section.
 
-2.2.2.11.4.2  cACertificate Attribute
+###### 2.2.2.11.4.2 cACertificate Attribute
 
 The cACertificate attribute is a multivalue Octet String attribute that contains the root CA signing
 certificate DER encoded.
 
 Specifications on the syntax of this attribute can be found in [MS-ADA1] section 2.95.
 
-2.2.3  Certificate Requirements
+#### 2.2.3 Certificate Requirements
 
-2.2.3.1  Key Recovery Certificate
+##### 2.2.3.1 Key Recovery Certificate
 
 A CA MAY use one or more locally configured and specified key recovery keys to encrypt the private
 key of a client, which is submitted to the CA encapsulated in a certificate enrollment request.
@@ -5897,7 +5164,8 @@ Release: November 21, 2025
 
 67 / 259
 
-2.2.4  Common Error Codes
+
+#### 2.2.4 Common Error Codes
 
 The following error codes are used by this protocol to indicate specific error conditions. Other error
 values might be used and are implementation-specific.
@@ -5943,7 +5211,7 @@ CRYPT_E_NO_SIGNER
 The signed cryptographic message does not have a signer for the specified
 signer index.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol accesses the directory service schema classes and attributes that are listed in the
 following table. For the syntactic specifications of the following class or class/attribute pairs, refer to
@@ -6004,7 +5272,8 @@ Release: November 21, 2025
 
 68 / 259
 
-Class
+
+Class
 
 Attribute
 
@@ -6075,7 +5344,8 @@ Release: November 21, 2025
 
 69 / 259
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Windows Client Certificate Enrollment Protocol is a simple request-response protocol. The client
 sends a certificate request and the server responds with a signed certificate or a detailed disposition
@@ -6084,7 +5354,7 @@ protocol is a single message followed by a single reply. An overview of subproto
 section 1.3.1. Many of the DCOM methods that are specified in section 2 are made available for
 nonprotocol functions, such as diagnostics.
 
-3.1  Client Role
+### 3.1 Client Role
 
 The following sections specify implementation modes of the client role:<20>
 
@@ -6097,7 +5367,7 @@ certificate templates.
 Enrollment based on certificate templates: Specifies a client that sends an enrollment request,
 based on enterprise policies published in Active Directory, by using certificate templates.
 
-3.1.1  Client Mode: Basic Enrollment
+#### 3.1.1 Client Mode: Basic Enrollment
 
 The Windows Client Certificate Enrollment Protocol constructs a certificate request as specified in
 section 2.2.2.6, sends the request to the CA, and retrieves the issued certificate. After the client has
@@ -6107,7 +5377,7 @@ later use by applications running on the client machine.<21>
 This section specifies the behavior of a client to this protocol that does not use the certificate
 templates.
 
-3.1.1.1  Abstract Data Model
+##### 3.1.1.1 Abstract Data Model
 
 This section describes a conceptual model of data organization that a possible implementation would
 maintain to participate in this protocol. The described organization is provided to facilitate
@@ -6133,7 +5403,7 @@ Returned_Request_ID: A ULONG that contains the request ID created by the CA when
 request for a certificate. This value is returned in the pdwRequestId parameter of the
 ICertRequestD::Request and ICertRequestD2::Request2 methods.
 
-3.1.1.2  Timers
+##### 3.1.1.2 Timers
 
  None.
 
@@ -6144,12 +5414,13 @@ Release: November 21, 2025
 
 70 / 259
 
-3.1.1.3  Initialization
+
+##### 3.1.1.3 Initialization
 
 The Windows Client Certificate Enrollment Protocol depends on DCOM for authentication, as specified
 in [MS-DCOM].
 
-3.1.1.4  Message Processing Events and Sequencing Rules
+##### 3.1.1.4 Message Processing Events and Sequencing Rules
 
 The Windows Client Certificate Enrollment Protocol is based on DCOM [MS-DCOM]. DCOM provides
 the capability to obtain the version of an interface. Clients SHOULD use the
@@ -6164,12 +5435,12 @@ protocol, a returned value of 0 indicates a successful invocation. Unless specif
 returned non-zero value indicates an error and the client SHOULD NOT rely on any specific value for
 its processing rules.
 
-3.1.1.4.1 Algorithms
+###### 3.1.1.4.1 Algorithms
 
 The following section specifies subroutines that are used by the Client Mode: Basic Enrollment protocol
 role.
 
-3.1.1.4.1.1  Sanitizing Common Names
+###### 3.1.1.4.1.1 Sanitizing Common Names
 
 The CNs of the Active Directory (as specified in [MS-ADTS]) objects used by the Windows Client
 Certificate Enrollment Protocol are created by sanitizing the names of other objects and shortening the
@@ -6202,7 +5473,7 @@ MUST be padded with leading zeros on the left to ensure a total length of five c
 
 string that contains the hash value.
 
-3.1.1.4.1.1.1  Hashing Processing Rules
+###### 3.1.1.4.1.1.1 Hashing Processing Rules
 
 The hash to represent truncated characters is computed by rotating a 16-bit value one bit to the left
 and adding each character truncated from the full CN (original name) until all of the truncated
@@ -6215,7 +5486,8 @@ Release: November 21, 2025
 
 71 / 259
 
-If the string length of the full CN is less than 52 characters in total length, the sanitized short name is
+
+If the string length of the full CN is less than 52 characters in total length, the sanitized short name is
 the same as the full CN. Otherwise, the string base equals the first 51 characters of the full CN.
 
 The string excess equals characters 52 through the end of the full CN. For each character that is in
@@ -6238,7 +5510,7 @@ LowBit) + [excess character].
 padded with zeros (0) to ensure that it is five characters in total length. The final, short sanitized
 name equals the concatenation of the string base plus a minus sign (–) plus the 5-character hash.
 
-3.1.1.4.1.1.2  Disallowed Characters
+###### 3.1.1.4.1.1.2 Disallowed Characters
 
 The following characters are disallowed and MUST NOT be used. The disallowed characters and their
 appropriate replacement values are noted in the table.
@@ -6347,7 +5619,8 @@ Release: November 21, 2025
 
 72 / 259
 
- Name
+
+ Name
 
  Character
 
@@ -6425,7 +5698,7 @@ Closing brace
 
 !007d
 
-3.1.1.4.2 Processing Rules for the pwszAuthority Parameter
+###### 3.1.1.4.2 Processing Rules for the pwszAuthority Parameter
 
 The pwszAuthority parameter is a common parameter for each of the methods in this protocol. The
 following sections describe the client processing rules for this parameter.
@@ -6438,7 +5711,7 @@ Note  Comparing the CA name in the preceding operations MUST NOT be case-sensiti
 
 CA name specifications are in section 1.3.2.5.
 
-3.1.1.4.3 ICertRequestD::Request and ICertRequestD2::Request2 Processing
+###### 3.1.1.4.3 ICertRequestD::Request and ICertRequestD2::Request2 Processing
 
 The processing for the ICertRequestD::Request method and the ICertRequestD2::Request2 method
 MUST be identical on the client side, except for the handling of the additional pwszSerialNumber
@@ -6467,7 +5740,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-pwszAttributes: The client MAY set the pwszAttributes parameter to a string representing a collection
+
+pwszAttributes: The client MAY set the pwszAttributes parameter to a string representing a collection
 of attributes to be applied to the enrollment request. For specifications on the format of the string,
 see section 2.2.2.7.
 
@@ -6570,7 +5844,7 @@ for anything other than display purposes. If the method encounters an error, the
 associated with the error code is returned. Error codes are specified in [MS-ERREF]. The client
 SHOULD NOT use the value in this field.
 
-3.1.1.4.3.1  New Certificate Requests
+###### 3.1.1.4.3.1 New Certificate Requests
 
 A new certificate request is defined as a certificate request that does not depend upon, and is not
 associated with, any previous certificate. For new certificate requests, the client MUST use one of the
@@ -6584,11 +5858,12 @@ Release: November 21, 2025
 
 74 / 259
 
-Before creating a new certificate request, the client MUST generate a new public-private key pair.
+
+Before creating a new certificate request, the client MUST generate a new public-private key pair.
 This newly generated public key will be the one that is certified by the CA while its associated
 private key is used to sign the request. For details, see the following sections.
 
-3.1.1.4.3.1.1  New Certificate Request Using PKCS #10 Request Format
+###### 3.1.1.4.3.1.1 New Certificate Request Using PKCS #10 Request Format
 
 The request MUST be an ASN.1 DER-encoded PKCS #10 request as specified in [RFC2986]. The PKCS
 #10 ASN.1 structure includes the following fields:
@@ -6659,7 +5934,7 @@ the CA to use in case the end entity's information cannot be obtained.
 rmd: The client SHOULD use this value to identify the exact FQDN of the machine
 object associated with the request.
 
-3.1.1.4.3.1.2  New Certificate Request Using CMS and PKCS #10 Request Formats
+###### 3.1.1.4.3.1.2 New Certificate Request Using CMS and PKCS #10 Request Formats
 
 75 / 259
 
@@ -6668,7 +5943,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The request MUST be an ASN.1 DER encoded CMS request as specified in [RFC3852]. The CMS ASN.1
+
+The request MUST be an ASN.1 DER encoded CMS request as specified in [RFC3852]. The CMS ASN.1
 structure includes the following fields:
 
   ContentType: This field MUST be the OID szOID_PKCS_7_SIGNED (1.2.840.113549.1.7.2, id-
@@ -6693,7 +5969,7 @@ eContent: This field MUST be a PKCS #10 certificate request as specified in sect
 
 SignerInfos: The request MUST be signed as specified in [RFC3852].
 
-3.1.1.4.3.1.3  New Certificate Request Using CMS and CMC Request Formats
+###### 3.1.1.4.3.1.3 New Certificate Request Using CMS and CMC Request Formats
 
 The request MUST be an ASN.1 DER encoded CMS request (as specified in [RFC3852]), that includes
 a CMC request (as specified in [RFC2797]). The ASN.1 structure includes the following fields. The
@@ -6738,7 +6014,7 @@ eContent: This field MUST be the CMC certificate request constructed in the prec
 signerInfo, as specified in [RFC2797] section 4.2, or MUST use the No-Signature Signature
 Mechanism, as specified in [RFC2797] section 3.3.3.1.
 
-3.1.1.4.3.1.4  New Certificate Request Using Netscape KEYGEN Request Format
+###### 3.1.1.4.3.1.4 New Certificate Request Using Netscape KEYGEN Request Format
 
 The request MUST be compliant with "Netscape Extensions for User Key Generation Communicator 4.0
 Version". For specifications, see [HTMLQ-keygen].
@@ -6756,12 +6032,13 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 rdn value: Client MUST request the subject name information through the rdn attributes.
 Supported values and their formats MUST be as specified in section 2.2.2.6.4.2.<24>
 
-3.1.1.4.3.2  Renew Certificate Requests
+###### 3.1.1.4.3.2 Renew Certificate Requests
 
 When sending a certificate renewal request, clients MUST use the CMS structure with an
 embedded PKCS #10 certificate request, as specified in [RFC3852] and [RFC2986], or the CMS
@@ -6772,7 +6049,7 @@ The renewal request MUST be done either by using an existing public-private key 
 with the certificate being renewed or by creating a new public-private key pair. See the following
 sections for details about how those key pairs are used to form a request.
 
-3.1.1.4.3.2.1  Renew Certificate Request Using CMS and PKCS #10 Request Formats
+###### 3.1.1.4.3.2.1 Renew Certificate Request Using CMS and PKCS #10 Request Formats
 
 The request MUST be an ASN.1 DER encoded CMS request as specified in [RFC3852]. The CMS ASN.1
 structure includes the following fields:
@@ -6821,7 +6098,7 @@ Attributes field specified in the preceding (second) step).
 
 with the certificate to be renewed.
 
-3.1.1.4.3.2.2  Renew Certificate Request Using CMS and CMC Request Formats
+###### 3.1.1.4.3.2.2 Renew Certificate Request Using CMS and CMC Request Formats
 
 The request MUST be an ASN.1 DER encoded CMS request (as specified in [RFC3852]) that includes a
 CMC request (as specified in [RFC2797]). The ASN.1 structure includes the following fields:
@@ -6844,7 +6121,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 The client MUST construct a CMC request with the following requirements:
 
@@ -6898,7 +6176,7 @@ Mechanism as specified in [RFC2797] section 3.3.3.1.
 The second SignerInfo MUST use the key associated with the certificate to be
 renewed.
 
-3.1.1.4.3.3  Enroll on Behalf of Certificate Requests
+###### 3.1.1.4.3.3 Enroll on Behalf of Certificate Requests
 
 The Enroll On Behalf Of (EOBO) proxy process is used when the client that sends a certificate
 request requests a certificate on behalf of another end entity.
@@ -6908,7 +6186,7 @@ PKCS #10 certificate request, as specified in [RFC3852] and [RFC2986], or client
 structure with an embedded CMC request format, as specified in [RFC3852] and [RFC2797]. Clients
 MUST follow the specific requirements defined in the following sections.
 
-3.1.1.4.3.3.1  Abstract Data Model
+###### 3.1.1.4.3.3.1 Abstract Data Model
 
 This section describes a conceptual model of data organization that a possible implementation would
 maintain to participate in this protocol. The described organization is provided to facilitate
@@ -6931,10 +6209,11 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-of the protocol to provide a way for end entities to exchange the requests and store it in this
+
+of the protocol to provide a way for end entities to exchange the requests and store it in this
 data.<27>
 
-3.1.1.4.3.3.2  Enroll on Behalf of Request Using CMS and PKCS #10 Request Formats
+###### 3.1.1.4.3.3.2 Enroll on Behalf of Request Using CMS and PKCS #10 Request Formats
 
 The request MUST be an ASN.1 DER encoded CMS request as specified in [RFC3852]. The CMS ASN.1
 structure includes the following fields:
@@ -6979,7 +6258,7 @@ the attribute MUST include the requestername name-value pair. The value of
 requestername MUST be the requested value for the Subject field in the issued
 certificate.
 
-3.1.1.4.3.3.3  Enroll on Behalf of Certificate Request Using CMS and CMC Request
+###### 3.1.1.4.3.3.3 Enroll on Behalf of Certificate Request Using CMS and CMC Request
 
 Formats
 
@@ -7020,7 +6299,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  Content: This field MUST be a SignedData with the following values for its fields:
+
+  Content: This field MUST be a SignedData with the following values for its fields:
 
 
 
@@ -7053,7 +6333,7 @@ Mechanism as specified in [RFC2797] section 3.3.3.1.
 The second SignerInfo MUST be done with the key associated to the certificate that is
 passed in the preceding Certificates field.
 
-3.1.1.4.3.4  Certificate Request with Key Attestation
+###### 3.1.1.4.3.4 Certificate Request with Key Attestation
 
 Note  For information on product behavior, see the following product behavior note.<28>
 
@@ -7107,7 +6387,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-(authority and subject) (section 3.1.1.4.3.4.1) is being performed. The
+
+(authority and subject) (section 3.1.1.4.3.4.1) is being performed. The
 szOID_ENROLL_AIK_INFO attribute MUST be used if the encrypted
 Client_HardwareKeyInfo contains the client Attestation Identity Key (AIK) and certificates;
 that is, when AIK attestation (subject only) (section 3.1.1.4.3.4.2) is being performed.
@@ -7125,24 +6406,24 @@ private/public key pair.
 Note  All request formats detailed in the following sections MUST be marshaled by using DER-
 encoding rules, as specified in [X690], for transmission.
 
-3.1.1.4.3.4.1  EK Attestation (Authority and Subject)
+###### 3.1.1.4.3.4.1 EK Attestation (Authority and Subject)
 
 The client MUST locally generate a symmetric key and MUST use it to encrypt the
 Client_HardwareKeyInfo ADM element in the request. The client MUST then encrypt the symmetric key
 by using the public key from the retrieved CA exchange certificate. The encrypted symmetric key
 MUST then be included in a certificate request, as specified in section 3.1.1.4.3.4.
 
-3.1.1.4.3.4.1.1
+###### 3.1.1.4.3.4.1.1 New Certificate Request with Key Attestation Statement
 
-New Certificate Request with Key Attestation Statement
+
 
 The request MUST be an ASN.1 DER-encoded PKCS10 request [RFC3852] that includes
 szOID_ENROLL_EK_INFO, szOID_ENROLL_ATTESTATION_STATEMENT, and
 szOID_ENROLL_KSP_NAME attributes. See section 3.1.1.4.3.4 for details.
 
-3.1.1.4.3.4.1.2
+###### 3.1.1.4.3.4.1.2 Responding to a CA Challenge Message
 
-Responding to a CA Challenge Message
+
 
 When the CA receives a certificate request with a key attestation statement containing
 szOID_ENROLL_EK_INFO, as specified in section 3.1.1.4.3.4.1, it SHOULD return a challenge to the
@@ -7184,14 +6465,15 @@ Release: November 21, 2025
 
 81 / 259
 
-7.  The client MUST set the 0x00000500 bit in the dwFlags parameter of
+
+7.  The client MUST set the 0x00000500 bit in the dwFlags parameter of
 
 ICertRequestD2::Request2, as described in section 3.2.1.4.3.1.1, to designate the request as
 containing the response to the CAChallenge.
 
-3.1.1.4.3.4.1.3
+###### 3.1.1.4.3.4.1.3 Certificate Request with Challenge Response
 
-Certificate Request with Challenge Response
+
 
 The request MUST be an ASN.1 DER-encoded CMS request (as specified in [RFC3852]). The ASN.1
 structure includes the following fields:
@@ -7206,16 +6488,16 @@ specified in [RFC3852] section 6.1.
 EncryptedContent: This field MUST include the secret that the CA has sent (in encrypted format)
 as described in section 3.2.2.6.2.1.2.6.
 
-3.1.1.4.3.4.2  AIK Attestation (Subject Only)
+###### 3.1.1.4.3.4.2 AIK Attestation (Subject Only)
 
 The client MUST generate a symmetric key locally and MUST use it to encrypt the
 Client_HardwareKeyInfo ADM element in the request. The client MUST then encrypt the symmetric
 key by using the public key from the retrieved CA exchange certificate. The encrypted symmetric
 key MUST then be included in a certificate request, as specified in section 3.1.1.4.3.4.<31>
 
-3.1.1.4.3.4.2.1
+###### 3.1.1.4.3.4.2.1 New Certificate Request with Key Attestation Statement
 
-New Certificate Request with Key Attestation Statement
+
 
 The request MUST be an ASN.1 DER-encoded PKCS10 request [RFC3852] that includes
 szOID_ENROLL_AIK_INFO, szOID_ENROLL_ATTESTATION_STATEMENT, and
@@ -7224,15 +6506,15 @@ szOID_ENROLL_KSP_NAME attributes.
 Subject-only attestation uses only the keyAttestation field in the
 Client_KeyAttestationStatement ADM element. The idBinding and aikOpaque fields are empty.
 
-3.1.1.4.3.5  Certificate Requests with Certificate Transparency
+###### 3.1.1.4.3.5 Certificate Requests with Certificate Transparency
 
-3.1.1.4.3.5.1  New Certificate Request with Certificate Transparency
+###### 3.1.1.4.3.5.1 New Certificate Request with Certificate Transparency
 
 A certificate request can be designated for additional Certificate Transparency processing at the
 server by setting the A flag (0x04000000) in the dwFlags parameter of ICertRequestD2::Request2,
 as described in section 3.2.1.4.3.1.1.
 
-3.1.1.4.3.5.2  Signed Certificate Timestamp List Request
+###### 3.1.1.4.3.5.2 Signed Certificate Timestamp List Request
 
 Processing of the server response to a client’s new certificate request with Certificate Transparency
 flagged for additional Certificate Transparency processing consists of the following.
@@ -7257,7 +6539,8 @@ Release: November 21, 2025
 
 82 / 259
 
-3.  The client MUST add the RequestId attribute (section 2.2.2.7.10), constructed from the
+
+3.  The client MUST add the RequestId attribute (section 2.2.2.7.10), constructed from the
 
 Returned_Request_ID ADM element, to the pwszAttributes parameter of the
 ICertRequestD::Request method.
@@ -7267,7 +6550,7 @@ ICertRequestD::Request method.
 ICertRequestD2::Request2, as described in section 3.2.1.4.3.1.1, to designate the request as
 containing the SignedCertificateTimestampList.
 
-3.1.1.4.3.6  Certificate Requests with Private Key Info
+###### 3.1.1.4.3.6 Certificate Requests with Private Key Info
 
 Before submitting a request to the CA for archiving purposes, the client MUST initialize a secure
 channel to the CA. To create a secure channel to the CA, the client MUST retrieve the current CA key
@@ -7289,7 +6572,7 @@ embedded CMC request format, which MUST be as specified in [RFC3852] and [RFC279
 MUST use ICertRequestD2::Request2 to submit the request and follow the specific requirements
 specified in the following section.
 
-3.1.1.4.3.6.1  Certificate Request with a Private Key Using CMC Request Format
+###### 3.1.1.4.3.6.1 Certificate Request with a Private Key Using CMC Request Format
 
 The request MUST be an ASN.1 DER-encoded CMS request (as specified in [RFC3852]) that includes a
 CMC request (as specified in [RFC2797]). The ASN.1 structure includes the following fields:
@@ -7340,7 +6623,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-ICertRequestD2::Request2. For more information about the supported attributes, see section
+
+ICertRequestD2::Request2. For more information about the supported attributes, see section
 3.1.1.4.3.1.1. The client MUST set the Y flag in the dwFlags parameter of
 ICertRequestD2::Request2.
 
@@ -7377,7 +6661,7 @@ is the CMS certificate request that is constructed in the preceding (second) ste
 Note  All the request formats detailed in the following sections MUST be marshaled via DER-encoding
 rules, as specified in [X690], for transmission.
 
-3.1.1.4.3.7  Certificate Request for Certificate Retrieval
+###### 3.1.1.4.3.7 Certificate Request for Certificate Retrieval
 
 A client retrieves an issued certificate from a CA by calling ICertRequestD::Request and
 ICertRequestD2::Request2 methods. The call that the client makes does not contain information on a
@@ -7415,7 +6699,8 @@ Release: November 21, 2025
 
 84 / 259
 
-pdwDisposition: Upon a successful return from an ICertRequestD::Request or
+
+pdwDisposition: Upon a successful return from an ICertRequestD::Request or
 ICertRequestD2::Request2 method invocation, the client receives the pdwDisposition parameter as an
 output value.
 
@@ -7424,15 +6709,15 @@ the enrollment request and the certificate has not been signed.
 
 If the value is 0x00000003 (CR_DISP_ISSUED), the CA has issued the certificate.
 
-3.1.1.4.3.8  Certificate Requests in Pre-sign flow
+###### 3.1.1.4.3.8 Certificate Requests in Pre-sign flow
 
-3.1.1.4.3.8.1  New Certificate Request for Pre-sign Processing
+###### 3.1.1.4.3.8.1 New Certificate Request for Pre-sign Processing
 
 A certificate request can be designated for Pre-sign certificate processing<32> at the server by
 setting the B flag (0x08000000) in the dwFlags parameter of ICertRequestD::Request or
 ICertRequestD2::Request2, as described in section 3.2.1.4.3.1.1.
 
-3.1.1.4.3.8.2  New Certificate Request After Pre-sign Processing
+###### 3.1.1.4.3.8.2 New Certificate Request After Pre-sign Processing
 
 Processing at the client after receiving a response for the request with a Pre-sign flag (section
 3.1.1.4.3.8.1) consists of the following:
@@ -7453,7 +6738,7 @@ ICertRequestD::Request or ICertRequestD2::Request2. Otherwise, the client SHOULD
 ICertAdminD::DenyRequest, as described in [MS-CSRA] section 3.1.4.1.4, to mark the request
 as denied.
 
-3.1.1.4.4 ICertRequestD::GetCACert Request Processing
+###### 3.1.1.4.4 ICertRequestD::GetCACert Request Processing
 
 This method returns a CA property.
 
@@ -7467,7 +6752,7 @@ certificate or property for which it is possible to have multiple instances on t
 bits MUST contain the index of the certificate to be returned. Details about the fchain parameter are
 specified in section 3.2.1.4.2.2.
 
-3.1.1.4.5 ICertRequestD::Ping and ICertRequestD2::Ping2 Request Processing
+###### 3.1.1.4.5 ICertRequestD::Ping and ICertRequestD2::Ping2 Request Processing
 
 A client invokes either the ICertRequestD::Ping or ICertRequestD2::Ping2 method to determine
 whether the CA can be contacted.
@@ -7481,7 +6766,8 @@ Release: November 21, 2025
 
 85 / 259
 
-pwszAuthority (see section 3.1.1.4.2): If the client knows any one of the CA names (common name,
+
+pwszAuthority (see section 3.1.1.4.2): If the client knows any one of the CA names (common name,
 sanitized name, or short name) it SHOULD pass it in this parameter. If the client does not know any
 of the CA names, it MAY pass a NULL string for this parameter.
 
@@ -7489,7 +6775,7 @@ Both the ICertRequestD::Ping and ICertRequestD2::Ping2 methods have the same mea
 The only difference between the methods is that Ping is a member of the ICertRequestD interface, and
 Ping2 is a member of the ICertRequestD2 interface.
 
-3.1.1.4.6 ICertRequestD2::GetCAProperty Request Processing
+###### 3.1.1.4.6 ICertRequestD2::GetCAProperty Request Processing
 
 This method returns a CA property.
 
@@ -7517,7 +6803,7 @@ section 3.2.1.4.3.2.
 
 The value and format of pctbPropertyValue MUST be as specified in section 3.2.1.4.3.2.
 
-3.1.1.4.7 ICertRequestD2::GetCAPropertyInfo Request Processing
+###### 3.1.1.4.7 ICertRequestD2::GetCAPropertyInfo Request Processing
 
 This method retrieves an array of structures that provide information about properties available on the
 CA.
@@ -7531,18 +6817,18 @@ On a successful return, the LONG pointed to by pcProperty contains the count of 
 CATRANSPROP structures returned in pctbPropInfo. Rules for marshaling multiple CATRANSPROP
 structures in a CERTTRANSBLOB are specified in section 2.2.2.3.1.
 
-3.1.1.5  Timer Events
+##### 3.1.1.5 Timer Events
 
 None.
 
-3.1.1.6  Other Local Events
+##### 3.1.1.6 Other Local Events
 
 This client can be triggered when an end user starts an application that requires enrollment for an
 X.509 certificate.<33> The following sections describe local events that capture the processing rules
 when the WCCE client is triggered. Simultaneous invocations of the WCCE client by the higher level
 code are not supported and the result of such invocations is undefined.
 
-3.1.1.6.1 Retrieving the Pending Certificate Request
+###### 3.1.1.6.1 Retrieving the Pending Certificate Request
 
 This local event allows higher level code to retrieve a certificate for a request that was set to pending
 by a CA.
@@ -7556,7 +6842,8 @@ Release: November 21, 2025
 
 86 / 259
 
-CAName: The name of the CA which processed the original request. The type and value of this
+
+CAName: The name of the CA which processed the original request. The type and value of this
 
 parameter is the same as the pwszAuthority parameter in the
 ICertRequestD::Request (section 3.2.1.4.2.1) method.
@@ -7646,7 +6933,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-4.  If the server does not support the ICertRequestD2 interface, then
+
+4.  If the server does not support the ICertRequestD2 interface, then
 
 1.  Retrieve the pending certificate request by invoking ICertRequestD::Request, using the
 
@@ -7692,7 +6980,7 @@ output parameter to "Error".
 
 the pctbEncodedCert returned by ICertRequestD::Request.
 
-3.1.1.6.2 Submitting Certificate Request
+###### 3.1.1.6.2 Submitting Certificate Request
 
 This local event allows higher level code to submit a certificate request to a CA.
 
@@ -7732,7 +7020,8 @@ Release: November 21, 2025
 
 88 / 259
 
-1.  Initialize a DCOM client as specified in section 2.1 by using the value of the ServerName input
+
+1.  Initialize a DCOM client as specified in section 2.1 by using the value of the ServerName input
 parameter as the remote server name setting of the DCOM client. If the initialization did not
 succeed, then set the Disposition output parameter to "Error".
 
@@ -7830,7 +7119,8 @@ Release: November 21, 2025
 
 89 / 259
 
-1.  If ICertRequestD::Request returns pdwDisposition with value of CR_DISP_ISSUED, set the
+
+1.  If ICertRequestD::Request returns pdwDisposition with value of CR_DISP_ISSUED, set the
 
 Disposition output parameter to "Issued".
 
@@ -7849,7 +7139,7 @@ output parameter to "Error".
 the pctbEncodedCert and set the Response output parameter to the value of the
 pctbCertChain returned by ICertRequestD::Request.
 
-3.1.2  Client Mode: Enrollment Based on Certificate Templates
+#### 3.1.2 Client Mode: Enrollment Based on Certificate Templates
 
 This client extends the specification in section 3.1.1 and performs certificate enrollment in an
 enterprise environment where the enterprise has specified enrollment policies by using certificate
@@ -7858,7 +7148,7 @@ client enforces those policies. This mode of use of the Windows Client Certifica
 invoked by some client processes, such as the autoenrollment task [MS-CERSOD], for each
 enrollment request.
 
-3.1.2.1  Abstract Data Model
+##### 3.1.2.1 Abstract Data Model
 
 This client defines the following abstract elements in addition to those specified in section 3.1.1.1.
 
@@ -7903,7 +7193,8 @@ Release: November 21, 2025
 
 90 / 259
 
-Certificate.Template.pKIMaxIssuingDepth: Corresponds to the pKIMaxIssuingDepth attribute
+
+Certificate.Template.pKIMaxIssuingDepth: Corresponds to the pKIMaxIssuingDepth attribute
 
 defined in [MS-CRTD] section 2.14.
 
@@ -7989,19 +7280,20 @@ Release: November 21, 2025
 
 91 / 259
 
-RACertificates: A list of certificates and their corresponding private keys to co-sign a certificate
+
+RACertificates: A list of certificates and their corresponding private keys to co-sign a certificate
 
 request.
 
-3.1.2.2  Timers
+##### 3.1.2.2 Timers
 
 None.
 
-3.1.2.3  Initialization
+##### 3.1.2.3 Initialization
 
 Same as specified in section 3.1.1.3.
 
-3.1.2.4  Message Processing Events and Sequencing Rules
+##### 3.1.2.4 Message Processing Events and Sequencing Rules
 
 The client implemented according to section 3.1.2 differs from the client specified in section 3.1.1 in
 the usage of the following methods:
@@ -8016,19 +7308,19 @@ ICertRequestD::GetCACert and ICertRequestD2::GetCAProperty
 
 The following section specifies the difference between those specifications.
 
-3.1.2.4.1 Algorithms
+###### 3.1.2.4.1 Algorithms
 
 The Client Mode: Enrollment Based on Certificate Templates protocol role uses the algorithms specified
 in section 3.1.1.4.1, and its subsections.
 
-3.1.2.4.2 ICertRequestD::Request and ICertRequestD2::Request2 Processing
+###### 3.1.2.4.2 ICertRequestD::Request and ICertRequestD2::Request2 Processing
 
 Certificate Template Based Enrollment adheres to the specification for this method detailed in section
 3.1.1.4.3 with the exceptions documented in the following sections. It is required that the abstract
 data elements defined in section 3.1.2.1 have been initialized using the method specified in section
 3.1.2.6.1.
 
-3.1.2.4.2.1  Choosing Certificate Request Types
+###### 3.1.2.4.2.1 Choosing Certificate Request Types
 
 This section describes what type of certificate request is used in different situations.
 
@@ -8067,7 +7359,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 If the Certificate.Template.msPKI-Template-Schema-Version datum equals to some
 other value or has not been set at all, the client SHOULD NOT<39> submit a certificate
@@ -8105,7 +7398,7 @@ If the Certificate.Template.msPKI-Template-Schema-Version datum equals to some
 other value or has not been set at all, the client SHOULD NOT<41> submit a certificate
 request.
 
-3.1.2.4.2.2  Certificate Template Processing Rules
+###### 3.1.2.4.2.2 Certificate Template Processing Rules
 
 The client MUST follow the rules identified in this section to create a request based on the abstract
 data model specified in section 3.1.2.1.
@@ -8131,13 +7424,13 @@ and 3.1.2.4.2.2.1.2.<42>
 The client MUST ignore attributes and flags of a certificate template that are not specified in the
 following sections.
 
-3.1.2.4.2.2.1  Processing Rules for Certificate Template Version 1
+###### 3.1.2.4.2.2.1 Processing Rules for Certificate Template Version 1
 
 The following sections contain the client processing rules for all certificate requests.
 
-3.1.2.4.2.2.1.1
+###### 3.1.2.4.2.2.1.1 Certificate.Template.flags
 
-Certificate.Template.flags
+
 
 The following processing rules are applied to flags in the Certificate.Template.flags datum.
 
@@ -8163,7 +7456,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Flag
+
+Flag
 
 Client processing
 
@@ -8180,9 +7474,9 @@ field of the Basic Constraints extension MUST be set to TRUE, and the pathLenCon
 be set as specified in section 3.1.2.4.2.2.1.4. This extension MUST be added as a request attribute to
 the certificate request, as specified in section 2.2.2.7.7.
 
-3.1.2.4.2.2.1.2
+###### 3.1.2.4.2.2.1.2 Certificate.Template.pKIExtendedKeyUsage
 
-Certificate.Template.pKIExtendedKeyUsage
+
 
 The client MUST create the extended key usage extension with the keyPurposeId as specified for the
 Certificate.Template.pKIExtendedKeyUsage datum (section 3.1.2.4.2.2.1.2). Specifications on
@@ -8191,9 +7485,9 @@ this extension are in [RFC3280] section 4.2.1.13.
 This extension MUST be added as a request attribute to the certificate request, as specified in
 section 2.2.2.7.7.
 
-3.1.2.4.2.2.1.3
+###### 3.1.2.4.2.2.1.3 Certificate.Template.pKIKeyUsage
 
-Certificate.Template.pKIKeyUsage
+
 
 The client MUST create the key usage extension with the bits value as specified in the
 Certificate.Template.pKIKeyUsage datum. Specifications on this extension are in [RFC3280]
@@ -8202,9 +7496,9 @@ section 4.2.1.3.
 This extension MUST be added as a request attribute to the certificate request, as specified in
 section 2.2.2.7.7.
 
-3.1.2.4.2.2.1.4
+###### 3.1.2.4.2.2.1.4 Certificate.Template.pKIMaxIssuingDepth
 
-Certificate.Template.pKIMaxIssuingDepth
+
 
 If a Basic Constraints extension (as specified in [RFC3280] section 4.2.1.10) is being added to the
 request:
@@ -8234,9 +7528,9 @@ include the pathLenConstraint field in the Basic Constraints extension.
 The conditions under which the Basic Constraints extension is added to the request are specified in
 sections 3.1.2.4.2.2.1.1 and 3.1.2.4.2.2.2.7.
 
-3.1.2.4.2.2.1.5
+###### 3.1.2.4.2.2.1.5 Certificate.Template.pKIDefaultKeySpec
 
-Certificate.Template.pKIDefaultKeySpec
+
 
 The Certificate.Template.pKIDefaultKeySpec datum SHOULD be used to determine the
 cryptographic key information for generating the cryptographic keys used with the certificate.<43>
@@ -8250,9 +7544,10 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-3.1.2.4.2.2.1.6
 
-Certificate.Template.pKIDefaultCSPs
+###### 3.1.2.4.2.2.1.6 Certificate.Template.pKIDefaultCSPs
+
+
 
 The client SHOULD use the Certificate.Template.pKIDefaultCSPs datum to determine the
 algorithm and the key size to be used to generate the private key as follows. For more details about
@@ -8367,54 +7662,55 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 If the value of the strCSP is on the list, use the mapped algorithm when creating a private
 key.
 
 3.  If no algorithm was selected in step 2, use RSA algorithm and generate a 1024-bit key.
 
-3.1.2.4.2.2.1.7
+###### 3.1.2.4.2.2.1.7 Certificate.Template.pKICriticalExtensions
 
-Certificate.Template.pKICriticalExtensions
+
 
 The client MUST mark the extensions listed in the Certificate.Template.pKICriticalExtensions
 datum critical when encoding the extensions in the request. Specifications on the extensions format
 are in section 2.2.2.7.7.
 
-3.1.2.4.2.2.1.8
+###### 3.1.2.4.2.2.1.8 Certificate.Template.cn
 
-Certificate.Template.cn
+
 
 The client MAY use the value of the Certificate.Template.cn datum to encode certificate template
 name as specified in section 2.2.2.7.7.1.<44>
 
-3.1.2.4.2.2.1.9
+###### 3.1.2.4.2.2.1.9 Certificate.Template.revision
 
-Certificate.Template.revision
+
 
 The value of the Certificate.Template.revision datum SHOULD <45> be encoded as a
 templateMajorVersion field of the Certificate Template OID extension specified in section
 2.2.2.7.7.2.
 
-3.1.2.4.2.2.2  Processing Rules for Certificate Template Versions 2, 3, and 4
+###### 3.1.2.4.2.2.2 Processing Rules for Certificate Template Versions 2, 3, and 4
 
 The client MUST adhere to the processing rules as specified in section 3.1.2.4.2.2.1. If the
 certificate.Template.msPKI-Template-Schema-Version datum is set to 2, 3, or 4, the client
 MUST also adhere to processing rules specified in this section.
 
-3.1.2.4.2.2.2.1
+###### 3.1.2.4.2.2.2.1 Certificate.Template.msPKI-Minimal-Key-Size
 
-Certificate.Template.msPKI-Minimal-Key-Size
+
 
 The client MUST create the key pair with a key length greater than or equal to the value of the
 Certificate.Template.msPKI-Minimal-Key-Size datum. The client MUST ignore the key length
 derived by processing the Certificate.Template.pKIDefaultCSPs (section 3.1.2.4.2.2.1.6) datum, as
 specified in section 3.1.2.4.2.2.1.6.
 
-3.1.2.4.2.2.2.2
+###### 3.1.2.4.2.2.2.2 Certificate.Template.pKIDefaultCSPs
 
-Certificate.Template.pKIDefaultCSPs
+
 
 The client SHOULD use the Certificate.Template.pKIDefaultCSPs datum to determine the
 algorithm and the key size to be used to generate the private key as follows
@@ -8453,7 +7749,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 If the certificate.Template.msPKI-Template-Schema-Version datum equals 0x4 and if
 CT_FLAG_USE_LEGACY_PROVIDER is not set:
@@ -8472,25 +7769,25 @@ specific methods, and the szOID_ENROLL_KSP_NAME attribute containing the CSP
 name.<46> If initialization failed and CT_FLAG_ATTEST_REQUIRED is set, the client SHOULD
 NOT submit a certificate request based on this template.<47>
 
-3.1.2.4.2.2.2.3
+###### 3.1.2.4.2.2.2.3 Certificate.Template.msPKI-Template-Cert-Template-OID
 
-Certificate.Template.msPKI-Template-Cert-Template-OID
+
 
 The value of the Certificate.Template.msPKI-Template-Cert-Template-OID datum MUST be
 encoded as a templateID field of the Certificate Template OID extension, as specified in section
 2.2.2.7.7.2.
 
-3.1.2.4.2.2.2.4
+###### 3.1.2.4.2.2.2.4 Certificate.Template.msPKI-Template-Minor-Revision
 
-Certificate.Template.msPKI-Template-Minor-Revision
+
 
 The value of the Certificate.Template.msPKI-Template-Minor-Revision datum MUST be encoded
 as a templateMinorVersion field of the Certificate Template OID extension as specified in section
 2.2.2.7.7.2.
 
-3.1.2.4.2.2.2.5
+###### 3.1.2.4.2.2.2.5 Certificate.Template.msPKI-RA-Application-Policies
 
-Certificate.Template.msPKI-RA-Application-Policies
+
 
 Clients MUST inspect the value of the Certificate.Template.msPKI-RA-Application-Policies datum
 as specified in [MS-CRTD] section 2.23. For each property type, the following client processing rules
@@ -8545,7 +7842,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-corresponding to the public key in the request. If this property type is not present, clients MAY
+
+corresponding to the public key in the request. If this property type is not present, clients MAY
 choose defaults based on local policy.<49>
 
   msPKI-Symmetric-Algorithm: If this property type is present, the client MUST use the algorithm
@@ -8569,9 +7867,9 @@ property type is not present, clients MAY choose defaults based on local policy.
 information for generating the cryptographic keys that are used with the certificate. If this
 property type is not present, clients MAY choose defaults based on local policy.<55>
 
-3.1.2.4.2.2.2.6
+###### 3.1.2.4.2.2.2.6 Certificate.Template.msPKI-Certificate-Application-Policy
 
-Certificate.Template.msPKI-Certificate-Application-Policy
+
 
 The client MUST create the Certificate Application Policy extension as specified in section 2.2.2.7.7.3,
 and using the OIDs in this abstract datum.
@@ -8579,9 +7877,9 @@ and using the OIDs in this abstract datum.
 This extension MUST be added as a request attribute to the certificate request. Specifications are in
 section 2.2.2.7.7.<56>
 
-3.1.2.4.2.2.2.7
+###### 3.1.2.4.2.2.2.7 Certificate.Template.msPKI-Enrollment-Flag
 
-Certificate.Template.msPKI-Enrollment-Flag
+
 
 The following processing rules are applied to flags in the Certificate.Template.msPKI-Enrollment-
 Flag datum.
@@ -8606,9 +7904,9 @@ If this flag is set, the client SHOULD add a Basic Constraints extension (as spe
 section 4.2.1.10) to the certificate request and set the cA field to FALSE. The client SHOULD NOT
 include the pathLenConstraint field in the Basic Constraints extension. <57>
 
-3.1.2.4.2.2.2.8
+###### 3.1.2.4.2.2.2.8 Certificate.Template.msPKI-Private-Key-Flag
 
-Certificate.Template.msPKI-Private-Key-Flag
+
 
 The following processing rules are applied to flags in the Certificate.Template.msPKI-Private-Key-
 Flag datum.
@@ -8620,7 +7918,8 @@ Release: November 21, 2025
 
 98 / 259
 
-Flag
+
+Flag
 
 0x00000001
 
@@ -8738,15 +8037,16 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 If the value of a bitwise AND of Certificate.Template.msPKI-Private-Key-Flag and
 0x0F000000 is larger than 0x0Y000000, where Y denotes the value of the
 Client_Current_Version ADM element, the client SHOULD NOT enroll for this template.<64>
 
-3.1.2.4.2.2.2.9
+###### 3.1.2.4.2.2.2.9 Certificate.Template.msPKI-Certificate-Policy
 
-Certificate.Template.msPKI-Certificate-Policy
+
 
 The client MUST construct the "certificate policies" extension as specified in [RFC3280] section
 4.2.1.5.
@@ -8758,9 +8058,9 @@ present.
 This extension MUST be added as a request attribute to the certificate request. Specifications are in
 section 2.2.2.7.7.
 
-3.1.2.4.2.2.2.10
+###### 3.1.2.4.2.2.2.10 Certificate.Template.msPKI-Certificate-Name-Flag
 
-Certificate.Template.msPKI-Certificate-Name-Flag
+
 
 The following processing rules are applied to flags in the Certificate.Template.msPKI-Certificate-
 Name-Flag datum.
@@ -8792,7 +8092,7 @@ szOID_CERT_EXTENSIONS of the PKCS #10 request (see section 3.1.1.4.3.1.1).
 CT_FLAG_ENROLLEE_SUPPLIES_SUBJECT_ALT_NAME flag is set, the client MUST set the Subject
 field to empty and encode it as a 0 length DER-encoded sequence.
 
-3.1.2.4.2.3  Encoding Certificate Template Identifier in the Request
+###### 3.1.2.4.2.3 Encoding Certificate Template Identifier in the Request
 
 Clients MUST identify certificate template to the server in one of the following ways:
 
@@ -8822,13 +8122,14 @@ Release: November 21, 2025
 
 100 / 259
 
-3.1.2.5  Timer Events
+
+##### 3.1.2.5 Timer Events
 
 None.
 
-3.1.2.6  Other Local Events
+##### 3.1.2.6 Other Local Events
 
-3.1.2.6.1 Creating a Certificate Request Based on a Certificate Template
+###### 3.1.2.6.1 Creating a Certificate Request Based on a Certificate Template
 
 Input Parameters
 
@@ -8897,7 +8198,8 @@ Release: November 21, 2025
 
 101 / 259
 
-Parameter.Certificate.Template.msPKI-Enrollment-Flag: The type and value of this parameter is
+
+Parameter.Certificate.Template.msPKI-Enrollment-Flag: The type and value of this parameter is
 the same as the Certificate.Template.msPKI-Enrollment-Flag ADM element described in
 section 3.1.2.1.
 
@@ -8985,7 +8287,8 @@ Release: November 21, 2025
 
 102 / 259
 
-Parameter
+
+Parameter
 
 Initializes …
 
@@ -9079,7 +8382,7 @@ RACertificates
 
 4.  Set the Request output parameter to the certificaterequest generated in the previous step.
 
-3.2  Server Role
+### 3.2 Server Role
 
 The server implements the interfaces as specified in sections 3.2.1 and 3.2.2 of this protocol
 specification.
@@ -9101,7 +8404,8 @@ Release: November 21, 2025
 
 103 / 259
 
-
+
+
 
 
 
@@ -9126,7 +8430,7 @@ The server MAY implement key archival, making it an advanced CA.<68>
 
 The server SHOULD return properties on its implementation by implementing
 ICertRequestD::GetCACert and ICertRequestD2::GetCAProperty methods as specified in sections
-3.2.1.4.2.2 and 3.2.1.4.3.2, respectively.
+###### 3.2.1.4.2.2 and 3.2.1.4.3.2, respectively.
 
 The following sections describe the server modes:
 
@@ -9182,7 +8486,8 @@ Release: November 21, 2025
 
 104 / 259
 
-Note  The abstract interface notation (Public) indicates that this abstract data model element can be
+
+Note  The abstract interface notation (Public) indicates that this abstract data model element can be
 directly accessed from outside this protocol.
 
 3.2.1.1.1 Request Table
@@ -9251,7 +8556,8 @@ Release: November 21, 2025
 
 105 / 259
 
-  Request_Org_Unit
+
+  Request_Org_Unit
 
   Request_Common_Name
 
@@ -9338,7 +8644,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Column name
+
+Column name
 
 Column description
 
@@ -9439,7 +8746,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Data name
+
+Data name
 
 Data description
 
@@ -9547,7 +8855,8 @@ the CASigningCert column. AIA is specified in
 
 108 / 259
 
-Data name
+
+Data name
 
 Config_CA_OCSP_Include_In_Cert (Public)
 
@@ -9652,7 +8961,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Data name
+
+Data name
 
 Data description
 
@@ -9752,7 +9062,8 @@ CA restricts access to the backup-related
 
 110 / 259
 
-Data name
+
+Data name
 
 Data description
 
@@ -9844,7 +9155,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Data name
+
+Data name
 
 Config_Disable_LDAP_Sign_Encrypt
 
@@ -9945,7 +9257,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Data name
+
+Data name
 
 Data description
 
@@ -10024,7 +9337,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-OutputAccountName output parameter, and setting the CA_SID equal to the OutputSID
+
+OutputAccountName output parameter, and setting the CA_SID equal to the OutputSID
 output parameter.
 
 3.2.1.3.1 CRL Partitioning Configuration Checks
@@ -10100,7 +9414,8 @@ Release: November 21, 2025
 
 114 / 259
 
-OutputAccountName: A string that contains the security account name under which CA is
+
+OutputAccountName: A string that contains the security account name under which CA is
 
 running.
 
@@ -10180,7 +9495,8 @@ Release: November 21, 2025
 
 115 / 259
 
-
+
+
 
 PolicyHandle: The PolicyHandle returned from the aforementioned LsarOpenPolicy.
 
@@ -10258,7 +9574,8 @@ Release: November 21, 2025
 
 116 / 259
 
-2.  The CA MUST follow the processing rules in [RFC2616] for retrieval.
+
+2.  The CA MUST follow the processing rules in [RFC2616] for retrieval.
 
 3.  If the retrieval attempt is successful from the current DistributionPoint, set the
 
@@ -10353,7 +9670,8 @@ Release: November 21, 2025
 
 117 / 259
 
-
+
+
 
 typesOnly: FALSE
 
@@ -10453,7 +9771,8 @@ Release: November 21, 2025
 
 118 / 259
 
-2.  Invoke the "Establishing an ADConnection" task ([MS-ADTS] section 7.6.1.3) with the following
+
+2.  Invoke the "Establishing an ADConnection" task ([MS-ADTS] section 7.6.1.3) with the following
 
 parameters:
 
@@ -10557,7 +9876,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-If successful, exit.
+
+If successful, exit.
 
 9.  If the TaskReturnStatus returned is not 0, convert it to a 4-byte HRESULT value (errors are
 
@@ -10639,7 +9959,8 @@ Release: November 21, 2025
 
 120 / 259
 
-pdwRequestId: A 32-bit integer value that contains the identifier used to identify the request.
+
+pdwRequestId: A 32-bit integer value that contains the identifier used to identify the request.
 
 Details about processing information are specified in section 3.1.1.4.3.
 
@@ -10714,7 +10035,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.  The CA MUST parse attributes passed in pwszAttributes parameter as specified in section
+
+2.  The CA MUST parse attributes passed in pwszAttributes parameter as specified in section
 
 3.2.1.4.2.1.2.
 
@@ -10800,7 +10122,8 @@ Release: November 21, 2025
 
 122 / 259
 
-in the Signing_Cert datum. The algorithm for shortening names is specified in section
+
+in the Signing_Cert datum. The algorithm for shortening names is specified in section
 3.1.1.4.1.1.1.
 
 2.  Return true if the EmptyNameAllowed is set to true and if the CANameString equals one of the
@@ -10887,7 +10210,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  1.2.3.4=contoso. The name of this token can be any OID (in this example 1.2.3.4). It is
+
+  1.2.3.4=contoso. The name of this token can be any OID (in this example 1.2.3.4). It is
 mapped to an otherName structure that has the OID 1.2.3.4. The format for the value
 uses an octet string for the OID and contoso for the value that is encoded as an octet
 string.
@@ -10972,7 +10296,8 @@ Release: November 21, 2025
 
 124 / 259
 
-based on the rdn attribute, as specified in section 3.2.1.4.2.1.4.1.4. Otherwise, the CA MUST
+
+based on the rdn attribute, as specified in section 3.2.1.4.2.1.4.1.4. Otherwise, the CA MUST
 ignore this attribute.
 
 3.2.1.4.2.1.3  Requesting Status Inspection
@@ -11055,7 +10380,8 @@ Release: November 21, 2025
 
 125 / 259
 
-The following table describes the different request types and request formats that are used when
+
+The following table describes the different request types and request formats that are used when
 constructing each certificate request, as indicated in the column heading.
 
 Request type
@@ -11152,7 +10478,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-present in the request or signature validation fails, the CA MUST return a nonzero error to the
+
+present in the request or signature validation fails, the CA MUST return a nonzero error to the
 client.
 
   Attribute: This field MAY be used to send additional parameters to the CA. The CA MUST parse it
@@ -11229,7 +10556,8 @@ Release: November 21, 2025
 
 127 / 259
 
-
+
+
 
 content: This field is a SignedData structure (as specified in [RFC3852] section 5.1) and has the
 following requirements for its fields:
@@ -11321,7 +10649,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 rdn ([HTMLQ-keygen] - see ‘Meter’ element): This attribute MUST be added to this parameter. If
 the attribute is not added, the CA MUST return a non-zero error code. If the attribute is present in
@@ -11408,7 +10737,8 @@ Release: November 21, 2025
 
 129 / 259
 
-The request MUST be compliant with the information specified in [RFC2797], otherwise the CA MUST
+
+The request MUST be compliant with the information specified in [RFC2797], otherwise the CA MUST
 return a non-zero error. The processing rules for the following fields MUST be adhered to by the CA
 but are not specified by [RFC2797]:
 
@@ -11494,7 +10824,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-3.2.1.4.2.1.4.3.2
+
+3.2.1.4.2.1.4.3.2
 
 Signed Certificate Timestamp List
 
@@ -11582,7 +10913,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Column name
+
+Column name
 
 Processing rules
 
@@ -11695,7 +11027,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Column name
+
+Column name
 
 Request_Title
 
@@ -11804,7 +11137,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Column name
+
+Column name
 
 Processing rules
 
@@ -11885,7 +11219,8 @@ Release: November 21, 2025
 
 134 / 259
 
-R:  An 8-byte arbitrary integer generated with any pseudo random number generator.
+
+R:  An 8-byte arbitrary integer generated with any pseudo random number generator.
 
 1.  If Config_High_Serial_String is not empty, the CA SHOULD<91>:
 
@@ -11966,7 +11301,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-3.2.1.4.2.1.4.6.3
+
+3.2.1.4.2.1.4.6.3
 
 Serial Numbers Based on Config_High_Serial_String
 
@@ -12050,7 +11386,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-representation of the Request_CRL_Partition_Index value. If the value of
+
+representation of the Request_CRL_Partition_Index value. If the value of
 Request_CRL_Partition_Index is zero, the substring <CRLPartitionIndex> MUST be removed
 completely. For example, if Request_CRL_Partition_Index is 11, then "<CRLPartitionIndex>"
 will be replaced with "_Partition00011".
@@ -12136,7 +11473,8 @@ Release: November 21, 2025
 
 137 / 259
 
-
+
+
 
 crls: If the client passed the X flag in the dwFlag parameter, this field MUST contain all current
 CRLs and delta CRLs for the CAs whose certificates were added to the certificates field. For
@@ -12245,7 +11583,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 value[0]: Set to the CMCStatusInfo structure specified in [RFC2797], section 5.1.
 
@@ -12349,7 +11688,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 
 
@@ -12456,7 +11796,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-A request can be designated for Pre-sign certificate processing by the client, as specified in section
+
+A request can be designated for Pre-sign certificate processing by the client, as specified in section
 3.1.1.4.3.8.1. In addition to the processing rules defined in section 3.2.1.4.2.1.4, the CA MUST
 perform the following processing on the certificate request:
 
@@ -12528,7 +11869,8 @@ Release: November 21, 2025
 
 141 / 259
 
-pctbOut:  If the function returns success (0) this parameter is a pointer to a CERTTRANSBLOB
+
+pctbOut:  If the function returns success (0) this parameter is a pointer to a CERTTRANSBLOB
 
 structure containing the returned value.
 
@@ -12630,7 +11972,8 @@ Release: November 21, 2025
 
 142 / 259
 
-The values in the following table define the indexed properties for the fchain parameter. The two
+
+The values in the following table define the indexed properties for the fchain parameter. The two
 most significant bytes of fchain define the property type, and the two least significant bytes of
 fchain define the index required for these properties.
 
@@ -12712,7 +12055,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  A CAINFO structure: A CAINFO structure MUST be returned if fchain is equal to the following:
+
+  A CAINFO structure: A CAINFO structure MUST be returned if fchain is equal to the following:
 
 GETCERT_CAINFO
 
@@ -12764,18 +12108,18 @@ Note  The numeric values for these constants are defined in the preceding table.
 
 two bytes of the fchain parameter.
 
-3.2.1.4.2.2.1  GETCERT_CASIGCERT - 0x00000000
+###### 3.2.1.4.2.2.1 GETCERT_CASIGCERT - 0x00000000
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_CASIGCERT property ID identified in the PropID parameter and the number of rows in the
 Signing_Cert table in the PropIndex parameter.
 
-3.2.1.4.2.2.2  GETCERT_CAXCHGCERT - 0x00000001
+###### 3.2.1.4.2.2.2 GETCERT_CAXCHGCERT - 0x00000001
 
 The CA SHOULD process this client request identically to one specified in section 3.2.1.4.3.2 for the
 CR_PROP_CAXCHGCERT property ID identified in the PropID parameter.<97>
 
-3.2.1.4.2.2.3  GETCERT_CURRENTCRL - 0x6363726C
+###### 3.2.1.4.2.2.3 GETCERT_CURRENTCRL - 0x6363726C
 
 144 / 259
 
@@ -12784,73 +12128,74 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
+
+Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_BASECRL property ID identified in the PropID parameter and the number of rows in the
 Signing_Cert table in the PropIndex parameter.
 
-3.2.1.4.2.2.4  GETCERT_FILEVERSION - 0x66696C65
+###### 3.2.1.4.2.2.4 GETCERT_FILEVERSION - 0x66696C65
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_FILEVERSION property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.5  GETCERT_CAINFO - 0x696E666F
+###### 3.2.1.4.2.2.5 GETCERT_CAINFO - 0x696E666F
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_CATYPE property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.6  GETCERT_CANAME - 0x6E616D65
+###### 3.2.1.4.2.2.6 GETCERT_CANAME - 0x6E616D65
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_CANAME property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.7  GETCERT_PARENTCONFIG - 0x70617265
+###### 3.2.1.4.2.2.7 GETCERT_PARENTCONFIG - 0x70617265
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_PARENTCA property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.8  GETCERT_POLICYVERSION - 0x706F6C69
+###### 3.2.1.4.2.2.8 GETCERT_POLICYVERSION - 0x706F6C69
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_POLICYDESCRIPTION property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.9  GETCERT_PRODUCTVERSION - 0x70726F64
+###### 3.2.1.4.2.2.9 GETCERT_PRODUCTVERSION - 0x70726F64
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_PRODUCTVERSION property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.10
+###### 3.2.1.4.2.2.10 GETCERT_SANITIZEDCANAME - 0x73616E69
 
-GETCERT_SANITIZEDCANAME - 0x73616E69
+
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_SANITIZEDCANAME property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.11
+###### 3.2.1.4.2.2.11 GETCERT_SHAREDFOLDER - 0x73686172
 
-GETCERT_SHAREDFOLDER - 0x73686172
+
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_SHAREDFOLDER property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.12
+###### 3.2.1.4.2.2.12 GETCERT_CATYPE - 0x74797065
 
-GETCERT_CATYPE - 0x74797065
+
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_CATYPE property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.13
+###### 3.2.1.4.2.2.13 GETCERT_CRLBYINDEX - 0x636C
 
-GETCERT_CRLBYINDEX - 0x636C
+
 
 The index for this property MUST be passed in the least significant two bytes of the property value.
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_BASECRL property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.14
+###### 3.2.1.4.2.2.14 GETCERT_CACERTBYINDEX - 0x6374
 
-GETCERT_CACERTBYINDEX - 0x6374
+
 
 145 / 259
 
@@ -12859,41 +12204,42 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The index for this property MUST be passed in the least significant two bytes of the property value.
+
+The index for this property MUST be passed in the least significant two bytes of the property value.
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_CASIGCERT property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.15
+###### 3.2.1.4.2.2.15 GETCERT_EXITVERSIONBYINDEX - 0x6578
 
-GETCERT_EXITVERSIONBYINDEX - 0x6578
+
 
 The index for this property MUST be passed in the least significant two bytes of the property value.
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_EXITDESCRIPTION property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.16
+###### 3.2.1.4.2.2.16 GETCERT_CRLSTATEBYINDEX - 0x736C
 
-GETCERT_CRLSTATEBYINDEX - 0x736C
+
 
 The index for this property MUST be passed in the least significant two bytes of the property value.
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_CRLSTATE property ID identified in the PropID parameter.
 
-3.2.1.4.2.2.17
+###### 3.2.1.4.2.2.17 GETCERT_CACERTSTATEBYINDEX - 0x7374
 
-GETCERT_CACERTSTATEBYINDEX - 0x7374
+
 
 The index for this property MUST be passed in the least significant two bytes of the property value.
 
 Processing rules MUST be identical to the ones specified in section 3.2.1.4.3.2 for the
 CR_PROP_CACERTSTATE property ID identified in the PropID parameter.
 
-3.2.1.4.2.3
+###### 3.2.1.4.2.3 ICertRequestD::Ping (Opnum 5)
 
-ICertRequestD::Ping (Opnum 5)
+
 
 The Ping method performs a request response test (ping) to the CA.
 
@@ -12925,7 +12271,7 @@ parameter set to the CA name passed in the pwszAuthority parameter and the Empty
 input parameter set to true. If false is returned, the CA MUST return the E_INVALIDARG
 (0x80070057) error code to the client.
 
-3.2.1.4.3 ICertRequestD2
+###### 3.2.1.4.3 ICertRequestD2
 
 [MS-WCCE] - v20251121
 Windows Client Certificate Enrollment Protocol
@@ -12934,7 +12280,8 @@ Release: November 21, 2025
 
 146 / 259
 
-The ICertRequestD2 interface MUST extend (derive from) the ICertRequestD interface specified in this
+
+The ICertRequestD2 interface MUST extend (derive from) the ICertRequestD interface specified in this
 protocol specification. The additional functionality provided by ICertRequestD2 includes the following:
 
   Additional CA properties MAY be retrieved from GetCAProperty.
@@ -12993,9 +12340,9 @@ Opnum: 9
 Note  Opnums 0, 1, and 2 are reserved for the IUnknown_QueryInterface, AddRef, and Release
 methods used by the standard COM IUnknown interface, as specified in [MS-DCOM].
 
-3.2.1.4.3.1
+###### 3.2.1.4.3.1 ICertRequestD2::Request2 (Opnum 6)
 
-ICertRequestD2::Request2 (Opnum 6)
+
 
 The Request2 method requests a certificate from the CA. It is similar to the ICertRequestD::Request
 method, but it has an additional parameter, pwszSerialNumber, which is specified as follows.
@@ -13024,7 +12371,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-pwszSerialNumber: A null-terminated [UNICODE] string that specifies a serial number that identifies
+
+pwszSerialNumber: A null-terminated [UNICODE] string that specifies a serial number that identifies
 a certificate. The string MUST specify the serial number as an even number of hexadecimal digits.
 If necessary, a zero can be prefixed to the number to produce an even number of digits. The
 string MUST NOT contain more than one leading zero. Information on the serial number is
@@ -13053,7 +12401,7 @@ Return Values: Identical to the return value of the ICertRequestD::Request metho
 The processing rules for this message MUST be the same as for the information that is specified in
 3.2.1.4.2.1.
 
-3.2.1.4.3.1.1  dwFlags Packed Data Requirements
+###### 3.2.1.4.3.1.1 dwFlags Packed Data Requirements
 
 The dwFlags field consists of a set of flags and values that MUST define the pctbRequest parameter
 BLOB and the expected content of the pctbCertChain parameter. This field MUST contain packed data
@@ -13123,7 +12471,8 @@ Release: November 21, 2025
 
 148 / 259
 
-0
+
+0
 
 1
 
@@ -13197,7 +12546,7 @@ The request format MUST be a SignedCertificateTimestampList structure.
 
 Padding2 (1 byte): This field MUST be set to 0 and ignored upon receipt.
 
-3.2.1.4.3.1.2  Requesting Status Inspection
+###### 3.2.1.4.3.1.2 Requesting Status Inspection
 
 The caller of the ICertRequestD2::Request2 can request a status inspection of a certificate request
 similar to how it is defined in section 3.2.1.4.2.1.4.1.3. If the pb field of the pctbRequest parameter is
@@ -13226,7 +12575,8 @@ Release: November 21, 2025
 
 149 / 259
 
-4.  If pwszSerialNumber is not NULL, the CA MUST look up the record in the Request table that is
+
+4.  If pwszSerialNumber is not NULL, the CA MUST look up the record in the Request table that is
 
 defined in section 3.2.1.1.1 by matching the serial number of the certificate in the
 pwszSerialNumber parameter with the values in the Serial_Number column. If the lookup failed,
@@ -13275,9 +12625,9 @@ previously issued certificate through the pctbEncodedCert parameter as specified
 
 value to the 0x80094014 (CERTSRV_E_ADMIN_DENIED_REQUEST).<100>
 
-3.2.1.4.3.2
+###### 3.2.1.4.3.2 ICertRequestD2::GetCAProperty (Opnum 7)
 
-ICertRequestD2::GetCAProperty (Opnum 7)
+
 
 The GetCAProperty method retrieves a property value from the CA.
 
@@ -13341,7 +12691,8 @@ exit algorithms registered
 
 150 / 259
 
-Property name
+
+Property name
 
 Numerical
 value
@@ -13502,7 +12853,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Property name
+
+Property name
 
 CR_PROP_CAXCHGCERT
 
@@ -13653,7 +13005,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Property name
+
+Property name
 
 Numerical
 value
@@ -13809,7 +13162,8 @@ Current_CA_Exchange_Ce
 
 153 / 259
 
-Property name
+
+Property name
 
 Numerical
 value
@@ -13958,7 +13312,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Property name
+
+Property name
 
 Numerical
 value
@@ -14094,7 +13449,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Property name
+
+Property name
 
 Numerical
 value
@@ -14193,7 +13549,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-PropType
+
+PropType
 MUST be
 
 0x00000004
@@ -14371,7 +13728,8 @@ Release: November 21, 2025
 
 157 / 259
 
-PropType
+
+PropType
 MUST be
 
 0x00000003
@@ -14525,7 +13883,8 @@ Release: November 21, 2025
 
 0x2B
 
-PropID
+
+PropID
 value
 
 PropIndex MUST be
@@ -14610,7 +13969,7 @@ returned property MUST be returned to the caller in the pctbPropertyValue parame
 CERTTRANSBLOB structure. The message format for this structure MUST be as specified in section
 2.2.2.2 and its subsections.
 
-3.2.1.4.3.2.1  PropID = 0x00000001 (CR_PROP_FILEVERSION) "CA File Version"
+###### 3.2.1.4.3.2.1 PropID = 0x00000001 (CR_PROP_FILEVERSION) "CA File Version"
 
 The client has requested the CA file version property. If the CA implements the Config_File_Version
 datum, the CA constructs a [UNICODE] string of the form "w.x.y.z" or "w.x:y.z",<103> where w, x, y,
@@ -14627,7 +13986,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-3.2.1.4.3.2.2  PropID = 0x00000002 (CR_PROP_PRODUCTVERSION) "CA Product
+
+###### 3.2.1.4.3.2.2 PropID = 0x00000002 (CR_PROP_PRODUCTVERSION) "CA Product
 
 Version"
 
@@ -14641,7 +14001,7 @@ structure.<106>
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.3  PropID = 0x00000003 (CR_PROP_EXITCOUNT) "Exit Count"
+###### 3.2.1.4.3.2.3 PropID = 0x00000003 (CR_PROP_EXITCOUNT) "Exit Count"
 
 The client has requested the count of exit algorithms installed on the CA. The CA MUST return the
 number stored in the Config_CA_Exit_Count datum. The returned value is returned through the
@@ -14653,7 +14013,7 @@ algorithms, the CA MUST return 0.
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.4  PropID = 0x00000004 (CR_PROP_EXITDESCRIPTION) "Exit Description"
+###### 3.2.1.4.3.2.4 PropID = 0x00000004 (CR_PROP_EXITDESCRIPTION) "Exit Description"
 
 The client has requested the text description for a particular exit algorithm. The client has indicated
 the particular algorithm by using the PropIndex parameter.
@@ -14669,7 +14029,7 @@ terminated [UNICODE] string through a CERTTRANSBLOB structure.
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.<108>
 
-3.2.1.4.3.2.5  PropID = 0x00000005 (CR_PROP_POLICYDESCRIPTION) "Policy
+###### 3.2.1.4.3.2.5 PropID = 0x00000005 (CR_PROP_POLICYDESCRIPTION) "Policy
 
 Description"
 
@@ -14683,7 +14043,7 @@ If the CA does not implement the Config_CA_Policy_Description datum, it MUST ret
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.1.<109>
 
-3.2.1.4.3.2.6  PropID = 0x00000006 (CR_PROP_CANAME) "Certification Authority
+###### 3.2.1.4.3.2.6 PropID = 0x00000006 (CR_PROP_CANAME) "Certification Authority
 
 Name"
 
@@ -14696,14 +14056,15 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The CA MUST return the value of the CN attribute of the Subject field in the CA signing certificate
+
+The CA MUST return the value of the CN attribute of the Subject field in the CA signing certificate
 found in the Signing_Cert_Certificate column in the indexed row of the Signing_Cert table specified by
 the PropIndex parameter as a [UNICODE] string, through a CERTTRANSBLOB (section 2.2.2.2)
 structure.
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.7  PropID = 0x00000007 (CR_PROP_SANITIZEDCANAME) "Sanitized CA
+###### 3.2.1.4.3.2.7 PropID = 0x00000007 (CR_PROP_SANITIZEDCANAME) "Sanitized CA
 
 Name"
 
@@ -14719,7 +14080,7 @@ CERTTRANSBLOB structure.
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.8  PropID = 0x00000008 (CR_PROP_SHAREDFOLDER) "Shared Folder
+###### 3.2.1.4.3.2.8 PropID = 0x00000008 (CR_PROP_SHAREDFOLDER) "Shared Folder
 
 Path"
 
@@ -14732,7 +14093,7 @@ Config_Configuration_Directory data, the CA MUST return a nonzero error. The err
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.9  PropID = 0x00000009 (CR_PROP_PARENTCA) "Parent CA Name"
+###### 3.2.1.4.3.2.9 PropID = 0x00000009 (CR_PROP_PARENTCA) "Parent CA Name"
 
 The client has requested the name of the parent of the CA.
 
@@ -14745,9 +14106,9 @@ string.
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.10
+###### 3.2.1.4.3.2.10 PropID = 0x0000000A (CR_PROP_CATYPE) "CA Type"
 
-PropID = 0x0000000A (CR_PROP_CATYPE) "CA Type"
+
 
 The client requested the type of the CA.
 
@@ -14770,7 +14131,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Root certificate type
+
+Root certificate type
 
 Value CA MUST return
 
@@ -14791,9 +14153,9 @@ server MUST return the CAINFO structure through a CERTTRANSBLOB (section 2.2.2.2
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.11
+###### 3.2.1.4.3.2.11 PropID = 0x0000000B (CR_PROP_CASIGCERTCOUNT) "CA
 
-PropID = 0x0000000B (CR_PROP_CASIGCERTCOUNT) "CA
+
 
 Signature Certificate Count"
 
@@ -14804,9 +14166,9 @@ CAINFO (section 2.2.2.4) structure through a CERTTRANSBLOB (section 2.2.2.2) str
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.12
+###### 3.2.1.4.3.2.12 PropID = 0x0000000C (CR_PROP_CASIGCERT) "CA Signature
 
-PropID = 0x0000000C (CR_PROP_CASIGCERT) "CA Signature
+
 
 Certificate"
 
@@ -14819,9 +14181,9 @@ CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.13
+###### 3.2.1.4.3.2.13 PropID = 0x0000000D (CR_PROP_CASIGCERTCHAIN) "CA signing
 
-PropID = 0x0000000D (CR_PROP_CASIGCERTCHAIN) "CA signing
+
 
 certificate Chain"
 
@@ -14833,9 +14195,9 @@ CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.14
+###### 3.2.1.4.3.2.14 PropID = 0x0000000E (CR_PROP_CAXCHGCERTCOUNT) "CA
 
-PropID = 0x0000000E (CR_PROP_CAXCHGCERTCOUNT) "CA
+
 
 Exchange Certificate Count"
 
@@ -14846,9 +14208,9 @@ ARCHIVE].
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.15
+###### 3.2.1.4.3.2.15 PropID = 0x0000000F (CR_PROP_CAXCHGCERT) "CA Exchange
 
-PropID = 0x0000000F (CR_PROP_CAXCHGCERT) "CA Exchange
+
 
 Certificate"
 
@@ -14859,7 +14221,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The client has requested the CA exchange certificate. The CA MUST follow these processing rules to
+
+The client has requested the CA exchange certificate. The CA MUST follow these processing rules to
 process the client's request:
 
 1.  If the PropIndex parameter is not equal to 0x0 or 0xFFFFFFFF, return the E_INVALIDARG
@@ -14918,9 +14281,9 @@ the contents of this datum by marshaling it in a CERTTRANSBLOB (section 2.2.2.2)
 specified in section 2.2.2.2.2. Marshaling rules for the CERTTRANSBLOB structure are specified in
 section 2.2.2.2.
 
-3.2.1.4.3.2.15.1
+###### 3.2.1.4.3.2.15.1 Creating a CA Exchange Certificate
 
-Creating a CA Exchange Certificate
+
 
 The CA MUST perform the following steps to create an exchange certificate.
 
@@ -14944,7 +14307,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-1.  Invoke the "Initialize ADConnection" task ([MS-ADTS] section 7.6.1.1) to construct an
+
+1.  Invoke the "Initialize ADConnection" task ([MS-ADTS] section 7.6.1.1) to construct an
 
 ADConnection with the following parameters:
 
@@ -15040,7 +14404,8 @@ Release: November 21, 2025
 
 164 / 259
 
-
+
+
 
 
 
@@ -15161,7 +14526,8 @@ Release: November 21, 2025
 
 165 / 259
 
-
+
+
 
 
 
@@ -15241,7 +14607,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-5.  Certificate Template Common Name extension with the value of Name as "CAExchange".
+
+5.  Certificate Template Common Name extension with the value of Name as "CAExchange".
 
 Encoding a Certificate Template Common Name Extension is specified in section 2.2.2.7.7.1.
 
@@ -15316,7 +14683,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-In addition, the CA SHOULD store the following request parameters in the Request table.
+
+In addition, the CA SHOULD store the following request parameters in the Request table.
 
 Column name
 
@@ -15437,7 +14805,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Column name
+
+Column name
 
 Value
 
@@ -15475,9 +14844,9 @@ The Device Serial Number attribute from the DN from the Subject
 field of the CA exchange certificate (Config_CA_Exchange_Cert
 datum).
 
-3.2.1.4.3.2.16
+###### 3.2.1.4.3.2.16 PropID = 0x00000010 (CR_PROP_CAXCHGCERTCHAIN) "CA
 
-PropID = 0x00000010 (CR_PROP_CAXCHGCERTCHAIN) "CA
+
 
 Exchange Certificate Chain"
 
@@ -15529,7 +14898,8 @@ Release: November 21, 2025
 
 169 / 259
 
-
+
+
 
 
 
@@ -15548,9 +14918,9 @@ signerInfos: Not used.
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.17
+###### 3.2.1.4.3.2.17 PropID = 0x00000011 (CR_PROP_BASECRL) "Base CRL"
 
-PropID = 0x00000011 (CR_PROP_BASECRL) "Base CRL"
+
 
 The client has requested a particular base CRL.
 
@@ -15579,9 +14949,9 @@ CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.2.4.
 
-3.2.1.4.3.2.18
+###### 3.2.1.4.3.2.18 PropID = 0x00000012 (CR_PROP_DELTACRL) "Delta CRL"
 
-PropID = 0x00000012 (CR_PROP_DELTACRL) "Delta CRL"
+
 
 The client has requested a particular delta CRL.
 
@@ -15610,9 +14980,9 @@ through a CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.19
+###### 3.2.1.4.3.2.19 PropID = 0x00000013 (CR_PROP_CACERTSTATE) "CA Signing
 
-PropID = 0x00000013 (CR_PROP_CACERTSTATE) "CA Signing
+
 
 Certificates State"
 
@@ -15623,7 +14993,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The client has requested the disposition status of all CA signing certificates.
+
+The client has requested the disposition status of all CA signing certificates.
 
 If the server implements the Signing_Cert Table, it MUST validate all the signing certificates stored in
 the Signing_Cert_Certificate column.
@@ -15659,9 +15030,9 @@ byte MUST identify the status of the signing certificate in the second row of th
 Subsequent bytes MUST repeat this pattern so that byte n MUST contain the disposition of the signing
 certificate in row n.
 
-3.2.1.4.3.2.20
+###### 3.2.1.4.3.2.20 PropID = 0x00000014 (CR_PROP_CRLSTATE) "CA CRL State"
 
-PropID = 0x00000014 (CR_PROP_CRLSTATE) "CA CRL State"
+
 
 The client has requested the CA signing certificate status for all CRLs.
 
@@ -15721,13 +15092,14 @@ Release: November 21, 2025
 
 171 / 259
 
-The CA MUST return the byte array in a CERTTRANSBLOB (section 2.2.2.2) structure. The first byte
+
+The CA MUST return the byte array in a CERTTRANSBLOB (section 2.2.2.2) structure. The first byte
 MUST specify the status of the first signing certificate, and the second byte MUST specify the status of
 the second signing certificate. Subsequent bytes MUST repeat this pattern.
 
-3.2.1.4.3.2.21
+###### 3.2.1.4.3.2.21 PropID = 0x00000015 (CR_PROP_CAPROPIDMAX) "Maximum
 
-PropID = 0x00000015 (CR_PROP_CAPROPIDMAX) "Maximum
+
 
 Property ID"
 
@@ -15739,9 +15111,9 @@ The CA MUST return the number through the lPropIDMax field of a CAINFO (section 
 structure. The CA MUST return the CAINFO (section 2.2.2.4) through a
 CERTTRANSBLOB (section 2.2.2.2) structure.<112>
 
-3.2.1.4.3.2.22
+###### 3.2.1.4.3.2.22 PropID = 0x00000016 (CR_PROP_DNSNAME) "CA Fully Qualified
 
-PropID = 0x00000016 (CR_PROP_DNSNAME) "CA Fully Qualified
+
 
 DNS"
 
@@ -15752,9 +15124,9 @@ CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.23
+###### 3.2.1.4.3.2.23 PropID = 0x00000017 (CR_PROP_ROLESEPARATIONENABLED)
 
-PropID = 0x00000017 (CR_PROP_ROLESEPARATIONENABLED)
+
 
 "Role Separated Enabled"
 
@@ -15782,9 +15154,9 @@ CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.24
+###### 3.2.1.4.3.2.24 PropID = 0x00000018 (CR_PROP_KRACERTUSEDCOUNT) "Count
 
-PropID = 0x00000018 (CR_PROP_KRACERTUSEDCOUNT) "Count
+
 
 Of Required KRAs For Archival"
 
@@ -15801,15 +15173,16 @@ Release: November 21, 2025
 
 172 / 259
 
-The CA MUST return the count through the cKRACertUsedCount field of a CAINFO (section 2.2.2.4)
+
+The CA MUST return the count through the cKRACertUsedCount field of a CAINFO (section 2.2.2.4)
 structure. The CA MUST return the CAINFO (section 2.2.2.4) through a
 CERTTRANSBLOB (section 2.2.2.2) structure.<114>
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.25
+###### 3.2.1.4.3.2.25 PropID = 0x00000019 (CR_PROP_KRACERTCOUNT) "Count Of
 
-PropID = 0x00000019 (CR_PROP_KRACERTCOUNT) "Count Of
+
 
 Registered KRAs"
 
@@ -15824,9 +15197,9 @@ CERTTRANSBLOB (section 2.2.2.2) structure. For more information, see [MSFT-ARCHI
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.26
+###### 3.2.1.4.3.2.26 PropID = 0x0000001A (CR_PROP_KRACERT) "KRA Certificate"
 
-PropID = 0x0000001A (CR_PROP_KRACERT) "KRA Certificate"
+
 
 The client has requested a particular KRA certificate. The client MUST specify the required index for
 the certificate in the Config_CA_KRA_Cert_List through the PropIndex parameter. The CA SHOULD
@@ -15840,9 +15213,9 @@ Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.
 provided by the client is out of range for the Config_CA_KRA_Cert_List, the CA MUST return a nonzero
 error code. The error code SHOULD be 0x80070002 (ERROR_FILE_NOT_FOUND).
 
-3.2.1.4.3.2.27
+###### 3.2.1.4.3.2.27 PropID = 0x0000001B (CR_PROP_KRACERTSTATE) "KRA
 
-PropID = 0x0000001B (CR_PROP_KRACERTSTATE) "KRA
+
 
 Certificates State"
 
@@ -15888,15 +15261,16 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-same for the second KRA certificate. Subsequent bytes MUST repeat this pattern. For more
+
+same for the second KRA certificate. Subsequent bytes MUST repeat this pattern. For more
 information, see [MSFT-ARCHIVE].
 
 If the CA does not implement the Config_CA_KRA_Cert_List data, the CA MUST return a non-zero
 error.
 
-3.2.1.4.3.2.28
+###### 3.2.1.4.3.2.28 PropID = 0x0000001C (CR_PROP_ADVANCEDSERVER) "Advanced
 
-PropID = 0x0000001C (CR_PROP_ADVANCEDSERVER) "Advanced
+
 
 Server"
 
@@ -15911,9 +15285,9 @@ through a CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for the CERTTRANSBLOB (section 2.2.2.2) structure are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.29
+###### 3.2.1.4.3.2.29 PropID = 0x0000001D (CR_PROP_TEMPLATES) "Configured
 
-PropID = 0x0000001D (CR_PROP_TEMPLATES) "Configured
+
 
 Certificate Templates"
 
@@ -15927,9 +15301,9 @@ name and string OID for each template and separated by new lines, as in the form
 If the template does not have an associated OID (Win2k domain), there will be an empty string in its
 place.
 
-3.2.1.4.3.2.30
+###### 3.2.1.4.3.2.30 PropID = 0x0000001E (CR_PROP_BASECRLPUBLISHSTATUS)
 
-PropID = 0x0000001E (CR_PROP_BASECRLPUBLISHSTATUS)
+
 
 "Base CRL Publishing Status"
 
@@ -15945,9 +15319,9 @@ The CA MUST return the publishing status in a CERTTRANSBLOB (section 2.2.2.2) st
 member of the structure MUST point to a ULONG in little-endian format that contains the publishing
 status as defined earlier. The cb member MUST contain the length of a ULONG.
 
-3.2.1.4.3.2.31
+###### 3.2.1.4.3.2.31 PropID = 0x0000001F (CR_PROP_DELTACRLPUBLISHSTATUS)
 
-PropID = 0x0000001F (CR_PROP_DELTACRLPUBLISHSTATUS)
+
 
 "Delta CRL Publishing State"
 
@@ -15966,7 +15340,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-specified in the table in [MS-CSRA] section 3.1.1.4.1 for the CRL_Publish_Flags element, except for
+
+specified in the table in [MS-CSRA] section 3.1.1.4.1 for the CRL_Publish_Flags element, except for
 the CPF_BASE flag, which is never set for this call.
 
 The CA MUST return the publishing status in a CERTTRANSBLOB structure. The pb member of the
@@ -15975,9 +15350,9 @@ defined earlier. The cb member MUST contain the length of a ULONG.
 
 The revocation process is specified in [RFC3280].
 
-3.2.1.4.3.2.32
+###### 3.2.1.4.3.2.32 PropID = 0x00000020 (CR_PROP_CASIGCERTCRLCHAIN) "CA
 
-PropID = 0x00000020 (CR_PROP_CASIGCERTCRLCHAIN) "CA
+
 
 Signing Certificate Chain and CRL"
 
@@ -15989,9 +15364,9 @@ through a CERTTRANSBLOB structure (as specified in section 2.2.2.2.3).
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.33
+###### 3.2.1.4.3.2.33 PropID = 0x00000021 (CR_PROP_CAXCHGCERTCRLCHAIN) "CA
 
-PropID = 0x00000021 (CR_PROP_CAXCHGCERTCRLCHAIN) "CA
+
 
 Exchange Certificate Chain and CRL"
 
@@ -16050,7 +15425,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 crls: Contains all current CRLs and delta CRLs for the CAs whose certificates were added to
 the certificates field. For each certificate in the certificates field, the CA SHOULD
@@ -16065,9 +15441,9 @@ signerInfos: Not used.
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.4.
 
-3.2.1.4.3.2.34
+###### 3.2.1.4.3.2.34 PropID = 0x00000022 (CR_PROP_CACERTSTATUSCODE) "CA
 
-PropID = 0x00000022 (CR_PROP_CACERTSTATUSCODE) "CA
+
 
 Signing Certificate Status"
 
@@ -16173,7 +15549,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
- Value
+
+ Value
 
  Meaning
 
@@ -16189,9 +15566,9 @@ certificate cannot be verified.
 An operational error occurred as
 specified in sections 3.3, 5.3.1, and 9.
 
-3.2.1.4.3.2.35
+###### 3.2.1.4.3.2.35 PropID = 0x00000023 (CR_PROP_CAFORWARDCROSSCERT) "CA
 
-PropID = 0x00000023 (CR_PROP_CAFORWARDCROSSCERT) "CA
+
 
 Forward Cross Certificate"
 
@@ -16214,9 +15591,9 @@ If the server does not implement the Signing_Forward_Cross_Certificate column, t
 return an empty CERTTRANSBLOB (as specified in section 2.2.2.2).  Marshaling rules for
 CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.36
+###### 3.2.1.4.3.2.36 PropID = 0x00000024 (CR_PROP_CABACKWARDCROSSCERT) "CA
 
-PropID = 0x00000024 (CR_PROP_CABACKWARDCROSSCERT) "CA
+
 
 Backward Cross Certificate"
 
@@ -16239,9 +15616,9 @@ If the server does not implement the Signing_Backward_Cross_Certificate column, 
 return an empty CERTTRANSBLOB. Marshaling rules for CERTTRANSBLOB are specified in section
 2.2.2.2.
 
-3.2.1.4.3.2.37
+###### 3.2.1.4.3.2.37 PropID = 0x00000025
 
-PropID = 0x00000025
+
 
 (CR_PROP_CAFORWARDCROSSCERTSTATE) "CA Forward Cross Certificate
 State"
@@ -16256,7 +15633,8 @@ Release: November 21, 2025
 
 177 / 259
 
-for each one of the forward cross certificates. Otherwise, the server MUST return an empty
+
+for each one of the forward cross certificates. Otherwise, the server MUST return an empty
 CERTTRANSBLOB (section 2.2.2.2) structure.
 
 The disposition's value SHOULD be one of the following.
@@ -16336,9 +15714,9 @@ can be any value from the preceding disposition table.
 
 The last CA certificate cannot have a forward cross certificate.
 
-3.2.1.4.3.2.38
+###### 3.2.1.4.3.2.38 PropID = 0x00000026
 
-PropID = 0x00000026
+
 
 (CR_PROP_CABACKWARDCROSSCERTSTATE) "CA Backward Cross
 Certificate State"
@@ -16355,7 +15733,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The possible disposition's values SHOULD be a set of values in the following table.
+
+The possible disposition's values SHOULD be a set of values in the following table.
 
  Value
 
@@ -16383,9 +15762,9 @@ The CA MUST return the byte array in a CERTTRANSBLOB structure. The first byte M
 status for the first backward cross certificate, and the second byte MUST identify the same for the
 second backward cross certificate. Subsequent bytes MUST repeat this pattern.
 
-3.2.1.4.3.2.39
+###### 3.2.1.4.3.2.39 PropID = 0x00000027 (CR_PROP_CACERTVERSION) "CA Signing
 
-PropID = 0x00000027 (CR_PROP_CACERTVERSION) "CA Signing
+
 
 Certificates Revisions"
 
@@ -16477,7 +15856,8 @@ Release: November 21, 2025
 
 179 / 259
 
- Index
+
+ Index
 
  ULONG
 
@@ -16515,9 +15895,9 @@ Release: November 21, 2025
 
 0008
 
-3.2.1.4.3.2.40
+###### 3.2.1.4.3.2.40 PropID = 0x00000028 (CR_PROP_SANITIZEDCASHORTNAME)
 
-PropID = 0x00000028 (CR_PROP_SANITIZEDCASHORTNAME)
+
 
 "CA Sanitized Short Name"
 
@@ -16528,9 +15908,9 @@ signing certificate) as a [UNICODE] string, through a CERTTRANSBLOB (section 2.2
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.41
+###### 3.2.1.4.3.2.41 PropID = 0x00000029 (CR_PROP_CERTCDPURLS) "CRL
 
-PropID = 0x00000029 (CR_PROP_CERTCDPURLS) "CRL
+
 
 Distribution Points"
 
@@ -16546,9 +15926,9 @@ CDP data.<116>
 The CA MUST return the string as a [UNICODE] string through a CERTTRANSBLOB (section 2.2.2.2)
 structure.
 
-3.2.1.4.3.2.42
+###### 3.2.1.4.3.2.42 PropID = 0x0000002A (CR_PROP_CERTAIAURLS) "Authority
 
-PropID = 0x0000002A (CR_PROP_CERTAIAURLS) "Authority
+
 
 Information Access"
 
@@ -16560,9 +15940,9 @@ If the CA does not implement the Config_CA_AIA_Include_In_Cert column, the CA MU
 empty string. If the CA implements the AIA column, the CA SHOULD construct a string that has a
 format of "String1\nString2\n" by using the strings stored in the AIA data.<117>
 
-3.2.1.4.3.2.43
+###### 3.2.1.4.3.2.43 PropID = 0x0000002B (CR_PROP_CERTAIAOCSPRLS) "OCSP
 
-PropID = 0x0000002B (CR_PROP_CERTAIAOCSPRLS) "OCSP
+
 
 URLs"
 
@@ -16577,16 +15957,17 @@ Release: November 21, 2025
 
 180 / 259
 
-If the CA does not implement the Config_CA_OCSP_Include_In_Cert column, the CA MUST return an
+
+If the CA does not implement the Config_CA_OCSP_Include_In_Cert column, the CA MUST return an
 empty string. If the CA implements the OCSP column, the CA MUST construct a string that has a
 format of "String1\nString2\n" by using the strings that are stored in OCSP data.
 
 The CA MUST return the list as a [UNICODE] string through a CERTTRANSBLOB (section 2.2.2.2)
 structure.<118>
 
-3.2.1.4.3.2.44
+###### 3.2.1.4.3.2.44 PropID = 0x0000002C (CR_PROP_LOCALENAME) "CA Locale
 
-PropID = 0x0000002C (CR_PROP_LOCALENAME) "CA Locale
+
 
 Name"
 
@@ -16594,9 +15975,9 @@ The client has request the locale of the CA. The CA SHOULD return its locale in 
 format as specified in the [RFC4646]. The CA MUST return it as a [UNICODE] string, through a
 CERTTRANSBLOB (section 2.2.2.2) structure.<119>
 
-3.2.1.4.3.2.45
+###### 3.2.1.4.3.2.45 PropID = 0x0000002D (CR_PROP_SUBJECTTEMPLATE_OIDS)
 
-PropID = 0x0000002D (CR_PROP_SUBJECTTEMPLATE_OIDS)
+
 
 "Subject Template"
 
@@ -16610,9 +15991,9 @@ their respective OIDs ([MS-ADTS] section 3.1.1.4) in string representation.
 The CA MUST return the string as a Unicode string through a CERTTRANSBLOB (section 2.2.2.2)
 structure.<120>
 
-3.2.1.4.3.2.46
+###### 3.2.1.4.3.2.46 PropID = 0x0000002E (CR_PROP_CRLPARTITIONCOUNT) "CRL
 
-PropID = 0x0000002E (CR_PROP_CRLPARTITIONCOUNT) "CRL
+
 
 Partitions Count"
 
@@ -16626,9 +16007,9 @@ endian format. The cb member MUST contain the length of a ULONG.
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.1.4.3.2.47
+###### 3.2.1.4.3.2.47 PropID = 0x0000002F (CR_PROP_PARTITIONED_BASECRL)
 
-PropID = 0x0000002F (CR_PROP_PARTITIONED_BASECRL)
+
 
 "Partitioned Base CRL"
 
@@ -16664,15 +16045,16 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Otherwise, the CA MUST return an empty CERTTRANSBLOB (section 2.2.2.2) structure. The CA
+
+Otherwise, the CA MUST return an empty CERTTRANSBLOB (section 2.2.2.2) structure. The CA
 MUST return the base CRL in X.509 format, as specified in [X660]. The CA MUST return the value
 through a CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.2.4.
 
-3.2.1.4.3.2.48
+###### 3.2.1.4.3.2.48 PropID = 0x00000030 (CR_PROP_PARTITIONED_DELTACRL)
 
-PropID = 0x00000030 (CR_PROP_PARTITIONED_DELTACRL)
+
 
 "Partitioned Delta CRL"
 
@@ -16707,9 +16089,9 @@ through a CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in section 2.2.2.2.4.
 
-3.2.1.4.3.2.49
+###### 3.2.1.4.3.2.49 PropID = 0x00000031
 
-PropID = 0x00000031
+
 
 (CR_PROP_PARTITIONED_BASECRLPUBLISHSTATUS) "Partitioned Base
 CRL Publishing Status"
@@ -16740,9 +16122,9 @@ The CA MUST return the publishing status in a CERTTRANSBLOB (section 2.2.2.2) st
 member of the structure MUST point to a ULONG in little-endian format that contains the publishing
 status as defined earlier. The cb member MUST contain the length of a ULONG.
 
-3.2.1.4.3.2.50
+###### 3.2.1.4.3.2.50 PropID = 0x00000032 (CR_PROP_
 
-PropID = 0x00000032 (CR_PROP_
+
 
 PARTITIONED_DELTACRLPUBLISHSTATUS) "Partitioned Delta CRL
 Publishing Status"
@@ -16754,7 +16136,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The client requested the publishing status of a particular partitioned delta CRL.
+
+The client requested the publishing status of a particular partitioned delta CRL.
 
 If Config_CRLPartition_Enabled is set to FALSE, CA MUST return E_INVALIDARG error.
 
@@ -16781,9 +16164,9 @@ The CA MUST return the publishing status in a CERTTRANSBLOB (section 2.2.2.2) st
 member of the structure MUST point to a ULONG in little-endian format that contains the publishing
 status as defined earlier. The cb member MUST contain the length of a ULONG.
 
-3.2.1.4.3.3
+###### 3.2.1.4.3.3 ICertRequestD2::GetCAPropertyInfo (Opnum 8)
 
-ICertRequestD2::GetCAPropertyInfo (Opnum 8)
+
 
 The GetCAPropertyInfo method retrieves a set of property structures from the CA. The list of
 properties is specified in section 3.2.1.4.3.2.
@@ -16830,13 +16213,14 @@ Release: November 21, 2025
 
 183 / 259
 
-If the CA name validation succeeded, the CA MUST return success (0), MUST construct the returned
+
+If the CA name validation succeeded, the CA MUST return success (0), MUST construct the returned
 CA properties information in the pctbPropInfo field (as specified in section 2.2.2.3.1), and MUST return
 the number of CA properties in the pcProperty parameter.
 
-3.2.1.4.3.4
+###### 3.2.1.4.3.4 ICertRequestD2::Ping2 (Opnum 9)
 
-ICertRequestD2::Ping2 (Opnum 9)
+
 
 The Ping2 method pings the CA.
 
@@ -16852,15 +16236,15 @@ nonzero value.
 
 The processing rules for this request MUST be the same as those specified in section 3.2.1.4.2.3.
 
-3.2.1.5  Timer Events
+##### 3.2.1.5 Timer Events
 
 None.
 
-3.2.1.6  Other Local Events
+##### 3.2.1.6 Other Local Events
 
 None.
 
-3.2.2  Server Mode: Enterprise CA
+#### 3.2.2 Server Mode: Enterprise CA
 
 The CA is an implementation of the server mode specified in section 3.2.1 with a different
 implementation for its CA policy algorithm implementation. The CA policy algorithm of this server
@@ -16868,7 +16252,7 @@ mode uses the certificate template data structure as specified in [MS-CRTD] for 
 issuance policies. Note that unless specified otherwise in the following sections, this server mode is
 compliant with the specifications documented in 3.2.1.
 
-3.2.2.1  Interaction with Active Directory
+##### 3.2.2.1 Interaction with Active Directory
 
 This section provides a recommendation for the Enterprise CA on how to access Active Directory.
 Server implementations can use an alternative method to read or write the information to the Active
@@ -16878,7 +16262,7 @@ The CA SHOULD use LDAP search and modify operations, as specified in [RFC2251] s
 4.6, to read and write to the Active Directory. The profile of LDAP as implemented by the Active
 Directory servers (DCs) as described in [MS-ADTS] section 3.1.1.3.
 
-3.2.2.1.1 Search Requests for Reading Objects under Enrollment Services or Certificate
+###### 3.2.2.1.1 Search Requests for Reading Objects under Enrollment Services or Certificate
 
 Templates Container
 
@@ -16899,7 +16283,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Output Parameters:
+
+Output Parameters:
 
 CertificateTemplatesandEnrollmentServicesObjects: The set of objects under Enrollment
 
@@ -16917,7 +16302,7 @@ section 7.2.
 
 ContainerDistinguishedName: A distinguished name.
 
-3.2.2.1.1.1  Search Requests
+###### 3.2.2.1.1.1 Search Requests
 
 The CA SHOULD perform search requests demonstrated in the following figure.
 
@@ -16928,7 +16313,8 @@ Release: November 21, 2025
 
 185 / 259
 
-<!-- Extracted images from page 186 -->
+
+<!-- Extracted images from page 186 -->
 ![Extracted image 1 from page 186]([MS-WCCE].images/page186-img01.png)
 <!-- /Extracted images from page 186 -->
 
@@ -16964,7 +16350,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.  Perform a bind request as specified in section 3.2.2.1.1.2. Store the returned ADConnection
+
+2.  Perform a bind request as specified in section 3.2.2.1.1.2. Store the returned ADConnection
 
 handle in the CertificateTemplatesAndEnrollmentServices_AD_Connection ADM
 element.
@@ -17067,7 +16454,8 @@ Release: November 21, 2025
 
 187 / 259
 
-
+
+
 
 
 
@@ -17171,7 +16559,8 @@ Release: November 21, 2025
 
 188 / 259
 
-
+
+
 
 If InputContainer is equal to Enrollment Services Container:
 
@@ -17273,7 +16662,8 @@ Release: November 21, 2025
 
 189 / 259
 
-4.  Repeat step 3. If the TaskReturnStatus returned is not 0, convert it to a 4-byte HRESULT
+
+4.  Repeat step 3. If the TaskReturnStatus returned is not 0, convert it to a 4-byte HRESULT
 
 value (errors are specified in [MS-ERREF] section 2.1) by performing the processing rules in
 section 3.2.2.1.7 with the following input parameters:
@@ -17288,7 +16678,7 @@ InputResultMessage: TaskOutputResultMessages
 
 Return the OutputHRESULT output parameter to the client and exit.
 
-3.2.2.1.1.2  Bind Requests
+###### 3.2.2.1.1.2 Bind Requests
 
 Bind requests are used to connect and to authenticate the user to an LDAP directory. The CA MUST
 perform bind requests as follows:
@@ -17365,7 +16755,8 @@ Release: November 21, 2025
 
 190 / 259
 
-
+
+
 
 If the TaskReturnStatus returned is not 0, convert it to a 4-byte HRESULT value (errors are
 specified in [MS-ERREF] section 2.1) by performing the processing rules in section 3.2.2.1.7
@@ -17381,7 +16772,7 @@ InputResultMessage: NULL
 
 Return the OutputHRESULT output parameter to the client and exit.
 
-3.2.2.1.2 Search Requests for Querying End Entity Object Attributes
+###### 3.2.2.1.2 Search Requests for Querying End Entity Object Attributes
 
 This type of search request is used to read attributes from user or computer object from the LDAP
 directory.
@@ -17406,7 +16797,7 @@ ActiveDirectory_Connection: An ADConnection handle. For more information, see [M
 
 section 7.2.
 
-3.2.2.1.2.1  Search Requests
+###### 3.2.2.1.2.1 Search Requests
 
 The CA SHOULD perform search requests demonstrated in the following figure.
 
@@ -17417,7 +16808,8 @@ Release: November 21, 2025
 
 191 / 259
 
-<!-- Extracted images from page 192 -->
+
+<!-- Extracted images from page 192 -->
 ![Extracted image 1 from page 192]([MS-WCCE].images/page192-img01.png)
 <!-- /Extracted images from page 192 -->
 
@@ -17452,7 +16844,8 @@ Release: November 21, 2025
 
 192 / 259
 
-2.  Remove from the Collection_Of_End_Entity_Object_Query_AD_Connections ADM element
+
+2.  Remove from the Collection_Of_End_Entity_Object_Query_AD_Connections ADM element
 
 the ADConnection handle that was added the last, and use it as the ADConnection handle in
 the following steps.
@@ -17565,7 +16958,8 @@ Release: November 21, 2025
 
 193 / 259
 
-
+
+
 
 If the TaskReturnStatus returned is not 0, convert it to a 4-byte HRESULT value (errors are
 specified in [MS-ERREF] section 2.1) by performing the processing rules in section 3.2.2.1.7
@@ -17607,7 +17001,7 @@ the Collection_Of_End_Entity_Object_Query_AD_Connections ADM element.
 section 7.6.1.5) with the TaskInputADConnection parameter set to
 ActiveDirectory_Connection.
 
-3.2.2.1.2.2  Bind Requests
+###### 3.2.2.1.2.2 Bind Requests
 
 Bind requests are used to connect and to authenticate the user to an LDAP directory. The CA MUST
 perform bind requests as follows:
@@ -17656,7 +17050,8 @@ Release: November 21, 2025
 
 194 / 259
 
-
+
+
 
 TaskInputOptionValue: Bitwise OR of the bits A, D, J, and R, as defined by [MS-NRPC]
 section 3.5.4.3.1.
@@ -17679,7 +17074,7 @@ InputResultMessage: NULL
 
 Return the OutputHRESULT output parameter to the client and exit.
 
-3.2.2.1.3 Search Requests for Querying End Entity Object Attributes with an End Entity
+###### 3.2.2.1.3 Search Requests for Querying End Entity Object Attributes with an End Entity
 
 Provided DC Name
 
@@ -17711,7 +17106,7 @@ ActiveDirectory_Connection: An ADConnection handle. For more information about
 
 ADConnection see [MS-ADTS] section 7.2.
 
-3.2.2.1.3.1  Search Requests
+###### 3.2.2.1.3.1 Search Requests
 
 The CA SHOULD perform search requests demonstrated in the following figure.<124>
 
@@ -17722,7 +17117,8 @@ Release: November 21, 2025
 
 195 / 259
 
-<!-- Extracted images from page 196 -->
+
+<!-- Extracted images from page 196 -->
 ![Extracted image 1 from page 196]([MS-WCCE].images/page196-img01.png)
 <!-- /Extracted images from page 196 -->
 
@@ -17748,7 +17144,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 
 
@@ -17863,7 +17260,8 @@ Release: November 21, 2025
 
 197 / 259
 
-  mail
+
+  mail
 
 
 
@@ -17917,7 +17315,7 @@ Return the OutputHRESULT output parameter to the client and exit.
 6.  Invoke the "Perform an LDAP Unbind on an ADConnection" task (see [MS-ADTS] section 7.6.1.5)
 with the TaskInputADConnection parameter set to be equal to ActiveDirectory_Connection.
 
-3.2.2.1.3.2  Bind Requests
+###### 3.2.2.1.3.2 Bind Requests
 
 Bind requests are used to connect and to authenticate the user to an LDAP directory. The CA MUST
 perform bind requests as follows:
@@ -17959,7 +17357,8 @@ Release: November 21, 2025
 
 198 / 259
 
-
+
+
 
 If the TaskReturnStatus returned is not 0, convert it to a 4-byte HRESULT value (errors are
 specified in [MS-ERREF] section 2.1) by performing the processing rules in section 3.2.2.1.7
@@ -17975,7 +17374,7 @@ InputResultMessage: NULL
 
 Return the OutputHRESULT output parameter to the client and exit.
 
-3.2.2.1.4 Publishing KRA Certificates
+###### 3.2.2.1.4 Publishing KRA Certificates
 
 Modify requests are used to write information to the LDAP directory. The CA SHOULD perform
 modify requests to publish KRA certificates to user objects in the Active Directory.
@@ -17998,7 +17397,7 @@ information about ADConnection.
 
 Set_Of_Certificates: A set of certificates.
 
-3.2.2.1.4.1  Search Requests
+###### 3.2.2.1.4.1 Search Requests
 
 The CA SHOULD perform modify requests as demonstrated in the following figure.
 
@@ -18009,7 +17408,8 @@ Release: November 21, 2025
 
 199 / 259
 
-<!-- Extracted images from page 200 -->
+
+<!-- Extracted images from page 200 -->
 ![Extracted image 1 from page 200]([MS-WCCE].images/page200-img01.png)
 <!-- /Extracted images from page 200 -->
 
@@ -18037,7 +17437,8 @@ Release: November 21, 2025
 
 200 / 259
 
-Store the returned ADConnection handle in the ActiveDirectory_Connection variable.
+
+Store the returned ADConnection handle in the ActiveDirectory_Connection variable.
 
 2.  Perform a bind request, as specified in section 3.2.2.1.4.2.
 
@@ -18138,7 +17539,8 @@ Release: November 21, 2025
 
 201 / 259
 
-
+
+
 
 TaskInputRequestMessage: LDAP SearchRequest message ([RFC2251] section 4.5.1) as
 follows:
@@ -18245,7 +17647,8 @@ Release: November 21, 2025
 
 202 / 259
 
-
+
+
 
 
 
@@ -18277,7 +17680,7 @@ Return the OutputHRESULT output parameter to the client and exit.
 
 with the TaskInputADConnection parameter set equal to ActiveDirectory_Connection.
 
-3.2.2.1.4.2  Bind Requests
+###### 3.2.2.1.4.2 Bind Requests
 
 Bind requests are used to connect and to authenticate the user to an LDAP directory. The CA MUST
 perform bind requests as follows:
@@ -18339,7 +17742,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  Repeat step 3.
+
+  Repeat step 3.
 
 
 
@@ -18357,7 +17761,7 @@ InputResultMessage: NULL
 
 Return the OutputHRESULT output parameter to the client and exit.
 
-3.2.2.1.5 Publishing Issued Certificates
+###### 3.2.2.1.5 Publishing Issued Certificates
 
 Modify requests are used to write information from the LDAP directory. The CA SHOULD perform
 modify requests to publish issued certificates to end entity object in the Active Directory.
@@ -18384,7 +17788,7 @@ information about ADConnection).
 
 Set_Of_Certificates: A set of certificates.
 
-3.2.2.1.5.1  Search Requests
+###### 3.2.2.1.5.1 Search Requests
 
 The CA SHOULD perform modify requests as demonstrated in the following figure.
 
@@ -18395,7 +17799,8 @@ Release: November 21, 2025
 
 204 / 259
 
-<!-- Extracted images from page 205 -->
+
+<!-- Extracted images from page 205 -->
 ![Extracted image 1 from page 205]([MS-WCCE].images/page205-img01.png)
 <!-- /Extracted images from page 205 -->
 
@@ -18425,7 +17830,8 @@ Release: November 21, 2025
 
 205 / 259
 
-
+
+
 
 TaskInputPortNumber: If the value of the Config_CA_LDAP_Flags datum has 0x0000001
 (LDAPF_SSLENABLE) bit set, use port 636. Otherwise, use port 389.
@@ -18525,7 +17931,8 @@ Release: November 21, 2025
 
 206 / 259
 
-5.  If Set_Of_Certificates is not changed as part of step 3.3 and 3.4, add the
+
+5.  If Set_Of_Certificates is not changed as part of step 3.3 and 3.4, add the
 
 ActiveDirectory_Connection to the
 Collection_of_Certificates_Publication_AD_Connections ADM and then exit.
@@ -18591,7 +17998,7 @@ the following:
 
 2.  Return a nonzero error to the client and then exit.
 
-3.2.2.1.5.2  Bind Requests
+###### 3.2.2.1.5.2 Bind Requests
 
 Bind requests are used to connect and to authenticate the user to an LDAP directory. The CA MUST
 perform bind requests as follows:
@@ -18618,7 +18025,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.  If the value of the Config_CA_LDAP_Flags datum does not have the 0x0000002
+
+2.  If the value of the Config_CA_LDAP_Flags datum does not have the 0x0000002
 
 (LDAPF_SIGNDISABLE) bit set and:
 
@@ -18671,7 +18079,7 @@ InputResultMessage: NULL
 
 Return the OutputHRESULT output parameter to the client and exit.
 
-3.2.2.1.6 Determining DC Support for Signing
+###### 3.2.2.1.6 Determining DC Support for Signing
 
 The processing rules in this section are used to determine whether the domain controller (DC)
 supports signing or not.
@@ -18707,7 +18115,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 
 
@@ -18763,7 +18172,7 @@ the results of the LDAP search.
 
 (LDAP_CAP_ACTIVE_DIRECTORY_LDAP_INTEG_OID_W), then return TRUE, else return FALSE.
 
-3.2.2.1.7 Converting the LDAP results to HRESULT
+###### 3.2.2.1.7 Converting the LDAP results to HRESULT
 
 The processing rules in this section are used to convert the returned LDAP result into an
 HRESULT (section 2.2.18), as specified in [MS-DTYP] section 2.2.18.
@@ -18805,7 +18214,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-ERREF] section 2.1.2. Set output parameter OutputHRESULT equal to the returned HRESULT
+
+ERREF] section 2.1.2. Set output parameter OutputHRESULT equal to the returned HRESULT
 and exit.
 
 2.  If each of the first 8 bytes is 0, use ERROR_DS_GENERIC_ERROR, as specified in [MS-ERREF]
@@ -18820,7 +18230,7 @@ the conversion specified in [MS-ERREF] section 2.4, and then convert the Win32 e
 using the conversion specified in [MS-ERREF] section 2.1.2. Set the output parameter
 OutputHRESULT equal to the returned HRESULT and exit.
 
-3.2.2.2  CA Information in the Active Directory
+##### 3.2.2.2 CA Information in the Active Directory
 
 This section specifies the information that is required to exist in the Active Directory of the client's
 domain for Enterprise CA.
@@ -18878,7 +18288,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
- "CN=Certification Authorities,CN=Public Key Services,CN=Services,CN=Configuration,DC=..."
+
+ "CN=Certification Authorities,CN=Public Key Services,CN=Services,CN=Configuration,DC=..."
 
 2.  The CN attribute of this object is set to the CN value of the Subject field of the CA signing
 
@@ -18886,7 +18297,7 @@ certificate.
 
 3.  All the CA signing certificates are added to the cACertificate attribute of that object.
 
-3.2.2.3  Abstract Data Model
+##### 3.2.2.3 Abstract Data Model
 
 In addition to the tables specified in section 3.2.1 and maintained by the server, the enterprise CA
 maintains the data detailed in the following sections.
@@ -18918,7 +18329,7 @@ Directory connection to publish issued certificates. This collection is initiali
 
 See [MS-ADTS] section 7.2 for more information about ADConnection.
 
-3.2.2.3.1 Certificate Templates Replica Table
+###### 3.2.2.3.1 Certificate Templates Replica Table
 
 The server maintains the following table.
 
@@ -18938,7 +18349,7 @@ template.
 
 Possible values are True and False.
 
-3.2.2.4  Timers
+##### 3.2.2.4 Timers
 
 There are no timers for this protocol.
 
@@ -18949,7 +18360,8 @@ Release: November 21, 2025
 
 211 / 259
 
-3.2.2.5  Initialization
+
+##### 3.2.2.5 Initialization
 
 In addition to the initialization steps documented in section 3.2.1.3, the server MUST perform the
 following initialization steps:
@@ -18998,23 +18410,23 @@ If the CA fails to complete any of the initialization steps in this section, the
 receive requests from clients. When the CA receives a request from a client, it MUST reattempt all the
 initialization steps, and if it still fails to initialize, it MUST return a nonzero error to the client.
 
-3.2.2.6  Message Processing Events and Sequencing Rules
+##### 3.2.2.6 Message Processing Events and Sequencing Rules
 
 The following sections specify processing rules that the server implements, in addition to those
 specified in section 3.2.1.4, or rules where the Enterprise CA deviates from those specified in section
 3.2.1.4. If an interface or method is specified in section 3.2.1.4, but is omitted in this section, the
 Enterprise CA implements that method or that interface exactly as specified in section 3.2.1.4.
 
-3.2.2.6.1 Algorithms
+###### 3.2.2.6.1 Algorithms
 
 The Server Mode: Enterprise CA protocol role uses the algorithms specified in 3.1.1.4.1, and its
 subsections, in addition to the algorithms specified in 3.2.1.4.1.
 
-3.2.2.6.2 ICertRequestD
+###### 3.2.2.6.2 ICertRequestD
 
-3.2.2.6.2.1
+###### 3.2.2.6.2.1 ICertRequestD::Request (Opnum 3)
 
-ICertRequestD::Request (Opnum 3)
+
 
 The server follows the specifications documented in section 3.2.1.4.2.1, with the following exceptions:
 
@@ -19025,7 +18437,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 
 
@@ -19039,7 +18452,7 @@ documented in 3.2.2.6.2.1.2.
 The server MUST replace the CA policy algorithm specified in section 3.2.1.4.2.1.4.5 with the
 one specified in section 3.2.2.6.2.1.4.
 
-3.2.2.6.2.1.1  Parsing and Verifying pwszAttributes
+###### 3.2.2.6.2.1.1 Parsing and Verifying pwszAttributes
 
 In addition to the processing rules specified in section 3.2.1.4.2.1.2, the server MUST support the
 following attributes:
@@ -19075,7 +18488,7 @@ The CA MUST obtain the dNSHostName attribute by invoking the processing rules in
 distinguished name and then retrieving the dNSHostName from the returned
 EndEntityAttributes output parameter.
 
-3.2.2.6.2.1.2  Processing a Request
+###### 3.2.2.6.2.1.2 Processing a Request
 
 In addition to the request types specified in section 3.2.1.4.2.1.4, the server MUST support the
 following types of certificate requests:
@@ -19145,7 +18558,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-"Yes" indicates that this format is supported for this request type. "No" indicates that this format is
+
+"Yes" indicates that this format is supported for this request type. "No" indicates that this format is
 not supported by this protocol.
 
 If a certificate request is submitted using a certificate format that is not supported, the CA MUST
@@ -19153,9 +18567,9 @@ return an error code. The error code SHOULD be CRYPT_E_INVALID_MSG_TYPE.
 
 The server MUST apply the rules specified in the following sections for each of these request types.
 
-3.2.2.6.2.1.2.1
+###### 3.2.2.6.2.1.2.1 Processing Rules for Request on Behalf of a Different Subject
 
-Processing Rules for Request on Behalf of a Different Subject
+
 
 A ROBO certificate request MUST use one of the following formats as specified in section
 3.2.1.4.2.1.4:
@@ -19177,9 +18591,9 @@ certificate being requested) based on the specific template. If the EA does not 
 make a request, the CA MUST return a nonzero error. The error SHOULD be 0x80094009
 (CERTSRV_E_RESTRICTEDOFFICER).
 
-3.2.2.6.2.1.2.1.1
+###### 3.2.2.6.2.1.2.1.1 Request on Behalf of Using CMS and PKCS #10 Request Formats
 
-Request on Behalf of Using CMS and PKCS #10 Request Formats
+
 
 The request MUST be compliant with the information that is specified in [RFC3852]. The processing
 rules for the following fields MUST be adhered to by the CA but are not specified by [RFC3852]:
@@ -19225,9 +18639,9 @@ attribute MUST include the requestername name-value pair. The value of the
 requestername name-value pair MUST be used to construct the Subject field in the issued
 certificate.
 
-3.2.2.6.2.1.2.1.2
+###### 3.2.2.6.2.1.2.1.2 Request on Behalf of Using CMS and CMC Request Format
 
-Request on Behalf of Using CMS and CMC Request Format
+
 
 214 / 259
 
@@ -19236,7 +18650,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The request MUST be compliant with the information that is specified in [RFC2797]. The processing
+
+The request MUST be compliant with the information that is specified in [RFC2797]. The processing
 rules for the following fields MUST be adhered to by the CA but are not specified by [RFC2797]:
 
 
@@ -19288,9 +18703,9 @@ agent EKU (1.3.6.1.4.1.311.20.2.1).
 signerInfos: The signing MUST be done with the key (or keys) associated with the already
 issued certificate (or certificates) that are passed in the certificates field.
 
-3.2.2.6.2.1.2.2
+###### 3.2.2.6.2.1.2.2 Processing Rules for Requests That Include Private Key
 
-Processing Rules for Requests That Include Private Key
+
 
 Information
 
@@ -19337,7 +18752,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 TaggedAttribute: This field MUST include the key hash attribute. The OID for this
 attribute is the OID szOID_ENCRYPTED_KEY_HASH (1.3.6.1.4.1.311.21.21), as
@@ -19390,17 +18806,17 @@ Current_CA_Exchange_Cert datum. The format of this private key is specified
 in section 2.2.2.9. If this private key does not correspond to the public key in
 the encapsulated PKCS #10 request, the CA MUST return a non-zero error.
 
-3.2.2.6.2.1.2.3
+###### 3.2.2.6.2.1.2.3 Processing Rules for Renewal Request
 
-Processing Rules for Renewal Request
+
 
 In addition to the processing rules defined in section 3.2.1.4.2.1.4.2, Enterprise CA MUST validate
 that the renewal request is based on the same certificate template as the certificate being
 renewed. If certificate templates do not match, the CA MUST return a non-zero error.
 
-3.2.2.6.2.1.2.4
+###### 3.2.2.6.2.1.2.4 Processing Renewal Request on Behalf of a Different Subject
 
-Processing Renewal Request on Behalf of a Different Subject
+
 
 The CA SHOULD accept renewal requests submitted on behalf of other end entities.<129> The client
 indicates this type of request by setting 0x00200000 bit of the dwFlags parameter of the Request
@@ -19423,7 +18839,8 @@ Release: November 21, 2025
 
 216 / 259
 
-3.  For a renewal request on behalf of others, the key that signed the request MUST be treated as the
+
+3.  For a renewal request on behalf of others, the key that signed the request MUST be treated as the
 authentication of the renewal request, overriding any authentication applied to the message that
 carries this request. If the CA fails to identify the end entity, it MUST return a nonzero error.
 
@@ -19431,9 +18848,9 @@ carries this request. If the CA fails to identify the end entity, it MUST return
 entity has made the call to the Request method and follow the all of the method's applicable
 processing rules as specified in section 3.2.2.6.2.1.
 
-3.2.2.6.2.1.2.5
+###### 3.2.2.6.2.1.2.5 Processing Rules for an Initial Key Attestation Request
 
-Processing Rules for an Initial Key Attestation Request
+
 
 Note  For information on product behavior, see the following product behavior note.<130>
 
@@ -19484,9 +18901,9 @@ in the Request_Request_Flags column, as described in section 3.2.2.6.2.1.2.6. If
 contains an szOID_ENROLL_AIK_INFO attribute (section 3.1.1.4.3.4.2), then the CA sets the
 CR_FLG_CHALLENGESATISFIED bit in the Request_Request_Flags column.
 
-3.2.2.6.2.1.2.5.1
+###### 3.2.2.6.2.1.2.5.1 Processing Rules for Key Attestation Based on Certificates
 
-Processing Rules for Key Attestation Based on Certificates
+
 
 The CA MUST follow the processing rules for key attestation as outlined in section 3.2.2.6.2.1.2.5
 and below in order to perform key attestation based on trusted certificates (EKCerts or AIKCerts).
@@ -19500,7 +18917,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.  The CA MUST check that any one of the certificates in the request meets the following criteria:
+
+2.  The CA MUST check that any one of the certificates in the request meets the following criteria:
 
 
 
@@ -19539,9 +18957,9 @@ hexadecimal string with no spaces in the EndorsementCertificateHash column of th
 Request_Request_Flags column to indicate that key attestation succeeded while processing a
 trusted certificate.
 
-3.2.2.6.2.1.2.5.2
+###### 3.2.2.6.2.1.2.5.2 Processing Rules for Key Attestation Based on a Key
 
-Processing Rules for Key Attestation Based on a Key
+
 
 The CA MUST follow the processing rules outlined below to perform key attestation based on a
 trusted public key.
@@ -19563,9 +18981,9 @@ step 2, the CA MUST set the CR_FLG_TRUSTEKKEY flag in the Request_Request_Flags 
 the Request table ([MS-CSRA] section 3.1.1.1.2) to indicate that key attestation succeeded on a
 trusted key.
 
-3.2.2.6.2.1.2.6
+###### 3.2.2.6.2.1.2.6 Processing Rules for Providing a Challenge Response to an Initial
 
-Processing Rules for Providing a Challenge Response to an Initial
+
 
 Key Attestation Request
 
@@ -19593,13 +19011,14 @@ Release: November 21, 2025
 
 218 / 259
 
-5.  The CA MUST also include additional attributes as specified in section 2.2.2.8.1 where
+
+5.  The CA MUST also include additional attributes as specified in section 2.2.2.8.1 where
 
 pdwDisposition is set to request pending (5).
 
-3.2.2.6.2.1.2.7
+###### 3.2.2.6.2.1.2.7 Processing Rules for a Challenge Response Request
 
-Processing Rules for a Challenge Response Request
+
 
 If a request of type Challenge Response is received the CA MUST adhere to the following processing
 rules:
@@ -19641,7 +19060,7 @@ as specified in [MS-CSRA] section 3.1.1.1.2.
 
 3.2.2.6.2.1.4.
 
-3.2.2.6.2.1.3  Storing Request Parameters in the Request Table
+###### 3.2.2.6.2.1.3 Storing Request Parameters in the Request Table
 
 Unless specified otherwise in this section, the CA MUST store the request parameters as specified in
 section 3.2.1.4.2.1.4.4.
@@ -19673,7 +19092,8 @@ Release: November 21, 2025
 
 219 / 259
 
-3.  From the Config_CA_KRA_Cert_List select Config_CA_KRA_Cert_Count number of certificates.
+
+3.  From the Config_CA_KRA_Cert_List select Config_CA_KRA_Cert_Count number of certificates.
 
 These certificates will be used in steps 4 and 6.
 
@@ -19746,7 +19166,7 @@ CR_FLG_TRUSTEKKEY flag in the Request_Request_Flags column.
 If the request contains an szOID_ENROLL_EK_INFO attribute, then the CA MUST save the secret
 that was encrypted with the CA exchange key in the Request_Attestation_Challenge column.
 
-3.2.2.6.2.1.4  CA Policy Algorithm
+###### 3.2.2.6.2.1.4 CA Policy Algorithm
 
 In addition to the rules specified in section 3.2.1.4.2.1.4.1.3, the server MUST adhere to the
 processing rules described in this section and subsections that describe how the CA policy algorithm
@@ -19759,7 +19179,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-1.  The server MUST verify that the request contains an identifier to a configured certificate template
+
+1.  The server MUST verify that the request contains an identifier to a configured certificate template
 
 and is for a template configured to be issued by this CA. See section 3.2.2.6.2.1.4.1.
 
@@ -19781,9 +19202,9 @@ also adhere to processing rules specified in section 3.2.2.6.2.1.4.2.
 
 The certificate templates data structure is specified in [MS-CRTD].
 
-3.2.2.6.2.1.4.1
+###### 3.2.2.6.2.1.4.1 Verify Configured Certificate Template
 
-Verify Configured Certificate Template
+
 
 After it receives a request, the server MUST first verify that the request is for a certificate that is
 based on a configured certificate template by performing the following steps:
@@ -19827,9 +19248,9 @@ be 0x80094802 (CERTSRV_E_TEMPLATE_CONFLICT).
 identified certificate template is True. If the value is False, the CA MUST fail the request. The error
 code SHOULD be 0x80094800 (CERTSRV_E_UNSUPPORTED_CERT_TYPE).
 
-3.2.2.6.2.1.4.2
+###### 3.2.2.6.2.1.4.2 Verify Certificate Template Version
 
-Verify Certificate Template Version
+
 
 [MS-WCCE] - v20251121
 Windows Client Certificate Enrollment Protocol
@@ -19838,7 +19259,8 @@ Release: November 21, 2025
 
 221 / 259
 
-The server MUST verify that the version of the certificate template that is submitted in the request
+
+The server MUST verify that the version of the certificate template that is submitted in the request
 is not newer than the certificate template that the server stores in its certificate template table. The
 server MUST perform the following steps:
 
@@ -19866,9 +19288,9 @@ than the value of the msPKI-Template-Minor-Revision attribute of the certificate
 is stored in the Certificate_Template_Data column, the request MUST be rejected with a
 disposition of error code as CERTSRV_E_BAD_TEMPLATE_VERSION.
 
-3.2.2.6.2.1.4.3
+###### 3.2.2.6.2.1.4.3 Verify End Entity Permissions
 
-Verify End Entity Permissions
+
 
 Input Parameters:
 
@@ -19898,16 +19320,16 @@ equal to Input_SID.
 CA MUST reject the request. The returned error code MUST be 0x80094012
 (CERTSRV_E_TEMPLATE_DENIED).
 
-3.2.2.6.2.1.4.4
+###### 3.2.2.6.2.1.4.4 Version 1 Certificate Template Server Processing
 
-Version 1 Certificate Template Server Processing
+
 
 The following sections describe the required server processing rules for attributes for certificate
 template version 1.
 
-3.2.2.6.2.1.4.4.1
+###### 3.2.2.6.2.1.4.4.1 Flags
 
-Flags
+
 
 The following processing rules are applied to flags in this attribute.
 
@@ -19918,7 +19340,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Flag
+
+Flag
 
 0x00000040
 
@@ -19970,32 +19393,32 @@ If this flag is set and if the certificate has been issued, the CA SHOULD NOT
 persist the information about the request in the Request table that is specified
 in section 3.2.1.1.1.<132>
 
-3.2.2.6.2.1.4.4.2
+###### 3.2.2.6.2.1.4.4.2 pKIExpirationPeriod
 
-pKIExpirationPeriod
+
 
 The CA MUST issue a certificate with a validity period that does not exceed the period defined by this
 attribute's value. Additional information on certificate validity period is specified in [RFC3280] section
 4.1.2.5.
 
-3.2.2.6.2.1.4.4.3
+###### 3.2.2.6.2.1.4.4.3 pKIExtendedKeyUsage
 
-pKIExtendedKeyUsage
+
 
 The server MUST add the extended key usage extension with the OID as specified by this attribute
 to the issued certificate. Specifications on this extension are in [RFC3280] section 4.2.1.13.
 
-3.2.2.6.2.1.4.4.4
+###### 3.2.2.6.2.1.4.4.4 pKIKeyUsage
 
-pKIKeyUsage
+
 
 The server SHOULD use this attribute from the certificate template, and use the public key
 algorithm sent in the certificate request, to construct the key usage extension in the issued
 certificate. Specifications on this extension are in [RFC3280] section 4.2.1.3.
 
-3.2.2.6.2.1.4.4.5
+###### 3.2.2.6.2.1.4.4.5 pKIMaxIssuingDepth
 
-pKIMaxIssuingDepth
+
 
 If a Basic Constraints extension (as specified in [RFC3280] section 4.2.1.10) is being added to the
 certificate:
@@ -20011,7 +19434,8 @@ Release: November 21, 2025
 
 223 / 259
 
-
+
+
 
 
 
@@ -20030,24 +19454,24 @@ the pathLenConstraint field in the Basic Constraints extension.
 The conditions under which a Basic Constraints extension is added to the certificate are specified in
 sections 3.2.2.6.2.1.4.4.1 and 3.2.2.6.2.1.4.5.6.
 
-3.2.2.6.2.1.4.4.6
+###### 3.2.2.6.2.1.4.4.6 pKICriticalExtensions
 
-pKICriticalExtensions
+
 
 CAs MUST use this attribute to determine which extension is to be marked critical in the certificate
 for the request that is being processed. Specifications on certificates format and extensions are in
 [RFC3280] section 4.2.
 
-3.2.2.6.2.1.4.5
+###### 3.2.2.6.2.1.4.5 Version 2, 3, and 4 Certificate Template Server Processing
 
-Version 2, 3, and 4 Certificate Template Server Processing
+
 
 The following sections describe the required server processing rules for attributes for certificate
 templates, versions 2, 3, and 4.
 
 Specifications on certificate template versions are in [MS-CRTD] section 2.16.
 
-3.2.2.6.2.1.4.5.1  msPKI-RA-Signature
+###### 3.2.2.6.2.1.4.5.1 msPKI-RA-Signature
 
 CAs that receive a certificate request referring to a template where the msPKI-RA-Signature is
 nonzero MUST require that the private keys used to sign the request are associated with certificates
@@ -20061,7 +19485,7 @@ If the number of signatures on the certificate request is less than the number d
 the CA SHOULD return a non-zero error. The error SHOULD be 0x8009480A
 (CERTSRV_E_SIGNATURE_COUNT).
 
-3.2.2.6.2.1.4.5.2  msPKI-Minimal-Key-Size
+###### 3.2.2.6.2.1.4.5.2 msPKI-Minimal-Key-Size
 
 When receiving a certificate request, a CA MUST require that the length of the specified public key
 be greater than or equal to the value of this property.
@@ -20069,14 +19493,14 @@ be greater than or equal to the value of this property.
 If the key length is less than this value, the CA SHOULD return the disposition as
 CERTSRV_E_KEY_LENGTH.
 
-3.2.2.6.2.1.4.5.3  msPKI-RA-Policies
+###### 3.2.2.6.2.1.4.5.3 msPKI-RA-Policies
 
 If any OID present in this attribute doesn't exist in Certificate Policies extension(defined in section
 4.2.1.5 of the [RFC3280]) of at least one certificate whose private key was used to sign the
 certificate request, the CA MUST reject the request and return a non-zero error. The error SHOULD be
 0x8009480B (CERTSRV_E_SIGNATURE_REJECTED).
 
-3.2.2.6.2.1.4.5.4  msPKI-RA-Application-Policies
+###### 3.2.2.6.2.1.4.5.4 msPKI-RA-Application-Policies
 
 If any OID in this attribute doesn't exist as a KeyPurposeID in Extended Key Usage extension
 (defined in section 4.2.1.13 of the [RFC3280]) of at least one certificate whose private key was
@@ -20088,15 +19512,16 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-used to sign the certificate request, the CA MUST reject the request and return a non-zero error. The
+
+used to sign the certificate request, the CA MUST reject the request and return a non-zero error. The
 error SHOULD be 0x8009480B (CERTSRV_E_SIGNATURE_REJECTED).
 
-3.2.2.6.2.1.4.5.5  msPKI-Certificate-Application-Policy
+###### 3.2.2.6.2.1.4.5.5 msPKI-Certificate-Application-Policy
 
 A CA that processes the request MUST add the OIDs specified in this property to the Certificate
 Application Policy extension, as specified in section 2.2.2.7.7.3.
 
-3.2.2.6.2.1.4.5.6  msPKI-Enrollment-Flag
+###### 3.2.2.6.2.1.4.5.6 msPKI-Enrollment-Flag
 
 The following processing rules are applied to flags in this attribute.
 
@@ -20160,7 +19585,7 @@ distinguished name.
 The CA MUST enforce this flag only for
 certificate renewal requests and only
 when the conditions specified in section
-3.2.2.6.2.1.4.8 are met.
+###### 3.2.2.6.2.1.4.8 are met.
 
 If this flag is set in the template:
 
@@ -20174,7 +19599,8 @@ msPKI-Application-Policy.
 
 225 / 259
 
-Flag
+
+Flag
 
 Client processing
 
@@ -20270,7 +19696,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Flag
+
+Flag
 
 Client processing
 
@@ -20363,7 +19790,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Flag
+
+Flag
 
 0x00001000
 
@@ -20464,7 +19892,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Flag
+
+Flag
 
 Client processing
 
@@ -20553,7 +19982,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Policy attribute. If there are any duplicates, the CA MUST preserve the OID in msPKI-Certificate-
+
+Policy attribute. If there are any duplicates, the CA MUST preserve the OID in msPKI-Certificate-
 Policy and discard the one from KeyAttestationPolicies.
 
 3.2.2.6.2.1.4.5.9  msPKI-Certificate-Name-Flag
@@ -20624,7 +20054,8 @@ Release: November 21, 2025
 
 230 / 259
 
-5.  If the CT_FLAG_SUBJECT_ALT_REQUIRE_UPN or CT_FLAG_SUBJECT_ALT_REQUIRE_SPN flag is
+
+5.  If the CT_FLAG_SUBJECT_ALT_REQUIRE_UPN or CT_FLAG_SUBJECT_ALT_REQUIRE_SPN flag is
 set, the CA MUST add the value of the userPrincipalName attribute from the requestor's user
 object in the working directory to the subject alternative name extension of the issued certificate.
 For this, the CA MUST invoke the processing rules in section 3.2.2.1.2 with input parameter
@@ -20702,7 +20133,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-rfc822Name, then the CA MUST remove any directoryName with only X520CommonName as the
+
+rfc822Name, then the CA MUST remove any directoryName with only X520CommonName as the
 RelativeDistinguishedName, as specified in [RFC3280] section 4.2.1.7.
 
 3.2.2.6.2.1.4.7
@@ -20776,11 +20208,11 @@ If the CT_FLAG_ENROLLEE_SUPPLIES_SUBJECT flag is not set,and the SubjectAltName 
 the rfc822Name, then the value of rfc822Name MUST match the value of the mail attribute
 from the requestor's user object in the working directory.
 
-3.2.2.6.3 ICertRequestD2
+###### 3.2.2.6.3 ICertRequestD2
 
-3.2.2.6.3.1
+###### 3.2.2.6.3.1 ICertRequestD2::GetCAProperty (Opnum 7)
 
-ICertRequestD2::GetCAProperty (Opnum 7)
+
 
 The server MUST comply with the requirements specified in section 3.2.1.4.3.2, with the following
 exceptions:
@@ -20797,12 +20229,13 @@ Release: November 21, 2025
 
 232 / 259
 
-
+
+
 
 If PropID is equal to 0x0000000A (CR_PROP_CATYPE), the server MUST follow the processing
 rules as specified in section 3.2.2.6.3.1.2.
 
-3.2.2.6.3.1.1  PropID=0x0000001D (CR_PROP_TEMPLATES) "Configured Certificate
+###### 3.2.2.6.3.1.1 PropID=0x0000001D (CR_PROP_TEMPLATES) "Configured Certificate
 
 Templates"
 
@@ -20832,7 +20265,7 @@ a [UNICODE] string through a CERTTRANSBLOB (section 2.2.2.2) structure.
 
 Marshaling rules for CERTTRANSBLOB are specified in section 2.2.2.2.
 
-3.2.2.6.3.1.2  PropID=0x0000000A (CR_PROP_CATYPE) "CA Type"
+###### 3.2.2.6.3.1.2 PropID=0x0000000A (CR_PROP_CATYPE) "CA Type"
 
 The client has requested the type of the CA:
 
@@ -20848,11 +20281,11 @@ The server MUST return the CAINFO structure through a CERTTRANSBLOB structure.
 
 Marshaling rules for the CERTTRANSBLOB structure are specified in 2.2.2.2.
 
-3.2.2.7  Timer Events
+##### 3.2.2.7 Timer Events
 
 None.
 
-3.2.2.8  Other Local Events
+##### 3.2.2.8 Other Local Events
 
 The server SHOULD monitor whether a change was made to the certificate template container or
 to its enrollment service object, as identified in section 3.2.2.5 steps 1 and 3 respectively by using the
@@ -20866,11 +20299,12 @@ Release: November 21, 2025
 
 233 / 259
 
-<!-- Extracted images from page 234 -->
+
+<!-- Extracted images from page 234 -->
 ![Extracted image 1 from page 234]([MS-WCCE].images/page234-img01.png)
 <!-- /Extracted images from page 234 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 Figure 8: Certificate enrollment
 
@@ -20890,7 +20324,8 @@ Release: November 21, 2025
 
 234 / 259
 
-5  Security Considerations
+
+## 5 Security Considerations
 
 Any cryptographic protocol has security considerations dealing with key handling during cryptographic
 operations and key distribution. A public-key certificate, although it is not by itself a protocol, has
@@ -20906,9 +20341,9 @@ there are security considerations around the use and provisioning of those names
 forms, there are attributes bound to either a name or a key, and there are security considerations
 around the use and provisioning of those attributes.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
-5.1.1  Keeping Information Secret
+#### 5.1.1 Keeping Information Secret
 
 Any cryptographic key has to be kept secret. Additionally, any function of a secret (such as a key
 schedule) that an attacker could use to decipher the secret more easily also has to be kept secret.
@@ -20922,14 +20357,14 @@ Typically, such memory is found in a hardware security module (HSM). If an HSM i
 as specified in [FIPS140], or the equivalent, at a level consistent with the security requirements of the
 customer deploying the cryptographic protocol or CA that uses the HSM.
 
-5.1.2  Generating Keys
+#### 5.1.2 Generating Keys
 
 Generation of a cryptographic key requires randomness so that the generated key cannot be guessed
 by an attacker. Randomness is expressed in terms of entropy, in units of bits. A symmetric key
 should have as many bits of entropy as there are bits in the key. A public key pair should have as
 many bits of entropy as there are bits in the key minus a small number of bits.
 
-5.1.3  Entropy Sources
+#### 5.1.3 Entropy Sources
 
 How entropy is acquired is up to the implementer of any protocol. The literature on measurement of
 entropy and on methods of harvesting entropy in computer systems is extensive and well known to
@@ -20941,7 +20376,7 @@ whitening function") and might be used to drive a pseudo-random number generator
 PRNG is used, it should be compliant with recognized standards, such as FIPS 140-2 Annex C, as
 specified in [FIPS140].
 
-5.1.4  Name Selection
+#### 5.1.4 Name Selection
 
 Human beings use names from an ID certificate to refer to end entities. When the relying party
 (RP) is a human being and that human makes a security decision based on the name from an ID
@@ -20953,11 +20388,12 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-certificate, that name should be clear and unambiguous to the human RP. It is the responsibility of the
+
+certificate, that name should be clear and unambiguous to the human RP. It is the responsibility of the
 CA (or the human administering the CA or associated RA) to choose (or approve) the name for an ID
 certificate.
 
-5.1.5  Name Binding
+#### 5.1.5 Name Binding
 
 A CA has the responsibility to bind a name to a key within an ID certificate and to do so with a
 proper level of care. In commercial CAs, this is called "certification practices". The actual certification
@@ -20966,13 +20402,13 @@ that will use these certificates. However, each deployment of a CA should establ
 requirements of its RPs and the appropriate certification practices. The trust root on an RP should list
 only those CA root keys (root certificates) that meet the RP's security requirements.
 
-5.1.6  Attribute Definition
+#### 5.1.6 Attribute Definition
 
 When a certificate binds an attribute to either a key or a name, if that attribute is to be used by a
 human RP in making a security decision, the presentation of that attribute to the human has to be
 clear and unambiguous.
 
-5.1.7  Attribute Binding
+#### 5.1.7 Attribute Binding
 
 When attributes are bound to either a key or a name, some authority is responsible for making that
 assignment of attributes. In any given deployment, it is important that the authority empowered to
@@ -20988,14 +20424,14 @@ that attribute. This might imply the use of multiple certificates for carrying a
 when attributes are held in a directory (such as Active Directory), the list of authorities for an
 attribute should be reflected in the ACL for that directory entry.
 
-5.1.8  Coding Practices
+#### 5.1.8 Coding Practices
 
 Any implementation of a protocol exposes code to inputs from attackers. Such code has to be
 developed according to secure coding and development practices to avoid buffer overflows, denial-of-
 service (DOS) attacks, escalation of privilege, and disclosure of information. For an introduction to
 these concepts, secure development best practices, and common errors, see [HOWARD].
 
-5.1.9  Security Consideration Citations
+#### 5.1.9 Security Consideration Citations
 
 Implementers of this protocol should be aware of the following security considerations:
 
@@ -21019,7 +20455,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  Clients should verify the public key of the server prior to submission of a private key for archival
+
+  Clients should verify the public key of the server prior to submission of a private key for archival
 
 or escrow. Details are specified in [RFC2797] section 9.
 
@@ -21059,7 +20496,7 @@ techniques, see [HOWARD].
 example, security considerations regarding LDAP repositories are as specified in [RFC2559]
 section 10.
 
-5.1.10 Key Archival Security Considerations
+#### 5.1.10 Key Archival Security Considerations
 
 Key archival is for decryption keys only. The purpose of key archival is the prevention of loss of
 data. Just as backup preserves the bits of a file, key archival permits recovery of decryption keys.
@@ -21099,10 +20536,11 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-This redundancy meets the third requirement listed above. The recovery process is entirely manual
+
+This redundancy meets the third requirement listed above. The recovery process is entirely manual
 and is a function of the enterprise within which the CA is deployed.
 
-5.1.11 Data Consistency for Certificate Templates
+#### 5.1.11 Data Consistency for Certificate Templates
 
 It is not possible to achieve all three of the desirable properties of a distributed system:
 
@@ -21143,7 +20581,8 @@ Release: November 21, 2025
 
 238 / 259
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full interface definition language (IDL) is provided here, where
 "ms-dcom.idl" is the IDL as specified in [MS-DCOM] section 6.
@@ -21215,7 +20654,8 @@ Release: November 21, 2025
 
 239 / 259
 
- [
+
+ [
      object,
      uuid(5422fd3a-d4b8-4cef-a12e-e87d4ca22e90),
      helpstring("ICertRequest2 DCOM Interface"),
@@ -21262,7 +20702,8 @@ Release: November 21, 2025
 
 240 / 259
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -21415,7 +20856,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 1.3.2.2: Windows 8.1 and later and Windows Server 2012 R2 and later support key
@@ -21483,7 +20925,8 @@ Release: November 21, 2025
 
 242 / 259
 
-Values for client application sending the request
+
+Values for client application sending the request
 
 Value
 
@@ -21594,7 +21037,8 @@ Release: November 21, 2025
 
 243 / 259
 
-<19> Section 2.2.3.1: Applicable Windows Server releases use key recovery certificates that
+
+<19> Section 2.2.3.1: Applicable Windows Server releases use key recovery certificates that
 contain the following X.509v3 extensions that are specific to such releases:
 
   Application Policies (Policy Identifier = Key Recovery Agent)
@@ -21669,7 +21113,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<32> Section 3.1.1.4.3.8.1: Pre-sign certificate processing is supported by the operating systems
+
+<32> Section 3.1.1.4.3.8.1: Pre-sign certificate processing is supported by the operating systems
 specified in [MSKB-5017379] and [MSKB-5017381], each with its related KB article download
 installed.
 
@@ -21737,7 +21182,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  When the value = 1: Windows can use this certificate template.
+
+  When the value = 1: Windows can use this certificate template.
 
   When the value = 2: Windows XP, Windows Server 2003, and Windows Vista and later and
 
@@ -21811,7 +21257,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<60> Section 3.1.2.4.2.2.2.8: Windows 2000, Windows XP, and Windows Server 2003 do not support
+
+<60> Section 3.1.2.4.2.2.2.8: Windows 2000, Windows XP, and Windows Server 2003 do not support
 this flag.
 
 <61> Section 3.1.2.4.2.2.2.8: Windows 8 and later and Windows Server 2012 and later support this
@@ -21878,7 +21325,8 @@ Release: November 21, 2025
 
 247 / 259
 
-<76> Section 3.2.1.1.4:  This configuration and the associated functionality are available in Windows
+
+<76> Section 3.2.1.1.4:  This configuration and the associated functionality are available in Windows
 Server 2019 and later versions of the Windows OS after installing the September (9B) Windows
 update.
 
@@ -21958,7 +21406,8 @@ Release: November 21, 2025
 
 248 / 259
 
-  Resubmitted by {domain\name}, where {domain\name} is replaced with the user name of the
+
+  Resubmitted by {domain\name}, where {domain\name} is replaced with the user name of the
 
 caller if the request was formerly in a pending state and was issued by using the ResubmitRequest
 method of [MS-CSRA].
@@ -22034,7 +21483,8 @@ Release: November 21, 2025
 
 249 / 259
 
-<88> Section 3.2.1.4.2.1.4.4: A Windows CA stores these additional values in the Request table.
+
+<88> Section 3.2.1.4.2.1.4.4: A Windows CA stores these additional values in the Request table.
 
 <89> Section 3.2.1.4.2.1.4.4:  This column and the associated functionality are available in Windows
 Server 2019 and later versions of the Windows OS after installing the September (9B) Windows
@@ -22122,7 +21572,8 @@ Release: November 21, 2025
 
 250 / 259
 
-<93> Section 3.2.1.4.2.1.4.8.1:  This functionality is available in Windows Server 2022 and later OS
+
+<93> Section 3.2.1.4.2.1.4.8.1:  This functionality is available in Windows Server 2022 and later OS
 versions after installing August (8B) Windows update. However, the fix is currently disabled and will
 be enabled starting with the November (11B) or later Windows updates.
 
@@ -22189,7 +21640,8 @@ Release: November 21, 2025
 
 251 / 259
 
-<110> Section 3.2.1.4.3.2.8: In Windows 2000 Server and Windows Server 2003 CAs, the Shared
+
+<110> Section 3.2.1.4.3.2.8: In Windows 2000 Server and Windows Server 2003 CAs, the Shared
 Folder feature is disabled and can be enabled through the CA setup wizard. If the feature is enabled,
 the folder contains a file named "certsrv.txt".
 
@@ -22282,7 +21734,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  CA signing certificates: The certificate files are encoded by using DER, and the naming convention
+
+  CA signing certificates: The certificate files are encoded by using DER, and the naming convention
 is "CAComputerDNSName_CASanitizedName(CertIndex).crt". Because the CertIndex value is
 based on CA certificate renewal, no index value is present for the first certificate.
 
@@ -22349,7 +21802,8 @@ Release: November 21, 2025
 
 253 / 259
 
-<125> Section 3.2.2.3: In Windows 2000, the maximum size of
+
+<125> Section 3.2.2.3: In Windows 2000, the maximum size of
 Collection_Of_End_Entity_Object_Query_AD_Connections is always one.
 
 <126> Section 3.2.2.5: Windows 2000 Server only supports templates that do not have msPKI-
@@ -22418,7 +21872,8 @@ Windows Client Certificate Enrollment Protocol
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Services (AD DS) schema, or Windows Server 2016 Active Directory Domain Services (AD DS)
+
+Services (AD DS) schema, or Windows Server 2016 Active Directory Domain Services (AD DS)
 schema, or Windows Server operating system Active Directory Domain Services (AD DS) schema, or a
 Windows Server 2019 and later Active Directory Domain Services (AD DS) schema:
 
@@ -22449,7 +21904,8 @@ Release: November 21, 2025
 
 255 / 259
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -22494,7 +21950,8 @@ Release: November 21, 2025
 
 256 / 259
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -22631,7 +22088,8 @@ Glossary 14
 
 257 / 259
 
-H
+
+H
 
 High-level protocol operations 28
 
@@ -22771,7 +22229,8 @@ Server
 
 258 / 259
 
-      abstract data model 211
+
+      abstract data model 211
       Active Directory
          CA information 210
          interaction 184

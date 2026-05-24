@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 34
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -318,7 +319,8 @@ Release: April 23, 2024
 
 2 / 34
 
-Date
+
+Date
 
 Revision
 History
@@ -532,7 +534,8 @@ Release: April 23, 2024
 
 3 / 34
 
-Date
+
+Date
 
 Revision
 History
@@ -565,185 +568,81 @@ Release: April 23, 2024
 
 4 / 34
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 WebDAV Extension Header](#221-webdav-extension-header)
+    - [2.2.2 Translate Header](#222-translate-header)
+    - [2.2.3 Extended Error Handling](#223-extended-error-handling)
+    - [2.2.4 Lock Headers](#224-lock-headers)
+      - [2.2.4.1 Lock Time-out Header](#2241-lock-time-out-header)
+      - [2.2.4.2 Lock-Token Header](#2242-lock-token-header)
+    - [2.2.5 Multipart Content Type](#225-multipart-content-type)
+    - [2.2.6 449 Retry With Status Code](#226-449-retry-with-status-code)
+    - [2.2.7 Ms-Echo-Request Header](#227-ms-echo-request-header)
+    - [2.2.8 Ms-Echo-Reply Header](#228-ms-echo-reply-header)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 WebDAV Client Details](#31-webdav-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 WebDAV Extension Header](#3151-webdav-extension-header)
+        - [3.1.5.1.1 Extensions to GET and POST](#31511-extensions-to-get-and-post)
+        - [3.1.5.1.2 Extensions to PUT](#31512-extensions-to-put)
+      - [3.1.5.2 Translate Header](#3152-translate-header)
+      - [3.1.5.3 Extended Errors](#3153-extended-errors)
+      - [3.1.5.4 Adding Lock Headers to Existing Commands](#3154-adding-lock-headers-to-existing-commands)
+      - [3.1.5.5 Retrying a Request with the 449 Status Code](#3155-retrying-a-request-with-the-449-status-code)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 WebDAV Server Details](#32-webdav-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Translate Header](#3251-translate-header)
+      - [3.2.5.2 Adding Lock Headers to Existing Commands](#3252-adding-lock-headers-to-existing-commands)
+      - [3.2.5.3 Extended Errors](#3253-extended-errors)
+      - [3.2.5.4 Extensions to GET and POST](#3254-extensions-to-get-and-post)
+      - [3.2.5.5 Extensions to PUT](#3255-extensions-to-put)
+      - [3.2.5.6 Retrying a Request with the 449 Status Code](#3256-retrying-a-request-with-the-449-status-code)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Translate Header](#41-translate-header)
+  - [4.2 Extended Error Information](#42-extended-error-information)
+  - [4.3 Example Command Combinations](#43-example-command-combinations)
+  - [4.4 Example OPTIONS Command](#44-example-options-command)
+  - [4.5 Example PUT + PROPPATCH + LOCK command](#45-example-put-proppatch-lock-command)
+  - [4.6 Multipart Content Type](#46-multipart-content-type)
+  - [4.7 449 Response and Echo Reply](#47-449-response-and-echo-reply)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Data Security Using File Encryption](#511-data-security-using-file-encryption)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-WebDAV Extension Header .......................................................................... 11
-Translate Header ........................................................................................ 12
-Extended Error Handling .............................................................................. 12
-Lock Headers ............................................................................................. 13
-Lock Time-out Header ........................................................................... 13
-Lock-Token Header ............................................................................... 13
-Multipart Content Type ................................................................................ 14
-449 Retry With Status Code ......................................................................... 14
-Ms-Echo-Request Header ............................................................................. 14
-Ms-Echo-Reply Header ................................................................................ 15
-
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-2.2.4.1
-2.2.4.2
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3  Protocol Details ..................................................................................................... 16
-WebDAV Client Details ...................................................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Processing Events and Sequencing Rules ....................................................... 16
-WebDAV Extension Header ..................................................................... 16
-Extensions to GET and POST ............................................................. 16
-Extensions to PUT ............................................................................ 17
-Translate Header .................................................................................. 17
-Extended Errors .................................................................................... 17
-Adding Lock Headers to Existing Commands ............................................. 17
-Retrying a Request with the 449 Status Code ........................................... 17
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-WebDAV Server Details ..................................................................................... 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Processing Events and Sequencing Rules ....................................................... 18
-Translate Header .................................................................................. 18
-Adding Lock Headers to Existing Commands ............................................. 18
-Extended Errors .................................................................................... 19
-Extensions to GET and POST .................................................................. 19
-Extensions to PUT ................................................................................. 20
-Retrying a Request with the 449 Status Code ........................................... 20
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2
-
-[MS-WDV] - v20240423
-Web Distributed Authoring and Versioning (WebDAV) Protocol: Client Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 34
-
-3.2.6
-3.2.7
-
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-
-4  Protocol Examples ................................................................................................. 21
-Translate Header ............................................................................................. 21
-Extended Error Information ............................................................................... 22
-Example Command Combinations ...................................................................... 22
-Example OPTIONS Command ............................................................................ 22
-Example PUT + PROPPATCH + LOCK command .................................................... 23
-Multipart Content Type ..................................................................................... 24
-449 Response and Echo Reply ........................................................................... 24
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5.1
-
-5  Security ................................................................................................................. 26
-Security Considerations for Implementers ........................................................... 26
-Data Security Using File Encryption ............................................................... 26
-Index of Security Parameters ............................................................................ 26
-
-5.1.1
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 27
-
-7  Change Tracking .................................................................................................... 32
-
-8  Index ..................................................................................................................... 33
-
-[MS-WDV] - v20240423
-Web Distributed Authoring and Versioning (WebDAV) Protocol: Client Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 34
-
-1  Introduction
+## 1 Introduction
 
 The HTTP Extensions for Distributed Authoring—WEBDAV Protocol (WebDAV), as specified in
 [RFC4918], extends the standard Hypertext Transfer Protocol (HTTP) mechanisms that are
@@ -763,7 +662,7 @@ special-case processing.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -817,7 +716,8 @@ Web Distributed Authoring and Versioning (WebDAV) Protocol: Client Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-server and, optionally, client authentication by using X.509 certificates (as specified in [X509]).
+
+server and, optionally, client authentication by using X.509 certificates (as specified in [X509]).
 TLS is standardized in the IETF TLS working group.
 
 Web Distributed Authoring and Versioning Protocol (WebDAV): The Web Distributed
@@ -837,14 +737,14 @@ and responds to requests from WebDAV clients.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -868,7 +768,7 @@ Syntax", STD 66, RFC 3986, January 2005, https://www.rfc-editor.org/info/rfc3986
 [RFC4918] Dusseault, L, Ed., "HTTP Extensions for Web Distributed Authoring and Versioning
 (WebDAV)", RFC 4918, June 2007, https://www.rfc-editor.org/info/rfc4918
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSASP] Microsoft Corporation, "Active Server Pages", http://msdn.microsoft.com/en-
 us/library/aa286483.aspx
@@ -884,7 +784,8 @@ Release: April 23, 2024
 
 8 / 34
 
-1.3  Overview
+
+### 1.3 Overview
 
 The WebDAV Protocol is a set of methods, headers, and content-types that extend the Hypertext
 Transfer Protocol -- HTTP/1.1, as specified in [RFC2616]. The WebDAV Protocol allows data to be
@@ -918,28 +819,28 @@ WebDAV Protocol: Client Extensions also specifies the following extension to the
 
   A mechanism for an HTTP request to be retried using the HTTP 449 status code extension.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 WebDAV Protocol: Client Extensions rely on the HTTP Extensions for Distributed Authoring—WEBDAV,
 as specified in [RFC4918], which in turn relies on HTTP/1.1, as specified in [RFC2616]. WebDAV
 Protocol: Client Extensions also rely on the Hypertext Transfer Protocol over Secure Sockets
 Layer (HTTPS), as specified in HTTP Over TLS, [RFC2818], for data protection services.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 WebDAV Protocol: Client Extensions require a WebDAV server, as specified in [RFC4918], that
 supports the OPTIONS command.
 
 This specification also requires that WebDAV clients have URLs that point to WebDAV servers.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable in scenarios that require efficient file operations. Note that this document
 specifies only those extensions that are needed to enable efficient file system clients. These
 extensions do not add any additional functionality. Instead, they help reduce the network traffic and
 increase the performance of clients that use the WebDAV Protocol, as specified in [RFC4918].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document introduces no new versioning mechanisms except those that already exist in the
 WebDAV Protocol and HTTP/1.1.
@@ -951,16 +852,17 @@ Release: April 23, 2024
 
 9 / 34
 
-Negotiation of the WebDAV Protocol and of HTTP/1.1 options in general is specified in [RFC4918] and
+
+Negotiation of the WebDAV Protocol and of HTTP/1.1 options in general is specified in [RFC4918] and
 [RFC2616], respectively. The X-MSDAVEXT header is used as part of the HTTP/1.1 OPTIONS discovery
 mechanism to indicate WebDAV server support for this specification.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The extensions that are defined in this protocol can be extended in constrained ways, as specified in
 section 2.2.3.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 No standards body has approved or governs this document or its header names and values. This
 specification conforms to the form and behavior of other custom HTTP headers, as specified in
@@ -973,9 +875,10 @@ Release: April 23, 2024
 
 10 / 34
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Messages are transported by using HTTP, as specified in [RFC4918] and [RFC2616].
 
@@ -985,7 +888,7 @@ as specified in [RFC2246].<1>
 Port 80 is the standard port assignment for HTTP, and port 443 is the standard port assignment for
 HTTP over SSL or TLS. However, individual implementations MAY support other ports.<2>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The extension headers in this protocol conform to the form and behavior of other custom HTTP
 headers, as specified in [RFC2616] section 4.2. They are consistent with the WebDAV Protocol verbs
@@ -1043,7 +946,7 @@ The following new status code is specified in this extension:
 The 449 Retry With status code allows the server to indicate that the request did not contain
 sufficient information and needs to be retried by the client, as specified in section 2.2.6.
 
-2.2.1  WebDAV Extension Header
+#### 2.2.1 WebDAV Extension Header
 
 The X-MSDAVEXT header has been added to indicate support for the WebDAV Protocol: Client
 Extensions and to request optional server behavior.
@@ -1055,7 +958,8 @@ Release: April 23, 2024
 
 11 / 34
 
-This new header is defined as follows (using the Augmented Backus-Naur Form (ABNF) Syntax as
+
+This new header is defined as follows (using the Augmented Backus-Naur Form (ABNF) Syntax as
 specified in [RFC2616] section 2.1):<3>
 
  MS-WebDAV-Extension-Header = "X-MSDAVEXT" ":" Ext-options
@@ -1078,7 +982,7 @@ header MUST indicate the media type of multipart/MSDAVEXTPrefixEncoded.
 
 This header SHOULD be ignored on all other commands and for all other values.<4>
 
-2.2.2  Translate Header
+#### 2.2.2 Translate Header
 
 Many resources that are obtained from a web server are returned exactly as is. However, some
 resources are programmatically interpreted by the web server, and the result of that interpretation is
@@ -1105,7 +1009,7 @@ ignored by the server. For more information about the processing of this header,
 
 This header MUST be supported on the GET verb and MAY be supported on other verbs.<6>
 
-2.2.3  Extended Error Handling
+#### 2.2.3 Extended Error Handling
 
 The current errors that are returned by the HTTP protocol are not sufficient to support all the error
 conditions that occur in file handling. This section specifies a mechanism to extend HTTP error
@@ -1118,7 +1022,8 @@ Release: April 23, 2024
 
 12 / 34
 
-Extended error handling MAY be used by applications in order to provide more specific information to
+
+Extended error handling MAY be used by applications in order to provide more specific information to
 the application user for an error that occurred on the server. The X-MSDAVEXT_ERROR header, which
 is returned by the WebDAV server, MAY be included in any WebDAV server response.<7>
 
@@ -1136,7 +1041,7 @@ An Error-string is a percentage-encoded UTF-8 string, as specified in [RFC3986] 
 additional explanatory text about the cause of the error. This string is not significant to protocol
 operation and is intended only for display and logging purposes.
 
-2.2.4  Lock Headers
+#### 2.2.4 Lock Headers
 
 WebDAV Protocol: Client Extensions extend the semantics of an existing LOCK header to enable
 resource locking and unlocking capabilities on the GET, PUT, and POST commands. This
@@ -1144,7 +1049,7 @@ enhancement eliminates the need to send separate messages. This protocol also ad
 MSDAVEXTLockTimeout header to indicate the lock duration. The Lock-Token header indicates the lock
 token, as specified in [RFC4918] section 6.3.<8>
 
-2.2.4.1  Lock Time-out Header
+##### 2.2.4.1 Lock Time-out Header
 
 The Lock Time-out header, which uses the Augmented Backus-Naur Form (ABNF), as specified in
 [RFC2616] section 2.1, is defined as follows:
@@ -1170,7 +1075,7 @@ Time-out header specifies the remaining time for which the lock is valid.
 The Lock-Token header MUST be included to unlock or refresh the file, as specified in sections 3.1.5.4
 and 3.2.5.2.
 
-2.2.4.2  Lock-Token Header
+##### 2.2.4.2 Lock-Token Header
 
 The Lock-Token header in the WebDAV Protocol: Client Extensions is the same Lock-Token header as
 specified in [RFC4918] section 10.5. This extension extends only the applicability of the header.
@@ -1182,7 +1087,8 @@ Release: April 23, 2024
 
 13 / 34
 
-The Lock-Token header MAY be included on GET, PUT, and POST requests and responses. When this
+
+The Lock-Token header MAY be included on GET, PUT, and POST requests and responses. When this
 header and the X-MSDAVEXTLockTimeout header are included on these requests, it instructs the
 server to either refresh or release the lock; or to perform a write operation on a locked object, as
 specified in section 3.1.5.4.<9>
@@ -1196,7 +1102,7 @@ OPTIONS request.
 The Lock-Token header MUST NOT be included on a GET or POST command without a lock time-out
 header.
 
-2.2.5  Multipart Content Type
+#### 2.2.5 Multipart Content Type
 
 To enable efficient transfer of multiple sets of information in an HTTP request or response, this
 extension defines a new media type, multipart/MSDAVEXTPrefixEncoded, as specified in [RFC2616]
@@ -1226,7 +1132,7 @@ File-Contents: The contents of the file. For a response, this MUST be the same a
 response, as specified in [RFC2616] section 9.3. For a request, this MUST be the same as the
 body of a PUT request, as specified in [RFC2616] section 9.6.<10>
 
-2.2.6  449 Retry With Status Code
+#### 2.2.6 449 Retry With Status Code
 
 The 449 Retry With status code indicates that the request cannot be satisfied because insufficient
 information was provided by the client.
@@ -1244,7 +1150,8 @@ Release: April 23, 2024
 
 14 / 34
 
-2.2.7  Ms-Echo-Request Header
+
+#### 2.2.7 Ms-Echo-Request Header
 
 The Ms-Echo-Request header is a response header. It is returned by the server when replying to a
 request with the 449 Retry With status code.
@@ -1258,7 +1165,7 @@ The field-value rule is specified in [RFC2616] section 4.2. The field value of t
 header is opaque. Its value MUST NOT be examined by the client except as necessary to ensure its
 compliance with the client's implementation of the underlying HTTP protocol.
 
-2.2.8  Ms-Echo-Reply Header
+#### 2.2.8 Ms-Echo-Reply Header
 
 The Ms-Echo-Reply header is a request header that is sent by the client when reissuing a request for a
 resource after receiving a 449 Retry With status code for a previous request.
@@ -1279,36 +1186,37 @@ Release: April 23, 2024
 
 15 / 34
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 As specified in [RFC4918], the WebDAV Protocol operates between an initiator (a WebDAV client)
 and a responder (a WebDAV server). In this section, the client and the server behaviors for the
 WebDAV Protocol: Client Extensions are specified. This section also includes details on abstract data
 models, syntax, and message processing rules.
 
-3.1  WebDAV Client Details
+### 3.1 WebDAV Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 A WebDAV client SHOULD maintain a logical Boolean variable for each server with which it
 communicates. This variable has to be set to TRUE if the server has returned an X-MSDAVEXT: 1
 header on an OPTIONS response, and FALSE otherwise.<11>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No new timers are required except those in the WebDAV Protocol, as specified in [RFC4918].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Prior to general interaction with a WebDAV server, the WebDAV client SHOULD perform an
 OPTIONS request to determine the correct setting of the Boolean value for MSDAVEXT (if the
 extensions are supported).
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No new events are triggered except those in the WebDAV Protocol, as specified in [RFC4918].
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 WebDAV Protocol: Client Extensions can be used to combine multiple commands in a single request;
 to propagate extended error information between the client and the server; and to allow
@@ -1324,12 +1232,12 @@ If the client does not support the extensions, the client MAY ignore the header 
 the new WebDAV extensions (as specified in this protocol). If the server adds the optional headers,
 the headers SHOULD be ignored by the client as unrecognized.<12>
 
-3.1.5.1  WebDAV Extension Header
+##### 3.1.5.1 WebDAV Extension Header
 
 The X-MSDAVEXT header has been added to indicate support for WebDAV Protocol: Client Extensions
 and to request optional server behavior. For more information, see section 3.1.5.
 
-3.1.5.1.1 Extensions to GET and POST
+###### 3.1.5.1.1 Extensions to GET and POST
 
 File system clients need to obtain file properties together with the contents of the file.
 
@@ -1340,7 +1248,8 @@ Release: April 23, 2024
 
 16 / 34
 
-An X-MSDAVEXT: PROPFIND header in the request from the client instructs the server to return the
+
+An X-MSDAVEXT: PROPFIND header in the request from the client instructs the server to return the
 properties of the file together with the content of the file. If the server returns a content type that is
 not multipart/MSDAVEXTPrefixEncoded in the response, the client SHOULD treat this as an error.<13>
 
@@ -1348,7 +1257,7 @@ This header SHOULD be included only on GET commands that are targeted to servers
 these extensions, as advertised by an X-MSDAVEXT: 1 header in the OPTIONS command response
 from the server.<14>
 
-3.1.5.1.2 Extensions to PUT
+###### 3.1.5.1.2 Extensions to PUT
 
 File system clients might need to update file properties along with the contents of the file.
 
@@ -1362,20 +1271,20 @@ server.<15>
 The Content-Type: multipart/MSDAVEXTPrefixEncoded header MUST be added by the client on the
 request, and the body SHOULD be of the format specified in section 2.2.5.
 
-3.1.5.2  Translate Header
+##### 3.1.5.2 Translate Header
 
 The WebDAV client MAY add the Translate header with a flag of "f" to a request if it needs the source
 of a file without any translation; otherwise, this header SHOULD be omitted. This header MAY be
 added to the commands that are sent to a WebDAV server that does not advertise the
 extensions.<16>
 
-3.1.5.3  Extended Errors
+##### 3.1.5.3 Extended Errors
 
 The WebDAV client MAY use the errors that are returned by the server through the X-
 MSDAVEXT_ERROR header in order to get more information about server errors. Clients SHOULD NOT
 rely on these errors for anything other than information status.<17>
 
-3.1.5.4  Adding Lock Headers to Existing Commands
+##### 3.1.5.4 Adding Lock Headers to Existing Commands
 
 The WebDAV Protocol locking semantics and processing orders, as specified in [RFC4918] section
 8.10, are not altered by the WebDAV Protocol: Client Extensions. These extensions simply allow for
@@ -1389,7 +1298,7 @@ token SHOULD be added to successfully complete the operation.
 The WebDAV client SHOULD add the LOCK extension headers only when it communicates with a
 server that supports these extensions.<18>
 
-3.1.5.5  Retrying a Request with the 449 Status Code
+##### 3.1.5.5 Retrying a Request with the 449 Status Code
 
 If the client does not support retrying a request with the 449 status code, the client SHOULD treat the
 449 Retry With status code as an unrecognized status code, as specified in [RFC2616] section 6.1.1,
@@ -1403,48 +1312,49 @@ Release: April 23, 2024
 
 17 / 34
 
-When a client that supports the 449 status code extension receives a 449 status code from the server,
+
+When a client that supports the 449 status code extension receives a 449 status code from the server,
 it MUST process the entity body of the response as normal but SHOULD NOT display its contents to
 the user.
 
 After the entity body has been processed, the client MUST repeat the request that generated the 449
 status code to the server and MUST include the Ms-Echo-Reply header with the new request.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No new timers are required except those in the WebDAV Protocol, as specified in [RFC4918].
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no new local events other than those that are specified in the WebDAV Protocol, as specified
 in [RFC4918].
 
-3.2  WebDAV Server Details
+### 3.2 WebDAV Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 No new abstract data model is needed other than that described in the WebDAV Protocol, as specified
 in [RFC4918].
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No new timers are required except those in the WebDAV Protocol, as specified in [RFC4918].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 No initialization is required except that in the WebDAV Protocol, as specified in [RFC4918].
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 No new events are triggered except those in the WebDAV Protocol, as specified in [RFC4918].
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 A WebDAV server SHOULD advertise support for the WebDAV Protocol: Client Extensions by adding
 the X_MSDAVEXT: 1 header to the response to the OPTIONS command. If the server does not support
 the WebDAV Protocol: Client Extensions, the OPTIONS response MUST omit the X_MSDAVEXT header.
 
-3.2.5.1  Translate Header
+##### 3.2.5.1 Translate Header
 
 The WebDAV server MUST respond with the actual source of the file if the translate header exists
 with a flag value "f." The WebDAV server SHOULD perform access checks when it processes a
@@ -1453,7 +1363,7 @@ command that contains a Translate: f header.<19>
 To maintain consistency with web browsers, the default behavior if this header is omitted is to
 translate the file; that is, omission of this header is the same as sending Translate: t.<20>
 
-3.2.5.2  Adding Lock Headers to Existing Commands
+##### 3.2.5.2 Adding Lock Headers to Existing Commands
 
 The WebDAV server MUST honor lock headers that are sent on GET, POST, and PUT requests that
 are sent by using the Translate: F header if it advertises this functionality with X-MSDAVEXT: 1 in its
@@ -1465,7 +1375,8 @@ Web Distributed Authoring and Versioning (WebDAV) Protocol: Client Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-OPTIONS response. It MAY honor these headers on requests that are not sent with Translate: F or on
+
+OPTIONS response. It MAY honor these headers on requests that are not sent with Translate: F or on
 other methods. It SHOULD NOT send or honor these headers if it does not advertise this functionality
 with the X-MSDAVEXT: 1 OPTIONS response header.<21>
 
@@ -1577,13 +1488,13 @@ MUST lock the file if no existing lock.
 
 MUST process the PUT request, as specified in [RFC4918] section 9.7.
 
-3.2.5.3  Extended Errors
+##### 3.2.5.3 Extended Errors
 
 The WebDAV server MAY add the extended error header in order to provide more error information
 to the client. The WebDAV server SHOULD NOT rely on the client to handle these errors because the
 WebDAV client MAY ignore the header.<23>
 
-3.2.5.4  Extensions to GET and POST
+##### 3.2.5.4 Extensions to GET and POST
 
 The WebDAV server SHOULD ignore the header if it receives an X-MSDAVEXT: PROPFIND header
 when support for the WebDAV Protocol: Client Extensions is not advertised. If the WebDAV server
@@ -1597,7 +1508,8 @@ Web Distributed Authoring and Versioning (WebDAV) Protocol: Client Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.5  Extensions to PUT
+
+##### 3.2.5.5 Extensions to PUT
 
 The WebDAV server MAY fail the request if it receives an X-MSDAVEXT: PROPPATCH header when
 the support for the WebDAV Protocol: Client Extensions is not advertised. If the WebDAV server
@@ -1605,7 +1517,7 @@ advertised support for the extensions, it MUST process the command by retrieving
 body and processing both PROPPATCH (using the properties portion) and PUT. The command
 SHOULD be successfully completed only if both operations succeed.<25>
 
-3.2.5.6  Retrying a Request with the 449 Status Code
+##### 3.2.5.6 Retrying a Request with the 449 Status Code
 
 If the server does not support retrying a request with the 449 status code, it MUST NOT send the 449
 Retry With status code in an HTTP response message and SHOULD treat the Ms-Echo-Reply header as
@@ -1623,11 +1535,11 @@ When sending a 449 status code, the server MUST include the Ms-Echo-Request head
 If the server receives a request from the client that contains an Ms-Echo-Reply header, it MUST NOT
 reply to such a request with a 449 Reply With status.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No new timers are required except those in the WebDAV Protocol, as specified in [RFC4918].
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no new local events other than those that are described in the WebDAV Protocol, as
 specified in [RFC4918].
@@ -1639,9 +1551,10 @@ Release: April 23, 2024
 
 20 / 34
 
-4  Protocol Examples
 
-4.1  Translate Header
+## 4 Protocol Examples
+
+### 4.1 Translate Header
 
 The following examples show the difference between requesting an entity and the source of an entity.
 This first example is a typical HTTP GET command as issued by a browser such as the Windows
@@ -1703,7 +1616,8 @@ Release: April 23, 2024
 
 21 / 34
 
- %>
+
+ %>
  <%
  ' Loop 3 times, adjusting the font size in each loop
  For I = 1 To 3 Step 1
@@ -1718,7 +1632,7 @@ Release: April 23, 2024
 The only difference between these two requests is that the second request is requesting the source of
 an entity. This is a typical example of how the Translate header is used.
 
-4.2  Extended Error Information
+### 4.2 Extended Error Information
 
 The following is an example of a response to a request to PUT a file that was checked out to another
 user.
@@ -1733,7 +1647,7 @@ user.
  X-Powered-By: ASP.NET
  Date: Tue, 25 Jan 2005 03:11:51 GMT
 
-4.3  Example Command Combinations
+### 4.3 Example Command Combinations
 
 The headers and extensions, as specified in section 2, enable multiple operations to be combined in a
 single request/response. The following list shows the typical combinations:
@@ -1762,7 +1676,7 @@ PUT + Lock or Refresh or Unlock
 
 PUT + PropPatch + Lock or Refresh or Unlock
 
-4.4  Example OPTIONS Command
+### 4.4 Example OPTIONS Command
 
  The following is an example of an OPTIONS request and the corresponding response from a server
 that supports the WebDAV Protocol: Client Extensions.
@@ -1782,7 +1696,8 @@ Release: April 23, 2024
 
 22 / 34
 
- Connection: Keep-Alive
+
+ Connection: Keep-Alive
  Content-Length: 0
 
 Response:
@@ -1802,7 +1717,7 @@ LOCK, UNLOCK
  X-MSDAVEXT: 1
  Public-Extension: http://schemas.fourthcoffee.com/repl-2
 
-4.5  Example PUT + PROPPATCH + LOCK command
+### 4.5 Example PUT + PROPPATCH + LOCK command
 
  The following is an example of how the LOCK and PROPPATCH commands can be combined with a
 PUT command.
@@ -1842,7 +1757,8 @@ Release: April 23, 2024
 
 23 / 34
 
-4.6  Multipart Content Type
+
+### 4.6 Multipart Content Type
 
 The following is an example of how the body of a request or response looks when the multipart
 content type is specified.
@@ -1859,7 +1775,7 @@ content type is specified.
  </D:set>
  </D:propertyupdate>0000000000000013this is a text file
 
-4.7  449 Response and Echo Reply
+### 4.7 449 Response and Echo Reply
 
 The following example shows a server returning a 449 response status along with a script to request
 that the browser set a cookie with the client's available screen dimensions. The client responds to the
@@ -1908,7 +1824,8 @@ Release: April 23, 2024
 
 24 / 34
 
- Cookie: screen=availWidth=800&availHeight=600
+
+ Cookie: screen=availWidth=800&availHeight=600
 
 Final response:
 
@@ -1931,22 +1848,23 @@ Release: April 23, 2024
 
 25 / 34
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 WebDAV servers that support the translate: f header need to perform access checks before
 returning the source of the file, as specified in section 3.2.5.1, in order to protect any source content
 (for example, database passwords).<26>
 
-5.1.1  Data Security Using File Encryption
+#### 5.1.1 Data Security Using File Encryption
 
 WebDAV servers do not support encryption of files. WebDAV clients can use their own encryption
 mechanism and store the files in raw format. Files that are created by using the raw format are
 readable only from the WebDAV clients that know how to decrypt these files from the raw
 format.<27>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 No security parameters are used in the WebDAV Protocol: Client Extensions.
 
@@ -1957,7 +1875,8 @@ Release: April 23, 2024
 
 26 / 34
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2025,7 +1944,8 @@ Release: April 23, 2024
 
 27 / 34
 
-443 for HTTP over SSL or TLS. WebDAV servers that run on Internet Information Services, Windows
+
+443 for HTTP over SSL or TLS. WebDAV servers that run on Internet Information Services, Windows
 SharePoint Services 3.0, or Windows SharePoint Services 2.0 support any port.
 
 <3> Section 2.2.1: This header is supported by WebDAV clients only in Windows Vista operating
@@ -2095,7 +2015,8 @@ Release: April 23, 2024
 
 28 / 34
 
-<10> Section 2.2.5: This extension is supported by the WebDAV client in Windows Vista operating
+
+<10> Section 2.2.5: This extension is supported by the WebDAV client in Windows Vista operating
 system and later and Windows Server 2008 operating system and later. This extension is supported
 by the WebDAV server in Windows SharePoint Services 3.0 technology.
 
@@ -2201,7 +2122,8 @@ Release: April 23, 2024
 
 29 / 34
 
- Extended
+
+ Extended
 error
 
  Windows NT
@@ -2325,7 +2247,8 @@ Release: April 23, 2024
 
 30 / 34
 
-<23> Section 3.2.5.3: The Windows SharePoint Services 3.0 technology in Windows-based servers
+
+<23> Section 3.2.5.3: The Windows SharePoint Services 3.0 technology in Windows-based servers
 returns an error code for operations whenever it has additional information. Other Windows WebDAV
 protocol implementations do not return extended error information. Windows clients pass this
 information, when present, to the application as an extended error and perform mapping for known
@@ -2372,7 +2295,8 @@ Release: April 23, 2024
 
 31 / 34
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2416,7 +2340,8 @@ Release: April 23, 2024
 
 32 / 34
 
-8  Index
+
+## 8 Index
 4
 
 449 Retry With Status Code message 14
@@ -2552,7 +2477,8 @@ Release: April 23, 2024
 
 33 / 34
 
-Standards assignments 10
+
+Standards assignments 10
 Syntax 11
 
 T

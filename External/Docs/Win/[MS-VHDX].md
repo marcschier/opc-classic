@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 38
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -148,158 +149,71 @@ Release: April 23, 2024
 
 2 / 38
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Layout](#21-layout)
+  - [2.2 Header Section](#22-header-section)
+    - [2.2.1 File Type Identifier](#221-file-type-identifier)
+    - [2.2.2 Headers](#222-headers)
+      - [2.2.2.1 Updating the Headers](#2221-updating-the-headers)
+    - [2.2.3 Region Table](#223-region-table)
+      - [2.2.3.1 Region Table Header](#2231-region-table-header)
+      - [2.2.3.2 Region Table Entry](#2232-region-table-entry)
+  - [2.3 Log](#23-log)
+    - [2.3.1 Log Entry](#231-log-entry)
+      - [2.3.1.1 Entry Header](#2311-entry-header)
+      - [2.3.1.2 Zero Descriptor](#2312-zero-descriptor)
+      - [2.3.1.3 Data Descriptor](#2313-data-descriptor)
+      - [2.3.1.4 Data Sector](#2314-data-sector)
+    - [2.3.2 Log Sequence](#232-log-sequence)
+    - [2.3.3 Log Replay](#233-log-replay)
+  - [2.4 Blocks](#24-blocks)
+  - [2.5 BAT](#25-bat)
+    - [2.5.1 BAT Entry](#251-bat-entry)
+      - [2.5.1.1 Payload BAT Entry States](#2511-payload-bat-entry-states)
+      - [2.5.1.2 Sector Bitmap BAT Entry States](#2512-sector-bitmap-bat-entry-states)
+  - [2.6 Metadata Region](#26-metadata-region)
+    - [2.6.1 Metadata Table](#261-metadata-table)
+      - [2.6.1.1 Metadata Table Header](#2611-metadata-table-header)
+      - [2.6.1.2 Metadata Table Entry](#2612-metadata-table-entry)
+    - [2.6.2 Known Metadata Items](#262-known-metadata-items)
+      - [2.6.2.1 File Parameters](#2621-file-parameters)
+      - [2.6.2.2 Virtual Disk Size](#2622-virtual-disk-size)
+      - [2.6.2.3 Virtual Disk ID](#2623-virtual-disk-id)
+      - [2.6.2.4 Logical Sector Size](#2624-logical-sector-size)
+      - [2.6.2.5 Physical Sector Size](#2625-physical-sector-size)
+      - [2.6.2.6 Parent Locator](#2626-parent-locator)
+        - [2.6.2.6.1 Parent Locator Header](#26261-parent-locator-header)
+        - [2.6.2.6.2 Parent Locator Entry](#26262-parent-locator-entry)
+        - [2.6.2.6.3 VHDX Parent Locator](#26263-vhdx-parent-locator)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index Of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Protocols and Other Structures ...................................................... 7
-Applicability Statement ....................................................................................... 8
-Versioning and Localization ................................................................................. 8
-Vendor-Extensible Fields ..................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.3
-
-2.3.1
-
-2.2.3
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2.3.2
-2.3.3
-
-2.2.3.1
-2.2.3.2
-
-2.3.1.1
-2.3.1.2
-2.3.1.3
-2.3.1.4
-
-2  Structures ............................................................................................................... 9
-Layout .............................................................................................................. 9
-Header Section .................................................................................................. 9
-File Type Identifier ...................................................................................... 10
-Headers..................................................................................................... 10
-Updating the Headers ............................................................................ 12
-Region Table .............................................................................................. 13
-Region Table Header ............................................................................. 13
-Region Table Entry ................................................................................ 13
-Log ................................................................................................................ 14
-Log Entry ................................................................................................... 15
-Entry Header ........................................................................................ 16
-Zero Descriptor ..................................................................................... 18
-Data Descriptor .................................................................................... 18
-Data Sector .......................................................................................... 19
-Log Sequence ............................................................................................ 19
-Log Replay ................................................................................................. 20
-Blocks............................................................................................................. 21
-BAT ................................................................................................................ 21
-BAT Entry .................................................................................................. 22
-Payload BAT Entry States ....................................................................... 22
-Sector Bitmap BAT Entry States .............................................................. 25
-Metadata Region .............................................................................................. 25
-Metadata Table........................................................................................... 26
-Metadata Table Header .......................................................................... 26
-Metadata Table Entry ............................................................................ 27
-Known Metadata Items ................................................................................ 28
-File Parameters ..................................................................................... 28
-Virtual Disk Size ................................................................................... 29
-Virtual Disk ID ...................................................................................... 29
-Logical Sector Size ................................................................................ 29
-Physical Sector Size .............................................................................. 30
-Parent Locator ...................................................................................... 30
-Parent Locator Header ..................................................................... 30
-Parent Locator Entry ........................................................................ 30
-VHDX Parent Locator ....................................................................... 31
-
-2.6.2.1
-2.6.2.2
-2.6.2.3
-2.6.2.4
-2.6.2.5
-2.6.2.6
-
-2.6.2.6.1
-2.6.2.6.2
-2.6.2.6.3
-
-2.5.1.1
-2.5.1.2
-
-2.6.1.1
-2.6.1.2
-
-2.4
-2.5
-
-2.5.1
-
-2.6.1
-
-2.6.2
-
-2.6
-
-3  Structure Examples ............................................................................................... 33
-
-4  Security ................................................................................................................. 34
-Security Considerations for Implementers ........................................................... 34
-Index Of Security Fields .................................................................................... 34
-
-4.1
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 35
-
-3 / 38
-
-[MS-VHDX] - v20240423
-Virtual Hard Disk v2 (VHDX) File Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6  Change Tracking .................................................................................................... 37
-
-7  Index ..................................................................................................................... 38
-
-[MS-VHDX] - v20240423
-Virtual Hard Disk v2 (VHDX) File Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 38
-
-1  Introduction
+## 1 Introduction
 
 This specification defines the virtual hard disk format that provides a disk-in-a-file abstraction.
 
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -319,14 +233,14 @@ host disk: The volume or disk on which the virtual hard disk file resides.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -341,7 +255,7 @@ Note There is a charge to download the journal.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -352,7 +266,8 @@ Release: April 23, 2024
 
 5 / 38
 
-1.3  Overview
+
+### 1.3 Overview
 
 The virtual hard disk v2 (VHDX) file format provides features at the virtual hard disk as well as virtual
 hard disk file layers and is optimized to work well with modern storage hardware configurations and
@@ -392,7 +307,8 @@ Release: April 23, 2024
 
 6 / 38
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-VHDX].images/page007-img01.png)
 ![Extracted image 2 from page 7]([MS-VHDX].images/page007-img02.png)
 <!-- /Extracted images from page 7 -->
@@ -401,7 +317,7 @@ Figure 1: Logical layout
 
 Figure 2: File layout example
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 None.
 
@@ -412,7 +328,8 @@ Release: April 23, 2024
 
 7 / 38
 
-1.5  Applicability Statement
+
+### 1.5 Applicability Statement
 
 The benefits of the structures defined in this document include:
 
@@ -442,7 +359,7 @@ sector sizes larger than 512 bytes.
 
 using the virtual hard disk, to optimize the size of the VHDX file.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 The version of the VHDX format is determined by the value of the Version field in the header, as
 specified in section 2.2.2.
@@ -455,7 +372,7 @@ Value
 
 0x00000001
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 None.
 
@@ -466,7 +383,8 @@ Release: April 23, 2024
 
 8 / 38
 
-2  Structures
+
+## 2 Structures
 
 All multibyte values MUST be stored in little-endian format with the least significant byte first unless
 specified otherwise. Bit 0 always means the least significant bit of the least significant byte. Note that
@@ -482,7 +400,7 @@ The notation Fl(X) shall mean the maximum integer that is lesser than or equal t
 
 Unless specified otherwise, all integer-valued fields are unsigned.
 
-2.1  Layout
+### 2.1 Layout
 
 The VHDX file begins with a fixed-sized header section. After this, non-overlapping structures and free
 space are intermixed freely in no particular order, the only restriction being that all objects have 1-MB
@@ -498,7 +416,7 @@ The logical and physical layouts of the structures, illustrated in the figures t
 fixed, dynamic, and differencing virtual hard disk types; differences are discussed in the following
 sections.
 
-2.2  Header Section
+### 2.2 Header Section
 
 The header section is the first structure on the disk and is the structure that is examined first when
 opening a VHDX file. The header section is 1 MB in size and contains five items that are 64 KB in size:
@@ -532,13 +450,14 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-VHDX].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 3: Header section layout
 
-2.2.1  File Type Identifier
+#### 2.2.1 File Type Identifier
 
 The file type identifier is a structure stored at offset zero of the file.
 
@@ -577,7 +496,7 @@ data in the first 64 KB of the file after the file has been created.
 The space between file identifier data and 64-KB alignment boundary for the file identifier structure is
 reserved.
 
-2.2.2  Headers
+#### 2.2.2 Headers
 
 Since the header is used to locate the log, updates to the headers cannot be made through the log. To
 provide power failure consistency, there are two headers in every VHDX file.
@@ -606,7 +525,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Checksum
+
+Checksum
 
 SequenceNumber
 
@@ -666,7 +586,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the other header's SequenceNumber field. The implementation MUST only use data from the
+
+the other header's SequenceNumber field. The implementation MUST only use data from the
 current header. If there is no current header, then the VHDX file is corrupt.
 
 FileWriteGuid (16 bytes): Specifies a 128-bit unique identifier that identifies the file's contents. On
@@ -716,7 +637,7 @@ Reserved (4016 bytes): MUST be set to 0 and ignored.
 The space between a 4-KB structure containing header data and a 64-KB alignment boundary for the
 header is reserved.
 
-2.2.2.1  Updating the Headers
+##### 2.2.2.1 Updating the Headers
 
 On every open of a VHDX file that allows the VHDX file to be written to, the headers MUST be updated
 before any other part of the file is modified. While the VHDX file is in use, the headers can also be
@@ -740,7 +661,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Generate a new header in memory. Set the SequenceNumber field to the current header's
+
+2.  Generate a new header in memory. Set the SequenceNumber field to the current header's
 
 SequenceNumber field plus one.
 
@@ -759,14 +681,14 @@ SHOULD perform the update procedure a second time so that both the current and n
 contain up-to-date information; this ensures that if one header is corrupted, the file can still be
 opened.
 
-2.2.3  Region Table
+#### 2.2.3 Region Table
 
 The region table consists of a header followed by a variable number of entries, which specify the
 identity and location of regions within the file. There are two copies of the region table, stored at file
 offset 192 KB and file offset 256 KB. Updates to the region table structures must be made through the
 log.
 
-2.2.3.1  Region Table Header
+##### 2.2.3.1 Region Table Header
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -799,7 +721,7 @@ equal to 2,047.
 
 Reserved (4 bytes): MUST be set to 0 and ignored.
 
-2.2.3.2  Region Table Entry
+##### 2.2.3.2 Region Table Entry
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -821,7 +743,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -872,7 +795,7 @@ BAT
 
 Metadata region
 
-2.3  Log
+### 2.3 Log
 
 2DC27766-F623-4200-9D64-
 115E9BFD4A08
@@ -897,7 +820,8 @@ Release: April 23, 2024
 
 14 / 38
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-VHDX].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -923,7 +847,7 @@ file.
 
 Figure 4: Log layout example
 
-2.3.1  Log Entry
+#### 2.3.1 Log Entry
 
 A log entry is a sequence of 4-KB sectors, aligned to a 4-KB sector.<3> This sequence is divided into
 two parts: a sequence of one or more descriptor sectors, and a sequence of zero or more data sectors.
@@ -947,7 +871,8 @@ Release: April 23, 2024
 
 15 / 38
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-VHDX].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -969,7 +894,7 @@ probability that a random entry corruption is detected.
 The space for the log entries can be reused for subsequent log writes only when the log entries are
 not part of the active log sequence (See section 2.3.3).
 
-2.3.1.1  Entry Header
+##### 2.3.1.1 Entry Header
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1005,7 +930,8 @@ Release: April 23, 2024
 
 16 / 38
 
-LogGuid
+
+LogGuid
 
 ...
 
@@ -1072,7 +998,8 @@ Release: April 23, 2024
 
 17 / 38
 
-2.3.1.2  Zero Descriptor
+
+##### 2.3.1.2 Zero Descriptor
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1115,7 +1042,7 @@ multiple of 4 KB.
 
 SequenceNumber (8 bytes): MUST match the SequenceNumber field of the log entry's header.
 
-2.3.1.3  Data Descriptor
+##### 2.3.1.3 Data Descriptor
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1147,7 +1074,8 @@ Release: April 23, 2024
 
 18 / 38
 
-SequenceNumber
+
+SequenceNumber
 
 ...
 
@@ -1168,7 +1096,7 @@ written. The value MUST be a multiple of 4 KB.
 
 SequenceNumber (8 bytes): MUST match the SequenceNumber field of the entry's header.
 
-2.3.1.4  Data Sector
+##### 2.3.1.4 Data Sector
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1204,7 +1132,7 @@ SequenceLow (4 bytes): MUST contain the four least significant bytes of the Sequ
 
 field of the associated entry.
 
-2.3.2  Log Sequence
+#### 2.3.2 Log Sequence
 
 At any given moment in the operation of the log, the newest entry in the log (or "head entry") always
 points to the oldest entry in the log that has the updates yet to be written and flushed to their final
@@ -1219,13 +1147,14 @@ Release: April 23, 2024
 
 19 / 38
 
-To determine whether a log sequence is both valid and complete, an implementation MUST ensure
+
+To determine whether a log sequence is both valid and complete, an implementation MUST ensure
 that each entry within the sequence is valid and that the entries were actually written as a sequence.
 To check that the entries contained within a sequence were actually written as a sequence, each non-
 tail entry in a valid sequence MUST have a sequence number one greater than the previous entry, and
 each entry log guid matches the LogGuid field in the file header.<4>
 
-2.3.3  Log Replay
+#### 2.3.3 Log Replay
 
 If the log is non-empty when the VHDX file is opened, the implementation MUST replay the log<5>
 before performing any I/O to the file other than reading the VHDX header and the log. If an
@@ -1291,12 +1220,13 @@ Release: April 23, 2024
 
 20 / 38
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-VHDX].images/page021-img01.png)
 ![Extracted image 2 from page 21]([MS-VHDX].images/page021-img02.png)
 <!-- /Extracted images from page 21 -->
 
-2.4  Blocks
+### 2.4 Blocks
 
 There are two types of Blocks: payload and sector bitmap. Payload blocks contain virtual disk payload
 data, while sector bitmap blocks contain parts of the sector bitmap.
@@ -1322,7 +1252,7 @@ contiguous, chunk-size aligned and chunk-sized portion of the virtual disk is kn
 chunk ratio is the number of payload blocks in a chunk, or equivalently, the number of payload blocks
 per sector bitmap block.
 
-2.5  BAT
+### 2.5 BAT
 
 BAT is a region consisting of a single array of 64-bit values, with an entry for each block that
 determines the state and file offset of that block. The entries for the payload block and sector bitmap
@@ -1347,7 +1277,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-VHDX].images/page022-img01.png)
 ![Extracted image 2 from page 22]([MS-VHDX].images/page022-img02.png)
 ![Extracted image 3 from page 22]([MS-VHDX].images/page022-img03.png)
@@ -1368,7 +1299,7 @@ The total number of BAT entries for either dynamic or fixed VHDX can be calculat
 For a differencing VHDX, the last BAT entry must be able to locate the last sector bitmap block that
 contains the last payload sector. The total number of BAT entries can be calculated as
 
-2.5.1  BAT Entry
+#### 2.5.1 BAT Entry
 
 A BAT entry is 64 bits in length and is divided into bit fields.
 
@@ -1402,7 +1333,7 @@ FileOffsetMB (44 bits): Specifies the offset within the file in units of 1 MB. T
 bitmap block must reside after the header section and must not overlap any other structure. The
 FileOffsetMB field value must be unique across all the BAT entries when it is other than zero.
 
-2.5.1.1  Payload BAT Entry States
+##### 2.5.1.1 Payload BAT Entry States
 
 The payload BAT entry determines the state of a virtual block and the associated offset in the VHDX
 file of that block. The following table summarizes the validity of the various states for the three VHDX
@@ -1431,7 +1362,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Payload BAT Entry State
+
+Payload BAT Entry State
 
 Fixed
 
@@ -1537,7 +1469,8 @@ Release: April 23, 2024
 
 23 / 38
 
-3.  Set the field to a nonzero value that MUST point to a location in the VHDX file that MUST contain
+
+3.  Set the field to a nonzero value that MUST point to a location in the VHDX file that MUST contain
 the contents of the block immediately before it was moved to this state with no modifications or
 some parts of it replaced with zeros.
 
@@ -1610,7 +1543,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This block state MUST NOT be present in a block entry for a fixed or dynamic VHDX file.
+
+This block state MUST NOT be present in a block entry for a fixed or dynamic VHDX file.
 
 For differencing VHDX files, the block's contents are defined in the file at the location specified by the
 FileOffsetMB field. When the block entry is in this state, the associated sector bitmap block MUST be
@@ -1624,7 +1558,7 @@ specified by the FileOffsetMB field, after the associated sector bitmap for that
 check if the sector being read is present in the VHDX file. If not, the parent VHDX file needs to be
 inspected for that sector.
 
-2.5.1.2  Sector Bitmap BAT Entry States
+##### 2.5.1.2 Sector Bitmap BAT Entry States
 
 The sector bitmap BAT entry indicates the presence of sector bitmap blocks for the associated chunk
 of payload blocks.
@@ -1681,7 +1615,7 @@ For differencing VHDX file, a sector bitmap block entry MUST be set to the SB_BL
 if any associated payload blocks are the PAYLOAD_BLOCK_ PARTIALLY_PRESENT state. The sector
 bitmap block contents are defined in the file at the location specified by the FileOffsetMB field.
 
-2.6  Metadata Region
+### 2.6 Metadata Region
 
 The metadata region consists of a fixed-size, 64-KB, unsorted metadata table, followed by unordered,
 variable-sized, unaligned metadata items and free space, as shown in the following figure. The
@@ -1693,7 +1627,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-VHDX].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1702,12 +1637,12 @@ table.
 
 Figure 7: Metadata region layout example
 
-2.6.1  Metadata Table
+#### 2.6.1 Metadata Table
 
 A metadata table contains a 32-byte header followed immediately by a variable number of valid 32-
 byte entries.
 
-2.6.1.1  Metadata Table Header
+##### 2.6.1.1 Metadata Table Header
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1752,12 +1687,13 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EntryCount (2 bytes): Specifies the number of entries in the table. This value must be less than or
+
+EntryCount (2 bytes): Specifies the number of entries in the table. This value must be less than or
 equal to 2,047. The free space in the metadata region may contain data that can be disregarded.
 
 Reserved2 (20 bytes): MUST be set to 0.
 
-2.6.1.2  Metadata Table Entry
+##### 2.6.1.2 Metadata Table Entry
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1828,11 +1764,12 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Reserved (29 bits): MUST be set to 0.
+
+Reserved (29 bits): MUST be set to 0.
 
 Reserved2 (4 bytes): MUST be set to 0.
 
-2.6.2  Known Metadata Items
+#### 2.6.2 Known Metadata Items
 
 There are certain metadata items that are defined in this specification, some of which are optional and
 some of which are required. The following table summarizes the known metadata items and their
@@ -1920,7 +1857,7 @@ A8D35F2D-B30B-
 454D-ABF7-
 D3D84834AB0C
 
-2.6.2.1  File Parameters
+##### 2.6.2.1 File Parameters
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1957,14 +1894,15 @@ Release: April 23, 2024
 
 28 / 38
 
-B - HasParent (1 bit): Specifies whether this file has a parent VHDX file. If set, the file is a
+
+B - HasParent (1 bit): Specifies whether this file has a parent VHDX file. If set, the file is a
 
 differencing file, and one or more parent locators specify the location and identity of the parent.
 LeaveBlockAllocated is ignored when HasParent is set.
 
 Reserved (30 bits): MUST be 0.
 
-2.6.2.2  Virtual Disk Size
+##### 2.6.2.2 Virtual Disk Size
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1987,7 +1925,7 @@ B
 
 the LogicalSectorSize (see section 2.6.2.4) metadata item and MUST be at most 64 TB.
 
-2.6.2.3  Virtual Disk ID
+##### 2.6.2.3 Virtual Disk ID
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2011,7 +1949,7 @@ B
 
 VirtualDiskId (16 bytes): A GUID that specifies the identification of the disk.
 
-2.6.2.4  Logical Sector Size
+##### 2.6.2.4 Logical Sector Size
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2039,7 +1977,8 @@ Release: April 23, 2024
 
 29 / 38
 
-2.6.2.5  Physical Sector Size
+
+##### 2.6.2.5 Physical Sector Size
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2058,7 +1997,7 @@ PhysicalSectorSize (4 bytes): Specifies the virtual disk's physical sector size,
 MUST be set to 512 or 4,096. An implementation MUST expose the virtual disk as having the
 specified physical sector size, but it can fail to load files with sector sizes that it does not support.
 
-2.6.2.6  Parent Locator
+##### 2.6.2.6 Parent Locator
 
 The parent locator specifies the type of the parent virtual block device as a GUID and a set of key-
 value pairs specifying anything necessary to locate and connect to the parent block device.
@@ -2074,7 +2013,7 @@ implementations can extend this as required.
 The parent locator item is made up of a 20-byte header immediately followed by a table of 12-byte
 entries specifying the offset and length of each key and value.
 
-2.6.2.6.1 Parent Locator Header
+###### 2.6.2.6.1 Parent Locator Header
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2108,7 +2047,7 @@ Reserved (2 bytes): MUST be set to 0.
 
 KeyValueCount (2 bytes): Specifies the number of key-value pairs defined for this parent locator.
 
-2.6.2.6.2 Parent Locator Entry
+###### 2.6.2.6.2 Parent Locator Entry
 
 [MS-VHDX] - v20240423
 Virtual Hard Disk v2 (VHDX) File Format
@@ -2117,7 +2056,8 @@ Release: April 23, 2024
 
 30 / 38
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2157,7 +2097,7 @@ be no internal NUL characters, and the Length field must not include a trailing 
 string is case sensitive, and lowercase keys are recommended. All keys must be unique, and there is
 no ordering to the entries.
 
-2.6.2.6.3 VHDX Parent Locator
+###### 2.6.2.6.3 VHDX Parent Locator
 
 The only parent-locator type defined by this specification is the VHDX locator type with a GUID value
 of "B04AEFB7-D19E-4A81-B789-25B8E9445913".
@@ -2220,7 +2160,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-At least one entry with key value of relative_path, volume_path, or absolute_win32_path MUST
+
+At least one entry with key value of relative_path, volume_path, or absolute_win32_path MUST
 be present to locate the parent VHDX file. An implementation has to evaluate the paths in a specific
 order to locate the parent: relative_path, volume_path and then absolute_path. Upon successful
 open of a chain, an implementation has to update any existing stale path entries to point to its current
@@ -2249,7 +2190,8 @@ Release: April 23, 2024
 
 32 / 38
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 None.
 
@@ -2260,13 +2202,14 @@ Release: April 23, 2024
 
 33 / 38
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 None.
 
-4.2  Index Of Security Fields
+### 4.2 Index Of Security Fields
 
 None.
 
@@ -2277,7 +2220,8 @@ Release: April 23, 2024
 
 34 / 38
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2345,7 +2289,8 @@ Virtual Hard Disk v2 (VHDX) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<7> Section 2.5.1.1:  If an implementation chooses to preserve sector stability, it has to continue to
+
+<7> Section 2.5.1.1:  If an implementation chooses to preserve sector stability, it has to continue to
 return the same data on subsequent block reads while the block remains in this state. To preserve
 sector stability across different implementations, it is recommended to transition the block to a state
 that has a tightly defined read behavior.
@@ -2380,7 +2325,8 @@ Release: April 23, 2024
 
 36 / 38
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2424,7 +2370,8 @@ Release: April 23, 2024
 
 37 / 38
 
-Structures
+
+Structures
    overview 9
 
 T
@@ -2436,7 +2383,7 @@ V
 Vendor-extensible fields 8
 Versioning 8
 
-7  Index
+## 7 Index
 A
 
 Applicability 8

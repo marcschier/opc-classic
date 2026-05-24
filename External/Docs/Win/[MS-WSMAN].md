@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 72
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Release: June 1, 2017
 
 2 / 72
 
-Date
+
+Date
 
 Revision
 History
@@ -516,7 +518,8 @@ Release: June 1, 2017
 
 3 / 72
 
-Date
+
+Date
 
 Revision
 History
@@ -551,336 +554,148 @@ Release: June 1, 2017
 
 4 / 72
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+      - [2.2.2.1 EmptyMessage](#2221-emptymessage)
+      - [2.2.2.2 AnyXmlMessage](#2222-anyxmlmessage)
+      - [2.2.2.3 OptionalXmlMessage](#2223-optionalxmlmessage)
+    - [2.2.3 Elements](#223-elements)
+      - [2.2.3.1 WSManFault](#2231-wsmanfault)
+    - [2.2.4 ComplexTypes](#224-complextypes)
+      - [2.2.4.1 WSManFaultType](#2241-wsmanfaulttype)
+      - [2.2.4.2 ConfigType](#2242-configtype)
+      - [2.2.4.3 ClientType](#2243-clienttype)
+      - [2.2.4.4 ClientUnencryptedType](#2244-clientunencryptedtype)
+      - [2.2.4.5 ClientHTTPType](#2245-clienthttptype)
+      - [2.2.4.6 ClientHTTPSType](#2246-clienthttpstype)
+      - [2.2.4.7 ServiceType](#2247-servicetype)
+      - [2.2.4.8 ServiceUnencryptedType](#2248-serviceunencryptedtype)
+      - [2.2.4.9 ServiceHTTPType](#2249-servicehttptype)
+      - [2.2.4.10 ServiceHTTPSType](#22410-servicehttpstype)
+      - [2.2.4.11 ListenerType](#22411-listenertype)
+      - [2.2.4.12 ThisType](#22412-thistype)
+    - [2.2.5 Simple Types](#225-simple-types)
+      - [2.2.5.1 CIM_DateTimeString](#2251-cimdatetimestring)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Common Message Processing Events and Sequencing Rules](#3141-common-message-processing-events-and-sequencing-rules)
+        - [3.1.4.1.1 XML Namespace Definitions](#31411-xml-namespace-definitions)
+        - [3.1.4.1.2 wsman:SelectorSet](#31412-wsmanselectorset)
+        - [3.1.4.1.3 wsa:ReplyTo](#31413-wsareplyto)
+        - [3.1.4.1.4 wsa:FaultTo](#31414-wsafaultto)
+        - [3.1.4.1.5 wsa:MessageID](#31415-wsamessageid)
+        - [3.1.4.1.6 wsa:RelatesTo](#31416-wsarelatesto)
+        - [3.1.4.1.7 wsman:OperationTimeout](#31417-wsmanoperationtimeout)
+        - [3.1.4.1.8 wsen:MaxTime](#31418-wsenmaxtime)
+        - [3.1.4.1.9 wsman:MaxEnvelopeSize](#31419-wsmanmaxenvelopesize)
+        - [3.1.4.1.10 wsman:Locale](#314110-wsmanlocale)
+        - [3.1.4.1.11 wsman:OptionSet](#314111-wsmanoptionset)
+        - [3.1.4.1.12 wsman:RequestEPR](#314112-wsmanrequestepr)
+        - [3.1.4.1.13 wsman:Filter](#314113-wsmanfilter)
+        - [3.1.4.1.14 wsen:Pull/wsen:MaxElements](#314114-wsenpullwsenmaxelements)
+        - [3.1.4.1.15 wsman:RequestTotalItemsCountEstimate](#314115-wsmanrequesttotalitemscountestimate)
+        - [3.1.4.1.16 wsman:OptimizeEnumeration](#314116-wsmanoptimizeenumeration)
+        - [3.1.4.1.17 wsman:EnumerationMode](#314117-wsmanenumerationmode)
+        - [3.1.4.1.18 wsman:FragmentTransfer](#314118-wsmanfragmenttransfer)
+        - [3.1.4.1.19 Concurrent Operations](#314119-concurrent-operations)
+        - [3.1.4.1.20 Inbound Message Size](#314120-inbound-message-size)
+        - [3.1.4.1.21 Fault Detail](#314121-fault-detail)
+        - [3.1.4.1.22 Metadata and Discovery](#314122-metadata-and-discovery)
+        - [3.1.4.1.23 Binary Attachments](#314123-binary-attachments)
+        - [3.1.4.1.24 Embedded Objects](#314124-embedded-objects)
+        - [3.1.4.1.25 CIM XML Namespace](#314125-cim-xml-namespace)
+        - [3.1.4.1.26 Arrays](#314126-arrays)
+        - [3.1.4.1.27 cim:Location](#314127-cimlocation)
+        - [3.1.4.1.28 wsmb:PolymorphismMode](#314128-wsmbpolymorphismmode)
+        - [3.1.4.1.29 Server Configuration](#314129-server-configuration)
+      - [3.1.4.2 Get](#3142-get)
+      - [3.1.4.3 Put](#3143-put)
+      - [3.1.4.4 Create](#3144-create)
+        - [3.1.4.4.1 Messages](#31441-messages)
+      - [3.1.4.5 Delete](#3145-delete)
+      - [3.1.4.6 Subscribe](#3146-subscribe)
+        - [3.1.4.6.1 Messages](#31461-messages)
+      - [3.1.4.7 Unsubscribe](#3147-unsubscribe)
+        - [3.1.4.7.1 Messages](#31471-messages)
+      - [3.1.4.8 Enumerate](#3148-enumerate)
+        - [3.1.4.8.1 Messages](#31481-messages)
+      - [3.1.4.9 Pull](#3149-pull)
+        - [3.1.4.9.1 Messages](#31491-messages)
+      - [3.1.4.10 Release](#31410-release)
+        - [3.1.4.10.1 Messages](#314101-messages)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Common Message Processing Events and Sequencing Rules](#3241-common-message-processing-events-and-sequencing-rules)
+        - [3.2.4.1.1 XML Namespace Definitions](#32411-xml-namespace-definitions)
+        - [3.2.4.1.2 wsa:MessageID](#32412-wsamessageid)
+        - [3.2.4.1.3 wsa:RelatesTo](#32413-wsarelatesto)
+        - [3.2.4.1.4 wsman:OperationTimeout](#32414-wsmanoperationtimeout)
+        - [3.2.4.1.5 wsman:MaxEnvelopeSize](#32415-wsmanmaxenvelopesize)
+        - [3.2.4.1.6 wsen:Pull/wsen:MaxElements](#32416-wsenpullwsenmaxelements)
+        - [3.2.4.1.7 Fault Detail](#32417-fault-detail)
+        - [3.2.4.1.8 Metadata and Discovery](#32418-metadata-and-discovery)
+        - [3.2.4.1.9 Binary Attachments](#32419-binary-attachments)
+        - [3.2.4.1.10 Embedded Objects](#324110-embedded-objects)
+        - [3.2.4.1.11 CIM XML Namespace](#324111-cim-xml-namespace)
+        - [3.2.4.1.12 Arrays](#324112-arrays)
+        - [3.2.4.1.13 cim:Location](#324113-cimlocation)
+        - [3.2.4.1.14 CIM Namespace](#324114-cim-namespace)
+        - [3.2.4.1.15 Client Configuration](#324115-client-configuration)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 CIM examples](#41-cim-examples)
+    - [4.1.1 Retrieving a CIM Instance](#411-retrieving-a-cim-instance)
+    - [4.1.2 Enumeration of Instances](#412-enumeration-of-instances)
+      - [4.1.2.1 Enumerate Request](#4121-enumerate-request)
+      - [4.1.2.2 Enumerate Response](#4122-enumerate-response)
+      - [4.1.2.3 First Pull Request](#4123-first-pull-request)
+      - [4.1.2.4 First Pull Response](#4124-first-pull-response)
+      - [4.1.2.5 Second Pull Request](#4125-second-pull-request)
+      - [4.1.2.6 Second Pull Response with EndOfSequence](#4126-second-pull-response-with-endofsequence)
+    - [4.1.3 Modifying an Instance](#413-modifying-an-instance)
+    - [4.1.4 Invoking a Method](#414-invoking-a-method)
+  - [4.2 Configuration Examples](#42-configuration-examples)
+    - [4.2.1 Retrieving Configuration](#421-retrieving-configuration)
+    - [4.2.2 Modify Configuration](#422-modify-configuration)
+  - [4.3 Fault Detail](#43-fault-detail)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL Definitions](#6-appendix-a-full-wsdl-definitions)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 14
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.3
-
-2.2.4
-
-2.1
-2.2
-
-2.2.3.1
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Common Message Syntax ................................................................................. 15
-Namespaces .............................................................................................. 15
-Messages ................................................................................................... 15
-EmptyMessage ..................................................................................... 16
-AnyXmlMessage .................................................................................... 16
-OptionalXmlMessage ............................................................................. 16
-Elements ................................................................................................... 17
-WSManFault ......................................................................................... 17
-ComplexTypes ............................................................................................ 17
-WSManFaultType .................................................................................. 18
-ConfigType ........................................................................................... 19
-ClientType ............................................................................................ 20
-ClientUnencryptedType .......................................................................... 21
-ClientHTTPType .................................................................................... 22
-ClientHTTPSType .................................................................................. 22
-ServiceType ......................................................................................... 23
-ServiceUnencryptedType ........................................................................ 24
-ServiceHTTPType .................................................................................. 24
-ServiceHTTPSType ................................................................................ 24
-ListenerType ........................................................................................ 25
-ThisType .............................................................................................. 26
-Simple Types ............................................................................................. 26
-CIM_DateTimeString ............................................................................. 26
-Attributes .................................................................................................. 27
-Groups ...................................................................................................... 27
-Attribute Groups ......................................................................................... 27
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-2.2.4.8
-2.2.4.9
-2.2.4.10
-2.2.4.11
-2.2.4.12
-
-2.2.6
-2.2.7
-2.2.8
-
-2.2.5.1
-
-2.2.5
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 28
-Server Details .................................................................................................. 28
-Abstract Data Model .................................................................................... 28
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-Common Message Processing Events and Sequencing Rules ....................... 29
-XML Namespace Definitions .............................................................. 29
-wsman:SelectorSet .......................................................................... 29
-wsa:ReplyTo ................................................................................... 29
-wsa:FaultTo .................................................................................... 29
-wsa:MessageID ............................................................................... 29
-wsa:RelatesTo ................................................................................ 30
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-3.1.4.1.6
-
-3.1.4.1
-
-[MS-WSMAN] - v20170601
-Web Services Management Protocol Extensions for Windows Server 2003
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 72
-
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3.1.4.5
-3.1.4.6
-
-3.1.4.7
-
-3.1.4.8
-
-3.1.4.9
-
-3.1.4.4.1
-
-3.1.4.1.7
-wsman:OperationTimeout................................................................. 30
-3.1.4.1.8
-wsen:MaxTime ................................................................................ 30
-wsman:MaxEnvelopeSize .................................................................. 30
-3.1.4.1.9
-3.1.4.1.10  wsman:Locale ................................................................................. 30
-3.1.4.1.11  wsman:OptionSet ............................................................................ 31
-3.1.4.1.12  wsman:RequestEPR ......................................................................... 31
-3.1.4.1.13  wsman:Filter ................................................................................... 31
-3.1.4.1.14  wsen:Pull/wsen:MaxElements ........................................................... 31
-3.1.4.1.15  wsman:RequestTotalItemsCountEstimate ........................................... 31
-3.1.4.1.16  wsman:OptimizeEnumeration ........................................................... 31
-3.1.4.1.17  wsman:EnumerationMode ................................................................ 32
-3.1.4.1.18  wsman:FragmentTransfer ................................................................. 32
-Concurrent Operations ..................................................................... 32
-3.1.4.1.19
-Inbound Message Size ..................................................................... 32
-3.1.4.1.20
-3.1.4.1.21
-Fault Detail ..................................................................................... 32
-3.1.4.1.22  Metadata and Discovery ................................................................... 32
-Binary Attachments ......................................................................... 33
-3.1.4.1.23
-Embedded Objects ........................................................................... 33
-3.1.4.1.24
-CIM XML Namespace ....................................................................... 33
-3.1.4.1.25
-Arrays ............................................................................................ 33
-3.1.4.1.26
-cim:Location ................................................................................... 33
-3.1.4.1.27
-3.1.4.1.28  wsmb:PolymorphismMode ................................................................ 34
-Server Configuration ........................................................................ 34
-3.1.4.1.29
-Get ..................................................................................................... 35
-Put ...................................................................................................... 36
-Create ................................................................................................. 37
-Messages ....................................................................................... 37
-Delete ................................................................................................. 37
-Subscribe ............................................................................................. 38
-Messages ....................................................................................... 38
-Unsubscribe ......................................................................................... 38
-Messages ....................................................................................... 38
-Enumerate ........................................................................................... 39
-Messages ....................................................................................... 39
-Pull ..................................................................................................... 39
-Messages ....................................................................................... 40
-Release................................................................................................ 40
-3.1.4.10.1  Messages ....................................................................................... 40
-Timer Events .............................................................................................. 40
-Other Local Events ...................................................................................... 41
-Client Details ................................................................................................... 41
-Abstract Data Model .................................................................................... 41
-Timers ...................................................................................................... 41
-Initialization ............................................................................................... 41
-Message Processing Events and Sequencing Rules .......................................... 41
-Common Message Processing Events and Sequencing Rules ....................... 41
-XML Namespace Definitions .............................................................. 41
-wsa:MessageID ............................................................................... 42
-wsa:RelatesTo ................................................................................ 42
-wsman:OperationTimeout................................................................. 42
-wsman:MaxEnvelopeSize .................................................................. 42
-wsen:Pull/wsen:MaxElements ........................................................... 42
-Fault Detail ..................................................................................... 42
-Metadata and Discovery ................................................................... 43
-Binary Attachments ......................................................................... 43
-Embedded Objects ........................................................................... 43
-CIM XML Namespace ....................................................................... 43
-Arrays ............................................................................................ 43
-
-3.2.4.1.1
-3.2.4.1.2
-3.2.4.1.3
-3.2.4.1.4
-3.2.4.1.5
-3.2.4.1.6
-3.2.4.1.7
-3.2.4.1.8
-3.2.4.1.9
-3.2.4.1.10
-3.2.4.1.11
-3.2.4.1.12
-
-3.1.4.8.1
-
-3.1.4.9.1
-
-3.1.4.6.1
-
-3.1.4.7.1
-
-3.1.4.10
-
-3.2.4.1
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-[MS-WSMAN] - v20170601
-Web Services Management Protocol Extensions for Windows Server 2003
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 72
-
-3.2.4.1.13
-3.2.4.1.14
-3.2.4.1.15
-
-cim:Location ................................................................................... 43
-CIM Namespace .............................................................................. 44
-Client Configuration ......................................................................... 44
-
-4.1
-
-4.1.1
-4.1.2
-
-4.1.2.1
-4.1.2.2
-4.1.2.3
-4.1.2.4
-4.1.2.5
-4.1.2.6
-
-4  Protocol Examples ................................................................................................. 46
-CIM examples .................................................................................................. 46
-Retrieving a CIM Instance ............................................................................ 46
-Enumeration of Instances ............................................................................ 47
-Enumerate Request ............................................................................... 49
-Enumerate Response ............................................................................. 49
-First Pull Request .................................................................................. 50
-First Pull Response ................................................................................ 51
-Second Pull Request .............................................................................. 51
-Second Pull Response with EndOfSequence .............................................. 52
-Modifying an Instance ................................................................................. 53
-Invoking a Method ...................................................................................... 55
-Configuration Examples .................................................................................... 56
-Retrieving Configuration .............................................................................. 56
-Modify Configuration ................................................................................... 58
-Fault Detail ..................................................................................................... 60
-
-4.2.1
-4.2.2
-
-4.1.3
-4.1.4
-
-4.2
-
-4.3
-
-5  Security ................................................................................................................. 63
-Security Considerations for Implementers ........................................................... 63
-Index of Security Parameters ............................................................................ 63
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL Definitions ........................................................................ 64
-
-7  Appendix B: Product Behavior ............................................................................... 67
-
-8  Change Tracking .................................................................................................... 69
-
-9  Index ..................................................................................................................... 70
-
-[MS-WSMAN] - v20170601
-Web Services Management Protocol Extensions for Windows Server 2003
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-7 / 72
-
-1  Introduction
+## 1 Introduction
 
 This specification details Microsoft extensions to the Web Services for Management (WS-
 Management) Protocol.
@@ -907,7 +722,7 @@ specified in [DMTF-DSP0227] and the WS-Management CIM Mapping Specification as s
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -953,7 +768,8 @@ Release: June 1, 2017
 
 8 / 72
 
-Common Information Model (CIM) namespace: A logical grouping of a set of Common
+
+Common Information Model (CIM) namespace: A logical grouping of a set of Common
 Information Model (CIM) classes designed for the same purpose or sharing a common
 management objective within the database used to store all CIM class definitions. This is a term
 mostly referenced in the Windows Management Instrumentation (WMI) implementation.
@@ -1033,7 +849,8 @@ Web Services Management Protocol Extensions for Windows Server 2003
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-procedure-oriented information. The operations and messages are described abstractly and are
+
+procedure-oriented information. The operations and messages are described abstractly and are
 bound to a concrete network protocol and message format in order to define an endpoint.
 Related concrete endpoints are combined into abstract endpoints, which describe a network
 service. WSDL is extensible, which allows the description of endpoints and their messages
@@ -1052,14 +869,14 @@ schemas.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1098,7 +915,8 @@ Release: June 1, 2017
 
 10 / 72
 
-[RFC2617] Franks, J., Hallam-Baker, P., Hostetler, J., et al., "HTTP Authentication: Basic and Digest
+
+[RFC2617] Franks, J., Hallam-Baker, P., Hostetler, J., et al., "HTTP Authentication: Basic and Digest
 Access Authentication", RFC 2617, June 1999, https://www.rfc-editor.org/info/rfc2617
 
 [RFC4559] Jaganathan, K., Zhu, L., and Brezak, J., "SPNEGO-based Kerberos and NTLM HTTP
@@ -1130,11 +948,11 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-WMI] Microsoft Corporation, "Windows Management Instrumentation Remote Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 The Web Services Management Protocol Extensions for Windows Server 2003 are a set of
 modifications to the WS-Management Protocol as specified in [DMTF-DSP0226], the WS-Management
@@ -1162,7 +980,8 @@ Release: June 1, 2017
 
 11 / 72
 
-The CIM management schema provides a standard framework and set of base classes that describe a
+
+The CIM management schema provides a standard framework and set of base classes that describe a
 managed environment. Each type of managed entity is described by a CIM class and individual
 entities are managed through instances of the appropriate CIM class. For example, a logical disk drive
 can be managed through an instance of the CIM_DiskDrive class. This class contains various member
@@ -1207,7 +1026,7 @@ managed entities in the WS-Management Protocol.<3>
 
 Server 2003 clients and servers.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WS-Management Protocol uses SOAP, as specified in [SOAP1.2-1/2003], over HTTP or HTTPS for
 communication. The WS-Management Protocol, as specified in [DMTF-DSP0226], is required to be
@@ -1231,13 +1050,14 @@ Release: June 1, 2017
 
 12 / 72
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-WSMAN].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 1: Web Services Management (WS-Management) Protocol stack
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 For a client that uses the WS-Management Protocol, as specified in [DMTF-DSP0226], to communicate
 with a server, the server MUST have an operational SOAP1.2/HTTP1.1/TCP/IP stack. WS-
@@ -1245,17 +1065,17 @@ Management assumes that the client machine already has an IP address and is thus
 communicate on the network. It also assumes that the client has already obtained the IP address and
 HTTP port of the server by some method such as manual configuration.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Web Services Management Protocol Extensions for Windows Server 2003 are protocols for accessing
 CIM objects to remotely administer software and hardware configurations.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The WS-Management Protocol defines a simple request called Identity to facilitate the process of
 finding the protocol version or versions supported by the services.<4>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Web Services Management Protocol Extensions for Windows Server 2003 do not define any vendor-
 extensible fields.
@@ -1267,7 +1087,8 @@ Release: June 1, 2017
 
 13 / 72
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 Because Web Services Management Protocol Extensions for Windows Server 2003 are based on
 prerelease drafts of [DMTF-DSP0226] and [DMTF-DSP0230], they use
@@ -1290,16 +1111,17 @@ Release: June 1, 2017
 
 14 / 72
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The WS-Management Protocol uses SOAP, as specified in [SOAP1.2-1/2003], over HTTP or HTTPS for
 communication. The WS-Management Protocol, as specified in [DMTF-DSP0226], MUST be used as the
 transport to provide access to CIM data using binding techniques specified by [DMTF-DSP0227] and
 mapping techniques specified by [DMTF-DSP0230].
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema, as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description Language,
@@ -1315,7 +1137,7 @@ types and rename the cimDateTime type.
 Note  XML namespaces are to be treated as identifiers, and they do not point to any location on the
 web.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1369,7 +1191,7 @@ http://schemas.dmtf.org/wsman/2005/06/base
 
 [DMTF-DSP0230] section 5.3
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 Message
 
@@ -1386,7 +1208,8 @@ Release: June 1, 2017
 
 15 / 72
 
-Message
+
+Message
 
 Description
 
@@ -1396,7 +1219,7 @@ A message that contains resource-specific XML in the SOAP Body.
 
 OptionalXmlMessage  A message that can contain either nothing or resource-specific XML in the SOAP Body.
 
-2.2.2.1  EmptyMessage
+##### 2.2.2.1 EmptyMessage
 
 EmptyMessage is used to describe messages that contain nothing in the SOAP Body.  EmptyMessage
 is used by the Web Services Management Protocol Extensions for Windows Server 2003 in the
@@ -1412,7 +1235,7 @@ The message MUST be as follows.
 
  <wsdl:message name="EmptyMessage" />
 
-2.2.2.2  AnyXmlMessage
+##### 2.2.2.2 AnyXmlMessage
 
 AnyXmlMessage is used to describe messages that contain resource-specific XML in the SOAP Body.
 AnyXmlMessage is used by the Web Services Management Protocol Extensions for Windows Server
@@ -1443,7 +1266,7 @@ body: Contains XML that represents the resource being acted upon.  The actual XM
 dependent upon the specific resource and is not defined by Web Services Management Protocol
 Extensions for Windows Server 2003.
 
-2.2.2.3  OptionalXmlMessage
+##### 2.2.2.3 OptionalXmlMessage
 
 OptionalXmlMessage is used to describe messages that either contain nothing in the SOAP Body or
 that contain resource-specific XML in the SOAP Body.  OptionalXmlMessage is used by the Web
@@ -1462,7 +1285,8 @@ Release: June 1, 2017
 
 16 / 72
 
-Message Type  Action URI
+
+Message Type  Action URI
 
 Response
 
@@ -1483,7 +1307,7 @@ body: Either contains XML that represents the resource being acted upon or is em
 the actual XML content is dependent upon the specific resource and is not defined by Web Services
 Management Protocol Extensions for Windows Server 2003.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 The following table summarizes the set of common XML schema element definitions defined by this
 specification. XML element definitions that are specific to a particular operation are described with the
@@ -1495,7 +1319,7 @@ Description
 
 WSManFault  Contains additional fault information reported by the service.
 
-2.2.3.1  WSManFault
+##### 2.2.3.1 WSManFault
 
 A SOAP fault is used to carry error information within a SOAP message. Faults are returned when the
 SOAP message is successfully delivered by the transport and processed by the services but the
@@ -1513,7 +1337,7 @@ schema for <WSManFault> MUST be as follows.
  <xs:element name="WSManFault" type="wsmanfault:WSManFaultType"/>
  </xs:schema>
 
-2.2.4  ComplexTypes
+#### 2.2.4 ComplexTypes
 
 The following table summarizes the set of common XML Schema complex type definitions defined by
 this specification. XML Schema complex type definitions that are specific to a particular operation are
@@ -1534,7 +1358,8 @@ Release: June 1, 2017
 
 17 / 72
 
-Complex Type
+
+Complex Type
 
 Description
 
@@ -1594,7 +1419,7 @@ ThisType
 
 Used to send information about the vendor and version of the protocol stack.
 
-2.2.4.1  WSManFaultType
+##### 2.2.4.1 WSManFaultType
 
 A SOAP fault is used to carry error information within a SOAP message. Faults are returned when the
 SOAP message is successfully delivered by the transport and processed by the services but the
@@ -1625,7 +1450,8 @@ Release: June 1, 2017
 
 18 / 72
 
- </xs:sequence>
+
+ </xs:sequence>
  <xs:attribute name="Code" type="xs:unsignedInt"
   use="required"/>
  <xs:attribute name="Machine" type="xs:string"
@@ -1670,7 +1496,7 @@ information.
 
 ProviderFault: An element that MUST contain specific resource provider fault information.
 
-2.2.4.2  ConfigType
+##### 2.2.4.2 ConfigType
 
 ConfigType is the overall container for the Web Services Management Protocol Extensions for Windows
 Server 2003 clients' and servers' configuration. Note that listeners are not part of this configuration
@@ -1696,7 +1522,8 @@ Release: June 1, 2017
 
 19 / 72
 
- type="xs:unsignedInt"
+
+ type="xs:unsignedInt"
                    default="60000"/>
        <xs:element name="MaxBatchItems"
  type="xs:unsignedInt"
@@ -1757,7 +1584,7 @@ Service: MUST contain additional elements to configure Web Services Management P
 
 Extensions for Windows Server 2003 servers as specified in section 2.2.4.
 
-2.2.4.3  ClientType
+##### 2.2.4.3 ClientType
 
 ClientType is the overall container for the Web Services Management Protocol Extensions for Windows
 Server 2003 client configuration. The schema MUST be as follows.
@@ -1769,7 +1596,8 @@ Release: June 1, 2017
 
 20 / 72
 
- <xs:complexType name="ClientType">
+
+ <xs:complexType name="ClientType">
    <xs:sequence>
      <xs:element name="NetworkDelayms"
  type="xs:unsignedInt"
@@ -1800,7 +1628,7 @@ HTTPS: MUST contain an additional element to configure behavior for HTTPS transp
 
 section 2.2.4.6.
 
-2.2.4.4  ClientUnencryptedType
+##### 2.2.4.4 ClientUnencryptedType
 
 ClientUnencryptedType is used to configure the authentication mechanisms that are enabled or
 disabled on the Web Services Management Protocol Extensions for Windows Server 2003 client when
@@ -1839,7 +1667,8 @@ Release: June 1, 2017
 
 21 / 72
 
-2.2.4.5  ClientHTTPType
+
+##### 2.2.4.5 ClientHTTPType
 
 ClientHTTPType is used to configure the Web Services Management Protocol Extensions for Windows
 Server 2003 client when using HTTP as the network transport. The schema MUST be as follows.
@@ -1861,7 +1690,7 @@ Unencrypted: MUST contain an additional element to configure unencrypted authent
 
 specified in section 3.1.4.1.29.
 
-2.2.4.6  ClientHTTPSType
+##### 2.2.4.6 ClientHTTPSType
 
 The ClientHTTPSType element is used to configure the port that is used and the authentication
 mechanisms that are enabled or disabled on the Web Services Management Protocol Extensions for
@@ -1906,7 +1735,8 @@ Release: June 1, 2017
 
 22 / 72
 
-2.2.4.7  ServiceType
+
+##### 2.2.4.7 ServiceType
 
 ServiceType is the overall container for the Web Services Management Protocol Extensions for
 Windows Server 2003 server configuration. Note that listeners are not part of this container and MUST
@@ -1979,7 +1809,8 @@ Web Services Management Protocol Extensions for Windows Server 2003
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.4.8  ServiceUnencryptedType
+
+##### 2.2.4.8 ServiceUnencryptedType
 
 ServiceUnencryptedType is used to configure the authentication mechanisms that are enabled or
 disabled on the Web Services Management Protocol Extensions for Windows Server 2003 server when
@@ -1998,7 +1829,7 @@ Basic: Enables or disables HTTP Basic Authentication (see [RFC2617] section 2).
 
 Negotiate: Enables or disables HTTP Negotiate Authentication (see [RFC4559] section 4).
 
-2.2.4.9  ServiceHTTPType
+##### 2.2.4.9 ServiceHTTPType
 
 ServiceHTTPType is used to configure the authentication mechanisms that are enabled or disabled on
 the Web Services Management Protocol Extensions for Windows Server 2003 server when using HTTP
@@ -2017,9 +1848,9 @@ described in section 3.1.4.1.29.
 
 These configuration settings MUST be used when sending messages as specified in section 3.1.4.1.29.
 
-2.2.4.10
+##### 2.2.4.10 ServiceHTTPSType
 
-ServiceHTTPSType
+
 
 ServiceHTTPSType is used to configure the authentication mechanisms that are enabled or disabled on
 the Web Services Management Protocol Extensions for Windows Server 2003 server when using
@@ -2045,15 +1876,16 @@ Release: June 1, 2017
 
 24 / 72
 
-Negotiate: Enables or disables HTTP Negotiate Authentication (as specified in [RFC4559] section 4).
+
+Negotiate: Enables or disables HTTP Negotiate Authentication (as specified in [RFC4559] section 4).
 
 MUST be true or false.
 
 These configuration settings MUST be used when sending messages as specified in section 3.1.4.1.29.
 
-2.2.4.11
+##### 2.2.4.11 ListenerType
 
-ListenerType
+
 
 ListenerType is used by Web Services Management Protocol Extensions for Windows Server 2003
 servers to listen on one or more IP addresses for WS-Management Protocol requests. ListenerType can
@@ -2120,7 +1952,8 @@ Release: June 1, 2017
 
 25 / 72
 
-MACAddress: MUST be the Media Access Control (MAC) address of the network interface card (NIC).
+
+MACAddress: MUST be the Media Access Control (MAC) address of the network interface card (NIC).
 Listeners MAY be defined for a specific IP address or for all IP addresses associated with a specific
 MAC address. Required if IP is "*". MUST be a sequence of six or eight pairs of case-insensitive
 hexadecimal digits separated by "-" (for example, 32-a3-58-90-be-cc).
@@ -2128,9 +1961,9 @@ hexadecimal digits separated by "-" (for example, 32-a3-58-90-be-cc).
 These configuration settings MUST be used when processing messages as described in section
 3.1.4.1.29.
 
-2.2.4.12
+##### 2.2.4.12 ThisType
 
-ThisType
+
 
 ThisType is used by the Web Services Management Protocol Extensions for Windows Server 2003
 server to send information about the vendor and version of the protocol stack. The schema MUST be
@@ -2157,7 +1990,7 @@ Version: MUST be a string that describes the version of the WS-Management Protoc
 
 intended for diagnostic purposes only and not for version negotiation.<7>
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 The following table summarizes the set of common XML Schema simple type definitions defined by this
 specification. XML Schema simple type definitions that are specific to a particular operation are
@@ -2169,7 +2002,7 @@ Description
 
 CIM_DateTimeString  Used to specify a time stamp (point in time) or an interval.
 
-2.2.5.1  CIM_DateTimeString
+##### 2.2.5.1 CIM_DateTimeString
 
 The CIM specification defines the DateTime type for specifying a time stamp (point in time) or an
 interval. If it specifies a time stamp, it allows preservation of the time zone offset. In both cases,
@@ -2188,15 +2021,16 @@ Release: June 1, 2017
 
 26 / 72
 
-2.2.6  Attributes
+
+#### 2.2.6 Attributes
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML Schema attribute group definitions.
 
@@ -2207,23 +2041,24 @@ Release: June 1, 2017
 
 27 / 72
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], describes a general SOAP-based
 protocol for managing PCs, servers, devices, Web services and other applications, and other
 manageable entities.
 
-3.1  Server Details
+### 3.1 Server Details
 
 This section describes changes to the WS-Management Protocol for Web Services Management
 Protocol Extensions for Windows Server 2003 servers.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Web Services Management Protocol Extensions for Windows Server 2003 includes no changes to the
 abstract data model of the WS-Management Protocol as specified in [DMTF-DSP0226].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Web Services Management Protocol Extensions for Windows Server 2003 defines one timer in addition
 to the timers of the WS-Management Protocol as specified in [DMTF-DSP0226]:
@@ -2233,12 +2068,12 @@ to the timers of the WS-Management Protocol as specified in [DMTF-DSP0226]:
 The Enumeration Garbage Collection timer MUST trigger cleanup of the state associated with an
 enumeration, if a client has not used it recently.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Web Services Management Protocol Extensions for Windows Server 2003 includes no changes to the
 initialization of the WS-Management Protocol as specified in [DMTF-DSP0226].
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This section describes changes made by Web Services Management Protocol Extensions for Windows
 Server 2003 servers to the message processing of the WS-Management Protocol as specified in
@@ -2290,11 +2125,12 @@ Release: June 1, 2017
 
 28 / 72
 
-3.1.4.1  Common Message Processing Events and Sequencing Rules
+
+##### 3.1.4.1 Common Message Processing Events and Sequencing Rules
 
 This section describes protocol details that are common across all WSDL operations.
 
-3.1.4.1.1 XML Namespace Definitions
+###### 3.1.4.1.1 XML Namespace Definitions
 
 The XML namespace for the WS-Management Protocol is specified in [DMTF-DSP0226] section 1.5 as
 http://schemas.dmtf.org/wbem/wsman/1/wsman.xsd. Web Services Management Protocol Extensions
@@ -2309,7 +2145,7 @@ http://schemas.dmtf.org/wbem/wsman/1/wsman.xsd.
 Note  XML namespaces are to be treated as identifiers, and they do not point to any location on the
 web.
 
-3.1.4.1.2 wsman:SelectorSet
+###### 3.1.4.1.2 wsman:SelectorSet
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], defines selector as a resource-
 relative name/value pair that acts as an instance-level discriminant. SelectorSet MUST be a set of
@@ -2321,7 +2157,7 @@ be treated as case-insensitive or case-sensitive.
 Web Services Management Protocol Extensions for Windows Server 2003 servers MUST treat all
 selector names and values as case-insensitive.
 
-3.1.4.1.3 wsa:ReplyTo
+###### 3.1.4.1.3 wsa:ReplyTo
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], allows the ReplyTo header value to
 be either a valid address for a new connection using any transport supported by the service or the
@@ -2333,7 +2169,7 @@ wsman:UnsupportedFeature fault with a detail code of wsman:faultDetail/Addressin
 receive a value other than http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous in
 the ReplyTo header.
 
-3.1.4.1.4 wsa:FaultTo
+###### 3.1.4.1.4 wsa:FaultTo
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], allows a conformant service to
 require that all faults be delivered to the client over the same transport or connection on which the
@@ -2346,7 +2182,7 @@ wsman:UnsupportedFeature fault with a detail code of wsman:faultDetail/Addressin
 wsa:Address element within the wsa:FaultTo is not set to
 http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous.
 
-3.1.4.1.5 wsa:MessageID
+###### 3.1.4.1.5 wsa:MessageID
 
 [MS-WSMAN] - v20170601
 Web Services Management Protocol Extensions for Windows Server 2003
@@ -2355,20 +2191,21 @@ Release: June 1, 2017
 
 29 / 72
 
-The WS-Management Protocol, as specified in [DMTF-DSP0226], endorses two different MessageID
+
+The WS-Management Protocol, as specified in [DMTF-DSP0226], endorses two different MessageID
 URI formats, as specified in [DMTF-DSP0226] section 2.7.
 
 Web Services Management Protocol Extensions for Windows Server 2003 servers MUST use only the
 uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx MessageID format.
 
-3.1.4.1.6 wsa:RelatesTo
+###### 3.1.4.1.6 wsa:RelatesTo
 
 The WS-Management Protocol, as specified in section 2.4 of [DMTF-DSP0226], endorses two different
 RelatesTo URI formats. For more details, see section 2.7 of [DMTF-DSP0226]. Web Services
 Management Protocol Extensions for Windows Server 2003 servers MUST use only the
 uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxRelatesTo format.
 
-3.1.4.1.7 wsman:OperationTimeout
+###### 3.1.4.1.7 wsman:OperationTimeout
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], defines the OperationTimeout value
 to indicate that the clients expect a response or a fault within the specified time, as specified in
@@ -2380,7 +2217,7 @@ OperationTimeout value is specified by the client or if the OperationTimeout val
 setting. Web Services Management Protocol Extensions for Windows Server 2003 servers SHOULD
 NOT support nonzero year and nonzero month values in the OperationTimeout field.
 
-3.1.4.1.8 wsen:MaxTime
+###### 3.1.4.1.8 wsen:MaxTime
 
 The WS-Enumeration specification defines the MaxTime value to indicate that the clients receive a
 response or a fault for Pull responses within the specified time, as specified in [WSENUM] section 3.2.
@@ -2391,7 +2228,7 @@ the client request. However, if neither this value, nor wsman:OperationTimeout i
 client, or if the MaxTime value is more than the MaxTimeoutms value, as specified in section 2.2.4.2,
 then the server MUST use the MaxTimeoutms value for the Pull response time-out.
 
-3.1.4.1.9 wsman:MaxEnvelopeSize
+###### 3.1.4.1.9 wsman:MaxEnvelopeSize
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], defines the MaxEnvelopeSize value to
 indicate that the client expect a response to be no larger than the given number of octets, as specified
@@ -2407,7 +2244,7 @@ wsman:EncodingLimit fault if the value of wsman:MaxEnvelopeSize is less than 8,1
 Services Management Protocol Extensions for Windows Server 2003 servers MUST return the indicated
 fault in this situation.<8>
 
-3.1.4.1.10  wsman:Locale
+###### 3.1.4.1.10 wsman:Locale
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], defines the Locale element, which
 specifies the language that the client requests (and sometimes requires) the response text to be
@@ -2420,11 +2257,12 @@ Release: June 1, 2017
 
 30 / 72
 
-Web Services Management Protocol Extensions for Windows Server 2003 servers MUST return a fault
+
+Web Services Management Protocol Extensions for Windows Server 2003 servers MUST return a fault
 of wsman:UnsupportedFeature with a detail code of wsman:faultDetail/Locale if the mustUnderstand
 attribute of this element is "true".
 
-3.1.4.1.11  wsman:OptionSet
+###### 3.1.4.1.11 wsman:OptionSet
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], defines the OptionSet element as a
 set of switches to the service to modify or refine the nature of the request, as specified in [DMTF-
@@ -2434,7 +2272,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 servers SHOU
 the OptionSet element unless mustUnderstand="true", in which case they will return an
 s:NotUnderstood fault as required by [SOAP1.2-1/2003].
 
-3.1.4.1.12  wsman:RequestEPR
+###### 3.1.4.1.12 wsman:RequestEPR
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], defines the RequestEPR SOAP
 header, which can be used by client that require the Endpoint Reference (EPR) in the response, as
@@ -2444,7 +2282,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 servers SHOU
 the RequestEPR header unless mustUnderstand="true", in which case they will return an
 s:NotUnderstood fault as required by [SOAP1.2-1/2003].
 
-3.1.4.1.13  wsman:Filter
+###### 3.1.4.1.13 wsman:Filter
 
 The WS-Management specification defines the Filter element, which is used to retrieve a subset of
 the result set, as specified in [DMTF-DSP0226] section 8.3.
@@ -2452,7 +2290,7 @@ the result set, as specified in [DMTF-DSP0226] section 8.3.
 Web Services Management Protocol Extensions for Windows Server 2003 servers MUST fault if the
 request contains the Filter element.<9>
 
-3.1.4.1.14  wsen:Pull/wsen:MaxElements
+###### 3.1.4.1.14 wsen:Pull/wsen:MaxElements
 
 The MaxElements element is used to limit the number of items retrieved in a single message, as
 specified in [WSENUM] section 3.2.
@@ -2464,7 +2302,7 @@ is returned in a single Pull response message is determined by the smaller of th
 configuration settings on the server and the value of the wsen:MaxElements element in the Pull
 request message.
 
-3.1.4.1.15  wsman:RequestTotalItemsCountEstimate
+###### 3.1.4.1.15 wsman:RequestTotalItemsCountEstimate
 
 The WS-Management specification defines the RequestTotalItemsCountEstimate SOAP header to
 allow a client to request an estimate for the number of items being returned in the result set, as
@@ -2473,7 +2311,7 @@ specified in [DMTF-DSP0226] section 5.2.2.
 Web Services Management Protocol Extensions for Windows Server 2003 servers SHOULD ignore the
 RequestTotalItemsCountEstimate header.
 
-3.1.4.1.16  wsman:OptimizeEnumeration
+###### 3.1.4.1.16 wsman:OptimizeEnumeration
 
 The WS-Management specification defines the optional element OptimizeEnumeration to allow a
 client to request that initial results be returned in the enumeration response, as specified in [DMTF-
@@ -2486,10 +2324,11 @@ Release: June 1, 2017
 
 31 / 72
 
-Web Services Management Protocol Extensions for Windows Server 2003 servers SHOULD ignore the
+
+Web Services Management Protocol Extensions for Windows Server 2003 servers SHOULD ignore the
 OptimizeEnumeration element.
 
-3.1.4.1.17  wsman:EnumerationMode
+###### 3.1.4.1.17 wsman:EnumerationMode
 
 The WS-Management specification defines the optional EnumerationMode element to allow a client
 to specify whether the actual objects, the EPR of the object, or both the EPR and the object are
@@ -2498,7 +2337,7 @@ returned, as specified in [DMTF-DSP0226] section 5.7.
 Web Services Management Protocol Extensions for Windows Server 2003 servers SHOULD ignore the
 EnumerationMode element and SHOULD support the enumeration of objects only.
 
-3.1.4.1.18  wsman:FragmentTransfer
+###### 3.1.4.1.18 wsman:FragmentTransfer
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], defines the FragmentTransfer SOAP
 header, which is used to retrieve and update fragments or individual elements of a CIM object, as
@@ -2508,9 +2347,9 @@ Web Services Management Protocol Extensions for Windows Server 2003 servers SHOU
 FragmentTransfer header unless mustUnderstand="true", in which case they return an
 s:NotUnderstood fault as required by [SOAP1.2-1/2003].
 
-3.1.4.1.19
+###### 3.1.4.1.19 Concurrent Operations
 
-Concurrent Operations
+
 
 A Web Services Management Protocol Extensions for Windows Server 2003 server MUST reject
 additional requests if it is already processing a number of concurrent requests equal to the
@@ -2524,18 +2363,18 @@ A Web Services Management Protocol Extensions for Windows Server 2003 server MUS
 additional requests to a specific provider if the provider is already processing a number of concurrent
 requests equal to the MaxProviderRequests configuration setting defined in section 2.2.4.2.
 
-3.1.4.1.20
+###### 3.1.4.1.20 Inbound Message Size
 
-Inbound Message Size
+
 
 Web Services Management Protocol Extensions for Windows Server 2003 servers MUST return an
 HTTP status of 413 (Request Entity Too Large) without processing the SOAP message if the request
 packet from the client is larger than the MaxEnvelopeSizekb configuration setting defined in section
 2.2.4.2.
 
-3.1.4.1.21
+###### 3.1.4.1.21 Fault Detail
 
-Fault Detail
+
 
 The WS-Management specification allows servers to specify additional fault details as part of SOAP
 faults that it generates, as specified in [DMTF-DSP0226] section 11. The URI prefix for fault detail is
@@ -2548,7 +2387,7 @@ prefix.
 Note  XML namespaces are to be treated as identifiers, and they do not point to any location on the
 web.
 
-3.1.4.1.22  Metadata and Discovery
+###### 3.1.4.1.22 Metadata and Discovery
 
 [MS-WSMAN] - v20170601
 Web Services Management Protocol Extensions for Windows Server 2003
@@ -2557,7 +2396,8 @@ Release: June 1, 2017
 
 32 / 72
 
-The WS-Management specification defines a mechanism to determine the existence of a WS-
+
+The WS-Management specification defines a mechanism to determine the existence of a WS-
 Management service on a server, as specified in [DMTF-DSP0226] section 11.
 
 Web Services Management Protocol Extensions for Windows Server 2003 servers SHOULD NOT use
@@ -2571,7 +2411,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 servers also
 to a WS-Management Get operation sent to the wsman:system/2005/06/this resource URI with a
 ThisType response as defined in section 2.2.4.12.
 
-3.1.4.1.23  Binary Attachments
+###### 3.1.4.1.23 Binary Attachments
 
 The WS-Management Protocol defines a mechanism to send binary attachments, as specified in
 [DMTF-DSP0226] section 13.5.
@@ -2579,9 +2419,9 @@ The WS-Management Protocol defines a mechanism to send binary attachments, as sp
 Web Services Management Protocol Extensions for Windows Server 2003 servers MUST NOT send
 binary attachments.
 
-3.1.4.1.24
+###### 3.1.4.1.24 Embedded Objects
 
-Embedded Objects
+
 
 The WS-CIM Mapping Specification defines how one object can be embedded in another object, as
 specified in [DMTF-DSP0230] section 7.2.5.
@@ -2589,9 +2429,9 @@ specified in [DMTF-DSP0230] section 7.2.5.
 Web Services Management Protocol Extensions for Windows Server 2003 servers MUST NOT send
 embedded objects as attachments (as specified in [SOAP1.2-Attach/2004]).
 
-3.1.4.1.25
+###### 3.1.4.1.25 CIM XML Namespace
 
-CIM XML Namespace
+
 
 The WS-CIM Mapping Specification defines the CIM XML namespace as
 http://schemas.dmtf.org/wbem/wscim/1/common, as specified in [DMTF-DSP0230] section 5.3.
@@ -2603,7 +2443,7 @@ namespace instead of http://schemas.dmtf.org/wbem/wscim/1/common.
 Note  XML namespaces are to be treated as identifiers, and they do not point to any location on the
 web.
 
-3.1.4.1.26  Arrays
+###### 3.1.4.1.26 Arrays
 
 The WS-CIM Mapping Specification defines specific rules for mapping CIM properties that are arrays,
 as specified in [DMTF-DSP0230] section 7.2.2.
@@ -2612,9 +2452,9 @@ Web Services Management Protocol Extensions for Windows Server 2003 servers MUST
 array elements. Web Services Management Protocol Extensions for Windows Server 2003 servers
 MUST indicate null arrays by including the element one time with the xsi:nil attribute set to "true".
 
-3.1.4.1.27
+###### 3.1.4.1.27 cim:Location
 
-cim:Location
+
 
 The WS-CIM Mapping Specification defines rules for representing a CIM object in XML, as specified in
 [DMTF-DSP0230] section 7.
@@ -2629,13 +2469,14 @@ Release: June 1, 2017
 
 33 / 72
 
-Web Services Management Protocol Extensions for Windows Server 2003 servers MUST add a
+
+Web Services Management Protocol Extensions for Windows Server 2003 servers MUST add a
 cim:Location element of type wsa:EndpointReferenceType, as specified in [WSAddressing] section 2.2,
 specifying the EPR of an object to the instance element when responding to Get, Put, or Pull requests.
 Web Services Management Protocol Extensions for Windows Server 2003 servers MUST ignore the
 cim:Location when processing a Put request.
 
-3.1.4.1.28  wsmb:PolymorphismMode
+###### 3.1.4.1.28 wsmb:PolymorphismMode
 
 A common way to extend CIM classes is to define derivatives of the CIM class. When a client
 requests objects of the type for CIM_Process, it is possible to return instances that are actually of a
@@ -2650,9 +2491,9 @@ instances of both base and derived classes by effectively casting derived object
 Each returned instance MUST contain only the properties of the base class and omit the properties
 from the derived classes.
 
-3.1.4.1.29
+###### 3.1.4.1.29 Server Configuration
 
-Server Configuration
+
 
 The wsman:microsoft.com/wsman/2005/06/config resource URI MUST be used to retrieve the
 complete configuration of Web Services Management Protocol Extensions for Windows Server 2003
@@ -2698,7 +2539,8 @@ Release: June 1, 2017
 
 34 / 72
 
-Web Services Management Protocol Extensions for Windows Server 2003 servers MAY use
+
+Web Services Management Protocol Extensions for Windows Server 2003 servers MAY use
 wsman:secprofile/https/digest as an authentication scheme.<15>
 
 The wsman:microsoft.com/wsman/2005/06/config/listener resource URI MUST be used for configuring
@@ -2740,7 +2582,7 @@ fault in response to a Put request if the Transport property is HTTPS and the ce
 the CertificateThumbprint property does not exist or the CN attribute of the certificate's Subject field
 (as specified in [RFC2459] section 4.1.2.6) does not match the Hostname property.
 
-3.1.4.2  Get
+##### 3.1.4.2 Get
 
 Web Services Management Protocol Extensions for Windows Server 2003 MUST support the Get
 operation, using the following Action URIs as specified in [DMTF-DSP0226]:
@@ -2764,7 +2606,8 @@ Release: June 1, 2017
 
 35 / 72
 
-Resource URI
+
+Resource URI
 
 Input
 data
@@ -2836,7 +2679,7 @@ None
 
 W:ThisType
 
-3.1.4.3  Put
+##### 3.1.4.3 Put
 
 Web Services Management Protocol Extensions for Windows Server 2003 MUST support the Put
 operation, using the following Action URIs as specified in [DMTF-DSP0226]:
@@ -2905,7 +2748,8 @@ Release: June 1, 2017
 
 36 / 72
 
-Resource URI
+
+Resource URI
 
 Input data type
 
@@ -2938,7 +2782,7 @@ cfg:ListenerType
 
 cfg:ListenerType
 
-3.1.4.4  Create
+##### 3.1.4.4 Create
 
 Web Services Management Protocol Extensions for Windows Server 2003 MUST support the Create
 operation, using the following Action URIs as specified in [DMTF-DSP0226]:
@@ -2950,7 +2794,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 includes no 
 to the Create operation from WS-Management Protocol as specified in [DMTF-DSP0226], except as
 noted in section 3.1.4.1.
 
-3.1.4.4.1 Messages
+###### 3.1.4.4.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2963,7 +2807,7 @@ CreateResponseMessage  A message that contains resource-specific XML in the Soap
 
 created resource.
 
-3.1.4.5  Delete
+##### 3.1.4.5 Delete
 
 Web Services Management Protocol Extensions for Windows Server 2003 MUST support the Delete
 operation, using the following Action URIs as specified in [DMTF-DSP0226]:
@@ -2987,7 +2831,8 @@ Release: June 1, 2017
 
 37 / 72
 
-Resource URI
+
+Resource URI
 
 Input data type  Output data type
 
@@ -2995,7 +2840,7 @@ wsman:microsoft.com/wsman/2005/06/config/listener  None
 
 None
 
-3.1.4.6  Subscribe
+##### 3.1.4.6 Subscribe
 
 Web Services Management Protocol Extensions for Windows Server 2003 operating system MAY
 support the Subscribe operation, using the following Action URIs as specified in [DMTF-DSP0226]:
@@ -3007,7 +2852,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 includes no 
 to the Subscribe operation from WS-Management Protocol as specified in [DMTF-DSP0226], except as
 noted in Section 3.1.4.1.
 
-3.1.4.6.1 Messages
+###### 3.1.4.6.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3022,7 +2867,7 @@ A message used to subscribe to have notifications delivered.
 
 SubscribeResponseMsg  A message used in response to a request to have notifications delivered.
 
-3.1.4.7  Unsubscribe
+##### 3.1.4.7 Unsubscribe
 
 Web Services Management Protocol Extensions for Windows Server 2003 MAY support the Unsubscribe
 operation, using the following Action URIs as specified in [DMTF-DSP0226]:
@@ -3034,7 +2879,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 includes no 
 to the Unsubscribe operation from WS-Management Protocol as specified in [DMTF-DSP0226], except
 as noted in Section 3.1.4.1.
 
-3.1.4.7.1 Messages
+###### 3.1.4.7.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3056,7 +2901,8 @@ Release: June 1, 2017
 
 38 / 72
 
-3.1.4.8  Enumerate
+
+##### 3.1.4.8 Enumerate
 
 Web Services Management Protocol Extensions for Windows Server 2003 MUST support the
 Enumerate operation, using the following Action URIs as specified in [DMTF-DSP0226]:
@@ -3081,7 +2927,7 @@ wsman:microsoft.com/wsman/2005/06/config/listener  None
 
 None
 
-3.1.4.8.1 Messages
+###### 3.1.4.8.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3096,7 +2942,7 @@ A message used to enumerate a set of resources.
 
 EnumerateResponseMessage  A message used in response to a request to enumerate a set of resources.
 
-3.1.4.9  Pull
+##### 3.1.4.9 Pull
 
 Web Services Management Protocol Extensions for Windows Server 2003 MUST support the Pull
 operation, using the following Action URIs as specified in [DMTF-DSP0226]:
@@ -3128,13 +2974,14 @@ Web Services Management Protocol Extensions for Windows Server 2003
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-When a request is received from the server to enumerate the existing listeners, the set of listeners
+
+When a request is received from the server to enumerate the existing listeners, the set of listeners
 SHOULD be returned exactly as they were created by using Create requests. A listener that is created
 SHOULD NOT be split into multiple instances. For example, if a Create request creates a listener with
 the IP field equal to "*", then a Pull request SHOULD return that instance without substituting the
 value "*" with a set of specific IP addresses.
 
-3.1.4.9.1 Messages
+###### 3.1.4.9.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3151,9 +2998,9 @@ PullResponseMessage  A message used in response to a request for a set of resour
 
 enumerated.
 
-3.1.4.10
+##### 3.1.4.10 Release
 
-Release
+
 
 Web Services Management Protocol Extensions for Windows Server 2003 MUST support the Release
 operation, using the following Action URIs as specified in [DMTF-DSP0226]:
@@ -3165,7 +3012,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 includes no 
 to the Release operation from WS-Management Protocol as specified in [DMTF-DSP0226], except as
 noted in Section 3.1.4.1.
 
-3.1.4.10.1  Messages
+###### 3.1.4.10.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3183,7 +3030,7 @@ ReleaseResponseMessage  A message used in response to an indication that the enu
 
 resources is no longer needed.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 The Enumeration Garbage Collection timer MUST be started by the Web Services Management
 Protocol Extensions for Windows Server 2003 server when it sends an EnumerationResponse or a
@@ -3201,49 +3048,50 @@ Release: June 1, 2017
 
 40 / 72
 
-The Enumeration Garbage Collection timer MUST expire after the number of milliseconds given by the
+
+The Enumeration Garbage Collection timer MUST expire after the number of milliseconds given by the
 EnumerationTimeoutms configuration setting defined in section 2.2.4.7. Upon expiration of this timer,
 the Web Services Management Protocol Extensions for Windows Server 2003 server MUST return a
 wsen:InvalidEnumerationContext fault in response to a Pull or Release request that contains the
 enumeration context value of the last PullResponse message or the EnumerateResponse if no
 PullResponse messages were sent.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 Web Services Management Protocol Extensions for Windows Server 2003 servers define no further
 local events.
 
-3.2  Client Details
+### 3.2 Client Details
 
 This section describes changes to the WS-Management Protocol for Web Services Management
 Protocol Extensions for Windows Server 2003 clients.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Web Services Management Protocol Extensions for Windows Server 2003 includes no changes to the
 abstract data model of the WS-Management Protocol as specified in [DMTF-DSP0226].
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Web Services Management Protocol Extensions for Windows Server 2003 includes no client changes to
 the timers of the WS-Management Protocol as specified in [DMTF-DSP0226].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Web Services Management Protocol Extensions for Windows Server 2003 includes no changes to the
 initialization of the WS-Management Protocol as specified in [DMTF-DSP0226].
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This section describes changes made by Web Services Management Protocol Extensions for Windows
 Server 2003 clients to the message processing of the WS-Management Protocol as specified in [DMTF-
 DSP0226].
 
-3.2.4.1  Common Message Processing Events and Sequencing Rules
+##### 3.2.4.1 Common Message Processing Events and Sequencing Rules
 
 This section describes protocol details that are common across all WSDL operations.
 
-3.2.4.1.1 XML Namespace Definitions
+###### 3.2.4.1.1 XML Namespace Definitions
 
 The XML namespace for the WS-Management Protocol is specified in [DMTF-DSP0226] section A.1 as
 http://schemas.dmtf.org/wbem/wsman/1/wsman.xsd. Web Services Management Protocol Extensions
@@ -3262,10 +3110,11 @@ Release: June 1, 2017
 
 41 / 72
 
-Note  XML namespaces are to be treated as identifiers, and they do not point to any location on the
+
+Note  XML namespaces are to be treated as identifiers, and they do not point to any location on the
 web.
 
-3.2.4.1.2 wsa:MessageID
+###### 3.2.4.1.2 wsa:MessageID
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], endorses two different MessageID
 URI formats, as specified in [DMTF-DSP0226] section 5.4.4.
@@ -3273,14 +3122,14 @@ URI formats, as specified in [DMTF-DSP0226] section 5.4.4.
 Web Services Management Protocol Extensions for Windows Server 2003 clients MUST use only the
 uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx MessageID format.
 
-3.2.4.1.3 wsa:RelatesTo
+###### 3.2.4.1.3 wsa:RelatesTo
 
 The WS-Management Protocol, as specified in section 5.4.4 of [DMTF-DSP0226], endorses two
 different RelatesTo URI formats. For more details, see section 2.7 of [DMTF-DSP0226]. Web Services
 Management Protocol Extensions for Windows Server 2003 clients MUST use only the
 uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx RelatesTo format.
 
-3.2.4.1.4 wsman:OperationTimeout
+###### 3.2.4.1.4 wsman:OperationTimeout
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], defines the OperationTimeout value
 to indicate that the clients expect a response or a fault within the specified time, as specified in
@@ -3290,7 +3139,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 clients MUST
 OperationTimeout value with the value of the MaxTimeoutms configuration setting defined in section
 2.2.4.2.
 
-3.2.4.1.5 wsman:MaxEnvelopeSize
+###### 3.2.4.1.5 wsman:MaxEnvelopeSize
 
 The WS-Management Protocol, as specified in [DMTF-DSP0226], defines the MaxEnvelopeSize value to
 indicate that the clients expect a response to be no larger than the given number of octets, as
@@ -3300,7 +3149,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 clients MUST
 MaxEnvelopeSize value with the value of the MaxEnvelopeSizekb configuration setting (defined in
 section 2.2.4.2) multiplied by 1,024.
 
-3.2.4.1.6 wsen:Pull/wsen:MaxElements
+###### 3.2.4.1.6 wsen:Pull/wsen:MaxElements
 
 The WS-Management specification defines the MaxElements element, which is used to limit the
 number of items retrieved in a single message, as specified in [WSENUM] section 3.2.
@@ -3309,7 +3158,7 @@ Web Services Management Protocol Extensions for Windows Server 2003 clients SHOU
 the value of MaxElements is a positive integer, and not more than the value specified in the
 MaxBatchItems configuration setting (defined in section 2.2.4.2), when sending Pull requests.<16>
 
-3.2.4.1.7 Fault Detail
+###### 3.2.4.1.7 Fault Detail
 
 The WS-Management specification allows servers to specify additional fault details as part of SOAP
 faults that it generates, as specified in [DMTF-DSP0226] section 14. The URI prefix for fault detail is
@@ -3329,7 +3178,8 @@ Web Services Management Protocol Extensions for Windows Server 2003
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.4.1.8 Metadata and Discovery
+
+###### 3.2.4.1.8 Metadata and Discovery
 
 The WS-Management specification defines a mechanism to determine the existence of a WS-
 Management service on a server, as specified in [DMTF-DSP0226] section 11.
@@ -3342,7 +3192,7 @@ Server 2003 Protocol, Web Services Management Protocol Extensions for Windows Se
 SHOULD send a WS-Management Get operation using the wsman:system/2005/06/this resource URIs
 with no selectors.
 
-3.2.4.1.9 Binary Attachments
+###### 3.2.4.1.9 Binary Attachments
 
 The WS-Management Protocol defines a mechanism to send binary attachments, as specified in
 [DMTF-DSP0226] section 13.5.
@@ -3350,9 +3200,9 @@ The WS-Management Protocol defines a mechanism to send binary attachments, as sp
 Web Services Management Protocol Extensions for Windows Server 2003 clients MUST NOT send
 binary attachments.
 
-3.2.4.1.10
+###### 3.2.4.1.10 Embedded Objects
 
-Embedded Objects
+
 
 The WS-CIM Mapping Specification defines how one object can be embedded in another object, as
 specified in [DMTF-DSP0230] section 7.2.5.
@@ -3360,9 +3210,9 @@ specified in [DMTF-DSP0230] section 7.2.5.
 Web Services Management Protocol Extensions for Windows Server 2003 clients MUST NOT send
 embedded objects as attachments.
 
-3.2.4.1.11
+###### 3.2.4.1.11 CIM XML Namespace
 
-CIM XML Namespace
+
 
 The WS-CIM Mapping Specification defines the CIM XML namespace as
 http://schemas.dmtf.org/wbem/wscim/1/common, as specified in [DMTF-DSP0230] section 5.3.
@@ -3374,7 +3224,7 @@ namespace instead of http://schemas.dmtf.org/wbem/wscim/1/common.
 Note  XML namespaces are to be treated as identifiers, and they do not point to any location on the
 web.
 
-3.2.4.1.12  Arrays
+###### 3.2.4.1.12 Arrays
 
 The WS-CIM Mapping Specification defines specific rules for mapping CIM properties that are arrays,
 as specified in [DMTF-DSP0230] section 7.2.2.
@@ -3383,9 +3233,9 @@ Web Services Management Protocol Extensions for Windows Server 2003 clients MUST
 array elements. Web Services Management Protocol Extensions for Windows Server 2003 clients MUST
 indicate null arrays by including the element one time with the xsi:nil attribute set to "true".
 
-3.2.4.1.13
+###### 3.2.4.1.13 cim:Location
 
-cim:Location
+
 
 The WS-CIM Mapping Specification defines rules for representing a CIM object in XML, as specified in
 [DMTF-DSP0230] section 7.
@@ -3400,14 +3250,15 @@ Release: June 1, 2017
 
 43 / 72
 
-Web Services Management Protocol Extensions for Windows Server 2003 clients SHOULD add a
+
+Web Services Management Protocol Extensions for Windows Server 2003 clients SHOULD add a
 cim:Location element of type wsa:EndpointReferenceType, as specified in [WSAddressing] section 2.2,
 specifying the EPR of an object to the instance element when requesting a Put operation following a
 Get operation on an object.<17>
 
-3.2.4.1.14
+###### 3.2.4.1.14 CIM Namespace
 
-CIM Namespace
+
 
 The CIM binding for WS-Management defines Resource URIs to be used in referencing the CIM
 objects, as specified in [DMTF-DSP0227] section 5.1.
@@ -3433,9 +3284,9 @@ Web Services Management Protocol Extensions for Windows Server 2003 clients MUST
 Note  XML namespaces are to be treated as identifiers, and they do not point to any location on the
 web.
 
-3.2.4.1.15
+###### 3.2.4.1.15 Client Configuration
 
-Client Configuration
+
 
 The wsman:microsoft.com/wsman/2005/06/config resource URI MUST be used to retrieve the
 complete configuration of Web Services Management Protocol Extensions for Windows Server 2003
@@ -3472,7 +3323,8 @@ Web Services Management Protocol Extensions for Windows Server 2003
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-cfg:ClientUnencryptedType is true. If a client application tries to use wsman:secprofile/http/digest as
+
+cfg:ClientUnencryptedType is true. If a client application tries to use wsman:secprofile/http/digest as
 an authentication scheme when the Digest property in the cfg:ClientUnencryptedType is false, the
 request MUST fail with an error.
 
@@ -3512,13 +3364,14 @@ Release: June 1, 2017
 
 45 / 72
 
-4  Protocol Examples
 
-4.1  CIM examples
+## 4 Protocol Examples
+
+### 4.1 CIM examples
 
 This section illustrates protocol examples related to CIM.
 
-4.1.1  Retrieving a CIM Instance
+#### 4.1.1 Retrieving a CIM Instance
 
 This section illustrates an example of a simple CIM class being accessed using the WS-Management
 Protocol.
@@ -3581,7 +3434,8 @@ Release: June 1, 2017
 
 46 / 72
 
- <w:Selector Name="id">1</w:Selector>
+
+ <w:Selector Name="id">1</w:Selector>
  </w:SelectorSet>
  <w:OperationTimeout>PT60.000S</w:OperationTimeout>
  </s:Header>
@@ -3638,7 +3492,7 @@ Get Response:
  </s:Body>
  </s:Envelope>
 
-4.1.2  Enumeration of Instances
+#### 4.1.2 Enumeration of Instances
 
 If there are multiple instances of a class, Enumeration can be used to retrieve all the instances of the
 CIM class. The example from section 4.1.1 can be extended to add another instance as follows.
@@ -3650,7 +3504,8 @@ Release: June 1, 2017
 
 47 / 72
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-WSMAN].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3692,7 +3547,8 @@ Web Services Management Protocol Extensions for Windows Server 2003
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.  Server responds with an Enumerate response that contains an Enumeration Context.
+
+2.  Server responds with an Enumerate response that contains an Enumeration Context.
 
 3.  Client sends a Pull request and includes the Enumeration Context returned in the Enumerate
 
@@ -3715,7 +3571,7 @@ no more instances.
 
 8.  Client can send a Release request at any time during the enumeration to stop the exchange.
 
-4.1.2.1  Enumerate Request
+##### 4.1.2.1 Enumerate Request
 
  <s:Envelope xmlns:s="http://www.w3.org/2003/05/
  soap-envelope"
@@ -3752,7 +3608,7 @@ no more instances.
  </s:Body>
  </s:Envelope>
 
-4.1.2.2  Enumerate Response
+##### 4.1.2.2 Enumerate Response
 
  <s:Envelope xml:lang="en-US"
  xmlns:s="http://www.w3.org/2003/05/soap-envelope"
@@ -3767,7 +3623,8 @@ Release: June 1, 2017
 
 49 / 72
 
- enumeration"
+
+ enumeration"
  xmlns:w="http://schemas.xmlsoap.org/ws/2005/06/
  management">
  <s:Header>
@@ -3793,7 +3650,7 @@ Release: June 1, 2017
  </s:Body>
  </s:Envelope>
 
-4.1.2.3  First Pull Request
+##### 4.1.2.3 First Pull Request
 
  <s:Envelope xmlns:s="http://www.w3.org/2003/05/
  soap-envelope"
@@ -3841,9 +3698,10 @@ Release: June 1, 2017
 
 50 / 72
 
- </s:Envelope>
 
-4.1.2.4  First Pull Response
+ </s:Envelope>
+
+##### 4.1.2.4 First Pull Response
 
  <s:Envelope xml:lang="en-US"
  xmlns:s="http://www.w3.org/2003/05/soap-envelope"
@@ -3909,7 +3767,8 @@ Release: June 1, 2017
 
 51 / 72
 
-4.1.2.5  Second Pull Request
+
+##### 4.1.2.5 Second Pull Request
 
  <s:Envelope xmlns:s="http://www.w3.org/2003/05/
  soap-envelope"
@@ -3952,7 +3811,7 @@ Release: June 1, 2017
  </s:Body>
  </s:Envelope>
 
-4.1.2.6  Second Pull Response with EndOfSequence
+##### 4.1.2.6 Second Pull Response with EndOfSequence
 
  <s:Envelope xml:lang="en-US"
  xmlns:s="http://www.w3.org/2003/05/
@@ -3983,7 +3842,8 @@ Release: June 1, 2017
 
 52 / 72
 
- </s:Header>
+
+ </s:Header>
  <s:Body>
  <n:PullResponse>
  <n:Items>
@@ -4016,7 +3876,7 @@ Release: June 1, 2017
  </s:Body>
  </s:Envelope>
 
-4.1.3  Modifying an Instance
+#### 4.1.3 Modifying an Instance
 
 To modify an instance, a Put request is used. Using the example from section 4.1.1, the following
 exchange shows the Data1 property being modified from "Hello World" to "Test String" in an instance
@@ -4055,7 +3915,8 @@ Release: June 1, 2017
 
 53 / 72
 
- <a:MessageID>
+
+ <a:MessageID>
  uuid:D1408048-E0F6-4C6D-8B8A-515B9F7B641C
  </a:MessageID>
  <w:SelectorSet>
@@ -4129,7 +3990,8 @@ Release: June 1, 2017
 
 54 / 72
 
- <a:Address>
+
+ <a:Address>
  http://schemas.xmlsoap.org/ws/2004/08/addressing/
  role/anonymous</a:Address>
  <a:ReferenceParameters>
@@ -4145,7 +4007,7 @@ Release: June 1, 2017
  </s:Body>
  </s:Envelope>
 
-4.1.4  Invoking a Method
+#### 4.1.4 Invoking a Method
 
 The WS-Management Protocol can be used to invoke a method on a CIM class or instance.
 Win32_Process is a CIM class derived from CIM_Process, which has a method called Create that is
@@ -4199,7 +4061,8 @@ Release: June 1, 2017
 
 55 / 72
 
-Invoke method response:
+
+Invoke method response:
 
  <s:Envelope xml:lang="en-US" xmlns:s=
  "http://www.w3.org/2003/05/
@@ -4230,12 +4093,12 @@ Release: June 1, 2017
  </s:Body>
  </s:Envelope>
 
-4.2  Configuration Examples
+### 4.2 Configuration Examples
 
 This section illustrates protocol examples related to configuration of a Web Services Management
 Protocol Extensions for Windows Server 2003 service.
 
-4.2.1  Retrieving Configuration
+#### 4.2.1 Retrieving Configuration
 
 This section illustrates an example of the entire configuration of Web Services Management Protocol
 Extensions for Windows Server 2003, accessed using Get.
@@ -4270,7 +4133,8 @@ Release: June 1, 2017
 
 56 / 72
 
- </w:MaxEnvelopeSize>
+
+ </w:MaxEnvelopeSize>
  <a:MessageID>uuid:613DCD71-95AF-4ED5-
  86E2-1D6AB44ECE66</a:MessageID>
  <w:OperationTimeout>
@@ -4344,7 +4208,8 @@ Release: June 1, 2017
 
 57 / 72
 
- <cfg:HTTP>
+
+ <cfg:HTTP>
  <cfg:Unencrypted>
  <cfg:Basic>true</cfg:Basic>
  <cfg:Negotiate>true</cfg:Negotiate>
@@ -4359,7 +4224,7 @@ Release: June 1, 2017
  </s:Body>
  </s:Envelope>
 
-4.2.2  Modify Configuration
+#### 4.2.2 Modify Configuration
 
 To modify a configuration, a Put request is used. In this example, cfg:MaxBatchItems is changed from
 20 to 10.
@@ -4417,7 +4282,8 @@ Release: June 1, 2017
 
 58 / 72
 
- <cfg:Basic>true</cfg:Basic>
+
+ <cfg:Basic>true</cfg:Basic>
  <cfg:Digest>false</cfg:Digest>
  <cfg:Negotiate>true</cfg:Negotiate>
  </cfg:Unencrypted>
@@ -4491,7 +4357,8 @@ Release: June 1, 2017
 
 59 / 72
 
- </cfg:MaxProviderRequests>
+
+ </cfg:MaxProviderRequests>
  <cfg:Client>
  <cfg:NetworkDelayms>5000</cfg:NetworkDelayms>
  <cfg:URLPrefix>wsman</cfg:URLPrefix>
@@ -4536,7 +4403,7 @@ Release: June 1, 2017
  </s:Body>
  </s:Envelope>
 
-4.3  Fault Detail
+### 4.3 Fault Detail
 
 In this section, an example of fault detail is shown. A Get request with an invalid Resource URI is
 sent, resulting in a fault.
@@ -4564,7 +4431,8 @@ Release: June 1, 2017
 
 60 / 72
 
- cimv2/win32_servic</w:ResourceURI>
+
+ cimv2/win32_servic</w:ResourceURI>
  <a:ReplyTo>
  <a:Address s:mustUnderstand="true">
  http://schemas.xmlsoap.org/ws/2004/08/addressing/role/
@@ -4638,7 +4506,8 @@ Release: June 1, 2017
 
 61 / 72
 
- "http://schemas.microsoft.com/ws/2005/06/
+
+ "http://schemas.microsoft.com/ws/2005/06/
  wsmanfault" Code="32768" Machine="server">
  <f:Message>The WS-Management service cannot
  process the request.  The service cannot find the
@@ -4660,9 +4529,10 @@ Release: June 1, 2017
 
 62 / 72
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Web Services Management Protocol Extensions for Windows Server 2003 use the WS-Management
 Security Profiles as described in [DMTF-DSP0226] section 12.
@@ -4700,7 +4570,7 @@ implement the following security profiles:
 
   wsman:secprofile/http/spnego-kerberos described in [DMTF-DSP0226] section 12.14.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4711,7 +4581,8 @@ Release: June 1, 2017
 
 63 / 72
 
-6  Appendix A: Full WSDL Definitions
+
+## 6 Appendix A: Full WSDL Definitions
 
 For ease of implementation, this section provides the full WSDL. The syntax uses the XrML syntax
 extensions, as specified in [WSDL]
@@ -4786,7 +4657,8 @@ Release: June 1, 2017
 
 64 / 72
 
-     <wsdl:part name="body" element="wsen:PullResponse" />
+
+     <wsdl:part name="body" element="wsen:PullResponse" />
    </wsdl:message>
    <wsdl:message name="ReleaseMessage">
      <wsdl:part name="body" element="wsen:Release" />
@@ -4861,7 +4733,8 @@ Release: June 1, 2017
 
 65 / 72
 
-   <!-- WSMAN binding -->
+
+   <!-- WSMAN binding -->
    <wsdl:binding type="tns:WSMAN" name="WSMANBinding">
      <soap:binding style="document"
      transport="http://schemas.xmlsoap.org/soap/http" />
@@ -4921,7 +4794,8 @@ Release: June 1, 2017
 
 66 / 72
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4994,7 +4868,8 @@ Release: June 1, 2017
 
 67 / 72
 
-MaxEnvelopeSize value is specified by the client or if the MaxEnvelopeSize value is more than this
+
+MaxEnvelopeSize value is specified by the client or if the MaxEnvelopeSize value is more than this
 setting.
 
 <9> Section 3.1.4.1.13: Windows Server 2003 R2 clients can be configured to send Enumerate
@@ -5047,7 +4922,8 @@ Release: June 1, 2017
 
 68 / 72
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -5059,7 +4935,8 @@ Release: June 1, 2017
 
 69 / 72
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -5195,7 +5072,8 @@ Release: June 1, 2017
 
 70 / 72
 
-   client (section 3.1.4.1 29, section 3.2.4 41)
+
+   client (section 3.1.4.1 29, section 3.2.4 41)
    server (section 3.1.4 28, section 3.1.4.1 29)
 Messages
    AnyXmlMessage 16
@@ -5342,7 +5220,8 @@ Web Services Management Protocol Extensions for Windows Server 2003
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Timer events - server 40
+
+Timer events - server 40
 Timers
    client 41
    server 28

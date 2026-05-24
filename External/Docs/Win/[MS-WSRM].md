@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 184
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -311,7 +312,8 @@ Release: June 1, 2017
 
 2 / 184
 
-Date
+
+Date
 
 Revision
 History
@@ -449,527 +451,244 @@ Release: June 1, 2017
 
 3 / 184
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 14
-Normative References ................................................................................. 14
-Informative References ............................................................................... 15
-Overview ........................................................................................................ 15
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 17
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Common Data Types ........................................................................................ 18
-ABNF Data Formats ..................................................................................... 18
-Affinity ................................................................................................ 18
-Boolean ............................................................................................... 19
-Date and Time ...................................................................................... 19
-Timestamp ........................................................................................... 20
-Constants .................................................................................................. 20
-Boolean Values ..................................................................................... 21
-2.2.2.1
-Category Types..................................................................................... 21
-2.2.2.2
-Day Modifiers ....................................................................................... 21
-2.2.2.3
-Day Options ......................................................................................... 22
-2.2.2.4
-Frequency Options ................................................................................ 22
-2.2.2.5
-Memory Options ................................................................................... 23
-2.2.2.6
-Object Types ........................................................................................ 23
-2.2.2.7
-Resource Allocation Options ................................................................... 23
-2.2.2.8
-2.2.2.9
-Supported Client Options ....................................................................... 24
-2.2.2.10  User Types ........................................................................................... 24
-Column Types....................................................................................... 25
-2.2.2.11
-Condition Category ................................................................................ 25
-2.2.2.12
-Condition Name .................................................................................... 25
-2.2.2.13
-Enumerations ............................................................................................. 26
-CONFIGTYPE Enumeration ...................................................................... 26
-EXCLUSIONLIST_TYPE Enumeration ........................................................ 27
-IMPORT_TYPE Enumeration .................................................................... 27
-MACHINE_GROUP_MERGE_OPTIONS Enumeration .................................... 28
-MANAGEMENT_TYPE Enumeration ........................................................... 28
-OBJECT_TYPE Enumeration .................................................................... 29
-RESTORE_MODE Enumeration ................................................................ 29
-Namespaces .............................................................................................. 29
-XML Data Formats ...................................................................................... 30
-AccountingClientList Element .................................................................. 31
-AccountingConfigInfo Element ................................................................ 32
-AccountingMetaData Element ................................................................. 33
-AccountingProcessList Element ............................................................... 34
-AccountingQueryCondition Element ......................................................... 39
-AppPoolList Element .............................................................................. 40
-Calendar Element .................................................................................. 41
-CalendarEvent Element .......................................................................... 42
-CalendarRule Element ........................................................................... 43
-Calendars Element ................................................................................ 46
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-2.2.5.4
-2.2.5.5
-2.2.5.6
-2.2.5.7
-2.2.5.8
-2.2.5.9
-2.2.5.10
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-
-2.2.4
-2.2.5
-
-2.2.3
-
-[MS-WSRM] - v20170601
-Windows System Resource Manager (WSRM) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 184
-
-2.2.5.11
-CalendarsCollection Element ................................................................... 47
-2.2.5.12
-ConditionalPolicy Element ...................................................................... 47
-ConfigurationFiles Element ..................................................................... 50
-2.2.5.13
-2.2.5.14  DependencyList Element ........................................................................ 51
-Events Element ..................................................................................... 52
-2.2.5.15
-2.2.5.16
-ExclusionList Element ............................................................................ 53
-2.2.5.17  Machine Element ................................................................................... 53
-2.2.5.18  MachineGroup Element .......................................................................... 54
-2.2.5.19  NotificationConfigInfo Element ................................................................ 55
-2.2.5.20  ObjectIds Element................................................................................. 56
-Policy Element ...................................................................................... 57
-2.2.5.21
-PolicyCollection Element ........................................................................ 58
-2.2.5.22
-ProcessList Element ............................................................................... 59
-2.2.5.23
-ProcessMatchingCriteria Element ............................................................. 62
-2.2.5.24
-ProcessMatchingCriteriaCollection Element ............................................... 63
-2.2.5.25
-Schedule Element ................................................................................. 63
-2.2.5.26
-Schedules Element ................................................................................ 64
-2.2.5.27
-ServiceList Element ............................................................................... 64
-2.2.5.28
-2.2.5.29
-SupportedClients Element ...................................................................... 65
-2.2.5.30  Users Element ...................................................................................... 66
-
-3.1
-
-3.2
-
-3.2.1
-
-3.1.5
-3.1.6
-
-3.2.1.1
-3.2.1.2
-
-3.2.2
-3.2.3
-3.2.4
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3  Protocol Details ..................................................................................................... 68
-Client Role Details ............................................................................................ 68
-Abstract Data Model .................................................................................... 68
-Timers ...................................................................................................... 68
-Initialization ............................................................................................... 68
-Message Processing Events and Sequencing Rules .......................................... 68
-Higher-Layer Triggered Events ............................................................... 68
-Opening and Closing a Session ............................................................... 68
-Processing Server Replies ...................................................................... 68
-Processing Server Notifications ............................................................... 69
-Timer Events .............................................................................................. 69
-Other Local Events ...................................................................................... 69
-Server Role Details ........................................................................................... 69
-Abstract Data Model .................................................................................... 69
-Data Structures .................................................................................... 69
-Accounting Database ............................................................................. 70
-Timers ...................................................................................................... 72
-Initialization ............................................................................................... 72
-Message Processing Events and Sequencing Rules .......................................... 72
-IResourceManager Interface ................................................................... 73
-RetrieveEventList (Opnum 7) ............................................................ 74
-3.2.4.1.1
-GetSystemAffinity (Opnum 8) ........................................................... 74
-3.2.4.1.2
-ImportXMLFiles (Opnum 9) ............................................................... 74
-3.2.4.1.3
-ExportXMLFiles (Opnum 10) ............................................................. 75
-3.2.4.1.4
-RestoreXMLFiles (Opnum 11) ............................................................ 76
-3.2.4.1.5
-GetDependencies (Opnum 12) .......................................................... 76
-3.2.4.1.6
-GetServiceList (Opnum 13) ............................................................... 77
-3.2.4.1.7
-GetIISAppPoolNames (Opnum 14) ..................................................... 78
-3.2.4.1.8
-3.2.4.1.9
-GetServerName (Opnum 15) ............................................................ 78
-3.2.4.1.10  GetCurrentMemory (Opnum 16) ........................................................ 79
-IResourceManager2 Interface ................................................................. 79
-ExportObjects (Opnum 7) ................................................................. 79
-GetImportConflicts (Opnum 8) .......................................................... 81
-ImportXml (Opnum 9) ..................................................................... 81
-ExportXml (Opnum 10) .................................................................... 82
-IWRMAccounting Interface ..................................................................... 83
-CreateAccountingDb (Opnum 7) ........................................................ 84
-
-3.2.4.2.1
-3.2.4.2.2
-3.2.4.2.3
-3.2.4.2.4
-
-3.2.4.3.1
-
-3.2.4.3
-
-3.2.4.2
-
-3.2.4.1
-
-[MS-WSRM] - v20170601
-Windows System Resource Manager (WSRM) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 184
-
-3.2.4.4
-
-3.2.4.5
-
-GetAccountingMetadata (Opnum 8) ................................................... 85
-3.2.4.3.2
-ExecuteAccountingQuery (Opnum 9) .................................................. 85
-3.2.4.3.3
-GetRawAccountingData (Opnum 10) .................................................. 87
-3.2.4.3.4
-GetNextAccountingDataBatch (Opnum 11) ......................................... 89
-3.2.4.3.5
-DeleteAccountingData (Opnum 12) .................................................... 90
-3.2.4.3.6
-DefragmentDB (Opnum 13) .............................................................. 91
-3.2.4.3.7
-CancelAccountingQuery (Opnum 14) .................................................. 91
-3.2.4.3.8
-3.2.4.3.9
-RegisterAccountingClient (Opnum 15) ................................................ 91
-3.2.4.3.10  DumpAccountingData (Opnum 16) .................................................... 92
-3.2.4.3.11  GetAccountingClients (Opnum 17) ..................................................... 93
-SetAccountingClientStatus (Opnum 18) .............................................. 94
-3.2.4.3.12
-CheckAccountingConnection (Opnum 19) ........................................... 95
-3.2.4.3.13
-SetClientPermissions (Opnum 20) ..................................................... 95
-3.2.4.3.14
-IWRMCalendar Interface ........................................................................ 96
-GetCalendarInfo (Opnum 7) ............................................................. 97
-3.2.4.4.1
-CreateCalendar (Opnum 8) ............................................................... 98
-3.2.4.4.2
-ModifyCalendar (Opnum 9) ............................................................... 98
-3.2.4.4.3
-DeleteCalendar (Opnum 10) ............................................................ 100
-3.2.4.4.4
-RenameCalendar (Opnum 11) .......................................................... 101
-3.2.4.4.5
-ComputeEvents (Opnum 12) ............................................................ 102
-3.2.4.4.6
-GetScheduleInfo (Opnum 13) .......................................................... 103
-3.2.4.4.7
-CreateSchedule (Opnum 14) ............................................................ 103
-3.2.4.4.8
-3.2.4.4.9
-ModifySchedule (Opnum 15) ............................................................ 104
-3.2.4.4.10  DeleteSchedule (Opnum 16) ............................................................ 105
-3.2.4.4.11
-RenameSchedule (Opnum 17) .......................................................... 106
-3.2.4.4.12  MoveBeforeCalendar (Opnum 18) ..................................................... 106
-3.2.4.4.13  MoveAfterCalendar (Opnum 19) ....................................................... 107
-3.2.4.4.14  GetServerTimeZone (Opnum 20) ...................................................... 108
-IWRMConfig Interface ........................................................................... 109
-GetConfig (Opnum 7) ...................................................................... 109
-SetConfig (Opnum 8) ...................................................................... 110
-IsEnabled (Opnum 9) ...................................................................... 111
-EnableDisable (Opnum 10) .............................................................. 112
-GetExclusionList (Opnum 11) ........................................................... 113
-SetExclusionList (Opnum 12) ........................................................... 114
-WSRMActivate (Opnum 13) ............................................................. 114
-IsWSRMActivated (Opnum 14) ......................................................... 115
-RestoreExclusionList (Opnum 15) ..................................................... 115
-IWRMMachineGroup Interface ................................................................ 116
-CreateMachineGroup (Opnum 7) ...................................................... 116
-GetMachineGroupInfo (Opnum 8) ..................................................... 117
-ModifyMachineGroup (Opnum 9) ...................................................... 118
-DeleteMachineGroup (Opnum 10) ..................................................... 119
-RenameMachineGroup (Opnum 11) .................................................. 119
-AddMachine (Opnum 12) ................................................................. 120
-GetMachineInfo (Opnum 13) ............................................................ 121
-ModifyMachineInfo (Opnum 14) ....................................................... 121
-DeleteMachine (Opnum 15) ............................................................. 122
-IWRMPolicy Interface ............................................................................ 123
-GetPolicyInfo (Opnum 7) ................................................................. 124
-CreatePolicy (Opnum 8) .................................................................. 125
-ModifyPolicy (Opnum 9) .................................................................. 126
-DeletePolicy (Opnum 10) ................................................................. 127
-RenameAllocationPolicy (Opnum 11) ................................................. 128
-MoveBefore (Opnum 12) ................................................................. 129
-MoveAfter (Opnum 13) ................................................................... 130
-SetCalDefaultPolicyName (Opnum 14) .............................................. 130
-GetCalDefaultPolicyName (Opnum 15) .............................................. 131
-
-3.2.4.5.1
-3.2.4.5.2
-3.2.4.5.3
-3.2.4.5.4
-3.2.4.5.5
-3.2.4.5.6
-3.2.4.5.7
-3.2.4.5.8
-3.2.4.5.9
-
-3.2.4.7.1
-3.2.4.7.2
-3.2.4.7.3
-3.2.4.7.4
-3.2.4.7.5
-3.2.4.7.6
-3.2.4.7.7
-3.2.4.7.8
-3.2.4.7.9
-
-3.2.4.6.1
-3.2.4.6.2
-3.2.4.6.3
-3.2.4.6.4
-3.2.4.6.5
-3.2.4.6.6
-3.2.4.6.7
-3.2.4.6.8
-3.2.4.6.9
-
-3.2.4.6
-
-3.2.4.7
-
-[MS-WSRM] - v20170601
-Windows System Resource Manager (WSRM) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 184
-
-3.2.4.8
-
-3.2.4.9
-
-3.2.4.8.1
-
-3.2.4.7.10  GetProcessList (Opnum 16) ............................................................. 131
-3.2.4.7.11  GetCurrentPolicy (Opnum 17) .......................................................... 132
-SetCurrentPolicy (Opnum 18) .......................................................... 133
-3.2.4.7.12
-3.2.4.7.13  GetCurrentStateAndActivePolicyName (Opnum 19) ............................. 133
-3.2.4.7.14  GetConditionalPolicy (Opnum 20) ..................................................... 134
-SetConditionalPolicy (Opnum 21) ..................................................... 134
-3.2.4.7.15
-IWRMProtocol Interface ........................................................................ 135
-GetSupportedClient (Opnum 7) ........................................................ 135
-IWRMRemoteSessionMgmt Interface ...................................................... 135
-GetRemoteUserCategories (Opnum 7) ............................................... 136
-SetRemoteUserCategories (Opnum 8) ............................................... 136
-RefreshRemoteSessionWeights (Opnum 9) ........................................ 137
-IWRMResourceGroup Interface .............................................................. 137
-3.2.4.10.1  GetResourceGroupInfo (Opnum 7) .................................................... 138
-3.2.4.10.2  ModifyResourceGroup (Opnum 8) ..................................................... 139
-3.2.4.10.3
-CreateResourceGroup (Opnum 9) ..................................................... 140
-3.2.4.10.4  DeleteResourceGroup (Opnum 10) ................................................... 141
-RenameResourceGroup (Opnum 11) ................................................. 142
-3.2.4.10.5
-Timer Events ............................................................................................. 143
-Other Local Events ..................................................................................... 143
-
-3.2.4.9.1
-3.2.4.9.2
-3.2.4.9.3
-
-3.2.4.10
-
-3.2.5
-3.2.6
-
-4.1
-
-4.2
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-4.1.6
-4.1.7
-4.1.8
-4.1.9
-
-4  Protocol Examples ............................................................................................... 144
-Message Processing Examples .......................................................................... 144
-Enable Accounting on a Local Machine .......................................................... 144
-Export Selected Objects from the Configuration ............................................. 144
-Check Whether Import Will Lead to Conflicting Objects ................................... 145
-Export Selected Policies to a Machine Group .................................................. 145
-Add a Machine to a Machine Group .............................................................. 146
-Create And Initialize a Machine Group .......................................................... 146
-Create a Custom Resource Allocation Policy .................................................. 147
-Set the Current Resource Policy ................................................................... 147
-Create a Custom Process Matching Criteria ................................................... 147
-Sample XML Data ............................................................................................ 148
-AccountingClientList Example ...................................................................... 149
-4.2.1
-AccountingConfigInfo Example .................................................................... 149
-4.2.2
-AccountingMetaData Example ..................................................................... 149
-4.2.3
-AccountingProcessList Example ................................................................... 150
-4.2.4
-AccountingQueryCondition Example ............................................................. 150
-4.2.5
-Calendar Example ...................................................................................... 151
-4.2.6
-Calendars Example .................................................................................... 152
-4.2.7
-CalendarsCollection Example ....................................................................... 152
-4.2.8
-ConditionalPolicy Example .......................................................................... 153
-4.2.9
-4.2.10
-ConfigurationFiles Example ......................................................................... 154
-4.2.11  DependencyList Example ............................................................................ 154
-Events Example ......................................................................................... 155
-4.2.12
-4.2.13
-ExclusionList Example ................................................................................ 155
-4.2.14  Machine Example ....................................................................................... 156
-4.2.15  MachineGroup Example .............................................................................. 157
-4.2.16  NotificationConfigInfo Example .................................................................... 157
-4.2.17  ObjectIds Example ..................................................................................... 157
-Policy Example .......................................................................................... 158
-4.2.18
-Policy Collection Example ............................................................................ 158
-4.2.19
-ProcessMatchingCriteria Example ................................................................. 159
-4.2.20
-ProcessMatchingCriteriaCollection Example ................................................... 159
-4.2.21
-Schedule Example ..................................................................................... 160
-4.2.22
-ServiceList Example ................................................................................... 160
-4.2.23
-4.2.24
-SupportedClients Example .......................................................................... 161
-4.2.25  Users Example .......................................................................................... 161
-
-[MS-WSRM] - v20170601
-Windows System Resource Manager (WSRM) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-7 / 184
-
-5  Security ............................................................................................................... 163
-Security Considerations for Implementers .......................................................... 163
-Index of Security Parameters ........................................................................... 163
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 164
-
-7  Appendix B: Product Behavior ............................................................................. 172
-
-8  Change Tracking .................................................................................................. 181
-
-9  Index ................................................................................................................... 182
-
-[MS-WSRM] - v20170601
-Windows System Resource Manager (WSRM) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-8 / 184
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 ABNF Data Formats](#221-abnf-data-formats)
+      - [2.2.1.1 Affinity](#2211-affinity)
+      - [2.2.1.2 Boolean](#2212-boolean)
+      - [2.2.1.3 Date and Time](#2213-date-and-time)
+      - [2.2.1.4 Timestamp](#2214-timestamp)
+    - [2.2.2 Constants](#222-constants)
+      - [2.2.2.1 Boolean Values](#2221-boolean-values)
+      - [2.2.2.2 Category Types](#2222-category-types)
+      - [2.2.2.3 Day Modifiers](#2223-day-modifiers)
+      - [2.2.2.4 Day Options](#2224-day-options)
+      - [2.2.2.5 Frequency Options](#2225-frequency-options)
+      - [2.2.2.6 Memory Options](#2226-memory-options)
+      - [2.2.2.7 Object Types](#2227-object-types)
+      - [2.2.2.8 Resource Allocation Options](#2228-resource-allocation-options)
+      - [2.2.2.9 Supported Client Options](#2229-supported-client-options)
+      - [2.2.2.10 User Types](#22210-user-types)
+      - [2.2.2.11 Column Types](#22211-column-types)
+      - [2.2.2.12 Condition Category](#22212-condition-category)
+      - [2.2.2.13 Condition Name](#22213-condition-name)
+    - [2.2.3 Enumerations](#223-enumerations)
+      - [2.2.3.1 CONFIGTYPE Enumeration](#2231-configtype-enumeration)
+      - [2.2.3.2 EXCLUSIONLIST_TYPE Enumeration](#2232-exclusionlisttype-enumeration)
+      - [2.2.3.3 IMPORT_TYPE Enumeration](#2233-importtype-enumeration)
+      - [2.2.3.4 MACHINE_GROUP_MERGE_OPTIONS Enumeration](#2234-machinegroupmergeoptions-enumeration)
+      - [2.2.3.5 MANAGEMENT_TYPE Enumeration](#2235-managementtype-enumeration)
+      - [2.2.3.6 OBJECT_TYPE Enumeration](#2236-objecttype-enumeration)
+      - [2.2.3.7 RESTORE_MODE Enumeration](#2237-restoremode-enumeration)
+    - [2.2.4 Namespaces](#224-namespaces)
+    - [2.2.5 XML Data Formats](#225-xml-data-formats)
+      - [2.2.5.1 AccountingClientList Element](#2251-accountingclientlist-element)
+      - [2.2.5.2 AccountingConfigInfo Element](#2252-accountingconfiginfo-element)
+      - [2.2.5.3 AccountingMetaData Element](#2253-accountingmetadata-element)
+      - [2.2.5.4 AccountingProcessList Element](#2254-accountingprocesslist-element)
+      - [2.2.5.5 AccountingQueryCondition Element](#2255-accountingquerycondition-element)
+      - [2.2.5.6 AppPoolList Element](#2256-apppoollist-element)
+      - [2.2.5.7 Calendar Element](#2257-calendar-element)
+      - [2.2.5.8 CalendarEvent Element](#2258-calendarevent-element)
+      - [2.2.5.9 CalendarRule Element](#2259-calendarrule-element)
+      - [2.2.5.10 Calendars Element](#22510-calendars-element)
+      - [2.2.5.11 CalendarsCollection Element](#22511-calendarscollection-element)
+      - [2.2.5.12 ConditionalPolicy Element](#22512-conditionalpolicy-element)
+      - [2.2.5.13 ConfigurationFiles Element](#22513-configurationfiles-element)
+      - [2.2.5.14 DependencyList Element](#22514-dependencylist-element)
+      - [2.2.5.15 Events Element](#22515-events-element)
+      - [2.2.5.16 ExclusionList Element](#22516-exclusionlist-element)
+      - [2.2.5.17 Machine Element](#22517-machine-element)
+      - [2.2.5.18 MachineGroup Element](#22518-machinegroup-element)
+      - [2.2.5.19 NotificationConfigInfo Element](#22519-notificationconfiginfo-element)
+      - [2.2.5.20 ObjectIds Element](#22520-objectids-element)
+      - [2.2.5.21 Policy Element](#22521-policy-element)
+      - [2.2.5.22 PolicyCollection Element](#22522-policycollection-element)
+      - [2.2.5.23 ProcessList Element](#22523-processlist-element)
+      - [2.2.5.24 ProcessMatchingCriteria Element](#22524-processmatchingcriteria-element)
+      - [2.2.5.25 ProcessMatchingCriteriaCollection Element](#22525-processmatchingcriteriacollection-element)
+      - [2.2.5.26 Schedule Element](#22526-schedule-element)
+      - [2.2.5.27 Schedules Element](#22527-schedules-element)
+      - [2.2.5.28 ServiceList Element](#22528-servicelist-element)
+      - [2.2.5.29 SupportedClients Element](#22529-supportedclients-element)
+      - [2.2.5.30 Users Element](#22530-users-element)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Role Details](#31-client-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Higher-Layer Triggered Events](#3141-higher-layer-triggered-events)
+      - [3.1.4.2 Opening and Closing a Session](#3142-opening-and-closing-a-session)
+      - [3.1.4.3 Processing Server Replies](#3143-processing-server-replies)
+      - [3.1.4.4 Processing Server Notifications](#3144-processing-server-notifications)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Server Role Details](#32-server-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Data Structures](#3211-data-structures)
+      - [3.2.1.2 Accounting Database](#3212-accounting-database)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 IResourceManager Interface](#3241-iresourcemanager-interface)
+        - [3.2.4.1.1 RetrieveEventList (Opnum 7)](#32411-retrieveeventlist-opnum-7)
+        - [3.2.4.1.2 GetSystemAffinity (Opnum 8)](#32412-getsystemaffinity-opnum-8)
+        - [3.2.4.1.3 ImportXMLFiles (Opnum 9)](#32413-importxmlfiles-opnum-9)
+        - [3.2.4.1.4 ExportXMLFiles (Opnum 10)](#32414-exportxmlfiles-opnum-10)
+        - [3.2.4.1.5 RestoreXMLFiles (Opnum 11)](#32415-restorexmlfiles-opnum-11)
+        - [3.2.4.1.6 GetDependencies (Opnum 12)](#32416-getdependencies-opnum-12)
+        - [3.2.4.1.7 GetServiceList (Opnum 13)](#32417-getservicelist-opnum-13)
+        - [3.2.4.1.8 GetIISAppPoolNames (Opnum 14)](#32418-getiisapppoolnames-opnum-14)
+        - [3.2.4.1.9 GetServerName (Opnum 15)](#32419-getservername-opnum-15)
+        - [3.2.4.1.10 GetCurrentMemory (Opnum 16)](#324110-getcurrentmemory-opnum-16)
+      - [3.2.4.2 IResourceManager2 Interface](#3242-iresourcemanager2-interface)
+        - [3.2.4.2.1 ExportObjects (Opnum 7)](#32421-exportobjects-opnum-7)
+        - [3.2.4.2.2 GetImportConflicts (Opnum 8)](#32422-getimportconflicts-opnum-8)
+        - [3.2.4.2.3 ImportXml (Opnum 9)](#32423-importxml-opnum-9)
+        - [3.2.4.2.4 ExportXml (Opnum 10)](#32424-exportxml-opnum-10)
+      - [3.2.4.3 IWRMAccounting Interface](#3243-iwrmaccounting-interface)
+        - [3.2.4.3.1 CreateAccountingDb (Opnum 7)](#32431-createaccountingdb-opnum-7)
+        - [3.2.4.3.2 GetAccountingMetadata (Opnum 8)](#32432-getaccountingmetadata-opnum-8)
+        - [3.2.4.3.3 ExecuteAccountingQuery (Opnum 9)](#32433-executeaccountingquery-opnum-9)
+        - [3.2.4.3.4 GetRawAccountingData (Opnum 10)](#32434-getrawaccountingdata-opnum-10)
+        - [3.2.4.3.5 GetNextAccountingDataBatch (Opnum 11)](#32435-getnextaccountingdatabatch-opnum-11)
+        - [3.2.4.3.6 DeleteAccountingData (Opnum 12)](#32436-deleteaccountingdata-opnum-12)
+        - [3.2.4.3.7 DefragmentDB (Opnum 13)](#32437-defragmentdb-opnum-13)
+        - [3.2.4.3.8 CancelAccountingQuery (Opnum 14)](#32438-cancelaccountingquery-opnum-14)
+        - [3.2.4.3.9 RegisterAccountingClient (Opnum 15)](#32439-registeraccountingclient-opnum-15)
+        - [3.2.4.3.10 DumpAccountingData (Opnum 16)](#324310-dumpaccountingdata-opnum-16)
+        - [3.2.4.3.11 GetAccountingClients (Opnum 17)](#324311-getaccountingclients-opnum-17)
+        - [3.2.4.3.12 SetAccountingClientStatus (Opnum 18)](#324312-setaccountingclientstatus-opnum-18)
+        - [3.2.4.3.13 CheckAccountingConnection (Opnum 19)](#324313-checkaccountingconnection-opnum-19)
+        - [3.2.4.3.14 SetClientPermissions (Opnum 20)](#324314-setclientpermissions-opnum-20)
+      - [3.2.4.4 IWRMCalendar Interface](#3244-iwrmcalendar-interface)
+        - [3.2.4.4.1 GetCalendarInfo (Opnum 7)](#32441-getcalendarinfo-opnum-7)
+        - [3.2.4.4.2 CreateCalendar (Opnum 8)](#32442-createcalendar-opnum-8)
+        - [3.2.4.4.3 ModifyCalendar (Opnum 9)](#32443-modifycalendar-opnum-9)
+        - [3.2.4.4.4 DeleteCalendar (Opnum 10)](#32444-deletecalendar-opnum-10)
+        - [3.2.4.4.5 RenameCalendar (Opnum 11)](#32445-renamecalendar-opnum-11)
+        - [3.2.4.4.6 ComputeEvents (Opnum 12)](#32446-computeevents-opnum-12)
+        - [3.2.4.4.7 GetScheduleInfo (Opnum 13)](#32447-getscheduleinfo-opnum-13)
+        - [3.2.4.4.8 CreateSchedule (Opnum 14)](#32448-createschedule-opnum-14)
+        - [3.2.4.4.9 ModifySchedule (Opnum 15)](#32449-modifyschedule-opnum-15)
+        - [3.2.4.4.10 DeleteSchedule (Opnum 16)](#324410-deleteschedule-opnum-16)
+        - [3.2.4.4.11 RenameSchedule (Opnum 17)](#324411-renameschedule-opnum-17)
+        - [3.2.4.4.12 MoveBeforeCalendar (Opnum 18)](#324412-movebeforecalendar-opnum-18)
+        - [3.2.4.4.13 MoveAfterCalendar (Opnum 19)](#324413-moveaftercalendar-opnum-19)
+        - [3.2.4.4.14 GetServerTimeZone (Opnum 20)](#324414-getservertimezone-opnum-20)
+      - [3.2.4.5 IWRMConfig Interface](#3245-iwrmconfig-interface)
+        - [3.2.4.5.1 GetConfig (Opnum 7)](#32451-getconfig-opnum-7)
+        - [3.2.4.5.2 SetConfig (Opnum 8)](#32452-setconfig-opnum-8)
+        - [3.2.4.5.3 IsEnabled (Opnum 9)](#32453-isenabled-opnum-9)
+        - [3.2.4.5.4 EnableDisable (Opnum 10)](#32454-enabledisable-opnum-10)
+        - [3.2.4.5.5 GetExclusionList (Opnum 11)](#32455-getexclusionlist-opnum-11)
+        - [3.2.4.5.6 SetExclusionList (Opnum 12)](#32456-setexclusionlist-opnum-12)
+        - [3.2.4.5.7 WSRMActivate (Opnum 13)](#32457-wsrmactivate-opnum-13)
+        - [3.2.4.5.8 IsWSRMActivated (Opnum 14)](#32458-iswsrmactivated-opnum-14)
+        - [3.2.4.5.9 RestoreExclusionList (Opnum 15)](#32459-restoreexclusionlist-opnum-15)
+      - [3.2.4.6 IWRMMachineGroup Interface](#3246-iwrmmachinegroup-interface)
+        - [3.2.4.6.1 CreateMachineGroup (Opnum 7)](#32461-createmachinegroup-opnum-7)
+        - [3.2.4.6.2 GetMachineGroupInfo (Opnum 8)](#32462-getmachinegroupinfo-opnum-8)
+        - [3.2.4.6.3 ModifyMachineGroup (Opnum 9)](#32463-modifymachinegroup-opnum-9)
+        - [3.2.4.6.4 DeleteMachineGroup (Opnum 10)](#32464-deletemachinegroup-opnum-10)
+        - [3.2.4.6.5 RenameMachineGroup (Opnum 11)](#32465-renamemachinegroup-opnum-11)
+        - [3.2.4.6.6 AddMachine (Opnum 12)](#32466-addmachine-opnum-12)
+        - [3.2.4.6.7 GetMachineInfo (Opnum 13)](#32467-getmachineinfo-opnum-13)
+        - [3.2.4.6.8 ModifyMachineInfo (Opnum 14)](#32468-modifymachineinfo-opnum-14)
+        - [3.2.4.6.9 DeleteMachine (Opnum 15)](#32469-deletemachine-opnum-15)
+      - [3.2.4.7 IWRMPolicy Interface](#3247-iwrmpolicy-interface)
+        - [3.2.4.7.1 GetPolicyInfo (Opnum 7)](#32471-getpolicyinfo-opnum-7)
+        - [3.2.4.7.2 CreatePolicy (Opnum 8)](#32472-createpolicy-opnum-8)
+        - [3.2.4.7.3 ModifyPolicy (Opnum 9)](#32473-modifypolicy-opnum-9)
+        - [3.2.4.7.4 DeletePolicy (Opnum 10)](#32474-deletepolicy-opnum-10)
+        - [3.2.4.7.5 RenameAllocationPolicy (Opnum 11)](#32475-renameallocationpolicy-opnum-11)
+        - [3.2.4.7.6 MoveBefore (Opnum 12)](#32476-movebefore-opnum-12)
+        - [3.2.4.7.7 MoveAfter (Opnum 13)](#32477-moveafter-opnum-13)
+        - [3.2.4.7.8 SetCalDefaultPolicyName (Opnum 14)](#32478-setcaldefaultpolicyname-opnum-14)
+        - [3.2.4.7.9 GetCalDefaultPolicyName (Opnum 15)](#32479-getcaldefaultpolicyname-opnum-15)
+        - [3.2.4.7.10 GetProcessList (Opnum 16)](#324710-getprocesslist-opnum-16)
+        - [3.2.4.7.11 GetCurrentPolicy (Opnum 17)](#324711-getcurrentpolicy-opnum-17)
+        - [3.2.4.7.12 SetCurrentPolicy (Opnum 18)](#324712-setcurrentpolicy-opnum-18)
+        - [3.2.4.7.13 GetCurrentStateAndActivePolicyName (Opnum 19)](#324713-getcurrentstateandactivepolicyname-opnum-19)
+        - [3.2.4.7.14 GetConditionalPolicy (Opnum 20)](#324714-getconditionalpolicy-opnum-20)
+        - [3.2.4.7.15 SetConditionalPolicy (Opnum 21)](#324715-setconditionalpolicy-opnum-21)
+      - [3.2.4.8 IWRMProtocol Interface](#3248-iwrmprotocol-interface)
+        - [3.2.4.8.1 GetSupportedClient (Opnum 7)](#32481-getsupportedclient-opnum-7)
+      - [3.2.4.9 IWRMRemoteSessionMgmt Interface](#3249-iwrmremotesessionmgmt-interface)
+        - [3.2.4.9.1 GetRemoteUserCategories (Opnum 7)](#32491-getremoteusercategories-opnum-7)
+        - [3.2.4.9.2 SetRemoteUserCategories (Opnum 8)](#32492-setremoteusercategories-opnum-8)
+        - [3.2.4.9.3 RefreshRemoteSessionWeights (Opnum 9)](#32493-refreshremotesessionweights-opnum-9)
+      - [3.2.4.10 IWRMResourceGroup Interface](#32410-iwrmresourcegroup-interface)
+        - [3.2.4.10.1 GetResourceGroupInfo (Opnum 7)](#324101-getresourcegroupinfo-opnum-7)
+        - [3.2.4.10.2 ModifyResourceGroup (Opnum 8)](#324102-modifyresourcegroup-opnum-8)
+        - [3.2.4.10.3 CreateResourceGroup (Opnum 9)](#324103-createresourcegroup-opnum-9)
+        - [3.2.4.10.4 DeleteResourceGroup (Opnum 10)](#324104-deleteresourcegroup-opnum-10)
+        - [3.2.4.10.5 RenameResourceGroup (Opnum 11)](#324105-renameresourcegroup-opnum-11)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Message Processing Examples](#41-message-processing-examples)
+    - [4.1.1 Enable Accounting on a Local Machine](#411-enable-accounting-on-a-local-machine)
+    - [4.1.2 Export Selected Objects from the Configuration](#412-export-selected-objects-from-the-configuration)
+    - [4.1.3 Check Whether Import Will Lead to Conflicting Objects](#413-check-whether-import-will-lead-to-conflicting-objects)
+    - [4.1.4 Export Selected Policies to a Machine Group](#414-export-selected-policies-to-a-machine-group)
+    - [4.1.5 Add a Machine to a Machine Group](#415-add-a-machine-to-a-machine-group)
+    - [4.1.6 Create And Initialize a Machine Group](#416-create-and-initialize-a-machine-group)
+    - [4.1.7 Create a Custom Resource Allocation Policy](#417-create-a-custom-resource-allocation-policy)
+    - [4.1.8 Set the Current Resource Policy](#418-set-the-current-resource-policy)
+    - [4.1.9 Create a Custom Process Matching Criteria](#419-create-a-custom-process-matching-criteria)
+  - [4.2 Sample XML Data](#42-sample-xml-data)
+    - [4.2.1 AccountingClientList Example](#421-accountingclientlist-example)
+    - [4.2.2 AccountingConfigInfo Example](#422-accountingconfiginfo-example)
+    - [4.2.3 AccountingMetaData Example](#423-accountingmetadata-example)
+    - [4.2.4 AccountingProcessList Example](#424-accountingprocesslist-example)
+    - [4.2.5 AccountingQueryCondition Example](#425-accountingquerycondition-example)
+    - [4.2.6 Calendar Example](#426-calendar-example)
+    - [4.2.7 Calendars Example](#427-calendars-example)
+    - [4.2.8 CalendarsCollection Example](#428-calendarscollection-example)
+    - [4.2.9 ConditionalPolicy Example](#429-conditionalpolicy-example)
+    - [4.2.10 ConfigurationFiles Example](#4210-configurationfiles-example)
+    - [4.2.11 DependencyList Example](#4211-dependencylist-example)
+    - [4.2.12 Events Example](#4212-events-example)
+    - [4.2.13 ExclusionList Example](#4213-exclusionlist-example)
+    - [4.2.14 Machine Example](#4214-machine-example)
+    - [4.2.15 MachineGroup Example](#4215-machinegroup-example)
+    - [4.2.16 NotificationConfigInfo Example](#4216-notificationconfiginfo-example)
+    - [4.2.17 ObjectIds Example](#4217-objectids-example)
+    - [4.2.18 Policy Example](#4218-policy-example)
+    - [4.2.19 Policy Collection Example](#4219-policy-collection-example)
+    - [4.2.20 ProcessMatchingCriteria Example](#4220-processmatchingcriteria-example)
+    - [4.2.21 ProcessMatchingCriteriaCollection Example](#4221-processmatchingcriteriacollection-example)
+    - [4.2.22 Schedule Example](#4222-schedule-example)
+    - [4.2.23 ServiceList Example](#4223-servicelist-example)
+    - [4.2.24 SupportedClients Example](#4224-supportedclients-example)
+    - [4.2.25 Users Example](#4225-users-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This is a specification of the Windows System Resource Manager (WSRM) Protocol. It is based on the
 Remote Procedure Call (RPC) Protocol [C706] [MS-RPCE].
@@ -987,7 +706,7 @@ Using these interfaces, the following operations can be performed:
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1043,7 +762,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-either enabled or disabled. When enabled, the management service continuously monitors
+
+either enabled or disabled. When enabled, the management service continuously monitors
 start and end dates and times of the scheduled RAP to activate the correct current resource
 policy. When disabled, the RAP scheduled on the calendar has no effect on which RAP is the
 current resource policy.
@@ -1120,7 +840,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
+
+fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
 
 location in the Domain Name System's (DNS) hierarchy tree, as defined in [RFC1035] section
 3.1 and [RFC2181] section 11.
@@ -1196,7 +917,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-are said to match, or be in, the PMC. A process can be selected by only one PMC at a time. The
+
+are said to match, or be in, the PMC. A process can be selected by only one PMC at a time. The
 term resource group" and PMC are used interchangeably.
 
 processor affinity: An element of process matching criteria (PMC), the association between a
@@ -1271,7 +993,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-objects specify the desired resource management behavior of the computer whose resources
+
+objects specify the desired resource management behavior of the computer whose resources
 are under management.
 
 schema: The set of attributes and object classes that govern the creation and update of objects.
@@ -1350,7 +1073,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-XML schema definition (XSD): The World Wide Web Consortium (W3C) standard language that
+
+XML schema definition (XSD): The World Wide Web Consortium (W3C) standard language that
 is used in defining XML schemas. Schemas are useful for enforcing structure and constraining
 the types of data that can be used validly within other XML documents. XML schema definition
 refers to the fully specified and currently recommended standard for use in authoring XML
@@ -1359,14 +1083,14 @@ schemas.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1416,7 +1140,8 @@ Release: June 1, 2017
 
 14 / 184
 
-[XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
+
+[XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
 W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-20091208/
 
 [XMLSCHEMA1/2] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema
@@ -1427,12 +1152,12 @@ https://www.w3.org/TR/2004/REC-xmlschema-1-20041028/
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-WSRM1] Microsoft Corporation, "Windows System Resource Manager, Windows Server 2008
 R2", http://technet.microsoft.com/en-us/library/cc755056.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows System Resource Manager (WSRM) Protocol provides tools for managing processor and
 memory resources on a computer. With WSRM, administrators can control how CPU resources are
@@ -1487,11 +1212,12 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Remote Session Management: Manages CPU quota allocation to different remote sessions.
+
+  Remote Session Management: Manages CPU quota allocation to different remote sessions.
 
   Resource Group Management: Retrieves, modifies, and deletes resource groups.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WSRM Protocol depends on the DCOM Protocol [MS-DCOM], which uses remote procedure call
 (RPC) ([C706] and [MS-RPCE]) as its transport.
@@ -1499,12 +1225,12 @@ The WSRM Protocol depends on the DCOM Protocol [MS-DCOM], which uses remote proc
 There are no protocols that depend on the WSRM Protocol. The WSRM Protocol can be used by
 applications directly.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The WSRM Protocol requires a working, correctly configured DCOM Protocol [MS-DCOM]
 infrastructure.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The WSRM Protocol is applicable when a programmatic interface is required that allows a user to
 remotely limit and monitor the allocation of resources to tasks running on a computer. The WSRM
@@ -1516,7 +1242,7 @@ that applications, services, or processes will interfere with the rest of the sy
 creates a more consistent and predictable experience for users of applications and services running on
 the computer.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -1573,7 +1299,8 @@ Release: June 1, 2017
 
 16 / 184
 
-Interface
+
+Interface
 
 Version
 
@@ -1586,7 +1313,7 @@ to obtain the identity of users making method calls ([MS-RPCE] section 3.3.3.4.3
 server uses this identity to perform access checks, as described in Security Considerations for
 Implementers (section 5.1).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The WSRM Protocol uses HRESULT method return values as specified in [MS-ERREF]. Vendors
 MAY<1> specify additional error codes, which MUST have the C bit (0x20000000) set, indicating they
@@ -1595,7 +1322,7 @@ are extensions.
 A management client SHOULD<2> be implemented to provide a user interface for accounting and
 resource management operations.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The WSRM Protocol uses the following UUIDs to uniquely identify its interfaces.
 
@@ -1700,9 +1427,10 @@ Release: June 1, 2017
 
 17 / 184
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Message transport in the Windows System Resource Manager (WSRM) Protocol uses the DCOM
 Protocol [MS-DCOM], which uses Remote Procedure Call (RPC) ([C706] and [MS-RPCE]) as its
@@ -1712,7 +1440,7 @@ The WSRM server requires clients to request an RPC authentication level of
 RPC_C_AUTHN_LEVEL_PKT_PRIVACY (see [MS-RPCE] section 2.2.1.1.8) for method calls to
 protect the privacy of client-server communication.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This section specifies common data types in the WSRM Protocol. These data types are used in
 messages and method parameters.
@@ -1738,7 +1466,7 @@ Specifies XSD schemas for XML string data.
 Note  Unless otherwise indicated, the internal representation of all numerical values is in little-
 endian order.
 
-2.2.1  ABNF Data Formats
+#### 2.2.1 ABNF Data Formats
 
 The WSRM Protocol specifies Augmented Backus-Naur Form (ABNF) data formats for strings that
 are used in messages and method parameters. These formats are defined using syntax specified in
@@ -1765,7 +1493,7 @@ Timestamp
 
 Specifies the format of timestamp values.
 
-2.2.1.1  Affinity
+##### 2.2.1.1 Affinity
 
 This section specifies the ABNF rules for affinity values, which are used to specify processors on a
 server. Processor affinity values can be specified in strings in WSRM Protocol method parameters
@@ -1778,7 +1506,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-    cpu-number        = 1*DIGIT
+
+    cpu-number        = 1*DIGIT
     cpu-range         = cpu-number "-" cpu-number
 
     cpu-sequence-elem = cpu-number / cpu-range
@@ -1786,7 +1515,7 @@ Release: June 1, 2017
 
     affinity          = cpu-sequence / "all"
 
-2.2.1.2  Boolean
+##### 2.2.1.2 Boolean
 
 This section specifies the ABNF rules for Boolean values. These values can be specified in strings in
 WSRM Protocol method parameters and XML data elements.
@@ -1796,7 +1525,7 @@ WSRM Protocol method parameters and XML data elements.
 
     boolean         = boolean-true / boolean-false
 
-2.2.1.3  Date and Time
+##### 2.2.1.3 Date and Time
 
 This section specifies the ABNF rules for date and time values. These values can be specified in
 strings in WSRM Protocol method parameters and XML data elements.
@@ -1842,10 +1571,11 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-date-T-time values are specified in Events XML elements (section 2.2.5.15). See the Events example
+
+date-T-time values are specified in Events XML elements (section 2.2.5.15). See the Events example
 (section 4.2.12).
 
-2.2.1.4  Timestamp
+##### 2.2.1.4 Timestamp
 
 This section specifies the ABNF rules for timestamp values. A timestamp can be specified inside a
 common node at the root level of an XML element.
@@ -1867,7 +1597,7 @@ A timestamp value MUST be defined at the root level of Calendar elements (sectio
 
 Calendar example (section 4.2.6).
 
-2.2.2  Constants
+#### 2.2.2 Constants
 
 The WSRM Protocol specifies literal constants that are used in messages and method parameters.
 
@@ -1926,7 +1656,8 @@ Release: June 1, 2017
 
 20 / 184
 
-2.2.2.1  Boolean Values
+
+##### 2.2.2.1 Boolean Values
 
 This section defines integer constants for Boolean values, which specify binary decisions. These values
 are used in WSRM protocol method parameters and XML data elements.
@@ -1945,7 +1676,7 @@ The integer value for "false".
 
 The integer value for "true".
 
-2.2.2.2  Category Types
+##### 2.2.2.2 Category Types
 
 This section defines literal constants for category types, which specify priorities of resource policies.
 These values are used in WSRM protocol method parameters and XML data elements.
@@ -1972,7 +1703,7 @@ Medium priority.
 
 Lowest priority.
 
-2.2.2.3  Day Modifiers
+##### 2.2.2.3 Day Modifiers
 
 This section defines literal constants for day modifiers, which specify the monthly instances of a day of
 the week for a scheduled event. They are intended to be used with day options (section 2.2.2.4).
@@ -2017,7 +1748,8 @@ Release: June 1, 2017
 
 21 / 184
 
-2.2.2.4  Day Options
+
+##### 2.2.2.4 Day Options
 
 This section defines literal constants for day options, which specify a calendar day of the week for a
 scheduled event. These values are used in WSRM Protocol method parameters and XML data
@@ -2075,7 +1807,7 @@ The event is scheduled for a Sunday.
 
 The event is scheduled for any day.
 
-2.2.2.5  Frequency Options
+##### 2.2.2.5 Frequency Options
 
 This section defines literal constants for frequency options, which specify the frequency of occurrence
 of a scheduled event. These values are used in WSRM Protocol method parameters and XML data
@@ -2110,7 +1842,8 @@ Release: June 1, 2017
 
 22 / 184
 
-Constant/value  Description
+
+Constant/value  Description
 
 Yearly
 
@@ -2118,7 +1851,7 @@ Yearly
 
 The event happens once a year.
 
-2.2.2.6  Memory Options
+##### 2.2.2.6 Memory Options
 
 This section defines literal constants for memory options, which specify an action to take when a
 process exceeds its maximum committed memory. These values are used in WSRM Protocol method
@@ -2140,7 +1873,7 @@ The process is terminated.
 
 "TerminateApp"
 
-2.2.2.7  Object Types
+##### 2.2.2.7 Object Types
 
 This section defines literal constants for object types, which specify types of conflicting objects.
 These values are used in WSRM protocol method parameters and XML data elements.
@@ -2175,7 +1908,7 @@ The object is a calendar object (section 2.2.5.7).
 
 "Calendar"
 
-2.2.2.8  Resource Allocation Options
+##### 2.2.2.8 Resource Allocation Options
 
 This section defines literal constants for resource allocation options, which specify how resources such
 as the CPU and memory are allocated to processes. These values are used in WSRM protocol method
@@ -2190,7 +1923,8 @@ Release: June 1, 2017
 
 23 / 184
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -2225,7 +1959,7 @@ Standard
 
 No attempt is made to control how the resource is allocated among processes.
 
-2.2.2.9  Supported Client Options
+##### 2.2.2.9 Supported Client Options
 
 This section defines literal constants for supported client options, which specify the level of support for
 clients on the WSRM server. These values are used in WSRM Protocol method parameters and XML
@@ -2253,9 +1987,9 @@ The level of client support provided by version 2 WSRM servers.<7>
 
 The level of client support provided by version 3 WSRM servers.<8>
 
-2.2.2.10
+##### 2.2.2.10 User Types
 
-User Types
+
 
 This section defines literal constants for user types, which specify the type of a user. These values are
 used in WSRM protocol method parameters and XML data elements.
@@ -2283,9 +2017,10 @@ Release: June 1, 2017
 
 24 / 184
 
-2.2.2.11
 
-Column Types
+##### 2.2.2.11 Column Types
+
+
 
 This section defines integer constants for Column Types, which specify the type of the columns in
 accounting databases. These values are used in XML data elements.
@@ -2316,9 +2051,9 @@ The integer designating column type as text of maximum length 255 characters.
 
 "3"
 
-2.2.2.12
+##### 2.2.2.12 Condition Category
 
-Condition Category
+
 
 This section defines literal constants for Condition Category, which specifies the category of a
 condition. These values are used in WSRM protocol method parameters and XML data elements.
@@ -2354,9 +2089,9 @@ sections 3.1.4.1.18, 3.1.4.1.19, 3.1.4.1.50, and 3.1.4.1.51, respectively.
 A special condition category. A condition with this category will be evaluated if no other
 condition matches for a conditional event.
 
-2.2.2.13
+##### 2.2.2.13 Condition Name
 
-Condition Name
+
 
 This section defines literal constants for Condition Name, which specifies the name of a condition.
 These values are used in WSRM protocol method parameters and XML data elements.
@@ -2378,7 +2113,8 @@ Release: June 1, 2017
 
 25 / 184
 
-Constant/value  Description
+
+Constant/value  Description
 
 MemoryNew
 
@@ -2418,7 +2154,7 @@ conditional event.
 
 Name to represent condition, which is not associated with any of the conditional event.
 
-2.2.3  Enumerations
+#### 2.2.3 Enumerations
 
 The WSRM Protocol specifies enumeration constants that are used in messages and method
 parameters.
@@ -2456,7 +2192,7 @@ RESTORE_MODE
 
 Defines states that objects can have when they are restored.
 
-2.2.3.1  CONFIGTYPE Enumeration
+##### 2.2.3.1 CONFIGTYPE Enumeration
 
 The CONFIGTYPE enumeration defines types of WSRM configuration objects on which operations
 can be performed. WSRM configuration objects are used in the IWRMConfig
@@ -2475,7 +2211,8 @@ Release: June 1, 2017
 
 26 / 184
 
- } CONFIGTYPE;
+
+ } CONFIGTYPE;
 
 CONFIGTYPE_ACCOUNTING:  This operation targets the accounting configuration.
 
@@ -2483,7 +2220,7 @@ CONFIGTYPE_NOTIFICATION:  This operation targets the notification configuration.
 
 CONFIGTYPE_CALENDARING:  This operation targets the calendar configuration.
 
-2.2.3.2  EXCLUSIONLIST_TYPE Enumeration
+##### 2.2.3.2 EXCLUSIONLIST_TYPE Enumeration
 
 The EXCLUSIONLIST_TYPE enumeration defines types of server exclusion list. A WSRM exclusion list
 is in the form of an ExclusionList element (section 2.2.5.16) in XML. They are used by IWRMConfig
@@ -2504,7 +2241,7 @@ DEFAULT_USER_EXCLUSION_LIST:  The exclusion list is the default user-defined exc
 
 list.<9>
 
-2.2.3.3  IMPORT_TYPE Enumeration
+##### 2.2.3.3 IMPORT_TYPE Enumeration
 
 The IMPORT_TYPE enumeration defines modes for importing objects when conflicting objects are
 present in the configuration.
@@ -2545,7 +2282,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.3.4  MACHINE_GROUP_MERGE_OPTIONS Enumeration
+
+##### 2.2.3.4 MACHINE_GROUP_MERGE_OPTIONS Enumeration
 
 The MACHINE_GROUP_MERGE_OPTIONS enumeration defines options for machine group
 modification.
@@ -2585,7 +2323,7 @@ range is sufficiently large and is not consumed completely because, in the WSRM 
 the maximum allowed number of objects of each type is 128. In addition, whenever an object with
 a smart name is deleted or renamed, the number that was used in its name is available for reuse.
 
-2.2.3.5  MANAGEMENT_TYPE Enumeration
+##### 2.2.3.5 MANAGEMENT_TYPE Enumeration
 
 The MANAGEMENT_TYPE enumeration defines management modes for the WSRM Protocol server.
 Management modes are used by IWRMPolicy methods (section 3.2.4.7).
@@ -2614,7 +2352,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-policy. The policy was set and the management mode was set to calendar mode as a result of a
+
+policy. The policy was set and the management mode was set to calendar mode as a result of a
 calendar event, which is created and managed by IWRMCalendar methods (section 3.2.4.4).
 
 PROFILING:  The server is in profiling mode. In this mode, WSRM does not manage the CPU and
@@ -2622,7 +2361,7 @@ PROFILING:  The server is in profiling mode. In this mode, WSRM does not manage 
 memory allocation for processes. If accounting is enabled, process properties of all running
 processes are logged into the accounting database.
 
-2.2.3.6  OBJECT_TYPE Enumeration
+##### 2.2.3.6 OBJECT_TYPE Enumeration
 
 The OBJECT_TYPE enumeration defines types of objects on which an operation can be performed. The
 WSRM objects are used by the GetDependencies (section 3.2.4.1.6) and
@@ -2641,7 +2380,7 @@ OBJECT_POLICY:  The target object is a policy.
 
 OBJECT_SCHEDULE:  The target object is a calendar or a schedule object.
 
-2.2.3.7  RESTORE_MODE Enumeration
+##### 2.2.3.7 RESTORE_MODE Enumeration
 
 The RESTORE_MODE enumeration defines states that the WSRM configuration can have when it is
 restored. The WSRM configuration is restored by the RestoreXMLFiles method (section 3.2.4.1.5).
@@ -2662,7 +2401,7 @@ RESTORE_EMPTY_FILES:  This value targets the initial state of the WSRM configura
 the product is shipped. This means that only the out-of-box policies, empty calendars, and
 conditional policies will be used in the restored state of the object.
 
-2.2.4  Namespaces
+#### 2.2.4 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a particular prefix for each namespace that is used,
@@ -2691,7 +2430,8 @@ Release: June 1, 2017
 
 29 / 184
 
-2.2.5  XML Data Formats
+
+#### 2.2.5 XML Data Formats
 
 The WSRM Protocol specifies XML data formats for strings that are used in messages and method
 parameters. These formats are defined using XSD schema syntax specified in [W3C-XSD].
@@ -2809,7 +2549,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Name
+
+Name
 
 Description
 
@@ -2848,7 +2589,7 @@ element MUST result in a value of "valid" for the validity property ([XMLSCHEMA1
 
 Samples of XML data formats are provided in Sample XML Data (section 4.2).
 
-2.2.5.1  AccountingClientList Element
+##### 2.2.5.1 AccountingClientList Element
 
 The AccountingClientList XML element is used to specify a list of accounting clients.
 
@@ -2896,7 +2637,8 @@ Release: June 1, 2017
 
 31 / 184
 
-Name
+
+Name
 
 Type
 
@@ -2906,7 +2648,7 @@ Enabled  xs:string  A string that specifies whether the accounting functionality
 
 currently enabled, in Boolean format (section 2.2.1.2).
 
-2.2.5.2  AccountingConfigInfo Element
+##### 2.2.5.2 AccountingConfigInfo Element
 
 The AccountingConfigInfo XML element is used to specify configuration information concerning the
 accounting database. It is the root element of XML documents that are used in WSRM method
@@ -2988,7 +2730,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.5.3  AccountingMetaData Element
+
+##### 2.2.5.3 AccountingMetaData Element
 
 The AccountingMetaData XML element is used to specify metadata for the accounting database.
 
@@ -3065,7 +2808,8 @@ Release: June 1, 2017
 
 33 / 184
 
-         </xs:complexType>
+
+         </xs:complexType>
        </xs:element>
      </xs:choice>
    </xs:complexType>
@@ -3158,7 +2902,7 @@ xs:string
 A string that specifies an aggregate function, which performs a
 calculation on rows in the column.
 
-2.2.5.4  AccountingProcessList Element
+##### 2.2.5.4 AccountingProcessList Element
 
 The AccountingProcessList XML element is used to specify a list of accounting processes and their
 properties. These properties correspond to data items in the accounting database. See section
@@ -3181,7 +2925,8 @@ Release: June 1, 2017
 
 34 / 184
 
-             <xs:element name="EventType"
+
+             <xs:element name="EventType"
                type="xs:string"
                minOccurs="0"
               />
@@ -3258,7 +3003,8 @@ Release: June 1, 2017
 
 35 / 184
 
-               type="xs:string"
+
+               type="xs:string"
                minOccurs="0"
               />
              <xs:element name="PolicyName"
@@ -3334,7 +3080,8 @@ Release: June 1, 2017
 
 36 / 184
 
- </xs:element>
+
+ </xs:element>
 
 Child Elements
 
@@ -3487,7 +3234,8 @@ Release: June 1, 2017
 
 37 / 184
 
-Element
+
+Element
 
 Type
 
@@ -3619,7 +3367,8 @@ Release: June 1, 2017
 
 38 / 184
 
-2.2.5.5  AccountingQueryCondition Element
+
+##### 2.2.5.5 AccountingQueryCondition Element
 
 The AccountingQueryCondition XML element is used to specify a query on the accounting database.
 It is the root element of XML documents that are used in WSRM method parameters.
@@ -3700,7 +3449,8 @@ Release: June 1, 2017
 
 39 / 184
 
-Element
+
+Element
 
 Column
 
@@ -3769,7 +3519,7 @@ For example:
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.6  AppPoolList Element
+##### 2.2.5.6 AppPoolList Element
 
 The AppPoolList XML element specifies an IIS application pool list structure. It is the root element
 of XML documents that are used in WSRM method parameters.
@@ -3795,7 +3545,8 @@ Release: June 1, 2017
 
 40 / 184
 
-Element  Type
+
+Element  Type
 
 Description
 
@@ -3820,7 +3571,7 @@ xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.7  Calendar Element
+##### 2.2.5.7 Calendar Element
 
 The Calendar XML element specifies a calendar object, which controls the scheduling of resource
 allocation. It is the root element of XML documents that are used in WSRM method parameters.
@@ -3870,7 +3621,8 @@ Release: June 1, 2017
 
 41 / 184
 
-         type="xsd:string"
+
+         type="xsd:string"
          minOccurs="0"
          maxOccurs="1"
         />
@@ -3941,7 +3693,7 @@ A text description of the calendar object.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.8  CalendarEvent Element
+##### 2.2.5.8 CalendarEvent Element
 
 The CalendarEvent XML element specifies the scheduling parameters for a calendar event that is
 associated with a resource allocation policy (RAP). It is used in the definition of Calendar and
@@ -3974,7 +3726,8 @@ Release: June 1, 2017
 
 42 / 184
 
-       <xs:element name="DurationDays"
+
+       <xs:element name="DurationDays"
          type="xs:unsignedByte"
          minOccurs="0"
          maxOccurs="1"
@@ -4028,7 +3781,7 @@ event.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.9  CalendarRule Element
+##### 2.2.5.9 CalendarRule Element
 
 The CalendarRule XML element specifies the calendar parameters for a single calendar event. It is
 the root element of XML documents that are used in WSRM method parameters, including methods of
@@ -4062,7 +3815,8 @@ Release: June 1, 2017
 
 43 / 184
 
-         type="xsd:string"
+
+         type="xsd:string"
          minOccurs="1"
          maxOccurs="1"
         />
@@ -4139,7 +3893,8 @@ Release: June 1, 2017
 
 44 / 184
 
-         minOccurs="0"
+
+         minOccurs="0"
          maxOccurs="1"
        >
          <xs:complexType name="ByMonth">
@@ -4253,7 +4008,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Element
+
+Element
 
 Type
 
@@ -4329,9 +4085,9 @@ MANAGEMENT_TYPE enumeration (section 2.2.3.5).
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.10
+##### 2.2.5.10 Calendars Element
 
-Calendars Element
+
 
 The Calendars XML element specifies one or more calendar objects. It is the root element of XML
 documents that are used in WSRM method parameters, including methods of the IWRMCalendar
@@ -4350,7 +4106,8 @@ Release: June 1, 2017
 
 46 / 184
 
-         ref="Calendar"
+
+         ref="Calendar"
         />
      </xs:sequence>
    </xs:complexType>
@@ -4368,9 +4125,9 @@ object.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.11
+##### 2.2.5.11 CalendarsCollection Element
 
-CalendarsCollection Element
+
 
 The CalendarsCollection XML element specifies a collection of calendar and schedule objects. It is the
 root element of XML documents that are used in WSRM method parameters, including methods of the
@@ -4423,9 +4180,9 @@ more schedule objects.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.12
+##### 2.2.5.12 ConditionalPolicy Element
 
-ConditionalPolicy Element
+
 
 The ConditionalPolicy XML element is used to control the selection of RAP. It is the root element of
 XML documents that are used in WSRM method parameters.
@@ -4437,7 +4194,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- <xs:element name="ConditionalPolicy">
+
+ <xs:element name="ConditionalPolicy">
    <xs:complexType name="ConditionalPolicy">
      <xs:sequence>
        <xs:element name="ConditionsList"
@@ -4514,7 +4272,8 @@ Release: June 1, 2017
 
 48 / 184
 
-                   use="required"
+
+                   use="required"
                   />
                  <xs:attribute name="Name"
                    type="xs:string"
@@ -4643,7 +4402,8 @@ Release: June 1, 2017
 
 49 / 184
 
-Name
+
+Name
 
 Type
 
@@ -4681,9 +4441,9 @@ The name of the conditional policy.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.13
+##### 2.2.5.13 ConfigurationFiles Element
 
-ConfigurationFiles Element
+
 
 The ConfigurationFiles XML element is used to specify configurations used for the import and export
 of user information. It is the root element of XML documents that are used in WSRM method
@@ -4749,11 +4509,12 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.14
+Additional XML data formats are specified in section 2.2.5.
 
-DependencyList Element
+##### 2.2.5.14 DependencyList Element
+
+
 
 The DependencyList XML element is used to specify dependent policies, calendar events, schedules,
 and conditions. It is the root element of XML documents that are used in WSRM method parameters.
@@ -4844,7 +4605,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Name  Type
+
+Name  Type
 
 Description
 
@@ -4886,9 +4648,9 @@ com:xml-msdata"
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.15
+##### 2.2.5.15 Events Element
 
-Events Element
+
 
 The Events XML element is used to specify a list of scheduled calendar events. It is the root element
 of XML documents that are used in WSRM method parameters.
@@ -4917,7 +4679,8 @@ Release: June 1, 2017
 
 52 / 184
 
-              />
+
+              />
              <xs:element name="CalendarName"
                type="xs:string"
               />
@@ -4965,9 +4728,9 @@ The name of the calendar to which this event is linked.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.16
+##### 2.2.5.16 ExclusionList Element
 
-ExclusionList Element
+
 
 The ExclusionList XML element is used to specify an exclusion list of processes to exclude from
 management. It is the root element of XML documents that are used in WSRM method parameters.
@@ -4995,9 +4758,9 @@ xs:string  The name of a process to be excluded.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.17
+##### 2.2.5.17 Machine Element
 
-Machine Element
+
 
 The Machine XML element is used to specify parameters for managing machines within machine
 groups. It is the root element of XML documents that are used in WSRM method parameters.
@@ -5011,7 +4774,8 @@ Release: June 1, 2017
 
 53 / 184
 
-   <xs:complexType>
+
+   <xs:complexType>
      <xs:attribute name="Name"
        type="xs:string"
       />
@@ -5067,9 +4831,9 @@ LastUpdatedTime  xs:string  The last time this machine information was updated, 
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.18
+##### 2.2.5.18 MachineGroup Element
 
-MachineGroup Element
+
 
 The MachineGroup XML element is used to specify parameters for managing machine groups. It is
 the root element of XML documents that are used in WSRM method parameters.
@@ -5098,7 +4862,8 @@ Release: June 1, 2017
 
 54 / 184
 
-      />
+
+      />
      <xs:attribute name="Description"
        type="xs:string"
       />
@@ -5137,9 +4902,9 @@ Description  xs:string  A description of the machine group.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.19
+##### 2.2.5.19 NotificationConfigInfo Element
 
-NotificationConfigInfo Element
+
 
 The NotificationConfigInfo XML element is used to specify the notification configuration.
 
@@ -5189,7 +4954,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Element
+
+Element
 
 Type
 
@@ -5209,9 +4975,9 @@ xs:string  A string that specifies a list of numeric event identifiers, separate
 
 commas.
 
-2.2.5.20
+##### 2.2.5.20 ObjectIds Element
 
-ObjectIds Element
+
 
 The ObjectIds XML element is used to specify objects on the server. It is the root element of XML
 documents that are used in WSRM method parameters.
@@ -5261,9 +5027,9 @@ xs:string  The type of the object, expressed as an object type (section 2.2.2.7)
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.21
+##### 2.2.5.21 Policy Element
 
-Policy Element
+
 
 The Policy XML element specifies parameters for managing resource allocation. It is the root
 element of XML documents that are used in WSRM method parameters.
@@ -5275,7 +5041,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- <xs:element name="Policy">
+
+ <xs:element name="Policy">
    <xs:complexType>
      <xs:sequence>
        <xs:element name="AllocationCriteria"
@@ -5356,7 +5123,8 @@ Release: June 1, 2017
 
 57 / 184
 
-Element
+
+Element
 
 Type
 
@@ -5437,9 +5205,9 @@ xs:string  The name of the policy.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.22
+##### 2.2.5.22 PolicyCollection Element
 
-PolicyCollection Element
+
 
 The PolicyCollection XML element specifies a collection of policy objects for managing resource
 allocation. It is the root element of XML documents that are used in WSRM method parameters,
@@ -5465,7 +5233,8 @@ Release: June 1, 2017
 
 58 / 184
 
-Element  Type  Description
+
+Element  Type  Description
 
 Policy
 
@@ -5475,9 +5244,9 @@ policy (RAP).
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.23
+##### 2.2.5.23 ProcessList Element
 
-ProcessList Element
+
 
 The ProcessList XML element specifies a list of processes and their properties and is used in the
 GetProcessList (Opnum 16) (section 3.2.4.7.10) method to return processes matched by the PMCs of
@@ -5544,7 +5313,8 @@ Release: June 1, 2017
 
 59 / 184
 
-             <xs:element name="PageFaultCount"
+
+             <xs:element name="PageFaultCount"
                type="xs:unsignedInt"
               />
              <xs:element name="PeakWorkingSetSize"
@@ -5638,7 +5408,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Element
+
+Element
 
 Type
 
@@ -5792,7 +5563,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Element
+
+Element
 
 Type
 
@@ -5854,9 +5626,9 @@ data transferred for I/O control functions.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.24
+##### 2.2.5.24 ProcessMatchingCriteria Element
 
-ProcessMatchingCriteria Element
+
 
 The ProcessMatchingCriteria XML element specifies parameters for resource management. It is the
 root element of XML documents that are used to specify process matching criteria (PMC) in WSRM
@@ -5896,7 +5668,8 @@ Release: June 1, 2017
 
 62 / 184
 
-Child Elements
+
+Child Elements
 
 Element
 
@@ -5932,9 +5705,9 @@ xs:string  The name of the PMC.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.25
+##### 2.2.5.25 ProcessMatchingCriteriaCollection Element
 
-ProcessMatchingCriteriaCollection Element
+
 
 The ProcessMatchingCriteriaCollection XML element specifies a collection of process matching
 criteria (PMC) objects for resource management. It is the root element of XML documents that are
@@ -5966,9 +5739,9 @@ management.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.26
+##### 2.2.5.26 Schedule Element
 
-Schedule Element
+
 
 The Schedule XML element specifies a schedule for a calendar event. It is the root element of XML
 documents that are used in WSRM method parameters.
@@ -5988,7 +5761,8 @@ Release: June 1, 2017
 
 63 / 184
 
-        />
+
+        />
        <xs:element
          maxOccurs="unbounded"
          ref="CalendarEvent"
@@ -6026,9 +5800,9 @@ A text description of the schedule.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.27
+##### 2.2.5.27 Schedules Element
 
-Schedules Element
+
 
 The Schedules XML element specifies one or more schedule objects. It is the root element of XML
 documents that are used in WSRM method parameters, including methods of the IWRMCalendar
@@ -6057,9 +5831,9 @@ schedule object.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.28
+##### 2.2.5.28 ServiceList Element
 
-ServiceList Element
+
 
 The ServiceList XML element is used to specify services that are registered with the server. It is the
 root element of XML documents that are used in WSRM method parameters.
@@ -6071,7 +5845,8 @@ Release: June 1, 2017
 
 64 / 184
 
- <xs:element name="ServiceList">
+
+ <xs:element name="ServiceList">
    <xs:complexType>
      <xs:sequence>
        <xs:element name="Service"
@@ -6130,9 +5905,9 @@ Description  xs:string  A text description of the service.
 
 Additional XML data formats are specified in section 2.2.5.
 
-2.2.5.29
+##### 2.2.5.29 SupportedClients Element
 
-SupportedClients Element
+
 
 The SupportedClients XML element is used to specify the level of support for clients on the WSRM
 server. It is the root element of XML documents that are used in WSRM method parameters.
@@ -6159,7 +5934,8 @@ Release: June 1, 2017
 
 65 / 184
 
-           </xs:simpleContent>
+
+           </xs:simpleContent>
          </xs:complexType>
        </xs:element>
      </xs:choice>
@@ -6176,9 +5952,9 @@ Client  A string that identifies the level of support for clients, expressed as 
 
 (section 2.2.2.9).
 
-2.2.5.30
+##### 2.2.5.30 Users Element
 
-Users Element
+
 
 The Users XML element is used to specify categories of remote session users. It is the root element of
 XML documents that are used in WSRM method parameters.
@@ -6231,7 +6007,8 @@ Release: June 1, 2017
 
 66 / 184
 
-Child Elements
+
+Child Elements
 
 Element  Type
 
@@ -6286,22 +6063,23 @@ Release: June 1, 2017
 
 67 / 184
 
-3  Protocol Details
 
-3.1  Client Role Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Role Details
+
+#### 3.1.1 Abstract Data Model
 
 No abstract data model is defined.
 
 The WSRM Protocol does not support notification callback, so no notification callback objects are
 defined.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are required.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The client MUST instantiate a ResourceManager Component Object Model (COM) object. A
 description of how to create COM objects is specified in [MS-DCOM] section 1.3.1.
@@ -6309,15 +6087,15 @@ description of how to create COM objects is specified in [MS-DCOM] section 1.3.1
 After instantiating the ResourceManager object and acquiring pointers to its interfaces, a client calls
 methods of interest.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
-3.1.4.1  Higher-Layer Triggered Events
+##### 3.1.4.1 Higher-Layer Triggered Events
 
 All method invocations are triggered by higher-layer events, including commands issued within
 administrative and diagnostic applications. Method invocations are specified in Message Processing
 Events and Sequencing Rules (section 3.2.4) for the WSRM Protocol server.
 
-3.1.4.2  Opening and Closing a Session
+##### 3.1.4.2 Opening and Closing a Session
 
 To open a session, the client MUST do the following, in sequence:
 
@@ -6332,7 +6110,7 @@ described in [MS-DCOM] section 3.1.1.5.8.
 To close a session, the client MUST release all of its acquired interface pointers by calling their
 Release methods.
 
-3.1.4.3  Processing Server Replies
+##### 3.1.4.3 Processing Server Replies
 
 Upon receiving a reply from the server in response to a method call, the client MUST validate the
 return code. If the return value is 0x00000000,success is indicated, and the client can assume that all
@@ -6349,20 +6127,21 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.1.4.4  Processing Server Notifications
+
+##### 3.1.4.4 Processing Server Notifications
 
 WSRM does not support notification callback; that is, the client receives no callback events issued by
 the server.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No timer events are used.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No other local events require special processing on the client.
 
-3.2  Server Role Details
+### 3.2 Server Role Details
 
 The following types of tasks are executed on the WSRM Protocol server:
 
@@ -6388,7 +6167,7 @@ Listening for commands to query, modify, configure, or create accounting databas
 
   Assigning resources to remote sessions according to configuration settings.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation of the
 WSRM Protocol could maintain in order to participate in this protocol. This description is provided to
@@ -6397,7 +6176,7 @@ facilitate the explanation of how the protocol behaves.
 This specification does not mandate that implementations adhere to this model as long as their
 external behavior is consistent with that defined in this specification.
 
-3.2.1.1  Data Structures
+##### 3.2.1.1 Data Structures
 
 The WSRM Protocol maintains types of information as described by the following data structures:
 
@@ -6422,11 +6201,12 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  System directory: An information structure returned by the GetIISAppPoolNames method. It
+
+  System directory: An information structure returned by the GetIISAppPoolNames method. It
 
 defines the system directory used by Terminal Services.<17>
 
-3.2.1.2  Accounting Database
+##### 3.2.1.2 Accounting Database
 
 The WSRM Protocol maintains information for each process it manages in an accounting database. It
 SHOULD<18> contain the following information. The "Name" column specifies the name of the
@@ -6521,7 +6301,8 @@ Release: June 1, 2017
 
 70 / 184
 
-Name
+
+Name
 
 Description
 
@@ -6636,7 +6417,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Name
+
+Name
 
 Description
 
@@ -6673,11 +6455,11 @@ GroupId
 
 A numerical identifier that uniquely identifies a raw accounting data record.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Timers are not required for this interface.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 At startup, the server registers the Component Object Model (COM) interfaces. At the initialization,
 the WSRM management service MUST attempt the following tasks:
@@ -6698,7 +6480,7 @@ If there is no machine group in the configuration, the management service MUST c
 first machine group with the name "Default" and the description "Default machine group", without
 any machine group or machine as its children.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The WSRM Protocol server exposes DCOM Protocol [MS-DCOM] interfaces for interacting with
 clients<20>. The server MUST implement the following interfaces:
@@ -6727,7 +6509,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Interface
+
+Interface
 
 Description
 
@@ -6759,7 +6542,7 @@ Retrieves, modifies, and deletes resource groups.
 
 These interfaces are specified in the sections that follow.
 
-3.2.4.1  IResourceManager Interface
+##### 3.2.4.1 IResourceManager Interface
 
 The IResourceManager interface defines the following methods.
 
@@ -6838,7 +6621,8 @@ Release: June 1, 2017
 
 73 / 184
 
-3.2.4.1.1 RetrieveEventList (Opnum 7)
+
+###### 3.2.4.1.1 RetrieveEventList (Opnum 7)
 
 The RetrieveEventList method is not implemented and always returns an error.
 
@@ -6860,7 +6644,7 @@ This function is not implemented.
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.1.2 GetSystemAffinity (Opnum 8)
+###### 3.2.4.1.2 GetSystemAffinity (Opnum 8)
 
 The GetSystemAffinity method gets the processor affinity of the system.
 
@@ -6887,7 +6671,7 @@ S_OK
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.1.3 ImportXMLFiles (Opnum 9)
+###### 3.2.4.1.3 ImportXMLFiles (Opnum 9)
 
 The ImportXMLFiles method loads a specified WSRM configuration.
 
@@ -6905,7 +6689,8 @@ Release: June 1, 2017
 
 74 / 184
 
-bstrPMCXml: A string that specifies the PMCs to be loaded by the server, in the form of a
+
+bstrPMCXml: A string that specifies the PMCs to be loaded by the server, in the form of a
 ProcessMatchingCriteriaCollection element (section 2.2.5.25). For an example, see
 ProcessMatchingCriteriaCollection example (section 4.2.21). This parameter is ignored if it is
 NULL.
@@ -6955,7 +6740,7 @@ The ImportXMLFiles method can be used to manage system resources by importing a 
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.1.4 ExportXMLFiles (Opnum 10)
+###### 3.2.4.1.4 ExportXMLFiles (Opnum 10)
 
 The ExportXMLFiles method saves the current WSRM configuration.<28>
 
@@ -6989,7 +6774,8 @@ Release: June 1, 2017
 
 75 / 184
 
-Return Values: This method returns 0x00000000 for success or a negative HRESULT value (in the
+
+Return Values: This method returns 0x00000000 for success or a negative HRESULT value (in the
 
 following table or in [MS-ERREF] section 2.1.1) if an error occurs.
 
@@ -7012,7 +6798,7 @@ Operation successful.
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.1.5 RestoreXMLFiles (Opnum 11)
+###### 3.2.4.1.5 RestoreXMLFiles (Opnum 11)
 
 The RestoreXMLFiles method restores the WSRM configuration to a specified state.
 
@@ -7057,7 +6843,7 @@ becomes corrupted and the server cannot proceed.
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.1.6 GetDependencies (Opnum 12)
+###### 3.2.4.1.6 GetDependencies (Opnum 12)
 
 The GetDependencies method returns a list of WSRM objects that are being used or that depend on a
 specified object.
@@ -7075,7 +6861,8 @@ Release: June 1, 2017
 
 76 / 184
 
-bstrObjectName: A string that specifies the name of the object whose dependencies are to be
+
+bstrObjectName: A string that specifies the name of the object whose dependencies are to be
 
 returned.
 
@@ -7159,7 +6946,7 @@ If a calendar object is specified, this method MUST return WRM_ERR_CAL_UNKNOWN_S
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.1.7 GetServiceList (Opnum 13)
+###### 3.2.4.1.7 GetServiceList (Opnum 13)
 
 The GetServiceList method provides a list of services that are registered with the server and are not
 excluded by the exclusion list. This list of services is expected to be used for defining process
@@ -7174,7 +6961,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-   [out] BSTR* pbstrServiceList
+
+   [out] BSTR* pbstrServiceList
  );
 
 pbstrServiceList: A pointer to a string that returns a list of services, in the form of a ServiceList
@@ -7195,7 +6983,7 @@ S_OK
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.1.8 GetIISAppPoolNames (Opnum 14)
+###### 3.2.4.1.8 GetIISAppPoolNames (Opnum 14)
 
 The GetIISAppPoolNames method returns a list of all the application pools on the WSRM server that
 are defined by and known to the IIS server.
@@ -7227,7 +7015,7 @@ S_OK
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.1.9 GetServerName (Opnum 15)
+###### 3.2.4.1.9 GetServerName (Opnum 15)
 
 The GetServerName method returns the server name.
 
@@ -7248,7 +7036,8 @@ Release: June 1, 2017
 
 78 / 184
 
-Return value/code  Description
+
+Return value/code  Description
 
 0x00000000
 
@@ -7258,7 +7047,7 @@ S_OK
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.1.10  GetCurrentMemory (Opnum 16)
+###### 3.2.4.1.10 GetCurrentMemory (Opnum 16)
 
 The GetCurrentMemory method determines the total amount of physical memory in the system.
 
@@ -7286,7 +7075,7 @@ S_OK
 
 Additional IResourceManager interface methods are specified in section 3.2.4.1.
 
-3.2.4.2  IResourceManager2 Interface
+##### 3.2.4.2 IResourceManager2 Interface
 
 The IResourceManager2 interface defines the following methods.<34>
 
@@ -7318,7 +7107,7 @@ Exports objects from the configuration.
 
 Opnum: 10
 
-3.2.4.2.1 ExportObjects (Opnum 7)
+###### 3.2.4.2.1 ExportObjects (Opnum 7)
 
 The ExportObjects method creates XML for exporting objects.
 
@@ -7331,7 +7120,8 @@ Release: June 1, 2017
 
 79 / 184
 
-   [in] BSTR bstrObjectIds,
+
+   [in] BSTR bstrObjectIds,
    [in] OBJECT_TYPE enumObjectType,
    [out] BSTR* pbstrObjectXml
  );
@@ -7423,7 +7213,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.4.2.2 GetImportConflicts (Opnum 8)
+
+###### 3.2.4.2.2 GetImportConflicts (Opnum 8)
 
 The GetImportConflicts method finds conflicts between import objects and existing objects.
 
@@ -7492,7 +7283,7 @@ invalid or cannot be processed.<36>
 
 Additional IResourceManager2 interface methods are specified in section 3.2.4.2.
 
-3.2.4.2.3 ImportXml (Opnum 9)
+###### 3.2.4.2.3 ImportXml (Opnum 9)
 
 The ImportXml method imports objects into the configuration.
 
@@ -7510,7 +7301,8 @@ Release: June 1, 2017
 
 81 / 184
 
-   [in] BSTR bstrConfigurationXmls,
+
+   [in] BSTR bstrConfigurationXmls,
    [in] IMPORT_TYPE enumImportType
  );
 
@@ -7578,7 +7370,7 @@ invalid or cannot be processed.<39>
 
 Additional IResourceManager2 interface methods are specified in section 3.2.4.2.
 
-3.2.4.2.4 ExportXml (Opnum 10)
+###### 3.2.4.2.4 ExportXml (Opnum 10)
 
 The ExportXml method exports objects from the configuration.
 
@@ -7598,7 +7390,8 @@ Release: June 1, 2017
 
 82 / 184
 
-pbstrPMCXml: A pointer to a string that returns process matching criteria (PMC), in the form of a
+
+pbstrPMCXml: A pointer to a string that returns process matching criteria (PMC), in the form of a
 
 ProcessMatchingCriteriaCollection element (section 2.2.5.25). For an example, see
 ProcessMatchingCriteriaCollection example (section 4.2.21).
@@ -7638,7 +7431,7 @@ S_OK
 
 Additional IResourceManager2 interface methods are specified in section 3.2.4.2.
 
-3.2.4.3  IWRMAccounting Interface
+##### 3.2.4.3 IWRMAccounting Interface
 
 The IWRMAccounting interface defines the following methods.
 
@@ -7695,7 +7488,8 @@ Release: June 1, 2017
 
 83 / 184
 
-Method
+
+Method
 
 Description
 
@@ -7767,7 +7561,7 @@ accounting server.
 
 Note  Remote accounting is not supported in a workgroup environment.
 
-3.2.4.3.1 CreateAccountingDb (Opnum 7)
+###### 3.2.4.3.1 CreateAccountingDb (Opnum 7)
 
 The CreateAccountingDb method creates the database for accounting data.<40>
 
@@ -7787,7 +7581,8 @@ Release: June 1, 2017
 
 84 / 184
 
-bWindowsAuth: This parameter MUST be ignored.
+
+bWindowsAuth: This parameter MUST be ignored.
 
 bstrUserName: User name for creating the database.
 
@@ -7815,7 +7610,7 @@ WSRM encountered an error in accounting.
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.2 GetAccountingMetadata (Opnum 8)
+###### 3.2.4.3.2 GetAccountingMetadata (Opnum 8)
 
 The GetAccountingMetadata method retrieves accounting metadata, which includes column names,
 types, and other attributes of the accounting tables.
@@ -7842,7 +7637,7 @@ S_OK
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.3 ExecuteAccountingQuery (Opnum 9)
+###### 3.2.4.3.3 ExecuteAccountingQuery (Opnum 9)
 
 The ExecuteAccountingQuery method executes an accounting query.
 
@@ -7865,7 +7660,8 @@ Release: June 1, 2017
 
 85 / 184
 
-bstrStartingDate: A string that specifies the starting date for the query, in date-and-time format
+
+bstrStartingDate: A string that specifies the starting date for the query, in date-and-time format
 (section 2.2.1.3). If this value is not in the correct format, the date range is ignored and the
 complete set of accounting data is returned.
 
@@ -7967,7 +7763,8 @@ Release: June 1, 2017
 
 86 / 184
 
-         <Column>ProcessName</Column>
+
+         <Column>ProcessName</Column>
      </GroupColumnCollection>
      <OrderColumnCollection />
      <HavingClause />
@@ -7975,7 +7772,7 @@ Release: June 1, 2017
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.4 GetRawAccountingData (Opnum 10)
+###### 3.2.4.3.4 GetRawAccountingData (Opnum 10)
 
 The GetRawAccountingData method returns raw accounting data from the accounting database
 (section 3.2.1.2).
@@ -8056,7 +7853,8 @@ Release: June 1, 2017
 
 87 / 184
 
-Column
+
+Column
 
 Description
 
@@ -8186,7 +7984,8 @@ Release: June 1, 2017
 
 88 / 184
 
-Return Values: This method returns 0x00000000 for success, or a negative HRESULT value (in the
+
+Return Values: This method returns 0x00000000 for success, or a negative HRESULT value (in the
 
 following table or in [MS-ERREF] section 2.1.1) if an error occurs.
 
@@ -8244,7 +8043,7 @@ time.<44>
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.5 GetNextAccountingDataBatch (Opnum 11)
+###### 3.2.4.3.5 GetNextAccountingDataBatch (Opnum 11)
 
 The GetNextAccountingDataBatch method gets the next batch of data in a previously initiated query to
 the accounting database.<45>
@@ -8292,7 +8091,8 @@ Release: June 1, 2017
 
 89 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8314,7 +8114,7 @@ data to be retrieved, and still GetNextAccountingDataBatch is called, pbstrResul
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.6 DeleteAccountingData (Opnum 12)
+###### 3.2.4.3.6 DeleteAccountingData (Opnum 12)
 
 The DeleteAccountingData method deletes accounting data within a specified time period from the
 accounting database (section 3.2.1.2). If there is no accounting data present between the specified
@@ -8384,7 +8184,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8392,7 +8193,7 @@ WRM_ERR_JET_SERVER_TOO_BUSY
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.7 DefragmentDB (Opnum 13)
+###### 3.2.4.3.7 DefragmentDB (Opnum 13)
 
 The DefragmentDB method is not implemented. It MUST return a success code.
 
@@ -8412,7 +8213,7 @@ S_OK
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.8 CancelAccountingQuery (Opnum 14)
+###### 3.2.4.3.8 CancelAccountingQuery (Opnum 14)
 
 The CancelAccountingQuery method cancels a previously-initiated query to the accounting database.
 
@@ -8452,7 +8253,7 @@ indicated by the value returned in the pbIsThereMoreData parameter of each metho
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.9 RegisterAccountingClient (Opnum 15)
+###### 3.2.4.3.9 RegisterAccountingClient (Opnum 15)
 
 [MS-WSRM] - v20170601
 Windows System Resource Manager (WSRM) Protocol
@@ -8461,7 +8262,8 @@ Release: June 1, 2017
 
 91 / 184
 
-The RegisterAccountingClient method registers an accounting client for remote accounting on an
+
+The RegisterAccountingClient method registers an accounting client for remote accounting on an
 accounting server. A default accounting database SHOULD<50> be defined.
 
 Note  This method is expected to be called remotely by the WSRM management service that is
@@ -8545,7 +8347,7 @@ Note  Remote accounting is not supported in a workgroup environment.
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.10  DumpAccountingData (Opnum 16)
+###### 3.2.4.3.10 DumpAccountingData (Opnum 16)
 
 [MS-WSRM] - v20170601
 Windows System Resource Manager (WSRM) Protocol
@@ -8554,7 +8356,8 @@ Release: June 1, 2017
 
 92 / 184
 
-The DumpAccountingData method dumps accounting data from a remote server acting as an
+
+The DumpAccountingData method dumps accounting data from a remote server acting as an
 accounting client to the server currently acting as its accounting database server. The time interval
 of dumping data SHOULD be set by the client by using the SetConfig method call of the management
 service running on the accounting client.
@@ -8621,7 +8424,7 @@ Note  Remote accounting is not supported in a workgroup environment.
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.11  GetAccountingClients (Opnum 17)
+###### 3.2.4.3.11 GetAccountingClients (Opnum 17)
 
 The GetAccountingClients method gets the names of all servers that are acting as accounting clients
 on the current server.
@@ -8641,7 +8444,8 @@ Release: June 1, 2017
 
 93 / 184
 
-Return Values: This method returns 0x00000000 for success, or a negative HRESULT value (in the
+
+Return Values: This method returns 0x00000000 for success, or a negative HRESULT value (in the
 
 following table or in [MS-ERREF] section 2.1.1) if an error occurs.
 
@@ -8677,9 +8481,9 @@ Note  Remote accounting is not supported in a workgroup environment.
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.12
+###### 3.2.4.3.12 SetAccountingClientStatus (Opnum 18)
 
-SetAccountingClientStatus (Opnum 18)
+
 
 The SetAccountingClientStatus method sets the status of accounting functionality of servers that are
 in the remote accounting client role. Status of accounting functionality is controlled by the Enabled
@@ -8737,7 +8541,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8756,9 +8561,9 @@ Note  Remote accounting is not supported in a workgroup environment.
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.13
+###### 3.2.4.3.13 CheckAccountingConnection (Opnum 19)
 
-CheckAccountingConnection (Opnum 19)
+
 
 The CheckAccountingConnection method determines the status of the connection to the accounting
 server.
@@ -8814,9 +8619,9 @@ Note  Remote accounting is not supported in a workgroup environment.
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.3.14
+###### 3.2.4.3.14 SetClientPermissions (Opnum 20)
 
-SetClientPermissions (Opnum 20)
+
 
 The SetClientPermissions method adds or removes a specified client for remote accounting on a
 server and makes the required changes for DCOM permissions; that is, it adds the machine account of
@@ -8833,7 +8638,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-   [in] BOOL fAddPermissions
+
+   [in] BOOL fAddPermissions
  );
 
 bstrClientId: A string that identifies the client machine name whose account is to be added or
@@ -8881,7 +8687,7 @@ Note  Remote accounting is not supported in a workgroup environment.
 
 Additional IWRMAccounting interface methods are specified in section 3.2.4.3.
 
-3.2.4.4  IWRMCalendar Interface
+##### 3.2.4.4 IWRMCalendar Interface
 
 The IWRMCalendar interface defines the following methods.
 
@@ -8934,7 +8740,8 @@ Release: June 1, 2017
 
 96 / 184
 
-Method
+
+Method
 
 Description
 
@@ -8982,7 +8789,7 @@ GetServerTimeZone  Gets the current time zone setting of the server.
 
 Opnum: 20
 
-3.2.4.4.1 GetCalendarInfo (Opnum 7)
+###### 3.2.4.4.1 GetCalendarInfo (Opnum 7)
 
 The GetCalendarInfo method gets information about one or all calendar events.
 
@@ -9027,9 +8834,10 @@ Release: June 1, 2017
 
 97 / 184
 
-Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.2 CreateCalendar (Opnum 8)
+Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
+
+###### 3.2.4.4.2 CreateCalendar (Opnum 8)
 
 The CreateCalendar method creates a new calendar event.
 
@@ -9106,7 +8914,7 @@ exceeded an implementation-defined limit.<58>
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.3 ModifyCalendar (Opnum 9)
+###### 3.2.4.4.3 ModifyCalendar (Opnum 9)
 
 The ModifyCalendar method modifies an existing calendar event.
 
@@ -9122,7 +8930,8 @@ Release: June 1, 2017
 
 98 / 184
 
- );
+
+ );
 
 bstrCalendarXML: A string that specifies the calendar event, in the form of a Calendar element
 
@@ -9229,7 +9038,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9274,7 +9084,7 @@ duration using the format dd:hh:mm.
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.4 DeleteCalendar (Opnum 10)
+###### 3.2.4.4.4 DeleteCalendar (Opnum 10)
 
 The DeleteCalendar method deletes a specified calendar event.
 
@@ -9333,7 +9143,8 @@ Release: June 1, 2017
 
 100 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9355,7 +9166,7 @@ WRM_ERR_CAL_UNKNOWN_CALENDAR
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.5 RenameCalendar (Opnum 11)
+###### 3.2.4.4.5 RenameCalendar (Opnum 11)
 
 The RenameCalendar method renames a specified calendar event.
 
@@ -9428,9 +9239,10 @@ Release: June 1, 2017
 
 101 / 184
 
-Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.6 ComputeEvents (Opnum 12)
+Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
+
+###### 3.2.4.4.6 ComputeEvents (Opnum 12)
 
 The ComputeEvents method computes the calendar events in a specified time interval. It returns the
 list of all calendar events from the system in pbstrEvents with a start time greater than or equal to the
@@ -9512,7 +9324,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.4.4.7 GetScheduleInfo (Opnum 13)
+
+###### 3.2.4.4.7 GetScheduleInfo (Opnum 13)
 
 The GetScheduleInfo method gets information about a specified schedule object.
 
@@ -9559,7 +9372,7 @@ WRM_ERR_CAL_UNKNOWN_SCHEDULE
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.8 CreateSchedule (Opnum 14)
+###### 3.2.4.4.8 CreateSchedule (Opnum 14)
 
 The CreateSchedule method creates a new schedule object.
 
@@ -9600,7 +9413,8 @@ Release: June 1, 2017
 
 103 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9626,7 +9440,7 @@ WRM_ERR_CAL_DUPLICATE_SCHEDULE
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.9 ModifySchedule (Opnum 15)
+###### 3.2.4.4.9 ModifySchedule (Opnum 15)
 
 The ModifySchedule method modifies the specified schedule of the calendar.
 
@@ -9695,7 +9509,8 @@ Release: June 1, 2017
 
 104 / 184
 
-Return Values: This method returns 0x00000000 for success or a negative HRESULT value (in the
+
+Return Values: This method returns 0x00000000 for success or a negative HRESULT value (in the
 
 following table or in [MS-ERREF] section 2.1.1) if an error occurs.
 
@@ -9736,7 +9551,7 @@ WRM_ERR_CAL_UNKNOWN_SCHEDULE
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.10  DeleteSchedule (Opnum 16)
+###### 3.2.4.4.10 DeleteSchedule (Opnum 16)
 
 The DeleteSchedule method deletes an existing schedule object.
 
@@ -9783,7 +9598,7 @@ One or more arguments are invalid.
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.11  RenameSchedule (Opnum 17)
+###### 3.2.4.4.11 RenameSchedule (Opnum 17)
 
 The RenameSchedule method renames a specified schedule object. If the schedule object is being
 referenced by some calendar object, then the calendar object is also updated with the new name.
@@ -9795,7 +9610,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- [id(11), helpstring("method RenameSchedule")] HRESULT RenameSchedule(
+
+ [id(11), helpstring("method RenameSchedule")] HRESULT RenameSchedule(
    [in] BSTR bstrOldScheduleName,
    [in] BSTR bstrNewScheduleName
  );
@@ -9860,7 +9676,7 @@ implementation-defined limit.<68>
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.12  MoveBeforeCalendar (Opnum 18)
+###### 3.2.4.4.12 MoveBeforeCalendar (Opnum 18)
 
 The MoveBeforeCalendar method moves a calendar event before the specified reference event. The
 caller can choose to control the move depending on whether the current resource policy is affected.
@@ -9886,7 +9702,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If this parameter is NULL, E_INVALIDARG MUST be returned.
+
+If this parameter is NULL, E_INVALIDARG MUST be returned.
 
 bChangeActivePolicy: A Boolean value that specifies whether the configuration changes made by
 this method call SHOULD change the current active policy, if applicable, of the system.<69>
@@ -9936,7 +9753,7 @@ WRM_ERR_CAL_UNKNOWN_CALENDAR
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.13  MoveAfterCalendar (Opnum 19)
+###### 3.2.4.4.13 MoveAfterCalendar (Opnum 19)
 
 The MoveAfterCalendar method moves a calendar event after the specified reference event. The caller
 can choose to control the move depending on whether the current resource policy is affected.
@@ -9977,7 +9794,8 @@ Release: June 1, 2017
 
 107 / 184
 
-Value
+
+Value
 
 Meaning
 
@@ -10016,7 +9834,7 @@ WRM_ERR_CAL_UNKNOWN_CALENDAR
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.4.14  GetServerTimeZone (Opnum 20)
+###### 3.2.4.4.14 GetServerTimeZone (Opnum 20)
 
 The GetServerTimeZone method gets the current time zone setting of the server.
 
@@ -10048,7 +9866,7 @@ E_INVALIDARG
 
 Additional IWRMCalendar interface methods are specified in section 3.2.4.4.
 
-3.2.4.5  IWRMConfig Interface
+##### 3.2.4.5 IWRMConfig Interface
 
 The IWRMConfig interface defines the following methods.
 
@@ -10070,7 +9888,8 @@ Release: June 1, 2017
 
 108 / 184
 
-Method
+
+Method
 
 Description
 
@@ -10129,7 +9948,7 @@ database. Minimally, using the SetConfig method:
 
   Set the accounting interval and turn on accounting.
 
-3.2.4.5.1 GetConfig (Opnum 7)
+###### 3.2.4.5.1 GetConfig (Opnum 7)
 
 The GetConfig method gets WSRM configuration information concerning accounting and
 notifications.
@@ -10168,7 +9987,8 @@ Release: June 1, 2017
 
 109 / 184
 
-Value
+
+Value
 
 Meaning
 
@@ -10201,7 +10021,7 @@ ERROR_NOT_SUPPORTED
 
 Additional IWRMConfig interface methods are specified in section 3.2.4.5.
 
-3.2.4.5.2 SetConfig (Opnum 8)
+###### 3.2.4.5.2 SetConfig (Opnum 8)
 
 The SetConfig method sets WSRM configuration information concerning accounting and
 notifications.
@@ -10267,7 +10087,8 @@ Release: June 1, 2017
 
 110 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10333,7 +10154,7 @@ ERROR_ACCESS_DENIED SHOULD be returned.<74>
 
 Additional IWRMConfig interface methods are specified in section 3.2.4.5.
 
-3.2.4.5.3 IsEnabled (Opnum 9)
+###### 3.2.4.5.3 IsEnabled (Opnum 9)
 
 The IsEnabled method returns whether a type of WSRM configuration object is enabled or disabled.
 
@@ -10369,7 +10190,8 @@ Release: June 1, 2017
 
 111 / 184
 
-Return value/code  Description
+
+Return value/code  Description
 
 0x80070057
 
@@ -10379,7 +10201,7 @@ E_INVALIDARG
 
 Additional IWRMConfig interface methods are specified in section 3.2.4.5.
 
-3.2.4.5.4 EnableDisable (Opnum 10)
+###### 3.2.4.5.4 EnableDisable (Opnum 10)
 
 The EnableDisable method enables or disables the management of a specified type of WSRM
 configuration.
@@ -10468,7 +10290,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10525,7 +10348,7 @@ server.<78>
 
 Additional IWRMConfig interface methods are specified in section 3.2.4.5.
 
-3.2.4.5.5 GetExclusionList (Opnum 11)
+###### 3.2.4.5.5 GetExclusionList (Opnum 11)
 
 The GetExclusionList method gets the current exclusion list of processes not managed by the WSRM
 management service.
@@ -10575,7 +10398,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10594,7 +10418,7 @@ an implementation-defined limit.<80>
 
 Additional IWRMConfig interface methods are specified in section 3.2.4.5.
 
-3.2.4.5.6 SetExclusionList (Opnum 12)
+###### 3.2.4.5.6 SetExclusionList (Opnum 12)
 
 The SetExclusionList method updates the contents of the exclusion list which is of type
 USER_EXCLUSION_LIST.
@@ -10639,7 +10463,7 @@ an implementation-defined limit.<82>
 
 Additional IWRMConfig interface methods are specified in section 3.2.4.5.
 
-3.2.4.5.7 WSRMActivate (Opnum 13)
+###### 3.2.4.5.7 WSRMActivate (Opnum 13)
 
 The WSRMActivate method activates or deactivates WSRM management state.
 
@@ -10670,7 +10494,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 Meaning
 
@@ -10708,7 +10533,7 @@ management service MUST attempt to restore its prior management state.<83>
 
 Additional IWRMConfig interface methods are specified in section 3.2.4.5.
 
-3.2.4.5.8 IsWSRMActivated (Opnum 14)
+###### 3.2.4.5.8 IsWSRMActivated (Opnum 14)
 
 The IsWSRMActivated method returns whether WSRM is active.
 
@@ -10742,7 +10567,7 @@ E_INVALIDARG
 
 Additional IWRMConfig interface methods are specified in section 3.2.4.5.
 
-3.2.4.5.9 RestoreExclusionList (Opnum 15)
+###### 3.2.4.5.9 RestoreExclusionList (Opnum 15)
 
 The RestoreExclusionList method restores the exclusion list, which is of type
 USER_EXCLUSION_LIST, to default values.
@@ -10756,7 +10581,8 @@ Release: June 1, 2017
 
 115 / 184
 
-This method has no parameters.
+
+This method has no parameters.
 
 Return Values: This method returns 0x00000000 for success or a negative HRESULT value (in the
 
@@ -10772,7 +10598,7 @@ S_OK
 
 Additional IWRMConfig interface methods are specified in section 3.2.4.5.
 
-3.2.4.6  IWRMMachineGroup Interface
+##### 3.2.4.6 IWRMMachineGroup Interface
 
 The IWRMMachineGroup interface defines the following methods.<84>
 
@@ -10834,7 +10660,7 @@ Delete a machine from a machine group.
 
 Opnum: 15
 
-3.2.4.6.1 CreateMachineGroup (Opnum 7)
+###### 3.2.4.6.1 CreateMachineGroup (Opnum 7)
 
 The CreateMachineGroup method creates and initializes a machine group.
 
@@ -10851,7 +10677,8 @@ Release: June 1, 2017
 
 116 / 184
 
-bstrParentMachineGroupId: A string that specifies the identifier of the parent machine group in
+
+bstrParentMachineGroupId: A string that specifies the identifier of the parent machine group in
 
 which to create a new machine group.
 
@@ -10924,7 +10751,7 @@ does not exist.
 
 Additional IWRMMachineGroup interface methods are specified in section 3.2.4.6.
 
-3.2.4.6.2 GetMachineGroupInfo (Opnum 8)
+###### 3.2.4.6.2 GetMachineGroupInfo (Opnum 8)
 
 The GetMachineGroupInfo method returns information about a machine group.
 
@@ -10952,7 +10779,8 @@ Release: June 1, 2017
 
 117 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10976,7 +10804,7 @@ WRM_ERR_MACHINEGROUPID_INVALID
 
 Additional IWRMMachineGroup interface methods are specified in section 3.2.4.6.
 
-3.2.4.6.3 ModifyMachineGroup (Opnum 9)
+###### 3.2.4.6.3 ModifyMachineGroup (Opnum 9)
 
 The ModifyMachineGroup method modifies an existing machine group. The method replaces or merges
 the machine group information according to the value specified in the enumMGMergeOptions
@@ -11053,7 +10881,8 @@ be modified because the total number of
 
 118 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11081,7 +10910,7 @@ The specified machine group ID is invalid.
 
 Additional IWRMMachineGroup interface methods are specified in section 3.2.4.6.
 
-3.2.4.6.4 DeleteMachineGroup (Opnum 10)
+###### 3.2.4.6.4 DeleteMachineGroup (Opnum 10)
 
 The DeleteMachineGroup method deletes an existing machine group.
 
@@ -11121,7 +10950,7 @@ WRM_ERR_MACHINEGROUPID_INVALID
 
 Additional IWRMMachineGroup interface methods are specified in section 3.2.4.6.
 
-3.2.4.6.5 RenameMachineGroup (Opnum 11)
+###### 3.2.4.6.5 RenameMachineGroup (Opnum 11)
 
 The RenameMachineGroup method changes the name of an existing machine group.
 
@@ -11141,7 +10970,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If this parameter is NULL, E_INVALIDARG MUST be returned.
+
+If this parameter is NULL, E_INVALIDARG MUST be returned.
 
 bstrNewMachineGroupName: A string that specifies the new identifier of the machine group.
 
@@ -11182,7 +11012,7 @@ WRM_ERR_MACHINEGROUPID_INVALID
 
 Additional IWRMMachineGroup interface methods are specified in section 3.2.4.6.
 
-3.2.4.6.6 AddMachine (Opnum 12)
+###### 3.2.4.6.6 AddMachine (Opnum 12)
 
 The AddMachine method adds a machine to a machine group.
 
@@ -11241,7 +11071,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11261,7 +11092,7 @@ child in the machine group.
 
 Additional IWRMMachineGroup interface methods are specified in section 3.2.4.6.
 
-3.2.4.6.7 GetMachineInfo (Opnum 13)
+###### 3.2.4.6.7 GetMachineInfo (Opnum 13)
 
 The GetMachineInfo method returns information about a machine. If more than one machine with the
 specified bstrMachineId value exists in the hierarchy of machine groups, the information can be
@@ -11309,7 +11140,7 @@ configuration.<98>
 
 Additional IWRMMachineGroup interface methods are specified in section 3.2.4.6.
 
-3.2.4.6.8 ModifyMachineInfo (Opnum 14)
+###### 3.2.4.6.8 ModifyMachineInfo (Opnum 14)
 
 The ModifyMachineInfo method modifies a machine in a machine group. This method modifies the
 direct child machine with the specified machine ID under the specified parent machine group.
@@ -11331,7 +11162,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If this parameter is NULL, E_INVALIDARG MUST be returned.
+
+If this parameter is NULL, E_INVALIDARG MUST be returned.
 
 bstrMachineId: A string that specifies the identifier of the machine to modify.
 
@@ -11392,7 +11224,7 @@ machine group.<102>
 
 Additional IWRMMachineGroup interface methods are specified in section 3.2.4.6.
 
-3.2.4.6.9 DeleteMachine (Opnum 15)
+###### 3.2.4.6.9 DeleteMachine (Opnum 15)
 
 The DeleteMachine method deletes a machine from a machine group.
 
@@ -11423,7 +11255,8 @@ Release: June 1, 2017
 
 122 / 184
 
-Value
+
+Value
 
 Meaning
 
@@ -11474,7 +11307,7 @@ WRM_ERR_MACHINEID_INVALID
 
 Additional IWRMMachineGroup interface methods are specified in section 3.2.4.6.
 
-3.2.4.7  IWRMPolicy Interface
+##### 3.2.4.7 IWRMPolicy Interface
 
 The IWRMPolicy interface defines the following methods.
 
@@ -11537,7 +11370,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Method
+
+Method
 
 Description
 
@@ -11585,7 +11419,7 @@ Loads specified conditions into the current resource policy.
 
 Opnum: 21
 
-3.2.4.7.1 GetPolicyInfo (Opnum 7)
+###### 3.2.4.7.1 GetPolicyInfo (Opnum 7)
 
 The GetPolicyInfo method gets one or more specified resource allocation policies (RAP).
 
@@ -11634,7 +11468,8 @@ Release: June 1, 2017
 
 124 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11646,7 +11481,7 @@ WRM_ERR_POLICYID_INVALID
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.2 CreatePolicy (Opnum 8)
+###### 3.2.4.7.2 CreatePolicy (Opnum 8)
 
 The CreatePolicy method creates a new resource allocation policy (RAP).
 
@@ -11736,7 +11571,8 @@ Release: June 1, 2017
 
 125 / 184
 
-3.2.4.7.3 ModifyPolicy (Opnum 9)
+
+###### 3.2.4.7.3 ModifyPolicy (Opnum 9)
 
 The ModifyPolicy method modifies an existing resource allocation policy (RAP).
 
@@ -11837,7 +11673,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11852,7 +11689,7 @@ criteria (PMC) name could not be found.
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.4 DeletePolicy (Opnum 10)
+###### 3.2.4.7.4 DeletePolicy (Opnum 10)
 
 The DeletePolicy method deletes an existing resource policy.
 
@@ -11938,7 +11775,8 @@ Release: June 1, 2017
 
 127 / 184
 
-3.2.4.7.5 RenameAllocationPolicy (Opnum 11)
+
+###### 3.2.4.7.5 RenameAllocationPolicy (Opnum 11)
 
 The RenameAllocationPolicy method renames an existing resource allocation policy (RAP).
 
@@ -12037,7 +11875,8 @@ Release: June 1, 2017
 
 128 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12050,7 +11889,7 @@ renamed.
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.6 MoveBefore (Opnum 12)
+###### 3.2.4.7.6 MoveBefore (Opnum 12)
 
 The MoveBefore method moves a specified resource group to a location just before a reference
 resource group.
@@ -12112,7 +11951,7 @@ One or more arguments are invalid.
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.7 MoveAfter (Opnum 13)
+###### 3.2.4.7.7 MoveAfter (Opnum 13)
 
 The MoveAfter method moves a specified resource group to a location just after a reference resource
 group.
@@ -12128,7 +11967,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-   [in] BSTR bstrRefResourceGroupName
+
+   [in] BSTR bstrRefResourceGroupName
  );
 
 bstrPolicyName: The name of the policy in which resource group is to be moved.
@@ -12181,7 +12021,7 @@ WRM_ERR_RESOURCEGROUPID_INVALID
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.8 SetCalDefaultPolicyName (Opnum 14)
+###### 3.2.4.7.8 SetCalDefaultPolicyName (Opnum 14)
 
 The SetCalDefaultPolicyName method stores the name of the default resource allocation policy
 (RAP) in the registry.
@@ -12219,7 +12059,8 @@ Release: June 1, 2017
 
 130 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12244,7 +12085,7 @@ of the following characters:
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.9 GetCalDefaultPolicyName (Opnum 15)
+###### 3.2.4.7.9 GetCalDefaultPolicyName (Opnum 15)
 
 The GetCalDefaultPolicyName method used to get the name of the default resource allocation
 policy (RAP).
@@ -12275,7 +12116,7 @@ S_OK
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.10  GetProcessList (Opnum 16)
+###### 3.2.4.7.10 GetProcessList (Opnum 16)
 
 The GetProcessList method returns a list of processes for a specified policy.
 
@@ -12300,7 +12141,8 @@ Release: June 1, 2017
 
 131 / 184
 
-Return Values: This method returns 0x00000000 for success or a negative HRESULT value (in the
+
+Return Values: This method returns 0x00000000 for success or a negative HRESULT value (in the
 
 following table or in [MS-ERREF] section 2.1.1) if an error occurs.
 
@@ -12338,7 +12180,7 @@ WRM_ERR_POLICYID_INVALID
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.11  GetCurrentPolicy (Opnum 17)
+###### 3.2.4.7.11 GetCurrentPolicy (Opnum 17)
 
 The GetCurrentPolicy method returns the current resource policy.
 
@@ -12371,9 +12213,9 @@ S_OK
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.12
+###### 3.2.4.7.12 SetCurrentPolicy (Opnum 18)
 
-SetCurrentPolicy (Opnum 18)
+
 
 The SetCurrentPolicy method sets the current resource policy to a specified resource policy by
 name.
@@ -12388,7 +12230,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-   [in] MANAGEMENT_TYPE enumManage
+
+   [in] MANAGEMENT_TYPE enumManage
  );
 
 bstrPolicyName: The name of the policy to become the current resource policy. If enumManage is
@@ -12439,7 +12282,7 @@ WRM_ERR_POLICYID_INVALID
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.13  GetCurrentStateAndActivePolicyName (Opnum 19)
+###### 3.2.4.7.13 GetCurrentStateAndActivePolicyName (Opnum 19)
 
 The GetCurrentStateAndActivePolicyName method returns the name of the current resource policy
 and the management state in which the WSRM management service is currently available.
@@ -12473,13 +12316,14 @@ Release: June 1, 2017
 
 133 / 184
 
-Return value/code  Description
+
+Return value/code  Description
 
 S_OK
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.14  GetConditionalPolicy (Opnum 20)
+###### 3.2.4.7.14 GetConditionalPolicy (Opnum 20)
 
 The GetConditionalPolicy function returns conditions for a specified conditional policy.
 
@@ -12514,9 +12358,9 @@ E_INVALIDARG
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.7.15
+###### 3.2.4.7.15 SetConditionalPolicy (Opnum 21)
 
-SetConditionalPolicy (Opnum 21)
+
 
 The SetConditionalPolicy method loads specified conditions into the conditional policy, which
 contains the conditions and the respective SwitchToPolicy element values. When a specified
@@ -12549,7 +12393,8 @@ Release: June 1, 2017
 
 134 / 184
 
-Return value/code  Description
+
+Return value/code  Description
 
 S_OK
 
@@ -12561,7 +12406,7 @@ E_INVALIDARG
 
 Additional IWRMPolicy interface methods are specified in section 3.2.4.7.
 
-3.2.4.8  IWRMProtocol Interface
+##### 3.2.4.8 IWRMProtocol Interface
 
 The IWRMProtocol interface defines the following methods.
 
@@ -12575,7 +12420,7 @@ GetSupportedClient  Gets a list of the clients that are supported by this server
 
 Opnum: 7
 
-3.2.4.8.1 GetSupportedClient (Opnum 7)
+###### 3.2.4.8.1 GetSupportedClient (Opnum 7)
 
 The GetSupportedClient method retrieves the level of support for clients on the WSRM server.
 
@@ -12601,7 +12446,7 @@ S_OK
 
 Additional IWRMProtocol interface methods are specified in section 3.2.4.8.
 
-3.2.4.9  IWRMRemoteSessionMgmt Interface
+##### 3.2.4.9 IWRMRemoteSessionMgmt Interface
 
 The IWRMRemoteSessionMgmt provides methods that manage user category and remote session
 information.<113>
@@ -12629,7 +12474,8 @@ Release: June 1, 2017
 
 135 / 184
 
-Method
+
+Method
 
 Description
 
@@ -12643,7 +12489,7 @@ quotas.
 
 Opnum: 9
 
-3.2.4.9.1 GetRemoteUserCategories (Opnum 7)
+###### 3.2.4.9.1 GetRemoteUserCategories (Opnum 7)
 
 The GetRemoteUserCategories method retrieves user categories information from the WSRM server.
 
@@ -12669,7 +12515,7 @@ S_OK
 
 Additional IWRMRemoteSessionMgmt interface methods are specified in section 3.2.4.9.
 
-3.2.4.9.2 SetRemoteUserCategories (Opnum 8)
+###### 3.2.4.9.2 SetRemoteUserCategories (Opnum 8)
 
 The SetRemoteUserCategories method sets user categories information on the WSRM server.
 
@@ -12714,7 +12560,8 @@ Release: June 1, 2017
 
 136 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12724,7 +12571,7 @@ invalid or cannot be processed.<114>
 
 Additional IWRMRemoteSessionMgmt interface methods are specified in section 3.2.4.9.
 
-3.2.4.9.3 RefreshRemoteSessionWeights (Opnum 9)
+###### 3.2.4.9.3 RefreshRemoteSessionWeights (Opnum 9)
 
 The RefreshRemoteSessionWeights method forces reallocation of CPU quotas for the sessions run by
 users according to the category type specified in bstrTargetUserSessions.
@@ -12792,9 +12639,9 @@ Operation successful.
 
 Additional IWRMRemoteSessionMgmt interface methods are specified in section 3.2.4.9.
 
-3.2.4.10
+##### 3.2.4.10 IWRMResourceGroup Interface
 
-IWRMResourceGroup Interface
+
 
 The IWRMResourceGroup interface defines the following methods.
 
@@ -12807,7 +12654,8 @@ Release: June 1, 2017
 
 137 / 184
 
-Method
+
+Method
 
 Description
 
@@ -12837,7 +12685,7 @@ RenameResourceGroup  Renames an existing resource group.
 
 Opnum: 11
 
-3.2.4.10.1  GetResourceGroupInfo (Opnum 7)
+###### 3.2.4.10.1 GetResourceGroupInfo (Opnum 7)
 
 The GetResourceGroupInfo method gets information about the resource group with the specified
 ID. If the ID is "\", this method returns all selection criteria.
@@ -12896,7 +12744,8 @@ Release: June 1, 2017
 
 138 / 184
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12911,7 +12760,7 @@ group does not exist.
 
 Additional IWRMResourceGroup interface methods are specified in section 3.2.4.10.
 
-3.2.4.10.2  ModifyResourceGroup (Opnum 8)
+###### 3.2.4.10.2 ModifyResourceGroup (Opnum 8)
 
 The ModifyResourceGroup method modifies an existing resource group.
 
@@ -12994,7 +12843,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -13056,9 +12906,9 @@ modified.<119>
 
 Additional IWRMResourceGroup interface methods are specified in section 3.2.4.10.
 
-3.2.4.10.3
+###### 3.2.4.10.3 CreateResourceGroup (Opnum 9)
 
-CreateResourceGroup (Opnum 9)
+
 
 The CreateResourceGroup function creates a new resource group.
 
@@ -13104,7 +12954,8 @@ The specified name contains characters that
 
 140 / 184
 
-Return value/code
+
+Return value/code
 
 WRM_ERR_ID_VALUE
 
@@ -13143,7 +12994,7 @@ group.
 
 Additional IWRMResourceGroup interface methods are specified in section 3.2.4.10.
 
-3.2.4.10.4  DeleteResourceGroup (Opnum 10)
+###### 3.2.4.10.4 DeleteResourceGroup (Opnum 10)
 
 The DeleteResourceGroup deletes a resource group with the specified identifier.
 
@@ -13204,7 +13055,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -13218,7 +13070,7 @@ WRM_ERR_RESERVED_RESOURCEGROUP
 
 Additional IWRMResourceGroup interface methods are specified in section 3.2.4.10.
 
-3.2.4.10.5  RenameResourceGroup (Opnum 11)
+###### 3.2.4.10.5 RenameResourceGroup (Opnum 11)
 
 The RenameResourceGroup renames an existing resource group.
 
@@ -13304,7 +13156,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -13312,11 +13165,11 @@ WRM_ERR_RESERVED_RESOURCEGROUP
 
 Additional IWRMResourceGroup interface methods are specified in section 3.2.4.10.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 Timer events are not specified for this interface.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 The server MUST track the following local events:
 
@@ -13331,9 +13184,10 @@ Release: June 1, 2017
 
 143 / 184
 
-4  Protocol Examples
 
-4.1  Message Processing Examples
+## 4 Protocol Examples
+
+### 4.1 Message Processing Examples
 
 This section presents the following sample scenarios that illustrate the allocation of resources using
 methods of the Windows System Resource Manager (WSRM) Protocol.
@@ -13415,7 +13269,7 @@ Create a custom process matching criteria (PMC).
 In each scenario, it is assumed that a WSRM management service is running on the server
 machine.
 
-4.1.1  Enable Accounting on a Local Machine
+#### 4.1.1 Enable Accounting on a Local Machine
 
 The following sequence of WSRM client actions can be used to enable accounting on a local machine:
 
@@ -13435,7 +13289,7 @@ enumConfigType set to CONFIGTYPE_ACCOUNTING.
 
 4.  Release the pointer to the interface.
 
-4.1.2  Export Selected Objects from the Configuration
+#### 4.1.2 Export Selected Objects from the Configuration
 
  The following sequence of WSRM client actions can be used to export selected objects from the
 configuration:
@@ -13457,7 +13311,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 
 
@@ -13472,7 +13327,7 @@ objects.
 
 5.  Release all pointers to interfaces.
 
-4.1.3  Check Whether Import Will Lead to Conflicting Objects
+#### 4.1.3 Check Whether Import Will Lead to Conflicting Objects
 
  The following sequence of WSRM client actions can be used to determine whether the import of a
 given object will lead to conflicts.
@@ -13533,7 +13388,7 @@ conflicting object identifiers.
 
 6.  Release all pointers to interfaces.
 
-4.1.4  Export Selected Policies to a Machine Group
+#### 4.1.4 Export Selected Policies to a Machine Group
 
  The following sequence of WSRM client actions can be used to export selected resource policies to a
 machine group.
@@ -13553,7 +13408,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 
 
@@ -13613,7 +13469,7 @@ IMPORT_TYPE enumeration.
 
 9.  Release all pointers to interfaces.
 
-4.1.5  Add a Machine to a Machine Group
+#### 4.1.5 Add a Machine to a Machine Group
 
 1.  Connect to the WSRM server by creating a ResourceManager COM object.
 
@@ -13639,7 +13495,7 @@ bstrMachineInfo set to the machine to be added, in the format of a Machine eleme
 
 5.  Release the pointer to the interface.
 
-4.1.6  Create And Initialize a Machine Group
+#### 4.1.6 Create And Initialize a Machine Group
 
 The following sequence of WSRM client actions can be used to create and initialize a new machine
 group on local machine:
@@ -13651,7 +13507,8 @@ Release: June 1, 2017
 
 146 / 184
 
-1.  Connect to the WSRM server by creating a ResourceManager COM object.
+
+1.  Connect to the WSRM server by creating a ResourceManager COM object.
 
 2.  Get a pointer to the IWRMMachineGroup interface.
 
@@ -13670,7 +13527,7 @@ MachineGroup element (section 2.2.5.17).
 
 4.  Release the pointer to the interface.
 
-4.1.7  Create a Custom Resource Allocation Policy
+#### 4.1.7 Create a Custom Resource Allocation Policy
 
  The following sequence of WSRM client actions can be used to create a custom RAP:
 
@@ -13684,7 +13541,7 @@ described in section 4.2.18.
 
 4.  Release the pointer to the interface.
 
-4.1.8  Set the Current Resource Policy
+#### 4.1.8 Set the Current Resource Policy
 
 The following sequence of WSRM client actions can be used to set the current resource policy to an
 existing RAP:
@@ -13705,7 +13562,7 @@ enumManage set to MANUAL_ACTIVE_POLICY.
 
 4.  Release the pointer to the interface.
 
-4.1.9  Create a Custom Process Matching Criteria
+#### 4.1.9 Create a Custom Process Matching Criteria
 
 The following sequence of WSRM client actions can be used to create a custom process matching
 criteria (PMC):
@@ -13727,7 +13584,8 @@ Release: June 1, 2017
 
 147 / 184
 
-4.2  Sample XML Data
+
+### 4.2 Sample XML Data
 
 The WSRM Protocol specifies XML data formats for strings that are used in messages and method
 parameters. These formats are specified in XML Data Formats (section 2.2.5).
@@ -13843,7 +13701,8 @@ Release: June 1, 2017
 
 148 / 184
 
-4.2.1  AccountingClientList Example
+
+#### 4.2.1 AccountingClientList Example
 
 The following is an example of the AccountingClientList XML element (section 2.2.5.1).
 
@@ -13856,7 +13715,7 @@ The following is an example of the AccountingClientList XML element (section 2.2
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.2  AccountingConfigInfo Example
+#### 4.2.2 AccountingConfigInfo Example
 
 The following is an example of the AccountingConfigInfo (section 2.2.5.2) XML element.
 
@@ -13882,7 +13741,7 @@ The following is an example of the AccountingConfigInfo (section 2.2.5.2) XML el
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.3  AccountingMetaData Example
+#### 4.2.3 AccountingMetaData Example
 
 The following is an example of the AccountingMetaData XML element (section 2.2.5.1).
 
@@ -13907,7 +13766,8 @@ Release: June 1, 2017
 
 149 / 184
 
-             <Pivot>ProcessName</Pivot>
+
+             <Pivot>ProcessName</Pivot>
              <AggregateFunction>MAX(</AggregateFunction>
              </Aggregation>
          </AggregationCollection>
@@ -13916,7 +13776,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.4  AccountingProcessList Example
+#### 4.2.4 AccountingProcessList Example
 
 The following is an example of the AccountingProcessList XML element (section 2.2.5.4).
 
@@ -13962,7 +13822,7 @@ The following is an example of the AccountingProcessList XML element (section 2.
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.5  AccountingQueryCondition Example
+#### 4.2.5 AccountingQueryCondition Example
 
 The following is an example of the AccountingQueryCondition (section 2.2.5.5) XML element.
 
@@ -13973,7 +13833,8 @@ Release: June 1, 2017
 
 150 / 184
 
- <?xml version="1.0"?>
+
+ <?xml version="1.0"?>
  <?WSRM version="1.0"?>
       <AccountingQueryCondition>
       <SelectFieldCollection>
@@ -13999,7 +13860,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.6  Calendar Example
+#### 4.2.6 Calendar Example
 
 The following is an example of the Calendar (section 2.2.5.7) XML element.
 
@@ -14040,7 +13901,8 @@ Release: June 1, 2017
 
 151 / 184
 
-4.2.7  Calendars Example
+
+#### 4.2.7 Calendars Example
 
 The following is an example of the Calendars (section 2.2.5.10) XML element.
 
@@ -14086,7 +13948,7 @@ EFFECTS]-->
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.8  CalendarsCollection Example
+#### 4.2.8 CalendarsCollection Example
 
 The following is an example of the CalendarsCollection (section 2.2.5.11) XML element.
 
@@ -14112,7 +13974,8 @@ Release: June 1, 2017
 
 152 / 184
 
-           </PolicyName>
+
+           </PolicyName>
            <TmStart>
              11:07:00
            </TmStart>
@@ -14162,7 +14025,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.9  ConditionalPolicy Example
+#### 4.2.9 ConditionalPolicy Example
 
 The following is an example of the ConditionalPolicy (section 2.2.5.12) XML element.
 
@@ -14186,7 +14049,8 @@ Release: June 1, 2017
 
 153 / 184
 
-             No Action</SwitchToPolicy>
+
+             No Action</SwitchToPolicy>
          </Action>
        </Condition>
        <Condition Active="true" ID="1" Category="Processor" Name="ProcessorNew">
@@ -14205,7 +14069,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.10 ConfigurationFiles Example
+#### 4.2.10 ConfigurationFiles Example
 
 The following is an example of the ConfigurationFiles (section 2.2.5.13) XML element.
 
@@ -14244,7 +14108,7 @@ The following is an example of the ConfigurationFiles (section 2.2.5.13) XML ele
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.11 DependencyList Example
+#### 4.2.11 DependencyList Example
 
 The following is an example of the DependencyList XML element (section 2.2.5.14).
 
@@ -14255,7 +14119,8 @@ Release: June 1, 2017
 
 154 / 184
 
- <?xml version="1.0"?>
+
+ <?xml version="1.0"?>
  <?WSRM version="1.0"?>
    <DependencyList>
 
@@ -14266,7 +14131,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.12 Events Example
+#### 4.2.12 Events Example
 
 The following is an example of the Events (section 2.2.5.15) XML element.
 
@@ -14311,7 +14176,7 @@ The following is an example of the Events (section 2.2.5.15) XML element.
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.13 ExclusionList Example
+#### 4.2.13 ExclusionList Example
 
 The following is an example of the ExclusionList (section 2.2.5.16) XML element.
 
@@ -14325,7 +14190,8 @@ Release: June 1, 2017
 
 155 / 184
 
-   <ExclusionList>
+
+   <ExclusionList>
      <Process>
        System
      </Process>
@@ -14375,7 +14241,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.14 Machine Example
+#### 4.2.14 Machine Example
 
 The following is an example of the Machine (section 2.2.5.17) XML element.
 
@@ -14393,7 +14259,8 @@ Release: June 1, 2017
 
 156 / 184
 
-4.2.15 MachineGroup Example
+
+#### 4.2.15 MachineGroup Example
 
 The following is an example of the MachineGroup (section 2.2.5.18) XML element.
 
@@ -14423,7 +14290,7 @@ The following is an example of the MachineGroup (section 2.2.5.18) XML element.
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.16 NotificationConfigInfo Example
+#### 4.2.16 NotificationConfigInfo Example
 
 The following is an example of the NotificationConfigInfo XML element (section 2.2.5.19).
 
@@ -14438,7 +14305,7 @@ The following is an example of the NotificationConfigInfo XML element (section 2
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.17 ObjectIds Example
+#### 4.2.17 ObjectIds Example
 
 The following is an example of the ObjectIds (section 2.2.5.20) XML element with multiple types.
 
@@ -14458,7 +14325,8 @@ Release: June 1, 2017
 
 157 / 184
 
-The following is an example of the ObjectIds (section 2.2.5.20) XML element with a single type.
+
+The following is an example of the ObjectIds (section 2.2.5.20) XML element with a single type.
 
  <?xml version="1.0"?>
  <?WSRM version="3.0"?>
@@ -14471,7 +14339,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.18 Policy Example
+#### 4.2.18 Policy Example
 
 The following is an example of the Policy (section 2.2.5.21) XML element.
 
@@ -14511,7 +14379,7 @@ The following is an example of the Policy (section 2.2.5.21) XML element.
 
 Additional XML data examples are described in section 4.2.
 
-4.2.19 Policy Collection Example
+#### 4.2.19 Policy Collection Example
 
 The following is an example of the Policy (section 2.2.5.21) XML element.
 
@@ -14522,7 +14390,8 @@ Release: June 1, 2017
 
 158 / 184
 
- <?xml version="1.0"?>
+
+ <?xml version="1.0"?>
  <?WSRM version="1.0"?>
    <Policy>
      <Policy Name="CliTest_Pol1">
@@ -14561,7 +14430,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.20 ProcessMatchingCriteria Example
+#### 4.2.20 ProcessMatchingCriteria Example
 
 The following is an example of process matching criteria (PMC) specified with the
 ProcessMatchingCriteria (section 2.2.5.24) XML element.
@@ -14577,7 +14446,7 @@ ProcessMatchingCriteria (section 2.2.5.24) XML element.
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.21 ProcessMatchingCriteriaCollection Example
+#### 4.2.21 ProcessMatchingCriteriaCollection Example
 
 The following is an example of a ProcessMatchingCriteriaCollection (section 2.2.5.25) XML element.
 
@@ -14588,7 +14457,8 @@ Release: June 1, 2017
 
 159 / 184
 
- <?xml version="1.0"?>
+
+ <?xml version="1.0"?>
  <?WSRM version="1.0"?>
    <ProcessMatchingCriteriaCollection>
      <ProcessMatchingCriteria Name="PmcUsedAsDefault">
@@ -14613,7 +14483,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.22 Schedule Example
+#### 4.2.22 Schedule Example
 
 The following is an example of the Schedule (section 2.2.5.26) XML element.
 
@@ -14646,7 +14516,7 @@ The following is an example of the Schedule (section 2.2.5.26) XML element.
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.23 ServiceList Example
+#### 4.2.23 ServiceList Example
 
 The following is an example of the ServiceList (section 2.2.5.28) XML element.
 
@@ -14657,7 +14527,8 @@ Release: June 1, 2017
 
 160 / 184
 
- <?xml version="1.0"?>
+
+ <?xml version="1.0"?>
  <?WSRM version="1.0"?>
    <ServiceList>
      <Service>
@@ -14693,7 +14564,7 @@ Release: June 1, 2017
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.24 SupportedClients Example
+#### 4.2.24 SupportedClients Example
 
 The following is an example of the SupportedClients (section 2.2.5.29) XML element.
 
@@ -14707,7 +14578,7 @@ The following is an example of the SupportedClients (section 2.2.5.29) XML eleme
 
 Additional XML data examples are specified in section 4.2.
 
-4.2.25 Users Example
+#### 4.2.25 Users Example
 
 The following is an example of the Users (section 2.2.5.30) XML element.
 
@@ -14726,7 +14597,8 @@ Release: June 1, 2017
 
 161 / 184
 
-              Domain="SampleDomain" Type="Group" Description=""/>
+
+              Domain="SampleDomain" Type="Group" Description=""/>
      </Category>
      <Category Type="Standard">
          <User DisplayName="Ankur Kulshrestha" ID="ankurkul"
@@ -14751,15 +14623,16 @@ Release: June 1, 2017
 
 162 / 184
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 WSRM allows any user who has administrator privileges on a machine to connect to a server.
 Therefore, a user can exploit security vulnerabilities in the WSRM server implementation. A secure
 server implementation enforces security on each method.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -14774,7 +14647,8 @@ Release: June 1, 2017
 
 163 / 184
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided as follows, where "ms-dtyp.idl" is the IDL found in
 [MS-DTYP] appendix A, and "ms-oaut.idl" is the IDL found in [MS-OAUT] appendix A:
@@ -14849,7 +14723,8 @@ Release: June 1, 2017
 
 164 / 184
 
-     uuid(E8BCFFAC-B864-4574-B2E8-F1FB21DFDC18),
+
+     uuid(E8BCFFAC-B864-4574-B2E8-F1FB21DFDC18),
      helpstring("ResourceManager Class")
  ]
  coclass ResourceManager
@@ -14926,7 +14801,8 @@ Release: June 1, 2017
 
 165 / 184
 
-     object,
+
+     object,
      uuid(481E06CF-AB04-4498-8FFE-124A0A34296D),
      dual,
      helpstring("IWRMCalendar Interface"),
@@ -15003,7 +14879,8 @@ Release: June 1, 2017
 
 166 / 184
 
- [
+
+ [
      object,
      uuid(59602EB6-57B0-4FD8-AA4B-EBF06971FE15),
      dual,
@@ -15078,7 +14955,8 @@ Release: June 1, 2017
 
 167 / 184
 
- [
+
+ [
      object,
      uuid(BC681469-9DD9-4BF4-9B3D-709F69EFE431),
      dual,
@@ -15155,7 +15033,8 @@ Release: June 1, 2017
 
 168 / 184
 
-             [in] BSTR bstrMachineName);
+
+             [in] BSTR bstrMachineName);
      [id(7), helpstring("method DefragmentDB")]
          HRESULT DefragmentDB();
      [id(8), helpstring("method CancelAccountingQuery")]
@@ -15232,7 +15111,8 @@ Release: June 1, 2017
 
 169 / 184
 
-     object,
+
+     object,
      uuid(F31931A9-832D-481C-9503-887A0E6A79F0),
      dual,
      helpstring("IWRMProtocol Interface"),
@@ -15309,7 +15189,8 @@ Release: June 1, 2017
 
 170 / 184
 
- {
+
+ {
      [id(1), helpstring("method ExportObjects")]
          HRESULT ExportObjects(
              [in] BSTR bstrObjectIds,
@@ -15371,7 +15252,8 @@ Release: June 1, 2017
 
 171 / 184
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -15440,7 +15322,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<12> Section 2.2.5.11: Windows uses root element as Calendars instead of CalendarsCollection in
+
+<12> Section 2.2.5.11: Windows uses root element as Calendars instead of CalendarsCollection in
 CalendarsCollection schema.
 
 <13> Section 2.2.5.21: For Windows, the name is the same as the value of the RefName attribute of
@@ -15538,7 +15421,8 @@ Release: June 1, 2017
 
 173 / 184
 
-Interface
+
+Interface
 
 Windows Version
 
@@ -15641,7 +15525,8 @@ Release: June 1, 2017
 
 174 / 184
 
-<38> Section 3.2.4.2.3: Windows can return this error if used with
+
+<38> Section 3.2.4.2.3: Windows can return this error if used with
 OVERRIDE_EXISTING_IMPORT.
 
 <39> Section 3.2.4.2.3: Windows returns this value if the XML data is corrupt.
@@ -15710,7 +15595,8 @@ Release: June 1, 2017
 
 175 / 184
 
-2.  Go to "%windir%\System32\Windows System Resource Manager" and corrupt the database folder
+
+2.  Go to "%windir%\System32\Windows System Resource Manager" and corrupt the database folder
 
 by deleting, moving, or renaming some files in the database directory.
 
@@ -15781,7 +15667,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<71> Section 3.2.4.5: Windows Server 2008 supports the Windows Internal Database, a built-in
+
+<71> Section 3.2.4.5: Windows Server 2008 supports the Windows Internal Database, a built-in
 relational database component for use by other Windows components.
 
 <72> Section 3.2.4.5.2: Windows returns this error if the configuration value is longer than 260
@@ -15850,7 +15737,8 @@ Release: June 1, 2017
 
 177 / 184
 
-<85> Section 3.2.4.6.1: Windows does not validate the machine name or its presence in a domain
+
+<85> Section 3.2.4.6.1: Windows does not validate the machine name or its presence in a domain
 while validating machine details.
 
 <86> Section 3.2.4.6.1: Windows returns this value if the XML data is corrupt.
@@ -15921,7 +15809,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<102> Section 3.2.4.6.8: Windows returns a WRM_ERR_MACHINEID_INVALID error if some machine
+
+<102> Section 3.2.4.6.8: Windows returns a WRM_ERR_MACHINEID_INVALID error if some machine
 with the new machine name already exists.
 
 <103> Section 3.2.4.6.9: Windows does not recursively delete all instances of machines even if the
@@ -15992,7 +15881,8 @@ Windows System Resource Manager (WSRM) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -16004,7 +15894,8 @@ Release: June 1, 2017
 
 180 / 184
 
-9  Index
+
+## 9 Index
 A
 
 ABNF data formats
@@ -16138,7 +16029,8 @@ Release: June 1, 2017
 
 181 / 184
 
-EqualPerProcess 23
+
+EqualPerProcess 23
 EqualPerSession 23
 EqualPerUser 23
 Events example 155
@@ -16281,7 +16173,8 @@ Message processing
 
 182 / 184
 
-      higher-layer triggered events 68
+
+      higher-layer triggered events 68
       opening and closing session 68
       processing server notifications 69
       processing server replies 68
@@ -16421,7 +16314,8 @@ Sequencing rules
 
 183 / 184
 
-W
+
+W
 
 Wednesday 22
 Weekly 22

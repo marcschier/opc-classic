@@ -57,224 +57,128 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Table of Contents
-1 Introduction ............................................................................................................ 7
-1.1 Glossary ........................................................................................................... 7
-1.2 References ........................................................................................................ 7
-1.2.1 Normative References ................................................................................... 7
-1.2.2 Informative References ................................................................................. 8
-1.3 Overview .......................................................................................................... 8
-1.3.1 XUSB Device Interface General Specifications .................................................. 8
-1.3.2 XUSB Adapter USB Interface General Specifications .......................................... 9
-1.3.3 XUSB Transfers ............................................................................................ 9
-1.3.4 Polling Interval and Idle Rate ......................................................................... 9
-1.4 Relationship to Other Protocols ............................................................................ 9
-1.5 Prerequisites/Preconditions ................................................................................. 9
-1.6 Applicability Statement ..................................................................................... 10
-1.7 Versioning and Capability Negotiation ................................................................. 10
-1.8 Vendor-Extensible Fields ................................................................................... 10
-1.9 Standards Assignments ..................................................................................... 10
-2 Messages ............................................................................................................... 11
-2.1 Transport ........................................................................................................ 11
-2.2 Message Syntax ............................................................................................... 11
-2.2.1 USB Device Framework ............................................................................... 11
-2.2.2 XUSB High Level Interface ........................................................................... 11
-2.2.2.1 Device Types and Subtypes .................................................................... 11
-2.2.2.1.1 XUSB Device Subtypes Definitions ..................................................... 11
-2.2.2.1.2 Game Controller (0x01) ................................................................... 12
-2.2.2.1.3 Racing Wheel .................................................................................. 13
-2.2.2.1.4 Arcade Stick/Pad ............................................................................. 13
-2.2.2.1.5 Flight Stick ..................................................................................... 14
-2.2.2.1.6 Dance Pad ...................................................................................... 14
-2.2.2.1.7 Guitar Standard/Alternate/Bass ......................................................... 15
-2.2.2.2 Device Enumeration .............................................................................. 15
-2.2.2.3 XUSB Device Interfaces and Endpoints .................................................... 15
-2.2.3 XUSB Adapter USB High Level Interface ........................................................ 16
-2.2.3.1 XUSB Adapter Interfaces and Endpoints ................................................... 16
-2.2.4 XUSB Descriptors ....................................................................................... 17
-2.2.4.1 Standard Device Descriptor .................................................................... 18
-2.2.4.2 Standard Configuration Descriptor .......................................................... 18
-2.2.4.3 Standard Interface Descriptor ................................................................. 19
-2.2.4.4 Standard Endpoint Report Descriptor ....................................................... 19
-2.2.4.5 XUSB Interface Device Descriptor (Vendor Specific) .................................. 19
-2.2.4.6 Microsoft OS Descriptor ......................................................................... 20
-2.2.5 XUSB Wireless Device Descriptors................................................................. 21
-2.2.6 Charge and Play Device Descriptors .............................................................. 21
-2.2.7 XUSB Adapter USB Descriptors ..................................................................... 22
-2.2.7.1 Standard Device Descriptor .................................................................... 22
-2.2.7.2 Standard Configuration Descriptor .......................................................... 23
-2.2.7.3 Standard Interface Descriptor ................................................................. 23
-2.2.7.4 Standard Endpoint Report Descriptor ....................................................... 23
-2.2.7.5 XUSB Adapter Interface Descriptor (Vendor Specific) ................................. 24
-2.2.8 XUSB Reports............................................................................................. 24
-2.2.8.1 XUSB Requests ..................................................................................... 25
-2.2.8.2 Get_Report (Input) ............................................................................... 27
-2.2.8.3 Set_Report (Output) ............................................................................. 28
-2.2.8.4 Set_Control Request.............................................................................. 28
-2.2.8.5 Get_Device_ID (Input) .......................................................................... 28
-3 / 81
-[MS-XUSBI] - v20240916
-Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
+## Table of Contents
 
-2.2.8.6 Set_Bind_Info (Output) ......................................................................... 29
-2.2.8.7 GET_CAPABILITIES Request ................................................................... 29
-2.2.9 XUSB Adapter Reports ................................................................................. 30
-2.2.9.1 XUSB Adapter USB Requests .................................................................. 30
-2.2.9.2 Get_Report (Input) ............................................................................... 32
-2.2.9.3 Set_Report (Output) ............................................................................. 33
-2.2.9.4 Get_Device_ID (Input) .......................................................................... 33
-2.2.9.5 Get_Bind_Info (Input) ........................................................................... 34
-3 Protocol Details ..................................................................................................... 35
-3.1 XUSB Interfaces Overview ................................................................................. 35
-3.2 Game Controller Interface (Interface 0) Details .................................................... 35
-3.2.1 Abstract Data Model .................................................................................... 35
-3.2.1.1 Game Controller Interface Descriptors ..................................................... 37
-3.2.1.1.1 Interface Descriptor ......................................................................... 37
-3.2.1.1.2 XUSB Interface Device Descriptor ...................................................... 38
-3.2.1.1.3 Endpoint Descriptor (IN 0x81)........................................................... 38
-3.2.1.1.4 Endpoint Descriptor (OUT 0x02) ........................................................ 39
-3.2.2 Timers ...................................................................................................... 39
-3.2.3 Initialization ............................................................................................... 39
-3.2.4 Higher-Layer Triggered Events ..................................................................... 39
-3.2.5 Message Processing Events and Sequencing Rules .......................................... 39
-3.2.5.1 Input Data Reports................................................................................ 39
-3.2.5.1.1 Default Game Controller Input Report (Report ID 0x00) ....................... 40
-3.2.5.1.2 Device Status Input Reports ............................................................. 41
-3.2.5.1.3 LED State Report (Report ID 0x01) .................................................... 41
-3.2.5.1.4 Rumble Level Setting (Report ID 0x03) .............................................. 42
-3.2.5.1.5 Battery Level & Type (Report ID 0x04) ............................................... 42
-3.2.5.1.6 Device Connection Report (Report ID 0x08) ........................................ 42
-3.2.5.2 Output Data Reports ............................................................................. 43
-3.2.5.2.1 Game Pad Rumble Motor Control Report (Report ID 0x00) .................... 43
-3.2.5.2.2 LED Control Request Report (Report ID 0x01) ..................................... 43
-3.2.5.2.3 Master Rumble Level Control (Report ID 0x02).................................... 43
-3.2.6 Timer Events .............................................................................................. 44
-3.2.7 Other Local Events ...................................................................................... 44
-3.3 Voice Communicator Interface (Interface 1) Details .............................................. 44
-3.3.1 Abstract Data Model .................................................................................... 44
-3.3.1.1 Voice Communicator Interface Descriptors ............................................... 44
-3.3.1.1.1 Interface Descriptor ......................................................................... 44
-3.3.1.1.2 XUSB Interface Device Descriptor ...................................................... 44
-3.3.1.1.3 Endpoint Descriptor (IN 0x83)........................................................... 45
-3.3.1.1.4 Endpoint Descriptor (IN 0x85)........................................................... 46
-3.3.1.1.5 Endpoint Descriptor (OUT 0x04) ........................................................ 46
-3.3.1.1.6 Endpoint Descriptor (OUT 0x06) ........................................................ 46
-3.3.2 Timers ...................................................................................................... 46
-3.3.3 Initialization ............................................................................................... 47
-3.3.4 Higher-Layer Triggered Events ..................................................................... 47
-3.3.5 Message Processing Events and Sequencing Rules .......................................... 47
-3.3.5.1 Voice Interrupt IN Endpoint (0x83) ......................................................... 47
-3.3.5.2 Voice Interrupt IN Endpoint 2 (0x85) ....................................................... 47
-3.3.5.2.1 Headset Status Report ..................................................................... 48
-3.3.5.2.2 Microphone Status Report................................................................. 48
-3.3.5.2.3 Playback Volume Setting Report ........................................................ 48
-3.3.5.2.4 Vox Setting Report .......................................................................... 48
-3.3.5.2.5 AGC Status Report ........................................................................... 49
-3.3.5.2.6 Voice Codec Report .......................................................................... 49
-3.3.5.3 Voice Interrupt OUT Endpoint (0x04) ....................................................... 49
-3.3.5.4 Voice control Interrupt OUT Endpoint (0x06) ............................................ 49
-4 / 81
-[MS-XUSBI] - v20240916
-Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 XUSB Device Interface General Specifications](#131-xusb-device-interface-general-specifications)
+    - [1.3.2 XUSB Adapter USB Interface General Specifications](#132-xusb-adapter-usb-interface-general-specifications)
+    - [1.3.3 XUSB Transfers](#133-xusb-transfers)
+    - [1.3.4 Polling Interval and Idle Rate](#134-polling-interval-and-idle-rate)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 USB Device Framework](#221-usb-device-framework)
+    - [2.2.2 XUSB High Level Interface](#222-xusb-high-level-interface)
+      - [2.2.2.1 Device Types and Subtypes](#2221-device-types-and-subtypes)
+        - [2.2.2.1.1 XUSB Device Subtypes Definitions](#22211-xusb-device-subtypes-definitions)
+        - [2.2.2.1.2 Game Controller (0x01)](#22212-game-controller-0x01)
+        - [2.2.2.1.3 Racing Wheel](#22213-racing-wheel)
+        - [2.2.2.1.4 Arcade Stick/Pad](#22214-arcade-stickpad)
+        - [2.2.2.1.5 Flight Stick](#22215-flight-stick)
+        - [2.2.2.1.6 Dance Pad](#22216-dance-pad)
+        - [2.2.2.1.7 Guitar Standard/Alternate/Bass](#22217-guitar-standardalternatebass)
+      - [2.2.2.2 Device Enumeration](#2222-device-enumeration)
+      - [2.2.2.3 XUSB Device Interfaces and Endpoints](#2223-xusb-device-interfaces-and-endpoints)
+    - [2.2.3 XUSB Adapter USB High Level Interface](#223-xusb-adapter-usb-high-level-interface)
+      - [2.2.3.1 XUSB Adapter Interfaces and Endpoints](#2231-xusb-adapter-interfaces-and-endpoints)
+    - [2.2.4 XUSB Descriptors](#224-xusb-descriptors)
+      - [2.2.4.1 Standard Device Descriptor](#2241-standard-device-descriptor)
+      - [2.2.4.2 Standard Configuration Descriptor](#2242-standard-configuration-descriptor)
+      - [2.2.4.3 Standard Interface Descriptor](#2243-standard-interface-descriptor)
+      - [2.2.4.4 Standard Endpoint Report Descriptor](#2244-standard-endpoint-report-descriptor)
+      - [2.2.4.5 XUSB Interface Device Descriptor (Vendor Specific)](#2245-xusb-interface-device-descriptor-vendor-specific)
+      - [2.2.4.6 Microsoft OS Descriptor](#2246-microsoft-os-descriptor)
+    - [2.2.5 XUSB Wireless Device Descriptors](#225-xusb-wireless-device-descriptors)
+    - [2.2.6 Charge and Play Device Descriptors](#226-charge-and-play-device-descriptors)
+    - [2.2.7 XUSB Adapter USB Descriptors](#227-xusb-adapter-usb-descriptors)
+      - [2.2.7.1 Standard Device Descriptor](#2271-standard-device-descriptor)
+      - [2.2.7.2 Standard Configuration Descriptor](#2272-standard-configuration-descriptor)
+      - [2.2.7.3 Standard Interface Descriptor](#2273-standard-interface-descriptor)
+      - [2.2.7.4 Standard Endpoint Report Descriptor](#2274-standard-endpoint-report-descriptor)
+      - [2.2.7.5 XUSB Adapter Interface Descriptor (Vendor Specific)](#2275-xusb-adapter-interface-descriptor-vendor-specific)
+    - [2.2.8 XUSB Reports](#228-xusb-reports)
+      - [2.2.8.1 XUSB Requests](#2281-xusb-requests)
+      - [2.2.8.2 Get_Report (Input)](#2282-getreport-input)
+      - [2.2.8.3 Set_Report (Output)](#2283-setreport-output)
+      - [2.2.8.4 Set_Control Request](#2284-setcontrol-request)
+      - [2.2.8.5 Get_Device_ID (Input)](#2285-getdeviceid-input)
+      - [2.2.8.6 Set_Bind_Info (Output)](#2286-setbindinfo-output)
+      - [2.2.8.7 GET_CAPABILITIES Request](#2287-getcapabilities-request)
+    - [2.2.9 XUSB Adapter Reports](#229-xusb-adapter-reports)
+      - [2.2.9.1 XUSB Adapter USB Requests](#2291-xusb-adapter-usb-requests)
+      - [2.2.9.2 Get_Report (Input)](#2292-getreport-input)
+      - [2.2.9.3 Set_Report (Output)](#2293-setreport-output)
+      - [2.2.9.4 Get_Device_ID (Input)](#2294-getdeviceid-input)
+      - [2.2.9.5 Get_Bind_Info (Input)](#2295-getbindinfo-input)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 XUSB Interfaces Overview](#31-xusb-interfaces-overview)
+  - [3.2 Game Controller Interface (Interface 0) Details](#32-game-controller-interface-interface-0-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Game Controller Interface Descriptors](#3211-game-controller-interface-descriptors)
+        - [3.2.1.1.1 Interface Descriptor](#32111-interface-descriptor)
+        - [3.2.1.1.2 XUSB Interface Device Descriptor](#32112-xusb-interface-device-descriptor)
+        - [3.2.1.1.3 Endpoint Descriptor (IN 0x81)](#32113-endpoint-descriptor-in-0x81)
+        - [3.2.1.1.4 Endpoint Descriptor (OUT 0x02)](#32114-endpoint-descriptor-out-0x02)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Input Data Reports](#3251-input-data-reports)
+        - [3.2.5.1.1 Default Game Controller Input Report (Report ID 0x00)](#32511-default-game-controller-input-report-report-id-0x00)
+        - [3.2.5.1.2 Device Status Input Reports](#32512-device-status-input-reports)
+        - [3.2.5.1.3 LED State Report (Report ID 0x01)](#32513-led-state-report-report-id-0x01)
+        - [3.2.5.1.4 Rumble Level Setting (Report ID 0x03)](#32514-rumble-level-setting-report-id-0x03)
+        - [3.2.5.1.5 Battery Level & Type (Report ID 0x04)](#32515-battery-level-type-report-id-0x04)
+        - [3.2.5.1.6 Device Connection Report (Report ID 0x08)](#32516-device-connection-report-report-id-0x08)
+      - [3.2.5.2 Output Data Reports](#3252-output-data-reports)
+        - [3.2.5.2.1 Game Pad Rumble Motor Control Report (Report ID 0x00)](#32521-game-pad-rumble-motor-control-report-report-id-0x00)
+        - [3.2.5.2.2 LED Control Request Report (Report ID 0x01)](#32522-led-control-request-report-report-id-0x01)
+        - [3.2.5.2.3 Master Rumble Level Control (Report ID 0x02)](#32523-master-rumble-level-control-report-id-0x02)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Voice Communicator Interface (Interface 1) Details](#33-voice-communicator-interface-interface-1-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Voice Communicator Interface Descriptors](#3311-voice-communicator-interface-descriptors)
+        - [3.3.1.1.1 Interface Descriptor](#33111-interface-descriptor)
+        - [3.3.1.1.2 XUSB Interface Device Descriptor](#33112-xusb-interface-device-descriptor)
+        - [3.3.1.1.3 Endpoint Descriptor (IN 0x83)](#33113-endpoint-descriptor-in-0x83)
+        - [3.3.1.1.4 Endpoint Descriptor (IN 0x85)](#33114-endpoint-descriptor-in-0x85)
+        - [3.3.1.1.5 Endpoint Descriptor (OUT 0x04)](#33115-endpoint-descriptor-out-0x04)
+        - [3.3.1.1.6 Endpoint Descriptor (OUT 0x06)](#33116-endpoint-descriptor-out-0x06)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Voice Interrupt IN Endpoint (0x83)](#3351-voice-interrupt-in-endpoint-0x83)
+      - [3.3.5.2 Voice Interrupt IN Endpoint 2 (0x85)](#3352-voice-interrupt-in-endpoint-2-0x85)
+        - [3.3.5.2.1 Headset Status Report](#33521-headset-status-report)
+        - [3.3.5.2.2 Microphone Status Report](#33522-microphone-status-report)
+        - [3.3.5.2.3 Playback Volume Setting Report](#33523-playback-volume-setting-report)
+        - [3.3.5.2.4 Vox Setting Report](#33524-vox-setting-report)
+- [4 Vox decay time Vox decay time in ms](#4-vox-decay-time-vox-decay-time-in-ms)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Descriptor and Protocol Definitions](#6-appendix-a-descriptor-and-protocol-definitions)
+  - [6.1 MS Interface Descriptor Type](#61-ms-interface-descriptor-type)
+  - [6.2 MS Special Interface Protocol definitions](#62-ms-special-interface-protocol-definitions)
+  - [6.3 XUSB Adapter Interface Descriptor (Vendor Specific)](#63-xusb-adapter-interface-descriptor-vendor-specific)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-3.3.5.4.1 Voice Input Codec Selection .............................................................. 50
-3.3.5.4.2 Microphone Mute Control .................................................................. 50
-3.3.5.4.3 Playback Volume Setting Report ........................................................ 50
-3.3.5.4.4 Vox Control .................................................................................... 51
-3.3.5.4.5 AGC Control .................................................................................... 51
-3.3.6 Timer Events .............................................................................................. 51
-3.3.7 Other Local Events ...................................................................................... 51
-3.4 Text Input Device Interface (Interface 2) Details .................................................. 51
-3.4.1 Abstract Data Model .................................................................................... 52
-3.4.1.1 Text Input Device Interface Descriptors ................................................... 52
-3.4.1.1.1 TID Interface Descriptor ................................................................... 52
-3.4.1.1.2 XUSB Interface Device Descriptor ...................................................... 52
-3.4.1.1.3 Endpoint Descriptor (IN 0x87)........................................................... 52
-3.4.2 Timers ...................................................................................................... 53
-3.4.3 Initialization ............................................................................................... 53
-3.4.4 Higher-Layer Triggered Events ..................................................................... 53
-3.4.5 Message Processing Events and Sequencing Rules .......................................... 53
-3.4.5.1 Default TID Input Report (Report ID 0x00)............................................... 53
-3.4.5.1.1 TID Backlight Status Report (Report ID 0x01) ..................................... 53
-3.4.5.1.2 TID Control Request ........................................................................ 54
-3.4.6 Timer Events .............................................................................................. 54
-3.4.7 Other Local Events ...................................................................................... 54
-3.5 XUSB Adapter USB Interfaces Structure .............................................................. 54
-3.5.1 Abstract Data Model .................................................................................... 55
-3.5.1.1 XUSB Adapter Controller and Devices Control Interface ............................. 56
-3.5.1.1.1 Interface Descriptor ......................................................................... 56
-3.5.1.1.2 XUSB Adapter Interface Device Descriptor .......................................... 56
-3.5.1.1.3 Endpoint Descriptor (IN 0x81)........................................................... 57
-3.5.1.1.4 Endpoint Descriptor (OUT 0x02) ........................................................ 57
-3.5.2 Timers ...................................................................................................... 57
-3.5.3 Initialization ............................................................................................... 57
-3.5.4 Higher-Layer Triggered Events ..................................................................... 57
-3.5.5 Message Processing Events and Sequencing Rules .......................................... 58
-3.5.5.1 Game Controller Input Data Transfer ....................................................... 58
-3.5.5.1.1 Wireless Controller Data/Device Status Input Report (Report ID 0x00) ... 58
-3.5.5.1.1.1 Header Only Report Type 0x00 .................................................... 59
-3.5.5.1.1.2 Header and Controller Data Type 0x01 ......................................... 59
-3.5.5.1.1.3 Header, Controller, and Plug-in Module Data Type 0x03 .................. 61
-3.5.5.1.1.4 Link Control Packet Type 0x0F ..................................................... 61
-3.5.5.1.2 Same Slot Voice Device Reports (Report ID 0x01) ............................... 61
-3.5.5.1.2.1 Device ID and Link Control Type 0x00 .......................................... 62
-3.5.5.1.2.2 Device Transport Packet Type 0x01 .............................................. 63
-3.5.5.1.2.3 Voice Header Packet Type 0xFF ................................................... 63
-3.5.5.1.3 Wireless Devices Connection Status Report (Report ID 0x08) ................ 63
-3.5.5.2 Game Controller Output Requests ........................................................... 63
-3.5.5.2.1 Wireless Controller Control Request (Request ID 0x00) ........................ 64
-3.5.5.2.1.1 Header Only Request Type 0x00 .................................................. 65
-3.5.5.2.1.2 Rumble/Force Feedback Data Request Type 0x01 .......................... 65
-3.5.5.2.2 Voice Device Control Request (Request ID 0x01) ................................. 66
-3.5.5.2.2.1 Transport Packet Type 0x01 ........................................................ 67
-3.5.5.2.2.2 Voice Header Only Packet Type 0x03 ............................................ 67
-3.5.5.2.3 Wireless Devices Connection Request (Request ID 0x08) ...................... 67
-3.5.6 Timer Events .............................................................................................. 68
-3.5.7 Other Local Events ...................................................................................... 68
-3.6 XUSB Adapter Voice Communicator Interface ...................................................... 68
-3.6.1 Abstract Data Model .................................................................................... 68
-3.6.1.1 XUSB Adapter Voice Communicator Descriptors ........................................ 68
-3.6.1.1.1 Interface Descriptor ......................................................................... 68
-5 / 81
-[MS-XUSBI] - v20240916
-Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-3.6.1.1.2 XUSB Adapter Interface Device Descriptor .......................................... 69
-3.6.1.1.3 Endpoint Descriptor (IN 0x84)........................................................... 69
-3.6.1.1.4 Endpoint Descriptor (OUT 0x04) ........................................................ 69
-3.6.2 Timers ...................................................................................................... 70
-3.6.3 Initialization ............................................................................................... 70
-3.6.4 Higher-Layer Triggered Events ..................................................................... 70
-3.6.5 Message Processing Events and Sequencing Rules .......................................... 70
-3.6.5.1 Voice Communicator Data Transfer ......................................................... 70
-3.6.5.1.1 Upstream Voice Data ....................................................................... 70
-3.6.5.1.2 Downstream Voice Data ................................................................... 71
-3.6.6 Timer Events .............................................................................................. 71
-3.6.7 Other Local Events ...................................................................................... 71
-4 Protocol Examples ................................................................................................. 72
-5 Security ................................................................................................................. 73
-5.1 Security Considerations for Implementers ........................................................... 73
-5.2 Index of Security Parameters ............................................................................ 73
-6 Appendix A: Descriptor and Protocol Definitions ................................................... 74
-6.1 MS Interface Descriptor Type ............................................................................. 74
-6.2 MS Special Interface Protocol definitions ............................................................. 74
-6.3 XUSB Adapter Interface Descriptor (Vendor Specific) ............................................ 74
-7 Appendix B: Product Behavior ............................................................................... 79
-8 Change Tracking .................................................................................................... 80
-9 Index ..................................................................................................................... 81
-6 / 81
-[MS-XUSBI] - v20240916
-Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-1 Introduction
+## 1 Introduction
 The Xbox Universal Serial Bus Protocol (XUSB) Interface Extension is a modified version of the USB
 2.0 interface that provides extended semantics for interaction between game controller devices and a
 host. The high level interface of the XUSB specification includes enumeration of device capabilities,
@@ -282,7 +186,7 @@ determining of device type and subtype, transfer of gamepad and voice data, and 
 expansion device on the controller.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
-1.1 Glossary
+### 1.1 Glossary
 This document uses the following terms:
 frequency-hopping spread spectrum (FHSS) polynomial: The frequency-hopping spread
 spectrum is a method of transmitting radio signals by rapidly switching a carrier among many
@@ -305,12 +209,12 @@ V power have a pin called VUSB or VBUS, that will output power directly from the
 connector. The pin will not receive any power if no power is being supplied to the USB port.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
-1.2 References
+### 1.2 References
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
-1.2.1 Normative References
+#### 1.2.1 Normative References
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
 assist you in finding the relevant information.
@@ -325,12 +229,12 @@ Release: September 16, 2024
 [USB-SPC2.0] USB Implementers Forum, Inc., "Document Library", USB 2.0 Specification, October
 2021, https://www.usb.org/documents
 Note Search for 2.0 and Technology USB 2.0
-1.2.2 Informative References
+#### 1.2.2 Informative References
 [MSDN-INFS] Microsoft Corporation, "Overview of INF Files", https://learn.microsoft.com/en-
 us/windows-hardware/drivers/install/overview-of-inf-files
 [MSLEARN-XINPUT] Microsoft Corporation, "XInput Game Controller APIs",
 https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-game-controller-apis-portal
-1.3 Overview
+### 1.3 Overview
 The Xbox Universal Serial Bus Protocol (XUSB) Interface Extension (XUSBI) is a modified version of
 the Universal Serial Bus (USB) Core protocol, an external bus architecture for connecting USB-capable
 peripheral devices to a host computer. XUSBI is based on the revision 2.0 of the USB specification
@@ -344,7 +248,7 @@ XUSB Adapter is a USB class device designed as a hub between the host and its wi
 peripheral devices. The USB interface for XUSB Wireless Adapter devices specification defines a simple
 bridge interface between the wireless input devices and host USB interface.
 For more information, see [MSLEARN-XINPUT].
-1.3.1 XUSB Device Interface General Specifications
+#### 1.3.1 XUSB Device Interface General Specifications
 The XUSB interface is a slightly modified version of the USB 2.0 interface. For the XUSB device side, it
 has the following general specifications:
  Supports both USB low speed and full speed, but only one mode at a time.
@@ -366,7 +270,7 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-1.3.2 XUSB Adapter USB Interface General Specifications
+#### 1.3.2 XUSB Adapter USB Interface General Specifications
 The XUSB Adapter USB interface is a standard USB 2.0 interface. It has the following general
 specifications:
  Is integrated with USB 2.0 full speed transceivers.
@@ -382,7 +286,7 @@ Signal Description
 3 – D+ Data plus line
 4 – GND GND
 Table 2: XUSB Adapter Host Interface Signal
-1.3.3 XUSB Transfers
+#### 1.3.3 XUSB Transfers
 XUSB Transfers
 Only control and interrupt transfers are supported by XUSBI. To minimize the transfer overhead,
 XUSBI transfers have some specific requirements. The following apply to both low speed mode and full
@@ -390,19 +294,19 @@ speed mode.
 Control Transfer: The data payload for XUSB control transfer is 8 bytes minimum.
 Interrupt Transfer: XUSB supports interrupt IN and interrupt OUT transfers. Interrupt IN and
 interrupt OUT transfers that support polling rate from 2 ms to 255 ms.
-1.3.4 Polling Interval and Idle Rate
+#### 1.3.4 Polling Interval and Idle Rate
 The host system follows the standard USB protocol and honors the bInterval in the device endpoint
 descriptors. XUSB device is prepared to respond to IN requests at fixed interval. For the input data
 report, it always responds with the latest unreported state. If the state changes multiple times
 between IN requests, only the last state SHOULD be reported. If the state does not change between
 IN requests, the device SHOULD negatively acknowledge (NAK) the IN request, regardless of the time
 since the previous acknowledge (ACK).
-1.4 Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 Xbox Universal Serial Bus Protocol Interface Extension (XUSBI) uses the Universal Serial Bus (USB)
 2.0 Core protocol, an external bus architecture for connecting USB-capable peripheral devices to a
 host computer. The USB 2.0 Core is maintained by the USB Implementers Forum in its USB 2.0 base
 specification. For information on the USB 2.0 Core interface, see [USB-SPC2.0] .
-1.5 Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 A USB-enabled gaming device. The Xbox Universal Serial Bus Protocol Interface Extension (XUSBI) is
 based on USB 2.0 specification. For details on the USB 2.0 Core interface, see [USB-SPC2.0].
 9 / 81
@@ -411,14 +315,14 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-1.6 Applicability Statement
+### 1.6 Applicability Statement
 Applies to USB-enabled devices.
-1.7 Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 The Xbox Universal Serial Bus Protocol (XUSB) Interface Extension (XUSBI) is based on only version
 2.0 of the USB Core protocol.
-1.8 Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 None.
-1.9 Standards Assignments
+### 1.9 Standards Assignments
 None.
 10 / 81
 [MS-XUSBI] - v20240916
@@ -426,15 +330,15 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2 Messages
-2.1 Transport
+## 2 Messages
+### 2.1 Transport
 The Xbox Universal Serial Bus Protocol (XUSB) Interface Extension (XUSBI) transports messages via
 the Universal Serial Bus (USB) Core protocol. USB Core is an external bus architecture for connecting
 USB-capable peripheral devices to a host computer. The USB Core is maintained by the USB
 Implementers Forum. XUSBI protocol is based on the Universal Serial Bus Revision 2.0 specification
 [USB-SPC2.0].
-2.2 Message Syntax
-2.2.1 USB Device Framework
+### 2.2 Message Syntax
+#### 2.2.1 USB Device Framework
 An XUSB device MAY be divided into three layers:
  The top layer is the functionality provided by the serial bus device such as game pad or steering
 wheel.
@@ -449,9 +353,9 @@ Low Speed Operation: The XUSB low speed bus interface follows the USB 2.0 low sp
 interface except it supports suspend/resume/remote wakeup in all states.
 Full Speed Operation: The XUSB full speed operation follows the USB 2.0 full speed bottom layer
 specification except it supports suspend/resume/remote wakeup in all states.
-2.2.2 XUSB High Level Interface
+#### 2.2.2 XUSB High Level Interface
 The following subsections define device types, subtypes, enumeration, interfaces, and endpoints.
-2.2.2.1 Device Types and Subtypes
+##### 2.2.2.1 Device Types and Subtypes
 The device type defines the primary use of the device. If a device supports a device type, it supports
 all devices of that type. The number of reports, their direction (input or output), and their format (field
 offsets, sizes, default values, and ranges) are determined by the device type and version
@@ -461,7 +365,7 @@ indicates the position of the steering wheel in a field determined by the subtyp
 mappings are designed to ensure that games do not need to know about the subtype. The subtype is
 available to games mainly for fine-tuning game play or user interfaces. Only a minority of games take
 advantage of knowing the subtype.
-2.2.2.1.1 XUSB Device Subtypes Definitions
+###### 2.2.2.1.1 XUSB Device Subtypes Definitions
 11 / 81
 [MS-XUSBI] - v20240916
 Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
@@ -489,7 +393,7 @@ Table 3: XUSB device subtypes
 The input report based on Wired Game Controller defined in Input Data Reports section 3.2.5.1.1
 applies to all of these types and is re-interpreted by the title. When exposed in HID format, the
 mappings described in the next few sections apply. Other buttons are ignored.
-2.2.2.1.2 Game Controller (0x01)
+###### 2.2.2.1.2 Game Controller (0x01)
 Game Controller XUSB to HID Report Mapping values are in the following table.
 HID Usage XUSB Button
 X Left Thumbstick X
@@ -519,7 +423,7 @@ Table 4: Game Controller XUSB to HID report mapping
 The left trigger and right trigger are combined in opposite directions to form the Z-axis. The value is
 shifted by 8 bits to account for the Z value being a word. The X, Y, Rx, Ry, and Z usages are defined
 from 0x0000 to 0xFFFF. As such, the thumbstick values are recentered around 0x8000.
-2.2.2.1.3 Racing Wheel
+###### 2.2.2.1.3 Racing Wheel
 Racing Wheel XUSB to HID Report Mapping values are in the following table.
 Note that the Z value calculation is inverted when compared to the standard gamepad usage.
 HID Usage XUSB Button
@@ -540,7 +444,7 @@ Button 9 Left Thumbstick Button
 Button 10 Right Thumbstick Button
 Hat Switch D-Pad
 Table 5: Racing Wheel XUSB to HID report mapping
-2.2.2.1.4 Arcade Stick/Pad
+###### 2.2.2.1.4 Arcade Stick/Pad
 Arcade Stick/Pad values are in the following table.
 HID Usage XUSB Button
 Button 1 A Button
@@ -562,7 +466,7 @@ Button 9 Left Trigger (treated as button)
 Button 10 Right Trigger (treated as button)
 Hat Switch D-Pad
 Table 6: Arcade Stick/Pad XUSB to HID report mapping
-2.2.2.1.5 Flight Stick
+###### 2.2.2.1.5 Flight Stick
 Flight Stick values are in the following table.
 HID Usage XUSB Button
 X (Flight Stick) Left Thumbstick X
@@ -584,7 +488,7 @@ Button 10 Right Thumbstick
 Button
 Hat Switch D-Pad
 Table 7: Flight Stick XUSB to HID report mapping
-2.2.2.1.6 Dance Pad
+###### 2.2.2.1.6 Dance Pad
 Dance Pad values are in the following table.
 HID Usage XUSB Button
 Button 1 A Button
@@ -606,7 +510,7 @@ Button 9 Left Thumbstick Button
 Button 10 Right Thumbstick Button
 Hat Switch D-Pad
 Table 8: Dance Pad/Pad XUSB to HID report mapping
-2.2.2.1.7 Guitar Standard/Alternate/Bass
+###### 2.2.2.1.7 Guitar Standard/Alternate/Bass
 Guitar Standard/Alternate/Bass XUSB to HID report mappings are in the following table.
 HID Usage XUSB Button
 Rz (Orientation) Right Thumbstick Y
@@ -624,12 +528,12 @@ Button 10 Right Thumbstick Button
 Hat Switch D-Pad
 Dial (Pickup Selector) Left Trigger (excluded for Alternate)
 Table 9: Guitar Standard/Alternate/Bass XUSB to HID report mapping
-2.2.2.2 Device Enumeration
+##### 2.2.2.2 Device Enumeration
 The device enumeration process follows the standard USB enumeration process with additional
 descriptors supported. After the device is enumerated, it supports operation mode switching. The
 following figure illustrates the enumeration process.
 Figure 1: XUSB device enumeration process
-2.2.2.3 XUSB Device Interfaces and Endpoints
+##### 2.2.2.3 XUSB Device Interfaces and Endpoints
 XSUB devices support the following interfaces and endpoints:
  Default control interface
 15 / 81
@@ -654,9 +558,9 @@ Control Transfer 1 8
 Interrupt IN 4 8 64 2 255
 Interrupt OUT 3 8 64 4 255
 Table 10: XUSB Endpoints
-2.2.3 XUSB Adapter USB High Level Interface
+#### 2.2.3 XUSB Adapter USB High Level Interface
 The following subsection defines the XUSB adapter interfaces and endpoints.
-2.2.3.1 XUSB Adapter Interfaces and Endpoints
+##### 2.2.3.1 XUSB Adapter Interfaces and Endpoints
 XUSB Adapter supports the following interfaces and endpoints:
  Default control interface
  Support one control endpoint
@@ -732,7 +636,7 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.4  XUSB Descriptors
+#### 2.2.4 XUSB Descriptors
 All XUSB devices MUST support the following descriptors:
   Standard USB device descriptor
   Standard USB Configuration descriptor
@@ -740,7 +644,7 @@ All XUSB devices MUST support the following descriptors:
   Standard USB Endpoint descriptor
   XUSB interface descriptor (vendor specific)
   Microsoft OS Descriptor
-2.2.4.1 Standard Device Descriptor
+##### 2.2.4.1 Standard Device Descriptor
 This is the standard USB device descriptor, and the format is shown in the following table.
 | Offset  Field       | Size  Value  | Description             |
 | ------------------- | ------------ | ----------------------- |
@@ -762,7 +666,7 @@ This is the standard USB device descriptor, and the format is shown in the follo
 Table 13: USB device descriptor
 The device type and subtype are defined in standard interface descriptor. XUSB device MUST support
 string descriptors.
-2.2.4.2 Standard Configuration Descriptor
+##### 2.2.4.2 Standard Configuration Descriptor
 This is the standard Configuration descriptor, and the format is shown in the following table.
 | Offset  Field  | Size  Value  | Description                        |
 | -------------- | ------------ | ---------------------------------- |
@@ -794,7 +698,7 @@ reasons
 8  MaxPower  1  Number  Total peak current consumption in mA (milliamperes). See
 section 2.2.7.2 and section 2.2.7.3.
 Table 14: Standard Configuration descriptor
-2.2.4.3 Standard Interface Descriptor
+##### 2.2.4.3 Standard Interface Descriptor
 This is the standard Interface descriptor, and the format is shown in the following table.
 | Offset  Field        | Size  Value  | Description                       |
 | -------------------- | ------------ | --------------------------------- |
@@ -810,7 +714,7 @@ This is the standard Interface descriptor, and the format is shown in the follow
 communicator
 8  iInterface  1  Number  String descriptor for interface (optional)
 Table 15: Interface descriptor
-2.2.4.4 Standard Endpoint Report Descriptor
+##### 2.2.4.4 Standard Endpoint Report Descriptor
 This is the standard Endpoint Report descriptor, and the format is shown in the following table.
 | Offset  Field        | Size  Value  | Description                        |
 | -------------------- | ------------ | ---------------------------------- |
@@ -834,7 +738,7 @@ Offset Field Size Value Description
 Bit 10 to 0 specifies the maximum packet size.
 6 bInterval 1 Number Polling interval in milliseconds.
 Table 16: Endpoint Report descriptor
-2.2.4.5 XUSB Interface Device Descriptor (Vendor Specific)
+##### 2.2.4.5 XUSB Interface Device Descriptor (Vendor Specific)
 This vendor specific descriptor is to provide host additional information about the XUSB device itself.
 This is an interface level descriptor for each interface. It also contains the number of reports
 supported for each endpoint in this interface, as well as the size for each report.
@@ -862,7 +766,7 @@ ID
 wReport 2 Number Last endpoint address and number of report
 bReportSize 1 Number Report size for the last endpoint
 Table 17: XUSB Device descriptor
-2.2.4.6 Microsoft OS Descriptor
+##### 2.2.4.6 Microsoft OS Descriptor
 When an operating system that supports the MS OS Descriptor identifies a XUSB device, it queries the
 device to check for the presence of a Microsoft OS String Descriptor – via a GET_DESCRIPTOR request
 to find out if it supports one or more of the MS OS Feature Descriptors. If the device supports the
@@ -916,7 +820,7 @@ descriptor.
 | 34  RESERVED  |     | 6  0x000000000000  |     | Reserved  |
 | ------------- | --- | ------------------ | --- | --------- |
 Table 19: Compatible ID descriptor
-2.2.5  XUSB Wireless Device Descriptors
+#### 2.2.5 XUSB Wireless Device Descriptors
 For wireless devices, the XUSB driver looks for a different bus type in the XUSB Interface Device
 Descriptor offset 1 section 2.2.4.5. The standard value of 0x21 defines USB devices. 0x22 serves to
 identify an XUSB adapter. The following table shows the descriptors.
@@ -931,7 +835,7 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.6  Charge and Play Device Descriptors
+#### 2.2.6 Charge and Play Device Descriptors
 Note: This path is not recommended and is only relevant for devices that cannot communicate to the
 host directly over USB.
 Some devices cannot communicate directly to the host via USB. The driver can automatically pair
@@ -955,7 +859,7 @@ The charge and play device then needs to implement the Get_Device_ID and Set_Bin
 requests, which the host uses to set the bind information it obtained from a separate wireless adapter.
 The Device ID for the Charge and Play device SHOULD be reported to be the same as the connecting
 device.
-2.2.7  XUSB Adapter USB Descriptors
+#### 2.2.7 XUSB Adapter USB Descriptors
 All XUSB Adapter USB devices MUST support the following descriptors:
   Standard USB device descriptor
   Standard USB configure descriptor
@@ -963,7 +867,7 @@ All XUSB Adapter USB devices MUST support the following descriptors:
   Standard USB endpoint descriptor
   XUSB Adapter Interface descriptor (vendor specific)
 All XUSB Adapter USB Descriptors with this implementation are listed in section 6.
-2.2.7.1 Standard Device Descriptor
+##### 2.2.7.1 Standard Device Descriptor
 This is the standard USB device descriptor, and the format is shown in the following table.
 | Offset  Field       | Size  Value  | Description             |
 | ------------------- | ------------ | ----------------------- |
@@ -990,7 +894,7 @@ Release: September 16, 2024
 | 16  iSerial         | 1  0x00      | Serial string descriptor        |
 | 17  bNumConfigure   | 1  0x01      | Number of configurations: 1     |
 Table 22: XUSB standard device descriptor
-2.2.7.2 Standard Configuration Descriptor
+##### 2.2.7.2 Standard Configuration Descriptor
 This is the standard Configuration descriptor, and the format is shown in the following table.
 | Offset  Field  | Size  Value  | Description                        |
 | -------------- | ------------ | ---------------------------------- |
@@ -1006,7 +910,7 @@ endpoint descriptors.
 | ---------------- | ---------- | --------- |
 8  MaxPower  1  0x82  Total peak current consumption 260 mA (milliamperes).
 Table 23: Standard Configuration descriptor
-2.2.7.3 Standard Interface Descriptor
+##### 2.2.7.3 Standard Interface Descriptor
 This is the standard Interface descriptor, and the format is shown in the following table.
 | Offset  Field  | Size  Value  | Description                        |
 | -------------- | ------------ | ---------------------------------- |
@@ -1029,7 +933,7 @@ Release: September 16, 2024
 | 7  bmAttributes  | 1  Bitmap    | Ignored.     |
 8  MaxPower  1  0x82  Total peak current consumption 260 mA (milliamperes).
 Table 24: Standard Interface descriptor
-2.2.7.4 Standard Endpoint Report Descriptor
+##### 2.2.7.4 Standard Endpoint Report Descriptor
 This is the standard Endpoint Report descriptor, and the format is shown in the following table.
 | Offset  Field        | Size  Value  | Description                        |
 | -------------------- | ------------ | ---------------------------------- |
@@ -1048,7 +952,7 @@ Bit 10 to 0 specifies the maximum packet size.
 | 6  bInterval  | 1  Number  | Polling interval in milliseconds.  |
 | ------------- | ---------- | ---------------------------------- |
 Table 25: Standard Endpoint Report descriptor
-2.2.7.5 XUSB Adapter Interface Descriptor (Vendor Specific)
+##### 2.2.7.5 XUSB Adapter Interface Descriptor (Vendor Specific)
 This is the XUSB Adapter Interface descriptor, and the format is shown in the following table.
 | Offset  Field       | Size  Value  | Description                        |
 | ------------------- | ------------ | ---------------------------------- |
@@ -1086,7 +990,7 @@ Release: September 16, 2024
 High byte: Report ID
 Low byte: Report size
 Table 26: XUSB Adapter Interface Device Descriptor
-2.2.8  XUSB Reports
+#### 2.2.8 XUSB Reports
 For XUSB status reports, the device MUST report all pending status reports to the host based on the
 sequence in which the status reports are generated.
 XUSB device uses USB interrupt transfers for its data reports. The following table summarizes the
@@ -1103,7 +1007,7 @@ Control Transfer (EP0)  XUSB descriptors device control  Varies
 | Interrupt OUT (EP2)  | Voice playback data            | 32  | 4    |
 | Interrupt OUT (EP3)  | Voice control data             | 32  | 16   |
 Table 27: USB reports and associated endpoints
-2.2.8.1 XUSB Requests
+##### 2.2.8.1 XUSB Requests
 The XUSB request format follows the same format as USB 2.0 standard requests. The following table
 shows the request data format.
 | Offset  Field     | Size  Value  | Description                  |     |
@@ -1255,7 +1159,7 @@ descriptor
 bVC is the MS
 vendor code
 Table 29: XUSB Request summary
-2.2.8.2 Get_Report (Input)
+##### 2.2.8.2 Get_Report (Input)
 The Get_Report requests the device to send host the most recent input data packet. Depending on the
 report ID specified in the wValueL field, the input data can be game pad/TID data or other input data
 reports that are reported in the endpoint report descriptor.
@@ -1274,7 +1178,7 @@ input report
 | 6   | wLength  | 2   | Count  | Length of the report  |
 requested
 Table 30: Get_Report request
-2.2.8.3 Set_Report (Output)
+##### 2.2.8.3 Set_Report (Output)
 The Set_Report (rumble) sends the rumble motor control data information to the device. The format is
 shown in the following table.
 | Offset  Field     | Size  Value    | Description                     |     |     |
@@ -1285,7 +1189,7 @@ shown in the following table.
 | 4  wIndex         | 2  Interface#  | Interface#                      |     |     |
 | 6  wLength        | 2  Count       | Length of the report requested  |     |     |
 Table 31: XUSB_Set_Report (output) request
-2.2.8.4 Set_Control Request
+##### 2.2.8.4 Set_Control Request
 This request is to set the vendor specific request for a specific interface. The following table shows the
 request format.
 28 / 81
@@ -1303,7 +1207,7 @@ Release: September 16, 2024
 | 4    wIndex    | 2  Interface#  | The interface #    |
 | 6    wLength   | 2  0x0000      | No data stage      |
 Table 32: SET_CONTROL request
-2.2.8.5 Get_Device_ID (Input)
+##### 2.2.8.5 Get_Device_ID (Input)
 The Get_Device_ID requests XUSB device to send host back its unique serial ID. The following table
 shows the format. Each XUSB device MUST have a unique serial ID.
 | Offset  Field     | Size  Value  | Description                        |
@@ -1317,7 +1221,7 @@ The packet 0x01 0x23 0x45 0x67 represents the device ID
 0x01234567.
 The high nibble of the LSB is reserved and set as 0.
 Table 33: Get_Device_ID request
-2.2.8.6 Set_Bind_Info (Output)
+##### 2.2.8.6 Set_Bind_Info (Output)
 The Set_Bind_Info requests the USB device (unique serial ID and the frequency-hopping spread
 spectrum (FHSS) polynomial) from the host and to save the information into its electrically
 erasable programmable read-only memory (EEPROM). This request only applies to wireless devices
@@ -1343,7 +1247,7 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.8.7 GET_CAPABILITIES Request
+##### 2.2.8.7 GET_CAPABILITIES Request
 XUSB v1.10 NOT USED. This command is unused, and the values returned are ignored by the
 system.
 This request is for XUSB version 1.10 and is not supported by XUSB 1.00 devices. GET_CAPABILITIES
@@ -1369,7 +1273,7 @@ D7…0: bReportID.
 | 6  wLength  | 2   | Count  Report length in bytes.  |     |     |
 | ----------- | --- | ------------------------------- | --- | --- |
 Table 35: GET_CAPABILITIES request
-2.2.9  XUSB Adapter Reports
+#### 2.2.9 XUSB Adapter Reports
 For XUSB Adapter other data such as voice and control/status, devices MUST report all the data based
 on the timing sequence the reports are generated
 XUSB Adapter uses USB interrupt transfers for its data reports. The following table summarizes the
@@ -1409,7 +1313,7 @@ Interrupt OUT (EP8)  Game pad  4 & voice 4 control data  12  8
 | Interrupt OUT (EP8)  | Voice 4 playback data  |     | 32  | 4   |
 | -------------------- | ---------------------- | --- | --- | --- |
 Table 36: USB reports and associated endpoints
-2.2.9.1 XUSB Adapter USB Requests
+##### 2.2.9.1 XUSB Adapter USB Requests
 Because XUSB Adapter USB follows the standard USB specification. The request format follows the
 same format as USB 2.0 standard requests. The following table shows the request data format.
 | Offset  Field     | Size  Value  | Description                  |     |     |
@@ -1512,7 +1416,7 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.9.2 Get_Report (Input)
+##### 2.2.9.2 Get_Report (Input)
 The Get_Report requests the device to send host the most recent input data packet. Depending on the
 report ID specified in the wValueL field, the input data can be game pad/TID data or other input data
 reports that are reported in the endpoint report descriptor.
@@ -1532,7 +1436,7 @@ wValueH: 0x01 for input report
 Table 39: Get_Report request
 This request cannot be used for getting the voice packet data. See Get_Report and Set_Report for
 implementation issues.
-2.2.9.3 Set_Report (Output)
+##### 2.2.9.3 Set_Report (Output)
 The Set_Report (device) sends the control data packet to the device. The packet includes the LED
 controls, overall rumble level settings, and other device level settings. The following table shows the
 format.
@@ -1550,7 +1454,7 @@ wValueH: 0x02 for input report
 Table 40: Set_Report (Output) request
 This request can NOT be used for sending the voice data. See Get_Report and Set_Report for
 implementation issues.
-2.2.9.4 Get_Device_ID (Input)
+##### 2.2.9.4 Get_Device_ID (Input)
 The Get_Device_ID requests XUSB Adapter to send host back its unique serial ID. The following table
 shows the format. Device ID in this case is the unique ID of the XUSB Adapter which is 28 bits, not
 the device ID of the gamepad or other wireless device that has a 32-bit ID.
@@ -1576,7 +1480,7 @@ The packet 0x12 0x34 0x56 0x70 represents the device ID 0x1234567.
 The low nibble of the LSB is reserved and set as 0.
 Table 42: Device_ID format
 See Get_Device_ID section 2.2.8.5 for implementation notes.
-2.2.9.5 Get_Bind_Info (Input)
+##### 2.2.9.5 Get_Bind_Info (Input)
 The Get_Bind_Info requests XUSB Adapter to send host back its unique serial ID and the FHSS
 polynomial. The following table shows the format.
 | Offset  Field     |     | Size  Value  | Description                        |
@@ -1605,8 +1509,8 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3 Protocol Details
-3.1 XUSB Interfaces Overview
+## 3 Protocol Details
+### 3.1 XUSB Interfaces Overview
 XUSB device is a composite device that can integrate functions of game controller, text input device,
 and voice communicator. Each function is represented by a dedicated USB interface. Each interface
 has one or more endpoints associated with it. The following table lists the different interfaces and the
@@ -1627,14 +1531,14 @@ each voice data packet transfer in the event of bus error. For example, to suppo
 upstream, device needs to send 32 bytes in every 4 ms. The polling rate is set as 2 ms. Device NAKs
 the second interrupt poll request if the first data transfer is successful.
 No alternate interface is supported.
-3.2 Game Controller Interface (Interface 0) Details
+### 3.2 Game Controller Interface (Interface 0) Details
 One interrupt IN and one interrupt OUT endpoints are associated with the game controller interface.
 The interrupt IN endpoint is for game pad to send back its game controller data as well as the device
 status information.
 The interrupt OUT endpoint is for host to send the motor control data to game pad and other settings
 such as LED control and so on.
 Descriptors are specified in section 3.2.1.1.
-3.2.1 Abstract Data Model
+#### 3.2.1 Abstract Data Model
 This section describes a conceptual model of possible data organization that an implementation can
 maintain to participate in this protocol. The organization is provided to help explain how the protocol
 works. This document does not require that implementations adhere to this model, provided their
@@ -1701,9 +1605,9 @@ remote wakeup capability and signal host to exit suspend mode through the use of
 to indicate remote wakeup. The remote wakeup function is enabled in all states, and the device MUST
 drive the upstream resume signal for 15 ms. The device does not support the ability of the host to
 enable and disable the remote wakeup capability.
-3.2.1.1 Game Controller Interface Descriptors
+##### 3.2.1.1 Game Controller Interface Descriptors
 The following subsections define the Game Controller descriptors for interfaces and endpoints.
-3.2.1.1.1 Interface Descriptor
+###### 3.2.1.1.1 Interface Descriptor
 The interface descriptors for the game controller are listed in the following table.
 Offset Field Size Value Description
 0 bLength 1 0x09 Size of this descriptor in bytes
@@ -1724,7 +1628,7 @@ Release: September 16, 2024
 | 7  bInterfaceProtocol  | 1  0x01      | 0x01 for game controller protocol  |
 | 8  bInterfaceString    | 1  0x01      | String descriptor index            |
 Table 46: Interface descriptors for game controller interface
-3.2.1.1.2 XUSB Interface Device Descriptor
+###### 3.2.1.1.2 XUSB Interface Device Descriptor
 The XUSB interface device descriptor for game control interface is listed in the following table.
 | Offset  Field       | Size  Value  | Description                 |
 | ------------------- | ------------ | --------------------------- |
@@ -1754,7 +1658,7 @@ Device control endpoint and support 3 reports
 16  breportsize  1  0x00  Report size is variable but smaller than max packet size for report
 0x02
 Table 47: XUSB Interface device descriptor for game control interface
-3.2.1.1.3 Endpoint Descriptor (IN 0x81)
+###### 3.2.1.1.3 Endpoint Descriptor (IN 0x81)
 The endpoint descriptor (IN 0x81) is listed in the following table. The endpoint address is determined
 by the individual chip design.
 | Field  Value            | Description                         |     |
@@ -1773,7 +1677,7 @@ Release: September 16, 2024
 Field Value Description
 bInterval 0x04 Polling interval for this endpoint in milliseconds
 Table 48: Endpoint IN descriptor for game controller interface
-3.2.1.1.4 Endpoint Descriptor (OUT 0x02)
+###### 3.2.1.1.4 Endpoint Descriptor (OUT 0x02)
 The endpoint descriptor (OUT 0x02) is listed in the following table. The endpoint address is
 determined by the individual chip design.
 Field Value Description
@@ -1784,7 +1688,7 @@ bmAttributes 0x03 Interrupt endpoint type
 wMaxPacketSize 0x0020 Endpoint FIFO size (32 bytes)
 bInterval 0x08 Polling interval for this endpoint in milliseconds
 Table 49: Endpoint OUT descriptor for game controller interface
-3.2.2 Timers
+#### 3.2.2 Timers
 XUSB device event timing follows standard USB device event timing specification except for those
 listed in the following table. For details, refer to [USB-SPC2.0] USB 2.0 Specification for the rest of the
 timing specification.
@@ -1793,12 +1697,12 @@ In powered state, device wait for host USB RESET before goes into suspend TSTSUS
 Table 50: Device wait for host USB RESET
 XUSB Adapter follows the standard USB 2.0 event timing except for the device suspend. It does not
 support USB suspend.
-3.2.3 Initialization
+#### 3.2.3 Initialization
 All XUSB devices use the default address 0 when initially powered or after the device has been reset.
-3.2.4 Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 None.
-3.2.5 Message Processing Events and Sequencing Rules
-3.2.5.1 Input Data Reports
+#### 3.2.5 Message Processing Events and Sequencing Rules
+##### 3.2.5.1 Input Data Reports
 The following table shows the structure of the interrupt IN transfer for game controller. All reports can
 be accessed by Get_Report request.
 Offset Field Size Description
@@ -1821,7 +1725,7 @@ Report ID  Description
 0x04  Battery charge state report
 0x08  Device connection report
 Table 52: Game Controller Interrupt IN Transfer Report ID Definition
-3.2.5.1.1 Default Game Controller Input Report (Report ID 0x00)
+###### 3.2.5.1.1 Default Game Controller Input Report (Report ID 0x00)
 The default report is the game controller input data and status report. The format is shown in the
 following table. This report can be accessed by host via Get_Report.
 | Offset  Field  | Size  Default  | Min  Max  | Description  |
@@ -1868,7 +1772,7 @@ Release: September 16, 2024
 | 14  X             | X button               |     |     |
 | 15  Y             | Y button               |     |     |
 Table 54: bmButtons field definition
-3.2.5.1.2 Device Status Input Reports
+###### 3.2.5.1.2 Device Status Input Reports
 The device status input reports contains the current device status, such as LED state, rumble level and
 so on. Some reports are optional depending on the feature set the device supports. For example, a
 game pad that does not have any LED on it does not support the report to indicate its LED pattern
@@ -1889,7 +1793,7 @@ following table shows the status ID definitions.
 | 0x03  Current rumble level settings  |     |     |     |
 | 0x04  Battery charge state           |     |     |     |
 Table 56: Device status ID definition
-3.2.5.1.3 LED State Report (Report ID 0x01)
+###### 3.2.5.1.3 LED State Report (Report ID 0x01)
 The LED state is value that represents the current operation model for the LEDs. The following table
 shows the LED pattern definitions. Device sends back this report whenever the LED pattern changes.
 | LED Patterns  Definition  |     |     |     |
@@ -1910,7 +1814,7 @@ Release: September 16, 2024
 | ------------------------- | --- | --- |
 | 0x10..0xFF  Reserved      |     |     |
 Table 57: LED pattern definitions
-3.2.5.1.4 Rumble Level Setting (Report ID 0x03)
+###### 3.2.5.1.4 Rumble Level Setting (Report ID 0x03)
 The rumble setting field indicates the current rumble setting for the game pad rumble motors. Device
 sends back this report whenever the rumble level changes. The field is specified in the following table.
 | Status Report  Description  |     |     |
@@ -1918,7 +1822,7 @@ sends back this report whenever the rumble level changes. The field is specified
 | 0x00  Rumble is OFF         |     |     |
 | 0x03  Full rumble setting   |     |     |
 Table 58: Rumble level field
-3.2.5.1.5 Battery Level & Type (Report ID 0x04)
+###### 3.2.5.1.5 Battery Level & Type (Report ID 0x04)
 The battery level & type report is for wireless devices only. This field contains the current status of the
 battery capacity, and reports host the type of the battery installed in the device. The level field can be
 used for battery level indicator and charging indicator. This report only applies to the wireless game
@@ -1940,7 +1844,7 @@ Low byte – battery level
 0x02: Battery level is medium
 0x03: Battery level is full
 Table 59: Battery level field
-3.2.5.1.6 Device Connection Report (Report ID 0x08)
+###### 3.2.5.1.6 Device Connection Report (Report ID 0x08)
 This report sends the update on the current plug-in device and voice connection status. The report is
 sent to host whenever a device is attached or detached from the wireless network.
 The format of the report is shown in the following table.
@@ -1960,8 +1864,8 @@ Release: September 16, 2024
 | -------------- | ------------- | -------- | ------------ |
 D2…D7: Reserved, set as 0
 Table 60: Wireless device connection status
-3.2.5.2 Output Data Reports
-3.2.5.2.1 Game Pad Rumble Motor Control Report (Report ID 0x00)
+##### 3.2.5.2 Output Data Reports
+###### 3.2.5.2.1 Game Pad Rumble Motor Control Report (Report ID 0x00)
 This report is used for host to send the game pad rumble motor data. The following table shows the
 format for the motor operation.
 | Offset  Field  | Size  Default  | Min  Max  | Description                   |
@@ -1973,7 +1877,7 @@ format for the motor operation.
 | 4  Mcontrol-2  | 1  0           | 0  255    | Small motor rumble magnitude  |
 | 5…7  Reserved  | 3  0           | 0  0      |                               |
 Table 61: Game pad rumble motor control report
-3.2.5.2.2 LED Control Request Report (Report ID 0x01)
+###### 3.2.5.2.2 LED Control Request Report (Report ID 0x01)
 The LED state setting is a value that instructs the device to set its LEDs to a predefined pattern. This
 report is optional. The format of this device request report is shown in the following table.
 | Offset  Field  | Size  Default  | Min  Max  | Description                 |
@@ -1982,7 +1886,7 @@ report is optional. The format of this device request report is shown in the fol
 | 1  bSize       | 1  0x03        |           | Size of this report = 3     |
 | 2  Request     | 1              |           | LED control report message  |
 Table 62: LED control report
-3.2.5.2.3 Master Rumble Level Control (Report ID 0x02)
+###### 3.2.5.2.3 Master Rumble Level Control (Report ID 0x02)
 The master rumble level setting field sets the master volume for the current rumble level. This report
 is optional. The format of this device request report is shown in the following table.
 | Offset  Field  | Size  Default  | Min  Max  | Description              |
@@ -2003,11 +1907,11 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 None.
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 None.
-3.3  Voice Communicator Interface (Interface 1) Details
+### 3.3 Voice Communicator Interface (Interface 1) Details
 The voice communicator interface supports two interrupt IN endpoints and two interrupt OUT
 endpoints. The following table summarizes the report type and size.
 | Endpoint  | Max packet size  | Report size  | Description                              |
@@ -2018,10 +1922,10 @@ endpoints. The following table summarizes the report type and size.
 | OUT 2     | 32               | Variable     | Voice device control request             |
 Table 65: Voice data type and report size
 See section 3.3.1.1 for Voice Communicator Interface descriptors and endpoints.
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 See section 3.2.1 for device state.
-3.3.1.1 Voice Communicator Interface Descriptors
-3.3.1.1.1 Interface Descriptor
+##### 3.3.1.1 Voice Communicator Interface Descriptors
+###### 3.3.1.1.1 Interface Descriptor
 The descriptors for the voice communicator interface appear in the following table.
 | Offset  | Field              | Size  Value  | Description                       |
 | ------- | ------------------ | ------------ | --------------------------------- |
@@ -2036,7 +1940,7 @@ The descriptors for the voice communicator interface appear in the following tab
 | 7   | bInterfaceProtocol  | 1  0x03  | 0x03 for voice protocol  |
 | 8   | bInterfaceString    | 1  0x00  | No string descriptor     |
 Table 66: Interface descriptor for voice communicator interface
-3.3.1.1.2 XUSB Interface Device Descriptor
+###### 3.3.1.1.2 XUSB Interface Device Descriptor
 The XUSB interface device descriptor for the voice communicator interface appears in the following
 table.
 44 / 81
@@ -2077,7 +1981,7 @@ Device control only endpoint and support for 6 reports (…16)
 25  bReportSize  1  0x00  Variable size but smaller than max packet size for report ID 4
 26  bReportSize  1  0x00  Variable size but smaller than max packet size for report ID 5
 Table 67: XUSB interface device descriptor for voice interface
-3.3.1.1.3 Endpoint Descriptor (IN 0x83)
+###### 3.3.1.1.3 Endpoint Descriptor (IN 0x83)
 The endpoint descriptor (IN 0x83) is listed in the following table. The endpoint address is determined
 by the individual chip design.
 | Field  Value            | Description                                         |     |
@@ -2095,7 +1999,7 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.3.1.1.4 Endpoint Descriptor (IN 0x85)
+###### 3.3.1.1.4 Endpoint Descriptor (IN 0x85)
 The endpoint descriptor (IN 0x85) is listed in the following table. The endpoint address is determined
 by the individual chip design.
 Field Value Description
@@ -2106,7 +2010,7 @@ bmAttributes 0x03 Interrupt endpoint type
 wMaxPacketSize 0x0020 Endpoint FIFO size (32 bytes)
 bInterval 0x40 Polling interval for this endpoint in milliseconds
 Table 69: Voice status endpoint IN descriptor for voice interface
-3.3.1.1.5 Endpoint Descriptor (OUT 0x04)
+###### 3.3.1.1.5 Endpoint Descriptor (OUT 0x04)
 The endpoint descriptor (OUT 0x04) is listed in the following table. The endpoint address is
 determined by the individual chip design.
 Field Value Description
@@ -2117,7 +2021,7 @@ bmAttributes 0x03 Interrupt endpoint type
 wMaxPacketSize 0x0020 Endpoint FIFO size (32 bytes)
 bInterval 0x04 Polling interval for this endpoint in milliseconds
 Table 70: Voice OUT endpoint OUT descriptor for voice interface
-3.3.1.1.6 Endpoint Descriptor (OUT 0x06)
+###### 3.3.1.1.6 Endpoint Descriptor (OUT 0x06)
 The endpoint descriptor (OUT 0x06) is listed in the following table. The endpoint address is
 determined by the individual chip design.
 Field Value Description
@@ -2128,7 +2032,7 @@ bmAttributes 0x03 Interrupt endpoint type
 wMaxPacketSize 0x0020 Endpoint FIFO size (32 bytes)
 bInterval 0x10 Polling interval for this endpoint in milliseconds
 Table 71: Voice control endpoint OUT descriptor for voice interface
-3.3.2 Timers
+#### 3.3.2 Timers
 See section 3.2.2 for XUSB timers.
 46 / 81
 [MS-XUSBI] - v20240916
@@ -2136,12 +2040,12 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 All XUSB devices use the default address 0 when initially powered or after the device has been reset.
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 None.
-3.3.5  Message Processing Events and Sequencing Rules
-3.3.5.1 Voice Interrupt IN Endpoint (0x83)
+#### 3.3.5 Message Processing Events and Sequencing Rules
+##### 3.3.5.1 Voice Interrupt IN Endpoint (0x83)
 The Voice Interrupt IN endpoint (0x83) is for the device to transfer the voice upstream data
 (microphone input) to the host. The upstream voice data field contains 64 or 128 voice samples
 depending on the voice codec used.
@@ -2155,7 +2059,7 @@ available every 4 ms.
 If u-law is used, the report contains 32 samples, and each byte represents a voice sample. Since this
 is encoded at an 8 KHz sample rate, a new 32-byte report is available every 4 ms.
 There MUST be two interrupt IN transactions to complete one report for the upstream.
-3.3.5.2 Voice Interrupt IN Endpoint 2 (0x85)
+##### 3.3.5.2 Voice Interrupt IN Endpoint 2 (0x85)
 The Voice Interrupt IN endpoint (0x85) is for the device to transfer the voice upstream data
 (microphone input) to the host. The format of the report is shown in the following table. All the reports
 in this endpoint can be queried by host via Get_Report request.
@@ -2182,7 +2086,7 @@ Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
 Table 73: Voice Communicator status ID definitions
-3.3.5.2.1 Headset Status Report
+###### 3.3.5.2.1 Headset Status Report
 The headset plugged in report reports if user has plugged in the headset, and if the headset is the
 headset or microphone. The following table shows the report.
 | Offset  Field      | Default  | Description          |
@@ -2196,7 +2100,7 @@ headset or microphone. The following table shows the report.
 0: Headset
 1: Microphone only
 Table 74: Headset Status Report
-3.3.5.2.2 Microphone Status Report
+###### 3.3.5.2.2 Microphone Status Report
 The microphone status report reports the status of the microphone (muted or un-muted) and whether
 it supports muting. The report for the microphone status is shown in the following table.
 | Offset  Field  | Default    | Description            |
@@ -2208,7 +2112,7 @@ it supports muting. The report for the microphone status is shown in the followi
      1 – microphone is muted
      0xFF – device does not support mute/un-mute microphone
 Table 75: Microphone status report
-3.3.5.2.3 Playback Volume Setting Report
+###### 3.3.5.2.3 Playback Volume Setting Report
 The playback volume setting report reports the playback volume setting (muted, maximum volume,
 does not support volume setting). The playback volume setting report is shown in the following table.
 | Offset  Field      | Default       | Description              |
@@ -2220,7 +2124,7 @@ does not support volume setting). The playback volume setting report is shown in
 0x0F: Max volume
 0xFF: Device does not support playback volume setting control
 Table 76: Playback Volume settings
-3.3.5.2.4 Vox Setting Report
+###### 3.3.5.2.4 Vox Setting Report
 The Vox setting report returns the status of the Vox control. The status report is shown in the
 following table.
 48 / 81
@@ -2237,7 +2141,7 @@ Offset Field Default Description
 1: Vox is off
 0xFF: Device does not support Vox
 3 Vox Attack Time Vox attack time in ms
-4 Vox decay time Vox decay time in ms
+## 4 Vox decay time Vox decay time in ms
 Table 77: Vox status
 3.3.5.2.5 AGC Status Report
 The automatic gain control (AGC) on/off status report returns the AGC status. The AGC status report
@@ -3312,11 +3216,11 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-5 Security
-5.1 Security Considerations for Implementers
+## 5 Security
+### 5.1 Security Considerations for Implementers
 See section 3.5.5.1.1 for Data transport packet for security chip and section 3.5.5.1.1.4 for Controller
 Supported Security Level.
-5.2 Index of Security Parameters
+### 5.2 Index of Security Parameters
 None.
 73 / 81
 [MS-XUSBI] - v20240916
@@ -3324,8 +3228,8 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-6  Appendix A: Descriptor and Protocol Definitions
-6.1  MS Interface Descriptor Type
+## 6 Appendix A: Descriptor and Protocol Definitions
+### 6.1 MS Interface Descriptor Type
 The standard value of 0x21 defines USB devices. 0x22 serves to identify an XUSB adapter. The
 following table shows the descriptors.
 | Descriptor ID  | Description                        |     |     |
@@ -3333,7 +3237,7 @@ following table shows the descriptors.
 | 0x21           | XUSB Interface Descriptor          |     |     |
 | 0x22           | XUSB Adapter Interface Descriptor  |     |     |
 Table A: Microsoft interface descriptor types
-6.2  MS Special Interface Protocol definitions
+### 6.2 MS Special Interface Protocol definitions
 The following table lists Microsoft special interface protocol definitions.
 | Protocol ID  Description                        |     |     |     |
 | ----------------------------------------------- | --- | --- | --- |
@@ -3343,7 +3247,7 @@ The following table lists Microsoft special interface protocol definitions.
 | 0x81  XUSB Adapter Game Controller Protocol     |     |     |     |
 | 0x82  XUSB Adapter Voice Communicator Protocol  |     |     |     |
 Table B: Microsoft special interface protocol definitions
-6.3  XUSB Adapter Interface Descriptor (Vendor Specific)
+### 6.3 XUSB Adapter Interface Descriptor (Vendor Specific)
 The following tables list the endpoints and descriptors for data and voice 1 through 4.
 Length  Hex
 | Field  | (bits)  | Decoded  Value  | Description  |
@@ -3517,7 +3421,7 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-7 Appendix B: Product Behavior
+## 7 Appendix B: Product Behavior
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
  Windows XP operating system
@@ -3538,7 +3442,7 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-8 Change Tracking
+## 8 Change Tracking
 No table of changes is available. The document is either new or has had no changes since its last
 release.
 80 / 81
@@ -3547,7 +3451,7 @@ Xbox Universal Serial Bus Protocol (XUSB) Interface Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-9 Index
+## 9 Index
 A S
 Applicability 10 Security
 implementer considerations 73

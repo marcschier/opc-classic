@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 39
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -169,267 +170,110 @@ Release: April 23, 2024
 
 2 / 39
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Device Metadata](#21-device-metadata)
+    - [2.1.1 Elements](#211-elements)
+      - [2.1.1.1 intel_friendly_name](#2111-intelfriendlyname)
+      - [2.1.1.2 intel_sink_device_URL](#2112-intelsinkdeviceurl)
+      - [2.1.1.3 intel_sink_manufacturer_logo](#2113-intelsinkmanufacturerlogo)
+      - [2.1.1.4 intel_sink_manufacturer_name](#2114-intelsinkmanufacturername)
+      - [2.1.1.5 intel_sink_model_name](#2115-intelsinkmodelname)
+      - [2.1.1.6 intel_sink_version](#2116-intelsinkversion)
+    - [2.1.2 Attributes](#212-attributes)
+    - [2.1.3 Complex Types](#213-complex-types)
+    - [2.1.4 Simple Types](#214-simple-types)
+  - [2.2 Enhanced Diagnostics](#22-enhanced-diagnostics)
+    - [2.2.1 Elements](#221-elements)
+      - [2.2.1.1 microsoft_diagnostics_capability](#2211-microsoftdiagnosticscapability)
+      - [2.2.1.2 microsoft_teardown_reason](#2212-microsoftteardownreason)
+    - [2.2.2 Attributes](#222-attributes)
+    - [2.2.3 Complex Types](#223-complex-types)
+    - [2.2.4 Simple Types](#224-simple-types)
+  - [2.3 Dynamic Resolution and Refresh Rate](#23-dynamic-resolution-and-refresh-rate)
+    - [2.3.1 Elements](#231-elements)
+      - [2.3.1.1 microsoft_format_change_capability](#2311-microsoftformatchangecapability)
+    - [2.3.2 Attributes](#232-attributes)
+    - [2.3.3 Complex Types](#233-complex-types)
+    - [2.3.4 Simple Types](#234-simple-types)
+  - [2.4 Latency Management](#24-latency-management)
+    - [2.4.1 Elements](#241-elements)
+      - [2.4.1.1 microsoft_latency_management_capability](#2411-microsoftlatencymanagementcapability)
+    - [2.4.2 Attributes](#242-attributes)
+    - [2.4.3 Complex Types](#243-complex-types)
+    - [2.4.4 Simple Types](#244-simple-types)
+  - [2.5 Display Source Identification](#25-display-source-identification)
+    - [2.5.1 Elements](#251-elements)
+      - [2.5.1.1 Server header](#2511-server-header)
+    - [2.5.2 Attributes](#252-attributes)
+    - [2.5.3 Complex Types](#253-complex-types)
+    - [2.5.4 Simple Types](#254-simple-types)
+  - [2.6 Device Capabilities](#26-device-capabilities)
+    - [2.6.1 Elements](#261-elements)
+      - [2.6.1.1 wfd_idr_request_capability](#2611-wfdidrrequestcapability)
+    - [2.6.2 Attributes](#262-attributes)
+    - [2.6.3 Complex Types](#263-complex-types)
+    - [2.6.4 Simple Types](#264-simple-types)
+  - [2.7 Video Formats](#27-video-formats)
+    - [2.7.1 Elements](#271-elements)
+      - [2.7.1.1 wfdx_video_formats](#2711-wfdxvideoformats)
+        - [2.7.1.1.1 Tables](#27111-tables)
+      - [2.7.1.2 microsoft_video_formats](#2712-microsoftvideoformats)
+        - [2.7.1.2.1 Tables](#27121-tables)
+    - [2.7.2 Attributes](#272-attributes)
+    - [2.7.3 Complex Types](#273-complex-types)
+    - [2.7.4 Simple Types](#274-simple-types)
+  - [2.8 RTCP](#28-rtcp)
+    - [2.8.1 Elements](#281-elements)
+      - [2.8.1.1 microsoft_rtcp_capability](#2811-microsoftrtcpcapability)
+    - [2.8.2 Attributes](#282-attributes)
+    - [2.8.3 Complex Types](#283-complex-types)
+    - [2.8.4 Simple Types](#284-simple-types)
+  - [2.9 High-Fidelity Color Space Conversion](#29-high-fidelity-color-space-conversion)
+    - [2.9.1 Elements](#291-elements)
+      - [2.9.1.1 microsoft_color_space_conversion](#2911-microsoftcolorspaceconversion)
+    - [2.9.2 Attributes](#292-attributes)
+    - [2.9.3 Complex Types](#293-complex-types)
+    - [2.9.4 Simple Types](#294-simple-types)
+  - [2.10 Maximum Supported Bitrate](#210-maximum-supported-bitrate)
+    - [2.10.1 Elements](#2101-elements)
+      - [2.10.1.1 microsoft_max_bitrate](#21011-microsoftmaxbitrate)
+    - [2.10.2 Attributes](#2102-attributes)
+    - [2.10.3 Complex Types](#2103-complex-types)
+    - [2.10.4 Simple Types](#2104-simple-types)
+  - [2.11 Multi-screen Management](#211-multi-screen-management)
+    - [2.11.1 Elements](#2111-elements)
+      - [2.11.1.1 microsoft_multiscreen_projection](#21111-microsoftmultiscreenprojection)
+    - [2.11.2 Attributes](#2112-attributes)
+    - [2.11.3 Complex Types](#2113-complex-types)
+    - [2.11.4 Simple Types](#2114-simple-types)
+  - [2.12 Source Audio Mute](#212-source-audio-mute)
+    - [2.12.1 Elements](#2121-elements)
+      - [2.12.1.1 microsoft_audio_mute](#21211-microsoftaudiomute)
+    - [2.12.2 Attributes](#2122-attributes)
+    - [2.12.3 Complex Types](#2123-complex-types)
+    - [2.12.4 Simple Types](#2124-simple-types)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Protocols and Other Structures ...................................................... 8
-Applicability Statement ....................................................................................... 8
-Versioning and Localization ................................................................................. 8
-Vendor-Extensible Fields ..................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.3
-
-2.2
-
-2.1
-
-2.3.1
-
-2.2.1
-
-2.1.1
-
-2.3.1.1
-
-2.2.1.1
-2.2.1.2
-
-2.1.2
-2.1.3
-2.1.4
-
-2.2.2
-2.2.3
-2.2.4
-
-2.1.1.1
-2.1.1.2
-2.1.1.3
-2.1.1.4
-2.1.1.5
-2.1.1.6
-
-2  Structures ............................................................................................................... 9
-Device Metadata ................................................................................................ 9
-Elements ..................................................................................................... 9
-intel_friendly_name ................................................................................ 9
-intel_sink_device_URL ............................................................................. 9
-intel_sink_manufacturer_logo ................................................................... 9
-intel_sink_manufacturer_name ............................................................... 10
-intel_sink_model_name ......................................................................... 10
-intel_sink_version ................................................................................. 10
-Attributes .................................................................................................. 10
-Complex Types ........................................................................................... 10
-Simple Types ............................................................................................. 11
-Enhanced Diagnostics ....................................................................................... 11
-Elements ................................................................................................... 11
-microsoft_diagnostics_capability ............................................................. 11
-microsoft_teardown_reason ................................................................... 11
-Attributes .................................................................................................. 12
-Complex Types ........................................................................................... 12
-Simple Types ............................................................................................. 12
-Dynamic Resolution and Refresh Rate ................................................................. 12
-Elements ................................................................................................... 12
-microsoft_format_change_capability ....................................................... 12
-Attributes .................................................................................................. 13
-Complex Types ........................................................................................... 13
-Simple Types ............................................................................................. 13
-Latency Management ........................................................................................ 13
-Elements ................................................................................................... 13
-microsoft_latency_management_capability .............................................. 13
-Attributes .................................................................................................. 14
-Complex Types ........................................................................................... 14
-Simple Types ............................................................................................. 14
-Display Source Identification ............................................................................. 15
-Elements ................................................................................................... 15
-Server header ...................................................................................... 15
-Attributes .................................................................................................. 15
-Complex Types ........................................................................................... 15
-Simple Types ............................................................................................. 15
-Device Capabilities ........................................................................................... 16
-Elements ................................................................................................... 16
-wfd_idr_request_capability ..................................................................... 16
-Attributes .................................................................................................. 16
-Complex Types ........................................................................................... 16
-Simple Types ............................................................................................. 16
-Video Formats ................................................................................................. 16
-
-2.3.2
-2.3.3
-2.3.4
-
-2.4.2
-2.4.3
-2.4.4
-
-2.5.2
-2.5.3
-2.5.4
-
-2.6.2
-2.6.3
-2.6.4
-
-2.5.1.1
-
-2.6.1.1
-
-2.4.1.1
-
-2.5.1
-
-2.6.1
-
-2.4.1
-
-2.7
-
-2.5
-
-2.6
-
-2.4
-
-[MS-WFDPE] - v20240423
-Wi-Fi Display Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 39
-
-2.9
-
-2.8
-
-2.9.1
-
-2.8.1
-
-2.7.1
-
-2.9.1.1
-
-2.8.1.1
-
-2.7.1.1
-
-2.7.1.2
-
-2.7.1.2.1
-
-2.7.1.1.1
-
-2.9.2
-2.9.3
-2.9.4
-
-2.8.2
-2.8.3
-2.8.4
-
-2.7.2
-2.7.3
-2.7.4
-
-Elements ................................................................................................... 17
-wfdx_video_formats .............................................................................. 17
-Tables ............................................................................................ 18
-microsoft_video_formats ........................................................................ 20
-Tables ............................................................................................ 21
-Attributes .................................................................................................. 22
-Complex Types ........................................................................................... 22
-Simple Types ............................................................................................. 22
-RTCP .............................................................................................................. 22
-Elements ................................................................................................... 22
-microsoft_rtcp_capability ....................................................................... 22
-Attributes .................................................................................................. 22
-Complex Types ........................................................................................... 22
-Simple Types ............................................................................................. 23
-High-Fidelity Color Space Conversion .................................................................. 23
-Elements ................................................................................................... 23
-microsoft_color_space_conversion .......................................................... 23
-Attributes .................................................................................................. 24
-Complex Types ........................................................................................... 24
-Simple Types ............................................................................................. 25
-2.10  Maximum Supported Bitrate .............................................................................. 25
-Elements ................................................................................................... 25
-2.10.1.1  microsoft_max_bitrate ........................................................................... 25
-Attributes .................................................................................................. 25
-Complex Types ........................................................................................... 25
-Simple Types ............................................................................................. 25
-2.11  Multi-screen Management ................................................................................. 25
-Elements ................................................................................................... 26
-2.11.1.1  microsoft_multiscreen_projection ............................................................ 26
-Attributes .................................................................................................. 27
-Complex Types ........................................................................................... 27
-Simple Types ............................................................................................. 27
-Source Audio Mute ........................................................................................... 27
-Elements ................................................................................................... 27
-2.12.1.1  microsoft_audio_mute ........................................................................... 27
-Attributes .................................................................................................. 28
-Complex Types ........................................................................................... 28
-Simple Types ............................................................................................. 28
-
-2.11.2
-2.11.3
-2.11.4
-
-2.10.2
-2.10.3
-2.10.4
-
-2.12.2
-2.12.3
-2.12.4
-
-2.10.1
-
-2.11.1
-
-2.12.1
-
-2.12
-
-3  Structure Examples ............................................................................................... 29
-
-4  Security ................................................................................................................. 35
-Security Considerations for Implementers ........................................................... 35
-Index of Security Fields .................................................................................... 35
-
-4.1
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 36
-
-6  Change Tracking .................................................................................................... 38
-
-7  Index ..................................................................................................................... 39
-
-[MS-WFDPE] - v20240423
-Wi-Fi Display Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 39
-
-1  Introduction
+## 1 Introduction
 
 The Wi-Fi Display Protocol Extension extends the Wi-Fi Display Technical Specification [WF-DTS2.1]
 with a set of extensions. This protocol extension set enables latency control, extended diagnostic
@@ -440,7 +284,7 @@ display scenarios, including word processing, web browsing, gaming, and video pr
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -505,7 +349,8 @@ Release: April 23, 2024
 
 5 / 39
 
-sequence parameter set/picture parameter set (SPS/PPS): Data units in an H.264 stream
+
+sequence parameter set/picture parameter set (SPS/PPS): Data units in an H.264 stream
 
 that include metadata about the stream.
 
@@ -522,14 +367,14 @@ video frame: A single still image that is shown as part of a quick succession of
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -574,7 +419,8 @@ Wi-Fi Display Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC3550] Schulzrinne, H., Casner, S., Frederick, R., and Jacobson, V., "RTP: A Transport Protocol for
+
+[RFC3550] Schulzrinne, H., Casner, S., Frederick, R., and Jacobson, V., "RTP: A Transport Protocol for
 Real-Time Applications", STD 64, RFC 3550, July 2003, https://www.rfc-editor.org/info/rfc3550
 
 [RFC3629] Yergeau, F., "UTF-8, A Transformation Format of ISO 10646", STD 63, RFC 3629,
@@ -599,11 +445,11 @@ https://www.wi-fi.org/file/wi-fi-display-technical-specification-v21
 
 Note Registration is required to download the document.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Wi-Fi Display Technical Specification [WF-DTS2.1] is used for a variety of scenarios; however, the
 Wi-Fi Display Technical Specification does not allow for a Wi-Fi Display Source [WF-DTS2.1] to
@@ -638,7 +484,8 @@ Release: April 23, 2024
 
 7 / 39
 
-This protocol extension adds a high-fidelity color space conversion extension that enables the Wi-Fi
+
+This protocol extension adds a high-fidelity color space conversion extension that enables the Wi-Fi
 Display Source to encode additional color information in repeat frames, which produces a 4:4:4 color
 space quality frame by using a 4:2:0 color space encoder.<3>
 
@@ -653,19 +500,19 @@ this information to encode at a lower resolution and bitrate, which can save sys
 This protocol extension enables Wi-Fi Display Sinks to manage whether the Wi-Fi Display Source sends
 audio. Disabling the audio stream saves network bandwidth.<6>
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The Wi-Fi Display Protocol Extension extends the Wi-Fi Display Technical Specification [WF-DTS2.1].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 This protocol extension is intended for any Wi-Fi Display Device.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 None.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1. Vendors can define their
 own HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value,
@@ -678,7 +525,8 @@ Release: April 23, 2024
 
 8 / 39
 
-2  Structures
+
+## 2 Structures
 
 Protocol extensions are defined using Augmented Backus-Naur Form (ABNF), as specified in
 [RFC5234].
@@ -691,15 +539,15 @@ A Wi-Fi Display Device implementing any of the protocol extension defined in thi
 use the M bit of the Real-Time Transport Protocol (RTP) packet header in the manner prescribed
 for video data in [RFC2250] section 3.3.
 
-2.1  Device Metadata
+### 2.1 Device Metadata
 
 This section extends [WF-DTS2.1] section 6.1, with additional data structures for device metadata.
 
-2.1.1  Elements
+#### 2.1.1 Elements
 
 The following subsections provide details about the device metadata data structures.
 
-2.1.1.1  intel_friendly_name
+##### 2.1.1.1 intel_friendly_name
 
 The intel_friendly_name parameter specifies a human-readable name of the Wi-Fi Display Sink.
 
@@ -712,7 +560,7 @@ utf8byte-no-hyphen = %x00-2C / %x2E-FF
 The friendly-name parameter MUST be formatted as specified in [RFC3629]. The hyphen code point
 ("-") MUST NOT be included in the friendly-name parameter.
 
-2.1.1.2  intel_sink_device_URL
+##### 2.1.1.2 intel_sink_device_URL
 
 The intel_sink_device_URL parameter specifies a Uniform Resource Identifier (URI) for the
 product information of the Wi-Fi Display Sink.
@@ -725,7 +573,7 @@ uri = 1*256(VCHAR) / "none"
 The intel_sink_device_URL parameter specifies a URI as specified in [RFC3986]. A value of "none"
 means that no product information is available.
 
-2.1.1.3  intel_sink_manufacturer_logo
+##### 2.1.1.3 intel_sink_manufacturer_logo
 
 The intel_sink_manufacturer_logo parameter specifies an image file representing the
 manufacturer of the Wi-Fi Display Sink. The image MUST be in Portable Network Graphics (PNG)
@@ -739,7 +587,8 @@ Wi-Fi Display Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The ABNF syntax is as follows:
+
+The ABNF syntax is as follows:
 
 intel-sink-manufacturer-logo = "intel_sink_manufacturer_logo:" SP logo CRLF
 logo = "none" / base64-logo
@@ -747,7 +596,7 @@ base64-logo = 464*76800(BASE64CHAR)
 
 A value of "none" means that no image is available.
 
-2.1.1.4  intel_sink_manufacturer_name
+##### 2.1.1.4 intel_sink_manufacturer_name
 
 The intel_sink_manufacturer_name parameter specifies the name of the manufacturer of the Wi-Fi
 Display Sink.
@@ -760,7 +609,7 @@ manufacturer-name = 1*32(VCHAR) / "none"
 
 A value of "none" means that the manufacturer name is not available.
 
-2.1.1.5  intel_sink_model_name
+##### 2.1.1.5 intel_sink_model_name
 
 The intel_sink_model_name parameter specifies the model name assigned by the manufacturer of
 the Wi-Fi Display Sink.
@@ -772,7 +621,7 @@ model-name = 1*32(VCHAR) / "none"
 
 A value of "none" means that the model name is not available.
 
-2.1.1.6  intel_sink_version
+##### 2.1.1.6 intel_sink_version
 
 The intel_sink_version parameter specifies the product identifier, hardware version, and software
 version of the Wi-Fi Display Sink.
@@ -787,7 +636,7 @@ minor = 1*2(DIGIT)
 sku = 1*2(DIGIT)
 build = 1*4(DIGIT)
 
-2.1.2  Attributes
+#### 2.1.2 Attributes
 
 Not applicable.
 
@@ -798,15 +647,16 @@ Release: April 23, 2024
 
 10 / 39
 
-2.1.3  Complex Types
+
+#### 2.1.3 Complex Types
 
 Not applicable.
 
-2.1.4  Simple Types
+#### 2.1.4 Simple Types
 
 Not applicable.
 
-2.2  Enhanced Diagnostics
+### 2.2 Enhanced Diagnostics
 
 The enhanced diagnostics protocol extension enables the Wi-Fi Display Sink to report error codes and
 error reasons to the Wi-Fi Display Source.
@@ -815,9 +665,9 @@ The extension consists of a data structure to first negotiate whether or not the
 supported by the Wi-Fi Display Sink. The data structure extends [WF-DTS2.1] section 6.1.
 Additionally, the M8 message, as specified in [WF-DTS2.1] section 6.4.8, is extended with a payload.
 
-2.2.1  Elements
+#### 2.2.1 Elements
 
-2.2.1.1  microsoft_diagnostics_capability
+##### 2.2.1.1 microsoft_diagnostics_capability
 
 The microsoft_diagnostics_capability parameter specifies whether a Wi-Fi Display Sink supports
 including the microsoft_teardown_reason parameter (section 2.2.1.2) in the message body of the
@@ -836,7 +686,7 @@ If the diagnostics-capability parameter has the value "supported", it means that
 microsoft_teardown_reason parameter in the message body of that request. If the diagnostics-
 capability parameter has the value "none", it means that there are no changes to the M8 request.
 
-2.2.1.2  microsoft_teardown_reason
+##### 2.2.1.2 microsoft_teardown_reason
 
 The microsoft_teardown_reason parameter is included in the message body of the M8 message
 ([WF-DTS2.1] section 6.4.8) when the Wi-Fi Display Sink sets the diagnostics-capability parameter
@@ -862,7 +712,8 @@ Release: April 23, 2024
 
 11 / 39
 
-Return value/code
+
+Return value/code
 
 Failure condition
 
@@ -920,19 +771,19 @@ Error reasons are implementation-defined and provide a human-readable explanatio
 condition. A Wi-Fi Display Source vendor and a Wi-Fi Display Sink vendor working together can use
 the error reason to identify and potentially correct the error condition.
 
-2.2.2  Attributes
+#### 2.2.2 Attributes
 
 Not applicable.
 
-2.2.3  Complex Types
+#### 2.2.3 Complex Types
 
 Not applicable.
 
-2.2.4  Simple Types
+#### 2.2.4 Simple Types
 
 Not applicable.
 
-2.3  Dynamic Resolution and Refresh Rate
+### 2.3 Dynamic Resolution and Refresh Rate
 
 The dynamic resolution and refresh rate extension allows the Wi-Fi Display Source to change the video
 resolution or video refresh rate of the video stream without sending an additional Real-Time
@@ -948,9 +799,10 @@ Release: April 23, 2024
 
 12 / 39
 
-2.3.1  Elements
 
-2.3.1.1  microsoft_format_change_capability
+#### 2.3.1 Elements
+
+##### 2.3.1.1 microsoft_format_change_capability
 
 The microsoft_format_change_capability parameter specifies whether the Wi-Fi Display Sink
 supports dynamic changes to the video resolution and video refresh rate.
@@ -982,19 +834,19 @@ If the format-change-caps parameter has the value "none", the frame rate and vid
 the H.264 bit stream cannot be changed unless the Wi-Fi Display Source sends an M4 message ([WF-
 DTS2.1] section 6.4.4).
 
-2.3.2  Attributes
+#### 2.3.2 Attributes
 
 Not applicable.
 
-2.3.3  Complex Types
+#### 2.3.3 Complex Types
 
 Not applicable.
 
-2.3.4  Simple Types
+#### 2.3.4 Simple Types
 
 Not applicable
 
-2.4  Latency Management
+### 2.4 Latency Management
 
 The latency management extension allows the Wi-Fi Display Source to inform the Wi-Fi Display Sink of
 the user intent regarding the display latency (section 2.4.1.1) of the currently streaming content.
@@ -1009,9 +861,10 @@ Release: April 23, 2024
 
 13 / 39
 
-2.4.1  Elements
 
-2.4.1.1  microsoft_latency_management_capability
+#### 2.4.1 Elements
+
+##### 2.4.1.1 microsoft_latency_management_capability
 
 The microsoft_latency_management_capability parameter specifies whether the Wi-Fi Display
 Sink is capable of dynamically changing the display latency of the video bit stream. When sent by the
@@ -1073,7 +926,7 @@ Specifies that the Wi-Fi Display Sink SHOULD buffer
 additional frames in order to ensure smooth playback, as
 long as the latency stays under 500 milliseconds.
 
-2.4.2  Attributes
+#### 2.4.2 Attributes
 
 Not applicable.
 
@@ -1084,15 +937,16 @@ Release: April 23, 2024
 
 14 / 39
 
-2.4.3  Complex Types
+
+#### 2.4.3 Complex Types
 
 Not applicable.
 
-2.4.4  Simple Types
+#### 2.4.4 Simple Types
 
 Not applicable.
 
-2.5  Display Source Identification
+### 2.5 Display Source Identification
 
 The Display Source Identification protocol extension enables the Wi-Fi Display Source, as specified in
 [WF-DTS2.1], to provide the version number of the Wi-Fi Display software used by the Wi-Fi Display
@@ -1106,9 +960,9 @@ For example, if a certain version of the Wi-Fi Display software has a defect tha
 fail, the version number in the Display Source Identification can identify if that version of the software
 is being used by the Wi-Fi Display Source.
 
-2.5.1  Elements
+#### 2.5.1 Elements
 
-2.5.1.1  Server header
+##### 2.5.1.1 Server header
 
 The Server header field appears in any RTSP responses generated by the Wi-Fi Display Source. The
 Server header field provides the version number of the Wi-Fi Display software used by the Wi-Fi
@@ -1134,7 +988,7 @@ generator to generate the syntax element, as shown in the following example.
 
 Server: MSMiracastSource/10.00.10011.0000 guid/be113d06-9e40-43e4-98e6-540a325e9ced
 
-2.5.2  Attributes
+#### 2.5.2 Attributes
 
 Not applicable.
 
@@ -1145,15 +999,16 @@ Release: April 23, 2024
 
 15 / 39
 
-2.5.3  Complex Types
+
+#### 2.5.3 Complex Types
 
 Not applicable.
 
-2.5.4  Simple Types
+#### 2.5.4 Simple Types
 
 Not applicable.
 
-2.6  Device Capabilities
+### 2.6 Device Capabilities
 
 The device capabilities protocol extension enables the Wi-Fi Display Source to determine whether the
 Wi-Fi Display Sink supports certain capabilities.
@@ -1165,9 +1020,9 @@ The data structures extend [WF-DTS2.1] section 6.1.
 
 Currently, the extension defines the wfd_idr_request_capability data structure (section 2.6.1.1).
 
-2.6.1  Elements
+#### 2.6.1 Elements
 
-2.6.1.1  wfd_idr_request_capability
+##### 2.6.1.1 wfd_idr_request_capability
 
 The wfd_idr_request_capability parameter specifies whether a Wi-Fi Display Sink supports sending
 an RTSP M13 message as specified in [WF-DTS2.1] section 6.4.13.
@@ -1191,11 +1046,11 @@ sending RTSP M13 messages.
 If the idr-req-cap-val parameter has the value "0", it means that the Wi-Fi Display Sink does not
 send any RTSP M13 messages.
 
-2.6.2  Attributes
+#### 2.6.2 Attributes
 
 Not applicable.
 
-2.6.3  Complex Types
+#### 2.6.3 Complex Types
 
 Not applicable.
 
@@ -1206,11 +1061,12 @@ Release: April 23, 2024
 
 16 / 39
 
-2.6.4  Simple Types
+
+#### 2.6.4 Simple Types
 
 Not applicable.
 
-2.7  Video Formats
+### 2.7 Video Formats
 
 Additional video formats, including 4K resolution formats and formats that use 3:2 picture aspect
 ratio, are supported via the Wi-Fi Display video formats protocol extension. This protocol extension
@@ -1219,9 +1075,9 @@ allows a Wi-Fi Display Source to send additional video formats to a Wi-Fi Displa
 The extension consists of two data structures to negotiate additional video formats. The data
 structures extend [WF-DTS2.1] section 6.1.3.
 
-2.7.1  Elements
+#### 2.7.1 Elements
 
-2.7.1.1  wfdx_video_formats
+##### 2.7.1.1 wfdx_video_formats
 
 The wfdx-video-formats parameter replaces the wfd-video-formats parameter as specified in
 [WF-DTS2.1] section 6.1.3.<10> The wfdx-video-formats parameter specifies:
@@ -1278,7 +1134,8 @@ Wi-Fi Display Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- CEA-Support  = 10*10HEXDIG;
+
+ CEA-Support  = 10*10HEXDIG;
  VESA-Support = 10*10HEXDIG;
  HH-Support = 8*8HEXDIG;
  latency = 2*2HEXDIG;
@@ -1303,7 +1160,7 @@ MUST NOT transmit an encoded picture constructed by multiple slices to a Wi-Fi D
 not support decoding a picture constructed by multiple slices (the Wi-Fi Display Sink sets the min-
 slice-size value to 0 in the RTSP M3 response message).
 
-2.7.1.1.1 Tables
+###### 2.7.1.1.1 Tables
 
 CEA Resolutions and Refresh Rates with Extension
 
@@ -1420,7 +1277,8 @@ Wi-Fi Display Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-monitor is using VESA timings, then, VESA CVT timings apply as specified in [VESA-CVT] section 4,
+
+monitor is using VESA timings, then, VESA CVT timings apply as specified in [VESA-CVT] section 4,
 even if the entry originated from the CEA table.
 
 VESA Resolutions and Refresh Rates with Extension
@@ -1539,7 +1397,8 @@ Release: April 23, 2024
 
 19 / 39
 
-Bits   Name
+
+Bits   Name
 
 Interpretation
 
@@ -1658,7 +1517,8 @@ Release: April 23, 2024
 
 20 / 39
 
-2.7.1.2  microsoft_video_formats
+
+##### 2.7.1.2 microsoft_video_formats
 
 The microsoft-video-formats parameter specifies additional supported video resolutions that
 augment the video resolutions specified in [WF-DTS2.1] sections 5.1.5.1–5.1.5.3.<11>
@@ -1675,7 +1535,7 @@ microsoft-resolutions = 12HEXDIG
 The possible values for the microsoft-video-formats parameter are specified in the table in section
 2.7.1.2.1.
 
-2.7.1.2.1 Tables
+###### 2.7.1.2.1 Tables
 
 The following table specifies the resolutions and refresh rates that are specified by the microsoft-
 video-formats parameter (section 2.7.1.2).
@@ -1801,7 +1661,8 @@ Release: April 23, 2024
 
 21 / 39
 
-Bits
+
+Bits
 
 Index
 
@@ -1829,28 +1690,28 @@ The Wi-Fi Display Sink SHOULD use the timings of the corresponding display devic
 monitor is using CEA timings, then CEA-861-F timings apply as specified in [CEA-861-F] section 4. If a
 monitor is using VESA timings, then, VESA CVT timings apply as specified in [VESA-CVT] section 4.
 
-2.7.2  Attributes
+#### 2.7.2 Attributes
 
 Not applicable.
 
-2.7.3  Complex Types
+#### 2.7.3 Complex Types
 
 Not applicable.
 
-2.7.4  Simple Types
+#### 2.7.4 Simple Types
 
 Not applicable.
 
-2.8  RTCP
+### 2.8 RTCP
 
 The RTCP extension enables the Wi-Fi Display Source and Wi-Fi Display Sink to communicate
 information regarding the quality of the network connection between the two devices.<12> A Wi-Fi
 Display Source can use this information to adjust the encoding bit rate in accordance with network
 conditions.
 
-2.8.1  Elements
+#### 2.8.1 Elements
 
-2.8.1.1  microsoft_rtcp_capability
+##### 2.8.1.1 microsoft_rtcp_capability
 
 The microsoft_rtcp_capability parameter specifies whether a Wi-Fi Display Sink supports Real-
 Time Transport Control Protocol (RTCP) in accordance with [RFC3550]. The ABNF syntax is as
@@ -1880,22 +1741,23 @@ Wi-Fi Display Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-response message, then the Wi-Fi Display Source MUST specify exactly one port number in the
+
+response message, then the Wi-Fi Display Source MUST specify exactly one port number in the
 server_port field on the Transport header of the RTSP SETUP response message.
 
-2.8.2  Attributes
+#### 2.8.2 Attributes
 
 Not applicable.
 
-2.8.3  Complex Types
+#### 2.8.3 Complex Types
 
 Not applicable.
 
-2.8.4  Simple Types
+#### 2.8.4 Simple Types
 
 Not applicable.
 
-2.9  High-Fidelity Color Space Conversion
+### 2.9 High-Fidelity Color Space Conversion
 
 The high-fidelity color space conversion extension enables the Wi-Fi Display Source to encode
 additional color information in repeat frames.<14> In general, the Wi-Fi Display Source has to
@@ -1905,9 +1767,9 @@ that is identical to the previous frame) to include the color information that w
 conversion, enabling the Wi-Fi Display Sink to connect color information from four frames and
 generate one complete frame with full color fidelity.
 
-2.9.1  Elements
+#### 2.9.1 Elements
 
-2.9.1.1  microsoft_color_space_conversion
+##### 2.9.1.1 microsoft_color_space_conversion
 
 The microsoft_color_space_conversion parameter specifies whether a Wi-Fi Display Sink supports
 the high-fidelity color space conversion (section 2.9) scheme.<15>
@@ -1942,7 +1804,8 @@ Wi-Fi Display Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When performing color space conversion from a 4:4:4 color space to a 4:2:0 color space, the color
+
+When performing color space conversion from a 4:4:4 color space to a 4:2:0 color space, the color
 space conversion component checks the frame counter variable to determine how to down sample the
 color information from a square of four pixels to one pixel in the output frame. The following table
 describes how the color space converter copies a pixel based on the current value of the frame
@@ -2026,30 +1889,31 @@ Release: April 23, 2024
 
 24 / 39
 
-2.9.2  Attributes
+
+#### 2.9.2 Attributes
 
 Not applicable.
 
-2.9.3  Complex Types
+#### 2.9.3 Complex Types
 
 Not applicable.
 
-2.9.4  Simple Types
+#### 2.9.4 Simple Types
 
 Not applicable.
 
-2.10  Maximum Supported Bitrate
+### 2.10 Maximum Supported Bitrate
 
 The maximum supported bitrate conversion extension enables Wi-Fi Display Sinks to specify the
 maximum supported bitrate, which is the dataflow transmitted over the network in bits per
 second.<16> Video encoders are configured to encode at a particular bitrate, with higher bitrates
 supporting greater data quality but requiring a larger network bandwidth.
 
-2.10.1 Elements
+#### 2.10.1 Elements
 
-2.10.1.1
+##### 2.10.1.1 microsoft_max_bitrate
 
-microsoft_max_bitrate
+
 
 The microsoft_max_bitrate parameter specifies the maximum video bitrate, which is the bits per
 second transmitted over the network, supported by a Wi-Fi Display Sink.<17>
@@ -2067,15 +1931,15 @@ The max-bitrate value specifies the maximum video bitrate supported by the Wi-Fi
 terms of bits per second. The Wi-Fi Display Source MUST encode the video stream at or below this
 bitrate.
 
-2.10.2 Attributes
+#### 2.10.2 Attributes
 
 Not applicable.
 
-2.10.3 Complex Types
+#### 2.10.3 Complex Types
 
 Not applicable.
 
-2.10.4 Simple Types
+#### 2.10.4 Simple Types
 
 Not applicable.
 
@@ -2086,7 +1950,8 @@ Release: April 23, 2024
 
 25 / 39
 
-2.11  Multi-screen Management
+
+### 2.11 Multi-screen Management
 
 The multi-screen management extension enables Wi-Fi Display Sinks to manage multiple connections
 from Wi-Fi Display Sources.<18>
@@ -2099,11 +1964,11 @@ the Wi-Fi Display Source is relegated to a subsection of the Wi-Fi Display Sink 
 The Wi-Fi Display Source can use this information to encode at a lower resolution and bitrate, which
 can save system resources and network bandwidth.
 
-2.11.1 Elements
+#### 2.11.1 Elements
 
-2.11.1.1
+##### 2.11.1.1 microsoft_multiscreen_projection
 
-microsoft_multiscreen_projection
+
 
 The microsoft_multiscreen_projection parameter specifies whether a Wi-Fi Display Source or a
 Wi-Fi Display Sink supports multi-screen management. It is also used to set the multi-screen
@@ -2165,7 +2030,8 @@ video stream. To save resources and bandwidth by
 
 26 / 39
 
-Value
+
+Value
 
 Meaning
 
@@ -2181,19 +2047,19 @@ Encoding bitrate, in bits per second.
 By default, a Wi-Fi Display Source that supports multi-screen projection operates as the primary
 display.
 
-2.11.2 Attributes
+#### 2.11.2 Attributes
 
 Not applicable.
 
-2.11.3 Complex Types
+#### 2.11.3 Complex Types
 
 Not applicable.
 
-2.11.4 Simple Types
+#### 2.11.4 Simple Types
 
 Not applicable.
 
-2.12  Source Audio Mute
+### 2.12 Source Audio Mute
 
 The source audio mute extension enables a Wi-Fi Display Sink to indicate whether the audio stream is
 muted or unmuted.<20>
@@ -2201,11 +2067,11 @@ muted or unmuted.<20>
 If the Wi-Fi Display Source mutes the audio stream, it is disabled, and the audio stream is not
 transmitted to the Wi-Fi Display Sink. Disabling the audio stream saves network bandwidth.
 
-2.12.1 Elements
+#### 2.12.1 Elements
 
-2.12.1.1
+##### 2.12.1.1 microsoft_audio_mute
 
-microsoft_audio_mute
+
 
 The microsoft_audio_mute parameter specifies whether a Wi-Fi Display Source or Wi-Fi Display
 Sink supports disabling of the audio stream. It is also used to disable the audio stream during
@@ -2227,7 +2093,8 @@ Release: April 23, 2024
 
 27 / 39
 
-Value
+
+Value
 
 supported
 
@@ -2259,15 +2126,15 @@ sending of audio data.
 
 By default, a Wi-Fi Display Source sends audio data.
 
-2.12.2 Attributes
+#### 2.12.2 Attributes
 
 Not applicable.
 
-2.12.3 Complex Types
+#### 2.12.3 Complex Types
 
 Not applicable.
 
-2.12.4 Simple Types
+#### 2.12.4 Simple Types
 
 Not applicable.
 
@@ -2278,7 +2145,8 @@ Release: April 23, 2024
 
 28 / 39
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following is an example of an M3 request for device metadata (section 2.1).
 
@@ -2344,7 +2212,8 @@ Release: April 23, 2024
 
 29 / 39
 
-Session: 12345678
+
+Session: 12345678
 Content-Type: text/parameters
 Content-Length: 74
 
@@ -2410,7 +2279,8 @@ Release: April 23, 2024
 
 30 / 39
 
-The following is an example of an M2 request and response where the response contains Display
+
+The following is an example of an M2 request and response where the response contains Display
 Source Identification (section 2.5).
 
 OPTIONS * RTSP/1.0
@@ -2476,7 +2346,8 @@ Wi-Fi Display Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- wfd_client_rtp_ports: RTP/AVP/UDP;unicast 19000 0 mode=play
+
+ wfd_client_rtp_ports: RTP/AVP/UDP;unicast 19000 0 mode=play
 
 The following is an example of an M3 request for extended video formats using the microsoft-video-
 formats parameter (section 2.7.1.2).
@@ -2542,7 +2413,8 @@ Release: April 23, 2024
 
 32 / 39
 
- microsoft_color_space_conversion
+
+ microsoft_color_space_conversion
 
 The following is an example of an M3 response for high-fidelity color space conversion (section 2.9).
 
@@ -2606,7 +2478,8 @@ Wi-Fi Display Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- SET_PARAMETER rtsp://localhost/wfd1.0 RTSP/1.0
+
+ SET_PARAMETER rtsp://localhost/wfd1.0 RTSP/1.0
 CSeq: 7
 Content-Type: text/parameters
 Content-Length: 43
@@ -2662,13 +2535,14 @@ Release: April 23, 2024
 
 34 / 39
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 None.
 
-4.2  Index of Security Fields
+### 4.2 Index of Security Fields
 
 None.
 
@@ -2679,7 +2553,8 @@ Release: April 23, 2024
 
 35 / 39
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2748,7 +2623,8 @@ Wi-Fi Display Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<13> Section 2.8.1.1:  The RTCP protocol extension is not supported in Windows 10 v1507 and
+
+<13> Section 2.8.1.1:  The RTCP protocol extension is not supported in Windows 10 v1507 and
 Windows 10 v1511.
 
 <14> Section 2.9:  The high-fidelity color space conversion extension is not supported in Windows 10
@@ -2782,7 +2658,8 @@ Release: April 23, 2024
 
 37 / 39
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2826,7 +2703,8 @@ Release: April 23, 2024
 
 38 / 39
 
-Security
+
+Security
    field index 35
    implementer considerations 35
 Structures
@@ -2841,7 +2719,7 @@ V
 Vendor-extensible fields 8
 Versioning 8
 
-7  Index
+## 7 Index
 A
 
 Applicability 8

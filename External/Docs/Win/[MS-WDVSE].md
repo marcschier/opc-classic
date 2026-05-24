@@ -64,7 +64,8 @@ Release: September 16, 2024
 
 1 / 27
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: September 16, 2024
 
 2 / 27
 
-Date
+
+Date
 
 Revision
 History
@@ -530,7 +532,8 @@ Web Distributed Authoring and Versioning (WebDAV) Protocol: Server Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -549,155 +552,69 @@ Release: September 16, 2024
 
 4 / 27
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Translate Request Header](#221-translate-request-header)
+    - [2.2.2 MS-Author-Via Response Header](#222-ms-author-via-response-header)
+    - [2.2.3 Depth "noroot" Request Header Extension](#223-depth-noroot-request-header-extension)
+    - [2.2.4 SEARCH Method](#224-search-method)
+    - [2.2.5 Deviations from RFC4918](#225-deviations-from-rfc4918)
+      - [2.2.5.1 Additional "Live" Properties](#2251-additional-live-properties)
+      - [2.2.5.2 Collections and Locking](#2252-collections-and-locking)
+      - [2.2.5.3 Multiple Property Elements](#2253-multiple-property-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 WebDAV Client Details](#31-webdav-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Translate Request Header](#3151-translate-request-header)
+      - [3.1.5.2 MS-Author-Via Response Header](#3152-ms-author-via-response-header)
+      - [3.1.5.3 Depth "noroot" Request Header Extension](#3153-depth-noroot-request-header-extension)
+      - [3.1.5.4 SEARCH Method](#3154-search-method)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 WebDAV Server Details](#32-webdav-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Translate Request Header](#3251-translate-request-header)
+      - [3.2.5.2 MS-Author-Via Response Header](#3252-ms-author-via-response-header)
+      - [3.2.5.3 Depth "noroot" Request Header Extension](#3253-depth-noroot-request-header-extension)
+      - [3.2.5.4 SEARCH Method](#3254-search-method)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 MS-Author-Via Response Header](#41-ms-author-via-response-header)
+  - [4.2 Translate Request Header](#42-translate-request-header)
+  - [4.3 Depth "noroot" Request Header Extension](#43-depth-noroot-request-header-extension)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Translate Request Header ............................................................................ 11
-MS-Author-Via Response Header .................................................................. 12
-Depth "noroot" Request Header Extension ..................................................... 13
-SEARCH Method ......................................................................................... 13
-Deviations from RFC4918 ............................................................................ 13
-Additional "Live" Properties .................................................................... 13
-Collections and Locking .......................................................................... 13
-Multiple Property Elements ..................................................................... 14
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3  Protocol Details ..................................................................................................... 15
-WebDAV Client Details ...................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Processing Events and Sequencing Rules ....................................................... 15
-Translate Request Header ...................................................................... 15
-MS-Author-Via Response Header ............................................................. 15
-Depth "noroot" Request Header Extension ................................................ 16
-SEARCH Method .................................................................................... 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-WebDAV Server Details ..................................................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Processing Events and Sequencing Rules ....................................................... 16
-Translate Request Header ...................................................................... 17
-MS-Author-Via Response Header ............................................................. 17
-Depth "noroot" Request Header Extension ................................................ 17
-SEARCH Method .................................................................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 18
-MS-Author-Via Response Header ........................................................................ 18
-Translate Request Header ................................................................................. 18
-Depth "noroot" Request Header Extension ........................................................... 19
-
-4.1
-4.2
-4.3
-
-[MS-WDVSE] - v20240916
-Web Distributed Authoring and Versioning (WebDAV) Protocol: Server Extensions
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 27
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 25
-
-8  Index ..................................................................................................................... 26
-
-[MS-WDVSE] - v20240916
-Web Distributed Authoring and Versioning (WebDAV) Protocol: Server Extensions
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 27
-
-1  Introduction
+## 1 Introduction
 
 The Web Distributed Authoring and Versioning (WebDAV) Protocol defined in [RFC4918] extends the
 standard Hypertext Transfer Protocol (HTTP) mechanisms defined in [RFC2068] to provide file access
@@ -713,7 +630,7 @@ that is used to send search queries to disparate search providers.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -768,7 +685,8 @@ Release: September 16, 2024
 
 7 / 27
 
-Uniform Resource Locator (URL): A string of characters in a standardized format that identifies
+
+Uniform Resource Locator (URL): A string of characters in a standardized format that identifies
 
 a document or resource on the World Wide Web. The format is as specified in [RFC1738].
 
@@ -789,14 +707,14 @@ and responds to requests from WebDAV clients.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -824,7 +742,7 @@ editor.org/info/rfc2291
 [RFC4918] Dusseault, L, Ed., "HTTP Extensions for Web Distributed Authoring and Versioning
 (WebDAV)", RFC 4918, June 2007, https://www.rfc-editor.org/info/rfc4918
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSASP] Microsoft Corporation, "Active Server Pages", http://msdn.microsoft.com/en-
 us/library/aa286483.aspx
@@ -836,7 +754,8 @@ Release: September 16, 2024
 
 8 / 27
 
-[MSDN-FP] Microsoft Corporation, "FrontPage", http://msdn.microsoft.com/en-
+
+[MSDN-FP] Microsoft Corporation, "FrontPage", http://msdn.microsoft.com/en-
 us/library/aa167865(office.11).aspx
 
 [RFC2518] Goland, Y., Whitehead, E., Faizi, A., et al., "HTTP Extensions for Distributed Authoring -
@@ -845,7 +764,7 @@ WebDAV", RFC 2518, February 1999, http://www.ietf.org/rfc/rfc2518.txt
 [RFC2818] Rescorla, E., "HTTP Over TLS", RFC 2818, May 2000, https://www.rfc-
 editor.org/info/rfc2818
 
-1.3  Overview
+### 1.3 Overview
 
 The Web Distributed Authoring and Versioning (WebDAV) Protocol described in [RFC2518] and in
 [RFC4918] is a set of methods, headers, and content types that extend the HTTP 1.1 Protocol
@@ -882,13 +801,13 @@ resource is to be included in the results.
 
   Additional properties in the DAV namespace that describe additional file characteristics.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WebDAV Protocol: Server Extensions rely on WebDAV which, in turn, relies on HTTP 1.1
 described in [RFC2616] and in [RFC2068]. These extensions can use HTTPS over Transport Layer
 Security (TLS) for data protection services, as described in [RFC2818].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 These protocol server extensions require a WebDAV server, as defined in [RFC2291], support the
 WebDAV OPTIONS command.
@@ -903,14 +822,15 @@ Release: September 16, 2024
 
 9 / 27
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 WebDAV Protocol: Server Extensions applies in scenarios that require efficient file operations. Note
 that only those extensions specific to enabling efficient file system clients are specified. These
 extensions do not add any functionality. They instead help reduce the network traffic and increase the
 performance of clients that use the WebDAV Protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Supported Transports: WebDAV Protocol: Server Extensions use HTTP as the only transport.
 
@@ -921,7 +841,7 @@ Capability Negotiation: Negotiation of WebDAV and HTTP capabilities is via the O
 These server extensions extends the OPTIONS method that uses an HTTP response header to indicate
 which authoring tools are to be used. For more information about authoring, see section 2.2.2.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 These protocol server extensions can be extended by adding new tokens to the MS-Author-Via field
 value, section 2.2.2.
@@ -929,7 +849,7 @@ value, section 2.2.2.
 These protocol server extensions use HTTP status codes [RFC2068] section 10 and [RFC4918] section
 11.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 No standards body has approved or governs these server extensions or its header names, values,
 methods, and deviations. This specification conforms to the form and behavior of other custom HTTP
@@ -942,12 +862,13 @@ Release: September 16, 2024
 
 10 / 27
 
-2  Messages
+
+## 2 Messages
 
 The following section describes transport requirements and the syntax of the WebDAV Protocol: Server
 Extensions.
 
-2.1  Transport
+### 2.1 Transport
 
 Messages are transported using HTTP as specified in [RFC4918] and [RFC2068].
 
@@ -957,7 +878,7 @@ as specified in [RFC2246].
 Port 80 is the standard port assignment for HTTP, and port 443 is the standard port assignment for
 HTTP over SSL or TLS; however, individual implementations can support other ports.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The extension headers in this protocol conform to the form and behavior of other custom HTTP
 headers, as specified in [RFC2068] section 4.2, and are consistent with the WebDAV verbs and
@@ -1006,7 +927,7 @@ collections, as specified in section 2.2.5.2 and in [RFC4918] section 7.4.
 The WebDAV property setting, as specified in [RFC4918] section 9.2, can include multiple un-
 nested property settings, as specified in section 2.2.5.3.
 
-2.2.1  Translate Request Header
+#### 2.2.1 Translate Request Header
 
 Many resources obtained from a WebDAV server are returned exactly as-is. However, some
 resources are programmatically interpreted by the web server and the result of that interpretation is
@@ -1020,7 +941,8 @@ Web Distributed Authoring and Versioning (WebDAV) Protocol: Server Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-rather than the actual source of the ASP page. A resource is an entity that can be identified by a URI.
+
+rather than the actual source of the ASP page. A resource is an entity that can be identified by a URI.
 A resource is used as specified in [RFC2616] section 1.3.
 
 In order for a WebDAV client to indicate the required representation, WebDAV Protocol: Server
@@ -1040,7 +962,7 @@ web server. For more details about processing of this request header, see sectio
 
 This request header MUST be supported on the GET verb and MAY be supported on other verbs.<2>
 
-2.2.2  MS-Author-Via Response Header
+#### 2.2.2 MS-Author-Via Response Header
 
 This extension MUST have the following format:
 
@@ -1100,7 +1022,8 @@ Web Distributed Authoring and Versioning (WebDAV) Protocol: Server Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.3  Depth "noroot" Request Header Extension
+
+#### 2.2.3 Depth "noroot" Request Header Extension
 
  This header extension is defined as follows, using the ABNF syntax defined in [RFC4234] section 2.1:
 
@@ -1133,7 +1056,7 @@ infinity,noroot  The command applies to all the resources in the container but n
 
 The noroot extension is present if the "1,noroot" value is set or if the "infinity,noroot" value is set.<3>
 
-2.2.4  SEARCH Method
+#### 2.2.4 SEARCH Method
 
 This method extension allows a WebDAV client to request search results from an external search
 provider. A WebDAV server SHOULD advertise support for the SEARCH method in the response to an
@@ -1154,14 +1077,14 @@ as defined in [RFC2068].
    </D:sql>
  </D:searchrequest>
 
-2.2.5  Deviations from RFC4918
+#### 2.2.5 Deviations from RFC4918
 
-2.2.5.1  Additional "Live" Properties
+##### 2.2.5.1 Additional "Live" Properties
 
 [RFC4918] sections 4 and 15 define the "live" properties that a WebDAV server SHOULD
 implement.<5>
 
-2.2.5.2  Collections and Locking
+##### 2.2.5.2 Collections and Locking
 
 [RFC4918] sections 7 and 9 define how WebDAV servers SHOULD implement locking for
 collections.<6>
@@ -1173,7 +1096,8 @@ Release: September 16, 2024
 
 13 / 27
 
-2.2.5.3  Multiple Property Elements
+
+##### 2.2.5.3 Multiple Property Elements
 
 [RFC4918] section 9.2 defines the message syntax for setting properties by using the PROPPATCH
 method. A property or group of properties for a resource MAY be enclosed within a single
@@ -1199,34 +1123,35 @@ Release: September 16, 2024
 
 14 / 27
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 As specified in [RFC4918], WebDAV operates between an initiator (a WebDAV client) and a
 responder (a WebDAV server). This section specifies the client and the server behaviors with respect
 to the WebDAV extensions.
 
-3.1  WebDAV Client Details
+### 3.1 WebDAV Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 A WebDAV client SHOULD maintain a variable for each server with which it communicates that
 contains the value of the MS-Author-Via response header.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No new timers are required beyond those specified in [RFC2068].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Prior to general interaction with a WebDAV server, the WebDAV client SHOULD perform an
 OPTIONS request to determine the current authoring implementation using the MS-Author-Via
 response header.<8>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No new events are triggered beyond those specified in [RFC2068].
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 A WebDAV client SHOULD send an OPTIONS request to the server and query the response headers
 for the presence of the WebDAV server's supported features. When sending an OPTIONS request,
@@ -1234,13 +1159,13 @@ the WebDAV client SHOULD send the OPTIONS request before sending any other reque
 WebDAV server. The information returned SHOULD be used by the WebDAV client to specialize
 requests to this server.
 
-3.1.5.1  Translate Request Header
+##### 3.1.5.1 Translate Request Header
 
 The WebDAV client SHOULD add the Translate request header with an "f" or "F" flag to a request if
 the WebDAV client needs the source of a file without any translation; otherwise this header SHOULD
 be omitted.
 
-3.1.5.2  MS-Author-Via Response Header
+##### 3.1.5.2 MS-Author-Via Response Header
 
 A WebDAV client MAY send an OPTIONS request to the server and query the response headers for
 the presence of the MS-Author-Via header. The WebDAV client SHOULD use the following information
@@ -1264,7 +1189,8 @@ Release: September 16, 2024
 
 15 / 27
 
-  MS-Author-Via: DAV
+
+  MS-Author-Via: DAV
 
   MS-Author-Via: DAV, MS-FP/4.0
 
@@ -1274,47 +1200,47 @@ Release: September 16, 2024
 
   MS-Author-Via: Token,DAV
 
-3.1.5.3  Depth "noroot" Request Header Extension
+##### 3.1.5.3 Depth "noroot" Request Header Extension
 
 The WebDAV client SHOULD add the Depth request header with a value of '1,noroot' or
 'infinity,noroot' to a request if the WebDAV client needs the resources that are in the container, but
 not in the container itself; otherwise this header SHOULD be omitted.<9> A resource is an entity that
 can be identified by a URI. A resource is used as specified in [RFC2616] section 1.3.
 
-3.1.5.4  SEARCH Method
+##### 3.1.5.4 SEARCH Method
 
 A WebDAV client SHOULD send a SEARCH request to a WebDAV server that advertises support for
 the SEARCH method through the response to an OPTIONS request from the WebDAV client. If the
 WebDAV server does not advertise support for the SEARCH method, the WebDAV client SHOULD NOT
 send a SEARCH request.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No new timers are required beyond those in the base protocol.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no new local events other than those described in the base protocol.
 
-3.2  WebDAV Server Details
+### 3.2 WebDAV Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 No new abstract data model is needed other than that described in the base protocol.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No new timers are required beyond those in the base protocol.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 No initialization is required beyond that in the base protocol.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 No new events are triggered beyond that in the base protocol.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 A WebDAV server can advertise support for WebDAV authoring by adding the MS-Author-Via: DAV
 response header to the response to the OPTIONS command. If the server does not support WebDAV
@@ -1326,10 +1252,11 @@ Release: September 16, 2024
 
 16 / 27
 
-authoring, the OPTIONS response SHOULD omit the MS-Author-Via: DAV response header. A WebDAV
+
+authoring, the OPTIONS response SHOULD omit the MS-Author-Via: DAV response header. A WebDAV
 server MAY add the MS-Author-Via: DAV header to other responses.
 
-3.2.5.1  Translate Request Header
+##### 3.2.5.1 Translate Request Header
 
 The WebDAV server MUST respond with the actual source of the file if the translate request header
 exists with a flag value starting with "f" or "F". The WebDAV server SHOULD perform access checks
@@ -1338,7 +1265,7 @@ when processing a command with a Translate request header.<10>
 To maintain consistency with web browsers, the default behavior if this request header is omitted is to
 translate the file; omission of this header SHOULD be the same as sending Translate: t.<11>
 
-3.2.5.2  MS-Author-Via Response Header
+##### 3.2.5.2 MS-Author-Via Response Header
 
 The WebDAV server SHOULD respond with the MS-Author-Via response header when a WebDAV
 client sends an OPTIONS request.<12> The WebDAV server responds with the appropriate
@@ -1371,23 +1298,23 @@ Extensions protocol is preferred over WebDAV.
 "MS-Author-Via: Token,DAV" The WebDAV server responds with this header when both the
 WebDAV and an extensible token are enabled.
 
-3.2.5.3  Depth "noroot" Request Header Extension
+##### 3.2.5.3 Depth "noroot" Request Header Extension
 
 If the WebDAV server supports the Depth "noroot" request header extension, the WebDAV server
 SHOULD respond appropriately depending on the WebDAV command that the WebDAV client is
 sending.<13>
 
-3.2.5.4  SEARCH Method
+##### 3.2.5.4 SEARCH Method
 
 A WebDAV server advertises support for the SEARCH method through the response to an OPTIONS
 request from the WebDAV client. If a WebDAV client sends a SEARCH request, the WebDAV server
 SHOULD send the request to the appropriate search provider on the server.<14>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No new timers are required beyond those in the base protocol.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no new local events other than those described in the base protocol.
 
@@ -1398,11 +1325,12 @@ Release: September 16, 2024
 
 17 / 27
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section provides examples of the protocol extensions.
 
-4.1  MS-Author-Via Response Header
+### 4.1 MS-Author-Via Response Header
 
 The following example shows an OPTIONS request from a WebDAV client and the response from the
 WebDAV server that contains the MS-Author-Via response header.
@@ -1426,7 +1354,7 @@ Response:
  MS-Author-Via: DAV
  Content-Length: 0
 
-4.2  Translate Request Header
+### 4.2 Translate Request Header
 
 The following examples show the difference between requesting an entity and the source of an entity.
 The first example is a typical HTTP GET command as issued by a browser such as Internet Explorer.
@@ -1461,7 +1389,8 @@ Release: September 16, 2024
 
 18 / 27
 
-An authoring application might want to retrieve the source of an entity, and it would issue the same
+
+An authoring application might want to retrieve the source of an entity, and it would issue the same
 request asking for the source of the entity as follows:
 
 Request:
@@ -1504,7 +1433,7 @@ Response:
 The difference between these two requests is that the second one is requesting the source of an
 entity. This is a typical example of how the Translate request header is used.
 
-4.3  Depth "noroot" Request Header Extension
+### 4.3 Depth "noroot" Request Header Extension
 
 The following example shows a PROPFIND request from a WebDAV client and the response from the
 WebDAV server that contains the Depth "noroot" Request Header Extension.
@@ -1525,7 +1454,8 @@ Release: September 16, 2024
 
 19 / 27
 
- <?xml version="1.0"?>
+
+ <?xml version="1.0"?>
  <D:propfind xmlns:D="DAV:">
    <D:prop>
      <D:displayname/>
@@ -1597,7 +1527,8 @@ Release: September 16, 2024
 
 20 / 27
 
- Content-Length:104
+
+ Content-Length:104
 
  <?xml version="1.0"?>
  <D:propfind xmlns:D="DAV:">
@@ -1654,15 +1585,16 @@ Release: September 16, 2024
 
 21 / 27
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 WebDAV servers that support the Translate request header can perform access checks before
 returning the source of the file, as specified in section 3.2.5.1, in order to protect any source content
 (for example, database passwords).<15>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 No new security parameters are required beyond those in the base protocol.
 
@@ -1673,7 +1605,8 @@ Release: September 16, 2024
 
 22 / 27
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1743,7 +1676,8 @@ Web Distributed Authoring and Versioning (WebDAV) Protocol: Server Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 2.2.1: The web server in IIS for Windows 2000 operating system, Windows XP, and
@@ -1808,7 +1742,8 @@ Release: September 16, 2024
 
 24 / 27
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1820,7 +1755,8 @@ Release: September 16, 2024
 
 25 / 27
 
-8  Index
+
+## 8 Index
 "
 
 "Live" properties 13
@@ -1956,7 +1892,8 @@ Release: September 16, 2024
 
 26 / 27
 
-P
+
+P
 
 V
 

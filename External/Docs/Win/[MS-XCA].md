@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -243,145 +244,63 @@ Release: April 23, 2024
 
 2 / 30
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Algorithms](#14-relationship-to-protocols-and-other-algorithms)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Standards Assignments](#16-standards-assignments)
+- [2 Algorithm Details](#2-algorithm-details)
+  - [2.1 LZ77+Huffman Compression Algorithm Details](#21-lz77huffman-compression-algorithm-details)
+    - [2.1.1 Abstract Data Model](#211-abstract-data-model)
+    - [2.1.2 Initialization](#212-initialization)
+    - [2.1.3 Processing Rules](#213-processing-rules)
+    - [2.1.4 Phases](#214-phases)
+      - [2.1.4.1 LZ77 Phase](#2141-lz77-phase)
+      - [2.1.4.2 Huffman Code Construction Phase](#2142-huffman-code-construction-phase)
+      - [2.1.4.3 Final Encoding Phase](#2143-final-encoding-phase)
+  - [2.2 LZ77+Huffman Decompression Algorithm Details](#22-lz77huffman-decompression-algorithm-details)
+    - [2.2.1 Abstract Data Model](#221-abstract-data-model)
+    - [2.2.2 Initialization](#222-initialization)
+    - [2.2.3 Processing Rules](#223-processing-rules)
+    - [2.2.4 Processing](#224-processing)
+  - [2.3 Plain LZ77 Compression Algorithm Details](#23-plain-lz77-compression-algorithm-details)
+    - [2.3.1 Abstract Data Model](#231-abstract-data-model)
+    - [2.3.2 Initialization](#232-initialization)
+    - [2.3.3 Processing Rules](#233-processing-rules)
+    - [2.3.4 Processing](#234-processing)
+  - [2.4 Plain LZ77 Decompression Algorithm Details](#24-plain-lz77-decompression-algorithm-details)
+    - [2.4.1 Abstract Data Model](#241-abstract-data-model)
+    - [2.4.2 Initialization](#242-initialization)
+    - [2.4.3 Processing Rules](#243-processing-rules)
+    - [2.4.4 Processing](#244-processing)
+  - [2.5 LZNT1 Algorithm Details](#25-lznt1-algorithm-details)
+    - [2.5.1 Abstract Data Model](#251-abstract-data-model)
+      - [2.5.1.1 Buffer Format](#2511-buffer-format)
+      - [2.5.1.2 Buffers and Chunks](#2512-buffers-and-chunks)
+      - [2.5.1.3 Flag Groups](#2513-flag-groups)
+      - [2.5.1.4 Data Elements](#2514-data-elements)
+    - [2.5.2 Initialization](#252-initialization)
+    - [2.5.3 Processing Rules](#253-processing-rules)
+    - [2.5.4 Processing](#254-processing)
+- [3 Algorithm Examples](#3-algorithm-examples)
+  - [3.1 LZ77](#31-lz77)
+  - [3.2 LZ77+Huffman](#32-lz77huffman)
+  - [3.3 LZNT1](#33-lznt1)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Parameters](#42-index-of-security-parameters)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Protocols and Other Algorithms ...................................................... 6
-Applicability Statement ....................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-
-2.3
-
-2.2
-
-2.1
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-
-2.1.4.1
-2.1.4.2
-2.1.4.3
-
-2  Algorithm Details..................................................................................................... 7
-LZ77+Huffman Compression Algorithm Details ...................................................... 7
-Abstract Data Model ...................................................................................... 7
-Initialization ................................................................................................. 7
-Processing Rules ........................................................................................... 7
-Phases ........................................................................................................ 7
-LZ77 Phase ............................................................................................ 7
-Huffman Code Construction Phase ........................................................... 10
-Final Encoding Phase ............................................................................. 11
-LZ77+Huffman Decompression Algorithm Details ................................................. 13
-Abstract Data Model .................................................................................... 13
-Initialization ............................................................................................... 13
-Processing Rules ......................................................................................... 14
-Processing ................................................................................................. 14
-Plain LZ77 Compression Algorithm Details ........................................................... 15
-Abstract Data Model .................................................................................... 15
-Initialization ............................................................................................... 16
-Processing Rules ......................................................................................... 16
-Processing ................................................................................................. 16
-Plain LZ77 Decompression Algorithm Details ....................................................... 17
-Abstract Data Model .................................................................................... 17
-Initialization ............................................................................................... 17
-Processing Rules ......................................................................................... 17
-Processing ................................................................................................. 18
-LZNT1 Algorithm Details ................................................................................... 19
-Abstract Data Model .................................................................................... 19
-Buffer Format ....................................................................................... 19
-Buffers and Chunks ............................................................................... 20
-Flag Groups .......................................................................................... 21
-Data Elements ...................................................................................... 21
-Initialization ............................................................................................... 22
-Processing Rules ......................................................................................... 22
-Processing ................................................................................................. 22
-
-2.5.1.1
-2.5.1.2
-2.5.1.3
-2.5.1.4
-
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-
-2.4.1
-2.4.2
-2.4.3
-2.4.4
-
-2.5.2
-2.5.3
-2.5.4
-
-2.5.1
-
-2.4
-
-2.5
-
-3  Algorithm Examples .............................................................................................. 23
-LZ77 .............................................................................................................. 23
-LZ77+Huffman ................................................................................................ 23
-LZNT1 ............................................................................................................ 24
-
-3.1
-3.2
-3.3
-
-4  Security ................................................................................................................. 26
-Security Considerations for Implementers ........................................................... 26
-Index of Security Parameters ............................................................................ 26
-
-4.1
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 27
-
-6  Change Tracking .................................................................................................... 28
-
-3 / 30
-
-[MS-XCA] - v20240423
-Xpress Compression Algorithm
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7  Index ..................................................................................................................... 29
-
-[MS-XCA] - v20240423
-Xpress Compression Algorithm
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 30
-
-1  Introduction
+## 1 Introduction
 
 The Xpress Compression Algorithm has three variants, all designed for speed.
 
@@ -395,7 +314,7 @@ but with an encoding process less complex than Plain LZ77.
 Sections 1.6 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -423,14 +342,14 @@ no valid code word in the system is a prefix of any other valid code word in the
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -449,36 +368,37 @@ Release: April 23, 2024
 
 5 / 30
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [UASDC] Ziv, J. and Lempel, A., "A Universal Algorithm for Sequential Data Compression", May 1977,
 http://www.cs.duke.edu/courses/spring03/cps296.5/papers/ziv_lempel_1977_universal_algorithm.pdf
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
-1.3  Overview
+### 1.3 Overview
 
 This algorithm efficiently compresses data that contain repeated byte sequences. It is not designed to
 compress image, audio, or video data. Between the trade-offs of compressed size and CPU cost, it
 heavily emphasizes low CPU cost.
 
-1.4  Relationship to Protocols and Other Algorithms
+### 1.4 Relationship to Protocols and Other Algorithms
 
 This algorithm does not depend on any other algorithms or protocols. It is a compression method
 designed to have minimal CPU overhead for compression and decompression. A protocol that depends
 on this algorithm would typically need to transfer significant amounts of data that cannot be easily
 precompressed by another algorithm having a better compression ratio.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 This algorithm is appropriate for any protocol that transfers large amounts of easily compressible
 textlike data, such as HTML, source code, or log files. Protocols use this algorithm to reduce the
 number of bits transferred.
 
-1.6  Standards Assignments
+### 1.6 Standards Assignments
 
 None.
 
@@ -489,9 +409,10 @@ Release: April 23, 2024
 
 6 / 30
 
-2  Algorithm Details
 
-2.1  LZ77+Huffman Compression Algorithm Details
+## 2 Algorithm Details
+
+### 2.1 LZ77+Huffman Compression Algorithm Details
 
 The overall compression algorithm for the Huffman [IEEE-MRC] variant can handle an arbitrary
 amount of data. Data is processed in 64k blocks, and the encoded results are stored in-order. After
@@ -529,21 +450,21 @@ integers: a length and a distance. When the decoding method encounters a match s
 data is reconstructed by copying <length> bytes from the position in its previously decompressed
 data of <[decompression cursor] – [match distance]>.
 
-2.1.1  Abstract Data Model
+#### 2.1.1 Abstract Data Model
 
   None.
 
-2.1.2  Initialization
+#### 2.1.2 Initialization
 
  None.
 
-2.1.3  Processing Rules
+#### 2.1.3 Processing Rules
 
  None.
 
-2.1.4  Phases
+#### 2.1.4 Phases
 
-2.1.4.1  LZ77 Phase
+##### 2.1.4.1 LZ77 Phase
 
 This phase processes each byte of the input data and produces two outputs: the intermediate LZ77
 ([UASDC]) encoding of flags, literals, and matches; and the frequency of each symbol in the Huffman
@@ -556,7 +477,8 @@ Xpress Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-XCA].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -579,7 +501,8 @@ Xpress Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- HashTable[HashValue] = CurrentPosition;
+
+ HashTable[HashValue] = CurrentPosition;
 
 The HashThreeBytes function SHOULD be quick to compute and provide a small number of
 collisions.
@@ -665,9 +588,10 @@ Xpress Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-    DistanceHighBit = 8 + PrecomputedHighBitTable[Distance >> 8]
 
-2.1.4.2  Huffman Code Construction Phase
+    DistanceHighBit = 8 + PrecomputedHighBitTable[Distance >> 8]
+
+##### 2.1.4.2 Huffman Code Construction Phase
 
 This phase computes canonical Huffman codes from the symbol counts generated by the LZ77
 ([UASDC]) phase. For each of the 512 symbols in the Huffman alphabet, this phase computes the
@@ -690,13 +614,14 @@ Release: April 23, 2024
 
 10 / 30
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-XCA].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 Figure 2: Length-limited canonical Huffman code construction method.
 
-2.1.4.3  Final Encoding Phase
+##### 2.1.4.3 Final Encoding Phase
 
 In the final encoding phase, the algorithm processes the intermediate encoding of literals and matches
 generated by the LZ77 ([UASDC]) phase. It re-encodes each literal and match using the canonical
@@ -712,7 +637,8 @@ Xpress Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For example, if the bit lengths of symbols 0, 1, 2, and 3 were 5, 6, 7, and 8, respectively, the first 2
+
+For example, if the bit lengths of symbols 0, 1, 2, and 3 were 5, 6, 7, and 8, respectively, the first 2
 bytes of the output buffer would be 0x65 0x87. The Huffman [IEEE-MRC] construction process
 guarantees that each bit length fits in 4 bits. Symbols that are never used, and therefore have no
 Huffman code, have the special value of zero.
@@ -782,7 +708,8 @@ Release: April 23, 2024
 
 12 / 30
 
-The WriteBits, WriteByte,  WriteUint16, WriteUint32, and FlushBits functions implicitly use five
+
+The WriteBits, WriteByte,  WriteUint16, WriteUint32, and FlushBits functions implicitly use five
 variables, which are initialized as follows:
 
  FreeBits = 16
@@ -831,13 +758,13 @@ buffer.
      The final compressed size is the value of OutputPosition
  End
 
-2.2  LZ77+Huffman Decompression Algorithm Details
+### 2.2 LZ77+Huffman Decompression Algorithm Details
 
-2.2.1  Abstract Data Model
+#### 2.2.1 Abstract Data Model
 
 None.
 
-2.2.2  Initialization
+#### 2.2.2 Initialization
 
 None.
 
@@ -848,11 +775,12 @@ Release: April 23, 2024
 
 13 / 30
 
-2.2.3  Processing Rules
+
+#### 2.2.3 Processing Rules
 
 None.
 
-2.2.4  Processing
+#### 2.2.4 Processing
 
 The decompression processes a series of blocks to form the decompressed output. Each block is
 processed in-order, and its decoded content written to the output stream is in-order. When processing
@@ -916,7 +844,8 @@ Xpress Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     CurrentPosition += 2
+
+     CurrentPosition += 2
      ExtraBitCount = 16
      BlockEnd = OutputPosition + 65536
      Loop until a block terminating condition
@@ -971,9 +900,9 @@ functions memcpy or memove. A sequence of bytes such as aaaaaa can be encoded li
 [literal: "a"][match: offset=1, length=5]. In other words, the match length can be greater
 than the match offset, and this necessitates the 1-byte-at-a-time copying strategy.
 
-2.3  Plain LZ77 Compression Algorithm Details
+### 2.3 Plain LZ77 Compression Algorithm Details
 
-2.3.1  Abstract Data Model
+#### 2.3.1 Abstract Data Model
 
 None.
 
@@ -984,15 +913,16 @@ Release: April 23, 2024
 
 15 / 30
 
-2.3.2  Initialization
+
+#### 2.3.2 Initialization
 
 None.
 
-2.3.3  Processing Rules
+#### 2.3.3 Processing Rules
 
 None.
 
-2.3.4  Processing
+#### 2.3.4 Processing
 
 The fastest variant of the Xpress Compression Algorithm avoids the cost of the Huffman[IEEE-MRC]
 pass by encoding the LZ77 [UASDC] literals and matches in a simple way. The encoding process is
@@ -1056,7 +986,8 @@ Release: April 23, 2024
 
 16 / 30
 
-                 Else
+
+                 Else
                      Write single byte value of 15 to OutputPosition
                      OutputPosition++
                      goto EncodeExtraLen
@@ -1104,17 +1035,17 @@ Release: April 23, 2024
  Write the 32-bit value Flags to FlagOutputPosition
  The final compressed size is the value of OutputPosition
 
-2.4  Plain LZ77 Decompression Algorithm Details
+### 2.4 Plain LZ77 Decompression Algorithm Details
 
-2.4.1  Abstract Data Model
-
-None.
-
-2.4.2  Initialization
+#### 2.4.1 Abstract Data Model
 
 None.
 
-2.4.3  Processing Rules
+#### 2.4.2 Initialization
+
+None.
+
+#### 2.4.3 Processing Rules
 
 None.
 
@@ -1125,7 +1056,8 @@ Release: April 23, 2024
 
 17 / 30
 
-2.4.4  Processing
+
+#### 2.4.4 Processing
 
 This section provides the decompression method corresponding to the compression method that is
 described in section 2.3. The basic structure is to decode each flag, which indicates whether the next
@@ -1197,7 +1129,8 @@ Release: April 23, 2024
 
 18 / 30
 
-2.5  LZNT1 Algorithm Details
+
+### 2.5 LZNT1 Algorithm Details
 
 The LZNT1 algorithm employs a grammar common to LZ77 variants, making use of LZ77 [UASDC]
 literals and matches and using the characteristic processing. The LZNT1 algorithm is comparable to
@@ -1222,7 +1155,7 @@ LZNT1 groups flags in bytes; Plain LZ77 groups them in 4-byte DWORDs.
 
 The LZNT1 buffer is structured as a series of chunks that can be independently decompressed.
 
-2.5.1  Abstract Data Model
+#### 2.5.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this algorithm. The described organization is provided to facilitate the
@@ -1246,7 +1179,7 @@ Flag group: A flag byte followed by zero or more data elements, each of which is
 
 or a 2-byte compressed word.
 
-2.5.1.1  Buffer Format
+##### 2.5.1.1 Buffer Format
 
 The LZNT1 algorithm relies on the use of a specific buffer format in its implementation of LZ77. The
 compression algorithm produces a buffer format of the following grammatical structure:
@@ -1272,7 +1205,8 @@ Release: April 23, 2024
 
 19 / 30
 
-   | Flag_byte <Data> <Data> <Data> <Data> <Data>
+
+   | Flag_byte <Data> <Data> <Data> <Data> <Data>
    | Flag_byte <Data> <Data> <Data> <Data>
    | Flag_byte <Data> <Data> <Data>
    | Flag_byte <Data> <Data>
@@ -1288,7 +1222,7 @@ that is followed by no more than 8 individual data elements.
 The following sections describe the structure of each of these grammatical elements, including
 constraints on their usage that are not expressed in the raw grammar.
 
-2.5.1.2  Buffers and Chunks
+##### 2.5.1.2 Buffers and Chunks
 
 A compressed buffer consists of a series of one or more compressed output chunks. Each chunk
 begins with a 16-bit header.
@@ -1336,7 +1270,8 @@ Release: April 23, 2024
 
 20 / 30
 
-2.5.1.3  Flag Groups
+
+##### 2.5.1.3 Flag Groups
 
 If a chunk is compressed, its chunk header is immediately followed by the first byte of a Flag_group
 nonterminal.
@@ -1347,7 +1282,7 @@ from low-order bits to high-order bits, specify the formats of the subsequent da
 bit 0 corresponds to the first data element, bit 1 to the second, and so on). If the bit corresponding to
 a data element is set, the element is a two-byte compressed word; otherwise, it is a one-byte literal.
 
-2.5.1.4  Data Elements
+##### 2.5.1.4 Data Elements
 
 A data element MUST either be an uncompressed literal or a compressed word. An uncompressed
 literal is a byte of data that was not compressed and can therefore be treated as part of the
@@ -1398,7 +1333,8 @@ Xpress Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Let U be the amount of uncompressed data that has already been processed in the current chunk
+
+Let U be the amount of uncompressed data that has already been processed in the current chunk
 (either the amount that has been read when compressing data or the amount that has been written
 when decompressing data).
 
@@ -1410,11 +1346,11 @@ Then let M be the largest value in [4…12] such that 2M-1 < U, or 4 if there is
 A compressed word then has the format D = M and L = 16 – M, with the displacement occupying D
 high-order bits and the length occupying L low-order bits.
 
-2.5.2  Initialization
+#### 2.5.2 Initialization
 
  None.
 
-2.5.3  Processing Rules
+#### 2.5.3 Processing Rules
 
  Input streams are compressed in units of 4096 bytes. The process of creating a chunk is complete if
 at least 4096 bytes of data or the remainder of the input buffer is compressed. If the data remains in
@@ -1432,7 +1368,7 @@ compressed chunk that is stored in the chunk header MUST be used to determine th
 last valid byte in the chunk. The size value MUST ignore flag bits that correspond to bytes outside the
 chunk.
 
-2.5.4  Processing
+#### 2.5.4 Processing
 
  For a discussion of LZ77 processing similar to that of the LZNT1 variant, see sections 2.3 and 2.4 on
 Plain LZ77 compression and decompression.
@@ -1444,9 +1380,10 @@ Release: April 23, 2024
 
 22 / 30
 
-3  Algorithm Examples
 
-3.1  LZ77
+## 3 Algorithm Examples
+
+### 3.1 LZ77
 
 With the  Plain LZ77 variant of the algorithm, the uncompressed ASCII string
 abcdefghijklmnopqrstuvwxyz is compressed as follows, in hexadecimal.
@@ -1470,7 +1407,7 @@ In this case, using Plain LZ77, those 300 bytes are encoded as follows:
 
 This is the encoding of abc[match: distance = 3, length = 297].
 
-3.2  LZ77+Huffman
+### 3.2 LZ77+Huffman
 
 The uncompressed ASCII string abcdefghijklmnopqrstuvwxyz is compressed as a sequence of
 literals, as follows, in hexadecimal.
@@ -1505,7 +1442,8 @@ Xpress Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The LZ77+Huffman algorithm encodes it as follows:
+
+The LZ77+Huffman algorithm encodes it as follows:
 
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 30 23 00 00 00 00 00 00 00 00 00 00 00 00
@@ -1523,7 +1461,7 @@ length=297][EOF]. This example illustrates how long match lengths are encoded. I
 the compressed data, note the calculation 0x126 = 294 = 297 – 3. Because it is the minimum match
 length, 3 is subtracted from each match length before it is encoded.
 
-3.3  LZNT1
+### 3.3 LZNT1
 
 The following shows an example of LZ77 compression in which the compressed word references data
 that is not wholly contained in the uncompressed buffer at the time when the word is processed. In
@@ -1568,7 +1506,8 @@ Xpress Compression Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3 characters of uncompressed data are "F# ", which results in an uncompressed string of length 6:
+
+3 characters of uncompressed data are "F# ", which results in an uncompressed string of length 6:
 "F# F# ".
 
 Bits 4 through 6 of the flag byte are clear, so the next three bytes are literals: 0x47 ('G'), 0x20 (a
@@ -1597,9 +1536,10 @@ Release: April 23, 2024
 
 25 / 30
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 Implementers of the decompression method need to ensure that their code fails correctly on invalid
 input instead of overwriting memory locations outside the caller's output buffer. Implementers need to
@@ -1608,7 +1548,7 @@ decompression function to read or write outside the buffers it is provided. A pa
 involves guarding against integer/pointer overflow bugs when the input buffer contains long match
 lengths.
 
-4.2  Index of Security Parameters
+### 4.2 Index of Security Parameters
 
 None.
 
@@ -1619,7 +1559,8 @@ Release: April 23, 2024
 
 26 / 30
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1675,7 +1616,8 @@ Release: April 23, 2024
 
 27 / 30
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1747,7 +1689,8 @@ Release: April 23, 2024
 
 28 / 30
 
-7  Index
+
+## 7 Index
 A
 
 Abstract data model
@@ -1879,7 +1822,8 @@ Security
 
 29 / 30
 
-   parameter index 26
+
+   parameter index 26
 Standards assignments 6
 
 T

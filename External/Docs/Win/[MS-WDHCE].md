@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 20
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -153,113 +154,54 @@ Release: April 23, 2024
 
 2 / 20
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Mouse pointer position message](#222-mouse-pointer-position-message)
+    - [2.2.3 Mouse pointer shape message](#223-mouse-pointer-shape-message)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Source Details](#31-source-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Sink Details](#32-sink-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 4
-Overview .......................................................................................................... 4
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 5
-Applicability Statement ....................................................................................... 5
-Versioning and Capability Negotiation ................................................................... 5
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Message Syntax ................................................................................................. 7
-Namespaces ................................................................................................ 8
-Mouse pointer position message ..................................................................... 8
-Mouse pointer shape message ........................................................................ 8
-Directory Service Schema Elements ................................................................... 10
-
-2.2.1
-2.2.2
-2.2.3
-
-2.3
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 11
-Source Details ................................................................................................. 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Message Processing Events and Sequencing Rules .......................................... 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-Sink Details ..................................................................................................... 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Message Processing Events and Sequencing Rules .......................................... 12
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 15
-
-5  Security ................................................................................................................. 17
-Security Considerations for Implementers ........................................................... 17
-Index of Security Parameters ............................................................................ 17
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 18
-
-7  Change Tracking .................................................................................................... 19
-
-8  Index ..................................................................................................................... 20
-
-[MS-WDHCE] - v20240423
-Wi-Fi Display Protocol: Hardware Cursor Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 20
-
-1  Introduction
+## 1 Introduction
 
 This documentation specifies an extension to the Miracast v1.1 Wireless Display protocol
 [WF-DTS1.1].
@@ -267,19 +209,19 @@ This documentation specifies an extension to the Miracast v1.1 Wireless Display 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -295,11 +237,11 @@ fi.org/downloads-registered-guest/Wi-Fi_Display_Specification_v1.1.zip/29558
 
 Note There is a charge to download the specification.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 The Miracast v1.1 protocol [WF-DTS1.1] only supports a single stream from the source to the sink,
 this means that the mouse image has to be part of the desktop image that is encoded and streamed
 to the sink.  This binds the mouse cursor refresh rate and latency to that of the desktop image.
@@ -320,7 +262,8 @@ Release: April 23, 2024
 
 4 / 20
 
-This document describes the hardware capabilities that a sink would need in order to process and
+
+This document describes the hardware capabilities that a sink would need in order to process and
 display the cursor information and additional detail the protocol changes required to send this
 additional stream to the sink.
 This document assumes that the mouse cursor and position information is sent by the source and
@@ -338,14 +281,14 @@ In some configurations, it is possible that a device might not support the Micro
 extension but might support the previous standard of Intel Fast Cursor. Applicable information for
 Intel Fast Cursor is described in the appropriate sections for devices that support both extensions.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This document describes an extension to the existing Miracast v1.1 standard for Wireless Display over WiFi
 Direct [WF-DTS1.1]. The protocol communicates over RTP/RTSP as described in the Miracast standard and
 this extension adds an additional capability query and support for side channel UDP communication between a
 source and receiver device during a Miracast session.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 This extension is to be implemented by a device (either source or receiver) that implements the Miracast v1.1
 protocol [WF-DTS1.1]. This extension is only available when used in conjunction with other devices that support
 this extension, otherwise the functionality will be ignored.
@@ -361,13 +304,13 @@ With the alpha cursor color image, a 32 bits per pixel ARGB image is supplied, w
 value used to blend between the RGB values in the display image and the RGB values in the cursor
 image. The result of the blending operation is sent to the display.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 The goal for this extension is to improve the end-to-end latency of the mouse cursor when streaming over
 Miracast. This is a valuable improvement to the baseline Miracast protocol particularly in scenarios such as
 productivity or gaming where low-latency responsive user input with a mouse is a high priority. If both devices
 participating in a Miracast session support this extension, it is recommended for use 100% of the time.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 Supported Transports: This protocol is be implemented on top of TCP/UDP as specified in the Miracast v1.1
 specification [WF-DTS1.1].
 
@@ -381,7 +324,8 @@ Release: April 23, 2024
 
 5 / 20
 
-A new optional RTSP parameter 'microsoft_cursor' is used to query for hardware cursor support and
+
+A new optional RTSP parameter 'microsoft_cursor' is used to query for hardware cursor support and
 capabilities. The following is the ABNF format for the response from the sink to the microsoft_cursor
 using the GET_PARAMETER command as specified in [WF-DTS1.1] section 6.2.2.
 
@@ -430,13 +374,13 @@ location. If a sink receives a fast cursor message containing the hidden ABNF ru
 the sink does not display any locally rendered cursors. If it has been more than 100ms since a fast
 cursor message was received, a sink does not display any locally rendered cursors.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1. Vendors can define their
 own HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value,
 indicating the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -447,9 +391,10 @@ Release: April 23, 2024
 
 6 / 20
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 As defined by the Miracast v1.1 protocol [WF-DTS1.1], this extension uses RTSP, which uses TCP at the
 transport layer to maintain an end-to-end connection. The capability negotiation portion of this extension occurs
 over RTSP.
@@ -464,7 +409,7 @@ user experience, the source sends the update multiple times to ensure the sink r
 
 The source will expand all monochrome cursors into masked color cursors before sending to the sink.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Both the mouse position and shape packets use an RTP header as follows.
 
@@ -551,11 +496,12 @@ Release: April 23, 2024
 
 7 / 20
 
-2.2.1  Namespaces
+
+#### 2.2.1 Namespaces
 
 None.
 
-2.2.2  Mouse pointer position message
+#### 2.2.2 Mouse pointer position message
 
 When the graphics driver is informed of a mouse position change, it sends a message to the sink so
 that the sink can update the screen location of the mouse pointer on the wireless display. The UDP
@@ -624,7 +570,7 @@ x = 1*4DIGIT ; x coordinate of the cursor position [0..width-1]
 y = 1*4DIGIT ; y coordinate of the cursor [0..height-1]
 orientation = "0" / "90" / "180" / "270" ; degrees of display rotation
 
-2.2.3  Mouse pointer shape message
+#### 2.2.3 Mouse pointer shape message
 
 When the graphics driver is given a new mouse pointer shape, it sends one or more messages to the
 sink. Each message is a UDP packet beginning with an RTP header, as specified in section 2.2. If the
@@ -640,7 +586,8 @@ Release: April 23, 2024
 
 8 / 20
 
-Field name
+
+Field name
 
 Type
 
@@ -787,7 +734,8 @@ Release: April 23, 2024
 
 9 / 20
 
-Field name
+
+Field name
 
 Type
 
@@ -826,7 +774,7 @@ The mouse pointer shape messages also contain the current mouse pointer position
 mouse cursor position, it is updated only once per frame during the vertical blank period. The latest
 image replaces any previous image.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 None.
 
@@ -837,9 +785,10 @@ Release: April 23, 2024
 
 10 / 20
 
-3  Protocol Details
 
-3.1  Source Details
+## 3 Protocol Details
+
+### 3.1 Source Details
 
 Source sending mouse pointer position updates:
 
@@ -882,14 +831,14 @@ UDP packets. It is recommended to test with a 256x256 cursor image that compress
 64Kb in size to verify this behavior. For source implementations, it is recommended to compile the
 graphics driver to use a very small UDP packet size to test this behavior.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Mouse pointer position: The position of the mouse cursor on the source device's screen.
 
 Mouse pointer shape: The image used to visually represent the mouse pointer, which can change
 shape contextually when the user performs actions like clicking links or resizing windows.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -900,56 +849,57 @@ Release: April 23, 2024
 
 11 / 20
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 Initialization of this extension occurs during the capabilities query defined by the Miracast standard. A
 new optional RTSP parameter ‘microsoft_cursor’ is used to query for hardware cursor support and
 capabilities.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 When a user causes a mouse cursor shape change, the source’s graphics driver is informed, and MUST
 send a message to the sink communicating this shape change, as described in section 3.1.1.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 N/A. Refer to section 1.7 for capability query details.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Sink Details
+### 3.2 Sink Details
 
 The mouse pointer position and shape on the display should be update once per frame during the
 vertical blank period to avoid any tearing of the mouse image.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Mouse pointer position: The position of the mouse cursor on the source device's screen.
 
 Mouse pointer shape: The image used to visually represent the mouse pointer, which can change
 shape contextually when the user performs actions like clicking links or resizing windows.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization of this extension occurs during the capabilities query defined by the Miracast standard. A
 new optional RTSP parameter ‘microsoft_cursor’ is used to query for hardware cursor support and
 capabilities.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 It is unnecessary for the sink to display the mouse pointer for every individual shape or position
 message received—just the most recent one. For example, if during one frame the sink receives 10
@@ -961,7 +911,8 @@ Release: April 23, 2024
 
 12 / 20
 
-position updates and 5 shape changes, then the mouse pointer position and shape for the next frame
+
+position updates and 5 shape changes, then the mouse pointer position and shape for the next frame
 should be the most recent position and shape that the sink received.
 
 For example:
@@ -1087,11 +1038,11 @@ Receive new mouse position Pos10
 
 VSync of TV/monitor
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 Sources can support multiple cursor types, though the source MUST convert the cursor image and
 PNG compress it before sending it to the sink. The table below illustrates how the source converts the
@@ -1130,7 +1081,8 @@ Wi-Fi Display Protocol: Hardware Cursor Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Source cursor type
+
+Source cursor type
 
 Sink that supports XOR
 
@@ -1155,7 +1107,8 @@ Release: April 23, 2024
 
 14 / 20
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 On initial connection, a source that has implemented the hardware cursor extension queries the
 capabilities of the sink through the M3 message defined in the Miracast protocol [WF-DTS1.1]. The
@@ -1246,7 +1199,8 @@ Release: April 23, 2024
 
 15 / 20
 
-Message parameter
+
+Message parameter
 
 Value
 
@@ -1343,13 +1297,14 @@ Release: April 23, 2024
 
 16 / 20
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1360,7 +1315,8 @@ Release: April 23, 2024
 
 17 / 20
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1396,7 +1352,8 @@ Release: April 23, 2024
 
 18 / 20
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1440,7 +1397,8 @@ Release: April 23, 2024
 
 19 / 20
 
-References 4
+
+References 4
    informative 4
    normative 4
 Relationship to other protocols 5
@@ -1463,7 +1421,7 @@ V
 Vendor-extensible fields 6
 Versioning 5
 
-8  Index
+## 8 Index
 A
 
 Applicability 5

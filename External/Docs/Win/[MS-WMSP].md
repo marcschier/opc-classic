@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 157
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 157
 
-Date
+
+Date
 
 Revision
 History
@@ -544,7 +546,8 @@ Release: April 23, 2024
 
 3 / 157
 
-Date
+
+Date
 
 Revision
 History
@@ -585,548 +588,237 @@ Release: April 23, 2024
 
 4 / 157
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-2.2.1.1.4
-2.2.1.1.5
-2.2.1.1.6
-2.2.1.1.7
-2.2.1.1.8
-2.2.1.1.9
-2.2.1.1.10
-2.2.1.1.11
-2.2.1.1.12
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-HTTP Header Fields ..................................................................................... 15
-Cache-Control ...................................................................................... 16
-max-age ........................................................................................ 16
-must-revalidate ............................................................................... 16
-no-store ......................................................................................... 16
-private ........................................................................................... 16
-proxy-revalidate .............................................................................. 16
-public ............................................................................................. 17
-proxy-public ................................................................................... 17
-user-public ..................................................................................... 17
-x-wms-content-size ......................................................................... 17
-x-wms-event-subscription ................................................................ 17
-x-wms-proxy-split ........................................................................... 17
-x-wms-stream-type ......................................................................... 17
-Content-Type ....................................................................................... 18
-application/octet-stream .................................................................. 18
-application/vnd.ms.wms-hdr.asfv1 .................................................... 18
-application/x-mms-framed ............................................................... 18
-application/x-wms-getcontentinfo ...................................................... 18
-application/x-wms-LogStats .............................................................. 18
-application/x-wms-sendevent ........................................................... 18
-text/plain ....................................................................................... 19
-Cookie ................................................................................................. 19
-Pragma ................................................................................................ 19
-AccelBW ......................................................................................... 19
-AccelDuration ................................................................................. 20
-BurstBW ......................................................................................... 20
-BurstDuration ................................................................................. 21
-client-id.......................................................................................... 21
-client-lag ........................................................................................ 21
-expect-new-header .......................................................................... 22
-features ......................................................................................... 22
-broadcast.................................................................................. 23
-last .......................................................................................... 23
-live .......................................................................................... 23
-playlist ..................................................................................... 23
-seekable ................................................................................... 23
-skipbackward ............................................................................ 23
-skipforward ............................................................................... 23
-
-2.2.1.4.8.1
-2.2.1.4.8.2
-2.2.1.4.8.3
-2.2.1.4.8.4
-2.2.1.4.8.5
-2.2.1.4.8.6
-2.2.1.4.8.7
-
-2.2.1.4.1
-2.2.1.4.2
-2.2.1.4.3
-2.2.1.4.4
-2.2.1.4.5
-2.2.1.4.6
-2.2.1.4.7
-2.2.1.4.8
-
-2.2.1.2.1
-2.2.1.2.2
-2.2.1.2.3
-2.2.1.2.4
-2.2.1.2.5
-2.2.1.2.6
-2.2.1.2.7
-
-2.2.1.3
-2.2.1.4
-
-[MS-WMSP] - v20240423
-Windows Media HTTP Streaming Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 157
-
-2.2.1.4.8.8
-
-stridable ................................................................................... 23
-2.2.1.4.9
-LinkBW .......................................................................................... 23
-log-line .......................................................................................... 24
-2.2.1.4.10
-2.2.1.4.11  max-duration .................................................................................. 24
-no-cache ........................................................................................ 25
-2.2.1.4.12
-packet-num .................................................................................... 25
-2.2.1.4.13
-packet-pair-experiment .................................................................... 25
-2.2.1.4.14
-pipeline-experiment ......................................................................... 25
-2.2.1.4.15
-pipeline-request .............................................................................. 26
-2.2.1.4.16
-pipeline-result ................................................................................. 26
-2.2.1.4.17
-playlist-gen-id ................................................................................. 26
-2.2.1.4.18
-playlist-seek-id ............................................................................... 27
-2.2.1.4.19
-pl-offset ......................................................................................... 27
-2.2.1.4.20
-proxy-client-agent ........................................................................... 28
-2.2.1.4.21
-rate ............................................................................................... 28
-2.2.1.4.22
-request-context ............................................................................... 28
-2.2.1.4.23
-speed............................................................................................. 29
-2.2.1.4.24
-stream-offset .................................................................................. 29
-2.2.1.4.25
-stream-switch-count ........................................................................ 30
-2.2.1.4.26
-stream-switch-entry ........................................................................ 30
-2.2.1.4.27
-stream-time.................................................................................... 31
-2.2.1.4.28
-timeout .......................................................................................... 31
-2.2.1.4.29
-version11-enabled ........................................................................... 32
-2.2.1.4.30
-version-info .................................................................................... 32
-2.2.1.4.31
-version-url ...................................................................................... 32
-2.2.1.4.32
-xClientGUID .................................................................................... 33
-2.2.1.4.33
-xKeepAliveInPause .......................................................................... 33
-2.2.1.4.34
-xPlayNextEntry ............................................................................... 33
-2.2.1.4.35
-xPlayStrm ...................................................................................... 34
-2.2.1.4.36
-xResetStrm .................................................................................... 34
-2.2.1.4.37
-xStopStrm ...................................................................................... 34
-2.2.1.4.38
-Server ................................................................................................. 35
-Set-Cookie ........................................................................................... 35
-Supported ............................................................................................ 36
-com.microsoft.wm.fastcache ............................................................. 36
-com.microsoft.wm.predstrm ............................................................. 36
-com.microsoft.wm.srvppair ............................................................... 36
-com.microsoft.wm.sswitch ................................................................ 36
-com.microsoft.wm.startupprofile ....................................................... 37
-User-Agent ........................................................................................... 37
-X-Accept-Authentication ........................................................................ 38
-X-Accept-Proxy-Authentication ............................................................... 38
-X-Proxy-Client-Verb .............................................................................. 38
-X-StartupProfile .................................................................................... 39
-2.2.1.12.1
-Rate .............................................................................................. 39
-2.2.1.12.2  MaxBytes ....................................................................................... 40
-Time .............................................................................................. 40
-2.2.1.12.3
-2.2.1.12.4
-StartTime ....................................................................................... 40
-LastTime ........................................................................................ 41
-2.2.1.12.5
-2.2.1.12.6  MaxDiffTime ................................................................................... 41
-2.2.1.12.7  MaxDiffSndTime .............................................................................. 41
-ByteRate ........................................................................................ 41
-2.2.1.12.8
-Request Types............................................................................................ 42
-Describe (Request and Response) ........................................................... 42
-GetContentInfo (Request and Response) .................................................. 44
-KeepAlive Request (Request and Response) ............................................. 46
-Non-Pipelined Mode ......................................................................... 47
-Pipelined Mode ................................................................................ 48
-
-2.2.1.7.1
-2.2.1.7.2
-2.2.1.7.3
-2.2.1.7.4
-2.2.1.7.5
-
-2.2.2.3.1
-2.2.2.3.2
-
-2.2.1.5
-2.2.1.6
-2.2.1.7
-
-2.2.1.8
-2.2.1.9
-2.2.1.10
-2.2.1.11
-2.2.1.12
-
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-[MS-WMSP] - v20240423
-Windows Media HTTP Streaming Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 157
-
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-
-2.2.3
-
-2.2.3.1
-
-2.2.3.1.1
-2.2.3.1.2
-
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-
-2.2.4
-
-2.2.5
-
-2.2.4.1
-
-Log (Request and Response) .................................................................. 49
-Pipeline (Request and Response) ............................................................ 51
-Play (Request and Response) ................................................................. 53
-PlayNextEntry (Request and Response) ................................................... 56
-SelectStream (Request and Response) .................................................... 59
-SendEvent (Request and Response) ........................................................ 61
-Stop (Request and Response) ................................................................. 63
-Packet Types .............................................................................................. 65
-Common Definitions .............................................................................. 65
-Framing Header .............................................................................. 65
-MMS Data Packet ............................................................................ 66
-$C (Stream Change Notification) Packet .................................................. 67
-$D (Data) Packet .................................................................................. 67
-$E (End-of-Stream Notification) Packet .................................................... 68
-$H (Header) Packet ............................................................................... 69
-$M (Metadata) Packet ............................................................................ 69
-$P (Packet-Pair) Packet ......................................................................... 70
-$T (Test Data Notification) Packet ........................................................... 70
-Content Description List Format .................................................................... 71
-CDL Value Types ................................................................................... 72
-Remote Event Format ................................................................................. 72
-
-3.1
-
-3.1.5
-
-3.1.4.3
-
-3.1.4.3.1
-
-3.1.4.2.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-
-3  Protocol Details ..................................................................................................... 74
-Client Details ................................................................................................... 74
-Abstract Data Model .................................................................................... 74
-Timers ...................................................................................................... 75
-Initialization ............................................................................................... 75
-Higher-Layer Triggered Events ..................................................................... 76
-Request to Retrieve Caching Information ................................................. 76
-Request to Retrieve Content Information ................................................. 77
-Sending the Describe Request ........................................................... 77
-Request to Start Streaming Content ........................................................ 77
-Sending a Play Request .................................................................... 78
-Request to Change the Currently Selected Streams ................................... 79
-Selection of Streams to Play from the New Playlist .................................... 80
-Request to Stop Streaming .................................................................... 81
-Request to Change the Playback Position ................................................. 82
-Playback of Content Has Finished ............................................................ 82
-Processing Events and Sequencing Rules ....................................................... 82
-Sending a Request (All Request Types) .................................................... 82
-Waiting for a Packet or a Response ......................................................... 84
-Receiving a Response (All Request Types) ................................................ 85
-Receiving a GetContentInfo Response ...................................................... 86
-Receiving a Describe Response ............................................................... 86
-Receiving a $P (Packet-Pair) Packet......................................................... 87
-Receiving a $M (Metadata) Packet ........................................................... 88
-Receiving a $H (Header) Packet .............................................................. 88
-Receiving a Pipeline Response ................................................................ 88
-Receiving a $T (Test Data Notification) Packet .......................................... 89
-Receiving a Play Response ..................................................................... 89
-Receiving a $D (Data) Packet ................................................................. 89
-Receiving a $E (End-of-Stream Notification) Packet ................................... 89
-Receiving a $C (Stream Change Notification) Packet.................................. 90
-Receiving a Log Response ...................................................................... 91
-Receiving a KeepAlive Response ............................................................. 91
-Receiving a SelectStream Response ........................................................ 91
-Receiving a PlayNextEntry Response ....................................................... 91
-Receiving a Stop Response ..................................................................... 91
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-3.1.5.10
-3.1.5.11
-3.1.5.12
-3.1.5.13
-3.1.5.14
-3.1.5.15
-3.1.5.16
-3.1.5.17
-3.1.5.18
-3.1.5.19
-
-[MS-WMSP] - v20240423
-Windows Media HTTP Streaming Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 157
-
-3.2
-
-3.1.6
-
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.1.6.1
-
-3.1.5.20
-
-3.2.4.1
-3.2.4.2
-
-Receiving a SendEvent Response ............................................................ 91
-Timer Events .............................................................................................. 92
-KeepAlive Timer Expires ........................................................................ 92
-Other Local Events ...................................................................................... 92
-Server Details .................................................................................................. 92
-Abstract Data Model .................................................................................... 92
-Timers ...................................................................................................... 94
-Initialization ............................................................................................... 94
-Higher-Layer Triggered Events ..................................................................... 94
-Notification That the Last $D Packet Has Been Sent................................... 94
-Notification That a New ASF Header Is Available ....................................... 95
-Processing Events and Sequencing Rules ....................................................... 96
-Receiving a Request (All Request Types) .................................................. 96
-Sending a Response (All Request Types) .................................................. 97
-Receiving a GetContentInfo Request ........................................................ 98
-Receiving a Describe Request ................................................................. 99
-Receiving a Pipeline Request ................................................................. 101
-Receiving a Play Request ...................................................................... 101
-Receiving a SelectStream Request ......................................................... 104
-KeepAlive Request (Request and Response) ............................................ 105
-Receiving a PlayNextEntry Request ........................................................ 105
-Receiving a Stop Request ...................................................................... 106
-Receiving a Log Request ....................................................................... 106
-Receiving a SendEvent Request ............................................................. 106
-Timer Events ............................................................................................. 107
-Pipeline-Test Timer Expires ................................................................... 107
-Idle-Timeout Timer Expires ................................................................... 107
-Other Local Events ..................................................................................... 107
-TCP Connection Is Closed by the Client ................................................... 107
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-3.2.5.10
-3.2.5.11
-3.2.5.12
-
-3.2.6.1
-3.2.6.2
-
-3.2.7.1
-
-3.2.6
-
-3.2.7
-
-4.5.1
-4.5.2
-
-4.1
-4.2
-4.3
-4.4
-4.5
-
-4  Protocol Examples ............................................................................................... 108
-Server States in Non-Pipelined Mode ................................................................. 108
-Server States in Pipelined Mode ........................................................................ 109
-Packet-Pair Bandwidth Estimation ..................................................................... 111
-Playlist Streaming ........................................................................................... 113
-Server-Side Playlist Streaming .......................................................................... 114
-Seeking and Skipping in Server-Side Playlists ............................................... 116
-Server-Side Playlist Streaming with Predictive Stream Selection ...................... 120
-Single File Streaming ....................................................................................... 122
-4.6
-Streaming and Stopping Playback by Using Non-Pipelined Mode............................ 123
-4.7
-Streaming and Stopping Playback by Using Pipelined Mode .................................. 125
-4.8
-Streaming, Stopping, and Striding Playback ....................................................... 127
-4.9
-4.10
-Stream Selection............................................................................................. 129
-4.11  Windows Media Encoder to Windows Media Server Pull Distribution ....................... 130
-4.12  Windows Media Services HTTP Proxy Server Interaction ....................................... 133
-Sequencing ............................................................................................... 136
-4.12.1.1  On-Demand Content Delivery ................................................................ 136
-Broadcast Content Delivery ................................................................... 137
-4.12.1.2
-Cache/Proxy Server and Origin Server Communication ............................. 139
-4.12.1.3
-Packet Processing During Initialization ............................................................... 140
-Parsing $M and $H Packets ......................................................................... 141
-Packet Processing During Streaming .................................................................. 142
-
-4.13.1
-
-4.12.1
-
-4.13
-
-4.14
-
-5  Security ............................................................................................................... 144
-Security Considerations for Implementers .......................................................... 144
-Index of Security Parameters ........................................................................... 144
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 145
-
-7  Change Tracking .................................................................................................. 153
-
-8 / 157
-
-[MS-WMSP] - v20240423
-Windows Media HTTP Streaming Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8  Index ................................................................................................................... 154
-
-[MS-WMSP] - v20240423
-Windows Media HTTP Streaming Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 157
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 HTTP Header Fields](#221-http-header-fields)
+      - [2.2.1.1 Cache-Control](#2211-cache-control)
+        - [2.2.1.1.1 max-age](#22111-max-age)
+        - [2.2.1.1.2 must-revalidate](#22112-must-revalidate)
+        - [2.2.1.1.3 no-store](#22113-no-store)
+        - [2.2.1.1.4 private](#22114-private)
+        - [2.2.1.1.5 proxy-revalidate](#22115-proxy-revalidate)
+        - [2.2.1.1.6 public](#22116-public)
+        - [2.2.1.1.7 proxy-public](#22117-proxy-public)
+        - [2.2.1.1.8 user-public](#22118-user-public)
+        - [2.2.1.1.9 x-wms-content-size](#22119-x-wms-content-size)
+        - [2.2.1.1.10 x-wms-event-subscription](#221110-x-wms-event-subscription)
+        - [2.2.1.1.11 x-wms-proxy-split](#221111-x-wms-proxy-split)
+        - [2.2.1.1.12 x-wms-stream-type](#221112-x-wms-stream-type)
+      - [2.2.1.2 Content-Type](#2212-content-type)
+        - [2.2.1.2.1 application/octet-stream](#22121-applicationoctet-stream)
+        - [2.2.1.2.2 application/vnd.ms.wms-hdr.asfv1](#22122-applicationvndmswms-hdrasfv1)
+        - [2.2.1.2.3 application/x-mms-framed](#22123-applicationx-mms-framed)
+        - [2.2.1.2.4 application/x-wms-getcontentinfo](#22124-applicationx-wms-getcontentinfo)
+        - [2.2.1.2.5 application/x-wms-LogStats](#22125-applicationx-wms-logstats)
+        - [2.2.1.2.6 application/x-wms-sendevent](#22126-applicationx-wms-sendevent)
+        - [2.2.1.2.7 text/plain](#22127-textplain)
+      - [2.2.1.3 Cookie](#2213-cookie)
+      - [2.2.1.4 Pragma](#2214-pragma)
+        - [2.2.1.4.1 AccelBW](#22141-accelbw)
+        - [2.2.1.4.2 AccelDuration](#22142-accelduration)
+        - [2.2.1.4.3 BurstBW](#22143-burstbw)
+        - [2.2.1.4.4 BurstDuration](#22144-burstduration)
+        - [2.2.1.4.5 client-id](#22145-client-id)
+        - [2.2.1.4.6 client-lag](#22146-client-lag)
+        - [2.2.1.4.7 expect-new-header](#22147-expect-new-header)
+        - [2.2.1.4.8 features](#22148-features)
+          - [2.2.1.4.8.1 broadcast](#221481-broadcast)
+          - [2.2.1.4.8.2 last](#221482-last)
+          - [2.2.1.4.8.3 live](#221483-live)
+          - [2.2.1.4.8.4 playlist](#221484-playlist)
+          - [2.2.1.4.8.5 seekable](#221485-seekable)
+          - [2.2.1.4.8.6 skipbackward](#221486-skipbackward)
+          - [2.2.1.4.8.7 skipforward](#221487-skipforward)
+          - [2.2.1.4.8.8 stridable](#221488-stridable)
+        - [2.2.1.4.9 LinkBW](#22149-linkbw)
+        - [2.2.1.4.10 log-line](#221410-log-line)
+        - [2.2.1.4.11 max-duration](#221411-max-duration)
+        - [2.2.1.4.12 no-cache](#221412-no-cache)
+        - [2.2.1.4.13 packet-num](#221413-packet-num)
+        - [2.2.1.4.14 packet-pair-experiment](#221414-packet-pair-experiment)
+        - [2.2.1.4.15 pipeline-experiment](#221415-pipeline-experiment)
+        - [2.2.1.4.16 pipeline-request](#221416-pipeline-request)
+        - [2.2.1.4.17 pipeline-result](#221417-pipeline-result)
+        - [2.2.1.4.18 playlist-gen-id](#221418-playlist-gen-id)
+        - [2.2.1.4.19 playlist-seek-id](#221419-playlist-seek-id)
+        - [2.2.1.4.20 pl-offset](#221420-pl-offset)
+        - [2.2.1.4.21 proxy-client-agent](#221421-proxy-client-agent)
+        - [2.2.1.4.22 rate](#221422-rate)
+        - [2.2.1.4.23 request-context](#221423-request-context)
+        - [2.2.1.4.24 speed](#221424-speed)
+        - [2.2.1.4.25 stream-offset](#221425-stream-offset)
+        - [2.2.1.4.26 stream-switch-count](#221426-stream-switch-count)
+        - [2.2.1.4.27 stream-switch-entry](#221427-stream-switch-entry)
+        - [2.2.1.4.28 stream-time](#221428-stream-time)
+        - [2.2.1.4.29 timeout](#221429-timeout)
+        - [2.2.1.4.30 version11-enabled](#221430-version11-enabled)
+        - [2.2.1.4.31 version-info](#221431-version-info)
+        - [2.2.1.4.32 version-url](#221432-version-url)
+        - [2.2.1.4.33 xClientGUID](#221433-xclientguid)
+        - [2.2.1.4.34 xKeepAliveInPause](#221434-xkeepaliveinpause)
+        - [2.2.1.4.35 xPlayNextEntry](#221435-xplaynextentry)
+        - [2.2.1.4.36 xPlayStrm](#221436-xplaystrm)
+        - [2.2.1.4.37 xResetStrm](#221437-xresetstrm)
+        - [2.2.1.4.38 xStopStrm](#221438-xstopstrm)
+      - [2.2.1.5 Server](#2215-server)
+      - [2.2.1.6 Set-Cookie](#2216-set-cookie)
+      - [2.2.1.7 Supported](#2217-supported)
+        - [2.2.1.7.1 com.microsoft.wm.fastcache](#22171-commicrosoftwmfastcache)
+        - [2.2.1.7.2 com.microsoft.wm.predstrm](#22172-commicrosoftwmpredstrm)
+        - [2.2.1.7.3 com.microsoft.wm.srvppair](#22173-commicrosoftwmsrvppair)
+        - [2.2.1.7.4 com.microsoft.wm.sswitch](#22174-commicrosoftwmsswitch)
+        - [2.2.1.7.5 com.microsoft.wm.startupprofile](#22175-commicrosoftwmstartupprofile)
+      - [2.2.1.8 User-Agent](#2218-user-agent)
+      - [2.2.1.9 X-Accept-Authentication](#2219-x-accept-authentication)
+      - [2.2.1.10 X-Accept-Proxy-Authentication](#22110-x-accept-proxy-authentication)
+      - [2.2.1.11 X-Proxy-Client-Verb](#22111-x-proxy-client-verb)
+      - [2.2.1.12 X-StartupProfile](#22112-x-startupprofile)
+        - [2.2.1.12.1 Rate](#221121-rate)
+        - [2.2.1.12.2 MaxBytes](#221122-maxbytes)
+        - [2.2.1.12.3 Time](#221123-time)
+        - [2.2.1.12.4 StartTime](#221124-starttime)
+        - [2.2.1.12.5 LastTime](#221125-lasttime)
+        - [2.2.1.12.6 MaxDiffTime](#221126-maxdifftime)
+        - [2.2.1.12.7 MaxDiffSndTime](#221127-maxdiffsndtime)
+        - [2.2.1.12.8 ByteRate](#221128-byterate)
+    - [2.2.2 Request Types](#222-request-types)
+      - [2.2.2.1 Describe (Request and Response)](#2221-describe-request-and-response)
+      - [2.2.2.2 GetContentInfo (Request and Response)](#2222-getcontentinfo-request-and-response)
+      - [2.2.2.3 KeepAlive Request (Request and Response)](#2223-keepalive-request-request-and-response)
+        - [2.2.2.3.1 Non-Pipelined Mode](#22231-non-pipelined-mode)
+        - [2.2.2.3.2 Pipelined Mode](#22232-pipelined-mode)
+      - [2.2.2.4 Log (Request and Response)](#2224-log-request-and-response)
+      - [2.2.2.5 Pipeline (Request and Response)](#2225-pipeline-request-and-response)
+      - [2.2.2.6 Play (Request and Response)](#2226-play-request-and-response)
+      - [2.2.2.7 PlayNextEntry (Request and Response)](#2227-playnextentry-request-and-response)
+      - [2.2.2.8 SelectStream (Request and Response)](#2228-selectstream-request-and-response)
+      - [2.2.2.9 SendEvent (Request and Response)](#2229-sendevent-request-and-response)
+      - [2.2.2.10 Stop (Request and Response)](#22210-stop-request-and-response)
+    - [2.2.3 Packet Types](#223-packet-types)
+      - [2.2.3.1 Common Definitions](#2231-common-definitions)
+        - [2.2.3.1.1 Framing Header](#22311-framing-header)
+        - [2.2.3.1.2 MMS Data Packet](#22312-mms-data-packet)
+      - [2.2.3.2 $C (Stream Change Notification) Packet](#2232-c-stream-change-notification-packet)
+      - [2.2.3.3 $D (Data) Packet](#2233-d-data-packet)
+      - [2.2.3.4 $E (End-of-Stream Notification) Packet](#2234-e-end-of-stream-notification-packet)
+      - [2.2.3.5 $H (Header) Packet](#2235-h-header-packet)
+      - [2.2.3.6 $M (Metadata) Packet](#2236-m-metadata-packet)
+      - [2.2.3.7 $P (Packet-Pair) Packet](#2237-p-packet-pair-packet)
+      - [2.2.3.8 $T (Test Data Notification) Packet](#2238-t-test-data-notification-packet)
+    - [2.2.4 Content Description List Format](#224-content-description-list-format)
+      - [2.2.4.1 CDL Value Types](#2241-cdl-value-types)
+    - [2.2.5 Remote Event Format](#225-remote-event-format)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Request to Retrieve Caching Information](#3141-request-to-retrieve-caching-information)
+      - [3.1.4.2 Request to Retrieve Content Information](#3142-request-to-retrieve-content-information)
+        - [3.1.4.2.1 Sending the Describe Request](#31421-sending-the-describe-request)
+      - [3.1.4.3 Request to Start Streaming Content](#3143-request-to-start-streaming-content)
+        - [3.1.4.3.1 Sending a Play Request](#31431-sending-a-play-request)
+      - [3.1.4.4 Request to Change the Currently Selected Streams](#3144-request-to-change-the-currently-selected-streams)
+      - [3.1.4.5 Selection of Streams to Play from the New Playlist](#3145-selection-of-streams-to-play-from-the-new-playlist)
+      - [3.1.4.6 Request to Stop Streaming](#3146-request-to-stop-streaming)
+      - [3.1.4.7 Request to Change the Playback Position](#3147-request-to-change-the-playback-position)
+      - [3.1.4.8 Playback of Content Has Finished](#3148-playback-of-content-has-finished)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending a Request (All Request Types)](#3151-sending-a-request-all-request-types)
+      - [3.1.5.2 Waiting for a Packet or a Response](#3152-waiting-for-a-packet-or-a-response)
+      - [3.1.5.3 Receiving a Response (All Request Types)](#3153-receiving-a-response-all-request-types)
+      - [3.1.5.4 Receiving a GetContentInfo Response](#3154-receiving-a-getcontentinfo-response)
+      - [3.1.5.5 Receiving a Describe Response](#3155-receiving-a-describe-response)
+      - [3.1.5.6 Receiving a $P (Packet-Pair) Packet](#3156-receiving-a-p-packet-pair-packet)
+      - [3.1.5.7 Receiving a $M (Metadata) Packet](#3157-receiving-a-m-metadata-packet)
+      - [3.1.5.8 Receiving a $H (Header) Packet](#3158-receiving-a-h-header-packet)
+      - [3.1.5.9 Receiving a Pipeline Response](#3159-receiving-a-pipeline-response)
+      - [3.1.5.10 Receiving a $T (Test Data Notification) Packet](#31510-receiving-a-t-test-data-notification-packet)
+      - [3.1.5.11 Receiving a Play Response](#31511-receiving-a-play-response)
+      - [3.1.5.12 Receiving a $D (Data) Packet](#31512-receiving-a-d-data-packet)
+      - [3.1.5.13 Receiving a $E (End-of-Stream Notification) Packet](#31513-receiving-a-e-end-of-stream-notification-packet)
+      - [3.1.5.14 Receiving a $C (Stream Change Notification) Packet](#31514-receiving-a-c-stream-change-notification-packet)
+      - [3.1.5.15 Receiving a Log Response](#31515-receiving-a-log-response)
+      - [3.1.5.16 Receiving a KeepAlive Response](#31516-receiving-a-keepalive-response)
+      - [3.1.5.17 Receiving a SelectStream Response](#31517-receiving-a-selectstream-response)
+      - [3.1.5.18 Receiving a PlayNextEntry Response](#31518-receiving-a-playnextentry-response)
+      - [3.1.5.19 Receiving a Stop Response](#31519-receiving-a-stop-response)
+      - [3.1.5.20 Receiving a SendEvent Response](#31520-receiving-a-sendevent-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 KeepAlive Timer Expires](#3161-keepalive-timer-expires)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Notification That the Last $D Packet Has Been Sent](#3241-notification-that-the-last-d-packet-has-been-sent)
+      - [3.2.4.2 Notification That a New ASF Header Is Available](#3242-notification-that-a-new-asf-header-is-available)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Request (All Request Types)](#3251-receiving-a-request-all-request-types)
+      - [3.2.5.2 Sending a Response (All Request Types)](#3252-sending-a-response-all-request-types)
+      - [3.2.5.3 Receiving a GetContentInfo Request](#3253-receiving-a-getcontentinfo-request)
+      - [3.2.5.4 Receiving a Describe Request](#3254-receiving-a-describe-request)
+      - [3.2.5.5 Receiving a Pipeline Request](#3255-receiving-a-pipeline-request)
+      - [3.2.5.6 Receiving a Play Request](#3256-receiving-a-play-request)
+      - [3.2.5.7 Receiving a SelectStream Request](#3257-receiving-a-selectstream-request)
+      - [3.2.5.8 KeepAlive Request (Request and Response)](#3258-keepalive-request-request-and-response)
+      - [3.2.5.9 Receiving a PlayNextEntry Request](#3259-receiving-a-playnextentry-request)
+      - [3.2.5.10 Receiving a Stop Request](#32510-receiving-a-stop-request)
+      - [3.2.5.11 Receiving a Log Request](#32511-receiving-a-log-request)
+      - [3.2.5.12 Receiving a SendEvent Request](#32512-receiving-a-sendevent-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Pipeline-Test Timer Expires](#3261-pipeline-test-timer-expires)
+      - [3.2.6.2 Idle-Timeout Timer Expires](#3262-idle-timeout-timer-expires)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 TCP Connection Is Closed by the Client](#3271-tcp-connection-is-closed-by-the-client)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Server States in Non-Pipelined Mode](#41-server-states-in-non-pipelined-mode)
+  - [4.2 Server States in Pipelined Mode](#42-server-states-in-pipelined-mode)
+  - [4.3 Packet-Pair Bandwidth Estimation](#43-packet-pair-bandwidth-estimation)
+  - [4.4 Playlist Streaming](#44-playlist-streaming)
+  - [4.5 Server-Side Playlist Streaming](#45-server-side-playlist-streaming)
+    - [4.5.1 Seeking and Skipping in Server-Side Playlists](#451-seeking-and-skipping-in-server-side-playlists)
+    - [4.5.2 Server-Side Playlist Streaming with Predictive Stream Selection](#452-server-side-playlist-streaming-with-predictive-stream-selection)
+  - [4.6 Single File Streaming](#46-single-file-streaming)
+  - [4.7 Streaming and Stopping Playback by Using Non-Pipelined Mode](#47-streaming-and-stopping-playback-by-using-non-pipelined-mode)
+  - [4.8 Streaming and Stopping Playback by Using Pipelined Mode](#48-streaming-and-stopping-playback-by-using-pipelined-mode)
+  - [4.9 Streaming, Stopping, and Striding Playback](#49-streaming-stopping-and-striding-playback)
+  - [4.10 Stream Selection](#410-stream-selection)
+  - [4.11 Windows Media Encoder to Windows Media Server Pull Distribution](#411-windows-media-encoder-to-windows-media-server-pull-distribution)
+  - [4.12 Windows Media Services HTTP Proxy Server Interaction](#412-windows-media-services-http-proxy-server-interaction)
+    - [4.12.1 Sequencing](#4121-sequencing)
+      - [4.12.1.1 On-Demand Content Delivery](#41211-on-demand-content-delivery)
+      - [4.12.1.2 Broadcast Content Delivery](#41212-broadcast-content-delivery)
+      - [4.12.1.3 Cache/Proxy Server and Origin Server Communication](#41213-cacheproxy-server-and-origin-server-communication)
+  - [4.13 Packet Processing During Initialization](#413-packet-processing-during-initialization)
+    - [4.13.1 Parsing $M and $H Packets](#4131-parsing-m-and-h-packets)
+  - [4.14 Packet Processing During Streaming](#414-packet-processing-during-streaming)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document specifies the Windows Media HTTP Streaming Protocol. This protocol is a client/server–
 based protocol used to stream real-time data between a client (the receiver of streaming data) and
@@ -1154,7 +846,7 @@ processing rules in section 3.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1203,7 +895,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-session: The state maintained by the server when it is streaming content to a client. If a server-
+
+session: The state maintained by the server when it is streaming content to a client. If a server-
 
 side playlist is used, the same session is used for all content in the playlist.
 
@@ -1221,14 +914,14 @@ into the data section of the file for each.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1271,7 +964,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC2109] Kristol, D., and Montulli, L., "HTTP State Management Mechanism", RFC 2109, February
+
+[RFC2109] Kristol, D., and Montulli, L., "HTTP State Management Mechanism", RFC 2109, February
 1997, https://www.rfc-editor.org/info/rfc2109
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
@@ -1295,7 +989,7 @@ November 2003, https://www.rfc-editor.org/info/rfc3629
 [RFC4559] Jaganathan, K., Zhu, L., and Brezak, J., "SPNEGO-based Kerberos and NTLM HTTP
 Authentication in Microsoft Windows", RFC 4559, June 2006, https://www.rfc-editor.org/info/rfc4559
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-MMSP] Microsoft Corporation, "Microsoft Media Server (MMS) Protocol".
 
@@ -1307,7 +1001,7 @@ us/library/ms910265.aspx
 [WMSSDK] Microsoft Corporation, "Windows Media Services 9.0 Series SDK",
 http://msdn.microsoft.com/en-us/library/ms738748.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows Media HTTP Streaming Protocol is used for transferring real-time multimedia data (that
 is, audio and video). It is a streaming protocol, which means that the protocol attempts to facilitate
@@ -1336,7 +1030,8 @@ Release: April 23, 2024
 
 12 / 157
 
-It is the session state that allows a server to relate an HTTP request containing feedback information
+
+It is the session state that allows a server to relate an HTTP request containing feedback information
 to an HTTP request used for the transfer of the multimedia data.
 
 In its most common mode of operation, feedback from the client is sent to the server by using HTTP
@@ -1348,7 +1043,7 @@ In another mode of operation, feedback from the client can be sent to the server
 requests on the same TCP connection that the server uses for transferring multimedia data to the
 client. This transfer is referred to as the pipelined mode of operation.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Windows Media HTTP Streaming Protocol depends on HTTP 1.0, as specified in [RFC1945]. The
 pipelined mode of the protocol can only be used if the client, the server, and any intermediate HTTP
@@ -1364,13 +1059,13 @@ Implementations of the client role of the protocol are able to share cookies wit
 the client role of the Real-Time Streaming Protocol (RTSP) Windows Media Extensions [MS-RTSP] that
 are running on the same machine.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
  The Windows Media HTTP Streaming Protocol does not provide a mechanism for a client to discover
 the URL to the server. Thus, it is a prerequisite that the client obtain a URL to the server before this
 protocol can be used.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Windows Media HTTP Streaming Protocol is suitable for streaming delivery of real-time
 multimedia data. The term streaming means that the data is transmitted at some fixed rate or at
@@ -1400,14 +1095,15 @@ Release: April 23, 2024
 
 13 / 157
 
-If some or all of the preceding applies but the multimedia data is to be transferred over UDP, it might
+
+If some or all of the preceding applies but the multimedia data is to be transferred over UDP, it might
 be more appropriate to implement the Real-Time Streaming Protocol Extensions, as specified in [MS-
 RTSP].
 
 If none of the preceding applies, it might be more appropriate to use HTTP 1.0, as specified in
 [RFC1945], to download the data, instead of implementing this protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -1448,13 +1144,13 @@ respectively.
 For an example of how this versioning mechanism works and how it affects which protocol messages
 are sent, see the description of the $M (Metadata) packet (section 2.2.3.6).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Windows Media HTTP Streaming Protocol uses HRESULTs as specified in [MS-ERREF]. Vendors are
 free to choose their own values as long as the C bit (0x20000000) is set, indicating that it is a
 customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  None.
 
@@ -1465,9 +1161,10 @@ Release: April 23, 2024
 
 14 / 157
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Windows Media HTTP Streaming Protocol uses HTTP 1.0, as specified in [RFC1945], or HTTP 1.1,
 as specified in [RFC2616], as the transport layer.
@@ -1481,7 +1178,7 @@ Authentication (section 2.2.1.9) header to specify the preferred list of authent
 more information about HTTP access authentication, see HTTP 1.0, as specified in [RFC1945], section
 11.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section is organized as follows:
 
@@ -1501,7 +1198,7 @@ HTTP messages.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.2.1  HTTP Header Fields
+#### 2.2.1 HTTP Header Fields
 
 This protocol specifies several new headers that do not exist in HTTP 1.0, as specified in [RFC1945], or
 HTTP 1.1, as specified in [RFC2616]. Some headers that are specified defined by these other
@@ -1532,10 +1229,11 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Specifications: ABNF use the ABNF extensions that are defined in HTTP 1.0, as specified in [RFC1945],
+
+Specifications: ABNF use the ABNF extensions that are defined in HTTP 1.0, as specified in [RFC1945],
 or HTTP 1.1, as specified in [RFC2616].
 
-2.2.1.1  Cache-Control
+##### 2.2.1.1 Cache-Control
 
 The purpose of the Cache-Control header is to specify to clients and any intermediate caches the
 conditions and restrictions for caching of content.
@@ -1561,22 +1259,22 @@ Example:
 The subsequent directives (max-age through x-wms-stream-type) are defined for the Cache-Control
 header when used in the response to a request.
 
-2.2.1.1.1 max-age
+###### 2.2.1.1.1 max-age
 
 This directive specifies how many seconds a cache is allowed to use the content without revalidating
 it with the server. For more information about max-age, including ABNF syntax, see HTTP 1.1, as
 specified in [RFC2616] section 14.9.
 
-2.2.1.1.2 must-revalidate
+###### 2.2.1.1.2 must-revalidate
 
 This directive specifies that the cache MUST revalidate that the content is still fresh before
 streaming the content or playing it.
 
-2.2.1.1.3 no-store
+###### 2.2.1.1.3 no-store
 
 This directive specifies that the cache MUST NOT store the content on persistent storage.
 
-2.2.1.1.4 private
+###### 2.2.1.1.4 private
 
 This directive specifies that the content MUST NOT be shared with other users on the device on which
 the client software is running or by other proxy servers. The directive applies to both caches that are
@@ -1584,7 +1282,7 @@ clients and caches that are proxy servers. If the cache is a proxy server, the p
 public (section 2.2.1.1.7) directive overrides this directive. If the cache is not acting as a proxy server,
 the user-public (section 2.2.1.1.8) directive overrides this directive.<3>
 
-2.2.1.1.5 proxy-revalidate
+###### 2.2.1.1.5 proxy-revalidate
 
 [MS-WMSP] - v20240423
 Windows Media HTTP Streaming Protocol
@@ -1593,36 +1291,37 @@ Release: April 23, 2024
 
 16 / 157
 
-This directive specifies that if the cache is a proxy server, it MUST revalidate that the content is still
+
+This directive specifies that if the cache is a proxy server, it MUST revalidate that the content is still
 fresh before streaming the content. This directive MUST be ignored by caches that are not acting as
 proxy servers.<4>
 
-2.2.1.1.6 public
+###### 2.2.1.1.6 public
 
 This directive specifies that the content MAY be cached and MAY be shared with other users on the
 device on which the client software is running or shared with other proxy servers. The directive applies
 to both caches that are clients and caches that are proxy servers.<5>
 
-2.2.1.1.7 proxy-public
+###### 2.2.1.1.7 proxy-public
 
 This directive specifies that if the cache is a proxy server, the content MAY be shared with other
 clients or other proxy servers. If the cache is a proxy server, this directive overrides the
 private (section 2.2.1.1.4) directive.<6>
 
-2.2.1.1.8 user-public
+###### 2.2.1.1.8 user-public
 
 This directive specifies that if the cache is not acting as a proxy server, the content MAY be cached
 and MAY be shared with other users on the device on which the client software is running. If the cache
 is not acting as a proxy server, this directive overrides the private (section 2.2.1.1.4) directive.
 
-2.2.1.1.9 x-wms-content-size
+###### 2.2.1.1.9 x-wms-content-size
 
 This directive specifies the approximate size of the content, in bytes, that will be required if the
 content is cached in its entirety.<7>
 
-2.2.1.1.10
+###### 2.2.1.1.10 x-wms-event-subscription
 
-x-wms-event-subscription
+
 
 This directive specifies a comma-separated list of remote event names that the server SHOULD
 receive. The list is enclosed in double quotation marks. The SendEvent Request (section 2.2.2.9) is
@@ -1633,17 +1332,17 @@ The syntax of the directive is defined as follows.
  "log-event = ("remote-open" /"remote-close" /"remote-log")
  x-wms-event-subscription="x-wms-event-subscription="%x22 log-event *2( "," log-event ) %x22
 
-2.2.1.1.11
+###### 2.2.1.1.11 x-wms-proxy-split
 
-x-wms-proxy-split
+
 
 This directive indicates that the content MAY be "split", that is, forwarded to multiple clients in real
 time. This approach is typically used for "live" content for which caching is inappropriate or not
 allowed.<9>
 
-2.2.1.1.12
+###### 2.2.1.1.12 x-wms-stream-type
 
-x-wms-stream-type
+
 
 This directive specifies a comma-separated list of properties that apply to the content. The list is
 enclosed in double quotation marks.
@@ -1662,11 +1361,12 @@ Release: April 23, 2024
 
 17 / 157
 
- stream-prop = ( "broadcast" / "playlist" )
+
+ stream-prop = ( "broadcast" / "playlist" )
  StreamTypes = "x-wms-stream-type="
                %x22 stream-prop *( "," stream-prop ) %x22
 
-2.2.1.2  Content-Type
+##### 2.2.1.2 Content-Type
 
 The Content-Type header specifies the type of data that is included in the message payload (that is,
 the response to a GET request or the message body of a POST request).<11>
@@ -1689,34 +1389,34 @@ Example:
 
  Content-Type: application/x-wms-LogStats;charset=UTF-8
 
-2.2.1.2.1 application/octet-stream
+###### 2.2.1.2.1 application/octet-stream
 
 Clients MAY ignore this content-type.
 
-2.2.1.2.2 application/vnd.ms.wms-hdr.asfv1
+###### 2.2.1.2.2 application/vnd.ms.wms-hdr.asfv1
 
 This content-type specifies that the response consists of an Advanced Systems Format (ASF)
 header (as specified in [ASF]) encapsulated in a $H packet (section 2.2.3.5). The $H packet MAY be
 preceded by $P packets (section 2.2.3.7) and $M packets (section 2.2.3.6).
 
-2.2.1.2.3 application/x-mms-framed
+###### 2.2.1.2.3 application/x-mms-framed
 
 This content-type specifies that the response consists of a sequence of framed Microsoft Media Server
 (MMS) data packets, adhering to the syntax specified in section 2.2.3.
 
-2.2.1.2.4 application/x-wms-getcontentinfo
+###### 2.2.1.2.4 application/x-wms-getcontentinfo
 
 This content-type is used in a POST request to query cache-control information from a server.<12>
 For more information, see GetContentInfo request (section 2.2.2.2).
 
-2.2.1.2.5 application/x-wms-LogStats
+###### 2.2.1.2.5 application/x-wms-LogStats
 
 This content-type specifies that the message body of the POST request contains a logging message in
 the XML format as specified in [MS-WMLOG]. This content-type is defined only for use in requests sent
 to a server with a version greater than or equal to 5.0 (as specified by the server in the Server
 header).<13>
 
-2.2.1.2.6 application/x-wms-sendevent
+###### 2.2.1.2.6 application/x-wms-sendevent
 
 18 / 157
 
@@ -1725,17 +1425,18 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This content-type specifies that the message body of the POST request contains a remote event
+
+This content-type specifies that the message body of the POST request contains a remote event
 message in the remote event format defined in section 2.2.5. This content-type is defined for use only
 in requests sent to a server with a version greater than or equal to 5.0 (as specified by the server in
 the Server header).<14>
 
-2.2.1.2.7 text/plain
+###### 2.2.1.2.7 text/plain
 
 This content-type MAY be used when sending a logging message using a POST request. <15> For
 more information, see Log (Request and Response) (section 2.2.2.4).
 
-2.2.1.3  Cookie
+##### 2.2.1.3 Cookie
 
 The syntax of the Cookie header MUST be as specified in [RFC2109].
 
@@ -1746,7 +1447,7 @@ This means that if a cookie is set for the URL rtsp://example.com/ using the RTS
 client then sends an HTTP GET request for the URL http://example.com/, then the cookie SHOULD be
 included in the GET request, even though it was originally obtained through RTSP.
 
-2.2.1.4  Pragma
+##### 2.2.1.4 Pragma
 
 This protocol uses the HTTP Pragma header field to communicate information specific to the operation
 of the protocol. The Pragma header consists of one or more comma-separated tokens, as specified in
@@ -1764,7 +1465,7 @@ error.<16>
 
 The Pragma header tokens are defined in the subsequent sections, AccelBW through xStopStrm.
 
-2.2.1.4.1 AccelBW
+###### 2.2.1.4.1 AccelBW
 
 When used in a request, this token specifies a transmission rate, in bits per second, that the client
 requests the server to use when transmitting the amount of multimedia data that is specified by the
@@ -1792,14 +1493,15 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Although not required, the AccelBW, AccelDuration, and LinkBW tokens are typically grouped together
+
+Although not required, the AccelBW, AccelDuration, and LinkBW tokens are typically grouped together
 as shown in the following example.
 
 Example:
 
  Pragma: LinkBW=2147483647, AccelBW=1048576, AccelDuration=5000
 
-2.2.1.4.2 AccelDuration
+###### 2.2.1.4.2 AccelDuration
 
 When used in a request, this token specifies the amount of multimedia data, in millisecond units, that
 the client requests the server to transmit at the bandwidth specified by the
@@ -1824,7 +1526,7 @@ as shown in the following example.
 
  Pragma: LinkBW=2147483647, AccelBW=1048576, AccelDuration=5000
 
-2.2.1.4.3 BurstBW
+###### 2.2.1.4.3 BurstBW
 
 When used in a request, this token specifies a transmission rate, in bits per second, that the client
 requests the server to use when transmitting the amount of multimedia data that is specified by the
@@ -1855,12 +1557,13 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Although not required, the BurstBW and BurstDuration tokens are typically grouped together, as
+
+Although not required, the BurstBW and BurstDuration tokens are typically grouped together, as
 shown in the following example.
 
  Pragma: BurstBW=1048576, BurstDuration=5000
 
-2.2.1.4.4 BurstDuration
+###### 2.2.1.4.4 BurstDuration
 
 When used in a request, this token specifies the amount of multimedia data, in milliseconds, that the
 client requests the server to transmit at the bandwidth that is specified by the
@@ -1890,7 +1593,7 @@ in the following example.
 
  Pragma: BurstBW=1048576, BurstDuration=5000
 
-2.2.1.4.5 client-id
+###### 2.2.1.4.5 client-id
 
 This token specifies the server session to which the client request is applied.
 
@@ -1904,7 +1607,7 @@ Example:
 
  Pragma: client-id=1234
 
-2.2.1.4.6 client-lag
+###### 2.2.1.4.6 client-lag
 
 This token indicates to the server the amount of time, in milliseconds, by which the client can be
 lagging behind the server as a result of predictive streaming playlist changes. The server SHOULD
@@ -1916,7 +1619,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-then slow down the pushing of headers to the client by the smallest of the amount specified and
+
+then slow down the pushing of headers to the client by the smallest of the amount specified and
 15000 milliseconds to ensure that the client does not fall too far behind.
 
 Lag is defined as the amount of data queued on the client that is not intended for buffering. For
@@ -1939,7 +1643,7 @@ Example:
 
  Pragma: client-lag=250
 
-2.2.1.4.7 expect-new-header
+###### 2.2.1.4.7 expect-new-header
 
 This token is used as a notification from the server to the client that the $M (section 2.2.3.6) and
 $H (section 2.2.3.5) packets, which are sent as the first packets in the response to the Play request,
@@ -1955,7 +1659,7 @@ Example:
 
  Pragma: expect-new-header=1
 
-2.2.1.4.8 features
+###### 2.2.1.4.8 features
 
 This token specifies a list of properties that are applicable to the current content or playlist entry.
 When included in a server response, the features token MUST include at least one feature token.
@@ -1977,33 +1681,34 @@ Release: April 23, 2024
 
 22 / 157
 
- Pragma: features="seekable, stridable"
 
-2.2.1.4.8.1  broadcast
+ Pragma: features="seekable, stridable"
+
+###### 2.2.1.4.8.1 broadcast
 
 Indicates to a client that the content is being broadcast.
 
 If the playlist (section 2.2.1.4.8.4) feature token is specified, and the client version is less than 9.0 (as
 specified by the client in the User-Agent header), the broadcast feature token MUST also be specified.
 
-2.2.1.4.8.2
+###### 2.2.1.4.8.2 last
 
-last
+
 
 Indicates that the content is the last entry in a server-side playlist.<22>
 
-2.2.1.4.8.3
+###### 2.2.1.4.8.3 live
 
-live
+
 
 Indicates to a client that the content is live content from an encoder.
 
-2.2.1.4.8.4  playlist
+###### 2.2.1.4.8.4 playlist
 
 Indicates to a client that the content is an entry, from possibly multiple entries, in a server-side
 playlist.<23>
 
-2.2.1.4.8.5  seekable
+###### 2.2.1.4.8.5 seekable
 
 Indicates that the server supports seeking within the content using the stream-
 time (section 2.2.1.4.28) token and the stream-offset (section 2.2.1.4.25) token.
@@ -2011,7 +1716,7 @@ time (section 2.2.1.4.28) token and the stream-offset (section 2.2.1.4.25) token
 If the playlist feature token is specified, and the client version is less than 9.0 (as specified by the
 client in the User-Agent header), the seekable feature token MUST NOT be specified.
 
-2.2.1.4.8.6  skipbackward
+###### 2.2.1.4.8.6 skipbackward
 
 Indicates that the server supports skipping to the previous entry in the server-side playlist by using
 the pl-offset (section 2.2.1.4.20) token.
@@ -2019,7 +1724,7 @@ the pl-offset (section 2.2.1.4.20) token.
 This feature token is only defined for clients with a version greater than or equal to 9.0 (as specified
 by the client in the User-Agent header).<24>
 
-2.2.1.4.8.7  skipforward
+###### 2.2.1.4.8.7 skipforward
 
 Indicates that the server supports skipping to the next entry in the server-side playlist by using the
 pl-offset (section 2.2.1.4.20) token.
@@ -2027,12 +1732,12 @@ pl-offset (section 2.2.1.4.20) token.
 This feature token is only defined for clients with a version greater than or equal to 9.0 (as specified
 by the client in the User-Agent header).<25>
 
-2.2.1.4.8.8  stridable
+###### 2.2.1.4.8.8 stridable
 
 Indicates that the server supports fast-forward or rewind of the content using the
 rate (section 2.2.1.4.22) token on the Pragma header.
 
-2.2.1.4.9 LinkBW
+###### 2.2.1.4.9 LinkBW
 
 This token MAY be sent by the client to inform the server of the connection bandwidth, in bits per
 second.
@@ -2044,7 +1749,8 @@ Release: April 23, 2024
 
 23 / 157
 
-This token is defined for use only in requests sent to a server with a version greater than or equal to
+
+This token is defined for use only in requests sent to a server with a version greater than or equal to
 5.0 (as specified by the server in the Server header).<26>
 
 The value MUST be an integer in the range from 0 through 4,294,967,295. A value of 0 signifies that
@@ -2061,9 +1767,9 @@ Example:
 
  Pragma: LinkBW=2147483647, AccelBW=1048576, AccelDuration=5000
 
-2.2.1.4.10
+###### 2.2.1.4.10 log-line
 
-log-line
+
 
 This token specifies logging information for the server. If a client sends the log-line token, it MUST be
 included in a Pragma header that does not include any other tokens.
@@ -2075,7 +1781,7 @@ The syntax of the log-line token is defined as follows.
 
 The w3c-token MUST adhere to the "legacy" logging format specified in [MS-WMLOG].
 
-2.2.1.4.11  max-duration
+###### 2.2.1.4.11 max-duration
 
 This token specifies the amount of data that the server streams, expressed as a time interval in
 milliseconds. If the most significant bit of the value is 1, the remaining 31 bits are treated as an
@@ -2107,9 +1813,10 @@ Release: April 23, 2024
 
 24 / 157
 
-2.2.1.4.12
 
-no-cache
+###### 2.2.1.4.12 no-cache
+
+
 
 This token specifies that HTTP caches are not allowed to use a cached response. The Pragma general-
 header field is used to include implementation-specific directives, such as the no-cache token, as
@@ -2123,9 +1830,9 @@ Example:
 
  Pragma: no-cache
 
-2.2.1.4.13
+###### 2.2.1.4.13 packet-num
 
-packet-num
+
 
 This token specifies the Advanced Systems Format (ASF), as specified in [ASF], and the packet
 number at which playback begins.
@@ -2142,9 +1849,9 @@ Example:
 
  Pragma: packet-num=0
 
-2.2.1.4.14
+###### 2.2.1.4.14 packet-pair-experiment
 
-packet-pair-experiment
+
 
 This token is used by clients to request that the server start a packet-pair experiment. It is also used
 by servers to indicate whether they will comply with the request.
@@ -2165,9 +1872,9 @@ Example:
 
  Pragma: packet-pair-experiment=1
 
-2.2.1.4.15
+###### 2.2.1.4.15 pipeline-experiment
 
-pipeline-experiment
+
 
 [MS-WMSP] - v20240423
 Windows Media HTTP Streaming Protocol
@@ -2176,7 +1883,8 @@ Release: April 23, 2024
 
 25 / 157
 
-This token is used by a client to specify that it supports Pipeline requests (section 2.2.2.5). A server
+
+This token is used by a client to specify that it supports Pipeline requests (section 2.2.2.5). A server
 uses the token to specify whether it accepts pipeline requests.
 
 This token MUST have a value of either 0 or 1.
@@ -2192,9 +1900,9 @@ Example:
 
  Pragma: pipeline-experiment=1
 
-2.2.1.4.16
+###### 2.2.1.4.16 pipeline-request
 
-pipeline-request
+
 
 This token is used by the client to identify the current request as a pipeline request (section 2.2.2.5).
 When attempting to determine if the pipelined mode of operation can be used, the client will send
@@ -2214,9 +1922,9 @@ Example:
 
  Pragma: pipeline-request=1
 
-2.2.1.4.17
+###### 2.2.1.4.17 pipeline-result
 
-pipeline-result
+
 
 This token is used in a response to a pipeline request (section 2.2.2.5), and it specifies if the
 pipelined mode of the protocol can be used. The token can have a value of 0 or 1.
@@ -2231,9 +1939,9 @@ Example:
 
  Pragma: pipeline-result=1
 
-2.2.1.4.18
+###### 2.2.1.4.18 playlist-gen-id
 
-playlist-gen-id
+
 
 [MS-WMSP] - v20240423
 Windows Media HTTP Streaming Protocol
@@ -2242,7 +1950,8 @@ Release: April 23, 2024
 
 26 / 157
 
-This token specifies the identifier of the playlist entry to which the current request applies.
+
+This token specifies the identifier of the playlist entry to which the current request applies.
 
 This token is defined for use only in requests sent to a server with a version greater than or equal to
 5.0 (as specified by the server in the Server header).<32>
@@ -2257,9 +1966,9 @@ Example:
 
  Pragma: playlist-gen-id=2587
 
-2.2.1.4.19
+###### 2.2.1.4.19 playlist-seek-id
 
-playlist-seek-id
+
 
 This token requests the server to seek the playlist entry with the ID specified as the value of this
 token.<33>
@@ -2279,9 +1988,9 @@ Example:
 For more information about how the server specifies the ID of a playlist entry, see $M
 packet (section 2.2.3.6).
 
-2.2.1.4.20
+###### 2.2.1.4.20 pl-offset
 
-pl-offset
+
 
 This token indicates to the server whether to move forward or backward to an entry in a playlist
 relative to the entry ID specified in the playlist-seek-id (section 2.2.1.4.19) token. If the value of the
@@ -2306,11 +2015,12 @@ Release: April 23, 2024
 
 27 / 157
 
- Pragma: pl-offset=1
 
-2.2.1.4.21
+ Pragma: pl-offset=1
 
-proxy-client-agent
+###### 2.2.1.4.21 proxy-client-agent
+
+
 
 This token is sent by intermediate devices (such as proxy servers) and specifies the information that
 the original client who initiated the HTTP request specified on the User-Agent (section 2.2.1.8) header.
@@ -2334,9 +2044,9 @@ Example:
 
  Pragma: proxy-client-agent="NSPlayer/9.0.0.0"
 
-2.2.1.4.22
+###### 2.2.1.4.22 rate
 
-rate
+
 
 This token specifies the requested playback mode (trick mode or normal playback). For example, a
 value of -5 specifies rewind, 5 specifies fast-forward, and 1 specifies normal playback.
@@ -2356,9 +2066,9 @@ Example:
 
  Pragma: rate=1.000
 
-2.2.1.4.23
+###### 2.2.1.4.23 request-context
 
-request-context
+
 
 This token specifies a value whose significance is implementation-specific. A client MAY choose to send
 this token in GET requests. <35>
@@ -2374,7 +2084,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The syntax of the request-context token is defined as follows.
+
+The syntax of the request-context token is defined as follows.
 
  request-context = "request-context=" 1*10DIGIT
 
@@ -2382,9 +2093,9 @@ The following example shows a first request sent by a client:
 
  Pragma: request-context=1
 
-2.2.1.4.24
+###### 2.2.1.4.24 speed
 
-speed
+
 
 When used in a request, this token specifies a speed-up factor, in which the client is requesting that
 the server apply its normal transmission rate.
@@ -2409,9 +2120,9 @@ In the example below, the value indicates 5 times faster than real time:
 
  Pragma: Speed=5.000
 
-2.2.1.4.25
+###### 2.2.1.4.25 stream-offset
 
-stream-offset
+
 
 This token specifies a byte offset from which playback begins. The byte offset is measured from the
 beginning of the ASF file and is expressed as two decimal numbers separated by a colon. The value
@@ -2437,15 +2148,16 @@ Release: April 23, 2024
 
 29 / 157
 
- Pragma: stream-offset=0:1024
+
+ Pragma: stream-offset=0:1024
 
 The following is an example of ignoring stream-offset.
 
  Pragma: stream-offset=4294967295:4294967295
 
-2.2.1.4.26
+###### 2.2.1.4.26 stream-switch-count
 
-stream-switch-count
+
 
  This token specifies the number of stream-switch entries in the stream-switch-
 entry (section 2.2.1.4.27) token.
@@ -2462,9 +2174,9 @@ The syntax of the stream-switch-count token is defined as follows.
 
  Pragma: switch-stream-count=2
 
-2.2.1.4.27
+###### 2.2.1.4.27 stream-switch-entry
 
-stream-switch-entry
+
 
 This token specifies one or more stream-switch entries. For information about how to specify the
 number of stream-switch-entries, see stream-switch-count (section 2.2.1.4.26).
@@ -2517,7 +2229,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- stream-switch-entry = "stream-switch-entry="
+
+ stream-switch-entry = "stream-switch-entry="
                        1*4HEXDIG ":" 1*4HEXDIG ":"
                        ("0" / "1" / "2")
 
@@ -2533,9 +2246,9 @@ The following is an example for thinning stream one.
 
  Pragma: switch-stream-entry=1:1:1
 
-2.2.1.4.28
+###### 2.2.1.4.28 stream-time
 
-stream-time
+
 
 This token specifies the absolute time position, in milliseconds, from which playback begins. A value of
 0 specifies that playback is requested to begin from time 0 or the beginning of the content if the
@@ -2553,9 +2266,9 @@ The following is an example.
 
  Pragma: stream-time=1000
 
-2.2.1.4.29
+###### 2.2.1.4.29 timeout
 
-timeout
+
 
 This token specifies the longest time interval, in milliseconds, that the server allows between
 KeepAlive (section 2.2.2.3) requests without timing out an idle session.
@@ -2577,11 +2290,12 @@ Release: April 23, 2024
 
 31 / 157
 
- Pragma: timeout=60000
 
-2.2.1.4.30
+ Pragma: timeout=60000
 
-version11-enabled
+###### 2.2.1.4.30 version11-enabled
+
+
 
 This token specifies if the pipelined mode of the protocol is used.
 
@@ -2597,9 +2311,9 @@ The following is an example.
 
  Pragma: version11-enabled=1
 
-2.2.1.4.31
+###### 2.2.1.4.31 version-info
 
-version-info
+
 
 This token specifies the earliest version number of Windows Media Player that is supported by
 Windows Media Services.
@@ -2616,9 +2330,9 @@ The following is an example.
 
  Pragma: version-info=4.0.1.3850
 
-2.2.1.4.32
+###### 2.2.1.4.32 version-url
 
-version-url
+
 
 This token specifies a URL from which Windows Media Player can download an update.
 
@@ -2640,11 +2354,12 @@ Release: April 23, 2024
 
 32 / 157
 
- "http://codecs.microsoft.com/isapi/mpupgrade.dll"
 
-2.2.1.4.33
+ "http://codecs.microsoft.com/isapi/mpupgrade.dll"
 
-xClientGUID
+###### 2.2.1.4.33 xClientGUID
+
+
 
  The identifier MUST be identical for all requests belonging to the same streaming session. The
 identifier MUST be a GUID (see [MS-DTYP] section 2.3.4). The GUID is expressed in registry format
@@ -2662,9 +2377,9 @@ The following is an example.
 
  Pragma: xClientGUID={11223344-1122-1122-1122-AABBCCDDEEFF}
 
-2.2.1.4.34
+###### 2.2.1.4.34 xKeepAliveInPause
 
-xKeepAliveInPause
+
 
 This token is used to request the server to not time out the current session (the session is identified
 using the client-id (section 2.2.1.4.5) token).
@@ -2682,9 +2397,9 @@ Example:
 
  Pragma: xKeepAliveInPause=1
 
-2.2.1.4.35
+###### 2.2.1.4.35 xPlayNextEntry
 
-xPlayNextEntry
+
 
 This token specifies that the client is ready to receive the current entry in a server-side playlist, and
 that the server starts streaming the $D packets (section 2.2.3.3) for that entry if it has not already
@@ -2705,15 +2420,16 @@ Release: April 23, 2024
 
 33 / 157
 
- xPlayNextEntry = "xPlayNextEntry=1"
+
+ xPlayNextEntry = "xPlayNextEntry=1"
 
  The following is an example.
 
  Pragma: xPlayNextEntry=1
 
-2.2.1.4.36
+###### 2.2.1.4.36 xPlayStrm
 
-xPlayStrm
+
 
 This token is used to request the server to start streaming the content.
 
@@ -2729,9 +2445,9 @@ Example (Play request):
 
  Pragma: xPlayStrm=1
 
-2.2.1.4.37
+###### 2.2.1.4.37 xResetStrm
 
-xResetStrm
+
 
 This token indicates to the client that the session that was specified by the client in the client-id
 token in the request has ended and that a new session has been created. For example, this can
@@ -2750,9 +2466,9 @@ The following is an example.
 
  Pragma: xResetStrm=1
 
-2.2.1.4.38
+###### 2.2.1.4.38 xStopStrm
 
-xStopStrm
+
 
 This token is used to request that the server stop streaming without closing the connection.
 
@@ -2771,13 +2487,14 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- xStopStrm = "xStopStrm=1"
+
+ xStopStrm = "xStopStrm=1"
 
 The following is an example.
 
  Pragma: xStopStrm=1
 
-2.2.1.5  Server
+##### 2.2.1.5 Server
 
 This header is defined for use only in responses sent to a client.
 
@@ -2870,7 +2587,7 @@ Rex
 
 0
 
-2.2.1.6  Set-Cookie
+##### 2.2.1.6 Set-Cookie
 
 The syntax of the Set-Cookie header MUST be as specified in [RFC2109].
 
@@ -2881,9 +2598,10 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This header is defined for use in responses sent to a client.
 
-2.2.1.7  Supported
+This header is defined for use in responses sent to a client.
+
+##### 2.2.1.7 Supported
 
 This header is used for specifying features of the protocol that are supported. Different features can
 apply to different entries in a server-side playlist.
@@ -2911,14 +2629,14 @@ The following is an example.
 The tokens that can be used on the Supported header are specified in the subsequent sections
 (com.microsoft.wm.fastcache through com.microsoft.wm.startupprofile).
 
-2.2.1.7.1 com.microsoft.wm.fastcache
+###### 2.2.1.7.1 com.microsoft.wm.fastcache
 
 This token specifies that the server permits the use of the Speed (section 2.2.1.4.24) token on the
 Pragma header.
 
 This token is defined for use only in responses sent to a client.
 
-2.2.1.7.2 com.microsoft.wm.predstrm
+###### 2.2.1.7.2 com.microsoft.wm.predstrm
 
 This token specifies support for predictive stream selection. This is a technique in which the server
 selects a set of streams from the next entry in a server-side playlist on the client's behalf and starts
@@ -2927,14 +2645,14 @@ streaming the next entry in the server-side playlist until the client has sent a
 request (section 2.2.2.8) or PlayNextEntry request (section 2.2.2.7), as appropriate (it depends on
 whether pipelined mode or non-pipelined mode is used).
 
-2.2.1.7.3 com.microsoft.wm.srvppair
+###### 2.2.1.7.3 com.microsoft.wm.srvppair
 
 This token specifies that the server permits the use of the packet-pair-experiment (section 2.2.1.4.14)
 token on the Pragma header.
 
 This token is defined for use only in responses sent to a client
 
-2.2.1.7.4 com.microsoft.wm.sswitch
+###### 2.2.1.7.4 com.microsoft.wm.sswitch
 
 This token specifies support for the SelectStream request (section 2.2.2.8).
 
@@ -2945,11 +2663,12 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.7.5 com.microsoft.wm.startupprofile
+
+###### 2.2.1.7.5 com.microsoft.wm.startupprofile
 
 This token specifies support for the X-StartupProfile (section 2.2.1.12) header.<45>
 
-2.2.1.8  User-Agent
+##### 2.2.1.8 User-Agent
 
 This header is defined for use only in requests sent to a server.
 
@@ -3067,7 +2786,8 @@ Release: April 23, 2024
 
 37 / 157
 
-2.2.1.9  X-Accept-Authentication
+
+##### 2.2.1.9 X-Accept-Authentication
 
 The X-Accept-Authentication header specifies the HTTP authentication schemes that the client
 supports. The authentication schemes that are supported by a server, if any, are implementation-
@@ -3087,9 +2807,9 @@ The following is an example.
 
  X-Accept-Authentication: Negotiate, NTLM, Digest, Basic
 
-2.2.1.10
+##### 2.2.1.10 X-Accept-Proxy-Authentication
 
-X-Accept-Proxy-Authentication
+
 
 The X-Accept-Proxy-Authentication header specifies the HTTP authentication schemes that the client
 supports when challenged by a proxy server. The authentication schemes that are supported by proxy
@@ -3110,9 +2830,9 @@ The following is an example.
 
  X-Accept-Proxy-Authentication: Negotiate, NTLM, Digest, Basic
 
-2.2.1.11
+##### 2.2.1.11 X-Proxy-Client-Verb
 
-X-Proxy-Client-Verb
+
 
 This header is sent by intermediate devices (such as proxy servers) and specifies the name of the
 HTTP or RTSP request method used by the client that triggered the HTTP request sent by the
@@ -3131,7 +2851,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Proxy-Client-Verb header enables the name of the request method to be preserved and be forwarded
+
+Proxy-Client-Verb header enables the name of the request method to be preserved and be forwarded
 across possibly multiple intermediate devices to the server.
 
 This header is only defined for requests sent to a server by an intermediate device, such as a proxy
@@ -3145,9 +2866,9 @@ The definition of rtsp-method is identical to the definition of the method token
 6.1. The definition of http-method is identical to the definition of the method token in [RFC2616]
 section 5.1.1.
 
-2.2.1.12
+##### 2.2.1.12 X-StartupProfile
 
-X-StartupProfile
+
 
 This header specifies a list of streaming bit rates, and for each bit rate it specifies the maximum
 amount of data that the audio and video decoders need and the time stamp of the ASF payload at
@@ -3178,7 +2899,7 @@ Example:
  StartTime=1694318962;LastTime=19521;MaxDiffTime=0;
  MaxDiffSndTime=0;ByteRate=30794,31469,31469,31469,31469;
 
-2.2.1.12.1  Rate
+###### 2.2.1.12.1 Rate
 
 This parameter contains a comma-separated list of possible acceleration rates, each of which MUST be
 expressed as a speed-up factor relative to the average bit rate of the content, multiplied by 10. For
@@ -3193,7 +2914,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- rate-value
+
+ rate-value
  XSP-Rate
 
 = 1*10DIGIT
@@ -3201,7 +2923,7 @@ Release: April 23, 2024
 
 The rate-value parameter MUST be an integer in the range from 1 through 4,294,967,295.
 
-2.2.1.12.2  MaxBytes
+###### 2.2.1.12.2 MaxBytes
 
 This parameter contains a comma-separated list of values, each of which MUST specify the maximum
 buffer underflow, in bytes, that occurs at the acceleration rate given by the corresponding rate value
@@ -3220,9 +2942,9 @@ The syntax of the MaxBytes parameter is defined as follows.
 
 The maxbyte-value parameter MUST be an integer in the range from 1 through 4,294,967,295.
 
-2.2.1.12.3
+###### 2.2.1.12.3 Time
 
-Time
+
 
 This parameter contains comma-separated list of presentation times, in milliseconds, that specify
 when maximum buffer underflows will occur. Each presentation time value MUST specify when the
@@ -3241,9 +2963,9 @@ The syntax of the Time parameter is defined as follows.
 
 The time-value parameter MUST be an integer in the range from 0 through 4,294,967,295.
 
-2.2.1.12.4
+###### 2.2.1.12.4 StartTime
 
-StartTime
+
 
 This parameter MUST specify the lowest ASF presentation time value of all the ASF payloads that will
 be transmitted during the acceleration interval. The duration of the acceleration interval is given by
@@ -3264,9 +2986,10 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.12.5
 
-LastTime
+###### 2.2.1.12.5 LastTime
+
+
 
 This parameter MUST specify the amount of data, represented as a length of time in milliseconds, that
 the server will transmit at the accelerated rate.
@@ -3277,7 +3000,7 @@ The syntax of the LastTime parameter is defined as follows.
 
 The value of the LastTime parameter MUST be an integer in the range from 0 through 4,294,967,295.
 
-2.2.1.12.6  MaxDiffTime
+###### 2.2.1.12.6 MaxDiffTime
 
 This parameter specifies the presentation time of the ASF payload that has the maximum latency
 specified by the MaxDiffSndTime parameter. The parameter MUST be specified as an offset from the
@@ -3292,7 +3015,7 @@ The syntax of the MaxDiffTime parameter is defined as follows.
 The value of the MaxDiffTime parameter MUST be an integer in the range from 0 to 4,294,967,295
 inclusive.
 
-2.2.1.12.7  MaxDiffSndTime
+###### 2.2.1.12.7 MaxDiffSndTime
 
 This parameter specifies the maximum latency, in milliseconds, between the video and the audio
 streams during the acceleration interval. The duration of the acceleration interval is specified by the
@@ -3318,7 +3041,7 @@ The syntax of the MaxDiffSndTime parameter is defined as follows.
 The value of the MaxDiffSndTime parameter MUST be an integer in the range from 0 through
 2,147,483,647.
 
-2.2.1.12.8  ByteRate
+###### 2.2.1.12.8 ByteRate
 
 [MS-WMSP] - v20240423
 Windows Media HTTP Streaming Protocol
@@ -3327,7 +3050,8 @@ Release: April 23, 2024
 
 41 / 157
 
-This parameter is a comma-separated list of bit rate values, expressed in units of bytes per second.
+
+This parameter is a comma-separated list of bit rate values, expressed in units of bytes per second.
 Each rate value MUST specify the average encoded bit rate of the content, computed over the
 acceleration time interval. The acceleration time interval is specified by the LastTime parameter.
 
@@ -3341,7 +3065,7 @@ The syntax of the ByteRate parameter is defined as follows.
 
 The byterate-val parameter MUST be an integer in the range from 1 through 4,294,967,295.
 
-2.2.2  Request Types
+#### 2.2.2 Request Types
 
 This protocol specifies requests that a client can send to a server.
 
@@ -3368,7 +3092,7 @@ The following are some common constructions that are used throughout this sectio
    / request-header
    / entity-header ) CRLF )
 
-2.2.2.1  Describe (Request and Response)
+##### 2.2.2.1 Describe (Request and Response)
 
 The purpose of the Describe request is to ask the server to send information about the content that is
 identified by the URL included in the request. A URL MUST be formed according to rules specified in
@@ -3394,7 +3118,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -3475,7 +3200,8 @@ Release: April 23, 2024
 
 43 / 157
 
-                           / DescResp-Token-OPT11
+
+                           / DescResp-Token-OPT11
 
  DescResp-Token-REQ      = no-cache                   ; section 2.2.1.4.12
                            / client-id                ; section 2.2.1.4.5
@@ -3524,7 +3250,7 @@ revalidate, proxy-public, proxy-revalidate
  Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch, com.microsoft.wm.predstrm,
 com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
 
-2.2.2.2  GetContentInfo (Request and Response)
+##### 2.2.2.2 GetContentInfo (Request and Response)
 
 The purpose of the GetContentInfo request is to retrieve cache-control information from the server
 without incurring the overhead of a Describe request.
@@ -3544,7 +3270,8 @@ Release: April 23, 2024
 
 44 / 157
 
-
+
+
 
 
 
@@ -3631,7 +3358,8 @@ Release: April 23, 2024
 
 45 / 157
 
- GCIResp-Pragma         = "Pragma: " #GCIResp-Pragma-Types CRLF
+
+ GCIResp-Pragma         = "Pragma: " #GCIResp-Pragma-Types CRLF
 
  GCIResp-Pragma-Types   = GCIResp-Token-REQ
                            / GCIResp-Token-OPT
@@ -3669,7 +3397,7 @@ revalidate, proxy-public, proxy-revalidate
 com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
  Content-Length: 0
 
-2.2.2.3  KeepAlive Request (Request and Response)
+##### 2.2.2.3 KeepAlive Request (Request and Response)
 
 The purpose of the KeepAlive request is to prevent the server from timing out any state that it
 maintains for the streaming session. This request is useful if the server has stopped streaming (for
@@ -3695,7 +3423,8 @@ Release: April 23, 2024
 
 46 / 157
 
-2.2.2.3.1 Non-Pipelined Mode
+
+###### 2.2.2.3.1 Non-Pipelined Mode
 
 When the non-pipelined mode of this protocol is in use, the KeepAlive request (section 2.2.2.3) is a
 HTTP POST request that satisfies the ABNF syntax for WMS-KeepAlive10-Request and satisfies all of
@@ -3783,7 +3512,8 @@ Release: April 23, 2024
 
 47 / 157
 
- KeepResp-Header-REQ     = Cache-Control ; section 2.2.1.1
+
+ KeepResp-Header-REQ     = Cache-Control ; section 2.2.1.1
                            / "Content-Length: 0"
                            / Server       ; section 2.2.1.5
 
@@ -3822,7 +3552,7 @@ The following example shows a KeepAlive response in the non-pipelined mode.
  Content-Length: 0
  Connection: Keep-Alive
 
-2.2.2.3.2 Pipelined Mode
+###### 2.2.2.3.2 Pipelined Mode
 
 The KeepAlive request for the pipelined mode of the protocol is an HTTP OPTIONS request that
 satisfies the ABNF syntax for the WMS-KeepAlive11-Request.
@@ -3845,7 +3575,8 @@ Release: April 23, 2024
 
 48 / 157
 
- WMS-KeepAlive11-Response = WMS-KeepAlive-Response ; section 2.2.2.3.1
+
+ WMS-KeepAlive11-Response = WMS-KeepAlive-Response ; section 2.2.2.3.1
 
 The following example shows a KeepAlive request using OPTIONS.
 
@@ -3866,7 +3597,7 @@ The following example shows the server response.
             com.microsoft.wm.predstrm, com.microsoft.wm.fastcache
  Content-Length: 0
 
-2.2.2.4  Log (Request and Response)
+##### 2.2.2.4 Log (Request and Response)
 
 The purpose of the Log request is to submit statistics about the streamed content to the server. The
 request specifies parameters such as streaming quality and packet transmission statistics.
@@ -3923,7 +3654,8 @@ Release: April 23, 2024
 
 49 / 157
 
-The syntax of the Log response is defined as WMS-Log-Response with the additional constraint that
+
+The syntax of the Log response is defined as WMS-Log-Response with the additional constraint that
 the response contains a zero-length message body.
 
  WMS-Log-Request        = WMS-Log-Req-Line
@@ -3996,7 +3728,8 @@ Release: April 23, 2024
 
 50 / 157
 
- Host: SampleServer
+
+ Host: SampleServer
  Pragma: xClientGUID={BFE16E37-55EC-4AE4-A5A9-0B0D307F4B72}
  X-Accept-Authentication: Negotiate, NTLM, Digest, Basic
  Pragma: client-id=2338761264
@@ -4014,7 +3747,7 @@ The following example shows a Log response.
  Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch, com.microsoft.wm.predstrm,
 com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
 
-2.2.2.5  Pipeline (Request and Response)
+##### 2.2.2.5 Pipeline (Request and Response)
 
 The purpose of the Pipeline request is to determine whether the pipelined mode of operation of the
 protocol is possible.
@@ -4075,7 +3808,8 @@ Release: April 23, 2024
 
 51 / 157
 
-                           / pipeline-request ; section 2.2.1.4.16
+
+                           / pipeline-request ; section 2.2.1.4.16
 
  WMS-Pipeline-Response-1 = Status-Line
                             WMS-PipeResp1-Headers
@@ -4148,7 +3882,8 @@ Release: April 23, 2024
 
 52 / 157
 
- PipeResp2A-Token-REQ      = client-id        ; section 2.2.1.4.5
+
+ PipeResp2A-Token-REQ      = client-id        ; section 2.2.1.4.5
                             / no-cache        ; section 2.2.1.4.12
                             / "pipeline-result=1" ; section 2.2.1.4.17
 
@@ -4188,7 +3923,7 @@ revalidate, proxy-public, proxy-revalidate
  Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch, com.microsoft.wm.predstrm,
 com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
 
-2.2.2.6  Play (Request and Response)
+##### 2.2.2.6 Play (Request and Response)
 
 The purpose of the Play request is to request the server to start streaming the content that is
 identified by the URL, as specified in [RFC1738], and which is included in the request.
@@ -4214,7 +3949,8 @@ Release: April 23, 2024
 
 53 / 157
 
-
+
+
 
 
 
@@ -4294,7 +4030,8 @@ Release: April 23, 2024
 
 54 / 157
 
- WMS-PlayResp-Headers    = *( PlayResp-Header-REQ
+
+ WMS-PlayResp-Headers    = *( PlayResp-Header-REQ
                            / PlayResp-Header-OPT
                            / PlayResp-Pragma
                            / HTTP-Header-Types )
@@ -4366,7 +4103,8 @@ Release: April 23, 2024
 
 55 / 157
 
-The following example shows a Play response.
+
+The following example shows a Play response.
 
  HTTP/1.1 200 OK
  Content-Type: application/x-mms-framed
@@ -4385,7 +4123,7 @@ Rate=10,12,15,20,30;MaxBytes=459,459,459,459,459;Time=0,0,0,0,0;StartTime=3290;L
  Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch, com.microsoft.wm.predstrm,
 com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
 
-2.2.2.7  PlayNextEntry (Request and Response)
+##### 2.2.2.7 PlayNextEntry (Request and Response)
 
 The purpose of the PlayNextEntry request is to request that the server start streaming the current
 entry in the server-side playlist. If the server has already started to stream the next current entry,
@@ -4443,7 +4181,8 @@ Release: April 23, 2024
 
 56 / 157
 
- PlayReq-Header-OPT      = Cookie                ; section 2.2.1.3
+
+ PlayReq-Header-OPT      = Cookie                ; section 2.2.1.3
                            / Supported              ; section 2.2.1.7
                            / X-Accept-Authentication; section 2.2.1.9
                            / X-Proxy-Client-Verb    ; section 2.2.1.11
@@ -4517,7 +4256,8 @@ Release: April 23, 2024
 
 57 / 157
 
- PlayResp-Token-OPT      = AccelBW                ; section 2.2.1.4.1
+
+ PlayResp-Token-OPT      = AccelBW                ; section 2.2.1.4.1
                            / AccelDuration        ; section 2.2.1.4.2
                            / BurstBW              ; section 2.2.1.4.3
                            / BurstDuration        ; section 2.2.1.4.4
@@ -4588,10 +4328,11 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch, com.microsoft.wm.predstrm,
+
+ Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch, com.microsoft.wm.predstrm,
 com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
 
-2.2.2.8  SelectStream (Request and Response)
+##### 2.2.2.8 SelectStream (Request and Response)
 
 The purpose of the SelectStream request is to request that the server turn on or off specified streams
 in the content (or current playlist entry if server-side playlists are used).
@@ -4685,7 +4426,8 @@ Release: April 23, 2024
 
 59 / 157
 
-The syntax of the SelectStream request is defined as WMS-SelectStrm with the additional constraint
+
+The syntax of the SelectStream request is defined as WMS-SelectStrm with the additional constraint
 that when in pipelined mode the response will either use Chunked Transfer Coding, as specified in
 [RFC2616] section 3.6.1, or contain a zero length message body.
 
@@ -4757,7 +4499,8 @@ Release: April 23, 2024
 
 60 / 157
 
- SelStrmResp-Token-REQ   = no-cache                 ; section 2.2.1.4.12
+
+ SelStrmResp-Token-REQ   = no-cache                 ; section 2.2.1.4.12
 
  SelStrmResp-Token-OPT   = AccelBW                  ; section 2.2.1.4.1
                            / AccelDuration          ; section 2.2.1.4.2
@@ -4808,7 +4551,7 @@ ffTime=0;MaxDiffSndTime=0;ByteRate=330,330,330,330,330;
  Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch, com.microsoft.wm.predstrm,
 com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
 
-2.2.2.9  SendEvent (Request and Response)
+##### 2.2.2.9 SendEvent (Request and Response)
 
 The purpose of the SendEvent request is to submit a remote event to the server. The most common
 remote event is "remote-log", which specifies rendering statistics independently of streaming
@@ -4823,7 +4566,8 @@ Release: April 23, 2024
 
 61 / 157
 
-The SendEvent request is defined as an HTTP POST request that satisfies the ABNF syntax for WMS-
+
+The SendEvent request is defined as an HTTP POST request that satisfies the ABNF syntax for WMS-
 SendEvent-Request [RFC4234] and satisfies all of the following conditions:
 
 
@@ -4908,7 +4652,8 @@ Release: April 23, 2024
 
 62 / 157
 
-                           / SEResp-Header-OPT
+
+                           / SEResp-Header-OPT
                            / SEResp-Pragma
                            / HTTP-Header-Types )
 
@@ -4951,9 +4696,9 @@ The following example shows a SendEvent response.
 com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
  Content-Length: 0
 
-2.2.2.10
+##### 2.2.2.10 Stop (Request and Response)
 
-Stop (Request and Response)
+
 
 The purpose of the Stop request is to request that the server stop streaming content.
 
@@ -4985,7 +4730,8 @@ Release: April 23, 2024
 
 63 / 157
 
-
+
+
 
 
 
@@ -5063,7 +4809,8 @@ Release: April 23, 2024
 
 64 / 157
 
- StopResp-Pragma-Types   = StopResp-Token-REQ
+
+ StopResp-Pragma-Types   = StopResp-Token-REQ
                            / StopResp-Token-OPT
 
  StopResp-Token-REQ      = no-cache               ; section 2.2.1.4.12
@@ -5094,7 +4841,7 @@ The following example shows a Stop response.
 com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
  Content-Length: 0
 
-2.2.3  Packet Types
+#### 2.2.3 Packet Types
 
 This section defines the packet types used by this protocol. The packets are sent by the server to the
 client. The packets will appear in the message body of any response sent by the server to an HTTP
@@ -5110,12 +4857,12 @@ The remainder of this section is organized as follows: Section 2.2.3.1 defines d
 definitions that are common to multiple packet types. Sections 2.2.3.2 through 2.2.3.8 define
 individual packet types.
 
-2.2.3.1  Common Definitions
+##### 2.2.3.1 Common Definitions
 
 All integer fields are transmitted in little-endian byte order. If a field is set to an invalid value, clients
 are free to handle that situation in an implementation-specific manner.<55>
 
-2.2.3.1.1 Framing Header
+###### 2.2.3.1.1 Framing Header
 
 The Framing Header is used by all packet types. The syntax of the framing header is defined as
 follows.
@@ -5127,7 +4874,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5180,7 +4928,7 @@ Reason (4 bytes): An optional 32-bit integer field. Unless specified otherwise, 
 
 its value MUST be set to an HRESULT code, as specified in [MS-ERREF].
 
-2.2.3.1.2 MMS Data Packet
+###### 2.2.3.1.2 MMS Data Packet
 
 The MMS data packet structure (also referred to as "MMS Packet"), is a part of the $D
 (Data) (section 2.2.3.3), $H (Header) (section 2.2.3.5), and $M (Metadata) (section 2.2.3.6) packet
@@ -5223,7 +4971,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-LocationId (4 bytes): A 32-bit unsigned integer field that specifies the index of the Payload field
+
+LocationId (4 bytes): A 32-bit unsigned integer field that specifies the index of the Payload field
 into the complete object that is being transferred. For $M and $H packets, which can be split
 across multiple packet payloads, the LocationId MUST be 0 for the first payload and MUST
 increment by 1 for each subsequent payload. For $D packets, the entire ASF file is considered the
@@ -5261,7 +5010,7 @@ Payload (variable): A variable size block of bytes. The content of this field is
 packet type. For more information, see all packets from $C (Stream Change Notification) (section
 2.2.3.2) through $T (Test Data Notification) (section 2.2.3.8).
 
-2.2.3.2  $C (Stream Change Notification) Packet
+##### 2.2.3.2 $C (Stream Change Notification) Packet
 
 The $C (Stream Change Notification) packet is sent by the server when it switches to the next or the
 previous entry in a server-side playlist. The purpose of this packet is to notify the client of that event.
@@ -5281,7 +5030,7 @@ server is switching to the previous entry in a server-side playlist, that is, th
 streaming the playlist in reverse, this field SHOULD be set to 0x400D14BE. Otherwise, it
 SHOULD be set to 0.
 
-2.2.3.3  $D (Data) Packet
+##### 2.2.3.3 $D (Data) Packet
 
 The $D (Data) packet is used by the server to transfer an ASF packet to the client.
 
@@ -5292,7 +5041,8 @@ Release: April 23, 2024
 
 67 / 157
 
-The $D packet MUST start with a Framing header (section 2.2.3.1.1), followed by an MMS data
+
+The $D packet MUST start with a Framing header (section 2.2.3.1.1), followed by an MMS data
 packet (section 2.2.3.1.2), with the following additional details:
 
 B (1 bit): As specified in section 2.2.3.1.1.
@@ -5314,7 +5064,7 @@ If the Padding Data field is removed, the Padding Length field in the ASF payloa
 information section, as specified in [ASF] section 5.2.2, MUST be updated to indicate a
 nonexistent Padding Data field.
 
-2.2.3.4  $E (End-of-Stream Notification) Packet
+##### 2.2.3.4 $E (End-of-Stream Notification) Packet
 
 The $E (End-of-Stream Notification) packet is used by the server to specify that the last $D (Data)
 packet (section 2.2.3.3) for the content has been transmitted. The $E packet also specifies if this was
@@ -5365,7 +5115,8 @@ Release: April 23, 2024
 
 68 / 157
 
-2.2.3.5  $H (Header) Packet
+
+##### 2.2.3.5 $H (Header) Packet
 
 The $H (Header) packet is used by the server to transfer an ASF header to the client. The packet is
 sent in the response to Describe (section 2.2.2.1), Play (section 2.2.2.6), and PlayNextEntry
@@ -5391,7 +5142,7 @@ maximum size of the MMS data packet (section 2.2.3.1.2) to be exceeded, the ASF 
 MUST be broken into multiple smaller pieces, and each piece MUST be transmitted as a separate
 $H packet, as specified in section 2.2.3.1.2.
 
-2.2.3.6  $M (Metadata) Packet
+##### 2.2.3.6 $M (Metadata) Packet
 
 The $M (Metadata) packet is used by the server to transfer metadata for the current playlist entry to
 the client.
@@ -5433,7 +5184,8 @@ Release: April 23, 2024
 
 69 / 157
 
- Metadata-Payload = playlist-gen-id             ; section 2.2.1.4.18
+
+ Metadata-Payload = playlist-gen-id             ; section 2.2.1.4.18
                     "," SP
                     "broadcast-id=" 1*10DIGIT
                     "," SP
@@ -5444,7 +5196,7 @@ Release: April 23, 2024
 The value of the broadcast-id parameter MUST be an integer in the range from 0 through
 4,294,967,295.
 
-2.2.3.7  $P (Packet-Pair) Packet
+##### 2.2.3.7 $P (Packet-Pair) Packet
 
 A $P packet starts with a Framing header (section 2.2.3.1.1) followed by a variable-length payload
 field, with the following additional field details<57>:
@@ -5478,7 +5230,7 @@ However, if Reason is equal to 504, the size of the Payload field MUST be 0 byte
 second $P packet, the size of the Payload field MUST be 504 bytes. For the third packet, the size
 of the Payload field MUST be 1,048 bytes plus the value of the Reason field.
 
-2.2.3.8  $T (Test Data Notification) Packet
+##### 2.2.3.8 $T (Test Data Notification) Packet
 
 The $T (Test Data Notification) packet is sent by the server in the response to the first in a series of
 two Pipeline requests (section 2.2.2.5).<58>
@@ -5502,7 +5254,8 @@ Release: April 23, 2024
 
 70 / 157
 
-2.2.4  Content Description List Format
+
+#### 2.2.4 Content Description List Format
 
 Metadata about the content that is sent by the server to the client in the $M
 (Metadata) (section 2.2.3.6) packet is formatted by using a syntax called the Content Description List
@@ -5583,12 +5336,13 @@ Release: April 23, 2024
 
 71 / 157
 
-                                 language-tag   ; [RFC2616] section 3.10
+
+                                 language-tag   ; [RFC2616] section 3.10
                                  *( "," content-description ) CRLF
 
  content-description-list     = 1*( language-content-description )
 
-2.2.4.1  CDL Value Types
+##### 2.2.4.1 CDL Value Types
 
 The following table shows supported values for the <value type> field in the content description,
 using data types as specified in [MS-OAUT] section 2.2.7.
@@ -5650,7 +5404,7 @@ VT_UINT
 
 23
 
-2.2.5  Remote Event Format
+#### 2.2.5 Remote Event Format
 
 The Remote Event format is used in the message body of the SendEvent request (section 2.2.2.9).
 
@@ -5674,7 +5428,8 @@ Release: April 23, 2024
 
 72 / 157
 
-The value of the EventType parameter MUST be set to one of the following three values: 28 to specify
+
+The value of the EventType parameter MUST be set to one of the following three values: 28 to specify
 the remote-open event, 29 to specify the remote-close event, or 30 to specify the remote-log event.
 
 The remote-open event is fired by a caching proxy server when it opens a content item from its cache.
@@ -5753,9 +5508,10 @@ Release: April 23, 2024
 
 73 / 157
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 Unless specified otherwise, the protocol reports the occurrence of an error to the higher layer, stops
 all timers, and stops processing further messages. Possible errors include the following: failure to
@@ -5767,7 +5523,7 @@ packet (such as receiving a $P packet when waiting for a $H packet) is received.
 Unless specified otherwise, the client role of the protocol always provides the value of the Higher-
 Layer-ID variable in the Abstract Data Model to the higher layer when it invokes the higher layer.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5825,7 +5581,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Expected-Packets: This variable specifies the packet types that the client is expecting to receive.
+
+Expected-Packets: This variable specifies the packet types that the client is expecting to receive.
 The variable can be set to any combination of $C, $D, $E, $H, $M, $P, and $T. The variable can
 also be empty, meaning that no packets are expected. The variable can be implemented as an
 unordered list or as a bit mask that is seven bits wide with one bit for each packet type. By default
@@ -5872,13 +5629,13 @@ and minor version number that the server specified on the most recently received
 Note  The preceding conceptual data can be implemented by using a variety of techniques. This
 protocol does not prescribe or advocate any specific implementation technique.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Keepalive: This timer is used for sending KeepAlive requests (section 2.2.2.3). The timeout period is
 controlled by the Keepalive-timeout variable specified in section 3.1.1. The minimum allowed
 value for the time-out period is 0.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Initialization of the protocol occurs as the result of a higher layer asking for information about
 multimedia content located on a server. That event is described in section 3.1.4.2.
@@ -5899,7 +5656,8 @@ Release: April 23, 2024
 
 75 / 157
 
-
+
+
 
 
 
@@ -5951,9 +5709,9 @@ If the Cookie-List variable already has a non-empty value, this value remains un
 
 The Client-Initialization-Status variable MUST be set to 1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Request to Retrieve Caching Information
+##### 3.1.4.1 Request to Retrieve Caching Information
 
 This event can occur when the application is a caching proxy server. The event can occur if the higher
 layer wants to check if content is available, and if it can be cached, but does not necessarily want to
@@ -5987,9 +5745,10 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-After having sent the request, the client MUST process the rules  in section 3.1.5.2.
 
-3.1.4.2  Request to Retrieve Content Information
+After having sent the request, the client MUST process the rules  in section 3.1.5.2.
+
+##### 3.1.4.2 Request to Retrieve Content Information
 
 This event causes the client to send a Describe request (section 2.2.2.1) to the server. The most
 common scenarios in which an application would ask the client for information about multimedia
@@ -6018,7 +5777,7 @@ The client MUST then establish a TCP connection to the server by using the IP ad
 number obtained by parsing the URL. Next, the client MUST send the Describe request to the server,
 as specified in the next section, 3.1.4.2.1.
 
-3.1.4.2.1 Sending the Describe Request
+###### 3.1.4.2.1 Sending the Describe Request
 
 The Describe request MUST adhere to the syntax specified in section 2.2.2.1.
 
@@ -6042,7 +5801,7 @@ token, as specified in 2.2.1.4.14.
 
 After having sent the request, the client MUST process the rules  in section 3.1.5.2.
 
-3.1.4.3  Request to Start Streaming Content
+##### 3.1.4.3 Request to Start Streaming Content
 
 This higher-layered triggered event can occur when the client is not currently streaming from the
 server. The event causes the client to send a Play request (section 2.2.2.6) to the server. The most
@@ -6056,7 +5815,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  A media player application that has examined the ASF header that was received from the server
+
+1.  A media player application that has examined the ASF header that was received from the server
 
 (as specified in 3.1.5.8) and determined that it is capable to decompress and play the multimedia
 content.
@@ -6083,7 +5843,7 @@ process the rules  in section 3.1.5.2.
 
 Next, the client MUST send the Play request to the server, as specified in the next section 3.1.4.3.1.
 
-3.1.4.3.1 Sending a Play Request
+###### 3.1.4.3.1 Sending a Play Request
 
 If the TCP connection that is used for sending the most recent Describe, Play, or PlayNextEntry
 request is still open, the connection MUST either be used for sending the Play request or it MUST be
@@ -6125,7 +5885,8 @@ Release: April 23, 2024
 
 78 / 157
 
-is provided, the client MUST send this information by using either the stream-
+
+is provided, the client MUST send this information by using either the stream-
 offset (section 2.2.1.4.25) token or the packet-num (section 2.2.1.4.13) token on the Pragma header.
 
 The higher layer MUST specify the playlist entry ID to which the previously mentioned time position or
@@ -6177,7 +5938,7 @@ enabled (section 2.2.1.4.30) token on the Pragma header, and the value of the to
 
 After having sent the request, the client MUST process the rules in section 3.1.5.2.
 
-3.1.4.4  Request to Change the Currently Selected Streams
+##### 3.1.4.4 Request to Change the Currently Selected Streams
 
 This event occurs when the higher layer changes the streams that are currently being streamed. For
 example, if the higher layer switches from an English language audio stream to a Spanish language
@@ -6190,7 +5951,8 @@ Release: April 23, 2024
 
 79 / 157
 
-If the pipelined mode of the protocol is used and the TCP connection used for the most recent Play
+
+If the pipelined mode of the protocol is used and the TCP connection used for the most recent Play
 or PlayNextEntry request is open, the client MUST send a SelectStream request (section 2.2.2.8) on
 this connection.
 
@@ -6214,7 +5976,7 @@ be 1.
 
 After having sent the request, the client MUST process the rules in section 3.1.5.2.
 
-3.1.4.5  Selection of Streams to Play from the New Playlist
+##### 3.1.4.5 Selection of Streams to Play from the New Playlist
 
 This event occurs after the higher layer has received the ASF header for a new playlist entry and the
 higher layer is ready to start processing the ASF packets for the new playlist entry. This event is the
@@ -6256,7 +6018,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SelectStream request), and other tokens SHOULD NOT be included on the same Pragma header as the
+
+SelectStream request), and other tokens SHOULD NOT be included on the same Pragma header as the
 stream-switch-entry token.
 
 If the stream-switch-entry token is included on a Pragma header, the token MUST specify the
@@ -6291,7 +6054,7 @@ request.
 
 After having sent the request, the client MUST process the rules in section 3.1.5.2.
 
-3.1.4.6  Request to Stop Streaming
+##### 3.1.4.6 Request to Stop Streaming
 
 This event occurs if the higher layer wants to stop streaming. For example, if the end user requests
 that streaming stop or the end user requests to seek to some position in the content while the client is
@@ -6321,7 +6084,8 @@ Release: April 23, 2024
 
 81 / 157
 
-If the server's product name is "Cougar", and its version number is greater than or equal to 9.0, as
+
+If the server's product name is "Cougar", and its version number is greater than or equal to 9.0, as
 determined by the Server-Version variable, the previously mentioned Log request SHOULD contain a
 logging message in XML format as defined in [MS-WMLOG]. If the client will submit remote-log remote
 events using the SendEvent request (section 2.2.2.9), the logging information included in the Log
@@ -6334,7 +6098,7 @@ If the Keepalive timer is running, it MUST be restarted. If it is not running, i
 
 Next, the client MUST process the rules in section 3.1.5.2.
 
-3.1.4.7  Request to Change the Playback Position
+##### 3.1.4.7 Request to Change the Playback Position
 
 This event occurs when the higher layer wants to start streaming from some specific position in the
 content.
@@ -6346,7 +6110,7 @@ If the value of the Client-State variable is STREAMING, the client MUST first re
 streaming, as specified in section 3.1.4.6. After streaming has completed, the client MUST request to
 start streaming at the new playback position, as specified in section 3.1.4.3.
 
-3.1.4.8  Playback of Content Has Finished
+##### 3.1.4.8 Playback of Content Has Finished
 
 This event occurs when the application software is a media player and it has finished rendering (that
 is, playing back) the content in the current playlist entry.
@@ -6361,9 +6125,9 @@ TCP connection.
 
 After having sent the request, the client MUST process the rules  in section 3.1.5.2.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Sending a Request (All Request Types)
+##### 3.1.5.1 Sending a Request (All Request Types)
 
 This section specifies common steps that MUST be performed whenever the client sends a request of
 any of the types specified in section 2.2.2 to the server.
@@ -6387,7 +6151,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-to servers with a version number higher than the version number indicated by the Server-Version
+
+to servers with a version number higher than the version number indicated by the Server-Version
 variable.
 
 The client MUST specify the User-Agent (section 2.2.1.8) header in the request. The client-token
@@ -6455,7 +6220,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Pragma header with the proxy-client-agent token, the "user-agent-data" syntax element on that
+
+Pragma header with the proxy-client-agent token, the "user-agent-data" syntax element on that
 header MUST be identical to the "user-agent-data" syntax element of the User-Agent header in the
 original request.<62>
 
@@ -6470,7 +6236,7 @@ If the request uses HTTP 1.0 and the request includes the Proxy-Authorization re
 NTLM (see [MS-NTHT] 2.2.4), then the request MUST include the "Connection: Keep-Alive" header.
 (For details about the usage of the Connection header in HTTP 1.0, see section 19.7.1. in [RFC2068].)
 
-3.1.5.2  Waiting for a Packet or a Response
+##### 3.1.5.2 Waiting for a Packet or a Response
 
 This section specifies steps that MUST be performed when the client is expecting to receive a packet
 (see 2.2.3) or a response to a request (see section 2.2.2).
@@ -6520,7 +6286,8 @@ Release: April 23, 2024
 
 84 / 157
 
-If a response is received and the element at the head of the Expected-Reponses variable is Log,
+
+If a response is received and the element at the head of the Expected-Reponses variable is Log,
 then the element at the head of the Expected-Reponses variable MUST be removed and the
 response MUST be processed according to the rules in section 3.1.5.15.
 
@@ -6551,7 +6318,7 @@ response MUST be processed according to the rules in section 3.1.5.19.
 If a response is received and the Expected-Responses variable is empty, then this MUST be treated
 as an error.
 
-3.1.5.3  Receiving a Response (All Request Types)
+##### 3.1.5.3 Receiving a Response (All Request Types)
 
 This section specifies common steps that MUST be performed whenever the client receives the
 response to a request that it has sent. These steps MUST be performed prior to any processing that is
@@ -6587,7 +6354,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the requested credentials from the Higher Layer. When the client is ready to resubmit the HTTP
+
+the requested credentials from the Higher Layer. When the client is ready to resubmit the HTTP
 request with the authentication credentials that the server requested, the HTTP request MUST be sent
 on the same TCP connection on which the 401 or 407 response was received, except if that TCP
 connection has been closed. If the TCP connection has been closed, the client MUST establish a new
@@ -6616,7 +6384,7 @@ application/x-mms-framed (section 2.2.1.2.3) Content-Type headers.
 If the Set-Cookie (section 2.2.1.6) header is present in the response, the cookies on that header
 MUST be included in the Cookie-List variable.<68>
 
-3.1.5.4  Receiving a GetContentInfo Response
+##### 3.1.5.4 Receiving a GetContentInfo Response
 
 The client MUST first follow the steps specified in section 3.1.5.3.
 
@@ -6630,7 +6398,7 @@ MUST then continue by following the steps specified in section 3.1.4.2.1.
 Otherwise, if the HTTP status code indicates that the request succeeded, the server SHOULD report
 the information in the Cache-Control header to the higher layer.
 
-3.1.5.5  Receiving a Describe Response
+##### 3.1.5.5 Receiving a Describe Response
 
 The client MUST first follow the steps that are specified in section 3.1.5.3.
 
@@ -6654,7 +6422,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-client MUST close the current TCP connection and establish a new TCP connection to the server, or
+
+client MUST close the current TCP connection and establish a new TCP connection to the server, or
 proxy server, as appropriate, depending on the status code. The client MUST then continue by
 following the steps defined in Sending the Describe Request (section 3.1.4.2.1)
 
@@ -6692,7 +6461,7 @@ Expected-Packets variable to $H, $M, and then process the rules in section 3.1.5
 
 Packets variable to $H and process the rules in section 3.1.5.2.
 
-3.1.5.6  Receiving a $P (Packet-Pair) Packet
+##### 3.1.5.6 Receiving a $P (Packet-Pair) Packet
 
 The client MUST verify that the $P packet adheres to the syntax specified in section 2.2.3.7.
 
@@ -6724,7 +6493,8 @@ Release: April 23, 2024
 
 87 / 157
 
-3.1.5.7  Receiving a $M (Metadata) Packet
+
+##### 3.1.5.7 Receiving a $M (Metadata) Packet
 
 The client MUST verify that the $M packet adheres to the syntax specified in section 2.2.3.6.
 
@@ -6743,7 +6513,7 @@ The client SHOULD make the metadata available to a higher layer.
 After having received the last $M packet, the client MUST set the value of the Expected-Packets
 variable to $H and then process the rules in section 3.1.5.2.
 
-3.1.5.8  Receiving a $H (Header) Packet
+##### 3.1.5.8 Receiving a $H (Header) Packet
 
 The client MUST verify that the $H packet adheres to the syntax specified in section 2.2.3.5.
 
@@ -6762,7 +6532,7 @@ triggered event occurs.
 If the value of the Client-State variable is STREAMING, the client MUST set the value of the
 Expected-Packets variable to $D and $E and then process the rules in section 3.1.5.2.
 
-3.1.5.9  Receiving a Pipeline Response
+##### 3.1.5.9 Receiving a Pipeline Response
 
 The client MUST first follow the steps specified in section 3.1.5.3.
 
@@ -6788,9 +6558,10 @@ Release: April 23, 2024
 
 88 / 157
 
-3.1.5.10
 
-Receiving a $T (Test Data Notification) Packet
+##### 3.1.5.10 Receiving a $T (Test Data Notification) Packet
+
+
 
 The client MUST verify that the $T packet adheres to the syntax specified in section 2.2.3.8.
 
@@ -6798,9 +6569,9 @@ The client MUST set the value of the Expected-Packets variable to empty.
 
 The client MUST then process the rules  in section 3.1.5.2.
 
-3.1.5.11
+##### 3.1.5.11 Receiving a Play Response
 
-Receiving a Play Response
+
 
 The client MUST first follow the steps specified in section 3.1.5.3.
 
@@ -6834,9 +6605,9 @@ Otherwise, the client MUST set the value of the Expected-Packets variable to $H.
 
 The client MUST then process the rules in section 3.1.5.2.
 
-3.1.5.12
+##### 3.1.5.12 Receiving a $D (Data) Packet
 
-Receiving a $D (Data) Packet
+
 
 The client MUST verify that the $D packet adheres to the syntax specified in section 2.2.3.3.
 
@@ -6848,9 +6619,9 @@ layer.
 The client MUST set the value of the Expected-Packets variable to $C , $D, $E and MUST then
 process the rules in section 3.1.5.2.
 
-3.1.5.13
+##### 3.1.5.13 Receiving a $E (End-of-Stream Notification) Packet
 
-Receiving a $E (End-of-Stream Notification) Packet
+
 
 The client MUST verify that the $E packet adheres to the syntax specified in section 2.2.3.4.
 
@@ -6861,7 +6632,8 @@ Release: April 23, 2024
 
 89 / 157
 
-If the value of the Client-State variable is STREAMING, or if the value of the Reason field in the $E
+
+If the value of the Client-State variable is STREAMING, or if the value of the Reason field in the $E
 packet specifies an error HRESULT code, the client MUST report this event to the higher layer.
 
 If the value of the Client-State variable is STREAMING, and the value of the KeepAlive-Mode variable
@@ -6891,9 +6663,9 @@ Packets variable to $C  and then process the rules in section 3.1.5.2.
 If the value of the Reason field in the $E packet is 0, then the client MUST set the value of the
 Expected-Packets variable to $E and then process the rules in section 3.1.5.2.
 
-3.1.5.14
+##### 3.1.5.14 Receiving a $C (Stream Change Notification) Packet
 
-Receiving a $C (Stream Change Notification) Packet
+
 
 The client MUST verify that the $C packet adheres to the syntax specified in section 2.2.3.2.
 
@@ -6929,12 +6701,13 @@ Release: April 23, 2024
 
 90 / 157
 
-Otherwise, the client MUST set the value of the Expected-Packets variable to $H and process the
+
+Otherwise, the client MUST set the value of the Expected-Packets variable to $H and process the
 rules in section 3.1.5.2.
 
-3.1.5.15
+##### 3.1.5.15 Receiving a Log Response
 
-Receiving a Log Response
+
 
 The client MUST first follow the steps specified in section 3.1.5.3.
 
@@ -6943,9 +6716,9 @@ was received SHOULD be closed.
 
 Next, the client MUST process the rules in section 3.1.5.2.
 
-3.1.5.16
+##### 3.1.5.16 Receiving a KeepAlive Response
 
-Receiving a KeepAlive Response
+
 
 The client MUST first follow the steps specified in section 3.1.5.3.
 
@@ -6954,9 +6727,9 @@ response was received SHOULD be closed.
 
 Next, the client MUST process the rules in section 3.1.5.2.
 
-3.1.5.17
+##### 3.1.5.17 Receiving a SelectStream Response
 
-Receiving a SelectStream Response
+
 
 The client MUST first follow the steps specified in section 3.1.5.3.
 
@@ -6965,17 +6738,17 @@ response was received SHOULD be closed.
 
 Next, the client MUST process the rules in section 3.1.5.2.
 
-3.1.5.18
+##### 3.1.5.18 Receiving a PlayNextEntry Response
 
-Receiving a PlayNextEntry Response
+
 
 The client MUST first follow the steps specified in section 3.1.5.3.
 
 The client MUST process the rules in section 3.1.5.2.
 
-3.1.5.19
+##### 3.1.5.19 Receiving a Stop Response
 
-Receiving a Stop Response
+
 
 The client MUST first follow the steps specified in section 3.1.5.3.
 
@@ -6985,9 +6758,9 @@ If the Keepalive timer is running, it MUST be restarted. If it is not running, i
 
 Next, the client MUST process the rules in section 3.1.5.2.
 
-3.1.5.20
+##### 3.1.5.20 Receiving a SendEvent Response
 
-Receiving a SendEvent Response
+
 
 The client MUST first follow the steps specified in section 3.1.5.3.
 
@@ -7002,9 +6775,10 @@ Release: April 23, 2024
 
 91 / 157
 
-3.1.6  Timer Events
 
-3.1.6.1  KeepAlive Timer Expires
+#### 3.1.6 Timer Events
+
+##### 3.1.6.1 KeepAlive Timer Expires
 
 When the KeepAlive timer expires, the following actions MUST take place.
 
@@ -7032,16 +6806,16 @@ The KeepAlive timer MUST be restarted.
 
 After having sent the request, the client MUST process the rules in section 3.1.5.2.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None defined.
 
-3.2  Server Details
+### 3.2 Server Details
 
 Unless specified otherwise, the server role of the protocol always provides the value of the Higher-
 Layer-ID variable in the Abstract Data Model to the higher layer when it invokes the higher layer.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -7072,7 +6846,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-source TCP port number, destination IP address, and destination TCP port number. The source IP
+
+source TCP port number, destination IP address, and destination TCP port number. The source IP
 address and source TCP port number represent the IP address and TCP port number on which the
 server received the TCP connection. The destination IP address and destination TCP port number
 represent the IP address and port number on the client to which the server is sending TCP packets
@@ -7143,7 +6918,8 @@ Release: April 23, 2024
 
 93 / 157
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 Idle-Timeout: This timer is used for cleaning up an unused session state. If no requests are
 
@@ -7156,7 +6932,7 @@ Pipeline-Test: This timer is used as part of the processing of pipeline requests
 
 value for the time-out period is 100 milliseconds. This timer does not have a default value.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization of the protocol occurs when a Describe (section 2.2.2.1) or Play (section 2.2.2.6) request
 is received and the request did not specify a client-id (section 2.2.1.4.5) token on the Pragma header
@@ -7199,9 +6975,9 @@ The Client-Version variable remains uninitialized.
 The Client-Token-Version variable is set to the client major and minor version number provided by
 the higher layer according to the table specified in 2.2.1.8.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Notification That the Last $D Packet Has Been Sent
+##### 3.2.4.1 Notification That the Last $D Packet Has Been Sent
 
 When the higher layer notifies the server that the last $D packet has been sent, the server MUST send
 a $E (End-of-Stream Notification) packet, except if the higher layer also indicates that a new ASF
@@ -7224,7 +7000,8 @@ Release: April 23, 2024
 
 94 / 157
 
-If the server follows the $E packet by a zero-length chunk then after sending the zero-length chunk
+
+If the server follows the $E packet by a zero-length chunk then after sending the zero-length chunk
 the server MUST send all of the responses stored in the Pending-Responses variable. The responses
 MUST be sent by removing the element at the head of the list in the Pending-Responses variable,
 sending it, and then repeating this until Pending-Responses is an empty list.
@@ -7238,7 +7015,7 @@ The value of the Session-State variable in the abstract data model MUST be chang
 
 The Idle-Timeout timer MUST be started.
 
-3.2.4.2  Notification That a New ASF Header Is Available
+##### 3.2.4.2 Notification That a New ASF Header Is Available
 
 As a prerequisite for this event, the higher layer MUST already have notified the server that it has sent
 the last $D packet for the previous playlist entry, as specified in section 3.2.4.1.
@@ -7292,7 +7069,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the value of the Client-features variable specifies that the client supports the
+
+If the value of the Client-features variable specifies that the client supports the
 com.microsoft.wm.predstrm (see section 2.2.1.7.2) feature, and the server has also specified that it
 supports this feature, and the server has received a Play request or a SelectStream request for the
 previous playlist entry, the server MUST select suitable streams from the ASF header of the new
@@ -7302,9 +7080,9 @@ MUST be set to STREAMING and the Idle-Timeout timer MUST be stopped.
 Otherwise, the Session-State variable MUST be set to WAITING, and if the Idle-Timeout timer is not
 running, it MUST be started.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a Request (All Request Types)
+##### 3.2.5.1 Receiving a Request (All Request Types)
 
 This section specifies common steps that MUST be performed whenever the server receives a request
 from a client. These steps MUST be performed prior to any processing that is specific to a particular
@@ -7358,7 +7136,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-names to be listed in order of preference. The server MUST make the list of authentication schemes
+
+names to be listed in order of preference. The server MUST make the list of authentication schemes
 available to the higher layer and MUST indicate to the higher layer that the most preferred
 authentication scheme is the scheme that is listed first. The server MUST then query the higher layer
 for the authentication scheme to use.
@@ -7409,7 +7188,7 @@ token not listed on the header MUST be removed from the Client-features variable
 
 If the Idle-Timeout timer is running, it MUST be stopped.
 
-3.2.5.2  Sending a Response (All Request Types)
+##### 3.2.5.2 Sending a Response (All Request Types)
 
 This section specifies common steps that MUST be performed whenever the server sends a response
 to a request from the client.
@@ -7424,7 +7203,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The response MUST NOT specify any of the headers and tokens specified in section 2.2.1 that are
+
+The response MUST NOT specify any of the headers and tokens specified in section 2.2.1 that are
 defined only for use in responses sent to clients with a version number higher than the version
 number specified by the Client-Version variable in the abstract data model.
 
@@ -7474,7 +7254,7 @@ MUST be equal to the value of the Playlist-gen-id variable.
 The Idle-Timeout timer MUST be started, unless the value of the Session-State variable in the abstract
 data model is STREAMING.
 
-3.2.5.3  Receiving a GetContentInfo Request
+##### 3.2.5.3 Receiving a GetContentInfo Request
 
 The server MUST first follow the steps specified in section 3.2.5.1.
 
@@ -7489,7 +7269,8 @@ Release: April 23, 2024
 
 98 / 157
 
-The GetContentInfo request does not require any server state. Hence, if the client-id token on the
+
+The GetContentInfo request does not require any server state. Hence, if the client-id token on the
 Pragma header is missing, this MUST NOT be treated as an error.
 
 The GetContentInfo response MUST follow the rules in section 3.2.5.2 and 2.2.2.2.
@@ -7507,7 +7288,7 @@ the server MUST send the GetContentInfo response.
 If the value of the KeepAlive-Mode variable specifies that the non-pipelined mode of the protocol is
 used, the server SHOULD close the TCP connection after sending the GetContentInfo response.
 
-3.2.5.4  Receiving a Describe Request
+##### 3.2.5.4 Receiving a Describe Request
 
 The server MUST first follow the steps specified in section 3.2.5.1.
 
@@ -7564,7 +7345,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the higher layer indicates that the client shall be redirected to another server, and if the URL to the
+
+If the higher layer indicates that the client shall be redirected to another server, and if the URL to the
 other server is more than 256 characters long when represented as a Unicode string, and if the client
 version is less than 7.0, as indicated by the value of the Client-Version variable, then the server
 SHOULD respond with HTTP status code 500 or any other valid HTTP error status code, as specified in
@@ -7632,7 +7414,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the client implementation supports the pipelined mode of the protocol, the Describe request
+
+If the client implementation supports the pipelined mode of the protocol, the Describe request
 SHOULD include a pipeline-experiment (section 2.2.1.4.15) token on the Pragma header, with the
 value set to 1.
 
@@ -7643,7 +7426,7 @@ the server MUST send one or more $M (Metadata) packets (section 2.2.3.6).
 The message body of the Describe response MUST end with the ASF header of the current playlist
 entry, encoded as one or more $H (Header) packets (section 2.2.3.5).
 
-3.2.5.5  Receiving a Pipeline Request
+##### 3.2.5.5 Receiving a Pipeline Request
 
 The server MUST first follow the steps specified in section 3.2.5.1.
 
@@ -7674,7 +7457,7 @@ Details about Chunked Transfer Coding are as specified in [RFC2616] section 3.6.
 
 For more information about the Pipeline request, see section 2.2.2.5.
 
-3.2.5.6  Receiving a Play Request
+##### 3.2.5.6 Receiving a Play Request
 
 The server MUST first follow the steps specified in section 3.2.5.1.
 
@@ -7698,7 +7481,8 @@ Release: April 23, 2024
 
 101 / 157
 
-If the request specifies a client-id token on a Pragma header, but the value of that token does not
+
+If the request specifies a client-id token on a Pragma header, but the value of that token does not
 match the value of the Client-ID variable in any instance of the server's state, the server MUST either
 create new state by performing the initialization procedure specified in section 3.2.3 or fail the
 request. Also, in this case, if the request is successful, the response MUST specify the
@@ -7766,7 +7550,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BurstDuration (section 2.2.1.4.4) token on a Pragma header in the response if the client sent the
+
+BurstDuration (section 2.2.1.4.4) token on a Pragma header in the response if the client sent the
 corresponding tokens on a Pragma header in the Play request, and if the server supports changing the
 transmission rate based on the respective tokens in the request. Otherwise, a server SHOULD NOT
 specify the tokens in the response.
@@ -7834,7 +7619,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-packet with the Reason field set to 1, followed by a $C packet with the Reason field set to 0,
+
+packet with the Reason field set to 1, followed by a $C packet with the Reason field set to 0,
 followed by the ASF header of the current playlist entry, encoded as one or more $H packets.
 
 The server MUST then send the ASF packets of the current playlist entry, encoded as $D (Data)
@@ -7852,7 +7638,7 @@ the Incarnation variable (section 2.2.2.6). If the server chooses to increment t
 MUST do it for both $M and $H packets so that the Incarnation field for both packet types stays
 synchronized.
 
-3.2.5.7  Receiving a SelectStream Request
+##### 3.2.5.7 Receiving a SelectStream Request
 
 The server MUST first follow the steps specified in section 3.2.5.1.
 
@@ -7898,7 +7684,8 @@ Release: April 23, 2024
 
 104 / 157
 
-3.2.5.8  KeepAlive Request (Request and Response)
+
+##### 3.2.5.8 KeepAlive Request (Request and Response)
 
 The server MUST first follow the steps specified in section 3.2.5.1.
 
@@ -7917,7 +7704,7 @@ used, the server SHOULD close the TCP connection after sending the KeepAlive res
 
 The server MAY ignore the xKeepAliveInPause (section 2.2.1.4.34) token.
 
-3.2.5.9  Receiving a PlayNextEntry Request
+##### 3.2.5.9 Receiving a PlayNextEntry Request
 
 The server MUST first follow the steps specified in section 3.2.5.1.
 
@@ -7974,7 +7761,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Any new streams that are transmitted as a result of the stream-switch-entry token MUST be
+
+Any new streams that are transmitted as a result of the stream-switch-entry token MUST be
 transmitted beginning with an ASF key-frame payload. Details about how to determine whether an
 ASF payload contains a key-frame are as specified in ASF
 
@@ -7984,9 +7772,9 @@ the Incarnation variable (section 2.2.2.6). If the server chooses to increment t
 MUST do it for both $M and $H packets so that the Incarnation field for both packet types stays
 synchronized.
 
-3.2.5.10
+##### 3.2.5.10 Receiving a Stop Request
 
-Receiving a Stop Request
+
 
 The server MUST first follow the steps defined in section 3.2.5.1.
 
@@ -7998,9 +7786,9 @@ The Session-State variable MUST be set to IDLE.
 
 The Stop response MUST follow the rules in sections 3.2.5.2 and 2.2.2.10.
 
-3.2.5.11
+##### 3.2.5.11 Receiving a Log Request
 
-Receiving a Log Request
+
 
 The server MUST first follow the steps defined in section 3.2.5.1.
 
@@ -8031,9 +7819,9 @@ packets and MUST add the Log response to the tail of the list in the Pending-Res
 If the server does not add the Log response to the Pending-Responses variable, then the server
 MUST send the Log response.
 
-3.2.5.12
+##### 3.2.5.12 Receiving a SendEvent Request
 
-Receiving a SendEvent Request
+
 
 The server MUST first follow the steps defined in section 3.2.5.1.
 
@@ -8044,7 +7832,8 @@ Release: April 23, 2024
 
 106 / 157
 
-The server MUST check with the higher layer that the URL that the client specified in the request is
+
+The server MUST check with the higher layer that the URL that the client specified in the request is
 valid. If it is not, then this is an error, and the server MUST respond with a valid HTTP error status
 code, as specified in [RFC2616] section 10.
 
@@ -8070,9 +7859,9 @@ variable.
 If the server does not add the SendEvent response to the Pending-Responses variable, then the
 server MUST send the SendEvent response.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Pipeline-Test Timer Expires
+##### 3.2.6.1 Pipeline-Test Timer Expires
 
 When the Pipeline-Test timer expires, the server MUST set the value of the Pipeline-Test-Timer-
 Running variable to 0 and then the server MUST send a zero-length chunk to terminate the response
@@ -8080,14 +7869,14 @@ to the first pipeline request (section 2.2.2.5).
 
 The Pipeline-Test timer MUST remain in a stopped state.
 
-3.2.6.2  Idle-Timeout Timer Expires
+##### 3.2.6.2 Idle-Timeout Timer Expires
 
 When the Idle-Timeout timer expires, the server MUST close any TCP connections that are still open to
 the client. After that, the server MUST delete the session state, invalidating the Client-ID variable.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  TCP Connection Is Closed by the Client
+##### 3.2.7.1 TCP Connection Is Closed by the Client
 
 If the value of the Session-State variable in the abstract data model is STREAMING, and the TCP
 connection is identified by the value of the Data-Connection variable, then the Session-State
@@ -8101,13 +7890,14 @@ Release: April 23, 2024
 
 107 / 157
 
-<!-- Extracted images from page 108 -->
+
+<!-- Extracted images from page 108 -->
 ![Extracted image 1 from page 108]([MS-WMSP].images/page108-img01.png)
 <!-- /Extracted images from page 108 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Server States in Non-Pipelined Mode
+### 4.1 Server States in Non-Pipelined Mode
 
 The following diagram shows the server states:
 
@@ -8131,7 +7921,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The presence of a caching proxy server introduces an additional state, indicated by the dotted box
 in the preceding server states diagram. This state is not applicable during direct server and client
@@ -8185,7 +7976,7 @@ the protocol. The Connection: Keep-Alive header is described in Hypertext Transf
 
 For more information about sequencing associated with the various server states, see section 3.2.
 
-4.2  Server States in Pipelined Mode
+### 4.2 Server States in Pipelined Mode
 
 The following figure shows the server states and sequencing.
 
@@ -8196,7 +7987,8 @@ Release: April 23, 2024
 
 109 / 157
 
-<!-- Extracted images from page 110 -->
+
+<!-- Extracted images from page 110 -->
 ![Extracted image 1 from page 110]([MS-WMSP].images/page110-img01.png)
 <!-- /Extracted images from page 110 -->
 
@@ -8227,7 +8019,8 @@ Release: April 23, 2024
 
 110 / 157
 
-  A TCP connection is initiated with a server when a client issues its first Describe request containing
+
+  A TCP connection is initiated with a server when a client issues its first Describe request containing
 a Request-URI ([RFC2616] section 5.1.2) corresponding to the virtual publishing point for content
 on the server. (The content can be stored or live.) This first Describe request initiates the server
 Idle state.
@@ -8272,7 +8065,7 @@ information, see section 4.8.
 
 For more information about sequencing associated with the various server states, see section 3.2.
 
-4.3  Packet-Pair Bandwidth Estimation
+### 4.3 Packet-Pair Bandwidth Estimation
 
 Packet-pair is a technique for estimating the bandwidth of a streaming media connection over the
 Internet.
@@ -8303,7 +8096,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 112 -->
+
+<!-- Extracted images from page 112 -->
 ![Extracted image 1 from page 112]([MS-WMSP].images/page112-img01.png)
 <!-- /Extracted images from page 112 -->
 
@@ -8359,7 +8153,8 @@ Release: April 23, 2024
 
 112 / 157
 
- HTTP/1.0 200 OK
+
+ HTTP/1.0 200 OK
  Content-Length: 5227
  Content-Type: application/vnd.ms.wms-hdr.asfv1
  Server: Cougar/9.01.01.3814
@@ -8376,7 +8171,7 @@ Release: April 23, 2024
  $M......<metadata payload>
  $H......<header payload>
 
-4.4  Playlist Streaming
+### 4.4 Playlist Streaming
 
 The following sequence occurs between a client and server during playlist streaming using predictive
 stream selection. The sequencing applies to both the pipelined mode and non-pipelined mode of
@@ -8427,7 +8222,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 114 -->
+
+<!-- Extracted images from page 114 -->
 ![Extracted image 1 from page 114]([MS-WMSP].images/page114-img01.png)
 <!-- /Extracted images from page 114 -->
 
@@ -8441,7 +8237,7 @@ The following figure shows the sequence described.
 
 Figure 4: Sequencing during normal playlist streaming
 
-4.5  Server-Side Playlist Streaming
+### 4.5 Server-Side Playlist Streaming
 
 The client can seek and skip to a new entry within a server-side playlist. For more information, see
 section 4.5.1. The following sequence occurs between a client and server during a server-side playlist
@@ -8456,7 +8252,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  The server responds with a $H (Header) packet.
+
+2.  The server responds with a $H (Header) packet.
 
 3.  The client sends a Play request for the file, selecting one or more streams.
 
@@ -8519,13 +8316,14 @@ Release: April 23, 2024
 
 115 / 157
 
-<!-- Extracted images from page 116 -->
+
+<!-- Extracted images from page 116 -->
 ![Extracted image 1 from page 116]([MS-WMSP].images/page116-img01.png)
 <!-- /Extracted images from page 116 -->
 
 Figure 5: Sequencing during normal playlist streaming
 
-4.5.1  Seeking and Skipping in Server-Side Playlists
+#### 4.5.1 Seeking and Skipping in Server-Side Playlists
 
 The following sequence occurs between a client and server during seeking or skipping in server-side
 playlists. This sequence applies to both the pipelined mode and non-pipelined mode of the
@@ -8547,7 +8345,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  The client sends a Log request for the previous play.
+
+2.  The client sends a Log request for the previous play.
 
 Note  When the non-pipelined mode of the protocol is used, the client sends the Log request
 over a new TCP connection. This request contains the client identifier in the client-id token on
@@ -8594,7 +8393,8 @@ Release: April 23, 2024
 
 117 / 157
 
-<!-- Extracted images from page 118 -->
+
+<!-- Extracted images from page 118 -->
 ![Extracted image 1 from page 118]([MS-WMSP].images/page118-img01.png)
 <!-- /Extracted images from page 118 -->
 
@@ -8607,7 +8407,8 @@ Release: April 23, 2024
 
 118 / 157
 
-<!-- Extracted images from page 119 -->
+
+<!-- Extracted images from page 119 -->
 ![Extracted image 1 from page 119]([MS-WMSP].images/page119-img01.png)
 <!-- /Extracted images from page 119 -->
 
@@ -8647,12 +8448,13 @@ Release: April 23, 2024
 
 119 / 157
 
- Pragma: playlist-seek-id=115
+
+ Pragma: playlist-seek-id=115
  Pragma: stream-switch-count=4
  Pragma: stream-switch-entry=ffff:1:0 ffff:2:2 ffff:4:2 ffff:5:0
  Accept-Language: en-us, *;q=0.1
 
-4.5.2  Server-Side Playlist Streaming with Predictive Stream Selection
+#### 4.5.2 Server-Side Playlist Streaming with Predictive Stream Selection
 
 The following sequence occurs between a client and server during a server-side playlist switch using
 either the pipelined mode or the non-pipelined mode of the protocol.
@@ -8716,7 +8518,8 @@ Release: April 23, 2024
 
 120 / 157
 
-<!-- Extracted images from page 121 -->
+
+<!-- Extracted images from page 121 -->
 ![Extracted image 1 from page 121]([MS-WMSP].images/page121-img01.png)
 <!-- /Extracted images from page 121 -->
 
@@ -8746,7 +8549,8 @@ Release: April 23, 2024
 
 121 / 157
 
- User-Agent: NSPlayer/9.0.0.2833
+
+ User-Agent: NSPlayer/9.0.0.2833
  Host: SampleServer
  X-Accept-Authentication: Negotiate, NTLM, Digest
  Pragma: client-id=2380927133
@@ -8770,7 +8574,7 @@ The following example shows a PlayNextEntry request.
  Pragma: stream-switch-count=4
  Pragma: stream-switch-entry=ffff:1:0 ffff:2:2 ffff:4:2 ffff:5:0
 
-4.6  Single File Streaming
+### 4.6 Single File Streaming
 
 The following sequence occurs between a client and server when streaming a single file. The
 sequencing applies to both the pipelined mode and the non-pipelined mode of the protocol.
@@ -8800,13 +8604,14 @@ Release: April 23, 2024
 
 122 / 157
 
-<!-- Extracted images from page 123 -->
+
+<!-- Extracted images from page 123 -->
 ![Extracted image 1 from page 123]([MS-WMSP].images/page123-img01.png)
 <!-- /Extracted images from page 123 -->
 
 Figure 9: Sequencing during single-file streaming
 
-4.7  Streaming and Stopping Playback by Using Non-Pipelined Mode
+### 4.7 Streaming and Stopping Playback by Using Non-Pipelined Mode
 
 The sequence described in this topic occurs between a client and server while streaming a file,
 pausing playback, and then resuming playback using the non-pipelined mode of the protocol.
@@ -8839,7 +8644,8 @@ Release: April 23, 2024
 
 123 / 157
 
-9.  The client sends a Play request for the same file, specifying the point or offset from which to
+
+9.  The client sends a Play request for the same file, specifying the point or offset from which to
 
 resume playback. If an offset is not specified, the client resumes playback from the beginning of
 the file.
@@ -8871,13 +8677,14 @@ Release: April 23, 2024
 
 124 / 157
 
-<!-- Extracted images from page 125 -->
+
+<!-- Extracted images from page 125 -->
 ![Extracted image 1 from page 125]([MS-WMSP].images/page125-img01.png)
 <!-- /Extracted images from page 125 -->
 
 Figure 10: Stream, pause, and resume packet sequencing
 
-4.8  Streaming and Stopping Playback by Using Pipelined Mode
+### 4.8 Streaming and Stopping Playback by Using Pipelined Mode
 
 The sequence described in this topic occurs between a client and server while streaming a file,
 pausing playback, and then resuming playback using the pipelined mode of the protocol.
@@ -8893,7 +8700,8 @@ Release: April 23, 2024
 
 125 / 157
 
-3.  The client sends a Play request for the file, selecting one or more streams.
+
+3.  The client sends a Play request for the file, selecting one or more streams.
 
 4.  The server responds with a $H (Header) packet and $D (Data) packets. HTTP 1.1 Chunked
 
@@ -8943,7 +8751,8 @@ Release: April 23, 2024
 
 126 / 157
 
-<!-- Extracted images from page 127 -->
+
+<!-- Extracted images from page 127 -->
 ![Extracted image 1 from page 127]([MS-WMSP].images/page127-img01.png)
 <!-- /Extracted images from page 127 -->
 
@@ -8952,7 +8761,7 @@ Figure 11: Stream, stop, and resume packet sequencing
 To prevent an idle connection from being disconnected, the client sends periodic KeepAlive requests to
 the server.
 
-4.9  Streaming, Stopping, and Striding Playback
+### 4.9 Streaming, Stopping, and Striding Playback
 
 The following sequence occurs between a client and server when streaming a file and then stopping
 it, followed by striding and stopping the file again by using either the pipelined or the non-
@@ -8965,7 +8774,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The client sends a Describe request to retrieve the ASF header.
+
+1.  The client sends a Describe request to retrieve the ASF header.
 
 2.  The server responds with a $H (Header) packet.
 
@@ -9008,13 +8818,14 @@ Release: April 23, 2024
 
 128 / 157
 
-<!-- Extracted images from page 129 -->
+
+<!-- Extracted images from page 129 -->
 ![Extracted image 1 from page 129]([MS-WMSP].images/page129-img01.png)
 <!-- /Extracted images from page 129 -->
 
 Figure 12: Stream, stop, stride, and stop packet sequencing
 
-4.10  Stream Selection
+### 4.10 Stream Selection
 
 The SelectStream request is sent by the client to notify the server which streams it requests. If a file
 contains only one stream, the SelectStream request will request that the server send the default
@@ -9044,7 +8855,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 130 -->
+
+<!-- Extracted images from page 130 -->
 ![Extracted image 1 from page 130]([MS-WMSP].images/page130-img01.png)
 <!-- /Extracted images from page 130 -->
 
@@ -9074,7 +8886,7 @@ The following figure shows the previously described sequence.
 
 Figure 13: Using the SelectStream Request packet sequencing
 
-4.11  Windows Media Encoder to Windows Media Server Pull Distribution
+### 4.11 Windows Media Encoder to Windows Media Server Pull Distribution
 
 Pull Distribution is a concept of the Media Streaming Server System [MS-MSSOD] in which streaming
 content is transmitted from a source, such as Windows Media Encoder or Windows Media Services
@@ -9087,7 +8899,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Streaming Protocol (WMSP) client role and WMSP server role to build a system that implements Pull
+
+Streaming Protocol (WMSP) client role and WMSP server role to build a system that implements Pull
 Distribution. The Distribution Server concept and its role in Pull Distribution are defined in [MS-
 MSSOD] section 1.1. In a Pull Distribution system, the Distribution Server uses the client role of a
 streaming protocol, such as WMSP, to connect to the source, which is typically an encoder. Similarly, if
@@ -9132,7 +8945,8 @@ Release: April 23, 2024
 
 131 / 157
 
-<!-- Extracted images from page 132 -->
+
+<!-- Extracted images from page 132 -->
 ![Extracted image 1 from page 132]([MS-WMSP].images/page132-img01.png)
 <!-- /Extracted images from page 132 -->
 
@@ -9172,7 +8986,8 @@ Release: April 23, 2024
 
 132 / 157
 
- <body of the response containing the headers ($H packets)>
+
+ <body of the response containing the headers ($H packets)>
 
 The client role of the Distribution Server sends a Play request for one or more streams, as shown in
 the following example.
@@ -9208,7 +9023,7 @@ such as fast-forward, rewind, seek, and pause are not available.
 
 For more information about the Pragma headers in these examples, see section 2.2.1.4.
 
-4.12  Windows Media Services HTTP Proxy Server Interaction
+### 4.12 Windows Media Services HTTP Proxy Server Interaction
 
 A server that is configured to operate as a proxy server provides the service of routing client requests
 to one or more origin servers that publish the streaming media content. In this case, the proxy
@@ -9235,7 +9050,8 @@ Release: April 23, 2024
 
 133 / 157
 
-For broadcast content, a proxy server might provide the capability to proxy live content from an origin
+
+For broadcast content, a proxy server might provide the capability to proxy live content from an origin
 server through another server. When a client requests live content, the proxy server checks whether it
 is already proxying the content. If so, it could split the streams and delivers the content to all of the
 requesting clients. If the proxy server is not proxying the content, it could establish a connection to
@@ -9263,7 +9079,8 @@ Release: April 23, 2024
 
 134 / 157
 
-<!-- Extracted images from page 135 -->
+
+<!-- Extracted images from page 135 -->
 ![Extracted image 1 from page 135]([MS-WMSP].images/page135-img01.png)
 <!-- /Extracted images from page 135 -->
 
@@ -9295,7 +9112,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 136 -->
+
+<!-- Extracted images from page 136 -->
 ![Extracted image 1 from page 136]([MS-WMSP].images/page136-img01.png)
 <!-- /Extracted images from page 136 -->
 
@@ -9304,7 +9122,7 @@ state transition; the proxy server will remain in its then current state.
 
 Figure 16: Caching proxy server state flow diagram
 
-4.12.1 Sequencing
+#### 4.12.1 Sequencing
 
 The general message sequence consists of the following steps:
 
@@ -9322,9 +9140,9 @@ indicated within the x-wms-stream-type directive on the Cache-Control header).
 
 steps are described in sections 4.12.1.1 and 4.12.1.2.
 
-4.12.1.1
+##### 4.12.1.1 On-Demand Content Delivery
 
-On-Demand Content Delivery
+
 
 The On-Demand Content Delivery consists of the following steps:
 
@@ -9355,7 +9173,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 137 -->
+
+<!-- Extracted images from page 137 -->
 ![Extracted image 1 from page 137]([MS-WMSP].images/page137-img01.png)
 <!-- /Extracted images from page 137 -->
 
@@ -9368,9 +9187,9 @@ media server that is configured as a cache/proxy server.
 
 Figure 17: On-demand content delivery
 
-4.12.1.2
+##### 4.12.1.2 Broadcast Content Delivery
 
-Broadcast Content Delivery
+
 
 The Broadcast Content Delivery consists of the following steps:
 
@@ -9381,7 +9200,8 @@ Release: April 23, 2024
 
 137 / 157
 
-1.  The cache/proxy server checks whether the stream can be split, as determined by the x-wms-
+
+1.  The cache/proxy server checks whether the stream can be split, as determined by the x-wms-
 
 proxy-split directive on the Cache-Control header.
 
@@ -9421,15 +9241,16 @@ Release: April 23, 2024
 
 138 / 157
 
-<!-- Extracted images from page 139 -->
+
+<!-- Extracted images from page 139 -->
 ![Extracted image 1 from page 139]([MS-WMSP].images/page139-img01.png)
 <!-- /Extracted images from page 139 -->
 
 Figure 18: Broadcast content delivery
 
-4.12.1.3
+##### 4.12.1.3 Cache/Proxy Server and Origin Server Communication
 
-Cache/Proxy Server and Origin Server Communication
+
 
 The following steps demonstrate the cache/proxy server and origin server communication:
 
@@ -9452,7 +9273,8 @@ Release: April 23, 2024
 
 139 / 157
 
-5.  If the content is not fully cached in the cache/proxy server's local cache, or if the content will not
+
+5.  If the content is not fully cached in the cache/proxy server's local cache, or if the content will not
 be cached, the cache/proxy server sends a Describe request followed by a Play request to the
 origin server.
 
@@ -9495,7 +9317,7 @@ Server to Client:
             com.microsoft.wm.predstrm, com.microsoft.wm.fastcache
  Content-Length: 0
 
-4.13  Packet Processing During Initialization
+### 4.13 Packet Processing During Initialization
 
 The following flow chart for packet processing during initialization illustrates the packet processing
 rules used by the client immediately after having sent a Describe Request. The processing rules
@@ -9509,13 +9331,14 @@ Release: April 23, 2024
 
 140 / 157
 
-<!-- Extracted images from page 141 -->
+
+<!-- Extracted images from page 141 -->
 ![Extracted image 1 from page 141]([MS-WMSP].images/page141-img01.png)
 <!-- /Extracted images from page 141 -->
 
 Figure 19: Flow chart for packet processing during initialization
 
-4.13.1 Parsing $M and $H Packets
+#### 4.13.1 Parsing $M and $H Packets
 
 The following flow chart for parsing $M and $H packets illustrates the packet processing rules used by
 the client when receiving $H and $M packets. The processing rules corresponding to this flow chart are
@@ -9528,13 +9351,14 @@ Release: April 23, 2024
 
 141 / 157
 
-<!-- Extracted images from page 142 -->
+
+<!-- Extracted images from page 142 -->
 ![Extracted image 1 from page 142]([MS-WMSP].images/page142-img01.png)
 <!-- /Extracted images from page 142 -->
 
 Figure 20: Parsing $M and $H packets flow chart
 
-4.14  Packet Processing During Streaming
+### 4.14 Packet Processing During Streaming
 
 The flow chart in this section illustrates the packet processing rules used by the client during
 streaming.  The flow chart starts with the packet processing requirements resulting from the rules in
@@ -9548,7 +9372,8 @@ Release: April 23, 2024
 
 142 / 157
 
-<!-- Extracted images from page 143 -->
+
+<!-- Extracted images from page 143 -->
 ![Extracted image 1 from page 143]([MS-WMSP].images/page143-img01.png)
 <!-- /Extracted images from page 143 -->
 
@@ -9561,9 +9386,10 @@ Release: April 23, 2024
 
 143 / 157
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
  The Windows Media HTTP Streaming Protocol is vulnerable to a session hijacking attack in which the
 attacker guesses the value of the client-id (section 2.2.1.4.5) token on the Pragma header and the
@@ -9574,7 +9400,7 @@ a good random number generator when creating client-id values. Also, if HTTP Acc
 is used, the server needs to authenticate access at least once on each new URL or TCP connection, or,
 preferably, on each Play request.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -9589,7 +9415,8 @@ Release: April 23, 2024
 
 144 / 157
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -9656,7 +9483,8 @@ Release: April 23, 2024
 
 145 / 157
 
-Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
+
+Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
 using the terms "SHOULD" or "SHOULD NOT" implies product behavior in accordance with the
 SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
@@ -9724,7 +9552,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-role on Windows (listed in the introduction to this section) will typically close the connection to the
+
+role on Windows (listed in the introduction to this section) will typically close the connection to the
 server and display an error message to the user.
 
 <17> Section 2.2.1.4.1: This token is supported by Windows Media Player for Windows XP, Windows
@@ -9790,7 +9619,8 @@ Release: April 23, 2024
 
 147 / 157
 
-<29> Section 2.2.1.4.15: This token is supported by Windows Media Format 9 Series SDK, Windows
+
+<29> Section 2.2.1.4.15: This token is supported by Windows Media Format 9 Series SDK, Windows
 Media Format 9.5 SDK, Windows Vista and later, and by Windows Media Services on Windows Server
 2003, Windows Server 2008, and Windows Server 2008 R2.
 
@@ -9858,7 +9688,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-and later, and by Windows Media Services on Windows Server 2003, Windows Server 2008, and
+
+and later, and by Windows Media Services on Windows Server 2003, Windows Server 2008, and
 Windows Server 2008 R2.
 
 <42> Section 2.2.1.4.38: The pipelined mode of the protocol, and hence also this token, is only
@@ -10027,7 +9858,8 @@ Release: April 23, 2024
 
 149 / 157
 
-Product name
+
+Product name
 
 Client-token  Major  Minor
 
@@ -10181,7 +10013,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<49> Section 2.2.1.12: This header is supported by Windows Media Format 9.5 SDK, Windows Vista
+
+<49> Section 2.2.1.12: This header is supported by Windows Media Format 9.5 SDK, Windows Vista
 and later, and by Windows Media Services on Windows Server 2003, Windows Server 2008, and
 Windows Server 2008 R2.
 
@@ -10247,7 +10080,8 @@ Release: April 23, 2024
 
 151 / 157
 
-<63> Section 3.1.5.1: The Cookie (section 2.2.1.3) header can be sent by Windows Media Format 9
+
+<63> Section 3.1.5.1: The Cookie (section 2.2.1.3) header can be sent by Windows Media Format 9
 Series SDK, Windows Media Format 9.5 SDK, and Windows Vista.
 
 <64> Section 3.1.5.3: Windows Media Player 6, Windows Media Format 7.0 SDK, Windows Media
@@ -10314,7 +10148,8 @@ Windows Media HTTP Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -10358,7 +10193,8 @@ Release: April 23, 2024
 
 153 / 157
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -10504,7 +10340,8 @@ K
 
 154 / 157
 
-KeepAlive request 46
+
+KeepAlive request 46
 KeepAlive timer expires 92
 
 P
@@ -10647,7 +10484,8 @@ Receiving a Stop response 91
 
 155 / 157
 
-Receiving requests 96
+
+Receiving requests 96
 Receiving responses 85
 References 11
    informative 12
@@ -10792,7 +10630,8 @@ x-wms-event-subscription 17
 
 156 / 157
 
-x-wms-proxy-split 17
+
+x-wms-proxy-split 17
 x-wms-stream-type 17
 
 [MS-WMSP] - v20240423

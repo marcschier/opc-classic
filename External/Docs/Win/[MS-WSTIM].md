@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 62
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -294,7 +295,8 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -426,293 +428,119 @@ Release: April 23, 2024
 
 3 / 62
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Identity Objects .......................................................................................... 10
-Dialect ...................................................................................................... 11
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Common Message Syntax ................................................................................. 13
-Namespaces .............................................................................................. 13
-Messages ................................................................................................... 13
-Elements ................................................................................................... 14
-AttributeType ....................................................................................... 14
-AttributeTypeAndValue .......................................................................... 14
-AttributeTypeNotValidForDialect .............................................................. 14
-AttributeTypeNotValidForEntry ................................................................ 15
-AttributeTypeOrValueAlreadyExists ......................................................... 15
-IdentityManagementOperation ................................................................ 16
-Complex Types ........................................................................................... 16
-AttributeTypeAndValueXmlType .............................................................. 16
-ExtensibleType ..................................................................................... 16
-ValueXmlType ...................................................................................... 17
-Simple Types ............................................................................................. 17
-Attributes .................................................................................................. 17
-SizeLimit .............................................................................................. 17
-Dialect ................................................................................................. 17
-Groups ...................................................................................................... 18
-Attribute Groups ......................................................................................... 18
-Directory Service Schema Elements ................................................................... 18
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-
-2.2.6.1
-2.2.6.2
-
-2.2.5
-2.2.6
-
-2.2.7
-2.2.8
-
-2.2.4
-
-2.3
-
-3.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 19
-Common Server Processing ............................................................................... 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-SOAP Header Processing ........................................................................ 20
-SOAP Faults ......................................................................................... 20
-wsman:AccessDenied ....................................................................... 21
-wsman:AlreadyExists ....................................................................... 22
-wsman:CannotProcessFilter .............................................................. 22
-wsa2004:DestinationUnreachable ...................................................... 23
-wsman:EncodingLimit ...................................................................... 23
-wsa2004:EndpointUnavailable ........................................................... 24
-wsman:FragmentDialectNotSupported ............................................... 24
-wxf:InvalidRepresentation ................................................................ 25
-
-3.1.4.2.1
-3.1.4.2.2
-3.1.4.2.3
-3.1.4.2.4
-3.1.4.2.5
-3.1.4.2.6
-3.1.4.2.7
-3.1.4.2.8
-
-[MS-WSTIM] - v20240423
-WS-Transfer: Identity Management Operations for Directory Access Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 62
-
-3.2.4.2
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.2.4.2.1
-
-3.2.4.1.3
-
-3.2.4.1.2
-
-3.2.4.1.1
-
-3.2.4.1.3.1
-
-3.2.4.1.2.1
-3.2.4.1.2.2
-
-3.2.4.1.1.1
-3.2.4.1.1.2
-
-3.2.4.2.1.1
-3.2.4.2.1.2
-
-3.1.4.2.9
-wsman:SchemaValidationError .......................................................... 26
-3.1.4.2.10  UnwillingToPerform .......................................................................... 26
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 27
-Resource Server Details .................................................................................... 27
-Abstract Data Model .................................................................................... 27
-Timers ...................................................................................................... 27
-Initialization ............................................................................................... 27
-Message Processing Events and Sequencing Rules .......................................... 28
-Get ..................................................................................................... 28
-Messages ....................................................................................... 29
-BaseObjectSearchRequestMessage ............................................... 29
-BaseObjectSearchResponseMessage ............................................. 29
-Elements ........................................................................................ 29
-BaseObjectSearchRequest ........................................................... 29
-BaseObjectSearchResponse......................................................... 30
-Complex Types ............................................................................... 31
-PartialAttributeXmlType .............................................................. 31
-Put ...................................................................................................... 31
-Messages ....................................................................................... 31
-ModifyRequestMessage ............................................................... 31
-ModifyResponseMessage ............................................................. 32
-Elements ........................................................................................ 32
-ModifyRequest ........................................................................... 32
-Change ..................................................................................... 32
-Simple Types .................................................................................. 33
-OperationXmlType ..................................................................... 33
-Delete ................................................................................................. 34
-Timer Events .............................................................................................. 34
-Other Local Events ...................................................................................... 34
-ResourceFactory Server Details .......................................................................... 34
-Abstract Data Model .................................................................................... 34
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Message Processing Events and Sequencing Rules .......................................... 35
-Create ................................................................................................. 35
-Messages ....................................................................................... 35
-AddRequestMessage ................................................................... 35
-AddResponseMessage ................................................................. 36
-Elements ........................................................................................ 36
-AddRequest ............................................................................... 36
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-
-3.2.4.2.2.1
-3.2.4.2.2.2
-
-3.3.4.1.1.1
-3.3.4.1.1.2
-
-3.2.4.2.3.1
-
-3.3.4.1.2.1
-
-3.2.4.2.2
-
-3.2.4.2.3
-
-3.3.4.1.1
-
-3.3.4.1.2
-
-3.2.4.3
-
-3.3
-
-3.2.5
-3.2.6
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.4.1
-
-3.3.5
-3.3.6
-
-4  Protocol Examples ................................................................................................. 38
-Example of Creating an Identity Object ............................................................... 38
-Example of Retrieving Attribute Types from an Identity Object .............................. 39
-Example of Retrieving the Complete XML Representation of an Identity Object ........ 41
-Example of Modifying an Identity Object ............................................................. 44
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 46
-Security Considerations for Implementers ........................................................... 46
-Index of Security Parameters ............................................................................ 46
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 47
-
-7  Appendix B: Product Behavior ............................................................................... 52
-
-8  Change Tracking .................................................................................................... 57
-
-[MS-WSTIM] - v20240423
-WS-Transfer: Identity Management Operations for Directory Access Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 62
-
-9  Index ..................................................................................................................... 58
-
-[MS-WSTIM] - v20240423
-WS-Transfer: Identity Management Operations for Directory Access Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 62
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Identity Objects](#131-identity-objects)
+    - [1.3.2 Dialect](#132-dialect)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+      - [2.2.3.1 AttributeType](#2231-attributetype)
+      - [2.2.3.2 AttributeTypeAndValue](#2232-attributetypeandvalue)
+      - [2.2.3.3 AttributeTypeNotValidForDialect](#2233-attributetypenotvalidfordialect)
+      - [2.2.3.4 AttributeTypeNotValidForEntry](#2234-attributetypenotvalidforentry)
+      - [2.2.3.5 AttributeTypeOrValueAlreadyExists](#2235-attributetypeorvaluealreadyexists)
+      - [2.2.3.6 IdentityManagementOperation](#2236-identitymanagementoperation)
+    - [2.2.4 Complex Types](#224-complex-types)
+      - [2.2.4.1 AttributeTypeAndValueXmlType](#2241-attributetypeandvaluexmltype)
+      - [2.2.4.2 ExtensibleType](#2242-extensibletype)
+      - [2.2.4.3 ValueXmlType](#2243-valuexmltype)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+      - [2.2.6.1 SizeLimit](#2261-sizelimit)
+      - [2.2.6.2 Dialect](#2262-dialect)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Server Processing](#31-common-server-processing)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 SOAP Header Processing](#3141-soap-header-processing)
+      - [3.1.4.2 SOAP Faults](#3142-soap-faults)
+        - [3.1.4.2.1 wsman:AccessDenied](#31421-wsmanaccessdenied)
+        - [3.1.4.2.2 wsman:AlreadyExists](#31422-wsmanalreadyexists)
+        - [3.1.4.2.3 wsman:CannotProcessFilter](#31423-wsmancannotprocessfilter)
+        - [3.1.4.2.4 wsa2004:DestinationUnreachable](#31424-wsa2004destinationunreachable)
+        - [3.1.4.2.5 wsman:EncodingLimit](#31425-wsmanencodinglimit)
+        - [3.1.4.2.6 wsa2004:EndpointUnavailable](#31426-wsa2004endpointunavailable)
+        - [3.1.4.2.7 wsman:FragmentDialectNotSupported](#31427-wsmanfragmentdialectnotsupported)
+        - [3.1.4.2.8 wxf:InvalidRepresentation](#31428-wxfinvalidrepresentation)
+        - [3.1.4.2.9 wsman:SchemaValidationError](#31429-wsmanschemavalidationerror)
+        - [3.1.4.2.10 UnwillingToPerform](#314210-unwillingtoperform)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Resource Server Details](#32-resource-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Get](#3241-get)
+        - [3.2.4.1.1 Messages](#32411-messages)
+          - [3.2.4.1.1.1 BaseObjectSearchRequestMessage](#324111-baseobjectsearchrequestmessage)
+          - [3.2.4.1.1.2 BaseObjectSearchResponseMessage](#324112-baseobjectsearchresponsemessage)
+        - [3.2.4.1.2 Elements](#32412-elements)
+          - [3.2.4.1.2.1 BaseObjectSearchRequest](#324121-baseobjectsearchrequest)
+          - [3.2.4.1.2.2 BaseObjectSearchResponse](#324122-baseobjectsearchresponse)
+        - [3.2.4.1.3 Complex Types](#32413-complex-types)
+          - [3.2.4.1.3.1 PartialAttributeXmlType](#324131-partialattributexmltype)
+      - [3.2.4.2 Put](#3242-put)
+        - [3.2.4.2.1 Messages](#32421-messages)
+          - [3.2.4.2.1.1 ModifyRequestMessage](#324211-modifyrequestmessage)
+          - [3.2.4.2.1.2 ModifyResponseMessage](#324212-modifyresponsemessage)
+        - [3.2.4.2.2 Elements](#32422-elements)
+          - [3.2.4.2.2.1 ModifyRequest](#324221-modifyrequest)
+          - [3.2.4.2.2.2 Change](#324222-change)
+        - [3.2.4.2.3 Simple Types](#32423-simple-types)
+          - [3.2.4.2.3.1 OperationXmlType](#324231-operationxmltype)
+      - [3.2.4.3 Delete](#3243-delete)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 ResourceFactory Server Details](#33-resourcefactory-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 Create](#3341-create)
+        - [3.3.4.1.1 Messages](#33411-messages)
+          - [3.3.4.1.1.1 AddRequestMessage](#334111-addrequestmessage)
+          - [3.3.4.1.1.2 AddResponseMessage](#334112-addresponsemessage)
+        - [3.3.4.1.2 Elements](#33412-elements)
+          - [3.3.4.1.2.1 AddRequest](#334121-addrequest)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example of Creating an Identity Object](#41-example-of-creating-an-identity-object)
+  - [4.2 Example of Retrieving Attribute Types from an Identity Object](#42-example-of-retrieving-attribute-types-from-an-identity-object)
+  - [4.3 Example of Retrieving the Complete XML Representation of an Identity Object](#43-example-of-retrieving-the-complete-xml-representation-of-an-identity-object)
+  - [4.4 Example of Modifying an Identity Object](#44-example-of-modifying-an-identity-object)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The WS-Transfer: Identity Management Operations for Directory Access Extensions (IMDA) are a set
 of extensions to the WS-Transfer protocol [WXFR] for representing the protocol operations commonly
@@ -729,7 +557,7 @@ the WS-Management protocol [DMTF-DSP0226].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -785,7 +613,8 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-endpoint: In the context of a web service, a network target to which a SOAP message can be
+
+endpoint: In the context of a web service, a network target to which a SOAP message can be
 
 addressed. See [WSADDR].
 
@@ -864,7 +693,8 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SOAP header block: The XML block containing the SOAP header entries within a SOAP header.
+
+SOAP header block: The XML block containing the SOAP header entries within a SOAP header.
 
 See [SOAP1.2-1/2007] section 5.2.1 for more information.
 
@@ -916,14 +746,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -936,7 +766,8 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[DMTF-DSP0226] Distributed Management Task Force, Inc., "Web Services for Management (WS-
+
+[DMTF-DSP0226] Distributed Management Task Force, Inc., "Web Services for Management (WS-
 Management) Specification", version 1.0.0, February 2008,
 http://dmtf.org/sites/default/files/standards/documents/DSP0226_1.0.0.pdf
 
@@ -1002,12 +833,13 @@ Release: April 23, 2024
 
 10 / 62
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MSFT-RSAT] Microsoft Corporation, "Remote Server Administration Tools (RSAT) for Windows
 operating systems", https://support.microsoft.com/en-us/kb/2693643
 
-1.3  Overview
+### 1.3 Overview
 
 IMDA is an extension to the WS-Transfer protocol [WXFR]. WS-Transfer permits the XML [XML10]
 representation of resources to be created, modified, retrieved, and deleted. WS-Transfer operates at
@@ -1054,7 +886,7 @@ of the communication session can understand. IMDA specifies SOAP faults for the 
 operations listed in this section as well as for the WS-Transfer Delete operation (which is not otherwise
 extended by IMDA).
 
-1.3.1  Identity Objects
+#### 1.3.1 Identity Objects
 
 IMDA operates on a type of resource known as an identity object. An identity object is a collection
 of one or more identity attributes. An example of a kind of identity object is a directory object.
@@ -1068,7 +900,8 @@ Release: April 23, 2024
 
 11 / 62
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-WSTIM].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1084,7 +917,7 @@ The identity attribute value is represented as an XML element. An identity attri
 more identity attribute values. For example, in an identity attribute for a user's telephone numbers,
 each phone number could be represented as an identity attribute value.
 
-1.3.2  Dialect
+#### 1.3.2 Dialect
 
 A single identity attributes within an identity object can be identified in multiple ways. In other
 words, there could be multiple identity attribute types that each name the same identity attribute.
@@ -1098,18 +931,18 @@ different dialect of identity attribute type.
 Formally, a dialect is a specification of the format of identity attribute types. Each dialect is uniquely
 identified by a unique Uniform Resource Identifier (URI).
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The IMDA protocol extensions depend on WS-Transfer [WXFR], built on top of SOAP [SOAP1.2-
 1/2003], as shown in the following diagram.
 
 Figure 1: IMDA protocol stack
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol extension does not assume any prerequisites or preconditions.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Use of the IMDA protocol extensions is suitable when access to XML representations of identity
 objects by means of a WS-Transfer is required and that access needs to be performed at a level of
@@ -1123,10 +956,11 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-other than WS-Transfer for providing access to a directory service. It might also not be useful in
+
+other than WS-Transfer for providing access to a directory service. It might also not be useful in
 applications where the directory objects are represented using a means other than XML.<2>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1142,11 +976,11 @@ support sending SOAP messages as described in section 2.1.
 
 considerations for such strings are specified in section 3.1.4.2.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol extension has no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  There are no standards assignments for this protocol extension.
 
@@ -1157,22 +991,23 @@ Release: April 23, 2024
 
 13 / 62
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 IMDA imposes no transport requirements or behaviors beyond those of the underlying WS-Transfer
 [WXFR] protocol. WS-Transfer provides SOAP bindings for both SOAP 1.1 [SOAP1.1] and SOAP 1.2
 [SOAP1.2-1/2003]. All messages MUST be formatted as specified by either SOAP 1.1 or SOAP
 1.2.<3>
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description
 Language as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1248,7 +1083,7 @@ Two versions of the WS-Addressing namespace are included in the preceding table,
 However, some of the faults incorporated into IMDA are based on the WS-Management [DMTF-
 DSP0226] protocol, which uses [WSAddressing].
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any WSDL messages that are used in more than one operation.
 
@@ -1259,7 +1094,8 @@ Release: April 23, 2024
 
 14 / 62
 
-2.2.3  Elements
+
+#### 2.2.3 Elements
 
 The following table summarizes the set of common XML schema element definitions defined by this
 specification. XML schema element definitions that are specific to a particular operation are described
@@ -1296,7 +1132,7 @@ IdentityManagementOperation
 Used in the SOAP header block to indicate a SOAP request message uses
 the IMDA protocol extensions.
 
-2.2.3.1  AttributeType
+##### 2.2.3.1 AttributeType
 
 The AttributeType element's value is an identity attribute type. The dialect used in the identity
 attribute type is not specified in the AttributeType but rather elsewhere in the operation-specific SOAP
@@ -1310,7 +1146,7 @@ message.
      </xsd:complexType>
  </xsd:element>
 
-2.2.3.2  AttributeTypeAndValue
+##### 2.2.3.2 AttributeTypeAndValue
 
 The AttributeTypeAndValue element specifies an identity attribute type and optional identity
 attribute value(s). Whether identity attribute values are included is a behavior defined by the
@@ -1320,7 +1156,7 @@ the use of the AttributeTypeAndValue element.
  <xsd:element name="AttributeTypeAndValue"
               type="AttributeTypeAndValueXmlType" />
 
-2.2.3.3  AttributeTypeNotValidForDialect
+##### 2.2.3.3 AttributeTypeNotValidForDialect
 
 The AttributeTypeNotValidForDialect element MAY<4> be used in a SOAP fault to indicate that the
 client specified one or more identity attribute types that were not valid expressions in the dialect
@@ -1335,7 +1171,8 @@ Release: April 23, 2024
 
 15 / 62
 
-     <xsd:complexType>
+
+     <xsd:complexType>
          <xsd:sequence>
              <xsd:element ref="AttributeType"
                           minOccurs="1" maxOccurs="unbounded" />
@@ -1348,7 +1185,7 @@ AttributeType: This element contains the invalid identity attribute type that wa
 client. This element can be present multiple times if multiple invalid identity attribute types were
 supplied.
 
-2.2.3.4  AttributeTypeNotValidForEntry
+##### 2.2.3.4 AttributeTypeNotValidForEntry
 
  The AttributeTypeNotValidForEntry element MAY<5> be used in a SOAP fault to indicate that the
 client specified an identity attribute that was not valid for the identity object that was the target of
@@ -1369,7 +1206,7 @@ attribute. The dialect used for the identity attribute type MUST be the same dia
 used in the SOAP request message. This element can be present multiple times if multiple invalid
 identity attributes were specified.
 
-2.2.3.5  AttributeTypeOrValueAlreadyExists
+##### 2.2.3.5 AttributeTypeOrValueAlreadyExists
 
 The AttributeTypeOrValueAlreadyExists element MAY<6> be used in a SOAP fault to indicate that the
 client specified at least one combination of an identity attribute and identity attribute value(s)
@@ -1401,18 +1238,19 @@ Release: April 23, 2024
 
 16 / 62
 
-AttributeTypeAndValue.AttributeValue: This element, if present, contains the identity attribute
+
+AttributeTypeAndValue.AttributeValue: This element, if present, contains the identity attribute
 
 value(s) that would be duplicated.
 
-2.2.3.6  IdentityManagementOperation
+##### 2.2.3.6 IdentityManagementOperation
 
 The IdentityManagementOperation element is used as a SOAP header in SOAP messages that
 request a WS-Transfer operation using IMDA protocol extensions to be performed.
 
  <xsd:element name="IdentityManagementOperation" />
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 The following table summarizes the set of common XML schema complex type definitions defined by
 this specification. XML schema complex type definitions that are specific to a particular operation are
@@ -1436,7 +1274,7 @@ ValueXmlType
 
 A type that contains identity attribute value(s).
 
-2.2.4.1  AttributeTypeAndValueXmlType
+##### 2.2.4.1 AttributeTypeAndValueXmlType
 
 Elements of this type contain an identity attribute type and, optionally, identity attribute
 value(s). It is used as the type of the AttributeTypeAndValue element. It is also used in the definition
@@ -1457,7 +1295,7 @@ AttributeType: An identity attribute type.
 
 AttributeValue: If present, the contents of this element are identity attribute value(s).
 
-2.2.4.2  ExtensibleType
+##### 2.2.4.2 ExtensibleType
 
 This is a base type from which other XML types derive, such as those XML types used to represent an
 identity attribute type or identity attribute values. The content of this type is unconstrained. The
@@ -1470,7 +1308,8 @@ Release: April 23, 2024
 
 17 / 62
 
- <xsd:complexType name="ExtensibleType">
+
+ <xsd:complexType name="ExtensibleType">
      <xsd:complexContent mixed="true">
          <xsd:restriction base="xsd:anyType">
              <xsd:sequence>
@@ -1481,7 +1320,7 @@ Release: April 23, 2024
      </xsd:complexContent>
  </xsd:complexType>
 
-2.2.4.3  ValueXmlType
+##### 2.2.4.3 ValueXmlType
 
 Elements of this type contain identity attribute values. The format of the identity attribute value(s)
 is implementation-defined.<8>
@@ -1492,11 +1331,11 @@ is implementation-defined.<8>
      </xsd:complexContent>
  </xsd:complexType>
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 The following table summarizes the set of common XML schema attribute definitions defined by this
 specification. XML schema attributes that are specific to a particular operation are described with the
@@ -1513,7 +1352,7 @@ Dialect
 
 Used in request messages to specify the format of identity attribute types, see section 1.3.2.
 
-2.2.6.1  SizeLimit
+##### 2.2.6.1 SizeLimit
 
 The SizeLimit attribute is attached to a wsman:FaultDetail [DMTF-DSP0226] element to indicate to
 the client the maximum number of elements that the server will permit in a request. It is used in
@@ -1521,7 +1360,7 @@ conjunction with the wsman:EncodingLimit SOAP fault subcode (section 3.1.4.2.5).
 
  <xsd:attribute name="SizeLimit" type="xsd:nonNegativeInteger"/>
 
-2.2.6.2  Dialect
+##### 2.2.6.2 Dialect
 
 The Dialect attribute is used in request messages to specify the URI of the dialect (section 1.3.2)
 used for identity attribute types.
@@ -1533,17 +1372,18 @@ Release: April 23, 2024
 
 18 / 62
 
- <xsd:attribute name="Dialect" type="xsd:anyURI"/>
 
-2.2.7  Groups
+ <xsd:attribute name="Dialect" type="xsd:anyURI"/>
+
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML schema attribute group definitions.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol extension does not access directory service schema classes or attributes.
 Implementations of this protocol extension MAY<9> map identity objects to directory objects and
@@ -1556,7 +1396,8 @@ Release: April 23, 2024
 
 19 / 62
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections describe the behavior of the IMDA protocol extension. As an extension to WS-
 Transfer [WXFR], the IMDA extensions follow the same client-server model, in which a client sends a
@@ -1575,7 +1416,7 @@ required on the client side of this protocol. Calls made by the higher-layer pro
 passed directly to the transport, and the results returned by the transport are passed directly back to
 the higher-layer protocol or application.
 
-3.1  Common Server Processing
+### 3.1 Common Server Processing
 
 This section describes processing common to all operations on all port types. Specifically, it documents
 the abstract data model and initialization procedure common to all port types. This section also
@@ -1583,7 +1424,7 @@ discusses the SOAP header that is included by clients on SOAP messages to identi
 requests that make use of the IMDA extensions. It describes the set of SOAP faults that IMDA
 provides for servers to use to communicate errors to clients.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1621,7 +1462,8 @@ Release: April 23, 2024
 
 20 / 62
 
-the named dialect, the server interprets the identity attribute type in accord with the rules of that
+
+the named dialect, the server interprets the identity attribute type in accord with the rules of that
 dialect. Otherwise, the server rejects the request with a SOAP fault with a fault subcode of
 wsman:FragmentDialectNotSupported. Dialects are named by URIs, and the URI of a dialect is
 specified as the value of the attribute called Dialect in a request message.
@@ -1634,22 +1476,22 @@ multiple names). This is analogous to LDAP [RFC2251], where an LDAP attribute in
 model can, at the protocol level, be referred to in multiple ways (for example, the LDAP display name
 of the attribute or the OID of the attribute).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 These protocol extensions do not specify any timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When this protocol initializes, it MUST begin listening on endpoints for the Resource and
 ResourceFactory port types. The URIs for the endpoints, as well as the transport and security
 mechanisms to use, are implementation-dependent.<12>
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This section describes the SOAP header processing and SOAP faults that are common to all
 operations.
 
-3.1.4.1  SOAP Header Processing
+##### 3.1.4.1 SOAP Header Processing
 
 A client MUST include the IdentityManagementOperation element (section 2.2.3.6) as a SOAP header
 in any WS-Transfer Get, Put, or Create request that uses the IMDA protocol extensions. The client
@@ -1662,7 +1504,7 @@ the request entirely. If the server receives a WS-Transfer request that does not
 IdentityManagementOperation element as a SOAP header, the server SHOULD<13> treat the request
 as an ordinary WS-Transfer request that does not make use of the IMDA extensions.
 
-3.1.4.2  SOAP Faults
+##### 3.1.4.2 SOAP Faults
 
 This section documents the SOAP faults specified for use by servers that implement the IMDA
 protocol extensions. These faults SHOULD be used by servers while processing a WS-Transfer
@@ -1684,7 +1526,8 @@ Release: April 23, 2024
 
 21 / 62
 
-Some of the SOAP faults documented as follows specify English-language text in their fault reason.
+
+Some of the SOAP faults documented as follows specify English-language text in their fault reason.
 Server implementations are permitted to localize this text to other languages. Such localizations
 SHOULD maintain, to the extent possible, the same meaning as the English text supplied in this
 document.
@@ -1761,7 +1604,7 @@ UnwillingToPerform
 
 The server cannot perform the requested operation.
 
-3.1.4.2.1 wsman:AccessDenied
+###### 3.1.4.2.1 wsman:AccessDenied
 
 If the client sends a request that the server is unable or unwilling to perform because of an access
 control restriction, the server SHOULD reject the operation and return a SOAP fault with a fault
@@ -1786,7 +1629,8 @@ Release: April 23, 2024
 
 22 / 62
 
-Element
+
+Element
 
 Description
 
@@ -1802,7 +1646,7 @@ The operation failed due to insufficient access rights.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2.2 wsman:AlreadyExists
+###### 3.1.4.2.2 wsman:AlreadyExists
 
 If the client sends a Create request that specifies the creation of an identity object that already
 exists, the server SHOULD reject the operation and return a SOAP fault with a fault subcode of
@@ -1832,7 +1676,7 @@ The supplied entry already exists.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2.3 wsman:CannotProcessFilter
+###### 3.1.4.2.3 wsman:CannotProcessFilter
 
 If the client specifies:
 
@@ -1880,7 +1724,8 @@ Release: April 23, 2024
 
 23 / 62
 
-Element
+
+Element
 
 Description
 
@@ -1893,7 +1738,7 @@ Description
      </AttributeTypeNotValidForEntry>
  </soapenv:Detail>
 
-3.1.4.2.4 wsa2004:DestinationUnreachable
+###### 3.1.4.2.4 wsa2004:DestinationUnreachable
 
 If the client sends a Get, Put, or Delete request in which the target of the operation is an identity
 object that does not exist, the server SHOULD reject the operation and return a SOAP fault in which
@@ -1924,7 +1769,7 @@ Implementation-defined.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2.5 wsman:EncodingLimit
+###### 3.1.4.2.5 wsman:EncodingLimit
 
 If the server determines that the client has included too many elements in a request (for example, too
 many AttributeType elements in a Get request or too many Change elements in a Put request), the
@@ -1961,7 +1806,8 @@ Release: April 23, 2024
 
 24 / 62
 
-Element
+
+Element
 
 Description
 
@@ -1986,7 +1832,7 @@ number in a single message.
      </wsman:FaultDetail>
  </soapenv:Detail>
 
-3.1.4.2.6 wsa2004:EndpointUnavailable
+###### 3.1.4.2.6 wsa2004:EndpointUnavailable
 
 If the server is unable to process the client's request because of a lack of internal resources, the
 server MAY<22> reject the request and return a SOAP fault with a fault subcode of
@@ -2012,7 +1858,7 @@ http://schemas.xmlsoap.org/ws/2004/08/addressing/fault
 
 Implementation-defined and MAY be empty
 
-3.1.4.2.7 wsman:FragmentDialectNotSupported
+###### 3.1.4.2.7 wsman:FragmentDialectNotSupported
 
 If the client specifies a dialect in the SOAP request message that the server does not support, the
 server SHOULD reject the operation and return a SOAP fault with a fault subcode of
@@ -2050,14 +1896,15 @@ Release: April 23, 2024
 
 25 / 62
 
-Element
+
+Element
 
 Description
 
  </wsman:FragmentDialect>
  </soapenv:Detail>
 
-3.1.4.2.8 wxf:InvalidRepresentation
+###### 3.1.4.2.8 wxf:InvalidRepresentation
 
 If a client sends a request for a Create or Put operation that would result in an invalid representation
 of an identity object, the server SHOULD reject the operation and return a SOAP fault with a fault
@@ -2135,7 +1982,8 @@ Release: April 23, 2024
 
 26 / 62
 
-A server MAY<27> return the wxf:InvalidRepresentation fault for other server-defined reasons, with a
+
+A server MAY<27> return the wxf:InvalidRepresentation fault for other server-defined reasons, with a
 fault detail of the server's choosing.
 
 Element
@@ -2160,7 +2008,7 @@ The supplied representation is invalid.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2.9 wsman:SchemaValidationError
+###### 3.1.4.2.9 wsman:SchemaValidationError
 
 If the server determines that the client sent a SOAP message containing a request that does not
 conform to the XML schema definition of WS-Transfer and/or the IMDA protocol extensions, or that is
@@ -2194,7 +2042,7 @@ Implementations can choose any string to describe the reason for the schema vali
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2.10  UnwillingToPerform
+###### 3.1.4.2.10 UnwillingToPerform
 
 A server SHOULD return a SOAP fault with a fault subcode of UnwillingToPerform when the client
 sends a request that is syntactically valid but that the server cannot perform and for which there is no
@@ -2225,7 +2073,8 @@ Release: April 23, 2024
 
 27 / 62
 
-Element
+
+Element
 
 Description
 
@@ -2238,15 +2087,15 @@ operation.
 
  Implementation-defined and MAY be empty.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 There are no timer events in this protocol extension.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 There are no other local events in this protocol extension.
 
-3.2  Resource Server Details
+### 3.2 Resource Server Details
 
 This section describes the server behavior of the IMDA protocol extensions as they apply to WS-
 Transfer's [WXFR] Resource port type. In WS-Transfer, this port type is used to process three WSDL
@@ -2273,15 +2122,15 @@ by one or more SOAP headers. The choice of these SOAP headers and how they speci
 the operation is not defined by the IMDA protocol extensions but rather by the service that employs
 the IMDA extensions.<30>
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 See the abstract data model in the common processing section Abstract Data Model (section 3.1.1).
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no timers in this protocol extension.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 See the initialization in the common processing section 3.1.3.
 
@@ -2292,7 +2141,8 @@ Release: April 23, 2024
 
 28 / 62
 
-3.2.4  Message Processing Events and Sequencing Rules
+
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The Resource port type includes three operations.
 
@@ -2310,7 +2160,7 @@ Retrieves one or more identity attributes from an identity object.
 
 Modifies the contents of one or more identity attributes on an identity object.
 
-3.2.4.1  Get
+##### 3.2.4.1 Get
 
 A server processes a Get request using the IMDA protocol extensions upon receiving a SOAP
 message containing the IdentityManagementOperation SOAP header and specifying the following
@@ -2365,7 +2215,8 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-representation any identity attributes that the client is not permitted to retrieve the values of due
+
+representation any identity attributes that the client is not permitted to retrieve the values of due
 to access control policy. The server MAY<32> exclude additional identity attributes as well.
 
 The server then assembles and returns a SOAP message containing a BaseObjectSearchResponse
@@ -2379,11 +2230,11 @@ IMDA protocol extensions.
 If an error occurs while processing this operation, the server SHOULD reject the operation and return
 one of the SOAP faults specified in section 3.1.4.2.
 
-3.2.4.1.1 Messages
+###### 3.2.4.1.1 Messages
 
 The following WSDL message definitions are specific to this operation.
 
-3.2.4.1.1.1  BaseObjectSearchRequestMessage
+###### 3.2.4.1.1.1 BaseObjectSearchRequestMessage
 
 The BaseObjectSearchRequestMessage is sent by the client to the server to specify which identity
 attributes of the identity object targeted by the Get operation are to be returned or (if it contains
@@ -2395,7 +2246,7 @@ be returned.
                 element="BaseObjectSearchRequest"/>
  </wsdl:message>
 
-3.2.4.1.1.2  BaseObjectSearchResponseMessage
+###### 3.2.4.1.1.2 BaseObjectSearchResponseMessage
 
 The BaseObjectSearchResponseMessage is returned by the server as the result of a successful Get
 operation and contains either the identity attribute values or the XML representation of the
@@ -2407,11 +2258,11 @@ AttributeType elements.
                 element="BaseObjectSearchResponse"/>
  </wsdl:message>
 
-3.2.4.1.2 Elements
+###### 3.2.4.1.2 Elements
 
 The following XML schema element definitions are specific to this operation.
 
-3.2.4.1.2.1  BaseObjectSearchRequest
+###### 3.2.4.1.2.1 BaseObjectSearchRequest
 
 This element forms the body of the SOAP message sent by a client in an IMDA-extended Get
 request. It contains zero or more identity attribute types, specifying the identity attributes that
@@ -2430,7 +2281,8 @@ Release: April 23, 2024
 
 30 / 62
 
-representation of the identity object be returned to the client. In this case, the server SHOULD ignore
+
+representation of the identity object be returned to the client. In this case, the server SHOULD ignore
 the contents of the Dialect attribute.
 
  <xsd:element name="BaseObjectSearchRequest">
@@ -2453,7 +2305,7 @@ Dialect: The value of this attribute is the URI of the dialect used for the iden
 
 specified in the AttributeType elements.
 
-3.2.4.1.2.2  BaseObjectSearchResponse
+###### 3.2.4.1.2.2 BaseObjectSearchResponse
 
 This element forms the body of the SOAP message sent by the server in response to an IMDA-
 extended Get operation. It contains one or more PartialAttribute elements. The contents of the
@@ -2501,15 +2353,16 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the XML representation of the identity object. In the case of (1), this element can be present
+
+the XML representation of the identity object. In the case of (1), this element can be present
 multiple times (once for each AttributeType element in the BaseObjectSearchRequest). In the case
 of (2), this element is present exactly once.
 
-3.2.4.1.3 Complex Types
+###### 3.2.4.1.3 Complex Types
 
 The following XML schema complex type definitions are specific to this operation.
 
-3.2.4.1.3.1  PartialAttributeXmlType
+###### 3.2.4.1.3.1 PartialAttributeXmlType
 
 This type is used for identity attribute values (or for a representation of the entire identity object)
 returned by the server in a BaseObjectSearchResponse element. The contents of elements of this type
@@ -2523,7 +2376,7 @@ identity object is implementation-defined.<33>
      </xsd:complexContent>
  </xsd:complexType>
 
-3.2.4.2  Put
+##### 3.2.4.2 Put
 
 A server processes a Put request using the IMDA protocol extensions upon receiving a SOAP
 message containing the IdentityManagementOperation SOAP header and specifying the following
@@ -2553,11 +2406,11 @@ perform any modifications to the identity object.<35>
 If an error occurs while processing this operation, the server SHOULD reject the operation and return
 one of the SOAP faults specified in section 3.1.4.2.
 
-3.2.4.2.1 Messages
+###### 3.2.4.2.1 Messages
 
 The following WSDL message definitions are specific to this operation.
 
-3.2.4.2.1.1  ModifyRequestMessage
+###### 3.2.4.2.1.1 ModifyRequestMessage
 
 [MS-WSTIM] - v20240423
 WS-Transfer: Identity Management Operations for Directory Access Extensions
@@ -2566,7 +2419,8 @@ Release: April 23, 2024
 
 32 / 62
 
-The ModifyRequestMessage is sent by the client to the server to specify which identity attributes of
+
+The ModifyRequestMessage is sent by the client to the server to specify which identity attributes of
 the targeted identity object are to be modified and what those modifications (the addition, removal,
 or replacement of identity attribute values) are to be.
 
@@ -2574,7 +2428,7 @@ or replacement of identity attribute values) are to be.
      <wsdl:part name="ModifyRequestMessageBody" element="ModifyRequest"/>
  </wsdl:message>
 
-3.2.4.2.1.2  ModifyResponseMessage
+###### 3.2.4.2.1.2 ModifyResponseMessage
 
 The ModifyResponseMessage is returned by the server in response to a successful Put operation. It
 has an empty SOAP body and so conveys no information to the client other than that the Put
@@ -2584,11 +2438,11 @@ object is to be returned by the server.
 
  <wsdl:message name="ModifyResponseMessage" />
 
-3.2.4.2.2 Elements
+###### 3.2.4.2.2 Elements
 
 The following XML schema element definitions are specific to this operation.
 
-3.2.4.2.2.1  ModifyRequest
+###### 3.2.4.2.2.1 ModifyRequest
 
 This element specifies zero or more modifications to be performed to the identity attributes of the
 identity object targeted by the Put operation.
@@ -2614,7 +2468,7 @@ Dialect: The value of this attribute is the URI of the dialect used for the iden
 
 (the AttributeType elements) in the Change elements.
 
-3.2.4.2.2.2  Change
+###### 3.2.4.2.2.2 Change
 
 This element specifies a modification to one identity attribute in the identity object targeted by the
 Put operation. A modification can take the form of adding, replacing, or removing values from the
@@ -2632,7 +2486,8 @@ Release: April 23, 2024
 
 33 / 62
 
-                 <xsd:attribute name="Operation" type="OperationXmlType"
+
+                 <xsd:attribute name="Operation" type="OperationXmlType"
                                 use="required" />
              </xsd:extension>
          </xsd:complexContent>
@@ -2659,11 +2514,11 @@ and the server SHOULD reject the request and return a wsman:SchemaValidationErro
 if it is not specified. If the Operation attribute has a value of "delete" or "replace", the
 AttributeValue is optional. The effects of omitting it are described in section OperationXmlType.
 
-3.2.4.2.3 Simple Types
+###### 3.2.4.2.3 Simple Types
 
 The following XML schema simple definitions are specific to this operation.
 
-3.2.4.2.3.1  OperationXmlType
+###### 3.2.4.2.3.1 OperationXmlType
 
 This enumeration type is used to specify the value of the Operation attribute in the Change element. It
 indicates the type of modification to be performed to the identity attribute that is specified in the
@@ -2704,7 +2559,8 @@ Release: April 23, 2024
 
 34 / 62
 
-3.2.4.3  Delete
+
+##### 3.2.4.3 Delete
 
 A server processes a Delete request upon receiving a SOAP message specifying the following URI as
 the SOAP action.
@@ -2727,15 +2583,15 @@ processing rules for the Delete operation, and therefore the IdentityManagementO
 header is not used on Delete requests. Instead, IMDA simply extends the specification for WS-
 Transfer Delete by permitting the server to return any of the SOAP faults specified in section 3.1.4.2.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 There are no timer events in this protocol extension.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 There are no other local events in this protocol extension.
 
-3.3  ResourceFactory Server Details
+### 3.3 ResourceFactory Server Details
 
 This section describes the server behavior of the IMDA protocol extensions as they apply to WS-
 Transfer's [WXFR] ResourceFactory port type. In WS-Transfer, this port type is used to process the
@@ -2747,15 +2603,15 @@ Note that unlike operations performed on the Resource port type, the Create oper
 a specific identity object but rather causes the creation of an identity object that can subsequently be
 targeted by operations on the Resource port type.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 See the abstract data model in the common processing section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 There are no timers in this protocol extension.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 See the initialization in the common processing section 3.1.3.
 
@@ -2766,7 +2622,8 @@ Release: April 23, 2024
 
 35 / 62
 
-3.3.4  Message Processing Events and Sequencing Rules
+
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 The ResourceFactory port type includes one operation.
 
@@ -2776,7 +2633,7 @@ Operation  Description
 
 Creates a new identity object.
 
-3.3.4.1  Create
+##### 3.3.4.1 Create
 
 A server processes a Create request using the IMDA protocol extensions upon receiving a SOAP
 message containing the IdentityManagementOperation SOAP header and specifying the following
@@ -2814,11 +2671,11 @@ defaults as part of the object creation.
 If an error occurs while processing this operation, the server SHOULD reject the operation and return
 one of the SOAP faults specified in section 3.1.4.2.
 
-3.3.4.1.1 Messages
+###### 3.3.4.1.1 Messages
 
 The following WSDL message definitions are specific to this operation.
 
-3.3.4.1.1.1  AddRequestMessage
+###### 3.3.4.1.1.1 AddRequestMessage
 
 The AddRequestMessage is sent by the client to the server to request the creation of a new identity
 object and to specify values for identity attributes on the identity object to be created.
@@ -2832,10 +2689,11 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     <wsdl:part name="AddRequestMessageBody" element="AddRequest"/>
+
+     <wsdl:part name="AddRequestMessageBody" element="AddRequest"/>
  </wsdl:message>
 
-3.3.4.1.1.2  AddResponseMessage
+###### 3.3.4.1.1.2 AddResponseMessage
 
 The AddResponseMessage is returned by the server in response to a successful Create operation. The
 contents of the message are a resource reference (wxf:ResourceCreated) for the newly created
@@ -2845,11 +2703,11 @@ identity object. wxf:ResourceCreated is defined in [WXFR].
      <wsdl:part name="AddResponseMessageBody" element="wxf:ResourceCreated" />
  </wsdl:message>
 
-3.3.4.1.2 Elements
+###### 3.3.4.1.2 Elements
 
 The following XML schema element definitions are specific to this operation.
 
-3.3.4.1.2.1  AddRequest
+###### 3.3.4.1.2.1 AddRequest
 
 This element is used by the client to specify identity attribute values to be added to identity
 attributes on the identity object that is to be created. Zero or more identity attributes can be
@@ -2897,13 +2755,14 @@ Release: April 23, 2024
 
 37 / 62
 
-Dialect: The value of this attribute is the URI of the dialect used for the identity attribute types.
 
-3.3.5  Timer Events
+Dialect: The value of this attribute is the URI of the dialect used for the identity attribute types.
+
+#### 3.3.5 Timer Events
 
 There are no timer events in this protocol extension.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 There are no other local events in this protocol extension.
 
@@ -2914,7 +2773,8 @@ Release: April 23, 2024
 
 38 / 62
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In this section, several sample IMDA operations are presented. First, an identity object is created
 using a Create operation. Information from that identity object is then retrieved using Get operations.
@@ -2925,7 +2785,7 @@ view of directory objects shown in [MS-ADDM] section 2.3. For the Get and Put ex
 header defined in [MS-ADDM] section 2.5 are used to specify the object that is the target of the
 operation.
 
-4.1  Example of Creating an Identity Object
+### 4.1 Example of Creating an Identity Object
 
 In this section, a new identity object is created using a Create operation with the IMDA protocol
 extensions. During the creation, identity attribute values are specified for five identity attributes.
@@ -2985,7 +2845,8 @@ Release: April 23, 2024
 
 39 / 62
 
-         </AttributeValue>
+
+         </AttributeValue>
        </AttributeTypeAndValue>
        <AttributeTypeAndValue>
          <AttributeType>addata:otherTelephone</AttributeType>
@@ -3052,7 +2913,8 @@ Release: April 23, 2024
 
 40 / 62
 
-4.2  Example of Retrieving Attribute Types from an Identity Object
+
+### 4.2 Example of Retrieving Attribute Types from an Identity Object
 
 In this example, three identity attributes are retrieved from the identity object created in the
 preceding example using a Get operation with the IMDA protocol extensions. One of the identity
@@ -3124,7 +2986,8 @@ Release: April 23, 2024
 
 41 / 62
 
-   </soapenv:Header>
+
+   </soapenv:Header>
    <soapenv:Body>
      <BaseObjectSearchResponse
  xmlns="http://schemas.microsoft.com/2006/11/IdentityManagement/DirectoryAccess"
@@ -3149,7 +3012,7 @@ Release: April 23, 2024
    </soapenv:Body>
  </soapenv:Envelope>
 
-4.3  Example of Retrieving the Complete XML Representation of an Identity Object
+### 4.3 Example of Retrieving the Complete XML Representation of an Identity Object
 
 In the previous example, the SOAP request specified the identity attribute types to be returned by
 the server. In the example in this section, the request does not specify any identity attribute types, so
@@ -3197,7 +3060,8 @@ Release: April 23, 2024
 
 42 / 62
 
- Windows/Resource</wsa:To>
+
+ Windows/Resource</wsa:To>
    </soapenv:Header>
    <soapenv:Body>
      <BaseObjectSearchRequest Dialect="http://schemas.microsoft.com/
@@ -3271,7 +3135,8 @@ Release: April 23, 2024
 
 43 / 62
 
-           <addata:pwdLastSet LdapSyntax="LargeInteger">
+
+           <addata:pwdLastSet LdapSyntax="LargeInteger">
              <ad:value xsi:type="xsd:string">0</ad:value>
            </addata:pwdLastSet>
            <addata:badPwdCount LdapSyntax="Integer">
@@ -3348,7 +3213,8 @@ Release: April 23, 2024
 
 44 / 62
 
-             <ad:value xsi:type="xsd:string">17189</ad:value>
+
+             <ad:value xsi:type="xsd:string">17189</ad:value>
            </addata:uSNCreated>
            <ad:container-hierarchy-parent>
              <ad:value xsi:type="xsd:string">
@@ -3369,7 +3235,7 @@ Release: April 23, 2024
    </soapenv:Body>
  </soapenv:Envelope>
 
-4.4  Example of Modifying an Identity Object
+### 4.4 Example of Modifying an Identity Object
 
 In this example, the previously created identity object has two of its identity attributes modified
 by using a Put operation with the IMDA protocol extensions. For the attribute identified by the
@@ -3421,7 +3287,8 @@ Release: April 23, 2024
 
 45 / 62
 
- DirectoryAccess"
+
+ DirectoryAccess"
  xmlns:ad="http://schemas.microsoft.com/2008/1/ActiveDirectory"
  xmlns:addata="http://schemas.microsoft.com/2008/1/
  ActiveDirectory/Data"
@@ -3471,9 +3338,10 @@ Release: April 23, 2024
 
 46 / 62
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no known additional security considerations for these protocol extensions, but implementers
 have to consider the security implications of the data that they expose by means of these extensions.
@@ -3482,7 +3350,7 @@ implementers are encouraged to use transport mechanisms that support encryption 
 verification of the messages. Server implementers are also encouraged to enforce access controls
 prior to performing any operation against an identity object.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol extension has no security parameters.
 
@@ -3493,7 +3361,8 @@ Release: April 23, 2024
 
 47 / 62
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 For ease of implementation, the full WSDL is provided below. After the full WSDL, a binding is
 included for using the Resource and ResourceFactory port types with SOAP 1.2 [SOAP1.2-1/2003]
@@ -3567,7 +3436,8 @@ Release: April 23, 2024
 
 48 / 62
 
-           <xsd:element ref="da:AttributeType"
+
+           <xsd:element ref="da:AttributeType"
                         minOccurs="1" maxOccurs="1" />
            <xsd:element name="AttributeValue" type="da:ValueXmlType"
                         minOccurs="0" maxOccurs="1" />
@@ -3643,7 +3513,8 @@ Release: April 23, 2024
 
 49 / 62
 
-       <xsd:element name="IdentityManagementOperation" />
+
+       <xsd:element name="IdentityManagementOperation" />
 
        <xsd:element name="AttributeTypeOrValueAlreadyExists">
          <xsd:complexType>
@@ -3720,7 +3591,8 @@ Release: April 23, 2024
 
 50 / 62
 
-     <wsdl:operation name="Get">
+
+     <wsdl:operation name="Get">
        <wsdl:input message="da:BaseObjectSearchRequestMessage"
          wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/transfer/Get" />
        <wsdl:output message="da:BaseObjectSearchResponseMessage"
@@ -3795,7 +3667,8 @@ Release: April 23, 2024
 
 51 / 62
 
-       <wsdl:output>
+
+       <wsdl:output>
          <soap12:body use="literal" />
        </wsdl:output>
      </wsdl:operation>
@@ -3844,7 +3717,8 @@ Release: April 23, 2024
 
 52 / 62
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3914,7 +3788,8 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-element as fault detail, if  the client specified one or more identity attribute types that were not
+
+element as fault detail, if  the client specified one or more identity attribute types that were not
 valid expressions in the dialect specified in the operation-specific SOAP message.
 
 <5> Section 2.2.3.4: While processing a WS-Transfer Message which uses IMDA extensions, the
@@ -3985,7 +3860,8 @@ Release: April 23, 2024
 
 54 / 62
 
-<15> Section 3.1.4.2.2: Microsoft implementations of WS-Transfer: Identity Management Operations
+
+<15> Section 3.1.4.2.2: Microsoft implementations of WS-Transfer: Identity Management Operations
 for Directory Access Extensions use the fault detail defined in [MS-ADDM] section 2.6.
 
 <16> Section 3.1.4.2.3: Microsoft implementations of WS-Transfer: Identity Management Operations
@@ -4052,7 +3928,8 @@ Release: April 23, 2024
 
 55 / 62
 
-<27> Section 3.1.4.2.8: Microsoft implementations of WS-Transfer: Identity Management Operations
+
+<27> Section 3.1.4.2.8: Microsoft implementations of WS-Transfer: Identity Management Operations
 for Directory Access Extensions return this fault whenever a condition occurs that would cause Active
 Directory [MS-ADTS] to return the LDAP error code objectClassViolation. Microsoft implementations of
 WS-Transfer: Identity Management Operations for Directory Access Extensions use the fault detail
@@ -4124,7 +4001,8 @@ Release: April 23, 2024
 
 56 / 62
 
-<35> Section 3.2.4.2:  Microsoft implementations of WS-Transfer: Identity Management Operations
+
+<35> Section 3.2.4.2:  Microsoft implementations of WS-Transfer: Identity Management Operations
 for Directory Access Extensions return  da:UnwillingToPerformFault specified in section 3.1.4.2.10
 without performing any modifications to the identity object if there are no change elements present in
 the ModifyRequest.
@@ -4161,7 +4039,8 @@ Release: April 23, 2024
 
 57 / 62
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4205,7 +4084,8 @@ Release: April 23, 2024
 
 58 / 62
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -4346,7 +4226,8 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      PartialAttributeXmlType 31
+
+      PartialAttributeXmlType 31
    elements
       BaseObjectSearchRequest 29
       BaseObjectSearchResponse 30
@@ -4493,7 +4374,8 @@ Release: April 23, 2024
 
 60 / 62
 
-   simple types
+
+   simple types
       OperationXmlType 33
       overview 33
 
@@ -4641,7 +4523,8 @@ WS-Transfer: Identity Management Operations for Directory Access Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   namespaces 13
+
+   namespaces 13
    overview 13
    simple types 17
 

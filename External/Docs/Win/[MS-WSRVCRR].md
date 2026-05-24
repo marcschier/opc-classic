@@ -64,7 +64,8 @@ Release: March 13, 2019
 
 1 / 46
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -299,7 +300,8 @@ Release: March 13, 2019
 
 2 / 46
 
-Date
+
+Date
 
 Revision
 History
@@ -453,215 +455,93 @@ Release: March 13, 2019
 
 3 / 46
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Request Message](#221-request-message)
+    - [2.2.2 Response Message](#222-response-message)
+    - [2.2.3 CreateSequence Message](#223-createsequence-message)
+    - [2.2.4 CreateSequenceResponse Message](#224-createsequenceresponse-message)
+    - [2.2.5 CloseSequence Message](#225-closesequence-message)
+    - [2.2.6 CloseSequenceResponse Message](#226-closesequenceresponse-message)
+    - [2.2.7 TerminateSequence Message](#227-terminatesequence-message)
+    - [2.2.8 TerminateSequenceResponse Message](#228-terminatesequenceresponse-message)
+    - [2.2.9 Application Request Message](#229-application-request-message)
+    - [2.2.10 Application Response Message](#2210-application-response-message)
+    - [2.2.11 Empty Response Message](#2211-empty-response-message)
+    - [2.2.12 Null Response Message](#2212-null-response-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Reliable Messaging Source Role Details](#31-reliable-messaging-source-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 INITIALIZED State](#3111-initialized-state)
+      - [3.1.1.2 OPENING State](#3112-opening-state)
+      - [3.1.1.3 OPEN State](#3113-open-state)
+      - [3.1.1.4 CLOSING_SEQUENCES_PENDING State](#3114-closingsequencespending-state)
+      - [3.1.1.5 CLOSING_SEQUENCES_COMPLETE State](#3115-closingsequencescomplete-state)
+      - [3.1.1.6 TERMINATING State](#3116-terminating-state)
+      - [3.1.1.7 CLOSED State](#3117-closed-state)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 OPEN Event](#3141-open-event)
+      - [3.1.4.2 SEND_REQUEST Event](#3142-sendrequest-event)
+      - [3.1.4.3 CLOSE Event](#3143-close-event)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 RESPONSE_RECEIVED Event](#3151-responsereceived-event)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 FAULT Event](#3171-fault-event)
+      - [3.1.7.2 SEQUENCES_COMPLETE Event](#3172-sequencescomplete-event)
+      - [3.1.7.3 PREPARE_ACKNOWLEDGEMENT Event](#3173-prepareacknowledgement-event)
+  - [3.2 Reliable Messaging Destination Details](#32-reliable-messaging-destination-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 INITIALIZED State](#3211-initialized-state)
+      - [3.2.1.2 OPEN State](#3212-open-state)
+      - [3.2.1.3 TERMINATING State](#3213-terminating-state)
+      - [3.2.1.4 CLOSED State](#3214-closed-state)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 SEND_RESPONSE Event](#3241-sendresponse-event)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 REQUEST_RECEIVED](#3251-requestreceived)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 FAULT Event](#3271-fault-event)
+      - [3.2.7.2 ACKNOWLEDGEMENT_RECEIVED Event](#3272-acknowledgementreceived-event)
+      - [3.2.7.3 PREPARE_ACKNOWLEDGEMENT Event](#3273-prepareacknowledgement-event)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 WS-ReliableMessaging 1.0](#41-ws-reliablemessaging-10)
+    - [4.1.1 Establish the Sequences](#411-establish-the-sequences)
+    - [4.1.2 Reliable Request-Response Exchange](#412-reliable-request-response-exchange)
+    - [4.1.3 Close and Terminate the Sequences](#413-close-and-terminate-the-sequences)
+  - [4.2 WS-ReliableMessaging 1.1](#42-ws-reliablemessaging-11)
+    - [4.2.1 Establish the Sequences](#421-establish-the-sequences)
+    - [4.2.2 Reliable Request-Response Exchange](#422-reliable-request-response-exchange)
+    - [4.2.3 Close and Terminate the Sequences](#423-close-and-terminate-the-sequences)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Request Message ........................................................................................ 11
-2.2.1
-Response Message ...................................................................................... 11
-2.2.2
-CreateSequence Message ............................................................................ 11
-2.2.3
-CreateSequenceResponse Message ............................................................... 12
-2.2.4
-CloseSequence Message .............................................................................. 12
-2.2.5
-CloseSequenceResponse Message ................................................................. 12
-2.2.6
-TerminateSequence Message ....................................................................... 13
-2.2.7
-TerminateSequenceResponse Message .......................................................... 13
-2.2.8
-Application Request Message........................................................................ 13
-2.2.9
-Application Response Message ..................................................................... 13
-2.2.10
-Empty Response Message ............................................................................ 13
-2.2.11
-2.2.12  Null Response Message ............................................................................... 14
-
-3.1
-
-3.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-3.1.1.6
-3.1.1.7
-
-3  Protocol Details ..................................................................................................... 15
-Reliable Messaging Source Role Details ............................................................... 15
-Abstract Data Model .................................................................................... 15
-INITIALIZED State ................................................................................ 17
-OPENING State ..................................................................................... 17
-OPEN State .......................................................................................... 18
-CLOSING_SEQUENCES_PENDING State ................................................... 18
-CLOSING_SEQUENCES_COMPLETE State ................................................. 18
-TERMINATING State .............................................................................. 18
-CLOSED State ...................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-OPEN Event .......................................................................................... 19
-SEND_REQUEST Event .......................................................................... 19
-CLOSE Event ........................................................................................ 20
-Message Processing Events and Sequencing Rules .......................................... 20
-RESPONSE_RECEIVED Event .................................................................. 20
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-FAULT Event ......................................................................................... 22
-SEQUENCES_COMPLETE Event ............................................................... 22
-PREPARE_ACKNOWLEDGEMENT Event ..................................................... 23
-Reliable Messaging Destination Details ................................................................ 23
-Abstract Data Model .................................................................................... 23
-INITIALIZED State ................................................................................ 25
-
-3.1.7.1
-3.1.7.2
-3.1.7.3
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.6
-3.1.7
-
-3.2.1.1
-
-3.1.5.1
-
-3.2.1
-
-3.1.5
-
-3.2
-
-[MS-WSRVCRR] - v20190313
-WS-ReliableMessaging Protocol: Reliable Request-Reply Extension
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 46
-
-3.2.1.2
-3.2.1.3
-3.2.1.4
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2.4.1
-
-3.2.5.1
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-OPEN State .......................................................................................... 25
-TERMINATING State .............................................................................. 26
-CLOSED State ...................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-SEND_RESPONSE Event ......................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 27
-REQUEST_RECEIVED ............................................................................. 27
-Timer Events .............................................................................................. 30
-Other Local Events ...................................................................................... 30
-FAULT Event ......................................................................................... 30
-ACKNOWLEDGEMENT_RECEIVED Event ................................................... 30
-PREPARE_ACKNOWLEDGEMENT Event ..................................................... 30
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ................................................................................................. 31
-WS-ReliableMessaging 1.0................................................................................. 31
-Establish the Sequences .............................................................................. 31
-Reliable Request-Response Exchange ............................................................ 32
-Close and Terminate the Sequences .............................................................. 34
-WS-ReliableMessaging 1.1................................................................................. 35
-Establish the Sequences .............................................................................. 35
-Reliable Request-Response Exchange ............................................................ 37
-Close and Terminate the Sequences .............................................................. 39
-
-4.2.1
-4.2.2
-4.2.3
-
-4.2
-
-5  Security ................................................................................................................. 42
-Security Considerations for Implementers ........................................................... 42
-Index of Security Parameters ............................................................................ 42
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 43
-
-7  Change Tracking .................................................................................................... 44
-
-8  Index ..................................................................................................................... 45
-
-[MS-WSRVCRR] - v20190313
-WS-ReliableMessaging Protocol: Reliable Request-Reply Extension
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 46
-
-1  Introduction
+## 1 Introduction
 
 The WS-ReliableMessaging Protocol: Reliable Request-Reply Extension, as specified in [WSRM1-0] and
 [WSRM1-1], assumes the use of duplex underlying protocols in order to provide support for
@@ -672,7 +552,7 @@ communicate reliably over transfer protocols that support only SOAP Request-Resp
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -737,7 +617,8 @@ Release: March 13, 2019
 
 6 / 46
 
-Uniform Resource Identifier (URI): A string that identifies a resource. The URI is an addressing
+
+Uniform Resource Identifier (URI): A string that identifies a resource. The URI is an addressing
 mechanism defined in Internet Engineering Task Force (IETF) Uniform Resource Identifier (URI):
 Generic Syntax [RFC3986].
 
@@ -753,14 +634,14 @@ specified in [WSRM1-0] and [WSRM1-1].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -801,11 +682,12 @@ Release: March 13, 2019
 
 7 / 46
 
-[WSRM1-2] Bilorusets, R., Box D., Cabrera L., Davis D. et al., "Web Services Reliable Messaging (WS-
+
+[WSRM1-2] Bilorusets, R., Box D., Cabrera L., Davis D. et al., "Web Services Reliable Messaging (WS-
 ReliableMessaging) Version 1.2", OASIS Standard, February 2009, https://docs.oasis-open.org/ws-
 rx/wsrm/200702
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
@@ -817,7 +699,7 @@ RFC 4346, April 2006, https://www.rfc-editor.org/info/rfc4346
 [WSSP1.3] OASIS Standard, "WS-SecurityPolicy 1.3", February 2009, http://docs.oasis-open.org/ws-
 sx/ws-securitypolicy/v1.3/os/ws-securitypolicy-1.3-spec-os.doc
 
-1.3  Overview
+### 1.3 Overview
 
 The WS-ReliableMessaging Protocol: Reliable Request-Reply Extension specifies a composition of the
 WSRM Protocol with the SOAP Request-Response specified in [SOAP1.2-2/2007] section 6 or
@@ -843,13 +725,14 @@ Release: March 13, 2019
 
 8 / 46
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-WSRVCRR].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 Figure 1: Message flow with replay
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WS-ReliableMessaging Protocol: Reliable Request-Reply Extension requires the use of [WSRM1-0],
 [WSRM1-1] or [WSRM1-2]. There is no preferred WSRM Protocol to be used with the WS-
@@ -862,7 +745,8 @@ Release: March 13, 2019
 
 9 / 46
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 The WS-ReliableMessaging Protocol: Reliable Request-Reply Extension has the following preconditions:
 
@@ -872,13 +756,13 @@ The underlying protocol supports SOAP Request-Response.
 
   An implementation of the WSRM Protocol is available.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The WS-ReliableMessaging Protocol: Reliable Request-Reply Extension is applicable when it is
 required, when an application request-response message exchange pattern is to be used, and when
 uncorrelated two-way SOAP messaging is not possible.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -892,11 +776,11 @@ SOAP Request-Response as described in section 2.1.
 
 Instead, configure an implementation to process only messages as described in section 2.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol has no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for this protocol.
 
@@ -907,14 +791,15 @@ Release: March 13, 2019
 
 10 / 46
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The underlying protocol MUST support the SOAP Request-Response as specified in [SOAP1.2-
 2/2007] section 6 or SOAP over HTTP as specified in [SOAP1.1] section 6.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section describes the messages used by the WS-ReliableMessaging Protocol: Reliable Request-
 Reply Extension. The messages specified in this section are SOAP messages as specified in [SOAP1.1]
@@ -925,7 +810,7 @@ The messages use elements that are specified by the WSRM Protocol and place addi
 constraints on their syntax. Except where noted, these constraints are the same for [WSRM1-0] and
 [WSRM1-1] elements.
 
-2.2.1  Request Message
+#### 2.2.1 Request Message
 
 Request messages are SOAP messages with the following additional constraints:
 
@@ -939,7 +824,7 @@ addressing properties as specified in [WSA] section 3.3.
 
   Request messages MUST include a [message id] addressing property.
 
-2.2.2  Response Message
+#### 2.2.2 Response Message
 
 Response messages are SOAP messages with the following additional constraints:
 
@@ -951,7 +836,7 @@ parameters] addressing properties as specified in [WSA] section 3.4.
 
 [WSASB] section 5.1.
 
-2.2.3  CreateSequence Message
+#### 2.2.3 CreateSequence Message
 
 The CreateSequence message is a request message used for establishing a pair of sequences.
 
@@ -985,7 +870,8 @@ Release: March 13, 2019
 
 11 / 46
 
-2.2.4  CreateSequenceResponse Message
+
+#### 2.2.4 CreateSequenceResponse Message
 
 The CreateSequenceResponse message is a response message used for establishing a pair of
 sequences.
@@ -1012,7 +898,7 @@ For [WSRM1-0]:
 The SOAP body MUST be the CreateSequenceResponse element, as specified in [WSRM1-0]
 section 3.4.
 
-2.2.5  CloseSequence Message
+#### 2.2.5 CloseSequence Message
 
 The CloseSequence message is a request message used for closing a pair of sequences.
 
@@ -1051,7 +937,7 @@ with the following additional constraints:
 
 The SOAP header element MUST include a SequenceAcknowledgement header block.
 
-2.2.6  CloseSequenceResponse Message
+#### 2.2.6 CloseSequenceResponse Message
 
 The CloseSequenceResponse message is a response message used for closing a pair or sequences:
 
@@ -1094,7 +980,8 @@ WS-ReliableMessaging Protocol: Reliable Request-Reply Extension
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.7  TerminateSequence Message
+
+#### 2.2.7 TerminateSequence Message
 
 The TerminateSequence message is a request message used for terminating a pair of sequences:
 
@@ -1107,7 +994,7 @@ and [WSRM1-1] section 3.6.
 
 The SOAP header element MUST contain a SequenceAcknowledgement header block.
 
-2.2.8  TerminateSequenceResponse Message
+#### 2.2.8 TerminateSequenceResponse Message
 
 The TerminateSequenceResponse message is a response message used for terminating a pair of
 sequences:
@@ -1138,7 +1025,7 @@ section 3.6.
 
 The SOAP header element MUST contain a SequenceAcknowledgement header block.
 
-2.2.9  Application Request Message
+#### 2.2.9 Application Request Message
 
 The Application Request message is a request message with the following additional constraints:
 
@@ -1146,7 +1033,7 @@ The Application Request message is a request message with the following addition
 
 The SOAP header element MUST contain a Sequence header block.
 
-2.2.10 Application Response Message
+#### 2.2.10 Application Response Message
 
 The Application Response message is a response message with the following additional constraints:
 
@@ -1166,7 +1053,7 @@ The SequenceAcknowledgement header block MUST NOT contain the Final element.
 
 The SOAP header element MUST contain a Sequence header block.
 
-2.2.11 Empty Response Message
+#### 2.2.11 Empty Response Message
 
 The Empty Response message is a response message with the following additional constraints:
 
@@ -1197,11 +1084,12 @@ Release: March 13, 2019
 
 13 / 46
 
-
+
+
 
 For [WSRM1-1] SequenceAcknowledgement
 
-2.2.12 Null Response Message
+#### 2.2.12 Null Response Message
 
 The Null Response message represents the response to a request message for which there is no
 response, as specified in [SOAP1.2-2/2007] section 6.2 and [SOAP1.1] section 6.2.
@@ -1213,7 +1101,8 @@ Release: March 13, 2019
 
 14 / 46
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section describes the WS-ReliableMessaging Protocol: Reliable Request-Reply Extension from the
 perspective of two distinct roles. The RMS role describes behaviors and requirements relevant to a
@@ -1221,9 +1110,9 @@ pair of sequences that an RMS manages. The RMD role describes behaviors and requ
 relevant to a pair of sequences that an RMD manages. These requirements and behaviors are
 described in section 3.1 for the RMS role and in section 3.2 for the RMD role.
 
-3.1  Reliable Messaging Source Role Details
+### 3.1 Reliable Messaging Source Role Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1290,7 +1179,8 @@ Release: March 13, 2019
 
 15 / 46
 
-  Response Sequence Number List: A list of nonnegative integer values that contains the
+
+  Response Sequence Number List: A list of nonnegative integer values that contains the
 
 sequence numbers of all Application Response messages received.
 
@@ -1324,19 +1214,20 @@ Release: March 13, 2019
 
 16 / 46
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-WSRVCRR].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
 Figure 2: State diagram for the RMS role
 
-3.1.1.1  INITIALIZED State
+##### 3.1.1.1 INITIALIZED State
 
 The following Higher-Layer event is processed in this state:
 
   OPEN
 
-3.1.1.2  OPENING State
+##### 3.1.1.2 OPENING State
 
 The following Message Processing event is processed in this state:
 
@@ -1347,7 +1238,8 @@ Release: March 13, 2019
 
 17 / 46
 
-  RESPONSE_RECEIVED
+
+  RESPONSE_RECEIVED
 
 The following Local event is processed in this state:
 
@@ -1355,7 +1247,7 @@ The following Local event is processed in this state:
 
 FAULT
 
-3.1.1.3  OPEN State
+##### 3.1.1.3 OPEN State
 
 The following Higher-Layer events are processed in this state:
 
@@ -1373,7 +1265,7 @@ The following Local event is processed in this state:
 
 FAULT
 
-3.1.1.4  CLOSING_SEQUENCES_PENDING State
+##### 3.1.1.4 CLOSING_SEQUENCES_PENDING State
 
 The following Message Processing event is processed in this state:
 
@@ -1387,7 +1279,7 @@ The following Local events are processed in this state:
 
 FAULT
 
-3.1.1.5  CLOSING_SEQUENCES_COMPLETE State
+##### 3.1.1.5 CLOSING_SEQUENCES_COMPLETE State
 
 The following Message Processing event is processed in this state:
 
@@ -1399,17 +1291,17 @@ The following Local event is processed in this state:
 
 FAULT
 
-3.1.1.6  TERMINATING State
+##### 3.1.1.6 TERMINATING State
 
 The following Message Processing event is processed in this state:
 
   RESPONSE_RECEIVED
 
-3.1.1.7  CLOSED State
+##### 3.1.1.7 CLOSED State
 
 No events are signaled in this state.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are defined for the RMS role.
 
@@ -1420,7 +1312,8 @@ Release: March 13, 2019
 
 18 / 46
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 During initialization of the RMS role:
 
@@ -1461,9 +1354,9 @@ The value of the Outbound Sequence Identifier field MUST be empty.
 The value of the WSRM Version field MUST be set according to the version of the WSRM that the
 RMS wants to use: WSRM10 for [WSRM1-0] or WSRM11 for [WSRM1-1].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  OPEN Event
+##### 3.1.4.1 OPEN Event
 
 If the OPEN event is signaled, the RMS role MUST perform the following actions:
 
@@ -1479,7 +1372,7 @@ CreateSequence message to the value of Inbound Sequence Identifier.
 
   Send the CreateSequence message on the underlying protocol.
 
-3.1.4.2  SEND_REQUEST Event
+##### 3.1.4.2 SEND_REQUEST Event
 
 This event MUST be signaled with the following argument:
 
@@ -1512,7 +1405,8 @@ Release: March 13, 2019
 
 19 / 46
 
-  Add a SequenceAcknowledgement header block to the Header element of the request.
+
+  Add a SequenceAcknowledgement header block to the Header element of the request.
 
   Set the value of the Identifier element in the SequenceAcknowledgement block in the Header
 
@@ -1542,7 +1436,7 @@ Identifier.
 
 Identifier.
 
-3.1.4.3  CLOSE Event
+##### 3.1.4.3 CLOSE Event
 
 If the CLOSE event is signaled, the RMS role MUST perform the following actions:
 
@@ -1554,9 +1448,9 @@ If the Request List is empty:
 
   Signal the SEQUENCES_COMPLETE event.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  RESPONSE_RECEIVED Event
+##### 3.1.5.1 RESPONSE_RECEIVED Event
 
 This event is signaled by the underlying protocol when a response message is received. This event
 MUST be signaled with the following arguments:
@@ -1592,7 +1486,8 @@ Release: March 13, 2019
 
 20 / 46
 
-  Set the value of the State field to OPEN.
+
+  Set the value of the State field to OPEN.
 
   Otherwise:
 
@@ -1685,7 +1580,8 @@ Release: March 13, 2019
 
 21 / 46
 
-  Set the value of the Identifier element in the TerminateSequence element in the body of
+
+  Set the value of the Identifier element in the TerminateSequence element in the body of
 
 the TerminateSequence message to the value of the Outbound Sequence Identifier
 field.
@@ -1708,13 +1604,13 @@ message.
 
   Do nothing.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No timer events are defined for the RMS role.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  FAULT Event
+##### 3.1.7.1 FAULT Event
 
 If the FAULT event is signaled, the RMS role MUST perform the following actions:
 
@@ -1722,7 +1618,7 @@ If the FAULT event is signaled, the RMS role MUST perform the following actions:
 
   Return an implementation-specific error to the higher-layer logic.
 
-3.1.7.2  SEQUENCES_COMPLETE Event
+##### 3.1.7.2 SEQUENCES_COMPLETE Event
 
 If the SEQUENCES_COMPLETE event is signaled, the RMS role MUST perform the following actions:
 
@@ -1758,11 +1654,12 @@ Release: March 13, 2019
 
 22 / 46
 
-  Signal the PREPARE_ACKNOWLEDGEMENT event passing the CloseSequence message.
+
+  Signal the PREPARE_ACKNOWLEDGEMENT event passing the CloseSequence message.
 
   Send the CloseSequence message on the underlying protocol.
 
-3.1.7.3  PREPARE_ACKNOWLEDGEMENT Event
+##### 3.1.7.3 PREPARE_ACKNOWLEDGEMENT Event
 
 This event MUST be signaled with the following argument:
 
@@ -1780,9 +1677,9 @@ SequenceAcknowledgement header block in the Header element of the Response by ad
 Acknowledgement Range elements as specified in [WSRM1-0] section 3.2 or [WSRM1-1] section
 3.9.
 
-3.2  Reliable Messaging Destination Details
+### 3.2 Reliable Messaging Destination Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1837,7 +1734,8 @@ Release: March 13, 2019
 
 23 / 46
 
-  RESPONSE_ACKNOWLEDGED
+
+  RESPONSE_ACKNOWLEDGED
 
   Response Message: An Application Response message, this field is the Application Response
 
@@ -1875,19 +1773,20 @@ Release: March 13, 2019
 
 24 / 46
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-WSRVCRR].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
 Figure 3: State diagram for the RMD role
 
-3.2.1.1  INITIALIZED State
+##### 3.2.1.1 INITIALIZED State
 
 The following Message Processing event is processed in this state:
 
   REQUEST_RECEIVED
 
-3.2.1.2  OPEN State
+##### 3.2.1.2 OPEN State
 
 The following Higher-Layer event is processed in this state:
 
@@ -1910,21 +1809,22 @@ Release: March 13, 2019
 
 25 / 46
 
-3.2.1.3  TERMINATING State
+
+##### 3.2.1.3 TERMINATING State
 
 The following Message Processing event is processed in this state:
 
   REQUEST_RECEIVED
 
-3.2.1.4  CLOSED State
+##### 3.2.1.4 CLOSED State
 
 No events are processed in this state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are defined for the RMD role.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 During initialization of the RMD role:
 
@@ -1953,9 +1853,9 @@ The value of the Outbound Sequence Identifier field MUST be empty.
 The value of the WSRM Version field MUST be set according to the version of the WSRM
 Protocol that the RMS uses: WSRM10 for [WSRM1-0] and WSRM11 for [WSRM1-1].
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  SEND_RESPONSE Event
+##### 3.2.4.1 SEND_RESPONSE Event
 
 This event is signaled by the higher-layer logic to send a response message related to a request
 message previously provided by the RMS role. This event MUST be signaled with the following
@@ -1994,7 +1894,8 @@ Release: March 13, 2019
 
 26 / 46
 
-  Set the value of the MessageNumber element in the Sequence header block in the header
+
+  Set the value of the MessageNumber element in the Sequence header block in the header
 
 element of Response to Next Sequence Number.
 
@@ -2030,9 +1931,9 @@ SequenceAcknowledgement.
 
   Raise the FAULT event.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  REQUEST_RECEIVED
+##### 3.2.5.1 REQUEST_RECEIVED
 
 This event is signaled by the underlying protocol when a request message is received. This event
 MUST be signaled with the following arguments:
@@ -2075,7 +1976,8 @@ Release: March 13, 2019
 
 27 / 46
 
-  Otherwise:
+
+  Otherwise:
 
   Signal the FAULT event.
 
@@ -2166,7 +2068,8 @@ Release: March 13, 2019
 
 28 / 46
 
-
+
+
 
 If the value of the WSRM field is WSRM10:
 
@@ -2244,13 +2147,14 @@ Release: March 13, 2019
 
 29 / 46
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 No timer events are defined for the RMD role.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  FAULT Event
+##### 3.2.7.1 FAULT Event
 
 If the FAULT event is signaled, the RMD role MUST perform the following actions:
 
@@ -2258,7 +2162,7 @@ If the FAULT event is signaled, the RMD role MUST perform the following actions:
 
   Return an implementation-specific error to the higher-layer logic.
 
-3.2.7.2  ACKNOWLEDGEMENT_RECEIVED Event
+##### 3.2.7.2 ACKNOWLEDGEMENT_RECEIVED Event
 
 This event MUST be signaled with the following argument:
 
@@ -2282,7 +2186,7 @@ If the lookup is successful:
 
   Set the value of the State field of Holder to RESPONSE_ACKNOWLEDGED.
 
-3.2.7.3  PREPARE_ACKNOWLEDGEMENT Event
+##### 3.2.7.3 PREPARE_ACKNOWLEDGEMENT Event
 
 This event MUST be signaled with the following argument:
 
@@ -2310,11 +2214,12 @@ Release: March 13, 2019
 
 30 / 46
 
-4  Protocol Examples
 
-4.1  WS-ReliableMessaging 1.0
+## 4 Protocol Examples
 
-4.1.1  Establish the Sequences
+### 4.1 WS-ReliableMessaging 1.0
+
+#### 4.1.1 Establish the Sequences
 
 The RMS emits a new sequence identifier and sends it to the RMD on a CreateSequence message
 that includes an Offer element (lines 15-17). The CreateSequence message indicates the RMS is
@@ -2378,13 +2283,14 @@ Release: March 13, 2019
 
 31 / 46
 
- 15                     </AcksTo>
+
+ 15                     </AcksTo>
  16                 </Accept>
  17             </CreateSequenceResponse>
  18         </s:Body>
  19     </s:Envelope>
 
-4.1.2  Reliable Request-Response Exchange
+#### 4.1.2 Reliable Request-Response Exchange
 
 The RMS sends the first reliable request message on the sequence that is provided by the RMD
 (lines 6-9) and that indicates an anonymous reply endpoint (lines 11-13).
@@ -2446,7 +2352,8 @@ Release: March 13, 2019
 
 32 / 46
 
-The RMS sends the second reliable request message on the sequence provided by the RMD (lines 10-
+
+The RMS sends the second reliable request message on the sequence provided by the RMD (lines 10-
 13), indicating an anonymous reply endpoint (lines 15-17) and acknowledging all the responses
 received (lines 6-9).
 
@@ -2515,7 +2422,8 @@ Release: March 13, 2019
 
 33 / 46
 
-4.1.3  Close and Terminate the Sequences
+
+#### 4.1.3 Close and Terminate the Sequences
 
 The RMS completes the exchange by sending a [WSRM1-0] CloseSequence message, ending the
 sequence provided by the RMD (line 13) and acknowledging all the responses received (lines 6-9).
@@ -2579,7 +2487,8 @@ Release: March 13, 2019
 
 34 / 46
 
-The RMS sends a [WSRM1-0] TerminateSequence message, terminating the sequence provided by the
+
+The RMS sends a [WSRM1-0] TerminateSequence message, terminating the sequence provided by the
 RMD (line 17) and acknowledging all the responses received (lines 6-9).
 
  1     <?xml version="1.0" encoding="utf-8"?>
@@ -2634,9 +2543,9 @@ sequence provided by the RMS (line 15) and acknowledging all the requests receiv
  17         </s:Body>
  18     </s:Envelope>
 
-4.2  WS-ReliableMessaging 1.1
+### 4.2 WS-ReliableMessaging 1.1
 
-4.2.1  Establish the Sequences
+#### 4.2.1 Establish the Sequences
 
 The RMS emits a new sequence identifier and sends it to the RMD on a CreateSequence message
 that includes an Offer element (lines 16-24). The CreateSequence message indicates the RMS is
@@ -2648,7 +2557,8 @@ WS-ReliableMessaging Protocol: Reliable Request-Reply Extension
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-anonymous by using the [reply endpoint] addressing property (an empty projection of the [reply
+
+anonymous by using the [reply endpoint] addressing property (an empty projection of the [reply
 endpoint] information property implies an anonymous reply endpoint as specified in [WSASB]) and
 by using the anonymous address in the Endpoint element of the Offer element (lines 18-20). The
 CreateSequence message carries an anonymous address in the AcksTo Endpoint (lines 13-15).
@@ -2721,14 +2631,15 @@ Release: March 13, 2019
 
 36 / 46
 
- 19                        <a:Address>http://localhost/RMD</a:Address>
+
+ 19                        <a:Address>http://localhost/RMD</a:Address>
  20                    </AcksTo>
  21                </Accept>
  22             </r:CreateSequenceResponse>
  23         </s:Body>
  24     </s:Envelope>
 
-4.2.2  Reliable Request-Response Exchange
+#### 4.2.2 Reliable Request-Response Exchange
 
 The RMS sends the first reliable request on the sequence provided by the RMD (lines 6-9) and
 indicating an anonymous reply endpoint (lines 11-13).
@@ -2790,7 +2701,8 @@ Release: March 13, 2019
 
 37 / 46
 
- 19         <s:Body>
+
+ 19         <s:Body>
  20             <!-- Application Data -->
  21         </s:Body>
  22     </s:Envelope>
@@ -2860,14 +2772,15 @@ Release: March 13, 2019
 
 38 / 46
 
- 16            </a:Action>
+
+ 16            </a:Action>
  17         </s:Header>
  18         <s:Body>
  19             <!-- Application Data -->
  20         </s:Body>
  21     </s:Envelope>
 
-4.2.3  Close and Terminate the Sequences
+#### 4.2.3 Close and Terminate the Sequences
 
 The RMS completes the exchange by sending a [WSRM1-1] CloseSequence message, ending the
 sequence provided by the RMD (line 19) and acknowledging all the responses received (lines 6-10)
@@ -2930,7 +2843,8 @@ Release: March 13, 2019
 
 39 / 46
 
- 13             </a:Action>
+
+ 13             </a:Action>
  14             <a:RelatesTo>urn:uuid:fb74ba73-ac42-4780-bc88-
                         0de5a8c5f27f</a:RelatesTo>
  15         </s:Header>
@@ -3000,7 +2914,8 @@ Release: March 13, 2019
 
 40 / 46
 
- 12                      http://docs.oasis-open.org/ws-
+
+ 12                      http://docs.oasis-open.org/ws-
                          rx/wsrm/200702/TerminateSequenceResponse
  13             </a:Action>
  14             <a:RelatesTo>urn:uuid:03e0dbb1-1508-4af7-83ee-
@@ -3021,9 +2936,10 @@ Release: March 13, 2019
 
 41 / 46
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The WS-ReliableMessaging Protocol: Reliable Request-Reply Extension is a restricted use of [WSRM1-
 0], [WSRM1-1], or [WSRM1-2] and therefore the same security considerations of [WSRM1-0],
@@ -3039,7 +2955,7 @@ The WS-ReliableMessaging Protocol: Reliable Request-Reply Extension only support
 policy elements in namespace http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702 as
 described in [WSSP1.3].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The WS-ReliableMessaging Protocol: Reliable Request-Reply Extension has no security parameters.
 
@@ -3050,7 +2966,8 @@ Release: March 13, 2019
 
 42 / 46
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3098,7 +3015,8 @@ Release: March 13, 2019
 
 43 / 46
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3135,7 +3053,8 @@ Release: March 13, 2019
 
 44 / 46
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3266,7 +3185,8 @@ Release: March 13, 2019
 
 45 / 46
 
-   source role 20
+
+   source role 20
 Source role
    abstract data model 15
    higher-layer triggered events 19

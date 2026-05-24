@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 62
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: April 23, 2024
 
 2 / 62
 
-Date
+
+Date
 
 Revision
 History
@@ -531,7 +533,8 @@ Release: April 23, 2024
 
 3 / 62
 
-Date
+
+Date
 
 Revision
 History
@@ -564,194 +567,91 @@ Release: April 23, 2024
 
 4 / 62
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 W32TIME_PROVIDER_INFO](#221-w32timeproviderinfo)
+    - [2.2.2 W32TIME_PROVIDER_DATA](#222-w32timeproviderdata)
+    - [2.2.3 W32TIME_HARDWARE_PROVIDER_DATA](#223-w32timehardwareproviderdata)
+    - [2.2.4 W32TIME_NTP_PROVIDER_DATA](#224-w32timentpproviderdata)
+    - [2.2.5 W32TIME_NTP_PEER_INFO](#225-w32timentppeerinfo)
+    - [2.2.6 Source of Time Service Configuration Setting](#226-source-of-time-service-configuration-setting)
+    - [2.2.7 State of Time Service](#227-state-of-time-service)
+    - [2.2.8 W32TIME_CONFIGURATION_PROVIDER](#228-w32timeconfigurationprovider)
+    - [2.2.9 W32TIME_PROVIDER_CONFIG](#229-w32timeproviderconfig)
+    - [2.2.10 W32TIME_PROVIDER_CONFIG_DATA](#2210-w32timeproviderconfigdata)
+    - [2.2.11 W32TIME_NTPCLIENT_PROVIDER_CONFIG_DATA](#2211-w32timentpclientproviderconfigdata)
+    - [2.2.12 W32TIME_NTPSERVER_PROVIDER_CONFIG_DATA](#2212-w32timentpserverproviderconfigdata)
+    - [2.2.13 W32TIME_CONFIGURATION_INFO](#2213-w32timeconfigurationinfo)
+    - [2.2.14 W32TIME_CONFIGURATION_BASIC](#2214-w32timeconfigurationbasic)
+    - [2.2.15 W32TIME_CONFIGURATION_ADVANCED](#2215-w32timeconfigurationadvanced)
+    - [2.2.16 W32TIME_CONFIGURATION_DEFAULT](#2216-w32timeconfigurationdefault)
+    - [2.2.17 W32TIME_STATUS_INFO](#2217-w32timestatusinfo)
+    - [2.2.18 W32TIME_ENTRY](#2218-w32timeentry)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 W32TimeSync](#3141-w32timesync)
+      - [3.1.4.2 W32TimeGetNetlogonServiceBits](#3142-w32timegetnetlogonservicebits)
+      - [3.1.4.3 W32TimeQueryProviderStatus](#3143-w32timequeryproviderstatus)
+      - [3.1.4.4 W32TimeQuerySource](#3144-w32timequerysource)
+      - [3.1.4.5 W32TimeQueryProviderConfiguration](#3145-w32timequeryproviderconfiguration)
+      - [3.1.4.6 W32TimeQueryConfiguration](#3146-w32timequeryconfiguration)
+      - [3.1.4.7 W32TimeQueryStatus](#3147-w32timequerystatus)
+      - [3.1.4.8 W32TimeLog](#3148-w32timelog)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Time Service Elements](#3211-time-service-elements)
+      - [3.2.1.2 Time Provider Elements](#3212-time-provider-elements)
+        - [3.2.1.2.1 NTP Client Provider Elements](#32121-ntp-client-provider-elements)
+      - [3.2.1.3 Time Peer Elements](#3213-time-peer-elements)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 W32TimeSync (Opnum 0)](#3251-w32timesync-opnum-0)
+      - [3.2.5.2 W32TimeGetNetlogonServiceBits (Opnum 1)](#3252-w32timegetnetlogonservicebits-opnum-1)
+      - [3.2.5.3 W32TimeQueryProviderStatus (Opnum 2)](#3253-w32timequeryproviderstatus-opnum-2)
+      - [3.2.5.4 W32TimeQuerySource (Opnum 3)](#3254-w32timequerysource-opnum-3)
+      - [3.2.5.5 W32TimeQueryProviderConfiguration (Opnum 4)](#3255-w32timequeryproviderconfiguration-opnum-4)
+      - [3.2.5.6 W32TimeQueryConfiguration (Opnum 5)](#3256-w32timequeryconfiguration-opnum-5)
+      - [3.2.5.7 W32TimeQueryStatus (Opnum 6)](#3257-w32timequerystatus-opnum-6)
+      - [3.2.5.8 W32TimeLog (Opnum 7)](#3258-w32timelog-opnum-7)
+      - [3.2.5.9 Common Message Processing Details](#3259-common-message-processing-details)
+        - [3.2.5.9.1 Time Provider Configuration Data Structure Generation](#32591-time-provider-configuration-data-structure-generation)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Example](#4-protocol-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Data Types ........................................................................................ 12
-W32TIME_PROVIDER_INFO ......................................................................... 12
-2.2.1
-W32TIME_PROVIDER_DATA ......................................................................... 12
-2.2.2
-W32TIME_HARDWARE_PROVIDER_DATA ....................................................... 13
-2.2.3
-W32TIME_NTP_PROVIDER_DATA .................................................................. 13
-2.2.4
-W32TIME_NTP_PEER_INFO .......................................................................... 14
-2.2.5
-Source of Time Service Configuration Setting ................................................. 15
-2.2.6
-State of Time Service .................................................................................. 15
-2.2.7
-W32TIME_CONFIGURATION_PROVIDER ........................................................ 16
-2.2.8
-2.2.9
-W32TIME_PROVIDER_CONFIG ..................................................................... 17
-2.2.10  W32TIME_PROVIDER_CONFIG_DATA ............................................................ 17
-2.2.11  W32TIME_NTPCLIENT_PROVIDER_CONFIG_DATA .......................................... 18
-2.2.12  W32TIME_NTPSERVER_PROVIDER_CONFIG_DATA.......................................... 20
-2.2.13  W32TIME_CONFIGURATION_INFO ................................................................ 21
-2.2.14  W32TIME_CONFIGURATION_BASIC .............................................................. 22
-2.2.15  W32TIME_CONFIGURATION_ADVANCED ....................................................... 23
-2.2.16  W32TIME_CONFIGURATION_DEFAULT .......................................................... 25
-2.2.17  W32TIME_STATUS_INFO ............................................................................. 25
-2.2.18  W32TIME_ENTRY ........................................................................................ 27
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 28
-Client Details ................................................................................................... 28
-Abstract Data Model .................................................................................... 28
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 28
-W32TimeSync ...................................................................................... 28
-W32TimeGetNetlogonServiceBits ............................................................ 28
-W32TimeQueryProviderStatus ................................................................ 28
-W32TimeQuerySource ........................................................................... 29
-W32TimeQueryProviderConfiguration ...................................................... 29
-W32TimeQueryConfiguration .................................................................. 29
-W32TimeQueryStatus ............................................................................ 29
-W32TimeLog ........................................................................................ 29
-Message Processing Events and Sequencing Rules .......................................... 29
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-Server Details .................................................................................................. 29
-Abstract Data Model .................................................................................... 29
-Time Service Elements .......................................................................... 30
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-
-3.1.5
-3.1.6
-3.1.7
-
-3.2.1.1
-
-3.2.1
-
-3.2
-
-[MS-W32T] - v20240423
-W32Time Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 62
-
-3.2.1.2
-
-3.2.1.2.1
-
-3.2.1.3
-
-Time Provider Elements ......................................................................... 32
-NTP Client Provider Elements ............................................................ 32
-Time Peer Elements............................................................................... 33
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 34
-Message Processing Events and Sequencing Rules .......................................... 34
-W32TimeSync (Opnum 0) ...................................................................... 35
-W32TimeGetNetlogonServiceBits (Opnum 1) ............................................ 37
-W32TimeQueryProviderStatus (Opnum 2) ................................................ 37
-W32TimeQuerySource (Opnum 3) ........................................................... 38
-W32TimeQueryProviderConfiguration (Opnum 4) ...................................... 39
-W32TimeQueryConfiguration (Opnum 5) .................................................. 39
-W32TimeQueryStatus (Opnum 6) ........................................................... 42
-W32TimeLog (Opnum 7) ........................................................................ 43
-Common Message Processing Details ....................................................... 44
-Time Provider Configuration Data Structure Generation ........................ 44
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-
-3.2.5.9.1
-
-3.2.6
-3.2.7
-
-4  Protocol Example................................................................................................... 47
-
-5  Security ................................................................................................................. 48
-Security Considerations for Implementers ........................................................... 48
-Index of Security Parameters ............................................................................ 48
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 49
-
-7  Appendix B: Product Behavior ............................................................................... 54
-
-8  Change Tracking .................................................................................................... 60
-
-9  Index ..................................................................................................................... 61
-
-[MS-W32T] - v20240423
-W32Time Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 62
-
-1  Introduction
+## 1 Introduction
 
 The W32Time Remote Protocol is a remote procedure call (RPC) interface for controlling and
 monitoring a time service that implements the Network Time Protocol (NTP) Authentication
@@ -760,7 +660,7 @@ Extensions [MS-SNTP].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -826,7 +726,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-of request-and-response message exchanges between computers (the RPC exchange); and the
+
+of request-and-response message exchanges between computers (the RPC exchange); and the
 single message from an RPC exchange (the RPC message).  For more information, see [C706].
 
 RPC protocol sequence: A character string that represents a valid combination of a remote
@@ -877,14 +778,14 @@ network and hardware time sources. For more information, see [WTSREF] and [MS-SN
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -900,7 +801,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note Registration is required to download the document.
+
+Note Registration is required to download the document.
 
 [MS-ERREF] Microsoft Corporation, "Windows Error Codes".
 
@@ -917,7 +819,7 @@ Analysis", RFC 1305, March 1992, https://www.rfc-editor.org/info/rfc1305
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-SNTP] Microsoft Corporation, "Network Time Protocol (NTP) Authentication Extensions".
 
@@ -936,7 +838,7 @@ https://www.eecis.udel.edu/~mills/database/reports/allan/secureb.pdf
 http://technet2.microsoft.com/WindowsServer/en/Library/a0fcd250-e5f7-41b3-b0e8-
 240f8236e2101033.mspx
 
-1.3  Overview
+### 1.3 Overview
 
 The W32Time Remote Protocol is an RPC-based protocol used for controlling and monitoring a time
 service that implements the Network Time Protocol (NTP) Authentication Extensions specified in [MS-
@@ -949,7 +851,7 @@ The server side of the W32Time Remote Protocol provides methods for controlling 
 client and server instances of the locally hosted NTP Authentication Extensions [MS-SNTP]
 implementation.<1>
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The W32Time Remote Protocol uses RPC over Server Message Block (SMB), as specified in [MS-
 SMB], as its transport. The W32Time Remote Protocol is commonly used to control and monitor a
@@ -964,7 +866,8 @@ Release: April 23, 2024
 
 9 / 62
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-W32T].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-W32T].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
@@ -978,12 +881,12 @@ Remote Protocol server implementation (see section 3.2.1 for details).
 
 Figure 2: Server-side protocol relationships
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol is an RPC interface and therefore has the prerequisites common to RPC interfaces, as
 specified in [MS-RPCE].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable wherever there is a need to control or monitor time services. The
 W32Time Remote Protocol does not participate in time synchronization.
@@ -995,7 +898,8 @@ Release: April 23, 2024
 
 10 / 62
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 Supported Transports: This protocol uses RPC over SMB, as specified in [MS-SMB], as its only
 
@@ -1010,11 +914,11 @@ the RPC interface, see [MS-RPCE].<2>
 
 Security and Authentication Methods: For security considerations, see sections 3.1.3 and 3.2.3.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1043,9 +947,10 @@ Release: April 23, 2024
 
 11 / 62
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol MUST use the following RPC protocol sequence: RPC over named pipes, as specified in
 [MS-RPCE] section 2.1.1.2.
@@ -1066,7 +971,7 @@ authentication level on behalf of the client and server, as specified in [MS-RPC
 
 This protocol MUST use the UUID as specified in section 1.9. The RPC version number is 4.1.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to the RPC base types and definitions specified in [C706] and [MS-RPCE], the following
 data types are defined in the Microsoft Interface Definition Language (MIDL) specification for
@@ -1075,7 +980,7 @@ this RPC interface.
 The types used in the IDL fragments in the following data type definitions are specified in [MS-RPCE]
 section 2.2.
 
-2.2.1  W32TIME_PROVIDER_INFO
+#### 2.2.1 W32TIME_PROVIDER_INFO
 
 The W32TIME_PROVIDER_INFO structure defines information about a selected time provider (either
 an NTP time provider or a hardware time provider).
@@ -1104,7 +1009,7 @@ ProviderData:  A W32TIME_PROVIDER_DATA union that contains information about the
 
 provider.
 
-2.2.2  W32TIME_PROVIDER_DATA
+#### 2.2.2 W32TIME_PROVIDER_DATA
 
 The W32TIME_PROVIDER_DATA union selects either an NTP time provider or a hardware time
 provider.
@@ -1116,7 +1021,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef
+
+ typedef
  [switch_type(unsigned __int32)]
  union {
    [case(0)]
@@ -1134,7 +1040,7 @@ pHardwareProviderData:  A W32TIME_HARDWARE_PROVIDER_DATA structure that contains
 information about a hardware time provider. Examples of hardware time providers include cesium
 and atomic clocks.
 
-2.2.3  W32TIME_HARDWARE_PROVIDER_DATA
+#### 2.2.3 W32TIME_HARDWARE_PROVIDER_DATA
 
 The W32TIME_HARDWARE_PROVIDER_DATA structure contains operational information about a
 hardware time provider, such as a cesium or atomic clock.
@@ -1162,7 +1068,7 @@ wszReferenceIdentifier:  The Reference Clock Identifier that identifies the time
 
 time service, as specified in [RFC1305] Appendix A, "NTP Data Format".
 
-2.2.4  W32TIME_NTP_PROVIDER_DATA
+#### 2.2.4 W32TIME_NTP_PROVIDER_DATA
 
 The W32TIME_NTP_PROVIDER_DATA structure defines the state of an NTP time provider.
 
@@ -1184,7 +1090,8 @@ Release: April 23, 2024
 
 13 / 62
 
-ulError:  The LastError element value (see section 3.2.1.2). Because the values transmitted in this
+
+ulError:  The LastError element value (see section 3.2.1.2). Because the values transmitted in this
 
 field are implementation-specific, all nonzero values MUST be treated as equivalent for protocol
 purposes.<6>
@@ -1202,7 +1109,7 @@ pPeerInfo:  The PeerList element value (see section 3.2.1.2). A pointer to
 W32TIME_NTP_PEER_INFO structures representing the time peers with which this time provider is
 currently synchronizing.
 
-2.2.5  W32TIME_NTP_PEER_INFO
+#### 2.2.5 W32TIME_NTP_PEER_INFO
 
 The W32TIME_NTP_PEER_INFO structure defines the current state of a time peer for an NTP time
 provider.
@@ -1258,7 +1165,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-machine closer to a reference source is not synchronized to a machine that is farther away, as
+
+machine closer to a reference source is not synchronized to a machine that is farther away, as
 specified in [RFC1305] section 2.2, "Network Configurations".
 
 ulReachability:  An 8-bit shift register that contains this time peer's reachability, as specified in
@@ -1275,7 +1183,7 @@ ulHostPollInterval:  The interval at which the NTP service provider is polling t
 expressed as specified in [RFC1305], using units of seconds given as exponents to a power of two.
 For example, a value of six indicates a minimum interval of 64 seconds.
 
-2.2.6  Source of Time Service Configuration Setting
+#### 2.2.6 Source of Time Service Configuration Setting
 
 The configuration setting source values indicate the source from which a configuration setting's value
 was loaded. These fields are not used to instruct an NTP Authentication Extensions implementation
@@ -1330,7 +1238,7 @@ field contains the value of the LargePhaseOffset ADM element (see [MS-SNTP] sect
 the ulLargePhaseOffsetFlag field will contain a value from the preceding table that indicated the
 source from which the value of the LargePhaseOffset ADM element was most recently loaded.
 
-2.2.7  State of Time Service
+#### 2.2.7 State of Time Service
 
 The state of the time service represents the current state of the time service in the clock discipline
 algorithm. For more information on clock discipline algorithms, see [NTP-TR9733i] and [NTP-TR9733]
@@ -1346,7 +1254,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1377,7 +1286,7 @@ synchronized or if the spike was just a network jitter.
 
 All other values are reserved for future use.
 
-2.2.8  W32TIME_CONFIGURATION_PROVIDER
+#### 2.2.8 W32TIME_CONFIGURATION_PROVIDER
 
 The W32TIME_CONFIGURATION_PROVIDER structure defines the configuration data of an NTP time
 provider.
@@ -1437,7 +1346,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-wszProviderName:  The ProviderName element value (see section 3.2.1.2)
+
+wszProviderName:  The ProviderName element value (see section 3.2.1.2)
 
 ulDllNameFlag:  An integer indicating the source of the configuration setting for wszDllName, as
 
@@ -1457,7 +1367,7 @@ specified in section 2.2.6.
 
 pProviderConfig:  A pointer to the W32TIME_PROVIDER_CONFIG structure.
 
-2.2.9  W32TIME_PROVIDER_CONFIG
+#### 2.2.9 W32TIME_PROVIDER_CONFIG
 
 The W32TIME_PROVIDER_CONFIG structure defines configuration data for a selected time provider.
 
@@ -1494,7 +1404,7 @@ pProviderConfigData:  A W32TIME_PROVIDER_CONFIG_DATA union that contains configu
 
 data about the time provider.
 
-2.2.10 W32TIME_PROVIDER_CONFIG_DATA
+#### 2.2.10 W32TIME_PROVIDER_CONFIG_DATA
 
 The W32TIME_PROVIDER_CONFIG_DATA union selects either an NtpClient or an NtpServer time
 provider.
@@ -1516,7 +1426,8 @@ Release: April 23, 2024
 
 17 / 62
 
-pNtpClientProviderConfigData:  A pointer to a W32TIME_NTPCLIENT_PROVIDER_CONFIG_DATA
+
+pNtpClientProviderConfigData:  A pointer to a W32TIME_NTPCLIENT_PROVIDER_CONFIG_DATA
 
 structure that contains configuration data for an NtpClient time provider.
 
@@ -1524,7 +1435,7 @@ pNtpServerProviderConfigData:  A pointer to a W32TIME_NTPSERVER_PROVIDER_CONFIG_
 
 structure that contains configuration data for an NtpServer time provider.
 
-2.2.11 W32TIME_NTPCLIENT_PROVIDER_CONFIG_DATA
+#### 2.2.11 W32TIME_NTPCLIENT_PROVIDER_CONFIG_DATA
 
 The W32TIME_NTPCLIENT_PROVIDER_CONFIG_DATA structure contains configuration data about an
 NtpClient time provider.
@@ -1592,7 +1503,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ulResolvePeerBackoffMaxTimes:  The ResolvePeerBackoffMaxTimes element value (see [MS-
+
+ulResolvePeerBackoffMaxTimes:  The ResolvePeerBackoffMaxTimes element value (see [MS-
 
 SNTP] section 3.1.1).
 
@@ -1676,7 +1588,8 @@ Release: April 23, 2024
 
 19 / 62
 
-ulResolvePeerBackoffMinutesFlag:  An integer that indicates the source of the configuration
+
+ulResolvePeerBackoffMinutesFlag:  An integer that indicates the source of the configuration
 
 setting for ulResolvePeerBackoffMinutes, as specified in section 2.2.6.
 
@@ -1712,7 +1625,7 @@ cEntries:  An integer that indicates the number of additional configuration entr
 
 pEntries:  A pointer to W32TIME_ENTRY structures that represent additional configuration entries.
 
-2.2.12 W32TIME_NTPSERVER_PROVIDER_CONFIG_DATA
+#### 2.2.12 W32TIME_NTPSERVER_PROVIDER_CONFIG_DATA
 
 The W32TIME_NTPSERVER_PROVIDER_CONFIG_DATA structure contains configuration data about an
 NtpServer time provider.
@@ -1756,7 +1669,8 @@ Release: April 23, 2024
 
 20 / 62
 
-All other values are reserved for future use.
+
+All other values are reserved for future use.
 
 ulAllowNonstandardModeCombinationsFlag:  An integer that indicates the source of the
 
@@ -1787,7 +1701,7 @@ cEntries:  An integer that indicates the number of additional configuration entr
 
 pEntries:  A pointer to W32TIME_ENTRY structures that represent additional configuration entries.
 
-2.2.13 W32TIME_CONFIGURATION_INFO
+#### 2.2.13 W32TIME_CONFIGURATION_INFO
 
 The W32TIME_CONFIGURATION_INFO structure defines the configuration data of the time service.
 
@@ -1836,7 +1750,8 @@ Release: April 23, 2024
 
 21 / 62
 
-2.2.14 W32TIME_CONFIGURATION_BASIC
+
+#### 2.2.14 W32TIME_CONFIGURATION_BASIC
 
 The W32TIME_CONFIGURATION_BASIC structure defines the basic configuration data of the time
 service.
@@ -1922,7 +1837,8 @@ Release: April 23, 2024
 
 22 / 62
 
-ulMinPollInterval:  An integer that indicates the minimum poll interval of domain time
+
+ulMinPollInterval:  An integer that indicates the minimum poll interval of domain time
 
 synchronization, expressed as specified in [RFC1305] section 3.2.7, using units of seconds given
 as exponents to a power of two.
@@ -1970,7 +1886,7 @@ ulMaxAllowedPhaseOffsetFlag:  An integer that indicates the source of the config
 
 ulMaxAllowedPhaseOffset, as specified in section 2.2.6.
 
-2.2.15 W32TIME_CONFIGURATION_ADVANCED
+#### 2.2.15 W32TIME_CONFIGURATION_ADVANCED
 
 The W32TIME_CONFIGURATION_ADVANCED structure defines the advanced configuration data of the
 time service.<13>
@@ -2002,7 +1918,8 @@ Release: April 23, 2024
 
 23 / 62
 
-   unsigned __int32 ulLocalClockDispersionFlag;
+
+   unsigned __int32 ulLocalClockDispersionFlag;
    unsigned __int32 ulHoldPeriodFlag;
    unsigned __int32 ulPhaseCorrectRateFlag;
    unsigned __int32 ulUpdateIntervalFlag;
@@ -2077,11 +1994,12 @@ Release: April 23, 2024
 
 24 / 62
 
-ulUpdateIntervalFlag:  An integer that indicates the source of the configuration setting for
+
+ulUpdateIntervalFlag:  An integer that indicates the source of the configuration setting for
 
 ulUpdateInterval, as specified in section 2.2.6.
 
-2.2.16 W32TIME_CONFIGURATION_DEFAULT
+#### 2.2.16 W32TIME_CONFIGURATION_DEFAULT
 
 The W32TIME_CONFIGURATION_DEFAULT structure defines the default configuration data of the time
 service as described in [WTSREF].
@@ -2129,7 +2047,7 @@ ulFileLogFlagsFlag:  An integer that indicates the source of the configuration s
 
 ulFileLogFlags, as specified in section 2.2.6.
 
-2.2.17 W32TIME_STATUS_INFO
+#### 2.2.17 W32TIME_STATUS_INFO
 
 The W32TIME_STATUS_INFO structure defines the current status data of the time service.
 
@@ -2151,7 +2069,8 @@ Release: April 23, 2024
 
 25 / 62
 
-   [string, unique] wchar_t* wszSource;
+
+   [string, unique] wchar_t* wszSource;
    signed __int64 toSysPhaseOffset;
    unsigned __int32 ulLcState;
    unsigned __int32 ulTSFlags;
@@ -2227,7 +2146,8 @@ Release: April 23, 2024
 
 26 / 62
 
-2.2.18 W32TIME_ENTRY
+
+#### 2.2.18 W32TIME_ENTRY
 
 The W32TIME_ENTRY structure defines the general entry as a possible extension to other time
 service data structures. This structure has no current use.
@@ -2255,20 +2175,21 @@ Release: April 23, 2024
 
 27 / 62
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required beyond those that RPC uses internally to implement resiliency to
 network outages, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The client creates an RPC binding handle, as specified in [C706], to the server RPC endpoint when an
 RPC method is called. The client can create a separate binding handle for each method invocation, or
@@ -2285,7 +2206,7 @@ remote RPC implementation server is listening on the authenticated endpoint but 
 appropriate authentication mechanism), the client can choose to either ignore the error for
 compatibility or terminate its attempt to invoke the RPC method.<16>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 A client's invocation of each method typically results from local application activity. The local
 application at the client specifies values for all input parameters. No other higher-layer triggered
@@ -2293,18 +2214,18 @@ events are processed.
 
 The following sections provide details about the method invocations.
 
-3.1.4.1  W32TimeSync
+##### 3.1.4.1 W32TimeSync
 
 Invoking the W32TimeSync method SHOULD cause the time service to immediately request a new
 time sample from its current time source.<17><18><19>The next request for a time sample from
 the time service to the time source SHOULD occur at the configured frequency from when the call was
 made to this method.
 
-3.1.4.2  W32TimeGetNetlogonServiceBits
+##### 3.1.4.2 W32TimeGetNetlogonServiceBits
 
 No client-specific events or rules are required.
 
-3.1.4.3  W32TimeQueryProviderStatus
+##### 3.1.4.3 W32TimeQueryProviderStatus
 
 For information about W32TimeQueryProviderStatus, see the following citation in Appendix B:
 Windows Behavior.<20>
@@ -2316,29 +2237,30 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.4  W32TimeQuerySource
+
+##### 3.1.4.4 W32TimeQuerySource
 
 No client-specific events or rules are required.
 
-3.1.4.5  W32TimeQueryProviderConfiguration
+##### 3.1.4.5 W32TimeQueryProviderConfiguration
 
 No client-specific events or rules are required.
 
-3.1.4.6  W32TimeQueryConfiguration
+##### 3.1.4.6 W32TimeQueryConfiguration
 
 No client-specific events or rules are required.
 
-3.1.4.7  W32TimeQueryStatus
+##### 3.1.4.7 W32TimeQueryStatus
 
 No client-specific events or rules are required.
 
-3.1.4.8  W32TimeLog
+##### 3.1.4.8 W32TimeLog
 
 The client SHOULD change the logging configuration of the time service before invoking this method
 in order for the time service to update. Otherwise, the same logging configuration is used without
 update.<21>
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The client SHOULD ignore errors that the RPC server returns and notify the application invoker of the
 error received in the higher layer. The client SHOULD ignore values that the RPC server returns that
@@ -2347,19 +2269,19 @@ client SHOULD notify the application invoker of invalid values in the higher lay
 message processing is required on the client beyond the processing required in the underlying RPC
 protocol.<22>
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No additional local events are used on the client beyond the events maintained in the underlying RPC
 protocol.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2377,13 +2299,14 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This protocol references the following abstract data model elements from [MS-SNTP] section 3.1.1:
+
+This protocol references the following abstract data model elements from [MS-SNTP] section 3.1.1:
 SpecialPollInterval, TimeSourceType, NtpServer, LargePhaseOffset, SpikeWatchPeriod,
 HoldPeriod, ResolvePeerBackoffMinutes, and ResolvePeerBackoffMaxTimes. This protocol
 references the following abstract data model elements from [MS-SNTP] section 3.2.1:
 AnnounceFlags and LocalClockDispersion.
 
-3.2.1.1  Time Service Elements
+##### 3.2.1.1 Time Service Elements
 
 The time service implementing this RPC interface MUST maintain the following abstract data
 elements that describe its capabilities:
@@ -2454,7 +2377,8 @@ Release: April 23, 2024
 
 30 / 62
 
-PollAdjustFactor: An unsigned integer that indicates the correction rate that determines how fast
+
+PollAdjustFactor: An unsigned integer that indicates the correction rate that determines how fast
 
 the time service adjusts the poll interval. For more information on adjusting the poll interval, see
 [NTP-TR9733i] and [NTP-TR9733] section 4.
@@ -2548,7 +2472,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2573,7 +2498,7 @@ TimeLastGoodSync: An unsigned 64-bit integer that indicates the time since the t
 
 performed a successful time synchronization, in 100-nanosecond units.
 
-3.2.1.2  Time Provider Elements
+##### 3.2.1.2 Time Provider Elements
 
 The following elements are defined for each time provider found in the time provider list. These
 elements are read-only.
@@ -2608,7 +2533,7 @@ IsNonstandardModeCombinationsAllowed: A Boolean flag that indicates whether nons
 
 mode combinations are allowed.
 
-3.2.1.2.1 NTP Client Provider Elements
+###### 3.2.1.2.1 NTP Client Provider Elements
 
 The following elements are defined for each NTP client time provider found in the time provider list.
 These elements are read-only.
@@ -2637,7 +2562,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2721,7 +2647,7 @@ LargeSampleSkew:  An integer that indicates the large time sample skew threshold
 time sample has a difference from the time of the local clock that is more than this value, it MUST
 be considered to be a sample with large skew.
 
-3.2.1.3  Time Peer Elements
+##### 3.2.1.3 Time Peer Elements
 
 The following elements are defined for each time peer found in the PeerList of an NTP time provider.
 These elements are read-only.
@@ -2737,7 +2663,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-discovery and FQDN resolution, as specified in [RFC1305]. The value SHOULD NOT<27> wrap
+
+discovery and FQDN resolution, as specified in [RFC1305]. The value SHOULD NOT<27> wrap
 around to 0.
 
 TimeRemaining: A 64-bit, unsigned integer value that indicates the amount of time remaining
@@ -2774,21 +2701,21 @@ PeerName: A null terminated string that represents the name of this time peer. T
 informational or display purposes only and is implementation specific. This element MAY<31>
 be ignored for protocol purposes.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server SHOULD<32> listen on both of the well-known endpoints defined for this RPC interface.
 For more information on endpoints, see section 2.1.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 For authenticated RPC over SMB, the details of method authentication are specific to the underlying
 RPC implementation, as specified in [C706].<33>
@@ -2807,7 +2734,8 @@ Release: April 23, 2024
 
 34 / 62
 
-Method
+
+Method
 
 W32TimeSync
 
@@ -2863,7 +2791,7 @@ Exceptions thrown: No exceptions are thrown beyond those thrown by the underlyin
 
 The RPC methods shown in the following sections are organized in opnum order.
 
-3.2.5.1  W32TimeSync (Opnum 0)
+##### 3.2.5.1 W32TimeSync (Opnum 0)
 
 The W32TimeSync method is invoked to request that the time service immediately initiate an
 attempt to synchronize its time. The MIDL syntax of this method is specified as follows.
@@ -2906,7 +2834,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following values SHOULD be mutually exclusive. When multiple values are set, the value
+
+The following values SHOULD be mutually exclusive. When multiple values are set, the value
 whose bit is least significant SHOULD take precedence.<35>
 
 Note  The TimeSyncFlag_SoftResync value MUST NOT be used in conjunction with any other value
@@ -3005,7 +2934,7 @@ The time service MUST immediately attempt to synchronize time with its time sour
 by the flags provided in the method invocation. For more information on the flags, see the ulFlags
 table in this section.<37>
 
-3.2.5.2  W32TimeGetNetlogonServiceBits (Opnum 1)
+##### 3.2.5.2 W32TimeGetNetlogonServiceBits (Opnum 1)
 
 The W32TimeGetNetlogonServiceBits method returns information about the functionality that the time
 service provides. The MIDL syntax of this method is specified as follows.
@@ -3019,7 +2948,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   [in] handle_t hBinding
+
+   [in] handle_t hBinding
  );
 
 hBinding: RPC primitive binding handle, as specified in [C706] part 3, sections Interface Definition
@@ -3055,7 +2985,7 @@ to the value of the time service's IsTimeServer data element, and the bit corres
 DS_GOOD_TIMESERV_FLAG MUST be set to the value of the time service's IsReliableTimeServer
 data element.<38>
 
-3.2.5.3  W32TimeQueryProviderStatus (Opnum 2)
+##### 3.2.5.3 W32TimeQueryProviderStatus (Opnum 2)
 
 The W32TimeQueryProviderStatus method returns operational information for a specified time
 provider (either an NTP or a hardware time provider) within the time service's list of time
@@ -3098,7 +3028,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  pProviderInfo.ulProviderType MUST be set to 0.
+
+1.  pProviderInfo.ulProviderType MUST be set to 0.
 
 2.  pProviderInfo.ProviderData.pNtpProviderData.ulSize MUST be set with the size, in bytes, of the
 
@@ -3184,7 +3115,7 @@ The Peer Poll Interval (peer.peerpoll), as specified in [RFC1305] section 3.2.3,
 The Host Poll Interval (peer.hostpoll), as specified in [RFC1305] section 3.2.3,
 "Peer Variables".
 
-3.2.5.4  W32TimeQuerySource (Opnum 3)
+##### 3.2.5.4 W32TimeQuerySource (Opnum 3)
 
 The W32TimeQuerySource method returns the current time source of the time service. The MIDL
 syntax of this method is specified as follows.
@@ -3205,7 +3136,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pwszSource: A pointer to a null-terminated string that is the name of the time source that the time
+
+pwszSource: A pointer to a null-terminated string that is the name of the time source that the time
 
 service is synchronizing with. If the time service is not synchronizing with any time source, the
 string MUST be set to a null-terminated empty string. This string SHOULD be either the FQDN or
@@ -3219,7 +3151,7 @@ treated as equivalent for the purposes of this protocol.<42>
 When W32TimeQuerySource is invoked, the server SHOULD return the current time source of the time
 service.<43>
 
-3.2.5.5  W32TimeQueryProviderConfiguration (Opnum 4)
+##### 3.2.5.5 W32TimeQueryProviderConfiguration (Opnum 4)
 
 The W32TimeQueryProviderConfiguration method returns configuration data for a specific time
 provider within the time service's list of time providers.<44> The MIDL syntax of this method is
@@ -3258,7 +3190,7 @@ provider cannot be located, the server MUST return ERROR_NOT_FOUND, as specified
 otherwise, the server MUST return the associated time provider configuration data structure, as
 specified in section 3.2.5.9.1.
 
-3.2.5.6  W32TimeQueryConfiguration (Opnum 5)
+##### 3.2.5.6 W32TimeQueryConfiguration (Opnum 5)
 
 The W32TimeQueryConfiguration method returns the configuration data of the time service.<47>
 The MIDL syntax of this method is specified as follows.
@@ -3275,7 +3207,8 @@ Release: April 23, 2024
 
 39 / 62
 
-hBinding: RPC primitive binding handle, as specified in [C706] part 3, sections Interface Definition
+
+hBinding: RPC primitive binding handle, as specified in [C706] part 3, sections Interface Definition
 
 Language and Stubs.
 
@@ -3360,7 +3293,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-17. pConfigurationInfo.basicConfig.ulMaxPosPhaseCorrectionFlag MUST be set to an integer indicating
+
+17. pConfigurationInfo.basicConfig.ulMaxPosPhaseCorrectionFlag MUST be set to an integer indicating
 
 the type of the configuration setting for ulMaxPosPhaseCorrection, as specified in section 2.2.6.
 
@@ -3446,7 +3380,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-37. pConfigurationInfo.defaultConfig.wszFileLogName MUST be set to the FileLogName data element
+
+37. pConfigurationInfo.defaultConfig.wszFileLogName MUST be set to the FileLogName data element
 
 value (section 3.2.1.1).
 
@@ -3491,7 +3426,7 @@ specified in section 3.2.5.9.1.
 
 48. pConfigurationInfo.pEntries MUST be set to NULL.
 
-3.2.5.7  W32TimeQueryStatus (Opnum 6)
+##### 3.2.5.7 W32TimeQueryStatus (Opnum 6)
 
 The W32TimeQueryStatus method returns the service status data of the time service.<49> The
 MIDL syntax of this method is specified as follows.
@@ -3523,7 +3458,8 @@ Release: April 23, 2024
 
 42 / 62
 
-Element field
+
+Element field
 
 Value
 
@@ -3610,7 +3546,7 @@ pEntries
 
 NULL
 
-3.2.5.8  W32TimeLog (Opnum 7)
+##### 3.2.5.8 W32TimeLog (Opnum 7)
 
 The W32TimeLog method is invoked to request that the time service update its logging
 configuration.<51> The logging of the time service is implementation specific.<52>
@@ -3628,7 +3564,8 @@ Release: April 23, 2024
 
 43 / 62
 
-hBinding: RPC primitive binding handle, as specified in [C706] part 3, sections Interface Definition
+
+hBinding: RPC primitive binding handle, as specified in [C706] part 3, sections Interface Definition
 
 Language and Stubs.
 
@@ -3639,9 +3576,9 @@ treated as equivalent for protocol purposes.<53>
 When W32TimeLog is invoked, the server SHOULD<54> update its logging behavior based on its
 implementation-specific logging configuration.
 
-3.2.5.9  Common Message Processing Details
+##### 3.2.5.9 Common Message Processing Details
 
-3.2.5.9.1 Time Provider Configuration Data Structure Generation
+###### 3.2.5.9.1 Time Provider Configuration Data Structure Generation
 
 For a given time provider, its configuration data structure (W32TIME_CONFIGURATION_PROVIDER) is
 populated as follows:
@@ -3705,7 +3642,8 @@ Release: April 23, 2024
 
 44 / 62
 
-5.  pProviderConfig.pProviderConfigData.pNtpClientProviderConfigData.ulResolvePeerBackoffMinut
+
+5.  pProviderConfig.pProviderConfigData.pNtpClientProviderConfigData.ulResolvePeerBackoffMinut
 es MUST be set to the ResolvePeerBackoffMinutes data element value ([MS-SNTP] section
 3.1.1).
 
@@ -3787,7 +3725,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-22. pProviderConfig.pProviderConfigData.pNtpClientProviderConfigData.ulNtpServerFlag SHOULD
+
+22. pProviderConfig.pProviderConfigData.pNtpClientProviderConfigData.ulNtpServerFlag SHOULD
 be set to an integer indicating the type of the configuration setting for wszNtpServer, as
 specified in section 2.2.6.
 
@@ -3830,12 +3769,12 @@ ulEventLogFlags, as specified in section 2.2.6.
 
 NULL.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 No additional local events are used on the client beyond the events maintained in the underlying RPC
 protocol.
@@ -3847,7 +3786,8 @@ Release: April 23, 2024
 
 46 / 62
 
-4  Protocol Example
+
+## 4 Protocol Example
 
 This section provides an example of how the W32Time Remote Protocol is used.
 
@@ -3873,9 +3813,10 @@ Release: April 23, 2024
 
 47 / 62
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations for both unauthenticated and authenticated RPC used in this protocol are
 specified in [MS-RPCE].
@@ -3885,7 +3826,7 @@ as specified in section 3.1.3. The unauthenticated RPC is not as secure as authe
 client is recommended to either audit or support this automatic failover only when it is explicitly
 specified.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security Parameter
 
@@ -3900,7 +3841,8 @@ Release: April 23, 2024
 
 48 / 62
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
  typedef struct {
      unsigned __int32 ulSize;
@@ -3976,7 +3918,8 @@ Release: April 23, 2024
 
 49 / 62
 
-     unsigned __int32 ulResolvePeerBackoffMaxTimesFlag;
+
+     unsigned __int32 ulResolvePeerBackoffMaxTimesFlag;
      unsigned __int32 ulCompatibilityFlagsFlag;
      unsigned __int32 ulEventLogFlagsFlag;
      unsigned __int32 ulLargeSampleSkewFlag;
@@ -4053,7 +3996,8 @@ Release: April 23, 2024
 
 50 / 62
 
-     unsigned __int32 ulFrequencyCorrectRateFlag;
+
+     unsigned __int32 ulFrequencyCorrectRateFlag;
      unsigned __int32 ulPollAdjustFactorFlag;
      unsigned __int32 ulLargePhaseOffsetFlag;
      unsigned __int32 ulSpikeWatchPeriodFlag;
@@ -4129,7 +4073,8 @@ Release: April 23, 2024
 
 51 / 62
 
- [
+
+ [
      uuid(8fb6d884-2388-11d0-8c35-00c04fda2795),
      version(4.1),
      pointer_default(unique)
@@ -4204,7 +4149,8 @@ Release: April 23, 2024
 
 52 / 62
 
- }
+
+ }
 
 [MS-W32T] - v20240423
 W32Time Remote Protocol
@@ -4213,7 +4159,8 @@ Release: April 23, 2024
 
 53 / 62
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4281,7 +4228,8 @@ Release: April 23, 2024
 
 54 / 62
 
-<1> Section 1.3: The Windows Time service (W32Time) implements the server end of the
+
+<1> Section 1.3: The Windows Time service (W32Time) implements the server end of the
 W32Time Remote Protocol. For more information on W32Time, see [WTSREF].
 
 <2> Section 1.7: Windows RPC returns RPC_S_PROCNUM_OUT_OF_RANGE to notify the client that
@@ -4350,7 +4298,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-method calls to the server. If this invocation fails, the Windows client implementation makes all the
+
+method calls to the server. If this invocation fails, the Windows client implementation makes all the
 RPC method calls without authentication.
 
 W32Time Remote Protocol clients in Windows 2000 do not attempt to negotiate authentication.
@@ -4417,7 +4366,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -4489,7 +4439,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<34> Section 3.2.5.1: Windows blocks the call by using a local RPC named event.
+
+<34> Section 3.2.5.1: Windows blocks the call by using a local RPC named event.
 
 <35> Section 3.2.5.1: W32Time servers running Windows 2000 ignore this field.
 
@@ -4558,7 +4509,8 @@ W32Time Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<53> Section 3.2.5.8: This field can take on any Windows error code value, as specified in [MS-
+
+<53> Section 3.2.5.8: This field can take on any Windows error code value, as specified in [MS-
 ERREF].
 
 <54> Section 3.2.5.8: W32Time updates its logging behavior based on the logging configuration in
@@ -4571,7 +4523,8 @@ Release: April 23, 2024
 
 59 / 62
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4615,7 +4568,8 @@ Release: April 23, 2024
 
 60 / 62
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -4752,7 +4706,8 @@ PW32TIME_STATUS_INFO 25
 
 61 / 62
 
-R
+
+R
 
 References 8
    informative 9

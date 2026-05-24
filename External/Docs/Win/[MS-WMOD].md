@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 58
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -216,163 +217,72 @@ Release: October 26, 2021
 
 2 / 58
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
+## Table of Contents
 
-1.1
-1.2
-1.3
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Purpose](#211-system-purpose)
+    - [2.1.2 Applicability](#212-applicability)
+    - [2.1.3 System Components](#213-system-components)
+    - [2.1.4 WM Protocols Stack](#214-wm-protocols-stack)
+    - [2.1.5 Protocol Communications](#215-protocol-communications)
+    - [2.1.6 Relevant Standards](#216-relevant-standards)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies On This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems](#232-dependencies-on-other-systems)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Use Case Groups](#251-use-case-groups)
+      - [2.5.1.1 Asset Management](#2511-asset-management)
+      - [2.5.1.2 Setup, Configuration, and Update](#2512-setup-configuration-and-update)
+      - [2.5.1.3 Monitoring](#2513-monitoring)
+      - [2.5.1.4 Diagnosis and Troubleshooting](#2514-diagnosis-and-troubleshooting)
+    - [2.5.2 Use Case Details](#252-use-case-details)
+      - [2.5.2.1 Create a CIM Object — WM Client](#2521-create-a-cim-object-wm-client)
+      - [2.5.2.2 Invoke a Method on a CIM Object — WM Client](#2522-invoke-a-method-on-a-cim-object-wm-client)
+      - [2.5.2.3 Set Properties of an Object — WM Client](#2523-set-properties-of-an-object-wm-client)
+      - [2.5.2.4 Query CIM Properties — WM Client](#2524-query-cim-properties-wm-client)
+      - [2.5.2.5 Monitor Events— WM Client](#2525-monitor-events-wm-client)
+      - [2.5.2.6 Delete CIM Object — WM Client](#2526-delete-cim-object-wm-client)
+      - [2.5.2.7 Attempt Delete of CIM Object — WM Client](#2527-attempt-delete-of-cim-object-wm-client)
+      - [2.5.2.8 Create and Invoke a Pipeline — PSRP Client](#2528-create-and-invoke-a-pipeline-psrp-client)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+    - [2.6.1 Versioning](#261-versioning)
+    - [2.6.2 Capability Negotiation](#262-capability-negotiation)
+    - [2.6.3 Extensibility](#263-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+    - [2.9.1 Security Configuration Per Protocol](#291-security-configuration-per-protocol)
+    - [2.9.2 Security of Data Over the Network](#292-security-of-data-over-the-network)
+    - [2.9.3 Security of Managed Data](#293-security-of-managed-data)
+    - [2.9.4 Security Considerations for Task-Based Management Client-Side](#294-security-considerations-for-task-based-management-client-side)
+    - [2.9.5 Security Considerations for Task-Based Management Server-Side](#295-security-considerations-for-task-based-management-server-side)
+    - [2.9.6 Data Integrity for Task-Based Management](#296-data-integrity-for-task-based-management)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+    - [2.10.1 Connection Breakdown Between the Entities](#2101-connection-breakdown-between-the-entities)
+    - [2.10.2 Security Failures](#2102-security-failures)
+    - [2.10.3 System Configuration Corruption and Other Internal Failures](#2103-system-configuration-corruption-and-other-internal-failures)
+    - [2.10.4 Other Common Failures in CIMOM Operations](#2104-other-common-failures-in-cimom-operations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Single Request/Response WSMAN Protocol Operations](#31-example-1-single-requestresponse-wsman-protocol-operations)
+  - [3.2 Example 2: Enumerations](#32-example-2-enumerations)
+  - [3.3 Example 3: Pull Event Subscriptions](#33-example-3-pull-event-subscriptions)
+  - [3.4 Example 4: Push Event Subscriptions](#34-example-4-push-event-subscriptions)
+  - [3.5 Example 5: Publisher-Initiated Event Subscriptions](#35-example-5-publisher-initiated-event-subscriptions)
+  - [3.6 Example 6: Create and Invoke a Pipeline](#36-example-6-create-and-invoke-a-pipeline)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.1
-
-2.5.1
-
-2.5.2
-
-2.4
-2.5
-
-2.2
-2.3
-
-2.3.1
-2.3.2
-
-2.5.1.1
-2.5.1.2
-2.5.1.3
-2.5.1.4
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-2.1.5
-2.1.6
-
-2  Functional Architecture ......................................................................................... 10
-Overview ........................................................................................................ 10
-System Purpose ......................................................................................... 11
-Applicability ............................................................................................... 12
-System Components ................................................................................... 12
-WM Protocols Stack .................................................................................... 14
-Protocol Communications ............................................................................. 15
-Relevant Standards ..................................................................................... 17
-Protocol Summary ............................................................................................ 17
-Environment .................................................................................................... 18
-Dependencies On This System ...................................................................... 18
-Dependencies on Other Systems .................................................................. 19
-Assumptions and Preconditions .......................................................................... 19
-Use Cases ....................................................................................................... 20
-Use Case Groups ........................................................................................ 21
-Asset Management ................................................................................ 21
-Setup, Configuration, and Update ........................................................... 22
-Monitoring............................................................................................ 22
-Diagnosis and Troubleshooting ............................................................... 23
-Use Case Details ......................................................................................... 24
-Create a CIM Object — WM Client ........................................................... 24
-Invoke a Method on a CIM Object — WM Client ......................................... 25
-Set Properties of an Object — WM Client .................................................. 26
-Query CIM Properties — WM Client .......................................................... 27
-Monitor Events— WM Client .................................................................... 28
-Delete CIM Object — WM Client .............................................................. 29
-Attempt Delete of CIM Object — WM Client .............................................. 30
-Create and Invoke a Pipeline — PSRP Client ............................................. 30
-Versioning, Capability Negotiation, and Extensibility ............................................. 31
-Versioning ................................................................................................. 31
-Capability Negotiation ................................................................................. 32
-Extensibility ............................................................................................... 32
-Error Handling ................................................................................................. 32
-Coherency Requirements .................................................................................. 32
-Security .......................................................................................................... 32
-Security Configuration Per Protocol ............................................................... 33
-Security of Data Over the Network ................................................................ 34
-Security of Managed Data ............................................................................ 34
-Security Considerations for Task-Based Management Client-Side ...................... 35
-Security Considerations for Task-Based Management Server-Side..................... 35
-Data Integrity for Task-Based Management ................................................... 35
-Additional Considerations .................................................................................. 35
-2.10.1
-Connection Breakdown Between the Entities .................................................. 35
-2.10.2
-Security Failures ......................................................................................... 36
-System Configuration Corruption and Other Internal Failures ........................... 36
-2.10.3
-2.10.4  Other Common Failures in CIMOM Operations ................................................ 36
-
-2.5.2.1
-2.5.2.2
-2.5.2.3
-2.5.2.4
-2.5.2.5
-2.5.2.6
-2.5.2.7
-2.5.2.8
-
-2.9.1
-2.9.2
-2.9.3
-2.9.4
-2.9.5
-2.9.6
-
-2.6.1
-2.6.2
-2.6.3
-
-2.7
-2.8
-2.9
-
-2.10
-
-2.6
-
-3  Examples ............................................................................................................... 37
-Example 1: Single Request/Response WSMAN Protocol Operations ......................... 37
-Example 2: Enumerations ................................................................................. 39
-
-3.1
-3.2
-
-3 / 58
-
-[MS-WMOD] - v20211026
-Windows Management Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3.3
-3.4
-3.5
-3.6
-
-Example 3: Pull Event Subscriptions ................................................................... 44
-Example 4: Push Event Subscriptions ................................................................. 47
-Example 5: Publisher-Initiated Event Subscriptions .............................................. 50
-Example 6: Create and Invoke a Pipeline ............................................................ 53
-
-4  Microsoft Implementations ................................................................................... 55
-Product Behavior .............................................................................................. 55
-
-4.1
-
-5  Change Tracking .................................................................................................... 57
-
-6  Index ..................................................................................................................... 58
-
-[MS-WMOD] - v20211026
-Windows Management Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 58
-
-1  Introduction
+## 1 Introduction
 
 This section provides an overview of the foundational concepts that are used in this document, a
 glossary, and list of references.
@@ -400,7 +310,7 @@ computers in the enterprise from the command line. Windows PowerShell providers 
 data stores, such as the registry and certificate store. For more information about Windows
 PowerShell, see [MSDN-PWRSHELL].
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 With constant advances in the capability, scalability, and affordability of computing and
 communications technology, a few noticeable trends emerge in the way that corporations manage
@@ -443,7 +353,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Different operating systems and applications that are installed on these computers.
+
+  Different operating systems and applications that are installed on these computers.
 
 To simplify the management of a heterogeneous and widely-distributed computers, it is necessary to
 provide both a common mechanism for retrieving and manipulating data and a common format for
@@ -522,7 +433,8 @@ Release: October 26, 2021
 
 6 / 58
 
-1.2  Glossary
+
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -599,7 +511,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-registry: A local system-defined database in which applications and system components store and
+
+registry: A local system-defined database in which applications and system components store and
 retrieve configuration data. It is a hierarchical data store with lightly typed elements that are
 logically stored in tree format. Applications use the registry API to retrieve, modify, or delete
 registry data. The data stored in the registry varies according to the version of the operating
@@ -651,7 +564,7 @@ Query Language (ANSI SQL). It differs from the standard SQL in that it retrieves
 rather than tables and returns CIM classes or instances rather than rows.  WQL is specified in
 [MS-WMI] section 2.2.1.
 
-1.3  References
+### 1.3 References
 
 [DMTF-DSP0004] Distributed Management Task Force, "Common Information Model (CIM)
 Infrastructure Specification", DSP0004, version 2.3 final, October 2005,
@@ -668,7 +581,8 @@ Release: October 26, 2021
 
 8 / 58
 
-[DMTF-DSP0227] Distributed Management Task Force, Inc., "WS-Management CIM Binding
+
+[DMTF-DSP0227] Distributed Management Task Force, Inc., "WS-Management CIM Binding
 Specification", version 1.0.0, June 2009,
 http://www.dmtf.org/sites/default/files/standards/documents/DSP0227_1.0.0.pdf
 
@@ -727,13 +641,14 @@ Release: October 26, 2021
 
 9 / 58
 
-2  Functional Architecture
+
+## 2 Functional Architecture
 
 This section provides an overview of the functionality of the Windows Management (WM) protocols,
 their relationships, and a summary of the WM protocols, system dependencies, use cases, versioning,
 capability negotiation, error handling, coherency requirements, and security considerations.
 
-2.1  Overview
+### 2.1 Overview
 
 Windows Management (WM) can use an object/resource-based approach or a task/command-based
 approach, as described in section 1.1. This section describes which of the WM protocols falls under
@@ -796,7 +711,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-These three WM protocols are independent of each other, and each can be used to access CIM objects.
+
+These three WM protocols are independent of each other, and each can be used to access CIM objects.
 A particular implementation can include support for one or more of these three protocols, as described
 in section 2.6.
 
@@ -843,7 +759,7 @@ Windows PowerShell servers.
 executes pipelines of commands over shells and supports text-based command shells and custom
 remote shells.
 
-2.1.1  System Purpose
+#### 2.1.1 System Purpose
 
 From a system point of view, the Windows Management (WM) protocols provide the network
 communications to remotely view and modify system management data that are based on a unified
@@ -870,7 +786,8 @@ Release: October 26, 2021
 
 11 / 58
 
-A given WM application can accomplish these tasks by using the WM protocols to communicate with
+
+A given WM application can accomplish these tasks by using the WM protocols to communicate with
 one or more managed computers. A single WM applications might use more than one WM protocol to
 accomplish its goals. Also, some managed computers might not support all three of the WM protocols,
 so the WM applications might have to use different WM protocols to accomplish the same task on
@@ -895,12 +812,12 @@ properties of an instance, the system is required to provide a consistent view o
 objects, regardless of the protocol that the query uses. Similarly, when a WM application modifies the
 CIM state, all future observers see the same change.
 
-2.1.2  Applicability
+#### 2.1.2 Applicability
 
 The WM protocols are applicable primarily in scenarios where centralized asset management,
 monitoring, and troubleshooting are required.
 
-2.1.3  System Components
+#### 2.1.3 System Components
 
 From a system perspective, the WM protocols and data structure together provide a way for WM
 applications to access and manipulate management data. The WM protocols provide a mechanism
@@ -941,7 +858,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-WMOD].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -965,7 +883,8 @@ Release: October 26, 2021
 
 13 / 58
 
-Figure 1: Windows Management protocols components
+
+Figure 1: Windows Management protocols components
 
 The WM protocols define a way by which management applications and tools can access CIM data
 remotely. They act as a communication channel between the management application and the CIMOM.
@@ -1000,7 +919,7 @@ commands to the PSRP and WSMV server roles of the Command Invocation server role
 Invocation server role receives these pipelines of commands and interprets and executes them with
 the help of the Command Execution engine.
 
-2.1.4  WM Protocols Stack
+#### 2.1.4 WM Protocols Stack
 
 The WM protocols are not dependent on each other; they are implemented independently of each
 other. Unless otherwise specified, their only interdependencies are the underlying transport
@@ -1029,13 +948,14 @@ Release: October 26, 2021
 
 14 / 58
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-WMOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 Figure 2: WM protocols stack
 
-2.1.5  Protocol Communications
+#### 2.1.5 Protocol Communications
 
 The flow of communication between the CIM client role and the CIM server role can be carried out
 over a network connection by using any one of the member protocols (WMI, WSMAN, and WSMV).
@@ -1070,7 +990,8 @@ Release: October 26, 2021
 
 15 / 58
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-WMOD].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1105,7 +1026,8 @@ Release: October 26, 2021
 
 16 / 58
 
-2.1.6  Relevant Standards
+
+#### 2.1.6 Relevant Standards
 
 The WM protocols depend on the following standards:
 
@@ -1146,7 +1068,7 @@ Web Services Management Protocol Extensions for Windows Vista, as specified in [
 The application/JSON Media Type for JavaScript Object Notation (JSON), as specified in
 [RFC4627], defines a set of formatting rules for the portable representation of structured data.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table lists the WM protocols and provides brief descriptions of each. Some major
 differences in capability between the protocols are highlighted. All WM protocols play a single role: a
@@ -1203,7 +1125,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+
+Protocol name
 
 Protocol description
 
@@ -1257,7 +1180,7 @@ Windows Server 2016 operating system are PowerShell Remoting Protocol and the Po
 Debugging Protocol. For full details of each protocol’s capabilities and Windows versions in which they
 are implemented, refer to their respective protocol specifications.
 
-2.3  Environment
+### 2.3 Environment
 
 Windows Management protocols provide a way for WM applications to access and manipulate CIM
 data on a remote server by using a choice of three available network protocols. These protocol
@@ -1285,7 +1208,7 @@ The following sections identify the context in which the WM protocols exist. Thi
 that use the interfaces the WM protocols provide, other entities that depend on this system, and, as
 appropriate, the channel in which protocols communicate in their environment.
 
-2.3.1  Dependencies On This System
+#### 2.3.1 Dependencies On This System
 
 Although it is not necessary, during the implementation of the WM protocols some protocol-specific
 configuration settings can be changed through Group Policy.<1>
@@ -1297,7 +1220,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.3.2  Dependencies on Other Systems
+
+#### 2.3.2 Dependencies on Other Systems
 
 The WM protocols depend on the following entities:
 
@@ -1353,7 +1277,7 @@ Model (CIM) Object Manager (CIMOM) is required to be running on the computer tha
 this access. The CIMOM has to be correctly configured to carry out the requests that come from
 the WM clients on behalf of the WM applications on the other end.
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The WM protocols can be used together or independently to access CIMOM objects. An
 implementation might choose to support only a subset of the WM protocols, but all supported
@@ -1379,7 +1303,8 @@ Release: October 26, 2021
 
 19 / 58
 
-
+
+
 
 
 
@@ -1423,7 +1348,7 @@ this information.
 therefore, it is assumed that the WSMV client role has the entire list of commands that can be
 executed.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 The following table lists the use cases that span the functionality of the WM protocols. The use cases
 are grouped into four groups as shown in the first column of the following table.
@@ -1469,7 +1394,8 @@ Release: October 26, 2021
 
 20 / 58
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-WMOD].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1477,9 +1403,9 @@ The following sections provide an overview for each of the use case groups and d
 for each of the use cases for each group. Because some use cases are common across two or more
 use case groups, the use case group overviews are described first, followed by the use case details.
 
-2.5.1  Use Case Groups
+#### 2.5.1 Use Case Groups
 
-2.5.1.1  Asset Management
+##### 2.5.1.1 Asset Management
 
 To manage a system, when you use WM, you have to first collect information about the computers or
 devices that are available to be managed. For example, you have to know per-computer information
@@ -1506,11 +1432,12 @@ Release: October 26, 2021
 
 21 / 58
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-WMOD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
-2.5.1.2  Setup, Configuration, and Update
+##### 2.5.1.2 Setup, Configuration, and Update
 
 An IT administrator has to be able to set up and configure the computers for use. After a computer
 becomes a part of the corporate network, it has to be updated with the required software applications,
@@ -1528,7 +1455,7 @@ The following diagram shows the use cases for setup, configuration, and update.
 
 Figure 5: Setup, configuration, and update use cases
 
-2.5.1.3  Monitoring
+##### 2.5.1.3 Monitoring
 
 After all of a company's assets have been configured and connected to a network, an IT administrator
 has to monitor the computers and their status. This monitoring activity is crucial for a number of
@@ -1543,7 +1470,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-WMOD].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1558,7 +1486,7 @@ The following diagram shows the monitoring interactions between the WM client an
 
 Figure 6: Monitoring use cases
 
-2.5.1.4  Diagnosis and Troubleshooting
+##### 2.5.1.4 Diagnosis and Troubleshooting
 
 When an IT administrator is alerted that a failure has occurred or is soon to occur, it is not always
 possible to directly diagnose the computer in question. Instead, the computer is often diagnosed
@@ -1581,7 +1509,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-WMOD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1589,9 +1518,9 @@ Figure 7: Diagnosis and troubleshooting use cases
 
 The following sections describe each use case for all use case groups.
 
-2.5.2  Use Case Details
+#### 2.5.2 Use Case Details
 
-2.5.2.1  Create a CIM Object — WM Client
+##### 2.5.2.1 Create a CIM Object — WM Client
 
 Goal: To create a new CIM object in the CIM repository. The newly created object will have
 attributes that are populated from the WM client and that the WM client specifies.
@@ -1617,7 +1546,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Authentication services: A supporting actor that provides authentication services through NTLM,
+
+  Authentication services: A supporting actor that provides authentication services through NTLM,
 
 Kerberos, Basic, and Digest authentication to secure communications. It also provides
 authentication services that support the client-to-server communication. For an overview of the
@@ -1661,7 +1591,7 @@ Extensions: If the communication channel cannot be established, or it becomes di
 causes the protocol to tear down all related communications and update any necessary data structures
 to maintain the system state, as described in section 2.10.1.
 
-2.5.2.2  Invoke a Method on a CIM Object — WM Client
+##### 2.5.2.2 Invoke a Method on a CIM Object — WM Client
 
 Goal: To invoke a method on a managed object.
 
@@ -1694,7 +1624,8 @@ Release: October 26, 2021
 
 25 / 58
 
-  WM user: A person who or a management application that has to access or change some set of
+
+  WM user: A person who or a management application that has to access or change some set of
 CIM data for some set of computers. The primary interest of the WM user is to invoke a method
 on the CIM object.
 
@@ -1731,7 +1662,7 @@ causes the protocol to tear down all related communications and update any neces
 to maintain the system state, as described in section 2.10.1. If the WM user refers to a nonexistent
 CIM object, the WM server notifies the WM client about the failure to perform the requested operation.
 
-2.5.2.3  Set Properties of an Object — WM Client
+##### 2.5.2.3 Set Properties of an Object — WM Client
 
 Goal: To set one or more properties of an existing CIM object.
 
@@ -1771,7 +1702,8 @@ Release: October 26, 2021
 
 26 / 58
 
-
+
+
 
 
 
@@ -1806,7 +1738,7 @@ the protocol to tear down all related communications and update any necessary da
 maintain the system state, as described in section 2.10.1. If the WM user refers to a nonexistent CIM
 object, the WM server notifies the client about the failure to perform the requested operation.
 
-2.5.2.4  Query CIM Properties — WM Client
+##### 2.5.2.4 Query CIM Properties — WM Client
 
 Goal: To retrieve the values of some set of properties of a CIM object.
 
@@ -1858,7 +1790,8 @@ Release: October 26, 2021
 
 27 / 58
 
-
+
+
 
 The WM user has to know the unique identifier of the object.
 
@@ -1885,7 +1818,7 @@ the protocol to tear down all related communications and update any necessary da
 maintain the system state, as described in section 2.10.1. If the WM user refers to a nonexistent CIM
 object, the WM server notifies the client about the failure to perform the requested operation.
 
-2.5.2.5  Monitor Events— WM Client
+##### 2.5.2.5 Monitor Events— WM Client
 
 Goal: The goal is to submit a query to the WM server and to have the WM server notify the submitting
 user when conditions that are given in the query are met.
@@ -1935,7 +1868,8 @@ Release: October 26, 2021
 
 28 / 58
 
-3.  If or when an event is generated that matches the query, the WM server delivers the event
+
+3.  If or when an event is generated that matches the query, the WM server delivers the event
 
 notifications to the client.
 
@@ -1945,7 +1879,7 @@ The WM server delivers all requested notifications of events to the WM user.
 
 Extensions: None.
 
-2.5.2.6  Delete CIM Object — WM Client
+##### 2.5.2.6 Delete CIM Object — WM Client
 
 Goal: To use the WM client to delete an existing CIM object in the CIM repository.
 
@@ -2006,7 +1940,8 @@ Release: October 26, 2021
 
 29 / 58
 
-2.5.2.7  Attempt Delete of CIM Object — WM Client
+
+##### 2.5.2.7 Attempt Delete of CIM Object — WM Client
 
 Goal: To describe the failure of deleting a requested CIM object.
 
@@ -2061,7 +1996,7 @@ Extensions: If the communication channel cannot be established or becomes discon
 the protocol to tear down all related communications and update any necessary data structures to
 maintain the system state, as described in section 2.10.1.
 
-2.5.2.8  Create and Invoke a Pipeline — PSRP Client
+##### 2.5.2.8 Create and Invoke a Pipeline — PSRP Client
 
 Goal: To create and invoke a pipeline.
 
@@ -2082,7 +2017,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Authentication services: A supporting actor that provides authentication services through NTLM,
+
+  Authentication services: A supporting actor that provides authentication services through NTLM,
 
 Kerberos, Basic, and Digest authentication to secure communications. It also provides
 authentication services that support the client-to-server communication. For an overview of the
@@ -2121,9 +2057,9 @@ Extensions: If the communication channel cannot be established or becomes discon
 the protocol to tear down all related communications and update any necessary data structures to
 maintain the system state, as described in section 2.10.1.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
-2.6.1  Versioning
+#### 2.6.1 Versioning
 
 The Windows versions that support each of the Windows management protocols are listed in the
 Product Behavior appendix of each protocol technical document.
@@ -2164,13 +2100,14 @@ Release: October 26, 2021
 
 31 / 58
 
-2.6.2  Capability Negotiation
+
+#### 2.6.2 Capability Negotiation
 
 Although there are multiple possible combinations of WM protocols, there is no system-wide capability
 negotiation mechanism. It is assumed that the WM application determines which computers support
 which member protocols.
 
-2.6.3  Extensibility
+#### 2.6.3 Extensibility
 
 Three major extension points are related to WM protocols: locale (for example, language) identifiers,
 schema, and available commands. None of these concepts is included in or defined by this document,
@@ -2183,7 +2120,7 @@ A major purpose of WM protocols is to enable access to CIM objects, so reference
 schema are pervasive in [MS-WMI], [MS-WSMV], and [MS-WSMAN], and in their normative
 references. For details of CIM schema, see [DMTF-DSP0004].
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 The Windows Management protocols do not define any error handling requirements beyond those that
 are defined in the specifications of the protocols that the system supports, as described in section 2.2.
@@ -2192,11 +2129,11 @@ Various errors can impact one or more of the Windows Management protocols. The e
 and the resulting protocol semantics are described in section 3 of the corresponding protocol
 specifications.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 This system has no special coherency requirements.
 
-2.9  Security
+### 2.9 Security
 
 This section documents system-wide security issues that are not otherwise described in the
 specifications for the WM protocols. It does not duplicate what is already in these specifications unless
@@ -2217,13 +2154,14 @@ Release: October 26, 2021
 
 32 / 58
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-WMOD].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
 Figure 8: Security configuration settings
 
-2.9.1  Security Configuration Per Protocol
+#### 2.9.1 Security Configuration Per Protocol
 
 A number of security settings are defined in the individual specifications of the WM protocols. It is
 important to note that the security configuration settings in this section only apply to the relevant
@@ -2260,7 +2198,8 @@ Release: October 26, 2021
 
 33 / 58
 
-2.9.2  Security of Data Over the Network
+
+#### 2.9.2 Security of Data Over the Network
 
 Because the CIM data that are transferred across a network connection can potentially hold sensitive
 information, it is important to help secure it from tampering or accidental disclosure. The CIM data has
@@ -2287,7 +2226,7 @@ DCOM specifies a set of constants that convey the level of authentication.
 PSRP includes a mechanism for secure key exchange, which allows passwords to be exchanged
 securely even over a nonencrypted transport, as specified in [MS-PSRP] section 3.2.5.4.4.
 
-2.9.3  Security of Managed Data
+#### 2.9.3 Security of Managed Data
 
 Regardless of the particular protocol that is used for remote access, the CIMOM restricts access to the
 underlying managed objects. To restrict access, SDDL strings are assigned to a particular CIM
@@ -2325,19 +2264,20 @@ Release: October 26, 2021
 
 34 / 58
 
-2.9.4  Security Considerations for Task-Based Management Client-Side
+
+#### 2.9.4 Security Considerations for Task-Based Management Client-Side
 
 The WSMV security considerations, as specified in [MS-WSMV] section 5, are applicable to the client-
 side role, which is the Command invocation client role. Additionally, the Command invocation client
 role implements the hosting of APIs as described in [MS-PSRP] section 2.2.3.17. Clients do not
 support information disclosure to the remote server or execute any code for the remote server.
 
-2.9.5  Security Considerations for Task-Based Management Server-Side
+#### 2.9.5 Security Considerations for Task-Based Management Server-Side
 
 The server-side role, that is, the Command invocation server role, secures against malicious inputs to
 its command set.
 
-2.9.6  Data Integrity for Task-Based Management
+#### 2.9.6 Data Integrity for Task-Based Management
 
 Task/command-based WM protocols can use either HTTP or HTTPS as a transport. HTTP provides no
 protection against eavesdropping, and it is recommended not to be used to transport confidential
@@ -2350,12 +2290,12 @@ The Windows security model handles security for resources that are accessed by u
 WSMV in a task-based approach. This resource security is applicable between the command execution
 engine and the managed objects, as described and illustrated in section 2.9.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 This section describes common failure scenarios and the behavior of WM protocols under those
 conditions.
 
-2.10.1 Connection Breakdown Between the Entities
+#### 2.10.1 Connection Breakdown Between the Entities
 
 A common failure scenario is an unexpected connection breakdown between the client and server
 entities. When the network is not available or one of the communicating participants becomes
@@ -2392,10 +2332,11 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-for a certain amount of time, a time-out operation is carried out to delete the remote shell, as
+
+for a certain amount of time, a time-out operation is carried out to delete the remote shell, as
 specified in [MS-WSMV] section 3.1.2 and section 3.1.4.1.31.7.
 
-2.10.2 Security Failures
+#### 2.10.2 Security Failures
 
 Not meeting authentication or authorization requirements causes security failures. In this case, when
 the authentication or the authorization requirements are not met, the member protocol or the
@@ -2405,7 +2346,7 @@ changes to the security settings and retry the scenario, as specified by the pro
 For details about how security failures are handled, see [MS-WMI] section 3.1.1.1.3, [MS-WSMV]
 section 2.2.4.39, and also [MS-WSMAN].
 
-2.10.3 System Configuration Corruption and Other Internal Failures
+#### 2.10.3 System Configuration Corruption and Other Internal Failures
 
 A participant in the system could detect an unrecoverable internal state during its lifetime due to
 corruption of its configuration data, or due to the system that is under high resource load. In such
@@ -2420,7 +2361,7 @@ internal error is resolved.
 For details about how each protocol handles system errors, see [MS-WMI] section 2.2.11, [MS-WSMV]
 section 2.2.4.39, and also [MS-WSMAN] section 2.2.4.1.
 
-2.10.4 Other Common Failures in CIMOM Operations
+#### 2.10.4 Other Common Failures in CIMOM Operations
 
 In some cases, the server could return an error when performing an operation, such as executing a
 method on an object, because a class was not defined in a given namespace or because the required
@@ -2437,7 +2378,8 @@ Release: October 26, 2021
 
 36 / 58
 
-3  Examples
+
+## 3 Examples
 
 This section provides a series of examples that describe the flow of communication between the
 components of WM protocols, based on the type of operation that is being carried out. The examples
@@ -2461,7 +2403,7 @@ Publisher-initiated event subscriptions.
 
   Command invocation with output.
 
-3.1  Example 1: Single Request/Response WSMAN Protocol Operations
+### 3.1 Example 1: Single Request/Response WSMAN Protocol Operations
 
 Most of the operations that WM protocols carry out are comprised of a single request/response
 operation. The major actions that are performed in this scenario are retrieving data, modifying data,
@@ -2510,7 +2452,8 @@ Release: October 26, 2021
 
 37 / 58
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-WMOD].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2559,7 +2502,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The CIMOM performs an access check to determine whether the requesting client is authorized to
+
+The CIMOM performs an access check to determine whether the requesting client is authorized to
 perform the action. The authorization depends on the operations that are being carried out:
 retrieval of data requires access to the object(s) as specified in [MS-WMI] section 3.1.4.3.4,
 modification of data requires access to the object(s) as specified in [MS-WMI] section 3.1.4.3.12,
@@ -2617,7 +2561,7 @@ role, delivers the response to the application. The message contains essentially
 information as the message in step 9, without the routing information that is used to direct the
 message to the server role.
 
-3.2  Example 2: Enumerations
+### 3.2 Example 2: Enumerations
 
 For a CIM class with multiple instances, enumeration can retrieve all the instances of the CIM class.
 When enumerating a set of managed objects, the result set can be too large to fit in a single response
@@ -2633,7 +2577,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-section 2.5.2.4, with a client and server that do not implement the Full Duplex capability, as specified
+
+section 2.5.2.4, with a client and server that do not implement the Full Duplex capability, as specified
 in [MS-WSMV] section 3.2.4.2.1.
 
 Prerequisites
@@ -2665,7 +2610,8 @@ Release: October 26, 2021
 
 40 / 58
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-WMOD].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2693,7 +2639,8 @@ Release: October 26, 2021
 
 41 / 58
 
-2.  Request: The WSMV client role of the member protocol sends the supplied information to the
+
+2.  Request: The WSMV client role of the member protocol sends the supplied information to the
 
 server role of the member protocol. This message contains the same information as the message
 in step 1.
@@ -2767,7 +2714,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-CIMOM implementation dictates the exact format of this message. It is not specified by any of the
+
+CIMOM implementation dictates the exact format of this message. It is not specified by any of the
 individual member protocols.
 
 13. Metadata: The CIM repository returns the requested metadata to the CIMOM. The CIMOM
@@ -2841,7 +2789,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-25. Results: The WSMV server role of the member protocol sends the supplied information to the
+
+25. Results: The WSMV server role of the member protocol sends the supplied information to the
 
 client role of the member protocol. This message contains the same information as the message in
 step 24.
@@ -2855,7 +2804,7 @@ that carried the CIM object data. Logically, the data is sent as one cohesive pi
 which this data is actually transmitted from the client role of the member protocol to the
 application is implementation-specific.
 
-3.3  Example 3: Pull Event Subscriptions
+### 3.3 Example 3: Pull Event Subscriptions
 
 Typically, when subscribing for the delivery of events through a WM protocol, there are three general
 subscription models for the message-flows: pull subscriptions, push subscriptions, and publisher-
@@ -2892,7 +2841,8 @@ Release: October 26, 2021
 
 44 / 58
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-WMOD].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
@@ -2923,7 +2873,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  Response: The CIMOM registers the subscription, and then sends a response to the server role's
+
+4.  Response: The CIMOM registers the subscription, and then sends a response to the server role's
 
 subscribe request that indicates the success or failure of the subscribe request and any additional
 necessary data, such as bookmark information that is used when retrieving the next events.
@@ -3000,7 +2951,8 @@ Release: October 26, 2021
 
 46 / 58
 
-17. Unsubscribe: The WMI client role of the WMI protocol sends the supplied information to the server
+
+17. Unsubscribe: The WMI client role of the WMI protocol sends the supplied information to the server
 role of the WMI protocol. The request contains the necessary routing information to direct the
 message to the server role, along with whatever information is necessary to identify the specific
 subscription that is to be canceled.
@@ -3026,7 +2978,7 @@ For details about the exact message content and format, see [MS-WMI] section 3.1
 
 application. The format of this message is implementation-dependent.
 
-3.4  Example 4: Push Event Subscriptions
+### 3.4 Example 4: Push Event Subscriptions
 
 The communication flow of subscription and event delivery is based on asynchronous operations, as
 specified in [MS-WMI] section 3.2.4.2.9. A detailed description of each message follows.
@@ -3059,7 +3011,8 @@ Release: October 26, 2021
 
 47 / 58
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-WMOD].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3088,7 +3041,8 @@ Release: October 26, 2021
 
 48 / 58
 
-3.  Subscribe: The WMI server role of the member protocol sends the supplied information to the
+
+3.  Subscribe: The WMI server role of the member protocol sends the supplied information to the
 
 CIMOM to register the subscription. This message contains the same information as the message
 in step 2.
@@ -3167,7 +3121,8 @@ Release: October 26, 2021
 
 49 / 58
 
-17. Response: The WMI client role reports the success or failure of the subscription cancellation to the
+
+17. Response: The WMI client role reports the success or failure of the subscription cancellation to the
 
 application. The format of this message is implementation-dependent.
 
@@ -3177,7 +3132,7 @@ specified in [MS-WMI] section 3.1.4.2.2.
 
 19. Response: The WMI client role sends back the response to the call that was made in step 18.
 
-3.5  Example 5: Publisher-Initiated Event Subscriptions
+### 3.5 Example 5: Publisher-Initiated Event Subscriptions
 
 It is important to note that the WMI and WSMAN protocols do not support publisher-initiated event
 subscriptions. The following section is only relevant for use of the WSMV member protocol.
@@ -3218,7 +3173,8 @@ Release: October 26, 2021
 
 50 / 58
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-WMOD].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
@@ -3251,7 +3207,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-information that is required to be able to deliver events, such as CIM class names or filters, along
+
+information that is required to be able to deliver events, such as CIM class names or filters, along
 with the necessary routing information to direct the message to the server role.
 
 For details about the exact message format, see [MS-WSMV] section 3.1.4.1.30.
@@ -3326,13 +3283,14 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-WMOD].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
 For details about the exact message content and format, see [MS-WSMV] section 3.1.4.1.30.
 
-3.6  Example 6: Create and Invoke a Pipeline
+### 3.6 Example 6: Create and Invoke a Pipeline
 
 This example describes a typical sequence for creating and invoking a successful pipeline on the
 PowerShell server, with respect to the PSRP protocol[MS-PSRP], as described in section 2.5.2.8, and in
@@ -3372,7 +3330,8 @@ Release: October 26, 2021
 
 53 / 58
 
-2.  Request: The PSRP client role sends the request to the PSRP server role by using the
+
+2.  Request: The PSRP client role sends the request to the PSRP server role by using the
 
 wxf:Command message, as specified in [MS-PSRP] section 3.1.5.3.3.
 
@@ -3418,7 +3377,8 @@ Release: October 26, 2021
 
 54 / 58
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this document is applicable to the following Microsoft products or supplemental
 software. References to product versions include released service packs:
@@ -3466,7 +3426,7 @@ with the product version, behavior changed in that service pack or QFE. The new 
 to subsequent service packs of the product unless otherwise specified. If a product edition appears
 with the product version, behavior is different in that product edition.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 2.3.1: Windows exposes the following configuration settings through Group Policy that
 affect access to CIM resources through WSMAN or WSMV:
@@ -3484,7 +3444,8 @@ Windows Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 Enable/disable the automatic listening to network traffic (server side).
 
@@ -3497,7 +3458,8 @@ Release: October 26, 2021
 
 56 / 58
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3541,7 +3503,8 @@ Release: October 26, 2021
 
 57 / 58
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 35

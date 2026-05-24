@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 40
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 40
 
-Date
+
+Date
 
 Revision
 History
@@ -432,205 +434,87 @@ Release: April 23, 2024
 
 3 / 40
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+      - [2.2.3.1 ad:controls](#2231-adcontrols)
+        - [2.2.3.1.1 ad:control](#22311-adcontrol)
+        - [2.2.3.1.2 ad:controlValue](#22312-adcontrolvalue)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+      - [2.2.6.1 ad:controls/ad:control/@criticality](#2261-adcontrolsadcontrolcriticality)
+      - [2.2.6.2 ad:controls/ad:control/@type](#2262-adcontrolsadcontroltype)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+    - [2.2.9 Common Data Structures](#229-common-data-structures)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Server Details](#31-common-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+  - [3.2 Resource Server Details](#32-resource-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Get](#3241-get)
+      - [3.2.4.2 Delete](#3242-delete)
+      - [3.2.4.3 Put](#3243-put)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 ResourceFactory Server Details](#33-resourcefactory-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 Create](#3341-create)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 Enumeration Server Details](#34-enumeration-server-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+      - [3.4.4.1 Pull](#3441-pull)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 WS-Transfer LDAP v3 Controls Extensions Create Example](#41-ws-transfer-ldap-v3-controls-extensions-create-example)
+  - [4.2 WS-Transfer LDAP v3 Controls Extensions Delete Example](#42-ws-transfer-ldap-v3-controls-extensions-delete-example)
+  - [4.3 WS-Transfer LDAP v3 Controls Extensions Get Example](#43-ws-transfer-ldap-v3-controls-extensions-get-example)
+  - [4.4 WS-Transfer LDAP v3 Controls Extensions Pull Example](#44-ws-transfer-ldap-v3-controls-extensions-pull-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: WSDL (Contains Extension Elements Only)](#6-appendix-a-wsdl-contains-extension-elements-only)
+- [7 Appendix B: Schema](#7-appendix-b-schema)
+  - [7.1 WS-Enumeration [WSENUM] Extended XML Schema](#71-ws-enumeration-wsenum-extended-xml-schema)
+  - [7.2 Identity Management Operations for Directory Access [WSTIM] Extended XML](#72-identity-management-operations-for-directory-access-wstim-extended-xml)
+- [8 Appendix C: Product Behavior](#8-appendix-c-product-behavior)
+- [9 Change Tracking](#9-change-tracking)
+- [10 Index](#10-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.3.1
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1.1
-2.2.3.1.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Message Syntax ................................................................................. 11
-Namespaces .............................................................................................. 11
-Messages ................................................................................................... 11
-Elements ................................................................................................... 11
-ad:controls ........................................................................................... 12
-ad:control ...................................................................................... 12
-ad:controlValue ............................................................................... 13
-Complex Types ........................................................................................... 13
-Simple Types ............................................................................................. 14
-Attributes .................................................................................................. 14
-ad:controls/ad:control/@criticality .......................................................... 14
-ad:controls/ad:control/@type ................................................................. 14
-Groups ...................................................................................................... 14
-Attribute Groups ......................................................................................... 14
-Common Data Structures ............................................................................ 14
-Directory Service Schema Elements ................................................................... 14
-
-2.2.7
-2.2.8
-2.2.9
-
-2.2.4
-2.2.5
-2.2.6
-
-2.2.6.1
-2.2.6.2
-
-2.3
-
-3.1
-
-3.2
-
-3.1.1
-3.1.2
-3.1.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3  Protocol Details ..................................................................................................... 15
-Common Server Details .................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Resource Server Details .................................................................................... 15
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Get ..................................................................................................... 16
-Delete ................................................................................................. 17
-Put ...................................................................................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-ResourceFactory Server Details .......................................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Create ................................................................................................. 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-3.3.6
-
-3.2.5
-3.2.6
-
-3.3.4.1
-
-3.3
-
-[MS-WSPELD] - v20240423
-WS-Transfer and WS-Enumeration Protocol Extension for Lightweight Directory Access Protocol v3 Controls
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 40
-
-3.4
-
-Enumeration Server Details ............................................................................... 18
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Pull ..................................................................................................... 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.5
-3.4.6
-
-3.4.4.1
-
-4  Protocol Examples ................................................................................................. 20
-WS-Transfer LDAP v3 Controls Extensions Create Example .................................... 20
-WS-Transfer LDAP v3 Controls Extensions Delete Example .................................... 22
-WS-Transfer LDAP v3 Controls Extensions Get Example ........................................ 23
-WS-Transfer LDAP v3 Controls Extensions Pull Example ........................................ 24
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 27
-Security Considerations for Implementers ........................................................... 27
-Index of Security Parameters ............................................................................ 27
-
-5.1
-5.2
-
-6  Appendix A: WSDL (Contains Extension Elements Only) ........................................ 28
-
-7  Appendix B: Schema .............................................................................................. 31
-WS-Enumeration [WSENUM] Extended XML Schema ............................................ 31
-Identity Management Operations for Directory Access [WSTIM] Extended XML Schema
- ..................................................................................................................... 32
-
-7.1
-7.2
-
-8  Appendix C: Product Behavior ............................................................................... 35
-
-9  Change Tracking .................................................................................................... 37
-
-10  Index ..................................................................................................................... 38
-
-[MS-WSPELD] - v20240423
-WS-Transfer and WS-Enumeration Protocol Extension for Lightweight Directory Access Protocol v3 Controls
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 40
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the WS-Transfer and WS-Enumeration Protocol Extension for Lightweight
 Directory Access Protocol v3 Controls, also known as WSPELD. WSPELD extends the Web Services
@@ -651,7 +535,7 @@ Services Transfer (WS-Transfer).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -699,7 +583,8 @@ Release: April 23, 2024
 
 6 / 40
 
-schema: The set of attributes and object classes that govern the creation and update of objects.
+
+schema: The set of attributes and object classes that govern the creation and update of objects.
 
 SOAP: A lightweight protocol for exchanging structured information in a decentralized, distributed
 environment. SOAP uses XML technologies to define an extensible messaging framework,
@@ -739,14 +624,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -769,7 +654,8 @@ Release: April 23, 2024
 
 7 / 40
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2251] Wahl, M., Howes, T., and Kille, S., "Lightweight Directory Access Protocol (v3)", RFC 2251,
@@ -808,12 +694,12 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-RSAT] Microsoft Corporation, "Remote Server Administration Tools (RSAT) for Windows
 operating systems", https://support.microsoft.com/en-us/kb/2693643
 
-1.3  Overview
+### 1.3 Overview
 
 The WS-Enumeration [WSENUM] and WS-Transfer [WXFR] specifications are SOAP-based protocols
 that define various operations to manage data on a server. The WSPELD Protocol specifies LDAP v3
@@ -838,7 +724,8 @@ Release: April 23, 2024
 
 8 / 40
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-WSPELD].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -863,7 +750,7 @@ operations defined by the WS-Enumeration and WS-Transfer protocols in a specific
 on the nature of the control [RFC2251]. These LDAP v3 control extensions apply to both request and
 response SOAP messages.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 WSPELD is a common extension to both WS-Enumeration [WSENUM] and WS-Transfer [WXFR]
 protocols built on top of SOAP binding ([SOAP1.2-1/2003]) as shown in the following layering
@@ -871,11 +758,11 @@ diagram.
 
 Figure 1: WSPELD protocol stack
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 There is an implicit assumption that the directory service in consideration supports an LDAP v3
 directory service [RFC2251]. That is, it supports including LDAP v3 controls specifying extensions to
@@ -888,7 +775,8 @@ Release: April 23, 2024
 
 9 / 40
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -900,11 +788,11 @@ that support sending SOAP messages as described in section Transport (2.1).
 
   Capability Negotiation: The WSPELD protocol does not support capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  None.
 
@@ -915,22 +803,23 @@ Release: April 23, 2024
 
 10 / 40
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The WSPELD protocol imposes no transport requirements or behaviors beyond those of the underlying
 WS-Enumeration [WSENUM] or WS-Transfer [WXFR] protocols. WS-Enumeration and WS-Transfer
 provide SOAP bindings for both SOAP 1.1 [SOAP1.1] and SOAP 1.2 [SOAP1.2-1/2003] [SOAP1.2-
 2/2003]. All messages MUST be formatted as specified by either SOAP 1.1 or SOAP 1.2.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema, as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description
 Language (WSDL) as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification references various XML namespaces using the mechanisms specified in [XMLNS].
 Although this specification associates a specific XML namespace prefix for each XML namespace that is
@@ -989,11 +878,11 @@ da:
 
 http://schemas.microsoft.com/2006/11/IdentityManagement/DirectoryAccess   [MS-WSTIM]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 None.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 The following table summarizes the set of common XML schema element definitions defined by this
 specification. XML schema element definitions that are specific to a particular operation are described
@@ -1006,7 +895,8 @@ Release: April 23, 2024
 
 11 / 40
 
-Element
+
+Element
 
 Description
 
@@ -1014,7 +904,7 @@ ad:controls  Specify LDAP v3 request controls sent by a client and response cont
 
 directory server.
 
-2.2.3.1  ad:controls
+##### 2.2.3.1 ad:controls
 
 ad:controls is an optional element to be specified by the client. In cases where a response control is
 required to be returned when the client sends an LDAP v3 request control, the server MUST return an
@@ -1063,7 +953,7 @@ For example, the following XML shows the contents of the controls element.
  </ad:control>
  </ad:controls>
 
-2.2.3.1.1 ad:control
+###### 2.2.3.1.1 ad:control
 
 [MS-WSPELD] - v20240423
 WS-Transfer and WS-Enumeration Protocol Extension for Lightweight Directory Access Protocol v3 Controls
@@ -1072,7 +962,8 @@ Release: April 23, 2024
 
 12 / 40
 
-The required element ad:control MUST be the child element of the ad:controls (section 2.2.3.1)
+
+The required element ad:control MUST be the child element of the ad:controls (section 2.2.3.1)
 element. The ad:control element might have a value (see section 2.2.3.1.2 for the ad:controlValue
 element).
 
@@ -1099,7 +990,7 @@ For example, the following XML shows the contents of the control element.
 
 For the value of attributes "type" and "criticality", see sections 2.2.6.2 and 2.2.6.1, respectively.
 
-2.2.3.1.2 ad:controlValue
+###### 2.2.3.1.2 ad:controlValue
 
 The optional element ad:controlValue, if present, MUST be the child element of the ad:control
 element defined in section 2.2.3.1.1. This element specifies the value for the respective LDAP v3
@@ -1118,7 +1009,7 @@ For example, the following XML shows the contents of the controlValue element.
 The controlValue MUST be a base64-encoded value. Attribute "xsi:type" SHOULD be included with its
 value equal to "xsd:base64Binary".
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML schema complex type definitions.
 
@@ -1129,11 +1020,12 @@ Release: April 23, 2024
 
 13 / 40
 
-2.2.5  Simple Types
+
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 The following table summarizes the set of common XML schema attribute definitions defined by this
 specification. XML schema attributes that are specific to a particular operation are described with the
@@ -1149,30 +1041,30 @@ type
 
 Contains the Object Identifier (OID) of the LDAP v3 request or response control.
 
-2.2.6.1  ad:controls/ad:control/@criticality
+##### 2.2.6.1 ad:controls/ad:control/@criticality
 
 The value for required attribute ad:controls/ad:control/@criticality MUST be Boolean (true or false)
 as String.
 
-2.2.6.2  ad:controls/ad:control/@type
+##### 2.2.6.2 ad:controls/ad:control/@type
 
 The value for required attribute ad:controls/ad:control/@type MUST be a UTF-8 encoded, dotted-
 decimal representation of an OID as String. This attribute uniquely identifies the LDAP v3 controls as
 specified in section 4.1.12 of [RFC2251].
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML schema attribute group definitions.
 
-2.2.9  Common Data Structures
+#### 2.2.9 Common Data Structures
 
 None.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This specification does not make use of any directory service schema elements.
 
@@ -1183,7 +1075,8 @@ Release: April 23, 2024
 
 14 / 40
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections describe the behavior of the WSPELD protocol. As an extension to WS-
 Enumeration and WS-Transfer, the WSPELD extensions follow the same client-server model, in which
@@ -1203,12 +1096,12 @@ on the client side of this protocol. Calls made by the higher-layer protocol or 
 directly to the transport, and the results returned by the transport are passed directly back to the
 higher-layer protocol or application.
 
-3.1  Common Server Details
+### 3.1 Common Server Details
 
 This section documents the abstract data model and initialization procedure common to all WSDL
 port types.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1223,18 +1116,18 @@ any abstract data model of its own beyond the underlying data model description 
 Enumeration and WS-Transfer Protocols. Implementers should refer to the abstract model defined in
 section 3.1.1 of [MS-WSTIM], when these extensions are being used with WSTIM extensions.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 WSPELD imposes no initialization requirements beyond those of the underlying WS-Enumeration or
 WS-Transfer Protocol. When initialized, WS-Enumeration and WS-Transfer begin listening on endpoints
 for the Enumeration, Resource, and ResourceFactory WSDL port types. The URIs for the endpoints,
 as well as the transport and security mechanisms to use, are implementation-dependent.<3>
 
-3.2  Resource Server Details
+### 3.2 Resource Server Details
 
 In WS-Transfer [WXFR], this WSDL port type is used to process three WSDL operations:
 
@@ -1247,25 +1140,26 @@ Release: April 23, 2024
 
 15 / 40
 
-
+
+
 
 Put
 
   Delete
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 See the abstract data model in the common processing section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 See the initialization in the common server details, section 3.1.3.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The Resource WSDL port type includes three operations.
 
@@ -1286,7 +1180,7 @@ Removes an existing directory object.
 The LDAP request and response controls element specified in section 2.2.3.1 could be a part of both
 SOAP request and response messages, respectively, for the preceding operations.
 
-3.2.4.1  Get
+##### 3.2.4.1 Get
 
 This section specifies extensions to the Get operation defined by WS-Transfer [WXFR]. It also specifies
 how these extensions must be used in conjunction with the Get operation extension, defined by the
@@ -1322,14 +1216,15 @@ Release: April 23, 2024
 
 16 / 40
 
-BaseObjectSearchResponse element, containing one or more PartialAttribute elements
+
+BaseObjectSearchResponse element, containing one or more PartialAttribute elements
 representing the fragment of the directory object. WSPELD specifies that ad:controls element defined
 in section 2.2.3.1, if present, MUST be the child element of the BaseObjectSearchRequest element
 in the request message and can be specified in any order). However, for the Response message, the
 protocol mandates that the ad:controls element, if present, MUST be the last child element of the
 BaseObjectSearchResponse element.
 
-3.2.4.2  Delete
+##### 3.2.4.2 Delete
 
 This section specifies extensions to the delete operation defined by WS-Transfer [WXFR].
 
@@ -1341,7 +1236,7 @@ element, if present, MUST be the last child element of the soapenv:Body element.
 
 See the example in section 4.2 for the WS-Transfer Delete request message with controls extension.
 
-3.2.4.3  Put
+##### 3.2.4.3 Put
 
 This section specifies extensions to the Put operation extensions defined by the WSTIM extensions
 [MS-WSTIM].
@@ -1359,15 +1254,15 @@ the presence of other child elements. The response to this Put operation, Modify
 the ad:controls element, if present, MUST be a child element of the soapenv:Body element of this
 ModifyResponseMessage.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
-3.3  ResourceFactory Server Details
+### 3.3 ResourceFactory Server Details
 
 In WS-Transfer [WXFR], this WSDL port type is used to process the Create operation.
 
@@ -1375,7 +1270,7 @@ Note that unlike operations performed on the Resource WSDL port type, the Create
 target a specific directory object but rather causes the creation of a directory object, which can
 subsequently be targeted by operations on the Resource WSDL port type.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 See the abstract data model in the common processing section 3.1.1.
 
@@ -1386,15 +1281,16 @@ Release: April 23, 2024
 
 17 / 40
 
-3.3.2  Timers
+
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 See the initialization in the common processing section 3.1.3.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 The ResourceFactory WSDL port type includes one operation.
 
@@ -1407,7 +1303,7 @@ Creates a new directory object
 The LDAP request and response controls element specified in section 2.2.3.1 could be a part of both
 Create SOAP request and response messages, respectively.
 
-3.3.4.1  Create
+##### 3.3.4.1 Create
 
 This section specifies extensions to the Create operation extensions defined by the WSTIM extensions
 [MS-WSTIM].
@@ -1427,15 +1323,15 @@ AddResponseMessage.
 See the example in section 4.1 for the WSTIM extensions Create request and response message with
 controls extension.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 None.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 None.
 
-3.4  Enumeration Server Details
+### 3.4 Enumeration Server Details
 
 In WS-Enumeration [WSENUM], this WSDL port type is used to process the following five WSDL
 operations:
@@ -1457,25 +1353,26 @@ Release: April 23, 2024
 
 18 / 40
 
-  GetStatus
+
+  GetStatus
 
   Release
 
 However, WSPELD extensions apply only to the Pull WSDL operation among the five of them.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 See the abstract data model in the common processing section 3.1.1.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 See the initialization in the common processing section 3.1.3.
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 The Enumeration WSDL port type includes one operation to which WSPELD applies.
 
@@ -1488,7 +1385,7 @@ Pulls the resultant directory objects in the context of a specific enumeration
 The LDAP request and response controls element specified in section 2.2.3.1 could be a part of both
 SOAP Pull request and response messages, respectively.
 
-3.4.4.1  Pull
+##### 3.4.4.1 Pull
 
 This section specifies extensions to the Pull operation defined by WS-Enumeration [WSENUM].
 
@@ -1508,11 +1405,11 @@ ad:controls element, if present, MUST be the last child element of the PullRespo
 See the example in section 4.4 for the WS-Enumeration [WSENUM] Pull request and response
 message with controls extension.
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 None.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 None.
 
@@ -1523,7 +1420,8 @@ Release: April 23, 2024
 
 19 / 40
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In this section, several sample WS-Transfer and WS-Enumeration operations with controls are
 presented.
@@ -1541,7 +1439,7 @@ operation including ShowDeleted control.
 For illustrative purposes, these examples have been shown in the context of Active Directory Web
 Services (ADWS).
 
-4.1  WS-Transfer LDAP v3 Controls Extensions Create Example
+### 4.1 WS-Transfer LDAP v3 Controls Extensions Create Example
 
 In this example, a new directory object is created using a Create operation with the [MS-WSTIM]
 protocol extensions. During the creation, an LDAP control (LDAP_SERVER_LAZY_COMMIT_OID) ([MS-
@@ -1596,7 +1494,8 @@ Release: April 23, 2024
 
 20 / 40
 
-         <AttributeValue>
+
+         <AttributeValue>
            <ad:value xsi:type="xsd:string">user</ad:value>
          </AttributeValue>
        </AttributeTypeAndValue>
@@ -1670,7 +1569,8 @@ Release: April 23, 2024
 
 21 / 40
 
-     <wxf:ResourceCreated>       <wsa:Address>net.tcp://
+
+     <wxf:ResourceCreated>       <wsa:Address>net.tcp://
  server01.fabrikam.com:9389/ActiveDirectoryWebServices/Windows/
  Resource</wsa:Address>
        <wsa:ReferenceParameters>
@@ -1683,7 +1583,7 @@ Release: April 23, 2024
    </soapenv:Body>
    </soapenv:Envelope>
 
-4.2  WS-Transfer LDAP v3 Controls Extensions Delete Example
+### 4.2 WS-Transfer LDAP v3 Controls Extensions Delete Example
 
 In this example, the directory object created previously is deleted using a [WXFR] delete operation.
 During the deletion, the LDAP_SERVER_TREE_DELETE_OID control ([MS-ADTS] section
@@ -1739,7 +1639,8 @@ Release: April 23, 2024
 
 22 / 40
 
-   xmlns:wsa="http://www.w3.org/2005/08/addressing">
+
+   xmlns:wsa="http://www.w3.org/2005/08/addressing">
    <soapenv:Header>
      <wsa:Action soapenv:mustUnderstand="1">
  http://schemas.xmlsoap.org/ws/2004/09/transfer/DeleteResponse
@@ -1752,7 +1653,7 @@ Release: April 23, 2024
    <soapenv:Body />
  </soapenv:Envelope>
 
-4.3  WS-Transfer LDAP v3 Controls Extensions Get Example
+### 4.3 WS-Transfer LDAP v3 Controls Extensions Get Example
 
 In this example, the directory object deleted previously is retrieved using a [WXFR] Get operation.
 During the extraction, the LDAP show deleted control (LDAP_SERVER_SHOW_DELETED_OID) ([MS-
@@ -1808,7 +1709,8 @@ Release: April 23, 2024
 
 23 / 40
 
- ActiveDirectory/Data"
+
+ ActiveDirectory/Data"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
    <soapenv:Header>
@@ -1867,7 +1769,7 @@ Release: April 23, 2024
    </soapenv:Body>
  </soapenv:Envelope>
 
-4.4  WS-Transfer LDAP v3 Controls Extensions Pull Example
+### 4.4 WS-Transfer LDAP v3 Controls Extensions Pull Example
 
 In this example, the directory object is retrieved using a [WSENUM] Pull operation in the context of
 an Enumeration specifying the search of the directory object in previous examples. During the
@@ -1881,7 +1783,8 @@ Release: April 23, 2024
 
 24 / 40
 
-section 3.1.1.3.4.1.6) are added to the request. The response to this control could be seen in the
+
+section 3.1.1.3.4.1.6) are added to the request. The response to this control could be seen in the
 response message.
 
 SOAP Request Message
@@ -1954,7 +1857,8 @@ Release: April 23, 2024
 
 25 / 40
 
- ActiveDirectory"
+
+ ActiveDirectory"
         xmlns:addata="http://schemas.microsoft.com/2008/1/
  ActiveDirectory/Data">
        <wsen:EnumerationContext>
@@ -2021,15 +1925,16 @@ Release: April 23, 2024
 
 26 / 40
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no known additional security considerations for these protocol extensions, but server
 implementers are encouraged to use transport mechanisms that support encryption and integrity-
 verification of the messages.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol extension has no security parameters.
 
@@ -2040,7 +1945,8 @@ Release: April 23, 2024
 
 27 / 40
 
-6  Appendix A: WSDL (Contains Extension Elements Only)
+
+## 6 Appendix A: WSDL (Contains Extension Elements Only)
 
 The WSPELD protocol extension does not define a WSDL of its own. It does not extend the [WSENUM]
 WSDL and extends only [WSENUM] XML Schema. The schema of extension elements defined by this
@@ -2107,7 +2013,8 @@ Release: April 23, 2024
 
 28 / 40
 
-   <wsdl:message name="DeleteResponseMessage">
+
+   <wsdl:message name="DeleteResponseMessage">
      <wsdl:part name="DeleteResponseMessageBody" element="ad:controls" minOccurs ="0"
 maxOccurs="1"/>
    </wsdl:message>
@@ -2179,7 +2086,8 @@ Release: April 23, 2024
 
 29 / 40
 
-   </wsdl:message>
+
+   </wsdl:message>
 
  </wsdl:definitions>
 
@@ -2190,7 +2098,8 @@ Release: April 23, 2024
 
 30 / 40
 
-7  Appendix B: Schema
+
+## 7 Appendix B: Schema
 
 This section provides the additional schema elements for the extensions defined by this protocol.
 Subsequent subsections show extended schema of [WSENUM], [WXFR] and [MS-WSTIM] importing
@@ -2226,7 +2135,7 @@ these extensions elements.
    </xsd:element>
  </xsd:schema>
 
-7.1  WS-Enumeration [WSENUM] Extended XML Schema
+### 7.1 WS-Enumeration [WSENUM] Extended XML Schema
 
 For clarity, elements of the WS-Enumeration [WSENUM] schema, which are untouched and have not
 been extended by this protocol are not shown in the extended schema. To obtain the full extended
@@ -2262,7 +2171,8 @@ Release: April 23, 2024
 
 31 / 40
 
-  ...
+
+  ...
   ...-->
 
    <!-- Extended Pull request -->
@@ -2310,7 +2220,7 @@ Release: April 23, 2024
   ...-->
  </xsd:schema>
 
-7.2  Identity Management Operations for Directory Access [WSTIM] Extended XML
+### 7.2 Identity Management Operations for Directory Access [WSTIM] Extended XML
 
 Schema
 
@@ -2335,7 +2245,8 @@ Release: April 23, 2024
 
 32 / 40
 
-   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
    xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12"
    >
 
@@ -2410,7 +2321,8 @@ Release: April 23, 2024
 
 33 / 40
 
-   <!--other elements defined by [MS-WSTIM]
+
+   <!--other elements defined by [MS-WSTIM]
   ...
   ...
   ...
@@ -2440,7 +2352,8 @@ Release: April 23, 2024
 
 34 / 40
 
-8  Appendix C: Product Behavior
+
+## 8 Appendix C: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2508,7 +2421,8 @@ Release: April 23, 2024
 
 35 / 40
 
-  1.2.840.113556.1.4.521 (LDAP_SERVER_CROSSDOM_MOVE_TARGET_OID)
+
+  1.2.840.113556.1.4.521 (LDAP_SERVER_CROSSDOM_MOVE_TARGET_OID)
 
   1.2.840.113556.1.4.801 (LDAP_SERVER_SD_FLAGS_OID)
 
@@ -2538,7 +2452,8 @@ Release: April 23, 2024
 
 36 / 40
 
-9  Change Tracking
+
+## 9 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2582,7 +2497,8 @@ Release: April 23, 2024
 
 37 / 40
 
-10  Index
+
+## 10 Index
 A
 
 Abstract data model
@@ -2745,7 +2661,8 @@ WS-Transfer and WS-Enumeration Protocol Extension for Lightweight Directory Acce
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-M
+
+M
 
 Message processing
    enumeration server
@@ -2890,7 +2807,8 @@ WS-Transfer and WS-Enumeration Protocol Extension for Lightweight Directory Acce
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   timers (section 3.1.2 15, section 3.3.2 18)
+
+   timers (section 3.1.2 15, section 3.3.2 18)
 Simple types 14
 Standards assignments 10
 Syntax

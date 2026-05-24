@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 213
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -309,7 +310,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: April 23, 2024
 
 3 / 213
 
-Date
+
+Date
 
 Revision
 History
@@ -580,503 +583,152 @@ Release: April 23, 2024
 
 4 / 213
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Metafile Structure](#131-metafile-structure)
+    - [1.3.2 Graphics Objects](#132-graphics-objects)
+    - [1.3.3 Byte Ordering](#133-byte-ordering)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 WMF Constants](#21-wmf-constants)
+    - [2.1.1 WMF Enumerations](#211-wmf-enumerations)
+      - [2.1.1.1 RecordType Enumeration](#2111-recordtype-enumeration)
+      - [2.1.1.2 BinaryRasterOperation Enumeration](#2112-binaryrasteroperation-enumeration)
+      - [2.1.1.3 BitCount Enumeration](#2113-bitcount-enumeration)
+      - [2.1.1.4 BrushStyle Enumeration](#2114-brushstyle-enumeration)
+      - [2.1.1.5 CharacterSet Enumeration](#2115-characterset-enumeration)
+      - [2.1.1.6 ColorUsage Enumeration](#2116-colorusage-enumeration)
+      - [2.1.1.7 Compression Enumeration](#2117-compression-enumeration)
+      - [2.1.1.8 FamilyFont Enumeration](#2118-familyfont-enumeration)
+      - [2.1.1.9 FloodFill Enumeration](#2119-floodfill-enumeration)
+      - [2.1.1.10 FontQuality Enumeration](#21110-fontquality-enumeration)
+      - [2.1.1.11 GamutMappingIntent Enumeration](#21111-gamutmappingintent-enumeration)
+      - [2.1.1.12 HatchStyle Enumeration](#21112-hatchstyle-enumeration)
+      - [2.1.1.13 Layout Enumeration](#21113-layout-enumeration)
+      - [2.1.1.14 LogicalColorSpace Enumeration](#21114-logicalcolorspace-enumeration)
+      - [2.1.1.15 LogicalColorSpaceV5 Enumeration](#21115-logicalcolorspacev5-enumeration)
+      - [2.1.1.16 MapMode Enumeration](#21116-mapmode-enumeration)
+      - [2.1.1.17 MetafileEscapes Enumeration](#21117-metafileescapes-enumeration)
+      - [2.1.1.18 MetafileType Enumeration](#21118-metafiletype-enumeration)
+      - [2.1.1.19 MetafileVersion Enumeration](#21119-metafileversion-enumeration)
+      - [2.1.1.20 MixMode Enumeration](#21120-mixmode-enumeration)
+      - [2.1.1.21 OutPrecision Enumeration](#21121-outprecision-enumeration)
+      - [2.1.1.22 PaletteEntryFlag Enumeration](#21122-paletteentryflag-enumeration)
+      - [2.1.1.23 PenStyle Enumeration](#21123-penstyle-enumeration)
+      - [2.1.1.24 PitchFont Enumeration](#21124-pitchfont-enumeration)
+      - [2.1.1.25 PolyFillMode Enumeration](#21125-polyfillmode-enumeration)
+      - [2.1.1.26 PostScriptCap Enumeration](#21126-postscriptcap-enumeration)
+      - [2.1.1.27 PostScriptClipping Enumeration](#21127-postscriptclipping-enumeration)
+      - [2.1.1.28 PostScriptFeatureSetting Enumeration](#21128-postscriptfeaturesetting-enumeration)
+      - [2.1.1.29 PostScriptJoin Enumeration](#21129-postscriptjoin-enumeration)
+      - [2.1.1.30 StretchMode Enumeration](#21130-stretchmode-enumeration)
+      - [2.1.1.31 TernaryRasterOperation Enumeration](#21131-ternaryrasteroperation-enumeration)
+    - [2.1.2 WMF Flags](#212-wmf-flags)
+      - [2.1.2.1 ClipPrecision Flags](#2121-clipprecision-flags)
+      - [2.1.2.2 ExtTextOutOptions Flags](#2122-exttextoutoptions-flags)
+      - [2.1.2.3 TextAlignmentMode Flags](#2123-textalignmentmode-flags)
+      - [2.1.2.4 VerticalTextAlignmentMode Flags](#2124-verticaltextalignmentmode-flags)
+  - [2.2 WMF Objects](#22-wmf-objects)
+    - [2.2.1 Graphics Objects](#221-graphics-objects)
+      - [2.2.1.1 Brush Object](#2211-brush-object)
+      - [2.2.1.2 Font Object](#2212-font-object)
+      - [2.2.1.3 Palette Object](#2213-palette-object)
+      - [2.2.1.4 Pen Object](#2214-pen-object)
+      - [2.2.1.5 Region Object](#2215-region-object)
+    - [2.2.2 Structure Objects](#222-structure-objects)
+      - [2.2.2.1 Bitmap16 Object](#2221-bitmap16-object)
+      - [2.2.2.2 BitmapCoreHeader Object](#2222-bitmapcoreheader-object)
+      - [2.2.2.3 BitmapInfoHeader Object](#2223-bitmapinfoheader-object)
+      - [2.2.2.4 BitmapV4Header Object](#2224-bitmapv4header-object)
+      - [2.2.2.5 BitmapV5Header Object](#2225-bitmapv5header-object)
+      - [2.2.2.6 CIEXYZ Object](#2226-ciexyz-object)
+      - [2.2.2.7 CIEXYZTriple Object](#2227-ciexyztriple-object)
+      - [2.2.2.8 ColorRef Object](#2228-colorref-object)
+      - [2.2.2.9 DeviceIndependentBitmap Object](#2229-deviceindependentbitmap-object)
+      - [2.2.2.10 LogBrush Object](#22210-logbrush-object)
+      - [2.2.2.11 LogColorSpace Object](#22211-logcolorspace-object)
+      - [2.2.2.12 LogColorSpaceW Object](#22212-logcolorspacew-object)
+      - [2.2.2.13 PaletteEntry Object](#22213-paletteentry-object)
+      - [2.2.2.14 PitchAndFamily Object](#22214-pitchandfamily-object)
+      - [2.2.2.15 PointL Object](#22215-pointl-object)
+      - [2.2.2.16 PointS Object](#22216-points-object)
+      - [2.2.2.17 PolyPolygon Object](#22217-polypolygon-object)
+      - [2.2.2.18 Rect Object](#22218-rect-object)
+      - [2.2.2.19 RectL Object](#22219-rectl-object)
+      - [2.2.2.20 RGBQuad Object](#22220-rgbquad-object)
+      - [2.2.2.21 Scan Object](#22221-scan-object)
+      - [2.2.2.22 SizeL Object](#22222-sizel-object)
+  - [2.3 WMF Records](#23-wmf-records)
+    - [2.3.6 Specify extensions to functionality that are not directly available through](#236-specify-extensions-to-functionality-that-are-not-directly-available-through)
+      - [2.3.6.10 Draws a rectangle with a defined pattern.](#23610-draws-a-rectangle-with-a-defined-pattern)
+      - [2.3.6.11 Sends arbitrary encapsulated PostScript (EPS) data](#23611-sends-arbitrary-encapsulated-postscript-eps-data)
+      - [2.3.6.12 Ends a path.](#23612-ends-a-path)
+      - [2.3.6.13 Notifies the printer driver that a new print job is ending.](#23613-notifies-the-printer-driver-that-a-new-print-job-is-ending)
+      - [2.3.6.15 Draws text using the currently selected font, background](#23615-draws-text-using-the-currently-selected-font-background)
+      - [2.3.6.16 Gets color table values from the printer driver.](#23616-gets-color-table-values-from-the-printer-driver)
+      - [2.3.6.17 Gets the device units currently configured on the output](#23617-gets-the-device-units-currently-configured-on-the-output)
+      - [2.3.6.18 Gets the extended text metrics that are currently configured](#23618-gets-the-extended-text-metrics-that-are-currently-configured)
+      - [2.3.6.19 Gets the font face name currently configured on the output](#23619-gets-the-font-face-name-currently-configured-on-the-output)
+      - [2.3.6.20 Gets the font kern table currently defined on the output](#23620-gets-the-font-kern-table-currently-defined-on-the-output)
+      - [2.3.6.21 Retrieves the physical page size currently selected on the](#23621-retrieves-the-physical-page-size-currently-selected-on-the)
+      - [2.3.6.22 Retrieves the offset from the upper-left corner of the](#23622-retrieves-the-offset-from-the-upper-left-corner-of-the)
+      - [2.3.6.23 Queries the printer driver for information about PostScript](#23623-queries-the-printer-driver-for-information-about-postscript)
+      - [2.3.6.24 Retrieves the scaling factors for the x-axis and the y-axis of](#23624-retrieves-the-scaling-factors-for-the-x-axis-and-the-y-axis-of)
+      - [2.3.6.26 Queries the printer driver about its support for metafiles on](#23626-queries-the-printer-driver-about-its-support-for-metafiles-on)
+      - [2.3.6.27 Notifies the printer driver that the application has finished](#23627-notifies-the-printer-driver-that-the-application-has-finished)
+      - [2.3.6.28 Notifies the printer driver that the application has finished](#23628-notifies-the-printer-driver-that-the-application-has-finished)
+      - [2.3.6.29 Passes through arbitrary data to the printer driver.](#23629-passes-through-arbitrary-data-to-the-printer-driver)
+      - [2.3.6.30 Sends arbitrary PostScript data to the output device.](#23630-sends-arbitrary-postscript-data-to-the-output-device)
+      - [2.3.6.31 Sets the printer driver to either PostScript-centric or GDI-](#23631-sets-the-printer-driver-to-either-postscript-centric-or-gdi-)
+      - [2.3.6.32 Notifies the output device to ignore PostScript data.](#23632-notifies-the-output-device-to-ignore-postscript-data)
+      - [2.3.6.34 Sends arbitrary data directly to a printer driver, which is](#23634-sends-arbitrary-data-directly-to-a-printer-driver-which-is)
+      - [2.3.6.35 Acts the same as STARTDOC, with a NULL document and](#23635-acts-the-same-as-startdoc-with-a-null-document-and)
+      - [2.3.6.36 Queries the printer driver about its support for DIBs on the](#23636-queries-the-printer-driver-about-its-support-for-dibs-on-the)
+      - [2.3.6.37 Queries the printer driver to determine whether a specific](#23637-queries-the-printer-driver-to-determine-whether-a-specific)
+      - [2.3.6.38 Sets color table values.](#23638-sets-color-table-values)
+      - [2.3.6.39 Sets the number of copies.](#23639-sets-the-number-of-copies)
+      - [2.3.6.40 Specifies the line-ending mode to use in drawing to the](#23640-specifies-the-line-ending-mode-to-use-in-drawing-to-the)
+      - [2.3.6.41 Specifies the line-joining mode to use in drawing to the](#23641-specifies-the-line-joining-mode-to-use-in-drawing-to-the)
+      - [2.3.6.42 Sets the limit for the length of miter joins to use in drawing](#23642-sets-the-limit-for-the-length-of-miter-joins-to-use-in-drawing)
+      - [2.3.6.43 Enables documents to include private procedures and other](#23643-enables-documents-to-include-private-procedures-and-other)
+      - [2.3.6.44 Notifies the printer driver that a new print job is starting.](#23644-notifies-the-printer-driver-that-a-new-print-job-is-starting)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Metafile Design](#31-metafile-design)
+    - [3.1.1 Device Independence](#311-device-independence)
+    - [3.1.2 Byte Ordering Example](#312-byte-ordering-example)
+    - [3.1.3 Mapping Modes](#313-mapping-modes)
+    - [3.1.4 Managing Objects](#314-managing-objects)
+      - [3.1.4.1 WMF Object Table](#3141-wmf-object-table)
+      - [3.1.4.2 Object Scaling](#3142-object-scaling)
+    - [3.1.5 Playback Device Context](#315-playback-device-context)
+    - [3.1.6 Run-Length Encoding (RLE) Compression](#316-run-length-encoding-rle-compression)
+      - [3.1.6.1 Bitmaps with 4 Bits per Pixel](#3161-bitmaps-with-4-bits-per-pixel)
+      - [3.1.6.2 Bitmaps with 8 Bits per Pixel](#3162-bitmaps-with-8-bits-per-pixel)
+  - [3.2 WMF Metafile Example](#32-wmf-metafile-example)
+    - [3.2.1 META_HEADER Example](#321-metaheader-example)
+    - [3.2.2 META_CREATEPENINDIRECT Example](#322-metacreatepenindirect-example)
+    - [3.2.3 META_SELECTOBJECT Example 1](#323-metaselectobject-example-1)
+    - [3.2.4 META_CREATEBRUSHINDIRECT Example](#324-metacreatebrushindirect-example)
+    - [3.2.5 META_SELECTOBJECT Example 2](#325-metaselectobject-example-2)
+    - [3.2.6 META_RECTANGLE Example](#326-metarectangle-example)
+    - [3.2.7 META_TEXTOUT Example](#327-metatextout-example)
+    - [3.2.8 META_EOF Example](#328-metaeof-example)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 15
-Normative References ................................................................................. 15
-Informative References ............................................................................... 16
-Overview ........................................................................................................ 16
-Metafile Structure ....................................................................................... 16
-Graphics Objects ........................................................................................ 18
-Byte Ordering ............................................................................................ 18
-Relationship to Protocols and Other Structures .................................................... 18
-Applicability Statement ..................................................................................... 19
-Versioning and Localization ............................................................................... 19
-Vendor-Extensible Fields ................................................................................... 19
-
-1.3.1
-1.3.2
-1.3.3
-
-1.4
-1.5
-1.6
-1.7
-
-2.1
-
-2.1.1
-
-2  Structures ............................................................................................................. 20
-WMF Constants ................................................................................................ 20
-WMF Enumerations ..................................................................................... 20
-RecordType Enumeration ....................................................................... 20
-2.1.1.1
-BinaryRasterOperation Enumeration ........................................................ 25
-2.1.1.2
-BitCount Enumeration ............................................................................ 28
-2.1.1.3
-BrushStyle Enumeration ........................................................................ 29
-2.1.1.4
-CharacterSet Enumeration ..................................................................... 30
-2.1.1.5
-ColorUsage Enumeration ........................................................................ 31
-2.1.1.6
-Compression Enumeration...................................................................... 31
-2.1.1.7
-FamilyFont Enumeration ........................................................................ 32
-2.1.1.8
-FloodFill Enumeration ............................................................................ 33
-2.1.1.9
-FontQuality Enumeration........................................................................ 33
-2.1.1.10
-2.1.1.11  GamutMappingIntent Enumeration .......................................................... 34
-2.1.1.12  HatchStyle Enumeration ........................................................................ 35
-Layout Enumeration .............................................................................. 35
-2.1.1.13
-2.1.1.14
-LogicalColorSpace Enumeration .............................................................. 36
-LogicalColorSpaceV5 Enumeration ........................................................... 36
-2.1.1.15
-2.1.1.16  MapMode Enumeration .......................................................................... 36
-2.1.1.17  MetafileEscapes Enumeration ................................................................. 37
-2.1.1.18  MetafileType Enumeration ...................................................................... 40
-2.1.1.19  MetafileVersion Enumeration .................................................................. 41
-2.1.1.20  MixMode Enumeration ........................................................................... 41
-2.1.1.21  OutPrecision Enumeration ...................................................................... 41
-PaletteEntryFlag Enumeration ................................................................. 42
-2.1.1.22
-PenStyle Enumeration ........................................................................... 42
-2.1.1.23
-PitchFont Enumeration ........................................................................... 43
-2.1.1.24
-PolyFillMode Enumeration ...................................................................... 44
-2.1.1.25
-PostScriptCap Enumeration .................................................................... 44
-2.1.1.26
-PostScriptClipping Enumeration .............................................................. 45
-2.1.1.27
-PostScriptFeatureSetting Enumeration ..................................................... 45
-2.1.1.28
-PostScriptJoin Enumeration .................................................................... 46
-2.1.1.29
-StretchMode Enumeration ...................................................................... 46
-2.1.1.30
-TernaryRasterOperation Enumeration ...................................................... 46
-2.1.1.31
-WMF Flags ................................................................................................. 75
-ClipPrecision Flags ................................................................................. 76
-ExtTextOutOptions Flags ........................................................................ 76
-TextAlignmentMode Flags ...................................................................... 77
-VerticalTextAlignmentMode Flags ............................................................ 78
-WMF Objects ................................................................................................... 78
-Graphics Objects ........................................................................................ 79
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-2.1.2.4
-
-2.2.1
-
-2.1.2
-
-2.2
-
-[MS-WMF] - v20240423
-Windows Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 213
-
-2.3
-
-2.3.1
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-2.2.2.13
-2.2.2.14
-2.2.2.15
-2.2.2.16
-2.2.2.17
-2.2.2.18
-2.2.2.19
-2.2.2.20
-2.2.2.21
-2.2.2.22
-
-Brush Object ........................................................................................ 79
-Font Object .......................................................................................... 80
-Palette Object ....................................................................................... 82
-Pen Object ........................................................................................... 83
-Region Object ....................................................................................... 83
-Structure Objects ....................................................................................... 84
-Bitmap16 Object ................................................................................... 84
-BitmapCoreHeader Object ...................................................................... 85
-BitmapInfoHeader Object ....................................................................... 85
-BitmapV4Header Object ......................................................................... 87
-BitmapV5Header Object ......................................................................... 88
-CIEXYZ Object ...................................................................................... 89
-CIEXYZTriple Object .............................................................................. 90
-ColorRef Object .................................................................................... 90
-DeviceIndependentBitmap Object ........................................................... 91
-LogBrush Object ................................................................................... 92
-LogColorSpace Object ............................................................................ 93
-LogColorSpaceW Object ......................................................................... 94
-PaletteEntry Object ............................................................................... 96
-PitchAndFamily Object ........................................................................... 96
-PointL Object ........................................................................................ 96
-PointS Object ....................................................................................... 97
-PolyPolygon Object ................................................................................ 97
-Rect Object .......................................................................................... 97
-RectL Object ......................................................................................... 98
-RGBQuad Object ................................................................................... 98
-Scan Object ......................................................................................... 99
-SizeL Object ......................................................................................... 99
-WMF Records .................................................................................................. 100
-Bitmap Record Types ................................................................................. 101
-META_BITBLT Record ........................................................................... 101
-With Bitmap ................................................................................... 102
-Without Bitmap .............................................................................. 103
-META_DIBBITBLT Record ...................................................................... 103
-With Bitmap ................................................................................... 104
-Without Bitmap .............................................................................. 105
-META_DIBSTRETCHBLT Record .............................................................. 105
-With Bitmap ................................................................................... 106
-Without Bitmap .............................................................................. 107
-META_SETDIBTODEV Record ................................................................. 108
-META_STRETCHBLT Record ................................................................... 109
-With Bitmap ................................................................................... 110
-Without Bitmap .............................................................................. 111
-META_STRETCHDIB Record ................................................................... 112
-Control Record Types ................................................................................. 113
-META_EOF Record ................................................................................ 114
-META_HEADER Record .......................................................................... 114
-META_PLACEABLE Record ..................................................................... 115
-Drawing Record Types ................................................................................ 116
-META_ARC Record ............................................................................... 116
-META_CHORD Record ........................................................................... 117
-META_ELLIPSE Record .......................................................................... 118
-META_EXTFLOODFILL Record ................................................................ 119
-META_EXTTEXTOUT Record ................................................................... 120
-META_FILLREGION Record .................................................................... 122
-META_FLOODFILL Record ...................................................................... 122
-META_FRAMEREGION Record ................................................................ 123
-META_INVERTREGION Record ............................................................... 124
-
-2.3.1.1
-
-2.3.1.1.1
-2.3.1.1.2
-
-2.3.1.2
-
-2.3.1.2.1
-2.3.1.2.2
-
-2.3.1.3
-
-2.3.1.3.1
-2.3.1.3.2
-
-2.3.1.4
-2.3.1.5
-
-2.3.1.5.1
-2.3.1.5.2
-
-2.3.1.6
-
-2.3.2
-
-2.3.2.1
-2.3.2.2
-2.3.2.3
-
-2.3.3
-
-2.3.3.1
-2.3.3.2
-2.3.3.3
-2.3.3.4
-2.3.3.5
-2.3.3.6
-2.3.3.7
-2.3.3.8
-2.3.3.9
-
-[MS-WMF] - v20240423
-Windows Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 213
-
-2.3.4
-
-2.3.5
-
-2.3.3.10  META_LINETO Record ........................................................................... 124
-2.3.3.11  META_PAINTREGION Record ................................................................. 125
-2.3.3.12  META_PATBLT Record ........................................................................... 125
-2.3.3.13  META_PIE Record ................................................................................. 126
-2.3.3.14  META_POLYLINE Record ........................................................................ 127
-2.3.3.15  META_POLYGON Record ........................................................................ 127
-2.3.3.16  META_POLYPOLYGON Record ................................................................. 128
-2.3.3.17  META_RECTANGLE Record .................................................................... 129
-2.3.3.18  META_ROUNDRECT Record ................................................................... 129
-2.3.3.19  META_SETPIXEL Record ........................................................................ 130
-2.3.3.20  META_TEXTOUT Record ........................................................................ 131
-Object Record Types .................................................................................. 131
-META_CREATEBRUSHINDIRECT Record .................................................. 132
-2.3.4.1
-META_CREATEFONTINDIRECT Record ..................................................... 133
-2.3.4.2
-META_CREATEPALETTE Record .............................................................. 133
-2.3.4.3
-META_CREATEPATTERNBRUSH Record .................................................... 134
-2.3.4.4
-META_CREATEPENINDIRECT Record ....................................................... 135
-2.3.4.5
-META_CREATEREGION Record ............................................................... 136
-2.3.4.6
-META_DELETEOBJECT Record ................................................................ 136
-2.3.4.7
-META_DIBCREATEPATTERNBRUSH Record .............................................. 137
-2.3.4.8
-META_SELECTCLIPREGION Record ......................................................... 138
-2.3.4.9
-2.3.4.10  META_SELECTOBJECT Record ................................................................ 138
-2.3.4.11  META_SELECTPALETTE Record ............................................................... 139
-State Record Types .................................................................................... 139
-META_ANIMATEPALETTE Record ............................................................ 141
-2.3.5.1
-META_EXCLUDECLIPRECT Record .......................................................... 141
-2.3.5.2
-META_INTERSECTCLIPRECT Record ........................................................ 142
-2.3.5.3
-META_MOVETO Record ......................................................................... 143
-2.3.5.4
-META_OFFSETCLIPRGN Record .............................................................. 143
-2.3.5.5
-META_OFFSETVIEWPORTORG Record ..................................................... 144
-2.3.5.6
-META_OFFSETWINDOWORG Record ....................................................... 144
-2.3.5.7
-META_REALIZEPALETTE Record ............................................................. 145
-2.3.5.8
-2.3.5.9
-META_RESIZEPALETTE Record ............................................................... 145
-2.3.5.10  META_RESTOREDC Record .................................................................... 146
-2.3.5.11  META_SAVEDC Record .......................................................................... 146
-2.3.5.12  META_SCALEVIEWPORTEXT Record ........................................................ 146
-2.3.5.13  META_SCALEWINDOWEXT Record .......................................................... 147
-2.3.5.14  META_SETBKCOLOR Record .................................................................. 148
-2.3.5.15  META_SETBKMODE Record .................................................................... 148
-2.3.5.16  META_SETLAYOUT Record ..................................................................... 149
-2.3.5.17  META_SETMAPMODE Record ................................................................. 149
-2.3.5.18  META_SETMAPPERFLAGS Record ........................................................... 150
-2.3.5.19  META_SETPALENTRIES Record .............................................................. 150
-2.3.5.20  META_SETPOLYFILLMODE Record .......................................................... 151
-2.3.5.21  META_SETRELABS Record ..................................................................... 151
-2.3.5.22  META_SETROP2 Record ........................................................................ 152
-2.3.5.23  META_SETSTRETCHBLTMODE Record ..................................................... 152
-2.3.5.24  META_SETTEXTALIGN Record ................................................................ 153
-2.3.5.25  META_SETTEXTCHAREXTRA Record ........................................................ 153
-2.3.5.26  META_SETTEXTCOLOR Record ............................................................... 154
-2.3.5.27  META_SETTEXTJUSTIFICATION Record ................................................... 154
-2.3.5.28  META_SETVIEWPORTEXT Record ........................................................... 155
-2.3.5.29  META_SETVIEWPORTORG Record .......................................................... 155
-2.3.5.30  META_SETWINDOWEXT Record ............................................................. 156
-2.3.5.31  META_SETWINDOWORG Record............................................................. 156
-Escape Record Types ................................................................................. 157
-META_ESCAPE Record .......................................................................... 158
-ABORTDOC Record ............................................................................... 159
-
-2.3.6.1
-2.3.6.2
-
-2.3.6
-
-[MS-WMF] - v20240423
-Windows Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 213
-
-BEGIN_PATH Record ............................................................................ 160
-2.3.6.3
-CHECKJPEGFORMAT Record................................................................... 160
-2.3.6.4
-CHECKPNGFORMAT Record ................................................................... 161
-2.3.6.5
-CLIP_TO_PATH Record .......................................................................... 161
-2.3.6.6
-CLOSECHANNEL Record ........................................................................ 162
-2.3.6.7
-DOWNLOADFACE Record ....................................................................... 163
-2.3.6.8
-DOWNLOADHEADER Record .................................................................. 163
-2.3.6.9
-2.3.6.10  DRAWPATTERNRECT Record .................................................................. 164
-ENCAPSULATED_POSTSCRIPT Record ..................................................... 164
-2.3.6.11
-END_PATH Record ................................................................................ 165
-2.3.6.12
-ENDDOC Record .................................................................................. 166
-2.3.6.13
-EPSPRINTING Record ........................................................................... 166
-2.3.6.14
-2.3.6.15
-EXTTEXTOUT Record ............................................................................ 167
-2.3.6.16  GETCOLORTABLE Record ...................................................................... 168
-2.3.6.17  GETDEVICEUNITS Record...................................................................... 169
-2.3.6.18  GETEXTENDEDTEXTMETRICS Record ...................................................... 169
-2.3.6.19  GETFACENAME Record .......................................................................... 170
-2.3.6.20  GETPAIRKERNTABLE Record .................................................................. 170
-2.3.6.21  GETPHYSPAGESIZE Record ................................................................... 171
-2.3.6.22  GETPRINTINGOFFSET Record ................................................................ 171
-2.3.6.23  GET_PS_FEATURESETTING Record ......................................................... 172
-2.3.6.24  GETSCALINGFACTOR Record ................................................................. 172
-2.3.6.25  META_ESCAPE_ENHANCED_METAFILE Record ......................................... 173
-2.3.6.26  METAFILE_DRIVER Record .................................................................... 174
-2.3.6.27  NEWFRAME Record ............................................................................... 175
-2.3.6.28  NEXTBAND Record ............................................................................... 175
-PASSTHROUGH Record ......................................................................... 176
-2.3.6.29
-POSTSCRIPT_DATA Record ................................................................... 176
-2.3.6.30
-POSTSCRIPT_IDENTIFY Record .............................................................. 177
-2.3.6.31
-POSTSCRIPT_IGNORE Record ................................................................ 178
-2.3.6.32
-POSTSCRIPT_INJECTION Record ............................................................ 178
-2.3.6.33
-2.3.6.34
-POSTSCRIPT_PASSTHROUGH Record ...................................................... 179
-2.3.6.35  OPENCHANNEL Record .......................................................................... 179
-2.3.6.36  QUERYDIBSUPPORT Record ................................................................... 180
-2.3.6.37  QUERYESCSUPPORT Record .................................................................. 180
-SETCOLORTABLE Record ....................................................................... 181
-2.3.6.38
-SETCOPYCOUNT Record ........................................................................ 181
-2.3.6.39
-SETLINECAP Record ............................................................................. 182
-2.3.6.40
-SETLINEJOIN Record ............................................................................ 183
-2.3.6.41
-SETMITERLIMIT Record ........................................................................ 183
-2.3.6.42
-SPCLPASSTHROUGH2 Record ................................................................ 184
-2.3.6.43
-STARTDOC Record ............................................................................... 185
-2.3.6.44
-
-3.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Structure Examples ............................................................................................. 186
-Metafile Design ............................................................................................... 186
-Device Independence ................................................................................. 186
-Byte Ordering Example ............................................................................... 186
-Mapping Modes ......................................................................................... 187
-Managing Objects ...................................................................................... 188
-WMF Object Table ................................................................................ 188
-Object Scaling ..................................................................................... 188
-Playback Device Context ............................................................................. 189
-Run-Length Encoding (RLE) Compression ..................................................... 192
-Bitmaps with 4 Bits per Pixel ................................................................. 192
-Bitmaps with 8 Bits per Pixel ................................................................. 193
-WMF Metafile Example ..................................................................................... 194
-META_HEADER Example ............................................................................. 195
-META_CREATEPENINDIRECT Example .......................................................... 196
-
-3.1.6.1
-3.1.6.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-
-3.2
-
-[MS-WMF] - v20240423
-Windows Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 213
-
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-3.2.8
-
-META_SELECTOBJECT Example 1 ................................................................ 197
-META_CREATEBRUSHINDIRECT Example ...................................................... 197
-META_SELECTOBJECT Example 2 ................................................................ 198
-META_RECTANGLE Example ........................................................................ 199
-META_TEXTOUT Example ............................................................................ 200
-META_EOF Example ................................................................................... 200
-
-4  Security Considerations ....................................................................................... 202
-
-5  Appendix A: Product Behavior ............................................................................. 203
-
-6  Change Tracking .................................................................................................. 208
-
-7  Index ................................................................................................................... 209
-
-[MS-WMF] - v20240423
-Windows Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 213
-
-1  Introduction
+## 1 Introduction
 
 This is a specification of the Windows metafile format (WMF) structure, which can store an image
 in portable form. The stored image can be rendered by parsing and processing the metafile.
@@ -1086,7 +738,7 @@ drawing commands, object definitions and properties. The metafile begins with a 
 includes the metafile version, its size, and the number of objects it defines. A WMF metafile is "played
 back" when its records are converted to a format understood by a specific graphics device.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1149,7 +801,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CIEXYZ: A widely used device-independent color standard developed by the Commission
+
+CIEXYZ: A widely used device-independent color standard developed by the Commission
 Internationale de l'Éclairage (CIE). The CIEXYZ standard is based on color-matching
 experiments on human observers. No actual device is expected to produce colors in this color
 space. It is used as a means of converting colors from one color space to another. The
@@ -1223,7 +876,8 @@ Release: April 23, 2024
 
 11 / 213
 
-font association: The automatic pairing of a font that contains ideographs with a font that does
+
+font association: The automatic pairing of a font that contains ideographs with a font that does
 not contain ideographs. Font association is used to maintain font attributes across changes in
 locale and allows the user to enter ideographic characters regardless of which font is selected.
 
@@ -1294,7 +948,8 @@ Release: April 23, 2024
 
 12 / 213
 
-METAFILEPICT: A structure that defines the metafile picture format. METAFILEPICT is used for
+
+METAFILEPICT: A structure that defines the metafile picture format. METAFILEPICT is used for
 
 exchanging metafile data through the clipboard. See [MSDN-METAFILEPICT] and [MSDN-
 CLIPFORM] for further information.
@@ -1370,7 +1025,8 @@ Release: April 23, 2024
 
 13 / 213
 
-printer driver: The interface component between the operating system and the printer device. It
+
+printer driver: The interface component between the operating system and the printer device. It
 is responsible for processing the application data into a page description language (PDL) that
 can be interpreted by the printer device.
 
@@ -1444,7 +1100,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Type 1 font: A public, standard type format originally developed for use with PostScript printers.
+
+Type 1 font: A public, standard type format originally developed for use with PostScript printers.
 Type 1 fonts contain two components—the outline font, used for printing; and the bitmap font
 set, used for screen display.
 
@@ -1491,14 +1148,14 @@ information, see [MSFT-XMLPAPER].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1517,7 +1174,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[JFIF] Hamilton, E., "JPEG File Interchange Format, Version 1.02", September 1992,
+
+[JFIF] Hamilton, E., "JPEG File Interchange Format, Version 1.02", September 1992,
 http://www.w3.org/Graphics/JPEG/jfif.txt
 
 [MS-DTYP] Microsoft Corporation, "Windows Data Types".
@@ -1531,16 +1189,16 @@ March 1997, https://www.rfc-editor.org/info/rfc2083
 [W3C-PNG] World Wide Web Consortium, "Portable Network Graphics (PNG) Specification, Second
 Edition", November 2003, http://www.w3.org/TR/PNG
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-EMF] Microsoft Corporation, "Enhanced Metafile Format".
 
 [MSDN-CLIPFORM] Microsoft Corporation, "Clipboard Formats", http://msdn.microsoft.com/en-
 us/library/ms649013.aspx
 
-1.3  Overview
+### 1.3 Overview
 
-1.3.1  Metafile Structure
+#### 1.3.1 Metafile Structure
 
 WMF specifies structures for defining a graphical image. A WMF metafile contains drawing
 commands, property definitions, and graphics objects in a series of WMF records. In effect, a WMF
@@ -1563,7 +1221,8 @@ Release: April 23, 2024
 
 16 / 213
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-WMF].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1613,7 +1272,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1627,7 +1287,7 @@ Parameters, if any, for the record function
 
 All WMF metafiles are terminated by a META_EOF Record (section 2.3.2.1).
 
-1.3.2  Graphics Objects
+#### 1.3.2 Graphics Objects
 
 Graphics objects include the brushes, fonts, palettes, pens, and regions, which are used in the
 drawing and painting operations specified in the records of a WMF metafile. They can be defined in
@@ -1646,7 +1306,7 @@ definition of any graphics objects. Thus, it is assumed that an initial state ex
 graphics properties of the playback device context, including default graphics objects. Information
 concerning the playback device context is provided in section 3.1.5.
 
-1.3.3  Byte Ordering
+#### 1.3.3 Byte Ordering
 
 Data in WMF metafile records is stored in little-endian format.
 
@@ -1686,7 +1346,7 @@ Little-endian  0x78
 
 0x12
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 WMF is not dependent on any protocols or other structures. WMF defines a design and layout based
 on 16-bit operating systems.<1>
@@ -1700,13 +1360,14 @@ Release: April 23, 2024
 
 18 / 213
 
-1.5  Applicability Statement
+
+### 1.5 Applicability Statement
 
 Structures that are compliant with WMF are portable, application-independent containers for images.
 The graphics supported in WMF metafiles are applicable to document content representation,
 including printing and plotting.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This specification covers versioning issues in the following areas:
 
@@ -1714,7 +1375,7 @@ Structure Versions: There is only one version of the WMF structure.
 
 Localization: This structure defines no locale-specific processes or data.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The WMF defines a mechanism for the encapsulation of arbitrary, vendor-defined data. See section
 2.3.6.1 for details.
@@ -1726,7 +1387,8 @@ Release: April 23, 2024
 
 19 / 213
 
-2  Structures
+
+## 2 Structures
 
 This section specifies the structures used to define the WMF, including:
 
@@ -1740,13 +1402,13 @@ Enumerations of WMF graphics properties, styles and flags.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  WMF Constants
+### 2.1 WMF Constants
 
-2.1.1  WMF Enumerations
+#### 2.1.1 WMF Enumerations
 
  This section contains enumerations of constant values that are referenced in this specification.
 
-2.1.1.1  RecordType Enumeration
+##### 2.1.1.1 RecordType Enumeration
 
 The RecordType Enumeration defines the types of records that can be used in WMF metafiles.
 
@@ -1799,7 +1461,8 @@ Release: April 23, 2024
 
 20 / 213
 
-   META_TEXTOUT = 0x0521,
+
+   META_TEXTOUT = 0x0521,
    META_POLYPOLYGON = 0x0538,
    META_EXTFLOODFILL = 0x0548,
    META_RECTANGLE = 0x041B,
@@ -1873,7 +1536,8 @@ Release: April 23, 2024
 
 21 / 213
 
-META_SETTEXTCHAREXTRA: This record defines inter-character spacing for text justification in the
+
+META_SETTEXTCHAREXTRA: This record defines inter-character spacing for text justification in the
 
 playback device context. Spacing is added to the white space between each character, including
 break characters, when a line of justified text is output.
@@ -1956,7 +1620,8 @@ Release: April 23, 2024
 
 22 / 213
 
-META_OFFSETWINDOWORG: This record moves the output window origin in the playback device
+
+META_OFFSETWINDOWORG: This record moves the output window origin in the playback device
 
 context by using specified horizontal and vertical offsets.
 
@@ -2037,7 +1702,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-META_ESCAPE: This record makes it possible to access capabilities of a particular printing device that
+
+META_ESCAPE: This record makes it possible to access capabilities of a particular printing device that
 
 are not directly available through other WMF records.
 
@@ -2115,7 +1781,8 @@ Release: April 23, 2024
 
 24 / 213
 
-  META_POLYGON
+
+  META_POLYGON
 
   META_POLYLINE
 
@@ -2129,7 +1796,7 @@ sections that define them.
 A record type is not defined for the WMF header record, because only one can be present as the first
 record in the metafile.
 
-2.1.1.2  BinaryRasterOperation Enumeration
+##### 2.1.1.2 BinaryRasterOperation Enumeration
 
 The BinaryRasterOperation Enumeration section lists the binary raster-operation codes. Raster-
 operation codes define how metafile processing combines the bits from the selected pen with the bits
@@ -2222,7 +1889,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- P
+
+ P
 
 1
 
@@ -2305,7 +1973,8 @@ Release: April 23, 2024
 
 26 / 213
 
-For a monochrome device, WMF format maps the value 0 to black and the value 1 to white. If an
+
+For a monochrome device, WMF format maps the value 0 to black and the value 1 to white. If an
 application attempts to draw with a black pen on a white destination by using the available binary
 raster operations, the following results occur.
 
@@ -2428,7 +2097,8 @@ Release: April 23, 2024
 
 27 / 213
 
- Raster operation
+
+ Raster operation
 
  Result
 
@@ -2464,7 +2134,7 @@ Visible white line
 
 Visible red/green line
 
-2.1.1.3  BitCount Enumeration
+##### 2.1.1.3 BitCount Enumeration
 
 The BitCount Enumeration specifies the number of bits that define each pixel and the maximum
 number of colors in a device-independent bitmap (DIB).
@@ -2513,7 +2183,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BI_BITCOUNT_4: The image is specified with a maximum of 2^16 colors.
+
+BI_BITCOUNT_4: The image is specified with a maximum of 2^16 colors.
 
 Each pixel in the bitmap in the BitmapBuffer field of the DIB Object is represented by a 16-bit
 value.
@@ -2561,7 +2232,7 @@ be used.
 
 BI_RGB and BI_BITFIELDS are specified in the Compression Enumeration.
 
-2.1.1.4  BrushStyle Enumeration
+##### 2.1.1.4 BrushStyle Enumeration
 
 The BrushStyle Enumeration specifies the different possible brush types that can be used in
 graphics operations. For more information, see the specification of the Brush Object (section
@@ -2583,7 +2254,8 @@ Release: April 23, 2024
 
 29 / 213
 
-   BS_DIBPATTERNPT = 0x0006,
+
+   BS_DIBPATTERNPT = 0x0006,
    BS_PATTERN8X8 = 0x0007,
    BS_DIBPATTERN8X8 = 0x0008,
    BS_MONOPATTERN = 0x0009
@@ -2613,7 +2285,7 @@ BS_DIBPATTERN8X8: Not supported.
 
 BS_MONOPATTERN: Not supported.
 
-2.1.1.5  CharacterSet Enumeration
+##### 2.1.1.5 CharacterSet Enumeration
 
 The CharacterSet Enumeration defines the possible sets of character glyphs that are defined in
 fonts for graphics output.
@@ -2653,7 +2325,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SYMBOL_CHARSET: Specifies a character set of symbols.
+
+SYMBOL_CHARSET: Specifies a character set of symbols.
 
 MAC_CHARSET: Specifies the Apple Macintosh character set.<6>
 
@@ -2691,7 +2364,7 @@ OEM_CHARSET: Specifies a mapping to one of the OEM code pages, according to the 
 
 locale setting.
 
-2.1.1.6  ColorUsage Enumeration
+##### 2.1.1.6 ColorUsage Enumeration
 
 The ColorUsage Enumeration specifies whether a color table exists in a device-independent
 bitmap (DIB) and how to interpret its values.
@@ -2724,7 +2397,8 @@ Release: April 23, 2024
 
 31 / 213
 
-2.1.1.7  Compression Enumeration
+
+##### 2.1.1.7 Compression Enumeration
 
 The Compression Enumeration specifies the type of compression for a bitmap image.
 
@@ -2797,7 +2471,8 @@ Release: April 23, 2024
 
 32 / 213
 
-2.1.1.8  FamilyFont Enumeration
+
+##### 2.1.1.8 FamilyFont Enumeration
 
 The FamilyFont Enumeration specifies the font family. Font families describe the look of a font in a
 general way. They are intended for specifying fonts when the exact typeface desired is not available.
@@ -2833,7 +2508,7 @@ FF_DECORATIVE: Novelty fonts. "Old English" is an example.
 In a Font Object (section 2.2.1.2), when a FamilyFont value is packed into a byte with a PitchFont
 Enumeration (section 2.1.1.24) value, the result is a PitchAndFamily Object (section 2.2.2.14).
 
-2.1.1.9  FloodFill Enumeration
+##### 2.1.1.9 FloodFill Enumeration
 
 The FloodFill Enumeration specifies the type of fill operation to be performed.
 
@@ -2851,9 +2526,9 @@ FLOODFILLSURFACE: The fill area is bounded by the color that is specified by the
 Filling continues outward in all directions as long as the color is encountered. This style is useful
 for filling areas with multicolored boundaries.
 
-2.1.1.10
+##### 2.1.1.10 FontQuality Enumeration
 
-FontQuality Enumeration
+
 
 The FontQuality Enumeration specifies how closely the attributes of the logical font match those of
 the physical font when rendering text.
@@ -2869,7 +2544,8 @@ Release: April 23, 2024
 
 33 / 213
 
-   DRAFT_QUALITY = 0x01,
+
+   DRAFT_QUALITY = 0x01,
    PROOF_QUALITY = 0x02,
    NONANTIALIASED_QUALITY = 0x03,
    ANTIALIASED_QUALITY = 0x04,
@@ -2905,9 +2581,9 @@ text, if the font supports it.<9>
 Fonts that do not support ClearType anti-aliasing include type 1 fonts, PostScript fonts,
 OpenType fonts without TrueType outlines, rasterized fonts, vector fonts, and device fonts.
 
-2.1.1.11
+##### 2.1.1.11 GamutMappingIntent Enumeration
 
-GamutMappingIntent Enumeration
+
 
 The GamutMappingIntent Enumeration specifies the relationship between logical and physical
 colors.<10>
@@ -2944,7 +2620,8 @@ Release: April 23, 2024
 
 34 / 213
 
-LCS_GM_GRAPHICS: Specifies that a colorimetric match SHOULD be maintained. Typically used for
+
+LCS_GM_GRAPHICS: Specifies that a colorimetric match SHOULD be maintained. Typically used for
 
 graphic designs and named colors.
 
@@ -2960,9 +2637,9 @@ Intent: Picture
 
 ICC name: Perceptual
 
-2.1.1.12
+##### 2.1.1.12 HatchStyle Enumeration
 
-HatchStyle Enumeration
+
 
 The HatchStyle Enumeration specifies the hatch pattern.
 
@@ -2988,9 +2665,9 @@ HS_CROSS: A horizontal and vertical cross-hatch.
 
 HS_DIAGCROSS: A 45-degree crosshatch.
 
-2.1.1.13
+##### 2.1.1.13 Layout Enumeration
 
-Layout Enumeration
+
 
 The Layout Enumeration defines options for controlling the direction in which text and graphics are
 drawn.<11>
@@ -3015,13 +2692,14 @@ Release: April 23, 2024
 
 35 / 213
 
-LAYOUT_BITMAPORIENTATIONPRESERVED: Disables mirroring of bitmaps that are drawn by
+
+LAYOUT_BITMAPORIENTATIONPRESERVED: Disables mirroring of bitmaps that are drawn by
 META_BITBLT Record (section 2.3.1.1) and META_STRETCHBLT Record (section 2.3.1.5)
 operations, when the layout is right-to-left.
 
-2.1.1.14
+##### 2.1.1.14 LogicalColorSpace Enumeration
 
-LogicalColorSpace Enumeration
+
 
 The LogicalColorSpace Enumeration specifies the type of color space.<12>
 
@@ -3041,9 +2719,9 @@ values are sRGB values.
 LCS_WINDOWS_COLOR_SPACE: The value is an encoding of the ASCII characters "Win ", including
 the trailing space, and it indicates that the color values are Windows default color space values.
 
-2.1.1.15
+##### 2.1.1.15 LogicalColorSpaceV5 Enumeration
 
-LogicalColorSpaceV5 Enumeration
+
 
 The LogicalColorSpaceV5 Enumeration is used to specify where to find color profile information
 for a DeviceIndependentBitmap (DIB) Object (section 2.2.2.9) that has a header of type
@@ -3062,9 +2740,9 @@ LCS_PROFILE_EMBEDDED: The value consists of the string "MBED" from the Windows c
 
 (code page 1252). It indicates that the color profile MUST be embedded in the DIB Object.
 
-2.1.1.16
+##### 2.1.1.16 MapMode Enumeration
 
-MapMode Enumeration
+
 
 The MapMode Enumeration defines how logical units are mapped to physical units; that is,
 assuming that the origins in both the logical and physical coordinate systems are at the same point on
@@ -3086,7 +2764,8 @@ Release: April 23, 2024
 
 36 / 213
 
- typedef  enum
+
+ typedef  enum
  {
    MM_TEXT = 0x0001,
    MM_LOMETRIC = 0x0002,
@@ -3133,9 +2812,9 @@ adjusted to keep the units isotropic.
 
 MM_ANISOTROPIC: Logical units are mapped to arbitrary units with arbitrarily scaled axes.
 
-2.1.1.17
+##### 2.1.1.17 MetafileEscapes Enumeration
 
-MetafileEscapes Enumeration
+
 
 The MetafileEscapes Enumeration specifies printer driver functionality that might not be directly
 accessible through WMF records defined in the RecordType Enumeration (section 2.1.1.1).
@@ -3161,7 +2840,8 @@ Release: April 23, 2024
 
 37 / 213
 
-   STARTDOC = 0x000A,
+
+   STARTDOC = 0x000A,
    ENDDOC = 0x000B,
    GETPHYSPAGESIZE = 0x000C,
    GETPRINTINGOFFSET = 0x000D,
@@ -3235,7 +2915,8 @@ Release: April 23, 2024
 
 38 / 213
 
-QUERYESCSUPPORT: Queries a printer driver to determine whether a specific escape function is
+
+QUERYESCSUPPORT: Queries a printer driver to determine whether a specific escape function is
 
 supported on the output device it drives.
 
@@ -3314,7 +2995,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-POSTSCRIPT_DATA: Sends arbitrary PostScript data to an output device.
+
+POSTSCRIPT_DATA: Sends arbitrary PostScript data to an output device.
 
 POSTSCRIPT_IGNORE: Notifies an output device to ignore PostScript data.
 
@@ -3379,9 +3061,9 @@ SPCLPASSTHROUGH2: Enables applications to include private procedures and other a
 
 documents.<21>
 
-2.1.1.18
+##### 2.1.1.18 MetafileType Enumeration
 
-MetafileType Enumeration
+
 
 The MetafileType Enumeration specifies where the metafile is stored.
 
@@ -3392,7 +3074,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef  enum
+
+ typedef  enum
  {
    MEMORYMETAFILE = 0x0001,
    DISKMETAFILE = 0x0002
@@ -3402,9 +3085,9 @@ MEMORYMETAFILE: Metafile is stored in memory.
 
 DISKMETAFILE: Metafile is stored on disk.
 
-2.1.1.19
+##### 2.1.1.19 MetafileVersion Enumeration
 
-MetafileVersion Enumeration
+
 
 The MetafileVersion Enumeration defines values that specify support for device-independent
 bitmaps (DIBs) in metafiles.
@@ -3419,9 +3102,9 @@ METAVERSION100: DIBs are not supported.
 
 METAVERSION300: DIBs are supported.
 
-2.1.1.20
+##### 2.1.1.20 MixMode Enumeration
 
-MixMode Enumeration
+
 
 The MixMode Enumeration specifies the background mix mode for text, hatched brushes, and other
 nonsolid pen styles.
@@ -3438,9 +3121,9 @@ OPAQUE: The background is filled with the background color that is currently def
 
 device context before the text, hatched brush, or pen is drawn.
 
-2.1.1.21
+##### 2.1.1.21 OutPrecision Enumeration
 
-OutPrecision Enumeration
+
 
 The OutPrecision enumeration defines values for output precision, which is the requirement for the
 font mapper to match specific font parameters, including height, width, character orientation,
@@ -3464,7 +3147,8 @@ Release: April 23, 2024
 
 41 / 213
 
-   OUT_SCREEN_OUTLINE_PRECIS = 0x00000009,
+
+   OUT_SCREEN_OUTLINE_PRECIS = 0x00000009,
    OUT_PS_ONLY_PRECIS = 0x0000000A
  } OutPrecision;
 
@@ -3502,9 +3186,9 @@ OUT_PS_ONLY_PRECIS: A value that specifies a requirement for only PostScript fon
 
 no PostScript fonts installed in the system, default behavior is specified.
 
-2.1.1.22
+##### 2.1.1.22 PaletteEntryFlag Enumeration
 
-PaletteEntryFlag Enumeration
+
 
 The PaletteEntryFlag Enumeration specifies how the palette entry is used.
 
@@ -3537,9 +3221,10 @@ Release: April 23, 2024
 
 42 / 213
 
-2.1.1.23
 
-PenStyle Enumeration
+##### 2.1.1.23 PenStyle Enumeration
+
+
 
 The 16-bit PenStyle Enumeration is used to specify different types of pens that can be used in
 graphics operations.
@@ -3611,9 +3296,10 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.1.1.24
 
-PitchFont Enumeration
+##### 2.1.1.24 PitchFont Enumeration
+
+
 
 The PitchFont Enumeration defines values that are used for specifying characteristics of a font. The
 values are used to indicate whether the characters in a font have a fixed or variable width, or pitch.
@@ -3639,9 +3325,9 @@ and space characters usually have much smaller widths than a "W" or "O" characte
 In a Font Object (section 2.2.1.2), when a FamilyFont Enumeration (section 2.1.1.8) value is
 packed into a byte with a PitchFont value, the result is a PitchAndFamily Object (section 2.2.2.14).
 
-2.1.1.25
+##### 2.1.1.25 PolyFillMode Enumeration
 
-PolyFillMode Enumeration
+
 
 The PolyFillMode Enumeration specifies the method used for filling a polygon.
 
@@ -3657,9 +3343,9 @@ polygon sides on each scan line).
 
 WINDING: Selects winding mode (fills any region with a nonzero winding value).
 
-2.1.1.26
+##### 2.1.1.26 PostScriptCap Enumeration
 
-PostScriptCap Enumeration
+
 
 The PostScriptCap Enumeration defines line-ending types for use with a PostScript printer
 driver.
@@ -3685,7 +3371,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PostScriptRoundCap: Specifies a circular cap. The center of the circle is the last point in the line.
+
+PostScriptRoundCap: Specifies a circular cap. The center of the circle is the last point in the line.
 The diameter of the circle is the same as the line width; that is, the thickness of the line.
 
 PostScriptSquareCap: Specifies a square cap. The center of the square is the last point in the line.
@@ -3693,9 +3380,9 @@ PostScriptSquareCap: Specifies a square cap. The center of the square is the las
 The height and width of the square are the same as the line width; that is, the thickness of the
 line.
 
-2.1.1.27
+##### 2.1.1.27 PostScriptClipping Enumeration
 
-PostScriptClipping Enumeration
+
 
 The PostScriptClipping Enumeration defines functions that can be applied to the clipping path
 used for PostScript output.
@@ -3717,9 +3404,9 @@ CLIP_INCLUSIVE: Intersects the current PostScript clipping path with the current
 
 saves the result as the new PostScript clipping path.
 
-2.1.1.28
+##### 2.1.1.28 PostScriptFeatureSetting Enumeration
 
-PostScriptFeatureSetting Enumeration
+
 
 The PostScriptFeatureSetting Enumeration defines values that are used to retrieve information
 about specific features in a PostScript printer driver.<23>
@@ -3758,7 +3445,8 @@ Release: April 23, 2024
 
 45 / 213
 
-FEATURESETTING_PRIVATE_BEGIN: Specifies the start of a range of values that a driver can use
+
+FEATURESETTING_PRIVATE_BEGIN: Specifies the start of a range of values that a driver can use
 
 for retrieving data concerning proprietary features.<24>
 
@@ -3766,9 +3454,9 @@ FEATURESETTING_PRIVATE_END: Specifies the end of a range of values that a driver
 
 retrieving data concerning proprietary features.<25>
 
-2.1.1.29
+##### 2.1.1.29 PostScriptJoin Enumeration
 
-PostScriptJoin Enumeration
+
 
 The PostScriptJoin Enumeration defines line-joining capabilities for use with a PostScript printer
 driver.
@@ -3793,9 +3481,9 @@ lines.
 
 PostScriptBevelJoin: Specifies a beveled join, which produces a diagonal corner.
 
-2.1.1.30
+##### 2.1.1.30 StretchMode Enumeration
 
-StretchMode Enumeration
+
 
 The StretchMode Enumeration specifies the bitmap stretching mode, which defines how the
 system combines rows or columns of a bitmap with existing pixels.
@@ -3831,12 +3519,13 @@ Release: April 23, 2024
 
 46 / 213
 
-After setting the HALFTONE stretching mode, the brush origin MUST be set to avoid misalignment
+
+After setting the HALFTONE stretching mode, the brush origin MUST be set to avoid misalignment
 artifacts.
 
-2.1.1.31
+##### 2.1.1.31 TernaryRasterOperation Enumeration
 
-TernaryRasterOperation Enumeration
+
 
 The TernaryRasterOperation Enumeration specifies ternary raster operation codes, which define
 how to combine the bits in a source bitmap with the bits in a destination bitmap.
@@ -3908,7 +3597,8 @@ Release: April 23, 2024
 
 47 / 213
 
-   SPDNOX = 0x39,
+
+   SPDNOX = 0x39,
    SPDSXOX = 0x3A,
    SPDNOAN = 0x3B,
    PSX = 0x3C,
@@ -3985,7 +3675,8 @@ Release: April 23, 2024
 
 48 / 213
 
-   SPXDSXO = 0x7E,
+
+   SPXDSXO = 0x7E,
    DPSAAN = 0x7F,
    DPSAA = 0x80,
    SPXDSXON = 0x81,
@@ -4062,7 +3753,8 @@ Release: April 23, 2024
 
 49 / 213
 
-   PSXN = 0xC3,
+
+   PSXN = 0xC3,
    SPDNOA = 0xC4,
    SPDSXOXN = 0xC5,
    SDPNAX = 0xC6,
@@ -4136,7 +3828,8 @@ Release: April 23, 2024
 
 50 / 213
 
-Common = 0
+
+Common = 0
 
 DPSOON:
 
@@ -4207,7 +3900,8 @@ Release: April 23, 2024
 
 51 / 213
 
-Reverse Polish = 000B0B2A
+
+Reverse Polish = 000B0B2A
 
 Common = PSDnaon
 
@@ -4278,7 +3972,8 @@ Release: April 23, 2024
 
 52 / 213
 
-PSDPSANAXX:
+
+PSDPSANAXX:
 
 Reverse Polish = 00165CCA
 
@@ -4349,7 +4044,8 @@ Release: April 23, 2024
 
 53 / 213
 
-Common = DPSnaa
+
+Common = DPSnaa
 
 SDPXON:
 
@@ -4420,7 +4116,8 @@ Release: April 23, 2024
 
 54 / 213
 
-Reverse Polish = 002B1D58
+
+Reverse Polish = 002B1D58
 
 Common = SSPxPDxaxn
 
@@ -4491,7 +4188,8 @@ Release: April 23, 2024
 
 55 / 213
 
-SDPOX:
+
+SDPOX:
 
 Reverse Polish = 003601A8
 
@@ -4562,7 +4260,8 @@ Release: April 23, 2024
 
 56 / 213
 
-Common = PSDnaa
+
+Common = PSDnaa
 
 DPSXON:
 
@@ -4633,7 +4332,8 @@ Release: April 23, 2024
 
 57 / 213
 
-Reverse Polish = 004B0605
+
+Reverse Polish = 004B0605
 
 Common = PDSnox
 
@@ -4704,7 +4404,8 @@ Release: April 23, 2024
 
 58 / 213
 
-DPSOX:
+
+DPSOX:
 
 Reverse Polish = 005601A9
 
@@ -4775,7 +4476,8 @@ Release: April 23, 2024
 
 59 / 213
 
-Common = PDSxa
+
+Common = PDSxa
 
 DSPDSAOXXN:
 
@@ -4846,7 +4548,8 @@ Release: April 23, 2024
 
 60 / 213
 
-Reverse Polish = 006B178A
+
+Reverse Polish = 006B178A
 
 Common = PSDPSoaxxn
 
@@ -4917,7 +4620,8 @@ Release: April 23, 2024
 
 61 / 213
 
-SDPSNAOX:
+
+SDPSNAOX:
 
 Reverse Polish = 00761B28
 
@@ -4988,7 +4692,8 @@ Release: April 23, 2024
 
 62 / 213
 
-Common = DPSaa
+
+Common = DPSaa
 
 SPXDSXON:
 
@@ -5059,7 +4764,8 @@ Release: April 23, 2024
 
 63 / 213
 
-Reverse Polish = 008B0666
+
+Reverse Polish = 008B0666
 
 Common = DSPDxoxn
 
@@ -5130,7 +4836,8 @@ Release: April 23, 2024
 
 64 / 213
 
-DPSXX:
+
+DPSXX:
 
 Reverse Polish = 00960169
 
@@ -5201,7 +4908,8 @@ Release: April 23, 2024
 
 65 / 213
 
-Common = DPa
+
+Common = DPa
 
 PDSPNAOXN:
 
@@ -5272,7 +4980,8 @@ Release: April 23, 2024
 
 66 / 213
 
-Reverse Polish = 00AB0889
+
+Reverse Polish = 00AB0889
 
 Common = DPSono
 
@@ -5343,7 +5052,8 @@ Release: April 23, 2024
 
 67 / 213
 
-DPSDPAOXX:
+
+DPSDPAOXX:
 
 Reverse Polish = 00B616E9
 
@@ -5414,7 +5124,8 @@ Release: April 23, 2024
 
 68 / 213
 
-Common = PSa
+
+Common = PSa
 
 SPDSNAOXN:
 
@@ -5485,7 +5196,8 @@ Release: April 23, 2024
 
 69 / 213
 
-Reverse Polish = 00CB06E4
+
+Reverse Polish = 00CB06E4
 
 Common = SPDSaoxn
 
@@ -5556,7 +5268,8 @@ Release: April 23, 2024
 
 70 / 213
 
-PSDPSAOXX:
+
+PSDPSAOXX:
 
 Reverse Polish = 00D616EA
 
@@ -5627,7 +5340,8 @@ Release: April 23, 2024
 
 71 / 213
 
-Common = PDSoa
+
+Common = PDSoa
 
 PDSOXN:
 
@@ -5698,7 +5412,8 @@ Release: April 23, 2024
 
 72 / 213
 
-Reverse Polish = 00EB0849
+
+Reverse Polish = 00EB0849
 
 Common = DPSxno
 
@@ -5769,7 +5484,8 @@ Release: April 23, 2024
 
 73 / 213
 
-PDSXO:
+
+PDSXO:
 
 Reverse Polish = 00F60265
 
@@ -5840,7 +5556,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Operand
+
+ Operand
 
  Meaning
 
@@ -5997,15 +5714,16 @@ Release: April 23, 2024
 
 75 / 213
 
-When the source and destination bitmaps are monochrome, a bit value of 0 represents a black pixel
+
+When the source and destination bitmaps are monochrome, a bit value of 0 represents a black pixel
 and a bit value of 1 represents a white pixel. When the source and the destination bitmaps are color,
 those colors are represented with red green blue (RGB) values.
 
-2.1.2  WMF Flags
+#### 2.1.2 WMF Flags
 
 This section contains constant flag values that are referenced in this specification.
 
-2.1.2.1  ClipPrecision Flags
+##### 2.1.2.1 ClipPrecision Flags
 
 ClipPrecision Flags specify clipping precision, which defines how to clip characters that are partially
 outside a clipping region. These flags can be combined to specify multiple options.
@@ -6070,7 +5788,7 @@ CLIP_EMBEDDED
 This value specifies that font embedding MUST be used to render
 document content; embedded fonts are read-only.
 
-2.1.2.2  ExtTextOutOptions Flags
+##### 2.1.2.2 ExtTextOutOptions Flags
 
 ExtTextOutOptions Flags specify various characteristics of the output of text. These flags can be
 combined to specify multiple options.
@@ -6099,7 +5817,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -6143,7 +5862,7 @@ used.<37>
 Indicates that both horizontal and vertical character displacement values
 SHOULD be provided.<38>
 
-2.1.2.3  TextAlignmentMode Flags
+##### 2.1.2.3 TextAlignmentMode Flags
 
 TextAlignmentMode Flags specify the relationship between a reference point and a bounding
 rectangle, for text alignment. These flags can be combined to specify multiple options, with the
@@ -6216,7 +5935,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -6248,7 +5968,7 @@ determined by TA_UPDATECP; if that bit is clear, the position MUST NOT be update
 This is the reason for defining three different zero values in the enumeration; they represent the
 default states of the three components of text alignment.
 
-2.1.2.4  VerticalTextAlignmentMode Flags
+##### 2.1.2.4 VerticalTextAlignmentMode Flags
 
 VerticalTextAlignmentMode Flags specify the relationship between a reference point and a
 bounding rectangle, for text alignment. These flags can be combined to specify multiple options, with
@@ -6315,7 +6035,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2  WMF Objects
+
+### 2.2 WMF Objects
 
 This section specifies WMF Objects, which are grouped into the following categories:
 
@@ -6343,7 +6064,7 @@ Specify data structures that are embedded in WMF objects and records.
 Structure objects, unlike graphics objects, are not explicitly created or
 deleted; they are components of more complex structures.
 
-2.2.1  Graphics Objects
+#### 2.2.1 Graphics Objects
 
 The WMF Graphics Objects specify parameters for graphics output. They are explicitly created and
 deleted by records of the Object Record Types (section 2.3.4) during the playback of an WMF
@@ -6395,7 +6116,7 @@ An implementation is responsible for keeping track of graphics objects during pl
 An abstract model for managing WMF graphics objects is described in WMF Object Table (section
 3.1.4.1).
 
-2.2.1.1  Brush Object
+##### 2.2.1.1 Brush Object
 
 The Brush Object defines the style, color, and pattern of a brush. Brush Objects are created by the
 META_CREATEBRUSHINDIRECT (section 2.3.4.1), META_CREATEPATTERNBRUSH (section
@@ -6427,7 +6148,8 @@ Release: April 23, 2024
 
 79 / 213
 
-...
+
+...
 
 BrushStyle (2 bytes): A 16-bit unsigned integer that defines the brush style. The value MUST be an
 enumeration from the BrushStyle Enumeration table (section 2.1.1.4). For the meanings of the
@@ -6493,7 +6215,7 @@ HatchStyle Enumeration table,
 specified in section 2.1.1.12, which
 defines the brush pattern.
 
-2.2.1.2  Font Object
+##### 2.2.1.2 Font Object
 
 The Font object specifies the attributes of a logical font.
 
@@ -6537,7 +6259,8 @@ Release: April 23, 2024
 
 80 / 213
 
-Quality
+
+Quality
 
 PitchAndFamily
 
@@ -6633,7 +6356,8 @@ Release: April 23, 2024
 
 81 / 213
 
-StrikeOut (1 byte): An 8-bit Boolean value that specifies the strikeout attribute of the font.
+
+StrikeOut (1 byte): An 8-bit Boolean value that specifies the strikeout attribute of the font.
 
 Value
 
@@ -6695,7 +6419,7 @@ Facename (32 bytes): A null-terminated string of up to 32 8-bit Latin-1 [ISO/IEC
 characters that specifies the typeface name of the font.  Any characters following the terminating
 null are ignored.
 
-2.2.1.3  Palette Object
+##### 2.2.1.3 Palette Object
 
 The Palette Object specifies the colors in a logical palette.
 
@@ -6721,7 +6445,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-aPaletteEntries (variable)
+
+aPaletteEntries (variable)
 
 ...
 
@@ -6738,7 +6463,7 @@ aPaletteEntries (variable): An array of NumberOfEntries 32-bit PaletteEntry Obje
 
 2.2.2.13).
 
-2.2.1.4  Pen Object
+##### 2.2.1.4 Pen Object
 
 The Pen Object specifies the style, width, and color of a pen.
 
@@ -6773,7 +6498,7 @@ dimensions. The x-coordinate is the pen width. The y-coordinate is ignored.
 
 ColorRef (4 bytes): A 32-bit ColorRef Object (section 2.2.2.8) that specifies the pen color value.
 
-2.2.1.5  Region Object
+##### 2.2.1.5 Region Object
 
 The Region Object defines a potentially non-rectilinear shape defined by an array of scanlines.
 
@@ -6815,7 +6540,8 @@ Release: April 23, 2024
 
 83 / 213
 
-...
+
+...
 
 nextInChain (2 bytes): A value that MUST be ignored.<41>
 
@@ -6845,13 +6571,13 @@ aScans (variable): An array of Scan Objects (section 2.2.2.21) that define the s
 
 region.
 
-2.2.2  Structure Objects
+#### 2.2.2 Structure Objects
 
 The WMF Structure Objects specify data structures that are embedded in WMF objects and records.
 Structure objects, unlike graphics objects, are not explicitly created or deleted; they are components
 of more complex structures.
 
-2.2.2.1  Bitmap16 Object
+##### 2.2.2.1 Bitmap16 Object
 
 The Bitmap16 Object specifies information about the dimensions and color format of a bitmap.
 
@@ -6901,7 +6627,8 @@ Release: April 23, 2024
 
 84 / 213
 
-BitsPixel (1 byte): An 8-bit unsigned integer that defines the number of adjacent color bits on each
+
+BitsPixel (1 byte): An 8-bit unsigned integer that defines the number of adjacent color bits on each
 
 plane.
 
@@ -6911,7 +6638,7 @@ field in bytes can be computed as follows.
 
  (((Width * BitsPixel + 15) >> 4) << 1) * Height
 
-2.2.2.2  BitmapCoreHeader Object
+##### 2.2.2.2 BitmapCoreHeader Object
 
 The BitmapCoreHeader Object contains information about the dimensions and color format of a
 device-independent bitmap (DIB).<43>
@@ -6954,7 +6681,7 @@ maximum number of colors in the DIB. This value MUST be in the BitCount Enumerat
 
 A DIB is specified by a DeviceIndependentBitmap Object (section 2.2.2.9).
 
-2.2.2.3  BitmapInfoHeader Object
+##### 2.2.2.3 BitmapInfoHeader Object
 
 The BitmapInfoHeader Object contains information about the dimensions and color format of a
 device-independent bitmap (DIB).
@@ -6989,7 +6716,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ImageSize
+
+ImageSize
 
 XPelsPerMeter
 
@@ -7068,7 +6796,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ColorUsed (4 bytes): A 32-bit unsigned integer that specifies the number of indexes in the color
+
+ColorUsed (4 bytes): A 32-bit unsigned integer that specifies the number of indexes in the color
 
 table used by the DIB, as follows:
 
@@ -7100,7 +6829,7 @@ When the array of pixels in the DIB immediately follows the BitmapInfoHeader, th
 packed bitmap. In a packed bitmap, the ColorUsed value MUST be either 0x00000000 or the
 actual size of the color table.
 
-2.2.2.4  BitmapV4Header Object
+##### 2.2.2.4 BitmapV4Header Object
 
 The BitmapV4Header Object contains information about the dimensions and color format of a
 device-independent bitmap (DIB). It is an extension of the BitmapInfoHeader Object (section
@@ -7146,7 +6875,8 @@ Release: April 23, 2024
 
 87 / 213
 
-...
+
+...
 
 ...
 
@@ -7211,7 +6941,8 @@ Release: April 23, 2024
 
 88 / 213
 
-2.2.2.5  BitmapV5Header Object
+
+##### 2.2.2.5 BitmapV5Header Object
 
 The BitmapV5Header Object contains information about the dimensions and color format of a
 device-independent bitmap (DIB). It is an extension of the BitmapV4Header Object (section
@@ -7273,7 +7004,7 @@ profile data.
 
 Reserved (4 bytes): A 32-bit unsigned integer that is undefined and SHOULD be ignored.
 
-2.2.2.6  CIEXYZ Object
+##### 2.2.2.6 CIEXYZ Object
 
 The CIEXYZ Object defines information about the CIEXYZ chromaticity object.
 
@@ -7284,7 +7015,8 @@ Release: April 23, 2024
 
 89 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7307,7 +7039,7 @@ ciexyzY (4 bytes): A 32-bit 2.30 fixed point type that defines the y chromaticit
 
 ciexyzZ (4 bytes): A 32-bit 2.30 fixed point type that defines the z chromaticity value.
 
-2.2.2.7  CIEXYZTriple Object
+##### 2.2.2.7 CIEXYZTriple Object
 
 The CIEXYZTriple Object defines information about the CIEXYZTriple color object.
 
@@ -7348,7 +7080,7 @@ ciexyzGreen (12 bytes): A 96-bit CIEXYZ Object that defines the green chromatici
 
 ciexyzBlue (12 bytes): A 96-bit CIEXYZ Object that defines the blue chromaticity values.
 
-2.2.2.8  ColorRef Object
+##### 2.2.2.8 ColorRef Object
 
 The ColorRef Object defines the RGB color.
 
@@ -7359,7 +7091,8 @@ Release: April 23, 2024
 
 90 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7386,7 +7119,7 @@ Blue (1 byte): An 8-bit unsigned integer that defines the relative intensity of 
 
 Reserved (1 byte): An 8-bit unsigned integer that MUST be 0x00.
 
-2.2.2.9  DeviceIndependentBitmap Object
+##### 2.2.2.9 DeviceIndependentBitmap Object
 
 The DeviceIndependentBitmap (DIB) Object defines an image in device-independent bitmap
 (DIB) format.
@@ -7454,7 +7187,8 @@ Release: April 23, 2024
 
 91 / 213
 
-...
+
+...
 
 aData (variable)
 
@@ -7477,9 +7211,9 @@ is BI_RGB, BI_BITFIELDS, or BI_CMYK.
 
 Otherwise, the size of aData MUST be the BitmapInfoHeader Object value ImageSize.
 
-2.2.2.10
+##### 2.2.2.10 LogBrush Object
 
-LogBrush Object
+
 
 The LogBrush Object defines the style, color, and pattern of a brush. This object is used only in the
 META_CREATEBRUSHINDIRECT Record (section 2.3.4.1) to create a Brush Object (section
@@ -7545,7 +7279,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BrushStyle
+
+BrushStyle
 
 ColorRef
 
@@ -7587,9 +7322,9 @@ A value from the HatchStyle Enumeration
 (section 2.1.1.12) that specifies the orientation of
 lines used to create the hatch.
 
-2.2.2.11
+##### 2.2.2.11 LogColorSpace Object
 
-LogColorSpace Object
+
 
 The LogColorSpace Object specifies a logical color space for the playback device context, which
 can be the name of a color profile in ASCII characters.
@@ -7638,7 +7373,8 @@ Release: April 23, 2024
 
 93 / 213
 
-...
+
+...
 
 Signature (4 bytes): A 32-bit unsigned integer that specifies the signature of color space objects; it
 
@@ -7704,9 +7440,10 @@ Release: April 23, 2024
 
 94 / 213
 
-2.2.2.12
 
-LogColorSpaceW Object
+##### 2.2.2.12 LogColorSpaceW Object
+
+
 
 The LogColorSpaceW Object specifies a logical color space, which can be defined by a color
 profile file with a name consisting of Unicode 16-bit characters.
@@ -7778,7 +7515,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-color space associated with the bitmap. If the ColorSpaceType field does not specify
+
+color space associated with the bitmap. If the ColorSpaceType field does not specify
 LCS_CALIBRATED_RGB, this field MUST be ignored.
 
 GammaRed (4 bytes): A 32-bit fixed point value that defines the toned response curve for red. If
@@ -7799,9 +7537,9 @@ be ignored.
 See the LogColorSpace Object (section 2.2.2.11) for additional details concerning the interpretation
 of field values of this object.
 
-2.2.2.13
+##### 2.2.2.13 PaletteEntry Object
 
-PaletteEntry Object
+
 
 The PaletteEntry Object defines the color and usage of an entry in a palette.
 
@@ -7835,9 +7573,9 @@ Values (1 byte): An 8-bit unsigned integer that defines how the palette entry is
 Values field MUST be 0x00 or one of the values in the PaletteEntryFlag Enumeration (section
 2.1.1.22) table.
 
-2.2.2.14
+##### 2.2.2.14 PitchAndFamily Object
 
-PitchAndFamily Object
+
 
 The PitchAndFamily Object specifies the pitch and family properties of a Font Object (section
 2.2.1.2). Pitch refers to the width of the characters, and family refers to the general appearance of a
@@ -7873,9 +7611,10 @@ Release: April 23, 2024
 
 96 / 213
 
-2.2.2.15
 
-PointL Object
+##### 2.2.2.15 PointL Object
+
+
 
 The PointL Object defines the coordinates of a point.
 
@@ -7898,9 +7637,9 @@ x (4 bytes): A 32-bit signed integer that defines the horizontal (x) coordinate 
 
 y (4 bytes): A 32-bit signed integer that defines the vertical (y) coordinate of the point.
 
-2.2.2.16
+##### 2.2.2.16 PointS Object
 
-PointS Object
+
 
 The PointS Object defines the x- and y-coordinates of a point.
 
@@ -7923,9 +7662,9 @@ x (2 bytes): A 16-bit signed integer that defines the horizontal (x) coordinate 
 
 y (2 bytes): A 16-bit signed integer that defines the vertical (y) coordinate of the point.
 
-2.2.2.17
+##### 2.2.2.17 PolyPolygon Object
 
-PolyPolygon Object
+
 
 The PolyPolygon Object defines a series of closed polygons.
 
@@ -7969,9 +7708,10 @@ Release: April 23, 2024
 
 97 / 213
 
-2.2.2.18
 
-Rect Object
+##### 2.2.2.18 Rect Object
+
+
 
 The Rect Object defines a rectangle.
 
@@ -8010,9 +7750,9 @@ Bottom (2 bytes): A 16-bit signed integer that defines the y-coordinate, in logi
 
 lower-right corner of the rectangle.
 
-2.2.2.19
+##### 2.2.2.19 RectL Object
 
-RectL Object
+
 
 The RectL Object defines a rectangle.
 
@@ -8061,9 +7801,10 @@ Release: April 23, 2024
 
 98 / 213
 
-2.2.2.20
 
-RGBQuad Object
+##### 2.2.2.20 RGBQuad Object
+
+
 
 The RGBQuad Object defines the pixel color values in an uncompressed DIB Object (section
 2.2.2.9).
@@ -8095,9 +7836,9 @@ Red (1 byte): An 8-bit unsigned integer that defines the relative intensity of r
 
 Reserved (1 byte): An 8-bit unsigned integer that MUST be 0x00.
 
-2.2.2.21
+##### 2.2.2.21 Scan Object
 
-Scan Object
+
 
 The Scan Object specifies a collection of scanlines.
 
@@ -8173,13 +7914,14 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Count2 (2 bytes): A 16-bit unsigned integer that MUST be the same as the value of the Count field;
+
+Count2 (2 bytes): A 16-bit unsigned integer that MUST be the same as the value of the Count field;
 
 it is present to allow upward travel in the structure.
 
-2.2.2.22
+##### 2.2.2.22 SizeL Object
 
-SizeL Object
+
 
 The SizeL Object defines the x- and y-extents of a rectangle.
 
@@ -8202,7 +7944,7 @@ cx (4 bytes): A 32-bit unsigned integer that defines the x-coordinate of the poi
 
 cy (4 bytes): A 32-bit unsigned integer that defines the y-coordinate of the point.
 
-2.3  WMF Records
+### 2.3 WMF Records
 
 This section specifies the WMF Records, which can be grouped into the following general categories.
 
@@ -8242,9 +7984,9 @@ Specify and manage the graphics configuration.
 
 Escape record types
 
-2.3.6
+#### 2.3.6 Specify extensions to functionality that are not directly available through
 
-Specify extensions to functionality that are not directly available through
+
 other records defined in the WMF RecordType Enumeration (section
 2.1.1.1).
 
@@ -8272,7 +8014,8 @@ Release: April 23, 2024
 
 100 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -8376,7 +8119,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RecordSize: A 32-bit unsigned integer that defines the number of 16-bit WORD structures, defined
+
+RecordSize: A 32-bit unsigned integer that defines the number of 16-bit WORD structures, defined
 
 in [MS-DTYP] section 2.2.61, in the record.
 
@@ -8460,7 +8204,8 @@ Release: April 23, 2024
 
 102 / 213
 
-Width
+
+Width
 
 XDest
 
@@ -8537,7 +8282,8 @@ Release: April 23, 2024
 
 103 / 213
 
-Reserved (2 bytes): This field MUST be ignored.
+
+Reserved (2 bytes): This field MUST be ignored.
 
 If the raster operation specified in this record requires a source, the processing of this record fails.
 
@@ -8608,7 +8354,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -8699,7 +8446,8 @@ Release: April 23, 2024
 
 105 / 213
 
-YDest
+
+YDest
 
 XDest
 
@@ -8767,7 +8515,8 @@ Release: April 23, 2024
 
 106 / 213
 
-DestWidth: A 16-bit signed integer that defines the width, in logical units, of the destination
+
+DestWidth: A 16-bit signed integer that defines the width, in logical units, of the destination
 
 rectangle.
 
@@ -8848,7 +8597,8 @@ Release: April 23, 2024
 
 107 / 213
 
-Target (variable): A variable-sized DeviceIndependentBitmap Object (section 2.2.2.9) that
+
+Target (variable): A variable-sized DeviceIndependentBitmap Object (section 2.2.2.9) that
 defines image content. This object MUST be specified, even if the raster operation does not
 require a source.
 
@@ -8936,7 +8686,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RecordFunction
+
+RecordFunction
 
 ScanCount
 
@@ -9020,7 +8771,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  A PNG image [W3C-PNG].<51>
+
+  A PNG image [W3C-PNG].<51>
 
 See section 2.3.1 for the specification of additional bitmap records.
 
@@ -9094,7 +8846,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.1 for the specification of additional bitmap records.
+
+See section 2.3.1 for the specification of additional bitmap records.
 
 2.3.1.5.1 With Bitmap
 
@@ -9181,7 +8934,8 @@ Release: April 23, 2024
 
 111 / 213
 
-RecordFunction
+
+RecordFunction
 
 RasterOperation
 
@@ -9269,7 +9023,8 @@ Release: April 23, 2024
 
 112 / 213
 
-DIB (variable)
+
+DIB (variable)
 
 ...
 
@@ -9347,7 +9102,8 @@ Release: April 23, 2024
 
 113 / 213
 
-See section 2.3.1 for the specification of additional bitmap records.
+
+See section 2.3.1 for the specification of additional bitmap records.
 
 2.3.2  Control Record Types
 
@@ -9446,7 +9202,8 @@ Release: April 23, 2024
 
 114 / 213
 
-Type (2 bytes): A 16-bit unsigned integer that defines the type of metafile. It MUST be a value in the
+
+Type (2 bytes): A 16-bit unsigned integer that defines the type of metafile. It MUST be a value in the
 
 MetafileType Enumeration (section 2.1.1.18).
 
@@ -9531,7 +9288,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BoundingBox (8 bytes): The rectangle in the playback context (or simply the destination rectangle),
+
+BoundingBox (8 bytes): The rectangle in the playback context (or simply the destination rectangle),
 measured in logical units, for displaying the metafile. The size of a logical unit is specified by the
 Inch field. See section 2.2.2.18 for details about the structure of the BoundingBox field.
 
@@ -9649,7 +9407,8 @@ Release: April 23, 2024
 
 116 / 213
 
-Name
+
+Name
 
 Section  Description
 
@@ -9751,7 +9510,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BottomRect (2 bytes): A 16-bit signed integer that defines the y-coordinate, in logical units, of the
+
+BottomRect (2 bytes): A 16-bit signed integer that defines the y-coordinate, in logical units, of the
 
 lower-right corner of the bounding rectangle.
 
@@ -9841,7 +9601,8 @@ Release: April 23, 2024
 
 118 / 213
 
-RightRect (2 bytes): A 16-bit signed integer that defines the x-coordinate, in logical units, of the
+
+RightRect (2 bytes): A 16-bit signed integer that defines the x-coordinate, in logical units, of the
 
 lower-right corner of the bounding rectangle.
 
@@ -9922,7 +9683,8 @@ Release: April 23, 2024
 
 119 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10014,7 +9776,8 @@ Release: April 23, 2024
 
 120 / 213
 
-Dx (variable)
+
+Dx (variable)
 
 ...
 
@@ -10092,7 +9855,8 @@ Release: April 23, 2024
 
 121 / 213
 
-CharSet
+
+CharSet
 
 CodePage ID
 
@@ -10177,7 +9941,8 @@ Release: April 23, 2024
 
 122 / 213
 
-RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
+
+RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
 
 defined in [MS-DTYP] section 2.2.61, in the WMF record.
 
@@ -10258,7 +10023,8 @@ Release: April 23, 2024
 
 123 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10351,7 +10117,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.3 for the specification of other Drawing Records.
+
+See section 2.3.3 for the specification of other Drawing Records.
 
 2.3.3.10
 
@@ -10443,7 +10210,8 @@ Release: April 23, 2024
 
 125 / 213
 
-See section 2.3.3 for the specification of other Drawing Records.
+
+See section 2.3.3 for the specification of other Drawing Records.
 
 2.3.3.12
 
@@ -10535,7 +10303,8 @@ Release: April 23, 2024
 
 126 / 213
 
-RecordFunction
+
+RecordFunction
 
 XRadial2
 
@@ -10626,7 +10395,8 @@ Release: April 23, 2024
 
 127 / 213
 
-aPoints (variable)
+
+aPoints (variable)
 
 ...
 
@@ -10710,7 +10480,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10804,7 +10575,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.3 for the specification of other Drawing Records.
+
+See section 2.3.3 for the specification of other Drawing Records.
 
 2.3.3.18
 
@@ -10900,7 +10672,8 @@ Release: April 23, 2024
 
 130 / 213
 
-RecordFunction
+
+RecordFunction
 
 ...
 
@@ -10985,7 +10758,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-StringLength specifies the length of the string. The string is written at the location specified by
+
+StringLength specifies the length of the string. The string is written at the location specified by
 the XStart and YStart fields. See section 2.3.3.5 for information about the encoding of the field.
 
 YStart (2 bytes): A 16-bit signed integer that defines the vertical (y-axis) coordinate, in logical units,
@@ -11103,7 +10877,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3.4.1  META_CREATEBRUSHINDIRECT Record
+
+2.3.4.1  META_CREATEBRUSHINDIRECT Record
 
 The META_CREATEBRUSHINDIRECT Record creates a Brush Object (section 2.2.1.11) from a
 LogBrush Object (section 2.2.2.10).
@@ -11200,7 +10975,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
 
@@ -11284,7 +11060,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 Reserved (18 bytes)
 
@@ -11362,7 +11139,8 @@ Release: April 23, 2024
 
 135 / 213
 
-2.3.4.5  META_CREATEPENINDIRECT Record
+
+2.3.4.5  META_CREATEPENINDIRECT Record
 
 The META_CREATEPENINDIRECT Record creates a Pen Object (section 2.2.1.4).
 
@@ -11447,7 +11225,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Region Object (section 2.2.1.5). After the object is deleted, its index in the WMF Object Table
+
+Region Object (section 2.2.1.5). After the object is deleted, its index in the WMF Object Table
 (section 3.1.4.1) is no longer valid but is available to be reused.
 
 0  1  2  3  4  5  6  7  8  9
@@ -11535,7 +11314,8 @@ Release: April 23, 2024
 
 137 / 213
 
-If the Style field specifies BS_PATTERN, a ColorUsage value of DIB_RGB_COLORS MUST be used
+
+If the Style field specifies BS_PATTERN, a ColorUsage value of DIB_RGB_COLORS MUST be used
 regardless of the contents of this field.
 
 If the Style field specified anything but BS_PATTERN, this field MUST be one of the values in the
@@ -11642,7 +11422,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.4 for the specification of other Object Records.
+
+See section 2.3.4 for the specification of other Object Records.
 
 2.3.4.10
 
@@ -11732,7 +11513,8 @@ Release: April 23, 2024
 
 139 / 213
 
-The WMF Object Table refers to an indexed table of WMF Objects (section 2.2) that are defined in
+
+The WMF Object Table refers to an indexed table of WMF Objects (section 2.2) that are defined in
 the metafile. See section 3.1.4.1 for more information.
 
 See section 2.3.4 for the specification of other Object Records.
@@ -11858,7 +11640,8 @@ Release: April 23, 2024
 
 140 / 213
 
-Name
+
+Name
 
 Section  Description
 
@@ -11973,7 +11756,8 @@ Release: April 23, 2024
 
 141 / 213
 
-RecordFunction (2 bytes): A 16-bit unsigned integer that defines this WMF record type. The lower
+
+RecordFunction (2 bytes): A 16-bit unsigned integer that defines this WMF record type. The lower
 byte MUST match the lower byte of the RecordType Enumeration (section 2.1.1.1) table value
 META_ANIMATEPALETTE.
 
@@ -12054,7 +11838,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12146,7 +11931,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.5 for the specification of other State Record Types.
+
+See section 2.3.5 for the specification of other State Record Types.
 
 2.3.5.5  META_OFFSETCLIPRGN Record
 
@@ -12233,7 +12019,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.5 for the specification of other State Record Types.
+
+See section 2.3.5 for the specification of other State Record Types.
 
 2.3.5.7  META_OFFSETWINDOWORG Record
 
@@ -12315,7 +12102,8 @@ Release: April 23, 2024
 
 145 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12413,7 +12201,8 @@ Release: April 23, 2024
 
 146 / 213
 
-RecordFunction
+
+RecordFunction
 
 RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
 
@@ -12499,7 +12288,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12593,7 +12383,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3.5.15
+
+2.3.5.15
 
 META_SETBKMODE Record
 
@@ -12685,7 +12476,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3.5.17
+
+2.3.5.17
 
 META_SETMAPMODE Record
 
@@ -12778,7 +12570,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12865,7 +12658,8 @@ Release: April 23, 2024
 
 151 / 213
 
-2.3.5.21
+
+2.3.5.21
 
 META_SETRELABS Record
 
@@ -12953,7 +12747,8 @@ Release: April 23, 2024
 
 152 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -13038,7 +12833,8 @@ Release: April 23, 2024
 
 153 / 213
 
-2.3.5.25
+
+2.3.5.25
 
 META_SETTEXTCHAREXTRA Record
 
@@ -13131,7 +12927,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -13217,7 +13014,8 @@ Release: April 23, 2024
 
 155 / 213
 
-2.3.5.29
+
+2.3.5.29
 
 META_SETVIEWPORTORG Record
 
@@ -13304,7 +13102,8 @@ Release: April 23, 2024
 
 156 / 213
 
-2.3.5.31
+
+2.3.5.31
 
 META_SETWINDOWORG Record
 
@@ -13405,11 +13204,11 @@ Downloads sets of PostScript procedures.
 
 DRAWPATTERNRECT
 
-2.3.6.10  Draws a rectangle with a defined pattern.
+##### 2.3.6.10 Draws a rectangle with a defined pattern.
 
 ENCAPSULATED_POSTSCRIPT
 
-2.3.6.11  Sends arbitrary encapsulated PostScript (EPS) data
+##### 2.3.6.11 Sends arbitrary encapsulated PostScript (EPS) data
 
 END_PATH
 
@@ -13417,9 +13216,9 @@ ENDDOC
 
 directly to the printer driver.
 
-2.3.6.12  Ends a path.
+##### 2.3.6.12 Ends a path.
 
-2.3.6.13  Notifies the printer driver that a new print job is ending.
+##### 2.3.6.13 Notifies the printer driver that a new print job is ending.
 
 157 / 213
 
@@ -13428,7 +13227,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 EPSPRINTING
 
@@ -13440,59 +13240,59 @@ Section  Description
 
 Indicates the start and end of EPS printing.
 
-2.3.6.15  Draws text using the currently selected font, background
+##### 2.3.6.15 Draws text using the currently selected font, background
 
 color, and text color.
 
 GETCOLORTABLE
 
-2.3.6.16  Gets color table values from the printer driver.
+##### 2.3.6.16 Gets color table values from the printer driver.
 
 GETDEVICEUNITS
 
-2.3.6.17  Gets the device units currently configured on the output
+##### 2.3.6.17 Gets the device units currently configured on the output
 
 device.
 
 GETEXTENDEDTEXTMETRICS
 
-2.3.6.18  Gets the extended text metrics that are currently configured
+##### 2.3.6.18 Gets the extended text metrics that are currently configured
 
 on the printer driver.
 
 GETFACENAME
 
-2.3.6.19  Gets the font face name currently configured on the output
+##### 2.3.6.19 Gets the font face name currently configured on the output
 
 device.
 
 GETPAIRKERNTABLE
 
-2.3.6.20  Gets the font kern table currently defined on the output
+##### 2.3.6.20 Gets the font kern table currently defined on the output
 
 device.
 
 GETPHYSPAGESIZE
 
-2.3.6.21  Retrieves the physical page size currently selected on the
+##### 2.3.6.21 Retrieves the physical page size currently selected on the
 
 output device.
 
 GETPRINTINGOFFSET
 
-2.3.6.22  Retrieves the offset from the upper-left corner of the
+##### 2.3.6.22 Retrieves the offset from the upper-left corner of the
 
 physical page where the actual printing or drawing begins.
 
 GET_PS_FEATURESETTING
 
-2.3.6.23  Queries the printer driver for information about PostScript
+##### 2.3.6.23 Queries the printer driver for information about PostScript
 
 features supported on the output device.
 
 GETSCALINGFACTOR
 
-2.3.6.24  Retrieves the scaling factors for the x-axis and the y-axis of
+##### 2.3.6.24 Retrieves the scaling factors for the x-axis and the y-axis of
 
 a printer.
 
@@ -13500,39 +13300,39 @@ META_ESCAPE_ENHANCED_METAFILE  2.3.6.25  Used to embed an EMF metafile within a 
 
 METAFILE_DRIVER
 
-2.3.6.26  Queries the printer driver about its support for metafiles on
+##### 2.3.6.26 Queries the printer driver about its support for metafiles on
 
 the output device.
 
 NEWFRAME
 
-2.3.6.27  Notifies the printer driver that the application has finished
+##### 2.3.6.27 Notifies the printer driver that the application has finished
 
 writing to a page.
 
 NEXTBAND
 
-2.3.6.28  Notifies the printer driver that the application has finished
+##### 2.3.6.28 Notifies the printer driver that the application has finished
 
 writing to a band.
 
 PASSTHROUGH
 
-2.3.6.29  Passes through arbitrary data to the printer driver.
+##### 2.3.6.29 Passes through arbitrary data to the printer driver.
 
 POSTSCRIPT_DATA
 
-2.3.6.30  Sends arbitrary PostScript data to the output device.
+##### 2.3.6.30 Sends arbitrary PostScript data to the output device.
 
 POSTSCRIPT_IDENTIFY
 
-2.3.6.31  Sets the printer driver to either PostScript-centric or GDI-
+##### 2.3.6.31 Sets the printer driver to either PostScript-centric or GDI-
 
 centric mode.
 
 POSTSCRIPT_IGNORE
 
-2.3.6.32  Notifies the output device to ignore PostScript data.
+##### 2.3.6.32 Notifies the output device to ignore PostScript data.
 
 POSTSCRIPT_INJECTION
 
@@ -13542,25 +13342,25 @@ Inserts a block of raw data into a PostScript stream.
 
 POSTSCRIPT_PASSTHROUGH
 
-2.3.6.34  Sends arbitrary data directly to a printer driver, which is
+##### 2.3.6.34 Sends arbitrary data directly to a printer driver, which is
 
 expected to process this data only when in PostScript mode.
 
 OPENCHANNEL
 
-2.3.6.35  Acts the same as STARTDOC, with a NULL document and
+##### 2.3.6.35 Acts the same as STARTDOC, with a NULL document and
 
 output filename, and data in raw mode.
 
 QUERYDIBSUPPORT
 
-2.3.6.36  Queries the printer driver about its support for DIBs on the
+##### 2.3.6.36 Queries the printer driver about its support for DIBs on the
 
 output device.
 
 QUERYESCSUPPORT
 
-2.3.6.37  Queries the printer driver to determine whether a specific
+##### 2.3.6.37 Queries the printer driver to determine whether a specific
 
 158 / 213
 
@@ -13569,7 +13369,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Section  Description
 
@@ -13577,39 +13378,39 @@ WMF escape function is supported on the output device.
 
 SETCOLORTABLE
 
-2.3.6.38  Sets color table values.
+##### 2.3.6.38 Sets color table values.
 
 SETCOPYCOUNT
 
-2.3.6.39  Sets the number of copies.
+##### 2.3.6.39 Sets the number of copies.
 
 SETLINECAP
 
-2.3.6.40  Specifies the line-ending mode to use in drawing to the
+##### 2.3.6.40 Specifies the line-ending mode to use in drawing to the
 
 output device.
 
 SETLINEJOIN
 
-2.3.6.41  Specifies the line-joining mode to use in drawing to the
+##### 2.3.6.41 Specifies the line-joining mode to use in drawing to the
 
 output device.
 
 SETMITERLIMIT
 
-2.3.6.42  Sets the limit for the length of miter joins to use in drawing
+##### 2.3.6.42 Sets the limit for the length of miter joins to use in drawing
 
 to the output device.
 
 SPCLPASSTHROUGH2
 
-2.3.6.43  Enables documents to include private procedures and other
+##### 2.3.6.43 Enables documents to include private procedures and other
 
 arbitrary data in documents.
 
 STARTDOC
 
-2.3.6.44  Notifies the printer driver that a new print job is starting.
+##### 2.3.6.44 Notifies the printer driver that a new print job is starting.
 
 2.3.6.1  META_ESCAPE Record
 
@@ -13669,7 +13470,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.6 for the specification of other Escape Record Types.
+
+See section 2.3.6 for the specification of other Escape Record Types.
 
 2.3.6.2  ABORTDOC Record
 
@@ -13756,7 +13558,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.6 for the specification of other Escape Record Types.
+
+See section 2.3.6 for the specification of other Escape Record Types.
 
 2.3.6.4  CHECKJPEGFORMAT Record
 
@@ -13844,7 +13647,8 @@ Release: April 23, 2024
 
 161 / 213
 
-RecordFunction (2 bytes): A 16-bit unsigned integer that defines this record type. The lower byte
+
+RecordFunction (2 bytes): A 16-bit unsigned integer that defines this record type. The lower byte
 MUST match the lower byte of the RecordType Enumeration (section 2.1.1.1) table value
 META_ESCAPE.
 
@@ -13934,7 +13738,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3.6.7  CLOSECHANNEL Record
+
+2.3.6.7  CLOSECHANNEL Record
 
 The CLOSECHANNEL Record notifies the printer driver that the current print job is ending. This is
 the same function as the ENDDOC Record (section 2.3.6.13). A CLOSECHANNEL MUST be preceded
@@ -14021,7 +13826,8 @@ Release: April 23, 2024
 
 163 / 213
 
-See section 2.3.6 for the specification of other Escape Record Types.
+
+See section 2.3.6 for the specification of other Escape Record Types.
 
 2.3.6.9  DOWNLOADHEADER Record
 
@@ -14111,7 +13917,8 @@ Release: April 23, 2024
 
 164 / 213
 
-RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
+
+RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
 
 defined in [MS-DTYP] section 2.2.61, in the record.
 
@@ -14198,7 +14005,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EscapeFunction (2 bytes): A 16-bit unsigned integer that defines the escape function. The value
+
+EscapeFunction (2 bytes): A 16-bit unsigned integer that defines the escape function. The value
 MUST be 0x1014 (ENCAPSULATED_POSTSCRIPT) from the MetafileEscapes Enumeration
 (section 2.1.1.17).
 
@@ -14290,7 +14098,8 @@ Release: April 23, 2024
 
 166 / 213
 
-ByteCount
+
+ByteCount
 
 RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
 
@@ -14378,7 +14187,8 @@ Release: April 23, 2024
 
 167 / 213
 
-2.3.6.15
+
+2.3.6.15
 
 EXTTEXTOUT Record
 
@@ -14470,7 +14280,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ByteCount (2 bytes): A 16-bit unsigned integer that specifies the size, in bytes, of the record data
+
+ByteCount (2 bytes): A 16-bit unsigned integer that specifies the size, in bytes, of the record data
 
 that follows.
 
@@ -14558,7 +14369,8 @@ Release: April 23, 2024
 
 169 / 213
 
-2.3.6.18
+
+2.3.6.18
 
 GETEXTENDEDTEXTMETRICS Record
 
@@ -14648,7 +14460,8 @@ Release: April 23, 2024
 
 170 / 213
 
-2.3.6.20
+
+2.3.6.20
 
 GETPAIRKERNTABLE Record
 
@@ -14737,7 +14550,8 @@ Release: April 23, 2024
 
 171 / 213
 
-2.3.6.22
+
+2.3.6.22
 
 GETPRINTINGOFFSET Record
 
@@ -14828,7 +14642,8 @@ Release: April 23, 2024
 
 172 / 213
 
-ByteCount (2 bytes): A 16-bit unsigned integer that specifies the size, in bytes, of the Feature
+
+ByteCount (2 bytes): A 16-bit unsigned integer that specifies the size, in bytes, of the Feature
 
 field. This MUST be 0x0004.
 
@@ -14924,7 +14739,8 @@ Release: April 23, 2024
 
 173 / 213
 
-...
+
+...
 
 Checksum
 
@@ -14999,7 +14815,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EnhancedMetafileDataSize (4 bytes): A 32-bit unsigned integer that specifies the total size of the
+
+EnhancedMetafileDataSize (4 bytes): A 32-bit unsigned integer that specifies the total size of the
 EMF stream embedded in this sequence of META_ESCAPE_ENHANCED_METAFILE records.
 
 EnhancedMetafileData (variable): A segment of an EMF file. The bytes in consecutive
@@ -15087,7 +14904,8 @@ Release: April 23, 2024
 
 175 / 213
 
-RecordFunction (2 bytes): A 16-bit unsigned integer that defines this record type. The lower byte
+
+RecordFunction (2 bytes): A 16-bit unsigned integer that defines this record type. The lower byte
 MUST match the lower byte of the RecordType Enumeration (section 2.1.1.1) table value
 META_ESCAPE.
 
@@ -15178,7 +14996,8 @@ Release: April 23, 2024
 
 176 / 213
 
-RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
+
+RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
 
 defined in [MS-DTYP] section 2.2.61, in the record.
 
@@ -15257,7 +15076,8 @@ Release: April 23, 2024
 
 177 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15346,7 +15166,8 @@ Release: April 23, 2024
 
 178 / 213
 
-See section 2.3.6 for the specification of other Escape Record Types.
+
+See section 2.3.6 for the specification of other Escape Record Types.
 
 2.3.6.33
 
@@ -15437,7 +15258,8 @@ Release: April 23, 2024
 
 179 / 213
 
-RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
+
+RecordSize (4 bytes): A 32-bit unsigned integer that defines the number of WORD structures,
 
 defined in [MS-DTYP] section 2.2.61, in the record.
 
@@ -15525,7 +15347,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RecordFunction
+
+RecordFunction
 
 EscapeFunction
 
@@ -15610,7 +15433,8 @@ Release: April 23, 2024
 
 181 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15705,7 +15529,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.6 for the specification of other Escape Record Types.
+
+See section 2.3.6 for the specification of other Escape Record Types.
 
 2.3.6.40
 
@@ -15797,7 +15622,8 @@ Release: April 23, 2024
 
 183 / 213
 
-RecordFunction (2 bytes): A 16-bit unsigned integer that defines this record type. The lower byte
+
+RecordFunction (2 bytes): A 16-bit unsigned integer that defines this record type. The lower byte
 MUST match the lower byte of the RecordType Enumeration (section 2.1.1.1) table value
 META_ESCAPE.
 
@@ -15878,7 +15704,8 @@ Release: April 23, 2024
 
 184 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15973,7 +15800,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RecordFunction (2 bytes): A 16-bit unsigned integer that defines this record type. The lower byte
+
+RecordFunction (2 bytes): A 16-bit unsigned integer that defines this record type. The lower byte
 MUST match the lower byte of the RecordType Enumeration (section 2.1.1.1) table value
 META_ESCAPE.
 
@@ -15997,11 +15825,12 @@ Release: April 23, 2024
 
 186 / 213
 
-3  Structure Examples
 
-3.1  Metafile Design
+## 3 Structure Examples
 
-3.1.1  Device Independence
+### 3.1 Metafile Design
+
+#### 3.1.1 Device Independence
 
 WMF metafiles are useful for transferring images between applications. Most applications support the
 clipboard format associated with metafiles, called METAFILEPICT (for more information, see
@@ -16038,7 +15867,7 @@ META_BITBLT (section 2.3.1.1).
 
 Terminate the metafile with a META_EOF Record (section 2.3.2.1) (0x0000).
 
-3.1.2  Byte Ordering Example
+#### 3.1.2 Byte Ordering Example
 
 The following code snippet illustrates how the use of the big-endian and little-endian methods can
 affect the compatibility of applications.
@@ -16067,7 +15896,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-% ./test
+
+% ./test
 
  First Integer in file.in = 12345678
  %
@@ -16086,7 +15916,7 @@ read integers from a file based on the endian method that the output computer us
 Because metafiles were developed and written with little-endian computers, computers that are big-
 endian based will have to perform this necessary compensation.
 
-3.1.3  Mapping Modes
+#### 3.1.3 Mapping Modes
 
 When an application pastes a WMF metafile from a clipboard, the application can determine the size
 of metafile output. For this to work cleanly between applications, be aware of the following:
@@ -16136,9 +15966,10 @@ Release: April 23, 2024
 
 188 / 213
 
-3.1.4  Managing Objects
 
-3.1.4.1  WMF Object Table
+#### 3.1.4 Managing Objects
+
+##### 3.1.4.1 WMF Object Table
 
 The WMF Object Table is a conceptual element of WMF graphics objects management. Graphics
 Objects (section 2.2.1) include Brush Objects (section 2.2.1.1), Font Objects (section 2.2.1.2),
@@ -16194,7 +16025,7 @@ Note  This specification does not mandate that implementations adhere to the imp
 WMF Object Table presented in this section, as long as the implementation of external behavior is
 compatible with the behavior described in this specification.
 
-3.1.4.2  Object Scaling
+##### 3.1.4.2 Object Scaling
 
 A metafile that is created by an application and then passed to another application is likely to be
 scaled. Scaling can alter the desired image in a way that was not anticipated by the originating
@@ -16211,7 +16042,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-x but not in y, the pen width does scale. Thus, using a pen of width 1 in a metafile results in a pen
+
+x but not in y, the pen width does scale. Thus, using a pen of width 1 in a metafile results in a pen
 that is wider (thick and slow) when the metafile is scaled. If a nominal width pen (width of 1 at all
 times) is wanted, use 0 as the width because it is not affected by mapping modes. A 0-width pen is
 drawn as having a width of 1.
@@ -16235,7 +16067,7 @@ independently in x and y. Scaling a font's width is also possible; unfortunately
 is scaled, the look of the typeface changes in ways not necessarily intended by the designers, and a
 typographically "incorrect" typeface results.
 
-3.1.5  Playback Device Context
+#### 3.1.5 Playback Device Context
 
 The playback device context is an abstract data structure that defines the state of graphics at any
 point in time during playback of a WMF metafile. The graphics state includes:
@@ -16309,7 +16141,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Graphics
+
+Graphics
 object
 
 Font
@@ -16512,7 +16345,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Structure
+
+Structure
 object
 
 origin
@@ -16673,7 +16507,8 @@ Release: April 23, 2024
 
 192 / 213
 
-3.1.6  Run-Length Encoding (RLE) Compression
+
+#### 3.1.6 Run-Length Encoding (RLE) Compression
 
  In general, run-length encoding (RLE) compression makes it possible to specify an arbitrary
 number of identical values without a proportional increase in storage requirements. The compressed
@@ -16684,7 +16519,7 @@ Metafile records can contain bitmaps that are compressed with an enhanced RLE co
 algorithm. Compression of bitmaps that are defined with 4 and 8 bits per pixel are described in the
 sections which follow.
 
-3.1.6.1  Bitmaps with 4 Bits per Pixel
+##### 3.1.6.1 Bitmaps with 4 Bits per Pixel
 
 When the Compression field of a BitmapInfoHeader Object (section 2.2.2.3) is BI_RLE4, an RLE
 compression algorithm is used to compress a 4-bit bitmap. This format specifies encoded and
@@ -16747,7 +16582,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  04 78: Encoded mode, specifying 4 pixels with the values 0x7, 0x8, 0x7, and 0x8.
+
+  04 78: Encoded mode, specifying 4 pixels with the values 0x7, 0x8, 0x7, and 0x8.
 
   00 02 05 01: Encoded mode, specifying a new relative position 5 pixels to the right and one line
 
@@ -16771,7 +16607,7 @@ specified are 0x00 by default. The resulting expended bitmap would be as follows
   1E 1E 1E 1E 10 00 00 00 00 00 00 00 00 00 00 00
   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
-3.1.6.2  Bitmaps with 8 Bits per Pixel
+##### 3.1.6.2 Bitmaps with 8 Bits per Pixel
 
 When the Compression field of a BitmapInfoHeader Object (section 2.2.2.3) is BI_RLE8, an RLE
 compression algorithm is used to compress an 8-bit bitmap. This format specifies encoded and
@@ -16822,7 +16658,8 @@ Release: April 23, 2024
 
 194 / 213
 
-<!-- Extracted images from page 195 -->
+
+<!-- Extracted images from page 195 -->
 ![Extracted image 1 from page 195]([MS-WMF].images/page195-img01.png)
 <!-- /Extracted images from page 195 -->
 
@@ -16858,7 +16695,7 @@ specified are 0x00 by default. The resulting expended bitmap would be as follows
   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00
 
-3.2  WMF Metafile Example
+### 3.2 WMF Metafile Example
 
 This section provides an example of a metafile which, when processed, renders the following image.
 
@@ -16882,7 +16719,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000050: 00 00 21 05 0C 00 48 65 6C 6C 6F 20 50 65 6F 70 ..!...Hello Peop
+
+ 00000050: 00 00 21 05 0C 00 48 65 6C 6C 6F 20 50 65 6F 70 ..!...Hello Peop
  00000060: 6C 65 0A 00 0A 00 03 00 00 00 00 00             le..........
 
 Note  When a WMF metafile is processed, the order in which graphics are rendered corresponds to
@@ -16896,7 +16734,7 @@ The sections that follow provide definitions of the WMF header and records that 
 metafile. The WMF Object Table (section 3.1.4.1) refers to an indexed table of WMF Objects
 (section 2.2) that are defined in the metafile.
 
-3.2.1  META_HEADER Example
+#### 3.2.1 META_HEADER Example
 
 This section provides an example of a META_HEADER Record (section 2.3.2.2), which is always the
 first record in the metafile.
@@ -16964,10 +16802,11 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note  Based on the value of the NumberOfObjects field, a WMF Object Table (section 3.1.4.1) can
+
+Note  Based on the value of the NumberOfObjects field, a WMF Object Table (section 3.1.4.1) can
 be created that is large enough for 2 objects.
 
-3.2.2  META_CREATEPENINDIRECT Example
+#### 3.2.2 META_CREATEPENINDIRECT Example
 
 This section provides an example of a META_CREATEPENDIRECT Record (section 2.3.4.5).
 
@@ -17060,7 +16899,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17090,7 +16930,7 @@ Red (1 byte): 0x00 specifies no red.
 Note  The Pen Object created by processing this record is assigned index 0 in the WMF Object
 Table (section 3.1.4.1).
 
-3.2.3  META_SELECTOBJECT Example 1
+#### 3.2.3 META_SELECTOBJECT Example 1
 
 This section provides an example of a META_SELECTOBJECT Record (section 2.3.4.10).
 
@@ -17125,7 +16965,7 @@ ObjectIndex (2 bytes): 0x0000 specifies the index in the WMF Object Table (secti
 the object being selected, which is the Pen Object (section 2.2.1.4) created in the previous
 record.
 
-3.2.4  META_CREATEBRUSHINDIRECT Example
+#### 3.2.4 META_CREATEBRUSHINDIRECT Example
 
 This section provides an example of a META_CREATEBRUSHINDIRECT Record (section 2.3.4.1).
 
@@ -17156,7 +16996,8 @@ Release: April 23, 2024
 
 198 / 213
 
-...
+
+...
 
 ...
 
@@ -17233,7 +17074,7 @@ BrushHatch (2 bytes): 0x0004 specifies the hatch style from the HatchStyle Enume
 Note  The Brush Object created by processing this record is assigned index 1 in the WMF Object
 Table (section 3.1.4.1).
 
-3.2.5  META_SELECTOBJECT Example 2
+#### 3.2.5 META_SELECTOBJECT Example 2
 
 This section provides an example of a META_SELECTOBJECT Record (section 2.3.4.10).
 
@@ -17246,7 +17087,8 @@ Release: April 23, 2024
 
 199 / 213
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17276,7 +17118,7 @@ ObjectIndex (2 bytes): 0x0001 specifies the index in the WMF Object Table (secti
 the object being selected, which is the Brush Object (section 2.2.1.1) created in the previous
 record.
 
-3.2.6  META_RECTANGLE Example
+#### 3.2.6 META_RECTANGLE Example
 
 This section provides an example of a META_RECTANGLE Record (section 2.3.3.17).
 
@@ -17336,7 +17178,8 @@ Release: April 23, 2024
 
 200 / 213
 
-3.2.7  META_TEXTOUT Example
+
+#### 3.2.7 META_TEXTOUT Example
 
 This section provides an example of a META_TEXTOUT Record (section 2.3.3.20).
 
@@ -17391,7 +17234,7 @@ XStart (2 bytes): 0x000A specifies the horizontal (x-axis) coordinate, in logica
 
 where drawing is to start.
 
-3.2.8  META_EOF Example
+#### 3.2.8 META_EOF Example
 
 This section provides an example of a META_EOF Record (section 2.3.2.1), which is always the last
 record in the metafile.
@@ -17420,7 +17263,8 @@ Release: April 23, 2024
 
 201 / 213
 
-RecordSize (4 bytes): 0x00000003 specifies the number of WORD structures, defined in [MS-DTYP]
+
+RecordSize (4 bytes): 0x00000003 specifies the number of WORD structures, defined in [MS-DTYP]
 
 section 2.2.61, in this record, which is equivalent to 6 (0x00000006) bytes.
 
@@ -17435,7 +17279,8 @@ Release: April 23, 2024
 
 202 / 213
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 This file format enables third parties to send payloads (such as PostScript) to pass through as
 executable code.
@@ -17447,7 +17292,8 @@ Release: April 23, 2024
 
 203 / 213
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -17517,7 +17363,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 1.4: Windows NT 3.1, Windows NT 3.51, Windows NT Server 4.0 operating system, and
@@ -17584,7 +17431,8 @@ Release: April 23, 2024
 
 205 / 213
 
-<19> Section 2.1.1.17: Windows NT 3.1, Windows NT 3.5, Windows NT 3.51, Windows 95, Windows
+
+<19> Section 2.1.1.17: Windows NT 3.1, Windows NT 3.5, Windows NT 3.51, Windows 95, Windows
 NT 4.0, Windows 98, and Windows Millennium Edition: This functionality is not supported.
 
 <20> Section 2.1.1.17: Windows NT 3.1, Windows NT 3.5, Windows NT 3.51, Windows 95, Windows
@@ -17653,7 +17501,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<39> Section 2.1.2.3: Windows NT 3.1, Windows NT 3.5, and Windows NT 3.51: This function is not
+
+<39> Section 2.1.2.3: Windows NT 3.1, Windows NT 3.5, and Windows NT 3.51: This function is not
 supported.
 
 <40> Section 2.2.1.2: All Windows versions: mapping the logical font size to the available physical
@@ -17721,7 +17570,8 @@ Windows Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<56> Section 2.3.4.1: In the following Windows versions, a solid-color black brush is not created by
+
+<56> Section 2.3.4.1: In the following Windows versions, a solid-color black brush is not created by
 default when a BrushStyle Enumeration (section 2.1.1.4) table value of BS_PATTERN or
 BS_DIBPATTERNPT is present: Windows NT 3.1, Windows NT 3.5, Windows NT 3.51, Windows 95,
 Windows NT 4.0, Windows 98, Windows Millennium Edition, Windows 2000, Windows XP, and Windows
@@ -17769,7 +17619,8 @@ Release: April 23, 2024
 
 208 / 213
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -17813,7 +17664,8 @@ Release: April 23, 2024
 
 209 / 213
 
-7  Index
+
+## 7 Index
 A
 
 ABORTDOC packet 159
@@ -17945,7 +17797,8 @@ GET_PAIRKERNTABLE Record 170
 
 210 / 213
 
-GET_PHYSPAGESIZE packet 171
+
+GET_PHYSPAGESIZE packet 171
 GET_PHYSPAGESIZE Record 171
 GET_PRINTINGOFFSET packet 171
 GET_PRINTINGOFFSET Record 171
@@ -18084,7 +17937,8 @@ META_ROUNDRECT packet 129
 
 211 / 213
 
-META_ROUNDRECT Record 129
+
+META_ROUNDRECT Record 129
 META_SAVEDC packet 146
 META_SAVEDC Record 146
 META_SCALEVIEWPORTEXT packet 146
@@ -18225,7 +18079,8 @@ PostScriptClipping enumeration 45
 
 212 / 213
 
-PostScriptFeatureSetting enumeration 45
+
+PostScriptFeatureSetting enumeration 45
 PostScriptJoin enumeration 46
 Product behavior 203
 

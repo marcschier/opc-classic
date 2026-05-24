@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 31
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: September 16, 2024
 
 2 / 31
 
-Date
+
+Date
 
 Revision
 History
@@ -524,7 +526,8 @@ Release: September 16, 2024
 
 3 / 31
 
-Date
+
+Date
 
 Revision
 History
@@ -574,141 +577,63 @@ Release: September 16, 2024
 
 4 / 31
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+    - [2.2.2 ClientInfo Value](#222-clientinfo-value)
+    - [2.2.3 Registry Type Values](#223-registry-type-values)
+    - [2.2.4 Driver Selection Request](#224-driver-selection-request)
+    - [2.2.5 Driver Selection Response](#225-driver-selection-response)
+    - [2.2.6 Driver Download Request](#226-driver-download-request)
+    - [2.2.7 Driver Download Response](#227-driver-download-response)
+      - [2.2.7.1 BIN File Format](#2271-bin-file-format)
+        - [2.2.7.1.1 UserDevMode Structure](#22711-userdevmode-structure)
+        - [2.2.7.1.2 PrnDataRoot Structure](#22712-prndataroot-structure)
+      - [2.2.7.2 DAT File Format](#2272-dat-file-format)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Client/Server Interaction](#41-clientserver-interaction)
+  - [4.2 Client/Server Messages](#42-clientserver-messages)
+    - [4.2.1 Client](#421-client)
+    - [4.2.2 Server](#422-server)
+- [5 Security Considerations](#5-security-considerations)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Common Data Types ................................................................................... 12
-ClientInfo Value .......................................................................................... 12
-Registry Type Values ................................................................................... 13
-Driver Selection Request ............................................................................. 14
-Driver Selection Response ........................................................................... 14
-Driver Download Request ............................................................................ 14
-Driver Download Response .......................................................................... 15
-BIN File Format .................................................................................... 15
-UserDevMode Structure.................................................................... 15
-PrnDataRoot Structure ..................................................................... 16
-DAT File Format .................................................................................... 18
-
-2.2.7.1.1
-2.2.7.1.2
-
-2.2.7.1
-
-2.2.7.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 20
-Client Details ................................................................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Server Details .................................................................................................. 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4.1
-4.2
-
-4  Protocol Examples ................................................................................................. 23
-Client/Server Interaction ................................................................................... 23
-Client/Server Messages ..................................................................................... 23
-Client ........................................................................................................ 23
-Server ....................................................................................................... 23
-
-4.2.1
-4.2.2
-
-5  Security Considerations ......................................................................................... 25
-
-6  Appendix A: Product Behavior ............................................................................... 26
-
-7  Change Tracking .................................................................................................... 29
-
-5 / 31
-
-[MS-WPRN] - v20240916
-Web Point-and-Print Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-8  Index ..................................................................................................................... 30
-
-[MS-WPRN] - v20240916
-Web Point-and-Print Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 31
-
-1  Introduction
+## 1 Introduction
 
 The Web Point-and-Print Protocol provides a way for a client to download printer driver software,
 from a server in the client network, from a website, or directly by a print device. This supports the
@@ -720,7 +645,7 @@ commonly used data types defined in [MS-DTYP].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -781,7 +706,8 @@ Web Point-and-Print Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Internet Protocol version 4 (IPv4): An Internet protocol that has 32-bit source and destination
+
+Internet Protocol version 4 (IPv4): An Internet protocol that has 32-bit source and destination
 
 addresses. IPv4 is the predecessor of IPv6.
 
@@ -834,14 +760,14 @@ web server: A server computer that hosts websites and responds to requests from 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -854,7 +780,8 @@ Release: September 16, 2024
 
 8 / 31
 
-[MS-DTYP] Microsoft Corporation, "Windows Data Types".
+
+[MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
 [MS-RPRN] Microsoft Corporation, "Print System Remote Protocol".
 
@@ -878,7 +805,7 @@ editor.org/info/rfc2818
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CAB] Microsoft Corporation, "Microsoft Cabinet Format", March 1997,
 http://msdn.microsoft.com/en-us/library/bb417343.aspx
@@ -904,7 +831,7 @@ Semantics", RFC 2911, September 2000, http://www.ietf.org/rfc/rfc2911.txt
 [RFC5234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", STD
 68, RFC 5234, January 2008, https://www.rfc-editor.org/info/rfc5234
 
-1.3  Overview
+### 1.3 Overview
 
 The Web Point-and-Print Protocol provides a mechanism for clients to download printer driver
 software from a server in the client network or from a website, or directly by print devices. <1>
@@ -916,7 +843,8 @@ Release: September 16, 2024
 
 9 / 31
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-WPRN].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -931,35 +859,35 @@ redirects the client to the location of the printer driver through the Driver Se
 After a suitable printer driver has been found, the client downloads it by issuing a Driver Download
 Request (section 2.2.6). The driver is supplied in a Driver Download Response (section 2.2.7).
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Web Point-and-Print Protocol is dependent on HTTP specifications [RFC2616] and [RFC2617], and
 on TCP/IP specification [RFC793]. There are no protocols that are dependent on the Web Point-and-
 Print Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Web Point-and-Print Protocol is built on HTTP [RFC2616].
 
 Before the protocol is invoked, a client obtains both the name of a server that supports the protocol
 and the name of a printer. How a client obtains these names is not addressed in this specification.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Web Point-and-Print Protocol is applicable in environments that require distribution of printer
 driver software where other mechanisms, such as the Print System Remote Protocol [MS-RPRN], are
 not available.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Web Point-and-Print Protocol does not have versioning and does not contain locale-dependent
 information.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Web Point-and-Print Protocol does not support vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Web Point-and-Print Protocol uses the following default assignments.
 
@@ -970,7 +898,8 @@ Release: September 16, 2024
 
 10 / 31
 
-Parameter
+
+Parameter
 
 TCP/IP port for Hypertext Transfer Protocol (HTTP)
 
@@ -995,9 +924,10 @@ Release: September 16, 2024
 
 11 / 31
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Web Point-and-Print Protocol uses the following transports:
 
@@ -1005,7 +935,7 @@ The Web Point-and-Print Protocol uses the following transports:
 
   HTTPS over TCP/IP [RFC2818]
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Web Point-and-Print Protocol issues its requests from the client via Uniform Resource Locators
 (URLs) in an HTTP GET request ([RFC2616] section 9.3) and the associated query qualifier. The
@@ -1013,7 +943,7 @@ server returns a response via an HTTP response message, which returns either a L
 redirect response ([RFC2616] section 14.30) or an HTTP 500 error ([RFC2616] section 10.5.1) if the
 original HTTP GET request cannot be processed by the server.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
 Unless otherwise noted, the following statements apply to this protocol:
 
@@ -1037,7 +967,7 @@ specify the number of characters in the string, including the terminating null c
 MULTI_SZ specify the number of bytes in the buffer, including the terminating null
 characters.
 
-2.2.2  ClientInfo Value
+#### 2.2.2 ClientInfo Value
 
 There are four parameters encoded in a ClientInfo value:
 
@@ -1063,7 +993,8 @@ Release: September 16, 2024
 
 12 / 31
 
- ClientInfo = (major version) * (2^24) + (minor version) * (2^16) + (client platform) * (2^8)
+
+ ClientInfo = (major version) * (2^24) + (minor version) * (2^16) + (client platform) * (2^8)
 + (client processor architecture)
 
 The major version number of the client operating system is dependent on the platform on which the
@@ -1108,7 +1039,7 @@ AMD64 or Intel x64
 
 ARM
 
-2.2.3  Registry Type Values
+#### 2.2.3 Registry Type Values
 
 The following table specifies valid registry type values for use in the dwType field of the
 PrnDataRoot structure (section 2.2.7.1.2).
@@ -1167,7 +1098,8 @@ Web Point-and-Print Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Registry type name/value
+
+Registry type name/value
 
 Description
 
@@ -1201,7 +1133,7 @@ A 64-bit number in little-endian format; equivalent to REG_QWORD.
 
 0x0000000B
 
-2.2.4  Driver Selection Request
+#### 2.2.4 Driver Selection Request
 
 The Driver Selection Request is a standard HTTP GET request ([RFC2616] section 9.3) that sends
 the printer driver selection criteria to the server in a PrinterDriverQuery. The format of the HTTP
@@ -1234,7 +1166,7 @@ CLIENT_INFO: The environmental information on the client that is making the requ
 a ClientInfo value (section 2.2.2) and formatted as the ASCII representation of a decimal
 integer.
 
-2.2.5  Driver Selection Response
+#### 2.2.5 Driver Selection Response
 
 The Driver Selection Response is a standard HTTP redirect response, in the HTTP Location field,
 to the URL of a file that contains the software and information necessary to install the printer driver
@@ -1248,12 +1180,13 @@ Release: September 16, 2024
 
 14 / 31
 
-2.2.6  Driver Download Request
+
+#### 2.2.6 Driver Download Request
 
 The Driver Download Request is a standard HTTP GET request ([RFC2616] section 9.3) to the URL
 specified in the Location header received in the Driver Selection Response (section 2.2.5).
 
-2.2.7  Driver Download Response
+#### 2.2.7 Driver Download Response
 
 The Driver Download Response is a standard HTTP response ([RFC2616] section 6) to the driver
 download HTTP GET request (section 2.2.6). If the response return code is 200 (success), the
@@ -1275,7 +1208,7 @@ setup/configuration data.
 
 setup/configuration data.
 
-2.2.7.1  BIN File Format
+##### 2.2.7.1 BIN File Format
 
 The BIN file contains the information needed to access printer setup and configuration data. The
 format of that information is shown below. All fields are in little-endian format.
@@ -1313,7 +1246,7 @@ UserDevMode (variable): A UserDevMode structure (section 2.2.7.1.1).
 
 PrnDataRoot (variable): A PrnDataRoot structure, which is repeated cItems times in this field.
 
-2.2.7.1.1 UserDevMode Structure
+###### 2.2.7.1.1 UserDevMode Structure
 
 [MS-WPRN] - v20240916
 Web Point-and-Print Protocol
@@ -1322,7 +1255,8 @@ Release: September 16, 2024
 
 15 / 31
 
-The UserDevMode structure is used for general printer information.
+
+The UserDevMode structure is used for general printer information.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1369,7 +1303,7 @@ Data (variable): Printer device settings in a _DEVMODE structure ([MS-RPRN] sect
 
 This field MUST be padded to the next 64-bit boundary.
 
-2.2.7.1.2 PrnDataRoot Structure
+###### 2.2.7.1.2 PrnDataRoot Structure
 
 The PrnDataRoot structure describes a printer configuration value in the registry structure used by
 a printer driver that is associated with a printer. This structure is repeated for a count specified by
@@ -1391,7 +1325,8 @@ Release: September 16, 2024
 
 16 / 31
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1465,13 +1400,14 @@ Release: September 16, 2024
 
 17 / 31
 
-Data (variable): A field containing data for the printer configuration value identified by ValueName.
+
+Data (variable): A field containing data for the printer configuration value identified by ValueName.
 The data contained in this field MUST be interpreted according to the registry value type that is
 specified by the dwType field.
 
 This field MUST be padded to the next 64-bit boundary.
 
-2.2.7.2  DAT File Format
+##### 2.2.7.2 DAT File Format
 
 The DAT file contains options for installing a printer driver on the client machine. The following
 restrictions apply to DAT files:
@@ -1544,7 +1480,8 @@ Web Point-and-Print Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  White space between the switch of an option (for example, "/r") and its parameter (for
+
+  White space between the switch of an option (for example, "/r") and its parameter (for
 
 example, the PrinterPortName) MUST be accepted.
 
@@ -1596,29 +1533,30 @@ Release: September 16, 2024
 
 19 / 31
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
+
+None.
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 A client invocation is the result of local client application activity. The client application specifies the
 driver selection parameters. The syntax and semantics of these parameters are specified in section
 2.2.4. No other higher-layer triggered events are defined.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The Web Point-and-Print Protocol client is preconfigured with the URL of a Web Point-and-Print
 Protocol server. To initiate the protocol, the client sends a Driver Selection Request (section 2.2.4)
@@ -1637,11 +1575,11 @@ the HTTP response is returned to the invoking application as the printer driver 
 response is anything other than success, the client MUST return an error code to the invoking client
 application.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No additional local events are used on the client beyond the events maintained in the underlying
 HTTP.
@@ -1653,9 +1591,10 @@ Release: September 16, 2024
 
 20 / 31
 
-3.2  Server Details
 
-3.2.1  Abstract Data Model
+### 3.2 Server Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 might need to maintain to participate in this protocol. The organization described in this section is
@@ -1700,19 +1639,19 @@ Information on the printer driver manufacturer, printer driver time stamp, and v
 
 The abstract data model can relate each printer to a single printer driver ([MS-RPRN] section 3.1.1).
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server listens for HTTP and HTTPS requests.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The client initiates the Web Point-and-Print Protocol by sending a Driver Selection Request message
 (section 2.2.4) to the server. On receiving this message, the server validates parameters as follows:
@@ -1728,7 +1667,8 @@ Web Point-and-Print Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The CLIENT_INFO section of the URL is a supported ClientInfo value (section 2.2.2) value.
 
@@ -1752,11 +1692,11 @@ Processing of a Driver Download Request (section 2.2.6) follows the rules specif
 processing ([RFC2616] section 9.3). The format of the data returned in the response is specified in the
 Driver Download Response (section 2.2.7).
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 No additional local events are used on the client beyond the events maintained in the underlying
 HTTP.
@@ -1768,22 +1708,23 @@ Release: September 16, 2024
 
 22 / 31
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-WPRN].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Client/Server Interaction
+### 4.1 Client/Server Interaction
 
 The following diagram illustrates the interaction sequence to obtain a printer driver using the Web
 Point-and-Print Protocol.
 
 Figure 2: Obtaining a printer driver
 
-4.2  Client/Server Messages
+### 4.2 Client/Server Messages
 
-4.2.1  Client
+#### 4.2.1 Client
 
 The following text is a sample client Driver Selection Request (section 2.2.4), depicted in the
 Client/Server Interaction figure in section 4.1. An HTTP GET request is used for sending printer
@@ -1791,7 +1732,7 @@ driver selection criteria to the server.
 
  GET /printers/printerModelXXX/.printer?createexe&83952128
 
-4.2.2  Server
+#### 4.2.2 Server
 
 The following text is a sample server Driver Selection Response (section 2.2.5) to a client Driver
 Selection Request (section 2.2.4), as depicted in the Client/Server Interaction figure in section
@@ -1814,7 +1755,8 @@ Release: September 16, 2024
 
 23 / 31
 
- <head><title>Document Moved</title></head>
+
+ <head><title>Document Moved</title></head>
  <body><h1>Object Moved</h1>This document may be found
     <a HREF="http://1.1.1.2/printers/PrtCabs/85CCX862.webpnp">here</a>
  </body>
@@ -1827,7 +1769,8 @@ Release: September 16, 2024
 
 24 / 31
 
-5  Security Considerations
+
+## 5 Security Considerations
 
 The Web Point-and-Print Protocol does not provide any facilities for mutual authentication, so server
 identities cannot be verified.
@@ -1839,7 +1782,8 @@ Release: September 16, 2024
 
 25 / 31
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1907,7 +1851,8 @@ Web Point-and-Print Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<2> Section 2.2.2: Windows clients use one of the following major version values.
+
+<2> Section 2.2.2: Windows clients use one of the following major version values.
 
 Value   Major version
 
@@ -1979,7 +1924,8 @@ Release: September 16, 2024
 
 27 / 31
 
-Not supported on Windows 2000, Windows 2000 Server, Windows Server 2003, Windows Vista,
+
+Not supported on Windows 2000, Windows 2000 Server, Windows Server 2003, Windows Vista,
 Windows Server 2008, Windows 7, or Windows Server 2008 R2 operating system:
 
   ARM
@@ -1995,7 +1941,8 @@ Release: September 16, 2024
 
 28 / 31
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2007,7 +1954,8 @@ Release: September 16, 2024
 
 29 / 31
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2138,7 +2086,8 @@ R
 
 30 / 31
 
-References 8
+
+References 8
    informative 9
    normative 8
 REG_BINARY 13

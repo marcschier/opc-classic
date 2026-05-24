@@ -64,7 +64,8 @@ Release: March 13, 2019
 
 1 / 53
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -299,7 +300,8 @@ Release: March 13, 2019
 
 2 / 53
 
-Date
+
+Date
 
 Revision
 History
@@ -455,251 +457,104 @@ Release: March 13, 2019
 
 3 / 53
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Scenario 1: Flowing a Transaction from an Initiator to a Server Application](#131-scenario-1-flowing-a-transaction-from-an-initiator-to-a-server-application)
+    - [1.3.2 Scenario 2: Flowing a Transaction from a Client Application to a Participant](#132-scenario-2-flowing-a-transaction-from-a-client-application-to-a-participant)
+      - [1.3.2.1 Scenario 2a: Flowing a WS-AtomicTransaction CoordinationContext from a](#1321-scenario-2a-flowing-a-ws-atomictransaction-coordinationcontext-from-a)
+      - [1.3.2.2 Scenario 2b: Flowing a Transaction from a Client Application to a Participant](#1322-scenario-2b-flowing-a-transaction-from-a-client-application-to-a-participant)
+    - [1.3.3 Scenario 3: Flowing a Transaction from Client Application to a Server](#133-scenario-3-flowing-a-transaction-from-client-application-to-a-server)
+      - [1.3.3.1 Scenario 3a: Server Application Uses Pull Propagation](#1331-scenario-3a-server-application-uses-pull-propagation)
+      - [1.3.3.2 Scenario 3b: Server Application Requests Activation Using an Existing](#1332-scenario-3b-server-application-requests-activation-using-an-existing)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Protocol Versioning](#221-protocol-versioning)
+    - [2.2.2 Data Types Used When Discovering Coordinator Activation and Registration](#222-data-types-used-when-discovering-coordinator-activation-and-registration)
+      - [2.2.2.1 Enumerations](#2221-enumerations)
+        - [2.2.2.1.1 ControlProtocol](#22211-controlprotocol)
+        - [2.2.2.1.2 IsolationLevel](#22212-isolationlevel)
+      - [2.2.2.2 Structures](#2222-structures)
+        - [2.2.2.2.1 ProtocolInformationFlags](#22221-protocolinformationflags)
+        - [2.2.2.2.2 SupportedProtocolsFlags](#22222-supportedprotocolsflags)
+        - [2.2.2.2.3 VariableCharArray](#22223-variablechararray)
+        - [2.2.2.2.4 WSAT_ProtocolGuid](#22224-wsatprotocolguid)
+        - [2.2.2.2.5 ExtendedWhereabouts](#22225-extendedwhereabouts)
+      - [2.2.2.3 Coordinator Activation Service URIs](#2223-coordinator-activation-service-uris)
+        - [2.2.2.3.1 HTTPS Activation Service Version 1.0 X.509 URI](#22231-https-activation-service-version-10-x509-uri)
+        - [2.2.2.3.2 HTTPS Activation Service Version 1.1 X.509 URI](#22232-https-activation-service-version-11-x509-uri)
+        - [2.2.2.3.3 HTTPS Activation Service Version 1.0 SPNEGO URI](#22233-https-activation-service-version-10-spnego-uri)
+        - [2.2.2.3.4 HTTPS Activation Service Version 1.1 SPNEGO URI](#22234-https-activation-service-version-11-spnego-uri)
+      - [2.2.2.4 Coordinator Registration Service URIs](#2224-coordinator-registration-service-uris)
+        - [2.2.2.4.1 HTTPS Registration Service Version 1.0 X.509 URI](#22241-https-registration-service-version-10-x509-uri)
+        - [2.2.2.4.2 HTTPS Registration Service Version 1.1 X.509 URI](#22242-https-registration-service-version-11-x509-uri)
+    - [2.2.3 Data Types Used to Extend WS-AtomicTransaction](#223-data-types-used-to-extend-ws-atomictransaction)
+      - [2.2.3.1 Common Data Types](#2231-common-data-types)
+        - [2.2.3.1.1 GuidStringType Complex Type](#22311-guidstringtype-complex-type)
+        - [2.2.3.1.2 UrnUuidStringType Complex Type](#22312-urnuuidstringtype-complex-type)
+        - [2.2.3.1.3 Enlistment Element](#22313-enlistment-element)
+        - [2.2.3.1.4 Loopback Element](#22314-loopback-element)
+        - [2.2.3.1.5 LocalTransactionId Element](#22315-localtransactionid-element)
+        - [2.2.3.1.6 RegisterInfo Element](#22316-registerinfo-element)
+        - [2.2.3.1.7 PropagationToken Element](#22317-propagationtoken-element)
+        - [2.2.3.1.8 CoordinationContextAnyElementType Complex Type](#22318-coordinationcontextanyelementtype-complex-type)
+        - [2.2.3.1.9 OleTxTransaction Element](#22319-oletxtransaction-element)
+        - [2.2.3.1.10 WS-AtomicTransaction (WS-AT) Protocol Extensions Error Codes](#223110-ws-atomictransaction-ws-at-protocol-extensions-error-codes)
+      - [2.2.3.2 Extended WS-AtomicTransaction Elements and Messages](#2232-extended-ws-atomictransaction-elements-and-messages)
+        - [2.2.3.2.1 CoordinationContext Element](#22321-coordinationcontext-element)
+        - [2.2.3.2.2 Register Element](#22322-register-element)
+        - [2.2.3.2.3 RegisterResponse Message](#22323-registerresponse-message)
+        - [2.2.3.2.4 FlowTransaction Message](#22324-flowtransaction-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 AppClient Role Details](#31-appclient-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 BUILD_COORDINATION_CONTEXT](#3141-buildcoordinationcontext)
+      - [3.1.4.2 FORMAT_FLOW_TRANSACTION](#3142-formatflowtransaction)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 AppServer Role Details](#32-appserver-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 PARSE_FLOW_TRANSACTION](#3241-parseflowtransaction)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Locating the Activation Service Endpoints](#41-locating-the-activation-service-endpoints)
+    - [4.1.1 Obtaining an Array of SExtendedEndpointInfo Structures](#411-obtaining-an-array-of-sextendedendpointinfo-structures)
+    - [4.1.2 Obtaining the WS-AtomicTransaction Activation Service Endpoints of the](#412-obtaining-the-ws-atomictransaction-activation-service-endpoints-of-the)
+  - [4.2 Propagating and Committing a Transaction Example](#42-propagating-and-committing-a-transaction-example)
+    - [4.2.1 Creating a CoordinationContext](#421-creating-a-coordinationcontext)
+    - [4.2.2 Registering for Completion](#422-registering-for-completion)
+    - [4.2.3 Propagating the Transaction](#423-propagating-the-transaction)
+    - [4.2.4 Completing the Transaction](#424-completing-the-transaction)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.2.2
-
-1.3.2.1
-
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Scenario 1: Flowing a Transaction from an Initiator to a Server Application .......... 9
-Scenario 2: Flowing a Transaction from a Client Application to a Participant ....... 10
-Scenario 2a: Flowing a WS-AtomicTransaction CoordinationContext from a
-Client Application to a Participant ............................................................ 10
-Scenario 2b: Flowing a Transaction from a Client Application to a Participant
-Using WS-AtomicTransaction .................................................................. 11
-Scenario 3: Flowing a Transaction from Client Application to a Server Application 12
-Scenario 3a: Server Application Uses Pull Propagation ............................... 12
-Scenario 3b: Server Application Requests Activation Using an Existing
-CoordinationContext .............................................................................. 13
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 15
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3.1
-1.3.3.2
-
-1.3.3
-
-2.1
-2.2
-
-2.2.2.3
-
-2.2.2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2.2.2.1.1
-2.2.2.1.2
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-2.2.2.2.4
-2.2.2.2.5
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Message Syntax ............................................................................................... 16
-Protocol Versioning ..................................................................................... 16
-Data Types Used When Discovering Coordinator Activation and Registration Service
-URIs ......................................................................................................... 16
-Enumerations ....................................................................................... 16
-ControlProtocol ............................................................................... 16
-IsolationLevel ................................................................................. 17
-Structures ............................................................................................ 17
-ProtocolInformationFlags .................................................................. 17
-SupportedProtocolsFlags .................................................................. 18
-VariableCharArray ........................................................................... 19
-WSAT_ProtocolGuid ......................................................................... 19
-ExtendedWhereabouts ..................................................................... 20
-Coordinator Activation Service URIs ........................................................ 21
-HTTPS Activation Service Version 1.0 X.509 URI ................................. 21
-HTTPS Activation Service Version 1.1 X.509 URI ................................. 21
-HTTPS Activation Service Version 1.0 SPNEGO URI .............................. 22
-HTTPS Activation Service Version 1.1 SPNEGO URI .............................. 22
-Coordinator Registration Service URIs ..................................................... 23
-HTTPS Registration Service Version 1.0 X.509 URI .............................. 23
-HTTPS Registration Service Version 1.1 X.509 URI .............................. 23
-Data Types Used to Extend WS-AtomicTransaction ......................................... 23
-Common Data Types ............................................................................. 24
-GuidStringType Complex Type .......................................................... 24
-UrnUuidStringType Complex Type ..................................................... 24
-Enlistment Element .......................................................................... 24
-Loopback Element ........................................................................... 25
-LocalTransactionId Element .............................................................. 25
-RegisterInfo Element ....................................................................... 25
-PropagationToken Element ............................................................... 25
-
-2.2.3.1.1
-2.2.3.1.2
-2.2.3.1.3
-2.2.3.1.4
-2.2.3.1.5
-2.2.3.1.6
-2.2.3.1.7
-
-2.2.2.3.1
-2.2.2.3.2
-2.2.2.3.3
-2.2.2.3.4
-
-2.2.2.4.1
-2.2.2.4.2
-
-2.2.2.4
-
-2.2.3.1
-
-2.2.3
-
-[MS-WSRVCAT] - v20190313
-WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 53
-
-2.2.3.2
-
-CoordinationContextAnyElementType Complex Type ............................ 26
-2.2.3.1.8
-2.2.3.1.9
-OleTxTransaction Element ................................................................ 26
-2.2.3.1.10  WS-AtomicTransaction (WS-AT) Protocol Extensions Error Codes .......... 27
-Extended WS-AtomicTransaction Elements and Messages .......................... 27
-CoordinationContext Element ............................................................ 27
-Register Element ............................................................................. 27
-RegisterResponse Message ............................................................... 28
-FlowTransaction Message ................................................................. 28
-
-2.2.3.2.1
-2.2.3.2.2
-2.2.3.2.3
-2.2.3.2.4
-
-3.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.5
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 30
-AppClient Role Details ....................................................................................... 30
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 30
-BUILD_COORDINATION_CONTEXT .......................................................... 30
-FORMAT_FLOW_TRANSACTION............................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-AppServer Role Details ..................................................................................... 33
-Abstract Data Model .................................................................................... 33
-Timers ...................................................................................................... 33
-Initialization ............................................................................................... 33
-Higher-Layer Triggered Events ..................................................................... 33
-PARSE_FLOW_TRANSACTION ................................................................. 33
-Message Processing Events and Sequencing Rules .......................................... 34
-Timer Events .............................................................................................. 34
-Other Local Events ...................................................................................... 34
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-3.2.7
-
-3.2.4.1
-
-3.2
-
-4.1
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ................................................................................................. 35
-Locating the Activation Service Endpoints ........................................................... 35
-Obtaining an Array of SExtendedEndpointInfo Structures ................................. 35
-Obtaining the WS-AtomicTransaction Activation Service Endpoints of the
-Transaction Coordinator .............................................................................. 37
-Propagating and Committing a Transaction Example ............................................. 38
-Creating a CoordinationContext .................................................................... 38
-Registering for Completion ........................................................................... 39
-Propagating the Transaction ......................................................................... 40
-Completing the Transaction.......................................................................... 44
-
-4.2.1
-4.2.2
-4.2.3
-4.2.4
-
-4.2
-
-5  Security ................................................................................................................. 48
-Security Considerations for Implementers ........................................................... 48
-Index of Security Parameters ............................................................................ 48
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 49
-
-7  Change Tracking .................................................................................................... 51
-
-8  Index ..................................................................................................................... 52
-
-[MS-WSRVCAT] - v20190313
-WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 53
-
-1  Introduction
+## 1 Introduction
 
 The protocol specified in this document extends the WS-AtomicTransaction protocol specified in
 [WSAT10] and [WSAT11], by enabling software entities that use the WS-AtomicTransaction protocol
@@ -708,7 +563,7 @@ to participate in transactions coordinated by OleTx transaction managers, as spe
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -772,7 +627,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-mechanisms for coordinating agreement on a single atomic outcome for each transaction and
+
+mechanisms for coordinating agreement on a single atomic outcome for each transaction and
 for reliably distributing that outcome to all participants in the transactions. For more
 information, see [MS-DTCO].
 
@@ -791,14 +647,14 @@ Two are the distinct phases of the Two-Phase Commit Protocol.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -841,7 +697,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[WSADDR] Gudgin, M., Hadley, M., and Rogers, T., "Web Services Addressing (WS-Addressing) 1.0",
+
+[WSADDR] Gudgin, M., Hadley, M., and Rogers, T., "Web Services Addressing (WS-Addressing) 1.0",
 W3C Recommendation, May 2006, http://www.w3.org/2005/08/addressing
 
 [WSAT10] Arjuna Technologies Ltd., BEA Systems, Hitachi Ltd., IBM, IONA Technologies and
@@ -873,7 +730,7 @@ xmlschema11-1-20060330/
 Definition Language (XSD) 1.1 Part 2: Datatypes", W3C Working Draft, June 2008,
 http://www.w3.org/TR/2008/WD-xmlschema11-2-20080620/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [COM+] Microsoft Corporation, "Availability of Windows Server 2003 Post-Service Pack 1 COM+ 1.5
 Hotfix Rollup Package 8", Version 5.8, December 2007, http://support.microsoft.com/?kbid=912818
@@ -893,7 +750,7 @@ Security Service Application Program Interface (GSS-API) Negotiation Mechanism",
 [XPCOM+] Microsoft Corporation, "Availability of Windows XP COM+ Hotfix Rollup Package 13",
 Version 2.5, December 2007, http://support.microsoft.com/?kbid=912817
 
-1.3  Overview
+### 1.3 Overview
 
 WS-AtomicTransaction, as specified in [WSAT10] and [WSAT11], defines three software entities that
 participate in Atomic Transactions:
@@ -905,7 +762,8 @@ Release: March 13, 2019
 
 8 / 53
 
-
+
+
 
 Initiator: A software component that creates a CoordinationContext (that is, transaction) and
 registers for the Completion Protocol.
@@ -971,7 +829,7 @@ flowed to a WS-AtomicTransaction participant and its coordinator.
 
 flowed to a server application and its transaction coordinator.
 
-1.3.1  Scenario 1: Flowing a Transaction from an Initiator to a Server Application
+#### 1.3.1 Scenario 1: Flowing a Transaction from an Initiator to a Server Application
 
 In this scenario, a WS-AtomicTransaction initiator creates a CoordinationContext (CC) Element and
 flows the transaction to a server application as a header in an implementation-specific SOAP
@@ -984,7 +842,8 @@ Release: March 13, 2019
 
 9 / 53
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-WSRVCAT].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -998,13 +857,13 @@ CoordinationContext to the Activation Service URI using the protocols specified 
 
 Figure 1: Flowing a transaction from an initiator to a server application
 
-1.3.2  Scenario 2: Flowing a Transaction from a Client Application to a Participant
+#### 1.3.2 Scenario 2: Flowing a Transaction from a Client Application to a Participant
 
 In this scenario, a client application creates a WS-AtomicTransaction CoordinationContext (CC)
 Element to flow to a WS-AtomicTransaction participant. Because the client application also supports
 [MS-DTCO], it can create a CoordinationContext Element using one of two methods.
 
-1.3.2.1  Scenario 2a: Flowing a WS-AtomicTransaction CoordinationContext from a
+##### 1.3.2.1 Scenario 2a: Flowing a WS-AtomicTransaction CoordinationContext from a
 
 Client Application to a Participant
 
@@ -1027,7 +886,8 @@ Release: March 13, 2019
 
 10 / 53
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-WSRVCAT].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1038,7 +898,7 @@ flowed CoordinationContext Element, as shown in the following figure.
 Figure 2: Flowing a WS-AtomicTransaction CoordinationContext from a client application to
 a participant
 
-1.3.2.2  Scenario 2b: Flowing a Transaction from a Client Application to a Participant
+##### 1.3.2.2 Scenario 2b: Flowing a Transaction from a Client Application to a Participant
 
 Using WS-AtomicTransaction
 
@@ -1065,14 +925,15 @@ Release: March 13, 2019
 
 11 / 53
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-WSRVCAT].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 3: Flowing a transaction from a client application to a participant using WS-
 AtomicTransaction
 
-1.3.3  Scenario 3: Flowing a Transaction from Client Application to a Server
+#### 1.3.3 Scenario 3: Flowing a Transaction from Client Application to a Server
 
 Application
 
@@ -1086,7 +947,7 @@ CoordinationContext Element and a Propagation_Token. The server application then
 either requesting activation using the flowed CoordinationContext Element or propagating the
 transaction using pull propagation, as specified in [MS-DTCO] (section 3.3.5.2.1).
 
-1.3.3.1  Scenario 3a: Server Application Uses Pull Propagation
+##### 1.3.3.1 Scenario 3a: Server Application Uses Pull Propagation
 
 In this scenario, the server application uses pull propagation to propagate the transaction, as
 shown in the following figure.
@@ -1098,13 +959,14 @@ Release: March 13, 2019
 
 12 / 53
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-WSRVCAT].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 4: Server Application Using Pull Propagation
 
-1.3.3.2  Scenario 3b: Server Application Requests Activation Using an Existing
+##### 1.3.3.2 Scenario 3b: Server Application Requests Activation Using an Existing
 
 CoordinationContext
 
@@ -1121,21 +983,22 @@ Release: March 13, 2019
 
 13 / 53
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-WSRVCAT].images/page014-img01.png)
 ![Extracted image 2 from page 14]([MS-WSRVCAT].images/page014-img02.png)
 <!-- /Extracted images from page 14 -->
 
 Figure 5: Server application requesting activation using an existing CoordinationContext
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on WS-AtomicTransaction and the transaction protocol described in [MS-DTCO],
 as shown in the following figure.
 
 Figure 6: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires the following:
 
@@ -1156,12 +1019,13 @@ Release: March 13, 2019
 
 14 / 53
 
-
+
+
 
 Either the implementation of a client application or a server application is present and
 running.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable to scenarios that require the processing of WS-AtomicTransaction
 messages, as specified in [WSAT10] and [WSAT11], when one or more of the coordinators involved
@@ -1172,7 +1036,7 @@ multiplexing protocol described in [MS-CMP], and the SOAP protocols [SOAP1.1] an
 1/2003] create a viable network transport for establishing many short-lived connection exchanges that
 accomplish specific tasks.<1>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1184,11 +1048,11 @@ SOAP messages as discussed in section 2.1.
 
   Capability Negotiation: This protocol does not support version negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1199,9 +1063,10 @@ Release: March 13, 2019
 
 15 / 53
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The WS-AtomicTransaction (WS-AT) Protocol can be used over any transport protocol that supports
 transmitting messages specified by the following protocols:
@@ -1221,7 +1086,7 @@ Application, and Transaction Coordinator, defined in section 1.3, use the follow
 
   MSDTC Connection Manager: OleTx Transports Protocol as specified in [MS-CMPO].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This document specifies data types that are used by client applications and server applications
 when discovering the Activation and Registration Service URIs of a transaction coordinator, as
@@ -1240,11 +1105,11 @@ Coordination Version 1.1. Where the differences between the two versions of the 
 protocol are significant, either WS-Coordination Version 1.0 or WS-Coordination Version 1.1 is
 referenced.
 
-2.2.1  Protocol Versioning
+#### 2.2.1 Protocol Versioning
 
 This protocol extension is not versioned.
 
-2.2.2  Data Types Used When Discovering Coordinator Activation and Registration
+#### 2.2.2 Data Types Used When Discovering Coordinator Activation and Registration
 
 Service URIs
 
@@ -1252,9 +1117,9 @@ These data types are used by client applications and server applications when di
 transaction coordinator's Activation and Registration Service URIs using SExtendedEndpointInfo
 information obtained through protocols as specified in [MS-DTCO] (section 2.2.5.8).
 
-2.2.2.1  Enumerations
+##### 2.2.2.1 Enumerations
 
-2.2.2.1.1 ControlProtocol
+###### 2.2.2.1.1 ControlProtocol
 
 [MS-WSRVCAT] - v20190313
 WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
@@ -1263,7 +1128,8 @@ Release: March 13, 2019
 
 16 / 53
 
-The ControlProtocol enumeration values identify the three WS-AtomicTransaction protocols, as
+
+The ControlProtocol enumeration values identify the three WS-AtomicTransaction protocols, as
 specified in [WSAT10] and [WSAT11].
 
  typedef  enum ControlProtocol
@@ -1285,7 +1151,7 @@ Durable2PC:  The Durable Two-Phase Commit Protocol, as specified in [WSAT10] sec
 
 [WSAT11] section 3.3.2.
 
-2.2.2.1.2 IsolationLevel
+###### 2.2.2.1.2 IsolationLevel
 
 The IsolationLevel enumeration is a one-to-one mapping of the OLETX_ISOLATION_LEVEL
 enumeration, as specified in [MS-DTCO] (section 2.2.6.9).
@@ -1312,9 +1178,9 @@ Chaos:  Equivalent to ISOLATIONLEVEL_CHAOS.
 
 Unspecified:  Equivalent to ISOLATIONLEVEL_UPSPECIFIED.
 
-2.2.2.2  Structures
+##### 2.2.2.2 Structures
 
-2.2.2.2.1 ProtocolInformationFlags
+###### 2.2.2.2.1 ProtocolInformationFlags
 
 The ProtocolInformationFlags is a byte field specifying network and security settings of the
 transaction coordinator endpoint.
@@ -1339,7 +1205,8 @@ Release: March 13, 2019
 
 17 / 53
 
-bitFieldEncoding (1 byte): The bits of this field MUST be encoded as follows.
+
+bitFieldEncoding (1 byte): The bits of this field MUST be encoded as follows.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1383,7 +1250,7 @@ G - bit6 (1 bit): Not used; set to 0 and ignored.
 
 H - bit7 (1 bit): Not used; set to 0 and ignored.
 
-2.2.2.2.2 SupportedProtocolsFlags
+###### 2.2.2.2.2 SupportedProtocolsFlags
 
 The SupportedProtocolsFlags is a 2-byte field consisting of bits that specify the WS-
 AtomicTransactions protocols supported by the Transaction Coordinator endpoint.
@@ -1435,7 +1302,8 @@ Release: March 13, 2019
 
 18 / 53
 
-Value  Meaning
+
+Value  Meaning
 
 1
 
@@ -1457,7 +1325,7 @@ WS-AtomicTransactions version 1.1 is supported.
 
 bit2thru15 (14 bits): Not used.
 
-2.2.2.2.3 VariableCharArray
+###### 2.2.2.2.3 VariableCharArray
 
 The VariableCharArray structure contains a variable-length array of Latin-1 ANSI characters.
 
@@ -1485,7 +1353,7 @@ field in bytes.
 szCharArray (variable):  A variable-length byte array that contains a nonterminated string of Latin-
 1 ANSI characters. The length of the array MUST be equal to the value of the cbCharArray field.
 
-2.2.2.2.4 WSAT_ProtocolGuid
+###### 2.2.2.2.4 WSAT_ProtocolGuid
 
 The WSAT_ProtocolGuid is the binary representation of the GUID, (cc228cf4-a9c8-43fc-8281-
 8565eb5889f2), as defined in [MS-DTYP] section 2.3.4.
@@ -1531,7 +1399,8 @@ Release: March 13, 2019
 
 19 / 53
 
-dword2
+
+dword2
 
 dword3
 
@@ -1545,7 +1414,7 @@ dword3 (4 bytes): MUST be set to 0x65858182.
 
 dword4 (4 bytes): MUST be set to 0xF28958EB.
 
-2.2.2.2.5 ExtendedWhereabouts
+###### 2.2.2.2.5 ExtendedWhereabouts
 
 The ExtendedWhereabouts structure specifies the network location and security configuration of the
 transaction coordinator's WS-AtomicTransactions endpoint.
@@ -1615,7 +1484,8 @@ Release: March 13, 2019
 
 20 / 53
 
-HttpsPort (4 bytes): A 4-byte, unsigned integer specifying the HTTPS port number of the
+
+HttpsPort (4 bytes): A 4-byte, unsigned integer specifying the HTTPS port number of the
 
 transaction coordinator WS-AtomicTransaction endpoints. This value MUST be between 1 and
 65535, inclusively.
@@ -1637,9 +1507,9 @@ transaction coordinator's WS-AtomicTransaction endpoints.
 
 SupportedProtocols (2 bytes):  A SupportedProtocolsFlags bit field.
 
-2.2.2.3  Coordinator Activation Service URIs
+##### 2.2.2.3 Coordinator Activation Service URIs
 
-2.2.2.3.1 HTTPS Activation Service Version 1.0 X.509 URI
+###### 2.2.2.3.1 HTTPS Activation Service Version 1.0 X.509 URI
 
 The HTTPS Activation Service Version 1.0 X.509 URI is an HTTP/TLS URI, as specified in [RFC2616]
 and [RFC2818], which results from resolving the following ActSvc10_X509_URI Augmented
@@ -1662,7 +1532,7 @@ If the "V1.0" SupportedProtocolFlag in the SupportedProtocols field of the Exten
 structure is 1, then the Coordinator MUST implement the HTTPS Activation Service Version 1.0 X.509
 endpoint at this URI.
 
-2.2.2.3.2 HTTPS Activation Service Version 1.1 X.509 URI
+###### 2.2.2.3.2 HTTPS Activation Service Version 1.1 X.509 URI
 
 The HTTPS Activation Service Version 1.1 X.509 URI is an HTTP/TLS URI, as specified in [RFC2616]
 and [RFC2818], which results from resolving the following ActSvc11_X509_URI ABNF rule
@@ -1684,7 +1554,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-port: MUST be the HttpsPort field.
+
+port: MUST be the HttpsPort field.
 
 segment: MUST be the szCharArray field of the BasePath field.
 
@@ -1692,7 +1563,7 @@ If the "V1.1" SupportedProtocolFlag in the SupportedProtocols field of the Exten
 structure is 1, then the Coordinator MUST implement the HTTPS Activation Service Version 1.1 X.509
 endpoint at this URI.
 
-2.2.2.3.3 HTTPS Activation Service Version 1.0 SPNEGO URI
+###### 2.2.2.3.3 HTTPS Activation Service Version 1.0 SPNEGO URI
 
 The HTTPS Activation Service Version 1.0 SPNEGO URI is an HTTP/TLS URI, as specified in [RFC2616]
 and [RFC2818], which results from resolving the following ActSvc10_WinA_URI ABNF rule
@@ -1716,7 +1587,7 @@ structure is 1 and the "N" ProtocolInformationFlags in the ProtocolFlags field o
 ExtendedWhereabouts structure is 1, then the Coordinator MUST implement the HTTPS Activation
 Service Version 1.0 SPNEGO endpoint at this URI.
 
-2.2.2.3.4 HTTPS Activation Service Version 1.1 SPNEGO URI
+###### 2.2.2.3.4 HTTPS Activation Service Version 1.1 SPNEGO URI
 
 The HTTPS Activation Service Version 1.1 SPNEGO URI is an HTTP/TLS URI, as specified in [RFC2616]
 and [RFC2818], which results from resolving the following ActSvc11_WinA_URI ABNF rule
@@ -1747,9 +1618,10 @@ Release: March 13, 2019
 
 22 / 53
 
-2.2.2.4  Coordinator Registration Service URIs
 
-2.2.2.4.1 HTTPS Registration Service Version 1.0 X.509 URI
+##### 2.2.2.4 Coordinator Registration Service URIs
+
+###### 2.2.2.4.1 HTTPS Registration Service Version 1.0 X.509 URI
 
 The HTTPS Registration Service Version 1.0 X.509 URI is an HTTP/TLS URI, as specified in [RFC2616]
 and [RFC2818], which results from resolving the following ActSvc10_X509_URI ABNF rule
@@ -1772,7 +1644,7 @@ If the "V1.0" SupportedProtocolFlag in the SupportedProtocols field of the Exten
 structure is 1, then the Coordinator MUST implement the HTTPS Registration Service Version 1.0
 X.509 endpoint at this URI.
 
-2.2.2.4.2 HTTPS Registration Service Version 1.1 X.509 URI
+###### 2.2.2.4.2 HTTPS Registration Service Version 1.1 X.509 URI
 
 The HTTPS Registration Service Version 1.1 X.509 URI is an HTTP/TLS URI, as specified in [RFC2616]
 and [RFC2818], which results from resolving the following ActSvc11_X509_URI ABNF rule
@@ -1795,7 +1667,7 @@ If the "V1.1" SupportedProtocolFlag in the SupportedProtocols field of the Exten
 structure is 1, then the Coordinator MUST implement the HTTPS Registration Service Version 1.1
 X.509 endpoint at this URI.
 
-2.2.3  Data Types Used to Extend WS-AtomicTransaction
+#### 2.2.3 Data Types Used to Extend WS-AtomicTransaction
 
 This section defines XML data types ([XML10/4] and [XMLSCHEMA1.1/2:2008]) used to communicate
 using the WS-AtomicTransaction protocol between participants and coordinators, and to propagate
@@ -1808,9 +1680,10 @@ Release: March 13, 2019
 
 23 / 53
 
-2.2.3.1  Common Data Types
 
-2.2.3.1.1 GuidStringType Complex Type
+##### 2.2.3.1 Common Data Types
+
+###### 2.2.3.1.1 GuidStringType Complex Type
 
 The GuidStringType Complex Type [XMLSCHEMA1.1/1] is used to represent a GUIDString.
 
@@ -1828,7 +1701,7 @@ fA-F0-9]{4}-[a-fA-F0-9]{12}"/>
        </xs:complexType>
  </xs:schema>
 
-2.2.3.1.2 UrnUuidStringType Complex Type
+###### 2.2.3.1.2 UrnUuidStringType Complex Type
 
 The UrnUuidStringType Complex Type [XMLSCHEMA1.1/1] is used to represent a GUIDString
 prepended with the string "urn:uuid:".
@@ -1847,7 +1720,7 @@ prepended with the string "urn:uuid:".
        </xs:complexType>
  </xs:schema>
 
-2.2.3.1.3 Enlistment Element
+###### 2.2.3.1.3 Enlistment Element
 
 The Enlistment Element [XMLSCHEMA1.1/1] is used to uniquely identify registration (or enlistment)
 instances during the lifetime of a WS-AtomicTransaction transaction.
@@ -1875,11 +1748,12 @@ Release: March 13, 2019
 
 24 / 53
 
-protocol: If present, the value of this attribute MUST be set to one of the ControlProtocol values
+
+protocol: If present, the value of this attribute MUST be set to one of the ControlProtocol values
 
 specified in section 2.2.2.1.1.
 
-2.2.3.1.4 Loopback Element
+###### 2.2.3.1.4 Loopback Element
 
 The Loopback Element [XMLSCHEMA1.1/1] is used to uniquely identify coordinators during
 registration to prevent coordinators from self-registering.
@@ -1891,7 +1765,7 @@ registration to prevent coordinators from self-registering.
        <xs:element name="Loopback" type="mstx:GuidStringType" />
  </xs:schema>
 
-2.2.3.1.5 LocalTransactionId Element
+###### 2.2.3.1.5 LocalTransactionId Element
 
 The LocalTransactionId element [XMLSCHEMA1.1/1] is used to uniquely identify the transaction
 represented by a CoordinationContext Element.
@@ -1903,7 +1777,7 @@ represented by a CoordinationContext Element.
        <xs:element name="LocalTransactionId" type="mstx:GuidStringType" />
  </xs:schema>
 
-2.2.3.1.6 RegisterInfo Element
+###### 2.2.3.1.6 RegisterInfo Element
 
 The RegisterInfo Element [XMLSCHEMA1.1/1] is a container for other elements that uniquely identify a
 CoordinationContext Element.
@@ -1934,7 +1808,7 @@ TokenId:  If present, the value of the element MUST be the identifier of the sec
 
 identifier used in the construction of the SOAP message, as specified in [WSSC].
 
-2.2.3.1.7 PropagationToken Element
+###### 2.2.3.1.7 PropagationToken Element
 
 [MS-WSRVCAT] - v20190313
 WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
@@ -1943,7 +1817,8 @@ Release: March 13, 2019
 
 25 / 53
 
-The PropagationToken Element [XMLSCHEMA1.1/1] is used when propagating a transaction using
+
+The PropagationToken Element [XMLSCHEMA1.1/1] is used when propagating a transaction using
 pull propagation, as specified in [MS-DTCO] (section 3.3.5.2.1).
 
  <xs:schema targetNamespace="http://schemas.microsoft.com/ws/2006/02/tx/oletx"
@@ -1962,7 +1837,7 @@ PropagationToken: The value of the element MUST be a base64 encoding of a
 
 Propagation_Token, as specified in [MS-DTCO] (section 2.2.5.4).<2>
 
-2.2.3.1.8 CoordinationContextAnyElementType Complex Type
+###### 2.2.3.1.8 CoordinationContextAnyElementType Complex Type
 
 The CoordinationContextAnyElementType Complex Type [XMLSCHEMA1.1/1] is a container for other
 elements that is used to provide additional information about the transaction represented by a
@@ -2003,7 +1878,7 @@ PropagationToken: This element MUST be a PropagationToken Element as specified i
 
 2.2.3.1.7.
 
-2.2.3.1.9 OleTxTransaction Element
+###### 2.2.3.1.9 OleTxTransaction Element
 
 The OleTxTransaction Element [XMLSCHEMA1.1/1] is a container for the PropagationToken Element
 and is used when propagating an OleTx transaction.
@@ -2015,7 +1890,8 @@ Release: March 13, 2019
 
 26 / 53
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-WSRVCAT].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -2036,14 +1912,14 @@ Release: March 13, 2019
 
 PropagationToken: This element MUST be a PropagationToken Element (section 2.2.3.1.7).
 
-2.2.3.1.10  WS-AtomicTransaction (WS-AT) Protocol Extensions Error Codes
+###### 2.2.3.1.10 WS-AtomicTransaction (WS-AT) Protocol Extensions Error Codes
 
 The WS-AtomicTransaction (WS-AT) Protocol Extensions Error Codes are used to communicate
 implementation-specific SOAP faults.<3>
 
-2.2.3.2  Extended WS-AtomicTransaction Elements and Messages
+##### 2.2.3.2 Extended WS-AtomicTransaction Elements and Messages
 
-2.2.3.2.1 CoordinationContext Element
+###### 2.2.3.2.1 CoordinationContext Element
 
 The CoordinationContext Element is a CoordinationContext, as specified in [WSC10] and [WSC11],
 with the additional constraints listed in the following figure.
@@ -2057,7 +1933,7 @@ the CoordinationContext Element.
 The CoordinationContextAnyElementType Complex Type (section 2.2.3.1.8) MUST be the first Any
 element in the CoordinationContext Element.
 
-2.2.3.2.2 Register Element
+###### 2.2.3.2.2 Register Element
 
 27 / 53
 
@@ -2066,7 +1942,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-WSRVCAT].images/page028-img01.png)
 ![Extracted image 2 from page 28]([MS-WSRVCAT].images/page028-img02.png)
 <!-- /Extracted images from page 28 -->
@@ -2083,7 +1960,7 @@ element in the Register Element.
 The Loopback Element (section 2.2.3.1.4) MUST be the first Any element in the WS-Coordination
 ParticipantProtocolService element in the Register Element.
 
-2.2.3.2.3 RegisterResponse Message
+###### 2.2.3.2.3 RegisterResponse Message
 
 The RegisterResponse Message is a RegisterResponse element, as specified in [WSC10] and
 [WSC11], with the additional constraints listed in the following figure.
@@ -2094,7 +1971,7 @@ The Enlistment Element (section 2.2.3.1.3) MUST be the only element in the WS-Ad
 ReferenceParameters element [WSADDR] in the WS-Coordination CoordinatorProtocolService
 element in the RegisterResponse element.
 
-2.2.3.2.4 FlowTransaction Message
+###### 2.2.3.2.4 FlowTransaction Message
 
 The FlowTransaction Message is a SOAP Request/Reply message containing either a
 CoordinationContext Element or an OleTxTransaction Element as a SOAP header, but not both.
@@ -2106,7 +1983,8 @@ Release: March 13, 2019
 
 28 / 53
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-WSRVCAT].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -2126,23 +2004,24 @@ Release: March 13, 2019
 
 29 / 53
 
-3  Protocol Details
 
-3.1  AppClient Role Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 AppClient Role Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
+
+None.
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 Two higher-layer triggered events are specified for the AppClient Role:
 
@@ -2152,7 +2031,7 @@ Two higher-layer triggered events are specified for the AppClient Role:
 
 FORMAT_FLOW_TRANSACTION event.
 
-3.1.4.1  BUILD_COORDINATION_CONTEXT
+##### 3.1.4.1 BUILD_COORDINATION_CONTEXT
 
 The BUILD_COORDINATION_CONTEXT event MUST be signaled by the higher-layer business logic with
 the following required arguments:
@@ -2209,7 +2088,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -2306,13 +2186,14 @@ Release: March 13, 2019
 
 31 / 53
 
-  Return the WS-Coordination CoordinationContext element to the higher-layer business
+
+  Return the WS-Coordination CoordinationContext element to the higher-layer business
 
 logic.
 
   Otherwise, return an implementation-specific failure result to the higher-layer business logic.
 
-3.1.4.2  FORMAT_FLOW_TRANSACTION
+##### 3.1.4.2 FORMAT_FLOW_TRANSACTION
 
 The FORMAT_FLOW_TRANSACTION event MUST be signaled by the higher-layer business logic with
 the following required argument:
@@ -2380,7 +2261,7 @@ Insert the CoordinationContext Element as a SOAP header in the FlowTransaction M
 
   Otherwise, return an implementation-specific failure result to the higher-layer business logic.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
@@ -2391,34 +2272,35 @@ Release: March 13, 2019
 
 32 / 53
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  AppServer Role Details
+### 3.2 AppServer Role Details
 
-3.2.1  Abstract Data Model
-
-None.
-
-3.2.2  Timers
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.3  Initialization
+#### 3.2.2 Timers
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.3 Initialization
+
+None.
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 One higher-layer triggered event, the PARSE_FLOW_TRANSACTION event, is specified for the
 AppServer Role.
 
-3.2.4.1  PARSE_FLOW_TRANSACTION
+##### 3.2.4.1 PARSE_FLOW_TRANSACTION
 
 The PARSE_FLOW_TRANSACTION event MUST be signaled by the higher-layer business logic with the
 following required argument:
@@ -2467,19 +2349,20 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Otherwise, return the CoordinationContext Element to the higher-layer business logic.
+
+  Otherwise, return the CoordinationContext Element to the higher-layer business logic.
 
   Otherwise, return an implementation-specific failure result to the higher-layer business logic.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2490,9 +2373,10 @@ Release: March 13, 2019
 
 34 / 53
 
-4  Protocol Examples
 
-4.1  Locating the Activation Service Endpoints
+## 4 Protocol Examples
+
+### 4.1 Locating the Activation Service Endpoints
 
 This example shows how an application, either a client application (as described in sections 1.3.2
 and 1.3.3) or a server application (as described in section 1.3.1), obtains the WS-AtomicTransaction
@@ -2508,7 +2392,7 @@ Role Implementation, as specified in [MS-DTCO] (section 3.3.5.2.2.1).
 The application then translates the array of SExtendedEndpointInfo structures into the
 transaction coordinator's Activation Service Endpoints, as specified in 2.2.2.3.
 
-4.1.1  Obtaining an Array of SExtendedEndpointInfo Structures
+#### 4.1.1 Obtaining an Array of SExtendedEndpointInfo Structures
 
 An Application Role Implementation, as specified in [MS-DTCO] (section 3.3), communicates with a
 transaction coordinator using an OleTx multiplexing connection, as specified in [MS-CMP], which is
@@ -2597,7 +2481,8 @@ Release: March 13, 2019
 
 35 / 53
 
-Field
+
+Field
 
 Value
 
@@ -2726,7 +2611,8 @@ Release: March 13, 2019
 
 36 / 53
 
-4.1.2  Obtaining the WS-AtomicTransaction Activation Service Endpoints of the
+
+#### 4.1.2 Obtaining the WS-AtomicTransaction Activation Service Endpoints of the
 
 Transaction Coordinator
 
@@ -2846,7 +2732,8 @@ Release: March 13, 2019
 
 37 / 53
 
-4.2  Propagating and Committing a Transaction Example
+
+### 4.2 Propagating and Committing a Transaction Example
 
 In this example, a client application propagates and commits a transaction with a server
 application using the WS-AtomicTransaction protocol, as described in section 1.3.3.2.
@@ -2856,7 +2743,7 @@ Version 1.1 X.509 URI for its transaction coordinator, as shown in section 4.1. 
 that a server application has similarly obtained the HTTPS Activation Service Version 1.1 X.509 URI for
 its transaction coordinator.
 
-4.2.1  Creating a CoordinationContext
+#### 4.2.1 Creating a CoordinationContext
 
 The client application obtains a CoordinationContext Element for a transaction from its
 transaction coordinator by sending the following CreateCoordinationContext SOAP message to the
@@ -2914,7 +2801,8 @@ Release: March 13, 2019
 
 38 / 53
 
-                         <wscoor:Identifier>urn:uuid:4413663a-b7f1-4001-8956-
+
+                         <wscoor:Identifier>urn:uuid:4413663a-b7f1-4001-8956-
 7af04265103b</wscoor:Identifier>
                          <wscoor:Expires>60000</wscoor:Expires>
                          <wscoor:CoordinationType>http://docs.oasis-open.org/ws-
@@ -2938,7 +2826,7 @@ ess>
        </s:Body>
  </s:Envelope>
 
-4.2.2  Registering for Completion
+#### 4.2.2 Registering for Completion
 
 After the client application obtains a CoordinationContext Element for a transaction, it then
 registers for Completion Protocol by sending a Register SOAP message to the transaction
@@ -2985,7 +2873,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Protocol Coordinator Protocol Service URI with an Enlistment Element as a reference parameter and
+
+Protocol Coordinator Protocol Service URI with an Enlistment Element as a reference parameter and
 sends the message to the client application.
 
  <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3013,7 +2902,7 @@ xmlns:mstx="http://schemas.microsoft.com/ws/2006/02/transactions">4413663a-b7f1-
        </s:Body>
  </s:Envelope>
 
-4.2.3  Propagating the Transaction
+#### 4.2.3 Propagating the Transaction
 
 After registering for completion (4.2.2), the client application sends a FlowTransaction Message to
 the server application containing the CoordinationContext Element (returned as shown in section
@@ -3057,7 +2946,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-             </wscoor:CoordinationContext>
+
+             </wscoor:CoordinationContext>
              <a:To s:mustUnderstand="1">https://machine_2.tempuri.org:8000/AppServer/</a:To>
        </s:Header>
        <s:Body>
@@ -3127,7 +3017,8 @@ Release: March 13, 2019
 
 41 / 53
 
-Register SOAP message to the RegistrationService URI contained in the CoordinationContext
+
+Register SOAP message to the RegistrationService URI contained in the CoordinationContext
 Element.
 
  <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3198,7 +3089,8 @@ Release: March 13, 2019
 
 42 / 53
 
-<a:Address>https://machine_1.tempuri.org:5555/WsatService/TwoPhaseCommit/Coordinator11/</a:Ad
+
+<a:Address>https://machine_1.tempuri.org:5555/WsatService/TwoPhaseCommit/Coordinator11/</a:Ad
 dress>
                          <a:ReferenceParameters>
                                <mstx:Enlistment mstx:protocol="3"
@@ -3267,7 +3159,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-4.2.4  Completing the Transaction
+
+#### 4.2.4 Completing the Transaction
 
 In this example, the client application commits the transaction. The client application creates a
 Completion Protocol Commit SOAP message and sends the message to its transaction coordinator's
@@ -3338,7 +3231,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <s:Body>
+
+       <s:Body>
              <wsat:Prepare xmlns:wsat="http://docs.oasis-open.org/ws-
 tx/wsat/2006/06"></wsat:Prepare>
        </s:Body>
@@ -3406,7 +3300,8 @@ Release: March 13, 2019
 
 45 / 53
 
- </s:Envelope>
+
+ </s:Envelope>
 
 The root transaction coordinator then creates a Durable Two-Phase Commit Protocol Commit SOAP
 message and sends the message to the subordinate transaction coordinator's Two-Phase Commit
@@ -3474,7 +3369,8 @@ Release: March 13, 2019
 
 46 / 53
 
-             <a:To
+
+             <a:To
 s:mustUnderstand="1">https://machine_1.tempuri.org:5555/WsatService/TwoPhaseCommit/Coordinato
 r11/</a:To>
              <mstx:Enlistment mstx:protocol="3" a:IsReferenceParameter="true"
@@ -3498,9 +3394,10 @@ Release: March 13, 2019
 
 47 / 53
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol has no security considerations for implementers. For security considerations with respect
 to:
@@ -3517,7 +3414,7 @@ to:
 
   MSDTC Communication Manager: OleTx Transaction Protocol, see [MS-DTCO].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol has no security parameters.
 
@@ -3528,7 +3425,8 @@ Release: March 13, 2019
 
 48 / 53
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3597,7 +3495,8 @@ WS-AtomicTransaction (WS-AT) Version 1.0 Protocol Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-CoordinatorRegistrationFailed:  This error code SHOULD be returned as a WS-
+
+CoordinatorRegistrationFailed:  This error code SHOULD be returned as a WS-
 
 AtomicTransaction Fault to a WS-Coordination Register SOAP message, if registration failed for
 an unspecified reason.
@@ -3624,7 +3523,8 @@ Release: March 13, 2019
 
 50 / 53
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3661,7 +3561,8 @@ Release: March 13, 2019
 
 51 / 53
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3798,7 +3699,8 @@ Release: March 13, 2019
 
 52 / 53
 
-   timers 33
+
+   timers 33
 Standards assignments 15
 SupportedProtocolsFlags packet 18
 Syntax 16

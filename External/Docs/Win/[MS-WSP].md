@@ -63,7 +63,8 @@ Release: March 9, 2026
 
 1 / 246
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: March 9, 2026
 
 2 / 246
 
-Date
+
+Date
 
 Revision
 History
@@ -538,7 +540,8 @@ Release: March 9, 2026
 
 3 / 246
 
-Date
+
+Date
 
 Revision
 History
@@ -653,450 +656,185 @@ Release: March 9, 2026
 
 4 / 246
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Remote Administration Tasks](#131-remote-administration-tasks)
+    - [1.3.2 Remote Querying](#132-remote-querying)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+    - [1.8.1 Property IDs](#181-property-ids)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Structures](#221-structures)
+      - [2.2.1.1 CBaseStorageVariant](#2211-cbasestoragevariant)
+        - [2.2.1.1.1 CBaseStorageVariant Structures](#22111-cbasestoragevariant-structures)
+          - [2.2.1.1.1.1 DECIMAL](#221111-decimal)
+          - [2.2.1.1.1.2 VT_VECTOR](#221112-vtvector)
+          - [2.2.1.1.1.3 SAFEARRAY](#221113-safearray)
+          - [2.2.1.1.1.4 SAFEARRAYBOUND](#221114-safearraybound)
+          - [2.2.1.1.1.5 SAFEARRAY2](#221115-safearray2)
+          - [2.2.1.1.1.6 VT_COMPRESSED_LPWSTR](#221116-vtcompressedlpwstr)
+          - [2.2.1.1.1.7 VT_CF](#221117-vtcf)
+      - [2.2.1.2 CFullPropSpec](#2212-cfullpropspec)
+      - [2.2.1.3 CContentRestriction](#2213-ccontentrestriction)
+      - [2.2.1.4 CInternalPropertyRestriction](#2214-cinternalpropertyrestriction)
+      - [2.2.1.5 CNatLanguageRestriction](#2215-cnatlanguagerestriction)
+      - [2.2.1.6 CNodeRestriction](#2216-cnoderestriction)
+      - [2.2.1.7 CPropertyRestriction](#2217-cpropertyrestriction)
+      - [2.2.1.8 CReuseWhere](#2218-creusewhere)
+      - [2.2.1.9 CScopeRestriction](#2219-cscoperestriction)
+      - [2.2.1.10 CSort](#22110-csort)
+      - [2.2.1.11 CVectorRestriction](#22111-cvectorrestriction)
+      - [2.2.1.12 CCoercionRestriction](#22112-ccoercionrestriction)
+      - [2.2.1.13 CRelDocRestriction](#22113-creldocrestriction)
+      - [2.2.1.14 CProbRestriction](#22114-cprobrestriction)
+      - [2.2.1.15 CFeedbackRestriction](#22115-cfeedbackrestriction)
+      - [2.2.1.16 CRestrictionArray](#22116-crestrictionarray)
+      - [2.2.1.17 CRestriction](#22117-crestriction)
+      - [2.2.1.18 CColumnSet](#22118-ccolumnset)
+      - [2.2.1.19 CCategorizationSet](#22119-ccategorizationset)
+      - [2.2.1.20 CCategorizationSpec](#22120-ccategorizationspec)
+      - [2.2.1.21 CCategSpec](#22121-ccategspec)
+      - [2.2.1.22 CRangeCategSpec](#22122-crangecategspec)
+      - [2.2.1.23 RANGEBOUNDARY](#22123-rangeboundary)
+      - [2.2.1.24 CAggregSet](#22124-caggregset)
+      - [2.2.1.25 CAggregSpec](#22125-caggregspec)
+      - [2.2.1.26 CSortAggregSet](#22126-csortaggregset)
+      - [2.2.1.27 CAggregSortKey](#22127-caggregsortkey)
+      - [2.2.1.28 CInGroupSortAggregSets](#22128-cingroupsortaggregsets)
+      - [2.2.1.29 CDbColId](#22129-cdbcolid)
+      - [2.2.1.30 CDbProp](#22130-cdbprop)
+        - [2.2.1.30.1 Database Properties](#221301-database-properties)
+      - [2.2.1.31 CDbPropSet](#22131-cdbpropset)
+      - [2.2.1.32 CPidMapper](#22132-cpidmapper)
+      - [2.2.1.33 CColumnGroupArray](#22133-ccolumngrouparray)
+      - [2.2.1.34 CColumnGroup](#22134-ccolumngroup)
+      - [2.2.1.35 SProperty](#22135-sproperty)
+      - [2.2.1.36 CRowSeekAt](#22136-crowseekat)
+      - [2.2.1.37 CRowSeekAtRatio](#22137-crowseekatratio)
+      - [2.2.1.38 CRowSeekByBookmark](#22138-crowseekbybookmark)
+      - [2.2.1.39 CRowSeekNext](#22139-crowseeknext)
+      - [2.2.1.40 CRowsetProperties](#22140-crowsetproperties)
+      - [2.2.1.41 CTableVariant](#22141-ctablevariant)
+      - [2.2.1.42 CSortSet](#22142-csortset)
+      - [2.2.1.43 CTableColumn](#22143-ctablecolumn)
+      - [2.2.1.44 SERIALIZEDPROPERTYVALUE](#22144-serializedpropertyvalue)
+      - [2.2.1.45 CCompletionCategSpec](#22145-ccompletioncategspec)
+      - [2.2.1.46 CRankMergeRestriction](#22146-crankmergerestriction)
+    - [2.2.2 Message Headers](#222-message-headers)
+      - [2.2.3.12 for details).](#22312-for-details)
+      - [2.2.3.13 CPMRatioFinishedIn](#22313-cpmratiofinishedin)
+      - [2.2.3.14 CPMRatioFinishedOut](#22314-cpmratiofinishedout)
+      - [2.2.3.15 CPMFetchValueIn](#22315-cpmfetchvaluein)
+      - [2.2.3.16 CPMFetchValueOut](#22316-cpmfetchvalueout)
+      - [2.2.3.17 CPMGetNotify](#22317-cpmgetnotify)
+      - [2.2.3.18 CPMSendNotifyOut](#22318-cpmsendnotifyout)
+      - [2.2.3.19 CPMGetApproximatePositionIn](#22319-cpmgetapproximatepositionin)
+      - [2.2.3.20 CPMGetApproximatePositionOut](#22320-cpmgetapproximatepositionout)
+      - [2.2.3.21 CPMCompareBmkIn](#22321-cpmcomparebmkin)
+      - [2.2.3.22 CPMCompareBmkOut](#22322-cpmcomparebmkout)
+      - [2.2.3.23 CPMRestartPositionIn](#22323-cpmrestartpositionin)
+      - [2.2.3.24 CPMFreeCursorIn](#22324-cpmfreecursorin)
+      - [2.2.3.25 CPMFreeCursorOut](#22325-cpmfreecursorout)
+      - [2.2.3.26 CPMDisconnect](#22326-cpmdisconnect)
+      - [2.2.3.27 CPMFindIndicesIn](#22327-cpmfindindicesin)
+      - [2.2.3.28 CPMFindIndicesOut](#22328-cpmfindindicesout)
+      - [2.2.3.29 CPMGetRowsetNotifyIn](#22329-cpmgetrowsetnotifyin)
+      - [2.2.3.30 CPMGetRowsetNotifyOut](#22330-cpmgetrowsetnotifyout)
+      - [2.2.3.31 CPMSetScopePrioritizationIn](#22331-cpmsetscopeprioritizationin)
+      - [2.2.3.32 CPMSetScopePrioritizationOut](#22332-cpmsetscopeprioritizationout)
+      - [2.2.3.33 CPMGetScopeStatisticsIn](#22333-cpmgetscopestatisticsin)
+      - [2.2.3.34 CPMGetScopeStatisticsOut](#22334-cpmgetscopestatisticsout)
+      - [2.2.3.35 CPMExternalSearchResultIn](#22335-cpmexternalsearchresultin)
+    - [2.2.4 Errors](#224-errors)
+    - [2.2.5 Standard Properties](#225-standard-properties)
+      - [2.2.5.1 Query Properties](#2251-query-properties)
+      - [2.2.5.2 Common Open Properties](#2252-common-open-properties)
+      - [2.2.5.3 ODBC Property](#2253-odbc-property)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing and Sequencing Rules](#315-processing-and-sequencing-rules)
+      - [3.1.5.1 Remote Windows Search Service Catalog Management](#3151-remote-windows-search-service-catalog-management)
+        - [3.1.5.1.1 Receiving a CPMCiStateInOut Request](#31511-receiving-a-cpmcistateinout-request)
+      - [3.1.5.2 Remote Windows Search Service Querying](#3152-remote-windows-search-service-querying)
+        - [3.1.5.2.1 Receiving a CPMConnectIn Request](#31521-receiving-a-cpmconnectin-request)
+        - [3.1.5.2.2 Receiving a CPMCreateQueryIn Request](#31522-receiving-a-cpmcreatequeryin-request)
+        - [3.1.5.2.3 Receiving a CPMGetQueryStatusIn Request](#31523-receiving-a-cpmgetquerystatusin-request)
+        - [3.1.5.2.4 Receiving a CPMGetQueryStatusExIn Request](#31524-receiving-a-cpmgetquerystatusexin-request)
+        - [3.1.5.2.5 Receiving a CPMRatioFinishedIn Request](#31525-receiving-a-cpmratiofinishedin-request)
+        - [3.1.5.2.6 Receiving a CPMGetRowsIn Request](#31526-receiving-a-cpmgetrowsin-request)
+        - [3.1.5.2.7 Receiving a CPMFetchValueIn Request](#31527-receiving-a-cpmfetchvaluein-request)
+        - [3.1.5.2.8 Receiving a CPMSetBindingsIn Request](#31528-receiving-a-cpmsetbindingsin-request)
+        - [3.1.5.2.9 Receiving a CPMGetNotify Request](#31529-receiving-a-cpmgetnotify-request)
+        - [3.1.5.2.10 Receiving a CPMGetApproximatePositionIn Request](#315210-receiving-a-cpmgetapproximatepositionin-request)
+        - [3.1.5.2.11 Receiving a CPMCompareBmkIn Request](#315211-receiving-a-cpmcomparebmkin-request)
+        - [3.1.5.2.12 Receiving a CPMRestartPositionIn Request](#315212-receiving-a-cpmrestartpositionin-request)
+        - [3.1.5.2.13 Receiving a CPMFreeCursorIn Request](#315213-receiving-a-cpmfreecursorin-request)
+        - [3.1.5.2.14 Receiving a CPMDisconnect Request](#315214-receiving-a-cpmdisconnect-request)
+        - [3.1.5.2.15 Receiving a CPMFindIndicesIn Request](#315215-receiving-a-cpmfindindicesin-request)
+        - [3.1.5.2.16 Receiving a CPMGetRowsetNotifyIn](#315216-receiving-a-cpmgetrowsetnotifyin)
+        - [3.1.5.2.17 Receiving a CPMGetScopeStatisticsIn](#315217-receiving-a-cpmgetscopestatisticsin)
+        - [3.1.5.2.18 Receiving a CPMSetScopePrioritizationIn](#315218-receiving-a-cpmsetscopeprioritizationin)
+        - [3.1.5.2.19 Receiving a CPMExternalSearchResultIn Request](#315219-receiving-a-cpmexternalsearchresultin-request)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Remote Windows Search Service Catalog Management](#3241-remote-windows-search-service-catalog-management)
+        - [3.2.4.1.1 Sending a CPMCiStateInOut Request](#32411-sending-a-cpmcistateinout-request)
+      - [3.2.4.2 Remote Windows Search Service Catalog Query Messages](#3242-remote-windows-search-service-catalog-query-messages)
+        - [3.2.4.2.1 Sending a CPMConnectIn Request](#32421-sending-a-cpmconnectin-request)
+        - [3.2.4.2.2 Sending a CPMCreateQueryIn Request](#32422-sending-a-cpmcreatequeryin-request)
+        - [3.2.4.2.3 Sending a CPMSetBindingsIn Request](#32423-sending-a-cpmsetbindingsin-request)
+        - [3.2.4.2.4 Sending a CPMGetRowsIn Request](#32424-sending-a-cpmgetrowsin-request)
+        - [3.2.4.2.5 Sending a CPMFetchValueIn Request](#32425-sending-a-cpmfetchvaluein-request)
+        - [3.2.4.2.6 Sending a CPMFreeCursorIn Request](#32426-sending-a-cpmfreecursorin-request)
+        - [3.2.4.2.7 Sending a CPMDisconnect Message](#32427-sending-a-cpmdisconnect-message)
+        - [3.2.4.2.8 Sending a CPMFindIndicesIn Request](#32428-sending-a-cpmfindindicesin-request)
+        - [3.2.4.2.9 Sending a CPMGetRowsetNotifyIn Request](#32429-sending-a-cpmgetrowsetnotifyin-request)
+        - [3.2.4.2.10 Sending a CPMGetScopeStatisticsIn Request](#324210-sending-a-cpmgetscopestatisticsin-request)
+        - [3.2.4.2.11 Sending a CPMSetScopePrioritizationIn Request](#324211-sending-a-cpmsetscopeprioritizationin-request)
+        - [3.2.4.2.12 Sending a CPMExternalSearchResultIn Request](#324212-sending-a-cpmexternalsearchresultin-request)
+    - [3.2.5 Processing and Sequencing Rules](#325-processing-and-sequencing-rules)
+      - [3.2.5.1 Receiving a CPMCreateQueryOut Response](#3251-receiving-a-cpmcreatequeryout-response)
+      - [3.2.5.2 Receiving a CPMGetRowsOut Response](#3252-receiving-a-cpmgetrowsout-response)
+      - [3.2.5.3 Receiving a CPMFetchValueOut Response](#3253-receiving-a-cpmfetchvalueout-response)
+      - [3.2.5.4 Receiving a CPMFreeCursorOut Response](#3254-receiving-a-cpmfreecursorout-response)
+      - [3.2.5.5 Receiving a CPMFindIndicesOut Response](#3255-receiving-a-cpmfindindicesout-response)
+      - [3.2.5.6 Receiving a CPMGetRowsetNotifyOut Response](#3256-receiving-a-cpmgetrowsetnotifyout-response)
+      - [3.2.5.7 Receiving a CPMGetScopeStatisticsOut Response](#3257-receiving-a-cpmgetscopestatisticsout-response)
+      - [3.2.5.8 Receiving a CPMSetScopePrioritizationOut Response](#3258-receiving-a-cpmsetscopeprioritizationout-response)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example 1](#41-example-1)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-Remote Administration Tasks ....................................................................... 12
-Remote Querying ........................................................................................ 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 14
-Property IDs .............................................................................................. 14
-Standards Assignments ..................................................................................... 14
-
-1.4
-1.5
-1.6
-1.7
-1.8
-
-1.8.1
-
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2.2.1.1.1
-
-2.2.1.1.1.1
-2.2.1.1.1.2
-2.2.1.1.1.3
-2.2.1.1.1.4
-2.2.1.1.1.5
-2.2.1.1.1.6
-2.2.1.1.1.7
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-Structures ................................................................................................. 15
-CBaseStorageVariant ............................................................................. 17
-CBaseStorageVariant Structures ........................................................ 21
-DECIMAL .................................................................................. 21
-VT_VECTOR .............................................................................. 22
-SAFEARRAY ............................................................................... 22
-SAFEARRAYBOUND .................................................................... 23
-SAFEARRAY2 ............................................................................. 23
-VT_COMPRESSED_LPWSTR ......................................................... 24
-VT_CF ...................................................................................... 24
-CFullPropSpec ...................................................................................... 25
-CContentRestriction ............................................................................... 26
-CInternalPropertyRestriction ................................................................... 27
-CNatLanguageRestriction ....................................................................... 29
-CNodeRestriction .................................................................................. 30
-CPropertyRestriction .............................................................................. 30
-CReuseWhere ....................................................................................... 33
-CScopeRestriction ................................................................................. 33
-CSort .................................................................................................. 34
-CVectorRestriction ................................................................................. 35
-CCoercionRestriction ............................................................................. 36
-CRelDocRestriction ................................................................................ 36
-CProbRestriction ................................................................................... 37
-CFeedbackRestriction ............................................................................ 38
-CRestrictionArray .................................................................................. 39
-CRestriction.......................................................................................... 39
-CColumnSet ......................................................................................... 41
-CCategorizationSet ................................................................................ 42
-CCategorizationSpec ............................................................................. 42
-CCategSpec.......................................................................................... 43
-CRangeCategSpec ................................................................................. 44
-RANGEBOUNDARY ................................................................................. 44
-CAggregSet .......................................................................................... 46
-CAggregSpec ........................................................................................ 46
-CSortAggregSet .................................................................................... 47
-CAggregSortKey ................................................................................... 48
-
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-2.2.1.10
-2.2.1.11
-2.2.1.12
-2.2.1.13
-2.2.1.14
-2.2.1.15
-2.2.1.16
-2.2.1.17
-2.2.1.18
-2.2.1.19
-2.2.1.20
-2.2.1.21
-2.2.1.22
-2.2.1.23
-2.2.1.24
-2.2.1.25
-2.2.1.26
-2.2.1.27
-
-[MS-WSP] - v20260309
-Windows Search Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-5 / 246
-
-2.2.2
-2.2.3
-
-2.2.1.28
-2.2.1.29
-2.2.1.30
-
-2.2.1.31
-2.2.1.32
-2.2.1.33
-2.2.1.34
-2.2.1.35
-2.2.1.36
-2.2.1.37
-2.2.1.38
-2.2.1.39
-2.2.1.40
-2.2.1.41
-2.2.1.42
-2.2.1.43
-2.2.1.44
-2.2.1.45
-2.2.1.46
-
-CInGroupSortAggregSets ....................................................................... 48
-CDbColId ............................................................................................. 49
-CDbProp .............................................................................................. 50
-2.2.1.30.1  Database Properties ......................................................................... 50
-CDbPropSet .......................................................................................... 52
-CPidMapper .......................................................................................... 53
-CColumnGroupArray .............................................................................. 53
-CColumnGroup ..................................................................................... 54
-SProperty ............................................................................................. 54
-CRowSeekAt ......................................................................................... 54
-CRowSeekAtRatio ................................................................................. 55
-CRowSeekByBookmark .......................................................................... 55
-CRowSeekNext ..................................................................................... 56
-CRowsetProperties ................................................................................ 56
-CTableVariant ....................................................................................... 58
-CSortSet .............................................................................................. 58
-CTableColumn ...................................................................................... 59
-SERIALIZEDPROPERTYVALUE ................................................................. 61
-CCompletionCategSpec .......................................................................... 61
-CRankMergeRestriction .......................................................................... 62
-Message Headers ........................................................................................ 62
-Messages ................................................................................................... 64
-CPMCiStateInOut .................................................................................. 64
-CPMConnectIn ...................................................................................... 67
-CPMConnectOut .................................................................................... 69
-CPMCreateQueryIn ................................................................................ 71
-CPMCreateQueryOut .............................................................................. 73
-CPMGetQueryStatusIn ........................................................................... 74
-CPMGetQueryStatusOut ......................................................................... 74
-CPMGetQueryStatusExIn ........................................................................ 75
-CPMGetQueryStatusExOut ...................................................................... 75
-CPMSetBindingsIn ................................................................................. 76
-CPMGetRowsIn ..................................................................................... 77
-CPMGetRowsOut ................................................................................... 80
-CPMRatioFinishedIn ............................................................................... 83
-CPMRatioFinishedOut ............................................................................. 83
-CPMFetchValueIn .................................................................................. 84
-CPMFetchValueOut ................................................................................ 85
-CPMGetNotify ....................................................................................... 86
-CPMSendNotifyOut ................................................................................ 86
-CPMGetApproximatePositionIn ................................................................ 86
-CPMGetApproximatePositionOut .............................................................. 87
-CPMCompareBmkIn ............................................................................... 87
-CPMCompareBmkOut ............................................................................ 88
-CPMRestartPositionIn ............................................................................ 88
-CPMFreeCursorIn .................................................................................. 89
-CPMFreeCursorOut ................................................................................ 89
-CPMDisconnect ..................................................................................... 89
-CPMFindIndicesIn .................................................................................. 89
-CPMFindIndicesOut ............................................................................... 90
-CPMGetRowsetNotifyIn .......................................................................... 90
-CPMGetRowsetNotifyOut ........................................................................ 91
-CPMSetScopePrioritizationIn ................................................................... 93
-CPMSetScopePrioritizationOut ................................................................. 93
-CPMGetScopeStatisticsIn ....................................................................... 93
-CPMGetScopeStatisticsOut ..................................................................... 94
-CPMExternalSearchResultIn .................................................................... 94
-Errors........................................................................................................ 95
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-2.2.3.11
-2.2.3.12
-2.2.3.13
-2.2.3.14
-2.2.3.15
-2.2.3.16
-2.2.3.17
-2.2.3.18
-2.2.3.19
-2.2.3.20
-2.2.3.21
-2.2.3.22
-2.2.3.23
-2.2.3.24
-2.2.3.25
-2.2.3.26
-2.2.3.27
-2.2.3.28
-2.2.3.29
-2.2.3.30
-2.2.3.31
-2.2.3.32
-2.2.3.33
-2.2.3.34
-2.2.3.35
-
-2.2.4
-
-[MS-WSP] - v20260309
-Windows Search Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-6 / 246
-
-2.2.5
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-
-Standard Properties .................................................................................... 96
-Query Properties ................................................................................... 97
-Common Open Properties ...................................................................... 98
-ODBC Property .................................................................................... 175
-
-3.1
-
-3.1.5.1
-
-3.1.5.2
-
-3.1.5.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-3.1.5.2.5
-3.1.5.2.6
-3.1.5.2.7
-3.1.5.2.8
-3.1.5.2.9
-3.1.5.2.10
-3.1.5.2.11
-3.1.5.2.12
-3.1.5.2.13
-3.1.5.2.14
-3.1.5.2.15
-3.1.5.2.16
-3.1.5.2.17
-3.1.5.2.18
-3.1.5.2.19
-
-3  Protocol Details ................................................................................................... 176
-Server Details ................................................................................................. 177
-Abstract Data Model ................................................................................... 177
-Timers ..................................................................................................... 177
-Initialization .............................................................................................. 177
-Higher-Layer Triggered Events .................................................................... 177
-Processing and Sequencing Rules ................................................................ 178
-Remote Windows Search Service Catalog Management ............................. 179
-Receiving a CPMCiStateInOut Request .............................................. 179
-Remote Windows Search Service Querying .............................................. 180
-Receiving a CPMConnectIn Request .................................................. 180
-Receiving a CPMCreateQueryIn Request ............................................ 181
-Receiving a CPMGetQueryStatusIn Request ....................................... 181
-Receiving a CPMGetQueryStatusExIn Request .................................... 182
-Receiving a CPMRatioFinishedIn Request ........................................... 184
-Receiving a CPMGetRowsIn Request ................................................. 185
-Receiving a CPMFetchValueIn Request .............................................. 187
-Receiving a CPMSetBindingsIn Request ............................................. 188
-Receiving a CPMGetNotify Request ................................................... 188
-Receiving a CPMGetApproximatePositionIn Request ............................ 189
-Receiving a CPMCompareBmkIn Request ........................................... 189
-Receiving a CPMRestartPositionIn Request ......................................... 190
-Receiving a CPMFreeCursorIn Request .............................................. 191
-Receiving a CPMDisconnect Request ................................................. 192
-Receiving a CPMFindIndicesIn Request .............................................. 192
-Receiving a CPMGetRowsetNotifyIn ................................................... 192
-Receiving a CPMGetScopeStatisticsIn ................................................ 193
-Receiving a CPMSetScopePrioritizationIn ........................................... 193
-Receiving a CPMExternalSearchResultIn Request ................................ 194
-Timer Events ............................................................................................. 195
-Other Local Events ..................................................................................... 195
-Client Details .................................................................................................. 214
-Abstract Data Model ................................................................................... 214
-Timers ..................................................................................................... 214
-Initialization .............................................................................................. 214
-Higher-Layer Triggered Events .................................................................... 214
-Remote Windows Search Service Catalog Management ............................. 215
-Sending a CPMCiStateInOut Request ................................................. 215
-Remote Windows Search Service Catalog Query Messages ........................ 215
-Sending a CPMConnectIn Request .................................................... 215
-Sending a CPMCreateQueryIn Request .............................................. 216
-Sending a CPMSetBindingsIn Request ............................................... 216
-Sending a CPMGetRowsIn Request ................................................... 217
-Sending a CPMFetchValueIn Request ................................................ 217
-Sending a CPMFreeCursorIn Request ................................................ 218
-Sending a CPMDisconnect Message ................................................... 218
-Sending a CPMFindIndicesIn Request ................................................ 218
-Sending a CPMGetRowsetNotifyIn Request ........................................ 218
-Sending a CPMGetScopeStatisticsIn Request ...................................... 218
-Sending a CPMSetScopePrioritizationIn Request ................................. 218
-Sending a CPMExternalSearchResultIn Request .................................. 219
-Processing and Sequencing Rules ................................................................ 219
-Receiving a CPMCreateQueryOut Response ............................................. 219
-
-3.2.4.2.1
-3.2.4.2.2
-3.2.4.2.3
-3.2.4.2.4
-3.2.4.2.5
-3.2.4.2.6
-3.2.4.2.7
-3.2.4.2.8
-3.2.4.2.9
-3.2.4.2.10
-3.2.4.2.11
-3.2.4.2.12
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.6
-3.1.7
-
-3.2.4.1.1
-
-3.2.5.1
-
-3.2.4.1
-
-3.2.4.2
-
-3.2.5
-
-3.2
-
-[MS-WSP] - v20260309
-Windows Search Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-7 / 246
-
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-
-3.2.6
-3.2.7
-
-Receiving a CPMGetRowsOut Response ................................................... 219
-Receiving a CPMFetchValueOut Response ................................................ 220
-Receiving a CPMFreeCursorOut Response ................................................ 221
-Receiving a CPMFindIndicesOut Response ............................................... 221
-Receiving a CPMGetRowsetNotifyOut Response ........................................ 221
-Receiving a CPMGetScopeStatisticsOut Response ..................................... 221
-Receiving a CPMSetScopePrioritizationOut Response ................................ 222
-Timer Events ............................................................................................. 222
-Other Local Events ..................................................................................... 222
-
-4  Protocol Examples ............................................................................................... 223
-Example 1 ...................................................................................................... 223
-
-4.1
-
-5  Security ............................................................................................................... 237
-Security Considerations for Implementers .......................................................... 237
-Index of Security Parameters ........................................................................... 237
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 238
-
-7  Change Tracking .................................................................................................. 243
-
-8  Index ................................................................................................................... 244
-
-[MS-WSP] - v20260309
-Windows Search Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-8 / 246
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Windows Search Protocol, which allows a client to issue queries to a
 server hosting a Generic Search service (GSS). The protocol is primarily intended to be used for
@@ -1107,7 +845,7 @@ This document specifies both remote querying and remote administration of GSS ca
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1165,7 +903,8 @@ Release: March 9, 2026
 
 9 / 246
 
-hierarchical group coordinate: A coordinate that defines the position of a result in a hierarchical
+
+hierarchical group coordinate: A coordinate that defines the position of a result in a hierarchical
 
 grouping result set. The coordinate is a list of non-negative integers, one per category as
 defined in the CPMCreateQueryIn message and CCategorizationSet structure, followed by
@@ -1241,7 +980,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-WHEREID: A 32-bit integer that uniquely identifies the query restriction. Cannot be equal to
+
+WHEREID: A 32-bit integer that uniquely identifies the query restriction. Cannot be equal to
 
 0xFFFFFFFF.
 
@@ -1252,14 +992,14 @@ the indexed file system.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1286,7 +1026,7 @@ Information by Computer", 1988, ISBN: 0201122278.
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [Jones] Sparck Jones, K., Walker, S., and Robertson, S.E., "A Probabilistic Model of Information and
 Retrieval: Development and Status", September 1998, University of Cambridge Technical Report
@@ -1308,7 +1048,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-[MSDOCS-NLST] Microsoft Corporation, "National Language Support Terminology",
+
+[MSDOCS-NLST] Microsoft Corporation, "National Language Support Terminology",
 https://learn.microsoft.com/en-us/windows/win32/intl/nls-terminology
 
 [MSKB-5062553] Microsoft Corporation, "July 2025 - 5062553", July 2025,
@@ -1316,7 +1057,7 @@ https://www.catalog.update.microsoft.com/Search.aspx?q=5062553
 
 [PIPE] Microsoft Corporation, "Named Pipes", http://msdn.microsoft.com/en-us/library/aa365590.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The WSS helps to efficiently organize the extracted features of a collection of documents. The
 Windows Search Protocol allows a client to communicate with a server hosting a GSS, both to issue
@@ -1338,7 +1079,7 @@ The specific tasks performed by the Windows Search Protocol are grouped into two
 
   Remote querying of GSS catalogs
 
-1.3.1  Remote Administration Tasks
+#### 1.3.1 Remote Administration Tasks
 
 The Windows Search Protocol enables one GSS catalog management task from a client: querying the
 current state of a GSS catalog on the server (see CPMCiStateInOut).
@@ -1346,7 +1087,7 @@ current state of a GSS catalog on the server (see CPMCiStateInOut).
 All remote administration tasks follow a simple request/response model. No state is maintained on the
 client for any administration call, and administrative calls can be made in any order.
 
-1.3.2  Remote Querying
+#### 1.3.2 Remote Querying
 
 The Windows Search Protocol enables clients to perform search queries against a remote server
 hosting a GSS.
@@ -1381,7 +1122,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-
+
+
 
 
 
@@ -1411,24 +1153,24 @@ client contacts the server to release the query.
 server. The connection is then closed. Alternatively, the client can issue another query and repeat
 the sequence from step 2.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Windows Search Protocol relies on the SMB Protocol, as specified in [MS-SMB], or the SMB2
 Protocol, as specified in [MS-SMB2], for message transport. No other protocol depends directly on the
 Windows Search Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The client is expected to have obtained the name of the server and a catalog name before this
 protocol is invoked. It is also assumed that the client and server have a security association usable
 with named pipes as specified in [MS-SMB] or [MS-SMB2].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Windows Search Protocol is designed for querying and managing catalogs on a remote server
 from a client.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Windows Search Protocol has its own version ID that is used to communicate capabilities between the
 server and the client. There are two parts to this version ID: the version number, which is held in the
@@ -1454,7 +1196,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -1474,7 +1217,7 @@ Windows Search 4.0.
 
 0x00010700  64-bit Windows 7 and later or Windows Server 2008 R2 operating system and later.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULTs that are vendor-extensible. Vendors are free to choose their own values
 for this field, as long as the C bit (0x20000000) is set as specified in [MS-ERREF] section 2.1,
@@ -1484,7 +1227,7 @@ This protocol also uses NTSTATUS values taken from the NTSTATUS number space def
 ERREF]. Vendors SHOULD<1> reuse those values with their indicated meaning. Choosing any other
 value runs the risk of a collision in the future.
 
-1.8.1  Property IDs
+#### 1.8.1 Property IDs
 
 Properties are represented by IDs known as property IDs. Each property MUST have a GUID, as
 defined in [MS-DTYP] section 2.3.4.3. This identifier consists of a GUID representing a collection of
@@ -1495,7 +1238,7 @@ are considered invalid.
 Vendors can guarantee that their properties are uniquely defined by placing them in a property set
 defined by their own GUIDs.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol has no standards assignments, only private assignments made by Microsoft using
 allocation procedures specified in other protocols.
@@ -1510,14 +1253,15 @@ Release: March 9, 2026
 
 14 / 246
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how messages are transported and provide details of message syntax,
 including common structures and common error codes.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 All messages MUST be transported using a named pipe, as specified in [MS-SMB] or [MS-SMB2]. The
 following pipe name is used. For more information, see [PIPE].
@@ -1531,7 +1275,7 @@ identity of the caller that made the connection as specified in [MS-SMB] section
 SMB2] section 2.2.13 . The client MUST set SECURITY_IMPERSONATION as the ImpersonationLevel
 in the request to open the named pipe.<2>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Several structures and messages in the following sections refer to chapter or bookmark handles. A
 handle is a 32-bit long opaque structure that uniquely identifies a chapter or bookmark. Typically,
@@ -1561,7 +1305,7 @@ A bookmark handle to a bookmark that identifies the last row in the rowset.
 
 0xFFFFFFFD
 
-2.2.1  Structures
+#### 2.2.1 Structures
 
 This section details data structures that are defined and used by the Windows Search Protocol.
 
@@ -1594,7 +1338,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Structure
+
+Structure
 
 Description
 
@@ -1725,7 +1470,8 @@ Release: March 9, 2026
 
 16 / 246
 
-Structure
+
+Structure
 
 Description
 
@@ -1778,7 +1524,7 @@ CRankMergeRestriction
 
 Contains rules or constraints for merging ranked data.
 
-2.2.1.1  CBaseStorageVariant
+##### 2.2.1.1 CBaseStorageVariant
 
 The CBaseStorageVariant structure contains the value on which to perform a match operation for a
 property specified in the CPropertyRestriction structure.
@@ -1837,7 +1583,8 @@ Release: March 9, 2026
 
 17 / 246
 
-Value
+
+Value
 
 VT_UI1
 
@@ -1965,7 +1712,8 @@ Release: March 9, 2026
 
 18 / 246
 
-Value
+
+Value
 
 VT_BLOB
 
@@ -2085,7 +1833,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-vType
+
+vType
 
 Size
 
@@ -2179,7 +1928,8 @@ Release: March 9, 2026
 
 20 / 246
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2206,11 +1956,11 @@ string (variable): Null-terminated string.
 
 Note  This field MUST be absent if cLen equals 0x00000000.
 
-2.2.1.1.1 CBaseStorageVariant Structures
+###### 2.2.1.1.1 CBaseStorageVariant Structures
 
 The following structures are used in the CBaseStorageVariant structure.
 
-2.2.1.1.1.1  DECIMAL
+###### 2.2.1.1.1.1 DECIMAL
 
 DECIMAL is used to represent an exact numeric value with a fixed precision and fixed scale.
 
@@ -2266,7 +2016,8 @@ Release: March 9, 2026
 
 21 / 246
 
-2.2.1.1.1.2  VT_VECTOR
+
+###### 2.2.1.1.1.2 VT_VECTOR
 
 VT_VECTOR is used to pass one-dimensional arrays.
 
@@ -2308,7 +2059,7 @@ of the padding bytes MUST be ignored by the receiver.
 For a vType set to VT_ARRAY | VT_VARIANT, the type for items in this sequence is
 CBaseStorageVariant.
 
-2.2.1.1.1.3  SAFEARRAY
+###### 2.2.1.1.1.3 SAFEARRAY
 
 SAFEARRAY is used to pass multidimensional arrays. The structure contains array size information as
 well as the data in the array.
@@ -2349,7 +2100,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-fFeatures (2 bytes): A 16-bit bitfield. The values represent features defined by upper-layer
+
+fFeatures (2 bytes): A 16-bit bitfield. The values represent features defined by upper-layer
 
 applications and MUST be ignored.
 
@@ -2390,7 +2142,7 @@ through the rightmost dimension first, and then incrementing the next dimension)
 Rgsabound (which records cElements and lLbound) would be: 0x00000004, 0x00000000,
 0x00000002, and 0x00000000.
 
-2.2.1.1.1.4  SAFEARRAYBOUND
+###### 2.2.1.1.1.4 SAFEARRAYBOUND
 
 The SAFEARRAYBOUND structure represents the bounds of one dimension of a SAFEARRAY or
 SAFEARRAY2. Its format is as follows.
@@ -2416,7 +2168,7 @@ dimension.
 
 lLbound (4 bytes): A 32-bit unsigned integer, specifying the lower bound of the dimension.
 
-2.2.1.1.1.5  SAFEARRAY2
+###### 2.2.1.1.1.5 SAFEARRAY2
 
 SAFEARRAY2 is used to pass multidimensional arrays in SERIALIZEDPROPERTYVALUE. The structure
 contains boundary information as well as the data.
@@ -2428,7 +2180,8 @@ Release: March 9, 2026
 
 23 / 246
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2460,7 +2213,7 @@ vData (variable): A vector of marshaled items of a particular type, indicated by
 containing SERIALIZEDPROPERTYVALUE, with bit 0x2000 cleared. The format of vData is the same
 as that specified for the vData field of SAFEARRAY.
 
-2.2.1.1.1.6  VT_COMPRESSED_LPWSTR
+###### 2.2.1.1.1.6 VT_COMPRESSED_LPWSTR
 
 The VT_COMPRESSED_LPWSTR structure contains a compressed version of a null-terminated, 16-bit
 Unicode string.
@@ -2493,7 +2246,7 @@ character, where the higher byte of the character is always set to zero. Note th
 Unicode characters can be represented with this encoding scheme. This field MUST be absent if
 ccLen is set to 0x00000000.
 
-2.2.1.1.1.7  VT_CF
+###### 2.2.1.1.1.7 VT_CF
 
 VT_CF is used for clipboard format.
 
@@ -2521,7 +2274,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-ulClipFmt
+
+ulClipFmt
 
 pClipData
 
@@ -2537,7 +2291,7 @@ pClipData (4 bytes): A 32-bit unsigned integer that specifies the offset to clip
 
 vData (variable): The clipboard format data.
 
-2.2.1.2  CFullPropSpec
+##### 2.2.1.2 CFullPropSpec
 
 The CFullPropSpec structure contains a property set GUID and a property identifier to uniquely
 identify a property. A CFullPropSpec instance has a property set GUID and either an integer property
@@ -2590,7 +2344,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-ulKind (4 bytes): A 32-bit unsigned integer. MUST be one of the following values that indicates the
+
+ulKind (4 bytes): A 32-bit unsigned integer. MUST be one of the following values that indicates the
 
 contents of PrSpec.
 
@@ -2618,7 +2373,7 @@ Property name (variable): If ulKind is set to PRSPEC_PROPID, this field MUST NOT
 ulKind is set to PRSPEC_LPWSTR, this field MUST contain a case-insensitive array of PrSpec non-
 null Unicode characters that contains the name of the property.
 
-2.2.1.3  CContentRestriction
+##### 2.2.1.3 CContentRestriction
 
 The CContentRestriction structure contains a word or phrase to match in the inverted index for a
 specific property.
@@ -2672,7 +2427,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Cc (4 bytes): A 32-bit unsigned integer, specifying the number of characters in the _pwcsPhrase
+
+Cc (4 bytes): A 32-bit unsigned integer, specifying the number of characters in the _pwcsPhrase
 
 field.
 
@@ -2724,7 +2480,7 @@ forms of a word can be determined by calling the Inflect abstract
 interface (section 3.1.7) to the GSS (Generic Search Service) with
 "pwcsPhrase" as an argument.
 
-2.2.1.4  CInternalPropertyRestriction
+##### 2.2.1.4 CInternalPropertyRestriction
 
 The CInternalPropertyRestriction structure contains a property value to match with an operation.
 
@@ -2760,7 +2516,8 @@ Release: March 9, 2026
 
 27 / 246
 
-restrictionPresent
+
+restrictionPresent
 
 nextRestriction (variable)
 
@@ -2865,7 +2622,8 @@ Release: March 9, 2026
 
 28 / 246
 
-nonzero), the value it contains is arbitrary. The content of this field MUST be ignored by the
+
+nonzero), the value it contains is arbitrary. The content of this field MUST be ignored by the
 receiver.
 
 _lcid (4 bytes): A 32-bit unsigned integer, indicating the locale of a string, contained in _prval
@@ -2886,7 +2644,7 @@ restrictionPresent indicates that the nextRestriction field is present.
 
 nextRestriction (variable): A CRestriction structure specifying a further restriction.
 
-2.2.1.5  CNatLanguageRestriction
+##### 2.2.1.5 CNatLanguageRestriction
 
 The CNatLanguageRestriction structure contains a natural language query match for a property.
 Natural language simply means that the string has no formal meaning. The GSS is free to match on
@@ -2941,7 +2699,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-_pwcsPhrase (variable): A non-null-terminated Unicode string containing the text to search for
+
+_pwcsPhrase (variable): A non-null-terminated Unicode string containing the text to search for
 
 within the specific property. MUST NOT be empty. The Cc field contains the length of the string.
 
@@ -2955,7 +2714,7 @@ Lcid (4 bytes): A 32-bit unsigned integer indicating the locale of _pwcsPhrase, 
 
 LCID].
 
-2.2.1.6  CNodeRestriction
+##### 2.2.1.6 CNodeRestriction
 
 The CNodeRestriction structure contains an array of command tree restriction nodes for
 constraining the results of a query.
@@ -2987,7 +2746,7 @@ by 0 to 3 padding bytes such that each structure begins at an offset that is a m
 from the beginning of the message that contains this array. If padding bytes are present, the
 value they contain is arbitrary. The content of the padding bytes MUST be ignored by the receiver.
 
-2.2.1.7  CPropertyRestriction
+##### 2.2.1.7 CPropertyRestriction
 
 The CPropertyRestriction structure contains a property to get from each row, a comparison operator
 and a constant. For each row, the value returned by the specific property in the row is compared
@@ -3024,7 +2783,8 @@ Release: March 9, 2026
 
 30 / 246
 
-...
+
+...
 
 _lcid
 
@@ -3129,7 +2889,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The asterisk matches any number of characters. The period matches the end of the string. The
+
+The asterisk matches any number of characters. The period matches the end of the string. The
 question mark matches any one character. The vertical bar (|) is an escape character, which
 indicates special behavior for the characters in the table below the ([) character. The following
 table explains the meanings of special characters in regular expressions.
@@ -3232,7 +2993,8 @@ Release: March 9, 2026
 
 32 / 246
 
-If the vType of _prval is VT_BLOB or VT_BLOB_OBJECT, and _Property refers to a property of a
+
+If the vType of _prval is VT_BLOB or VT_BLOB_OBJECT, and _Property refers to a property of a
 string type (VT_LPSTR, VT_LPWSTR, VT_COMPRESSED_LPWSTR, VT_BSTR, or VT_VECTORs or
 VT_ARRAYs of those base types), then the first byte of the blob SHOULD be the low-order byte of
 a valid RANGEBOUNDARY ulType value (see section 2.2.1.23) and be followed by a null-
@@ -3250,7 +3012,7 @@ _lcid (4 bytes): A 32-bit unsigned integer representing locale for the string co
 
 specified in [MS-LCID].
 
-2.2.1.8  CReuseWhere
+##### 2.2.1.8 CReuseWhere
 
 The CReuseWhere restriction packet contains a WHEREID that refers to the restriction array used to
 construct a currently open rowset. A rowset is open as long as there is still a cursor returned by
@@ -3274,7 +3036,7 @@ whereID (4 bytes): A 32-bit unsigned integer defining a unique WHEREID for refer
 
 CRestrictionArray.
 
-2.2.1.9  CScopeRestriction
+##### 2.2.1.9 CScopeRestriction
 
 The CScopeRestriction structure restricts the files to be returned to those with a path that matches the
 restriction.
@@ -3313,7 +3075,8 @@ Release: March 9, 2026
 
 33 / 246
 
-CcLowerPath (4 bytes): A 32-bit unsigned integer containing the number of Unicode characters in
+
+CcLowerPath (4 bytes): A 32-bit unsigned integer containing the number of Unicode characters in
 
 the _lowerPath field.
 
@@ -3352,9 +3115,9 @@ Meaning
 
 system) for a website.
 
-2.2.1.10
+##### 2.2.1.10 CSort
 
-CSort
+
 
 The CSort structure identifies a column, direction, and locale to sort by.
 
@@ -3398,7 +3161,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 0x00000000
 
@@ -3440,9 +3204,9 @@ locale (4 bytes): A 32-bit unsigned integer indicating the locale (as specified 
 column. The locale determines the sorting rules to use when sorting textual values. The GSS can
 use the appropriate operating system facilities to do this.
 
-2.2.1.11
+##### 2.2.1.11 CVectorRestriction
 
-CVectorRestriction
+
 
 The CVectorRestriction structure contains a weighted OR operation over restriction nodes. Vector
 restrictions represent queries using the full text vector space model of ranking (see [SALTON] for
@@ -3497,7 +3261,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 0x00000000
 
@@ -3527,9 +3292,9 @@ Use the Jaccard coefficient algorithm, as specified in [SALTON].
 
 0x00000004
 
-2.2.1.12
+##### 2.2.1.12 CCoercionRestriction
 
-CCoercionRestriction
+
 
 The CCoercionRestriction structure contains the modifier and rank coercion operation.
 
@@ -3580,9 +3345,9 @@ _childRes (variable): CRestriction structure that specifies a command tree. The 
 value for results of a child restriction will be coerced as specified by the containing CRestriction
 structure.
 
-2.2.1.13
+##### 2.2.1.13 CRelDocRestriction
 
-CRelDocRestriction
+
 
 A CRelDocRestriction structure contains a relevant document ID.
 
@@ -3593,7 +3358,8 @@ Release: March 9, 2026
 
 36 / 246
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3624,9 +3390,9 @@ In the example, "docid" is a uniquie 32-bit unsigned integer, "Windows" is the a
 "SystemIndex" is the catalog name, and "153" is the document ID for the document in decimal
 notation.<4>
 
-2.2.1.14
+##### 2.2.1.14 CProbRestriction
 
-CProbRestriction
+
 
 A CProbRestriction structure contains parameters for probabilistic ranking.
 
@@ -3671,7 +3437,8 @@ Release: March 9, 2026
 
 37 / 246
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-WSP].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -3727,9 +3494,9 @@ terms.
 
 k1, k3, and b are parameters, specified in the CProbRestriction structure.
 
-2.2.1.15
+##### 2.2.1.15 CFeedbackRestriction
 
-CFeedbackRestriction
+
 
 The CFeedbackRestriction structure contains the number of relevant documents and a property
 specification for a relevance feedback query.
@@ -3756,15 +3523,16 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-...
+
+...
 
 _cFeedbackDoc (4 bytes): A 32-bit unsigned integer specifying the count of relevant documents.
 
 _Property (variable): A CFullPropSpec structure, specifying a property.
 
-2.2.1.16
+##### 2.2.1.16 CRestrictionArray
 
-CRestrictionArray
+
 
 The CRestrictionArray structure contains an array of restriction nodes. The first two fields (count
 and isPresent) are not padded and will start where the previous structure in the message ended (as
@@ -3827,9 +3595,9 @@ Restriction (variable): A CRestriction structure, specifying a node of a query c
 
 Note  Restriction MUST be omitted if the value of isPresent is set to 0x00.
 
-2.2.1.17
+##### 2.2.1.17 CRestriction
 
-CRestriction
+
 
 The CRestriction structure contains a restriction node in a query command tree.
 
@@ -3840,7 +3608,8 @@ Release: March 9, 2026
 
 39 / 246
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3954,7 +3723,8 @@ Release: March 9, 2026
 
 40 / 246
 
-Value
+
+Value
 
 Meaning
 
@@ -4033,9 +3803,9 @@ Restriction (variable): The restriction type for the command tree node. The synt
 
 indicated by the _ulType field.
 
-2.2.1.18
+##### 2.2.1.18 CColumnSet
 
-CColumnSet
+
 
 The CColumnSet structure specifies the column numbers to be returned. This structure is always used
 in reference to a specific CPidMapper structure.
@@ -4066,13 +3836,14 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-indexes (variable): An array of 4-byte unsigned integers each representing a zero-based index into
+
+indexes (variable): An array of 4-byte unsigned integers each representing a zero-based index into
 the aPropSpec array in the corresponding CPidMapper structure. The corresponding property
 values are returned as columns in the result set.
 
-2.2.1.19
+##### 2.2.1.19 CCategorizationSet
 
-CCategorizationSet
+
 
 The CCategorizationSet structure contains information on how the grouping is done at each level in a
 hierarchical result set.
@@ -4102,9 +3873,9 @@ categories (variable): Array of CCategorizationSpec structures specifying the gr
 
 in a hierarchical query. The first structure specifies the top level.
 
-2.2.1.20
+##### 2.2.1.20 CCategorizationSpec
 
-CCategorizationSpec
+
 
 The CCategorizationSpec structure specifies how grouping is done at one level in a hierarchical query.
 
@@ -4148,7 +3919,8 @@ Release: March 9, 2026
 
 42 / 246
 
-_csColumns (variable): A CColumnSet structure indicating the columns to return at that level in a
+
+_csColumns (variable): A CColumnSet structure indicating the columns to return at that level in a
 
 hierarchical result set.
 
@@ -4168,9 +3940,9 @@ _cMaxResults (4 bytes): A 32-bit unsigned integer. Reserved.
 
 Note  MUST be set to 0x00000000.
 
-2.2.1.21
+##### 2.2.1.21 CCategSpec
 
-CCategSpec
+
 
 The CCategSpec structure contains information about which grouping to perform over query results.
 
@@ -4236,9 +4008,10 @@ Release: March 9, 2026
 
 43 / 246
 
-2.2.1.22
 
-CRangeCategSpec
+##### 2.2.1.22 CRangeCategSpec
+
+
 
 The CRangeCategSpec structure contains information about ranges for grouping into range-specified
 buckets.
@@ -4278,9 +4051,9 @@ on. The last range includes all the items greater than the last RANGEBOUNDARY st
 maximum value. There will be a total of cRange + 1 ranges. Values with vType set to VT_NULL
 and VT_EMPTY are always in the last group, regardless of sort order.
 
-2.2.1.23
+##### 2.2.1.23 RANGEBOUNDARY
 
-RANGEBOUNDARY
+
 
 The RANGEBOUNDARY structure contains a single range.
 
@@ -4320,7 +4093,8 @@ Release: March 9, 2026
 
 44 / 246
 
-ulType (4 bytes): A 32-bit unsigned integer that indicates which type of boundary is represented by
+
+ulType (4 bytes): A 32-bit unsigned integer that indicates which type of boundary is represented by
 
 this structure.
 
@@ -4405,9 +4179,10 @@ Release: March 9, 2026
 
 45 / 246
 
-2.2.1.24
 
-CAggregSet
+##### 2.2.1.24 CAggregSet
+
+
 
 The CAggregSet structure contains information about aggregates. Aggregate is a database concept for
 a field calculated using the information retrieved from the query. The different aggregates that are
@@ -4436,9 +4211,9 @@ AggregSpecs (variable): An array of CAggregSpec structures, each describing indi
 
 aggregation.
 
-2.2.1.25
+##### 2.2.1.25 CAggregSpec
 
-CAggregSpec
+
 
 The CAggregSpec structure contains information about an individual aggregate.
 
@@ -4504,7 +4279,8 @@ the group. Valid only for numeric or filetime properties.
 
 46 / 246
 
-Value
+
+Value
 
 Meaning
 
@@ -4592,9 +4368,9 @@ idRepresentative (4 bytes): An optional 32-bit unsigned integer that is the repr
 
 ID requested for the RepresentativeOf aggregate.
 
-2.2.1.26
+##### 2.2.1.26 CSortAggregSet
 
-CSortAggregSet
+
 
 The CSortAggregSet structure contains information about group sorting.
 
@@ -4620,15 +4396,16 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-...
+
+...
 
 cCount (4 bytes): A 32-bit unsigned integer specifying the number of entries in SortKeys.
 
 SortKeys (variable): An array of CAggregSortKey structures, each describing a sort order.
 
-2.2.1.27
+##### 2.2.1.27 CAggregSortKey
 
-CAggregSortKey
+
 
 The CAggregSortKey structure contains information about sort order over single column.
 
@@ -4673,9 +4450,9 @@ specified.
 
 ColumnSpec (variable): A CAggregSpec structure specifying which column to sort by.
 
-2.2.1.28
+##### 2.2.1.28 CInGroupSortAggregSets
 
-CInGroupSortAggregSets
+
 
 The CInGroupSortAggregSets structure contains information on how the group is sorted with regard to
 the parent's group ranges.
@@ -4712,13 +4489,14 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Reserved (4 bytes): A 4-byte field that must be ignored.
+
+Reserved (4 bytes): A 4-byte field that must be ignored.
 
 SortSets (variable): An array of CSortSet structures.
 
-2.2.1.29
+##### 2.2.1.29 CDbColId
 
-CDbColId
+
 
 The CDbColId structure contains a column identifier.
 
@@ -4795,9 +4573,10 @@ Release: March 9, 2026
 
 49 / 246
 
-2.2.1.30
 
-CDbProp
+##### 2.2.1.30 CDbProp
+
+
 
 The CDbProp structure contains a database property. These properties control how queries are
 interpreted by the GSS.
@@ -4843,7 +4622,7 @@ colid (variable): A CDbColId structure that defines the database property being 
 
 vValue (variable): A CBaseStorageVariant containing the property value.
 
-2.2.1.30.1  Database Properties
+###### 2.2.1.30.1 Database Properties
 
 This section details the properties that are used by the Windows Search Protocol to control the
 behavior of the GSS. These properties are grouped into three property sets, identified in the
@@ -4885,7 +4664,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- Value
+
+ Value
 
  Meaning
 
@@ -4999,7 +4779,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- Value
+
+ Value
 
  Meaning
 
@@ -5007,9 +4788,9 @@ Release: March 9, 2026
 
 containing 0x2A4880706FD911D0A80800A0C906241A.
 
-2.2.1.31
+##### 2.2.1.31 CDbPropSet
 
-CDbPropSet
+
 
 The CDbPropSet structure contains a set of properties. The first field (guidPropertySet) is not
 padded and will start where the previous structure in the message ended (as indicated by the
@@ -5088,7 +4869,8 @@ Release: March 9, 2026
 
 52 / 246
 
-cProperties (4 bytes): A 32-bit unsigned integer containing the number of elements in the aProps
+
+cProperties (4 bytes): A 32-bit unsigned integer containing the number of elements in the aProps
 
 array.
 
@@ -5099,9 +4881,9 @@ multiple of 4 bytes from the beginning of the message that contains this array. 
 are present, the value they contain is arbitrary. The content of the padding bytes MUST be ignored
 by the receiver.
 
-2.2.1.32
+##### 2.2.1.32 CPidMapper
 
-CPidMapper
+
 
 The CPidMapper structure contains an array of property specifications and serves to map from a
 property offset to a full property specification. The more compact property offsets are used to name
@@ -5143,9 +4925,9 @@ CFullPropSpec in the array MUST be separated by 0 to 3 padding bytes such that e
 has a 4-byte alignment from the beginning of a message. Such padding bytes can be set to any
 arbitrary value when sent and MUST be ignored on receipt.
 
-2.2.1.33
+##### 2.2.1.33 CColumnGroupArray
 
-CColumnGroupArray
+
 
 The CColumnGroupArray structure contains a set of property groups with weights for each property.
 
@@ -5173,7 +4955,8 @@ Release: March 9, 2026
 
 53 / 246
 
-count (4 bytes): A 32-bit unsigned integer containing the number of elements in the aGroupArray
+
+count (4 bytes): A 32-bit unsigned integer containing the number of elements in the aGroupArray
 
 array.
 
@@ -5184,9 +4967,9 @@ to 3 padding bytes such that each structure has a 4-byte alignment from the begi
 message. Such padding bytes can be set to any arbitrary value when sent and MUST be ignored
 on receipt.
 
-2.2.1.34
+##### 2.2.1.34 CColumnGroup
 
-CColumnGroup
+
 
 The CColumnGroup structure contains information about a property's weight in a single group.
 
@@ -5219,9 +5002,9 @@ Props (variable): An array of SProperty structures, each specifying a PID and a 
 
 property.
 
-2.2.1.35
+##### 2.2.1.35 SProperty
 
-SProperty
+
 
 The SProperty structure contains information about single property weight.
 
@@ -5246,9 +5029,9 @@ _weight (4 bytes): A 32-bit unsigned integer specifying the weight to be used in
 
 ranking.
 
-2.2.1.36
+##### 2.2.1.36 CRowSeekAt
 
-CRowSeekAt
+
 
 The CRowSeekAt structure contains the offset at which to retrieve rows in a CPMGetRowsIn message.
 
@@ -5259,7 +5042,8 @@ Release: March 9, 2026
 
 54 / 246
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5286,9 +5070,9 @@ _hRegion (4 bytes): A 32-bit unsigned integer.
 
 Note  This field MUST be set to 0x00000000 and MUST be ignored.
 
-2.2.1.37
+##### 2.2.1.37 CRowSeekAtRatio
 
-CRowSeekAtRatio
+
 
 The CRowSeekAtRatio structure identifies the point at which to begin retrieval for a CPMGetRowsIn
 message.
@@ -5322,9 +5106,9 @@ _hRegion (4 bytes): A 32-bit unsigned integer.
 
 Note  This field MUST be set to 0x00000000 and MUST be ignored.
 
-2.2.1.38
+##### 2.2.1.38 CRowSeekByBookmark
 
-CRowSeekByBookmark
+
 
 The CRowSeekByBookmark structure identifies the bookmarks from which to begin retrieving rows
 for a CPMGetRowsIn message. The client needs to previously have set up the ODBC Bookmark
@@ -5342,7 +5126,8 @@ Release: March 9, 2026
 
 55 / 246
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5383,9 +5168,9 @@ When sent by the client, MUST be set to zero when sent and MUST be ignored on re
 sent by the server (as part of the CPMGetRowsOut message), the values in the array indicate the
 result status for each row retrieval.
 
-2.2.1.39
+##### 2.2.1.39 CRowSeekNext
 
-CRowSeekNext
+
 
 The CRowSeekNext structure contains the number of rows to skip in a CPMGetRowsIn message.
 
@@ -5404,9 +5189,9 @@ _cskip
 
 _cskip (4 bytes): A 32-bit unsigned integer representing the number of rows to skip in the rowset.
 
-2.2.1.40
+##### 2.2.1.40 CRowsetProperties
 
-CRowsetProperties
+
 
 The CRowsetProperties structure contains configuration information for a query.
 
@@ -5434,7 +5219,8 @@ Release: March 9, 2026
 
 56 / 246
 
-_cMaxResults
+
+_cMaxResults
 
 _cCmdTimeout
 
@@ -5542,7 +5328,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Note  This field MUST be set to 0x00000000. It is not used and MUST be ignored.
+
+Note  This field MUST be set to 0x00000000. It is not used and MUST be ignored.
 
 _cMaxResults (4 bytes): A 32-bit unsigned integer specifying the maximum number of rows that
 
@@ -5555,9 +5342,9 @@ executing on the server.
 
 Note  A value of 0x00000000 means that the query is not to time out.
 
-2.2.1.41
+##### 2.2.1.41 CTableVariant
 
-CTableVariant
+
 
 The CTableVariant structure contains the fixed-size portion of a variable length data type stored in the
 CPMGetRowsOut message.
@@ -5614,9 +5401,9 @@ VT_DECIMAL (see section 2.2.1.1.1.1) type: Size of value field is 4 bytes.
 
 All other types: Size of value field is 8 bytes.
 
-2.2.1.42
+##### 2.2.1.42 CSortSet
 
-CSortSet
+
 
 The CSortSet structure contains the sort order of the query.
 
@@ -5627,7 +5414,8 @@ Release: March 9, 2026
 
 58 / 246
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5651,9 +5439,9 @@ the query. Structures in the array MUST be separated by 0 to 3 padding bytes suc
 structure has a 4-byte alignment from the beginning of a message. Such padding bytes can be set
 to any arbitrary value when sent and MUST be ignored on receipt.
 
-2.2.1.43
+##### 2.2.1.43 CTableColumn
 
-CTableColumn
+
 
 The CTableColumn structure contains a column of a CPMSetBindingsIn message.
 
@@ -5722,7 +5510,8 @@ Release: March 9, 2026
 
 59 / 246
 
-Value  Meaning
+
+Value  Meaning
 
 0x00
 
@@ -5807,7 +5596,8 @@ Release: March 9, 2026
 
 60 / 246
 
-This field MUST be inserted before LengthOffset if, without it, LengthOffset would not begin at
+
+This field MUST be inserted before LengthOffset if, without it, LengthOffset would not begin at
 an even offset from the beginning of a message. The value of this byte is arbitrary and MUST be
 ignored. If LengthUsed is set to 0x00, this field MUST NOT be present.
 
@@ -5816,9 +5606,9 @@ row. In CPMGetRowsOut, length is represented by a 32-bit unsigned integer by the
 in LengthOffset. If LengthUsed is set to 0x00, this field MUST NOT be present. The offset value
 is within row size(CPMSetBindingsIn._cbRow), and the offset + 4 is within row size too.
 
-2.2.1.44
+##### 2.2.1.44 SERIALIZEDPROPERTYVALUE
 
-SERIALIZEDPROPERTYVALUE
+
 
 The SERIALIZEDPROPERTYVALUE structure contains a serialized value.
 
@@ -5850,9 +5640,9 @@ rgb (variable): Serialized value. The serialization depends on the value of dwTy
 identically to the vValue field in section 2.2.1.1. The process used to serialize rgb is the same as
 that described in section 2.2.1.1.
 
-2.2.1.45
+##### 2.2.1.45 CCompletionCategSpec
 
-CCompletionCategSpec
+
 
 The CCompletionCategSpec structure contains the specification for building groups of search
 completion suggestions.
@@ -5889,7 +5679,8 @@ Release: March 9, 2026
 
 61 / 246
 
-...
+
+...
 
 type (4 bytes): A 32-bit unsigned integer. 0 for fuzzy matching, 1 for exact. A match is exact if it is a
 prefix of any of the strings specified by apszComplStrings. Fuzzy matching specifies that the
@@ -5913,9 +5704,9 @@ property that can be matched against for search completion values. If no PIDs ar
 PIDs that are included in the index of completion strings are considered for matches. There will be
 cComplPids PIDs.
 
-2.2.1.46
+##### 2.2.1.46 CRankMergeRestriction
 
-CRankMergeRestriction
+
 
 The CRankMergeRestriction structure contains merge types for ranked data.<7>
 
@@ -5958,7 +5749,7 @@ minimum rank from all results.
 This merging algorithm is the default behavior in case of OR cursor. It selects the
 maximum rank from all results.
 
-2.2.2  Message Headers
+#### 2.2.2 Message Headers
 
 All Windows Search Protocol messages have a 16-byte header.
 
@@ -5971,7 +5762,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6050,7 +5842,8 @@ Release: March 9, 2026
 
 63 / 246
 
-Value
+
+Value
 
 Meaning
 
@@ -6083,7 +5876,7 @@ _ulReserved2 (4 bytes): MUST be ignored by the receiver.
 
 Note  This field MUST be set to 0x00000000 except for the CPMGetRowsIn message, where it
 MUST hold the high 32-bits part of a 64-bit offset if 64-bit offsets are being used (see section
-2.2.3.12 for details).
+##### 2.2.3.12 for details).
 
 2.2.3  Messages
 
@@ -6123,7 +5916,8 @@ Release: March 9, 2026
 
 64 / 246
 
-eState
+
+eState
 
 cFilteredDocuments
 
@@ -6213,7 +6007,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -6321,7 +6116,8 @@ Release: March 9, 2026
 
 66 / 246
 
-dwPropCacheSize (4 bytes): A 32-bit unsigned integer indicating the size, in megabytes, of the
+
+dwPropCacheSize (4 bytes): A 32-bit unsigned integer indicating the size, in megabytes, of the
 
 property cache.
 
@@ -6389,7 +6185,8 @@ Release: March 9, 2026
 
 67 / 246
 
-...
+
+...
 
 cExtPropSet
 
@@ -6461,7 +6258,8 @@ Release: March 9, 2026
 
 68 / 246
 
-_paddingcPropSets (variable): This field MUST be 0 to 7 bytes in length. The number of bytes
+
+_paddingcPropSets (variable): This field MUST be 0 to 7 bytes in length. The number of bytes
 
 MUST be the number required to make the byte offset of the cPropSets field from the beginning
 of the message that contains this structure equal a multiple of 8. The value of the bytes can be
@@ -6542,7 +6340,8 @@ Release: March 9, 2026
 
 69 / 246
 
-dwNLSVerMajor (optional)
+
+dwNLSVerMajor (optional)
 
 dwNLSVerMinor (optional)
 
@@ -6628,7 +6427,8 @@ Release: March 9, 2026
 
 70 / 246
 
-Value
+
+Value
 
 Meaning
 
@@ -6706,7 +6506,8 @@ Release: March 9, 2026
 
 71 / 246
 
-GroupArray (variable)
+
+GroupArray (variable)
 
 ...
 
@@ -6782,7 +6583,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-bytes from the beginning of the message that contains this structure. If this field is present (that
+
+bytes from the beginning of the message that contains this structure. If this field is present (that
 is, length nonzero), the value it contains is arbitrary. The content of this field MUST be ignored by
 the receiver. This field MUST be absent if CCategorizationSetPresent is set to 0x00.
 
@@ -6865,7 +6667,8 @@ Release: March 9, 2026
 
 73 / 246
 
-aCursors (variable): An array of 32-bit unsigned integers representing the handles to cursors with
+
+aCursors (variable): An array of 32-bit unsigned integers representing the handles to cursors with
 the number of elements equal to the number of categories in the CCategorizationSet field of
 CPMCreateQueryIn message plus one element, representing an uncategorized cursor.
 
@@ -6967,7 +6770,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Constant
+
+Constant
 
 Meaning
 
@@ -7058,7 +6862,8 @@ Release: March 9, 2026
 
 75 / 246
 
-_iRowBmk
+
+_iRowBmk
 
 _cRowsTotal
 
@@ -7137,7 +6942,8 @@ Release: March 9, 2026
 
 76 / 246
 
-_dummy (optional)
+
+_dummy (optional)
 
 cColumns (optional)
 
@@ -7208,7 +7014,8 @@ Release: March 9, 2026
 
 77 / 246
 
-_ulClientBase
+
+_ulClientBase
 
 _fBwdFetch
 
@@ -7284,7 +7091,8 @@ Release: March 9, 2026
 
 78 / 246
 
-Value
+
+Value
 
 Meaning
 
@@ -7325,7 +7133,8 @@ Release: March 9, 2026
 
 79 / 246
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-WSP].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
@@ -7348,7 +7157,8 @@ Release: March 9, 2026
 
 80 / 246
 
-
+
+
 
 
 
@@ -7440,7 +7250,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -7507,15 +7318,16 @@ Release: March 9, 2026
 
 82 / 246
 
-<!-- Extracted images from page 83 -->
+
+<!-- Extracted images from page 83 -->
 ![Extracted image 1 from page 83]([MS-WSP].images/page083-img01.png)
 <!-- /Extracted images from page 83 -->
 
 Figure 3: Structure of the row buffer
 
-2.2.3.13
+##### 2.2.3.13 CPMRatioFinishedIn
 
-CPMRatioFinishedIn
+
 
 The CPMRatioFinishedIn message requests the completion percentage of a query. The format of the
 CPMRatioFinishedIn message that follows the header is shown in the following diagram.
@@ -7543,9 +7355,9 @@ _fQuick (4 bytes): This is unused and MUST be ignored by the server.
 
 Note  This field MUST be set to 0x00000001.
 
-2.2.3.14
+##### 2.2.3.14 CPMRatioFinishedOut
 
-CPMRatioFinishedOut
+
 
 The CPMRatioFinishedOut message replies to a CPMRatioFinishedIn message with the completion ratio
 of a query. The format of the CPMRatioFinishedOut message that follows the header is shown in the
@@ -7573,7 +7385,8 @@ Release: March 9, 2026
 
 83 / 246
 
-_cRows
+
+_cRows
 
 _fNewRows
 
@@ -7599,9 +7412,9 @@ Meaning
 
 0x00000001  There are new rows available in the rowset.
 
-2.2.3.15
+##### 2.2.3.15 CPMFetchValueIn
 
-CPMFetchValueIn
+
 
 The CPMFetchValueIn message requests a property value that was too large to return in a rowset. As
 specified in section 3.2.4.2.5, this message is sent repeatedly to retrieve all bytes of the property,
@@ -7649,7 +7462,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-_cbSoFar (4 bytes): A 32-bit unsigned integer containing the number of bytes previously transferred
+
+_cbSoFar (4 bytes): A 32-bit unsigned integer containing the number of bytes previously transferred
 
 for this property.
 
@@ -7669,9 +7483,9 @@ _padding (variable): This field MUST be of the length necessary (0 to 3 bytes) t
 out to a multiple of 4 bytes in length. The value of the padding bytes can be any arbitrary value.
 This field MUST be ignored by the receiver.
 
-2.2.3.16
+##### 2.2.3.16 CPMFetchValueOut
 
-CPMFetchValueOut
+
 
 The CPMFetchValueOut message replies to a CPMFetchValueIn message with a property value from a
 previous query. As specified in section 3.2.4.2.5, this message is sent after each CPMFetchValueIn
@@ -7732,24 +7546,25 @@ Release: March 9, 2026
 
 85 / 246
 
-vValue (variable): A portion of a byte array containing a SERIALIZEDPROPERTYVALUE, where the
+
+vValue (variable): A portion of a byte array containing a SERIALIZEDPROPERTYVALUE, where the
 
 offset of the beginning of the portion is the value of _cbSoFar in CPMFetchValueIn. The length of
 the portion, indicated by the _cbValue field, MUST be less than or equal to the value of
 _cbChunk in CPMFetchValueIn.
 
-2.2.3.17
+##### 2.2.3.17 CPMGetNotify
 
-CPMGetNotify
+
 
 The CPMGetNotify message requests that the client wants to be notified of rowset changes.
 
 The message MUST NOT include a body; only the message header, as specified in section 2.2.2, is
 sent.
 
-2.2.3.18
+##### 2.2.3.18 CPMSendNotifyOut
 
-CPMSendNotifyOut
+
 
 The CPMSendNotifyOut message notifies the client of a change to the results of a query.
 
@@ -7795,9 +7610,9 @@ The query has been executed again.
 
 0x00000003
 
-2.2.3.19
+##### 2.2.3.19 CPMGetApproximatePositionIn
 
-CPMGetApproximatePositionIn
+
 
 The CPMGetApproximatePositionIn message requests the approximate position of a bookmark in a
 chapter. The format of the CPMGetApproximatePositionIn message that follows the header is shown
@@ -7827,7 +7642,8 @@ Release: March 9, 2026
 
 86 / 246
 
-_hCursor (4 bytes): A 32-bit value representing the query cursor obtained from
+
+_hCursor (4 bytes): A 32-bit value representing the query cursor obtained from
 
 CPMCreateQueryOut for the rowset containing the bookmark.
 
@@ -7837,9 +7653,9 @@ _bmk (4 bytes): A 32-bit value representing the handle to the bookmark for which
 
 approximate position.
 
-2.2.3.20
+##### 2.2.3.20 CPMGetApproximatePositionOut
 
-CPMGetApproximatePositionOut
+
 
 The CPMGetApproximatePositionOut message replies to a CPMGetApproximatePositionIn message
 describing the approximate position of the bookmark in the chapter. The format of the
@@ -7866,9 +7682,9 @@ rowset. If there are no rows, this field MUST be set to 0x00000000.
 
 _denominator (4 bytes): A 32-bit unsigned integer containing the number of rows in the rowset.
 
-2.2.3.21
+##### 2.2.3.21 CPMCompareBmkIn
 
-CPMCompareBmkIn
+
 
 The CPMCompareBmkIn message requests a comparison of two bookmarks in a chapter.<19>
 
@@ -7917,9 +7733,10 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-2.2.3.22
 
-CPMCompareBmkOut
+##### 2.2.3.22 CPMCompareBmkOut
+
+
 
 The CPMCompareBmkOut message replies to a CPMCompareBmkIn message with the comparison of
 the two bookmarks in the chapter. The format of the CPMCompareBmkOut message that follows the
@@ -7976,9 +7793,9 @@ The first bookmark is not comparable to the second.
 
 0x00000004
 
-2.2.3.23
+##### 2.2.3.23 CPMRestartPositionIn
 
-CPMRestartPositionIn
+
 
 The CPMRestartPositionIn message moves the fetch position for a cursor to the beginning of the
 chapter. As specified in section 3.1.5.2.12, the server will reply using the same message, with the
@@ -8014,13 +7831,14 @@ Release: March 9, 2026
 
 88 / 246
 
-_chapt (4 bytes): A 32-bit value representing the handle of a chapter from which to retrieve rows.
+
+_chapt (4 bytes): A 32-bit value representing the handle of a chapter from which to retrieve rows.
 This field MUST be present when the message is sent by the client and MUST be absent when the
 message is sent by the server.
 
-2.2.3.24
+##### 2.2.3.24 CPMFreeCursorIn
 
-CPMFreeCursorIn
+
 
 The CPMFreeCursorIn message requests the release of a cursor. The format of the CPMFreeCursorIn
 message that follows the header is shown in the following diagram.
@@ -8042,9 +7860,9 @@ CPMCreateQueryOut message to release.
 
 _hCursor
 
-2.2.3.25
+##### 2.2.3.25 CPMFreeCursorOut
 
-CPMFreeCursorOut
+
 
 The CPMFreeCursorOut message replies to a CPMFreeCursorIn message with the results of freeing a
 cursor. The format of the CPMFreeCursorOut message that follows the header is shown in the
@@ -8067,18 +7885,18 @@ _cCursorsRemaining (4 bytes): A 32-bit unsigned integer indicating the number of
 
 use for the query.
 
-2.2.3.26
+##### 2.2.3.26 CPMDisconnect
 
-CPMDisconnect
+
 
 The CPMDisconnect message ends the connection with the server.
 
 The message MUST NOT include a body; only the message header, as specified in section 2.2.2, is
 sent.
 
-2.2.3.27
+##### 2.2.3.27 CPMFindIndicesIn
 
-CPMFindIndicesIn
+
 
 The CPMFindIndicesIn <21> message requests the rowset position of the next occurrence of a
 document identifier.
@@ -8109,7 +7927,8 @@ Release: March 9, 2026
 
 89 / 246
 
-_prgiRowPrev (variable)
+
+_prgiRowPrev (variable)
 
 ...
 
@@ -8131,9 +7950,9 @@ indices leading to the previous occurrence of any of the specified document iden
 the array MUST be equal to _cDepthPrev. If _cDepthPrev is equal to zero this field MUST be
 omitted.
 
-2.2.3.28
+##### 2.2.3.28 CPMFindIndicesOut
 
-CPMFindIndicesOut
+
 
 The CPMFindIndicesOut message replies to a CPMFindIndicesIn message with the hierarchical group
 indices leading to the next occurrence of any of the document identifiers specified in the
@@ -8169,9 +7988,9 @@ indices leading to the next occurrence of any of the document identifiers specif
 corresponding CPMFindIndicesIn message. The size of the array MUST be equal to _cDepthNext.
 This field MUST be omitted if _cDepthNext is equal to zero.
 
-2.2.3.29
+##### 2.2.3.29 CPMGetRowsetNotifyIn
 
-CPMGetRowsetNotifyIn
+
 
 The CPMGetRowsetNotifyIn <22> message requests the next rowset event from the server if
 available.
@@ -8185,9 +8004,10 @@ Release: March 9, 2026
 
 90 / 246
 
-2.2.3.30
 
-CPMGetRowsetNotifyOut
+##### 2.2.3.30 CPMGetRowsetNotifyOut
+
+
 
 The CPMGetRowsetNotifyOut message replies to CPMGetRowsetNotifyIn message with oldest available
 rowset event. The format of the CPMGetRowsetNotifyOut message that follows the header is shown in
@@ -8299,7 +8119,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -8410,13 +8231,14 @@ Release: March 9, 2026
 
 92 / 246
 
-rowsetEventData2 (8 bytes): A 64 bit unsigned number whose meaning is dependent on
+
+rowsetEventData2 (8 bytes): A 64 bit unsigned number whose meaning is dependent on
 
 rowsetEvent. Undefined unless eventType is PROPAGATE_ROWSET.
 
-2.2.3.31
+##### 2.2.3.31 CPMSetScopePrioritizationIn
 
-CPMSetScopePrioritizationIn
+
 
 The CPMSetScopePrioritizationIn<23> message requests that the server prioritize indexing of items
 that could be relevant to the originating query at a rate specified in the message. The format of the
@@ -8479,18 +8301,18 @@ ROWSETEVENT_TYPE_SCOPESTATISTICS. When eventFrequency is set to zero the server 
 NOT issue the ROWSETEVENT_TYPE_SCOPESTATISTICS events. This field MUST be set to zero
 when setting priority to PRIORITY_LEVEL_DEFAULT.
 
-2.2.3.32
+##### 2.2.3.32 CPMSetScopePrioritizationOut
 
-CPMSetScopePrioritizationOut
+
 
 The CPMSetScopePrioritizationOut message replies to the CPMSetScopePrioritizationIn message.
 
 The message MUST NOT include a body; only the message header, as specified in section 2.2.2, is
 sent.
 
-2.2.3.33
+##### 2.2.3.33 CPMGetScopeStatisticsIn
 
-CPMGetScopeStatisticsIn
+
 
 The CPMGetScopeStatisticsIn <24> message requests statistics regarding the number of indexed
 items, the number of items needing to be indexed and the number of items needing to be re-indexed
@@ -8506,9 +8328,10 @@ Release: March 9, 2026
 
 93 / 246
 
-2.2.3.34
 
-CPMGetScopeStatisticsOut
+##### 2.2.3.34 CPMGetScopeStatisticsOut
+
+
 
 The CPMGetScopeStatisticsOut message replies to CPMGetScopeStatisticsIn message with the
 requested statistics for the originating rowset. The format of the CPMGetScopeStatisticsOut message
@@ -8543,9 +8366,9 @@ dwOutstandingModifies (4 bytes): A 32-bit unsigned integer containing the number
 
 need to be re-indexed that are relevant to the originating query.
 
-2.2.3.35
+##### 2.2.3.35 CPMExternalSearchResultIn
 
-CPMExternalSearchResultIn
+
 
 The CPMExternalSearchResultIn message is used to transfer external result row-set from indexer
 client to indexer server.<25> The format of the CPMExternalSearchResultIn message that follows
@@ -8589,7 +8412,8 @@ Release: March 9, 2026
 
 94 / 246
 
-FilePath (variable)
+
+FilePath (variable)
 
 …
 
@@ -8615,7 +8439,7 @@ FilePath (variable): A null-terminated Unicode string containing the physical pa
 
 PropertyId (variable): A null-terminated Unicode string containing the property identifier.
 
-2.2.4  Errors
+#### 2.2.4 Errors
 
 Windows Search Protocol (WSP) messages indicate success two ways:
 
@@ -8664,7 +8488,8 @@ Release: March 9, 2026
 
 95 / 246
 
-
+
+
 
 E_ACCESSDENIED (0x80070005)
 
@@ -8685,7 +8510,7 @@ identical meaning. However, even if there are conflicts in the future, they woul
 issues as long as the value for STATUS_INSUFFICIENT_RESOURCES remains unique, because all other
 error values are treated the same.
 
-2.2.5  Standard Properties
+#### 2.2.5 Standard Properties
 
  Properties in the GSS are represented by the combination of a property set GUID and either a string
 property name or an integer property ID. For details, see CFullPropSpec.
@@ -8738,7 +8563,8 @@ Release: March 9, 2026
 
 96 / 246
 
-  UInt32 – VT_UI4
+
+  UInt32 – VT_UI4
 
   UInt64 – VT_UI8
 
@@ -8766,7 +8592,7 @@ useForTypeAhead: A Boolean value that is TRUE if and only if this is a property 
 
 used as a source of completion suggestions.
 
-2.2.5.1  Query Properties
+##### 2.2.5.1 Query Properties
 
 Query Property Set
 
@@ -8843,10 +8669,11 @@ Release: March 9, 2026
 
 97 / 246
 
-The friendly name is Contents, the PropId is 0x00000013, the data type is VT_LPWSTR, and it is the
+
+The friendly name is Contents, the PropId is 0x00000013, the data type is VT_LPWSTR, and it is the
 main contents of a file. Usually this property cannot be retrieved.
 
-2.2.5.2  Common Open Properties
+##### 2.2.5.2 Common Open Properties
 
 A GSS can allow querying and retrieval over any property. The tables below outline some properties
 typically used. See [MSDN-PROPLIST] for more information.
@@ -8970,7 +8797,8 @@ Release: March 9, 2026
 
 98 / 246
 
-Attribute/Value
+
+Attribute/Value
 
 Description
 
@@ -9098,7 +8926,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Name/PropId
+
+Name/PropId
 
 Datatype
 
@@ -9244,7 +9073,8 @@ Release: March 9, 2026
 
 100 / 246
 
-Name/PropId
+
+Name/PropId
 
 System.category
 
@@ -9382,7 +9212,8 @@ Release: March 9, 2026
 
 101 / 246
 
-Name/PropId
+
+Name/PropId
 
 Datatype
 
@@ -9511,7 +9342,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Name/PropId
+
+Name/PropId
 
 0x00000006
 
@@ -9640,7 +9472,8 @@ Release: March 9, 2026
 
 103 / 246
 
-Name/PropId
+
+Name/PropId
 
 Datatype
 
@@ -9782,7 +9615,8 @@ Release: March 9, 2026
 
 104 / 246
 
-Full property table
+
+Full property table
 
 Property Name
 
@@ -9994,7 +9828,8 @@ Release: March 9, 2026
 
 105 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -10228,7 +10063,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -10452,7 +10288,8 @@ Release: March 9, 2026
 
 107 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -10667,7 +10504,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -10895,7 +10733,8 @@ Release: March 9, 2026
 
 109 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -11102,7 +10941,8 @@ Release: March 9, 2026
 
 110 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -11309,7 +11149,8 @@ Release: March 9, 2026
 
 111 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -11521,7 +11362,8 @@ Release: March 9, 2026
 
 112 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -11728,7 +11570,8 @@ Release: March 9, 2026
 
 113 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -11933,7 +11776,8 @@ Release: March 9, 2026
 
 114 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -12137,7 +11981,8 @@ Release: March 9, 2026
 
 115 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -12358,7 +12203,8 @@ Release: March 9, 2026
 
 116 / 246
 
-pr
+
+pr
 op
 ID
 
@@ -12572,7 +12418,8 @@ Release: March 9, 2026
 
 117 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -12768,7 +12615,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-pr
+
+pr
 op
 ID
 
@@ -12984,7 +12832,8 @@ Release: March 9, 2026
 
 119 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -13191,7 +13040,8 @@ Release: March 9, 2026
 
 120 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -13397,7 +13247,8 @@ Release: March 9, 2026
 
 121 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -13598,7 +13449,8 @@ Release: March 9, 2026
 
 122 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -13810,7 +13662,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -14023,7 +13876,8 @@ Release: March 9, 2026
 
 124 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -14230,7 +14084,8 @@ Release: March 9, 2026
 
 125 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -14426,7 +14281,8 @@ Release: March 9, 2026
 
 126 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -14628,7 +14484,8 @@ Release: March 9, 2026
 
 127 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -14831,7 +14688,8 @@ Release: March 9, 2026
 
 128 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -15008,7 +14866,8 @@ file folder. Example values: if the
 
 129 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -15214,7 +15073,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -15421,7 +15281,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -15636,7 +15497,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Description
+
+Description
 
 System.Importance. Not
 intended to be parsed
@@ -15850,7 +15712,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -16068,7 +15931,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -16223,7 +16087,8 @@ xample values: ----------------
 
 135 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -16377,7 +16242,8 @@ documents might not be useful
 
 136 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -16507,7 +16373,8 @@ System.ItemNameDisplay--------
 
 137 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -16684,7 +16551,8 @@ optimize for a narrow viewing
 
 138 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -16827,7 +16695,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-pr
+
+pr
 op
 ID
 
@@ -17005,7 +16874,8 @@ c://{GUID}/…"Messages:
 
 140 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -17209,7 +17079,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -17415,7 +17286,8 @@ Release: March 9, 2026
 
 142 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -17629,7 +17501,8 @@ Release: March 9, 2026
 
 143 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -17835,7 +17708,8 @@ Release: March 9, 2026
 
 144 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -18046,7 +17920,8 @@ Release: March 9, 2026
 
 145 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -18268,7 +18143,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -18489,7 +18365,8 @@ Release: March 9, 2026
 
 147 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -18708,7 +18585,8 @@ Release: March 9, 2026
 
 148 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -18927,7 +18805,8 @@ Release: March 9, 2026
 
 149 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -19156,7 +19035,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -19382,7 +19262,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -19597,7 +19478,8 @@ and compilation info.
 
 152 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -19801,7 +19683,8 @@ Release: March 9, 2026
 
 153 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -20030,7 +19913,8 @@ Release: March 9, 2026
 
 154 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -20254,7 +20138,8 @@ Release: March 9, 2026
 
 155 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -20477,7 +20362,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -20629,7 +20515,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -20814,7 +20701,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -21028,7 +20916,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -21229,7 +21118,8 @@ programmatically.
 
 160 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -21452,7 +21342,8 @@ intended to be parsed
 
 161 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -21704,7 +21595,8 @@ value="2" text="High"
 
 162 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -21922,7 +21814,8 @@ Release: March 9, 2026
 
 163 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -22125,7 +22018,8 @@ Release: March 9, 2026
 
 164 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -22331,7 +22225,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -22555,7 +22450,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -22795,7 +22691,8 @@ Release: March 9, 2026
 
 167 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -23011,7 +22908,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -23227,7 +23125,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Description
+
+Description
 
 – 10 KB)"     dname="Small"
 minValue="10241"
@@ -23397,7 +23296,8 @@ Release: March 9, 2026
 
 170 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -23592,7 +23492,8 @@ Release: March 9, 2026
 
 171 / 246
 
-Ve
+
+Ve
 cto
 r
 Pr
@@ -23806,7 +23707,8 @@ Release: March 9, 2026
 
 172 / 246
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -24045,7 +23947,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Property Name
+
+Property Name
 
 GUID
 
@@ -24146,7 +24049,7 @@ ticalAspectRatio
 6B11A
 03}
 
-2.2.5.3  ODBC Property
+##### 2.2.5.3 ODBC Property
 
 ODBC Property set
 
@@ -24178,7 +24081,8 @@ Release: March 9, 2026
 
 174 / 246
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Windows Search Protocol message requests require only minimal sequencing. All messages MUST
 be preceded by an initial CPMConnectIn message (for example, at least one CPMConnectIn for each
@@ -24200,7 +24104,8 @@ Release: March 9, 2026
 
 175 / 246
 
-<!-- Extracted images from page 176 -->
+
+<!-- Extracted images from page 176 -->
 ![Extracted image 1 from page 176]([MS-WSP].images/page176-img01.png)
 <!-- /Extracted images from page 176 -->
 
@@ -24209,9 +24114,9 @@ Figure 4: Windows Search Protocol session life cycle
 The messages represented in the preceding diagram represent a subset of all of the Windows Search
 Protocol messages used for querying a remote GSS catalog.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The following section specifies data and state maintained by the Windows Search Protocol server. The
 data provided in this document explains how the protocol behaves. This section does not mandate that
@@ -24225,7 +24130,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-The Generic Search Service (GSS) implementing the Windows Search Protocol MUST maintain the
+
+The Generic Search Service (GSS) implementing the Windows Search Protocol MUST maintain the
 following abstract data elements:
 
 ConnectedClientsIdentifiers: A list of 32-bit unsigned integers. Values are added upon successful
@@ -24244,7 +24150,7 @@ ConnectedClientsIdentifiers list. If the last 2 bytes of the client version are 
 equal to 0x109, the server will verify the checksums in the message. If the version is greater than
 0x10000, the server detects that the client is a 64-bit system.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The following timer is required for the server.
 
@@ -24257,17 +24163,17 @@ The following input or state is required for this timer.
 
 QueryIdentifier: A unique query identifier of the query for which this timer was started.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Upon initialization, the server MUST set its state to "not initialized" and start listening for messages on
 the named pipe specified in section 1.9. After performing any other internal initialization, it MUST
 transition to the "running" state.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing and Sequencing Rules
+#### 3.1.5 Processing and Sequencing Rules
 
 Whenever an error occurs during processing of a message sent by a client, the server MUST report an
 error back to the client as follows:
@@ -24293,7 +24199,8 @@ Release: March 9, 2026
 
 177 / 246
 
-Error
+
+Error
 
 Meaning
 
@@ -24350,15 +24257,16 @@ Release: March 9, 2026
 
 178 / 246
 
-<!-- Extracted images from page 179 -->
+
+<!-- Extracted images from page 179 -->
 ![Extracted image 1 from page 179]([MS-WSP].images/page179-img01.png)
 <!-- /Extracted images from page 179 -->
 
 Figure 5: Windows Search Protocol message sequence relationships
 
-3.1.5.1  Remote Windows Search Service Catalog Management
+##### 3.1.5.1 Remote Windows Search Service Catalog Management
 
-3.1.5.1.1 Receiving a CPMCiStateInOut Request
+###### 3.1.5.1.1 Receiving a CPMCiStateInOut Request
 
 When the server receives a CPMCiStateInOut message request from the client, the server MUST first
 search the ConnectedClientsIdentifiers list for the HANDLE of the named pipe over which the
@@ -24372,12 +24280,13 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-with a CPMCiStateInOut message containing information about the client's associated catalog,
+
+with a CPMCiStateInOut message containing information about the client's associated catalog,
 obtained by calling the GetState abstract interface.
 
-3.1.5.2  Remote Windows Search Service Querying
+##### 3.1.5.2 Remote Windows Search Service Querying
 
-3.1.5.2.1 Receiving a CPMConnectIn Request
+###### 3.1.5.2.1 Receiving a CPMConnectIn Request
 
 When the server receives a CPMConnectIn request from a client, the server MUST do the following.
 
@@ -24445,7 +24354,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-  DS_E_ INVALIDDATASOURCE or ERROR_INVALID_PARAMETER: Generated when the catalog
+
+  DS_E_ INVALIDDATASOURCE or ERROR_INVALID_PARAMETER: Generated when the catalog
 
 was not specified correctly.
 
@@ -24453,7 +24363,7 @@ was not specified correctly.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.2 Receiving a CPMCreateQueryIn Request
+###### 3.1.5.2.2 Receiving a CPMCreateQueryIn Request
 
 When the server receives a CPMCreateQueryIn message request from a client, the server MUST do the
 following:
@@ -24516,7 +24426,7 @@ resource, such as a file result or a catalog.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.3 Receiving a CPMGetQueryStatusIn Request
+###### 3.1.5.2.3 Receiving a CPMGetQueryStatusIn Request
 
 181 / 246
 
@@ -24525,7 +24435,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-When the server receives a CPMGetQueryStatusIn message request from a client, the server MUST do
+
+When the server receives a CPMGetQueryStatusIn message request from a client, the server MUST do
 the following:
 
 1.
@@ -24563,7 +24474,7 @@ layout as defined for their types in this document.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.4 Receiving a CPMGetQueryStatusExIn Request
+###### 3.1.5.2.4 Receiving a CPMGetQueryStatusExIn Request
 
 When the server receives a CPMGetQueryStatusExIn message request from a client, the server MUST
 do the following:
@@ -24614,7 +24525,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-  Use Output parameters:
+
+  Use Output parameters:
 
   QStatus = QStatus
 
@@ -24719,7 +24631,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-5.  Report any errors encountered during message preparation or during any abstract interface call to
+
+5.  Report any errors encountered during message preparation or during any abstract interface call to
 
 the GSS. Errors that are specific to this request:
 
@@ -24738,7 +24651,7 @@ resource such as a file result or a catalog.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.5 Receiving a CPMRatioFinishedIn Request
+###### 3.1.5.2.5 Receiving a CPMRatioFinishedIn Request
 
 When the server receives a CPMRatioFinishedIn message request from a client, the server MUST do
 the following:
@@ -24811,7 +24724,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-3.1.5.2.6 Receiving a CPMGetRowsIn Request
+
+###### 3.1.5.2.6 Receiving a CPMGetRowsIn Request
 
 When the server receives a CPMGetRowsIn message request from a client, the server MUST do the
 following:
@@ -24899,7 +24813,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-CursorHandle argument, with _chapt as its chapter argument, with _cRowsToTransfer as its
+
+CursorHandle argument, with _chapt as its chapter argument, with _cRowsToTransfer as its
 NumRowsRequested argument, and with _fBwdFetch as its  FetchForward argument. Do this in all
 cases, except for step 4 bullet 3.
 
@@ -24982,7 +24897,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-13. Report any errors encountered during message preparation or during any abstract interface call to
+
+13. Report any errors encountered during message preparation or during any abstract interface call to
 
 the GSS. Errors that are specific to this request:
 
@@ -25010,7 +24926,7 @@ large property value separately using a CPMFetchValueIn request.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.7 Receiving a CPMFetchValueIn Request
+###### 3.1.5.2.7 Receiving a CPMFetchValueIn Request
 
 When the server receives a CPMFetchValueIn message request from a client, the server MUST do the
 following:
@@ -25061,7 +24977,8 @@ Release: March 9, 2026
 
 187 / 246
 
-  STATUS_INVALID_PARAMETER: generated when any of the parameters passed in by the client
+
+  STATUS_INVALID_PARAMETER: generated when any of the parameters passed in by the client
 is invalid. Invalid parameters are those that do not obey the corresponding data structure
 layout as defined for their types in this document.
 
@@ -25076,7 +24993,7 @@ value separately, using a CPMFetchValueIn request with a larger buffer.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.8 Receiving a CPMSetBindingsIn Request
+###### 3.1.5.2.8 Receiving a CPMSetBindingsIn Request
 
 When the server receives a CPMSetBindingsIn message request from a client, the server MUST do the
 following:
@@ -25121,7 +25038,7 @@ layout as defined for their types in this document.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.9 Receiving a CPMGetNotify Request
+###### 3.1.5.2.9 Receiving a CPMGetNotify Request
 
 When the server receives a CPMGetNotify message from a client, the server MUST do the following:
 
@@ -25140,7 +25057,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-ChangesPresent output parameter is true, then the server MUST respond with a
+
+ChangesPresent output parameter is true, then the server MUST respond with a
 CPMSendNotifyOut message and MUST set the _watchNotify field of this message to the
 LatestChange parameter value that is output from the call.
 
@@ -25163,7 +25081,7 @@ layout as defined for their types in this document.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.10  Receiving a CPMGetApproximatePositionIn Request
+###### 3.1.5.2.10 Receiving a CPMGetApproximatePositionIn Request
 
 When the server receives a CPMGetApproximatePositionIn message request from the client, the server
 MUST do the following:
@@ -25210,7 +25128,7 @@ layout as defined for their types in this document.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.11  Receiving a CPMCompareBmkIn Request
+###### 3.1.5.2.11 Receiving a CPMCompareBmkIn Request
 
 189 / 246
 
@@ -25219,7 +25137,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-When the server receives a CPMCompareBmkIn message request from the client, the server MUST do
+
+When the server receives a CPMCompareBmkIn message request from the client, the server MUST do
 the following:
 
 1.  Search the ConnectedClientsIdentifiers list for the HANDLE of the named pipe over which the
@@ -25277,7 +25196,7 @@ layout as defined for their types in this document.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.12  Receiving a CPMRestartPositionIn Request
+###### 3.1.5.2.12 Receiving a CPMRestartPositionIn Request
 
 When the server receives the CPMRestartPositionIn message request from the client, the server MUST
 do the following:
@@ -25299,7 +25218,8 @@ Release: March 9, 2026
 
 190 / 246
 
-ContainsHandle output parameter is not true, the server MUST report an E_FAIL (0x80004005)
+
+ContainsHandle output parameter is not true, the server MUST report an E_FAIL (0x80004005)
 error.
 
 3.  Move the cursor to the beginning of the chapter identified by the chapter handle by calling the
@@ -25329,7 +25249,7 @@ layout as defined for their types in this document.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.13  Receiving a CPMFreeCursorIn Request
+###### 3.1.5.2.13 Receiving a CPMFreeCursorIn Request
 
 When the server receives a CPMFreeCursorIn message request from the client, the server MUST do
 the following:
@@ -25375,7 +25295,8 @@ Release: March 9, 2026
 
 191 / 246
 
-3.1.5.2.14  Receiving a CPMDisconnect Request
+
+###### 3.1.5.2.14 Receiving a CPMDisconnect Request
 
 When the server receives a CPMDisconnect message request from the client, the server MUST do the
 following:
@@ -25389,7 +25310,7 @@ message from the ConnectedClientsIdentifiers list.
   Call the ReleaseQuery abstract interface to the GSS with the HANDLE of the named pipe over
 which the server has received the CPMDisconnect message as its QueryIdentifier argument.
 
-3.1.5.2.15  Receiving a CPMFindIndicesIn Request
+###### 3.1.5.2.15 Receiving a CPMFindIndicesIn Request
 
 When the server receives a CPMFindIndicesIn message request from a client, the server MUST do the
 following:
@@ -25433,7 +25354,7 @@ layout as defined for their types in this document.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.16  Receiving a CPMGetRowsetNotifyIn
+###### 3.1.5.2.16 Receiving a CPMGetRowsetNotifyIn
 
 When the server receives a CPMGetRowsetNotifyIn message request from a client, the server MUST do
 the following:
@@ -25445,7 +25366,8 @@ Release: March 9, 2026
 
 192 / 246
 
-1.  Search the ConnectedClientsIdentifiers list for the HANDLE of the named pipe over which the
+
+1.  Search the ConnectedClientsIdentifiers list for the HANDLE of the named pipe over which the
 server has received the CPMGetRowsetNotifyIn message. If it is not present, the server MUST
 report a STATUS_INVALID_PARAMETER (0xC000000D) error.
 
@@ -25473,7 +25395,7 @@ layout as defined for their types in this document.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.17  Receiving a CPMGetScopeStatisticsIn
+###### 3.1.5.2.17 Receiving a CPMGetScopeStatisticsIn
 
 When the server receives a CPMGetScopeStatisticsIn message request from a client, the server MUST
 do the following:
@@ -25513,7 +25435,7 @@ resource such as a file result or a catalog.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.18  Receiving a CPMSetScopePrioritizationIn
+###### 3.1.5.2.18 Receiving a CPMSetScopePrioritizationIn
 
 193 / 246
 
@@ -25522,7 +25444,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-This message is currently implemented only in the Windows 7 operating system. If the server fails
+
+This message is currently implemented only in the Windows 7 operating system. If the server fails
 implementation of this message, it can report a STATUS_INVALID_PARAMETER error. Otherwise, when
 the server receives a CPMSetScopePrioritizationIn message request from a client, the server MUST do
 the following:
@@ -25567,7 +25490,7 @@ layout as defined for their types in this document.
 
 Any other error code can be returned, but it will be treated as informative only.
 
-3.1.5.2.19  Receiving a CPMExternalSearchResultIn Request
+###### 3.1.5.2.19 Receiving a CPMExternalSearchResultIn Request
 
 When the server receives a CPMExternalSearchResultIn request message from the client, the
 server MUST do the following:
@@ -25597,7 +25520,8 @@ Release: March 9, 2026
 
 194 / 246
 
-7.  All results MUST be merged, de-duplicated and ranked along with lexical and semantic result row-
+
+7.  All results MUST be merged, de-duplicated and ranked along with lexical and semantic result row-
 
 set.
 
@@ -25605,7 +25529,7 @@ set.
 2.2.2) to the client by setting _status field to zero and _msg to CPMExternalSearchResultIn.
 Otherwise, any other error code returned SHOULD be treated as informative only.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 The following timer is required.
 
@@ -25616,7 +25540,7 @@ This does not result in any message being sent to the client. It simply ensures 
 generates a Scope Statistics event which can later be retrieved by the client via a
 CPMGetRowsetNotifyIn message.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 This section describes the use of several abstract interfaces.
 
@@ -25671,7 +25595,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Constraints: None.
+
+Constraints: None.
 
 StoreClientInformation
 
@@ -25747,7 +25672,8 @@ Release: March 9, 2026
 
 196 / 246
 
-  Any time when RunNewQuery was called with QueryIdentifier as an argument and
+
+  Any time when RunNewQuery was called with QueryIdentifier as an argument and
 returned true and QueryParametersError (see following) was returned as zero.
 
 
@@ -25859,7 +25785,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-
+
+
 
 fWorkidUnique: This is set to true as long as the GSS is able to return results.
 
@@ -25936,7 +25863,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-
+
+
 
 
 
@@ -26024,7 +25952,8 @@ Release: March 9, 2026
 
 199 / 246
 
-
+
+
 
 This abstract interface assumes that the caller has already called ClientQueryHasCursorHandle
 with the QueryIdentifier and CursorHandle arguments, respectively, and that the abstract
@@ -26105,7 +26034,8 @@ Release: March 9, 2026
 
 200 / 246
 
-
+
+
 
 
 
@@ -26188,7 +26118,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-
+
+
 
 This abstract interface assumes that the caller has already called ClientQueryHasCursorHandle
 with the QueryIdentifier and CursorHandle arguments, respectively, and that the abstract
@@ -26272,7 +26203,8 @@ Release: March 9, 2026
 
 202 / 246
 
-This abstract interface returns rows requested for the specified query and cursor. The position from
+
+This abstract interface returns rows requested for the specified query and cursor. The position from
 which it returns rows can be set through the SetNextRowsPosition abstract interface.
 
 Inputs:
@@ -26355,7 +26287,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-abstract interface call with the same QueryIdentifier and CursorHandle as arguments. If
+
+abstract interface call with the same QueryIdentifier and CursorHandle as arguments. If
 the type in the binding was not VT_VARIANT, the GSS MUST attempt to convert the column's
 property value to that type. Otherwise, if the DBPROP_USEEXTENDEDDBTYPES flag was set in
 the client's DBPROPSET_QUERYEXT property set, or if the column's property value was not a
@@ -26435,7 +26368,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-When returning a row, the GSS MUST take the document identifier field of that row and call the
+
+When returning a row, the GSS MUST take the document identifier field of that row and call the
 HasAccessToWorkid abstract interface with QueryIdentifier and Workid as arguments. If it does
 not return true, then the GSS MUST skip this row.
 
@@ -26507,7 +26441,8 @@ Release: March 9, 2026
 
 205 / 246
 
-  ValueExists, a Boolean set to true if and only if the specified property exists on the server and if
+
+  ValueExists, a Boolean set to true if and only if the specified property exists on the server and if
 
 the client has access to it. This MUST be determined by calling the HasAccessToProperty
 abstract interface with QueryIdentifier and PropSpec as arguments.
@@ -26591,7 +26526,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -26682,7 +26618,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Inputs:
+
+Inputs:
 
   QueryIdentifier, a 32-bit unsigned integer. This value uniquely identifies a query to this server.
 
@@ -26757,7 +26694,8 @@ Release: March 9, 2026
 
 208 / 246
 
-     Keywords = 'key2'
+
+     Keywords = 'key2'
          file2.txt
          file3.txt
  Author = 'author2'
@@ -26849,7 +26787,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 0
 
@@ -26964,7 +26903,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Constraints:
+
+Constraints:
 
 
 
@@ -27044,7 +26984,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-RowsetEventData2's low 32 bits MUST contain the number of indexed items that could be
+
+RowsetEventData2's low 32 bits MUST contain the number of indexed items that could be
 relevant to the originating rowset.
 
 
@@ -27134,7 +27075,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -27219,7 +27161,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Inputs:
+
+Inputs:
 
   QueryIdentifier, a 32-bit unsigned integer. This value uniquely identifies a query to this server.
 
@@ -27232,9 +27175,9 @@ Constraints:
 Events generated through this abstract interface to the GSS MUST be the same events that are
 later returned by the GetLastUnretrievedEvent abstract interface call.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The following section specifies data and state maintained by the Windows Search Protocol client. The
 data is provided to explain how the protocol behaves. This section does not mandate that
@@ -27259,15 +27202,15 @@ Current Bytes Received  The number of bytes received for the Current Property Va
 
 Named Pipe Connection  A connection to the server.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 No actions are taken until a higher-layer request is received.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 When a request is received from a higher layer, the client MUST create a named pipe connection to
 the server as specified in section 2.1. If it is unable to do so, the higher-layer request MUST be failed.
@@ -27292,16 +27235,17 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-3.  Subtract the value given by _msg from the value that results from the bitwise XOR.
 
-3.2.4.1  Remote Windows Search Service Catalog Management
+3.  Subtract the value given by _msg from the value that results from the bitwise XOR.
+
+##### 3.2.4.1 Remote Windows Search Service Catalog Management
 
 Each message is triggered by a request from the higher layer. There is no message sequence enforced
 by the client for the Windows Search Protocol message requests for remotely managing the catalog.
 However, the server will reply with success only if the client previously connected by means of a
 CPMConnectIn message.
 
-3.2.4.1.1 Sending a CPMCiStateInOut Request
+###### 3.2.4.1.1 Sending a CPMCiStateInOut Request
 
 Typically, the higher layer asks the protocol client to send a CPMCiStateInOut message when it
 requires information about the GSS on the server.
@@ -27318,7 +27262,7 @@ messages.
 
 informational structure back to the higher layer.
 
-3.2.4.2  Remote Windows Search Service Catalog Query Messages
+##### 3.2.4.2 Remote Windows Search Service Catalog Query Messages
 
 With the exceptions of CPMGetRowsIn/CPMGetRowsOut and CPMFetchValueIn/CPMFetchValueOut,
 there is a one-to-one relationship between the Windows Search Protocol messages and higher-layer
@@ -27331,7 +27275,7 @@ client is in a connected state, but this is not enforced in any way by the clien
 For illustrative purposes, the client portion of the diagram in section 3 illustrates this sequence for a
 simple GSS query.
 
-3.2.4.2.1 Sending a CPMConnectIn Request
+###### 3.2.4.2.1 Sending a CPMConnectIn Request
 
 This message is typically the very first request from the higher layer. The higher level provides the
 protocol client with the information necessary to connect.
@@ -27364,7 +27308,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-7.  Compare 4 DWORDs past the _serverVersion field with the 4 DWORDs at the same offset of
+
+7.  Compare 4 DWORDs past the _serverVersion field with the 4 DWORDs at the same offset of
 
 CPMConnectIn message. If the value of the DWORDs is different, assume that the server supports
 version information and decode dwWinVerMajor, dwWinVerMinor, dwNLSVerMajor,
@@ -27380,7 +27325,7 @@ successful connection, but these are not enforced by the Windows Search Protocol
 
 from the catalog.
 
-3.2.4.2.2 Sending a CPMCreateQueryIn Request
+###### 3.2.4.2.2 Sending a CPMCreateQueryIn Request
 
 The higher layer will typically provide the information for the query creation after the protocol client is
 connected. The higher layer provides the client with a restrictions set, column set, sort order rules,
@@ -27420,7 +27365,7 @@ CCategorizationSet field.
 cursor handles and informative Boolean values (as specified in section 2.2.3.5) back to the higher
 layer.
 
-3.2.4.2.3 Sending a CPMSetBindingsIn Request
+###### 3.2.4.2.3 Sending a CPMSetBindingsIn Request
 
 Typically, the higher layer will set bindings for each column to be returned in the rows when it
 already has a valid cursor handle (after successfully receiving CPMCreateQueryOut). The higher layer
@@ -27444,7 +27389,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-3.  Set the specified fields in the CPMSetBindingsIn message to the values provided by the higher
+
+3.  Set the specified fields in the CPMSetBindingsIn message to the values provided by the higher
 
 application layer. Set the _ulChecksum field to the value calculated, as specified in section 3.2.4.
 
@@ -27457,7 +27403,7 @@ application layer. Set the _ulChecksum field to the value calculated, as specifi
 For informative purposes, it is expected that higher layers will typically request a client to send a
 CPMGetRowsIn message, but this is not enforced by the Windows Search Protocol.
 
-3.2.4.2.4 Sending a CPMGetRowsIn Request
+###### 3.2.4.2.4 Sending a CPMGetRowsIn Request
 
 When the higher layer is about to receive rows information, it will provide the protocol client with
 valid cursor and chapter handles and give an appropriate seek description. Typically, a higher layer
@@ -27499,7 +27445,7 @@ the Rows field in the CPMGetRowsOut message) to the value of _cbSeek plus 0x14.
 
 5.  Send a CPMGetRowsIn message to the server.
 
-3.2.4.2.5 Sending a CPMFetchValueIn Request
+###### 3.2.4.2.5 Sending a CPMFetchValueIn Request
 
 If the client receives a CPMGetRowsOut response from the server with the column's status byte field
 set to StoreStatusDeferred (0x01), it means that the property value was not included in the Rows
@@ -27522,11 +27468,12 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-3.  Set current bytes received to 0.
+
+3.  Set current bytes received to 0.
 
 4.  Send the CPMFetchValueIn message to the server.
 
-3.2.4.2.6 Sending a CPMFreeCursorIn Request
+###### 3.2.4.2.6 Sending a CPMFreeCursorIn Request
 
 After the higher level is no longer using the search query, it can release the resources on the server
 by requesting that the client send a CPMFreeCursorIn message.
@@ -27534,14 +27481,14 @@ by requesting that the client send a CPMFreeCursorIn message.
 When this request is received, the client MUST send a CPMFreeCursorIn message to the server
 containing the handle specified by the upper layer.
 
-3.2.4.2.7 Sending a CPMDisconnect Message
+###### 3.2.4.2.7 Sending a CPMDisconnect Message
 
 If the higher layer has no more queries for the Generic Search service (GSS), to free up more
 server resources, the application can request that the client send a CPMDisconnect message to the
 server. When this query is received, the client MUST simply send the message as requested. There is
 no response to this message from the server.
 
-3.2.4.2.8 Sending a CPMFindIndicesIn Request
+###### 3.2.4.2.8 Sending a CPMFindIndicesIn Request
 
 When the higher layer is about to request document identifier location within a rowset information, it
 will provide the protocol client with a set of document identifiers to look for. The higher layer can also
@@ -27563,23 +27510,23 @@ to zero.
 
 4.  Send the CPMFindIndicesIn message to the server.
 
-3.2.4.2.9 Sending a CPMGetRowsetNotifyIn Request
+###### 3.2.4.2.9 Sending a CPMGetRowsetNotifyIn Request
 
 If the higher layer requires rowset eventing, it can send a CPMGetRowsetNotifyIn message to the
 server to request the next available event at any timed interval it chooses.
 
-3.2.4.2.10
+###### 3.2.4.2.10 Sending a CPMGetScopeStatisticsIn Request
 
-Sending a CPMGetScopeStatisticsIn Request
+
 
  When the higher layer wants to retrieve statistics regarding the number of indexed items, number of
 outstanding items to be indexed, or number of items needing re-indexed that are relevant to its
 query, it can send a CPMGetScopeStatisticsIn message to the server to request these values at any
 interval it chooses.
 
-3.2.4.2.11
+###### 3.2.4.2.11 Sending a CPMSetScopePrioritizationIn Request
 
-Sending a CPMSetScopePrioritizationIn Request
+
 
 When the higher layer wants to modify the indexing priority of documents that could be relevant to its
 query, it will send a CPMSetScopePrioritizationIn message to the server to request that the priority of
@@ -27594,7 +27541,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-1.  Set the priority in the CPMSetScopePrioritizationIn message to the priority requested by the higher
+
+1.  Set the priority in the CPMSetScopePrioritizationIn message to the priority requested by the higher
 
 layer.
 
@@ -27605,9 +27553,9 @@ by the higher layer, or to zero if the priority requested is PRIORITY_LEVEL_DEFA
 
 3.  Send the CPMSetScopePrioritizationIn message to the server.
 
-3.2.4.2.12
+###### 3.2.4.2.12 Sending a CPMExternalSearchResultIn Request
 
-Sending a CPMExternalSearchResultIn Request
+
 
 When the higher layer wants to process external search results, the client MUST perform the
 following:
@@ -27618,13 +27566,13 @@ following:
 
 3.  Send the CPMExternalSearchResultIn request message to the server.
 
-3.2.5  Processing and Sequencing Rules
+#### 3.2.5 Processing and Sequencing Rules
 
 When the client receives a message response from the server, the client MUST use the Last Sent
 Message to determine if the message received from the server is the one expected by the client. All
 messages with the _msg field different from that in the Last Sent Message MUST be ignored.
 
-3.2.5.1  Receiving a CPMCreateQueryOut Response
+##### 3.2.5.1 Receiving a CPMCreateQueryOut Response
 
 When the client receives a CPMCreateQueryOut message response from the server, the client MUST
 return _status, and if the status is successful, return the cursor handle values back to the higher
@@ -27647,7 +27595,7 @@ actions on query the path.
 
   Use CPMRatioFinishedIn to request the completion percentage of a query.
 
-3.2.5.2  Receiving a CPMGetRowsOut Response
+##### 3.2.5.2 Receiving a CPMGetRowsOut Response
 
 When the client receives a CPMGetRowsOut message response from the server, the client MUST
 perform the following:
@@ -27667,7 +27615,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-(0xC0000023), and the Last Message Sent already has _cbReadBuffer equal to 0x4000, the
+
+(0xC0000023), and the Last Message Sent already has _cbReadBuffer equal to 0x4000, the
 client MUST report the error to the higher level.
 
 3.  If the _status value is any other error value, the client MUST report the failure to the higher
@@ -27721,7 +27670,7 @@ chapter.
 
 rowset.
 
-3.2.5.3  Receiving a CPMFetchValueOut Response
+##### 3.2.5.3 Receiving a CPMFetchValueOut Response
 
 When the client receives a CPMFetchValueOut message response from the server, the client MUST
 perform the following:
@@ -27752,7 +27701,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-3.2.5.4  Receiving a CPMFreeCursorOut Response
+
+##### 3.2.5.4 Receiving a CPMFreeCursorOut Response
 
 When the client receives a successful CPMFreeCursorOut message response from the server, the client
 MUST return the _cCursorsRemaining value to the higher layer.
@@ -27763,7 +27713,7 @@ those which have already been freed. When the value of _cCursorsRemaining is equ
 0x00000000, the higher layer can use the connection to specify another query (using a
 CPMCreateQueryIn message).
 
-3.2.5.5  Receiving a CPMFindIndicesOut Response
+##### 3.2.5.5 Receiving a CPMFindIndicesOut Response
 
 When the client receives a CPMFindIndicesOut message response from the server, the client MUST
 perform the following:
@@ -27785,7 +27735,7 @@ but these are not enforced by the Windows Search Protocol client:
 CPMFindIndicesIn message in order to retrieve the next occurrence. This procedure can be
 repeated until no results are found.
 
-3.2.5.6  Receiving a CPMGetRowsetNotifyOut Response
+##### 3.2.5.6 Receiving a CPMGetRowsetNotifyOut Response
 
 When the client receives a CPMGetRowsetNotifyOut message response from the server, the client
 MUST perform the following:
@@ -27799,7 +27749,7 @@ requesting the information, and further actions are determined by the higher lay
 
 the higher layer is informed of the type of event and relevant information for the event.
 
-3.2.5.7  Receiving a CPMGetScopeStatisticsOut Response
+##### 3.2.5.7 Receiving a CPMGetScopeStatisticsOut Response
 
 When the client receives a CPMGetScopeStatisticsOut message response from the server, the client
 MUST perform the following:
@@ -27823,7 +27773,8 @@ Release: March 9, 2026
 
 221 / 246
 
-3.2.5.8  Receiving a CPMSetScopePrioritizationOut Response
+
+##### 3.2.5.8 Receiving a CPMSetScopePrioritizationOut Response
 
 When the client receives a CPMSetScopePrioritizationOut message response from the server, the client
 MUST perform the following:
@@ -27835,11 +27786,11 @@ MUST perform the following:
  If the _status value indicates success, the results MUST be reported to the higher layer
 requesting the information, and further actions are determined by the higher layer.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -27850,9 +27801,10 @@ Release: March 9, 2026
 
 222 / 246
 
-4  Protocol Examples
 
-4.1  Example 1
+## 4 Protocol Examples
+
+### 4.1 Example 1
 
 In the following example, consider a scenario in which the user, UserA on machine UserA-2A, wants to
 obtain the path files that contain the word "flowers" from the set of files stored on server UserA-4 in
@@ -27929,7 +27881,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-  DBPROPSTATUS is set to 0x00000000.
+
+  DBPROPSTATUS is set to 0x00000000.
 
 
 
@@ -28038,7 +27991,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-
+
+
 
 The PropertySet2 field is of type CDbPropSet. The CDbPropSet structure comprising the
 PropertySet1 field is populated as follows:
@@ -28141,7 +28095,8 @@ Release: March 9, 2026
 
 225 / 246
 
-  vValue is set to 0x2 / "" (2 bytes / null-terminated empty Unicode string). This
+
+  vValue is set to 0x2 / "" (2 bytes / null-terminated empty Unicode string). This
 
 value is ignored by all Windows implementations of the protocol.
 
@@ -28253,7 +28208,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-  vValue is set to 0x0000 (FALSE), meaning trimming of security results will not be
+
+  vValue is set to 0x0000 (FALSE), meaning trimming of security results will not be
 
 deferred.
 
@@ -28362,7 +28318,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-  vValue is set to 0x0000 (FALSE), meaning a parse tree is not generated for
+
+  vValue is set to 0x0000 (FALSE), meaning a parse tree is not generated for
 
 debugging.
 
@@ -28469,7 +28426,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-
+
+
 
 
 
@@ -28573,7 +28531,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-5.  The _reserved fields are filled with arbitrary data.
+
+5.  The _reserved fields are filled with arbitrary data.
 
 6.  The client prepares a CPMCreateQueryIn message.
 
@@ -28669,7 +28628,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-  vType is set to 0x001F (VT_LPWSTR).
+
+  vType is set to 0x001F (VT_LPWSTR).
 
   vValue is set to the Unicode string "file://UserA-4/Users/UserA/Pictures",
 
@@ -28746,7 +28706,8 @@ Release: March 9, 2026
 
 231 / 246
 
-  _lcid is set to 0x00000409, meaning U.S. English is the default locale for the query.
+
+  _lcid is set to 0x00000409, meaning U.S. English is the default locale for the query.
 
 7.  The server processes it and responds with a CPMCreateQueryOut message.
 
@@ -28832,7 +28793,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-  _ValueUsed is set to 0x01 (column transferred in row).
+
+  _ValueUsed is set to 0x01 (column transferred in row).
 
   _ValueOffset is set to 0x0008 (8 bytes from beginning of row).
 
@@ -28907,7 +28869,8 @@ Release: March 9, 2026
 
 233 / 246
 
-
+
+
 
 The body of the message is populated as follows:
 
@@ -28989,7 +28952,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-  -- -- -- --
+
+  -- -- -- --
   E0 63 C9 03 (address of VT_LPWSTR: 0x03C963E0 - base 0x03C924C8 =
                offset 0x3F18 into buffer)
   -- -- -- --
@@ -29071,7 +29035,8 @@ Release: March 9, 2026
 
 235 / 246
 
-  _ulReserved2 is set to 0x00000000.
+
+  _ulReserved2 is set to 0x00000000.
 
 
 
@@ -29142,16 +29107,17 @@ Release: March 9, 2026
 
 236 / 246
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for administrators.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 For indexing implementations that index secure content, consider using the user context provided by
 [MS-SMB] or [MS-SMB2] to trim search results and return only those results accessible to the caller.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The only security parameter is impersonation level, section 2.1.
 
@@ -29162,7 +29128,8 @@ Release: March 9, 2026
 
 237 / 246
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -29230,7 +29197,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-also applies to subsequent updates unless otherwise specified. If a product edition appears with the
+
+also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
 
 Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
@@ -29315,7 +29283,8 @@ Release: March 9, 2026
 
 239 / 246
 
-Value
+
+Value
 
 Meaning
 
@@ -29384,7 +29353,8 @@ Windows Search Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Windows XP can be used for client and server if Windows® Search Version 4 is installed. It can serve
+
+Windows XP can be used for client and server if Windows® Search Version 4 is installed. It can serve
 as a client if Windows® Desktop Search Version 3 is installed.
 
 Windows Home Server uses MS-WSP as a server and ships with Windows® Desktop Search Version 3.
@@ -29451,7 +29421,8 @@ Release: March 9, 2026
 
 241 / 246
 
-<42> Section 3.1.7: This is only implemented on Windows Vista, not on Windows Search 4.0 or
+
+<42> Section 3.1.7: This is only implemented on Windows Vista, not on Windows Search 4.0 or
 Windows 7.
 
 <43> Section 3.1.7: This interface is only available on Windows 7.
@@ -29474,7 +29445,8 @@ Release: March 9, 2026
 
 242 / 246
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -29540,7 +29512,8 @@ Release: March 9, 2026
 
 243 / 246
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -29682,7 +29655,8 @@ CSortSet packet 58
 
 244 / 246
 
-CTableColumn packet 59
+
+CTableColumn packet 59
 CVectorRestriction packet 35
 
 D
@@ -29824,7 +29798,8 @@ Relationship to other protocols 13
 
 245 / 246
 
-Remote administration 12
+
+Remote administration 12
 Remote querying 12
 
 S

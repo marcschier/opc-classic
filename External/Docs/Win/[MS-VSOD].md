@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -127,92 +128,41 @@ Release: October 26, 2021
 
 2 / 30
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Overview .......................................................................................................... 5
-Prerequisites/Preconditions ................................................................................. 5
+## Table of Contents
 
-1.1
-1.2
-1.3
-1.4
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Prerequisites/Preconditions](#14-prerequisitespreconditions)
+- [2 Functional Description](#2-functional-description)
+  - [2.1 Components and Capabilities](#21-components-and-capabilities)
+  - [2.2 Summary of Protocols](#22-summary-of-protocols)
+  - [2.3 Protocol Relationships](#23-protocol-relationships)
+  - [2.4 Coherency Requirements](#24-coherency-requirements)
+  - [2.5 Security](#25-security)
+  - [2.6 Additional Considerations](#26-additional-considerations)
+- [3 Use Cases](#3-use-cases)
+  - [3.1 Accessing a Virtual Disk File](#31-accessing-a-virtual-disk-file)
+    - [3.1.1 Connecting and Opening a Virtual Disk](#311-connecting-and-opening-a-virtual-disk)
+      - [3.1.1.1 Success Case Example](#3111-success-case-example)
+    - [3.1.2 Interacting with a Virtual Disk](#312-interacting-with-a-virtual-disk)
+      - [3.1.2.1 Success Case Example](#3121-success-case-example)
+    - [3.1.3 Disconnecting from a Virtual Disk](#313-disconnecting-from-a-virtual-disk)
+      - [3.1.3.1 Success Case Example](#3131-success-case-example)
+  - [3.2 Accessing a Shared Virtual SCSI Disk](#32-accessing-a-shared-virtual-scsi-disk)
+    - [3.2.1 Connecting and Opening a Shared Virtual SCSI Disk](#321-connecting-and-opening-a-shared-virtual-scsi-disk)
+      - [3.2.1.1 Success Case Example](#3211-success-case-example)
+    - [3.2.2 Interacting with a Shared Virtual SCSI Disk](#322-interacting-with-a-shared-virtual-scsi-disk)
+      - [3.2.2.1 Success Case Example](#3221-success-case-example)
+    - [3.2.3 Disconnecting from a Shared Virtual SCSI Disk](#323-disconnecting-from-a-shared-virtual-scsi-disk)
+      - [3.2.3.1 Success Case Example](#3231-success-case-example)
+- [4 Product Behavior](#4-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2  Functional Description ............................................................................................. 6
-Components and Capabilities ............................................................................... 6
-Summary of Protocols ......................................................................................... 7
-Protocol Relationships ......................................................................................... 7
-Coherency Requirements .................................................................................... 8
-Security ............................................................................................................ 8
-Additional Considerations .................................................................................... 8
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-
-3.1
-
-3.1.3
-
-3.1.2
-
-3.1.1
-
-3.1.2.1
-
-3.1.1.1
-
-3  Use Cases ................................................................................................................ 9
-Accessing a Virtual Disk File ................................................................................ 9
-Connecting and Opening a Virtual Disk ............................................................ 9
-Success Case Example ........................................................................... 10
-Interacting with a Virtual Disk ...................................................................... 12
-Success Case Example ........................................................................... 13
-Disconnecting from a Virtual Disk ................................................................. 13
-Success Case Example ........................................................................... 14
-Accessing a Shared Virtual SCSI Disk ................................................................. 16
-Connecting and Opening a Shared Virtual SCSI Disk ....................................... 17
-Success Case Example ........................................................................... 18
-Interacting with a Shared Virtual SCSI Disk ................................................... 20
-Success Case Example ........................................................................... 21
-Disconnecting from a Shared Virtual SCSI Disk............................................... 24
-Success Case Example ........................................................................... 25
-
-3.1.3.1
-
-3.2.1.1
-
-3.2.2.1
-
-3.2.3.1
-
-3.2.1
-
-3.2.2
-
-3.2.3
-
-3.2
-
-4  Product Behavior ................................................................................................... 27
-
-5  Change Tracking .................................................................................................... 28
-
-6  Index ..................................................................................................................... 29
-
-[MS-VSOD] - v20211026
-Virtual Storage Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 30
-
-1  Introduction
+## 1 Introduction
 
 Virtualizing storage allows for high availability and more efficient use of physical storage space. Virtual
 files can be hosted either locally or remotely for multiple access. An implementer can also leverage
@@ -220,7 +170,7 @@ network adapters that have Remote Direct Memory Access (RDMA) capability to prov
 throughput and lower latency and CPU utilization. This document provides an overview of the
 protocols that support virtual storage and provides examples of their use.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -268,7 +218,7 @@ and purposes, behaves like a physical disk.
 virtual disk file: The file that is the backing store for a virtual disk. This file can be exposed to
 an operating system as a disk device. The exposed disk device is referred to as a virtual disk.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -284,13 +234,14 @@ Virtual Storage Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[MS-RSVD] Microsoft Corporation, "Remote Shared Virtual Disk Protocol".
+
+[MS-RSVD] Microsoft Corporation, "Remote Shared Virtual Disk Protocol".
 
 [MS-SMB2] Microsoft Corporation, "Server Message Block (SMB) Protocol Versions 2 and 3".
 
 [MS-SMBD] Microsoft Corporation, "SMB2 Remote Direct Memory Access (RDMA) Transport Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 This document provides an overview of the functionality of and relationship among the Virtual Storage
 protocols, which provide a means for a client to access, read, and write to virtual storage (for
@@ -302,7 +253,7 @@ protocols interact with each other. It provides examples of some common use case
 restate the processing rules and other details that are specific for each protocol. Those details are
 described in the specifications for the protocols and data structures that belong to this group.
 
-1.4  Prerequisites/Preconditions
+### 1.4 Prerequisites/Preconditions
 
 There are no prerequisites or preconditions beyond what is already described in [MS-SMB2] section
 1.4, [MS-RSVD] section 1.4, and [MS-SMBD] section 1.4.
@@ -314,7 +265,8 @@ Release: October 26, 2021
 
 5 / 30
 
-2  Functional Description
+
+## 2 Functional Description
 
 The Virtual Storage protocols that are described in this document provide functionality that supports:
 
@@ -399,7 +351,7 @@ Single-user access
 Requires specialized network
 adapter hardware
 
-2.1  Components and Capabilities
+### 2.1 Components and Capabilities
 
 The primary purpose of this overview document is to describe the interactions among the protocols
 used to access, read, and write to virtual storage, as shown in the following diagram.
@@ -411,7 +363,8 @@ Release: October 26, 2021
 
 6 / 30
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-VSOD].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -425,7 +378,7 @@ commands.
 SMB3 service: Used for connecting to and interacting with a virtual disk. Also used for connecting to
 and forwarding RSVD service commands.
 
-2.2  Summary of Protocols
+### 2.2 Summary of Protocols
 
 The following table summarizes the primary purpose of the Virtual Storage protocols.
 
@@ -468,7 +421,7 @@ or multiple consumers.
 
 [MS-RSVD]
 
-2.3  Protocol Relationships
+### 2.3 Protocol Relationships
 
 The following diagram shows the dependencies and relationships of the Virtual Storage protocols to
 each other and to industry standards.
@@ -480,23 +433,24 @@ Release: October 26, 2021
 
 7 / 30
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-VSOD].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
 Figure 2: Protocol relationships
 
-2.4  Coherency Requirements
+### 2.4 Coherency Requirements
 
 This group of protocols has no special coherency requirements.
 
-2.5  Security
+### 2.5 Security
 
 When using SMB3 as the transport protocol, message signing ([MS-SMB2] section 3.2.4.1.1) and
 encryption ([MS-SMB2] section 3.2.4.1.8) are available for privacy. For more information about
 security, see [MS-SMB2] section 5.
 
-2.6  Additional Considerations
+### 2.6 Additional Considerations
 
 There are no additional considerations.
 
@@ -507,13 +461,14 @@ Release: October 26, 2021
 
 8 / 30
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-VSOD].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
-3  Use Cases
+## 3 Use Cases
 
-3.1  Accessing a Virtual Disk File
+### 3.1 Accessing a Virtual Disk File
 
 These use cases support accessing the content of a virtual disk that is on a high-availability share.
 
@@ -529,7 +484,7 @@ Read and write commands to the virtual disk.
 
 Figure 3: Accessing the content of a virtual disk
 
-3.1.1  Connecting and Opening a Virtual Disk
+#### 3.1.1 Connecting and Opening a Virtual Disk
 
 Goal
 
@@ -547,7 +502,8 @@ Virtual Storage Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Actors
+
+Actors
 
 Application: The application is the primary actor that triggers this use case.
 
@@ -600,7 +556,7 @@ Variations
 
 None.
 
-3.1.1.1  Success Case Example
+##### 3.1.1.1 Success Case Example
 
 The following diagram shows the steps required to connect to and open the shared virtual disk.
 
@@ -611,7 +567,8 @@ Release: October 26, 2021
 
 10 / 30
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-VSOD].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -642,7 +599,8 @@ Release: October 26, 2021
 
 11 / 30
 
-5.  The file server processes the SMB2 SESSION_SETUP Request, as described in [MS-SMB2] section
+
+5.  The file server processes the SMB2 SESSION_SETUP Request, as described in [MS-SMB2] section
 3.3.5.5. The file server responds with an SMB2 SESSION_SETUP Response ([MS-SMB2] section
 2.2.6).
 
@@ -673,7 +631,7 @@ starting at the “Response Construction” phase.
 
 and returns the open handle to the application.
 
-3.1.2  Interacting with a Virtual Disk
+#### 3.1.2 Interacting with a Virtual Disk
 
 Goal
 
@@ -715,7 +673,8 @@ Virtual Storage Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-VSOD].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -729,7 +688,7 @@ Variations
 
 None.
 
-3.1.2.1  Success Case Example
+##### 3.1.2.1 Success Case Example
 
 The following diagram shows the steps required to write to the virtual disk.
 
@@ -751,7 +710,7 @@ SMB2 WRITE Response ([MS-SMB2] section 2.2.22) to the file client.
 
 status code to the application.
 
-3.1.3  Disconnecting from a Virtual Disk
+#### 3.1.3 Disconnecting from a Virtual Disk
 
 Goal
 
@@ -768,7 +727,8 @@ Release: October 26, 2021
 
 13 / 30
 
-Actors
+
+Actors
 
 Application: The application is the primary actor that triggers this use case.
 
@@ -804,7 +764,7 @@ Variations
 
 After the file handle is closed, the file client can optionally log off from the share.
 
-3.1.3.1  Success Case Example
+##### 3.1.3.1 Success Case Example
 
 The following diagram shows the steps required to close the connection to the virtual disk. Optionally,
 the file client can log off from the share.
@@ -816,7 +776,8 @@ Release: October 26, 2021
 
 14 / 30
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-VSOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -843,7 +804,8 @@ Virtual Storage Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  The file client processes the SMB2 CLOSE Response, as described in [MS-SMB2] section 3.2.5.9,
+
+4.  The file client processes the SMB2 CLOSE Response, as described in [MS-SMB2] section 3.2.5.9,
 
 and passes the status code to the application.
 
@@ -871,7 +833,7 @@ and sends an SMB2 LOGOFF Response to the file client.
 
 3.2.5.4.
 
-3.2  Accessing a Shared Virtual SCSI Disk
+### 3.2 Accessing a Shared Virtual SCSI Disk
 
 These use cases support accessing the content of a shared virtual SCSI disk that is on a high-
 availability share.
@@ -894,13 +856,14 @@ Release: October 26, 2021
 
 16 / 30
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-VSOD].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
 Figure 7: Accessing the content of a shared virtual SCSI disk
 
-3.2.1  Connecting and Opening a Shared Virtual SCSI Disk
+#### 3.2.1 Connecting and Opening a Shared Virtual SCSI Disk
 
 Goal
 
@@ -931,7 +894,8 @@ Release: October 26, 2021
 
 17 / 30
 
-File Client: The file client is a supporting actor that implements client-side protocol components and
+
+File Client: The file client is a supporting actor that implements client-side protocol components and
 consumes the file services that are offered by the file server.
 
 File Server: The file server is a supporting actor and implements server-side protocol components
@@ -979,7 +943,7 @@ Variations
 
 None.
 
-3.2.1.1  Success Case Example
+##### 3.2.1.1 Success Case Example
 
 The following diagram shows the steps required to connect to and open the shared virtual SCSI disk.
 
@@ -990,7 +954,8 @@ Release: October 26, 2021
 
 18 / 30
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-VSOD].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1015,7 +980,8 @@ Virtual Storage Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-section 2.2.4) to notify the client of the preferred common dialect. The preferred common dialect
+
+section 2.2.4) to notify the client of the preferred common dialect. The preferred common dialect
 has to be version 3.0.2 or later.
 
 4.  The file client processes the SMB2 NEGOTIATE Request as described in [MS-SMB2] section
@@ -1072,7 +1038,7 @@ and returns STATUS_SUCCESS to the RSVD client.
 
 15. The RSVD client returns a handle for the opened shared virtual SCSI disk to the calling application.
 
-3.2.2  Interacting with a Shared Virtual SCSI Disk
+#### 3.2.2 Interacting with a Shared Virtual SCSI Disk
 
 Goal
 
@@ -1091,7 +1057,8 @@ Virtual Storage Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Actors
+
+Actors
 
 Application: The application is the primary actor that triggers this use case.
 
@@ -1141,7 +1108,7 @@ Variations
 
 None.
 
-3.2.2.1  Success Case Example
+##### 3.2.2.1 Success Case Example
 
 The following diagram shows the steps required for the application to send SCSI commands to the
 shared virtual SCSI disk. The application has to first retrieve the information about the shared virtual
@@ -1154,7 +1121,8 @@ Release: October 26, 2021
 
 21 / 30
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-VSOD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1176,7 +1144,8 @@ Virtual Storage Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-RSVD client then calls the file client, as described in [MS-SMB2] section 3.2.4.20.11, providing the
+
+RSVD client then calls the file client, as described in [MS-SMB2] section 3.2.4.20.11, providing the
 handle, the control code of FSCTL_SVHDX_SYNC_TUNNEL_REQUEST, the
 SVHDX_TUNNEL_OPERATION_HEADER structure ([MS-RSVD] section 2.2.4.11), and the buffer
 size.
@@ -1252,7 +1221,8 @@ Virtual Storage Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-6.  The file client processes the SMB2 IOCTL Response as described in [MS-SMB2] section
+
+6.  The file client processes the SMB2 IOCTL Response as described in [MS-SMB2] section
 
 3.2.5.14.13. The file client sends the response data to the RSVD client as described in [MS-RSVD]
 section 3.1.5.8.
@@ -1261,7 +1231,7 @@ section 3.1.5.8.
 
 command to the application.
 
-3.2.3  Disconnecting from a Shared Virtual SCSI Disk
+#### 3.2.3 Disconnecting from a Shared Virtual SCSI Disk
 
 Goal
 
@@ -1324,11 +1294,12 @@ Release: October 26, 2021
 
 24 / 30
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-VSOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-3.2.3.1  Success Case Example
+##### 3.2.3.1 Success Case Example
 
 The following diagram shows the steps required to close the connection to the shared virtual SCSI
 disk. Optionally, the file client can log off from the share.
@@ -1345,7 +1316,8 @@ Release: October 26, 2021
 
 25 / 30
 
-1.  The application requests that the RSVD client close its connection to the shared virtual SCSI disk
+
+1.  The application requests that the RSVD client close its connection to the shared virtual SCSI disk
 as described in [MS-RSVD] section 3.1.4.3. The RSVD client requests that the file client process
 the close as described in [MS-SMB2] section 3.2.4.5.
 
@@ -1398,7 +1370,8 @@ Release: October 26, 2021
 
 26 / 30
 
-4  Product Behavior
+
+## 4 Product Behavior
 
 The information in this document is applicable to the following Microsoft products or supplemental
 software. References to product versions include released service packs:
@@ -1426,7 +1399,8 @@ Release: October 26, 2021
 
 27 / 30
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1463,7 +1437,8 @@ Release: October 26, 2021
 
 28 / 30
 
-6  Index
+
+## 6 Index
 C
 
 Change tracking 28
@@ -1611,7 +1586,8 @@ Use case detail
 
 29 / 30
 
-   interacting with a virtual disk 12
+
+   interacting with a virtual disk 12
    SMB3 share (section 3.1.1 9, section 3.1.2 12)
 Use cases
    accessing a shared SCSI disk

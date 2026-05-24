@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 62
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -277,7 +278,8 @@ Release: March 13, 2019
 
 2 / 62
 
-Date
+
+Date
 
 Revision
 History
@@ -359,368 +361,148 @@ Release: March 13, 2019
 
 3 / 62
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Message Syntax ................................................................................. 12
-Namespaces .............................................................................................. 12
-Messages ................................................................................................... 13
-Elements ................................................................................................... 13
-Complex Types ........................................................................................... 13
-Simple Types ............................................................................................. 13
-Attributes .................................................................................................. 13
-Groups ...................................................................................................... 13
-Attribute Groups ......................................................................................... 13
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.1
-
-3.1.4.1
-
-3.1.4.1.2
-
-3.1.4.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-3.1.4.1.1.1
-3.1.4.1.1.2
-
-3  Protocol Details ..................................................................................................... 14
-IWorkflowInstanceManagement Server Details..................................................... 14
-Abstract Data Model .................................................................................... 14
-Active State ......................................................................................... 14
-Suspended State ................................................................................... 15
-Completed State ................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 16
-Run ..................................................................................................... 17
-Messages ....................................................................................... 17
-IWorkflowInstanceManagement_Run_InputMessage ....................... 17
-IWorkflowInstanceManagement_Run_OutputMessage .................... 18
-Elements ........................................................................................ 18
-Run .......................................................................................... 18
-RunResponse ............................................................................ 18
-TransactedRun ..................................................................................... 19
-Messages ....................................................................................... 19
-IWorkflowInstanceManagement_TransactedRun_InputMessage ....... 19
-IWorkflowInstanceManagement_TransactedRun_OutputMessage ..... 20
-Elements ........................................................................................ 20
-TransactedRun .......................................................................... 20
-TransactedRunResponse ............................................................. 20
-Abandon .............................................................................................. 21
-Messages ....................................................................................... 21
-IWorkflowInstanceManagement_Abandon_InputMessage ................ 22
-IWorkflowInstanceManagement_Abandon_OutputMessage .............. 22
-Elements ........................................................................................ 22
-Abandon ................................................................................... 22
-AbandonResponse ...................................................................... 23
-
-3.1.4.2.2.1
-3.1.4.2.2.2
-
-3.1.4.3.2.1
-3.1.4.3.2.2
-
-3.1.4.2.1.1
-3.1.4.2.1.2
-
-3.1.4.3.1.1
-3.1.4.3.1.2
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-
-3.1.4.3.2
-
-3.1.4.2.1
-
-3.1.4.2.2
-
-3.1.4.3.1
-
-3.1.4.3
-
-3.1.4.2
-
-[MS-WFIM] - v20190313
-Workflow Instance Management Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 62
-
-3.1.4.7
-
-3.1.4.6
-
-3.1.4.5
-
-3.1.4.4
-
-3.1.4.7.2
-
-3.1.4.7.1
-
-3.1.4.6.2
-
-3.1.4.6.1
-
-3.1.4.5.2
-
-3.1.4.5.1
-
-3.1.4.4.2
-
-3.1.4.4.1
-
-3.1.4.4.2.1
-3.1.4.4.2.2
-
-3.1.4.4.1.1
-3.1.4.4.1.2
-
-3.1.4.7.2.1
-3.1.4.7.2.2
-
-3.1.4.6.2.1
-3.1.4.6.2.2
-
-3.1.4.5.2.1
-3.1.4.5.2.2
-
-3.1.4.5.1.1
-3.1.4.5.1.2
-
-3.1.4.7.1.1
-3.1.4.7.1.2
-
-3.1.4.6.1.1
-3.1.4.6.1.2
-
-Cancel ................................................................................................. 23
-Messages ....................................................................................... 23
-IWorkflowInstanceManagement_Cancel_InputMessage ................... 24
-IWorkflowInstanceManagement_Cancel_OutputMessage ................. 24
-Elements ........................................................................................ 24
-Cancel ...................................................................................... 24
-CancelResponse ......................................................................... 25
-TransactedCancel .................................................................................. 25
-Messages ....................................................................................... 25
-IWorkflowInstanceManagement_TransactedCancel_InputMessage ... 26
-IWorkflowInstanceManagement_TransactedCancel_OutputMessage . 26
-Elements ........................................................................................ 26
-TransactedCancel ....................................................................... 26
-TransactedCancelResponse ......................................................... 27
-Terminate ............................................................................................ 27
-Messages ....................................................................................... 27
-IWorkflowInstanceManagement_Terminate_InputMessage .............. 28
-IWorkflowInstanceManagement_Terminate_OutputMessage ............ 28
-Elements ........................................................................................ 28
-Terminate ................................................................................. 28
-TerminateResponse .................................................................... 29
-TransactedTerminate ............................................................................. 29
-Messages ....................................................................................... 30
-IWorkflowInstanceManagement_TransactedTerminate_InputMessage30
-IWorkflowInstanceManagement_TransactedTerminate_OutputMessage
- ............................................................................................... 30
-Elements ........................................................................................ 30
-TransactedTerminate .................................................................. 31
-TransactedTerminateResponse .................................................... 31
-Suspend .............................................................................................. 31
-Messages ....................................................................................... 32
-IWorkflowInstanceManagement_Suspend_InputMessage ................ 32
-IWorkflowInstanceManagement_Suspend_OutputMessage .............. 32
-Elements ........................................................................................ 32
-Suspend ................................................................................... 33
-SuspendResponse ...................................................................... 33
-TransactedSuspend ............................................................................... 33
-Messages ....................................................................................... 34
-IWorkflowInstanceManagement_TransactedSuspend_InputMessage . 34
-IWorkflowInstanceManagement_TransactedSuspend_OutputMessage35
-Elements ........................................................................................ 35
-TransactedSuspend .................................................................... 35
-TransactedSuspendResponse....................................................... 35
-3.1.4.10  Unsuspend ........................................................................................... 36
-3.1.4.10.1  Messages ....................................................................................... 36
-IWorkflowInstanceManagement_Unsuspend_InputMessage ............. 36
-IWorkflowInstanceManagement_Unsuspend_OutputMessage ........... 37
-Elements ........................................................................................ 37
-3.1.4.10.2.1  Unsuspend ................................................................................ 37
-3.1.4.10.2.2  UnsuspendResponse ................................................................... 37
-TransactedUnsuspend ............................................................................ 38
-3.1.4.11.1  Messages ....................................................................................... 38
-IWorkflowInstanceManagement_TransactedUnsuspend_InputMessage39
-IWorkflowInstanceManagement_TransactedUnsuspend_OutputMessage
- ............................................................................................... 39
-Elements ........................................................................................ 39
-TransactedUnsuspend ................................................................ 39
-TransactedUnsuspendResponse ................................................... 39
-
-3.1.4.11.2.1
-3.1.4.11.2.2
-
-3.1.4.11.1.1
-3.1.4.11.1.2
-
-3.1.4.10.1.1
-3.1.4.10.1.2
-
-3.1.4.8.2.1
-3.1.4.8.2.2
-
-3.1.4.9.1.1
-3.1.4.9.1.2
-
-3.1.4.9.2.1
-3.1.4.9.2.2
-
-3.1.4.8.1.1
-3.1.4.8.1.2
-
-3.1.4.11.2
-
-3.1.4.10.2
-
-3.1.4.8.1
-
-3.1.4.8.2
-
-3.1.4.9.1
-
-3.1.4.9.2
-
-3.1.4.11
-
-3.1.4.8
-
-3.1.4.9
-
-[MS-WFIM] - v20190313
-Workflow Instance Management Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 62
-
-3.1.4.13
-
-3.1.4.12.2
-
-3.1.4.12.1.1
-3.1.4.12.1.2
-
-3.1.4.12  Update ................................................................................................ 40
-3.1.4.12.1  Messages ....................................................................................... 40
-IWorkflowInstanceManagement_Update_InputMessage .................. 40
-IWorkflowInstanceManagement_Update_OutputMessage ................ 41
-Elements ........................................................................................ 41
-3.1.4.12.2.1  Update ..................................................................................... 41
-3.1.4.12.2.2  UpdateResponse ........................................................................ 41
-TransactedUpdate ................................................................................. 42
-3.1.4.13.1  Messages ....................................................................................... 42
-IWorkflowInstanceManagement_TransactedUpdate_InputMessage ... 42
-IWorkflowInstanceManagement_TransactedUpdate_OutputMessage . 43
-Elements ........................................................................................ 43
-TransactedUpdate ...................................................................... 43
-TransactedUpdateResponse ......................................................... 43
-Timer Events .............................................................................................. 44
-Other Local Events ...................................................................................... 44
-IWorkflowInstanceManagement Client Details ...................................................... 44
-
-3.1.4.13.1.1
-3.1.4.13.1.2
-
-3.1.4.13.2.1
-3.1.4.13.2.2
-
-3.1.4.13.2
-
-3.1.5
-3.1.6
-
-3.2
-
-4  Protocol Examples ................................................................................................. 45
-
-5  Security ................................................................................................................. 46
-Security Considerations for Implementers ........................................................... 46
-Index of Security Parameters ............................................................................ 46
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 47
-Workflow Instance Management Protocol WSDL ................................................... 47
-Workflow Instance Management Schema for the WSDL ......................................... 52
-Workflow Identity Management Schema for the WSDL .......................................... 56
-
-6.1
-6.2
-6.3
-
-7  Appendix B: Product Behavior ............................................................................... 57
-
-8  Change Tracking .................................................................................................... 59
-
-9  Index ..................................................................................................................... 60
-
-[MS-WFIM] - v20190313
-Workflow Instance Management Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-6 / 62
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IWorkflowInstanceManagement Server Details](#31-iworkflowinstancemanagement-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Active State](#3111-active-state)
+      - [3.1.1.2 Suspended State](#3112-suspended-state)
+      - [3.1.1.3 Completed State](#3113-completed-state)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Run](#3141-run)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 IWorkflowInstanceManagement_Run_InputMessage](#314111-iworkflowinstancemanagementruninputmessage)
+          - [3.1.4.1.1.2 IWorkflowInstanceManagement_Run_OutputMessage](#314112-iworkflowinstancemanagementrunoutputmessage)
+        - [3.1.4.1.2 Elements](#31412-elements)
+          - [3.1.4.1.2.1 Run](#314121-run)
+          - [3.1.4.1.2.2 RunResponse](#314122-runresponse)
+      - [3.1.4.2 TransactedRun](#3142-transactedrun)
+        - [3.1.4.2.1 Messages](#31421-messages)
+          - [3.1.4.2.1.1 IWorkflowInstanceManagement_TransactedRun_InputMessage](#314211-iworkflowinstancemanagementtransactedruninputmessage)
+          - [3.1.4.2.1.2 IWorkflowInstanceManagement_TransactedRun_OutputMessage](#314212-iworkflowinstancemanagementtransactedrunoutputmessage)
+        - [3.1.4.2.2 Elements](#31422-elements)
+          - [3.1.4.2.2.1 TransactedRun](#314221-transactedrun)
+          - [3.1.4.2.2.2 TransactedRunResponse](#314222-transactedrunresponse)
+      - [3.1.4.3 Abandon](#3143-abandon)
+        - [3.1.4.3.1 Messages](#31431-messages)
+          - [3.1.4.3.1.1 IWorkflowInstanceManagement_Abandon_InputMessage](#314311-iworkflowinstancemanagementabandoninputmessage)
+          - [3.1.4.3.1.2 IWorkflowInstanceManagement_Abandon_OutputMessage](#314312-iworkflowinstancemanagementabandonoutputmessage)
+        - [3.1.4.3.2 Elements](#31432-elements)
+          - [3.1.4.3.2.1 Abandon](#314321-abandon)
+          - [3.1.4.3.2.2 AbandonResponse](#314322-abandonresponse)
+      - [3.1.4.4 Cancel](#3144-cancel)
+        - [3.1.4.4.1 Messages](#31441-messages)
+          - [3.1.4.4.1.1 IWorkflowInstanceManagement_Cancel_InputMessage](#314411-iworkflowinstancemanagementcancelinputmessage)
+          - [3.1.4.4.1.2 IWorkflowInstanceManagement_Cancel_OutputMessage](#314412-iworkflowinstancemanagementcanceloutputmessage)
+        - [3.1.4.4.2 Elements](#31442-elements)
+          - [3.1.4.4.2.1 Cancel](#314421-cancel)
+          - [3.1.4.4.2.2 CancelResponse](#314422-cancelresponse)
+      - [3.1.4.5 TransactedCancel](#3145-transactedcancel)
+        - [3.1.4.5.1 Messages](#31451-messages)
+          - [3.1.4.5.1.1 IWorkflowInstanceManagement_TransactedCancel_InputMessage](#314511-iworkflowinstancemanagementtransactedcancelinputmessage)
+          - [3.1.4.5.1.2 IWorkflowInstanceManagement_TransactedCancel_OutputMessage](#314512-iworkflowinstancemanagementtransactedcanceloutputmessage)
+        - [3.1.4.5.2 Elements](#31452-elements)
+          - [3.1.4.5.2.1 TransactedCancel](#314521-transactedcancel)
+          - [3.1.4.5.2.2 TransactedCancelResponse](#314522-transactedcancelresponse)
+      - [3.1.4.6 Terminate](#3146-terminate)
+        - [3.1.4.6.1 Messages](#31461-messages)
+          - [3.1.4.6.1.1 IWorkflowInstanceManagement_Terminate_InputMessage](#314611-iworkflowinstancemanagementterminateinputmessage)
+          - [3.1.4.6.1.2 IWorkflowInstanceManagement_Terminate_OutputMessage](#314612-iworkflowinstancemanagementterminateoutputmessage)
+        - [3.1.4.6.2 Elements](#31462-elements)
+          - [3.1.4.6.2.1 Terminate](#314621-terminate)
+          - [3.1.4.6.2.2 TerminateResponse](#314622-terminateresponse)
+      - [3.1.4.7 TransactedTerminate](#3147-transactedterminate)
+        - [3.1.4.7.1 Messages](#31471-messages)
+          - [3.1.4.7.1.1 IWorkflowInstanceManagement_TransactedTerminate_InputMessage](#314711-iworkflowinstancemanagementtransactedterminateinputmessage)
+          - [3.1.4.7.1.2 IWorkflowInstanceManagement_TransactedTerminate_OutputMessage](#314712-iworkflowinstancemanagementtransactedterminateoutputmessage)
+        - [3.1.4.7.2 Elements](#31472-elements)
+          - [3.1.4.7.2.1 TransactedTerminate](#314721-transactedterminate)
+          - [3.1.4.7.2.2 TransactedTerminateResponse](#314722-transactedterminateresponse)
+      - [3.1.4.8 Suspend](#3148-suspend)
+        - [3.1.4.8.1 Messages](#31481-messages)
+          - [3.1.4.8.1.1 IWorkflowInstanceManagement_Suspend_InputMessage](#314811-iworkflowinstancemanagementsuspendinputmessage)
+          - [3.1.4.8.1.2 IWorkflowInstanceManagement_Suspend_OutputMessage](#314812-iworkflowinstancemanagementsuspendoutputmessage)
+        - [3.1.4.8.2 Elements](#31482-elements)
+          - [3.1.4.8.2.1 Suspend](#314821-suspend)
+          - [3.1.4.8.2.2 SuspendResponse](#314822-suspendresponse)
+      - [3.1.4.9 TransactedSuspend](#3149-transactedsuspend)
+        - [3.1.4.9.1 Messages](#31491-messages)
+          - [3.1.4.9.1.1 IWorkflowInstanceManagement_TransactedSuspend_InputMessage](#314911-iworkflowinstancemanagementtransactedsuspendinputmessage)
+          - [3.1.4.9.1.2 IWorkflowInstanceManagement_TransactedSuspend_OutputMessage](#314912-iworkflowinstancemanagementtransactedsuspendoutputmessage)
+        - [3.1.4.9.2 Elements](#31492-elements)
+          - [3.1.4.9.2.1 TransactedSuspend](#314921-transactedsuspend)
+          - [3.1.4.9.2.2 TransactedSuspendResponse](#314922-transactedsuspendresponse)
+      - [3.1.4.10 Unsuspend](#31410-unsuspend)
+        - [3.1.4.10.1 Messages](#314101-messages)
+          - [3.1.4.10.1.1 IWorkflowInstanceManagement_Unsuspend_InputMessage](#3141011-iworkflowinstancemanagementunsuspendinputmessage)
+          - [3.1.4.10.1.2 IWorkflowInstanceManagement_Unsuspend_OutputMessage](#3141012-iworkflowinstancemanagementunsuspendoutputmessage)
+        - [3.1.4.10.2 Elements](#314102-elements)
+          - [3.1.4.10.2.1 Unsuspend](#3141021-unsuspend)
+          - [3.1.4.10.2.2 UnsuspendResponse](#3141022-unsuspendresponse)
+      - [3.1.4.11 TransactedUnsuspend](#31411-transactedunsuspend)
+        - [3.1.4.11.1 Messages](#314111-messages)
+          - [3.1.4.11.1.1 IWorkflowInstanceManagement_TransactedUnsuspend_InputMessage](#3141111-iworkflowinstancemanagementtransactedunsuspendinputmessage)
+          - [3.1.4.11.1.2 IWorkflowInstanceManagement_TransactedUnsuspend_OutputMessage](#3141112-iworkflowinstancemanagementtransactedunsuspendoutputmessage)
+        - [3.1.4.11.2 Elements](#314112-elements)
+          - [3.1.4.11.2.1 TransactedUnsuspend](#3141121-transactedunsuspend)
+          - [3.1.4.11.2.2 TransactedUnsuspendResponse](#3141122-transactedunsuspendresponse)
+      - [3.1.4.12 Update](#31412-update)
+        - [3.1.4.12.1 Messages](#314121-messages)
+          - [3.1.4.12.1.1 IWorkflowInstanceManagement_Update_InputMessage](#3141211-iworkflowinstancemanagementupdateinputmessage)
+          - [3.1.4.12.1.2 IWorkflowInstanceManagement_Update_OutputMessage](#3141212-iworkflowinstancemanagementupdateoutputmessage)
+        - [3.1.4.12.2 Elements](#314122-elements)
+          - [3.1.4.12.2.1 Update](#3141221-update)
+          - [3.1.4.12.2.2 UpdateResponse](#3141222-updateresponse)
+      - [3.1.4.13 TransactedUpdate](#31413-transactedupdate)
+        - [3.1.4.13.1 Messages](#314131-messages)
+          - [3.1.4.13.1.1 IWorkflowInstanceManagement_TransactedUpdate_InputMessage](#3141311-iworkflowinstancemanagementtransactedupdateinputmessage)
+          - [3.1.4.13.1.2 IWorkflowInstanceManagement_TransactedUpdate_OutputMessage](#3141312-iworkflowinstancemanagementtransactedupdateoutputmessage)
+        - [3.1.4.13.2 Elements](#314132-elements)
+          - [3.1.4.13.2.1 TransactedUpdate](#3141321-transactedupdate)
+          - [3.1.4.13.2.2 TransactedUpdateResponse](#3141322-transactedupdateresponse)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 IWorkflowInstanceManagement Client Details](#32-iworkflowinstancemanagement-client-details)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+  - [6.1 Workflow Instance Management Protocol WSDL](#61-workflow-instance-management-protocol-wsdl)
+  - [6.2 Workflow Instance Management Schema for the WSDL](#62-workflow-instance-management-schema-for-the-wsdl)
+  - [6.3 Workflow Identity Management Schema for the WSDL](#63-workflow-identity-management-schema-for-the-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This document specifies the Workflow Instance Management Protocol, which defines a set of SOAP
 messages for the management of durable program instances, such as suspending, resuming, or
@@ -729,7 +511,7 @@ canceling an instance.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -790,7 +572,8 @@ Release: March 13, 2019
 
 7 / 62
 
-WSDL operation: A single action or function of a web service. The execution of a WSDL operation
+
+WSDL operation: A single action or function of a web service. The execution of a WSDL operation
 typically requires the exchange of messages between the service requestor and the service
 provider.
 
@@ -817,14 +600,14 @@ schemas.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -858,7 +641,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[XMLNS-2ED] Bray, T., Hollander, D., Layman, A., and Tobin, R., Eds., "Namespaces in XML 1.0
+
+[XMLNS-2ED] Bray, T., Hollander, D., Layman, A., and Tobin, R., Eds., "Namespaces in XML 1.0
 (Second Edition)", W3C Recommendation, August 2006, https://www.w3.org/TR/2006/REC-xml-
 names-20060816/
 
@@ -869,7 +653,7 @@ names-20060816/
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
@@ -889,7 +673,7 @@ us/lifecycle/search?sort=PN&alpha=.NET%20Framework&Filter=FilterNO
 Security 1.0 (WS-Security 2004)", March 2004, http://docs.oasis-open.org/wss/2004/01/oasis-
 200401-wss-soap-message-security-1.0.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 The familiar control operations of starting, pausing, and terminating processes are sufficient for
 managing programs where execution is contained within a single process; however, these operations
@@ -924,7 +708,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-WFIM].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -937,14 +722,14 @@ In some scenarios, operations in the Workflow Instance Management Protocol are u
 internals itself. For example, the Run operation can be utilized internally by the system for recovery
 after system failure.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Workflow Instance Management Protocol can be used with SOAP-formatted messages. The
 following figure shows a protocol stack:
 
 Figure 1: Protocol stack for the Workflow Instance Management Protocol
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Workflow Instance Management Protocol requires that:
 
@@ -961,13 +746,13 @@ program instance on which management operation(s) need to be performed. This uni
 identifier is used by the client to identify the target instance of the management operation on the
 server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Workflow Instance Management Protocol is applicable to scenarios where management of
 durable program instances is required. The client and server use this protocol to perform
 management operations on durable program instances.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -982,7 +767,8 @@ Release: March 13, 2019
 
 10 / 62
 
-  Protocol Versions: This protocol has only one WSDL port type version with a single set of
+
+  Protocol Versions: This protocol has only one WSDL port type version with a single set of
 
 operations. The use of these operations is specified in section 3.2.
 
@@ -991,11 +777,11 @@ operations. The use of these operations is specified in section 3.2.
 negotiation of the version to use. Instead, an implementation has to be configured to process
 messages only as described in section 2.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields in this protocol.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1006,9 +792,10 @@ Release: March 13, 2019
 
 11 / 62
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Workflow Instance Management Protocol can be used over any transport protocol that supports
 transmitting messages that are specified by the following protocols:
@@ -1021,13 +808,13 @@ This specification uses the term SOAP to mean either SOAP 1.1 or SOAP 1.2. An im
 the Workflow Instance Management Protocol MUST support the processing of messages that are
 specified by either of these SOAP versions.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 schema (XSD) as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description
 Language as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS-2ED]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1111,7 +898,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Prefix
+
+Prefix
 
 Namespace URI
 
@@ -1134,31 +922,31 @@ Reference
 [XMLSCHEMA1],
 [XMLSCHEMA2]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common XSD message definitions.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 This specification does not define any common XSD element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XSD complex-type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XSD simple-type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XSD attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XSD group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XSD attribute group definitions.
 
@@ -1169,20 +957,21 @@ Release: March 13, 2019
 
 13 / 62
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-WFIM].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through mechanism. That is, no additional timers or
 other state is required on the client side of this protocol. Calls made by the higher-layer protocol or
 application are passed directly to the transport, and the results returned by the transport are passed
 directly back to the higher-layer protocol or application.
 
-3.1  IWorkflowInstanceManagement Server Details
+### 3.1 IWorkflowInstanceManagement Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1211,7 +1000,7 @@ invoked.
 
 Figure 2: Durable program instance states when operation is invoked and completed
 
-3.1.1.1  Active State
+##### 3.1.1.1 Active State
 
 The durable program instance is in the active state before it reaches the completed state and when
 it is not in the suspended state. In the active state, the durable program instance SHOULD execute
@@ -1224,15 +1013,16 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-WFIM].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-3.1.1.2  Suspended State
+##### 3.1.1.2 Suspended State
 
 In the suspended state, the durable program instance MUST NOT execute.
 
-3.1.1.3  Completed State
+##### 3.1.1.3 Completed State
 
 The completed state is a final state of the durable program instance. The durable program instance
 MUST NOT execute in this state.
@@ -1247,11 +1037,11 @@ following durable program instance state machine.
 
 Figure 3: Durable program instance state machine
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When a server role is initialized:
 
@@ -1262,7 +1052,8 @@ Release: March 13, 2019
 
 15 / 62
 
-
+
+
 
 The Durable Program Instance Table MUST be set to a value that is obtained from an
 implementation-specific source.
@@ -1284,7 +1075,7 @@ implementation-specific source.
 The durable program instance state MUST be set to one of the enumerated values: active,
 suspended, or completed.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations as defined by this specification:
 
@@ -1366,13 +1157,14 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Operation
+
+Operation
 
 Description
 
 updated identity.
 
-3.1.4.1  Run
+##### 3.1.4.1 Run
 
 The WSDL definition of the Run operation is as follows.
 
@@ -1419,7 +1211,7 @@ completed state.
 
 The server encounters an internal error while executing the Run operation.
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1436,9 +1228,9 @@ IWorkflowInstanceManagement_Run_OutputMessage  Sent from the server as a reply t
 
 IWorkflowInstanceManagement_Run_InputMessage.
 
-3.1.4.1.1.1
+###### 3.1.4.1.1.1 IWorkflowInstanceManagement_Run_InputMessage
 
-IWorkflowInstanceManagement_Run_InputMessage
+
 
 The IWorkflowInstanceManagement_Run_InputMessage message is the request message for the Run
 operation. The client SHOULD send this message to invoke the Run operation.
@@ -1452,14 +1244,15 @@ Release: March 13, 2019
 
 17 / 62
 
-     <wsdl:part name="parameters" element="tns:Run" />
+
+     <wsdl:part name="parameters" element="tns:Run" />
  </wsdl:message>
 
 Run: The <Run> element, as specified in section 3.1.4.1.2.1.
 
-3.1.4.1.1.2
+###### 3.1.4.1.1.2 IWorkflowInstanceManagement_Run_OutputMessage
 
-IWorkflowInstanceManagement_Run_OutputMessage
+
 
 The IWorkflowInstanceManagement_Run_OutputMessage message is the reply message for the Run
 operation. The message indicates that the Run operation has successfully completed.
@@ -1470,7 +1263,7 @@ operation. The message indicates that the Run operation has successfully complet
 
 RunResponse: The <RunResponse> element, as specified in section 3.1.4.1.2.2.
 
-3.1.4.1.2 Elements
+###### 3.1.4.1.2 Elements
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -1484,7 +1277,7 @@ Contains the body of the IWorkflowInstanceManagement_Run_InputMessage message.
 
 <RunResponse>  Contains the body of the IWorkflowInstanceManagement_Run_OutputMessage message.
 
-3.1.4.1.2.1  Run
+###### 3.1.4.1.2.1 Run
 
 <Run> is an XSD element that has a child element <instanceId>. The XSD definition of the <Run>
 element is as follows:
@@ -1503,7 +1296,7 @@ instanceId: The value of this element is of type GUID and SHOULD match the ident
 with the durable program instance in the Durable Program Instance Table on which this
 operation SHOULD be performed.
 
-3.1.4.1.2.2  RunResponse
+###### 3.1.4.1.2.2 RunResponse
 
 <RunResponse> is an XSD element that has no child elements. The XSD definition of the
 <RunResponse> element is as follows:
@@ -1521,7 +1314,8 @@ Release: March 13, 2019
 
 18 / 62
 
-3.1.4.2  TransactedRun
+
+##### 3.1.4.2 TransactedRun
 
 The WSDL definition of the TransactedRun operation is as follows:
 
@@ -1577,7 +1371,7 @@ completed state.
 
 The server encounters an internal error while executing the TransactedRun operation.
 
-3.1.4.2.1 Messages
+###### 3.1.4.2.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1599,9 +1393,9 @@ Sent from the server as a reply to
 IWorkflowInstanceManagement_TransactedRun_Input
 Message.
 
-3.1.4.2.1.1
+###### 3.1.4.2.1.1 IWorkflowInstanceManagement_TransactedRun_InputMessage
 
-IWorkflowInstanceManagement_TransactedRun_InputMessage
+
 
 19 / 62
 
@@ -1610,7 +1404,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The IWorkflowInstanceManagement_TransactedRun_InputMessage message is the request message
+
+The IWorkflowInstanceManagement_TransactedRun_InputMessage message is the request message
 for the TransactedRun operation. The client SHOULD send this message to invoke the
 TransactedRun operation.
 
@@ -1620,9 +1415,9 @@ TransactedRun operation.
 
 TransactedRun: The <TransactedRun> element, as specified in section 3.1.4.2.2.1.
 
-3.1.4.2.1.2
+###### 3.1.4.2.1.2 IWorkflowInstanceManagement_TransactedRun_OutputMessage
 
-IWorkflowInstanceManagement_TransactedRun_OutputMessage
+
 
 The IWorkflowInstanceManagement_TransactedRun_OutputMessage message is the reply message for
 the TransactedRun operation. The message indicates that the TransactedRun operation has
@@ -1636,7 +1431,7 @@ TransactedRunResponse: The <TransactedRunResponse> element, as specified in sect
 
 3.1.4.2.2.2.
 
-3.1.4.2.2 Elements
+###### 3.1.4.2.2 Elements
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -1653,7 +1448,7 @@ IWorkflowInstanceManagement_TransactedRun_InputMessage message.
 
 IWorkflowInstanceManagement_TransactedRun_OutputMessage message.
 
-3.1.4.2.2.1  TransactedRun
+###### 3.1.4.2.2.1 TransactedRun
 
 <TransactedRun> is an XSD element that has a child element <instanceId>. The XSD definition of
 the <TransactedRun> element is as follows:
@@ -1672,7 +1467,7 @@ instanceId: The value of this element is of type GUID and SHOULD match the ident
 with the durable program instance in the Durable Program Instance Table on which this
 operation SHOULD be performed.
 
-3.1.4.2.2.2  TransactedRunResponse
+###### 3.1.4.2.2.2 TransactedRunResponse
 
 [MS-WFIM] - v20190313
 Workflow Instance Management Protocol
@@ -1681,7 +1476,8 @@ Release: March 13, 2019
 
 20 / 62
 
-<TransactedRunResponse> is an XSD element that has no child elements. The XSD definition of the
+
+<TransactedRunResponse> is an XSD element that has no child elements. The XSD definition of the
 <TransactedRunResponse> element is as follows:
 
  <xs:element name="TransactedRunResponse">
@@ -1690,7 +1486,7 @@ Release: March 13, 2019
    </xs:complexType>
  </xs:element>
 
-3.1.4.3  Abandon
+##### 3.1.4.3 Abandon
 
 The WSDL definition of the Abandon operation is as follows:
 
@@ -1737,7 +1533,7 @@ completed state.
 
 The server encounters an internal error while executing the Abandon operation.
 
-3.1.4.3.1 Messages
+###### 3.1.4.3.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1764,15 +1560,16 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Message
+
+Message
 
 Description
 
 e.
 
-3.1.4.3.1.1
+###### 3.1.4.3.1.1 IWorkflowInstanceManagement_Abandon_InputMessage
 
-IWorkflowInstanceManagement_Abandon_InputMessage
+
 
 The IWorkflowInstanceManagement_Abandon_InputMessage message is the request message for the
 Abandon operation. The client role SHOULD send this message to invoke the Abandon operation.
@@ -1783,9 +1580,9 @@ Abandon operation. The client role SHOULD send this message to invoke the Abando
 
 Abandon: The <Abandon> element, as specified in section 3.1.4.1.2.2.
 
-3.1.4.3.1.2
+###### 3.1.4.3.1.2 IWorkflowInstanceManagement_Abandon_OutputMessage
 
-IWorkflowInstanceManagement_Abandon_OutputMessage
+
 
 The IWorkflowInstanceManagement_Abandon_OutputMessage message is the reply message for the
 Abandon operation. The message indicates that the Abandon operation has successfully completed.
@@ -1796,7 +1593,7 @@ Abandon operation. The message indicates that the Abandon operation has successf
 
 AbandonResponse: The <AbandonResponse> element, as specified in section 3.1.4.3.2.2.
 
-3.1.4.3.2 Elements
+###### 3.1.4.3.2 Elements
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -1813,7 +1610,7 @@ message.
 
 message.
 
-3.1.4.3.2.1  Abandon
+###### 3.1.4.3.2.1 Abandon
 
 <Abandon> is an XSD element that has two child elements: <instanceId> and <reason>. The XSD
 definition of the <Abandon> element is as follows:
@@ -1840,11 +1637,12 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-reason: The value of this element is a description of the reason for performing the Abandon
+
+reason: The value of this element is a description of the reason for performing the Abandon
 
 operation.
 
-3.1.4.3.2.2  AbandonResponse
+###### 3.1.4.3.2.2 AbandonResponse
 
 <AbandonResponse> is an XSD element that has no child elements. The XSD definition of the
 <AbandonResponse> element is as follows:
@@ -1855,7 +1653,7 @@ operation.
    </xs:complexType>
  </xs:element>
 
-3.1.4.4  Cancel
+##### 3.1.4.4 Cancel
 
 The WSDL definition of the Cancel operation is as follows:
 
@@ -1899,7 +1697,7 @@ completed state.
 
 The server encounters an internal error while executing the Cancel operation.
 
-3.1.4.4.1 Messages
+###### 3.1.4.4.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1921,15 +1719,16 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Message
+
+Message
 
 Description
 
 IWorkflowInstanceManagement_Cancel_InputMessage.
 
-3.1.4.4.1.1
+###### 3.1.4.4.1.1 IWorkflowInstanceManagement_Cancel_InputMessage
 
-IWorkflowInstanceManagement_Cancel_InputMessage
+
 
 The IWorkflowInstanceManagement_Cancel_InputMessage message is the request message for the
 Cancel operation. The client role SHOULD send this message to invoke the Cancel operation.
@@ -1940,9 +1739,9 @@ Cancel operation. The client role SHOULD send this message to invoke the Cancel 
 
 Cancel: The <Cancel> element, as specified in section 3.1.4.4.2.1.
 
-3.1.4.4.1.2
+###### 3.1.4.4.1.2 IWorkflowInstanceManagement_Cancel_OutputMessage
 
-IWorkflowInstanceManagement_Cancel_OutputMessage
+
 
 The IWorkflowInstanceManagement_Cancel_OutputMessage message is the reply message for the
 Cancel operation. The message indicates that the Cancel operation has successfully completed. The
@@ -1954,7 +1753,7 @@ SOAP:body of this message consists of the <CancelResponse> element.
 
 CancelResponse: The <CancelResponse> element, as specified in section 3.1.4.4.2.2.
 
-3.1.4.4.2 Elements
+###### 3.1.4.4.2 Elements
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -1968,7 +1767,7 @@ Contains the body of the IWorkflowInstanceManagement_Cancel_InputMessage message
 
 <CancelResponse>  Contains the body of the IWorkflowInstanceManagement_Cancel_OutputMessage message.
 
-3.1.4.4.2.1  Cancel
+###### 3.1.4.4.2.1 Cancel
 
 <Cancel> is an XSD element that has a child element <instanceId>. The XSD definition of the
 <Cancel> element is as follows:
@@ -1987,7 +1786,7 @@ instanceId: The value of this element is of type GUID and SHOULD match the ident
 associated with the durable program instance in the Durable Program Instance Table on
 which this operation SHOULD be performed.
 
-3.1.4.4.2.2  CancelResponse
+###### 3.1.4.4.2.2 CancelResponse
 
 [MS-WFIM] - v20190313
 Workflow Instance Management Protocol
@@ -1996,7 +1795,8 @@ Release: March 13, 2019
 
 24 / 62
 
-<CancelResponse> is an XSD element that has no child elements. The XSD definition of the
+
+<CancelResponse> is an XSD element that has no child elements. The XSD definition of the
 <CancelResponse> element is as follows:
 
  <xs:element name="CancelResponse">
@@ -2005,7 +1805,7 @@ Release: March 13, 2019
    </xs:complexType>
  </xs:element>
 
-3.1.4.5  TransactedCancel
+##### 3.1.4.5 TransactedCancel
 
 Following is the WSDL definition of the TransactedCancel operation:
 
@@ -2057,7 +1857,7 @@ completed state.
 
 The server encounters an internal error while executing the TransactedCancel operation.
 
-3.1.4.5.1 Messages
+###### 3.1.4.5.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2069,7 +1869,8 @@ Release: March 13, 2019
 
 25 / 62
 
-Message
+
+Message
 
 Description
 
@@ -2086,9 +1887,9 @@ Sent from the server as a reply to
 IWorkflowInstanceManagement_TransactedCancel_Inp
 utMessage.
 
-3.1.4.5.1.1
+###### 3.1.4.5.1.1 IWorkflowInstanceManagement_TransactedCancel_InputMessage
 
-IWorkflowInstanceManagement_TransactedCancel_InputMessage
+
 
 The IWorkflowInstanceManagement_TransactedCancel_InputMessage message is the request
 message for the TransactedCancel operation. The client role SHOULD send this message to invoke
@@ -2100,9 +1901,9 @@ the TransactedCancel operation.
 
 TransactedCancel: The <TransactedCancel> element, as specified in section 3.1.4.5.2.1.
 
-3.1.4.5.1.2
+###### 3.1.4.5.1.2 IWorkflowInstanceManagement_TransactedCancel_OutputMessage
 
-IWorkflowInstanceManagement_TransactedCancel_OutputMessage
+
 
 The IWorkflowInstanceManagement_TransactedCancel_OutputMessage message is the reply message
 for the TransactedCancel operation. The message indicates that the TransactedCancel operation
@@ -2116,7 +1917,7 @@ TransactedCancelResponse: The <TransactedCancelResponse> element, as specified i
 
 3.1.4.5.2.2.
 
-3.1.4.5.2 Elements
+###### 3.1.4.5.2 Elements
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -2133,7 +1934,7 @@ IWorkflowInstanceManagement_TransactedCancel_InputMessage message.
 
 IWorkflowInstanceManagement_TransactedCancel_OutputMessage message.
 
-3.1.4.5.2.1  TransactedCancel
+###### 3.1.4.5.2.1 TransactedCancel
 
 <TransactedCancel> is an XSD element that has a child element <instanceId>. The XSD definition of
 the <TransactedCancel> element is as follows:
@@ -2152,7 +1953,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     </xs:sequence>
+
+     </xs:sequence>
    </xs:complexType>
  </xs:element>
 
@@ -2161,7 +1963,7 @@ instanceId: The value of this element is of type GUID and SHOULD match the ident
 associated with the durable program instance in the Durable Program Instance Table on
 which this operation SHOULD be performed.
 
-3.1.4.5.2.2  TransactedCancelResponse
+###### 3.1.4.5.2.2 TransactedCancelResponse
 
 <TransactedCancelResponse> is an XSD element that has no child elements. The XSD definition of
 the <TransactedCancelResponse> element is as follows:
@@ -2172,7 +1974,7 @@ the <TransactedCancelResponse> element is as follows:
    </xs:complexType>
  </xs:element>
 
-3.1.4.6  Terminate
+##### 3.1.4.6 Terminate
 
 Following is the WSDL definition of the Terminate operation:
 
@@ -2215,7 +2017,7 @@ completed state.
 
 The server encounters an internal error while executing the Terminate operation.
 
-3.1.4.6.1 Messages
+###### 3.1.4.6.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2227,7 +2029,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Message
+
+Message
 
 Description
 
@@ -2244,9 +2047,9 @@ Sent from the server as a reply to
 IWorkflowInstanceManagement_Terminate_InputMess
 age.
 
-3.1.4.6.1.1
+###### 3.1.4.6.1.1 IWorkflowInstanceManagement_Terminate_InputMessage
 
-IWorkflowInstanceManagement_Terminate_InputMessage
+
 
 The IWorkflowInstanceManagement_Terminate_InputMessage message is the request message for
 the Terminate operation. The client SHOULD send this message to invoke the Terminate operation.
@@ -2257,9 +2060,9 @@ the Terminate operation. The client SHOULD send this message to invoke the Termi
 
 Terminate: The <Terminate> element, as specified in section 3.1.4.6.2.1.
 
-3.1.4.6.1.2
+###### 3.1.4.6.1.2 IWorkflowInstanceManagement_Terminate_OutputMessage
 
-IWorkflowInstanceManagement_Terminate_OutputMessage
+
 
 The IWorkflowInstanceManagement_Terminate_OutputMessage message is the reply message for the
 Terminate operation. The message indicates that the Terminate operation has successfully
@@ -2271,7 +2074,7 @@ completed.
 
 TerminateResponse: The <TerminateResponse> element, as specified in section 3.1.4.6.2.2.
 
-3.1.4.6.2 Elements
+###### 3.1.4.6.2 Elements
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -2288,7 +2091,7 @@ message.
 
 message.
 
-3.1.4.6.2.1  Terminate
+###### 3.1.4.6.2.1 Terminate
 
 <Terminate> is an XSD element that has two child elements: <instanceId> and <reason>. The XSD
 definition of the <Terminate> element is as follows:
@@ -2309,7 +2112,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   </xs:complexType>
+
+   </xs:complexType>
  </xs:element>
 
 instanceId: The value of this element is of type GUID and SHOULD match the identifier that is
@@ -2321,7 +2125,7 @@ reason: The value of this element is a description of the reason for performing 
 
 operation.
 
-3.1.4.6.2.2  TerminateResponse
+###### 3.1.4.6.2.2 TerminateResponse
 
 <TerminateResponse> is an XSD element that has no child elements. The XSD definition of the
 <TerminateResponse> element is as follows:
@@ -2332,7 +2136,7 @@ operation.
    </xs:complexType>
  </xs:element>
 
-3.1.4.7  TransactedTerminate
+##### 3.1.4.7 TransactedTerminate
 
 The WSDL definition of the TransactedTerminate operation is as follows:
 
@@ -2382,7 +2186,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 The durable program instance associated with the value of the <instanceId> element is in the
 completed state.
@@ -2391,7 +2196,7 @@ completed state.
 
 The server encounters an internal error while executing the TransactedTerminate operation.
 
-3.1.4.7.1 Messages
+###### 3.1.4.7.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2413,9 +2218,9 @@ Sent from the server as a reply to
 IWorkflowInstanceManagement_TransactedTerminate_
 InputMessage.
 
-3.1.4.7.1.1
+###### 3.1.4.7.1.1 IWorkflowInstanceManagement_TransactedTerminate_InputMessage
 
-IWorkflowInstanceManagement_TransactedTerminate_InputMessage
+
 
 The IWorkflowInstanceManagement_TransactedTerminate_InputMessage message is the request
 message for the TransactedTerminate operation. The client SHOULD send this message to invoke
@@ -2427,9 +2232,9 @@ the TransactedTerminate operation.
 
 TransactedTerminate: The <TransactedTerminate> element, as specified in section 3.1.4.7.2.1.
 
-3.1.4.7.1.2
+###### 3.1.4.7.1.2 IWorkflowInstanceManagement_TransactedTerminate_OutputMessage
 
-IWorkflowInstanceManagement_TransactedTerminate_OutputMessage
+
 
 The IWorkflowInstanceManagement_TransactedTerminate_OutputMessage message is the reply
 message for the TransactedTerminate operation. The message indicates that the
@@ -2443,7 +2248,7 @@ TransactedTerminateResponse: The <TransactedTerminateResponse> element, as speci
 
 section 3.1.4.7.2.2.
 
-3.1.4.7.2 Elements
+###### 3.1.4.7.2 Elements
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -2469,7 +2274,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.1.4.7.2.1  TransactedTerminate
+
+###### 3.1.4.7.2.1 TransactedTerminate
 
 <TransactedTerminate> is an XSD element that has a child element <instanceId>. The XSD definition
 of the <TransactedTerminate> element is as follows:
@@ -2493,7 +2299,7 @@ reason: The value of this element is a description of the reason for performing 
 
 TransactedTerminate operation.
 
-3.1.4.7.2.2  TransactedTerminateResponse
+###### 3.1.4.7.2.2 TransactedTerminateResponse
 
 <TransactedTerminateResponse> is an XSD element that has no child elements. The XSD definition of
 the <TransactedTerminateResponse> element is as follows:
@@ -2504,7 +2310,7 @@ the <TransactedTerminateResponse> element is as follows:
    </xs:complexType>
  </xs:element>
 
-3.1.4.8  Suspend
+##### 3.1.4.8 Suspend
 
 The WSDL definition of the Suspend operation is as follows:
 
@@ -2543,7 +2349,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -2561,7 +2368,7 @@ durable program instance on which the operation is to be performed. If the durab
 associated with the identifier passed to the Suspend operation is already in the suspended state, the
 state is not modified.
 
-3.1.4.8.1 Messages
+###### 3.1.4.8.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2582,9 +2389,9 @@ Sent from the server as a reply to
 IWorkflowInstanceManagement_Suspend_InputMessag
 e.
 
-3.1.4.8.1.1
+###### 3.1.4.8.1.1 IWorkflowInstanceManagement_Suspend_InputMessage
 
-IWorkflowInstanceManagement_Suspend_InputMessage
+
 
 The IWorkflowInstanceManagement_Suspend_InputMessage message is the request message for the
 Suspend operation. The client SHOULD send this message to invoke the Suspend operation.
@@ -2595,9 +2402,9 @@ Suspend operation. The client SHOULD send this message to invoke the Suspend ope
 
 Suspend: The <Suspend> element, as specified in section 3.1.4.8.2.1.
 
-3.1.4.8.1.2
+###### 3.1.4.8.1.2 IWorkflowInstanceManagement_Suspend_OutputMessage
 
-IWorkflowInstanceManagement_Suspend_OutputMessage
+
 
 The IWorkflowInstanceManagement_Suspend_OutputMessage message is the reply message for the
 Suspend operation. The message indicates that the Suspend operation has successfully completed.
@@ -2608,7 +2415,7 @@ Suspend operation. The message indicates that the Suspend operation has successf
 
 SuspendResponse: The <SuspendResponse> element, as specified in section 3.1.4.8.2.2.
 
-3.1.4.8.2 Elements
+###### 3.1.4.8.2 Elements
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -2628,7 +2435,8 @@ Release: March 13, 2019
 
 32 / 62
 
-Element
+
+Element
 
 Description
 
@@ -2636,7 +2444,7 @@ Description
 
 message.
 
-3.1.4.8.2.1  Suspend
+###### 3.1.4.8.2.1 Suspend
 
 <Suspend> is an XSD element that has two child elements: <instanceId> and <reason>. The XSD
 definition of the <Suspend> element is as follows:
@@ -2660,7 +2468,7 @@ reason: The value of this element is a description of the reason for performing 
 
 operation.
 
-3.1.4.8.2.2  SuspendResponse
+###### 3.1.4.8.2.2 SuspendResponse
 
 <SuspendResponse> is an XSD element that has no child elements. The XSD definition of the
 <SuspendResponse> element is as follows:
@@ -2671,7 +2479,7 @@ operation.
    </xs:complexType>
  </xs:element>
 
-3.1.4.9  TransactedSuspend
+##### 3.1.4.9 TransactedSuspend
 
 The WSDL definition of the TransactedSuspend operation is as follows:
 
@@ -2695,7 +2503,8 @@ Release: March 13, 2019
 
 33 / 62
 
-
+
+
 
 
 
@@ -2745,7 +2554,7 @@ durable program instance on which the operation is to be performed. If the durab
 associated with the identifier passed to the Suspend operation is already in the suspended state, then
 the state is not modified.
 
-3.1.4.9.1 Messages
+###### 3.1.4.9.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2767,9 +2576,9 @@ Sent from the server as a reply to
 IWorkflowInstanceManagement_TransactedSuspend_I
 nputMessage.
 
-3.1.4.9.1.1
+###### 3.1.4.9.1.1 IWorkflowInstanceManagement_TransactedSuspend_InputMessage
 
-IWorkflowInstanceManagement_TransactedSuspend_InputMessage
+
 
 The IWorkflowInstanceManagement_TransactedSuspend_InputMessage message is the request
 message for the TransactedSuspend operation. The client SHOULD send this message to invoke the
@@ -2781,9 +2590,9 @@ TransactedSuspend operation.
 
 TransactedSuspend: The <TransactedSuspend> element, as specified in section 3.1.4.9.2.1.
 
-3.1.4.9.1.2
+###### 3.1.4.9.1.2 IWorkflowInstanceManagement_TransactedSuspend_OutputMessage
 
-IWorkflowInstanceManagement_TransactedSuspend_OutputMessage
+
 
 34 / 62
 
@@ -2792,7 +2601,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The IWorkflowInstanceManagement_TransactedSuspend_OutputMessage message is the reply
+
+The IWorkflowInstanceManagement_TransactedSuspend_OutputMessage message is the reply
 message for the TransactedSuspend operation. The message indicates that the
 TransactedSuspend operation has successfully completed.
 
@@ -2804,7 +2614,7 @@ TransactedSuspendResponse: The <TransactedSuspendResponse> element, as specified
 
 3.1.4.9.2.2.
 
-3.1.4.9.2 Elements
+###### 3.1.4.9.2 Elements
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -2821,7 +2631,7 @@ IWorkflowInstanceManagement_TransactedSuspend_InputMessage message.
 
 IWorkflowInstanceManagement_TransactedSuspend_OutputMessage message.
 
-3.1.4.9.2.1  TransactedSuspend
+###### 3.1.4.9.2.1 TransactedSuspend
 
 <TransactedSuspend> is an XSD element that has two child elements: <instanceId> and <reason>.
 The XSD definition of the <TransactedSuspend> element is as follows:
@@ -2845,7 +2655,7 @@ reason: The value of this element is a description of the reason for performing 
 
 TransactedSuspend operation.
 
-3.1.4.9.2.2  TransactedSuspendResponse
+###### 3.1.4.9.2.2 TransactedSuspendResponse
 
 <TransactedSuspendResponse> is an XSD element that has no child elements. The XSD definition of
 the <TransactedSuspendResponse> element is as follows:
@@ -2863,9 +2673,10 @@ Release: March 13, 2019
 
 35 / 62
 
-3.1.4.10
 
-Unsuspend
+##### 3.1.4.10 Unsuspend
+
+
 
 The WSDL definition of the Unsuspend operation is as follows:
 
@@ -2911,7 +2722,7 @@ completed state.
 
 The server encounters an internal error while executing the Unsuspend operation.
 
-3.1.4.10.1  Messages
+###### 3.1.4.10.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2933,7 +2744,7 @@ Sent from the server as a reply to
 IWorkflowInstanceManagement_Unsuspend_InputMess
 age.
 
-3.1.4.10.1.1  IWorkflowInstanceManagement_Unsuspend_InputMessage
+###### 3.1.4.10.1.1 IWorkflowInstanceManagement_Unsuspend_InputMessage
 
 The IWorkflowInstanceManagement_Unsuspend_InputMessage message is the request message for
 the Unsuspend operation. The client SHOULD send this message to invoke the Unsuspend
@@ -2949,11 +2760,12 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- </wsdl:message>
+
+ </wsdl:message>
 
 Unsuspend: The <Unsuspend> element, as specified in section 3.1.4.10.2.1.
 
-3.1.4.10.1.2  IWorkflowInstanceManagement_Unsuspend_OutputMessage
+###### 3.1.4.10.1.2 IWorkflowInstanceManagement_Unsuspend_OutputMessage
 
 The IWorkflowInstanceManagement_Unsuspend_OutputMessage message is the reply message for the
 Unsuspend operation. The message indicates that the Unsuspend operation has successfully
@@ -2965,9 +2777,9 @@ completed.
 
 UnsuspendResponse: The <UnsuspendResponse> element, as specified in section 3.1.4.10.2.2.
 
-3.1.4.10.2
+###### 3.1.4.10.2 Elements
 
-Elements
+
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -2984,7 +2796,7 @@ message.
 
 message.
 
-3.1.4.10.2.1  Unsuspend
+###### 3.1.4.10.2.1 Unsuspend
 
 <Unsuspend> is an XSD element that has a child element <instanceId>. The XSD definition of the
 <Unsuspend> element is as follows:
@@ -3003,7 +2815,7 @@ instanceId: The value of this element is of type GUID and SHOULD match the ident
 associated with the durable program instance in the Durable Program Instance Table on
 which this operation SHOULD be performed.
 
-3.1.4.10.2.2  UnsuspendResponse
+###### 3.1.4.10.2.2 UnsuspendResponse
 
 <UnsuspendResponse> is an XSD element that has no child elements. The XSD definition of the
 <UnsuspendResponse> element is as follows:
@@ -3020,11 +2832,12 @@ Release: March 13, 2019
 
 37 / 62
 
- </xs:element>
 
-3.1.4.11
+ </xs:element>
 
-TransactedUnsuspend
+##### 3.1.4.11 TransactedUnsuspend
+
+
 
 The WSDL definition of the TransactedUnsuspend operation is as follows:
 
@@ -3076,7 +2889,7 @@ completed state.
 
 The server encounters an internal error while executing the TransactedUnsuspend operation.
 
-3.1.4.11.1  Messages
+###### 3.1.4.11.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3105,7 +2918,8 @@ Release: March 13, 2019
 
 38 / 62
 
-3.1.4.11.1.1  IWorkflowInstanceManagement_TransactedUnsuspend_InputMessage
+
+###### 3.1.4.11.1.1 IWorkflowInstanceManagement_TransactedUnsuspend_InputMessage
 
 The IWorkflowInstanceManagement_TransactedUnsuspend_InputMessage message is the request
 message for the TransactedUnsuspend operation. The client SHOULD send this message to invoke
@@ -3117,7 +2931,7 @@ the TransactedUnsuspend operation.
 
 TransactedUnsuspend: The <TransactedUnsuspend> element, as specified in section 3.1.4.11.2.1.
 
-3.1.4.11.1.2  IWorkflowInstanceManagement_TransactedUnsuspend_OutputMessage
+###### 3.1.4.11.1.2 IWorkflowInstanceManagement_TransactedUnsuspend_OutputMessage
 
 The IWorkflowInstanceManagement_TransactedUnsuspend_OutputMessage message is the reply
 message for the TransactedUnsuspend operation. The message indicates that the
@@ -3127,9 +2941,9 @@ TransactedUnsuspend operation has successfully completed.
      <wsdl:part name="parameters" element="tns:TransactedUnsuspendResponse" />
  </wsdl:message>
 
-3.1.4.11.2
+###### 3.1.4.11.2 Elements
 
-Elements
+
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -3148,7 +2962,7 @@ message.
 IWorkflowInstanceManagement_TransactedUnsuspend_OutputMessage
 message.
 
-3.1.4.11.2.1  TransactedUnsuspend
+###### 3.1.4.11.2.1 TransactedUnsuspend
 
 <TransactedUnsuspend> is an XSD element that has a child element <instanceId>. The XSD
 definition of the <TransactedUnsuspend> element is as follows:
@@ -3167,7 +2981,7 @@ instanceId: The value of this element is of type GUID and SHOULD match the ident
 associated with the durable program instance in the Durable Program Instance Table on
 which this operation SHOULD be performed.
 
-3.1.4.11.2.2  TransactedUnsuspendResponse
+###### 3.1.4.11.2.2 TransactedUnsuspendResponse
 
 [MS-WFIM] - v20190313
 Workflow Instance Management Protocol
@@ -3176,7 +2990,8 @@ Release: March 13, 2019
 
 39 / 62
 
-<TransactedUnsuspendResponse> is an XSD element that has no child elements. The XSD definition
+
+<TransactedUnsuspendResponse> is an XSD element that has no child elements. The XSD definition
 of the <TransactedUnsuspendResponse> element is as follows:
 
  <xs:element name="TransactedUnsuspendResponse">
@@ -3185,9 +3000,9 @@ of the <TransactedUnsuspendResponse> element is as follows:
    </xs:complexType>
  </xs:element>
 
-3.1.4.12
+##### 3.1.4.12 Update
 
-Update
+
 
 The WSDL definition of the Update operation is as follows:
 
@@ -3219,7 +3034,7 @@ The <instanceId> element is absent.
 The value of the <instanceId> element does not exist in the Durable Program Instance Table
 on the server.
 
-3.1.4.12.1  Messages
+###### 3.1.4.12.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3239,7 +3054,7 @@ Sent from the server as a reply to
 IWorkflowInstanceManagement_Update_InputMessage
 .
 
-3.1.4.12.1.1  IWorkflowInstanceManagement_Update_InputMessage
+###### 3.1.4.12.1.1 IWorkflowInstanceManagement_Update_InputMessage
 
 The IWorkflowInstanceManagement_Update_InputMessage message is the request message for the
 Update operation. The client SHOULD send this message to invoke the Update operation.
@@ -3255,9 +3070,10 @@ Release: March 13, 2019
 
 40 / 62
 
-Update: The <Update> element, as specified in section 3.1.4.12.2.1.
 
-3.1.4.12.1.2  IWorkflowInstanceManagement_Update_OutputMessage
+Update: The <Update> element, as specified in section 3.1.4.12.2.1.
+
+###### 3.1.4.12.1.2 IWorkflowInstanceManagement_Update_OutputMessage
 
 The IWorkflowInstanceManagement_Update_OutputMessage message is the reply message for the
 Update operation. This message indicates that the Update operation has successfully completed.
@@ -3268,9 +3084,9 @@ Update operation. This message indicates that the Update operation has successfu
 
 UpdateResponse: The <UpdateResponse> element, as specified in section 3.1.4.12.2.2.
 
-3.1.4.12.2
+###### 3.1.4.12.2 Elements
 
-Elements
+
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -3286,7 +3102,7 @@ Contains the body of the IWorkflowInstanceManagement_Update_InputMessage message
 
 message.
 
-3.1.4.12.2.1  Update
+###### 3.1.4.12.2.1 Update
 
 <Update> is an XSD element that has two child elements, <instanceId> and
 <updateDefinitionIdentity>. The XSD definition of the <Update> element is as follows:
@@ -3313,7 +3129,7 @@ updateDefinitionIdentity: The value of this element is of type WorkflowIdentity 
 the identity of the durable program instance on which the <Update> operation SHOULD be
 performed.
 
-3.1.4.12.2.2  UpdateResponse
+###### 3.1.4.12.2.2 UpdateResponse
 
 <UpdateResponse> is an XSD element that has no child elements. The XSD definition of the
 <UpdateResponse> element is as follows:
@@ -3329,12 +3145,13 @@ Release: March 13, 2019
 
 41 / 62
 
-   </xs:complexType>
+
+   </xs:complexType>
  </xs:element>
 
-3.1.4.13
+##### 3.1.4.13 TransactedUpdate
 
-TransactedUpdate
+
 
 The WSDL definition of the TransactedUpdate operation is as follows:
 
@@ -3373,7 +3190,7 @@ on the server.
 
 The server encounters an internal error while executing the TransactedUpdate operation.
 
-3.1.4.13.1  Messages
+###### 3.1.4.13.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3395,7 +3212,7 @@ Sent from the server as a reply to the
 IWorkflowInstanceManagement_TransactedUpdate_In
 putMessage message.
 
-3.1.4.13.1.1  IWorkflowInstanceManagement_TransactedUpdate_InputMessage
+###### 3.1.4.13.1.1 IWorkflowInstanceManagement_TransactedUpdate_InputMessage
 
 The IWorkflowInstanceManagement_TransactedUpdate_InputMessage message is the request
 message for the TransactedUpdate operation. The client SHOULD send this message to invoke the
@@ -3412,9 +3229,10 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-TransactedUpdate: The <TransactedUpdate> element, as specified in section 3.1.4.13.2.1.
 
-3.1.4.13.1.2  IWorkflowInstanceManagement_TransactedUpdate_OutputMessage
+TransactedUpdate: The <TransactedUpdate> element, as specified in section 3.1.4.13.2.1.
+
+###### 3.1.4.13.1.2 IWorkflowInstanceManagement_TransactedUpdate_OutputMessage
 
 The IWorkflowInstanceManagement_TransactedUpdate_OutputMessage message is the reply message
 for the TransactedUpdate operation. This message indicates that the TransactedUpdate operation
@@ -3428,9 +3246,9 @@ TransactedUpdateResponse: The <TransactedUpdateResponse> element, as specified i
 
 3.1.4.13.2.2.
 
-3.1.4.13.2
+###### 3.1.4.13.2 Elements
 
-Elements
+
 
 The following table summarizes the XSD element definitions that are specific to this operation.
 
@@ -3447,7 +3265,7 @@ IWorkflowInstanceManagement_TransactedUpdate_InputMessage message.
 
 IWorkflowInstanceManagement_TransactedUpdate_OutputMessage message.
 
-3.1.4.13.2.1  TransactedUpdate
+###### 3.1.4.13.2.1 TransactedUpdate
 
 <TransactedUpdate> is an XSD element that has two child elements <instanceId> and
 <updateDefinitionIdentity>. The XSD definition of the <TransactedUpdate> element is as follows:
@@ -3473,7 +3291,7 @@ updateDefinitionIdentity: The value of this element is of type WorkflowIdentity 
 the identity of the durable program instance on which the <TransactedUpdate> operation SHOULD
 be performed.
 
-3.1.4.13.2.2  TransactedUpdateResponse
+###### 3.1.4.13.2.2 TransactedUpdateResponse
 
 <TransactedUpdateResponse> is an XSD element that has no child elements. The XSD definition of
 the <TransactedUpdateResponse> element is as follows:
@@ -3485,21 +3303,22 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- <xs:element name="TransactedUpdateResponse">
+
+ <xs:element name="TransactedUpdateResponse">
    <xs:complexType>
      <xs:sequence />
    </xs:complexType>
  </xs:element>
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  IWorkflowInstanceManagement Client Details
+### 3.2 IWorkflowInstanceManagement Client Details
 
 The client side of this protocol is simply a pass-through mechanism. That is, no additional timers or
 other state is required on the client side of this protocol. Calls made by the higher-layer protocol or
@@ -3513,7 +3332,8 @@ Release: March 13, 2019
 
 44 / 62
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following is an example message exchange using the Workflow Instance Management Protocol to
 suspend a durable program instance.
@@ -3567,15 +3387,16 @@ Release: March 13, 2019
 
 45 / 62
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Secure the Workflow Instance Management Protocol by using the security mechanisms provided by
 the underlying layers including WS-* security mechanisms, such as [WSS1] and those provided by the
 transport, such as HTTPS.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3586,7 +3407,8 @@ Release: March 13, 2019
 
 46 / 62
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 WSDL or schema name
 
@@ -3610,7 +3432,7 @@ Section 6.3
 
 For ease of implementation the full WSDL with schemas are provided in the following sections.
 
-6.1  Workflow Instance Management Protocol WSDL
+### 6.1 Workflow Instance Management Protocol WSDL
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -3672,7 +3494,8 @@ Release: March 13, 2019
 
 47 / 62
 
-     <wsdl:part name="parameters" element="tns:SuspendResponse" />
+
+     <wsdl:part name="parameters" element="tns:SuspendResponse" />
    </wsdl:message>
    <wsdl:message name="IWorkflowInstanceManagement_Terminate_InputMessage">
      <wsdl:part name="parameters" element="tns:Terminate" />
@@ -3749,7 +3572,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <wsdl:operation name="Cancel">
+
+     <wsdl:operation name="Cancel">
        <wsdl:input
 wsaw:Action="http://schemas.datacontract.org/2008/10/WorkflowServices/IWorkflowInstanceManage
 ment/Cancel" message="tns:IWorkflowInstanceManagement_Cancel_InputMessage" />
@@ -3826,7 +3650,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <wsdl:operation name="TransactedTerminate">
+
+     <wsdl:operation name="TransactedTerminate">
        <wsdl:input
 wsaw:Action="http://schemas.datacontract.org/2008/10/WorkflowServices/IWorkflowInstanceManage
 ment/TransactedTerminate"
@@ -3903,7 +3728,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <wsdl:input>
+
+       <wsdl:input>
          <soap:body use="literal" />
        </wsdl:input>
        <wsdl:output>
@@ -3980,7 +3806,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <wsdl:output>
+
+       <wsdl:output>
          <soap:body use="literal" />
        </wsdl:output>
      </wsdl:operation>
@@ -4020,7 +3847,7 @@ ent/Update" style="document" />
    </wsdl:binding>
  </wsdl:definitions>
 
-6.2  Workflow Instance Management Schema for the WSDL
+### 6.2 Workflow Instance Management Schema for the WSDL
 
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2008/10/WorkflowServices"
@@ -4061,7 +3888,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-      </xs:sequence>
+
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AbandonResponse">
@@ -4148,7 +3976,8 @@ Release: March 13, 2019
 
 53 / 62
 
-  </xs:element>
+
+  </xs:element>
   <xs:element name="UnsuspendResponse">
     <xs:complexType>
       <xs:sequence />
@@ -4237,7 +4066,8 @@ Release: March 13, 2019
 
 54 / 62
 
-    </xs:complexType>
+
+    </xs:complexType>
   </xs:element>
   <xs:element name="TransactedUpdateResponse">
     <xs:complexType>
@@ -4322,10 +4152,11 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  <xs:attribute name="Ref" type="xs:IDREF" />
+
+  <xs:attribute name="Ref" type="xs:IDREF" />
 </xs:schema>
 
-6.3  Workflow Identity Management Schema for the WSDL
+### 6.3 Workflow Identity Management Schema for the WSDL
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System.Activities"
@@ -4369,7 +4200,8 @@ Release: March 13, 2019
 
 56 / 62
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4443,7 +4275,8 @@ Workflow Instance Management Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -4482,7 +4315,8 @@ Release: March 13, 2019
 
 58 / 62
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4540,7 +4374,8 @@ Release: March 13, 2019
 
 59 / 62
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -4682,7 +4517,8 @@ Namespaces 12
 
 60 / 62
 
-Normative references 8
+
+Normative references 8
 
 O
 
@@ -4825,7 +4661,8 @@ WSDL 47
 
 61 / 62
 
-   Workflow Identity Management Schema for the
+
+   Workflow Identity Management Schema for the
 
 WSDL 56
 

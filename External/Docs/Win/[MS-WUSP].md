@@ -63,7 +63,8 @@ Release: February 9, 2026
 
 1 / 191
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: February 9, 2026
 
 2 / 191
 
-Date
+
+Date
 
 Revision
 History
@@ -548,7 +550,8 @@ Release: February 9, 2026
 
 3 / 191
 
-Date
+
+Date
 
 Revision
 History
@@ -628,227 +631,99 @@ Release: February 9, 2026
 
 4 / 191
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Xpress Compression](#211-xpress-compression)
+      - [2.1.1.1 CompressOrDecompressWin2k3](#2111-compressordecompresswin2k3)
+        - [2.1.1.1.1 LZ77 Compression Algorithm](#21111-lz77-compression-algorithm)
+        - [2.1.1.1.2 DIRECT2 Encoding Algorithm](#21112-direct2-encoding-algorithm)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+      - [2.2.2.1 SimpleAuth Web Service](#2221-simpleauth-web-service)
+        - [2.2.2.1.1 GetAuthorizationCookie](#22211-getauthorizationcookie)
+      - [2.2.2.2 Client Web Service](#2222-client-web-service)
+        - [2.2.2.2.1 GetConfig](#22221-getconfig)
+        - [2.2.2.2.2 GetCookie](#22222-getcookie)
+        - [2.2.2.2.3 RegisterComputer](#22223-registercomputer)
+        - [2.2.2.2.4 SyncUpdates](#22224-syncupdates)
+        - [2.2.2.2.5 RefreshCache](#22225-refreshcache)
+        - [2.2.2.2.6 GetExtendedUpdateInfo](#22226-getextendedupdateinfo)
+        - [2.2.2.2.7 GetFileLocations](#22227-getfilelocations)
+        - [2.2.2.2.8 StartCategoryScan](#22228-startcategoryscan)
+        - [2.2.2.2.9 SyncPrinterCatalog](#22229-syncprintercatalog)
+        - [2.2.2.2.10 GetExtendedUpdateInfo2](#222210-getextendedupdateinfo2)
+      - [2.2.2.3 Reporting Web Service](#2223-reporting-web-service)
+        - [2.2.2.3.1 ReportEventBatch](#22231-reporteventbatch)
+      - [2.2.2.4 Faults](#2224-faults)
+      - [2.2.2.5 Update Content Directory and Self-Update Content Directory](#2225-update-content-directory-and-self-update-content-directory)
+    - [2.2.3 Complex Types](#223-complex-types)
+      - [2.2.3.1 ArrayOfInt](#2231-arrayofint)
+      - [2.2.3.2 ArrayOfString](#2232-arrayofstring)
+      - [2.2.3.3 ArrayOfGuid](#2233-arrayofguid)
+      - [2.2.3.4 AuthorizationCookie](#2234-authorizationcookie)
+      - [2.2.3.5 Cookie](#2235-cookie)
+      - [2.2.3.6 UpdateIdentity](#2236-updateidentity)
+      - [2.2.3.7 ArrayOfBase64Binary](#2237-arrayofbase64binary)
+    - [2.2.4 Simple Types](#224-simple-types)
+      - [2.2.4.1 Guid](#2241-guid)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Populating the Data Model](#3111-populating-the-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Self-Update](#3151-self-update)
+      - [3.1.5.2 GetConfig](#3152-getconfig)
+      - [3.1.5.3 GetAuthorizationCookie](#3153-getauthorizationcookie)
+      - [3.1.5.4 GetCookie](#3154-getcookie)
+      - [3.1.5.5 RegisterComputer](#3155-registercomputer)
+      - [3.1.5.6 StartCategoryScan](#3156-startcategoryscan)
+      - [3.1.5.7 SyncUpdates](#3157-syncupdates)
+      - [3.1.5.8 RefreshCache](#3158-refreshcache)
+      - [3.1.5.9 GetExtendedUpdateInfo](#3159-getextendedupdateinfo)
+      - [3.1.5.10 GetFileLocations](#31510-getfilelocations)
+      - [3.1.5.11 ReportEventBatch](#31511-reporteventbatch)
+      - [3.1.5.12 SyncPrinterCatalog](#31512-syncprintercatalog)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations](#51-security-considerations)
+- [6 Appendix A: Full WSDL Definitions](#6-appendix-a-full-wsdl-definitions)
+  - [6.1 SimpleAuth Web Service WSDL](#61-simpleauth-web-service-wsdl)
+  - [6.2 Client Web Service WSDL](#62-client-web-service-wsdl)
+  - [6.3 Reporting Web Service WSDL](#63-reporting-web-service-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.1.1
-
-2.2.2.1
-
-2.2.2.2
-
-2.1.1.1
-
-2.2.2.1.1
-
-2.2.1
-2.2.2
-
-2.1.1.1.1
-2.1.1.1.2
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Xpress Compression .................................................................................... 16
-CompressOrDecompressWin2k3 .............................................................. 16
-LZ77 Compression Algorithm ............................................................ 17
-DIRECT2 Encoding Algorithm ............................................................ 19
-Common Message Syntax ................................................................................. 22
-Namespaces .............................................................................................. 23
-Messages ................................................................................................... 23
-SimpleAuth Web Service ........................................................................ 23
-GetAuthorizationCookie .................................................................... 23
-Client Web Service ................................................................................ 24
-GetConfig ....................................................................................... 24
-2.2.2.2.1
-GetCookie ...................................................................................... 27
-2.2.2.2.2
-RegisterComputer............................................................................ 28
-2.2.2.2.3
-SyncUpdates ................................................................................... 31
-2.2.2.2.4
-RefreshCache .................................................................................. 38
-2.2.2.2.5
-GetExtendedUpdateInfo ................................................................... 40
-2.2.2.2.6
-GetFileLocations .............................................................................. 42
-2.2.2.2.7
-StartCategoryScan .......................................................................... 44
-2.2.2.2.8
-2.2.2.2.9
-SyncPrinterCatalog .......................................................................... 45
-2.2.2.2.10  GetExtendedUpdateInfo2 .................................................................. 46
-Reporting Web Service .......................................................................... 51
-ReportEventBatch ............................................................................ 51
-Faults .................................................................................................. 62
-Update Content Directory and Self-Update Content Directory ..................... 64
-Complex Types ........................................................................................... 64
-ArrayOfInt............................................................................................ 64
-ArrayOfString ....................................................................................... 64
-ArrayOfGuid ......................................................................................... 64
-AuthorizationCookie .............................................................................. 65
-Cookie ................................................................................................. 65
-UpdateIdentity ..................................................................................... 66
-ArrayOfBase64Binary ............................................................................ 66
-Simple Types ............................................................................................. 66
-Guid .................................................................................................... 66
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-
-2.2.2.4
-2.2.2.5
-
-2.2.2.3.1
-
-2.2.4.1
-
-2.2.2.3
-
-2.2.4
-
-2.2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 67
-Server Details .................................................................................................. 67
-Abstract Data Model .................................................................................... 67
-Populating the Data Model ..................................................................... 70
-Timers ...................................................................................................... 74
-
-3.1.1.1
-
-3.1.1
-
-3.1.2
-
-[MS-WUSP] - v20260209
-Windows Update Services: Client-Server Protocol
-Copyright © 2026 Microsoft Corporation
-Release: February 9, 2026
-
-5 / 191
-
-3.1.3
-3.1.4
-3.1.5
-
-Initialization ............................................................................................... 75
-Higher-Layer Triggered Events ..................................................................... 75
-Message Processing Events and Sequencing Rules .......................................... 75
-Self-Update .......................................................................................... 76
-3.1.5.1
-GetConfig ............................................................................................. 77
-3.1.5.2
-GetAuthorizationCookie ......................................................................... 77
-3.1.5.3
-GetCookie ............................................................................................ 78
-3.1.5.4
-RegisterComputer ................................................................................. 79
-3.1.5.5
-StartCategoryScan ................................................................................ 79
-3.1.5.6
-SyncUpdates ........................................................................................ 80
-3.1.5.7
-RefreshCache ....................................................................................... 83
-3.1.5.8
-GetExtendedUpdateInfo ......................................................................... 84
-3.1.5.9
-3.1.5.10  GetFileLocations.................................................................................... 85
-ReportEventBatch ................................................................................. 85
-3.1.5.11
-SyncPrinterCatalog ................................................................................ 85
-3.1.5.12
-Timer Events .............................................................................................. 87
-Other Local Events ...................................................................................... 87
-Client Details ................................................................................................... 87
-Abstract Data Model .................................................................................... 88
-Timers ...................................................................................................... 90
-Initialization ............................................................................................... 90
-Higher-Layer Triggered Events ..................................................................... 90
-Message Processing Events and Sequencing Rules .......................................... 90
-Timer Events .............................................................................................. 91
-Other Local Events ...................................................................................... 91
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 92
-
-5  Security ............................................................................................................... 109
-Security Considerations ................................................................................... 109
-
-5.1
-
-6  Appendix A: Full WSDL Definitions ...................................................................... 110
-SimpleAuth Web Service WSDL ......................................................................... 110
-Client Web Service WSDL ................................................................................. 111
-Reporting Web Service WSDL ........................................................................... 126
-
-6.1
-6.2
-6.3
-
-7  Appendix B: Product Behavior ............................................................................. 138
-
-8  Change Tracking .................................................................................................. 188
-
-9  Index ................................................................................................................... 189
-
-[MS-WUSP] - v20260209
-Windows Update Services: Client-Server Protocol
-Copyright © 2026 Microsoft Corporation
-Release: February 9, 2026
-
-6 / 191
-
-1  Introduction
+## 1 Introduction
 
 The Windows Server Update Services: Client-Server Protocol enables machines to discover and
 download software updates over the Internet by using the SOAP and HTTP protocols (as specified in
@@ -857,7 +732,7 @@ download software updates over the Internet by using the SOAP and HTTP protocols
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -918,7 +793,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-globally unique identifier (GUID): A term used interchangeably with universally unique
+
+globally unique identifier (GUID): A term used interchangeably with universally unique
 
 identifier (UUID) in Microsoft protocol technical documents (TDs). Interchanging the usage of
 these terms does not imply or require a specific algorithm or mechanism to generate the value.
@@ -996,7 +872,8 @@ Release: February 9, 2026
 
 8 / 191
 
-SHA1 hash: A hashing algorithm defined in [FIPS180] that was developed by the National
+
+SHA1 hash: A hashing algorithm defined in [FIPS180] that was developed by the National
 Institute of Standards and Technology (NIST) and the National Security Agency (NSA).
 
 SHA-256: An algorithm that generates a 256-bit hash value from an arbitrary amount of input
@@ -1074,17 +951,18 @@ Release: February 9, 2026
 
 9 / 191
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1137,7 +1015,8 @@ Release: February 9, 2026
 
 10 / 191
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [AUPOLICY] Microsoft Corporation, "Configure Automatic Updates by Using Group Policy",
 http://technet2.microsoft.com/WindowsServer/en/Library/51c8a814-6665-4d50-a0d8-
@@ -1173,7 +1052,7 @@ https://support.microsoft.com/en-us/topic/june-23-2022-kb5014668-os-build-22000-
 [WSUS] Microsoft Corporation, "Windows Server Update Services",
 http://www.microsoft.com/windowsserversystem/updateservices/default.mspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows Server Update Services (WSUS) family of protocols provides support for central
 publication and distribution of software updates from server machines to client machines, and for
@@ -1206,7 +1085,8 @@ Release: February 9, 2026
 
 11 / 191
 
-
+
+
 
 To further reduce the amount of update metadata that clients need to synchronize, update
 metadata is divided into fragments. Each client synchronizes only the fragments that it needs.
@@ -1239,7 +1119,7 @@ This specification details the protocol mechanisms that enable clients to downlo
 binaries, synchronize update metadata , and download update content. It also details the protocol
 mechanisms for enabling clients to report events to servers.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The reporting and metadata synchronization protocols include web services that use SOAP (as
 specified in [SOAP1.1]) over HTTP or HTTPS (as specified in [RFC2616]) for communication. The self-
@@ -1252,7 +1132,8 @@ Release: February 9, 2026
 
 12 / 191
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-WUSP].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1265,7 +1146,7 @@ This specification is closely related to the Windows Server Update Services: Ser
 specified in [MS-WSUSSS], which defines mechanisms for synchronizing updates within a hierarchical
 configuration of update servers.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol imposes the following requirement on server implementations.
 
@@ -1290,12 +1171,13 @@ Release: February 9, 2026
 
 13 / 191
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 This protocol is applicable in environments where there is a need for centralized, systematic
 distribution of software updates to managed client computer (2).
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas.
 
@@ -1329,11 +1211,11 @@ updated executable files, which implement the most recent protocol behavior requ
 server. This process is specified in section 2.1. In some instances, client behavior depends on the
 server protocol version. Those are specified in this document.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not define any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol has not received any standards assignments.
 
@@ -1344,7 +1226,8 @@ Release: February 9, 2026
 
 14 / 191
 
-2  Messages
+
+## 2 Messages
 
 This protocol MUST be carried out over SOAP (as specified in [SOAP1.1]) and HTTP (as specified in
 [RFC2616]) and consists of the following set of web services and virtual directories.
@@ -1372,7 +1255,7 @@ information on their update activity, as specified in section 2.2.2.3.
 The following sections specify the use of the transports listed above and the syntax of these web
 services.
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol is carried out over a set of web services and virtual directories.
 
@@ -1424,7 +1307,8 @@ Release: February 9, 2026
 
 15 / 191
 
-Reporting Web service: This virtual directory, as specified in section 2.2.2.3, MUST be exposed at
+
+Reporting Web service: This virtual directory, as specified in section 2.2.2.3, MUST be exposed at
 
 URL http[s]://serverUrl:[commonPort]/ReportingWebService/ReportingWebService.asmx
 
@@ -1448,7 +1332,7 @@ A client implementation MAY request another type of compression by specifying th
 in the HTTP Accept-Encoding request-header field ([RFC2616] section 14.3). If the client requests
 another type of compression, the update server MAY encode the response using the requested format.
 
-2.1.1  Xpress Compression
+#### 2.1.1 Xpress Compression
 
 To compress an input stream of bytes using Xpress Compression, the server MUST first segment the
 input stream into a sequence of blocks. The original, uncompressed size of each block MUST NOT be
@@ -1470,7 +1354,7 @@ compressed: A signed, 32-bit integer indicating the compressed size, in bytes, o
 
 follows. The encoding MUST be little-endian.
 
-2.1.1.1  CompressOrDecompressWin2k3
+##### 2.1.1.1 CompressOrDecompressWin2k3
 
  procedure CompressOrDecompressWin2k3(
    inputBuffer: sequence of BYTE,
@@ -1497,7 +1381,8 @@ Release: February 9, 2026
 
 16 / 191
 
-
+
+
 
 
 
@@ -1507,7 +1392,7 @@ filled into this buffer.
 comp: A Boolean indicating whether to compress (comp=TRUE) or decompress (comp=FALSE) the
 inputBuffer.
 
-2.1.1.1.1 LZ77 Compression Algorithm
+###### 2.1.1.1.1 LZ77 Compression Algorithm
 
 The LZ77 Compression Algorithm is used to analyze input data and determine how to reduce the size
 of that input data by replacing redundant information with metadata. Sections of the data that are
@@ -1574,7 +1459,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-Compression Process
+
+Compression Process
 
 The compression algorithm searches the window for the longest match with the beginning of the
 lookahead buffer and then outputs a pointer to that match. Because even a 1-byte match might not
@@ -1698,7 +1584,8 @@ Release: February 9, 2026
 
 18 / 191
 
-The result of compression, conceptually, is the output column—that is, a series of bytes and optional
+
+The result of compression, conceptually, is the output column—that is, a series of bytes and optional
 metadata that indicates whether that byte is preceded by some sequence of bytes that is already in
 the output.
 
@@ -1790,7 +1677,7 @@ ABC
 
 A A B C B B A B C
 
-2.1.1.1.2 DIRECT2 Encoding Algorithm
+###### 2.1.1.1.2 DIRECT2 Encoding Algorithm
 
 The basic notion of the DIRECT2 Encoding Algorithm is that data appears unchanged in the
 compressed representation, and metadata is encoded in the same output stream, and in line with the
@@ -1808,7 +1695,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-This section describes the bitmasks that enable the decoder to distinguish data from metadata. It also
+
+This section describes the bitmasks that enable the decoder to distinguish data from metadata. It also
 describes the process of encoding the metadata.
 
 Bitmask
@@ -1876,7 +1764,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-maximum length of six (the value b'111' is reserved), because the minimum match is three bytes,
+
+maximum length of six (the value b'111' is reserved), because the minimum match is three bytes,
 these three bits actually allow for the expression of lengths from three to nine. The match length goes
 from L = b'000' + 3 bytes, to L = b'110' + 3 bytes. Because smaller lengths are much more common
 than the larger lengths, the algorithm tries to optimize for smaller lengths. To encode a length
@@ -1954,7 +1843,8 @@ Release: February 9, 2026
 
 21 / 191
 
-Match
+
+Match
 length
 
 Length bits in the metadata
@@ -2039,7 +1929,7 @@ length of greater than 278 bytes requires a relatively large number of bits: 3+4
 three bits in the original two bytes of metadata, four bits in the nibble in the "shared" byte, eight bits
 in the next byte, and 16 bits in the final two bytes of metadata.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section specifies the syntax of SOAP messages, which are part of this protocol. The following
 rules apply to all SOAP messages in the protocol.
@@ -2051,7 +1941,8 @@ Release: February 9, 2026
 
 22 / 191
 
-
+
+
 
 
 
@@ -2074,7 +1965,7 @@ WSDL for the elements.
 
 In all such cases, the additional restrictions are specified immediately after the WSDL is given.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 The following table shows the standard XML namespaces used within this protocol and the alias
 (prefix) used in the remaining sections of this specification.
@@ -2112,13 +2003,13 @@ wsdl
 The Microsoft-defined XML namespaces used in this protocol are listed in the product behavior
 appendix.<10>
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
-2.2.2.1  SimpleAuth Web Service
+##### 2.2.2.1 SimpleAuth Web Service
 
 The SimpleAuth Web service is used for restricting availability of updates to groups of clients.
 
-2.2.2.1.1 GetAuthorizationCookie
+###### 2.2.2.1.1 GetAuthorizationCookie
 
 Synopsis:
 
@@ -2136,7 +2027,8 @@ Release: February 9, 2026
 
 23 / 191
 
- <soap:operation soapAction="http://www.microsoft.com/
+
+ <soap:operation soapAction="http://www.microsoft.com/
     SoftwareDistribution/Server/SimpleAuthWebService/GetAuthorizationCookie"
     style="document" />
 
@@ -2178,11 +2070,11 @@ The server MUST return a result with the following syntax.
 GetAuthorizationCookieResult: Upon successful completion of this operation, this element MUST be
 returned. The syntax for the AuthorizationCookie type MUST be as specified in section 2.2.3.4.
 
-2.2.2.2  Client Web Service
+##### 2.2.2.2 Client Web Service
 
 The client Web service is used for synchronizing metadata to the client.
 
-2.2.2.2.1 GetConfig
+###### 2.2.2.2.1 GetConfig
 
 Synopsis:
 
@@ -2203,7 +2095,8 @@ Release: February 9, 2026
 
 24 / 191
 
-    style="document" />
+
+    style="document" />
 
 Request:
 
@@ -2271,7 +2164,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-        nillable="true" type="s1:AuthPlugInInfo" />
+
+        nillable="true" type="s1:AuthPlugInInfo" />
    </s:sequence>
  </s:complexType>
 
@@ -2337,7 +2231,8 @@ Release: February 9, 2026
 
 26 / 191
 
-Name
+
+Name
 
 Value
 
@@ -2363,7 +2258,7 @@ ClientReportingLevel
 
 The value SHOULD be "2".
 
-2.2.2.2.2 GetCookie
+###### 2.2.2.2.2 GetCookie
 
 Synopsis:
 
@@ -2413,7 +2308,8 @@ Release: February 9, 2026
 
 27 / 191
 
-        type="s1:AuthorizationCookie" />
+
+        type="s1:AuthorizationCookie" />
    </s:sequence>
  </s:complexType>
 
@@ -2449,7 +2345,7 @@ GetCookieResult: On successful completion of this operation, this element MUST b
 
 format for this element MUST be as specified in section 2.2.3.5.
 
-2.2.2.2.3 RegisterComputer
+###### 2.2.2.2.3 RegisterComputer
 
 Synopsis:
 
@@ -2482,7 +2378,8 @@ Release: February 9, 2026
 
 28 / 191
 
-   </s:complexType>
+
+   </s:complexType>
  </s:element>
 
 cookie: Specifies a cookie that MUST have been obtained from a previous call to
@@ -2554,7 +2451,8 @@ Release: February 9, 2026
 
 29 / 191
 
-OSMajorVersion: The client operating system major version number.
+
+OSMajorVersion: The client operating system major version number.
 
 OSMinorVersion: The client operating system minor version number.
 
@@ -2631,12 +2529,13 @@ Release: February 9, 2026
 
 30 / 191
 
-   <s:complexType />
+
+   <s:complexType />
  </s:element>
 
 This type has no fields.
 
-2.2.2.2.4 SyncUpdates
+###### 2.2.2.2.4 SyncUpdates
 
 Synopsis:
 
@@ -2708,7 +2607,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-     <s:element minOccurs="0" maxOccurs="1" name="SystemSpec" type="s1:ArrayOfDevice" />
+
+     <s:element minOccurs="0" maxOccurs="1" name="SystemSpec" type="s1:ArrayOfDevice" />
      <s:element minOccurs="0" maxOccurs="1" name="CachedDriverIDs"
         type="s1:ArrayOfInt" />
      <s:element minOccurs="1" maxOccurs="1" name="SkipSoftwareSync" type="s:boolean" />
@@ -2781,7 +2681,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-InstalledDriver: If a driver is already installed for this device, this describes properties of that driver.
+
+InstalledDriver: If a driver is already installed for this device, this describes properties of that driver.
 
 Its format is as follows:<16>
 
@@ -2852,7 +2753,8 @@ Release: February 9, 2026
 
 33 / 191
 
-  DriverVerVersion: The software version of the extension driver.
+
+  DriverVerVersion: The software version of the extension driver.
 
   Class: The driver class (for example, Printer, Display, and so on), as specified by the driver during
 
@@ -2922,7 +2824,8 @@ Release: February 9, 2026
 
 34 / 191
 
-NeedTwoGroupOutOfScopeUpdates: Specifies that the client requires the server to return two sets
+
+NeedTwoGroupOutOfScopeUpdates: Specifies that the client requires the server to return two sets
 of out-of-scope updates in the response (documented in the response below). The client MUST
 NOT send this parameter unless it has specified a protocolVersion greater than or equal to 1.7
 during the GetCookie request (section 2.2.2.2.2) and the server specified a ProtocolVersion
@@ -2992,7 +2895,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-UpdateInfo: Information about an update revision. Its format is as follows.
+
+UpdateInfo: Information about an update revision. Its format is as follows.
 
  <s:complexType name="UpdateInfo">
    <s:sequence>
@@ -3065,7 +2969,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-The enumeration (DeploymentAction) for this element is as follows:
+
+The enumeration (DeploymentAction) for this element is as follows:
 
  <s:simpleType name="DeploymentAction">
    <s:restriction base="s:string">
@@ -3143,7 +3048,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-OutOfScopeRevisionIDs: An array of RevisionIDs that identify revisions to be removed from the
+
+OutOfScopeRevisionIDs: An array of RevisionIDs that identify revisions to be removed from the
 
 client cache. If the client is performing a category scan by specifying a list of FilterCategoryIds and
 by specifying True for NeedTwoGroupOutOfScopeUpdates in the request, this list shall contain only
@@ -3178,7 +3084,7 @@ Properties returned in the response to the GetConfig method call (section 2.2.2.
 client specified that it supports a protocolVersion greater than or equal to 1.7 in the GetCookie
 request (section 2.2.2.2.2).
 
-2.2.2.2.5 RefreshCache
+###### 2.2.2.2.5 RefreshCache
 
 Synopsis:
 
@@ -3211,7 +3117,8 @@ Release: February 9, 2026
 
 38 / 191
 
-cookie: Specifies a cookie that was obtained from a previous call to GetCookie (section 2.2.2.2.2),
+
+cookie: Specifies a cookie that was obtained from a previous call to GetCookie (section 2.2.2.2.2),
 GetFileLocations (section 2.2.2.2.7), or SyncUpdates (section 2.2.2.2.4). This element MUST be
 present.
 
@@ -3278,13 +3185,14 @@ Release: February 9, 2026
 
 39 / 191
 
-Deployment: The deployment for this revision. This field MUST be present. Its format is specified in
+
+Deployment: The deployment for this revision. This field MUST be present. Its format is specified in
 
 section 2.2.2.2.4.
 
 Each of the above values is specified in more detail in section 3.1.1.
 
-2.2.2.2.6 GetExtendedUpdateInfo
+###### 2.2.2.2.6 GetExtendedUpdateInfo
 
 Synopsis:
 
@@ -3349,7 +3257,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-   </s:sequence>
+
+   </s:sequence>
  </s:complexType>
 
 XmlUpdateFragmentType: Specifies the type of metadata fragment. Its enumeration is as follows.
@@ -3417,7 +3326,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-        nillable="true" type="s1:UpdateData" />
+
+        nillable="true" type="s1:UpdateData" />
    </s:sequence>
  </s:complexType>
 
@@ -3475,7 +3385,7 @@ OutOfScopeRevisionIDs: Specifies an array of revision IDs that SHOULD be purged 
 
 cache because these updates are no longer in-scope for the client.
 
-2.2.2.2.7 GetFileLocations
+###### 2.2.2.2.7 GetFileLocations
 
 Synopsis:
 
@@ -3486,7 +3396,8 @@ Release: February 9, 2026
 
 42 / 191
 
-Returns the URL where the specified set of files can be found.
+
+Returns the URL where the specified set of files can be found.
 
  <wsdl:operation name="GetFileLocations" />
 
@@ -3554,7 +3465,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-2.2.2.2.8 StartCategoryScan
+
+###### 2.2.2.2.8 StartCategoryScan
 
 Synopsis:
 
@@ -3620,7 +3532,8 @@ Release: February 9, 2026
 
 44 / 191
 
-         <s:complexType>
+
+         <s:complexType>
            <s:sequence>
              <s:element minOccurs="0" maxOccurs="1" name="preferredCategoryIds"
                 type="s1:ArrayOfGuid" />
@@ -3640,7 +3553,7 @@ it invokes the SyncUpdates method.
 
 requestedCategoryIdsInError: The GUID list of categories that the server does not recognize.
 
-2.2.2.2.9 SyncPrinterCatalog
+###### 2.2.2.2.9 SyncPrinterCatalog
 
 This method is invoked to synchronize metadata describing the best matching printer drivers for the
 client. The syntax of this method refers to the following concepts as specified in sections 3.1.1 and
@@ -3695,7 +3608,8 @@ Release: February 9, 2026
 
 45 / 191
 
-cookie: Specifies a cookie that MUST have been obtained from a previous call to
+
+cookie: Specifies a cookie that MUST have been obtained from a previous call to
 
 GetCookie (section 2.2.2.2.2), GetFileLocations (section 2.2.2.2.7), or
 SyncUpdates (section 2.2.2.2.4). This element MUST be present.
@@ -3724,7 +3638,7 @@ SyncPrinterCatalogResult: Upon successful completion of this operation, this ele
 returned. The client SHOULD interpret this result, as specified in section 3.1.5.7. The format is the
 same as the one defined in the Response section of 2.2.2.2.4.
 
-2.2.2.2.10  GetExtendedUpdateInfo2
+###### 2.2.2.2.10 GetExtendedUpdateInfo2
 
 This method is invoked to obtain additional metadata, such as the file decryption key, for the
 encrypted files in an update. If the client determines that additional metadata is needed, it
@@ -3766,7 +3680,8 @@ Release: February 9, 2026
 
 46 / 191
 
-cookie: Specifies a cookie that MUST have been obtained from a previous call to
+
+cookie: Specifies a cookie that MUST have been obtained from a previous call to
 
 GetCookie (section 2.2.2.2.2), GetFileLocations (section 2.2.2.2.7), or
 SyncUpdates (section 2.2.2.2.4). This element MUST be present.
@@ -3837,7 +3752,8 @@ Release: February 9, 2026
 
 47 / 191
 
-     <s:element minOccurs="0" maxOccurs="1" name="FileDecryptionData2"
+
+     <s:element minOccurs="0" maxOccurs="1" name="FileDecryptionData2"
 type="tns:ArrayOfFileDecryption2"/>
      <s:element minOccurs="0" maxOccurs="1" name="UpdateEncryptionDetails"
 type="tns:ArrayOfUpdateEncryptionDetail"/>
@@ -3906,7 +3822,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- </s:complexType>
+
+ </s:complexType>
 
 FileDigest: This field MUST be present. The value MUST be the SHA-1 hash computed over the
 
@@ -3973,7 +3890,8 @@ Release: February 9, 2026
 
 49 / 191
 
-<s:complexType name="ArrayOfFileDecryption">
+
+<s:complexType name="ArrayOfFileDecryption">
   <s:sequence>
     <s:element minOccurs="0" maxOccurs="unbounded" name="FileDecryption"
 
@@ -4049,7 +3967,8 @@ Release: February 9, 2026
 
 50 / 191
 
-UpdateEncryptionDetail: Specifies the encryption state for an update. This is an optional field used
+
+UpdateEncryptionDetail: Specifies the encryption state for an update. This is an optional field used
 when the files are encrypted.<36>
 
 UpdateIdentity: An identifier for a specific revision of an update, as specified in section 2.2.3.6. This
@@ -4057,12 +3976,12 @@ element MUST be present.
 HasEncryptedFiles: This element MUST be set to TRUE if the update is encrypted, otherwise it MUST
 be set to FALSE. This element MUST be present.
 
-2.2.2.3  Reporting Web Service
+##### 2.2.2.3 Reporting Web Service
 
 The reporting Web service is used by clients to report selected events that contain information on
 their update activity.
 
-2.2.2.3.1 ReportEventBatch
+###### 2.2.2.3.1 ReportEventBatch
 
 Synopsis:
 
@@ -4115,7 +4034,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- </s:complexType>
+
+ </s:complexType>
 
 ReportingEvent: Specifies information of an update-related event. Its format MUST be as follows.
 
@@ -4186,7 +4106,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-EventInstanceID: A GUID generated by the client to uniquely identify this occurrence of this event.
+
+EventInstanceID: A GUID generated by the client to uniquely identify this occurrence of this event.
 
 NamespaceID: MUST be set to 1 by all clients. The server MAY ignore events with other values.
 
@@ -4260,7 +4181,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-placeholders into which instance-specific strings are inserted to obtain an expanded message
+
+placeholders into which instance-specific strings are inserted to obtain an expanded message
 string. Its format MUST be as follows.
 
  <s:complexType name="ArrayOfString">
@@ -4330,7 +4252,8 @@ Release: February 9, 2026
 
 54 / 191
 
-
+
+
 
 If EventID indicates a driver install success/failure event, MUST be set to a non-empty string
 whose format is opaque to the server.
@@ -4502,7 +4425,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- Friendly Name
+
+ Friendly Name
 
  Misc
 Data
@@ -4687,7 +4611,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-recursively evaluated. The <ReplacementStrings> array MUST contain the same number of elements
+
+recursively evaluated. The <ReplacementStrings> array MUST contain the same number of elements
 as the number of placeholders specified in the parameterized message.
 
  Name
@@ -4859,7 +4784,8 @@ Reporting client status.
 
 57 / 191
 
- Name
+
+ Name
 
 Event
 ID
@@ -5026,7 +4952,8 @@ download at
 certain
 points.
 
- Name
+
+ Name
 
 Install Events
 
@@ -5203,7 +5130,8 @@ killed by the agent: %2
 
 59 / 191
 
- Name
+
+ Name
 
 Event
 ID
@@ -5395,7 +5323,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- Name
+
+ Name
 
 Event
 ID
@@ -5571,7 +5500,8 @@ terminated by the agent: %2.
 
 61 / 191
 
- Name
+
+ Name
 
 Event
 ID
@@ -5664,7 +5594,7 @@ ReportEventBatchResult: Upon successful completion of this operation, this MUST 
 value MUST be TRUE if the events were successfully received by the server. Otherwise, it MUST be
 FALSE.
 
-2.2.2.4  Faults
+##### 2.2.2.4 Faults
 
 This protocol allows a server to notify a client of application-level faults by generating SOAP faults by
 using the following XML syntax.
@@ -5683,7 +5613,8 @@ Release: February 9, 2026
 
 62 / 191
 
-<ID>id</ID>
+
+<ID>id</ID>
 
 <Method>method</Method>
 
@@ -5764,7 +5695,7 @@ locations.
 
 method: A string indicating the web service method in which the fault occurred. This can be omitted.
 
-2.2.2.5  Update Content Directory and Self-Update Content Directory
+##### 2.2.2.5 Update Content Directory and Self-Update Content Directory
 
 Both the update content directory and self-update content directory MUST support HTTP
 requests, as specified in [RFC2616]. The update content directory and the self-update content
@@ -5776,14 +5707,15 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-directory MUST support HTTP HEAD and GET (range) request messages. The locations of the update
+
+directory MUST support HTTP HEAD and GET (range) request messages. The locations of the update
 content directory and the self-update content directory are specified in section 2.1.
 
-2.2.3  Complex Types
+#### 2.2.3 Complex Types
 
 The following sections define the common complex types that are used in this protocol.
 
-2.2.3.1  ArrayOfInt
+##### 2.2.3.1 ArrayOfInt
 
 An array of integer values used in messages within the protocol.
 
@@ -5796,7 +5728,7 @@ Defined in namespace: http://www.microsoft.com/SoftwareDistribution.
    </s:sequence>
  </s:complexType>
 
-2.2.3.2  ArrayOfString
+##### 2.2.3.2 ArrayOfString
 
 An array of string values used in messages within the protocol.
 
@@ -5809,7 +5741,7 @@ Defined in namespace: http://www.microsoft.com/SoftwareDistribution.
    </s:sequence>
  </s:complexType>
 
-2.2.3.3  ArrayOfGuid
+##### 2.2.3.3 ArrayOfGuid
 
 An array of GUID values used in messages within the protocol.
 
@@ -5822,7 +5754,7 @@ Defined in namespace: http://www.microsoft.com/SoftwareDistribution.
    </s:sequence>
  </s:complexType>
 
-2.2.3.4  AuthorizationCookie
+##### 2.2.3.4 AuthorizationCookie
 
 An object returned by the server on successful completion of the
 GetAuthorizationCookie (section 2.2.2.1.1) operation.
@@ -5840,7 +5772,8 @@ Release: February 9, 2026
 
 64 / 191
 
-        type="s:string" />
+
+        type="s:string" />
      <s:element minOccurs="0" maxOccurs="1" name="CookieData"
         type="s:base64Binary" />
    </s:sequence>
@@ -5860,7 +5793,7 @@ The data SHOULD include the client ID and the target groups to which the client 
 server can implement authentication by using the client ID and can implement authorization by
 using both the client ID and target groups. This element MUST be present.
 
-2.2.3.5  Cookie
+##### 2.2.3.5 Cookie
 
 Used by the server to store client authorization, authentication, and protocol state information in a
 format opaque to the client.
@@ -5891,7 +5824,7 @@ The data SHOULD include the client ID, the target groups the client belongs to; 
 expiration time; the client protocol version; the last time the client synchronized software, drivers,
 and printer catalog; and the server's identity. This element MUST be present.
 
-2.2.3.6  UpdateIdentity
+##### 2.2.3.6 UpdateIdentity
 
 A globally unique identifier (GUID) for a specific revision of an update.
 
@@ -5909,7 +5842,8 @@ Release: February 9, 2026
 
 65 / 191
 
-     <s:element minOccurs="1" maxOccurs="1" name="RevisionNumber"
+
+     <s:element minOccurs="1" maxOccurs="1" name="RevisionNumber"
         type="s:int" />
    </s:sequence>
  </s:complexType>
@@ -5920,7 +5854,7 @@ RevisionNumber: A 32-bit number that uniquely identifies a specific version of a
 
 types are specified in the Abstract Data Model (section 3.1.1).
 
-2.2.3.7  ArrayOfBase64Binary
+##### 2.2.3.7 ArrayOfBase64Binary
 
 An array of binary values encoded in base 64.
 
@@ -5934,11 +5868,11 @@ Defined in namespace: http://www.microsoft.com/SoftwareDistribution.
    </s:sequence>
  </s:complexType>
 
-2.2.4  Simple Types
+#### 2.2.4 Simple Types
 
 The following sections define the common simple types that are used in this protocol.
 
-2.2.4.1  Guid
+##### 2.2.4.1 Guid
 
 Simple type corresponding to a GUID or uniqueidentifier.
 
@@ -5958,11 +5892,12 @@ Release: February 9, 2026
 
 66 / 191
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-WUSP].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 This protocol operates between a client (the initiator) and a server (the responder).
 
@@ -5972,9 +5907,9 @@ respect to each client, and the server requires the client to retain that cookie
 presents its cookie when invoking methods against the server, and the server updates the cookie as
 appropriate over the course of its communication with the client.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model and possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5994,7 +5929,8 @@ Release: February 9, 2026
 
 67 / 191
 
-Revision Table: A collection of entries corresponding to the revisions available on the server. Each
+
+Revision Table: A collection of entries corresponding to the revisions available on the server. Each
 entry is uniquely identified by an UpdateID and RevisionNumber, and is also independently identified
 uniquely by a RevisionID. Each entry includes the following elements:
 
@@ -6065,7 +6001,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-  DistributionComputerHardwareId: A GUID that represents a set of computer systems to which
+
+  DistributionComputerHardwareId: A GUID that represents a set of computer systems to which
 
 this driver revision is distribution-targeted for a specific device HardwareId.
 
@@ -6141,7 +6078,8 @@ Release: February 9, 2026
 
 69 / 191
 
-  ClauseID: Specifies the CNF "AND clause" in which the bundled revision appears. The ClauseID is
+
+  ClauseID: Specifies the CNF "AND clause" in which the bundled revision appears. The ClauseID is
 used to group each disjunctive clause. In the above example, R6 and R8 have the same ClauseID
 in this table.
 
@@ -6192,7 +6130,7 @@ medium-, or low-priority relative to other content needed by the client.
 This ADM element contains data that overlaps with the Deployment Table specified in [MS-
 WSUSSS] section 3.1.1.
 
-3.1.1.1  Populating the Data Model
+##### 3.1.1.1 Populating the Data Model
 
 The server implementation extracts information for the data model from the update metadata. Except
 as specified below, the update metadata does not need to be interpreted by the server. Because the
@@ -6209,7 +6147,8 @@ Release: February 9, 2026
 
 70 / 191
 
-There is one entry in the revision table for each metadata revision in the server. The RevisionID
+
+There is one entry in the revision table for each metadata revision in the server. The RevisionID
 element is populated with a unique server-assigned value. The remaining elements are populated from
 the revision metadata using the following unqualified XPATHs.
 
@@ -6309,7 +6248,8 @@ Release: February 9, 2026
 
 71 / 191
 
-Property
+
+Property
 
 HardwareID
 
@@ -6398,7 +6338,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-/Update/Relationships/BundledUpdates/AtLeastOne/UpdateIdentity
+
+/Update/Relationships/BundledUpdates/AtLeastOne/UpdateIdentity
 
 The entry has the following elements:
 
@@ -6490,7 +6431,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-FragmentType: Extended.
+
+FragmentType: Extended.
 
 Locale: NULL.
 
@@ -6567,14 +6509,15 @@ Release: February 9, 2026
 
 74 / 191
 
-This protocol does not mandate a specific mechanism for populating this table. Implementations can
+
+This protocol does not mandate a specific mechanism for populating this table. Implementations can
 do so by implementation-specific<47> means.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None. All protocol requests are initiated by the client.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The following initialization steps MUST be performed.
 
@@ -6590,11 +6533,11 @@ addresses given in the message transport (as specified in section 2.1).
 
 the URL address given in the message transport (as specified in section 2.1).
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events. All protocol requests are initiated by the client.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The following high-level sequence diagram illustrates the operation of the protocol.
 
@@ -6605,7 +6548,8 @@ Release: February 9, 2026
 
 75 / 191
 
-<!-- Extracted images from page 76 -->
+
+<!-- Extracted images from page 76 -->
 ![Extracted image 1 from page 76]([MS-WUSP].images/page076-img01.png)
 <!-- /Extracted images from page 76 -->
 
@@ -6618,7 +6562,7 @@ method call, therefore the overall ordering of the web method calls need to be m
 download and event reporting SHOULD be performed asynchronously from other operations. Each of
 these operations is specified in more detail in the following sections.
 
-3.1.5.1  Self-Update
+##### 3.1.5.1 Self-Update
 
 At the start of the protocol, a client that implements the self-update protocol SHOULD<48> check if it
 needs to self-update. Client/server communications can fail if the server does not expose the self-
@@ -6638,7 +6582,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-3.1.5.2  GetConfig
+
+##### 3.1.5.2 GetConfig
 
 Synopsis:
 
@@ -6667,7 +6612,7 @@ Results:
 If no faults occur during the operation, the server MUST return a GetConfigResponse message in
 response to the client.
 
-3.1.5.3  GetAuthorizationCookie
+##### 3.1.5.3 GetAuthorizationCookie
 
 Synopsis:
 
@@ -6722,7 +6667,8 @@ Release: February 9, 2026
 
 77 / 191
 
-3.1.5.4  GetCookie
+
+##### 3.1.5.4 GetCookie
 
 Synopsis:
 
@@ -6812,7 +6758,8 @@ Release: February 9, 2026
 
 78 / 191
 
-3.1.5.5  RegisterComputer
+
+##### 3.1.5.5 RegisterComputer
 
 Synopsis:
 
@@ -6861,7 +6808,7 @@ Results:
 If no faults occur during the operation, the server MUST return a RegisterComputerResponse message
 to the client.
 
-3.1.5.6  StartCategoryScan
+##### 3.1.5.6 StartCategoryScan
 
 Synopsis:
 
@@ -6893,7 +6840,8 @@ Release: February 9, 2026
 
 79 / 191
 
-The server SHOULD limit the number of categories being requested as an optimization.<52>
+
+The server SHOULD limit the number of categories being requested as an optimization.<52>
 
 Data Processing:
 
@@ -6935,7 +6883,7 @@ category GUIDs from the PreferredCategoryList, which is computed as specified pr
 StartCategoryScanResponse.requestedCategoryIdsInError: This MUST be populated with the
 category GUIDs from the ErrorList, which is computed as specified previously.
 
-3.1.5.7  SyncUpdates
+##### 3.1.5.7 SyncUpdates
 
 Synopsis:
 
@@ -6965,7 +6913,8 @@ Release: February 9, 2026
 
 80 / 191
 
-3.  Otherwise, evaluate the applicability of updates in the result of the call and collect applicable
+
+3.  Otherwise, evaluate the applicability of updates in the result of the call and collect applicable
 
 updates into a list. The applicability evaluation is performed using the metadata contained in the
 XmlFragments provided by the server and is implementation-specific.<53>
@@ -7049,7 +6998,8 @@ Release: February 9, 2026
 
 81 / 191
 
-Given a collection of drivers and a particular device listed in the system spec, the "best" driver for that
+
+Given a collection of drivers and a particular device listed in the system spec, the "best" driver for that
 device is determined by applying the above rules repeatedly to each pair-wise combination of drivers,
 discarding any driver not deemed "better" in a given pair-wise combination. The last remaining driver
 is the "best" match.
@@ -7138,7 +7088,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-SHOULD include all the HardwareIDs associated with this revision from the driver table that
+
+SHOULD include all the HardwareIDs associated with this revision from the driver table that
 are selected as "best" matches.<54>
 
 
@@ -7188,7 +7139,7 @@ LastChangeTime is less than the value stored in this cookie, then the deployment
 returned in the ChangedUpdates list, since the deployment data will already be cached on the
 client.
 
-3.1.5.8  RefreshCache
+##### 3.1.5.8 RefreshCache
 
 Synopsis:
 
@@ -7210,7 +7161,8 @@ Release: February 9, 2026
 
 83 / 191
 
-Parameter   Validation conditions
+
+Parameter   Validation conditions
 
 Error code
 
@@ -7247,7 +7199,7 @@ Deployment: The entry in the deployment table that specifies the revision ID and
 
 TargetGroupName.
 
-3.1.5.9  GetExtendedUpdateInfo
+##### 3.1.5.9 GetExtendedUpdateInfo
 
 Synopsis:
 
@@ -7306,13 +7258,14 @@ Release: February 9, 2026
 
 84 / 191
 
-  FileLocations: For each requested revision that is deployed to the client, the URLs (in the update
+
+  FileLocations: For each requested revision that is deployed to the client, the URLs (in the update
 content directory) of the updates-associated content. The structure of the content directory is
 implementation-specific.<56>
 
-3.1.5.10
+##### 3.1.5.10 GetFileLocations
 
-GetFileLocations
+
 
 Synopsis:
 
@@ -7347,9 +7300,9 @@ Upon successful completion, the server MUST return a GetFileLocationsResponse me
 client. The message MUST include file locations for content matching the specified SHA1 hashes,
 although the file location itself is implementation-specific.<57>
 
-3.1.5.11
+##### 3.1.5.11 ReportEventBatch
 
-ReportEventBatch
+
 
 Synopsis:
 
@@ -7389,9 +7342,9 @@ InvalidParameters.
 If no faults occur during the operation, the server MUST return a ReportEventBatchResponse message
 to the client.
 
-3.1.5.12
+##### 3.1.5.12 SyncPrinterCatalog
 
-SyncPrinterCatalog
+
 
 Synopsis:
 
@@ -7402,7 +7355,8 @@ Release: February 9, 2026
 
 85 / 191
 
-This call supports the synchronization of printer driver update metadata to client computers (2) and
+
+This call supports the synchronization of printer driver update metadata to client computers (2) and
 is used only by the Add Printer Wizard on the client.
 
 Request Validation:
@@ -7490,7 +7444,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-NeededRevisions list because it was a dependency of an explicitly deployed revision), the
+
+NeededRevisions list because it was a dependency of an explicitly deployed revision), the
 DeploymentAction MUST be set to "Evaluate". For driver updates (UpdateType = driver), when
 the client reports a protocolVersion of "1.6" or higher in the GetCookie call, the server
 SHOULD include all the HardwareIDs that are selected as "best" matches associated with this
@@ -7544,15 +7499,15 @@ LastChangeTime is less than the value stored in this cookie, then the deployment
 returned in the ChangedUpdates list, because the deployment data will already be cached on the
 client.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
 This section describes the logical structure, components, and event handlers of this protocol.
 
@@ -7563,11 +7518,12 @@ Release: February 9, 2026
 
 87 / 191
 
-<!-- Extracted images from page 88 -->
+
+<!-- Extracted images from page 88 -->
 ![Extracted image 1 from page 88]([MS-WUSP].images/page088-img01.png)
 <!-- /Extracted images from page 88 -->
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model and possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -7610,7 +7566,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-ApplicabilityState: The client evaluates whether the revision is needed, installed, or not
+
+ApplicabilityState: The client evaluates whether the revision is needed, installed, or not
 
 applicable during metadata synchronization. The client does this by evaluating the applicability
 rules in the core metadata fragment (although the format of the applicability rules is opaque to
@@ -7687,7 +7644,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 If the client automatically performs periodic protocol exchanges on the interval defined by the
 DetectionFrequency setting of the Configuration Table ADM element, it SHOULD use a timer for
@@ -7695,7 +7653,7 @@ the next protocol exchange time.<61>
 
 All other timers are implementation-specific.<62>
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 On its first initialization, each client MUST assign itself a ClientIdString. The resulting value MUST be
 stored as the ClientID property in a persistent storage location for use in subsequent protocol
@@ -7704,7 +7662,7 @@ operations. The algorithm used by the client to create the ClientID is implement
 Before initiating any protocol communication with a server, the client SHOULD read the Update
 Server element of the Configuration Table to determine the server to communicate with.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The only higher-layer triggered events required by the protocol are the generation of the reporting
 events as specified in the EventID table of ReportEventBatch (section 2.2.2.3.1). The client SHOULD
@@ -7713,7 +7671,7 @@ which improves network, client, and server performance.<64>
 
 Other higher-layer triggers are up to the implementation.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The "metadata sync" portion of this protocol conforms to the figure as specified in section 3.1.5.
 
@@ -7759,11 +7717,12 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 There are no timer events required by this protocol.<65>
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 If, at the start of metadata synchronization, the client determines that the registration information it
 last sent to the server has changed, it SHOULD call the RegisterComputer (section 3.1.5.5) method
@@ -7776,7 +7735,8 @@ Release: February 9, 2026
 
 91 / 191
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
  <!-- S A M P L E   C L I E N T - S E R V E R  C O N V E R S A T I O N -->
 
@@ -7849,7 +7809,8 @@ Release: February 9, 2026
 
 92 / 191
 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
   xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
  <soap:Body>
@@ -7926,7 +7887,8 @@ Release: February 9, 2026
 
 93 / 191
 
- </soap:Envelope>
+
+ </soap:Envelope>
 
  <!-- AUTHORIZATION PHASE: GetCookie() Response - Success  -->
  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http
@@ -8003,7 +7965,8 @@ Release: February 9, 2026
 
 94 / 191
 
- <ErrorCode>InvalidCookie</ErrorCode>
+
+ <ErrorCode>InvalidCookie</ErrorCode>
  <Message />
  <ID>34f57c46-0f67-45ed-b3d5-90bd2e8a1e87</ID>
  <Method>"http://www.microsoft.com/SoftwareDistribution/Server/ClientWebServi
@@ -8079,7 +8042,8 @@ Release: February 9, 2026
 
 95 / 191
 
- <cookie>
+
+ <cookie>
  <Expiration>2006-05-23T03:18:56Z</Expiration>
  <EncryptedData>JTaRKKkZAjLUqC8SaVvfYrrNigA8ICtNu1po4umDm6aXpgEo91QPg5wa8u9+q
       ecS3SkW42bZnI6nSw9j/r4SEeA4nD4IyZbpqSNTeBEbdQbfkS8ZfbqkzPzVcWZ16QY4Mq2JBhJ
@@ -8155,7 +8119,8 @@ Release: February 9, 2026
 
 96 / 191
 
- <!-- AUTHORIZATION PHASE: SyncUpdates() Request - Very First from WinXP  -->
+
+ <!-- AUTHORIZATION PHASE: SyncUpdates() Request - Very First from WinXP  -->
  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="
   http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XML
   Schema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
@@ -8230,7 +8195,8 @@ Release: February 9, 2026
 
 97 / 191
 
- <int>382</int>
+
+ <int>382</int>
  <int>383</int>
  <int>384</int>
  <int>385</int>
@@ -8307,7 +8273,8 @@ Release: February 9, 2026
 
 98 / 191
 
- <int>104</int>
+
+ <int>104</int>
  <int>105</int>
  <int>106</int>
  <int>107</int>
@@ -8384,7 +8351,8 @@ Release: February 9, 2026
 
 99 / 191
 
- <int>44</int>
+
+ <int>44</int>
  <int>45</int>
  <int>46</int>
  <int>47</int>
@@ -8457,7 +8425,8 @@ Release: February 9, 2026
 
 100 / 191
 
- <!-- AUTHORIZATION PHASE: GetCookie() Request  -->
+
+ <!-- AUTHORIZATION PHASE: GetCookie() Request  -->
 
  <!-- AUTHORIZATION PHASE: GetCookie() Response  -->
 
@@ -8532,7 +8501,8 @@ Release: February 9, 2026
 
 101 / 191
 
- <UserAccountName />
+
+ <UserAccountName />
  </PrivateData>
  </ReportingEvent>
  <ReportingEvent>
@@ -8609,7 +8579,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- </EncryptedData>
+
+ </EncryptedData>
  </cookie>
  <clientTime>2006-05-23T03:12:14.859</clientTime>
  <eventBatch xmlns:q1="http://www.microsoft.com/SoftwareDistribution" soapenc:ar
@@ -8686,7 +8657,8 @@ Release: February 9, 2026
 
 103 / 191
 
- </UpdateID>
+
+ </UpdateID>
  <Win32HResult>0</Win32HResult>
  <AppName>AutomaticUpdates</AppName>
  </BasicData>
@@ -8763,7 +8735,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- <Expiration>2006-05-23T07:10:57Z</Expiration>
+
+ <Expiration>2006-05-23T07:10:57Z</Expiration>
  <EncryptedData>tWB+wl7EII8S0t3g14U/ZzYZBZMMNs799VoKHe3nvDSOjTHL0b1PT9T1ODoD4fSKkwq
       6SLwNL35cFprXzFyZVYJ62wX3cSjGtTHkn1OlSHx0hLBXuUxpt6EQAFNRWorX2niWD7KDK8l9tUOXMCD
       0k59jBjjWnUTKWl+U4s4r/ZjoSMrdxXLW+9zSOv1YY2oCM4WpCL/3KapdjWkPDG3gwDzF8hNECd3dUBA
@@ -8840,7 +8813,8 @@ Release: February 9, 2026
 
 105 / 191
 
- <EventID>202</EventID>
+
+ <EventID>202</EventID>
  <SourceID>102</SourceID>
  <UpdateID>
  <UpdateID>00000000-0000-0000-0000-000000000000</UpdateID>
@@ -8917,7 +8891,8 @@ Release: February 9, 2026
 
 106 / 191
 
- </MiscData>
+
+ </MiscData>
  <ComputerBrand>Dell Inc.</ComputerBrand>
  <ComputerModel>OptiPlex GX620</ComputerModel>
  <BiosRevision>A06</BiosRevision>
@@ -8994,7 +8969,8 @@ Release: February 9, 2026
 
 107 / 191
 
- <Major>5</Major>
+
+ <Major>5</Major>
  <Minor>2</Minor>
  <Build>3790</Build>
  <Revision>196882</Revision>
@@ -9059,9 +9035,10 @@ Release: February 9, 2026
 
 108 / 191
 
-5  Security
 
-5.1  Security Considerations
+## 5 Security
+
+### 5.1 Security Considerations
 
 Because the server can tell the client to install binaries, it is important to prevent a man-in-the-
 middle or other forms of a spoof server telling the client to install binaries that will compromise the
@@ -9112,11 +9089,12 @@ Release: February 9, 2026
 
 109 / 191
 
-6  Appendix A: Full WSDL Definitions
+
+## 6 Appendix A: Full WSDL Definitions
 
 For ease of implementation, this section provides the full WSDL.
 
-6.1  SimpleAuth Web Service WSDL
+### 6.1 SimpleAuth Web Service WSDL
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -9186,7 +9164,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <wsdl:output>
+
+       <wsdl:output>
          <soap:body use="literal" />
        </wsdl:output>
      </wsdl:operation>
@@ -9215,7 +9194,7 @@ orizationCookie" style="document" />
    </wsdl:service>
  </wsdl:definitions>
 
-6.2  Client Web Service WSDL
+### 6.2 Client Web Service WSDL
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -9259,7 +9238,8 @@ Release: February 9, 2026
 
 111 / 191
 
-           <s:element minOccurs="1" maxOccurs="1" name="IsRegistrationRequired"
+
+           <s:element minOccurs="1" maxOccurs="1" name="IsRegistrationRequired"
 type="s:boolean" />
            <s:element minOccurs="0" maxOccurs="1" name="AuthInfo"
 type="tns:ArrayOfAuthPlugInInfo" />
@@ -9336,7 +9316,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-         </s:sequence>
+
+         </s:sequence>
        </s:complexType>
        <s:element name="GetCookieResponse">
          <s:complexType>
@@ -9413,7 +9394,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <s:complexType name="ArrayOfCategoryRelationship">
+
+       <s:complexType name="ArrayOfCategoryRelationship">
          <s:sequence>
            <s:element minOccurs="0" maxOccurs="unbounded" name="CategoryRelationship"
 nillable="true" type="tns:CategoryRelationship" />
@@ -9489,7 +9471,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-           <s:element minOccurs="0" maxOccurs="1" name="CompatibleIDs"
+
+           <s:element minOccurs="0" maxOccurs="1" name="CompatibleIDs"
 type="tns:ArrayOfString" />
            <s:element minOccurs="0" maxOccurs="1" name="installedDriver"
 type="tns:InstalledDriver" />
@@ -9566,7 +9549,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       </s:complexType>
+
+       </s:complexType>
        <s:element name="SyncUpdatesResponse">
          <s:complexType>
            <s:sequence>
@@ -9642,7 +9626,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       </s:simpleType>
+
+       </s:simpleType>
       <s:complexType name="ArrayOfClientBehavior">
 
     <s:sequence>
@@ -9723,7 +9708,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <s:element name="RefreshCacheResponse">
+
+       <s:element name="RefreshCacheResponse">
          <s:complexType>
            <s:sequence>
              <s:element minOccurs="0" maxOccurs="1" name="RefreshCacheResult"
@@ -9800,7 +9786,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-           <s:element minOccurs="0" maxOccurs="1" name="OutOfScopeRevisionIDs"
+
+           <s:element minOccurs="0" maxOccurs="1" name="OutOfScopeRevisionIDs"
 type="tns:ArrayOfInt" />
          </s:sequence>
        </s:complexType>
@@ -9876,7 +9863,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-             <s:element minOccurs="0" maxOccurs="1" name="GetExtendedUpdateInfo2Result"
+
+             <s:element minOccurs="0" maxOccurs="1" name="GetExtendedUpdateInfo2Result"
 type="s1:ExtendedUpdateInfo2"/>
            </s:sequence>
          </s:complexType>
@@ -9953,7 +9941,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       </s:element>
+
+       </s:element>
        <s:complexType name="GetFileLocationsResults">
          <s:sequence>
            <s:element minOccurs="0" maxOccurs="1" name="FileLocations"
@@ -10030,7 +10019,8 @@ Release: February 9, 2026
 
 121 / 191
 
-   </wsdl:message>
+
+   </wsdl:message>
    <wsdl:message name="GetExtendedUpdateInfo2SoapOut">
      <wsdl:part name="parameters" element="tns:GetExtendedUpdateInfo2Response" />
    </wsdl:message>
@@ -10107,7 +10097,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <wsdl:input>
+
+       <wsdl:input>
          <soap:body use="literal" />
        </wsdl:input>
        <wsdl:output>
@@ -10184,7 +10175,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <wsdl:output>
+
+       <wsdl:output>
          <soap:body use="literal" />
        </wsdl:output>
      </wsdl:operation>
@@ -10261,7 +10253,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <wsdl:output>
+
+       <wsdl:output>
          <soap12:body use="literal" />
        </wsdl:output>
      </wsdl:operation>
@@ -10338,7 +10331,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-6.3  Reporting Web Service WSDL
+
+### 6.3 Reporting Web Service WSDL
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -10411,7 +10405,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-         <s:sequence>
+
+         <s:sequence>
            <s:element minOccurs="0" maxOccurs="1" name="Sid" type="s:string" />
          </s:sequence>
        </s:complexType>
@@ -10488,7 +10483,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-             <s:element minOccurs="0" maxOccurs="1" name="eventBatch"
+
+             <s:element minOccurs="0" maxOccurs="1" name="eventBatch"
 type="tns:ArrayOfReportingEvent" />
            </s:sequence>
          </s:complexType>
@@ -10565,7 +10561,8 @@ Release: February 9, 2026
 
 128 / 191
 
-         </s:complexType>
+
+         </s:complexType>
        </s:element>
        <s:complexType name="RollupConfiguration">
          <s:sequence>
@@ -10641,7 +10638,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-           <s:element minOccurs="1" maxOccurs="1" name="UpdatesNeededByComputersCount"
+
+           <s:element minOccurs="1" maxOccurs="1" name="UpdatesNeededByComputersCount"
 type="s:int" />
            <s:element minOccurs="1" maxOccurs="1" name="UpdatesUpToDateCount" type="s:int" />
            <s:element minOccurs="1" maxOccurs="1" name="CustomComputerTargetGroupCount"
@@ -10718,7 +10716,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-         </s:complexType>
+
+         </s:complexType>
        </s:element>
        <s:complexType name="ArrayOfComputerRollupInfo">
          <s:sequence>
@@ -10795,7 +10794,8 @@ Release: February 9, 2026
 
 131 / 191
 
-       <s:complexType name="ChangedComputer">
+
+       <s:complexType name="ChangedComputer">
          <s:attribute name="ComputerId" type="s:string" />
          <s:attribute name="Change" type="tns:ComputerChangeType" use="required" />
        </s:complexType>
@@ -10872,7 +10872,8 @@ Release: February 9, 2026
 
 132 / 191
 
-       <s:complexType name="ArrayOfComputerStatusRollupUpdateStatus">
+
+       <s:complexType name="ArrayOfComputerStatusRollupUpdateStatus">
          <s:sequence>
            <s:element minOccurs="0" maxOccurs="unbounded"
 name="ComputerStatusRollupUpdateStatus" nillable="true"
@@ -10949,7 +10950,8 @@ Release: February 9, 2026
 
 133 / 191
 
-   <wsdl:message name="RollupComputersSoapIn">
+
+   <wsdl:message name="RollupComputersSoapIn">
      <wsdl:part name="parameters" element="tns:RollupComputers" />
    </wsdl:message>
    <wsdl:message name="RollupComputersSoapOut">
@@ -11026,7 +11028,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-     <wsdl:operation name="ReportEventBatch2">
+
+     <wsdl:operation name="ReportEventBatch2">
        <soap:operation
 soapAction="http://www.microsoft.com/SoftwareDistribution/ReportEventBatch2" style="document"
 />
@@ -11101,7 +11104,8 @@ Release: February 9, 2026
 
 135 / 191
 
-       <soap:operation
+
+       <soap:operation
 soapAction="http://www.microsoft.com/SoftwareDistribution/GetOutOfSyncComputers"
 style="document" />
        <wsdl:input>
@@ -11178,7 +11182,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <soap12:operation
+
+       <soap12:operation
 soapAction="http://www.microsoft.com/SoftwareDistribution/GetRollupConfiguration"
 style="document" />
        <wsdl:input>
@@ -11250,7 +11255,8 @@ Release: February 9, 2026
 
 137 / 191
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -11318,7 +11324,8 @@ Release: February 9, 2026
 
 138 / 191
 
-<1> Section 1.3: WSUS is a component of Windows that consists of both an update client
+
+<1> Section 1.3: WSUS is a component of Windows that consists of both an update client
 implementation and an update server implementation.
 
 The update server is a component of some Windows versions and can be installed to enable applicable
@@ -11551,7 +11558,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-<4> Section 2.1:  Self-updating functionality is available only in Windows XP, Windows Vista,
+
+<4> Section 2.1:  Self-updating functionality is available only in Windows XP, Windows Vista,
 Windows 7, Windows 8, and Windows 8.1.
 
 <5> Section 2.1: This protocol exposes the self-update content directory on port 80. It has a
@@ -11632,7 +11640,8 @@ Release: February 9, 2026
 
 140 / 191
 
-Windows version
+
+Windows version
 
 Client protocol version
 
@@ -11776,7 +11785,8 @@ Release: February 9, 2026
 
 141 / 191
 
-Name of client
+
+Name of client
 operating
 system
 
@@ -11954,7 +11964,8 @@ Release: February 9, 2026
 
 142 / 191
 
-Name of client
+
+Name of client
 operating
 system
 
@@ -12132,7 +12143,8 @@ Release: February 9, 2026
 
 143 / 191
 
-Name of client
+
+Name of client
 operating
 system
 
@@ -12317,7 +12329,8 @@ Release: February 9, 2026
 
 144 / 191
 
-Name of client
+
+Name of client
 operating
 system
 
@@ -12502,7 +12515,8 @@ Release: February 9, 2026
 
 145 / 191
 
-Name of client
+
+Name of client
 operating
 system
 
@@ -12673,7 +12687,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-Name of client
+
+Name of client
 operating
 system
 
@@ -12869,7 +12884,8 @@ Contains
 
 147 / 191
 
-Name of client
+
+Name of client
 operating
 system
 
@@ -13051,7 +13067,8 @@ Contains
 
 86
 
-Name of client
+
+Name of client
 operating
 system
 
@@ -13195,7 +13212,8 @@ Release: February 9, 2026
 
 149 / 191
 
-<20> Section 2.2.2.2.4:  DeviceFlags are supported by the down-level operating systems specified
+
+<20> Section 2.2.2.2.4:  DeviceFlags are supported by the down-level operating systems specified
 in [MSKB-5011563], [MSKB-5011558], and [MSKB-5011831]; each with its corresponding KB article
 download installed. DeviceFlags are also supported by Windows 11 v22H2 and later.
 
@@ -13269,7 +13287,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-                       <element name="AdditionalDigest" minOccurs="0" maxOccurs="unbounded"
+
+                       <element name="AdditionalDigest" minOccurs="0" maxOccurs="unbounded"
 type="bt:AdditionalDigest"></element>
                      </sequence>
                      <attribute name="Digest" type="bt:FileDigest" use="required">
@@ -13342,7 +13361,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- </restriction>
+
+ </restriction>
  </simpleType>
  <simpleType name="AdditionalDigestAlgorithm">
  <annotation>
@@ -13418,7 +13438,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-                     </attribute>
+
+                     </attribute>
                      <attribute name="PatchingType" type="upd:PatchingType" use="optional" />
                  </complexType>
              </element>
@@ -13524,7 +13545,8 @@ Release: February 9, 2026
 
 153 / 191
 
-Windows version
+
+Windows version
 
 Major  Minor  OSProductType
 
@@ -13659,7 +13681,8 @@ Release: February 9, 2026
 
 154 / 191
 
-       <documentation>Compare's the operating system's version information to specified
+
+       <documentation>Compare's the operating system's version information to specified
 values.  Implemented using Win32 VerifyVersionInfo().  The Comparison attribute applies to
 MajorVersion, MinorVersion, BuildNumber, ServicePackMajor, and ServicePack Minor.  If
 Comparison is omitted, it is assumed to be set to EqualTo.  The AllSuitesMustBePresent
@@ -13736,7 +13759,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-   <element name="MuiLanguageInstalled" substitutionGroup="upd:ApplicabilityRuleElement">
+
+   <element name="MuiLanguageInstalled" substitutionGroup="upd:ApplicabilityRuleElement">
      <annotation>
        <documentation>Returns true if the specified language is installed for the Windows
 Multilanguage User Interface (MUI).  Always returns false if MUI itself is not
@@ -13813,7 +13837,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <attribute name="Suffix" type="string" use="optional"/>
+
+       <attribute name="Suffix" type="string" use="optional"/>
      </complexType>
    </element>
    <!--
@@ -13890,7 +13915,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <documentation>Same as FileVersion, but the MSUS Client will prepend the specified
+
+       <documentation>Same as FileVersion, but the MSUS Client will prepend the specified
 REG_SZ value from the registry instead of a CSIDL.</documentation>
      </annotation>
      <complexType>
@@ -13966,7 +13992,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <documentation>Same as FileModified, but the MSUS Client will prepend the specified
+
+       <documentation>Same as FileModified, but the MSUS Client will prepend the specified
 REG_SZ value from the registry instead of a CSIDL.</documentation>
      </annotation>
      <complexType>
@@ -14043,7 +14070,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-     </complexType>
+
+     </complexType>
    </element>
    <element name="RegDword" substitutionGroup="upd:ApplicabilityRuleElement">
      <annotation>
@@ -14120,7 +14148,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-     <complexType>
+
+     <complexType>
        <attributeGroup ref="bt:RegistryKeyAttributes"/>
        <attribute name="Value" type="bt:RegistryValue" use="optional"/>
        <attribute name="Data" type="string" use="required"/>
@@ -14196,7 +14225,8 @@ Release: February 9, 2026
 
 161 / 191
 
-       <documentation>Returns true if the update has been installed on this client, based on
+
+       <documentation>Returns true if the update has been installed on this client, based on
 the machine's installation history.</documentation>
      </annotation>
      <complexType/>
@@ -14271,7 +14301,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-           <documentation>This is only valid if VersionMax is specified. If set to true, the
+
+           <documentation>This is only valid if VersionMax is specified. If set to true, the
 value in VersionMax is not considered a valid version for this check. If set to false,
 VersionMax is valid.</documentation>
          </annotation>
@@ -14348,7 +14379,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <attribute name="PatchCode" type="mspblob:GUID" use="required">
+
+       <attribute name="PatchCode" type="mspblob:GUID" use="required">
          <annotation>
            <documentation>MSI patch code for the patch whose install status is to be
 checked.</documentation>
@@ -14425,7 +14457,8 @@ Release: February 9, 2026
 
 164 / 191
 
-   </element>
+
+   </element>
    <!--
 
    MSI (Windows Installer Application) checks - these rely on the MSI metadata
@@ -14502,7 +14535,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-     <sequence>
+
+     <sequence>
        <element name="ProductCode" minOccurs="1" maxOccurs="1">
          <complexType>
            <simpleContent>
@@ -14577,7 +14611,8 @@ Release: February 9, 2026
 
 166 / 191
 
- <documentation>A driver provider string.</documentation>
+
+ <documentation>A driver provider string.</documentation>
  </annotation>
  <restriction base="string">
  <maxLength value="256" />
@@ -14654,7 +14689,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- <annotation>
+
+ <annotation>
  <documentation>The driver version date. The driver version date is derived from the submitted
 INF file as part of the publication process.</documentation>
  </annotation>
@@ -14731,7 +14767,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- </annotation>
+
+ </annotation>
  <complexType />
  </element>
  <element name="WindowsDriverInstallable" substitutionGroup="upd:ApplicabilityRuleElement">
@@ -14798,7 +14835,8 @@ Release: February 9, 2026
 
 169 / 191
 
-<48> Section 3.1.5.1: Only Windows 8.1 and earlier Windows versions use this self-update
+
+<48> Section 3.1.5.1: Only Windows 8.1 and earlier Windows versions use this self-update
 mechanism.
 
 <49> Section 3.1.5.1:  Windows 8.1 and earlier Windows versions perform self-update using the
@@ -14873,7 +14911,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-<52> Section 3.1.5.6: WSUS 3.0 SP2 validates the number of categories to be less than 200.
+
+<52> Section 3.1.5.6: WSUS 3.0 SP2 validates the number of categories to be less than 200.
 Otherwise, it returns an error code of InvalidParameters. The StartCategoryScan method is not
 supported on WSUS 2.0, WSUS 2.0 SP1, WSUS 3.0, or WSUS 3.0 SP1.
 
@@ -14949,7 +14988,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <attribute name="ServicePackMinor" type="unsignedShort" use="optional"/>
+
+       <attribute name="ServicePackMinor" type="unsignedShort" use="optional"/>
        <attribute name="AllSuitesMustBePresent" type="boolean" use="optional"
 default="false"/>
        <attribute name="SuiteMask" type="unsignedShort" use="optional"/>
@@ -15026,7 +15066,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-     </complexType>
+
+     </complexType>
    </element>
    <element name="NumberOfProcessors" substitutionGroup="upd:ApplicabilityRuleElement">
      <annotation>
@@ -15103,7 +15144,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <documentation>Same as FileExists, but the MSUS Client will prepend the specified
+
+       <documentation>Same as FileExists, but the MSUS Client will prepend the specified
 REG_SZ value from the registry instead of a CSIDL.</documentation>
      </annotation>
      <complexType>
@@ -15179,7 +15221,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-       <documentation>Same as FileCreated, but the MSUS Client will prepend the specified
+
+       <documentation>Same as FileCreated, but the MSUS Client will prepend the specified
 REG_SZ value from the registry instead of a CSIDL.</documentation>
      </annotation>
      <complexType>
@@ -15256,7 +15299,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-     </annotation>
+
+     </annotation>
      <complexType>
        <complexContent>
          <extension base="bar:FileCompareSizeType">
@@ -15333,7 +15377,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-   <element name="RegSzToVersion" substitutionGroup="upd:ApplicabilityRuleElement">
+
+   <element name="RegSzToVersion" substitutionGroup="upd:ApplicabilityRuleElement">
      <annotation>
        <documentation>Compares a specified REG_SZ registry value to a specified four-part
 version string.</documentation>
@@ -15410,7 +15455,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-     <annotation>
+
+     <annotation>
        <documentation>Compares a specified Software License DWORD value to a specified
 number.</documentation>
      </annotation>
@@ -15485,7 +15531,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-         xmlns:msiar="http://schemas.microsoft.com/msus/2002/12/MsiApplicabilityRules"
+
+         xmlns:msiar="http://schemas.microsoft.com/msus/2002/12/MsiApplicabilityRules"
          xmlns:mspblob="http://www.microsoft.com/msi/patch_applicability.xsd"
          elementFormDefault="qualified"
          attributeFormDefault="unqualified">
@@ -15561,7 +15608,8 @@ Release: February 9, 2026
 
 179 / 191
 
-         <element name="Feature" type="bt:MsiFeatureName" minOccurs="1" maxOccurs="unbounded"
+
+         <element name="Feature" type="bt:MsiFeatureName" minOccurs="1" maxOccurs="unbounded"
 />
          <element name="Product" type="mspblob:GUID" minOccurs="1" maxOccurs="unbounded" />
        </sequence>
@@ -15638,7 +15686,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-         </annotation>
+
+         </annotation>
        </attribute>
        <attribute name="Language" type="int" use="optional">
          <annotation>
@@ -15713,7 +15762,8 @@ Release: February 9, 2026
 
 181 / 191
 
-       <documentation>The metadata for an MSP (Windows Installer Patch). This metadata is used
+
+       <documentation>The metadata for an MSP (Windows Installer Patch). This metadata is used
 by the MsiPatchInstalled, MsiPatchSuperseded, and MsiPatchInstallable applicability
 rules.</documentation>
      </annotation>
@@ -15788,7 +15838,8 @@ Release: February 9, 2026
 
 182 / 191
 
- <?xml version="1.0" encoding="UTF-8" ?>
+
+ <?xml version="1.0" encoding="UTF-8" ?>
  <schema
 targetNamespace="http://schemas.microsoft.com/msus/2002/12/UpdateHandlers/WindowsDriver"
  xmlns:tns="http://schemas.microsoft.com/msus/2002/12/UpdateHandlers/WindowsDriver"
@@ -15865,7 +15916,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- <documentation>The drivers version string written as four integers separated by dots (e.g.,
+
+ <documentation>The drivers version string written as four integers separated by dots (e.g.,
 "1.2.3.4"). The DriverVerVersion is derived from information in the driver
 INF.</documentation>
  </annotation>
@@ -15941,7 +15993,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
- <documentation>The company that manufactured the driver. The manufacturer is derived from the
+
+ <documentation>The company that manufactured the driver. The manufacturer is derived from the
 submitted INF file as part of the publication process.</documentation>
  </annotation>
  </attribute>
@@ -16013,7 +16066,8 @@ Release: February 9, 2026
 
 185 / 191
 
-bytes of that string are used to specify the subdirectory, and the full string is used as the location of
+
+bytes of that string are used to specify the subdirectory, and the full string is used as the location of
 the file in the subdirectory.
 
 <58> Section 3.1.5.12: WSUS 3.0 SP1 and WSUS 3.0 SP2 include the HardwareIDs when the
@@ -16094,7 +16148,8 @@ Windows Update Services: Client-Server Protocol
 Copyright © 2026 Microsoft Corporation
 Release: February 9, 2026
 
-  Retry failed sync. If metadata synchronization fails for some reason, the client will retry in 5
+
+  Retry failed sync. If metadata synchronization fails for some reason, the client will retry in 5
 
 hours.
 
@@ -16126,7 +16181,8 @@ Release: February 9, 2026
 
 187 / 191
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -16184,7 +16240,8 @@ Release: February 9, 2026
 
 188 / 191
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -16316,7 +16373,8 @@ Release: February 9, 2026
 
 189 / 191
 
-   SimpleAuth Web Service message 23
+
+   SimpleAuth Web Service message 23
    syntax 22
    transport 15
    update content directory 64
@@ -16458,7 +16516,8 @@ Release: February 9, 2026
 
 190 / 191
 
-V
+
+V
 
 Vendor-extensible fields 14
 Versioning 14

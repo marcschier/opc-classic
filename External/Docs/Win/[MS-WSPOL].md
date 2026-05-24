@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 36
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -276,7 +277,8 @@ Release: March 13, 2019
 
 2 / 36
 
-Date
+
+Date
 
 Revision
 History
@@ -360,160 +362,65 @@ Release: March 13, 2019
 
 3 / 36
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+      - [2.2.3.1 Basic HTTP Authentication Policy Assertion](#2231-basic-http-authentication-policy-assertion)
+      - [2.2.3.2 Digest HTTP Authentication Policy Assertion](#2232-digest-http-authentication-policy-assertion)
+      - [2.2.3.3 NTLM HTTP Authentication Policy Assertion](#2233-ntlm-http-authentication-policy-assertion)
+      - [2.2.3.4 Negotiate HTTP Authentication Policy Assertion](#2234-negotiate-http-authentication-policy-assertion)
+      - [2.2.3.5 Streamed Message Framing Policy Assertion](#2235-streamed-message-framing-policy-assertion)
+      - [2.2.3.6 Binary Encoding Policy Assertion](#2236-binary-encoding-policy-assertion)
+      - [2.2.3.7 Message Framing Transport Security Policy Assertion](#2237-message-framing-transport-security-policy-assertion)
+      - [2.2.3.8 Message Framing Security Provider Negotiation Policy Assertion](#2238-message-framing-security-provider-negotiation-policy-assertion)
+      - [2.2.3.9 One-way Policy Assertion](#2239-one-way-policy-assertion)
+      - [2.2.3.10 Composite Duplex Policy Assertion](#22310-composite-duplex-policy-assertion)
+      - [2.2.3.11 UDP Retransmission-Enabled Policy Assertion](#22311-udp-retransmission-enabled-policy-assertion)
+      - [2.2.3.12 WebSocket Streamed Policy Assertion](#22312-websocket-streamed-policy-assertion)
+      - [2.2.3.13 WebSocket Streamed Request Policy Assertion](#22313-websocket-streamed-request-policy-assertion)
+      - [2.2.3.14 WebSocket Streamed Response Policy Assertion](#22314-websocket-streamed-response-policy-assertion)
+      - [2.2.3.15 SOAP-over-UDP SOAP Binding Transport URI](#22315-soap-over-udp-soap-binding-transport-uri)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+      - [2.2.6.1 Using Session WSDL Extension](#2261-using-session-wsdl-extension)
+      - [2.2.6.2 Is Initiating WSDL Extension](#2262-is-initiating-wsdl-extension)
+      - [2.2.6.3 Is Terminating WSDL Extension](#2263-is-terminating-wsdl-extension)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+  - [3.2 Client Details](#32-client-details)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+  - [6.1 Basic HTTP Authentication Policy Assertion](#61-basic-http-authentication-policy-assertion)
+  - [6.15 <!-- omitted elements -->](#615)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Message Syntax ................................................................................. 12
-Namespaces .............................................................................................. 12
-Messages ................................................................................................... 12
-Elements ................................................................................................... 12
-Basic HTTP Authentication Policy Assertion ............................................... 13
-2.2.3.1
-Digest HTTP Authentication Policy Assertion ............................................. 14
-2.2.3.2
-NTLM HTTP Authentication Policy Assertion .............................................. 14
-2.2.3.3
-Negotiate HTTP Authentication Policy Assertion ......................................... 14
-2.2.3.4
-Streamed Message Framing Policy Assertion ............................................. 14
-2.2.3.5
-Binary Encoding Policy Assertion ............................................................. 15
-2.2.3.6
-Message Framing Transport Security Policy Assertion ................................ 15
-2.2.3.7
-Message Framing Security Provider Negotiation Policy Assertion ................. 15
-2.2.3.8
-One-way Policy Assertion ....................................................................... 16
-2.2.3.9
-2.2.3.10
-Composite Duplex Policy Assertion .......................................................... 17
-2.2.3.11  UDP Retransmission-Enabled Policy Assertion ........................................... 17
-2.2.3.12  WebSocket Streamed Policy Assertion ..................................................... 17
-2.2.3.13  WebSocket Streamed Request Policy Assertion ......................................... 18
-2.2.3.14  WebSocket Streamed Response Policy Assertion ....................................... 18
-SOAP-over-UDP SOAP Binding Transport URI............................................ 18
-2.2.3.15
-Complex Types ........................................................................................... 18
-Simple Types ............................................................................................. 18
-Attributes .................................................................................................. 19
-Using Session WSDL Extension ............................................................... 19
-Is Initiating WSDL Extension .................................................................. 19
-Is Terminating WSDL Extension .............................................................. 19
-Groups ...................................................................................................... 20
-Attribute Groups ......................................................................................... 20
-
-2.2.6.1
-2.2.6.2
-2.2.6.3
-
-2.2.4
-2.2.5
-2.2.6
-
-2.2.7
-2.2.8
-
-3  Protocol Details ..................................................................................................... 21
-Server Details .................................................................................................. 21
-Client Details ................................................................................................... 21
-
-3.1
-3.2
-
-4  Protocol Examples ................................................................................................. 22
-
-5  Security ................................................................................................................. 23
-Security Considerations for Implementers ........................................................... 23
-Index of Security Parameters ............................................................................ 23
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 24
-Basic HTTP Authentication Policy Assertion .......................................................... 24
-Digest HTTP Authentication Policy Assertion ........................................................ 25
-
-6.1
-6.2
-
-[MS-WSPOL] - v20190313
-Web Services: Policy Assertions and WSDL Extensions
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 36
-
-NTLM HTTP Authentication Policy Assertion .......................................................... 25
-6.3
-Negotiate HTTP Authentication Policy Assertion .................................................... 26
-6.4
-Streamed Message Framing Policy Assertion ........................................................ 26
-6.5
-Binary Encoding Policy Assertion ........................................................................ 26
-6.6
-Message Framing Transport Security Policy Assertion ........................................... 27
-6.7
-Message Framing Security Provider Negotiation Policy Assertion ............................ 28
-6.8
-One-way and Composite Duplex Policy Assertions ................................................ 28
-6.9
-6.10  UDP Retransmission-Enabled Policy Assertion ...................................................... 29
-6.11  WebSocket Streamed Policy Assertion ................................................................ 29
-6.12  WebSocket Streamed Request Policy Assertion .................................................... 30
-6.13  WebSocket Streamed Response Policy Assertion .................................................. 30
-SOAP-over-UDP Transport URI ........................................................................... 30
-6.14
-6.15  Using Session, Is Initiating, and Is Terminating WSDL Extensions .......................... 31
-
-7  Appendix B: Product Behavior ............................................................................... 32
-
-8  Change Tracking .................................................................................................... 33
-
-9  Index ..................................................................................................................... 34
-
-[MS-WSPOL] - v20190313
-Web Services: Policy Assertions and WSDL Extensions
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 36
-
-1  Introduction
+## 1 Introduction
 
 This document specifies a collection of Web service policy assertions and Web Services Description
 Language (WSDL) extensions, which define domain-specific behavior for the interaction between two
@@ -523,7 +430,7 @@ exchanges.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -583,7 +490,8 @@ Release: March 13, 2019
 
 6 / 36
 
-Web Services Description Language (WSDL): An XML format for describing network services
+
+Web Services Description Language (WSDL): An XML format for describing network services
 
 as a set of endpoints that operate on messages that contain either document-oriented or
 procedure-oriented information. The operations and messages are described abstractly and are
@@ -619,14 +527,14 @@ document type at a relatively high level of abstraction.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -651,7 +559,8 @@ Release: March 13, 2019
 
 7 / 36
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2617] Franks, J., Hallam-Baker, P., Hostetler, J., et al., "HTTP Authentication: Basic and Digest
@@ -697,11 +606,11 @@ names-20060816/
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 WS-Policy (Web Services Policy Framework) [WS-Policy] and WS-PolicyAttachment (Web Services
 Policy Attachment) [WSPolicyAtt] collectively define a framework, model, and grammar for expressing
@@ -717,7 +626,8 @@ Web Services: Policy Assertions and WSDL Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The Basic HTTP Authentication policy assertion indicates that a Web service endpoint requires
+
+The Basic HTTP Authentication policy assertion indicates that a Web service endpoint requires
 authentication using the Basic Authentication scheme, as specified in [RFC2617] section 2.
 
   Digest HTTP Authentication
@@ -786,7 +696,8 @@ Web Services: Policy Assertions and WSDL Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-The WebSocket Streamed policy assertion indicates that a Web service endpoint intends to send
+
+The WebSocket Streamed policy assertion indicates that a Web service endpoint intends to send
 and receive messages as a stream of bytes, as specified in [RFC6455].
 
   WebSocket Streamed Request
@@ -829,20 +740,20 @@ The SOAP-over-UDP transport defines the following URI: http://schemas.microsoft.
 which indicates that a Web service endpoint requires messages to be transferred using the [SOAP-
 UDP] protocol.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This document only defines policy assertions and WSDL extensions for existing protocols and does
 not define any new protocols.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 None.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
@@ -853,11 +764,12 @@ Release: March 13, 2019
 
 10 / 36
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -868,18 +780,19 @@ Release: March 13, 2019
 
 11 / 36
 
-2  Messages
+
+## 2 Messages
 
 This document only defines policy assertions and WSDL extensions for existing protocols and does
 not define any new messages.
 
-2.1  Transport
+### 2.1 Transport
 
 None.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references the following XML namespaces using the mechanisms
 specified in [XMLNS-2ED], which MUST be used by the implementations of this specification.
@@ -948,11 +861,11 @@ http://schemas.microsoft.com/ws/06/2010/policy/soap/udp
 
 mswsp  http://schemas.microsoft.com/soap/websocket/policy
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any messages.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 The following table summarizes the set of common XML Schema element definitions defined by this
 specification.
@@ -972,7 +885,8 @@ Release: March 13, 2019
 
 12 / 36
 
-Element
+
+Element
 
 Description
 
@@ -1043,7 +957,7 @@ bytes over the WebSockets protocol.
 The following sections contain the XML schema description for the policy assertions and WSDL
 extensions specified in this document.
 
-2.2.3.1  Basic HTTP Authentication Policy Assertion
+##### 2.2.3.1 Basic HTTP Authentication Policy Assertion
 
  <xs:schema
      attributeFormDefault="unqualified"
@@ -1066,7 +980,8 @@ Release: March 13, 2019
 
 13 / 36
 
-2.2.3.2  Digest HTTP Authentication Policy Assertion
+
+##### 2.2.3.2 Digest HTTP Authentication Policy Assertion
 
  <xs:schema
      attributeFormDefault="unqualified"
@@ -1083,7 +998,7 @@ The following describes the content model of the DigestAuthentication element.
 assertion MUST authenticate clients using the Digest Access Authentication scheme, as specified
 in [RFC2617] section 3.
 
-2.2.3.3  NTLM HTTP Authentication Policy Assertion
+##### 2.2.3.3 NTLM HTTP Authentication Policy Assertion
 
  <xs:schema
      attributeFormDefault="unqualified"
@@ -1099,7 +1014,7 @@ The following describes the content model of the NtlmAuthentication element.
 
 MUST authenticate clients using the NTLM over HTTP Protocol, as specified in [MS-NTHT].
 
-2.2.3.4  Negotiate HTTP Authentication Policy Assertion
+##### 2.2.3.4 Negotiate HTTP Authentication Policy Assertion
 
  <xs:schema
      attributeFormDefault="unqualified"
@@ -1116,7 +1031,7 @@ The following describes the content model of the NegotiateAuthentication element
 assertion MUST authenticate clients using the HTTP Negotiate Authentication scheme, as specified
 in [RFC4559] section 4.
 
-2.2.3.5  Streamed Message Framing Policy Assertion
+##### 2.2.3.5 Streamed Message Framing Policy Assertion
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1135,12 +1050,13 @@ Web Services: Policy Assertions and WSDL Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-/msf:Streamed: A Web service endpoint with Streamed Message Framing policy assertion MUST
+
+/msf:Streamed: A Web service endpoint with Streamed Message Framing policy assertion MUST
 
 exchange messages using the .NET Message Framing Protocol [MC-NMF]. The framing mode MUST
 be Singleton Unsized (as described in [MC-NMF] section 2.2.3.2).
 
-2.2.3.6  Binary Encoding Policy Assertion
+##### 2.2.3.6 Binary Encoding Policy Assertion
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1159,7 +1075,7 @@ in-band dictionary specified in [MC-NBFSE]. A Web service endpoint with a Binary
 assertion and configured with a transport that is not a sessionful transport MUST exchange
 messages using the binary format specified in [MC-NBFS].<1>
 
-2.2.3.7  Message Framing Transport Security Policy Assertion
+##### 2.2.3.7 Message Framing Transport Security Policy Assertion
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1193,7 +1109,7 @@ sp:TransportBinding/wsp:Policy/sp:TransportToken/wsp:Policy element of the Trans
 Assertion, as specified in [WSSP1.2], to indicate that the SOAP message protection is provided by
 the Transport Layer Security Protocol [RFC4346].
 
-2.2.3.8  Message Framing Security Provider Negotiation Policy Assertion
+##### 2.2.3.8 Message Framing Security Provider Negotiation Policy Assertion
 
  <xs:schema
 
@@ -1204,7 +1120,8 @@ Web Services: Policy Assertions and WSDL Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-            attributeFormDefault="unqualified"
+
+            attributeFormDefault="unqualified"
             elementFormDefault="qualified"
             targetNamespace="http://schemas.microsoft.com/ws/2006/05/framing/policy"
             xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -1261,7 +1178,7 @@ sp:TransportBinding/wsp:Policy/sp:TransportToken/wsp:Policy element of the Trans
 Assertion, as specified in [WSSP1.2], to indicate that the SOAP message protection is provided by
 the .NET NegotiateStream Protocol [MS-NNS].
 
-2.2.3.9  One-way Policy Assertion
+##### 2.2.3.9 One-way Policy Assertion
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1282,7 +1199,8 @@ Web Services: Policy Assertions and WSDL Extensions
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   </xs:element>
+
+   </xs:element>
  </xs:schema>
 
 The following describes the content model of the OneWay element.
@@ -1298,9 +1216,9 @@ replies from sent messages.
 
 endpoint MUST be sent as .NET packets, as specified in [MC-NPR] section 2.2.2.
 
-2.2.3.10
+##### 2.2.3.10 Composite Duplex Policy Assertion
 
-Composite Duplex Policy Assertion
+
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1319,9 +1237,9 @@ ReplyTo header. Messages sent to the Web service endpoint MUST specify an endpoi
 in the ReplyTo header [WSAddressing] of each request message. Messages sent by the Web
 service endpoint to the client MUST be sent using the WSDL binding for the Web service endpoint.
 
-2.2.3.11
+##### 2.2.3.11 UDP Retransmission-Enabled Policy Assertion
 
-UDP Retransmission-Enabled Policy Assertion
+
 
  <xs:schema
      attributeFormDefault="unqualified"
@@ -1338,9 +1256,9 @@ The following describes the content model of the RetransmissionEnabled element.
 retransmit messages. A client SHOULD enable a mechanism to detect duplicates and take
 appropriate action as messages are received from this Web service endpoint.<2>
 
-2.2.3.12
+##### 2.2.3.12 WebSocket Streamed Policy Assertion
 
-WebSocket Streamed Policy Assertion
+
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1357,15 +1275,16 @@ Release: March 13, 2019
 
 17 / 36
 
-The following describes the content model of the Streamed element.
+
+The following describes the content model of the Streamed element.
 
 /mswsp:Streamed: A Web service endpoint with WebSocket Streamed policy assertion MUST send
 
 and receive messages as a stream of bytes.<3>
 
-2.2.3.13
+##### 2.2.3.13 WebSocket Streamed Request Policy Assertion
 
-WebSocket Streamed Request Policy Assertion
+
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1381,9 +1300,9 @@ The following describes the content model of the StreamedRequest element.
 
 WebSocket Streamed Request policy assertion as a stream of bytes.<4>
 
-2.2.3.14
+##### 2.2.3.14 WebSocket Streamed Response Policy Assertion
 
-WebSocket Streamed Response Policy Assertion
+
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1399,19 +1318,19 @@ The following describes the content model of the StreamedResponse element.
 
 assertion MUST send messages as a stream of bytes.<5>
 
-2.2.3.15
+##### 2.2.3.15 SOAP-over-UDP SOAP Binding Transport URI
 
-SOAP-over-UDP SOAP Binding Transport URI
+
 
 This protocol does not define any new element. However, this protocol defines a new transport URI,
 http://schemas.microsoft.com/soap/udp, which specifies that a Web service endpoint requires
 messages to be transferred using the [SOAP-UDP] protocol.<6>
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML Schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML Schema simple type definitions.
 
@@ -1422,7 +1341,8 @@ Release: March 13, 2019
 
 18 / 36
 
-2.2.6  Attributes
+
+#### 2.2.6 Attributes
 
 The following table summarizes the set of common XML Schema attribute definitions defined by this
 specification.
@@ -1446,7 +1366,7 @@ Indicates that an operation is a terminating operation.
 The following sections contain the XML schema description for the WSDL extensions specified in
 this document.
 
-2.2.6.1  Using Session WSDL Extension
+##### 2.2.6.1 Using Session WSDL Extension
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1475,7 +1395,7 @@ processing operations, followed by zero or one terminating operations.
 The Web service endpoint MUST process all operations in the order they were sent by the
 client.
 
-2.2.6.2  Is Initiating WSDL Extension
+##### 2.2.6.2 Is Initiating WSDL Extension
 
  <xs:schema
             attributeFormDefault="unqualified"
@@ -1491,7 +1411,7 @@ The following describes the content model of the isInitiating attribute.
 
 indicates that this operation is an initiating operation.
 
-2.2.6.3  Is Terminating WSDL Extension
+##### 2.2.6.3 Is Terminating WSDL Extension
 
  <xs:schema
 
@@ -1502,7 +1422,8 @@ Release: March 13, 2019
 
 19 / 36
 
-            attributeFormDefault="unqualified"
+
+            attributeFormDefault="unqualified"
             elementFormDefault="qualified"
             targetNamespace="http://schemas.microsoft.com/ws/2005/12/wsdl/contract/"
             xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -1515,11 +1436,11 @@ The following describes the content model of the isTerminating attribute.
 
 true value indicates that the operation is a terminating operation.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML Schema attribute group definitions.
 
@@ -1530,7 +1451,8 @@ Release: March 13, 2019
 
 20 / 36
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The policy assertions defined in this document specify behavior over all messages sent to and from a
 Web service endpoint and so they MUST have the following policy subjects, as defined in [WS-Policy]:
@@ -1569,11 +1491,11 @@ following list of WSDL/1.1 [WSDL] elements:
 
   wsdl:operation
 
-3.1  Server Details
+### 3.1 Server Details
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
 None.
 
@@ -1584,7 +1506,8 @@ Release: March 13, 2019
 
 21 / 36
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Section 6, Appendix A: Full WSDL, provides examples of all of the policy assertions specified in this
 document.
@@ -1596,14 +1519,15 @@ Release: March 13, 2019
 
 22 / 36
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations are discussed in detail under the security considerations section in [WS-
 Policy].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1614,7 +1538,8 @@ Release: March 13, 2019
 
 23 / 36
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 For ease of implementation the full WSDLs with schemas are provided in the following sections.
 
@@ -1696,7 +1621,7 @@ Is Terminating WSDL Extension
 
 msc:IsTerminating
 
-6.1  Basic HTTP Authentication Policy Assertion
+### 6.1 Basic HTTP Authentication Policy Assertion
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions
@@ -1756,11 +1681,12 @@ Release: March 13, 2019
 
 6.15
 
-6.15
+### 6.15 <!-- omitted elements -->
 
 24 / 36
 
-   <!-- omitted elements -->
+
+
    <wsdl:binding name="MyBinding" type="tns:MyPortType">
      <wsp:PolicyReference URI="#MyPolicy" />
      <!-- omitted elements -->
@@ -1831,7 +1757,8 @@ Release: March 13, 2019
 
 25 / 36
 
-6.4  Negotiate HTTP Authentication Policy Assertion
+
+6.4  Negotiate HTTP Authentication Policy Assertion
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions
@@ -1902,7 +1829,8 @@ Release: March 13, 2019
 
 26 / 36
 
-                   xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
+
+                   xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-utility-1.0.xsd"
                    xmlns:wsdl=http://schemas.xmlsoap.org/wsdl/
                  xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1>
@@ -1971,7 +1899,8 @@ Release: March 13, 2019
 
 27 / 36
 
-6.8  Message Framing Security Provider Negotiation Policy Assertion
+
+6.8  Message Framing Security Provider Negotiation Policy Assertion
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions
@@ -2045,7 +1974,8 @@ Release: March 13, 2019
 
 28 / 36
 
-   </wsdl:binding>
+
+   </wsdl:binding>
    <!-- omitted elements -->
  </wsdl:definitions>
 
@@ -2112,7 +2042,8 @@ Release: March 13, 2019
 
 29 / 36
 
-6.12  WebSocket Streamed Request Policy Assertion
+
+6.12  WebSocket Streamed Request Policy Assertion
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions
@@ -2183,7 +2114,8 @@ Release: March 13, 2019
 
 30 / 36
 
-     <soap12:binding transport="http://schemas.microsoft.com/soap/udp"/>
+
+     <soap12:binding transport="http://schemas.microsoft.com/soap/udp"/>
      <wsdl:operation name="MyOperation">
        <!-- ommitted elements -->
      </wsdl:operation>
@@ -2225,7 +2157,8 @@ Release: March 13, 2019
 
 31 / 36
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2283,7 +2216,8 @@ Release: March 13, 2019
 
 32 / 36
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2320,7 +2254,8 @@ Release: March 13, 2019
 
 33 / 36
 
-9  Index
+
+## 9 Index
 A
 
 Applicability 10
@@ -2467,7 +2402,8 @@ isTerminating attribute 19
 
 34 / 36
 
-M
+
+M
 
    transport 12
    UDP Retransmission-Enabled Policy Assertion
@@ -2643,7 +2579,8 @@ Security
 
 35 / 36
 
-   parameter index 23
+
+   parameter index 23
 Security -  implementer considerations 23
 Security - implementer considerations 23
 Server - details 21

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 44
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 44
 
-Date
+
+Date
 
 Revision
 History
@@ -449,229 +451,96 @@ Release: April 23, 2024
 
 3 / 44
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Enumeration Server Details](#31-enumeration-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 wsen:Enumerate](#3141-wsenenumerate)
+        - [3.1.4.1.1 Elements](#31411-elements)
+          - [3.1.4.1.1.1 adlq:LdapQuery](#314111-adlqldapquery)
+            - [3.1.4.1.1.1.1 adlq:filter](#3141111-adlqfilter)
+            - [3.1.4.1.1.1.2 adlq:BaseObject](#3141112-adlqbaseobject)
+            - [3.1.4.1.1.1.3 adlq:Scope](#3141113-adlqscope)
+          - [3.1.4.1.1.2 ad:Selection](#314112-adselection)
+            - [3.1.4.1.1.2.1 ad:SelectionProperty](#3141121-adselectionproperty)
+          - [3.1.4.1.1.3 ad:Sorting](#314113-adsorting)
+            - [3.1.4.1.1.3.1 ad:SortingProperty](#3141131-adsortingproperty)
+        - [3.1.4.1.2 Attributes](#31412-attributes)
+          - [3.1.4.1.2.1 ad:Selection/@Dialect](#314121-adselectiondialect)
+          - [3.1.4.1.2.2 ad:Sorting/@Dialect](#314122-adsortingdialect)
+          - [3.1.4.1.2.3 ad:Sorting/ad:SortingProperty/@Ascending](#314123-adsortingadsortingpropertyascending)
+        - [3.1.4.1.3 SOAP Faults](#31413-soap-faults)
+          - [3.1.4.1.3.1 ad:EnumerationContextLimitExceeded](#314131-adenumerationcontextlimitexceeded)
+          - [3.1.4.1.3.2 ad:UnsupportedSelectOrSortDialectFault](#314132-adunsupportedselectorsortdialectfault)
+          - [3.1.4.1.3.3 ad:InvalidPropertyFault](#314133-adinvalidpropertyfault)
+          - [3.1.4.1.3.4 ad:InvalidSortKey](#314134-adinvalidsortkey)
+          - [3.1.4.1.3.5 wsen:CannotProcessFilter](#314135-wsencannotprocessfilter)
+          - [3.1.4.1.3.6 wsa2004:EndPointUnavailable](#314136-wsa2004endpointunavailable)
+      - [3.1.4.2 wsen:Pull](#3142-wsenpull)
+        - [3.1.4.2.1 SOAP Faults](#31421-soap-faults)
+          - [3.1.4.2.1.1 ad:MaxCharsNotSupported](#314211-admaxcharsnotsupported)
+          - [3.1.4.2.1.2 wsen:InvalidEnumerationContext](#314212-wseninvalidenumerationcontext)
+          - [3.1.4.2.1.3 wsa2004:DestinationUnreachable](#314213-wsa2004destinationunreachable)
+          - [3.1.4.2.1.4 wsa2004:EndpointUnavailable](#314214-wsa2004endpointunavailable)
+          - [3.1.4.2.1.5 ad:MaxTimeExceedsLimit](#314215-admaxtimeexceedslimit)
+      - [3.1.4.3 wsen:Renew](#3143-wsenrenew)
+        - [3.1.4.3.1 SOAP faults](#31431-soap-faults)
+          - [3.1.4.3.1.1 wsen:InvalidEnumerationContext](#314311-wseninvalidenumerationcontext)
+          - [3.1.4.3.1.2 wsa2004:EndpointUnavailable](#314312-wsa2004endpointunavailable)
+      - [3.1.4.4 wsen:GetStatus](#3144-wsengetstatus)
+        - [3.1.4.4.1 SOAP Faults](#31441-soap-faults)
+          - [3.1.4.4.1.1 wsen:InvalidEnumerationContext](#314411-wseninvalidenumerationcontext)
+          - [3.1.4.4.1.2 wsa2004:EndpointUnavailable](#314412-wsa2004endpointunavailable)
+      - [3.1.4.5 wsen:Release](#3145-wsenrelease)
+        - [3.1.4.5.1 SOAP Faults](#31451-soap-faults)
+          - [3.1.4.5.1.1 wsa2004:EndpointUnavailable](#314511-wsa2004endpointunavailable)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 WS-Enumerate Directory Services Extension "Enumerate" Request Example](#41-ws-enumerate-directory-services-extension-enumerate-request-example)
+  - [4.2 WS-Enumerate Directory Services Extension "Enumerate" Response Example](#42-ws-enumerate-directory-services-extension-enumerate-response-example)
+  - [4.3 WS-Enumerate Directory Services Extension "Pull" Request Example](#43-ws-enumerate-directory-services-extension-pull-request-example)
+  - [4.4 WS-Enumerate Directory Services Extension "Pull" Response Example](#44-ws-enumerate-directory-services-extension-pull-response-example)
+  - [4.5 WS-Enumerate Directory Services Extension "FaultDetail" Example](#45-ws-enumerate-directory-services-extension-faultdetail-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: WSDL](#6-appendix-a-wsdl)
+- [7 Appendix B: Schema](#7-appendix-b-schema)
+- [8 Appendix C: Product Behavior](#8-appendix-c-product-behavior)
+- [9 Change Tracking](#9-change-tracking)
+- [10 Index](#10-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Message Syntax ................................................................................. 11
-Namespaces .............................................................................................. 11
-Messages ................................................................................................... 11
-Elements ................................................................................................... 11
-Complex Types ........................................................................................... 12
-Simple Types ............................................................................................. 12
-Attributes .................................................................................................. 12
-Groups ...................................................................................................... 12
-Attribute Groups ......................................................................................... 12
-Directory Service Schema Elements ................................................................... 12
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-2.3
-
-3.1
-
-3.1.4.1
-
-3.1.4.1.1
-
-3.1.4.1.1.2
-
-3.1.4.1.1.1
-
-3.1.4.1.1.2.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.1.1.1
-3.1.4.1.1.1.2
-3.1.4.1.1.1.3
-
-3  Protocol Details ..................................................................................................... 13
-Enumeration Server Details ............................................................................... 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-wsen:Enumerate ................................................................................... 15
-Elements ........................................................................................ 16
-adlq:LdapQuery ......................................................................... 16
-adlq:filter ............................................................................ 17
-adlq:BaseObject ................................................................... 17
-adlq:Scope .......................................................................... 17
-ad:Selection .............................................................................. 18
-ad:SelectionProperty............................................................. 18
-ad:Sorting ................................................................................ 19
-ad:SortingProperty ............................................................... 19
-Attributes ....................................................................................... 20
-ad:Selection/@Dialect ................................................................ 20
-ad:Sorting/@Dialect ................................................................... 20
-ad:Sorting/ad:SortingProperty/@Ascending .................................. 20
-SOAP Faults .................................................................................... 20
-ad:EnumerationContextLimitExceeded .......................................... 20
-ad:UnsupportedSelectOrSortDialectFault ....................................... 21
-ad:InvalidPropertyFault .............................................................. 21
-ad:InvalidSortKey ...................................................................... 22
-wsen:CannotProcessFilter ........................................................... 22
-wsa2004:EndPointUnavailable ..................................................... 23
-wsen:Pull ............................................................................................. 23
-SOAP Faults .................................................................................... 24
-
-3.1.4.1.3.1
-3.1.4.1.3.2
-3.1.4.1.3.3
-3.1.4.1.3.4
-3.1.4.1.3.5
-3.1.4.1.3.6
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-3.1.4.1.2.3
-
-3.1.4.1.1.3.1
-
-3.1.4.1.1.3
-
-3.1.4.2.1
-
-3.1.4.1.2
-
-3.1.4.1.3
-
-3.1.4.2
-
-[MS-WSDS] - v20240423
-WS-Enumeration: Directory Services Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 44
-
-3.1.4.3
-
-3.1.4.3.1
-
-3.1.4.4
-
-3.1.4.4.1
-
-3.1.4.3.1.1
-3.1.4.3.1.2
-
-3.1.4.2.1.1
-3.1.4.2.1.2
-3.1.4.2.1.3
-3.1.4.2.1.4
-3.1.4.2.1.5
-
-ad:MaxCharsNotSupported .......................................................... 24
-wsen:InvalidEnumerationContext ................................................. 24
-wsa2004:DestinationUnreachable ................................................ 25
-wsa2004:EndpointUnavailable ..................................................... 25
-ad:MaxTimeExceedsLimit ............................................................ 25
-wsen:Renew ......................................................................................... 26
-SOAP faults .................................................................................... 26
-wsen:InvalidEnumerationContext ................................................. 26
-wsa2004:EndpointUnavailable ..................................................... 26
-wsen:GetStatus .................................................................................... 27
-SOAP Faults .................................................................................... 27
-wsen:InvalidEnumerationContext ................................................. 27
-wsa2004:EndpointUnavailable ..................................................... 27
-wsen:Release ....................................................................................... 28
-SOAP Faults .................................................................................... 28
-wsa2004:EndpointUnavailable ..................................................... 28
-Timer Events .............................................................................................. 28
-Other Local Events ...................................................................................... 28
-
-3.1.4.4.1.1
-3.1.4.4.1.2
-
-3.1.4.5.1.1
-
-3.1.4.5
-
-3.1.4.5.1
-
-3.1.5
-3.1.6
-
-4  Protocol Examples ................................................................................................. 29
-WS-Enumerate Directory Services Extension "Enumerate" Request Example ........... 29
-WS-Enumerate Directory Services Extension "Enumerate" Response Example ......... 30
-WS-Enumerate Directory Services Extension "Pull" Request Example ...................... 30
-WS-Enumerate Directory Services Extension "Pull" Response Example .................... 31
-WS-Enumerate Directory Services Extension "FaultDetail" Example ........................ 32
-
-4.1
-4.2
-4.3
-4.4
-4.5
-
-5  Security ................................................................................................................. 34
-Security Considerations for Implementers ........................................................... 34
-Index of Security Parameters ............................................................................ 34
-
-5.1
-5.2
-
-6  Appendix A: WSDL ................................................................................................. 35
-
-7  Appendix B: Schema .............................................................................................. 36
-
-8  Appendix C: Product Behavior ............................................................................... 39
-
-9  Change Tracking .................................................................................................... 42
-
-10  Index ..................................................................................................................... 43
-
-[MS-WSDS] - v20240423
-WS-Enumeration: Directory Services Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 44
-
-1  Introduction
+## 1 Introduction
 
 The WS-Enumeration Directory Services Protocol Extensions are a set of extensions to the Web
 Services Enumeration (WS-Enumeration) [WSENUM] protocol for facilitating SOAP-based search
@@ -687,7 +556,7 @@ various WS-Enumeration [WSENUM] operations.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -747,7 +616,8 @@ WS-Enumeration: Directory Services Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-schema: The set of attributes and object classes that govern the creation and update of objects.
+
+schema: The set of attributes and object classes that govern the creation and update of objects.
 
 security principal: A unique entity that is identifiable through cryptographic means by at least
 one key. It frequently corresponds to a human user, but also can be a service that offers a
@@ -800,14 +670,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -820,7 +690,8 @@ WS-Enumeration: Directory Services Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-ADDM] Microsoft Corporation, "Active Directory Web Services: Data Model and Common
+
+[MS-ADDM] Microsoft Corporation, "Active Directory Web Services: Data Model and Common
 Elements".
 
 [MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
@@ -873,7 +744,7 @@ names-20060816/
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-NMF] Microsoft Corporation, ".NET Message Framing Protocol".
 
@@ -884,14 +755,15 @@ Release: April 23, 2024
 
 8 / 44
 
-[MSDOCS-ADWS] Microsoft, "What's New in AD DS: Active Directory Web Services",
+
+[MSDOCS-ADWS] Microsoft, "What's New in AD DS: Active Directory Web Services",
 https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-r2-and-
 2008/dd391908(v%3dws.10)
 
 [MSFT-RSAT] Microsoft Corporation, "Remote Server Administration Tools (RSAT) for Windows
 operating systems", https://support.microsoft.com/en-us/kb/2693643
 
-1.3  Overview
+### 1.3 Overview
 
 The WS-Enumeration [WSENUM] specification describes how query operations performed against the
 directory server in the form of SOAP messages are initiated using the Enumerate operation. The
@@ -917,7 +789,7 @@ request. This improves interoperability between clients and servers by providing
 errors that both sides of the communications session can understand. [MS-WSDS] specifies SOAP
 faults for the Enumerate and Pull operation defined by WS-Enumeration [WSENUM].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 [MS-WSDS] is an extension to the WS-Enumeration [WSENUM] protocol built on top of SOAP
 [SOAP1.2-1/2003] as shown in the following layering diagram.
@@ -932,11 +804,11 @@ SOAP
 
  Industry-standard
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol extension does not assume any prerequisites or preconditions.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Use of the WS-Enumeration: Directory Services protocol extensions is suitable when searching XML
 representations of directory objects by means of WS-Enumeration and the granularity of resultant
@@ -950,7 +822,8 @@ Release: April 23, 2024
 
 9 / 44
 
-applications that have already standardized on a protocol other than WS-Enumeration [WSENUM] for
+
+applications that have already standardized on a protocol other than WS-Enumeration [WSENUM] for
 querying directory services.
 
 The XPath 1.0-derived selection language, defined in [MS-ADDM] section 2.4, is used to specify the
@@ -961,7 +834,7 @@ There is an implicit assumption that the directory service exposes semantics sim
 Lightweight Directory Access Protocol (LDAP) version 3 directory service [RFC2251] facilitating
 the use of LdapQuery language for the filter expression in the enumerate request.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -977,11 +850,11 @@ support sending SOAP messages as described in section 2.1.
 
 considerations for such strings are specified in section 3.1.4.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for this protocol extension.
 
@@ -992,22 +865,23 @@ Release: April 23, 2024
 
 10 / 44
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 [MS-WSDS] imposes no transport requirements or behaviors beyond those of the underlying WS-
 Enumeration [WSENUM] protocol. WS-Enumeration provides SOAP bindings for both SOAP 1.1
 [SOAP1.1] and SOAP 1.2 [SOAP1.2-1/2003]. All messages MUST be formatted as specified by either
 SOAP 1.1 or SOAP 1.2.<1>
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions that are used by this protocol. The syntax of the definitions
 uses an XML Schema, as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services
 Description Language (WSDL), as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS-2ED]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1085,7 +959,7 @@ of this specification
 
 [XMLSCHEMA1]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any new messages.
 
@@ -1096,31 +970,32 @@ Release: April 23, 2024
 
 11 / 44
 
-2.2.3  Elements
+
+#### 2.2.3 Elements
 
 This specification does not define any common XML schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
  This specification does not define any common XML schema attribute group definitions.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This specification does not make use of any directory service schema elements.
 
@@ -1131,7 +1006,8 @@ Release: April 23, 2024
 
 12 / 44
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The WS-Enumeration: Directory Services Protocol Extensions [MS-WSDS] extend how the WS-
 Enumeration [WSENUM] protocol operates between an application and a directory server. The
@@ -1165,7 +1041,7 @@ Note  The server implementation of the WS-Enumeration: Directory Services Protoc
 MAY<3> limit the maximum validity of an enumeration context. This limit, if implemented, applies
 across the Renew operation (section 3.1.4.3).
 
-3.1  Enumeration Server Details
+### 3.1 Enumeration Server Details
 
 This section describes the server behavior of the [MS-WSDS] protocol extensions as they apply to the
 WS-Enumeration [WSENUM] WSDL port types. In WS-Enumeration, this WSDL port types is used to
@@ -1185,7 +1061,7 @@ Pull
 
   Release
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1200,7 +1076,8 @@ Release: April 23, 2024
 
 13 / 44
 
-[MS-WSDS] operates on a collection of directory objects. The Enumerate operation specifies the
+
+[MS-WSDS] operates on a collection of directory objects. The Enumerate operation specifies the
 search filter requesting for selected directory objects matching the filter or only fragments of those
 selected directory objects, whichever is required. The Pull operation retrieves the objects or fragments
 of those objects in the context of the previous Enumeration operation. The resultant items out of the
@@ -1219,17 +1096,17 @@ containing the directory attributes, the contents of those attributes, and the r
 directory objects (including their directory attributes and directory attribute values) as an XML
 document is implementation-defined.<4>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no timers in this protocol extension.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When this protocol initializes, it MUST begin listening on endpoints for the Enumeration interface. The
 URIs for the endpoints, as well as the transport and security mechanisms to use, are implementation-
 dependent.<5>
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The following operations are defined by the WS-Enumeration [WSENUM] protocol. This protocol
 specifies extensions to the request, response, and SOAP faults associated with these operations.
@@ -1274,7 +1151,8 @@ Release: April 23, 2024
 
 14 / 44
 
-Server implementations are permitted to return additional faults beyond those described as follows.
+
+Server implementations are permitted to return additional faults beyond those described as follows.
 Where applicable, make use of the documented faults in order to maximize interoperability.
 
 Some of the SOAP faults documented as follows specify English-language text in their fault reason.
@@ -1307,7 +1185,7 @@ In the tables describing faults in the later sections, the following apply.
 [Details] is an illustrative example of the fault detail. If not present, WSDS does not specify a fault
 detail for the fault.
 
-3.1.4.1  wsen:Enumerate
+##### 3.1.4.1 wsen:Enumerate
 
 This section defines the directory services extensions to the Enumerate request and response message
 defined in WS-Enumeration [WSENUM] section 3.1.
@@ -1352,7 +1230,8 @@ WS-Enumeration: Directory Services Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The WS-Enumeration [WSENUM] Enumerate request can specify the expiration time of the request as
+
+The WS-Enumeration [WSENUM] Enumerate request can specify the expiration time of the request as
 a specific time or duration type. If the wsen:Expires element specifying expiration time is absent in
 the request, meaning indefinite lifetime for the enumeration, it is up to the server to grant such
 enumeration.<7>
@@ -1360,7 +1239,7 @@ enumeration.<7>
 WS-Enumeration [WSENUM] also specifies for the Enumerate response that the expiration time can be
 either an absolute time or a duration but should be of the same type as the requested expiration.<8>
 
-3.1.4.1.1 Elements
+###### 3.1.4.1.1 Elements
 
 The following XML schema element definitions are specific to extensions of the enumerate operation
 defined in WS-Enumeration [WSENUM] section 3.1.
@@ -1379,7 +1258,7 @@ Specifies the fragments for the Selection element.
 
 Specifies the Sorting element.
 
-3.1.4.1.1.1  adlq:LdapQuery
+###### 3.1.4.1.1.1 adlq:LdapQuery
 
 This section specify the format of optional LDAP query element which is used to define the optional
 /soapenv:Envelope/soapenv:Body/wsen:Enumerate/wsen:Filter element of the Enumerate request
@@ -1419,7 +1298,8 @@ Release: April 23, 2024
 
 16 / 44
 
-   < /adlq:Scope>
+
+   < /adlq:Scope>
  </adlq:LdapQuery>
 
 If the adlq:LdapQuery element is absent in the request (that is, no query filter has been provided in
@@ -1439,7 +1319,7 @@ the request), the server SHOULD use the following Ldap query filter by default:
    </adlq:LdapQuery>
  </wsen:Filter>
 
-3.1.4.1.1.1.1  adlq:filter
+###### 3.1.4.1.1.1.1 adlq:filter
 
 The requestor MUST specify the LDAP search filter strings as defined in [RFC2254] as the query
 string for the required filter element wsen:Enumerate/wsen:Filter/adlq:LdapQuery/adlq:filter in the
@@ -1449,7 +1329,7 @@ Enumerate request.
       <RFC 2254 filter string>
  </adlq:Filter>
 
-3.1.4.1.1.1.2  adlq:BaseObject
+###### 3.1.4.1.1.1.2 adlq:BaseObject
 
 The requestor MUST specify the object reference property (GUID or distinguished name of the
 object) as defined in [MS-ADDM] section 2.3.3.1 under the required BaseObject element
@@ -1459,7 +1339,7 @@ wsen:Enumerate/wsen:Filter/adlq:LdapQuery/adlq:BaseObject in the Enumerate reque
       <object Reference Property, a.k.a. GUID, or object DN>
  </adlq:BaseObject>
 
-3.1.4.1.1.1.3  adlq:Scope
+###### 3.1.4.1.1.1.3 adlq:Scope
 
 The requestor MUST specify "base", "onelevel", or "subtree" under the required scope element
 wsen:Enumerate/wsen:Filter/adlq:LdapQuery/adlq:Scope in the Enumerate request. This element
@@ -1486,7 +1366,8 @@ WS-Enumeration: Directory Services Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Scope
+
+Scope
 
 Explanation
 
@@ -1494,7 +1375,7 @@ subtree
 
 Limits the search scope to the whole subtree, including the base object and all its child objects.
 
-3.1.4.1.1.2  ad:Selection
+###### 3.1.4.1.1.2 ad:Selection
 
 The optional element /soapenv:Envelope/soapenv:Body/wsen:Enumerate/ad:Selection specifies which
 fragments (SelectionProperties) (that is, what portions (directory attributes)) of the object to return
@@ -1531,7 +1412,7 @@ Level-1">
 The value of /soapenv:Envelope/ soapenv:Body/wsen:Enumerate/ad:Selection/@Dialect is specified in
 section 3.1.4.1.2.1.
 
-3.1.4.1.1.2.1  ad:SelectionProperty
+###### 3.1.4.1.1.2.1 ad:SelectionProperty
 
 The required element
 /soapenv:Envelope/soapenv:Body/wsen:Enumerate/ad:Selection/ad:SelectionProperty specifies which
@@ -1553,12 +1434,13 @@ WS-Enumeration: Directory Services Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Following is the XML Schema [XMLSCHEMA1] definition of the SelectionProperty element.
+
+Following is the XML Schema [XMLSCHEMA1] definition of the SelectionProperty element.
 
  <xsd:element name="SelectionProperty" type="xsd:string" minOccurs="1"
            maxOccurs ="unbounded"/>
 
-3.1.4.1.1.3  ad:Sorting
+###### 3.1.4.1.1.3 ad:Sorting
 
 The optional element /soapenv:Envelope/soapenv:Body/wsen:Enumerate/ad:Sorting determines
 which attribute the sorting of resultant items in the response message for that specific enumeration
@@ -1602,7 +1484,7 @@ For example, the following XML shows the contents of the Sorting element:
 The value of /s:Envelope/s:Body/wsen:Enumerate/ad:Sorting/@Dialect is specified in section
 3.1.4.1.2.2.
 
-3.1.4.1.1.3.1  ad:SortingProperty
+###### 3.1.4.1.1.3.1 ad:SortingProperty
 
 The required element
 /soapenv:Envelope/soapenv:Body/wsen:Enumerate/ad:Sorting/ad:SortingProperty specifies the
@@ -1617,13 +1499,14 @@ Release: April 23, 2024
 
 19 / 44
 
-The following XML shows the contents of the SortingProperty element:
+
+The following XML shows the contents of the SortingProperty element:
 
  <ad:SortingProperty Ascending=(true|false)>
     <XPath Level I>
  </ad:SortingProperty>
 
-3.1.4.1.2 Attributes
+###### 3.1.4.1.2 Attributes
 
 The following XML schema attribute definitions are specific to these Enumerate request extensions.
 
@@ -1641,7 +1524,7 @@ Specifies the Sorting property.
 
 <ad:Sorting/ad:SortingProperty/@Ascending>  Specifies the ascending Sorting property.
 
-3.1.4.1.2.1  ad:Selection/@Dialect
+###### 3.1.4.1.2.1 ad:Selection/@Dialect
 
 The XPath 1.0-derived Selection Language, defined in [MS-ADDM] section 2.4, is used to specify
 selection properties. This derived language is identified by the following URI:
@@ -1651,7 +1534,7 @@ http://schemas.microsoft.com/2008/1/ActiveDirectory/Dialect/XPath-Level-1
 The URI stated previously MUST be the value of the /soapenv:Envelope/ soapenv:Body/
 wsen:Enumerate / * /ad:Selection/@Dialect required attribute.
 
-3.1.4.1.2.2  ad:Sorting/@Dialect
+###### 3.1.4.1.2.2 ad:Sorting/@Dialect
 
 The XPath 1.0-derived Selection Language, defined in [MS-ADDM] section 2.4, is used to specify the
 sorting property. This derived language is identified by the following URI:
@@ -1661,18 +1544,18 @@ http://schemas.microsoft.com/2008/1/ActiveDirectory/Dialect/XPath-Level-1
 The URI stated previously MUST be the value of the /soapenv:Envelope/soapenv:Body/
 wsen:Enumerate/ * /ad:Sorting/ @Dialect required attribute.
 
-3.1.4.1.2.3  ad:Sorting/ad:SortingProperty/@Ascending
+###### 3.1.4.1.2.3 ad:Sorting/ad:SortingProperty/@Ascending
 
 The value for the optional /soapenv:Envelope/ soapenv:Body/ wsen:Enumerate/ * / ad:Sorting/
 ad:SortingProperty/@Ascending attribute MUST be of type Boolean. If true, the sorting order of the
 resultant items based on the Sorting Property is ascending. If false, it is descending.
 
-3.1.4.1.3 SOAP Faults
+###### 3.1.4.1.3 SOAP Faults
 
 This section defines the extensions to SOAP fault messages for the Enumerate operation defined in
 WS-Enumeration [WSENUM] section 3.1.
 
-3.1.4.1.3.1  ad:EnumerationContextLimitExceeded
+###### 3.1.4.1.3.1 ad:EnumerationContextLimitExceeded
 
 Server implementations SHOULD reject the Enumerate request and return the following fault when
 there is more than a specific, server-imposed limit number<11> of Enumeration contexts open either
@@ -1685,7 +1568,8 @@ Release: April 23, 2024
 
 20 / 44
 
-Implementations MAY<12> supply a fault detail of their choosing.
+
+Implementations MAY<12> supply a fault detail of their choosing.
 
 SOAP Element  Value
 
@@ -1709,7 +1593,7 @@ Too many enumeration contexts open.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.1.3.2  ad:UnsupportedSelectOrSortDialectFault
+###### 3.1.4.1.3.2 ad:UnsupportedSelectOrSortDialectFault
 
 Server implementations SHOULD reject the Enumerate request and return the following fault when it
 does not support the dialect specified for Selection or sorting properties defined in sections 3.1.4.1.2.2
@@ -1746,7 +1630,7 @@ http://schemas.microsoft.com/2008/1/ActiveDirectory/Dialect/XPath-Level-1
 
 </soapenv:Detail>
 
-3.1.4.1.3.3  ad:InvalidPropertyFault
+###### 3.1.4.1.3.3 ad:InvalidPropertyFault
 
 Server implementations SHOULD reject the Enumerate request and return the following fault when
 any selection or sorting property specified in the Enumerate request is not a valid directory
@@ -1781,7 +1665,8 @@ Release: April 23, 2024
 
 21 / 44
 
-SOAP
+
+SOAP
 Element
 
 Value
@@ -1803,7 +1688,7 @@ Sort property's syntax is not valid with respect to the dialect.)</ad:Error>
 
 </soapenv:Detail>
 
-3.1.4.1.3.4  ad:InvalidSortKey
+###### 3.1.4.1.3.4 ad:InvalidSortKey
 
 If the sorting property defined in section 3.1.4.1.1.3.1 is one of the non-LDAP directory attributes
 including the synthetic (implementation-specific) directory attributes,<13> "<ad:all>", or if more than
@@ -1834,7 +1719,7 @@ Invalid sorting property.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.1.3.5  wsen:CannotProcessFilter
+###### 3.1.4.1.3.5 wsen:CannotProcessFilter
 
 When the wsen:filter or adlq:LdapQuery element is absent in the enumerate request, the server uses
 a default Ldap query filter for search as defined in section 3.1.4.1 and 3.1.4.1.1.1. However, if the
@@ -1872,7 +1757,8 @@ Release: April 23, 2024
 
 22 / 44
 
-3.1.4.1.3.6  wsa2004:EndPointUnavailable
+
+###### 3.1.4.1.3.6 wsa2004:EndPointUnavailable
 
 The server SHOULD notify a requestor of other application-level faults by generating a
 wsa2004:EndPointUnavailable SOAP fault defined in the WS-Addressing [WSAddressing] protocol.
@@ -1905,7 +1791,7 @@ Endpoint unavailable.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2  wsen:Pull
+##### 3.1.4.2 wsen:Pull
 
 This section defines the directory services extensions to the Pull response message defined in WS-
 Enumeration [WSENUM] section 3.2.
@@ -1948,7 +1834,8 @@ Release: April 23, 2024
 
 23 / 44
 
-   <addata:user>
+
+   <addata:user>
      <ad:objectReferenceProperty>
        <ad:value xsi:type= "xsd:string">
          ED18488A-3042-4e12-B7D1-69A059F80BC1
@@ -1976,12 +1863,12 @@ greater than this timeout value SHOULD return the ad:MaxTimeExceedsLimit fault d
 An optional ad:controls element can also be passed to the pull request, according to the requirements
 in [MS-WSPELD] section 2.2.3.1.
 
-3.1.4.2.1 SOAP Faults
+###### 3.1.4.2.1 SOAP Faults
 
 This section defines the extensions to SOAP fault messages for the Pull operation defined in WS-
 Enumeration [WSENUM] section 3.2.
 
-3.1.4.2.1.1  ad:MaxCharsNotSupported
+###### 3.1.4.2.1.1 ad:MaxCharsNotSupported
 
 Server implementations SHOULD reject the Pull request and return the following fault when it does not
 support the wsen:MaxCharacters element specified in the Pull request.
@@ -2010,7 +1897,7 @@ MaxChars specified in the request.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2.1.2  wsen:InvalidEnumerationContext
+###### 3.1.4.2.1.2 wsen:InvalidEnumerationContext
 
 The server SHOULD return the wsen:InvalidEnumerationContext fault defined by WS-Enumeration
 [WSENUM] when the enumeration context specified in the respective Pull request belongs to a
@@ -2023,7 +1910,8 @@ WS-Enumeration: Directory Services Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Implementations MAY<20> supply a fault detail of their choosing.
+
+Implementations MAY<20> supply a fault detail of their choosing.
 
 SOAP Element  Value
 
@@ -2047,7 +1935,7 @@ Invalid enumeration context specified in the request.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2.1.3  wsa2004:DestinationUnreachable
+###### 3.1.4.2.1.3 wsa2004:DestinationUnreachable
 
 The server SHOULD return the wsa2004:DestinationUnreachable fault defined in the WS-Addressing
 [WSAddressing] protocol when the object requested through the corresponding Enumerate request of
@@ -2077,7 +1965,7 @@ The failed operation was attempted on a nonexistent directory object.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2.1.4  wsa2004:EndpointUnavailable
+###### 3.1.4.2.1.4 wsa2004:EndpointUnavailable
 
 The server SHOULD notify a requestor of other application-level faults by generating a
 wsa2004:EndPointUnavailable SOAP fault defined in the WS-Addressing [WSAddressing] protocol.
@@ -2110,7 +1998,7 @@ Endpoint unavailable.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.2.1.5  ad:MaxTimeExceedsLimit
+###### 3.1.4.2.1.5 ad:MaxTimeExceedsLimit
 
 [MS-WSDS] - v20240423
 WS-Enumeration: Directory Services Protocol Extensions
@@ -2119,7 +2007,8 @@ Release: April 23, 2024
 
 25 / 44
 
-Server implementations SHOULD reject the Pull request and return the following fault when the value
+
+Server implementations SHOULD reject the Pull request and return the following fault when the value
 of wsen:MaxTime is greater than the default value mentioned in section 3.1.4.2.
 
 Implementations MAY<24> supply a fault detail of their choosing.
@@ -2146,17 +2035,17 @@ MaxTime exceeds the limit.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.3  wsen:Renew
+##### 3.1.4.3 wsen:Renew
 
 This section defines only the extensions to SOAP fault messages for the Renew operation defined in
 WS-Enumeration [WSENUM] section 3.3.
 
-3.1.4.3.1 SOAP faults
+###### 3.1.4.3.1 SOAP faults
 
 The server SHOULD reject the Renew request on application-level errors, client-side request errors, or
 directory errors; and return an appropriate fault from below.
 
-3.1.4.3.1.1  wsen:InvalidEnumerationContext
+###### 3.1.4.3.1.1 wsen:InvalidEnumerationContext
 
 The server SHOULD return the wsen:InvalidEnumerationContext fault defined by WS-Enumeration
 [WSENUM] when the enumeration context specified in the respective Renew request belongs to a
@@ -2186,7 +2075,7 @@ Invalid enumeration context specified in the request.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.3.1.2  wsa2004:EndpointUnavailable
+###### 3.1.4.3.1.2 wsa2004:EndpointUnavailable
 
 The server SHOULD notify a requestor of other application-level faults by generating a
 wsa2004:EndPointUnavailable SOAP fault defined in the WS-Addressing [WSAddressing] protocol.
@@ -2204,7 +2093,8 @@ Release: April 23, 2024
 
 26 / 44
 
-SOAP Element  Value
+
+SOAP Element  Value
 
 [Code]
 
@@ -2226,17 +2116,17 @@ Endpoint unavailable.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.4  wsen:GetStatus
+##### 3.1.4.4 wsen:GetStatus
 
 This section defines only the extensions to SOAP fault messages for the GetStatus operation defined
 in WS-Enumeration [WSENUM] section 3.4.
 
-3.1.4.4.1 SOAP Faults
+###### 3.1.4.4.1 SOAP Faults
 
 The server SHOULD reject the GetStatus request on application-level errors, client-side request errors
 or directory errors, and return an appropriate fault from below.
 
-3.1.4.4.1.1  wsen:InvalidEnumerationContext
+###### 3.1.4.4.1.1 wsen:InvalidEnumerationContext
 
 The server SHOULD return the wsen:InvalidEnumerationContext fault defined by WS-Enumeration
 [WSENUM] when the enumeration context specified in the respective Pull request belongs to a
@@ -2266,7 +2156,7 @@ Invalid enumeration context specified in the request.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.4.1.2  wsa2004:EndpointUnavailable
+###### 3.1.4.4.1.2 wsa2004:EndpointUnavailable
 
 The server SHOULD notify a requestor of other application-level faults by generating a
 wsa2004:EndPointUnavailable SOAP fault defined in the WS-Addressing [WSAddressing] protocol.
@@ -2294,7 +2184,8 @@ Release: April 23, 2024
 
 27 / 44
 
-SOAP Element  Value
+
+SOAP Element  Value
 
 [Action]
 
@@ -2308,17 +2199,17 @@ Endpoint unavailable.
 
 Implementation-defined and MAY be empty.
 
-3.1.4.5  wsen:Release
+##### 3.1.4.5 wsen:Release
 
 This section defines only the extensions to SOAP fault messages for the Release operation defined in
 WS-Enumeration [WSENUM] section 3.5.
 
-3.1.4.5.1 SOAP Faults
+###### 3.1.4.5.1 SOAP Faults
 
 The server SHOULD reject the Release request and return the following fault on application-level
 errors, client-side request errors, or directory errors encountered during the Release operation.
 
-3.1.4.5.1.1  wsa2004:EndpointUnavailable
+###### 3.1.4.5.1.1 wsa2004:EndpointUnavailable
 
 The server SHOULD notify a requestor of other application-level faults by generating a
 wsa2004:EndPointUnavailable SOAP fault defined in the WS-Addressing [WSAddressing] protocol.
@@ -2351,11 +2242,11 @@ Endpoint unavailable.
 
 Implementation-defined and MAY be empty.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -2366,13 +2257,14 @@ Release: April 23, 2024
 
 28 / 44
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section contains examples of the WS-Enumeration extensions defined in the [MS-WSDS] protocol.
 For illustrative purposes, these examples have been shown in the context of Active Directory Web
 Services behavior.
 
-4.1  WS-Enumerate Directory Services Extension "Enumerate" Request Example
+### 4.1 WS-Enumerate Directory Services Extension "Enumerate" Request Example
 
 This example demonstrates a [MS-WSDS] Enumerate operation. In this SOAP request message, the
 requestor is specifying the LDAP query filter for search and directory attributes it requests out of the
@@ -2438,7 +2330,8 @@ WS-Enumeration: Directory Services Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                       </ad:SelectionProperty>
+
+                       </ad:SelectionProperty>
                </ad:Selection>
                <ad:Sorting
 Dialect="http://schemas.microsoft.com/2008/1/ActiveDirectory/Dialect/XPath-Level-1">
@@ -2450,7 +2343,7 @@ Dialect="http://schemas.microsoft.com/2008/1/ActiveDirectory/Dialect/XPath-Level
        </soapenv:Body>
   </soapenv:Envelope>
 
-4.2  WS-Enumerate Directory Services Extension "Enumerate" Response Example
+### 4.2 WS-Enumerate Directory Services Extension "Enumerate" Response Example
 
 This example demonstrates an [MS-WSDS] Enumerate response to the Enumerate request in the
 previous example. In this SOAP response message, the expiration time and enumeration context
@@ -2482,7 +2375,7 @@ e
    </soapenv:Body>
  </soapenv:Envelope>
 
-4.3  WS-Enumerate Directory Services Extension "Pull" Request Example
+### 4.3 WS-Enumerate Directory Services Extension "Pull" Request Example
 
 This example demonstrates a [MS-WSDS] Pull request. In this SOAP request message, the requestor
 is specifying the enumeration context in the form of GUID and the number of elements
@@ -2506,7 +2399,8 @@ WS-Enumeration: Directory Services Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      <wsa:MessageID>
+
+      <wsa:MessageID>
             urn:uuid:b22747a9-ca15-41de-8c91-5a51bd88669c
        </wsa:MessageID>
        <wsa:ReplyTo>
@@ -2524,7 +2418,7 @@ Release: April 23, 2024
    </soapenv:Body>
  </soapenv:Envelope>
 
-4.4  WS-Enumerate Directory Services Extension "Pull" Response Example
+### 4.4 WS-Enumerate Directory Services Extension "Pull" Response Example
 
 This example demonstrates a [MS-WSDS] Pull response to the request specified in section 4.2 in
 context of the Enumeration defined in section 4.1.
@@ -2579,7 +2473,8 @@ Release: April 23, 2024
 
 31 / 44
 
-           <ad:objectReferenceProperty>
+
+           <ad:objectReferenceProperty>
              <ad:value xsi:type="xsd:string">
                51d67624-d52d-421d-a0d6-1dc350abd009
              </ad:value>
@@ -2601,7 +2496,7 @@ Release: April 23, 2024
    </soapenv:Body>
  </soapenv:Envelope>
 
-4.5  WS-Enumerate Directory Services Extension "FaultDetail" Example
+### 4.5 WS-Enumerate Directory Services Extension "FaultDetail" Example
 
 The following example shows a WS-Enumeration specific fault response message returned by Active
 Directory Web Services with detail element (specified in [MS-ADDM] section 2.6) to an Enumerate
@@ -2652,7 +2547,8 @@ Release: April 23, 2024
 
 32 / 44
 
-             addata:Invalid_Entry
+
+             addata:Invalid_Entry
            </InvalidProperty>
          </EnumerateFault>
        </soapenv:Detail>
@@ -2667,9 +2563,10 @@ Release: April 23, 2024
 
 33 / 44
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no known additional security considerations for these protocol extensions, but implementers
 have to consider the security implications of the data that they expose by way of these extensions.
@@ -2678,7 +2575,7 @@ implementers are encouraged to use transport mechanisms that support encryption 
 verification of the messages. Server implementers are also encouraged to enforce access controls
 prior to performing any operation against a directory object.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol extension has no security parameters.
 
@@ -2689,7 +2586,8 @@ Release: April 23, 2024
 
 34 / 44
 
-6  Appendix A: WSDL
+
+## 6 Appendix A: WSDL
 
 The [MS-WSDS] extensions to the WS-Enumeration [WSENUM] protocol do not define a WSDL of
 their own, nor do they extend the [WSENUM] WSDL. The schema of extension elements defined by
@@ -2705,7 +2603,8 @@ Release: April 23, 2024
 
 35 / 44
 
-7  Appendix B: Schema
+
+## 7 Appendix B: Schema
 
 This section provides the additional schema elements for the extensions defined by the [MS-WSDS]
 protocol. For clarity, elements of the WS-Enumeration [WSENUM] schema that are not extended by
@@ -2779,7 +2678,8 @@ Release: April 23, 2024
 
 36 / 44
 
-         </xsd:element>
+
+         </xsd:element>
        </xsd:sequence>
        <xsd:attribute name="Dialect"
 
@@ -2855,7 +2755,8 @@ Release: April 23, 2024
 
 37 / 44
 
-   Other elements from [MS-WSPELD] schema in Appendix B:
+
+   Other elements from [MS-WSPELD] schema in Appendix B:
     ad:Controls (element)
 
    -->
@@ -2926,7 +2827,8 @@ Release: April 23, 2024
 
 38 / 44
 
-8  Appendix C: Product Behavior
+
+## 8 Appendix C: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2994,7 +2896,8 @@ Release: April 23, 2024
 
 39 / 44
 
-<4> Section 3.1.1: Microsoft implementations of WS-Enumeration: Directory Services Protocol
+
+<4> Section 3.1.1: Microsoft implementations of WS-Enumeration: Directory Services Protocol
 Extensions use the mapping defined in [MS-ADDM] section 2.3.
 
 <5> Section 3.1.3: All the endpoints of Microsoft implementations of WS-Enumeration: Directory
@@ -3061,7 +2964,8 @@ Release: April 23, 2024
 
 40 / 44
 
-<17> Section 3.1.4.1.3.6: Microsoft implementations of WS-Enumeration: Directory Services Protocol
+
+<17> Section 3.1.4.1.3.6: Microsoft implementations of WS-Enumeration: Directory Services Protocol
 Extensions use the element ad:FaultDetail, which is defined in [MS-ADDM] section 2.6, for
 wsa2004:EndPointUnavailable faults.
 
@@ -3119,7 +3023,8 @@ Release: April 23, 2024
 
 41 / 44
 
-9  Change Tracking
+
+## 9 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3163,7 +3068,8 @@ Release: April 23, 2024
 
 42 / 44
 
-10  Index
+
+## 10 Index
 A
 
 Abstract data model 13
@@ -3294,7 +3200,8 @@ Release: April 23, 2024
 
 43 / 44
 
-Transport 11
+
+Transport 11
 Types
    complex 12
    simple 12

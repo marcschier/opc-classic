@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 69
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -285,7 +286,8 @@ Release: April 23, 2024
 
 2 / 69
 
-Date
+
+Date
 
 Revision
 History
@@ -417,371 +419,160 @@ Release: April 23, 2024
 
 3 / 69
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.5.1
-
-2.2.1
-2.2.2
-
-2.2.3
-2.2.4
-2.2.5
-
-2.2.6
-2.2.7
-2.2.8
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Packet Format ............................................................................................ 10
-Security Header .......................................................................................... 10
-Packet Hashing ..................................................................................... 11
-Packet Signing ...................................................................................... 12
-Packet Checksum .................................................................................. 12
-Session Header .......................................................................................... 12
-Extended Options ....................................................................................... 13
-JOIN Packet ............................................................................................... 14
-WDSMCTP_OPT_CAPABILITIES ............................................................... 15
-JOINACK Packet ......................................................................................... 15
-QCC Packet ................................................................................................ 16
-QCR Packet ................................................................................................ 16
-In Response to JOINACK ........................................................................ 17
-In Response to QCC .............................................................................. 17
-Voluntary Response ............................................................................... 18
-Extended Options .................................................................................. 19
-POLL Packet ............................................................................................... 20
-POLLACK Packet ......................................................................................... 20
-LEAVE Packet ............................................................................................. 21
-KICK Packet ............................................................................................... 22
-ClientList ............................................................................................. 22
-2.2.13  DEMOTE Packet .......................................................................................... 23
-SPM Packet ................................................................................................ 24
-2.2.14
-2.2.15
-ACK Packet ................................................................................................ 24
-2.2.16  ODATA Packet ............................................................................................ 25
-2.2.17
-RDATA Packet ............................................................................................ 26
-2.2.18  NACK Packet .............................................................................................. 27
-2.2.18.1  NACK RangeList .................................................................................... 28
-2.2.19  NCF Packet ................................................................................................ 28
-2.2.19.1  NCF RangeList ...................................................................................... 28
-
-2.2.8.1
-2.2.8.2
-2.2.8.3
-2.2.8.4
-
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-
-2.2.12.1
-
-3.1
-
-3.1.1
-
-3  Protocol Details ..................................................................................................... 30
-Server Details .................................................................................................. 30
-Abstract Data Model .................................................................................... 30
-Multicast Session Configuration ............................................................... 31
-Client List ............................................................................................ 31
-Data State Configuration ........................................................................ 32
-Protocol Parameters .............................................................................. 33
-QCC State Configuration ........................................................................ 34
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-[MS-WDSMT] - v20240423
-Windows Deployment Services Multicast Transport Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 69
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.5.2
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-
-3.1.5.6.1
-
-3.1.5.7
-
-3.1.5.7.1
-3.1.5.7.2
-3.1.5.7.3
-
-3.1.5.8
-3.1.5.9
-
-3.1.5.9.1
-3.1.5.9.2
-3.1.5.9.3
-3.1.5.9.4
-3.1.5.9.5
-3.1.5.9.6
-
-3.1.5.9.6.1
-
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 34
-Message Processing Events and Sequencing Rules .......................................... 35
-Packet Processing ................................................................................. 35
-Packet Validation ............................................................................. 36
-Processing a JOIN Packet ....................................................................... 36
-Adding a Client to the Pending Client List ........................................... 36
-Sending a JOINACK Packet ............................................................... 37
-Receiving a QCR Packet .................................................................... 37
-Processing a LEAVE Packet ..................................................................... 37
-Processing a POLL Trigger ...................................................................... 37
-Processing a POLLACK Packet ................................................................. 38
-Processing a KICK Trigger ...................................................................... 38
-Sending a KICK Packet ..................................................................... 38
-Processing QCC State ............................................................................ 38
-Entering QCC State .......................................................................... 39
-Leaving QCC State ........................................................................... 39
-Sending a QCC Packet and InState QCC Timer .................................... 39
-Processing a QCR Packet ........................................................................ 39
-Processing Data State ............................................................................ 40
-Entering DataState .......................................................................... 40
-Leaving DataState ........................................................................... 40
-Sending an SPM Packet .................................................................... 40
-Processing a Data Trigger ................................................................. 41
-Processing an ACK Packet ................................................................. 41
-Processing a NACK Packet ................................................................ 42
-Identifying a New Master Client ................................................... 43
-Updating an ODATA Packet ............................................................... 43
-Sending an RDATA Packet ................................................................ 43
-Processing the Demote Trigger ............................................................... 44
-Sending a DEMOTE Packet ................................................................ 44
-Timer Events .............................................................................................. 44
-JoinAck Timer ....................................................................................... 44
-Client Cleanup Timer ............................................................................. 44
-Kick Timer............................................................................................ 45
-InState QCC Timer ................................................................................ 45
-OutState QCC Timer .............................................................................. 45
-SPM Timer ........................................................................................... 45
-Cleanup Data List Timer ......................................................................... 45
-Demote Timer ...................................................................................... 46
-Inactivity Timer .................................................................................... 46
-Other Local Events ...................................................................................... 46
-Client Details ................................................................................................... 46
-Abstract Data Model .................................................................................... 46
-Multicast Session Configuration ............................................................... 46
-Protocol Parameters .............................................................................. 47
-Data Configuration ................................................................................ 47
-Missing ODATA List .......................................................................... 48
-Update Start of List .................................................................... 49
-Update End of List ...................................................................... 49
-Received ODATA Packet .............................................................. 49
-Highest Continuous Received ODATASeqNo ................................... 50
-Timers ...................................................................................................... 50
-Initialization ............................................................................................... 50
-Higher-Layer Triggered Events ..................................................................... 51
-Message Processing Events and Sequencing Rules .......................................... 51
-Messages Processing ............................................................................. 51
-
-3.2.1.3.1.1
-3.2.1.3.1.2
-3.2.1.3.1.3
-3.2.1.3.1.4
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-3.1.6.4
-3.1.6.5
-3.1.6.6
-3.1.6.7
-3.1.6.8
-3.1.6.9
-
-3.1.5.9.7
-3.1.5.9.8
-
-3.1.5.10
-
-3.1.5.10.1
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-
-3.2.1.3.1
-
-3.2.5.1
-
-3.1.6
-
-3.1.7
-
-3.2
-
-3.2.1
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-[MS-WDSMT] - v20240423
-Windows Deployment Services Multicast Transport Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 69
-
-3.2.5.7
-
-3.2.5.4
-
-3.2.5.7.1
-
-3.2.5.6.1
-
-3.2.5.2
-3.2.5.3
-
-3.2.5.5
-3.2.5.6
-
-3.2.5.3.1
-3.2.5.3.2
-
-3.2.5.4.1
-3.2.5.4.2
-3.2.5.4.3
-
-Packet Validation .................................................................................. 52
-Joining the Multicast Session .................................................................. 52
-Join Timer Expiry ............................................................................. 53
-JOINACK Reply ................................................................................ 53
-Leaving................................................................................................ 53
-Higher-Layer Triggered Events .......................................................... 53
-Inactivity Timer Expiry ..................................................................... 53
-Sending LEAVE Packet ..................................................................... 54
-Processing JOINACK .............................................................................. 54
-Processing POLL .................................................................................... 54
-Poll Timer Expiry ............................................................................. 54
-Processing QCC Packet .......................................................................... 54
-QCC Timer Expiry ............................................................................ 55
-Force QCC Timer Expiry ......................................................................... 55
-3.2.5.8
-3.2.5.9
-Processing SPM Packet .......................................................................... 56
-3.2.5.10  Updating Loss Report ............................................................................ 56
-Loss Report for SPM ......................................................................... 56
-Loss Report for ODATA/RDATA .......................................................... 57
-3.2.5.11
-Sending an ACK Packet .......................................................................... 57
-3.2.5.12  NACK Management ............................................................................... 57
-3.2.5.12.1  NACK Timer Expiry .......................................................................... 57
-Sending Zero NACK ......................................................................... 58
-3.2.5.12.2
-3.2.5.13
-Processing an ODATA Packet .................................................................. 58
-3.2.5.14
-Processing an RDATA Packet .................................................................. 59
-3.2.5.15
-Processing a KICK Packet ....................................................................... 59
-Processing a DEMOTE Packet .................................................................. 59
-3.2.5.16
-3.2.5.17  Query Cache Trigger ............................................................................. 59
-Cache Done Trigger ............................................................................... 60
-3.2.5.18
-Processing an NCF Packet ...................................................................... 60
-3.2.5.19
-Timer Events .............................................................................................. 60
-Other Local Events ...................................................................................... 60
-
-3.2.5.10.1
-3.2.5.10.2
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 61
-
-5  Security ................................................................................................................. 62
-Security Considerations for Implementers ........................................................... 62
-Index of Security Parameters ............................................................................ 62
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 63
-
-7  Change Tracking .................................................................................................... 65
-
-8  Index ..................................................................................................................... 66
-
-[MS-WDSMT] - v20240423
-Windows Deployment Services Multicast Transport Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 69
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Packet Format](#221-packet-format)
+    - [2.2.2 Security Header](#222-security-header)
+      - [2.2.2.1 Packet Hashing](#2221-packet-hashing)
+      - [2.2.2.2 Packet Signing](#2222-packet-signing)
+      - [2.2.2.3 Packet Checksum](#2223-packet-checksum)
+    - [2.2.3 Session Header](#223-session-header)
+    - [2.2.4 Extended Options](#224-extended-options)
+    - [2.2.5 JOIN Packet](#225-join-packet)
+      - [2.2.5.1 WDSMCTP_OPT_CAPABILITIES](#2251-wdsmctpoptcapabilities)
+    - [2.2.6 JOINACK Packet](#226-joinack-packet)
+    - [2.2.7 QCC Packet](#227-qcc-packet)
+    - [2.2.8 QCR Packet](#228-qcr-packet)
+      - [2.2.8.1 In Response to JOINACK](#2281-in-response-to-joinack)
+      - [2.2.8.2 In Response to QCC](#2282-in-response-to-qcc)
+      - [2.2.8.3 Voluntary Response](#2283-voluntary-response)
+      - [2.2.8.4 Extended Options](#2284-extended-options)
+    - [2.2.9 POLL Packet](#229-poll-packet)
+    - [2.2.10 POLLACK Packet](#2210-pollack-packet)
+    - [2.2.11 LEAVE Packet](#2211-leave-packet)
+    - [2.2.12 KICK Packet](#2212-kick-packet)
+      - [2.2.12.1 ClientList](#22121-clientlist)
+    - [2.2.13 DEMOTE Packet](#2213-demote-packet)
+    - [2.2.14 SPM Packet](#2214-spm-packet)
+    - [2.2.15 ACK Packet](#2215-ack-packet)
+    - [2.2.16 ODATA Packet](#2216-odata-packet)
+    - [2.2.17 RDATA Packet](#2217-rdata-packet)
+    - [2.2.18 NACK Packet](#2218-nack-packet)
+      - [2.2.18.1 NACK RangeList](#22181-nack-rangelist)
+    - [2.2.19 NCF Packet](#2219-ncf-packet)
+      - [2.2.19.1 NCF RangeList](#22191-ncf-rangelist)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Multicast Session Configuration](#3111-multicast-session-configuration)
+      - [3.1.1.2 Client List](#3112-client-list)
+      - [3.1.1.3 Data State Configuration](#3113-data-state-configuration)
+      - [3.1.1.4 Protocol Parameters](#3114-protocol-parameters)
+      - [3.1.1.5 QCC State Configuration](#3115-qcc-state-configuration)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Packet Processing](#3151-packet-processing)
+        - [3.1.5.1.1 Packet Validation](#31511-packet-validation)
+      - [3.1.5.2 Processing a JOIN Packet](#3152-processing-a-join-packet)
+        - [3.1.5.2.1 Adding a Client to the Pending Client List](#31521-adding-a-client-to-the-pending-client-list)
+        - [3.1.5.2.2 Sending a JOINACK Packet](#31522-sending-a-joinack-packet)
+        - [3.1.5.2.3 Receiving a QCR Packet](#31523-receiving-a-qcr-packet)
+      - [3.1.5.3 Processing a LEAVE Packet](#3153-processing-a-leave-packet)
+      - [3.1.5.4 Processing a POLL Trigger](#3154-processing-a-poll-trigger)
+      - [3.1.5.5 Processing a POLLACK Packet](#3155-processing-a-pollack-packet)
+      - [3.1.5.6 Processing a KICK Trigger](#3156-processing-a-kick-trigger)
+        - [3.1.5.6.1 Sending a KICK Packet](#31561-sending-a-kick-packet)
+      - [3.1.5.7 Processing QCC State](#3157-processing-qcc-state)
+        - [3.1.5.7.1 Entering QCC State](#31571-entering-qcc-state)
+        - [3.1.5.7.2 Leaving QCC State](#31572-leaving-qcc-state)
+        - [3.1.5.7.3 Sending a QCC Packet and InState QCC Timer](#31573-sending-a-qcc-packet-and-instate-qcc-timer)
+      - [3.1.5.8 Processing a QCR Packet](#3158-processing-a-qcr-packet)
+      - [3.1.5.9 Processing Data State](#3159-processing-data-state)
+        - [3.1.5.9.1 Entering DataState](#31591-entering-datastate)
+        - [3.1.5.9.2 Leaving DataState](#31592-leaving-datastate)
+        - [3.1.5.9.3 Sending an SPM Packet](#31593-sending-an-spm-packet)
+        - [3.1.5.9.4 Processing a Data Trigger](#31594-processing-a-data-trigger)
+        - [3.1.5.9.5 Processing an ACK Packet](#31595-processing-an-ack-packet)
+        - [3.1.5.9.6 Processing a NACK Packet](#31596-processing-a-nack-packet)
+          - [3.1.5.9.6.1 Identifying a New Master Client](#315961-identifying-a-new-master-client)
+        - [3.1.5.9.7 Updating an ODATA Packet](#31597-updating-an-odata-packet)
+        - [3.1.5.9.8 Sending an RDATA Packet](#31598-sending-an-rdata-packet)
+      - [3.1.5.10 Processing the Demote Trigger](#31510-processing-the-demote-trigger)
+        - [3.1.5.10.1 Sending a DEMOTE Packet](#315101-sending-a-demote-packet)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 JoinAck Timer](#3161-joinack-timer)
+      - [3.1.6.2 Client Cleanup Timer](#3162-client-cleanup-timer)
+      - [3.1.6.3 Kick Timer](#3163-kick-timer)
+      - [3.1.6.4 InState QCC Timer](#3164-instate-qcc-timer)
+      - [3.1.6.5 OutState QCC Timer](#3165-outstate-qcc-timer)
+      - [3.1.6.6 SPM Timer](#3166-spm-timer)
+      - [3.1.6.7 Cleanup Data List Timer](#3167-cleanup-data-list-timer)
+      - [3.1.6.8 Demote Timer](#3168-demote-timer)
+      - [3.1.6.9 Inactivity Timer](#3169-inactivity-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Multicast Session Configuration](#3211-multicast-session-configuration)
+      - [3.2.1.2 Protocol Parameters](#3212-protocol-parameters)
+      - [3.2.1.3 Data Configuration](#3213-data-configuration)
+        - [3.2.1.3.1 specifies the parameters for Missing ODATA List.](#32131-specifies-the-parameters-for-missing-odata-list)
+          - [3.2.1.3.1.1 Update Start of List](#321311-update-start-of-list)
+          - [3.2.1.3.1.2 Update End of List](#321312-update-end-of-list)
+          - [3.2.1.3.1.3 Received ODATA Packet](#321313-received-odata-packet)
+          - [3.2.1.3.1.4 Highest Continuous Received ODATASeqNo](#321314-highest-continuous-received-odataseqno)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Messages Processing](#3251-messages-processing)
+      - [3.2.5.2 Packet Validation](#3252-packet-validation)
+      - [3.2.5.3 Joining the Multicast Session](#3253-joining-the-multicast-session)
+        - [3.2.5.3.1 Join Timer Expiry](#32531-join-timer-expiry)
+        - [3.2.5.3.2 JOINACK Reply](#32532-joinack-reply)
+      - [3.2.5.4 Leaving](#3254-leaving)
+        - [3.2.5.4.1 Higher-Layer Triggered Events](#32541-higher-layer-triggered-events)
+        - [3.2.5.4.2 Inactivity Timer Expiry](#32542-inactivity-timer-expiry)
+        - [3.2.5.4.3 Sending LEAVE Packet](#32543-sending-leave-packet)
+      - [3.2.5.5 Processing JOINACK](#3255-processing-joinack)
+      - [3.2.5.6 Processing POLL](#3256-processing-poll)
+        - [3.2.5.6.1 Poll Timer Expiry](#32561-poll-timer-expiry)
+      - [3.2.5.7 Processing QCC Packet](#3257-processing-qcc-packet)
+        - [3.2.5.7.1 QCC Timer Expiry](#32571-qcc-timer-expiry)
+      - [3.2.5.8 Force QCC Timer Expiry](#3258-force-qcc-timer-expiry)
+      - [3.2.5.9 Processing SPM Packet](#3259-processing-spm-packet)
+      - [3.2.5.10 Updating Loss Report](#32510-updating-loss-report)
+        - [3.2.5.10.1 Loss Report for SPM](#325101-loss-report-for-spm)
+        - [3.2.5.10.2 Loss Report for ODATA/RDATA](#325102-loss-report-for-odatardata)
+      - [3.2.5.11 Sending an ACK Packet](#32511-sending-an-ack-packet)
+      - [3.2.5.12 NACK Management](#32512-nack-management)
+        - [3.2.5.12.1 NACK Timer Expiry](#325121-nack-timer-expiry)
+        - [3.2.5.12.2 Sending Zero NACK](#325122-sending-zero-nack)
+      - [3.2.5.13 Processing an ODATA Packet](#32513-processing-an-odata-packet)
+      - [3.2.5.14 Processing an RDATA Packet](#32514-processing-an-rdata-packet)
+      - [3.2.5.15 Processing a KICK Packet](#32515-processing-a-kick-packet)
+      - [3.2.5.16 Processing a DEMOTE Packet](#32516-processing-a-demote-packet)
+      - [3.2.5.17 Query Cache Trigger](#32517-query-cache-trigger)
+      - [3.2.5.18 Cache Done Trigger](#32518-cache-done-trigger)
+      - [3.2.5.19 Processing an NCF Packet](#32519-processing-an-ncf-packet)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The WDS Multicast Transport Protocol is a multiple clients/single server protocol.
 
@@ -795,7 +586,7 @@ lifetime of a multicast session and still be able to download content completely
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -820,14 +611,14 @@ the address are delivered to a single host.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -851,15 +642,16 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-WDSMT].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The WDS Multicast Transport Protocol, in conjunction with WDS Multicast Application Protocol, allows
 transmission of data from a single server to multiple clients using the multicast feature of the User
@@ -884,7 +676,7 @@ pieces of the content to the client.
 
  When client has received all pieces of the content, it leaves the multicast session.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WDS Multicast Transport Protocol uses the User Datagram Protocol as a transport and in return,
 the WDS Multicast Application Protocol, as specified in [MS-WDSMA], uses this protocol as a transport
@@ -900,7 +692,8 @@ Release: April 23, 2024
 
 8 / 69
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 The protocol assumes that the client has obtained the unicast and multicast IP addresses, security
 modes and cryptographic keys, and details for the content by using the WDS Multicast Session
@@ -909,11 +702,11 @@ Initiation Protocol.
 The client supports the security mode and cryptographic algorithms required to validate received
 packets and to construct packets for sending to the server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable when an application requires content from a server using multicast.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas.
 
@@ -930,11 +723,11 @@ WDSMSI].
 Localization: The protocol does not have any support for localization, and acts as a pass-through
 for string data.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -945,22 +738,23 @@ Release: April 23, 2024
 
 9 / 69
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-WDSMT].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-2  Messages
+## 2 Messages
 
-2.1  Transport
+### 2.1 Transport
 
 The WDS Multicast Transport Protocol MUST use network byte order unless noted otherwise.
 
 The clients MUST send all packets to the unicast address of the server. The clients MUST NOT send
 any packets to the multicast address.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Packet Format
+#### 2.2.1 Packet Format
 
 All packets for the WDS Multicast Transport Protocol MUST follow the format specified in the following
 section.
@@ -977,7 +771,7 @@ OpCode are specified in this section.
 
 Extended Options: The format for extended options is specified in section 2.2.4.
 
-2.2.2  Security Header
+#### 2.2.2 Security Header
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1009,7 +803,8 @@ Release: April 23, 2024
 
 10 / 69
 
-Identifier (2 bytes): The first byte MUST be set to character "W" and second byte MUST be set to
+
+Identifier (2 bytes): The first byte MUST be set to character "W" and second byte MUST be set to
 
 character "D".
 
@@ -1087,7 +882,7 @@ The SecurityData field MUST specify the 32-bit Checksum for the
 packet. The Checksum MUST be computed as specified in section
 2.2.2.3.
 
-2.2.2.1  Packet Hashing
+##### 2.2.2.1 Packet Hashing
 
 The Hash for the packet is computed after the packet has been fully constructed and before the
 SecurityData field is updated. The Hash MUST be computed using the Session Header, Packet-
@@ -1111,7 +906,8 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.2  Packet Signing
+
+##### 2.2.2.2 Packet Signing
 
 The Signature for the packet is computed after the packet has been fully constructed and before the
 SecurityData field is updated. The Signature MUST be computed using the Session Header, Packet-
@@ -1126,7 +922,7 @@ The computed Hash for the packet MUST be signed by the Private RSA Key (defined 
 The resulting Signature for the packet MUST be treated as a binary data, and a network byte order
 transformation MUST NOT be performed.
 
-2.2.2.3  Packet Checksum
+##### 2.2.2.3 Packet Checksum
 
 The Checksum for the packet is computed after the packet has been fully constructed and before the
 SecurityData field is updated. The Checksum MUST be computed using the Session Header, Packet-
@@ -1142,7 +938,7 @@ Once all bytes have been added to the variable PacketChecksum, all bits of the v
 Finally, the value of PacketChecksum is transformed to network byte order and added to the
 Security Header.
 
-2.2.3  Session Header
+#### 2.2.3 Session Header
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1194,7 +990,8 @@ Release: April 23, 2024
 
 12 / 69
 
-Value
+
+Value
 
 Meaning
 
@@ -1278,7 +1075,7 @@ Section 2.2.13
 
 SenderTime (8 bytes): MUST be set to the time on the sender machine, in millisecond granularity.
 
-2.2.4  Extended Options
+#### 2.2.4 Extended Options
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1310,7 +1107,8 @@ Release: April 23, 2024
 
 13 / 69
 
-...
+
+...
 
 OptionsCount (2 bytes): MUST be set to the number of Extended Options specified in the
 
@@ -1329,7 +1127,7 @@ OptionsValue (variable): MUST be set to the value for the Extended Option. The l
 
 this field is specified by the OptionLen field.
 
-2.2.5  JOIN Packet
+#### 2.2.5 JOIN Packet
 
 This packet MUST be the first packet sent by the client to the server when the client joins a multicast
 session. The packet is sent to the unicast address of the server.
@@ -1390,7 +1188,8 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MacAddress (variable): MUST be set to the MAC address of the network interface card being used
+
+MacAddress (variable): MUST be set to the MAC address of the network interface card being used
 
 by client to communicate with server. The length, in bytes, for this field is specified by the
 MacAddrLen field.
@@ -1417,7 +1216,7 @@ WDSMCTP_OPT_CAPABILITIES
 The client MAY send this Extended Option. See section 2.2.5.1 for
 more details.<2>
 
-2.2.5.1  WDSMCTP_OPT_CAPABILITIES
+##### 2.2.5.1 WDSMCTP_OPT_CAPABILITIES
 
 This Extended Option is used to communicate optional capabilities of the client. If the JOIN packet
 does not specify this Extended Option, then the server MUST assume that the client does not support
@@ -1442,7 +1241,7 @@ The client MAY specify this capability. When specified, it means that client
 supports demotion to a lower speed multicast session if the server determines
 that the client is slow.<3>
 
-2.2.6  JOINACK Packet
+#### 2.2.6 JOINACK Packet
 
 This packet is sent by the server to the client in response to a JOIN packet. This packet MUST be sent
 to the client address only.
@@ -1479,7 +1278,8 @@ Release: April 23, 2024
 
 15 / 69
 
-ClientId (4 bytes): MUST be set to a unique numeric value that is assigned to the client by the
+
+ClientId (4 bytes): MUST be set to a unique numeric value that is assigned to the client by the
 
 server, and MUST be used by the client in all future communication with the server whenever a
 packet requires a ClientId.
@@ -1503,7 +1303,7 @@ session header.
 
 This packet does not have any Extended Options.
 
-2.2.7  QCC Packet
+#### 2.2.7 QCC Packet
 
 This packet is sent by the server to the multicast address. All clients in the multicast session MUST
 reply back to the server using the QCR packet.
@@ -1534,7 +1334,7 @@ for a random time between 0 and QCRBackOff before sending a QCR packet to the se
 
 This packet does not have any Extended Options.
 
-2.2.8  QCR Packet
+#### 2.2.8 QCR Packet
 
 This packet is sent by clients to the unicast address of the server.
 
@@ -1561,7 +1361,8 @@ Release: April 23, 2024
 
 16 / 69
 
-2.2.8.1  In Response to JOINACK
+
+##### 2.2.8.1 In Response to JOINACK
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1626,7 +1427,7 @@ AppData (variable): MUST NOT be specified.
 
 The Extended Options for QCR packet are specified in section 2.2.8.4.
 
-2.2.8.2  In Response to QCC
+##### 2.2.8.2 In Response to QCC
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1648,7 +1449,8 @@ Release: April 23, 2024
 
 17 / 69
 
-BackOff
+
+BackOff
 
 ...
 
@@ -1706,7 +1508,7 @@ MUST NOT define the structure for it.
 
 The Extended Options for QCR packet are specified in section 2.2.8.4.
 
-2.2.8.3  Voluntary Response
+##### 2.2.8.3 Voluntary Response
 
 The client MUST set the fields of the voluntary QCR packet as follows.
 
@@ -1730,7 +1532,8 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BackOff
+
+BackOff
 
 ...
 
@@ -1786,7 +1589,7 @@ MUST NOT define the structure for it.
 
 The Extended Options for QCR packet are specified in section 2.2.8.4.
 
-2.2.8.4  Extended Options
+##### 2.2.8.4 Extended Options
 
 The client MAY send the following Extended Options in a QCR packet.
 
@@ -1809,7 +1612,8 @@ Release: April 23, 2024
 
 19 / 69
 
-Extended Option
+
+Extended Option
 
 Description
 
@@ -1830,7 +1634,7 @@ byte value ranging from 0 to 100 and specifies the percentage of network utiliza
 of the network interface card being used by the client to communicate with the
 server.
 
-2.2.9  POLL Packet
+#### 2.2.9 POLL Packet
 
 This packet is sent by the server on explicit instructions from the WDS Multicast Application Protocol,
 as specified in [MS-WDSMA]. This packet is sent on the multicast address. All clients participating in a
@@ -1876,7 +1680,7 @@ AppData (variable): Specifies the Application Data provided by the WDS Multicast
 Protocol, as specified in [MS-WDSMA]. The protocol acts solely as transport for the Application
 Data and MUST NOT define the structure for it.
 
-2.2.10 POLLACK Packet
+#### 2.2.10 POLLACK Packet
 
 This packet is sent by the client in response to the POLL packet and is sent to the Unicast Address of
 the server.
@@ -1901,7 +1705,8 @@ Release: April 23, 2024
 
 20 / 69
 
-AppDataLen
+
+AppDataLen
 
 POLLSeqNo
 
@@ -1927,7 +1732,7 @@ Protocol, as specified in [MS-WDSMA].
 
 This packet does not have any Extended Options.
 
-2.2.11 LEAVE Packet
+#### 2.2.11 LEAVE Packet
 
 This packet MUST be sent by the client before it leaves the multicast session. The packet MUST be
 sent to the Unicast address of the server.
@@ -1990,7 +1795,8 @@ Release: April 23, 2024
 
 21 / 69
 
-2.2.12 KICK Packet
+
+#### 2.2.12 KICK Packet
 
 This packet is sent by the server on multicast address and is used to instruct selected clients to
 remove themselves from the multicast session.
@@ -2021,9 +1827,9 @@ to remove themselves from the multicast session. The count of elements in the ar
 the count specified by the ClientCount field. The format for each element of the array is specified
 in section 2.2.12.1.
 
-2.2.12.1
+##### 2.2.12.1 ClientList
 
-ClientList
+
 
 The format for each element of the array specified in a ClientList field is as follows.
 
@@ -2084,7 +1890,8 @@ Release: April 23, 2024
 
 22 / 69
 
-2.2.13 DEMOTE Packet
+
+#### 2.2.13 DEMOTE Packet
 
 This packet is sent by the server on multicast address and is used to instruct selected clients to
 remove themselves from the multicast session and join a multicast session that is operating at a lower
@@ -2169,7 +1976,8 @@ Release: April 23, 2024
 
 23 / 69
 
-2.2.14 SPM Packet
+
+#### 2.2.14 SPM Packet
 
 This packet is sent by the server on multicast address and provides status of the multicast session.
 
@@ -2234,7 +2042,7 @@ RTT (2 bytes): MUST be set to the round trip time in milliseconds for the Master
 
 This packet does not have any Extended Options.
 
-2.2.15 ACK Packet
+#### 2.2.15 ACK Packet
 
 This packet is sent by client in response to ODATA, RDATA and SPM packets. The packet is sent to the
 unicast address of the server.
@@ -2246,7 +2054,8 @@ Release: April 23, 2024
 
 24 / 69
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2295,7 +2104,7 @@ LossRate (8 bytes): MUST be set to the loss rate for the client.
 
 This packet does not have any Extended Options.
 
-2.2.16 ODATA Packet
+#### 2.2.16 ODATA Packet
 
 This packet is sent by the server on multicast address and is used to send data provided by the WDS
 Multicast Application Protocol, as specified in [MS-WDSMA].
@@ -2326,7 +2135,8 @@ Release: April 23, 2024
 
 25 / 69
 
-DataLen
+
+DataLen
 
 ...
 
@@ -2368,7 +2178,7 @@ of this option MUST be a sequence number greater than or
 equal to MCTrailODATASeqNo and less than or equal to
 MCLeadODATASeqNo as described in 3.1.1.3.
 
-2.2.17 RDATA Packet
+#### 2.2.17 RDATA Packet
 
 This packet is sent by the server on the multicast address, and is used to retransmit data that has
 already been sent using ODATA packets.
@@ -2405,7 +2215,8 @@ Release: April 23, 2024
 
 26 / 69
 
-...
+
+...
 
 ClientId (4 bytes): MUST be set to the unique ID of the client that is supposed to send an ACK
 
@@ -2428,7 +2239,7 @@ specified in [MS-WDSMA].
 
 This packet does not have any Extended Options.
 
-2.2.18 NACK Packet
+#### 2.2.18 NACK Packet
 
 This packet is sent by the client to request retransmission of an ODATA packet using an RDATA
 packet. The packet is sent to the unicast address of server.
@@ -2484,11 +2295,12 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This packet does not have any Extended Options.
 
-2.2.18.1
+This packet does not have any Extended Options.
 
-NACK RangeList
+##### 2.2.18.1 NACK RangeList
+
+
 
 Each element of the array MUST be specified as follows.
 
@@ -2519,7 +2331,7 @@ EndODATASeqNo (8 bytes): MUST be set to the last ODATASeqNo for the range of ODA
 
 that the client did not receive.
 
-2.2.19 NCF Packet
+#### 2.2.19 NCF Packet
 
 The NCF packet is sent by the server in response to a NACK packet, and specifies the list of ODATA
 ranges that server will be sending using RDATA packets. This packet is sent to the multicast address.
@@ -2551,9 +2363,9 @@ count of elements in the array MUST match the count specified using the RangeCou
 
 This packet does not have any Extended Options.
 
-2.2.19.1
+##### 2.2.19.1 NCF RangeList
 
-NCF RangeList
+
 
 Each element of the array MUST be specified as follows.
 
@@ -2579,7 +2391,8 @@ Release: April 23, 2024
 
 28 / 69
 
-EndODATASeqNo
+
+EndODATASeqNo
 
 ...
 
@@ -2598,13 +2411,14 @@ Release: April 23, 2024
 
 29 / 69
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-WDSMT].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Server Details
+### 3.1 Server Details
 
 This section specifies the WDS Multicast Transport Protocol behavior for the WDS Server.
 
@@ -2612,7 +2426,7 @@ The following state diagram shows the lifetime of the protocol on the server.
 
 Figure 3: Server state diagram
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2653,11 +2467,12 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Data State Configuration: Configuration information for the Data State of a multicast session, stored in
+
+Data State Configuration: Configuration information for the Data State of a multicast session, stored in
 temporary storage in the form of a (name, value) pair. The list of metadata information is specified in
 section 3.1.1.3.
 
-3.1.1.1  Multicast Session Configuration
+##### 3.1.1.1 Multicast Session Configuration
 
 The following properties are stored for WDS server configuration.
 
@@ -2714,7 +2529,7 @@ NextPollSeqNo: A 64-bit value that specifies the SPMSeqNo field to use for next 
 
 the server. MUST be set to 1 on initialization.
 
-3.1.1.2  Client List
+##### 3.1.1.2 Client List
 
 The following properties are stored for WDS server configuration.
 
@@ -2732,7 +2547,8 @@ Release: April 23, 2024
 
 31 / 69
 
-UDPPort: Specifies the UDP port being used by the client to send packets to the unicast address of
+
+UDPPort: Specifies the UDP port being used by the client to send packets to the unicast address of
 
 server.
 
@@ -2762,7 +2578,7 @@ QCRReceived: A Boolean value that is set to TRUE (0x00000001) when a QCR packet 
 from the client when the server is in QCCState. MUST be set to FALSE (0x00000000) on
 initialization.
 
-3.1.1.3  Data State Configuration
+##### 3.1.1.3 Data State Configuration
 
 MinNACKBackOff: Specifies the time, in milliseconds, that a client MUST wait after detecting a
 
@@ -2815,7 +2631,8 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-specifies the highest ODATASeqNo packet. The following additional information is kept for each
+
+specifies the highest ODATASeqNo packet. The following additional information is kept for each
 packet in the list.
 
   CreationTime: Specifies the local time on the server when the ODATA packet is added to list.
@@ -2824,7 +2641,7 @@ packet in the list.
 
 clients.
 
-3.1.1.4  Protocol Parameters
+##### 3.1.1.4 Protocol Parameters
 
 InactivityTimeout: Specifies the time, in milliseconds, that the server MUST wait without receiving
 any packet from the client before terminating the multicast session. The default value is 300,000
@@ -2890,7 +2707,8 @@ Release: April 23, 2024
 
 33 / 69
 
-3.1.1.5  QCC State Configuration
+
+##### 3.1.1.5 QCC State Configuration
 
 NextQCCSeqNo: Specifies the QCCSeqNo field for the next QCC packet to be sent by the server.
 
@@ -2900,7 +2718,7 @@ WaitTime: Specifies the timeout to use for the InState QCC Timer when the multic
 
 set to the QCCState field. MUST be set to 1 on initialization.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Timer
 
@@ -2937,7 +2755,7 @@ Timer
 The timeout for this timer is specified by the CleanupDataListInterval parameter (section
 3.1.1.4).
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The multicast session on initialization MUST configure the TCP/IP stack to listen for incoming UDP
 packets as specified by the unicast address (section 3.1.1.1).
@@ -2947,7 +2765,7 @@ The Inactivity Timer MUST be initialized with the default timeout value as speci
 The Client Cleanup Timer is a recurring timer that MUST be initialized with the default timeout value
 as specified in section 3.1.2.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The multicast session is initialized when a client requests content using the WDS Multicast Session
 Initiation Protocol for delivery, as specified in [MS-WDSMA].
@@ -2974,9 +2792,10 @@ Release: April 23, 2024
 
 34 / 69
 
-3.1.5  Message Processing Events and Sequencing Rules
 
-3.1.5.1  Packet Processing
+#### 3.1.5 Message Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Packet Processing
 
 A multicast session is initialized to be in PreStartState (section 3.1.1.1). In PreStartState, the server
 MUST NOT send any packets and MUST wait until the first client joins (section 3.1.5.2) the multicast
@@ -3068,7 +2887,8 @@ Release: April 23, 2024
 
 35 / 69
 
-OpCode
+
+OpCode
 
 0x09
 
@@ -3078,7 +2898,7 @@ When the Inactivity Timer (section 3.1.2) expires (which happens when the server
 packets from any clients for the time specified in section 3.1.2), the server MUST terminate the
 multicast session.
 
-3.1.5.1.1 Packet Validation
+###### 3.1.5.1.1 Packet Validation
 
 The information specified in the Security Header (section 2.2.2) MUST match the client security mode
 (section 3.1.1.1).
@@ -3100,7 +2920,7 @@ The server MUST validate that the SessionId (section 2.2.3) matches the SessionI
 Based on the OpCode field in the Session Header (section 2.2.3), the server MUST validate that all
 fields required for the packet are specified as per section 2.2.
 
-3.1.5.2  Processing a JOIN Packet
+##### 3.1.5.2 Processing a JOIN Packet
 
 When a JOIN packet is received from client, the server MUST add a record of the client to the Pending
 Client List (section 3.1.5.2.1). The server MUST send a JOINACK packet (section 3.1.5.2.2) to the
@@ -3111,7 +2931,7 @@ to the Active Client List, and MUST destroy the instance of JoinAck Timer create
 The server MUST create an instance of JoinAck Timer for the client, and MUST configure the JoinAck
 Timer to expire after a timeout specified by the JoinAckToQCRTimeout parameter (section 3.1.1.4).
 
-3.1.5.2.1 Adding a Client to the Pending Client List
+###### 3.1.5.2.1 Adding a Client to the Pending Client List
 
 The server MUST add a new record into the Pending Client List (section 3.1.1.2) and set the attributes
 of the entry as specified below.
@@ -3137,7 +2957,8 @@ Release: April 23, 2024
 
 36 / 69
 
-SupportsDemote: If the JOIN packet specifies the WDSMCTP_OPT_CAPABILITIES Extended Option
+
+SupportsDemote: If the JOIN packet specifies the WDSMCTP_OPT_CAPABILITIES Extended Option
 
 (section 2.2.5.1), and the value for the Extended Option specifies WDSMCTP_CAP_MULTISTREAM
 (section 2.2.5.1), then this parameter MUST be set to TRUE  (0x00000001); otherwise, it MUST be
@@ -3146,7 +2967,7 @@ set to  FALSE (0x00000000).
 All remaining parameters for this record MUST be set to values specified for initialization in section
 3.1.1.2 before it is added to the list.
 
-3.1.5.2.2 Sending a JOINACK Packet
+###### 3.1.5.2.2 Sending a JOINACK Packet
 
 When sending a JOINACK packet, the server MUST set the fields of the JOINACK packet as specified
 below.
@@ -3168,7 +2989,7 @@ ClientTime: MUST be set to the ClientTime from the client's entry in the Pending
 The server MUST send the JOINACK packet to the IPAddress field and UDPPort field (section
 3.1.1.2) specified in the client's entry in the Pending Client List.
 
-3.1.5.2.3 Receiving a QCR Packet
+###### 3.1.5.2.3 Receiving a QCR Packet
 
 When a QCR packet (section 2.2.8.1) is received, the server MUST move the entry for the client from
 the Pending Client List (section 3.1.1.2) to the Active Client List (section 3.1.1.2), and MUST destroy
@@ -3187,14 +3008,14 @@ AppDataLen fields (section 2.2.8).
 
 If SessionState (section 3.1.1.1) is set to PreStartState, the server MUST change it to QCCState.
 
-3.1.5.3  Processing a LEAVE Packet
+##### 3.1.5.3 Processing a LEAVE Packet
 
 When a LEAVE packet is received, the server MUST remove the entry for the client from the Active
 Client List (section 3.1.1.2), using the ClientId field (section 2.2.11) of the LEAVE packet to identify
 the client. If a client entry matching the ClientId is not found in Active Client List (section 3.1.1.2),
 the server MUST check and remove the entry from the Kick Client List (section 3.1.1.2).
 
-3.1.5.4  Processing a POLL Trigger
+##### 3.1.5.4 Processing a POLL Trigger
 
 The server MUST construct the POLL packet as specified in section 2.2.9 and set the fields of the
 packet as specified below.
@@ -3206,7 +3027,8 @@ Release: April 23, 2024
 
 37 / 69
 
-PollSeqNo: MUST be set to the value of the NextPollSeqNo (section 3.1.1.1), and then increment
+
+PollSeqNo: MUST be set to the value of the NextPollSeqNo (section 3.1.1.1), and then increment
 
 the NextPollSeqNo by one.
 
@@ -3221,7 +3043,7 @@ The server MUST send the constructed POLL packet to the multicast address (secti
 The server MUST provide the value of PollBackOff to the WDS Multicast Application Protocol in
 response to the POLL Trigger, as specified in [MS-WDSMA].
 
-3.1.5.5  Processing a POLLACK Packet
+##### 3.1.5.5 Processing a POLLACK Packet
 
 The server MUST validate that the POLLSeqNo field (section 2.2.10) in the POLLACK packet matches
 the value (NextPollSeqNo – 1) (section 3.1.1.1).
@@ -3230,7 +3052,7 @@ The protocol MUST send a POLLACK Trigger to the WDS Multicast Application Protoc
 [MS-WDSMA], to communicate that the payload has been received in the packet in the AppData and
 AppDataLen fields.
 
-3.1.5.6  Processing a KICK Trigger
+##### 3.1.5.6 Processing a KICK Trigger
 
 The KICK Trigger MUST provide the ClientId and a Reason fields for removing the client from the
 Active Client List (section 3.1.1.2).
@@ -3245,7 +3067,7 @@ Immediately send a KICK packet as specified in section 3.1.5.6.1.
 
 Configure the Kick Timer to expire at the interval specified by KickInterval (section 3.2.1.2).
 
-3.1.5.6.1 Sending a KICK Packet
+###### 3.1.5.6.1 Sending a KICK Packet
 
 The server MUST construct the KICK packet as specified in section 2.2.12.
 
@@ -3255,7 +3077,7 @@ MUST construct multiple KICK packets.
 
 The server MUST send all constructed KICK packets to the multicast address (section 3.1.1.1).
 
-3.1.5.7  Processing QCC State
+##### 3.1.5.7 Processing QCC State
 
 The server enters QCC state in order to find a client that can be used as a Master Client for the
 multicast session. The server sends a QCC packet (section 2.2.7) to the multicast address (section
@@ -3274,25 +3096,26 @@ Release: April 23, 2024
 
 38 / 69
 
-The server MUST start by setting the InState QCC Timer to expire using a relatively short timeout, and
+
+The server MUST start by setting the InState QCC Timer to expire using a relatively short timeout, and
 MUST continue to increase the timeout for InState QCC Timer when no reply is received.
 
 When entering this state, server MUST proceed as specified in section 3.1.5.7.1.
 
 When leaving this state, server MUST proceed as specified in section 3.1.5.7.2.
 
-3.1.5.7.1 Entering QCC State
+###### 3.1.5.7.1 Entering QCC State
 
 The server MUST set WaitTime (section 3.1.1.5) to 1.
 
 The server MUST send a QCC packet, and set up the InState QCC Timer as specified in section
 3.1.5.7.3.
 
-3.1.5.7.2 Leaving QCC State
+###### 3.1.5.7.2 Leaving QCC State
 
 The server MUST disable the InState QCC Timer.
 
-3.1.5.7.3 Sending a QCC Packet and InState QCC Timer
+###### 3.1.5.7.3 Sending a QCC Packet and InState QCC Timer
 
 The server MUST set QCRReceived (section 3.1.1.2) for all entries in the Active Client List (section
 3.1.1.2) to FALSE (0x00000000).
@@ -3322,7 +3145,7 @@ multicast session.
 The server MUST set the InState QCC Timer (section 3.1.2) to expire after the time specified by
 WaitTime (section 3.1.1.5).
 
-3.1.5.8  Processing a QCR Packet
+##### 3.1.5.8 Processing a QCR Packet
 
 If the QCCSeqNo field (section 2.2.8) of the QCR packet is set to zero, and there exists an entry in
 the Pending Client List (section 3.1.1.2) for the client identified by the ClientId field (section 2.2.8) of
@@ -3343,7 +3166,8 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RTT: MUST be set to the time calculated by subtracting the ServerTime (section 2.2.8) from the
+
+RTT: MUST be set to the time calculated by subtracting the ServerTime (section 2.2.8) from the
 
 current local time on server.
 
@@ -3353,7 +3177,7 @@ The server MUST send a Status Trigger to the WDS Multicast Application Protocol,
 WDSMA], to communicate the payload specified in the QCR packet, using the AppData and
 AppDataLen fields (section 2.2.8).
 
-3.1.5.9  Processing Data State
+##### 3.1.5.9 Processing Data State
 
 The server enters the Data state when a client has been designated as Master Client in QCC state.
 
@@ -3371,7 +3195,7 @@ When entering this state, the server MUST proceed as specified in section 3.1.5.
 
 When leaving this state, the server MUST proceed as specified in section 3.1.5.9.2.
 
-3.1.5.9.1 Entering DataState
+###### 3.1.5.9.1 Entering DataState
 
 The server:
 
@@ -3387,11 +3211,11 @@ CleanupDataListInterval (section 3.2.1.2).
 
   MUST send an SPM packet and Update SPM Timer as specified in section 3.1.5.9.3.
 
-3.1.5.9.2 Leaving DataState
+###### 3.1.5.9.2 Leaving DataState
 
 The server MUST disable the SPM Timer, Cleanup Data List Timer and OutState QCC Timer.
 
-3.1.5.9.3 Sending an SPM Packet
+###### 3.1.5.9.3 Sending an SPM Packet
 
 The server MUST update the MinNACKBackOff field (section 3.1.1.3) as follows:
 
@@ -3419,7 +3243,8 @@ Release: April 23, 2024
 
 40 / 69
 
-  MaxNACKBackOff: MUST be set to MaxNACKBackOff (section 3.1.1.3).
+
+  MaxNACKBackOff: MUST be set to MaxNACKBackOff (section 3.1.1.3).
 
   TrailODATASeqNo: MUST set to the ODATASeqNo of the ODATA packet stored at the head of
 
@@ -3441,7 +3266,7 @@ session.
 
 time for the Master Client, whichever is larger.
 
-3.1.5.9.4 Processing a Data Trigger
+###### 3.1.5.9.4 Processing a Data Trigger
 
 The server MUST construct an ODATA packet (section 2.2.16) and set the fields of the ODATA packet
 as follows.
@@ -3467,7 +3292,7 @@ The server MUST add the ODATA packet to the tail of the Data Packet List, set Cr
 local time of the server, and MUST set all other attributes of the entry to their initialization values as
 specified in section 3.1.1.3.
 
-3.1.5.9.5 Processing an ACK Packet
+###### 3.1.5.9.5 Processing an ACK Packet
 
 An ACK packet is sent by the Master Client for each of ODATA, RDATA and SPM packets. The server
 MUST NOT accept an ACK packet if the ClientId field (section 2.2.15) of the ACK packet does not
@@ -3500,7 +3325,8 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PacketsAcknowledged = ODATASeqNo from ACK packet – MCTrailODATASeqNo
+
+PacketsAcknowledged = ODATASeqNo from ACK packet – MCTrailODATASeqNo
 
 The server MUST update CurrentWindowSize (section 3.1.1.3) as specified below when the value of
 CurrentWindowSize is less than ExpMaxWindowSize (section 3.1.1.4):
@@ -3541,7 +3367,7 @@ specified by PacketCount. Each ODATA packet MUST be updated as specified in sect
 The server MUST add the number of ODATA packets that have been sent to MCLeadODATASeqNo
 (section 3.1.1.3).
 
-3.1.5.9.6 Processing a NACK Packet
+###### 3.1.5.9.6 Processing a NACK Packet
 
 The server MUST set MCLossRate (section 3.1.1.3) to ( LossRate field / 10000000000000000 )
 (section 2.2.18) of the NACK packet if the ClientId field (section 2.2.18) of the NACK packet matches
@@ -3568,7 +3394,8 @@ Release: April 23, 2024
 
 42 / 69
 
-1.
+
+1.
 
 2.
 
@@ -3591,9 +3418,9 @@ move on to the next ODATASeqNo.
  The server MUST set the LastSendTime for the entry in Data Packet List (section 3.1.1.3) to the
 server's local time.
 
-3.1.5.9.6.1
+###### 3.1.5.9.6.1 Identifying a New Master Client
 
-Identifying a New Master Client
+
 
 The server MUST find the entry for the client in the Active Client List (section 3.1.1.2) using the
 ClientId field of the NACK packet (section 2.2.18), and MUST compute the throughput of the client as
@@ -3624,7 +3451,7 @@ NACK packet.
  Server MUST set MCLossRate to the value of the LossRate field (section NACK Packet) of the NACK
 packet.
 
-3.1.5.9.7 Updating an ODATA Packet
+###### 3.1.5.9.7 Updating an ODATA Packet
 
 The server MUST update the following fields of the ODATA packet (section 2.2.16) before sending the
 packet to the multicast address (section 3.1.1.1):
@@ -3635,7 +3462,7 @@ TrailODATASeqNo: MUST be set to the ODATASeqNo of the ODATA packet stored at the
 
 the Data Packet List (section 3.1.1.3).
 
-3.1.5.9.8 Sending an RDATA Packet
+###### 3.1.5.9.8 Sending an RDATA Packet
 
 ODATA and RDATA packets have same packet format and are differentiated only by the OpCode field
 in the Session Header (section 2.2.3).
@@ -3647,15 +3474,16 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST duplicate the ODATA packet, update the fields of the ODATA packet as specified in
+
+The server MUST duplicate the ODATA packet, update the fields of the ODATA packet as specified in
 section 3.1.5.9.7, and MUST set the OpCode in Session Header (section 2.2.3) to
 WDSMCTP_OP_RDATA.
 
 The server MUST send each RDATA packet to multicast address (section 3.1.1.1).
 
-3.1.5.10
+##### 3.1.5.10 Processing the Demote Trigger
 
-Processing the Demote Trigger
+
 
 The Demote Trigger MUST provide the ClientId of the client to demote. If a multicast session exists
 on the server that is operating at a lower speed, the server MUST obtain the multicast IP, unicast IP,
@@ -3671,9 +3499,9 @@ Immediately send a DEMOTE packet as specified in section 3.1.5.10.1.
 
 Set the Demote Timer to expire after the time specified by DemoteInterval (section 3.2.1.2).
 
-3.1.5.10.1
+###### 3.1.5.10.1 Sending a DEMOTE Packet
 
-Sending a DEMOTE Packet
+
 
 The server MUST construct the DEMOTE packet (section 2.2.13) and add information for all clients in
 the Demoted Client List (section 3.1.1.2). If the number of clients exceeds the limit specified in
@@ -3681,9 +3509,9 @@ section 2.2.13, the server MUST construct multiple DEMOTE packets.
 
 The server MUST send all DEMOTE packets to the multicast address (section 3.1.1.1).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  JoinAck Timer
+##### 3.1.6.1 JoinAck Timer
 
 If the JoinAckSendCount (section 3.1.1.2) matches the MaxJoinAckSends (section 3.2.1.2)
 parameter, then the server MUST:
@@ -3701,7 +3529,7 @@ sent to the client.
 The server MUST configure the instance of JoinAck Timer to expire again at interval specified by
 JoinAckToQCRTimeout (section 3.2.1.2).
 
-3.1.6.2  Client Cleanup Timer
+##### 3.1.6.2 Client Cleanup Timer
 
 The server MUST go through each entry in the Active Client List (section 3.1.1.2) and Kick Client List
 (section 3.1.1.2) and MUST remove all entries for clients where the ( Local Time on Server –
@@ -3714,14 +3542,15 @@ Release: April 23, 2024
 
 44 / 69
 
-3.1.6.3  Kick Timer
+
+##### 3.1.6.3 Kick Timer
 
 The server MUST disable the Kick Timer if the Kick Client List (section 3.1.1.2) is empty.
 
 Otherwise, the server MUST send the KICK packet as specified in section 3.1.5.6.1. The server MUST
 also configure Kick Timer to expire after the interval specified by KickInterval (section 3.2.1.2).
 
-3.1.6.4  InState QCC Timer
+##### 3.1.6.4 InState QCC Timer
 
 The server MUST go through all entries in Active Client List (section 3.1.1.2) and MUST find an entry
 where QCRReceived is set to TRUE (0x00000001) and the RTT is the highest for the entry among all
@@ -3732,7 +3561,7 @@ MasterClientId (section 3.1.1.3) to the ClientId (section 3.1.1.2) and process a
 When no entries have QCRReceived set to TRUE (0x00000001), then server MUST process as
 specified in section 3.1.5.7.3.
 
-3.1.6.5  OutState QCC Timer
+##### 3.1.6.5 OutState QCC Timer
 
 The server MUST construct a QCC packet (section 2.2.7) and set the QCCSeqNo to NextQCCSeqNo
 (section 3.1.1.5), and MUST increment the value of NextQCCSeqNo by one.
@@ -3746,13 +3575,13 @@ The server MUST send the QCC packet to multicast address (section 3.1.1.1).
 
 The server MUST set the OutState QCC Timer to expire at computed value for QCRBackOff.
 
-3.1.6.6  SPM Timer
+##### 3.1.6.6 SPM Timer
 
 If SPMCount (section 3.1.1.3) matches the value specified by MaxNoResponseSPM (section
 3.2.1.2), then the server MUST change the state to QCCState. Otherwise, the server MUST send an
 SPM packet and update SPM Timer as specified in section 3.1.5.9.3.
 
-3.1.6.7  Cleanup Data List Timer
+##### 3.1.6.7 Cleanup Data List Timer
 
 The server MUST start from the head of the Data Packet List (section 3.1.1.3), moving towards the tail
 of the list, and remove all ODATA packets from list which match the following criteria:
@@ -3778,7 +3607,8 @@ Release: April 23, 2024
 
 45 / 69
 
-3.1.6.8  Demote Timer
+
+##### 3.1.6.8 Demote Timer
 
 The server MUST disable the Demote Timer if the Demoted Client List (section 3.1.1.2) is empty.
 
@@ -3786,20 +3616,20 @@ Otherwise, server MUST send the DEMOTE packet as specified in section 3.1.5.10.1
 also configure Demote Timer to expire after the interval specified by DemoteInterval (section
 3.1.1.4).
 
-3.1.6.9  Inactivity Timer
+##### 3.1.6.9 Inactivity Timer
 
 The server MUST terminate the WDS Multicast Transport Protocol and MUST send a Terminate Trigger
 to WDS Multicast Application Protocol.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
 This section specifies the WDS Multicast Transport Protocol behavior for the client.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3819,7 +3649,7 @@ Data Configuration: Configuration information used to keep track of ODATA and RD
 
 received from server. The list of metadata information is specified in section 3.2.1.3.
 
-3.2.1.1  Multicast Session Configuration
+##### 3.2.1.1 Multicast Session Configuration
 
 SessionState: Specifies the current state of the multicast session and MUST be set to one of the
 
@@ -3846,7 +3676,8 @@ Release: April 23, 2024
 
 46 / 69
 
-SessionId: An Id assigned to the WDS Multicast Transport Protocol by the server and is
+
+SessionId: An Id assigned to the WDS Multicast Transport Protocol by the server and is
 
 communicated to client using WDS Multicast Session Initiation Protocol.
 
@@ -3876,7 +3707,7 @@ QCCRecvTime: Specifies the time in millisecond granularity when the latest QCC p
 
 from server.
 
-3.2.1.2  Protocol Parameters
+##### 3.2.1.2 Protocol Parameters
 
 InactivityTimeout: Specifies time in milliseconds the client MUST wait without getting any packet
 from server before terminating the WDS Multicast Transport Protocol on the client. The default
@@ -3895,7 +3726,7 @@ QCC packet so a QCR reply can be sent. If no QCC packet is received from the ser
 time specified by this parameter, then the client MUST send a QCR packet. The default value is
 20,000 ms.
 
-3.2.1.3  Data Configuration
+##### 3.2.1.3 Data Configuration
 
 MinNACKBackOff: Specifies the time in milliseconds a client MUST wait after detecting an ODATA
 packet loss and before sending a NACK packet. This value is ignored by the Master Client.
@@ -3920,7 +3751,8 @@ Release: April 23, 2024
 
 47 / 69
 
-HiLossODATASeqNo: Specifies the highest ODATASeqNo up to which LossRate has been calculated.
+
+HiLossODATASeqNo: Specifies the highest ODATASeqNo up to which LossRate has been calculated.
 
 MUST be set to zero on initialization.
 
@@ -3958,7 +3790,7 @@ Application Protocol. MUST be set to zero on initialization.
 
 Missing ODATA List: Specifies a list of ODATA packet ranges that the client is missing. Section
 
-3.2.1.3.1 specifies the parameters for Missing ODATA List.
+###### 3.2.1.3.1 specifies the parameters for Missing ODATA List.
 
 3.2.1.3.1 Missing ODATA List
 
@@ -4007,7 +3839,8 @@ Release: April 23, 2024
 
 48 / 69
 
-Operation
+
+Operation
 
 Description
 
@@ -4017,7 +3850,7 @@ Section 3.2.1.3.1.3
 
 Highest Continuous Received ODATASeqNo  Section 3.2.1.3.1.4
 
-3.2.1.3.1.1  Update Start of List
+###### 3.2.1.3.1.1 Update Start of List
 
 For this operation, Missing ODATA List is provided with a new starting ODATASeqNo
 (NewStartODATASeqNo) and the list MUST update itself to remove information for any missing
@@ -4043,7 +3876,7 @@ further processing of the elements of RangeList.
 The client MUST set StartODATASeqNo to NewStartODATASeqNo. If EndODATASeqNo is less
 than the new value of StartODATASeqNo it MUST be updated to the value of StartODATASeqNo.
 
-3.2.1.3.1.2  Update End of List
+###### 3.2.1.3.1.2 Update End of List
 
 For this operation, Missing ODATA List is provided with the new ending ODATASeqNo
 (NewEndODATASeqNo). The list MUST update itself to start tracking missing ODATA packets up to
@@ -4058,7 +3891,7 @@ list, and set the range to (EndODATASeqNo + 1, NewEndODATASeqNo).
 
 The client MUST set EndODATASeqNo to NewEndODATASeqNo.
 
-3.2.1.3.1.3  Received ODATA Packet
+###### 3.2.1.3.1.3 Received ODATA Packet
 
 This operation is used to update the Missing ODATA List when an ODATA or RDATA packet is
 received. For this operation, Missing ODATA List is provided with the ODATASeqNo
@@ -4078,7 +3911,8 @@ Release: April 23, 2024
 
 49 / 69
 
-2.  If the StartSeqNo and EndSeqNo of the range specify the same value, and that value matches
+
+2.  If the StartSeqNo and EndSeqNo of the range specify the same value, and that value matches
 the RecvODATASeqNo then the client MUST delete the entry for the range from the RangeList
 and MUST stop further processing of the elements of the RangeList.
 
@@ -4096,7 +3930,7 @@ current entry, set the range in the current entry to (StartSeqNo, RecvODATASeqNo
 set the newly inserted entry after the current entry to (RecvODATASeqNo + 1, EndSeqNo). The
 client MUST stop further processing of the elements of RangeList.
 
-3.2.1.3.1.4  Highest Continuous Received ODATASeqNo
+###### 3.2.1.3.1.4 Highest Continuous Received ODATASeqNo
 
 This operation returns the highest ODATASeqNo up to which all ODATA packets have been received.
 
@@ -4108,7 +3942,7 @@ To perform this operation, the client MUST perform the steps below:
 
 value (StartSeqNo – 1).
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Timer
 
@@ -4142,7 +3976,7 @@ NACK Timer
 
 The timeout for this timer is computed by client as specified in section 3.2.5.12.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST bind to any available UDP port to receive and send UDP packets to the server and set
 Local Address (section 3.2.1.1) to that address.
@@ -4160,7 +3994,8 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
  [MS-WDSMA] WDS Multicast Application Protocol MAY instruct the WDS Multicast Transport Protocol
 to terminate at any point by sending a Terminate Trigger, which MUST be processed as specified in
@@ -4170,9 +4005,9 @@ WDS Multicast Application Protocol, as specified in [MS-WDSMA], MUST send a Cach
 when it has completed processing the payload provided by WDS Multicast Transport Protocol using
 DATA Trigger, and MUST be processed as specified in section 3.2.5.18.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Messages Processing
+##### 3.2.5.1 Messages Processing
 
 Higher Layered Trigger Events (section 3.2.4) MUST be processed as specified below:
 
@@ -4250,7 +4085,8 @@ Release: April 23, 2024
 
 51 / 69
 
-Packet
+
+Packet
 
 Description
 
@@ -4294,7 +4130,7 @@ DATA Trigger
 
 Section 3.2.5.13
 
-3.2.5.2  Packet Validation
+##### 3.2.5.2 Packet Validation
 
 The information specified in Security Header (section 2.2.2) MUST match the server security mode
 (section 3.1.1.1).
@@ -4320,7 +4156,7 @@ The SessionId field in Session Header (section 2.2.3) MUST match the SessionId (
 Based on the OpCode field in Session Header (section 2.2.3), the client MUST validate remaining
 fields of the packet as specified in section 2.2.
 
-3.2.5.3  Joining the Multicast Session
+##### 3.2.5.3 Joining the Multicast Session
 
 The client MUST construct a JOIN packet (section 2.2.5) and set the fields of the packet as specified
 below:
@@ -4332,7 +4168,8 @@ Release: April 23, 2024
 
 52 / 69
 
-
+
+
 
 IPAddrLen: MUST be set to the length in bytes of the IP address as specified by Local Address
 (section 3.2.1.1).
@@ -4352,11 +4189,11 @@ WDSMCTP_CAP_MULTISTREAM in the JOIN packet.
 The client MUST send the packet to the Server Address (section 3.2.1.1), and set the Join Timer to
 expire after a timeout specified in section 3.2.2.
 
-3.2.5.3.1 Join Timer Expiry
+###### 3.2.5.3.1 Join Timer Expiry
 
 When Join Timer expires, client MUST send JOIN packet as specified in section 3.2.5.3.
 
-3.2.5.3.2 JOINACK Reply
+###### 3.2.5.3.2 JOINACK Reply
 
 The client MUST set ClientId (section 3.2.1.1) to the ClientId field (section 2.2.6) from the JOINACK
 packet.
@@ -4384,14 +4221,14 @@ The client MUST change the SessionState to RegularState (section 3.2.1.1).
 
 The client MUST set the Force QCC Timer to expire in time specified by section 3.2.2.
 
-3.2.5.4  Leaving
+##### 3.2.5.4 Leaving
 
-3.2.5.4.1 Higher-Layer Triggered Events
+###### 3.2.5.4.1 Higher-Layer Triggered Events
 
 The Higher-Layered Triggered Events MUST provide a reason to the client for leaving the Multicast
 Session. The client MUST send a LEAVE packet as specified in section 2.2.11.
 
-3.2.5.4.2 Inactivity Timer Expiry
+###### 3.2.5.4.2 Inactivity Timer Expiry
 
 The client MUST send a LEAVE packet as specified in section 2.2.11, with a reason of
 WDSMCTP_LEAVE_REASON_CANCELLED
@@ -4403,7 +4240,8 @@ Release: April 23, 2024
 
 53 / 69
 
-3.2.5.4.3 Sending LEAVE Packet
+
+###### 3.2.5.4.3 Sending LEAVE Packet
 
 If MaxNACKBackOff (section 3.2.1.3) is non-zero, then the client MUST wait for a random time
 between zero and MaxNACKBackOff (section 3.2.1.3) before sending a LEAVE packet.
@@ -4413,13 +4251,13 @@ maximum time specified by MaxLeaveDelay (section 3.2.1.2) before sending a LEAVE
 
 The client MUST send the LEAVE packet to Server Address (section 3.2.1.1).
 
-3.2.5.5  Processing JOINACK
+##### 3.2.5.5 Processing JOINACK
 
 When the client receives a JOINACK packet in RegularState (section 3.2.1.1), the client MUST
 assume that the QCR packet sent in response to JOINACK (section 3.2.5.3.2) is lost and MUST
 proceed as specified in section 3.2.5.3.2.
 
-3.2.5.6  Processing POLL
+##### 3.2.5.6 Processing POLL
 
 If the POLLSeqNo from the POLL packet (section 2.2.9) is less than or equal to the LastPOLLSeqNo
 (section 3.2.1.1), then such a packet MUST be rejected by client.
@@ -4433,7 +4271,7 @@ from server.
 The client MUST set the Poll Timer (section 3.2.2) timeout to a random value between 0 and BackOff
 (section 2.2.9).
 
-3.2.5.6.1 Poll Timer Expiry
+###### 3.2.5.6.1 Poll Timer Expiry
 
 The client MUST send a POLL Trigger to [MS-WDSMA] WDS Multicast Application Protocol providing the
 AppData and AppDataLen from the LastPOLLPacket (section 3.2.1.1).
@@ -4455,7 +4293,7 @@ to the Trigger.
 
 The POLLACK packet MUST be sent to the Server Address (section 3.2.1.1).
 
-3.2.5.7  Processing QCC Packet
+##### 3.2.5.7 Processing QCC Packet
 
 If the QCCSeqNo from QCC packet (section 2.2.7) is less than or equal to the LastQCCSeqNo
 (section 3.2.1.1) then the packet MUST be rejected by client.
@@ -4472,12 +4310,13 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client MUST set LastQCCPacket (section 3.2.1.1) to the QCC packet received from server.
+
+The client MUST set LastQCCPacket (section 3.2.1.1) to the QCC packet received from server.
 
 The client MUST set QCC Timer (section 3.2.2) to expire after a random time which MUST be between
 zero and QCRBackOff (section 2.2.7).
 
-3.2.5.7.1 QCC Timer Expiry
+###### 3.2.5.7.1 QCC Timer Expiry
 
 The client MUST send a QCC Trigger to WDS Multicast Application Protocol to get the payload for QCR
 packet. The client MUST construct the QCR packet and set the fields as specified below:
@@ -4510,7 +4349,7 @@ The client MUST send the constructed QCR packet to Server Address (section 3.2.1
 
 The client MUST reset the Force QCC Timer to timeout as specified in section 3.2.2.
 
-3.2.5.8  Force QCC Timer Expiry
+##### 3.2.5.8 Force QCC Timer Expiry
 
 The client MUST send a QCC Trigger to WDS Multicast Application Protocol to get the payload for QCR
 packet. The client MUST construct the QCR packet and set the fields as specified below:
@@ -4544,7 +4383,8 @@ Release: April 23, 2024
 
 55 / 69
 
-3.2.5.9  Processing SPM Packet
+
+##### 3.2.5.9 Processing SPM Packet
 
 If the SPMSeqNo from the SPM packet is less than or equal to LastSPMSeqNo (section 3.2.1.3), then
 the client MUST reject such a packet.
@@ -4589,9 +4429,9 @@ The client MUST identify missing ODATA packets and setup NACK packets as specifi
 
 The client MUST send an ACK as specified in section 3.2.5.11.
 
-3.2.5.10
+##### 3.2.5.10 Updating Loss Report
 
-Updating Loss Report
+
 
 The client MUST stop processing if FirstODATASeqNo (section 3.2.1.3) is set to zero.
 
@@ -4601,9 +4441,9 @@ section 3.2.5.10.1.
 The client MUST update LossReport (section 3.2.1.3) in response to RDATA and ODATA as specified
 in section 3.2.5.10.2.
 
-3.2.5.10.1
+###### 3.2.5.10.1 Loss Report for SPM
 
-Loss Report for SPM
+
 
 The client MUST use the following algorithm to update the LossRate (section 3.2.1.3):
 
@@ -4616,15 +4456,16 @@ Release: April 23, 2024
 
 56 / 69
 
-LossRate = ( (500 / 65536) * LossRate ) + ( 1 – ( 500 / 65536 ) )
+
+LossRate = ( (500 / 65536) * LossRate ) + ( 1 – ( 500 / 65536 ) )
 
 END FOR LOOP
 
 The client MUST set HiLossODATASeqNo (section 3.2.1.3) to LeadODATASeqNo from SPM packet.
 
-3.2.5.10.2
+###### 3.2.5.10.2 Loss Report for ODATA/RDATA
 
-Loss Report for ODATA/RDATA
+
 
 The client MUST use the algorithm given below:
 
@@ -4642,9 +4483,9 @@ The client MUST update HiLossODATASeqNo (section 3.2.1.3) as follows:
 
 HiLossODATASeqNo = MAX( HiLossODATASeqNo, ODATASeqNo from ODATA or RDATA packet )
 
-3.2.5.11
+##### 3.2.5.11 Sending an ACK Packet
 
-Sending an ACK Packet
+
 
 The client MUST NOT sent ACK packet if MasterClientId (section 3.2.1.3) is not equal to ClientId
 (section 3.2.1.1).
@@ -4665,9 +4506,9 @@ triggered sending of ACK packet.
 
 The ACK packet MUST be sent to Server Address (section 3.2.1.1).
 
-3.2.5.12
+##### 3.2.5.12 NACK Management
 
-NACK Management
+
 
 If the RangeList (section 3.2.1.3.1) is empty or NACK Timer is still active, then the client MUST stop
 processing.
@@ -4682,7 +4523,7 @@ be zero.
 
 and MaxNACKBackOff (section 3.2.1.3) and setup the NACK Timer with it.
 
-3.2.5.12.1  NACK Timer Expiry
+###### 3.2.5.12.1 NACK Timer Expiry
 
 If the RangeList (section 3.2.1.3.1) is empty the client MUST stop processing.
 
@@ -4693,7 +4534,8 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client MUST construct NACK packet as specified in section 2.2.18 and MUST set the fields of the
+
+The client MUST construct NACK packet as specified in section 2.2.18 and MUST set the fields of the
 packet as follows:
 
   ClientId: MUST be set to ClientId (section 3.2.1.3).
@@ -4711,9 +4553,9 @@ The client MUST send the NACK packet to the Server Address (section 3.2.1.1).
 The client MUST generate a random value between MinNACKBackOff (section 3.2.1.3) and
 MaxNACKBackOff (section 3.2.1.3), and MUST set the timeout for NACK Timer (section 3.2.2) to it.
 
-3.2.5.12.2
+###### 3.2.5.12.2 Sending Zero NACK
 
-Sending Zero NACK
+
 
 The client MUST construct a NACK packet (section 2.2.18) and set the packet fields as follows:
 
@@ -4729,9 +4571,9 @@ The client MUST construct a NACK packet (section 2.2.18) and set the packet fiel
 
 The client MUST send the NACK packet to the Server Address (section 3.2.1.1).
 
-3.2.5.13
+##### 3.2.5.13 Processing an ODATA Packet
 
-Processing an ODATA Packet
+
 
 If the ODATASeqNo of ODATA packet is less than FirstODATASeqNo (section 3.2.1.3) and
 FirstODATASeqNo (section 3.2.1.3) is a non-zero value, then the client MUST ignore the packet.
@@ -4765,7 +4607,8 @@ Release: April 23, 2024
 
 58 / 69
 
-The client MUST update Missing ODATA List (section 3.2.1.3.1) using Received ODATA Packet (section
+
+The client MUST update Missing ODATA List (section 3.2.1.3.1) using Received ODATA Packet (section
 3.2.1.3.1.3) and providing the ODATASeqNo of the ODATA packet.
 
 The client MUST identify missing ODATA packets and setup NACK packets as specified in section
@@ -4785,25 +4628,25 @@ Application Protocol providing the payload specified by AppData and AppDataLen (
 fields of ODATA packet, and then MUST add the value of AppDataLen field to CurrentAppCacheSize
 (section 3.2.1.3).
 
-3.2.5.14
+##### 3.2.5.14 Processing an RDATA Packet
 
-Processing an RDATA Packet
+
 
 The client MUST set LastRDATATime (section 3.2.1.3) to the local time on client.
 
 The client MUST process RDATA exactly like an ODATA packet, as specified in section 3.2.5.13.
 
-3.2.5.15
+##### 3.2.5.15 Processing a KICK Packet
 
-Processing a KICK Packet
+
 
 The client MUST iterate through the list of ClientList fields (section 2.2.12) looking for an entry that
 matches the ClientId (section 3.2.1.1). If such an entry is found, client MUST terminate the Multicast
 Session.
 
-3.2.5.16
+##### 3.2.5.16 Processing a DEMOTE Packet
 
-Processing a DEMOTE Packet
+
 
 The client MUST iterate though ClientList fields (section 2.2.18) looking for an entry that matches the
 ClientId (section 3.2.1). If such an entry is found, client MUST send a LEAVE packet as specified in
@@ -4824,9 +4667,9 @@ packet.
 
   Set SessionState (section 3.2.1) to JoinState.
 
-3.2.5.17
+##### 3.2.5.17 Query Cache Trigger
 
-Query Cache Trigger
+
 
 The client MUST send a Query Cache Trigger to [MS-WDSMA] WDS Multicast Application Protocol to
 query the maximum number of bytes of payload that can be passed to it. The response MUST be
@@ -4839,25 +4682,26 @@ Release: April 23, 2024
 
 59 / 69
 
-3.2.5.18
 
-Cache Done Trigger
+##### 3.2.5.18 Cache Done Trigger
+
+
 
 [MS-WDSMA] WDS Multicast Application Protocol MUST provide the number of bytes of data that has
 been processed when sending this trigger. The client MUST subtract the specified number of bytes
 from the CurrentAppCacheSize (section 3.2.1.3).
 
-3.2.5.19
+##### 3.2.5.19 Processing an NCF Packet
 
-Processing an NCF Packet
+
 
 The client MUST ignore all NCF packets.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 Section 3.2.5.1 specifies the actions taken when each Timer expires.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -4868,7 +4712,8 @@ Release: April 23, 2024
 
 60 / 69
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -4879,11 +4724,12 @@ Release: April 23, 2024
 
 61 / 69
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
 
-5.2  Index of Security Parameters
+### 5.1 Security Considerations for Implementers
+
+### 5.2 Index of Security Parameters
 
 Security Parameter  Section
 
@@ -4896,7 +4742,8 @@ Release: April 23, 2024
 
 62 / 69
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4965,7 +4812,8 @@ Windows Deployment Services Multicast Transport Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<10> Section 3.2.5.13: Windows Server 2012 and Windows Server 2012 R2 WDS clients process the
+
+<10> Section 3.2.5.13: Windows Server 2012 and Windows Server 2012 R2 WDS clients process the
 WDSMCTP_OPT_ODATA_FW_LEAD_SEQ_NO Extended Option per this recommendation.
 
 [MS-WDSMT] - v20240423
@@ -4975,7 +4823,8 @@ Release: April 23, 2024
 
 64 / 69
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5019,7 +4868,8 @@ Release: April 23, 2024
 
 65 / 69
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -5151,7 +5001,8 @@ Extended Options message 13
 
 66 / 69
 
-Extended_Options packet 13
+
+Extended_Options packet 13
 
 F
 
@@ -5289,7 +5140,8 @@ Release: April 23, 2024
 
 67 / 69
 
-      WDSMCTP_OPT_CAPABILITIES Extended Option
+
+      WDSMCTP_OPT_CAPABILITIES Extended Option
 
 15
 
@@ -5430,7 +5282,8 @@ Release: April 23, 2024
 
 68 / 69
 
-      Kick Timer 45
+
+      Kick Timer 45
       OutState QCC Timer 45
       SPM Timer 45
 Timers

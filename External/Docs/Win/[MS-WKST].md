@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 205
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 205
 
-Date
+
+Date
 
 Revision
 History
@@ -550,7 +552,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -617,323 +620,162 @@ Release: April 23, 2024
 
 4 / 205
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Constants](#221-constants)
+      - [2.2.1.1 JOIN_MAX_PASSWORD_LENGTH](#2211-joinmaxpasswordlength)
+      - [2.2.1.2 JOIN_OBFUSCATOR_LENGTH](#2212-joinobfuscatorlength)
+      - [2.2.1.3 MAX_PREFERRED_LENGTH](#2213-maxpreferredlength)
+    - [2.2.2 Data Types](#222-data-types)
+      - [2.2.2.1 WKSSVC_IDENTIFY_HANDLE](#2221-wkssvcidentifyhandle)
+      - [2.2.2.2 WKSSVC_IMPERSONATE_HANDLE](#2222-wkssvcimpersonatehandle)
+      - [2.2.2.3 handle_t](#2223-handlet)
+    - [2.2.3 Enumerations](#223-enumerations)
+      - [2.2.3.1 NETSETUP_JOIN_STATUS](#2231-netsetupjoinstatus)
+      - [2.2.3.2 NETSETUP_NAME_TYPE](#2232-netsetupnametype)
+      - [2.2.3.3 NET_COMPUTER_NAME_TYPE](#2233-netcomputernametype)
+    - [2.2.4 Unions](#224-unions)
+      - [2.2.4.1 WKSTA_INFO](#2241-wkstainfo)
+      - [2.2.4.2 USE_INFO](#2242-useinfo)
+    - [2.2.5 Structures](#225-structures)
+      - [2.2.5.1 WKSTA_INFO_100](#2251-wkstainfo100)
+      - [2.2.5.2 WKSTA_INFO_101](#2252-wkstainfo101)
+      - [2.2.5.3 WKSTA_INFO_102](#2253-wkstainfo102)
+      - [2.2.5.4 WKSTA_INFO_502](#2254-wkstainfo502)
+      - [2.2.5.5 WKSTA_INFO_1013](#2255-wkstainfo1013)
+      - [2.2.5.6 WKSTA_INFO_1018](#2256-wkstainfo1018)
+      - [2.2.5.7 WKSTA_INFO_1046](#2257-wkstainfo1046)
+      - [2.2.5.8 WKSTA_TRANSPORT_INFO_0](#2258-wkstatransportinfo0)
+      - [2.2.5.9 WKSTA_USER_INFO_0](#2259-wkstauserinfo0)
+      - [2.2.5.10 WKSTA_USER_INFO_1](#22510-wkstauserinfo1)
+      - [2.2.5.11 STAT_WORKSTATION_0](#22511-statworkstation0)
+      - [2.2.5.12 WKSTA_USER_INFO_0_CONTAINER](#22512-wkstauserinfo0container)
+      - [2.2.5.13 WKSTA_USER_INFO_1_CONTAINER](#22513-wkstauserinfo1container)
+      - [2.2.5.14 WKSTA_USER_ENUM_STRUCT](#22514-wkstauserenumstruct)
+      - [2.2.5.15 WKSTA_TRANSPORT_INFO_0_CONTAINER](#22515-wkstatransportinfo0container)
+      - [2.2.5.16 WKSTA_TRANSPORT_ENUM_STRUCT](#22516-wkstatransportenumstruct)
+      - [2.2.5.17 JOINPR_USER_PASSWORD](#22517-joinpruserpassword)
+      - [2.2.5.18 JOINPR_ENCRYPTED_USER_PASSWORD](#22518-joinprencrypteduserpassword)
+        - [2.2.5.18.1 Password Encoding](#225181-password-encoding)
+        - [2.2.5.18.2 Initializing JOINPR_USER_PASSWORD](#225182-initializing-joinpruserpassword)
+        - [2.2.5.18.3 Encryption and Decryption](#225183-encryption-and-decryption)
+        - [2.2.5.18.4 Password Decoding](#225184-password-decoding)
+      - [2.2.5.19 JOINPR_ENCRYPTED_USER_PASSWORD_AES](#22519-joinprencrypteduserpasswordaes)
+        - [2.2.5.19.1 Password Encoding](#225191-password-encoding)
+        - [2.2.5.19.2 Session Key](#225192-session-key)
+        - [2.2.5.19.3 Encrypt Key and MAC Key](#225193-encrypt-key-and-mac-key)
+        - [2.2.5.19.4 Encrypt Encoded Password](#225194-encrypt-encoded-password)
+        - [2.2.5.19.5 Decrypt JOINPR_ENCRYPTED_USER_PASSWORD_AES](#225195-decrypt-joinprencrypteduserpasswordaes)
+      - [2.2.5.20 UNICODE_STRING](#22520-unicodestring)
+      - [2.2.5.21 NET_COMPUTER_NAME_ARRAY](#22521-netcomputernamearray)
+      - [2.2.5.22 USE_INFO_0](#22522-useinfo0)
+      - [2.2.5.23 USE_INFO_1](#22523-useinfo1)
+      - [2.2.5.24 USE_INFO_2](#22524-useinfo2)
+      - [2.2.5.25 USE_INFO_3](#22525-useinfo3)
+      - [2.2.5.26 USE_INFO_0_CONTAINER](#22526-useinfo0container)
+      - [2.2.5.27 USE_INFO_1_CONTAINER](#22527-useinfo1container)
+      - [2.2.5.28 USE_INFO_2_CONTAINER](#22528-useinfo2container)
+      - [2.2.5.29 USE_ENUM_STRUCT](#22529-useenumstruct)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 wkssvc Client Details](#31-wkssvc-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 wkssvc Server Details](#32-wkssvc-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Access Control Abstract Data Model](#3211-access-control-abstract-data-model)
+      - [3.2.1.2 Computer Name Abstract Data Model](#3212-computer-name-abstract-data-model)
+      - [3.2.1.3 OtherDomains Name Abstract Data Model](#3213-otherdomains-name-abstract-data-model)
+      - [3.2.1.4 Transport Information Abstract Data Model](#3214-transport-information-abstract-data-model)
+      - [3.2.1.5 Mapped Abstract Data Model Elements](#3215-mapped-abstract-data-model-elements)
+      - [3.2.1.6 Domain Membership Abstract Data Model](#3216-domain-membership-abstract-data-model)
+        - [3.2.1.6.1 Interaction with the [MS-LSAD] Data Model](#32161-interaction-with-the-ms-lsad-data-model)
+      - [3.2.1.7 UseEntry Information](#3217-useentry-information)
+      - [3.2.1.8 Connection Information Abstract Data Model](#3218-connection-information-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 NetrWkstaGetInfo (Opnum 0)](#3241-netrwkstagetinfo-opnum-0)
+      - [3.2.4.2 NetrWkstaSetInfo (Opnum 1)](#3242-netrwkstasetinfo-opnum-1)
+      - [3.2.4.3 NetrWkstaUserEnum (Opnum 2)](#3243-netrwkstauserenum-opnum-2)
+      - [3.2.4.4 NetrWkstaTransportEnum (Opnum 5)](#3244-netrwkstatransportenum-opnum-5)
+      - [3.2.4.5 NetrWkstaTransportAdd (Opnum 6)](#3245-netrwkstatransportadd-opnum-6)
+      - [3.2.4.6 NetrWkstaTransportDel (Opnum 7)](#3246-netrwkstatransportdel-opnum-7)
+      - [3.2.4.7 NetrUseAdd (Opnum 8)](#3247-netruseadd-opnum-8)
+      - [3.2.4.8 NetrUseGetInfo (Opnum 9)](#3248-netrusegetinfo-opnum-9)
+      - [3.2.4.9 NetrUseDel (Opnum 10)](#3249-netrusedel-opnum-10)
+      - [3.2.4.10 NetrUseEnum (Opnum 11)](#32410-netruseenum-opnum-11)
+      - [3.2.4.11 NetrWorkstationStatisticsGet (Opnum 13)](#32411-netrworkstationstatisticsget-opnum-13)
+      - [3.2.4.12 NetrGetJoinInformation (Opnum 20)](#32412-netrgetjoininformation-opnum-20)
+      - [3.2.4.13 NetrJoinDomain2 (Opnum 22)](#32413-netrjoindomain2-opnum-22)
+        - [3.2.4.13.1 and 3.2.4.13.3 specify the processing of this parameter.](#324131-and-324133-specify-the-processing-of-this-parameter)
+        - [3.2.4.13.2 State Changes Required for Domain Join](#324132-state-changes-required-for-domain-join)
+        - [3.2.4.13.3 Domain Join Specific Message Processing](#324133-domain-join-specific-message-processing)
+        - [3.2.4.13.4 Workgroup Join Specific Message Processing](#324134-workgroup-join-specific-message-processing)
+      - [3.2.4.14 NetrUnjoinDomain2 (Opnum 23)](#32414-netrunjoindomain2-opnum-23)
+      - [3.2.4.15 NetrRenameMachineInDomain2 (Opnum 24)](#32415-netrrenamemachineindomain2-opnum-24)
+      - [3.2.4.16 NetrValidateName2 (Opnum 25)](#32416-netrvalidatename2-opnum-25)
+      - [3.2.4.17 NetrGetJoinableOUs2 (Opnum 26)](#32417-netrgetjoinableous2-opnum-26)
+      - [3.2.4.18 NetrAddAlternateComputerName (Opnum 27)](#32418-netraddalternatecomputername-opnum-27)
+      - [3.2.4.19 NetrRemoveAlternateComputerName (Opnum 28)](#32419-netrremovealternatecomputername-opnum-28)
+      - [3.2.4.20 NetrSetPrimaryComputerName (Opnum 29)](#32420-netrsetprimarycomputername-opnum-29)
+      - [3.2.4.21 NetrEnumerateComputerNames (Opnum 30)](#32421-netrenumeratecomputernames-opnum-30)
+      - [3.2.4.22 NetrJoinDomain3 (Opnum 31)](#32422-netrjoindomain3-opnum-31)
+        - [3.2.4.22.1 Common Message Processing](#324221-common-message-processing)
+        - [3.2.4.22.2 State Changes Required for Domain Join](#324222-state-changes-required-for-domain-join)
+      - [3.2.4.23 NetrUnjoinDomain3 (Opnum 32)](#32423-netrunjoindomain3-opnum-32)
+      - [3.2.4.24 NetrRenameMachineInDomain3 (Opnum 33)](#32424-netrrenamemachineindomain3-opnum-33)
+      - [3.2.4.25 NetrValidateName3 (Opnum 34)](#32425-netrvalidatename3-opnum-34)
+      - [3.2.4.26 NetrAddAlternateComputerName2 (Opnum 35)](#32426-netraddalternatecomputername2-opnum-35)
+      - [3.2.4.27 NetrRemoveAlternateComputerName2 (Opnum 36)](#32427-netrremovealternatecomputername2-opnum-36)
+      - [3.2.4.28 NetrSetPrimaryComputerName2 (Opnum 37)](#32428-netrsetprimarycomputername2-opnum-37)
+      - [3.2.4.29 Common Message Processing](#32429-common-message-processing)
+        - [3.2.4.29.1 Query Computer Account DN for the Local Machine](#324291-query-computer-account-dn-for-the-local-machine)
+        - [3.2.4.29.2 LDAP Bind](#324292-ldap-bind)
+        - [3.2.4.29.3 LDAP Unbind](#324293-ldap-unbind)
+        - [3.2.4.29.4 Computer Account Update over SAMR](#324294-computer-account-update-over-samr)
+        - [3.2.4.29.5 Update Display Name Using SAMR](#324295-update-display-name-using-samr)
+        - [3.2.4.29.6 StartImpersonatingClient](#324296-startimpersonatingclient)
+        - [3.2.4.29.7 StopImpersonatingClient](#324297-stopimpersonatingclient)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+      - [3.2.6.1 WkstaQueryOtherDomains Event](#3261-wkstaqueryotherdomains-event)
+      - [3.2.6.2 WkstaAddOtherDomains Event](#3262-wkstaaddotherdomains-event)
+      - [3.2.6.3 Administrator Requests Redirection to Be Paused](#3263-administrator-requests-redirection-to-be-paused)
+      - [3.2.6.4 Administrator Requests Redirection to Be Resumed](#3264-administrator-requests-redirection-to-be-resumed)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 NetrWkstaGetInfo Example](#41-netrwkstagetinfo-example)
+  - [4.2 NetrWkstaUserEnum Example](#42-netrwkstauserenum-example)
+  - [4.3 NetrJoinDomain2 Example](#43-netrjoindomain2-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Entropy Sources](#52-entropy-sources)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 14
-Normative References ................................................................................. 14
-Informative References ............................................................................... 16
-Overview ........................................................................................................ 16
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 20
-Applicability Statement ..................................................................................... 20
-Versioning and Capability Negotiation ................................................................. 20
-Vendor-Extensible Fields ................................................................................... 20
-Standards Assignments ..................................................................................... 20
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.5
-
-2.2.4
-
-2.2.3
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.4.1
-2.2.4.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2  Messages ............................................................................................................... 21
-Transport ........................................................................................................ 21
-Message Syntax ............................................................................................... 21
-Constants .................................................................................................. 21
-JOIN_MAX_PASSWORD_LENGTH ............................................................ 21
-JOIN_OBFUSCATOR_LENGTH ................................................................. 21
-MAX_PREFERRED_LENGTH ..................................................................... 21
-Data Types ................................................................................................ 22
-WKSSVC_IDENTIFY_HANDLE .................................................................. 22
-WKSSVC_IMPERSONATE_HANDLE........................................................... 22
-handle_t .............................................................................................. 22
-Enumerations ............................................................................................. 22
-NETSETUP_JOIN_STATUS ...................................................................... 22
-NETSETUP_NAME_TYPE ......................................................................... 23
-NET_COMPUTER_NAME_TYPE ................................................................. 23
-Unions....................................................................................................... 24
-WKSTA_INFO ....................................................................................... 24
-USE_INFO ............................................................................................ 24
-Structures ................................................................................................. 25
-2.2.5.1
-WKSTA_INFO_100 ................................................................................ 25
-2.2.5.2
-WKSTA_INFO_101 ................................................................................ 26
-2.2.5.3
-WKSTA_INFO_102 ................................................................................ 26
-2.2.5.4
-WKSTA_INFO_502 ................................................................................ 27
-2.2.5.5
-WKSTA_INFO_1013 .............................................................................. 29
-2.2.5.6
-WKSTA_INFO_1018 .............................................................................. 29
-2.2.5.7
-WKSTA_INFO_1046 .............................................................................. 29
-2.2.5.8
-WKSTA_TRANSPORT_INFO_0 ................................................................. 29
-WKSTA_USER_INFO_0 .......................................................................... 30
-2.2.5.9
-2.2.5.10  WKSTA_USER_INFO_1 .......................................................................... 30
-2.2.5.11
-STAT_WORKSTATION_0 ........................................................................ 30
-2.2.5.12  WKSTA_USER_INFO_0_CONTAINER ........................................................ 33
-2.2.5.13  WKSTA_USER_INFO_1_CONTAINER ........................................................ 33
-2.2.5.14  WKSTA_USER_ENUM_STRUCT ................................................................ 34
-2.2.5.15  WKSTA_TRANSPORT_INFO_0_CONTAINER .............................................. 34
-2.2.5.16  WKSTA_TRANSPORT_ENUM_STRUCT ...................................................... 34
-JOINPR_USER_PASSWORD .................................................................... 35
-2.2.5.17
-JOINPR_ENCRYPTED_USER_PASSWORD .................................................. 35
-2.2.5.18
-Password Encoding .......................................................................... 36
-Initializing JOINPR_USER_PASSWORD ............................................... 38
-Encryption and Decryption ................................................................ 38
-Password Decoding .......................................................................... 38
-JOINPR_ENCRYPTED_USER_PASSWORD_AES ........................................... 39
-
-2.2.5.18.1
-2.2.5.18.2
-2.2.5.18.3
-2.2.5.18.4
-
-2.2.5.19
-
-[MS-WKST] - v20240423
-Workstation Service Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 205
-
-Password Encoding .......................................................................... 40
-2.2.5.19.1
-Session Key .................................................................................... 40
-2.2.5.19.2
-Encrypt Key and MAC Key ................................................................ 40
-2.2.5.19.3
-2.2.5.19.4
-Encrypt Encoded Password ............................................................... 40
-2.2.5.19.5  Decrypt JOINPR_ENCRYPTED_USER_PASSWORD_AES ......................... 41
-2.2.5.20  UNICODE_STRING ................................................................................ 41
-2.2.5.21  NET_COMPUTER_NAME_ARRAY .............................................................. 41
-2.2.5.22  USE_INFO_0 ........................................................................................ 41
-2.2.5.23  USE_INFO_1 ........................................................................................ 42
-2.2.5.24  USE_INFO_2 ........................................................................................ 43
-2.2.5.25  USE_INFO_3 ........................................................................................ 43
-2.2.5.26  USE_INFO_0_CONTAINER ...................................................................... 44
-2.2.5.27  USE_INFO_1_CONTAINER ...................................................................... 44
-2.2.5.28  USE_INFO_2_CONTAINER ...................................................................... 44
-2.2.5.29  USE_ENUM_STRUCT .............................................................................. 45
-Directory Service Schema Elements ................................................................... 45
-
-2.3
-
-3.2
-
-3.1
-
-3.2.1
-
-3.2.1.6.1
-
-3.2.1.7
-3.2.1.8
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-3.2.1.5
-3.2.1.6
-
-3  Protocol Details ..................................................................................................... 47
-wkssvc Client Details ........................................................................................ 47
-Abstract Data Model .................................................................................... 47
-Timers ...................................................................................................... 47
-Initialization ............................................................................................... 47
-Message Processing Events and Sequencing Rules .......................................... 47
-Timer Events .............................................................................................. 47
-Other Local Events ...................................................................................... 47
-wkssvc Server Details ....................................................................................... 47
-Abstract Data Model .................................................................................... 47
-Access Control Abstract Data Model ......................................................... 48
-Computer Name Abstract Data Model ...................................................... 49
-OtherDomains Name Abstract Data Model ................................................ 50
-Transport Information Abstract Data Model .............................................. 50
-Mapped Abstract Data Model Elements .................................................... 50
-Domain Membership Abstract Data Model ................................................ 51
-Interaction with the [MS-LSAD] Data Model ........................................ 51
-UseEntry Information ............................................................................ 52
-Connection Information Abstract Data Model ............................................ 52
-Timers ...................................................................................................... 53
-Initialization ............................................................................................... 53
-Message Processing Events and Sequencing Rules .......................................... 53
-NetrWkstaGetInfo (Opnum 0) ................................................................. 56
-3.2.4.1
-NetrWkstaSetInfo (Opnum 1) ................................................................. 58
-3.2.4.2
-NetrWkstaUserEnum (Opnum 2) ............................................................. 62
-3.2.4.3
-NetrWkstaTransportEnum (Opnum 5) ...................................................... 64
-3.2.4.4
-NetrWkstaTransportAdd (Opnum 6) ........................................................ 66
-3.2.4.5
-NetrWkstaTransportDel (Opnum 7) ......................................................... 67
-3.2.4.6
-NetrUseAdd (Opnum 8) ......................................................................... 68
-3.2.4.7
-NetrUseGetInfo (Opnum 9) .................................................................... 71
-3.2.4.8
-3.2.4.9
-NetrUseDel (Opnum 10) ........................................................................ 73
-3.2.4.10  NetrUseEnum (Opnum 11) ..................................................................... 75
-3.2.4.11  NetrWorkstationStatisticsGet (Opnum 13) ................................................ 78
-3.2.4.12  NetrGetJoinInformation (Opnum 20) ....................................................... 79
-3.2.4.13  NetrJoinDomain2 (Opnum 22) ................................................................ 80
-3.2.4.13.1
-Common Message Processing ............................................................ 83
-State Changes Required for Domain Join ............................................ 84
-3.2.4.13.2
-3.2.4.13.3  Domain Join Specific Message Processing ........................................... 85
-3.2.4.13.4  Workgroup Join Specific Message Processing ....................................... 89
-3.2.4.14  NetrUnjoinDomain2 (Opnum 23) ............................................................. 90
-3.2.4.15  NetrRenameMachineInDomain2 (Opnum 24) ............................................ 93
-
-3.2.2
-3.2.3
-3.2.4
-
-[MS-WKST] - v20240423
-Workstation Service Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 205
-
-3.2.4.22.1
-3.2.4.22.2
-
-3.2.4.16  NetrValidateName2 (Opnum 25) ............................................................. 97
-3.2.4.17  NetrGetJoinableOUs2 (Opnum 26).......................................................... 101
-3.2.4.18  NetrAddAlternateComputerName (Opnum 27) ......................................... 104
-3.2.4.19  NetrRemoveAlternateComputerName (Opnum 28) ................................... 110
-3.2.4.20  NetrSetPrimaryComputerName (Opnum 29) ............................................ 117
-3.2.4.21  NetrEnumerateComputerNames (Opnum 30) ........................................... 125
-3.2.4.22  NetrJoinDomain3 (Opnum 31) ............................................................... 127
-Common Message Processing ........................................................... 130
-State Changes Required for Domain Join ........................................... 131
-3.2.4.23  NetrUnjoinDomain3 (Opnum 32) ............................................................ 132
-3.2.4.24  NetrRenameMachineInDomain3 (Opnum 33) ........................................... 135
-3.2.4.25  NetrValidateName3 (Opnum 34) ............................................................ 140
-3.2.4.26  NetrAddAlternateComputerName2 (Opnum 35) ....................................... 144
-3.2.4.27  NetrRemoveAlternateComputerName2 (Opnum 36) ................................. 150
-3.2.4.28  NetrSetPrimaryComputerName2 (Opnum 37) .......................................... 156
-Common Message Processing ................................................................ 165
-3.2.4.29
-3.2.4.29.1  Query Computer Account DN for the Local Machine ............................. 165
-LDAP Bind ..................................................................................... 165
-3.2.4.29.2
-LDAP Unbind .................................................................................. 166
-3.2.4.29.3
-3.2.4.29.4
-Computer Account Update over SAMR ............................................... 167
-3.2.4.29.5  Update Display Name Using SAMR .................................................... 168
-StartImpersonatingClient ................................................................ 170
-3.2.4.29.6
-StopImpersonatingClient ................................................................. 170
-3.2.4.29.7
-Timer Events ............................................................................................. 170
-Other Local Events ..................................................................................... 170
-WkstaQueryOtherDomains Event ........................................................... 170
-WkstaAddOtherDomains Event .............................................................. 170
-Administrator Requests Redirection to Be Paused ..................................... 170
-Administrator Requests Redirection to Be Resumed .................................. 170
-
-3.2.6.1
-3.2.6.2
-3.2.6.3
-3.2.6.4
-
-3.2.5
-3.2.6
-
-4  Protocol Examples ............................................................................................... 171
-NetrWkstaGetInfo Example .............................................................................. 171
-NetrWkstaUserEnum Example ........................................................................... 171
-NetrJoinDomain2 Example ................................................................................ 172
-
-4.1
-4.2
-4.3
-
-5  Security ............................................................................................................... 175
-Security Considerations for Implementers .......................................................... 175
-Entropy Sources ............................................................................................. 175
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 176
-
-7  Appendix B: Product Behavior ............................................................................. 186
-
-8  Change Tracking .................................................................................................. 201
-
-9  Index ................................................................................................................... 202
-
-[MS-WKST] - v20240423
-Workstation Service Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 205
-
-1  Introduction
+## 1 Introduction
 
 The Workstation Service Remote Protocol is used to perform tasks on a computer remotely on a
 network, including:
@@ -953,7 +795,7 @@ This protocol is based on the Remote Procedure Call (RPC) protocol [C706] [MS-RP
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1004,7 +846,8 @@ Release: April 23, 2024
 
 8 / 205
 
-built-in domain: The security identifier (SID) namespace defined by the fixed SID S-1-5-32.
+
+built-in domain: The security identifier (SID) namespace defined by the fixed SID S-1-5-32.
 
 Contains groups that define roles on a local machine such as Backup Operators.
 
@@ -1078,7 +921,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-domain object: A unit of data storage in a domain that is maintained and made available to
+
+domain object: A unit of data storage in a domain that is maintained and made available to
 
 domain members by a domain controller (DC).
 
@@ -1158,7 +1002,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-machine account: An account that is associated with individual client or server machines in an
+
+machine account: An account that is associated with individual client or server machines in an
 
 Active Directory domain.
 
@@ -1234,7 +1079,8 @@ Release: April 23, 2024
 
 11 / 205
 
-plaintext: In cryptography, ordinary readable text before it is encrypted into ciphertext, or after it
+
+plaintext: In cryptography, ordinary readable text before it is encrypted into ciphertext, or after it
 
 has been decrypted.
 
@@ -1311,7 +1157,8 @@ Release: April 23, 2024
 
 12 / 205
 
-security identifier (SID): An identifier for security principals that is used to identify an account
+
+security identifier (SID): An identifier for security principals that is used to identify an account
 
 or a group. Conceptually, the SID is composed of an account authority portion (typically a
 domain) and a smaller integer representing an identity relative to the account authority,
@@ -1384,7 +1231,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-provides three forms (UTF-8, UTF-16, and UTF-32) and seven schemes (UTF-8, UTF-16, UTF-16
+
+provides three forms (UTF-8, UTF-16, and UTF-32) and seven schemes (UTF-8, UTF-16, UTF-16
 BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 
 universally unique identifier (UUID): A 128-bit value. UUIDs can be used for multiple
@@ -1427,14 +1275,14 @@ distinct from an RODC.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1456,7 +1304,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-ADA1] Microsoft Corporation, "Active Directory Schema Attributes A-L".
+
+[MS-ADA1] Microsoft Corporation, "Active Directory Schema Attributes A-L".
 
 [MS-ADA2] Microsoft Corporation, "Active Directory Schema Attributes M".
 
@@ -1524,7 +1373,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC2252] Wahl, M., Coulbeck, A., Howes, T., and Kille, S., "Lightweight Directory Access Protocol
+
+[RFC2252] Wahl, M., Coulbeck, A., Howes, T., and Kille, S., "Lightweight Directory Access Protocol
 (v3): Attribute Syntax Definitions", RFC 2252, December 1997, https://www.rfc-
 editor.org/info/rfc2252
 
@@ -1548,7 +1398,7 @@ with IPsec", RFC 4868, May 2007, https://www.rfc-editor.org/info/rfc4868
 http://technet2.microsoft.com/WindowsServer/en/Library/a0fcd250-e5f7-41b3-b0e8-
 240f8236e2101033.mspx
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [FIPS140] FIPS PUBS, "Security Requirements for Cryptographic Modules", FIPS PUB 140-2, May
 2001, https://csrc.nist.gov/csrc/media/publications/fips/140/2/final/documents/fips1402.pdf
@@ -1578,7 +1428,7 @@ RFC 819, August 1982, https://www.rfc-editor.org/info/rfc819
 [WININTERNALS] Russinovich, M., and Solomon, D., "Microsoft Windows Internals, Fourth Edition",
 Microsoft Press, 2005, ISBN: 0735619174.
 
-1.3  Overview
+### 1.3 Overview
 
 The Workstation Service Remote Protocol is designed for remotely querying and configuring certain
 aspects of an SMB network redirector on a remote computer. For example, an implementer can use
@@ -1590,7 +1440,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-this protocol to query the computer name or major and minor version numbers of the operating
+
+this protocol to query the computer name or major and minor version numbers of the operating
 system running on a remote computer.
 
 An implementer can also use the protocol to configure the behavior of an SMB network redirector. For
@@ -1638,7 +1489,7 @@ This is a simple request-response protocol. For every method call that the serve
 executes the method and returns a completion. The client simply returns the completion status to the
 caller. Each method call is independent of any previous method call.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Workstation Service Remote Protocol is dependent on the Remote Procedure Call (RPC)
 Protocol Extensions [MS-RPCE] and Server Message Block (SMB) Protocol [MS-SMB] for its
@@ -1654,7 +1505,8 @@ Release: April 23, 2024
 
 17 / 205
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-WKST].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1670,7 +1522,8 @@ Release: April 23, 2024
 
 18 / 205
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-WKST].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1701,7 +1554,8 @@ Release: April 23, 2024
 
 19 / 205
 
-  Read/write access to the domain-secret state variable in Active Directory ([MS-ADTS] section
+
+  Read/write access to the domain-secret state variable in Active Directory ([MS-ADTS] section
 
 6.4.1). In Netlogon it is called the shared secret ([MS-NRPC] section 3.1.1).
 
@@ -1720,7 +1574,7 @@ performing updates to the computer account (section 3.2.4.29.4).
 
 No other protocol depends on the Workstation Service Remote Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Workstation Service Remote Protocol is an RPC interface and, as a result, has the prerequisites
 [MS-RPCE] common to RPC interfaces.
@@ -1731,7 +1585,7 @@ computer that supports the Workstation Service Remote Protocol before this proto
 The client is expected to know the names of the transport protocols that can be enabled for use by the
 SMB network redirector on a remote computer.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is only appropriate for querying and configuring an SMB network redirector on a
 remote computer or enumerating the currently logged-on users on a remote computer.
@@ -1739,17 +1593,17 @@ remote computer or enumerating the currently logged-on users on a remote compute
 This protocol is not appropriate for enumeration of large numbers of logged-on users or transport
 protocols, because it provides no guarantees that those enumerations are consistent.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There are no versioning issues for this protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses Win32 error codes. These values are taken from the error number space specified in
 [MS-ERREF]. Vendors SHOULD<3> reuse those values with their indicated meaning. Choosing any
 other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1772,9 +1626,10 @@ Release: April 23, 2024
 
 20 / 205
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Workstation Service Remote Protocol MUST use the following RPC protocol sequence: RPC over
 SMB ([MS-RPCE] section 2.1.1.2).
@@ -1796,15 +1651,15 @@ underlying RPC protocol to retrieve the identity of the caller that made the met
 section 3.3.3.4.3, second bullet). The server SHOULD<4> use this identity to perform method-specific
 access checks (section 3.2.4).
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 In addition to RPC base types [C706], [MS-RPCE], and [MS-DTYP], the following data types are
 defined in the Microsoft Interface Definition Language (MIDL) specification for this RPC
 interface.
 
-2.2.1  Constants
+#### 2.2.1 Constants
 
-2.2.1.1  JOIN_MAX_PASSWORD_LENGTH
+##### 2.2.1.1 JOIN_MAX_PASSWORD_LENGTH
 
 Constant/value
 
@@ -1817,7 +1672,7 @@ JOIN_MAX_PASSWORD_LENGTH
 The size, in 16-bit characters, of the cleartext password buffer in a
 JOINPR_USER_PASSWORD structure (section 2.2.5.17).
 
-2.2.1.2  JOIN_OBFUSCATOR_LENGTH
+##### 2.2.1.2 JOIN_OBFUSCATOR_LENGTH
 
 Constant/value
 
@@ -1830,7 +1685,7 @@ JOIN_OBFUSCATOR_LENGTH
 The size, in bytes, of the unencrypted salt value in a
 JOINPR_USER_PASSWORD structure (section 2.2.5.17).
 
-2.2.1.3  MAX_PREFERRED_LENGTH
+##### 2.2.1.3 MAX_PREFERRED_LENGTH
 
 Constant/value
 
@@ -1848,7 +1703,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 0xFFFFFFFF
 
@@ -1858,9 +1714,9 @@ NetrUseEnum methods (sections 3.2.4.3, 3.2.4.4, and 3.2.4.10)
 to indicate that the server (2) MUST allocate the amount of
 memory required to return all the requested data.
 
-2.2.2  Data Types
+#### 2.2.2 Data Types
 
-2.2.2.1  WKSSVC_IDENTIFY_HANDLE
+##### 2.2.2.1 WKSSVC_IDENTIFY_HANDLE
 
 This type is declared as follows:
 
@@ -1870,7 +1726,7 @@ A null-terminated Unicode string that identifies the remote computer on which to
 method. The client MUST set the impersonation level to SECURITY_IDENTIFICATION ([MS-RPCE]
 section 2.2.1.1.10) for the RPC connection that refers to this handle.
 
-2.2.2.2  WKSSVC_IMPERSONATE_HANDLE
+##### 2.2.2.2 WKSSVC_IMPERSONATE_HANDLE
 
 This type is declared as follows:
 
@@ -1880,15 +1736,15 @@ A null-terminated Unicode string that identifies the remote computer on which to
 method. The client MUST set the impersonation level to SECURITY_IMPERSONATION ([MS-RPCE]
 section 2.2.1.1.10) for the RPC connection that refers to this handle.
 
-2.2.2.3  handle_t
+##### 2.2.2.3 handle_t
 
 A concrete type for an RPC binding handle ([C706] section 4.2.9.7 and [MS-DTYP] section 2.1.3).
 The client MUST set the impersonation level to SECURITY_IMPERSONATION ([MS-RPCE] section
 2.2.1.1.10) for the RPC connection that refers to this handle.
 
-2.2.3  Enumerations
+#### 2.2.3 Enumerations
 
-2.2.3.1  NETSETUP_JOIN_STATUS
+##### 2.2.3.1 NETSETUP_JOIN_STATUS
 
 The NETSETUP_JOIN_STATUS enumeration specifies details about the domain join status of a
 machine.
@@ -1911,13 +1767,14 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NetSetupUnjoined: Machine is not joined to a domain or to a workgroup.
+
+NetSetupUnjoined: Machine is not joined to a domain or to a workgroup.
 
 NetSetupWorkgroupName: Machine is joined to a workgroup.
 
 NetSetupDomainName: Machine is joined to a domain.
 
-2.2.3.2  NETSETUP_NAME_TYPE
+##### 2.2.3.2 NETSETUP_NAME_TYPE
 
 The NETSETUP_NAME_TYPE enumeration specifies the types of validation that can be performed for
 a computer name, workgroup name, or domain name (2).
@@ -1951,7 +1808,7 @@ domain with that name does not exist.
 
 NetSetupDnsMachine:  Verify that the name is valid as a DNS computer name.
 
-2.2.3.3  NET_COMPUTER_NAME_TYPE
+##### 2.2.3.3 NET_COMPUTER_NAME_TYPE
 
 The NET_COMPUTER_NAME_TYPE enumeration specifies the types of names that can be
 enumerated for a computer using the NetrEnumerateComputerNames method (section 3.2.4.21).
@@ -1980,9 +1837,10 @@ Release: April 23, 2024
 
 23 / 205
 
-2.2.4  Unions
 
-2.2.4.1  WKSTA_INFO
+#### 2.2.4 Unions
+
+##### 2.2.4.1 WKSTA_INFO
 
 The WKSTA_INFO union specifies details about a computer. This union is used by the methods
 NetrWkstaGetInfo (section 3.2.4.1) and NetrWkstaSetInfo (section 3.2.4.2).
@@ -2023,7 +1881,7 @@ WkstaInfo1018: Details about the state of the SMB network redirector (section 2.
 
 WkstaInfo1046: Details about the state of the SMB network redirector (section 2.2.5.7).
 
-2.2.4.2  USE_INFO
+##### 2.2.4.2 USE_INFO
 
 The USE_INFO union specifies details about the connection between a machine on which the
 workstation service is running and a shared resource. This union is used by the methods NetrUseAdd
@@ -2050,7 +1908,8 @@ Release: April 23, 2024
 
 24 / 205
 
-  *PUSE_INFO,
+
+  *PUSE_INFO,
   *LPUSE_INFO;
 
 UseInfo0: Details about a connection (section 2.2.5.22).
@@ -2061,9 +1920,9 @@ UseInfo2: Details about a connection (section 2.2.5.24).
 
 UseInfo3: Details about a connection (section 2.2.5.25).
 
-2.2.5  Structures
+#### 2.2.5 Structures
 
-2.2.5.1  WKSTA_INFO_100
+##### 2.2.5.1 WKSTA_INFO_100
 
 The WKSTA_INFO_100 structure specifies details about a computer environment, including
 platform-specific information, the names of the domain and local computer, and the operating
@@ -2124,7 +1983,8 @@ Release: April 23, 2024
 
 25 / 205
 
-2.2.5.2  WKSTA_INFO_101
+
+##### 2.2.5.2 WKSTA_INFO_101
 
 The WKSTA_INFO_101 structure specifies details about a computer environment, including
 platform-specific information, the names of the domain and local computer, and the operating
@@ -2157,7 +2017,7 @@ wki101_ver_minor: The minor version number of the operating system running on th
 
 wki101_lanroot: A value that is not used and MUST be returned as NULL by the server (2).
 
-2.2.5.3  WKSTA_INFO_102
+##### 2.2.5.3 WKSTA_INFO_102
 
 The WKSTA_INFO_102 structure specifies details about a computer environment, including
 platform-specific information, the names of the domain and local computer, the operating system,
@@ -2196,11 +2056,12 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-wki102_lanroot: A value that is not used and MUST be returned as NULL by the server (2).
+
+wki102_lanroot: A value that is not used and MUST be returned as NULL by the server (2).
 
 wki102_logged_on_users: The number of users who are currently active on the computer.
 
-2.2.5.4  WKSTA_INFO_502
+##### 2.2.5.4 WKSTA_INFO_502
 
 The WKSTA_INFO_502 structure specifies details about a computer environment.
 
@@ -2271,7 +2132,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-wki502_max_threads: Any value when sent, and MUST be ignored on receipt.
+
+wki502_max_threads: Any value when sent, and MUST be ignored on receipt.
 
 wki502_lock_quota: Any value when sent, and MUST be ignored on receipt.
 
@@ -2344,7 +2206,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.5.5  WKSTA_INFO_1013
+
+##### 2.2.5.5 WKSTA_INFO_1013
 
 The WKSTA_INFO_1013 structure specifies details about the state of the SMB network redirector.
 
@@ -2358,7 +2221,7 @@ wki1013_keep_conn: The number of seconds the SMB network redirector maintains an
 
 SMB connection to a remote computer’s resource before closing it.
 
-2.2.5.6  WKSTA_INFO_1018
+##### 2.2.5.6 WKSTA_INFO_1018
 
 The WKSTA_INFO_1018 structure specifies details about the state of the SMB network redirector.
 
@@ -2372,7 +2235,7 @@ wki1018_sess_timeout: The number of seconds the server (2) MUST wait before disc
 
 inactive session.
 
-2.2.5.7  WKSTA_INFO_1046
+##### 2.2.5.7 WKSTA_INFO_1046
 
 The WKSTA_INFO_1046 structure specifies details about the state of the SMB network redirector.
 
@@ -2387,7 +2250,7 @@ wki1046_dormant_file_limit: The maximum number of file or printer handles the SM
 redirector can continue to keep open, even after the application has closed the corresponding
 handle.
 
-2.2.5.8  WKSTA_TRANSPORT_INFO_0
+##### 2.2.5.8 WKSTA_TRANSPORT_INFO_0
 
 The WKSTA_TRANSPORT_INFO_0 structure specifies details about the network transport protocol
 that the SMB network redirector uses.
@@ -2411,7 +2274,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-wkti0_number_of_vcs: The current number of remote connections using this transport protocol.
+
+wkti0_number_of_vcs: The current number of remote connections using this transport protocol.
 
 wkti0_transport_name: The null-terminated, implementation-specific<5> name of the device that
 
@@ -2425,7 +2289,7 @@ wkti0_wan_ish: Whether the transport protocol is a routable protocol. If set to 
 
 routable protocol. If set to FALSE, this is not a routable protocol.
 
-2.2.5.9  WKSTA_USER_INFO_0
+##### 2.2.5.9 WKSTA_USER_INFO_0
 
 The WKSTA_USER_INFO_0 structure contains the name of a user who is currently active on the
 computer.
@@ -2439,9 +2303,9 @@ computer.
 wkui0_username: Null-terminated name of a user<7> who is currently active on the computer.
 Multiple users can be currently active on a computer; this is the name of any such user.
 
-2.2.5.10
+##### 2.2.5.10 WKSTA_USER_INFO_1
 
-WKSTA_USER_INFO_1
+
 
 The WKSTA_USER_INFO_1 structure contains user information as it pertains to a specific computer.
 
@@ -2466,9 +2330,9 @@ wkui1_logon_server: A null-terminated, NetBIOS name of the server (2) that authe
 
 the user.
 
-2.2.5.11
+##### 2.2.5.11 STAT_WORKSTATION_0
 
-STAT_WORKSTATION_0
+
 
 The STAT_WORKSTATION_0 structure contains statistical details about the SMB network
 redirector.
@@ -2486,7 +2350,8 @@ Release: April 23, 2024
 
 30 / 205
 
-   LARGE_INTEGER NonPagingReadBytesRequested;
+
+   LARGE_INTEGER NonPagingReadBytesRequested;
    LARGE_INTEGER CacheReadBytesRequested;
    LARGE_INTEGER NetworkReadBytesRequested;
    LARGE_INTEGER BytesTransmitted;
@@ -2563,7 +2428,8 @@ Release: April 23, 2024
 
 31 / 205
 
-PagingWriteBytesRequested: If applicable to the server, an implementation-specific value;
+
+PagingWriteBytesRequested: If applicable to the server, an implementation-specific value;
 
 otherwise, it MUST be set to zero.
 
@@ -2647,7 +2513,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Reconnects: The total number of SMB connections that have failed.
+
+Reconnects: The total number of SMB connections that have failed.
 
 CoreConnects: The total number of SMB connections to remote computers supporting the PCNET1
 
@@ -2679,9 +2546,9 @@ FailedUseCount: The total number of failed SMB connections for the SMB network r
 
 CurrentCommands: The number of current requests that the SMB network redirector has completed.
 
-2.2.5.12
+##### 2.2.5.12 WKSTA_USER_INFO_0_CONTAINER
 
-WKSTA_USER_INFO_0_CONTAINER
+
 
 The WKSTA_USER_INFO_0_CONTAINER structure contains a value that indicates the number of
 entries that the NetrWkstaUserEnum method (section 3.2.4.3) returns, as well as a pointer to the
@@ -2698,9 +2565,9 @@ EntriesRead: The number of entries that the method returns.
 
 Buffer: The names of the user accounts logged onto the remote computer.
 
-2.2.5.13
+##### 2.2.5.13 WKSTA_USER_INFO_1_CONTAINER
 
-WKSTA_USER_INFO_1_CONTAINER
+
 
 The WKSTA_USER_INFO_1_CONTAINER structure contains a value that indicates the number of
 entries that the NetrWkstaUserEnum method (section 3.2.4.3) returns, as well as a pointer to the
@@ -2722,11 +2589,12 @@ Release: April 23, 2024
 
 33 / 205
 
-Buffer: Details about the user accounts logged onto the remote computer.
 
-2.2.5.14
+Buffer: Details about the user accounts logged onto the remote computer.
 
-WKSTA_USER_ENUM_STRUCT
+##### 2.2.5.14 WKSTA_USER_ENUM_STRUCT
+
+
 
 The WKSTA_USER_ENUM_STRUCT structure is used by the NetrWkstaUserEnum method (section
 3.2.4.3) to encapsulate the _WKSTA_USER_ENUM_UNION union.
@@ -2766,9 +2634,9 @@ WkstaUserInfo: A WKSTA_USER_INFO_0_CONTAINER structure or a
 
 WKSTA_USER_INFO_1_CONTAINER structure.
 
-2.2.5.15
+##### 2.2.5.15 WKSTA_TRANSPORT_INFO_0_CONTAINER
 
-WKSTA_TRANSPORT_INFO_0_CONTAINER
+
 
 The WKSTA_TRANSPORT_INFO_0_CONTAINER structure is used by the
 NetrWkstaTransportEnum method (section 3.2.4.4) to specify the number of entries and a pointer
@@ -2787,9 +2655,9 @@ Buffer: A pointer to the array of WKSTA_TRANSPORT_INFO_0 structures that specify
 
 transport protocols.
 
-2.2.5.16
+##### 2.2.5.16 WKSTA_TRANSPORT_ENUM_STRUCT
 
-WKSTA_TRANSPORT_ENUM_STRUCT
+
 
 The WKSTA_TRANSPORT_ENUM_STRUCT structure is used by the NetrWkstaTransportEnum
 method (section 3.2.4.4). The Level parameter in the submitted structure determines the information
@@ -2802,7 +2670,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef struct _WKSTA_TRANSPORT_ENUM_STRUCT {
+
+ typedef struct _WKSTA_TRANSPORT_ENUM_STRUCT {
    unsigned long Level;
    [switch_is(Level)] union _WKSTA_TRANSPORT_ENUM_UNION {
      [case(0)]
@@ -2819,9 +2688,9 @@ WkstaTransportInfo: A pointer to a WKSTA_TRANSPORT_INFO_0_CONTAINER structure
 
 (section 2.2.5.15).
 
-2.2.5.17
+##### 2.2.5.17 JOINPR_USER_PASSWORD
 
-JOINPR_USER_PASSWORD
+
 
 The JOINPR_USER_PASSWORD structure represents a decrypted password in the Buffer member
 of a JOINPR_ENCRYPTED_USER_PASSWORD structure (section 2.2.5.18).
@@ -2845,9 +2714,9 @@ Length: An unsigned integer, in little-endian order, that specifies the length i
 
 string in the Buffer member.
 
-2.2.5.18
+##### 2.2.5.18 JOINPR_ENCRYPTED_USER_PASSWORD
 
-JOINPR_ENCRYPTED_USER_PASSWORD
+
 
 The JOINPR_ENCRYPTED_USER_PASSWORD structure is the container for a password during the
 encoding, encryption, decryption and decoding process.
@@ -2874,7 +2743,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  Encoding the cleartext password (section 2.2.5.18.1).
+
+1.  Encoding the cleartext password (section 2.2.5.18.1).
 
 2.  Initializing JOINPR_USER_PASSWORD with the result of step 1 (section 2.2.5.18.2).
 
@@ -2886,9 +2756,9 @@ Release: April 23, 2024
 
 cleartext password (section 2.2.5.18.4).
 
-2.2.5.18.1
+###### 2.2.5.18.1 Password Encoding
 
-Password Encoding
+
 
 The implementer MUST use the following algorithm to encode the password. However, the
 implementer MAY use alternate data structures as long as the resulting value is the same.
@@ -2950,7 +2820,8 @@ Release: April 23, 2024
 
 36 / 205
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-WKST].images/page037-img01.png)
 ![Extracted image 2 from page 37]([MS-WKST].images/page037-img02.png)
 <!-- /Extracted images from page 37 -->
@@ -3006,15 +2877,16 @@ Release: April 23, 2024
 
 37 / 205
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-WKST].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
 Figure 5: EncodedPassword complete
 
-2.2.5.18.2
+###### 2.2.5.18.2 Initializing JOINPR_USER_PASSWORD
 
-Initializing JOINPR_USER_PASSWORD
+
 
 An EncodedPassword is packed into the JOINPR_USER_PASSWORD structure (section 2.2.5.17) as
 follows:
@@ -3034,9 +2906,9 @@ the buffer. Any remaining bits MUST be initialized with random data.
 
 JOINPR_USER_PASSWORD.Length is initialized with the number of bytes in EncodedPassword.
 
-2.2.5.18.3
+###### 2.2.5.18.3 Encryption and Decryption
 
-Encryption and Decryption
+
 
 The algorithm that encrypts the JOINPR_USER_PASSWORD structure (section 2.2.5.17), beginning
 at JOINPR_USER_PASSWORD.Buffer and including JOINPR_USER_PASSWORD.Length, is
@@ -3078,9 +2950,9 @@ JOINPR_USER_PASSWORD.Length, which is ((JOIN_MAX_PASSWORD_LENGTH (section
 user-session-key is a 16-byte value obtained from the 16-byte SMB session key ([MS-SMB]
 section 3.2.1.3).
 
-2.2.5.18.4
+###### 2.2.5.18.4 Password Decoding
 
-Password Decoding
+
 
 [MS-WKST] - v20240423
 Workstation Service Remote Protocol
@@ -3089,7 +2961,8 @@ Release: April 23, 2024
 
 38 / 205
 
-Prior to decoding, decrypt the encrypted portion of the JOINPR_USER_PASSWORD structure
+
+Prior to decoding, decrypt the encrypted portion of the JOINPR_USER_PASSWORD structure
 (section 2.2.5.17).
 
 The implementer MUST use the following algorithm to decode the password. However, the
@@ -3126,9 +2999,9 @@ Seed.
 Then the buffer beginning at EncodedPassword[2], interpreted as an array of double byte characters,
 or wchar_t, is the cleartext password.
 
-2.2.5.19
+##### 2.2.5.19 JOINPR_ENCRYPTED_USER_PASSWORD_AES
 
-JOINPR_ENCRYPTED_USER_PASSWORD_AES
+
 
 The JOINPR_ENCRYPTED_USER_PASSWORD_AES structure is the container for a password
 during the encoding, encryption, decryption, and decoding process.<10>
@@ -3159,22 +3032,23 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.5.19.1
 
-Password Encoding
+###### 2.2.5.19.1 Password Encoding
+
+
 
 The clear text of the password should be encoded following the process in section 2.2.5.18.1.
 
-2.2.5.19.2
+###### 2.2.5.19.2 Session Key
 
-Session Key
+
 
 This is the first 16 bytes of the cryptographic key for this authenticated context. If the cryptographic
 key is less than 16 bytes, it is right-padded with zero bytes (see [MS-SMB2] section 3.3.1.8).
 
-2.2.5.19.3
+###### 2.2.5.19.3 Encrypt Key and MAC Key
 
-Encrypt Key and MAC Key
+
 
 The following variables and values are used in calculating the EncryptKey and HMACKey values.
 
@@ -3230,9 +3104,9 @@ MACKey := HMAC-SHA-512(SessionKey, WKST_AES256_MAC_KEY_STRING)
 Note that the SessionKey is calculated as in section 2.2.5.19.2. See [RFC4868] for details of the
 HMAC-SHA-512 algorithm.
 
-2.2.5.19.4
+###### 2.2.5.19.4 Encrypt Encoded Password
 
-Encrypt Encoded Password
+
 
 Encrypt the encoded password as follows:
 
@@ -3254,9 +3128,10 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note that EncryptKey is truncated to 32 bytes and the entire 64-byte MACKey is used.
 
-2.2.5.19.5  Decrypt JOINPR_ENCRYPTED_USER_PASSWORD_AES
+Note that EncryptKey is truncated to 32 bytes and the entire 64-byte MACKey is used.
+
+###### 2.2.5.19.5 Decrypt JOINPR_ENCRYPTED_USER_PASSWORD_AES
 
 When the server receives a JOINPR_ENCRYPTED_USER_PASSWORD_AES, the first steps are
 preparing the EncryptKey and MACKey values as in section 2.2.5.19.3.
@@ -3268,9 +3143,9 @@ EncodedPassword := De-AES-CBC(EncryptKey[0:256], IV(Salt), Cipher).
 
 The decoded password is the same as in section 2.2.5.18.4.
 
-2.2.5.20
+##### 2.2.5.20 UNICODE_STRING
 
-UNICODE_STRING
+
 
 The UNICODE_STRING structure specifies a Unicode string.
 
@@ -3293,9 +3168,9 @@ Buffer: The Unicode UTF-8 string. If the MaximumLength value is greater than zer
 
 MUST contain a non-null character. Buffer can contain a terminating null character.
 
-2.2.5.21
+##### 2.2.5.21 NET_COMPUTER_NAME_ARRAY
 
-NET_COMPUTER_NAME_ARRAY
+
 
 The NET_COMPUTER_NAME_ARRAY structure specifies the number of names associated with a
 computer and a buffer containing the names.
@@ -3312,9 +3187,9 @@ ComputerNames: The names as an array of UNICODE_STRING structures (section 2.2.5
 
 are associated with a machine.
 
-2.2.5.22
+##### 2.2.5.22 USE_INFO_0
 
-USE_INFO_0
+
 
 The USE_INFO_0 structure specifies details about the connection between a machine on which the
 workstation service is running and a shared resource.
@@ -3328,7 +3203,8 @@ Release: April 23, 2024
 
 41 / 205
 
-   [string] wchar_t* ui0_local;
+
+   [string] wchar_t* ui0_local;
    [string] wchar_t* ui0_remote;
  } USE_INFO_0,
   *PUSE_INFO_0,
@@ -3342,9 +3218,9 @@ ui0_remote: A pointer to a string that contains the share name of the remote res
 
 accessed. The string MUST be in the following form: "\\servername\sharename".
 
-2.2.5.23
+##### 2.2.5.23 USE_INFO_1
 
-USE_INFO_1
+
 
 The USE_INFO_1 structure specifies details about the connection between a machine on which the
 workstation service is running and a shared resource, including connection status and connection type.
@@ -3420,7 +3296,8 @@ Release: April 23, 2024
 
 42 / 205
 
-Value/code
+
+Value/code
 
 0x00000005
 
@@ -3474,9 +3351,9 @@ ui1_usecount: The number of explicit connections (with a device name) or implici
 
 (without the device name) that are established with the resource.
 
-2.2.5.24
+##### 2.2.5.24 USE_INFO_2
 
-USE_INFO_2
+
 
 The USE_INFO_2 structure specifies details about the connection between a machine on which the
 workstation service is running and a shared resource, including user name and domain name.
@@ -3495,9 +3372,9 @@ ui2_username: A pointer to a string that contains the name of the user who initi
 
 ui2_domainname: A pointer to a string that contains the domain name of the remote resource.
 
-2.2.5.25
+##### 2.2.5.25 USE_INFO_3
 
-USE_INFO_3
+
 
 The USE_INFO_3 structure specifies details about the connection between a machine on which the
 workstation service is running and a shared resource, including user name and domain name.
@@ -3513,7 +3390,8 @@ Release: April 23, 2024
 
 43 / 205
 
- } USE_INFO_3,
+
+ } USE_INFO_3,
   *PUSE_INFO_3,
   *LPUSE_INFO_3;
 
@@ -3521,9 +3399,9 @@ ui3_ui2: A pointer to the USE_INFO_2 structure (section 2.2.5.24) that the metho
 
 ui3_flags: A reserved field that the client MUST set to zero, and the server MUST ignore on receipt.
 
-2.2.5.26
+##### 2.2.5.26 USE_INFO_0_CONTAINER
 
-USE_INFO_0_CONTAINER
+
 
 The USE_INFO_0_CONTAINER structure contains a value that indicates the number of entries that
 the NetrUseEnum method (section 3.2.4.10) returns, as well as a pointer to the buffer.
@@ -3539,9 +3417,9 @@ EntriesRead: The number of entries that the method returns.
 
 Buffer: Details about the connection between a device and a shared resource.
 
-2.2.5.27
+##### 2.2.5.27 USE_INFO_1_CONTAINER
 
-USE_INFO_1_CONTAINER
+
 
 The USE_INFO_1_CONTAINER structure contains a value that indicates the number of entries that
 the NetrUseEnum method (section 3.2.4.10) returns, as well as a pointer to the buffer.
@@ -3559,9 +3437,9 @@ Buffer: Details about the connection between a machine on which the workstation 
 
 and a shared resource.
 
-2.2.5.28
+##### 2.2.5.28 USE_INFO_2_CONTAINER
 
-USE_INFO_2_CONTAINER
+
 
 The USE_INFO_2_CONTAINER structure contains a value that indicates the number of entries that
 the NetrUseEnum method (section 3.2.4.10) returns, as well as a pointer to the buffer.
@@ -3582,13 +3460,14 @@ Release: April 23, 2024
 
 44 / 205
 
-Buffer: Details about the connection between a machine on which the workstation service is running
+
+Buffer: Details about the connection between a machine on which the workstation service is running
 
 and a shared resource.
 
-2.2.5.29
+##### 2.2.5.29 USE_ENUM_STRUCT
 
-USE_ENUM_STRUCT
+
 
 The USE_ENUM_STRUCT structure is used by the NetrUseEnum method (section 3.2.4.10) to
 encapsulate the _USE_ENUM_UNION union.
@@ -3635,7 +3514,7 @@ UseInfo: A buffer containing any one of the USE_INFO_0, USE_INFO_1, or USE_INFO_
 
 structures.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The Workstation Service Remote Protocol accesses the directory service (DS) schema classes and
 attributes that are listed in the following table. For the syntactic specifications of the <Class> or
@@ -3675,7 +3554,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Class
+
+Class
 
 Attribute
 
@@ -3699,7 +3579,8 @@ Release: April 23, 2024
 
 46 / 205
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The methods comprising this RPC interface MUST all return 0x00000000 on success, and a non-zero,
 implementation-specific error code on failure. Unless otherwise specified in the following sections, a
@@ -3713,22 +3594,22 @@ protocol, respectively, rather than to client or server (2) versions of an opera
 methods MUST all behave the same regardless of whether the server side of the protocol is running in
 a client or server version of an operating system.
 
-3.1  wkssvc Client Details
+### 3.1 wkssvc Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 No abstract data model (ADM) is required.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required beyond those used internally by the RPC to implement resiliency to
 network outages [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The client MUST create an RPC connection to the remote computer (section 2.1).
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 No sequence of method calls is imposed on this protocol.
 
@@ -3739,17 +3620,17 @@ The client MUST ignore errors that the RPC server (2) returns and notify the app
 the error received in the higher layer. Otherwise, no special message processing is required on the
 client beyond the processing required in the underlying RPC protocol.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 There are no timer events.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 There are no local events.
 
-3.2  wkssvc Server Details
+### 3.2 wkssvc Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3761,7 +3642,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-explanation of how the protocol behaves. This specification does not mandate that implementations
+
+explanation of how the protocol behaves. This specification does not mandate that implementations
 adhere to this model as long as their external behavior is consistent with that described in this
 specification.
 
@@ -3809,7 +3691,7 @@ Ver_Major: The major version number of the operating system running on the compu
 
 Ver_Minor: The minor version number of the operating system running on the computer.
 
-3.2.1.1  Access Control Abstract Data Model
+##### 3.2.1.1 Access Control Abstract Data Model
 
 Access Rights: The access rights defined by this protocol are specified by the bit settings in the
 following table.
@@ -3840,7 +3722,8 @@ Release: April 23, 2024
 
 48 / 205
 
-NetSecurityDescriptor: A security descriptor that is used for the verification of access security
+
+NetSecurityDescriptor: A security descriptor that is used for the verification of access security
 
 during message processing. If present, this security descriptor MUST NOT be changed. Its value
 can be expressed as follows in Security Descriptor Definition Language (SDDL).<11>
@@ -3892,7 +3775,7 @@ PrincipalSelfSubst SID: This parameter MUST be NULL.
 
 5.  The server returns the results of the algorithm (from either step 2 or 3).
 
-3.2.1.2  Computer Name Abstract Data Model
+##### 3.2.1.2 Computer Name Abstract Data Model
 
 ComputerName (Public): The domain client MUST know the name of the computer upon which it is
 
@@ -3918,7 +3801,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-is a Unicode UTF-8 string [RFC3629] of 15 characters or fewer. The NetBIOS name of the
+
+is a Unicode UTF-8 string [RFC3629] of 15 characters or fewer. The NetBIOS name of the
 computer is the same as the unqualified name of the computer—for an example, see use of
 "simple-name" [RFC819]—if the name fits within the NetBIOS naming constraints. If the simple
 name does not meet the requirements of NetBIOS host names, the transformation from simple
@@ -3937,7 +3821,7 @@ alternate-computer-names: A list of tuples containing:
 
 The list of alternate-computer-names MAY<12> be empty.
 
-3.2.1.3  OtherDomains Name Abstract Data Model
+##### 3.2.1.3 OtherDomains Name Abstract Data Model
 
 OtherDomains: Specifies a list of NetBIOS names of domains browsed by the computer. Each name
 
@@ -3954,7 +3838,7 @@ computer. This list SHOULD<13> be empty.
 
 This element is set locally by a principal with administrator privileges.
 
-3.2.1.4  Transport Information Abstract Data Model
+##### 3.2.1.4 Transport Information Abstract Data Model
 
 The server (2) data model for transport information is defined as follows:
 
@@ -3971,7 +3855,7 @@ protocol.
 
 Transport.Wannish: A Boolean value that indicates whether the transport is routable.
 
-3.2.1.5  Mapped Abstract Data Model Elements
+##### 3.2.1.5 Mapped Abstract Data Model Elements
 
 DomainNameNetBIOS: the NetBIOS name of the domain that the machine is joined to, or the
 
@@ -3989,7 +3873,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ComputerNameNetBIOS: the NetBIOS name of the machine; this ADM element is the same as
+
+ComputerNameNetBIOS: the NetBIOS name of the machine; this ADM element is the same as
 
 ComputerName.NetBIOS (section 3.2.1.2).
 
@@ -3997,7 +3882,7 @@ ComputerNameFQDN: the FQDN of the machine; this ADM element is the same as
 
 ComputerName.FQDN (section 3.2.1.2).
 
-3.2.1.6  Domain Membership Abstract Data Model
+##### 3.2.1.6 Domain Membership Abstract Data Model
 
 The server must maintain the following data in a persistent store. The following elements are shared
 in a read-write mode with domain client administrators. These elements must be shared in a read-
@@ -4056,7 +3941,7 @@ it is possible to prompt the user for this information. If the domain client is 
 service or set of services (for example, a server), the implementation must store these values in a
 way that allows the domain client to retrieve them.
 
-3.2.1.6.1 Interaction with the [MS-LSAD] Data Model
+###### 3.2.1.6.1 Interaction with the [MS-LSAD] Data Model
 
 51 / 205
 
@@ -4065,7 +3950,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When the domain client is running the Local Security Authority (LSA), access to its public ADM
+
+When the domain client is running the Local Security Authority (LSA), access to its public ADM
 elements MUST be implemented ([MS-LSAD] section 3.1.1.10). The following ADM elements (section
 3.2.1.6) are considered to be owned by that protocol.
 
@@ -4104,7 +3990,7 @@ The DnsForestName member of the
 LSAPR_POLICY_DNS_DOMAIN_INFO structure, which represents
 the DNS Domain Information ADM element.
 
-3.2.1.7  UseEntry Information
+##### 3.2.1.7 UseEntry Information
 
 UseEntry.UserToken: A token that represents the identity of the client or the user that created
 
@@ -4114,7 +4000,7 @@ UseEntry.ConnectionTable: A list of connections established between a workstatio
 behalf of a user, each entry of which is specified in the Connection Information Abstract Data
 Model (section 3.2.1.8).
 
-3.2.1.8  Connection Information Abstract Data Model
+##### 3.2.1.8 Connection Information Abstract Data Model
 
 Connection: An array of connections established between a workstation and a server.
 
@@ -4147,13 +4033,14 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Connection.context: The context handle associated with the connection.
 
-3.2.2  Timers
+  Connection.context: The context handle associated with the connection.
+
+#### 3.2.2 Timers
 
 This protocol requires no timers.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Section 2.1 specifies the parameters necessary to initialize the RPC protocol.
 
@@ -4197,7 +4084,7 @@ Transport.VC_Count: Set to an implementation-defined value.<24>
 
 Transport.Wannish: Set to an implementation-defined value.<25>
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This protocol requires the following:
 
@@ -4218,7 +4105,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Methods that accept any of the following types of handles as parameters MUST return an
+
+Methods that accept any of the following types of handles as parameters MUST return an
 implementation specific error to the caller, if the impersonation level for the RPC connection that
 refers to the handle is not set to SECURITY_IDENTIFICATION ([MS-RPCE] section 2.2.1.1.10):
 
@@ -4327,7 +4215,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -4457,7 +4346,8 @@ Release: April 23, 2024
 
 55 / 205
 
-In the preceding table, the term "Reserved for local use" means that the client MUST NOT send the
+
+In the preceding table, the term "Reserved for local use" means that the client MUST NOT send the
 opnum, and the server behavior is undefined<27> because it does not affect interoperability.
 
 All methods MUST NOT throw exceptions.
@@ -4470,7 +4360,7 @@ connections immediately prior to returning, by providing the server name, the sh
 security principal that is requesting the share be closed ([MS-SMB2] section 3.2.4.22), unless
 otherwise stated.<28>
 
-3.2.4.1  NetrWkstaGetInfo (Opnum 0)
+##### 3.2.4.1 NetrWkstaGetInfo (Opnum 0)
 
 The NetrWkstaGetInfo method returns details about the configuration of a remote computer,
 including the computer name and major and minor version numbers of the operating system.
@@ -4545,7 +4435,8 @@ Release: April 23, 2024
 
 56 / 205
 
-The response of the server depends on the value of the Level parameter. If the Level parameter is not
+
+The response of the server depends on the value of the Level parameter. If the Level parameter is not
 equal to one of the valid values, the server MUST fail the call and return ERROR_INVALID_LEVEL.
 
 The server SHOULD<29> enforce security measures to verify that the caller has the required
@@ -4616,11 +4507,12 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  wki502_sess_timeout is set to Session_TimeOut
+
+  wki502_sess_timeout is set to Session_TimeOut
 
   wki502_dormant_file_limit MAY<30> be set to DormantFileLimit
 
-3.2.4.2  NetrWkstaSetInfo (Opnum 1)
+##### 3.2.4.2 NetrWkstaSetInfo (Opnum 1)
 
 The NetrWkstaSetInfo method configures a remote computer according to the information structure
 passed in the call.
@@ -4706,7 +4598,8 @@ Release: April 23, 2024
 
 58 / 205
 
-Value/code
+
+Value/code
 
 0x00000057
 
@@ -4792,7 +4685,8 @@ Value Returned
 
 59 / 205
 
-Member
+
+Member
 
 wki502_collection_time
 
@@ -4928,7 +4822,8 @@ SHOULD ignore this field.
 
 60 / 205
 
-Member
+
+Member
 
 Valid Range
 
@@ -5067,7 +4962,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Member
+
+Member
 
 wki502_buf_read_only_files
 
@@ -5151,7 +5047,7 @@ have the required credentials, the server MUST fail the call with ERROR_ACCESS_D
 Specifications for determining the identity of the caller for the purpose of performing an access check
 are in [MS-RPCE] section 3.3.3.1.3.
 
-3.2.4.3  NetrWkstaUserEnum (Opnum 2)
+##### 3.2.4.3 NetrWkstaUserEnum (Opnum 2)
 
 The NetrWkstaUserEnum method returns details about users who are currently active on a remote
 computer.
@@ -5171,7 +5067,8 @@ Release: April 23, 2024
 
 62 / 205
 
-ServerName: A WKSSVC_IDENTIFY_HANDLE structure (section 2.2.2.1) that identifies the server
+
+ServerName: A WKSSVC_IDENTIFY_HANDLE structure (section 2.2.2.1) that identifies the server
 (2). The client MUST map this structure to an RPC binding handle ([C706] sections 4.3.5 and
 5.1.5.2). The server MUST ignore this parameter.
 
@@ -5255,7 +5152,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-hold all the entries, then the server MUST return the maximum number of entries that fit in the
+
+hold all the entries, then the server MUST return the maximum number of entries that fit in the
 UserInfo buffer and return ERROR_MORE_DATA.
 
 The following rules specify processing of the ResumeHandle parameter:
@@ -5282,7 +5180,7 @@ The server is not required to maintain any state between calls to the NetrWkstaU
 the server returns NERR_Success or ERROR_MORE_DATA, it MUST set the TotalEntries parameter to
 equal the total number of entries that could have been enumerated from the current resume position.
 
-3.2.4.4  NetrWkstaTransportEnum (Opnum 5)
+##### 3.2.4.4 NetrWkstaTransportEnum (Opnum 5)
 
 The NetrWkstaTransportEnum method provides details about the transport protocols currently
 enabled for use by the SMB network redirector on a remote computer.
@@ -5334,7 +5232,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 0x00000000
 
@@ -5419,13 +5318,14 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server is not required to maintain any state between calls to the NetrWkstaTransportEnum
+
+The server is not required to maintain any state between calls to the NetrWkstaTransportEnum
 method. If the server returns NERR_Success, it MUST set the TotalEntries parameter to equal the total
 number of entries that could have been enumerated from the current resume position. If the server
 returns NERR_BufTooSmall, it SHOULD set the TotalEntries value to the total number of entries that
 could have been enumerated from the current resume position.<40>
 
-3.2.4.5  NetrWkstaTransportAdd (Opnum 6)
+##### 3.2.4.5 NetrWkstaTransportAdd (Opnum 6)
 
 The NetrWkstaTransportAdd method enables the SMB network redirector to use a transport
 protocol on a remote computer.
@@ -5501,7 +5401,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server SHOULD<42> enforce security measures to verify that the caller has authorization to
+
+The server SHOULD<42> enforce security measures to verify that the caller has authorization to
 execute this routine. If the server enforces security measures and the caller does not have the
 required credentials, the server SHOULD fail the call with ERROR_ACCESS_DENIED. Specifications for
 determining the identity of the caller for the purpose of performing an access check are in [MS-RPCE]
@@ -5524,7 +5425,7 @@ elements for each transport in TransportList (section 3.2.1.4) as follows:
 
   wkti0_wan_ish stored in Transport.Wannish
 
-3.2.4.6  NetrWkstaTransportDel (Opnum 7)
+##### 3.2.4.6 NetrWkstaTransportDel (Opnum 7)
 
 The NetrWkstaTransportDel method disables the use of a transport protocol by the SMB network
 redirector on a remote computer. The transport can be re-enabled by calling the
@@ -5585,7 +5486,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 NERR_Success
 
@@ -5645,7 +5547,7 @@ is 0x00000000 or 0x00000001, the server MUST fail the call. If the ForceLevel pa
 If this method call is successful, the server MUST remove this protocol from its list of currently
 enabled transport protocols.
 
-3.2.4.7  NetrUseAdd (Opnum 8)
+##### 3.2.4.7 NetrUseAdd (Opnum 8)
 
 The NetrUseAdd method establishes a connection between the workstation server and an SMB
 server. Workstation servers SHOULD NOT allow this method to be invoked remotely<45> and
@@ -5670,7 +5572,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Level: A value that specifies the information level of the data. This parameter MUST be one of the
+
+Level: A value that specifies the information level of the data. This parameter MUST be one of the
 
 following values; otherwise, the server MUST fail the call with an ERROR_INVALID_LEVEL code.
 
@@ -5776,7 +5679,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5861,7 +5765,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Connection.username is set to ui*_username.
+
+  Connection.username is set to ui*_username.
 
   Connection.usecount is set to ui*_usecount.
 
@@ -5881,7 +5786,7 @@ end the client impersonation ([MS-RPCE] section 3.3.3.4.3.3) and return NERR_Suc
 If the CIFS server returns a failure, the server MUST invoke the event to end the client impersonation
 ([MS-RPCE] section 3.3.3.4.3.3) and fail the call with the status code received from the event.
 
-3.2.4.8  NetrUseGetInfo (Opnum 9)
+##### 3.2.4.8 NetrUseGetInfo (Opnum 9)
 
 The NetrUseGetInfo method retrieves details from a remote workstation about a connection to a
 shared resource on an SMB server. The server SHOULD NOT allow this method to be invoked
@@ -5943,7 +5848,8 @@ Release: April 23, 2024
 
 71 / 205
 
-Value/code
+
+Value/code
 
 NERR_Success
 
@@ -6031,7 +5937,8 @@ Release: April 23, 2024
 
 72 / 205
 
-  ui1_password set to NULL
+
+  ui1_password set to NULL
 
   ui1_status set to Connection.status
 
@@ -6067,7 +5974,7 @@ parameter as follows. USE_INFO_2_CONTAINER contains an array of USE_INFO_2 struc
 
 The server MUST invoke the event to end the client impersonation ([MS-RPCE] section 3.3.3.4.3.3).
 
-3.2.4.9  NetrUseDel (Opnum 10)
+##### 3.2.4.9 NetrUseDel (Opnum 10)
 
 The NetrUseDel function terminates a connection from the workstation server to a shared resource
 on an SMB server. The server SHOULD NOT<49> allow this method to be invoked remotely and
@@ -6108,7 +6015,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 0x00000000
 
@@ -6207,7 +6115,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If a matching connection is found and IsWorkstationPaused is TRUE, the server MUST verify the
+
+If a matching connection is found and IsWorkstationPaused is TRUE, the server MUST verify the
 format of Connection.local. If Connection.local is prefixed with "PRN" or "COM", the server MUST
 fail the call with an ERROR_REDIR_PAUSED error code. If a matching connection is found and
 IsWorkstationPaused is FALSE, the server MUST disconnect the connection with the server by
@@ -6226,9 +6135,9 @@ UseEntry.UserToken matches UserToken.
 
 The server MUST invoke the event to end the client impersonation ([MS-RPCE] section 3.3.3.4.3.3).
 
-3.2.4.10
+##### 3.2.4.10 NetrUseEnum (Opnum 11)
 
-NetrUseEnum (Opnum 11)
+
 
 The NetrUseEnum method lists open connections between a workstation server and a remote SMB
 server. The server SHOULD NOT allow this method to be invoked remotely<51> and SHOULD return
@@ -6283,7 +6192,8 @@ Release: April 23, 2024
 
 75 / 205
 
-ResumeHandle: A pointer that, if specified and if this method returns ERROR_MORE_DATA, MUST
+
+ResumeHandle: A pointer that, if specified and if this method returns ERROR_MORE_DATA, MUST
 
 receive an implementation-specific value that can be passed in subsequent calls to this method in
 order to continue with the enumeration of currently logged-on users.
@@ -6375,7 +6285,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-parameter as follows. The USE_INFO_1_CONTAINER structure contains an array of
+
+parameter as follows. The USE_INFO_1_CONTAINER structure contains an array of
 USE_INFO_1 structures (section 2.2.5.23).
 
   ui1_local set to Connection.local
@@ -6453,11 +6364,12 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST invoke the event to end the client impersonation ([MS-RPCE] section 3.3.3.4.3.3).
 
-3.2.4.11
+The server MUST invoke the event to end the client impersonation ([MS-RPCE] section 3.3.3.4.3.3).
 
-NetrWorkstationStatisticsGet (Opnum 13)
+##### 3.2.4.11 NetrWorkstationStatisticsGet (Opnum 13)
+
+
 
 The NetrWorkstationStatisticsGet method returns various statistics about the SMB network
 redirector on a remote computer.
@@ -6536,13 +6448,14 @@ Release: April 23, 2024
 
 78 / 205
 
-Some members of the STAT_WORKSTATION_0 structure (section 2.2.5.11) are implementation-
+
+Some members of the STAT_WORKSTATION_0 structure (section 2.2.5.11) are implementation-
 specific values<55> that indicate certain performance characteristics of an operating system and do
 not apply to all servers. If a member value does not apply to the server, it MUST be set to zero.
 
-3.2.4.12
+##### 3.2.4.12 NetrGetJoinInformation (Opnum 20)
 
-NetrGetJoinInformation (Opnum 20)
+
 
 The NetrGetJoinInformation method retrieves details about the workgroup or domain to which the
 specified computer is joined.
@@ -6620,7 +6533,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -6641,9 +6555,9 @@ DomainNameFQDN.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.13
+##### 3.2.4.13 NetrJoinDomain2 (Opnum 22)
 
-NetrJoinDomain2 (Opnum 22)
+
 
 The NetrJoinDomain2 method uses encrypted credentials to join a computer to a domain or a
 workgroup.<57>
@@ -6697,7 +6611,8 @@ Release: April 23, 2024
 
 80 / 205
 
-MachineAccountOU: A pointer to a string that contains [RFC1777] the format name of the
+
+MachineAccountOU: A pointer to a string that contains [RFC1777] the format name of the
 
 organizational unit (OU) directory object under which the machine account directory object is
 created. This parameter is optional. If specified, this string MUST contain the full path; for
@@ -6718,7 +6633,7 @@ the format MUST be one of the following:
 Password: A pointer to a JOINPR_ENCRYPTED_USER_PASSWORD structure (section 2.2.5.18)
 
 that specifies the encrypted password to use with the AccountName parameter. Sections
-3.2.4.13.1 and 3.2.4.13.3 specify the processing of this parameter.
+###### 3.2.4.13.1 and 3.2.4.13.3 specify the processing of this parameter.
 
 Options: A 32-bit bitfield that specifies modifications to default server (2) behavior in message
 
@@ -6806,7 +6721,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -6931,7 +6847,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -7025,7 +6942,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The server MUST retrieve the RPC protocol sequence used for the current call ([MS-RPCE]
+
+1.  The server MUST retrieve the RPC protocol sequence used for the current call ([MS-RPCE]
 
 section 3.1.3.4.1), specifying the server binding handle maintained by the RPC runtime ([C706]
 section 6.2.1). If that RPC protocol sequence is not NCACN_NP, the server SHOULD return
@@ -7064,9 +6982,9 @@ continues.
 processing this message (section 3.2.4.13.4); otherwise, the server MUST process the message
 (section 3.2.4.13.3).
 
-3.2.4.13.2
+###### 3.2.4.13.2 State Changes Required for Domain Join
 
-State Changes Required for Domain Join
+
 
 A computer is said to be joined to a domain if a certain state exists on the computer and in the
 domain NC. See the specific state requirements that MUST occur both locally and in the domain NC at
@@ -7111,7 +7029,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-LDAP attribute name
+
+LDAP attribute name
 
 Value
 
@@ -7158,7 +7077,7 @@ A DNS-based SPN.
 
 A NetBIOS-based SPN for the computer joining the domain.
 
-3.2.4.13.3  Domain Join Specific Message Processing
+###### 3.2.4.13.3 Domain Join Specific Message Processing
 
 The following definitions are used in the specification of message processing that follows.
 
@@ -7203,7 +7122,8 @@ Release: April 23, 2024
 
 85 / 205
 
-3.  If the NETSETUP_MACHINE_PWD_PASSED bit is set in Options, and either Password is NULL
+
+3.  If the NETSETUP_MACHINE_PWD_PASSED bit is set in Options, and either Password is NULL
 
 or the length of the PasswordString is zero, the server MUST return
 ERROR_PASSWORD_RESTRICTION. Otherwise, message processing continues.
@@ -7278,7 +7198,8 @@ Release: April 23, 2024
 
 86 / 205
 
-  SiteName = 0
+
+  SiteName = 0
 
 
 
@@ -7355,7 +7276,8 @@ Release: April 23, 2024
 
 87 / 205
 
-21. If the NETSETUP_MACHINE_PWD_PASSED bit is not set in Options, and neither the
+
+21. If the NETSETUP_MACHINE_PWD_PASSED bit is not set in Options, and neither the
 
 NETSETUP_WIN9X_UPGRADE bit nor the NETSETUP_JOIN_UNSECURE bit is set in Options,
 ComputerPasswordString is an ASCII string of randomly chosen characters. Each character's ASCII
@@ -7431,7 +7353,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-LDAP attribute name
+
+LDAP attribute name
 
 Value
 
@@ -7507,7 +7430,7 @@ Domain Users group to the local users groups ([MS-SAMR] section 3.1.4.2).
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.13.4  Workgroup Join Specific Message Processing
+###### 3.2.4.13.4 Workgroup Join Specific Message Processing
 
 The following statements define the sequence of message processing operations.
 
@@ -7529,7 +7452,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  DomainName.NetBIOS = DomainNameParam
+
+  DomainName.NetBIOS = DomainNameParam
 
   DomainName.FQDN = NULL
 
@@ -7551,9 +7475,9 @@ workgroup.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.14
+##### 3.2.4.14 NetrUnjoinDomain2 (Opnum 23)
 
-NetrUnjoinDomain2 (Opnum 23)
+
 
 The NetrUnjoinDomain2 method uses encrypted credentials to unjoin a computer from a workgroup
 or domain.<76>
@@ -7613,7 +7537,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 NERR_Success
 
@@ -7713,7 +7638,8 @@ Release: April 23, 2024
 
 91 / 205
 
-2.2.5.17). The value of the Length member MUST be less than 513; otherwise, message
+
+2.2.5.17). The value of the Length member MUST be less than 513; otherwise, message
 processing is stopped, and the server MUST return ERROR_INVALID_PASSWORD.
 
 4.  The server MUST impersonate the client by invoking the StartImpersonatingClient task (section
@@ -7791,7 +7717,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-20. The server MUST set the following ADM elements (section 3.2.1.6) to NULL: ClientName,
+
+20. The server MUST set the following ADM elements (section 3.2.1.6) to NULL: ClientName,
 
 DomainName, DomainSid, ForestNameFQDN, DomainGuid, SiteName, and Password.
 
@@ -7801,9 +7728,9 @@ DomainName, DomainSid, ForestNameFQDN, DomainGuid, SiteName, and Password.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.15
+##### 3.2.4.15 NetrRenameMachineInDomain2 (Opnum 24)
 
-NetrRenameMachineInDomain2 (Opnum 24)
+
 
 The NetrRenameMachineInDomain2 method uses encrypted credentials to change the locally
 persisted variable ComputerNameNetBIOS (section 3.2.1.5) and to optionally rename the computer
@@ -7871,7 +7798,8 @@ Release: April 23, 2024
 
 93 / 205
 
-Value/code
+
+Value/code
 
 NERR_Success
 
@@ -7974,7 +7902,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following statements define the sequence of message processing operations.
+
+The following statements define the sequence of message processing operations.
 
 1.  The server (2) MUST retrieve the RPC protocol sequence used for the current call ([MS-RPCE]
 
@@ -8053,7 +7982,8 @@ Release: April 23, 2024
 
 95 / 205
 
-If the DsrGetDcNameEx2 method fails, the server MUST retry the call specifying the following
+
+If the DsrGetDcNameEx2 method fails, the server MUST retry the call specifying the following
 parameters:
 
   ComputerName = NULL
@@ -8140,7 +8070,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 First list entry
 
@@ -8206,9 +8137,9 @@ protocols on the server can operate using the new name.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.16
+##### 3.2.4.16 NetrValidateName2 (Opnum 25)
 
-NetrValidateName2 (Opnum 25)
+
 
 The NetrValidateName2 method verifies the validity of a computer, workgroup, or domain name
 (2).<87>
@@ -8231,7 +8162,8 @@ Release: April 23, 2024
 
 97 / 205
 
-ServerName: This parameter has no effect on message processing in any environment. The client
+
+ServerName: This parameter has no effect on message processing in any environment. The client
 MUST set this parameter to a value that resolves to the IP protocol layer destination address of
 the RPC packets it transmits ([MS-RPCE] section 2.1.1.2). The server (2) MUST ignore this
 parameter.
@@ -8347,7 +8279,8 @@ Release: April 23, 2024
 
 98 / 205
 
-Any other return value MUST conform to the error code requirements in Protocol Details (section
+
+Any other return value MUST conform to the error code requirements in Protocol Details (section
 3).
 
 The following definition is used in the specification of message processing that follows.
@@ -8431,7 +8364,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -8508,7 +8442,8 @@ Release: April 23, 2024
 
 100 / 205
 
-
+
+
 
 The name MUST be valid for registration as a NetBIOS group name [RFC1001].<90> If the
 name is not valid then ERROR_INVALID_PARAMETER MUST be returned.
@@ -8557,9 +8492,9 @@ ERROR_DUP_NAME MUST be returned if this condition is not satisfied.<93>
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.17
+##### 3.2.4.17 NetrGetJoinableOUs2 (Opnum 26)
 
-NetrGetJoinableOUs2 (Opnum 26)
+
 
 The NetrGetJoinableOUs2 method returns a list of organizational units (OUs) in which the user
 can create an object.<94>
@@ -8593,7 +8528,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-AccountName: A pointer to a string that specifies the account name to use when connecting to a
+
+AccountName: A pointer to a string that specifies the account name to use when connecting to a
 domain controller. This parameter is optional. If this parameter is NULL, the caller's account
 name MUST be used.
 
@@ -8693,7 +8629,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The server MUST retrieve the RPC protocol sequence used for the current call ([MS-RPCE] section
+
+1.  The server MUST retrieve the RPC protocol sequence used for the current call ([MS-RPCE] section
 
 3.1.3.4.1), specifying the server binding handle maintained by the RPC runtime ([C706] section
 6.2.1). If that RPC protocol sequence is not NCACN_NP, the server SHOULD return
@@ -8778,7 +8715,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 TaskInputRequestMessage: LDAP SearchRequest message [RFC2251] section 4.5.1 as
 follows:
@@ -8827,9 +8765,9 @@ DomainControllerConnection.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.18
+##### 3.2.4.18 NetrAddAlternateComputerName (Opnum 27)
 
-NetrAddAlternateComputerName (Opnum 27)
+
 
 The NetrAddAlternateComputerName method adds an alternate name for a specified server
 (2).<99>
@@ -8868,7 +8806,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  <FullyQualifiedDNSDomainName>\<UserName>
+
+  <FullyQualifiedDNSDomainName>\<UserName>
 
   <UserName>@<FullyQualifiedDNSDomainName>
 
@@ -8979,7 +8918,8 @@ Release: April 23, 2024
 
 105 / 205
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -9064,7 +9004,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Length member MUST be less than 513; otherwise, message processing is stopped, and the
+
+Length member MUST be less than 513; otherwise, message processing is stopped, and the
 server MUST return ERROR_INVALID_PASSWORD.
 
 6.  The server MUST impersonate the client by invoking the StartImpersonatingClient task (section
@@ -9140,7 +9081,8 @@ Release: April 23, 2024
 
 107 / 205
 
-
+
+
 
 Flags = (J | B) ([MS-NRPC] section 3.5.4.3.1).
 
@@ -9231,7 +9173,8 @@ Release: April 23, 2024
 
 108 / 205
 
-
+
+
 
 
 
@@ -9346,7 +9289,8 @@ Release: April 23, 2024
 
 109 / 205
 
-
+
+
 
 
 
@@ -9432,9 +9376,9 @@ NewAlternateNames from the list in alternate-computer-names persisted locally.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.19
+##### 3.2.4.19 NetrRemoveAlternateComputerName (Opnum 28)
 
-NetrRemoveAlternateComputerName (Opnum 28)
+
 
 The NetrRemoveAlternateComputerName method removes an alternate name for a specified
 server (2).<106>
@@ -9446,7 +9390,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- unsigned long NetrRemoveAlternateComputerName(
+
+ unsigned long NetrRemoveAlternateComputerName(
    [in] handle_t RpcBindingHandle,
    [in, string, unique] wchar_t* ServerName,
    [in, string, unique] wchar_t* AlternateName,
@@ -9533,7 +9478,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 0x00000000
 
@@ -9641,7 +9587,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  ComputerAccountDN: A UTF-8 string that contains the DN of the computer account.
+
+  ComputerAccountDN: A UTF-8 string that contains the DN of the computer account.
 
   ComputerAccountExtendedDN: A UTF-8 string that contains the extended DN ([MS-ADTS] section
 
@@ -9721,7 +9668,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-9.  The server MUST impersonate the client by invoking the StartImpersonatingClient task (section
+
+9.  The server MUST impersonate the client by invoking the StartImpersonatingClient task (section
 
 3.2.4.29.6). If this operation fails, the server MUST return an error.
 
@@ -9806,7 +9754,8 @@ Release: April 23, 2024
 
 114 / 205
 
-  DisallowReferrals: TRUE
+
+  DisallowReferrals: TRUE
 
 The result is stored in ReadOnlyDomainControllerConnection. If the LDAP bind is not successful,
 steps 15 through 21 are not processed and the server MUST return an error after processing steps
@@ -9914,7 +9863,8 @@ Release: April 23, 2024
 
 115 / 205
 
-
+
+
 
 typesOnly: FALSE
 
@@ -10024,7 +9974,8 @@ Release: April 23, 2024
 
 116 / 205
 
-
+
+
 
 
 
@@ -10056,9 +10007,9 @@ the list in alternate-computer-names persisted locally.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.20
+##### 3.2.4.20 NetrSetPrimaryComputerName (Opnum 29)
 
-NetrSetPrimaryComputerName (Opnum 29)
+
 
 The NetrSetPrimaryComputerName method sets the primary computer name for a specified
 server (2).<113>
@@ -10106,7 +10057,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Reserved: A 32-bit bitfield that SHOULD be set to zero.
+
+Reserved: A 32-bit bitfield that SHOULD be set to zero.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -10221,7 +10173,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Unless otherwise noted, if the server encounters an error during message processing, the server
+
+Unless otherwise noted, if the server encounters an error during message processing, the server
 SHOULD revert any state changes made, MUST stop message processing, and MUST return the error
 to the caller.<116>
 
@@ -10308,7 +10261,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PasswordString MUST equal the decrypted and decoded value. The decrypted buffer is represented
+
+PasswordString MUST equal the decrypted and decoded value. The decrypted buffer is represented
 as a JOINPR_USER_PASSWORD structure (section 2.2.5.17). The value of the Length member
 MUST be less than 513; otherwise, message processing is stopped, and the server MUST return
 ERROR_INVALID_PASSWORD.
@@ -10386,7 +10340,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-19. If the server is not joined to a domain ([MS-ADTS] section 6.4), proceed to step 32. Otherwise,
+
+19. If the server is not joined to a domain ([MS-ADTS] section 6.4), proceed to step 32. Otherwise,
 
 the server MUST make the following updates in the domain.
 
@@ -10470,7 +10425,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-24. The server invokes Query Computer Account DN for the Local Machine (section 3.2.4.29.1),
+
+24. The server invokes Query Computer Account DN for the Local Machine (section 3.2.4.29.1),
 specifying DomainControllerString for the DomainControllerQueryTarget parameter, storing the
 result in ComputerAccountDN. If the query returns an error, steps 25 through 29 are not
 processed and the server MUST return the error after processing steps 30 through 34.
@@ -10581,7 +10537,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 TaskInputRequestMessage: LDAP SearchRequest message ([RFC2251] section 4.5.1) as
 follows:
@@ -10691,7 +10648,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-28. If IsRODC is TRUE, the server invokes the "Performing an LDAP Operation on an ADConnection"
+
+28. If IsRODC is TRUE, the server invokes the "Performing an LDAP Operation on an ADConnection"
 
 task of [MS-ADTS] section 7.6.1.6 with the following parameters:
 
@@ -10799,7 +10757,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Sets ComputerNameFQDN to OldAlternateNames.FQDN.
+
+  Sets ComputerNameFQDN to OldAlternateNames.FQDN.
 
   Sets ComputerNameNetBIOS to OldAlternateNames.NetBIOS.
 
@@ -10829,9 +10788,9 @@ following parameters:
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.21
+##### 3.2.4.21 NetrEnumerateComputerNames (Opnum 30)
 
-NetrEnumerateComputerNames (Opnum 30)
+
 
 The NetrEnumerateComputerNames method returns a list of computer names for a specified
 server (2). The results of the query are determined by the type of the name. <120>
@@ -10885,7 +10844,8 @@ field.
 
 125 / 205
 
-Value
+
+Value
 
 Meaning
 
@@ -10987,7 +10947,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-6.  The server MUST initialize the output parameter ComputerNames as follows depending on the
+
+6.  The server MUST initialize the output parameter ComputerNames as follows depending on the
 
 input query type in NameType.
 
@@ -11016,9 +10977,9 @@ NetAlternateComputerNames input query types.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.22
+##### 3.2.4.22 NetrJoinDomain3 (Opnum 31)
 
-NetrJoinDomain3 (Opnum 31)
+
 
 The NetrJoinDomain3 method uses encrypted credentials to join a computer to a domain or to a
 workgroup.<124>
@@ -11059,7 +11020,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-be either the NetBIOS name of the domain or the fully qualified domain name (FQDN) (1) of
+
+be either the NetBIOS name of the domain or the fully qualified domain name (FQDN) (1) of
 the domain. If the MachineName is passed, it MUST be either the NetBIOS name of the domain
 controller or the Internet host name of the domain controller. The format of DomainNameToJoin
 places no constraint on the format of MachineName and vice versa; thus, each of the following
@@ -11162,7 +11124,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -11285,7 +11248,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 0x0000054A
 
@@ -11363,9 +11327,9 @@ in Password.
 ComputerPasswordString: The ASCII string that contains the plaintext form of the password for the
 computer account.
 
-3.2.4.22.1
+###### 3.2.4.22.1 Common Message Processing
 
-Common Message Processing
+
 
 The following statements pertain to all message processing:
 
@@ -11385,7 +11349,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -11438,9 +11403,9 @@ If Options does not have the NETSETUP_JOIN_DOMAIN bit set, the server MUST conti
 processing this message (section 3.2.4.13.4); otherwise, the server MUST process the message
 (section 3.2.4.13.3).
 
-3.2.4.22.2
+###### 3.2.4.22.2 State Changes Required for Domain Join
 
-State Changes Required for Domain Join
+
 
 A computer is said to be joined to a domain if a certain state exists on the computer and in the
 domain NC. See the specific state requirements that MUST occur both locally and in the domain NC at
@@ -11472,7 +11437,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  A computer account object with the following LDAP attributes<139>. See [RFC2252] and
+
+  A computer account object with the following LDAP attributes<139>. See [RFC2252] and
 
 [RFC2253] for more information about LDAP.
 
@@ -11527,9 +11493,9 @@ A DNS based SPN.
 
 A NetBIOS based SPN for the computer joining the domain.
 
-3.2.4.23
+##### 3.2.4.23 NetrUnjoinDomain3 (Opnum 32)
 
-NetrUnjoinDomain3 (Opnum 32)
+
 
 The NetrUnjoinDomain3 method uses encrypted credentials to unjoin a computer from a workgroup
 or domain.<140>
@@ -11568,7 +11534,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -11674,7 +11641,8 @@ Release: April 23, 2024
 
 133 / 205
 
-1.  The server MUST retrieve the RPC protocol sequence used for the current call ([MS-RPCE] section
+
+1.  The server MUST retrieve the RPC protocol sequence used for the current call ([MS-RPCE] section
 
 3.1.3.4.1), specifying the server binding handle maintained by the RPC runtime ([C706] section
 6.2.1). If that RPC protocol sequence is not NCACN_NP, the server SHOULD return
@@ -11753,7 +11721,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-16. The server MUST configure the Certificate Auto Enrollment Service ([MSFT-AUTOENROLLMENT]
+
+16. The server MUST configure the Certificate Auto Enrollment Service ([MSFT-AUTOENROLLMENT]
 and [MS-CERSOD] section 2.1.2.2.2) so that it is aware of no longer being joined to a domain.
 
 17. The server MUST configure the local Net Logon Remote Protocol [MS-NRPC] such that it is aware
@@ -11777,9 +11746,9 @@ DomainName, DomainSid, ForestNameFQDN, DomainGuid, SiteName, and Password.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.24
+##### 3.2.4.24 NetrRenameMachineInDomain3 (Opnum 33)
 
-NetrRenameMachineInDomain3 (Opnum 33)
+
 
 The NetrRenameMachineInDomain3 method uses encrypted credentials to change the locally
 persisted variable ComputerNameNetBIOS (section 3.2.1.5) and to optionally rename the computer
@@ -11833,7 +11802,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 0x00000002
 
@@ -11938,7 +11908,8 @@ Release: April 23, 2024
 
 136 / 205
 
-7.  PasswordString: A UTF-8 string that contains a password in cleartext.
+
+7.  PasswordString: A UTF-8 string that contains a password in cleartext.
 
 8.  DomainControllerConnection: An ADCONNECTION_HANDLE ([MS-DTYP] section 2.2.2) to a domain
 
@@ -12016,7 +11987,8 @@ Release: April 23, 2024
 
 137 / 205
 
-  AllowableAccountControlBits = ADS_UF_WORKSTATION_TRUST_ACCOUNT |
+
+  AllowableAccountControlBits = ADS_UF_WORKSTATION_TRUST_ACCOUNT |
 
 ADS_UF_SERVER_TRUST_ACCOUNT ([MS-ADTS] section 2.2.16)
 
@@ -12099,7 +12071,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-18. The server invokes the "Performing an LDAP Operation on an ADConnection" task of [MS-ADTS]
+
+18. The server invokes the "Performing an LDAP Operation on an ADConnection" task of [MS-ADTS]
 
 section 7.6.1.6 with the following parameters:
 
@@ -12183,9 +12156,9 @@ protocols on the server can operate using the new name.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.25
+##### 3.2.4.25 NetrValidateName3 (Opnum 34)
 
-NetrValidateName3 (Opnum 34)
+
 
 The NetrValidateName3 method verifies the validity of a computer, workgroup, or domain
 name.<151>
@@ -12197,7 +12170,8 @@ Release: April 23, 2024
 
 139 / 205
 
- unsigned long NetrValidateName3(
+
+ unsigned long NetrValidateName3(
    [in] handle_t RpcBindingHandle,
    [in, string, unique] wchar_t* ServerName,
    [in, string] wchar_t* NameToValidate,
@@ -12296,7 +12270,8 @@ Release: April 23, 2024
 
 140 / 205
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -12394,7 +12369,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 001, 002, 003, 004, 005, 006, 007, 010, 011, 012, 013, 014,
+
+ 001, 002, 003, 004, 005, 006, 007, 010, 011, 012, 013, 014,
  015, 016, 017, 020, 021, 022, 023, 024, 025, 026, 027, 030,
  031, 032, 033, 034, 035, 036, 037
 
@@ -12471,7 +12447,8 @@ Release: April 23, 2024
 
 142 / 205
 
-ERROR_INVALID_NAME MUST be returned if any condition in this group is violated.
+
+ERROR_INVALID_NAME MUST be returned if any condition in this group is violated.
 
   Contain a space.
 
@@ -12541,9 +12518,9 @@ ERROR_DUP_NAME MUST be returned if this condition is not satisfied.<157>
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.26
+##### 3.2.4.26 NetrAddAlternateComputerName2 (Opnum 35)
 
-NetrAddAlternateComputerName2 (Opnum 35)
+
 
 The NetrAddAlternateComputerName method adds an alternate name for a specified
 server.<158>
@@ -12558,7 +12535,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   [in, string, unique] wchar_t* ServerName,
+
+   [in, string, unique] wchar_t* ServerName,
    [in, string, unique] wchar_t* AlternateName,
    [in, string, unique] wchar_t* DomainAccount,
    [in, unique] PJOINPR_ENCRYPTED_USER_PASSWORD_AES EncryptedPassword,
@@ -12645,7 +12623,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -12750,7 +12729,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 IsRODC: A Boolean that is TRUE if the server is a read-only domain controller ([MS-DRSR] section
 5.7), and FALSE otherwise.
@@ -12829,7 +12809,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-through 21 are not processed and the server MUST return an error after processing steps 22 and
+
+through 21 are not processed and the server MUST return an error after processing steps 22 and
 23.
 
 11. If the server is not joined to a domain ([MS-ADTS] section 6.4), proceed to step 22. Otherwise,
@@ -12912,7 +12893,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-15. The server invokes Query Computer Account DN for the Local Machine (section 3.2.4.29.1),
+
+15. The server invokes Query Computer Account DN for the Local Machine (section 3.2.4.29.1),
 specifying DomainControllerString for the DomainControllerQueryTarget parameter, storing the
 result in ComputerAccountDN. If the query returns an error, steps 16 through 21 are not
 processed and the server MUST return the error after processing steps 22 and 23.
@@ -13022,7 +13004,8 @@ Release: April 23, 2024
 
 148 / 205
 
-The server MUST process the results returned from the DC in LDAPResultMessages. For the
+
+The server MUST process the results returned from the DC in LDAPResultMessages. For the
 entry (SearchResultEntry, [RFC2251] section 4.5.2) returned by the search in
 LDAPResultMessages, WritableDomainControllerDN MUST equal the value of the attribute
 dsServiceName. If the LDAP operation is not successful, steps 18 and 19 are not processed and
@@ -13130,7 +13113,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 TaskOutputResultMessages: LDAPResultMessages
 
@@ -13154,9 +13138,9 @@ NewAlternateNames from the list in alternate-computer-names persisted locally.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.27
+##### 3.2.4.27 NetrRemoveAlternateComputerName2 (Opnum 36)
 
-NetrRemoveAlternateComputerName2 (Opnum 36)
+
 
 The NetrRemoveAlternateComputerName method removes an alternate name for a specified
 server.<165>
@@ -13207,7 +13191,8 @@ Release: April 23, 2024
 
 150 / 205
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -13320,7 +13305,8 @@ Release: April 23, 2024
 
 151 / 205
 
-Unless otherwise noted, if the server encounters an error during message processing, the server
+
+Unless otherwise noted, if the server encounters an error during message processing, the server
 SHOULD revert any state changes made, MUST stop message processing, and MUST return the error
 to the caller.<168>
 
@@ -13403,7 +13389,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Contain a label longer than 63 octets.
+
+  Contain a label longer than 63 octets.
 
   Contain two or more consecutive dots.
 
@@ -13480,7 +13467,8 @@ Release: April 23, 2024
 
 153 / 205
 
-Otherwise, DomainControllerString MUST equal the string name of the returned writable domain
+
+Otherwise, DomainControllerString MUST equal the string name of the returned writable domain
 controller.
 
 13. The server invokes LDAP Bind (section 3.2.4.29.2) with the following parameters:
@@ -13572,7 +13560,8 @@ Release: April 23, 2024
 
 154 / 205
 
-
+
+
 
 controls: Sequence of one Control structure, as follows:
 
@@ -13687,7 +13676,8 @@ Release: April 23, 2024
 
 155 / 205
 
-
+
+
 
 
 
@@ -13767,9 +13757,9 @@ the list in alternate-computer-names persisted locally.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.28
+##### 3.2.4.28 NetrSetPrimaryComputerName2 (Opnum 37)
 
-NetrSetPrimaryComputerName2 (Opnum 37)
+
 
 The NetrSetPrimaryComputerName method sets the primary computer name for a specified
 server.<172>
@@ -13785,7 +13775,8 @@ Release: April 23, 2024
 
 156 / 205
 
-   [in, string, unique] wchar_t* PrimaryName,
+
+   [in, string, unique] wchar_t* PrimaryName,
    [in, string, unique] wchar_t* DomainAccount,
    [in, unique] PJOINPR_ENCRYPTED_USER_PASSWORD EncryptedPassword,
    [in] unsigned long Reserved
@@ -13874,7 +13865,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 0x00000005
 
@@ -13977,7 +13969,8 @@ Release: April 23, 2024
 
 158 / 205
 
-  ReadOnlyDomainControllerConnection: An ADConnection ([MS-ADTS] section 7.3) to a read-only
+
+  ReadOnlyDomainControllerConnection: An ADConnection ([MS-ADTS] section 7.3) to a read-only
 
 domain controller.
 
@@ -14057,7 +14050,8 @@ Release: April 23, 2024
 
 159 / 205
 
-8.  DNS_ERROR_INVALID_NAME_CHAR MUST be returned if any condition in the preceding group is
+
+8.  DNS_ERROR_INVALID_NAME_CHAR MUST be returned if any condition in the preceding group is
 
 violated. Otherwise, processing continues.
 
@@ -14138,7 +14132,8 @@ Release: April 23, 2024
 
 160 / 205
 
-If a domain controller cannot be located, steps 22 through 31 are not processed and the server
+
+If a domain controller cannot be located, steps 22 through 31 are not processed and the server
 MUST return the error after processing steps 32 through 34.
 
 Otherwise, DomainControllerString MUST equal the string name of the returned writable domain
@@ -14229,7 +14224,8 @@ Release: April 23, 2024
 
 161 / 205
 
-
+
+
 
 vals: ComputerNameFQDN
 
@@ -14341,7 +14337,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-27. If IsRODC is TRUE, the server invokes the "Performing an LDAP Operation on an ADConnection"
+
+27. If IsRODC is TRUE, the server invokes the "Performing an LDAP Operation on an ADConnection"
 
 task of [MS-ADTS] section 7.6.1.6 with the following parameters:
 
@@ -14453,7 +14450,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the LDAP operation returns an error, step 29 is not processed and processing continues at step
+
+If the LDAP operation returns an error, step 29 is not processed and processing continues at step
 30.
 
 29. If IsRODC is TRUE, the server invokes the "Performing an LDAP Operation on an ADConnection"
@@ -14546,19 +14544,20 @@ Release: April 23, 2024
 
 164 / 205
 
-  DomainAccountPassword = PasswordString
+
+  DomainAccountPassword = PasswordString
 
 34. The server MUST start the Netlogon Remote Protocol ([MS-NRPC]) if it was stopped in step 20.
 
 If no errors occur, the server MUST return NERR_Success.
 
-3.2.4.29
+##### 3.2.4.29 Common Message Processing
 
-Common Message Processing
+
 
 The following sections represent common processing tasks used by several of the above opnums.
 
-3.2.4.29.1  Query Computer Account DN for the Local Machine
+###### 3.2.4.29.1 Query Computer Account DN for the Local Machine
 
 This task accepts as input the following:
 
@@ -14599,9 +14598,9 @@ formatDesired = DS_FQDN_1779_NAME
 the DN returned from the IDL_DRSCrackNames call, and returns it. Otherwise, the task returns
 an error.
 
-3.2.4.29.2
+###### 3.2.4.29.2 LDAP Bind
 
-LDAP Bind
+
 
 This task accepts as input the following:
 
@@ -14633,7 +14632,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This task executes as follows:
+
+This task executes as follows:
 
 1.  The server invokes the "Initializing an ADConnection" task of [MS-ADTS] section 7.6.1.1 with the
 
@@ -14735,9 +14735,9 @@ TaskInputADConnection parameter set to NewADConnection.
 
 8.  Upon success, NewADConnection is returned to the caller. Otherwise, an error is returned.
 
-3.2.4.29.3
+###### 3.2.4.29.3 LDAP Unbind
 
-LDAP Unbind
+
 
 [MS-WKST] - v20240423
 Workstation Service Remote Protocol
@@ -14746,7 +14746,8 @@ Release: April 23, 2024
 
 166 / 205
 
-This task accepts as input the following:
+
+This task accepts as input the following:
 
   ADConnectionToUnbind: an ADCONNECTION_HANDLE ([MS-DTYP] section 2.2.2) to unbind.
 
@@ -14755,9 +14756,9 @@ This task executes as follows:
 1.  The server invokes the "Performing an LDAP Unbind on an ADConnection" task ([MS-ADTS]
 section 7.6.1.5) with the TaskInputADConnection parameter set to ADConnectionToUnbind.
 
-3.2.4.29.4
+###### 3.2.4.29.4 Computer Account Update over SAMR
 
-Computer Account Update over SAMR
+
 
 This task accepts as input the following:
 
@@ -14829,7 +14830,8 @@ Release: April 23, 2024
 
 167 / 205
 
-Upon success, the server MUST store the result in LocalServerHandle.
+
+Upon success, the server MUST store the result in LocalServerHandle.
 
 3.  The server MUST call SamrLookupDomainInSamServer ([MS-SAMR] section 3.1.5.11.1) to
 
@@ -14889,7 +14891,7 @@ SAMR] section 3.1.5.13.1).
 
 LocalSMBSession.
 
-3.2.4.29.5  Update Display Name Using SAMR
+###### 3.2.4.29.5 Update Display Name Using SAMR
 
 This task accepts as input the following:
 
@@ -14906,7 +14908,8 @@ Release: April 23, 2024
 
 168 / 205
 
-1.  The server MUST invoke the SamrConnect5 method on DomainController, specifying the
+
+1.  The server MUST invoke the SamrConnect5 method on DomainController, specifying the
 
 following parameters:
 
@@ -14983,13 +14986,14 @@ Release: April 23, 2024
 
 169 / 205
 
-10. The server MUST invoke SamrCloseHandle on DomainController, specifying the server handle
+
+10. The server MUST invoke SamrCloseHandle on DomainController, specifying the server handle
 
 obtained in step 1.
 
-3.2.4.29.6
+###### 3.2.4.29.6 StartImpersonatingClient
 
-StartImpersonatingClient
+
 
 This task accepts no inputs. It executes as follows:
 
@@ -14999,9 +15003,9 @@ The server MUST invoke the RpcImpersonateClient abstract interface ([MS-RPCE] se
 3.3.3.4.3.2), specifying NULL for the BindingHandle parameter. The result MUST be returned to
 the caller.
 
-3.2.4.29.7
+###### 3.2.4.29.7 StopImpersonatingClient
 
-StopImpersonatingClient
+
 
 This task accepts no inputs and does not return any results to the caller. It executes as follows:
 
@@ -15010,12 +15014,12 @@ This task accepts no inputs and does not return any results to the caller. It ex
 The server MUST stop impersonating the client by invoking the RpcRevertToSelf abstract
 interface ([MS-RPCE] section 3.3.3.4.3.3).
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 transport.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 The first two of the following subsections specify local events that are invoked by the browser server
 and used by the Common Internet File System (CIFS) Browser Protocol [MS-BRWS] and the Common
@@ -15024,24 +15028,24 @@ Internet File System (CIFS) Browser Auxiliary Protocol [MS-BRWSA].
 The final two of the following subsections specify local events to control redirection pause and
 redirection resume, and can only be invoked by an Administrator.
 
-3.2.6.1  WkstaQueryOtherDomains Event
+##### 3.2.6.1 WkstaQueryOtherDomains Event
 
 The calling application requests the list of OtherDomains from the server (2). The calling application
 provides no parameters, and the server returns the OtherDomains list in the OtherDomains Name
 Abstract Data Model (section 3.2.1.3).
 
-3.2.6.2  WkstaAddOtherDomains Event
+##### 3.2.6.2 WkstaAddOtherDomains Event
 
 The calling application provides a list of NetBIOS domains in the format in the OtherDomains Name
 Abstract Data Model (section 3.2.1.3). The server (2) appends entries to the OtherDomains list
 that are not already present.
 
-3.2.6.3  Administrator Requests Redirection to Be Paused
+##### 3.2.6.3 Administrator Requests Redirection to Be Paused
 
 If the administrator requests to pause redirection of printer and serial communication, the server sets
 IsWorkstationPaused to TRUE (section 3.2.1).
 
-3.2.6.4  Administrator Requests Redirection to Be Resumed
+##### 3.2.6.4 Administrator Requests Redirection to Be Resumed
 
 If administrator requests to resume redirection of printer and serial communication, the server sets
 IsWorkstationPaused to FALSE (section 3.2.1).
@@ -15053,9 +15057,10 @@ Release: April 23, 2024
 
 170 / 205
 
-4  Protocol Examples
 
-4.1  NetrWkstaGetInfo Example
+## 4 Protocol Examples
+
+### 4.1 NetrWkstaGetInfo Example
 
 As an example, the client calls the NetrWkstaGetInfo method (section 3.2.4.1) on a server (2)
 named srvr1.example.com.
@@ -15088,7 +15093,7 @@ where WkstaInfo is set as follows.
      unsigned long wki100_ver_minor = 0x00000000;
  } WKSTA_INFO_100, *PWKSTA_INFO_100, *LPWKSTA_INFO_100;
 
-4.2  NetrWkstaUserEnum Example
+### 4.2 NetrWkstaUserEnum Example
 
 In this example, the client calls the NetrWkstaUserEnum method (section 3.2.4.3) to enumerate
 the names of currently logged-on users on a server (2) named "SrvrA". Five active users are logged
@@ -15116,7 +15121,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PreferredMaximumLength parameter to MAX_PREFERRED_LENGTH (section 2.2.1.3) and passes a
+
+PreferredMaximumLength parameter to MAX_PREFERRED_LENGTH (section 2.2.1.3) and passes a
 non-NULL pointer as TotalEntries. The client also passes the unchanged value of ResumeHandle
 (0x000000120).
 
@@ -15125,7 +15131,7 @@ ResumeHandle value of 0x00000120, and returns NERR_Success. The server returns t
 next three logged-on users in the UserInfo parameter. It also sets the value of TotalEntries to
 0x00000005. The value of ResumeHandle is irrelevant.
 
-4.3  NetrJoinDomain2 Example
+### 4.3 NetrJoinDomain2 Example
 
 In this example, "SrvrA" is a machine that is not joined to a domain, and there exists a domain with
 the name "DomainA" and a domain controller of that domain named "DC-A".
@@ -15192,7 +15198,8 @@ Release: April 23, 2024
 
 172 / 205
 
-<!-- Extracted images from page 173 -->
+
+<!-- Extracted images from page 173 -->
 ![Extracted image 1 from page 173]([MS-WKST].images/page173-img01.png)
 <!-- /Extracted images from page 173 -->
 
@@ -15249,7 +15256,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SrvrA
+
+SrvrA
 
 DC-A
 
@@ -15287,9 +15295,10 @@ Release: April 23, 2024
 
 174 / 205
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 As specified in section 2.1, this protocol allows any user to connect to the server (2). Therefore, any
 security bug in the server implementation could be exploitable. It is recommended that the server
@@ -15297,7 +15306,7 @@ implementation enforce security on each method.
 
 There is only one security parameter, Authentication Protocol (section 2.1).
 
-5.2  Entropy Sources
+### 5.2 Entropy Sources
 
 How entropy is acquired is up to the implementer of any protocol. The literature on measurement of
 entropy and on methods of harvesting entropy in computer systems is extensive and well known to
@@ -15315,7 +15324,8 @@ Release: April 23, 2024
 
 175 / 205
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL found in
 [MS-DTYP] Appendix A.
@@ -15389,7 +15399,8 @@ Release: April 23, 2024
 
 176 / 205
 
-         unsigned long   FailedSessions;
+
+         unsigned long   FailedSessions;
          unsigned long   Reconnects;
          unsigned long   CoreConnects;
          unsigned long   Lanman20Connects;
@@ -15466,7 +15477,8 @@ Release: April 23, 2024
 
 177 / 205
 
-         int  wki502_use_raw_write;
+
+         int  wki502_use_raw_write;
          int  wki502_use_write_raw_data;
          int  wki502_use_encryption;
          int  wki502_buf_files_deny_write;
@@ -15542,7 +15554,8 @@ Release: April 23, 2024
 
 178 / 205
 
-     typedef struct _USE_INFO_1 {
+
+     typedef struct _USE_INFO_1 {
          [string] wchar_t* ui1_local;
          [string] wchar_t* ui1_remote;
          [string] wchar_t* ui1_password;
@@ -15619,7 +15632,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       UCHAR AuthData[64];
+
+       UCHAR AuthData[64];
        UCHAR Salt[16];
        [range(0, MAX_PASSWORDBLOB_SIZE)] ULONG cbCipher;
        [size_is(cbCipher)] PUCHAR Cipher;
@@ -15694,7 +15708,8 @@ Release: April 23, 2024
 
 180 / 205
 
-     typedef struct _WKSTA_TRANSPORT_ENUM_STRUCT {
+
+     typedef struct _WKSTA_TRANSPORT_ENUM_STRUCT {
          unsigned long   Level;
          [switch_is(Level)] union _WKSTA_TRANSPORT_ENUM_UNION {
              [case(0)]
@@ -15769,7 +15784,8 @@ Release: April 23, 2024
 
 181 / 205
 
-     unsigned long
+
+     unsigned long
      NetrWorkstationStatisticsGet(
          [in,string,unique] WKSSVC_IDENTIFY_HANDLE ServerName,
          [in,string,unique] wchar_t* ServiceName,
@@ -15845,7 +15861,8 @@ Release: April 23, 2024
 
 182 / 205
 
-         [in,unique] PJOINPR_ENCRYPTED_USER_PASSWORD Password,
+
+         [in,unique] PJOINPR_ENCRYPTED_USER_PASSWORD Password,
          [in] unsigned long Options
      );
 
@@ -15922,7 +15939,8 @@ Release: April 23, 2024
 
 183 / 205
 
-     unsigned long
+
+     unsigned long
      NetrEnumerateComputerNames(
          [in,string,unique] WKSSVC_IMPERSONATE_HANDLE ServerName,
          [in] NET_COMPUTER_NAME_TYPE  NameType,
@@ -15997,7 +16015,8 @@ Release: April 23, 2024
 
 184 / 205
 
-     unsigned long
+
+     unsigned long
      NetrSetPrimaryComputerName2(
        [in] handle_t RpcBindingHandle,
        [in, string, unique] wchar_t* ServerName,
@@ -16016,7 +16035,8 @@ Release: April 23, 2024
 
 185 / 205
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -16086,7 +16106,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<2> Section 1.4: Windows implementations use LDAP as a client when queries or modifications to
+
+<2> Section 1.4: Windows implementations use LDAP as a client when queries or modifications to
 directory objects are specified.
 
 <3> Section 1.8: Windows only uses the values in [MS-ERREF].
@@ -16159,7 +16180,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<17> Section 3.2.3: Windows server implementations initialize this value to 50.
+
+<17> Section 3.2.3: Windows server implementations initialize this value to 50.
 
 <18> Section 3.2.3: Windows server implementations initialize this value to 0x000001F4, which is the
 value for Windows (section 2.2.5.1).
@@ -16260,7 +16282,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<29> Section 3.2.4.1: Windows server implementations require that the caller be a member of the
+
+<29> Section 3.2.4.1: Windows server implementations require that the caller be a member of the
 Administrators group if the Level parameter is equal to 0x00000066 or 0x000001F6. If the caller is
 not a member of the Administrators group, the server (2) fails the method with
 ERROR_ACCESS_DENIED.
@@ -16328,7 +16351,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<44> Section 3.2.4.6: Windows NT requires that the caller be a member of the Administrators group.
+
+<44> Section 3.2.4.6: Windows NT requires that the caller be a member of the Administrators group.
 
 <45> Section 3.2.4.7: Although Windows implementations, expose this RPC call to remote callers, it is
 called only by processes on the local machine. Windows clients do not issue this RPC call to a remote
@@ -16401,7 +16425,8 @@ Release: April 23, 2024
 
 190 / 205
 
-<60> Section 3.2.4.13: Windows implementations do not update the DnsHostName and SPN
+
+<60> Section 3.2.4.13: Windows implementations do not update the DnsHostName and SPN
 properties on the computer during message processing when NETSETUP_DEFER_SPN_SET is
 specified. The values are updated in a subsequent call to NetrRenameMachineInDomain2 (section
 3.2.4.15).
@@ -16467,7 +16492,8 @@ Release: April 23, 2024
 
 191 / 205
 
-<68> Section 3.2.4.13.1: Windows implementations define
+
+<68> Section 3.2.4.13.1: Windows implementations define
 NETSETUP_IGNORE_UNSUPPORTED_FLAGS but do not set the flag. This flag is ignored by
 Windows NT, Windows 2000, and Windows XP server implementations.
 
@@ -16538,7 +16564,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The variable m is the number of blocks that can be output by the [FIPS186-2] PRNG before a non-
+
+The variable m is the number of blocks that can be output by the [FIPS186-2] PRNG before a non-
 NULL value is passed to XSEEDj. Windows implementations set it to the shortest possible value, which
 is 1.
 
@@ -16606,7 +16633,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<87> Section 3.2.4.16: This method is not available on Windows NT.
+
+<87> Section 3.2.4.16: This method is not available on Windows NT.
 
 <88> Section 3.2.4.16: Windows implementations enforce the verification of the proper RPC protocol
 sequence, except on Windows NT, Windows 2000, Windows XP, Windows XP SP1, and Windows Server
@@ -16673,7 +16701,8 @@ Release: April 23, 2024
 
 194 / 205
 
-<103> Section 3.2.4.18: Windows implementations enforce the verification of the proper RPC protocol
+
+<103> Section 3.2.4.18: Windows implementations enforce the verification of the proper RPC protocol
 sequence. If the server identifies a previous RPC call that is modifying the identity of the machine, the
 server returns RPC_S_CALL_IN_PROGRESS.
 
@@ -16740,7 +16769,8 @@ Release: April 23, 2024
 
 195 / 205
 
-<118> Section 3.2.4.20: Windows clients return ERROR_NOT_SUPPORTED if this method is
+
+<118> Section 3.2.4.20: Windows clients return ERROR_NOT_SUPPORTED if this method is
 invoked.
 
 <119> Section 3.2.4.20: Windows server implementations use a syntactic/textual conversion. This
@@ -16812,7 +16842,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When setting this flag, Windows client implementations locate a domain controller on a server. The
+
+When setting this flag, Windows client implementations locate a domain controller on a server. The
 location mechanism is specified in the DsrGetDcNameEx2 method ([MS-NRPC] section 3.5.4.3.1);
 the flag description for DS_FULL_SECRET_DOMAIN_6_FLAG is specified in [MS-ADTS] section
 6.3.3.2.
@@ -16878,7 +16909,8 @@ Release: April 23, 2024
 
 197 / 205
 
-1.  The computer account object is created at a writable domain controller (writable DC) using the
+
+1.  The computer account object is created at a writable domain controller (writable DC) using the
 
 SamrCreateUser2InDomain method ([MS-SAMR] section 3.1.5.4.4).
 
@@ -16950,7 +16982,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If this setting is not available, the TCP/IP setting for the domain is queried and is used as the DNS
+
+If this setting is not available, the TCP/IP setting for the domain is queried and is used as the DNS
 suffix.
 
 <151> Section 3.2.4.25:  This method is available after the [MSFT-CVE-2022-21924] security update
@@ -17017,7 +17050,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<165> Section 3.2.4.27:  This method is available after the [MSFT-CVE-2022-21924] security update
+
+<165> Section 3.2.4.27:  This method is available after the [MSFT-CVE-2022-21924] security update
 (applies to Windows 7 SP1 and later, and Windows Server 2008 R2 and later) and is recommended.
 
 <166> Section 3.2.4.27: Windows NT, Windows 2000, and Windows XP implementations do not check
@@ -17078,7 +17112,8 @@ Release: April 23, 2024
 
 200 / 205
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -17122,7 +17157,8 @@ Release: April 23, 2024
 
 201 / 205
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -17256,7 +17292,8 @@ Messages
 
 202 / 205
 
-   unions 24
+
+   unions 24
 Methods
    Common Message Processing 165
    NetrAddAlternateComputerName (Opnum 27) 104
@@ -17418,7 +17455,8 @@ Workstation Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PUSE_INFO_1_CONTAINER 44
+
+PUSE_INFO_1_CONTAINER 44
 PUSE_INFO_2 43
 PUSE_INFO_2_CONTAINER 44
 PUSE_INFO_3 43
@@ -17577,7 +17615,8 @@ WKSTA_INFO_1046 structure 29
 
 204 / 205
 
-WKSTA_INFO_502 structure 27
+
+WKSTA_INFO_502 structure 27
 WKSTA_TRANSPORT_ENUM_STRUCT structure 34
 WKSTA_TRANSPORT_INFO_0 structure 29
 WKSTA_TRANSPORT_INFO_0_CONTAINER structure

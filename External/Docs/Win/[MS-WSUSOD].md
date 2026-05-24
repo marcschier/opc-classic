@@ -63,7 +63,8 @@ Release: June 14, 2022
 
 1 / 48
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -228,181 +229,78 @@ Release: June 14, 2022
 
 2 / 48
 
-Table of Contents
 
-1.1
+## Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Software Updates ......................................................................................... 5
-Update Server .............................................................................................. 6
-Update Client ............................................................................................... 6
-Downstream Server (DSS) ............................................................................. 6
-Upstream Server (USS) ................................................................................. 6
-Reporting Data ............................................................................................. 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+    - [1.1.1 Software Updates](#111-software-updates)
+    - [1.1.2 Update Server](#112-update-server)
+    - [1.1.3 Update Client](#113-update-client)
+    - [1.1.4 Downstream Server (DSS)](#114-downstream-server-dss)
+    - [1.1.5 Upstream Server (USS)](#115-upstream-server-uss)
+    - [1.1.6 Reporting Data](#116-reporting-data)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Purpose](#211-system-purpose)
+    - [2.1.2 Functional Overview](#212-functional-overview)
+      - [2.1.2.1 Black Box Diagram](#2121-black-box-diagram)
+      - [2.1.2.2 White Box Diagram](#2122-white-box-diagram)
+    - [2.1.3 Applicability](#213-applicability)
+    - [2.1.4 Relevant Standards](#214-relevant-standards)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems](#232-dependencies-on-other-systems)
+      - [2.3.2.1 Network Connectivity](#2321-network-connectivity)
+      - [2.3.2.2 Underlying Protocols](#2322-underlying-protocols)
+      - [2.3.2.3 Persistent Storage Facility](#2323-persistent-storage-facility)
+      - [2.3.2.4 External Configuration System](#2324-external-configuration-system)
+      - [2.3.2.5 External Restartable HTTP Download Service](#2325-external-restartable-http-download-service)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Actors](#251-actors)
+    - [2.5.2 Use Case Summary Diagram](#252-use-case-summary-diagram)
+    - [2.5.3 Use Case Descriptions](#253-use-case-descriptions)
+      - [2.5.3.1 Configure Update Server - Server Management Tool](#2531-configure-update-server-server-management-tool)
+      - [2.5.3.2 Manage Computer Groups - WSUS Administrator](#2532-manage-computer-groups-wsus-administrator)
+      - [2.5.3.3 Approve Update - WSUS Administrator](#2533-approve-update-wsus-administrator)
+      - [2.5.3.4 Monitor Update Installation - WSUS Administrator](#2534-monitor-update-installation-wsus-administrator)
+      - [2.5.3.5 Synchronize Server - Server Management Tool](#2535-synchronize-server-server-management-tool)
+      - [2.5.3.6 Configure Update Client - Computer User](#2536-configure-update-client-computer-user)
+      - [2.5.3.7 Start Update Scan - Computer User](#2537-start-update-scan-computer-user)
+      - [2.5.3.8 Install Updates - Computer User](#2538-install-updates-computer-user)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+    - [2.7.1 Failure Scenarios](#271-failure-scenarios)
+      - [2.7.1.1 Network Failure](#2711-network-failure)
+      - [2.7.1.2 Data Stores Corrupted](#2712-data-stores-corrupted)
+      - [2.7.1.3 Update Content Corrupted](#2713-update-content-corrupted)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+    - [2.8.1 Timers](#281-timers)
+    - [2.8.2 Non-Timer Events](#282-non-timer-events)
+    - [2.8.3 Initialization and Reinitialization Procedures](#283-initialization-and-reinitialization-procedures)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Update Synchronization to DSS](#31-example-1-update-synchronization-to-dss)
+    - [3.1.1 Registration and Authorization](#311-registration-and-authorization)
+    - [3.1.2 Configuration Synchronization](#312-configuration-synchronization)
+    - [3.1.3 Configuration Updates Synchronization](#313-configuration-updates-synchronization)
+    - [3.1.4 Software Updates Synchronization](#314-software-updates-synchronization)
+  - [3.2 Example 2: Initial Deployment Synchronization to Replica DSS](#32-example-2-initial-deployment-synchronization-to-replica-dss)
+  - [3.3 Example 3: Initial Update Synchronization to Update Client](#33-example-3-initial-update-synchronization-to-update-client)
+  - [3.4 Example 4: Differential Update Synchronization to Update Client](#34-example-4-differential-update-synchronization-to-update-client)
+  - [3.5 Example 5: Rollup of Reporting Data to USS](#35-example-5-rollup-of-reporting-data-to-uss)
+  - [3.6 Example 6: Update Client Is Pointed to a New Update Server](#36-example-6-update-client-is-pointed-to-a-new-update-server)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-1.1.1
-1.1.2
-1.1.3
-1.1.4
-1.1.5
-1.1.6
-
-1.2
-1.3
-
-2.1
-
-2.4
-2.5
-
-2.2
-2.3
-
-2.1.3
-2.1.4
-
-2.3.1
-2.3.2
-
-2.1.1
-2.1.2
-
-2.1.2.1
-2.1.2.2
-
-2.5.1
-2.5.2
-2.5.3
-
-2.3.2.1
-2.3.2.2
-2.3.2.3
-2.3.2.4
-2.3.2.5
-
-2  Functional Architecture ......................................................................................... 10
-Overview ........................................................................................................ 10
-System Purpose ......................................................................................... 10
-Functional Overview .................................................................................... 11
-Black Box Diagram ................................................................................ 12
-White Box Diagram ............................................................................... 13
-Applicability ............................................................................................... 15
-Relevant Standards ..................................................................................... 15
-Protocol Summary ............................................................................................ 16
-Environment .................................................................................................... 16
-Dependencies on This System ...................................................................... 16
-Dependencies on Other Systems .................................................................. 16
-Network Connectivity ............................................................................ 17
-Underlying Protocols .............................................................................. 17
-Persistent Storage Facility ...................................................................... 17
-External Configuration System ................................................................ 17
-External Restartable HTTP Download Service ............................................ 17
-Assumptions and Preconditions .......................................................................... 18
-Use Cases ....................................................................................................... 18
-Actors ....................................................................................................... 18
-Use Case Summary Diagram ........................................................................ 18
-Use Case Descriptions ................................................................................. 19
-Configure Update Server - Server Management Tool.................................. 19
-Manage Computer Groups - WSUS Administrator ...................................... 20
-Approve Update - WSUS Administrator .................................................... 21
-Monitor Update Installation - WSUS Administrator..................................... 22
-Synchronize Server - Server Management Tool ......................................... 23
-Configure Update Client - Computer User ................................................. 24
-Start Update Scan - Computer User ........................................................ 26
-Install Updates - Computer User ............................................................. 27
-Versioning, Capability Negotiation, and Extensibility ............................................. 28
-Error Handling ................................................................................................. 29
-Failure Scenarios ........................................................................................ 29
-Network Failure .................................................................................... 29
-Data Stores Corrupted ........................................................................... 29
-Update Content Corrupted ..................................................................... 29
-Coherency Requirements .................................................................................. 30
-Timers ...................................................................................................... 30
-Non-Timer Events ....................................................................................... 30
-Initialization and Reinitialization Procedures ................................................... 30
-Security .......................................................................................................... 30
-Additional Considerations .................................................................................. 31
-
-2.5.3.1
-2.5.3.2
-2.5.3.3
-2.5.3.4
-2.5.3.5
-2.5.3.6
-2.5.3.7
-2.5.3.8
-
-2.7.1.1
-2.7.1.2
-2.7.1.3
-
-2.8.1
-2.8.2
-2.8.3
-
-2.9
-2.10
-
-2.6
-2.7
-
-2.7.1
-
-2.8
-
-3  Examples ............................................................................................................... 32
-
-3 / 48
-
-[MS-WSUSOD] - v20220614
-Windows Server Update Services Protocols Overview
-Copyright © 2022 Microsoft Corporation
-Release: June 14, 2022
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.2
-3.3
-3.4
-3.5
-3.6
-
-Example 1: Update Synchronization to DSS ......................................................... 32
-Registration and Authorization...................................................................... 33
-Configuration Synchronization ...................................................................... 34
-Configuration Updates Synchronization .......................................................... 34
-Software Updates Synchronization ................................................................ 34
-Example 2: Initial Deployment Synchronization to Replica DSS .............................. 34
-Example 3: Initial Update Synchronization to Update Client ................................... 35
-Example 4: Differential Update Synchronization to Update Client ........................... 37
-Example 5: Rollup of Reporting Data to USS ........................................................ 39
-Example 6: Update Client Is Pointed to a New Update Server ................................ 40
-
-4  Microsoft Implementations ................................................................................... 43
-Product Behavior .............................................................................................. 43
-
-4.1
-
-5  Change Tracking .................................................................................................... 45
-
-6  Index ..................................................................................................................... 46
-
-[MS-WSUSOD] - v20220614
-Windows Server Update Services Protocols Overview
-Copyright © 2022 Microsoft Corporation
-Release: June 14, 2022
-
-4 / 48
-
-1  Introduction
+## 1 Introduction
 
 This document describes how the Windows Server Update Services (WSUS) protocols interact with
 each other and provide specific scenarios to highlight the WSUS design goals. The details of the
@@ -424,7 +322,7 @@ configurations without having to evaluate every available update. This is essent
 that a single computer requires are based on the hardware and software configuration and usually
 represent a minority of all available updates. WSUS is designed to meet this need.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 This section provides a conceptual overview of Windows Server Update Services (WSUS). This
 document assumes that the reader has the following background knowledge:
@@ -449,7 +347,7 @@ updates that are available on the server. In addition, WSUS requires communicati
 to propagate update information, the updates, and administrative intent in a hierarchical
 deployment.
 
-1.1.1  Software Updates
+#### 1.1.1 Software Updates
 
 A software update is either an update to an application or an update to a driver for a hardware device.
 WSUS treats any type of update the same way; it defines a software update as update metadata
@@ -465,7 +363,8 @@ Release: June 14, 2022
 
 5 / 48
 
-1.1.2  Update Server
+
+#### 1.1.2 Update Server
 
 WSUS has a hierarchical topology that consists of servers called update servers and client
 computers that are called update clients. An update server is a computer that implements both the
@@ -473,7 +372,7 @@ Windows Server Update Services: Server-Server Protocol, as specified in [MS-WSUS
 Windows Server Update Services: Client-Server Protocol, as specified in [MS-WUSP], for providing
 update to other update servers and client computers.
 
-1.1.3  Update Client
+#### 1.1.3 Update Client
 
 Individual update clients report the update installation activity to its update server, as specified in
 [MS-WUSP] section 3.2.4. Data from individual update clients are propagated by a downstream
@@ -481,7 +380,7 @@ server (DSS) to its upstream server (USS), based on the DSS and USS configuratio
 in [MS-WSUSSS] section 3.2.4.5. The reporting data provides the basis on which update installation
 reports can be generated by administrators to gauge the penetration and health of update distribution.
 
-1.1.4  Downstream Server (DSS)
+#### 1.1.4 Downstream Server (DSS)
 
 WSUS has a hierarchical topology of servers with individual child servers that are configured either as
 an autonomous downstream server (DSS) or as a replica DSS, as described in [MS-WSUSSS]
@@ -493,7 +392,7 @@ The update metadata, content, and deployment that are synchronized in this way o
 are used to determine available, applicable software updates for an individual update client. The
 protocol between an update client and its update server is specified in [MS-WUSP].
 
-1.1.5  Upstream Server (USS)
+#### 1.1.5 Upstream Server (USS)
 
 A USS is an update server that provides updates to other update servers. The following figure shows
 an example of a WSUS hierarchy. The upstream servers in a hierarchy provide information about
@@ -510,7 +409,8 @@ Release: June 14, 2022
 
 6 / 48
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-WSUSOD].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -521,7 +421,7 @@ configured to deploy the updates to its client computers by assigning the update
 for deployment and, optionally, by specifying an installation or removal deadline. This mapping of
 the individual update revisions to target groups is known as a deployment.
 
-1.1.6  Reporting Data
+#### 1.1.6 Reporting Data
 
 In WSUS, the term reporting data is used to describe data about update installation activity.
 Reporting data is generated by the update client on the target computer and it is sent to update
@@ -529,7 +429,7 @@ servers. When WSUS is configured as a hierarchy, it can send the reporting data 
 USS. The reporting data provides the basis on which update installation reports can be generated by
 administrators to gauge the penetration and health of update distribution.
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -545,7 +445,8 @@ Release: June 14, 2022
 
 7 / 48
 
-anchor: An opaque data element generated by an update server to identify the occurrence of a
+
+anchor: An opaque data element generated by an update server to identify the occurrence of a
 software update-related event in a manner that distinguishes temporally separate occurrences
 of the event.
 
@@ -622,7 +523,8 @@ Release: June 14, 2022
 
 8 / 48
 
-update classification: A scheme to classify updates such as Critical, Security, Service Pack, and
+
+update classification: A scheme to classify updates such as Critical, Security, Service Pack, and
 so on. An update classification is identified by a GUID and described by metadata. It can be
 treated as an update with no associated content.
 
@@ -647,7 +549,7 @@ running the Windows operating system. WSUS administrators can fully manage the d
 of updates that are released through Microsoft Update to computers on their network. They are
 responsible for creating target group and update deployments.
 
-1.3  References
+### 1.3 References
 
 [MS-GPOD] Microsoft Corporation, "Group Policy Protocols Overview".
 
@@ -674,9 +576,10 @@ Release: June 14, 2022
 
 9 / 48
 
-2  Functional Architecture
 
-2.1  Overview
+## 2 Functional Architecture
+
+### 2.1 Overview
 
 WSUS is composed of two protocols:
 
@@ -696,7 +599,7 @@ metadata, deployments, and content from an upstream server (USS) to a downstream
 rely on the DSS that has acquired status information from update clients by using the Windows
 Update Services: Client-Server Protocol.
 
-2.1.1  System Purpose
+#### 2.1.1 System Purpose
 
 WSUS enables the WSUS administrator to control automated delivery of updates to computers in
 an environment where the computers are managed by one or more WSUS administrators. WSUS is
@@ -744,7 +647,8 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-from all the client computers across the hierarchy, enabling the administrator to assess the overall
+
+from all the client computers across the hierarchy, enabling the administrator to assess the overall
 health of the computing environment across the enterprise.
 
 Enables software update delivery and installation in a secure and scalable way. Applying
@@ -764,7 +668,7 @@ Allows configuration options to control the update installation. In cases where 
 
 requires additional control, WSUS allows client configuration options that enable manual settings.
 
-2.1.2  Functional Overview
+#### 2.1.2 Functional Overview
 
 The WSUS protocols provide centralized update management in an enterprise computing
 environment. The protocols provides automated update discovery and delivery, and administrative
@@ -817,7 +721,8 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-WSUSOD].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -825,7 +730,7 @@ At the end of the discovery phase, the update client downloads the installation 
 server to complete the update installation. The update client sends back information about the update
 detection and installation phases as events to the update server.
 
-2.1.2.1  Black Box Diagram
+##### 2.1.2.1 Black Box Diagram
 
 The following diagram shows the communication in a black box relationship.
 
@@ -854,7 +759,8 @@ Release: June 14, 2022
 
 12 / 48
 
-The ADM elements for the WUSP server and ways to populate them are specified in [MS-WUSP]
+
+The ADM elements for the WUSP server and ways to populate them are specified in [MS-WUSP]
 section 3.1.1 and section 3.1.1.1. Out of the ADM elements described, the server management tool
 can be used to alter the state of the Client Computers Table, Target Group Table, and the
 Deployment Table to express administrative intent.
@@ -865,7 +771,7 @@ Server Update Services: Server-Server Protocol are specified in [MS-WSUSSS] sect
 The Group Policy protocols interact with WSUS by altering the state of the ADM element Policy Table
 as specified in [MS-WUSP] section 3.2.1.
 
-2.1.2.2  White Box Diagram
+##### 2.1.2.2 White Box Diagram
 
 This section describes the primary relationship between the Windows Update Services: Client-Server
 Protocol (WUSP) and the Windows Update Services: Server-Server Protocol (WSUSSS). The primary
@@ -888,7 +794,8 @@ Release: June 14, 2022
 
 13 / 48
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-WSUSOD].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -920,11 +827,12 @@ Release: June 14, 2022
 
 14 / 48
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-WSUSOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-2.1.3  Applicability
+#### 2.1.3 Applicability
 
 WSUS is appropriate for the management of updates for groups of computers. Additionally, it is
 applicable to situations in which several groups of computers need to be managed separately.
@@ -954,7 +862,7 @@ the parent server forms the USS, and the child server forms the DSS.
 
 Figure 4: Windows Server Update Services overview
 
-2.1.4  Relevant Standards
+#### 2.1.4 Relevant Standards
 
 The Windows Server Update Services protocols use and extend the following standards:
 
@@ -965,13 +873,14 @@ Release: June 14, 2022
 
 15 / 48
 
-Hypertext Transfer Protocol - HTTP/1.1, as specified in [RFC2616]. This protocol enables file
+
+Hypertext Transfer Protocol - HTTP/1.1, as specified in [RFC2616]. This protocol enables file
 transfer from update server to update client.
 
 SOAP Version 1.2 Part 1: Messaging Framework, as specified in [SOAP1.2-1/2003]. This protocol
 serves as the base protocol from which most of the internal protocols for WSUS are defined.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table lists the WSUS member protocols.
 
@@ -1018,17 +927,17 @@ WUSP]
 [MS-
 WSUSSS]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which WSUS exists. This includes the systems that use
 the interfaces provided by the WSUS protocols, other systems that depend on WSUS, and, as
 appropriate, how WSUS components communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 None.
 
-2.3.2  Dependencies on Other Systems
+#### 2.3.2 Dependencies on Other Systems
 
 This section describes the relationships between WSUS and external components, dependencies, and
 other systems influenced by WSUS.
@@ -1054,7 +963,8 @@ Release: June 14, 2022
 
 16 / 48
 
-2.3.2.1  Network Connectivity
+
+##### 2.3.2.1 Network Connectivity
 
 WSUS requires a networked environment in which clients and servers are connected. However,
 constant connectivity is not required; client and server implementations can take advantage of
@@ -1063,14 +973,14 @@ function of WSUS is to transfer update-related information between clients and s
 and servers. If the requirement is not satisfied, WSUS will not function. A temporary loss of
 connectivity can be mitigated by retrying the protocol operation at a later time.
 
-2.3.2.2  Underlying Protocols
+##### 2.3.2.2 Underlying Protocols
 
 All WSUS member protocols are implemented as a layer on top of other protocols. These underlying
 protocols include SOAP, HTTP, and HTTPS. The WSUS environment is required to provide
 implementations of these underlying protocols; for example, as operating system libraries. If the
 requirement is not met, WSUS will not function.
 
-2.3.2.3  Persistent Storage Facility
+##### 2.3.2.3 Persistent Storage Facility
 
 WSUS requires a persistent storage facility so that abstract data models (ADMs) can be maintained.
 Examples of such a facility include file systems and databases. If the requirement is not satisfied,
@@ -1094,7 +1004,7 @@ WSUS can depend on other systems or external entities to provide configuration d
 services. The relationships described in this section are not required to implement WSUS, but are
 examples of such relationships.
 
-2.3.2.4  External Configuration System
+##### 2.3.2.4 External Configuration System
 
 An external system that provides configuration data can be used to configure clients of WSUS. One
 such system is Group Policy [MS-GPOD].
@@ -1107,7 +1017,7 @@ An external configuration system can influence WSUS by configuring a client's AD
 
 Configuration of these values is specified in [MS-WUSP] section 3.2.1.
 
-2.3.2.5  External Restartable HTTP Download Service
+##### 2.3.2.5 External Restartable HTTP Download Service
 
 The member protocols do not specify how update content files are downloaded. However, an external
 restartable HTTP download service that can restart interrupted downloads is typically used. One such
@@ -1121,10 +1031,11 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-on an update server, when an update's files finish downloading, the update can become available to
+
+on an update server, when an update's files finish downloading, the update can become available to
 update clients.
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 WSUS has the following assumptions and preconditions:
 
@@ -1132,9 +1043,9 @@ WSUS has the following assumptions and preconditions:
 
   A DSS is required to be initialized with the location of its USS.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
-2.5.1  Actors
+#### 2.5.1 Actors
 
 The actors that participate in the WSUS use cases are:
 
@@ -1166,7 +1077,7 @@ Configuration system: A supporting actor that is used by the WSUS administrator 
 specified values to distribute configuration settings that control the client's behavior. An example of
 such a configuration system is Group Policy, as described in [MS-GPOD].
 
-2.5.2  Use Case Summary Diagram
+#### 2.5.2 Use Case Summary Diagram
 
 The following diagram provides an overview of WSUS use cases with the WSUS administrator and
 computer user as the primary actors.
@@ -1178,15 +1089,16 @@ Release: June 14, 2022
 
 18 / 48
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-WSUSOD].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
 Figure 5: Windows Server Update Services use cases
 
-2.5.3  Use Case Descriptions
+#### 2.5.3 Use Case Descriptions
 
-2.5.3.1  Configure Update Server - Server Management Tool
+##### 2.5.3.1 Configure Update Server - Server Management Tool
 
 Goal: To configure the update server according to the deployment requirements.
 
@@ -1220,7 +1132,8 @@ Release: June 14, 2022
 
 19 / 48
 
-Supporting Actors: None.
+
+Supporting Actors: None.
 
 Stakeholders and Interests:
 
@@ -1280,7 +1193,7 @@ or by manual membership assignment on the update server.
 
 schedule.
 
-2.5.3.2  Manage Computer Groups - WSUS Administrator
+##### 2.5.3.2 Manage Computer Groups - WSUS Administrator
 
 Goal: To create computer target groups and establish membership of computers managed by the
 update server within those target groups.
@@ -1304,7 +1217,8 @@ Release: June 14, 2022
 
 20 / 48
 
-Primary actor: The primary actor is the WSUS administrator.
+
+Primary actor: The primary actor is the WSUS administrator.
 
 Supporting actors: None.
 
@@ -1365,7 +1279,7 @@ Main Success Scenario:
 
 Extensions: None.
 
-2.5.3.3  Approve Update - WSUS Administrator
+##### 2.5.3.3 Approve Update - WSUS Administrator
 
 Goal: To approve an update to a target group either for installation or uninstallation. This is the
 primary use case that enables WSUS to control update delivery.
@@ -1384,7 +1298,8 @@ Release: June 14, 2022
 
 21 / 48
 
-Supporting Actors: None.
+
+Supporting Actors: None.
 
 Stakeholders and Interests:
 
@@ -1440,7 +1355,7 @@ Main Success Scenario:
 
 Extensions: None.
 
-2.5.3.4  Monitor Update Installation - WSUS Administrator
+##### 2.5.3.4 Monitor Update Installation - WSUS Administrator
 
 Goal: To generate update installation and applicability reports. How WSUS is implemented determines
 the type of reports that are generated. Reports can vary between high-level summary reports to
@@ -1474,7 +1389,8 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Preconditions:
+
+Preconditions:
 
 
 
@@ -1510,7 +1426,7 @@ generated.
 
 Extensions: None.
 
-2.5.3.5  Synchronize Server - Server Management Tool
+##### 2.5.3.5 Synchronize Server - Server Management Tool
 
 Goal: To synchronize a DSS in an update server hierarchy with updates and deployments from a
 USS.
@@ -1561,7 +1477,8 @@ Release: June 14, 2022
 
 23 / 48
 
-Success Guarantee:
+
+Success Guarantee:
 
   Updates available on the USS that are not already present on the DSS are obtained and persisted
 
@@ -1601,7 +1518,7 @@ If the DSS is a replica DSS, target groups and deployments are also selected.
 If the DSS is a replica DSS, the selected target groups and deployments are created in the local
 data store.
 
-2.5.3.6  Configure Update Client - Computer User
+##### 2.5.3.6 Configure Update Client - Computer User
 
 The following use case diagram describes the interaction between the computer user and the WSUS
 administrator to update the client with user-specified settings.
@@ -1613,7 +1530,8 @@ Release: June 14, 2022
 
 24 / 48
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-WSUSOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1660,7 +1578,8 @@ Release: June 14, 2022
 
 25 / 48
 
-  A failure to modify configuration settings is not destructive to previously configured settings.
+
+  A failure to modify configuration settings is not destructive to previously configured settings.
 
 Previously configured settings are retained.
 
@@ -1717,7 +1636,7 @@ values.
 
 Extensions: None.
 
-2.5.3.7  Start Update Scan - Computer User
+##### 2.5.3.7 Start Update Scan - Computer User
 
 Goal: To discover changes in the set of updates available to the client computer and their
 deployments since the last time the use case was executed. Additionally, update metadata is
@@ -1739,7 +1658,8 @@ Release: June 14, 2022
 
 26 / 48
 
-Supporting Actors: None.
+
+Supporting Actors: None.
 
 Stakeholders and Interests:
 
@@ -1801,7 +1721,7 @@ This data is cached on the client.
 
 Extensions: None.
 
-2.5.3.8  Install Updates - Computer User
+##### 2.5.3.8 Install Updates - Computer User
 
 Goal: To carry out the directive that the WSUS administrator specified for each update that is
 applicable to the client computer. These directives include Install and Uninstall. An update
@@ -1820,7 +1740,8 @@ Release: June 14, 2022
 
 27 / 48
 
-Primary Actor: The primary actor of this use case is a computer user.
+
+Primary Actor: The primary actor of this use case is a computer user.
 
 Supporting Actors: None.
 
@@ -1881,7 +1802,7 @@ Main Success Scenario:
 
 Extensions: None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 No capability negotiation is associated with WSUS. Any deviations from the implementation of a
 specific version of these protocol specifications are documented in the respective protocol document.
@@ -1899,7 +1820,8 @@ Release: June 14, 2022
 
 28 / 48
 
-2.7  Error Handling
+
+### 2.7 Error Handling
 
 WSUS does not define any errors beyond those that are described in the specifications of the member
 protocols, as described in section 2.2.
@@ -1909,9 +1831,9 @@ protocol.
 
 The following sections describe common failure scenarios.
 
-2.7.1  Failure Scenarios
+#### 2.7.1 Failure Scenarios
 
-2.7.1.1  Network Failure
+##### 2.7.1.1 Network Failure
 
 A common failure scenario is the inability of an update client or update server to contact an update
 server due to an underlying network failure. Network failures can be caused by a lack of connectivity
@@ -1924,7 +1846,7 @@ by lower level operating system networking components (for example, error codes 
 
 Recovering from this error requires that the protocol operation be retried at a later time.
 
-2.7.1.2  Data Stores Corrupted
+##### 2.7.1.2 Data Stores Corrupted
 
 This failure scenario occurs when the data store of an update client or update server becomes
 corrupted. This corruption can occur due to an error in the underlying storage facility or hardware,
@@ -1939,7 +1861,7 @@ data from a server. The data store can either be reset in manual operation or re
 implementation can recognize data store corruption; in either case this recovery is not part of the
 protocol itself.
 
-2.7.1.3  Update Content Corrupted
+##### 2.7.1.3 Update Content Corrupted
 
 This failure scenario occurs when the installation files that are associated with an update are corrupted
 or modified either due to unintentional causes, such as network unreliability, or an intentional attempt
@@ -1963,9 +1885,10 @@ Release: June 14, 2022
 
 29 / 48
 
-2.8  Coherency Requirements
 
-2.8.1  Timers
+### 2.8 Coherency Requirements
+
+#### 2.8.1 Timers
 
 It is recommended that an update server use a timer to trigger periodic synchronization with its
 USS. The frequency of the timer is implementation-specific. The synchronization time and frequency
@@ -1980,11 +1903,11 @@ update server. The frequency of the timer is implementation-specific. The period
 update client to its update server affects the update server's USS due to the relationship between the
 protocols, as described in section 2.1.2.2.<1>
 
-2.8.2  Non-Timer Events
+#### 2.8.2 Non-Timer Events
 
 There are no non-timer events with system-level significance.
 
-2.8.3  Initialization and Reinitialization Procedures
+#### 2.8.3 Initialization and Reinitialization Procedures
 
 WSUS initialization consists of the following:
 
@@ -2005,7 +1928,7 @@ update server.
 An update server or update client can be individually reinitialized without reinitializing the entire
 system.
 
-2.9  Security
+### 2.9 Security
 
 This section documents WSUS security issues that are not otherwise specified in the technical
 documents for the member protocols. It does not duplicate what is already in the member protocol
@@ -2031,7 +1954,8 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-2.10  Additional Considerations
+
+### 2.10 Additional Considerations
 
 There are no additional considerations.
 
@@ -2042,7 +1966,8 @@ Release: June 14, 2022
 
 31 / 48
 
-3  Examples
+
+## 3 Examples
 
 This section provides examples that describe the use of Windows Server Update Services. The
 examples are as follows:
@@ -2065,7 +1990,7 @@ Initial update synchronization to an update client
 
 Pointing the update client to a new update server
 
-3.1  Example 1: Update Synchronization to DSS
+### 3.1 Example 1: Update Synchronization to DSS
 
 This example describes the scenario where a DSS is configured to synchronize with an USS, and the
 synchronization is triggered by using the server management tool or triggered on a schedule from
@@ -2083,7 +2008,8 @@ Release: June 14, 2022
 
 32 / 48
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-WSUSOD].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -2091,7 +2017,7 @@ Figure 7: Sequence diagram for initial update synchronization to the DSS
 
 The phases in the message flow are described in the following sections.
 
-3.1.1  Registration and Authorization
+#### 3.1.1 Registration and Authorization
 
 During this phase of the message exchanges, the DSS establishes its identity to the USS, and the
 USS provides a cookie to the DSS that is to be used for the remaining requests. If this is the first
@@ -2105,19 +2031,20 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-  Section 3.1.4.1: GetAuthConfig
+
+  Section 3.1.4.1: GetAuthConfig
 
   Section 3.1.4.2: GetAuthorizationCookie
 
   Section 3.1.4.3: GetCookie
 
-3.1.2  Configuration Synchronization
+#### 3.1.2 Configuration Synchronization
 
 During this phase, the DSS obtains the configuration data from the USS that governs the metadata
 and content synchronization phases of the protocol and persists this information in its data store.
 This is specified in [MS-WSUSSS] section 3.1.4.4.
 
-3.1.3  Configuration Updates Synchronization
+#### 3.1.3 Configuration Updates Synchronization
 
 If this is an initial synchronization, the DSS obtains and persists the full set of categories, update
 classifications, and detectoids that are available on the USS. On subsequent synchronizations, the
@@ -2129,7 +2056,7 @@ the previous synchronization in the GetRevisionIdList request. The update metada
 through a series of batched GetUpdateData and GetUpdateDecryptionData requests, as specified in
 [MS-WSUSSS] section 3.1.4.6.
 
-3.1.4  Software Updates Synchronization
+#### 3.1.4 Software Updates Synchronization
 
 If this is the initial synchronization, the DSS obtains and persists the full set of software updates
 that are available on the USS. The DSS first obtains the list of software updates by using a single
@@ -2153,7 +2080,7 @@ Additional details about message sequencing and processing for this scenario are
 
 By the end of this scenario, the DSS has the same set of updates in its data store as the USS.
 
-3.2  Example 2: Initial Deployment Synchronization to Replica DSS
+### 3.2 Example 2: Initial Deployment Synchronization to Replica DSS
 
 When the DSS is configured as a replica of the USS, it synchronizes target groups and update
 deployments from the USS in addition to updates. This example describes the message exchanges
@@ -2172,7 +2099,8 @@ Release: June 14, 2022
 
 34 / 48
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-WSUSOD].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2184,7 +2112,7 @@ GetDeployments requests. On subsequent synchronizations, only the changes since 
 synchronization are returned. For more information about message details and processing
 requirements, see [MS-WSUSSS] section 3.1.4.10 and section 3.2.4.3.
 
-3.3  Example 3: Initial Update Synchronization to Update Client
+### 3.3 Example 3: Initial Update Synchronization to Update Client
 
 The goal of this example is for a particular update client to synchronize update metadata and
 deployments from a particular update server for the first time. In this case, the update client has no
@@ -2206,7 +2134,8 @@ Release: June 14, 2022
 
 35 / 48
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-WSUSOD].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -2229,7 +2158,8 @@ Release: June 14, 2022
 
 36 / 48
 
-3.  The update client sends a GetAuthorizationCookie message to the update server, which responds
+
+3.  The update client sends a GetAuthorizationCookie message to the update server, which responds
 with an authorization cookie. The message details are specified in [MS-WUSP] section 3.1.5.3.
 
 4.  The update client sends a GetCookie message to the update server, which responds with a cookie.
@@ -2281,7 +2211,7 @@ server environment has changed, the cookie is invalid, or the file location has 
 
 the status. The message details are specified in [MS-WUSP] section 3.1.5.11.
 
-3.4  Example 4: Differential Update Synchronization to Update Client
+### 3.4 Example 4: Differential Update Synchronization to Update Client
 
 The goal of this example is for a particular update client to synchronize update metadata and
 deployments from a particular update server after having already synchronized at a previous point in
@@ -2301,7 +2231,8 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-WSUSOD].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2338,7 +2269,8 @@ Release: June 14, 2022
 
 38 / 48
 
-4.  If updates are determined to be applicable, the update client sends a GetExtendedUpdateInfo
+
+4.  If updates are determined to be applicable, the update client sends a GetExtendedUpdateInfo
 
 message to the server, which responds with extended update information. Message details are
 specified in [MS-WUSP] section 3.1.5.9.
@@ -2362,7 +2294,7 @@ respectively) at any time during the message sequence to request or renew a cook
 are sent either because a cookie has expired or because a fault has occurred. See [MS-WUSP] section
 2.2.2.4 for information on faults.
 
-3.5  Example 5: Rollup of Reporting Data to USS
+### 3.5 Example 5: Rollup of Reporting Data to USS
 
 In this example, the goal of the scenario is for the DSS to send update installation and applicability
 information about the clients and descendent DSSs to the USS. This supports the Monitor Update
@@ -2383,7 +2315,8 @@ Release: June 14, 2022
 
 39 / 48
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-WSUSOD].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -2394,7 +2327,7 @@ specified in [MS-WSUSSS] section 3.2.4.5. Because the amount of data to be sent 
 as part of this scenario can be large, some of the messages are required to be put into batches by the
 DSS in order not to overwhelm the USS.
 
-3.6  Example 6: Update Client Is Pointed to a New Update Server
+### 3.6 Example 6: Update Client Is Pointed to a New Update Server
 
 In this example, the goal of the scenario is for a particular update client to synchronize update
 metadata and deployments from a different update server than it used for its previous
@@ -2418,7 +2351,8 @@ Release: June 14, 2022
 
 40 / 48
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-WSUSOD].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2443,7 +2377,8 @@ Release: June 14, 2022
 
 41 / 48
 
-3.  The update client sends a GetAuthorizationCookie message to the update server, which responds
+
+3.  The update client sends a GetAuthorizationCookie message to the update server, which responds
 
 with an authorization cookie. Message details are specified in [MS-WUSP] section 3.1.5.3.
 
@@ -2503,7 +2438,8 @@ Release: June 14, 2022
 
 42 / 48
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this document is applicable to the following Microsoft products:
 
@@ -2553,7 +2489,7 @@ Windows Server
 
 Exceptions, if any, are noted in the following section.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 2.8.1: The update client periodically reports to its update server with a randomly
 chosen frequency of between one time every minute and one time every fifteen minutes.
@@ -2572,7 +2508,8 @@ Windows Server Update Services Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<5> Section 3.6: Self-update functionality is only available in Windows 8.1 and earlier.
+
+<5> Section 3.6: Self-update functionality is only available in Windows 8.1 and earlier.
 
 [MS-WSUSOD] - v20220614
 Windows Server Update Services Protocols Overview
@@ -2581,7 +2518,8 @@ Release: June 14, 2022
 
 44 / 48
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2630,7 +2568,8 @@ Release: June 14, 2022
 
 45 / 48
 
-6  Index
+
+## 6 Index
 A
 
 Actors
@@ -2767,7 +2706,8 @@ Functional requirements
 
 46 / 48
 
-Functional requirements - overview 10
+
+Functional requirements - overview 10
 
 G
 
@@ -2921,7 +2861,8 @@ System use cases
 
 47 / 48
 
-   use case summary diagram 18
+
+   use case summary diagram 18
 
 T
 

@@ -63,7 +63,8 @@ Release: March 9, 2026
 
 1 / 48
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -292,7 +293,8 @@ Release: March 9, 2026
 
 2 / 48
 
-Date
+
+Date
 
 Revision
 History
@@ -453,208 +455,77 @@ Release: March 9, 2026
 
 3 / 48
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IPolicy Server Details](#31-ipolicy-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 GetPolicies Operation](#3141-getpolicies-operation)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 GetPolicies Message](#314111-getpolicies-message)
+          - [3.1.4.1.1.2 GetPoliciesResponse Message](#314112-getpoliciesresponse-message)
+        - [3.1.4.1.2 Elements](#31412-elements)
+          - [3.1.4.1.2.1 GetPolicies](#314121-getpolicies)
+          - [3.1.4.1.2.2 GetPoliciesResponse](#314122-getpoliciesresponse)
+          - [3.1.4.1.3.3 that contains the issuers for the certificate enrollment policies.](#314133-that-contains-the-issuers-for-the-certificate-enrollment-policies)
+          - [3.1.4.1.3.17 that contains the collection of OIDs for the response.](#3141317-that-contains-the-collection-of-oids-for-the-response)
+          - [3.1.4.1.3.18 OIDReferenceCollection](#3141318-oidreferencecollection)
+          - [3.1.4.1.3.19 PolicyCollection](#3141319-policycollection)
+          - [3.1.4.1.3.20 PrivateKeyAttributes](#3141320-privatekeyattributes)
+          - [3.1.4.1.3.21 RARequirements](#3141321-rarequirements)
+          - [3.1.4.1.3.22 RequestFilter](#3141322-requestfilter)
+          - [3.1.4.1.3.23 Response](#3141323-response)
+          - [3.1.4.1.3.24 Revision](#3141324-revision)
+          - [3.1.4.1.3.25 SupersededPolicies](#3141325-supersededpolicies)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Standard GetPolicies Request and GetPoliciesResponse Response Message](#41-standard-getpolicies-request-and-getpoliciesresponse-response-message)
+    - [4.1.1 Initial Certificate Enrollment Policy Retrieval](#411-initial-certificate-enrollment-policy-retrieval)
+      - [4.1.1.1 Initial GetPolicies Client Request](#4111-initial-getpolicies-client-request)
+      - [4.1.1.2 GetPoliciesResponse Response](#4112-getpoliciesresponse-response)
+    - [4.1.2 Certificate Enrollment Policy Retrieval Using LastUpdateTime](#412-certificate-enrollment-policy-retrieval-using-lastupdatetime)
+      - [4.1.2.1 Client Request with Provided LastUpdateTime](#4121-client-request-with-provided-lastupdatetime)
+      - [4.1.2.2 Server Response](#4122-server-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+  - [6.1 WSDL](#61-wsdl)
+  - [6.2 XML Schema](#62-xml-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Message Syntax ................................................................................. 12
-Namespaces .............................................................................................. 12
-Messages ................................................................................................... 12
-Elements ................................................................................................... 12
-Complex Types ........................................................................................... 12
-Simple Types ............................................................................................. 12
-Attributes .................................................................................................. 12
-Groups ...................................................................................................... 13
-Attribute Groups ......................................................................................... 13
-Directory Service Schema Elements ................................................................... 13
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-2.3
-
-3.1
-
-3.1.4.1
-
-3.1.4.1.3
-
-3.1.4.1.2
-
-3.1.4.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-
-3.1.4.1.1.1
-3.1.4.1.1.2
-
-3  Protocol Details ..................................................................................................... 14
-IPolicy Server Details ........................................................................................ 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-GetPolicies Operation ............................................................................ 15
-Messages ....................................................................................... 15
-GetPolicies Message ................................................................... 15
-GetPoliciesResponse Message ...................................................... 16
-Elements ........................................................................................ 16
-GetPolicies ................................................................................ 16
-GetPoliciesResponse ................................................................... 16
-Complex Types ............................................................................... 17
-Attributes ................................................................................. 18
-CA ........................................................................................... 21
-CACollection .............................................................................. 22
-CAReferenceCollection ................................................................ 22
-CAURI ...................................................................................... 22
-CAURICollection ......................................................................... 23
-CertificateEnrollmentPolicy .......................................................... 23
-CertificateValidity ....................................................................... 24
-Client ....................................................................................... 24
-CryptoProviders ......................................................................... 25
-EnrollmentPermission ................................................................. 25
-Extension .................................................................................. 25
-ExtensionCollection .................................................................... 26
-FilterOIDCollection ..................................................................... 26
-KeyArchivalAttributes ................................................................. 26
-
-3.1.4.1.3.1
-3.1.4.1.3.2
-3.1.4.1.3.3
-3.1.4.1.3.4
-3.1.4.1.3.5
-3.1.4.1.3.6
-3.1.4.1.3.7
-3.1.4.1.3.8
-3.1.4.1.3.9
-3.1.4.1.3.10
-3.1.4.1.3.11
-3.1.4.1.3.12
-3.1.4.1.3.13
-3.1.4.1.3.14
-3.1.4.1.3.15
-
-[MS-XCEP] - v20260309
-X.509 Certificate Enrollment Policy Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-4 / 48
-
-3.1.4.1.3.16  OID .......................................................................................... 27
-3.1.4.1.3.17  OIDCollection ............................................................................ 27
-3.1.4.1.3.18  OIDReferenceCollection .............................................................. 28
-PolicyCollection .......................................................................... 28
-3.1.4.1.3.19
-PrivateKeyAttributes ................................................................... 28
-3.1.4.1.3.20
-RARequirements ........................................................................ 29
-3.1.4.1.3.21
-RequestFilter ............................................................................. 29
-3.1.4.1.3.22
-Response .................................................................................. 30
-3.1.4.1.3.23
-Revision .................................................................................... 31
-3.1.4.1.3.24
-SupersededPolicies ..................................................................... 31
-3.1.4.1.3.25
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-
-3.1.5
-3.1.6
-
-4.1
-
-4.1.1
-
-4  Protocol Examples ................................................................................................. 33
-Standard GetPolicies Request and GetPoliciesResponse Response Message Sequences33
-Initial Certificate Enrollment Policy Retrieval .................................................. 33
-Initial GetPolicies Client Request ............................................................. 33
-GetPoliciesResponse Response ................................................................ 34
-Certificate Enrollment Policy Retrieval Using LastUpdateTime ........................... 36
-Client Request with Provided LastUpdateTime ........................................... 36
-Server Response ................................................................................... 37
-
-4.1.1.1
-4.1.1.2
-
-4.1.2.1
-4.1.2.2
-
-4.1.2
-
-5  Security ................................................................................................................. 38
-Security Considerations for Implementers ........................................................... 38
-Index of Security Parameters ............................................................................ 38
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 39
-WSDL ............................................................................................................. 39
-XML Schema.................................................................................................... 39
-
-6.1
-6.2
-
-7  Appendix B: Product Behavior ............................................................................... 44
-
-8  Change Tracking .................................................................................................... 46
-
-9  Index ..................................................................................................................... 47
-
-[MS-XCEP] - v20260309
-X.509 Certificate Enrollment Policy Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 9, 2026
-
-5 / 48
-
-1  Introduction
+## 1 Introduction
 
 This protocol specification describes the X.509 Certificate Enrollment Policy Protocol, a protocol
 between a requesting client and a responding server for the exchange of a certificate enrollment
@@ -673,7 +544,7 @@ The server can alternatively respond with a SOAP fault message.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -724,7 +595,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Enrollment permissions define the rules by which a certification authority (CA) will issue or
+
+Enrollment permissions define the rules by which a certification authority (CA) will issue or
 deny certificate requests. In Windows environments, certificate templates are stored as
 objects in the Active Directory and used by Microsoft enterprise CAs.
 
@@ -800,7 +672,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-service. WSDL is extensible, which allows the description of endpoints and their messages
+
+service. WSDL is extensible, which allows the description of endpoints and their messages
 regardless of the message formats or network protocols that are used.
 
 X.509: An ITU-T standard for public key infrastructure subsequently adapted by the IETF, as
@@ -822,14 +695,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -866,7 +739,8 @@ Release: March 9, 2026
 
 8 / 48
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-XCEP].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -877,7 +751,7 @@ Release: March 9, 2026
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DUBUISSON] Dubuisson, O., "ASN.1 Communication between Heterogeneous Systems", Morgan
 Kaufmann, October 2000, ISBN: 0126333610.
@@ -891,7 +765,7 @@ editor.org/info/rfc4262
 [RFC4523] Zeilenga, K., "Lightweight Directory Access Protocol (LDAP) Schema Definitions for X.509
 Certificates", RFC 4523, June 2006, https://www.rfc-editor.org/info/rfc4523
 
-1.3  Overview
+### 1.3 Overview
 
 The X.509 certificate enrollment policy defines the properties and characteristics for the
 certificate enrollment process. The set of policies is stored and managed by the public key
@@ -913,27 +787,28 @@ Release: March 9, 2026
 
 9 / 48
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-XCEP].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-XCEP].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 2: Typical sequence when server responds with SOAP fault message
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
  The following figure shows the X.509 Certificate Enrollment Policy Protocol stack diagram.
 
 Figure 3: Stack diagram for the X.509 Certificate Enrollment Policy Protocol
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The server that implements the X.509 Certificate Enrollment Policy Protocol requires the client to be
 preconfigured with the URI location of the Web service. Authentication using Kerberos will require a
 compliant Kerberos client. For information about the data model initialization requirements, see
 section 3.1.3.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The X.509 Certificate Enrollment Policy Protocol is recommended for use as part of a managed PKI to
 provide clients with policy guidance for the X.509 certificate life cycle. It is possible to enroll for a
@@ -950,17 +825,18 @@ Release: March 9, 2026
 
 10 / 48
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Vendor extensibility is provided through the use of individual extension points (the <##any>
 element) as described in sections 3.1.4.1.3.1, 3.1.4.1.3.7, 3.1.4.1.3.9, 3.1.4.1.3.16, 3.1.4.1.3.22,
 and 3.1.4.1.3.23.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -971,20 +847,21 @@ Release: March 9, 2026
 
 11 / 48
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The X.509 Certificate Enrollment Policy Protocol makes use of the HTTPS transport for message
 exchange.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by the X.509 Certificate Enrollment Policy Protocol. The
 syntax of the definitions use XML Schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and
 Web Services Description Language (WSDL) as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 The X.509 Certificate Enrollment Policy Protocol defines and references various XML namespaces
 using the mechanisms specified in [XMLNS]. Although this protocol associates a specific XML
@@ -1031,23 +908,23 @@ http://schemas.xmlsoap.org/wsdl/
 
 [WSDL]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common XML schema message definitions.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 This specification does not define any common XML schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML schema attribute definitions.
 
@@ -1058,15 +935,16 @@ Release: March 9, 2026
 
 12 / 48
 
-2.2.7  Groups
+
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML schema attribute group definitions.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol accesses the following Directory Service schema classes and attributes listed in the
 following table.
@@ -1099,18 +977,19 @@ Release: March 9, 2026
 
 13 / 48
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-XCEP].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or application are
 passed directly to the transport, and the results returned by the transport are passed directly back to
 the higher-layer protocol or application.
 
-3.1  IPolicy Server Details
+### 3.1 IPolicy Server Details
 
 The IPolicy server hosts a message endpoint that receives GetPolicies (section 3.1.4.1.1.1) messages.
 Once received, the server processes the client request, formulates a response, and sends either a
@@ -1119,7 +998,7 @@ been sent to the client, the server returns to the waiting state.
 
 Figure 4: X.509 Certificate Enrollment Policy Protocol session state diagram
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 CertificateEnrollmentPolicyStore: A repository where a certificate enrollment policy resides.
 The enrollment policy in the store is the basis for a server's X.509 Certificate Enrollment Policy
@@ -1136,7 +1015,8 @@ Release: March 9, 2026
 
 14 / 48
 
-DefaultLanguage: A data element that is used to store the server's default language for localized
+
+DefaultLanguage: A data element that is used to store the server's default language for localized
 
 resources.
 
@@ -1144,11 +1024,11 @@ LastUpdateTime: A data element that specifies the last date and time when the
 
 CertificateEnrollmentPolicyStore was updated or modified.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The CertificateEnrollmentPolicyStore data element MUST be initialized with the available
 certificate enrollment policy. The initialization MUST also set the value for the LastUpdateTime
@@ -1158,7 +1038,7 @@ A server MUST initialize the DefaultLanguage data element with the language iden
 used when responding to requests when a caller has not specified a preferred language, or when the
 specified preferred language is not available in the set of SupportedLanguages.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 Operation
 
@@ -1168,7 +1048,7 @@ GetPolicies (section 3.1.4.1)  The GetPolicies operation defines the client requ
 
 that are used to complete the act of retrieving a certificate enrollment policy.
 
-3.1.4.1  GetPolicies Operation
+##### 3.1.4.1 GetPolicies Operation
 
 The GetPolicies operation defines the client request and server response messages that are used to
 complete the act of retrieving a certificate enrollment policy.
@@ -1186,7 +1066,7 @@ ciesResponse
    </wsdl:operation>
  </wsdl:portType>
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
 Message
 
@@ -1198,7 +1078,7 @@ Sent from the client to the server to retrieve certificate enrollment policies.
 
 GetPoliciesResponse  Sent from the server to the client that contains the requested certificate enrollment policy.
 
-3.1.4.1.1.1  GetPolicies Message
+###### 3.1.4.1.1.1 GetPolicies Message
 
 [MS-XCEP] - v20260309
 X.509 Certificate Enrollment Policy Protocol
@@ -1207,7 +1087,8 @@ Release: March 9, 2026
 
 15 / 48
 
-GetPolicies is a request message. It is the message sent from client to server to retrieve certificate
+
+GetPolicies is a request message. It is the message sent from client to server to retrieve certificate
 enrollment policies.
 
  <wsdl:message name="IPolicy_GetPolicies_InputMessage">
@@ -1218,7 +1099,7 @@ xcep:GetPolicies: An instance of a <GetPolicies> element as defined in section 3
 
 element contains the client request.
 
-3.1.4.1.1.2  GetPoliciesResponse Message
+###### 3.1.4.1.1.2 GetPoliciesResponse Message
 
 GetPoliciesResponse is a response message. It is the message sent from the server to the client
 containing the requested certificate enrollment policy.
@@ -1231,7 +1112,7 @@ xcep:GetPoliciesResponse: An instance of a <GetPoliciesResponse> element as defi
 
 3.1.4.1.2.2. This element contains the server response.
 
-3.1.4.1.2 Elements
+###### 3.1.4.1.2 Elements
 
 Element
 
@@ -1243,7 +1124,7 @@ Contains the body of the request for the GetPolicies operation.
 
 <GetPoliciesResponse> (section 3.1.4.1.2.2)  Contains the server response to a GetPolicies request message.
 
-3.1.4.1.2.1  GetPolicies
+###### 3.1.4.1.2.1 GetPolicies
 
 The <GetPolicies> element contains the client request.
 
@@ -1267,7 +1148,7 @@ xcep:requestFilter: The <xcep:requestFilter> element is an instance of the Reque
 defined in section 3.1.4.1.3.22. The <xcep:requestFilter> element specified in the request is used
 to constrain the policy request to specific policies.
 
-3.1.4.1.2.2  GetPoliciesResponse
+###### 3.1.4.1.2.2 GetPoliciesResponse
 
 The <GetPoliciesResponse> element contains the server response.
 
@@ -1278,7 +1159,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
- <xs:element name="GetPoliciesResponse">
+
+ <xs:element name="GetPoliciesResponse">
    <xs:complexType>
      <xs:sequence>
        <xs:element name="response" nillable="true" type="xcep:Response" />
@@ -1294,11 +1176,11 @@ section 3.1.4.1.3.23 that contains the certificate enrollment policies.
 
 xcep:cAs: The <xcep:cAs> element is an instance of a CACollection object as defined in section
 
-3.1.4.1.3.3 that contains the issuers for the certificate enrollment policies.
+###### 3.1.4.1.3.3 that contains the issuers for the certificate enrollment policies.
 
 xcep:oIDs: The <xcep:oIDs> element is an instance of the OIDCollection object as defined in section
 
-3.1.4.1.3.17 that contains the collection of OIDs for the response.
+###### 3.1.4.1.3.17 that contains the collection of OIDs for the response.
 
 3.1.4.1.3 Complex Types
 
@@ -1418,7 +1300,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-Complex Type
+
+Complex Type
 
 Description
 
@@ -1491,7 +1374,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-supersededPolicies: An instance of a SupersededPolicies object as defined in section 3.1.4.1.3.25. A
+
+supersededPolicies: An instance of a SupersededPolicies object as defined in section 3.1.4.1.3.25. A
 value of nil indicates that the corresponding CertificateEnrollmentPolicy object does not supersede
 another.
 
@@ -1596,7 +1480,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-enrollmentFlags: The <enrollmentFlags> element is an unsigned integer that MUST be a bitwise OR
+
+enrollmentFlags: The <enrollmentFlags> element is an unsigned integer that MUST be a bitwise OR
 
 of zero or more of the following values.
 
@@ -1743,7 +1628,8 @@ Release: March 9, 2026
 
 20 / 48
 
-Integer
+
+Integer
 value
 
 Name
@@ -1831,7 +1717,8 @@ Release: March 9, 2026
 
 21 / 48
 
-cAReferenceID: Each instance of a CA object in a GetPoliciesResponse message MUST have a unique
+
+cAReferenceID: Each instance of a CA object in a GetPoliciesResponse message MUST have a unique
 
 <cAReferenceID>. The <cAReferenceID> is an unsigned integer value used as an index for
 referencing the corresponding CA object within the scope of a GetPoliciesResponse message.
@@ -1902,7 +1789,8 @@ Release: March 9, 2026
 
 22 / 48
 
-Integer value  Meaning
+
+Integer value  Meaning
 
 2
 
@@ -1979,7 +1867,8 @@ Release: March 9, 2026
 
 23 / 48
 
-cAs: A <cAs> element is used to represent an instance of a CAReferenceCollection object as defined
+
+cAs: A <cAs> element is used to represent an instance of a CAReferenceCollection object as defined
 
 in section 3.1.4.1.3.4, which is used to reference the issuers for this CertificateEnrollmentPolicy
 object.
@@ -2050,7 +1939,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-element, the GetPoliciesResponse message MUST return using the language specified by the
+
+element, the GetPoliciesResponse message MUST return using the language specified by the
 DefaultLanguage data element.
 
 ##any: This element provides a vendor-extensible point. Additional elements MAY be included as part
@@ -2118,7 +2008,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-critical: The <critical> element is used to indicate whether the Extension is critical. A value of true
+
+critical: The <critical> element is used to indicate whether the Extension is critical. A value of true
 
 indicates that the Extension is critical. A value of false indicates that the Extension is not critical.
 
@@ -2183,7 +2074,8 @@ Release: March 9, 2026
 
 26 / 48
 
-symmetricAlgorithmKeyLength: An integer value representing the expected bit length of a
+
+symmetricAlgorithmKeyLength: An integer value representing the expected bit length of a
 symmetric key used when encrypting a private key during key exchange requests. The
 <symmetricAlgorithmKeyLength> element MUST be a positive nonzero integer value.
 
@@ -2279,11 +2171,12 @@ Release: March 9, 2026
 
 27 / 48
 
- </xs:complexType>
+
+ </xs:complexType>
 
 oID: An instance of an OID object as defined in section 3.1.4.1.3.16.
 
-3.1.4.1.3.18  OIDReferenceCollection
+###### 3.1.4.1.3.18 OIDReferenceCollection
 
 A list of references to OID objects. The reference is to the <oIDReferenceID> element of an OID
 object. The list is not ordered.
@@ -2300,7 +2193,7 @@ oIDReference: An integer reference to an <oIDReferenceID> element in an OID obje
 GetPoliciesResponse (section 3.1.4.1.1.2) message. The integer MUST reference an existing
 <oIDReferenceID> in this GetPoliciesResponse message.
 
-3.1.4.1.3.19  PolicyCollection
+###### 3.1.4.1.3.19 PolicyCollection
 
 A list of CertificateEnrollmentPolicy objects. The list is not ordered. The <PolicyCollection> is used to
 group CertificateEnrollmentPolicy objects together.
@@ -2314,7 +2207,7 @@ group CertificateEnrollmentPolicy objects together.
 
 policy: An instance of a CertificateEnrollmentPolicy object as defined in section 3.1.4.1.3.7.
 
-3.1.4.1.3.20  PrivateKeyAttributes
+###### 3.1.4.1.3.20 PrivateKeyAttributes
 
 The <PrivateKeyAttributes> complex type contains the attributes for the private key that will be
 associated with any certificate request for the corresponding CertificateEnrollmentPolicy object.
@@ -2346,7 +2239,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-keySpec: This element has identical semantics for the <pKIDefaultKeySpec> attribute specified in
+
+keySpec: This element has identical semantics for the <pKIDefaultKeySpec> attribute specified in
 
 [MS-WCCE] section 3.1.2.4.2.2.1.5.
 
@@ -2367,7 +2261,7 @@ cryptoProviders: An instance of the CryptoProviders object as specified in secti
 
 there are no cryptographic providers to be specified, the <cryptoProviders> element MUST be nil.
 
-3.1.4.1.3.21  RARequirements
+###### 3.1.4.1.3.21 RARequirements
 
 If additional registration authority (RA) key(s) are required in signing enrollment requests for this
 policy, these keys are defined in an RARequirements object.
@@ -2394,7 +2288,7 @@ the RA certificate.
 rAPolicies: An instance of an OIDReferenceCollection object defined in section 3.1.4.1.3.18. The
 <rAPolicies> element defines the required values in the policy extension of the RA certificate.
 
-3.1.4.1.3.22  RequestFilter
+###### 3.1.4.1.3.22 RequestFilter
 
 The <RequestFilter> complex type is provided in a request and used by the server to filter the
 GetPoliciesResponse to contain only CertificateEnrollmentPolicy objects that satisfy the filter.
@@ -2417,7 +2311,8 @@ Release: March 9, 2026
 
 29 / 48
 
-policyOIDs: An instance of a FilterOIDCollection object as defined in section 3.1.4.1.3.14. If the
+
+policyOIDs: An instance of a FilterOIDCollection object as defined in section 3.1.4.1.3.14. If the
 
 <policyOIDs> element is missing or specified as nil or empty, the server MUST NOT apply an OID
 filter to the policies returned in the GetPoliciesResponse message.
@@ -2475,7 +2370,7 @@ Y is capped to the server's maximum supported CA version.
 
 of a RequestFilter object instance. Additional elements MAY be ignored by a server.
 
-3.1.4.1.3.23  Response
+###### 3.1.4.1.3.23 Response
 
 The <Response> complex type is used to convey the results of a request for certificate enrollment
 policy.
@@ -2503,7 +2398,8 @@ Release: March 9, 2026
 
 30 / 48
 
-policyID: A unique identifier for the certificate enrollment policy. Two or more servers can respond
+
+policyID: A unique identifier for the certificate enrollment policy. Two or more servers can respond
 with the same <policyID> element in a GetPoliciesResponse message if, and only if, they are
 configured to return the same Response object to the same requestor. The <policyID> element is
 not intended to be a human-readable property.
@@ -2528,7 +2424,7 @@ policies: An instance of a PolicyCollection object as defined in section 3.1.4.1
 
 of a Response object instance.
 
-3.1.4.1.3.24  Revision
+###### 3.1.4.1.3.24 Revision
 
 The <Revision> complex type identifies the version information of a CertificateEnrollmentPolicy object.
 
@@ -2550,7 +2446,7 @@ The <minorRevision> element MUST be an integer greater than or equal to 0. The
 <minorRevision> element will be populated from the <msPKI-Template-Minor-Revision> attribute
 as specified in [MS-CRTD] section 2.17.
 
-3.1.4.1.3.25  SupersededPolicies
+###### 3.1.4.1.3.25 SupersededPolicies
 
 A list of superseded policies identified by the value of their <commonName> attribute. The list is not
 ordered.
@@ -2574,14 +2470,15 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-the SupersededPolicies object is constructed based on the <msPKI-Supersede-Templates>
+
+the SupersededPolicies object is constructed based on the <msPKI-Supersede-Templates>
 attribute as specified in [MS-CRTD] section 2.21. Each value is returned as a string element.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 Updates to the certificate enrollment policy data model SHOULD be accompanied by an update to
 the initialized update time for the data model.
@@ -2593,18 +2490,19 @@ Release: March 9, 2026
 
 32 / 48
 
-4  Protocol Examples
 
-4.1  Standard GetPolicies Request and GetPoliciesResponse Response Message
+## 4 Protocol Examples
+
+### 4.1 Standard GetPolicies Request and GetPoliciesResponse Response Message
 
 Sequences
 
 In the following sections, the username/password authentication headers have been included in the
 message sequences for clarity.
 
-4.1.1  Initial Certificate Enrollment Policy Retrieval
+#### 4.1.1 Initial Certificate Enrollment Policy Retrieval
 
-4.1.1.1  Initial GetPolicies Client Request
+##### 4.1.1.1 Initial GetPolicies Client Request
 
  <s:Envelope
    xmlns:s="http://www.w3.org/2003/05/soap-envelope"
@@ -2665,7 +2563,8 @@ Release: March 9, 2026
 
 33 / 48
 
-4.1.1.2  GetPoliciesResponse Response
+
+##### 4.1.1.2 GetPoliciesResponse Response
 
  <s:Envelope
    xmlns:a="http://www.w3.org/2005/08/addressing"
@@ -2742,7 +2641,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-                   <oIDReference>6</oIDReference>
+
+                   <oIDReference>6</oIDReference>
                    <critical>false</critical>
                    <value>
                      MCAGCCsGAQUFBwMCB…YBBAGCNwoDBA==
@@ -2819,7 +2719,8 @@ Release: March 9, 2026
 
 35 / 48
 
-         <oID>
+
+         <oID>
            <value>
         1.3.6.1.4.1.311.21.8.3800100.3166153.13323660.9808540.8334961.78.1.6
            </value>
@@ -2832,9 +2733,9 @@ Release: March 9, 2026
    </s:Body>
  </s:Envelope>
 
-4.1.2  Certificate Enrollment Policy Retrieval Using LastUpdateTime
+#### 4.1.2 Certificate Enrollment Policy Retrieval Using LastUpdateTime
 
-4.1.2.1  Client Request with Provided LastUpdateTime
+##### 4.1.2.1 Client Request with Provided LastUpdateTime
 
  <s:Envelope
    xmlns:s="http://www.w3.org/2003/05/soap-envelope"
@@ -2889,7 +2790,8 @@ Release: March 9, 2026
 
 36 / 48
 
-4.1.2.2  Server Response
+
+##### 4.1.2.2 Server Response
 
  <s:Envelope
    xmlns:a="http://www.w3.org/2005/08/addressing"
@@ -2924,16 +2826,17 @@ Release: March 9, 2026
 
 37 / 48
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The X.509 Certificate Enrollment Policy Protocol does not provide message-level signing or message-
 level encryption for either GetPolicies (section 3.1.4.1.1.1) request messages or
 GetPoliciesResponse (section 3.1.4.1.1.2) response messages. Implementers should make use of
 available transport protection as available in HTTPS to provide security to the client/server interaction.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2944,9 +2847,10 @@ Release: March 9, 2026
 
 38 / 48
 
-6  Appendix A: Full WSDL
 
-6.1  WSDL
+## 6 Appendix A: Full WSDL
+
+### 6.1 WSDL
 
 For ease of implementation, the full WSDL is provided as follows.
 
@@ -2986,7 +2890,7 @@ iciesResponse"
    </wsdl:portType>
  </wsdl:definitions>
 
-6.2  XML Schema
+### 6.2 XML Schema
 
 For ease of implementation, the XML Schema is provided as follows.
 
@@ -3015,7 +2919,8 @@ Release: March 9, 2026
 
 39 / 48
 
-   </xs:element>
+
+   </xs:element>
 
    <xs:element name="GetPoliciesResponse">
      <xs:complexType>
@@ -3092,7 +2997,8 @@ Release: March 9, 2026
 
 40 / 48
 
-   <xs:complexType name="CAURI">
+
+   <xs:complexType name="CAURI">
      <xs:sequence>
        <xs:element name="clientAuthentication" type="xs:unsignedInt" />
        <xs:element name="uri" type="xs:anyURI" />
@@ -3167,7 +3073,8 @@ Release: March 9, 2026
 
 41 / 48
 
-   <xs:complexType name="ExtensionCollection">
+
+   <xs:complexType name="ExtensionCollection">
      <xs:sequence>
        <xs:element name="extension"
          type="xcep:Extension" minOccurs="1" maxOccurs="unbounded" />
@@ -3243,7 +3150,8 @@ Release: March 9, 2026
 
 42 / 48
 
-   <xs:complexType name="RARequirements">
+
+   <xs:complexType name="RARequirements">
      <xs:sequence>
        <xs:element name="rASignatures" type="xs:unsignedInt" />
        <xs:element name="rAEKUs" type="xcep:OIDReferenceCollection"
@@ -3300,7 +3208,8 @@ Release: March 9, 2026
 
 43 / 48
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3373,7 +3282,8 @@ X.509 Certificate Enrollment Policy Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 9, 2026
 
-<5> Section 3.1.4.1.3.22:  On Windows Server 2012, this rule is not applied, and Y is not reset when
+
+<5> Section 3.1.4.1.3.22:  On Windows Server 2012, this rule is not applied, and Y is not reset when
 the RequestFilter is not specified. On Windows Server 2012, the maximum supported CA version is
 4. On Windows Server 2012 R2 and later, the maximum supported CA version is 5.
 
@@ -3387,7 +3297,8 @@ Release: March 9, 2026
 
 45 / 48
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3447,7 +3358,8 @@ Release: March 9, 2026
 
 46 / 48
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3583,7 +3495,8 @@ Messages
 
 47 / 48
 
-   elements 12
+
+   elements 12
    enumerated 12
    groups 13
    namespaces 12

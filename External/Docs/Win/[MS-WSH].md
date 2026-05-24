@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 80
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: June 1, 2017
 
 2 / 80
 
-Date
+
+Date
 
 Revision
 History
@@ -510,340 +512,152 @@ Release: June 1, 2017
 
 3 / 80
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.3.1
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Network Access Protection (NAP) Application Programming Interface (API)](#131-network-access-protection-nap-application-programming-interface-api)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+    - [1.4.1 Relationship with the Windows Update Client-Server Protocol](#141-relationship-with-the-windows-update-client-server-protocol)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 TLV](#221-tlv)
+    - [2.2.2 WSHA SoH](#222-wsha-soh)
+      - [2.2.2.1 TLV 1](#2221-tlv-1)
+      - [2.2.2.2 TLV 2](#2222-tlv-2)
+      - [2.2.2.3 TLV 3](#2223-tlv-3)
+      - [2.2.2.4 TLV 4](#2224-tlv-4)
+      - [2.2.2.5 TLV 5](#2225-tlv-5)
+      - [2.2.2.6 TLV 6](#2226-tlv-6)
+      - [2.2.2.7 TLV 7](#2227-tlv-7)
+      - [2.2.2.8 TLV 8](#2228-tlv-8)
+      - [2.2.2.9 TLV 9](#2229-tlv-9)
+      - [2.2.2.10 TLV 10](#22210-tlv-10)
+      - [2.2.2.11 TLV 11](#22211-tlv-11)
+      - [2.2.2.12 TLV 12](#22212-tlv-12)
+      - [2.2.2.13 TLV 13](#22213-tlv-13)
+      - [2.2.2.14 TLV 14](#22214-tlv-14)
+      - [2.2.2.15 TLV 15](#22215-tlv-15)
+      - [2.2.2.16 TLV 16](#22216-tlv-16)
+      - [2.2.2.17 TLV 17](#22217-tlv-17)
+      - [2.2.2.18 TLV 18](#22218-tlv-18)
+      - [2.2.2.19 TLV 19](#22219-tlv-19)
+    - [2.2.3 WSHV SoHR](#223-wshv-sohr)
+      - [2.2.3.1 TLV 1](#2231-tlv-1)
+      - [2.2.3.2 TLV 2](#2232-tlv-2)
+      - [2.2.3.3 TLV 3](#2233-tlv-3)
+      - [2.2.3.4 TLV 4](#2234-tlv-4)
+      - [2.2.3.5 TLV 5](#2235-tlv-5)
+      - [2.2.3.6 TLV 6](#2236-tlv-6)
+      - [2.2.3.7 TLV 7](#2237-tlv-7)
+      - [2.2.3.8 TLV 8](#2238-tlv-8)
+      - [2.2.3.9 TLV 9](#2239-tlv-9)
+      - [2.2.3.10 TLV 10](#22310-tlv-10)
+      - [2.2.3.11 TLV 11](#22311-tlv-11)
+      - [2.2.3.12 TLV 12](#22312-tlv-12)
+      - [2.2.3.13 TLV 13](#22313-tlv-13)
+      - [2.2.3.14 TLV 14](#22314-tlv-14)
+      - [2.2.3.15 TLV 15](#22315-tlv-15)
+    - [2.2.4 NAPSystemHealthID](#224-napsystemhealthid)
+    - [2.2.5 Flag](#225-flag)
+    - [2.2.6 Version](#226-version)
+    - [2.2.7 HealthClassID](#227-healthclassid)
+    - [2.2.8 ProductName](#228-productname)
+    - [2.2.9 ClientStatusCode](#229-clientstatuscode)
+      - [2.2.9.1 Windows Update Agent (WUA) Error Codes and Security Update Status Codes](#2291-windows-update-agent-wua-error-codes-and-security-update-status-codes)
+      - [2.2.9.2 Windows Security Center (WSC) Error Codes](#2292-windows-security-center-wsc-error-codes)
+      - [2.2.9.3 Antivirus and Antispyware Status Codes](#2293-antivirus-and-antispyware-status-codes)
+      - [2.2.9.4 Firewall Status Codes](#2294-firewall-status-codes)
+      - [2.2.9.5 Automatic Update Status Codes](#2295-automatic-update-status-codes)
+      - [2.2.9.6 ClientStatusCode Packet](#2296-clientstatuscode-packet)
+    - [2.2.10 DurationSinceLastSynch](#2210-durationsincelastsynch)
+    - [2.2.11 WSUSServerName](#2211-wsusservername)
+    - [2.2.12 UpdatesFlag](#2212-updatesflag)
+    - [2.2.13 ComplianceCode1](#2213-compliancecode1)
+    - [2.2.14 ComplianceCode2](#2214-compliancecode2)
+      - [2.2.14.1 Antivirus and Antispyware](#22141-antivirus-and-antispyware)
+      - [2.2.14.2 Security Updates](#22142-security-updates)
+    - [2.2.15 Data Types](#2215-data-types)
+      - [2.2.15.1 ProductInformation](#22151-productinformation)
+      - [2.2.15.2 SecurityUpdatesStatus](#22152-securityupdatesstatus)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Setting the NAP System Health ID Field](#3151-setting-the-nap-system-health-id-field)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 WSHA (Client) Specific Details](#32-wsha-client-specific-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 SoH Request](#3241-soh-request)
+      - [3.2.4.2 SendMessageToUI Abstract Interface](#3242-sendmessagetoui-abstract-interface)
+      - [3.2.4.3 GetNumberOfFirewallProducts Abstract Interface](#3243-getnumberoffirewallproducts-abstract-interface)
+      - [3.2.4.4 GetFirewallProductsInformation Abstract Interface](#3244-getfirewallproductsinformation-abstract-interface)
+      - [3.2.4.5 GetNumberOfAntivirusProducts Abstract Interface](#3245-getnumberofantivirusproducts-abstract-interface)
+      - [3.2.4.6 GetAntivirusProductsInformation Abstract Interface](#3246-getantivirusproductsinformation-abstract-interface)
+      - [3.2.4.7 GetNumberOfAntispywareProducts Abstract Interface](#3247-getnumberofantispywareproducts-abstract-interface)
+      - [3.2.4.8 GetAntispywareProductsInformation Abstract Interface](#3248-getantispywareproductsinformation-abstract-interface)
+      - [3.2.4.9 GetAutomaticUpdatesStatusCode Abstract Interface](#3249-getautomaticupdatesstatuscode-abstract-interface)
+      - [3.2.4.10 GetSecurityUpdatesStatus Abstract Interface](#32410-getsecurityupdatesstatus-abstract-interface)
+      - [3.2.4.11 FreeProductsInformation Abstract Interface](#32411-freeproductsinformation-abstract-interface)
+      - [3.2.4.12 GetClientVersion Abstract Interface](#32412-getclientversion-abstract-interface)
+      - [3.2.4.13 ClientVersion ADM Initialization](#32413-clientversion-adm-initialization)
+      - [3.2.4.14 SohFlag ADM initialization](#32414-sohflag-adm-initialization)
+      - [3.2.4.15 RemediateFirewall Abstract Interface](#32415-remediatefirewall-abstract-interface)
+      - [3.2.4.16 RemediateAntispyware Abstract Interface](#32416-remediateantispyware-abstract-interface)
+      - [3.2.4.17 RemediateAutomaticUpdates Abstract Interface](#32417-remediateautomaticupdates-abstract-interface)
+      - [3.2.4.18 StartWSCService Abstract Interface](#32418-startwscservice-abstract-interface)
+      - [3.2.4.19 DoOnlineScan Abstract Interface](#32419-doonlinescan-abstract-interface)
+      - [3.2.4.20 DoSecuritySoftwareUpdate Abstract Interface](#32420-dosecuritysoftwareupdate-abstract-interface)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 General Problems](#3251-general-problems)
+      - [3.2.5.2 Constructing an SoH](#3252-constructing-an-soh)
+      - [3.2.5.3 Processing an SoHR](#3253-processing-an-sohr)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Client Abstract Interfaces](#3271-client-abstract-interfaces)
+      - [3.2.7.2 SoH Construction Interface](#3272-soh-construction-interface)
+      - [3.2.7.3 SoH Change Notifications](#3273-soh-change-notifications)
+  - [3.3 WSHV (Server) Specific Details](#33-wshv-server-specific-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 SoH Validation Request](#3341-soh-validation-request)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 General Problems](#3351-general-problems)
+      - [3.3.5.2 Constructing an SoHR from an SoH](#3352-constructing-an-sohr-from-an-soh)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Server Abstract Interfaces](#3371-server-abstract-interfaces)
+      - [3.3.7.2 SoHR Construction Interface](#3372-sohr-construction-interface)
+      - [3.3.7.3 SoH Processing Interface](#3373-soh-processing-interface)
+- [4 Protocol Example](#4-protocol-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Network Access Protection (NAP) Application Programming Interface (API) .......... 9
-Relationship to Other Protocols ............................................................................ 9
-Relationship with the Windows Update Client-Server Protocol ........................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.4.1
-
-1.4
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-2.2.2.13
-2.2.2.14
-2.2.2.15
-2.2.2.16
-2.2.2.17
-2.2.2.18
-2.2.2.19
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-TLV ........................................................................................................... 12
-WSHA SoH ................................................................................................. 13
-TLV 1 .................................................................................................. 13
-TLV 2 .................................................................................................. 13
-TLV 3 .................................................................................................. 14
-TLV 4 .................................................................................................. 14
-TLV 5 .................................................................................................. 15
-TLV 6 .................................................................................................. 15
-TLV 7 .................................................................................................. 16
-TLV 8 .................................................................................................. 16
-TLV 9 .................................................................................................. 17
-TLV 10 ................................................................................................. 17
-TLV 11 ................................................................................................. 18
-TLV 12 ................................................................................................. 18
-TLV 13 ................................................................................................. 19
-TLV 14 ................................................................................................. 19
-TLV 15 ................................................................................................. 20
-TLV 16 ................................................................................................. 20
-TLV 17 ................................................................................................. 20
-TLV 18 ................................................................................................. 21
-TLV 19 ................................................................................................. 22
-WSHV SoHR ............................................................................................... 22
-TLV 1 .................................................................................................. 22
-TLV 2 .................................................................................................. 23
-TLV 3 .................................................................................................. 23
-TLV 4 .................................................................................................. 24
-TLV 5 .................................................................................................. 24
-TLV 6 .................................................................................................. 25
-TLV 7 .................................................................................................. 25
-TLV 8 .................................................................................................. 26
-TLV 9 .................................................................................................. 26
-TLV 10 ................................................................................................. 27
-TLV 11 ................................................................................................. 27
-TLV 12 ................................................................................................. 27
-TLV 13 ................................................................................................. 28
-TLV 14 ................................................................................................. 28
-TLV 15 ................................................................................................. 29
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-2.2.3.11
-2.2.3.12
-2.2.3.13
-2.2.3.14
-2.2.3.15
-
-2.2.3
-
-[MS-WSH] - v20170601
-Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 80
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-2.2.9.1
-2.2.9.2
-2.2.9.3
-2.2.9.4
-2.2.9.5
-2.2.9.6
-
-NAPSystemHealthID.................................................................................... 29
-Flag .......................................................................................................... 30
-Version ...................................................................................................... 30
-HealthClassID ............................................................................................ 30
-ProductName ............................................................................................. 30
-ClientStatusCode ........................................................................................ 30
-Windows Update Agent (WUA) Error Codes and Security Update Status Codes31
-Windows Security Center (WSC) Error Codes ............................................ 31
-Antivirus and Antispyware Status Codes .................................................. 32
-Firewall Status Codes ............................................................................ 33
-Automatic Update Status Codes .............................................................. 33
-ClientStatusCode Packet ........................................................................ 33
-2.2.10  DurationSinceLastSynch .............................................................................. 34
-2.2.11  WSUSServerName ...................................................................................... 34
-2.2.12  UpdatesFlag ............................................................................................... 34
-ComplianceCode1 ....................................................................................... 35
-2.2.13
-ComplianceCode2 ....................................................................................... 37
-2.2.14
-Antivirus and Antispyware ...................................................................... 37
-Security Updates................................................................................... 38
-2.2.15  Data Types ................................................................................................ 38
-ProductInformation ............................................................................... 38
-SecurityUpdatesStatus........................................................................... 39
-
-2.2.15.1
-2.2.15.2
-
-2.2.14.1
-2.2.14.2
-
-3.2
-
-3.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 40
-Common Details .............................................................................................. 40
-Abstract Data Model .................................................................................... 40
-Timers ...................................................................................................... 41
-Initialization ............................................................................................... 41
-Higher-Layer Triggered Events ..................................................................... 41
-Processing Events and Sequencing Rules ....................................................... 41
-Setting the NAP System Health ID Field ................................................... 41
-Timer Events .............................................................................................. 42
-Other Local Events ...................................................................................... 42
-WSHA (Client) Specific Details ........................................................................... 42
-Abstract Data Model .................................................................................... 42
-Timers ...................................................................................................... 45
-Initialization ............................................................................................... 45
-Higher-Layer Triggered Events ..................................................................... 46
-SoH Request ........................................................................................ 46
-3.2.4.1
-SendMessageToUI Abstract Interface ....................................................... 46
-3.2.4.2
-GetNumberOfFirewallProducts Abstract Interface ...................................... 46
-3.2.4.3
-GetFirewallProductsInformation Abstract Interface .................................... 46
-3.2.4.4
-GetNumberOfAntivirusProducts Abstract Interface ..................................... 47
-3.2.4.5
-GetAntivirusProductsInformation Abstract Interface .................................. 48
-3.2.4.6
-GetNumberOfAntispywareProducts Abstract Interface ................................ 48
-3.2.4.7
-GetAntispywareProductsInformation Abstract Interface .............................. 49
-3.2.4.8
-3.2.4.9
-GetAutomaticUpdatesStatusCode Abstract Interface .................................. 49
-3.2.4.10  GetSecurityUpdatesStatus Abstract Interface............................................ 49
-FreeProductsInformation Abstract Interface .............................................. 50
-3.2.4.11
-3.2.4.12  GetClientVersion Abstract Interface ......................................................... 50
-ClientVersion ADM Initialization .............................................................. 50
-3.2.4.13
-SohFlag ADM initialization ...................................................................... 50
-3.2.4.14
-RemediateFirewall Abstract Interface ....................................................... 50
-3.2.4.15
-RemediateAntispyware Abstract Interface ................................................ 51
-3.2.4.16
-RemediateAutomaticUpdates Abstract Interface ........................................ 51
-3.2.4.17
-3.2.4.18
-StartWSCService Abstract Interface ........................................................ 51
-3.2.4.19  DoOnlineScan Abstract Interface ............................................................. 52
-3.2.4.20  DoSecuritySoftwareUpdate Abstract Interface........................................... 52
-
-[MS-WSH] - v20170601
-Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 80
-
-3.3
-
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.6
-3.2.7
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-Processing Events and Sequencing Rules ....................................................... 53
-General Problems .................................................................................. 53
-Constructing an SoH .............................................................................. 53
-Processing an SoHR............................................................................... 56
-Timer Events .............................................................................................. 60
-Other Local Events ...................................................................................... 60
-Client Abstract Interfaces ....................................................................... 60
-SoH Construction Interface .................................................................... 60
-SoH Change Notifications ....................................................................... 60
-WSHV (Server) Specific Details .......................................................................... 60
-Abstract Data Model .................................................................................... 60
-Timers ...................................................................................................... 62
-Initialization ............................................................................................... 62
-Higher-Layer Triggered Events ..................................................................... 63
-SoH Validation Request .......................................................................... 63
-Processing Events and Sequencing Rules ....................................................... 63
-General Problems .................................................................................. 63
-Constructing an SoHR from an SoH ......................................................... 63
-Timer Events .............................................................................................. 71
-Other Local Events ...................................................................................... 71
-Server Abstract Interfaces ..................................................................... 71
-SoHR Construction Interface................................................................... 71
-SoH Processing Interface ....................................................................... 71
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-
-3.3.6
-3.3.7
-
-3.3.4.1
-
-3.3.5.1
-3.3.5.2
-
-3.3.7.1
-3.3.7.2
-3.3.7.3
-
-4  Protocol Example................................................................................................... 72
-
-5  Security ................................................................................................................. 73
-Security Considerations for Implementers ........................................................... 73
-Index of Security Parameters ............................................................................ 73
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 74
-
-7  Change Tracking .................................................................................................... 76
-
-8  Index ..................................................................................................................... 77
-
-[MS-WSH] - v20170601
-Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 80
-
-1  Introduction
+## 1 Introduction
 
 The Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
 is included in the packet payload specified in the Protocol Bindings for SoH, as specified in [TNC-IF-
@@ -855,7 +669,7 @@ allowing the client into the network.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -913,7 +727,8 @@ Release: June 1, 2017
 
 7 / 80
 
-Windows Security Center (WSC): WSC is the service on Windows XP operating system Service
+
+Windows Security Center (WSC): WSC is the service on Windows XP operating system Service
 
 Pack 3 (SP3) and Windows Vista operating system clients that determines the firewall, antivirus,
 antispyware, and Automatic Updates states that are then reported by the WSHA.
@@ -921,14 +736,14 @@ antispyware, and Automatic Updates states that are then reported by the WSHA.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -945,7 +760,7 @@ Health Validator (WSHV) Protocol".
 [TNC-IF-TNCCSPBSoH] TCG, "TNC IF-TNCCS: Protocol Bindings for SoH", version 1.0, May 2007,
 https://trustedcomputinggroup.org/tnc-if-tnccs-protocol-bindings-soh/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ITUX680] ITU-T, "Abstract Syntax Notation One (ASN.1): Specification of Basic Notation",
 Recommendation X.680, Approved 2021-02-13, https://www.itu.int/rec/T-REC-X.680-202102-I/en
@@ -979,7 +794,8 @@ Release: June 1, 2017
 
 8 / 80
 
-[MSDN-NapDatatypes] Microsoft Corporation, "NAP Datatypes", http://msdn.microsoft.com/en-
+
+[MSDN-NapDatatypes] Microsoft Corporation, "NAP Datatypes", http://msdn.microsoft.com/en-
 us/library/cc441807(v=VS.85).aspx
 
 [MSDN-NAP] Microsoft Corporation, "Network Access Protection", http://msdn.microsoft.com/en-
@@ -991,7 +807,7 @@ us/library/aa387099(VS.85).aspx
 [MSFT-MSRC] Microsoft Corporation, "Severity Update Rating System",
 https://technet.microsoft.com/en-us/security/gg309177.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
 uses the Protocol Bindings for SoH (as specified in [TNC-IF-TNCCSPBSoH]) to transport a client's
@@ -1002,7 +818,7 @@ message.
 For detailed information about the Network Access Protection (NAP) system components and
 developers API, see [MSDN-NAP].
 
-1.3.1  Network Access Protection (NAP) Application Programming Interface (API)
+#### 1.3.1 Network Access Protection (NAP) Application Programming Interface (API)
 
 The Network Access Protection (NAP) API provides a set of function calls that allow SHAs from
 third-party vendors to register with the NAP agent to indicate system health status and to respond to
@@ -1013,7 +829,7 @@ respond with health evaluation results and remediation information.
 
 For information about the NAP API, see [MSDN-NAPAPI].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WSHA and WSHV data is encapsulated in the SoH and SoHR messages, where the WSHA data is
 packaged as an SoHReportEntry set within SoH messages and the WSHV data is packaged as an
@@ -1047,13 +863,14 @@ Release: June 1, 2017
 
 9 / 80
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-WSH].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 1: Relationship to other protocols
 
-1.4.1  Relationship with the Windows Update Client-Server Protocol
+#### 1.4.1 Relationship with the Windows Update Client-Server Protocol
 
 During operation, the Windows Security Health Agent (WSHA) sends a summary of Windows Update-
 related information in an SoH message. The WSHA on a client retrieves the summary information by
@@ -1078,7 +895,8 @@ Release: June 1, 2017
 
 10 / 80
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 For a Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
 exchange to occur, there is required to be a Protocol Bindings for SoH (as specified in [TNC-IF-
@@ -1086,13 +904,13 @@ TNCCSPBSoH]) session with a suitable transport protocol established between the 
 policy server. There are also required to be WSHA and WSHV client and server components running on
 the client and health policy server, respectively.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
 is applicable only in an environment in which NAP is being used, and the NAP service is enabled on
 the client computer.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The WSHA reports its version in the SoH, as specified in section 2.2.6. The WSHV parses the status
 and enforces the policy differently, depending on the WSHA version.
@@ -1100,12 +918,12 @@ and enforces the policy differently, depending on the WSHA version.
 Based on the implementation configuration, the Network Access Protection (NAP) client is required to
 be installed.<1>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
 does not include any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
 has no standards assignments.
@@ -1117,7 +935,8 @@ Release: June 1, 2017
 
 11 / 80
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Windows Security Health Agent (WSHA) and Windows Security
 Health Validator (WSHV) Protocol messages are transported and WSHA and WSHV Protocol message
@@ -1125,13 +944,13 @@ syntax.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
 does not provide its own transport. It MUST be carried in the Protocol Bindings for SoH, as specified in
 [TNC-IF-TNCCSPBSoH].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
 is comprised of messages in the form of SoHReportEntries in the NAP SoH and SoHR, respectively,
@@ -1140,7 +959,7 @@ For more information on the ASN.1 notation, see [ITUX680].
 
 The respective SoH and SoHR message formats are specified in the following sections.
 
-2.2.1  TLV
+#### 2.2.1 TLV
 
 The following are the basic constituents of all TLVs contained in the WSHA SoH packet (section 2.2.2).
 All of the values MUST be present, unless otherwise noted, and the values MUST be specified in this
@@ -1199,11 +1018,12 @@ Release: June 1, 2017
 
 12 / 80
 
-Value (variable): Contains the data for the TLV specified as an array of bytes.
+
+Value (variable): Contains the data for the TLV specified as an array of bytes.
 
 The SoH and SoHR are lists of TLVs concatenated one after the other.
 
-2.2.2  WSHA SoH
+#### 2.2.2 WSHA SoH
 
 The following subsections define the TLV constituents of the WSHA SoH packet. All of the values MUST
 be present, unless otherwise noted. The values MUST be in the order in which they are presented in
@@ -1216,7 +1036,7 @@ Security_Updates_DurationSinceLastSynch field of TLV 17, and the
 Security_Updates_UpdatesFlag field of TLV 19, which are sent in machine byte order and are little-
 endian.
 
-2.2.2.1  TLV 1
+##### 2.2.2.1 TLV 1
 
 The following are the constituents of TLV 1 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1254,7 +1074,7 @@ in bytes, of the NAPSystemHealthID field.
 
 NAPSystemHealthID (4 bytes): A 32-bit unsigned integer, as specified in section 2.2.4.
 
-2.2.2.2  TLV 2
+##### 2.2.2.2 TLV 2
 
 The following are the constituents of TLV 2 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1288,7 +1108,8 @@ Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-M (1 bit): The M bit MUST be set to zero.
+
+M (1 bit): The M bit MUST be set to zero.
 
 ...
 
@@ -1302,7 +1123,7 @@ in bytes, of the Flag field.
 
 Flag (8 bytes): Eight bytes, as specified in section 2.2.5.
 
-2.2.2.3  TLV 3
+##### 2.2.2.3 TLV 3
 
 The following are the constituents of TLV 3 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1343,7 +1164,7 @@ in bytes, of the Version field.
 
 Version (8 bytes): Eight bytes, as specified in section 2.2.6.
 
-2.2.2.4  TLV 4
+##### 2.2.2.4 TLV 4
 
 The following are the constituents of TLV 4 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1376,7 +1197,8 @@ Release: June 1, 2017
 
 14 / 80
 
-M (1 bit): The M bit MUST be set to zero.
+
+M (1 bit): The M bit MUST be set to zero.
 
 R (1 bit): The R bit is reserved, and MUST be set to zero when sent and ignored on receipt.
 
@@ -1388,7 +1210,7 @@ in bytes, of the Firewall_HealthClassID field.
 
 Firewall_HealthClassID (1 byte): An 8-bit unsigned integer, as specified in section 2.2.7.
 
-2.2.2.5  TLV 5
+##### 2.2.2.5 TLV 5
 
 The following are the constituents of TLV 5 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. TLV 5 MUST have at least
@@ -1430,7 +1252,7 @@ bytes, of the Firewall_ProductName field.
 
 Firewall_ProductName (variable): A string, as specified in section 2.2.8.
 
-2.2.2.6  TLV 6
+##### 2.2.2.6 TLV 6
 
 The following are the constituents of TLV 6 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. TLV 6 MUST have at least
@@ -1465,7 +1287,8 @@ Release: June 1, 2017
 
 15 / 80
 
-M (1 bit): The M bit MUST be set to zero.
+
+M (1 bit): The M bit MUST be set to zero.
 
 R (1 bit): The R bit is reserved, and MUST be set to zero when sent and ignored on receipt.
 
@@ -1477,7 +1300,7 @@ in bytes, of the Firewall_ClientStatusCode field.
 
 Firewall_ClientStatusCode (4 bytes): A DWORD, as specified in section 2.2.9.
 
-2.2.2.7  TLV 7
+##### 2.2.2.7 TLV 7
 
 The following are the constituents of TLV 7 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1515,7 +1338,7 @@ in bytes, of the Antivirus_HealthClassID field.
 
 Antivirus_HealthClassID (1 byte): An 8-bit unsigned integer, as specified in section 2.2.7.
 
-2.2.2.8  TLV 8
+##### 2.2.2.8 TLV 8
 
 The following are the constituents of TLV 8 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. TLV 8 MUST have at least
@@ -1554,7 +1377,8 @@ Release: June 1, 2017
 
 16 / 80
 
-R (1 bit): The R bit is reserved, and MUST be set to zero when sent and ignored on receipt.
+
+R (1 bit): The R bit is reserved, and MUST be set to zero when sent and ignored on receipt.
 
 TLV_Type (14 bits): A 14-bit unsigned integer that MUST be set to 10.
 
@@ -1564,7 +1388,7 @@ the string, in bytes, of the Antivirus_ProductName field.
 
 Antivirus_ProductName (variable): A string, as specified in section 2.2.8.
 
-2.2.2.9  TLV 9
+##### 2.2.2.9 TLV 9
 
 The following are the constituents of TLV 9 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. TLV 9 MUST have at least
@@ -1604,9 +1428,9 @@ in bytes, of the Antivirus_ClientStatusCode field.
 
 Antivirus_ClientStatusCode (4 bytes): A DWORD, as specified in section 2.2.9.
 
-2.2.2.10
+##### 2.2.2.10 TLV 10
 
-TLV 10
+
 
 The following are the constituents of TLV 10 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1646,15 +1470,16 @@ Release: June 1, 2017
 
 17 / 80
 
-Length (2 bytes): A 16-bit unsigned integer in network-byte order that MUST indicate the length (1),
+
+Length (2 bytes): A 16-bit unsigned integer in network-byte order that MUST indicate the length (1),
 
 in bytes, of the Antispyware_HealthClassID field.
 
 Antispyware_HealthClassID (1 byte): An 8-bit unsigned integer, as specified in section 2.2.7.
 
-2.2.2.11
+##### 2.2.2.11 TLV 11
 
-TLV 11
+
 
 The following are the constituents of TLV 11 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. TLV 11 MUST have at
@@ -1696,9 +1521,9 @@ the string, in bytes, of the Antispyware_ProductName field.
 
 Antispyware_ProductName (variable): A string, as specified in section 2.2.8.
 
-2.2.2.12
+##### 2.2.2.12 TLV 12
 
-TLV 12
+
 
 The following are the constituents of TLV 12 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. TLV 12 MUST have at
@@ -1739,15 +1564,16 @@ Release: June 1, 2017
 
 18 / 80
 
-Length (2 bytes): A 16-bit unsigned integer in network-byte order that MUST indicate the length (4),
+
+Length (2 bytes): A 16-bit unsigned integer in network-byte order that MUST indicate the length (4),
 
 in bytes, of the Antispyware_ClientStatusCode field.
 
 Antispyware_ClientStatusCode (4 bytes): A DWORD, as specified in section 2.2.9.
 
-2.2.2.13
+##### 2.2.2.13 TLV 13
 
-TLV 13
+
 
 The following are the constituents of TLV 13 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1788,9 +1614,9 @@ Automatic_Updates_HealthClassID (1 byte): An 8-bit unsigned integer, as specifie
 
 2.2.7.
 
-2.2.2.14
+##### 2.2.2.14 TLV 14
 
-TLV 14
+
 
 The following are the constituents of TLV 14 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1835,9 +1661,10 @@ Release: June 1, 2017
 
 19 / 80
 
-2.2.2.15
 
-TLV 15
+##### 2.2.2.15 TLV 15
+
+
 
 The following are the constituents of TLV 15 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1878,9 +1705,9 @@ Security_Updates_HealthClassID (1 byte): An 8-bit unsigned integer, as specified
 
 2.2.7.
 
-2.2.2.16
+##### 2.2.2.16 TLV 16
 
-TLV 16
+
 
 The following are the constituents of TLV 16 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1918,9 +1745,9 @@ in bytes, of the Security_Updates_ClientStatusCode field.
 
 Security_Updates_ClientStatusCode (4 bytes): A DWORD, as specified in section 2.2.9.
 
-2.2.2.17
+##### 2.2.2.17 TLV 17
 
-TLV 17
+
 
 The following are the constituents of TLV 17 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -1933,7 +1760,8 @@ Release: June 1, 2017
 
 20 / 80
 
-receipt. All TLV 17 values are sent in network-byte order, which is big-endian, except for the
+
+receipt. All TLV 17 values are sent in network-byte order, which is big-endian, except for the
 Security_Updates_DurationSinceLastSynch field which is sent in machine-byte order and is little-
 endian.
 
@@ -1974,9 +1802,9 @@ Not used if an error is returned in the Security_Updates_ClientStatusCode (see s
 Note  If Security_Updates_ClientStatusCode is an error, TLV 17 will not be present. For more
 information about Security_Updates_ClientStatusCode, see section 2.2.9
 
-2.2.2.18
+##### 2.2.2.18 TLV 18
 
-TLV 18
+
 
 The following are the constituents of TLV 18 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -2026,12 +1854,13 @@ Release: June 1, 2017
 
 21 / 80
 
-Note  If Security_Updates_ClientStatusCode is an error, TLV 18 will not be present. For more
+
+Note  If Security_Updates_ClientStatusCode is an error, TLV 18 will not be present. For more
 information about Security_Updates_ClientStatusCode, see section 2.2.9.
 
-2.2.2.19
+##### 2.2.2.19 TLV 19
 
-TLV 19
+
 
 The following are the constituents of TLV 19 of the WSHA SoH packet (section 2.2.2). All of the values
 MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits are
@@ -2077,14 +1906,14 @@ an error is returned in the Security_Updates_ClientStatusCode (see section 2.2.9
 Note  If Security_Updates_ClientStatusCode is an error, TLV 19 will not be present. For more
 information about Security_Updates_ClientStatusCode, see section 2.2.9.
 
-2.2.3  WSHV SoHR
+#### 2.2.3 WSHV SoHR
 
 The following sections are the TLV constituents of the WSHV SoHR packet. All of the values MUST be
 present, unless otherwise noted. The values MUST be in the order in which they are presented in this
 specification. The M and R bits are defined in the Protocol Bindings for SoH [TNC-IF-TNCCSPBSoH] and
 are ignored by the WSHA upon receipt.
 
-2.2.3.1  TLV 1
+##### 2.2.3.1 TLV 1
 
 The following are the constituents of TLV 1 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2117,7 +1946,8 @@ Release: June 1, 2017
 
 22 / 80
 
-M (1 bit): The M bit MUST be set to zero.
+
+M (1 bit): The M bit MUST be set to zero.
 
 R (1 bit): The R bit is reserved, and MUST be set to zero when sent and ignored on receipt.
 
@@ -2129,7 +1959,7 @@ in bytes, of the NAPSystemHealthID field.
 
 NAPSystemHealthID (4 bytes): A 32-bit unsigned integer, as specified in section 2.2.4.
 
-2.2.3.2  TLV 2
+##### 2.2.3.2 TLV 2
 
 The following are the constituents of TLV 2 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2167,7 +1997,7 @@ in bytes, of the Firewall_HealthClassID field.
 
 Firewall_HealthClassID (1 byte): An 8-bit unsigned integer, as specified in section 2.2.7.
 
-2.2.3.3  TLV 3
+##### 2.2.3.3 TLV 3
 
 The following are the constituents of TLV 3 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2206,13 +2036,14 @@ Release: June 1, 2017
 
 23 / 80
 
-Length (2 bytes): A 16-bit unsigned integer in network-byte order that MUST indicate the length (4),
+
+Length (2 bytes): A 16-bit unsigned integer in network-byte order that MUST indicate the length (4),
 
 in bytes, of the Firewall_ComplianceCode field.
 
 Firewall_ComplianceCode (4 bytes): A DWORD, as specified in section 2.2.13.
 
-2.2.3.4  TLV 4
+##### 2.2.3.4 TLV 4
 
 The following are the constituents of TLV 4 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2249,7 +2080,7 @@ Length (2 bytes): A 16-bit unsigned integer that MUST be set to 1.
 
 Firewall_ComplianceCode (1 byte): An 8-bit field that MUST be set to 2.
 
-2.2.3.5  TLV 5
+##### 2.2.3.5 TLV 5
 
 The following are the constituents of TLV 5 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2294,7 +2125,8 @@ Release: June 1, 2017
 
 24 / 80
 
-2.2.3.6  TLV 6
+
+##### 2.2.3.6 TLV 6
 
 The following are the constituents of TLV 6 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2337,7 +2169,7 @@ Antivirus_ComplianceCode_1 (4 bytes): A DWORD, as specified in section 2.2.13.
 
 Antivirus_ComplianceCode_2 (4 bytes): A DWORD, as specified in section 2.2.14.
 
-2.2.3.7  TLV 7
+##### 2.2.3.7 TLV 7
 
 The following are the constituents of TLV 7 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2381,7 +2213,8 @@ Release: June 1, 2017
 
 25 / 80
 
-2.2.3.8  TLV 8
+
+##### 2.2.3.8 TLV 8
 
 The following are the constituents of TLV 8 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2420,7 +2253,7 @@ in bytes, of the Antispyware_HealthClassID field.
 
 Antispyware_HealthClassID (1 byte): An 8-bit unsigned integer, as specified in section 2.2.7.
 
-2.2.3.9  TLV 9
+##### 2.2.3.9 TLV 9
 
 The following are the constituents of TLV 9 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2471,9 +2304,10 @@ Release: June 1, 2017
 
 26 / 80
 
-2.2.3.10
 
-TLV 10
+##### 2.2.3.10 TLV 10
+
+
 
 The following are the constituents of TLV 10 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2510,9 +2344,9 @@ Length (2 bytes): A 16-bit unsigned integer that MUST be set to 1.
 
 Antispyware_FailureCategory (1 byte): An 8-bit field that MUST be set to 2.
 
-2.2.3.11
+##### 2.2.3.11 TLV 11
 
-TLV 11
+
 
 The following are the constituents of TLV 11 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2553,9 +2387,9 @@ Automatic_Updates_HealthClassID (1 byte): An 8-bit unsigned integer, as specifie
 
 2.2.7.
 
-2.2.3.12
+##### 2.2.3.12 TLV 12
 
-TLV 12
+
 
 The following are the constituents of TLV 12 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2567,7 +2401,8 @@ Release: June 1, 2017
 
 27 / 80
 
-are defined in the Protocol Bindings for SoH [TNC-IF-TNCCSPBSoH] and are ignored by the WSHA
+
+are defined in the Protocol Bindings for SoH [TNC-IF-TNCCSPBSoH] and are ignored by the WSHA
 upon receipt.
 
 0  1  2  3  4  5  6  7  8  9
@@ -2601,9 +2436,9 @@ in bytes, of the Automatic_Updates_ComplianceCode field.
 
 Automatic_Updates_ComplianceCode (4 bytes): A DWORD, as specified in section 2.2.13.
 
-2.2.3.13
+##### 2.2.3.13 TLV 13
 
-TLV 13
+
 
 The following are the constituents of TLV 13 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2640,9 +2475,9 @@ Length (2 bytes): A 16-bit unsigned integer that MUST be set to 1.
 
 Automatic_Updates_FailureCategory (1 byte): An 8-bit field that MUST be set to 2.
 
-2.2.3.14
+##### 2.2.3.14 TLV 14
 
-TLV 14
+
 
 The following are the constituents of TLV 14 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2656,7 +2491,8 @@ Release: June 1, 2017
 
 28 / 80
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2690,9 +2526,9 @@ Security_Updates_HealthClassID (1 byte): An 8-bit unsigned integer, as specified
 
 2.2.7.
 
-2.2.3.15
+##### 2.2.3.15 TLV 15
 
-TLV 15
+
 
 The following are the constituents of TLV 15 for the WSHV SoHR packet (section 2.2.3). All of the
 values MUST be present, unless otherwise noted. The values MUST be in this order. The M and R bits
@@ -2736,7 +2572,7 @@ Security_Updates_ComplianceCode_1 (4 bytes): A DWORD, as specified in section 2.
 
 Security_Updates_ComplianceCode_2 (4 bytes): A DWORD, as specified in section 2.2.14.
 
-2.2.4  NAPSystemHealthID
+#### 2.2.4 NAPSystemHealthID
 
 NAPSystemHealthID is a 32-bit unsigned integer that is assigned by NAP. This NAPSystemHealthID is
 used to differentiate the WSHA SoH packets and WSHV SoHR packets from those of other security
@@ -2750,19 +2586,20 @@ Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.5  Flag
+
+#### 2.2.5 Flag
 
 This consists of eight bytes. The first four bytes are the VendorID and MUST be 0x00013780. The
 second four bytes are a DWORD that is incremented for each new SoH. It is used to determine if the
 SoH is a duplicate.
 
-2.2.6  Version
+#### 2.2.6 Version
 
 The Version consists of eight bytes. The first four bytes are the VendorID and MUST be 0x00013780.
 The second four bytes are a DWORD that differentiates the WSHA client version so that the WSHV can
 determine how to handle client version-specific messages.<2>
 
-2.2.7  HealthClassID
+#### 2.2.7 HealthClassID
 
 This is an 8-bit field that specifies to which security health class the data in the following fields
 pertains.
@@ -2791,7 +2628,7 @@ Automatic Updates
 
 Security Updates
 
-2.2.8  ProductName
+#### 2.2.8 ProductName
 
 This is a variable Unicode string that contains the product name reported for each health class. This
 name is passed to the WSHA by Windows Security Center (WSC). When the ClientStatusCode for
@@ -2801,7 +2638,7 @@ corresponding ProductName TLV. If the ClientStatusCode for firewall, antivirus, 
 NOT_STARTED_SINCE_BOOT), then the ProductName TLV MUST NOT be present. There can be
 multiple ProductName TLVs.
 
-2.2.9  ClientStatusCode
+#### 2.2.9 ClientStatusCode
 
 This is a DWORD that reports the specific status for each health class on the client.
 
@@ -2822,7 +2659,8 @@ Release: June 1, 2017
 
 30 / 80
 
-2.2.9.1  Windows Update Agent (WUA) Error Codes and Security Update Status Codes
+
+##### 2.2.9.1 Windows Update Agent (WUA) Error Codes and Security Update Status Codes
 
 Security update codes are obtained from the windows Update Agent (WUA) error codes and security
 update status codes, as follows.
@@ -2879,7 +2717,7 @@ updates
 E_MSSHAV_WUA_SERVICE_NOT_STARTED_SINCE_BOOT  Security
 updates
 
-2.2.9.2  Windows Security Center (WSC) Error Codes
+##### 2.2.9.2 Windows Security Center (WSC) Error Codes
 
 The following table represents Windows Security Center (WSC) error codes.
 
@@ -2935,7 +2773,8 @@ Release: June 1, 2017
 
 31 / 80
 
-Value
+
+Value
 
 ClientStatusCode status
 
@@ -2980,7 +2819,7 @@ antispyware,
 and automatic
 updates
 
-2.2.9.3  Antivirus and Antispyware Status Codes
+##### 2.2.9.3 Antivirus and Antispyware Status Codes
 
 The following table represents the possible states for antivirus and antispyware.
 
@@ -3080,7 +2919,8 @@ Release: June 1, 2017
 
 32 / 80
 
-2.2.9.4  Firewall Status Codes
+
+##### 2.2.9.4 Firewall Status Codes
 
 The following table represents the possible states for firewall.
 
@@ -3129,7 +2969,7 @@ Non-Microsoft product enabled and snoozed.
 
 0x9
 
-2.2.9.5  Automatic Update Status Codes
+##### 2.2.9.5 Automatic Update Status Codes
 
 Automatic updates are handled differently. The following table represents the possible states for
 automatic updates (AUs).
@@ -3181,7 +3021,7 @@ either of the following two forms (where 'X' is described by the preceding table
 
   0x0000010X – Configured by policy
 
-2.2.9.6  ClientStatusCode Packet
+##### 2.2.9.6 ClientStatusCode Packet
 
 The ClientStatusCode Packet is structured as follows.
 
@@ -3207,7 +3047,8 @@ Release: June 1, 2017
 
 33 / 80
 
-Ignore (28 bits): This field MUST be ignored on receipt.
+
+Ignore (28 bits): This field MUST be ignored on receipt.
 
 A - B3 (1 bit): Product snoozed: This bit is set if the product has been temporarily placed into a
 
@@ -3245,13 +3086,13 @@ precedence. (This does not apply to AUs.)
 
 0x0 or 0x9
 
-2.2.10 DurationSinceLastSynch
+#### 2.2.10 DurationSinceLastSynch
 
 This is comprised of eight bytes. The first four bytes are the VendorID and MUST be 0x00013780. The
 second four bytes are a DWORD that contains the time in seconds since the client last scanned for
 updates. If the Security_Updates_ClientStatusCode is an error, then this TLV is not used.<4>
 
-2.2.11 WSUSServerName
+#### 2.2.11 WSUSServerName
 
 This consists of four bytes plus a variable-length single-byte string. The first four bytes are the Vendor
 ID and MUST be 0x0013780. The string reports the name of the Windows Server Update Services
@@ -3260,7 +3101,7 @@ is using WSUS for security updates. If Security_Updates_ClientStatusCode is an e
 not used. If the client is not registered with WSUS, the Vendor ID MUST be followed by a single byte
 of zeros (0x00) rather than a variable-length string.
 
-2.2.12 UpdatesFlag
+#### 2.2.12 UpdatesFlag
 
 This consists of eight bytes. The first four bytes are the VendorID and MUST be 0x00013780. The
 second four bytes are a DWORD that reports specific information on the security update status of
@@ -3275,7 +3116,8 @@ Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Value
+
+ Value
 
  Severity rating
 
@@ -3301,7 +3143,7 @@ Important
 
 0x00020000  Microsoft Update
 
-2.2.13 ComplianceCode1
+#### 2.2.13 ComplianceCode1
 
 This is a DWORD that returns to the client whether or not each health class is compliant.
 
@@ -3379,7 +3221,8 @@ Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Value
+
+ Value
 
  ComplianceCode name
 
@@ -3512,7 +3355,8 @@ Release: June 1, 2017
 
 36 / 80
 
- Value
+
+ Value
 
  ComplianceCode name
 
@@ -3580,15 +3424,15 @@ configured to get
 updates from any
 source.
 
-2.2.14 ComplianceCode2
+#### 2.2.14 ComplianceCode2
 
 This is a DWORD that returns additional information for antivirus, antispyware, and security
 updates. This compliance code is not used for antivirus and anti-spyware if an error is reported in
 ComplianceCode1 (section 2.2.13).
 
-2.2.14.1
+##### 2.2.14.1 Antivirus and Antispyware
 
-Antivirus and Antispyware
+
 
 The following codes are used to echo the antivirus and antispyware signature definition status.
 
@@ -3612,7 +3456,8 @@ Release: June 1, 2017
 
 37 / 80
 
- Value
+
+ Value
 
  ComplianceCode name
 
@@ -3625,9 +3470,9 @@ up to date.
 product is installed and enabled, but not
 up to date.
 
-2.2.14.2
+##### 2.2.14.2 Security Updates
 
-Security Updates
+
 
 For the security updates health class, this contains the minimum Microsoft Security Response Center
 severity rating (as specified in [MSFT-MSRC]) for updates required by the server. The severity ratings
@@ -3675,15 +3520,15 @@ Important
 
 0x00000400  Critical
 
-2.2.15 Data Types
+#### 2.2.15 Data Types
 
 The following data types are used by the ADM elements FirewallProductsInformation,
 AntivirusProductsInformation, AntispywareProductsInformation, and SUStatus, which are
 defined in section 3.2.1.
 
-2.2.15.1
+##### 2.2.15.1 ProductInformation
 
-ProductInformation
+
 
 This type is declared as follows.
 
@@ -3694,7 +3539,8 @@ Release: June 1, 2017
 
 38 / 80
 
- typedef struct _ProductInformation {
+
+ typedef struct _ProductInformation {
    DWORD pi_clientStatusCode;
    [string] wchar_t* pi_productName;
  } ProductInformation;
@@ -3705,9 +3551,9 @@ pi_productName:  MUST be a null-terminated wide-character string that is the nam
 
 See section 2.2.8.
 
-2.2.15.2
+##### 2.2.15.2 SecurityUpdatesStatus
 
-SecurityUpdatesStatus
+
 
  typedef struct _SecurityUpdatesStatus {
    DWORD sus_clientStatusCode;
@@ -3737,17 +3583,18 @@ Release: June 1, 2017
 
 39 / 80
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-WSH].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The following sections specify details of the Windows Security Health Agent (WSHA) and Windows
 Security Health Validator (WSHV) Protocol, including abstract data models, state machines, and
 message processing rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
 This is a simple protocol with a single exchange. The party seeking access to a network resource
 sends the SoH and receives an SoHR. It is represented graphically in the following diagram.
@@ -3757,7 +3604,7 @@ Figure 2: Client SOH request and Health Policy Server response
 The WSHA provides status in the form of an SoHReportEntry in the SoH. The WSHV provides a
 response to that status in the form of an SoHReportEntry in the SoHR.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The abstract data model in sections 3.2.1 and 3.3.1 describes a conceptual model of possible data
 organization that an implementation maintains to participate in this protocol. The described
@@ -3799,7 +3646,8 @@ Release: June 1, 2017
 
 40 / 80
 
-Name
+
+Name
 
 Type
 
@@ -3849,21 +3697,21 @@ health class data is being referred to.
 For more information about the HealthClassID ADM element, see
 section 2.2.7.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Setting the NAP System Health ID Field
+##### 3.1.5.1 Setting the NAP System Health ID Field
 
 The NAPSystemHealthID (section 2.2.4) is used to differentiate the WSHA SoH packets and the WSHV
 SoHR packets from those of other security health agents. The NAPSystemHealthID01 value for the
@@ -3886,7 +3734,8 @@ Release: June 1, 2017
 
 41 / 80
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-WSH].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
@@ -3897,17 +3746,17 @@ Creation of the WSHV SoHR packet is triggered during creation of an SoHR, as spe
 IF-TNCCSPBSoH]. When processing an SoH packet, the NAPSystemHealthID01 value MUST equal
 0x00013780 (79744) prior to passing the packet to WSHV, as specified in [TNC-IF-TNCCSPBSoH].
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  WSHA (Client) Specific Details
+### 3.2 WSHA (Client) Specific Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The following is a state diagram for the WSHA:
 
@@ -3933,7 +3782,8 @@ Release: June 1, 2017
 
 42 / 80
 
-ADM elements are defined for the WSHA as follows:
+
+ADM elements are defined for the WSHA as follows:
 
 FirewallStatus: This ADM element stores the WSC status for firewall as described in section 2.2.9.2.
 
@@ -3998,7 +3848,8 @@ Release: June 1, 2017
 
 43 / 80
 
- DWORD AntispywareStatus;
+
+ DWORD AntispywareStatus;
 
 NumberOfAntispywareProducts: This ADM element stores the number of antispyware products
 
@@ -4058,11 +3909,12 @@ Release: June 1, 2017
 
 44 / 80
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The WSHA MUST implement the following data initialization.
 
@@ -4120,14 +3972,15 @@ Release: June 1, 2017
 
 45 / 80
 
-3.2.4  Higher-Layer Triggered Events
 
-3.2.4.1  SoH Request
+#### 3.2.4 Higher-Layer Triggered Events
+
+##### 3.2.4.1 SoH Request
 
 The NAP agent queries the WSHA for an SoH by calling the public NAP interface
 INapSystemHealthAgentCallback::GetSoHRequest described in [MSDN-INapSysHA].
 
-3.2.4.2  SendMessageToUI Abstract Interface
+##### 3.2.4.2 SendMessageToUI Abstract Interface
 
 This abstract interface is called by the client processing rules to present the user with a text-based
 message.
@@ -4137,7 +3990,7 @@ message.
 
 message: The message to be presented to the user.
 
-3.2.4.3  GetNumberOfFirewallProducts Abstract Interface
+##### 3.2.4.3 GetNumberOfFirewallProducts Abstract Interface
 
 This abstract interface is called to initialize the FirewallStatus ADM element described in section
 3.2.1 and the NumberOfFirewallProducts ADM element described in section 3.2.1.
@@ -4181,7 +4034,7 @@ started since the computer started. No value
 was set in the pNumberOfFirewallProducts
 parameter.
 
-3.2.4.4  GetFirewallProductsInformation Abstract Interface
+##### 3.2.4.4 GetFirewallProductsInformation Abstract Interface
 
 This abstract interface is called to initialize the FirewallProductsInformation ADM element
 described in section 3.2.1.
@@ -4193,7 +4046,8 @@ Release: June 1, 2017
 
 46 / 80
 
- DWORD GetFirewallProductsInformation(
+
+ DWORD GetFirewallProductsInformation(
      [out] ProductInformation **ppFirewallProductsInformation);
 
 ppFirewallProductsInformation: A pointer to a variable that receives the address of the array of
@@ -4223,7 +4077,7 @@ The interface allocates the memory required to accommodate the array of ProductI
 structures. This memory should be freed by calling to the FreeProductsInformation abstract
 interface described in section 3.2.4.11.
 
-3.2.4.5  GetNumberOfAntivirusProducts Abstract Interface
+##### 3.2.4.5 GetNumberOfAntivirusProducts Abstract Interface
 
 This abstract interface is called to initialize the AntivirusStatus ADM element described in section
 3.2.1 and the NumberOfAntivirusProducts ADM element described in section 3.2.1.
@@ -4272,7 +4126,8 @@ Release: June 1, 2017
 
 47 / 80
 
-3.2.4.6  GetAntivirusProductsInformation Abstract Interface
+
+##### 3.2.4.6 GetAntivirusProductsInformation Abstract Interface
 
 This abstract interface is called to initialize the AntivirusProductsInformation ADM element
 described in section 3.2.1.
@@ -4307,7 +4162,7 @@ The interface allocates the memory required to accommodate the array of ProductI
 structures. This memory should be freed by calling to the FreeProductsInformation abstract
 interface described in section 3.2.4.11.
 
-3.2.4.7  GetNumberOfAntispywareProducts Abstract Interface
+##### 3.2.4.7 GetNumberOfAntispywareProducts Abstract Interface
 
 This abstract interface is called to initialize the AntispywareStatus ADM element described in section
 3.2.1 and the NumberOfAntispywareProducts ADM element described in section 3.2.1.
@@ -4357,7 +4212,8 @@ Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.4.8  GetAntispywareProductsInformation Abstract Interface
+
+##### 3.2.4.8 GetAntispywareProductsInformation Abstract Interface
 
 This abstract interface is called to initialize the AntispywareProductsInformation ADM element
 described in section 3.2.1.
@@ -4392,7 +4248,7 @@ The interface allocates the memory required to accommodate the array of ProductI
 structures. This memory should be freed by calling to the FreeProductsInformation abstract
 interface described in section 3.2.4.11.
 
-3.2.4.9  GetAutomaticUpdatesStatusCode Abstract Interface
+##### 3.2.4.9 GetAutomaticUpdatesStatusCode Abstract Interface
 
 This abstract interface is called to initialize the AutomaticUpdatesStatusCode ADM element
 described in section 3.2.1.
@@ -4422,9 +4278,9 @@ E_FAIL
 The interface failed to retrieve the automatic updates status code. No value was set in the
 pAutomaticUpdatesStatusCode parameter.
 
-3.2.4.10
+##### 3.2.4.10 GetSecurityUpdatesStatus Abstract Interface
 
-GetSecurityUpdatesStatus Abstract Interface
+
 
 This abstract interface is called to initialize the SUStatus ADM element described in section 3.2.1.
 
@@ -4435,7 +4291,8 @@ Release: June 1, 2017
 
 49 / 80
 
- DWORD GetSecurityUpdatesStatus (
+
+ DWORD GetSecurityUpdatesStatus (
      [out] DWORD *pSecurityUpdatesStatus);
 
 pSecurityUpdatesStatus: A pointer to a SecurityUpdatesStatus (section 2.2.15.2) structure that
@@ -4459,9 +4316,9 @@ E_OUTOFMEMORY
 The interface failed to retrieve the security updates status. No values were set in the
 structure indicated by the pSecurityUpdatesStatus parameter.
 
-3.2.4.11
+##### 3.2.4.11 FreeProductsInformation Abstract Interface
 
-FreeProductsInformation Abstract Interface
+
 
 This abstract interface is called to free memory allocated by one of the following abstract interfaces:
 GetFirewallProductsInformation, GetAntivirusProductsInformation, or
@@ -4475,9 +4332,9 @@ pProductsInformation: A pointer to a memory location that was allocated during a
 following abstract interfaces: GetFirewallProductsInformation,
 GetAntivirusProductsInformation, or GetAntispywareProductsInformation.
 
-3.2.4.12
+##### 3.2.4.12 GetClientVersion Abstract Interface
 
-GetClientVersion Abstract Interface
+
 
 This abstract interface is called to initialize the ClientVersion ADM element described in section 3.2.1.
 
@@ -4488,22 +4345,22 @@ ClientVersion: A pointer to an array of two DWORD elements that receive the clie
 
 described in section 2.2.6.
 
-3.2.4.13
+##### 3.2.4.13 ClientVersion ADM Initialization
 
-ClientVersion ADM Initialization
+
 
 During system initialization, the ClientVersion ADM element is initialized as described in section
 3.2.1.
 
-3.2.4.14
+##### 3.2.4.14 SohFlag ADM initialization
 
-SohFlag ADM initialization
+
 
 During system initialization, the SohFlag ADM element is initialized as described in section 3.2.1.
 
-3.2.4.15
+##### 3.2.4.15 RemediateFirewall Abstract Interface
 
-RemediateFirewall Abstract Interface
+
 
 This abstract interface is called to activate the firewall.
 
@@ -4514,7 +4371,8 @@ Release: June 1, 2017
 
 50 / 80
 
- DWORD RemediateFirewall();
+
+ DWORD RemediateFirewall();
 
 Return Values
 
@@ -4528,9 +4386,9 @@ Firewall activation has started.
 
 E_FAIL (0x80004005)  The firewall activation failed.
 
-3.2.4.16
+##### 3.2.4.16 RemediateAntispyware Abstract Interface
 
-RemediateAntispyware Abstract Interface
+
 
 This abstract interface is called either to activate the spyware software or to update the spyware
 software signatures.
@@ -4559,9 +4417,9 @@ E_FAIL
 
 The operation failed.
 
-3.2.4.17
+##### 3.2.4.17 RemediateAutomaticUpdates Abstract Interface
 
-RemediateAutomaticUpdates Abstract Interface
+
 
 This abstract interface is called to activate software updates.
 
@@ -4579,9 +4437,9 @@ The automatic updates feature has been activated.
 
 E_FAIL (0x80004005)  Automatic updates activation failed.
 
-3.2.4.18
+##### 3.2.4.18 StartWSCService Abstract Interface
 
-StartWSCService Abstract Interface
+
 
 This abstract interface is called to activate the WSC service.
 
@@ -4592,7 +4450,8 @@ Release: June 1, 2017
 
 51 / 80
 
- DWORD StartWSCService ();
+
+ DWORD StartWSCService ();
 
 Return Values
 
@@ -4606,9 +4465,9 @@ The WSC service is activated.
 
 E_FAIL (0x80004005)  WSC service activation failed.
 
-3.2.4.19
+##### 3.2.4.19 DoOnlineScan Abstract Interface
 
-DoOnlineScan Abstract Interface
+
 
 This abstract interface is called to start an online scan by Windows Update Services. The online scan is
 performed to get an indication of whether there are pending security updates that need to be installed
@@ -4628,9 +4487,9 @@ Online scan started.
 
 E_FAIL (0x80004005)  Online scan failed to start.
 
-3.2.4.20
+##### 3.2.4.20 DoSecuritySoftwareUpdate Abstract Interface
 
-DoSecuritySoftwareUpdate Abstract Interface
+
 
 This abstract interface is called to update the client with pending security updates.
 
@@ -4662,7 +4521,8 @@ Release: June 1, 2017
 
 52 / 80
 
-Value
+
+Value
 
 Description
 
@@ -4672,15 +4532,15 @@ The security update has started.
 
 E_FAIL (0x80004005)  The security update failed to start.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  General Problems
+##### 3.2.5.1 General Problems
 
 The WSHA is stateless, so when it sends an SoH, it does not actively wait for an SoHR. If the client
 sends an SoH, it will not send a new SoH unless the security health status changes or a new SoH is
 requested by the NAP agent.
 
-3.2.5.2  Constructing an SoH
+##### 3.2.5.2 Constructing an SoH
 
 The SoH message is constructed by creating each of the TLVs described in section 2.2.2 and
 appending each TLV to the SoH message using the INapSoHConstructor interface described in
@@ -4732,7 +4592,8 @@ Release: June 1, 2017
 
 53 / 80
 
-9.  If the AntispywareStatus ADM element is set to S_OK, initialize the
+
+9.  If the AntispywareStatus ADM element is set to S_OK, initialize the
 AntispywareProductsInformation ADM element by calling the
 GetAntispywareProductsInformation abstract interface described in section 3.2.4.8.
 
@@ -4813,7 +4674,8 @@ Release: June 1, 2017
 
 54 / 80
 
-8.  Construct TLV 7 by using the value described in section 2.2.7 for antivirus and the structure
+
+8.  Construct TLV 7 by using the value described in section 2.2.7 for antivirus and the structure
 
 described in section 2.2.2.7, and append it to the SoH.
 
@@ -4898,7 +4760,8 @@ Release: June 1, 2017
 
 55 / 80
 
-17. Construct TLV 15 using the value described in section 2.2.7 for security updates and the structure
+
+17. Construct TLV 15 using the value described in section 2.2.7 for security updates and the structure
 
 described in section 2.2.2.15, and append it to the SoH.
 
@@ -4932,7 +4795,7 @@ FreeProductsInformation abstract interface (see 3.2.4.11).
 The process exit code is used by the Protocol Bindings for SoH [TNC-IF-TNCCSPBSoH] as an indication
 of the success or failure of the SoH construction, and the SoH protocol then acts accordingly.
 
-3.2.5.3  Processing an SoHR
+##### 3.2.5.3 Processing an SoHR
 
 The following procedure describes how the SoHR is processed.
 
@@ -4981,7 +4844,8 @@ Release: June 1, 2017
 
 56 / 80
 
-HealthClassId
+
+HealthClassId
 
 Action
 
@@ -5095,7 +4959,8 @@ Release: June 1, 2017
 
 57 / 80
 
-5.
+
+5.
 
  If ComplianceCode equals E_MSSHV_THIRD_PARTY_PRODUCT_NOT_UPTODATE
 (0xC0FF0048), do the following.
@@ -5212,7 +5077,8 @@ Release: June 1, 2017
 
 58 / 80
 
-ComplianceCode
+
+ComplianceCode
 
 RemediationRequired == TRUE
 
@@ -5328,13 +5194,14 @@ Release: June 1, 2017
 
 59 / 80
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  Client Abstract Interfaces
+##### 3.2.7.1 Client Abstract Interfaces
 
 The Network Access Protection (NAP) client communicates with the WSHA using public APIs
 described in [MSDN-INapSysHA]. The WSHA APIs enable the NAP client to query for an SoH
@@ -5342,12 +5209,12 @@ message to send an SoH to the WSHV and to receive an SoHR for remediation.
 
 The data types that are used with the NAP interfaces are described in [MSDN-NapDatatypes].
 
-3.2.7.2  SoH Construction Interface
+##### 3.2.7.2 SoH Construction Interface
 
 When the WSHA has to construct an SoH, it calls the public interface INapSoHConstructor described in
 [MSDN-NAPAPI].
 
-3.2.7.3  SoH Change Notifications
+##### 3.2.7.3 SoH Change Notifications
 
 WSHA registers with the Windows Services Manager to receive any change in the state of the
 Windows Security Center service and the Windows Updates service.
@@ -5362,9 +5229,9 @@ After WSHA receives an indication of change in state of one of the above, it sig
 Access Protection (NAP) client by calling the INapSystemHealthAgentBinding::NotifySoHChange
 public method (described in [MSDN-NAPAPI]) to initiate a new health assessment cycle.
 
-3.3  WSHV (Server) Specific Details
+### 3.3 WSHV (Server) Specific Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The following is a state diagram for the WSHV:
 
@@ -5375,7 +5242,8 @@ Release: June 1, 2017
 
 60 / 80
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MS-WSH].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
@@ -5441,7 +5309,8 @@ Release: June 1, 2017
 
 61 / 80
 
-Name
+
+Name
 
 Type
 
@@ -5499,11 +5368,11 @@ required to have antispyware signatures that are up-to-date.
 When the value is 0, the client can have antispyware
 signatures that are not up-to-date.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 All ADM elements described in section 3.3.1 are set by an administrative application that enables the
 server administrator to set those ADM elements according to the corporate policy.
@@ -5549,7 +5418,8 @@ Release: June 1, 2017
 
 62 / 80
 
-Name
+
+Name
 
 WUAllowed
 
@@ -5601,16 +5471,16 @@ AntiSpywareUptoDate<13>
 The client is required to have up-to-date antispyware
 signatures.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  SoH Validation Request
+##### 3.3.4.1 SoH Validation Request
 
 The NPS requests the WSHV to validate an SoH and create the corresponding SoHR by calling the
 public NAP interface INapSystemHealthValidator::Validate described in [MSDN-INapSysHV].
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1  General Problems
+##### 3.3.5.1 General Problems
 
 If the WSHV is unable to process the security updates health class received in the WSHA SoH, or if
 the WSHV is unable to interpret or evaluate the received WSHA SoH, the WSHV MUST return the error
@@ -5618,7 +5488,7 @@ code E_MSSHV_WUS_SHC_FAILURE in the SoHR. Examples of this include, but are not 
 when the received WSHA SoH is not formatted properly or when the WSHV cannot access its policy
 store.
 
-3.3.5.2  Constructing an SoHR from an SoH
+##### 3.3.5.2 Constructing an SoHR from an SoH
 
 The SoHR message is constructed by creating each of the TLVs described in section 2.2.3 and
 appending each TLV to the SoHR message using the INapSoHConstructor interface described in
@@ -5644,7 +5514,8 @@ Release: June 1, 2017
 
 63 / 80
 
-5.  If the SoH TLV pointed to by SOH_TLV_Index is not a health class TLV (that is, if TLV_Type is
+
+5.  If the SoH TLV pointed to by SOH_TLV_Index is not a health class TLV (that is, if TLV_Type is
 
 not 8) or if the health class value is not 0 (for firewall), stop processing and abandon the SoH.
 
@@ -5727,7 +5598,8 @@ Release: June 1, 2017
 
 64 / 80
 
-21. Construct SoHR TLV 3 using the value of ComplianceCode and  the structure described in section
+
+21. Construct SoHR TLV 3 using the value of ComplianceCode and  the structure described in section
 
 2.2.3.3, and append it to the SoHR.
 
@@ -5810,7 +5682,8 @@ Release: June 1, 2017
 
 65 / 80
 
-1.  Set ComplianceCode1 to E_MSSHV_PRODUCT_NOT_ENABLED (0xC0FF0001).
+
+1.  Set ComplianceCode1 to E_MSSHV_PRODUCT_NOT_ENABLED (0xC0FF0001).
 
 2.  If the antivirus is required to be up to date, as defined by the AntiVirusUptoDate ADM
 
@@ -5886,7 +5759,8 @@ Release: June 1, 2017
 
 66 / 80
 
-51. If the SoH TLV pointed to by SOH_TLV_Index is not a health class TLV (that is, if TLV_Type is
+
+51. If the SoH TLV pointed to by SOH_TLV_Index is not a health class TLV (that is, if TLV_Type is
 not 8), or if the health class value is not equal to 2 (for antispyware), stop processing and
 abandon the SoH.
 
@@ -5966,7 +5840,8 @@ Release: June 1, 2017
 
 67 / 80
 
-1.  Set ComplianceCode1 to S_OK.
+
+1.  Set ComplianceCode1 to S_OK.
 
 2.  If antivirus is required to be up to date, as defined by the AntiSpywareUptoDate ADM
 
@@ -6049,7 +5924,8 @@ Release: June 1, 2017
 
 68 / 80
 
-82. If health class status is not equal to 1, 5, 0xC0FF0003 (E_MSSHAV_WSC_SERVICE_DOWN), or
+
+82. If health class status is not equal to 1, 5, 0xC0FF0003 (E_MSSHAV_WSC_SERVICE_DOWN), or
 
 0x00FF0008 (E_MSSHAV_WSC_SERVICE_NOT_STARTED_SINCE_BOOT), go to step 87.
 
@@ -6133,7 +6009,8 @@ Release: June 1, 2017
 
 69 / 80
 
-102.
+
+102.
 
 Set DurationSinceLastSync to the value stored in the SoH TLV pointed to by
 
@@ -6239,13 +6116,14 @@ Release: June 1, 2017
 
 70 / 80
 
-3.3.6  Timer Events
+
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
-3.3.7.1  Server Abstract Interfaces
+##### 3.3.7.1 Server Abstract Interfaces
 
 The network policy server (NPS) communicates with the WSHV using public APIs described in
 [MSDN-INapSysHV]. The WSHV APIs enable the NPS to pass the received SoH from the SHA and to
@@ -6253,12 +6131,12 @@ query for the SoHR to send to the WSHA.
 
 The data types that are used with the NAP interfaces are described in [MSDN-NapDatatypes].
 
-3.3.7.2  SoHR Construction Interface
+##### 3.3.7.2 SoHR Construction Interface
 
 When the WSHV has to construct an SoHR, it calls the public interface INapSoHConstructor described
 in [MSDN-NAPAPI].
 
-3.3.7.3  SoH Processing Interface
+##### 3.3.7.3 SoH Processing Interface
 
 When the WSHV has to process an SoH sent from the WSHA, it uses the public interface
 INapSoHProcessor. The INapSoHProcessor interface, and its use, are described in [MSDN-NAPAPI].
@@ -6270,7 +6148,8 @@ Release: June 1, 2017
 
 71 / 80
 
-4  Protocol Example
+
+## 4 Protocol Example
 
 The Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol
 is a simple protocol with a single exchange. The party seeking access to a network resource sends the
@@ -6304,16 +6183,17 @@ Release: June 1, 2017
 
 72 / 80
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Windows Security Health
 Agent (WSHA) and Windows Security Health Validator (WSHV) Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -6324,7 +6204,8 @@ Release: June 1, 2017
 
 73 / 80
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6391,7 +6272,8 @@ Release: June 1, 2017
 
 74 / 80
 
-<5> Section 2.2.12: For Windows Vista clients, the field contains the maximum severity rating of the
+
+<5> Section 2.2.12: For Windows Vista clients, the field contains the maximum severity rating of the
 security updates that it knows about. For Windows XP, Windows Vista SP1, Windows 7, Windows 8,
 and Windows 8.1 clients, it also contains the security update source that the client is enlisted in.
 
@@ -6443,7 +6325,8 @@ Release: June 1, 2017
 
 75 / 80
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -6455,7 +6338,8 @@ Release: June 1, 2017
 
 76 / 80
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6605,7 +6489,8 @@ Release: June 1, 2017
 
 77 / 80
 
-      general problems 53
+
+      general problems 53
       setting NAP System Health ID field 41
       SoH - constructing 53
       SoHR - processing 56
@@ -6773,7 +6658,8 @@ Windows Security Health Agent (WSHA) and Windows Security Health Validator (WSHV
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-      DoOnlineScan abstract interface 52
+
+      DoOnlineScan abstract interface 52
       DoSecuritySoftwareUpdate abstract interface 52
       FreeProductsInformation abstract interface 50
       GetAntispywareProductsInformation abstract
@@ -6943,7 +6829,8 @@ Release: June 1, 2017
 
 79 / 80
 
-WSHV SoHR packet 22
+
+WSHV SoHR packet 22
 WSUSServerName 34
 WSUSServerName message 34
 

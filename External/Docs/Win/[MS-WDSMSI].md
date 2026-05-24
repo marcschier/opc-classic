@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 29
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -285,7 +286,8 @@ Release: April 23, 2024
 
 2 / 29
 
-Date
+
+Date
 
 Revision
 History
@@ -407,132 +409,59 @@ Release: April 23, 2024
 
 3 / 29
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.3
-1.4
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+    - [1.4.1 Using the WDS Control Protocol](#141-using-the-wds-control-protocol)
+    - [1.4.2 Using UDP](#142-using-udp)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 WDSMC_OP_INITIATE OpCode](#221-wdsmcopinitiate-opcode)
+      - [2.2.1.1 Determine Client Security Mode](#2211-determine-client-security-mode)
+      - [2.2.1.2 Determine Server Security Mode](#2212-determine-server-security-mode)
+    - [2.2.2 Session Initiation Packets for UDP](#222-session-initiation-packets-for-udp)
+      - [2.2.2.1 Multicast Session Initiation Request Packet](#2221-multicast-session-initiation-request-packet)
+      - [2.2.2.2 Multicast Session Initiation Reply Packet](#2222-multicast-session-initiation-reply-packet)
+      - [2.2.2.3 Multicast Session Initiation Error Packet](#2223-multicast-session-initiation-error-packet)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Registered Content Provider Configuration](#3111-registered-content-provider-configuration)
+      - [3.1.1.2 Registered Multicast Namespaces Configuration](#3112-registered-multicast-namespaces-configuration)
+      - [3.1.1.3 WDS Server Configuration](#3113-wds-server-configuration)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Supported Security Modes](#3151-supported-security-modes)
+        - [3.1.5.1.1 Pre-OS Client](#31511-pre-os-client)
+      - [3.1.5.2 WDSMC_OP_INITIATE](#3152-wdsmcopinitiate)
+      - [3.1.5.3 Over UDP](#3153-over-udp)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 WDS Multicast Session Initiation Protocol over WDS Control Protocol](#41-wds-multicast-session-initiation-protocol-over-wds-control-protocol)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Using the WDS Control Protocol ...................................................................... 7
-Using UDP ................................................................................................... 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.4.1
-1.4.2
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-WDSMC_OP_INITIATE OpCode ..................................................................... 11
-Determine Client Security Mode .............................................................. 13
-Determine Server Security Mode ............................................................. 14
-Session Initiation Packets for UDP ................................................................. 15
-Multicast Session Initiation Request Packet .............................................. 16
-Multicast Session Initiation Reply Packet .................................................. 17
-Multicast Session Initiation Error Packet ................................................... 17
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.2.1.1
-2.2.1.2
-
-2.2.2
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-3  Protocol Details ..................................................................................................... 19
-Server Details .................................................................................................. 19
-Abstract Data Model .................................................................................... 19
-Registered Content Provider Configuration ............................................... 19
-Registered Multicast Namespaces Configuration ........................................ 19
-WDS Server Configuration ...................................................................... 19
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Supported Security Modes ...................................................................... 20
-Pre-OS Client .................................................................................. 21
-WDSMC_OP_INITIATE ........................................................................... 21
-Over UDP ............................................................................................. 22
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.2
-3.1.5.3
-
-3.1.6
-3.1.7
-
-3.1.5.1.1
-
-3.1.5.1
-
-4  Protocol Examples ................................................................................................. 24
-WDS Multicast Session Initiation Protocol over WDS Control Protocol ...................... 24
-
-4.1
-
-5  Security ................................................................................................................. 25
-Security Considerations for Implementers ........................................................... 25
-Index of Security Parameters ............................................................................ 25
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 26
-
-7  Change Tracking .................................................................................................... 27
-
-8  Index ..................................................................................................................... 28
-
-[MS-WDSMSI] - v20240423
-Windows Deployment Services Multicast Session Initiation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 29
-
-1  Introduction
+## 1 Introduction
 
 The Multicast Session Initiation Protocol specifies communication between a client and a Windows
 Deployment Services server to initiate a Multicast Session. It is a client/server protocol which specifies
@@ -541,7 +470,7 @@ two mechanisms for the client to request initiation of a Multicast Session from 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -608,7 +537,8 @@ Windows Deployment Services Multicast Session Initiation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-domain) and a smaller integer representing an identity relative to the account authority, termed
+
+domain) and a smaller integer representing an identity relative to the account authority, termed
 the relative identifier (RID). The SID format is specified in [MS-DTYP] section 2.4.2; a string
 representation of SIDs is specified in [MS-DTYP] section 2.4.2 and [MS-AZOD] section 1.1.1.2.
 
@@ -630,14 +560,14 @@ extensible mechanism to allow service providers to provide services to clients.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -657,11 +587,11 @@ Authentication", RFC 2104, February 1997, https://www.rfc-editor.org/info/rfc210
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 A typical interaction between client and server involves the following:
 
@@ -676,7 +606,8 @@ Release: April 23, 2024
 
 6 / 29
 
-  Name of multicast namespace.
+
+  Name of multicast namespace.
 
   Name of the content in multicast namespace.
 
@@ -688,13 +619,13 @@ namespace be set up for delivery using multicast transmission.
 
 the multicast namespace and sends the details of the multicast session to the client.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Multicast Session Initiation Protocol specifies two mechanisms for clients to request initiation of a
 multicast session. One uses the WDS Control Protocol, and the other uses UDP. Both are described in
 the following subsections.
 
-1.4.1  Using the WDS Control Protocol
+#### 1.4.1 Using the WDS Control Protocol
 
 The Multicast Session Initiation Protocol uses the WDS Control Protocol to send a request to the
 server, which allows the user identity to be transported to the server with the request. The following
@@ -708,13 +639,14 @@ Release: April 23, 2024
 
 7 / 29
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-WDSMSI].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
 Figure 1: Protocol relationships
 
-1.4.2  Using UDP
+#### 1.4.2 Using UDP
 
 The clients can use UDP as a transport to send requests to a server<1>, but this limits all requests to
 being unauthenticated. The following diagram illustrates the relationship of the Multicast Session
@@ -727,13 +659,14 @@ Release: April 23, 2024
 
 8 / 29
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-WDSMSI].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 Figure 2: WDSMSI relationship to UDP
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The WDS Multicast Session Initiation Protocol assumes the client has obtained the following:
 
@@ -757,13 +690,13 @@ An agreement MUST exist between the multicast namespace and the content provider
 of the configuration string, which is used by the multicast namespace to instruct the content
 provider to expose the appropriate content for the multicast namespace.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable when a client is required to download content from a server using
 multicast session, and uses the WDS Multicast Session Initiation Protocol to request that the server
 set up the content for delivery over the multicast session.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas.
 
@@ -786,7 +719,8 @@ Release: April 23, 2024
 
 9 / 29
 
-  Capability Negotiation: The protocol does explicit capability negotiations for certain Endpoint
+
+  Capability Negotiation: The protocol does explicit capability negotiations for certain Endpoint
 
 GUID and OpCodes as specified in the following section.
 
@@ -796,7 +730,7 @@ Section
 
 WDSMC_OP_INITIATE  Section 2.2.1
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The protocol does not provide any vendor-extensible fields.
 
@@ -804,7 +738,7 @@ This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Vendo
 those values with their indicated meaning. Choosing any other value runs the risk of a collision in the
 future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -833,9 +767,10 @@ Release: April 23, 2024
 
 10 / 29
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Multicast Session Initiation Protocol over the WDS Control Protocol MUST use the byte-order as
 specified in [MS-WDSC].
@@ -843,7 +778,7 @@ specified in [MS-WDSC].
 The Multicast Session Initiation Protocol over UDP MUST use network-byte-order unless noted
 otherwise.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 WDS servers MUST support the following OpCodes under Multicast Session Initiation Endpoint
 GUID, as specified in [MS-WDSC] (section 2.1.2).
@@ -866,7 +801,7 @@ up specified content for delivery using multicast session.
 
 The WDS server MAY support incoming requests on UDP Port as specified in section 1.9.<2>
 
-2.2.1  WDSMC_OP_INITIATE OpCode
+#### 2.2.1 WDSMC_OP_INITIATE OpCode
 
 The client uses this OpCode under the Multicast Session Initiation Endpoint GUID to request setup of
 content for delivery using multicast session.
@@ -921,7 +856,8 @@ Release: April 23, 2024
 
 11 / 29
 
-The reply packet MUST include the following variables.
+
+The reply packet MUST include the following variables.
 
 TpMcAddress.Port (WDSCPL_VAR_ULONG as specified in [MS-WDSC] section 2.2.1.3.2.1): MUST be
 
@@ -996,7 +932,8 @@ Release: April 23, 2024
 
 12 / 29
 
-Section 2.2.1.1 specifies the rules to determine the client security mode and section 2.2.1.2
+
+Section 2.2.1.1 specifies the rules to determine the client security mode and section 2.2.1.2
 specifies the rules to determine the server security mode.
 
 HashAlgId (WDSCPL_VAR_ULONG as specified in [MS-WDSC] section 2.2.1.3.2.1): Specifies the
@@ -1063,7 +1000,7 @@ UserSid (WDSCPL_VAR_BLOB): MUST be set to the security identifier, as specified 
 
 section 2.4.2, of the user.<5>
 
-2.2.1.1  Determine Client Security Mode
+##### 2.2.1.1 Determine Client Security Mode
 
 The following flowchart specifies the logic to be followed by the client to determine the client security
 mode for the WDS Multicast Transport Protocol, as specified in [MS-WDSMT].
@@ -1075,13 +1012,14 @@ Release: April 23, 2024
 
 13 / 29
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-WDSMSI].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
 Figure 3: Client security mode flowchart
 
-2.2.1.2  Determine Server Security Mode
+##### 2.2.1.2 Determine Server Security Mode
 
 The following flowchart specifies the logic to be followed by the client to determine the server
 security mode for WDS Multicast Transport Protocol, as specified in [MS-WDSMT].
@@ -1093,13 +1031,14 @@ Release: April 23, 2024
 
 14 / 29
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-WDSMSI].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 Figure 4: Server security mode flowchart
 
-2.2.2  Session Initiation Packets for UDP
+#### 2.2.2 Session Initiation Packets for UDP
 
 The WDS Multicast Session Initiation Protocol over UDP uses a single packet format. The packet
 format supports options and depending on the type of packet, a different set of options are specified
@@ -1131,7 +1070,8 @@ Release: April 23, 2024
 
 15 / 29
 
-...
+
+...
 
 OptionLength
 
@@ -1172,7 +1112,7 @@ OptionValue (variable): Specifies the value for the option. The length for this 
 
 the OptionLength field.
 
-2.2.2.1  Multicast Session Initiation Request Packet
+##### 2.2.2.1 Multicast Session Initiation Request Packet
 
 This packet is sent by the client to server on the UDP port specified in section 1.9. This packet is used
 to request the server to set up specified content for delivery using multicast session.
@@ -1232,10 +1172,11 @@ Release: April 23, 2024
 
 16 / 29
 
-If a request packet does not specify WDSMCSE_OPT_IPV6_CAPABLE option, the server MUST assume
+
+If a request packet does not specify WDSMCSE_OPT_IPV6_CAPABLE option, the server MUST assume
 that the client is not capable of receiving IPv6 multicast packets.
 
-2.2.2.2  Multicast Session Initiation Reply Packet
+##### 2.2.2.2 Multicast Session Initiation Reply Packet
 
 The server sends this packet in response to Multicast Session Initiation Request Packet when the
 requested content has been set up for delivery using multicast session. The reply packet MUST be
@@ -1323,7 +1264,7 @@ session on the server.
 
 The value is a 32-bit unsigned numeric value.
 
-2.2.2.3  Multicast Session Initiation Error Packet
+##### 2.2.2.3 Multicast Session Initiation Error Packet
 
 This packet is sent by the server in response to the Multicast Session Initiation Request Packet if an
 error occurs that prevents the server from setting up the Multicast Session for the requested
@@ -1336,7 +1277,8 @@ Release: April 23, 2024
 
 17 / 29
 
-The format for this packet is specified in section 2.2.2. The request packet MUST include the options
+
+The format for this packet is specified in section 2.2.2. The request packet MUST include the options
 specified below.
 
 Option Id
@@ -1359,13 +1301,14 @@ Release: April 23, 2024
 
 18 / 29
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
+
+### 3.1 Server Details
 
 This section specifies the WDS Deployment Protocol behavior for WDS server.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1384,7 +1327,7 @@ configuration data associated with it, as specified in section 3.1.1.2.
 WDS serverconfiguration: Configuration information for the server, in persistent storage, in the form
 of (name, value) pairs. The list of configuration parameters are specified in section 3.1.1.3.
 
-3.1.1.1  Registered Content Provider Configuration
+##### 3.1.1.1 Registered Content Provider Configuration
 
 The following properties are stored for each registered content provider in persistent storage.
 
@@ -1397,7 +1340,7 @@ AllowUnauthenticated: A Boolean value which, when set to TRUE (0x00000001), spec
 content provider allows unauthenticated clients to request content using the WDS Multicast
 Session Initiation Protocol over UDP.
 
-3.1.1.2  Registered Multicast Namespaces Configuration
+##### 3.1.1.2 Registered Multicast Namespaces Configuration
 
 The following properties are stored in persistent storage for each registered multicast namespace.
 
@@ -1411,7 +1354,7 @@ ConfigurationString: Specifies a configuration string that instructs the content
 
 types of content to make available for the multicast namespace.
 
-3.1.1.3  WDS Server Configuration
+##### 3.1.1.3 WDS Server Configuration
 
 The following properties are stored for WDS server configuration.
 
@@ -1425,7 +1368,8 @@ Release: April 23, 2024
 
 19 / 29
 
-ServerSecurityMode: A numeric value that specifies the server security mode (section 2.2.1).
+
+ServerSecurityMode: A numeric value that specifies the server security mode (section 2.2.1).
 
 Section 3.1.5.1 specifies the list of supported security mode.
 
@@ -1450,11 +1394,11 @@ HMACAlgId: A numeric value that specifies the Cryptographic HMAC algorithm to us
 
 mode is set to WDSMCTP_SEC_HASH.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 On initialization, the WDS server MUST register a Multicast Session Initiation Endpoint GUID as
 specified in section 1.9. If AllowUDP (section 3.1.1.2) is set to TRUE (0x00000001), the server MUST
@@ -1479,13 +1423,13 @@ can be made available for the multicast namespace.
 The server MUST also validate that the security modes specified by the ServerSecurityMode field
 and the ClientSecurityMode field are valid as specified in section 3.1.5.1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Supported Security Modes
+##### 3.1.5.1 Supported Security Modes
 
 The server MUST support the following combination of security modes.
 
@@ -1496,7 +1440,8 @@ Release: April 23, 2024
 
 20 / 29
 
-Pre-OS Client  Server Security Mode
+
+Pre-OS Client  Server Security Mode
 
 Client Security Mode
 
@@ -1526,7 +1471,7 @@ WDSMCTP_SEC_NONE
 
 WDSMCTP_SEC_NONE
 
-3.1.5.1.1 Pre-OS Client
+###### 3.1.5.1.1 Pre-OS Client
 
 The server MUST assume that the client is running in a pre-OS environment if a request packet is
 received using the UDP port.
@@ -1535,7 +1480,7 @@ For requests received using the WDS Control Protocol, as specified in [MS-WDSC],
 assume that the client is running in pre-OS environment if the Cap variable specifies the
 WDSMC_CLIENT_CAP_BOOT_DEVICE flag.
 
-3.1.5.2  WDSMC_OP_INITIATE
+##### 3.1.5.2 WDSMC_OP_INITIATE
 
 This OpCode is used by clients to request set up of content under a multicast namespace for
 delivery using multicast session.
@@ -1580,7 +1525,8 @@ Release: April 23, 2024
 
 21 / 29
 
-The server MUST validate that when server or client security mode is set to
+
+The server MUST validate that when server or client security mode is set to
 WDSMCTP_SEC_CHECKSUM, the request packet MUST include the Cap variable. Cap MUST specify
 the WDSMC_CLIENT_CAP_CHECKSUM.
 
@@ -1618,7 +1564,7 @@ SecMode variable.
 The server MUST get the user security identifier and add it to the reply packet using the UserSid
 variable.
 
-3.1.5.3  Over UDP
+##### 3.1.5.3 Over UDP
 
 The Multicast Session Initiation Request Packet is received by the server on the UDP port specified in
 section 1.9.
@@ -1656,12 +1602,13 @@ Release: April 23, 2024
 
 22 / 29
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 When using the WDS Multicast Session Initiation Protocol over UDP, the client MUST wait for 1 second
 for the reply from the server before sending the request packet again.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1672,9 +1619,10 @@ Release: April 23, 2024
 
 23 / 29
 
-4  Protocol Examples
 
-4.1  WDS Multicast Session Initiation Protocol over WDS Control Protocol
+## 4 Protocol Examples
+
+### 4.1 WDS Multicast Session Initiation Protocol over WDS Control Protocol
 
 The Request Packet includes following variables.
 
@@ -1727,13 +1675,14 @@ Release: April 23, 2024
 
 24 / 29
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security Parameter
 
@@ -1748,7 +1697,8 @@ Release: April 23, 2024
 
 25 / 29
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1805,7 +1755,8 @@ Release: April 23, 2024
 
 26 / 29
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1849,7 +1800,8 @@ Release: April 23, 2024
 
 27 / 29
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1981,7 +1933,8 @@ Release: April 23, 2024
 
 28 / 29
 
-   timer events 23
+
+   timer events 23
    timers 20
 Session Initiation Packets for UDP message 15
 Session_Initiation_Packets_for_UDP packet 15

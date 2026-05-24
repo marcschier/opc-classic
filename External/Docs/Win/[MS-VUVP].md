@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -309,7 +310,8 @@ Release: April 23, 2024
 
 2 / 26
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: April 23, 2024
 
 3 / 26
 
-Date
+
+Date
 
 Revision
 History
@@ -547,171 +550,73 @@ Release: April 23, 2024
 
 4 / 26
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 VT-UTF8](#131-vt-utf8)
+    - [1.3.2 VT100+](#132-vt100)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 VT-UTF8 and VT100+ for Serial/UPS](#221-vt-utf8-and-vt100-for-serialups)
+    - [2.2.2 VT100+ Character Extensions for Serial/UPS](#222-vt100-character-extensions-for-serialups)
+      - [2.2.2.1 Client Display Terminal Color Extensions](#2221-client-display-terminal-color-extensions)
+        - [2.2.2.1.1 Character Sequences](#22211-character-sequences)
+        - [2.2.2.1.2 Color Values](#22212-color-values)
+      - [2.2.2.2 Character and Key Extensions](#2222-character-and-key-extensions)
+    - [2.2.3 VT100+ Character Extensions for Console Host](#223-vt100-character-extensions-for-console-host)
+      - [2.2.3.1 Client Display Terminal Color Extensions](#2231-client-display-terminal-color-extensions)
+        - [2.2.3.1.1 Character Sequences](#22311-character-sequences)
+        - [2.2.3.1.2 Color Values](#22312-color-values)
+      - [2.2.3.2 Character and Key Extensions](#2232-character-and-key-extensions)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending VT-UTF8 and VT100+ Requests](#3151-sending-vt-utf8-and-vt100-requests)
+      - [3.1.5.2 Receiving VT-UTF8 and VT100+ Requests](#3152-receiving-vt-utf8-and-vt100-requests)
+      - [3.1.5.3 Receiving Character and Key Extensions](#3153-receiving-character-and-key-extensions)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending VT-UTF8 and VT100+ Requests](#3251-sending-vt-utf8-and-vt100-requests)
+      - [3.2.5.2 Receiving VT-UTF8 and VT100+ Requests](#3252-receiving-vt-utf8-and-vt100-requests)
+      - [3.2.5.3 Receiving Client Display Terminal Color Extensions](#3253-receiving-client-display-terminal-color-extensions)
+      - [3.2.5.4 Receiving Character and Key Extensions](#3254-receiving-character-and-key-extensions)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 VT-UTF8 Example for Serial/UPS](#41-vt-utf8-example-for-serialups)
+  - [4.2 VT100+ Example for Serial/UPS](#42-vt100-example-for-serialups)
+  - [4.3 VT100+ Example for Console Host](#43-vt100-example-for-console-host)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-VT-UTF8 ...................................................................................................... 9
-VT100+ ....................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-VT-UTF8 and VT100+ for Serial/UPS ............................................................. 10
-VT100+ Character Extensions for Serial/UPS .................................................. 10
-Client Display Terminal Color Extensions .................................................. 11
-Character Sequences ....................................................................... 11
-Color Values ................................................................................... 11
-Character and Key Extensions ................................................................ 12
-VT100+ Character Extensions for Console Host .............................................. 13
-Client Display Terminal Color Extensions .................................................. 13
-Character Sequences ....................................................................... 13
-Color Values ................................................................................... 13
-Character and Key Extensions ................................................................ 15
-
-2.2.3.1.1
-2.2.3.1.2
-
-2.2.2.1.1
-2.2.2.1.2
-
-2.2.3.2
-
-2.2.2.2
-
-2.2.3.1
-
-2.2.3
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 16
-Server Details .................................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Sending VT-UTF8 and VT100+ Requests .................................................. 16
-Receiving VT-UTF8 and VT100+ Requests ................................................ 17
-Receiving Character and Key Extensions .................................................. 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-Client Details ................................................................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Sending VT-UTF8 and VT100+ Requests .................................................. 18
-Receiving VT-UTF8 and VT100+ Requests ................................................ 18
-Receiving Client Display Terminal Color Extensions ................................... 18
-Receiving Character and Key Extensions .................................................. 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2
-
-[MS-VUVP] - v20240423
-VT-UTF8 and VT100+ Protocols
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 26
-
-4  Protocol Examples ................................................................................................. 20
-VT-UTF8 Example for Serial/UPS ........................................................................ 20
-VT100+ Example for Serial/UPS ......................................................................... 20
-VT100+ Example for Console Host ..................................................................... 20
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-VUVP] - v20240423
-VT-UTF8 and VT100+ Protocols
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 26
-
-1  Introduction
+## 1 Introduction
 
 The VT-UTF8 and VT100+ Protocols are used for point-to-point serial communication for terminal
 control and headless server configuration.
@@ -719,7 +624,7 @@ control and headless server configuration.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -780,7 +685,8 @@ Release: April 23, 2024
 
 7 / 26
 
-UTF-8: A byte-oriented standard for encoding Unicode characters, defined in the Unicode standard.
+
+UTF-8: A byte-oriented standard for encoding Unicode characters, defined in the Unicode standard.
 
 Unless specified otherwise, this term refers to the UTF-8 encoding form specified in
 [UNICODE5.0.0/2007] section 3.9.
@@ -792,14 +698,14 @@ language, 80 × 25 text console.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -811,7 +717,7 @@ assist you in finding the relevant information.
 [VT100] Digital Equipment Corporation, "VT100 Series Technical Manual", September 1980,
 http://vt100.net/docs/vt100-tm/ek-vt100-tm-002.pdf
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ACPI] Hewlett-Packard Corporation, Intel Corporation, Microsoft Corporation, Phoenix Technologies
 Ltd., Toshiba Corporation, "Advanced Configuration and Power Interface Specification", October 2006,
@@ -826,7 +732,7 @@ us/library/windows/desktop/ms682087(v=vs.85).aspx
 [XTermControl] Moy, E., Gildea S., and Dickey T., "XTerm Control Sequences", http://invisible-
 island.net/xterm/ctlseqs/ctlseqs.html
 
-1.3  Overview
+### 1.3 Overview
 
 The VT-UTF8 and VT100+ protocols are used for point-to-point serial client/server communication.
 
@@ -847,30 +753,31 @@ VT-UTF8 and VT100+ Protocols
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-graphical signaling information to be interleaved with character data within the sequence of characters
+
+graphical signaling information to be interleaved with character data within the sequence of characters
 as it travels between the client and server.
 
-1.3.1  VT-UTF8
+#### 1.3.1 VT-UTF8
 
 The VT-UTF8 protocol uses UTF-8 encoding to allow Unicode characters to be used without
 conflicting with the original VT100 protocol commands. Using Unicode characters, for example, allows
 non-English output on a client display.
 
-1.3.2  VT100+
+#### 1.3.2 VT100+
 
 The VT100+ protocol extends the original VT100 terminal specification ([VT100]) to support the use
 of color in a client display terminal, to define character sequences for function keys on the U.S.
 standard keyboard (101 keys), and to make provisions for additional graphic characters.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol extends the VT100 protocol, as specified in [VT100].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The VT-UTF8 and VT100+ protocols can apply to text-mode serial connections to physical hardware
 devices in emergency scenarios such as power outages.
@@ -879,15 +786,15 @@ A text-mode serial connection can alternatively be the connection between a clie
 console host window process. In this case, "serial" refers to the practice of signaling messages on a
 single stream.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -898,18 +805,19 @@ Release: April 23, 2024
 
 9 / 26
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how the VT-UTF8 and VT100+ protocols are transported and message
 syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 The VT-UTF8 and VT100+ protocols are transmitted over a serial port (COM port) connection.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  VT-UTF8 and VT100+ for Serial/UPS
+#### 2.2.1 VT-UTF8 and VT100+ for Serial/UPS
 
 The VT-UTF8 and VT100+ client console command request or server response consists of a single field
 that contains the "<ESC>" character followed by one or more characters. The entire sequence MUST
@@ -959,7 +867,7 @@ sleep states, see [ACPI]). If the server is already turned on, server operation 
 NOT be disturbed. The server ASIC or service processor MUST return an
 Acknowledge Sequence within 1 second.
 
-2.2.2  VT100+ Character Extensions for Serial/UPS
+#### 2.2.2 VT100+ Character Extensions for Serial/UPS
 
 The VT100+ character extensions conform to ANSI conventions for setting client display foreground
 and background colors. The VT100 standard, approved by the American National Standards Institute,
@@ -974,15 +882,16 @@ VT-UTF8 and VT100+ Protocols
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-character and key extensions also support selected keyboard keys and graphics characters that are
+
+character and key extensions also support selected keyboard keys and graphics characters that are
 not part of the original VT100 terminal specification. Function keys on a U.S. standard keyboard (101
 keys) are not equivalent to similarly named keys on a VT100 terminal keyboard.
 
-2.2.2.1  Client Display Terminal Color Extensions
+##### 2.2.2.1 Client Display Terminal Color Extensions
 
 The following sections list the character sequences and color values for the VT100+ extensions.
 
-2.2.2.1.1 Character Sequences
+###### 2.2.2.1.1 Character Sequences
 
 The following table lists the character sequences for the VT100+ extensions for uninterruptible
 power supply (UPS).
@@ -997,7 +906,7 @@ Sets video mode and color, where %1 is the color value.
 
 MUST NOT overlap.
 
-2.2.2.1.2 Color Values
+###### 2.2.2.1.2 Color Values
 
 The following table lists the color values for the VT100+ extensions.
 
@@ -1078,13 +987,14 @@ Release: April 23, 2024
 
 11 / 26
 
-Color value  Description
+
+Color value  Description
 
 47
 
 Background white
 
-2.2.2.2  Character and Key Extensions
+##### 2.2.2.2 Character and Key Extensions
 
 The following table lists the character sequences that correspond to the VT100+ character and key
 extensions for uninterruptible power supply (UPS).
@@ -1197,7 +1107,8 @@ Release: April 23, 2024
 
 12 / 26
 
- Character or key
+
+ Character or key
 
  Character sequence
 
@@ -1229,7 +1140,7 @@ Reserved
 
 <ESC>r
 
-2.2.3  VT100+ Character Extensions for Console Host
+#### 2.2.3 VT100+ Character Extensions for Console Host
 
 The VT100+ character extensions for console host conform to ANSI conventions for setting client
 display foreground and background colors. The extensions use the same general format of coded
@@ -1237,11 +1148,11 @@ sequences of characters, but assign additional meanings to align with Xterm cont
 described in [XTermControl]. This provides interoperability with terminal emulators on Linux and Mac
 OS computers.<1>
 
-2.2.3.1  Client Display Terminal Color Extensions
+##### 2.2.3.1 Client Display Terminal Color Extensions
 
 The following sections list the character sequences and color values for the VT100+ extensions.
 
-2.2.3.1.1 Character Sequences
+###### 2.2.3.1.1 Character Sequences
 
 The following table lists the character sequences for the VT100+ extensions for console host.
 
@@ -1262,7 +1173,7 @@ Sets video mode and color, where %1 is the color value.
 values can be used separated by semicolons. Additional values beyond 16 are
 discarded.
 
-2.2.3.1.2 Color Values
+###### 2.2.3.1.2 Color Values
 
 The following table lists the color values for the VT100+ extensions for console host.
 
@@ -1291,7 +1202,8 @@ Release: April 23, 2024
 
 13 / 26
 
-Color value  Description
+
+Color value  Description
 
 24
 
@@ -1428,7 +1340,8 @@ Release: April 23, 2024
 
 14 / 26
 
-Color value  Description
+
+Color value  Description
 
 104
 
@@ -1446,7 +1359,7 @@ Background cyan bold/intense
 
 Background white bold/intense
 
-2.2.3.2  Character and Key Extensions
+##### 2.2.3.2 Character and Key Extensions
 
 The following table lists the character sequences that correspond to the VT100+ character and key
 extensions for console host.
@@ -1470,14 +1383,15 @@ Release: April 23, 2024
 
 15 / 26
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
+
+### 3.1 Server Details
 
 This section applies to both the console host server and uninterruptible power supply (UPS)
 server implementations.<2>
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 When the uninterruptible power supply (UPS) server receives an escape character, it MUST enter
 an escape state for 2 seconds as it waits for additional characters.
@@ -1487,7 +1401,7 @@ characters.
 
 For more information, see section 3.1.2.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 When an escape sequence is signaled to an uninterruptible power supply (UPS) server, the server
 MUST receive the escaped characters within 2 seconds. For example, the sequence "<ESC>(" invokes
@@ -1497,7 +1411,7 @@ the service processor. The "(" character MUST be received by the server within 2
 When an escape sequence is signaled to a console host server, the server MUST wait indefinitely for
 the next character before invoking the service processor.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The uninterruptible power supply (UPS) server requires no initialization.
 
@@ -1506,16 +1420,16 @@ applications can initialize the server through the SetConsoleMode function (see 
 Users or system administrators can set initialization to occur by default by setting the registry key at
 HKCU\VirtualTerminalLevel for each user account to a nonzero value.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The server has no higher-layer triggered events.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The following sections specify the behavior of this protocol when receiving correct requests. Incorrect
 requests MUST be ignored.
 
-3.1.5.1  Sending VT-UTF8 and VT100+ Requests
+##### 3.1.5.1 Sending VT-UTF8 and VT100+ Requests
 
 The original VT100 protocol, as specified in [VT100], uses the ASCII character set. The UTF-8
 algorithm MUST map a Unicode character into a string of 8-bit bytes. The number of 8-bit bytes
@@ -1536,7 +1450,8 @@ Release: April 23, 2024
 
 16 / 26
 
- Bit width
+
+ Bit width
 
  UTF8 encoding
 
@@ -1554,7 +1469,7 @@ Release: April 23, 2024
 
 10xxxxxx
 
-3.1.5.2  Receiving VT-UTF8 and VT100+ Requests
+##### 3.1.5.2 Receiving VT-UTF8 and VT100+ Requests
 
 When a series of bytes is received by the server, it MUST be decoded into the appropriate 16-bit
 Unicode character. The leading byte MAY be 0x00000000.<3>
@@ -1566,7 +1481,7 @@ If an escape sequence is received, the server processes all the characters in th
 single action that is described by the escape sequence, instead of processing each literal character in
 the sequence.
 
-3.1.5.3  Receiving Character and Key Extensions
+##### 3.1.5.3 Receiving Character and Key Extensions
 
 When a series of bytes is received by the server, it MUST be decoded into the appropriate 16-bit
 Unicode character. The leading byte MAY be 0x00000000.
@@ -1578,23 +1493,23 @@ If an escape sequence is received, the server processes all the characters in th
 single action that is described by the escape sequence, instead of processing each literal character in
 the sequence.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 If the server does not receive the escaped characters within 2 seconds of sequence initiation, the
 entire sequence is discarded.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 When the client receives an escape character, it MUST enter an escape state for 2 seconds as it waits
 for additional characters. For more information, see section 3.2.2.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 When an escape sequence is signaled, the client MUST receive the escaped characters within 2
 seconds.
@@ -1606,23 +1521,24 @@ VT-UTF8 and VT100+ Protocols
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For example, the sequence "<ESC>(" invokes the service processor. The "(" character MUST be
+
+For example, the sequence "<ESC>(" invokes the service processor. The "(" character MUST be
 received by the server within 2 seconds of when "<ESC>" is received.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client requires no initialization.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The client has no higher-layer triggered events.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The following sections specify this protocol's behavior when receiving correct requests. Incorrect
 requests MUST be ignored.
 
-3.2.5.1  Sending VT-UTF8 and VT100+ Requests
+##### 3.2.5.1 Sending VT-UTF8 and VT100+ Requests
 
 The original VT100 protocol, as specified in [VT100], uses the ASCII character set. The UTF-8
 algorithm MUST map a Unicode character into a string of 8-bit bytes. The number of 8-bit bytes
@@ -1650,7 +1566,7 @@ depends on the bit width of the Unicode character, as shown in the following tab
 
 10xxxxxx
 
-3.2.5.2  Receiving VT-UTF8 and VT100+ Requests
+##### 3.2.5.2 Receiving VT-UTF8 and VT100+ Requests
 
 When a series of bytes is received by the client, it MUST be decoded into the appropriate 16-bit
 Unicode character. The leading byte MAY be 0x00000000.
@@ -1662,7 +1578,7 @@ If an escape sequence is received, the client processes all the characters in th
 single action that is described by the escape sequence, instead of processing each literal character in
 the sequence.
 
-3.2.5.3  Receiving Client Display Terminal Color Extensions
+##### 3.2.5.3 Receiving Client Display Terminal Color Extensions
 
 When a series of bytes is received by the client, it MUST be decoded into the appropriate 16-bit
 Unicode character.
@@ -1677,11 +1593,12 @@ Release: April 23, 2024
 
 18 / 26
 
-If an escape sequence is received, the client processes all the characters in the escape sequence as a
+
+If an escape sequence is received, the client processes all the characters in the escape sequence as a
 single action that is described by the escape sequence, instead of processing each literal character in
 the sequence.
 
-3.2.5.4  Receiving Character and Key Extensions
+##### 3.2.5.4 Receiving Character and Key Extensions
 
 When a series of bytes is received by the client, it MUST be decoded into the appropriate 16-bit
 Unicode character.
@@ -1693,12 +1610,12 @@ If an escape sequence is received, the client processes all the characters in th
 single action that is described by the escape sequence, instead of processing each literal character in
 the sequence.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 If the client does not receive the escaped characters within 2 seconds of sequence initiation, the entire
 sequence is discarded.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1709,9 +1626,10 @@ Release: April 23, 2024
 
 19 / 26
 
-4  Protocol Examples
 
-4.1  VT-UTF8 Example for Serial/UPS
+## 4 Protocol Examples
+
+### 4.1 VT-UTF8 Example for Serial/UPS
 
 A server wants to transmit the Unicode character stream that is represented by the following code
 point sequence.
@@ -1733,7 +1651,7 @@ where
 This stream can be transmitted to the client and then decoded by reconstructing the same Unicode
 character stream.
 
-4.2  VT100+ Example for Serial/UPS
+### 4.2 VT100+ Example for Serial/UPS
 
 A user wishes to set the video mode to bold, the text foreground to black, and the background to
 green. The user sends the sequence
@@ -1742,7 +1660,7 @@ green. The user sends the sequence
 
 as specified in section 2.2.2.1.1.
 
-4.3  VT100+ Example for Console Host
+### 4.3 VT100+ Example for Console Host
 
 The following sequence patterns can be found in section 2.2.3.1.1.
 
@@ -1769,7 +1687,8 @@ Release: April 23, 2024
 
 20 / 26
 
-A user can specify multiple overlapping colors and they will be applied from beginning to end in the
+
+A user can specify multiple overlapping colors and they will be applied from beginning to end in the
 order received. The final applicable color in the sequence will be the resulting video mode. In the
 following example, a user sets blue foreground then magenta foreground:
 
@@ -1784,13 +1703,14 @@ Release: April 23, 2024
 
 21 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1801,7 +1721,8 @@ Release: April 23, 2024
 
 22 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1868,7 +1789,8 @@ Release: April 23, 2024
 
 23 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1912,7 +1834,8 @@ Release: April 23, 2024
 
 24 / 26
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2050,7 +1973,8 @@ Relationship to other protocols 9
 
 25 / 26
 
-S
+
+S
 
 Security 22
    implementer considerations 22

@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 74
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -311,7 +312,8 @@ Release: April 23, 2024
 
 2 / 74
 
-Date
+
+Date
 
 Revision
 History
@@ -518,7 +520,8 @@ Release: April 23, 2024
 
 3 / 74
 
-Date
+
+Date
 
 Revision
 History
@@ -567,221 +570,119 @@ Release: April 23, 2024
 
 4 / 74
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Introduction](#21-introduction)
+  - [2.2 Annotated Object Block Encoding](#22-annotated-object-block-encoding)
+    - [2.2.1 EncodingUnit](#221-encodingunit)
+    - [2.2.2 EncodingUnitObjectBlock](#222-encodingunitobjectblock)
+    - [2.2.3 EncodingUnitInstanceNoClass](#223-encodingunitinstancenoclass)
+    - [2.2.4 ObjectEncodingLength](#224-objectencodinglength)
+    - [2.2.5 ObjectBlock](#225-objectblock)
+    - [2.2.6 ObjectFlags](#226-objectflags)
+    - [2.2.7 Decoration](#227-decoration)
+    - [2.2.8 DecServerName](#228-decservername)
+    - [2.2.9 DecNamespaceName](#229-decnamespacename)
+    - [2.2.10 Encoding](#2210-encoding)
+    - [2.2.11 ClassType](#2211-classtype)
+    - [2.2.12 ParentClass](#2212-parentclass)
+    - [2.2.13 CurrentClass](#2213-currentclass)
+    - [2.2.14 ClassAndMethodsPart](#2214-classandmethodspart)
+    - [2.2.15 ClassPart](#2215-classpart)
+    - [2.2.16 ClassHeader](#2216-classheader)
+    - [2.2.17 DerivationList](#2217-derivationlist)
+    - [2.2.18 ClassNameEncoding](#2218-classnameencoding)
+    - [2.2.19 ClassNameRef](#2219-classnameref)
+    - [2.2.20 ClassQualifierSet](#2220-classqualifierset)
+    - [2.2.21 PropertyLookupTable](#2221-propertylookuptable)
+    - [2.2.22 PropertyCount](#2222-propertycount)
+    - [2.2.23 PropertyLookup](#2223-propertylookup)
+    - [2.2.24 PropertyNameRef](#2224-propertynameref)
+    - [2.2.25 PropertyInfoRef](#2225-propertyinforef)
+    - [2.2.26 NdTable](#2226-ndtable)
+    - [2.2.27 NullAndDefaultFlag](#2227-nullanddefaultflag)
+    - [2.2.28 NdTableValueTableLength](#2228-ndtablevaluetablelength)
+    - [2.2.29 ValueTable](#2229-valuetable)
+    - [2.2.30 PropertyInfo](#2230-propertyinfo)
+    - [2.2.31 PropertyType](#2231-propertytype)
+    - [2.2.32 Inherited](#2232-inherited)
+    - [2.2.33 DeclarationOrder](#2233-declarationorder)
+    - [2.2.34 ValueTableOffset](#2234-valuetableoffset)
+    - [2.2.35 ClassOfOrigin](#2235-classoforigin)
+    - [2.2.36 PropertyQualifierSet](#2236-propertyqualifierset)
+    - [2.2.37 ClassHeap](#2237-classheap)
+    - [2.2.38 MethodsPart](#2238-methodspart)
+    - [2.2.39 MethodCount](#2239-methodcount)
+    - [2.2.40 MethodCountPadding](#2240-methodcountpadding)
+    - [2.2.41 MethodDescription](#2241-methoddescription)
+    - [2.2.42 MethodName](#2242-methodname)
+    - [2.2.43 MethodFlags](#2243-methodflags)
+    - [2.2.44 MethodPadding](#2244-methodpadding)
+    - [2.2.45 MethodOrigin](#2245-methodorigin)
+    - [2.2.46 MethodQualifiers](#2246-methodqualifiers)
+    - [2.2.47 HeapQualifierSetRef](#2247-heapqualifiersetref)
+    - [2.2.48 InputSignature](#2248-inputsignature)
+    - [2.2.49 OutputSignature](#2249-outputsignature)
+    - [2.2.50 MethodSignature](#2250-methodsignature)
+    - [2.2.51 HeapMethodSignatureBlockRef](#2251-heapmethodsignatureblockref)
+    - [2.2.52 MethodHeap](#2252-methodheap)
+    - [2.2.53 InstanceType](#2253-instancetype)
+    - [2.2.54 InstanceFlags](#2254-instanceflags)
+    - [2.2.55 InstanceClassName](#2255-instanceclassname)
+    - [2.2.56 InstanceData](#2256-instancedata)
+    - [2.2.57 InstanceQualifierSet](#2257-instancequalifierset)
+    - [2.2.58 InstanceHeap](#2258-instanceheap)
+    - [2.2.59 QualifierSet](#2259-qualifierset)
+    - [2.2.60 Qualifier](#2260-qualifier)
+    - [2.2.61 QualifierName](#2261-qualifiername)
+    - [2.2.62 QualifierFlavor](#2262-qualifierflavor)
+    - [2.2.63 QualifierType](#2263-qualifiertype)
+    - [2.2.64 QualifierValue](#2264-qualifiervalue)
+    - [2.2.65 InstancePropQualifierSet](#2265-instancepropqualifierset)
+    - [2.2.66 Heap](#2266-heap)
+    - [2.2.67 HeapItem](#2267-heapitem)
+    - [2.2.68 HeapStringRef](#2268-heapstringref)
+    - [2.2.69 HeapRef](#2269-heapref)
+    - [2.2.70 MethodSignatureBlock](#2270-methodsignatureblock)
+    - [2.2.71 EncodedValue](#2271-encodedvalue)
+    - [2.2.72 NumericValue](#2272-numericvalue)
+    - [2.2.73 EncodingLength](#2273-encodinglength)
+    - [2.2.74 NoValue](#2274-novalue)
+    - [2.2.75 BOOL](#2275-bool)
+    - [2.2.76 ReservedOctet](#2276-reservedoctet)
+    - [2.2.77 Signature](#2277-signature)
+    - [2.2.78 Encoded-String](#2278-encoded-string)
+    - [2.2.79 Encoded-Array](#2279-encoded-array)
+    - [2.2.80 DictionaryReference](#2280-dictionaryreference)
+    - [2.2.81 BIT](#2281-bit)
+    - [2.2.82 CimType](#2282-cimtype)
+  - [2.3 Special Data Type Encodings](#23-special-data-type-encodings)
+    - [2.3.1 CIM DateTime Type](#231-cim-datetime-type)
+    - [2.3.2 CIM Reference Types](#232-cim-reference-types)
+    - [2.3.3 CIM Methods](#233-cim-methods)
+    - [2.3.4 Heap Encoding](#234-heap-encoding)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Instance Encoding](#31-instance-encoding)
+  - [3.2 Class Encoding with Methods](#32-class-encoding-with-methods)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Appendix B: ABNF Encoding Definition](#6-appendix-b-abnf-encoding-definition)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Protocols and Other Structures .................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Localization ............................................................................... 11
-Vendor-Extensible Fields ................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-2.2
-
-2  Structures ............................................................................................................. 12
-Introduction .................................................................................................... 12
-Annotated Object Block Encoding ....................................................................... 12
-EncodingUnit .............................................................................................. 12
-2.2.1
-EncodingUnitObjectBlock ............................................................................. 13
-2.2.2
-EncodingUnitInstanceNoClass ....................................................................... 13
-2.2.3
-ObjectEncodingLength ................................................................................. 14
-2.2.4
-ObjectBlock ............................................................................................... 14
-2.2.5
-ObjectFlags ................................................................................................ 14
-2.2.6
-Decoration ................................................................................................. 14
-2.2.7
-DecServerName ......................................................................................... 15
-2.2.8
-DecNamespaceName ................................................................................... 15
-2.2.9
-Encoding ................................................................................................... 15
-2.2.10
-ClassType .................................................................................................. 15
-2.2.11
-ParentClass ................................................................................................ 16
-2.2.12
-CurrentClass .............................................................................................. 16
-2.2.13
-ClassAndMethodsPart .................................................................................. 16
-2.2.14
-ClassPart ................................................................................................... 16
-2.2.15
-2.2.16
-ClassHeader ............................................................................................... 17
-2.2.17  DerivationList ............................................................................................. 17
-ClassNameEncoding .................................................................................... 17
-2.2.18
-ClassNameRef ............................................................................................ 18
-2.2.19
-ClassQualifierSet ........................................................................................ 18
-2.2.20
-PropertyLookupTable................................................................................... 18
-2.2.21
-PropertyCount ............................................................................................ 18
-2.2.22
-PropertyLookup .......................................................................................... 18
-2.2.23
-PropertyNameRef ....................................................................................... 19
-2.2.24
-2.2.25
-PropertyInfoRef .......................................................................................... 19
-2.2.26  NdTable ..................................................................................................... 19
-2.2.27  NullAndDefaultFlag ..................................................................................... 20
-2.2.28  NdTableValueTableLength ............................................................................ 20
-ValueTable ................................................................................................. 20
-2.2.29
-PropertyInfo............................................................................................... 21
-2.2.30
-PropertyType ............................................................................................. 21
-2.2.31
-2.2.32
-Inherited ................................................................................................... 21
-2.2.33  DeclarationOrder ........................................................................................ 22
-ValueTableOffset ........................................................................................ 22
-2.2.34
-ClassOfOrigin ............................................................................................. 22
-2.2.35
-PropertyQualifierSet .................................................................................... 22
-2.2.36
-2.2.37
-ClassHeap .................................................................................................. 22
-2.2.38  MethodsPart ............................................................................................... 22
-2.2.39  MethodCount ............................................................................................. 23
-2.2.40  MethodCountPadding .................................................................................. 23
-2.2.41  MethodDescription ...................................................................................... 23
-
-[MS-WMIO] - v20240423
-Windows Management Instrumentation Encoding Version 1.0 Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 74
-
-2.2.42  MethodName .............................................................................................. 23
-2.2.43  MethodFlags .............................................................................................. 23
-2.2.44  MethodPadding ........................................................................................... 23
-2.2.45  MethodOrigin ............................................................................................. 24
-2.2.46  MethodQualifiers......................................................................................... 24
-2.2.47  HeapQualifierSetRef .................................................................................... 24
-InputSignature ........................................................................................... 24
-2.2.48
-2.2.49  OutputSignature ......................................................................................... 25
-2.2.50  MethodSignature ........................................................................................ 25
-2.2.51  HeapMethodSignatureBlockRef ..................................................................... 25
-2.2.52  MethodHeap ............................................................................................... 25
-InstanceType ............................................................................................. 25
-2.2.53
-InstanceFlags ............................................................................................. 26
-2.2.54
-InstanceClassName ..................................................................................... 26
-2.2.55
-InstanceData ............................................................................................. 26
-2.2.56
-2.2.57
-InstanceQualifierSet .................................................................................... 26
-InstanceHeap ............................................................................................. 26
-2.2.58
-2.2.59  QualifierSet ................................................................................................ 26
-2.2.60  Qualifier .................................................................................................... 27
-2.2.61  QualifierName ............................................................................................ 27
-2.2.62  QualifierFlavor ............................................................................................ 27
-2.2.63  QualifierType.............................................................................................. 28
-2.2.64  QualifierValue............................................................................................. 28
-2.2.65
-InstancePropQualifierSet ............................................................................. 28
-2.2.66  Heap ......................................................................................................... 29
-2.2.67  HeapItem .................................................................................................. 29
-2.2.68  HeapStringRef ............................................................................................ 30
-2.2.69  HeapRef .................................................................................................... 30
-2.2.70  MethodSignatureBlock ................................................................................. 30
-EncodedValue ............................................................................................ 30
-2.2.71
-2.2.72  NumericValue ............................................................................................. 31
-2.2.73
-EncodingLength .......................................................................................... 32
-2.2.74  NoValue .................................................................................................... 32
-BOOL ........................................................................................................ 32
-2.2.75
-ReservedOctet ............................................................................................ 32
-2.2.76
-Signature .................................................................................................. 32
-2.2.77
-Encoded-String........................................................................................... 32
-2.2.78
-2.2.79
-Encoded-Array ........................................................................................... 33
-2.2.80  DictionaryReference .................................................................................... 33
-BIT ........................................................................................................... 34
-2.2.81
-CimType .................................................................................................... 34
-2.2.82
-Special Data Type Encodings ............................................................................. 36
-CIM DateTime Type .................................................................................... 36
-CIM Reference Types .................................................................................. 36
-CIM Methods .............................................................................................. 36
-Heap Encoding ........................................................................................... 38
-
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-
-2.3
-
-3  Structure Examples ............................................................................................... 39
-Instance Encoding ............................................................................................ 52
-Class Encoding with Methods ............................................................................. 56
-
-3.1
-3.2
-
-4  Security Considerations ......................................................................................... 65
-
-5  Appendix A: Product Behavior ............................................................................... 66
-
-6  Appendix B: ABNF Encoding Definition .................................................................. 67
-
-7  Change Tracking .................................................................................................... 71
-
-8  Index ..................................................................................................................... 72
-
-[MS-WMIO] - v20240423
-Windows Management Instrumentation Encoding Version 1.0 Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 74
-
-[MS-WMIO] - v20240423
-Windows Management Instrumentation Encoding Version 1.0 Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 74
-
-1  Introduction
+## 1 Introduction
 
 The Windows Management Instrumentation Encoding Version 1.0 Protocol specifies a binary data
 encoding format that is used by the Windows Management Instrumentation Remote Protocol,
@@ -808,7 +709,7 @@ an efficient binary format for describing CIM objects within network packets.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -849,7 +750,8 @@ Release: April 23, 2024
 
 8 / 74
 
-Common Information Model (CIM) object: An object that represents a Common Information
+
+Common Information Model (CIM) object: An object that represents a Common Information
 
 Model (CIM) object. This can be either a CIM class or a CIM instance of a CIM class.
 
@@ -895,14 +797,14 @@ extension of the CIM standard.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -919,7 +821,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[IEEE754] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-1985, October 1985,
+
+[IEEE754] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-1985, October 1985,
 http://ieeexplore.ieee.org/servlet/opac?punumber=2355
 
 [MS-DCOM] Microsoft Corporation, "Distributed Component Object Model (DCOM) Remote Protocol".
@@ -934,11 +837,11 @@ http://ieeexplore.ieee.org/servlet/opac?punumber=2355
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DMTF] DMTF, "Distributed Management Task Force (DMTF)", http://dmtf.org
 
-1.3  Overview
+### 1.3 Overview
 
 The carrier protocol, as specified in [MS-WMI], is the actual protocol for transferring CIM objects
 specified in this specification. This specification defines a binary format that is used within the custom
@@ -985,7 +888,8 @@ Release: April 23, 2024
 
 10 / 74
 
-if the CIM instance requires updating, the PutInstance operation (as specified in [MS-WMI]) is used,
+
+if the CIM instance requires updating, the PutInstance operation (as specified in [MS-WMI]) is used,
 and the updated CIM instance is encoded by using the format in this specification.
 
 The WMI Remote Protocol can read and write both CIM classes and instances of those classes. This
@@ -1030,12 +934,12 @@ LL(1) grammar theory, and code emission techniques with syntax-directed translat
 for the encoding and decoding are thus equivalent to the techniques used by high-level language
 compilers.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 Because this specification only specifies an encoding, there are no specific relationships to other
 protocols other than what is specified in [MS-WMI].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The encoding in this specification is used wherever CIM classes and CIM objects are transferred on
 the wire, as specified in [MS-WMI].
@@ -1047,12 +951,13 @@ Release: April 23, 2024
 
 11 / 74
 
-1.6  Versioning and Localization
+
+### 1.6 Versioning and Localization
 
 Only one version of the encoding currently exists. There are no provisions for multiple encodings or
 alternate versions.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The encoding format is not extensible.
 
@@ -1063,7 +968,8 @@ Release: April 23, 2024
 
 12 / 74
 
-2  Structures
+
+## 2 Structures
 
 Because this specification specifies an encoding that is used by the Windows Management
 Instrumentation Remote Protocol (as specified in [MS-WMI]), no messages or network-level
@@ -1072,12 +978,12 @@ operations are defined.
 Annotated object block encoding for the Windows Management Instrumentation Encoding Version 1.0
 Protocol is specified in the following sections.
 
-2.1  Introduction
+### 2.1 Introduction
 
 The following sections specify annotated object block encoding for the Windows Management
 Instrumentation Encoding Version 1.0 Protocol.
 
-2.2  Annotated Object Block Encoding
+### 2.2 Annotated Object Block Encoding
 
 CIM instance and CIM class definitions, as specified in [DMTF-DSP0004] section 2.1, are encoded
 by using a binary data format. Qualifiers for instance and instance properties are Microsoft extensions
@@ -1104,7 +1010,7 @@ that represents the distance, in octets, from some base point. An offset of zero
 to the first octet in the block, and an offset of seven indicates a reference to the eighth octet of the
 block.
 
-2.2.1  EncodingUnit
+#### 2.2.1 EncodingUnit
 
 The EncodingUnit object block is the root node block of the encoding that is used for encoding classes
 or instances if the object is encoded as specified in [MS-WMI] section 2.2.4.1. This block is contained
@@ -1126,7 +1032,8 @@ Release: April 23, 2024
 
 13 / 74
 
-2.2.2  EncodingUnitObjectBlock
+
+#### 2.2.2 EncodingUnitObjectBlock
 
 EncodingUnitObjectBlock is the root node of the encoding that is used for encoding classes or
 instances if the object is encoded as specified in [MS-WMI] section 2.2.14.2 and section 2.2.14.3.
@@ -1141,7 +1048,7 @@ the length specified in dwSizeOfData of WBEMOBJECT_CLASS (as specified in [MS-WM
 in dwSizeOfData of WBEMOBJECT_INSTANCE (as specified in [MS-WMI] section 2.2.14.3) if
 EncodingUnitObjectBlock is contained within WBEMOBJECT_INSTANCE.
 
-2.2.3  EncodingUnitInstanceNoClass
+#### 2.2.3 EncodingUnitInstanceNoClass
 
 The EncodingUnitInstanceNoClass is the root node of the encoding that is used for encoding instances
 if the CIM instance is encoded as specified in [MS-WMI] section 2.2.14.4. During transmission, this
@@ -1191,14 +1098,15 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.4  ObjectEncodingLength
+
+#### 2.2.4 ObjectEncodingLength
 
 ObjectEncodingLength is a 32-bit unsigned integer that specifies the length of the
 ObjectBlock (section 2.2.5).
 
  ObjectEncodingLength = UINT32
 
-2.2.5  ObjectBlock
+#### 2.2.5 ObjectBlock
 
 ObjectBlock is where the actual binary encoding of the CIM object begins.
 
@@ -1208,7 +1116,7 @@ ObjectFlags (section 2.2.6) indicates whether the Decoration (section 2.2.7) blo
 whether the CIM object is a CIM class definition or a CIM instance. The Encoding (section 2.2.10)
 block contains either a CIM class or CIM instance definition, depending on the value of ObjectFlags.
 
-2.2.6  ObjectFlags
+#### 2.2.6 ObjectFlags
 
 The ObjectFlags block is used to classify the currently encoded object.
 
@@ -1248,7 +1156,7 @@ This flag MUST be used only in combination with the 0x01 and 0x10 flags.
 ObjectFlags MUST have either the 0x01 or the 0x02 bit set. They are mutually exclusive; both MUST
 NOT be set simultaneously.
 
-2.2.7  Decoration
+#### 2.2.7 Decoration
 
 The Decoration block is used to optionally decorate the CIM object with information that indicates the
 server and CIM namespace from which the CIM object originates. This block MUST be present if the
@@ -1261,14 +1169,15 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Decoration = DecServerName DecNamespaceName
+
+ Decoration = DecServerName DecNamespaceName
 
 In the encoded sequence, the strings DecServerName (section 2.2.8) and
 DecNamespaceName (section 2.2.9) MUST be placed inline. If either string has no value, an empty
 Encoded-String MUST be present. The two Encoded-String values MUST NOT be omitted, even if
 empty.
 
-2.2.8  DecServerName
+#### 2.2.8 DecServerName
 
 DecServerName is an Encoded-String that represents the server name from which the CIM object
 originates. The format of the string is purely documentary and can be in any format, such as a
@@ -1277,14 +1186,14 @@ expected to be useful in determining the origin of the packet.
 
  DecServerName = Encoded-String
 
-2.2.9  DecNamespaceName
+#### 2.2.9 DecNamespaceName
 
 DecNamespaceName is an Encoded-String that represents the CIM namespace name from which the
 CIM object originates.
 
  DecNamespaceName = Encoded-String
 
-2.2.10 Encoding
+#### 2.2.10 Encoding
 
 Because the encoding carries a CIM class or a CIM instance, the Encoding block is merely a switch
 to select the correct block.
@@ -1294,7 +1203,7 @@ to select the correct block.
 The InstanceType (section 2.2.53) block encodes the CIM instance, and the ClassType (section 2.2.11)
 block encodes the CIM class object.
 
-2.2.11 ClassType
+#### 2.2.11 ClassType
 
 The ClassType block is used to define a CIM class. It consists of two sequential CIM class definitions.
 The first block consists of the definition of the superclass to the current CIM class. The second block
@@ -1317,12 +1226,13 @@ Release: April 23, 2024
 
 16 / 74
 
-A class might not have a superclass, as specified in [DMTF-DSP0004] Appendix A. The ParentClass
+
+A class might not have a superclass, as specified in [DMTF-DSP0004] Appendix A. The ParentClass
 block MUST be present even if the class that is coded in CurrentClass has no superclass. In this case,
 the ParentClass block MUST be filled with the class name as NULL, zero class names in the derivation
 list, zero class qualifiers, zero properties, and zero HeapItems in ClassHeap.
 
-2.2.12 ParentClass
+#### 2.2.12 ParentClass
 
 ParentClass is the CIM class that is the immediate parent of the current CIM class, according to the
 inheritance mechanism specified in [DMTF-DSP0004].
@@ -1331,7 +1241,7 @@ inheritance mechanism specified in [DMTF-DSP0004].
 
 ClassAndMethodsPart (section 2.2.14) specifies the properties and method signatures for the class.
 
-2.2.13 CurrentClass
+#### 2.2.13 CurrentClass
 
 CurrentClass is the encoding of the CIM class that the EncodingUnit represents. The ClassType block
 requires the encoding to contain both the encoding of the ParentClass for the class and the CIM class
@@ -1342,7 +1252,7 @@ itself, which is specified by this rule.
 The InstanceType block MUST also contain a CurrentClass block as part of its own definition because
 CurrentClass is reachable through several subrules in this grammar.
 
-2.2.14 ClassAndMethodsPart
+#### 2.2.14 ClassAndMethodsPart
 
 The ClassAndMethodsPart block divides the CIM class definition into two sections:
 
@@ -1359,7 +1269,7 @@ indicates that the outermost object being encoded is a ClassType (section 2.2.11
 MUST NOT be present if the ObjectFlags indicates that the outermost object being encoded is an
 InstanceType (section 2.2.53).
 
-2.2.15 ClassPart
+#### 2.2.15 ClassPart
 
 The ClassPart block contains the actual core of a CIM class definition, as specified in [DMTF-
 DSP0004]. Each field MUST be located serially after the other.
@@ -1374,7 +1284,8 @@ Release: April 23, 2024
 
 17 / 74
 
-The ClassHeader (section 2.2.16) contains information about the overall ClassPart block length and
+
+The ClassHeader (section 2.2.16) contains information about the overall ClassPart block length and
 the length of various internal blocks. The DerivationList (section 2.2.17) is an encoded array that
 MUST contain the set of CIM class names that form the list of superclasses for the current CIM class.
 
@@ -1391,7 +1302,7 @@ NdTable and ValueTable are optional. Their inclusion is controlled by the number
 PropertyLookupTable. If the PropertyLookupTable contains zero properties, NdTable and ValueTable
 MUST be omitted.
 
-2.2.16 ClassHeader
+#### 2.2.16 ClassHeader
 
 ClassHeader contains various details on the CIM class block.
 
@@ -1403,7 +1314,7 @@ ClassNameRef (section 2.2.19) contains a reference to the string that is the nam
 class. The NdTableValueTableLength (section 2.2.28) is sum of the lengths, in octets, of the encoded
 "ClassPart::NdTable" and "ClassPart::ValueTable" blocks.
 
-2.2.17 DerivationList
+#### 2.2.17 DerivationList
 
 DerivationList is an encoded array that indicates the list of superclasses that form the inheritance
 chain of the current class. The array contains only the names of the superclasses. The order of classes
@@ -1416,7 +1327,7 @@ EncodingLength (section 2.2.73) includes itself in the total. Therefore, an empt
 least one UINT32 value of 0x4 hexadecimal, which is the length of the EncodingLength item.
 ClassNameEncoding (section 2.2.18) contains the names of the superclasses.
 
-2.2.18 ClassNameEncoding
+#### 2.2.18 ClassNameEncoding
 
 Each ClassNameEncoding is an Encoded-String that is suffixed by a 32-bit value that indicates the
 length, in character count, of the Encoded-String. This length includes the value of the leading octet
@@ -1431,14 +1342,15 @@ Release: April 23, 2024
 
 18 / 74
 
-2.2.19 ClassNameRef
+
+#### 2.2.19 ClassNameRef
 
 ClassNameRef is a reference to the current CIM class name. It is a HeapStringRef (section 2.2.68) in
 the ClassHeap (section 2.2.37).
 
  ClassNameRef = HeapStringRef
 
-2.2.20 ClassQualifierSet
+#### 2.2.20 ClassQualifierSet
 
 ClassQualifierSet is the CIM qualifier set for the current class.
 
@@ -1456,7 +1368,7 @@ applies to the CIM class definition as a whole.
 This usage in CIM is distinct from qualifiers that apply to various internal declarations, such as
 properties and methods.
 
-2.2.21 PropertyLookupTable
+#### 2.2.21 PropertyLookupTable
 
 PropertyLookupTable is a simple dispatching table for finding properties. The
 PropertyCount (section 2.2.22) indicates how many properties follow in the
@@ -1468,7 +1380,7 @@ The PropertyLookup sequence MUST be sorted according to the lexical ordering tha
 the character set, as specified in [UNICODE]. This sort order is required because implementations
 expect to perform binary search operations on the table and these searches require lexical ordering.
 
-2.2.22 PropertyCount
+#### 2.2.22 PropertyCount
 
 PropertyCount is the total number of properties in the class. If zero, the optional
 NdTable (section 2.2.26) and ValueTable (section 2.2.29) blocks (as specified in section 2.2.15) MUST
@@ -1476,7 +1388,7 @@ be absent.
 
  PropertyCount = UINT32
 
-2.2.23 PropertyLookup
+#### 2.2.23 PropertyLookup
 
 The PropertyLookup structure represents a data block that allows a lookup of a specific named CIM
 property in a CIM class. The PropertyNameRef (section 2.2.24) item is a reference to the string
@@ -1491,23 +1403,24 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- PropertyLookup = PropertyNameRef PropertyInfoRef
+
+ PropertyLookup = PropertyNameRef PropertyInfoRef
 
 These items are simple references into the ClassHeap, and each item is only 32 bits in length.
 
-2.2.24 PropertyNameRef
+#### 2.2.24 PropertyNameRef
 
 PropertyNameRef MUST be a heap reference to the Encoded-String for the CIM property name.
 
  PropertyNameRef = HeapStringRef
 
-2.2.25 PropertyInfoRef
+#### 2.2.25 PropertyInfoRef
 
 PropertyInfoRef MUST be a heap reference to the PropertyInfo (section 2.2.30) item for the property.
 
  PropertyInfoRef = HeapRef
 
-2.2.26 NdTable
+#### 2.2.26 NdTable
 
 NdTable is an encoded table that represents the behavior of the default value of properties in a CIM
 class.
@@ -1552,7 +1465,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- NdTable = *NullAndDefaultFlag
+
+ NdTable = *NullAndDefaultFlag
 
 The total number of bits is the number of properties * 2 rounded up to the nearest whole octet count.
 Specifically, the number of required octets is specified by the following formula.
@@ -1566,7 +1480,7 @@ InstanceType.CurrentClass.ClassPart.PropertyLookupTable MUST be used.
 
 Because of rounding, there might be unused bits in the octet. These bits can have any value.
 
-2.2.27 NullAndDefaultFlag
+#### 2.2.27 NullAndDefaultFlag
 
 NullAndDefaultFlag denotes how the default property value is set and whether that value is NULL.
 
@@ -1608,7 +1522,7 @@ For a specified property, if the preceding table shows either of the bit values 
 property is predetermined as NULL or is propagated from the parent. In these cases, the value in the
 ValueTable for that property is ignored.
 
-2.2.28 NdTableValueTableLength
+#### 2.2.28 NdTableValueTableLength
 
 NdTableValueTableLength is sum of the lengths, in octets, of the NdTable and ValueTable.
 
@@ -1616,7 +1530,7 @@ NdTableValueTableLength is sum of the lengths, in octets, of the NdTable and Val
 
 Unlike EncodingLength rules, NdTableValueTableLength does not include its own length.
 
-2.2.29 ValueTable
+#### 2.2.29 ValueTable
 
 The ValueTable encodes the literal values of the properties or references to their values in the heap.
 However, for a specific property, the value here is relevant only if the corresponding NDTable bits for
@@ -1630,7 +1544,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- ValueTable = *EncodedValue
+
+ ValueTable = *EncodedValue
 
 Depending on the type of the CIM property, each EncodedValue (section 2.2.71) has variable length.
 The sequence of EncodedValues is packed at the octet level with no alignment or padding.
@@ -1652,7 +1567,7 @@ ClassHeader of the ClassPart MUST be used for calculating length. When encoding 
 ValueTable under InstanceData of InstanceType, the NdTableValueTableLength specified in
 InstanceType.CurrentClass.ClassPart.ClassHeader MUST be used.
 
-2.2.30 PropertyInfo
+#### 2.2.30 PropertyInfo
 
 The PropertyInfo element exists in the heap and is referenced through a PropertyLookup block. It
 contains information about a property other than its value, such as its data type declaration order, the
@@ -1663,7 +1578,7 @@ set for the property.
 
  ValueTableOffset ClassOfOrigin PropertyQualifierSet
 
-2.2.31 PropertyType
+#### 2.2.31 PropertyType
 
 PropertyType encodes the data type of the property.
 
@@ -1673,7 +1588,7 @@ PropertyType encodes the data type of the property.
 
 CimType MUST have the form that is specified in section 2.2.82.
 
-2.2.32 Inherited
+#### 2.2.32 Inherited
 
 Inherited indicates the origin of the property.
 
@@ -1689,14 +1604,15 @@ Release: April 23, 2024
 
 22 / 74
 
-2.2.33 DeclarationOrder
+
+#### 2.2.33 DeclarationOrder
 
 The DeclarationOrder element shows the actual order of the CIM property as it appears in the order
 within the CIM declaration of the MOF for the class, as specified in [DMTF-DSP0004].
 
  DeclarationOrder = UINT16
 
-2.2.34 ValueTableOffset
+#### 2.2.34 ValueTableOffset
 
 ValueTableOffset MUST be the offset in the ValueTable (section 2.2.29) that contains the value for the
 property. Depending on the type of the property, the ValueTable entry is interpreted differently. The
@@ -1705,7 +1621,7 @@ entry, which is a sibling of this ValueTableOffset in the larger PropertyInfo (s
 
  ValueTableOffset = UINT32
 
-2.2.35 ClassOfOrigin
+#### 2.2.35 ClassOfOrigin
 
 ClassOfOrigin defines from which CIM class in the DerivationList the CIM property comes, where 0
 indicates the first CIM class in the DerivationList, and so on. If the CIM property is local to the current
@@ -1713,7 +1629,7 @@ class, the ClassOfOrigin is equal to the number of items in the DerivationList.
 
  ClassOfOrigin = UINT32
 
-2.2.36 PropertyQualifierSet
+#### 2.2.36 PropertyQualifierSet
 
 PropertyQualifierSet is a set of qualifiers that apply to the preceding property. There is no count of
 qualifiers. Qualifiers in the QualifierSet are decoded and recognized until the
@@ -1721,7 +1637,7 @@ qualifiers. Qualifiers in the QualifierSet are decoded and recognized until the
 
  PropertyQualifierSet = QualifierSet
 
-2.2.37 ClassHeap
+#### 2.2.37 ClassHeap
 
 ClassHeap is structured like any other heap except that the items that are contained in it only apply to
 the CIM class definition.
@@ -1734,7 +1650,7 @@ that the heap references are not intermixed between the class and instance parts
 All heap references that occur in the ClassPart (section 2.2.15) block MUST be limited to references in
 the ClassHeap.
 
-2.2.38 MethodsPart
+#### 2.2.38 MethodsPart
 
 The MethodsPart block is the second half of the ClassType encoding rule and defines the methods for
 the class.
@@ -1748,40 +1664,41 @@ Release: April 23, 2024
 
 23 / 74
 
-          MethodCountPadding *MethodDescription MethodHeap
+
+          MethodCountPadding *MethodDescription MethodHeap
 
 A class encoding that has no methods MUST still contain the indicated fields. MethodCount MUST be
 zero, and there MUST be a zero-length MethodHeap that is encoded according to their respective
 rules.
 
-2.2.39 MethodCount
+#### 2.2.39 MethodCount
 
 MethodCount is the number of methods in the class.
 
  MethodCount = UINT16
 
-2.2.40 MethodCountPadding
+#### 2.2.40 MethodCountPadding
 
 MethodCountPadding is a two-octet sequence that is not used and SHOULD<1> be set to zero. The
 recipient MUST ignore this field.
 
  MethodCountPadding = 2OCTET
 
-2.2.41 MethodDescription
+#### 2.2.41 MethodDescription
 
 MethodDescription specifies one method.
 
  MethodDescription = MethodName MethodFlags MethodPadding
        MethodOrigin MethodQualifiers InputSignature OutputSignature
 
-2.2.42 MethodName
+#### 2.2.42 MethodName
 
 MethodName MUST be a simple HeapStringRef to the MethodHeap (section 2.2.52) for the method
 name.
 
  MethodName = HeapStringRef
 
-2.2.43 MethodFlags
+#### 2.2.43 MethodFlags
 
 The MethodFlags block defines the flags for the method.
 
@@ -1793,7 +1710,7 @@ the parent class. The method origin is calculated for the current ClassAndMethod
 
 The other bits MUST be set to 0.
 
-2.2.44 MethodPadding
+#### 2.2.44 MethodPadding
 
 MethodPadding is reserved and SHOULD be zero.
 
@@ -1804,12 +1721,13 @@ Release: April 23, 2024
 
 24 / 74
 
- MethodPadding = 3OCTET
+
+ MethodPadding = 3OCTET
 
 Because the fields are not used, some implementations can place random values in these octets;
 therefore, values other than zero MUST be ignored.
 
-2.2.45 MethodOrigin
+#### 2.2.45 MethodOrigin
 
 MethodOrigin is a zero-origin array index to a CIM class name in the DerivationList that shows which
 CIM class owns the method.
@@ -1820,7 +1738,7 @@ A value of zero refers to the first element in the DerivationList. A value of 1 
 element in the DerivationList, and so on. If the method is local to the current class, the MethodOrigin
 is equal to the number of items in the DerivationList.
 
-2.2.46 MethodQualifiers
+#### 2.2.46 MethodQualifiers
 
 MethodQualifiers is a set of qualifiers that are applicable to the method.
 
@@ -1838,14 +1756,14 @@ qualifiers.
        uint32 Restart([in] string ServiceName, [out] int Status);
  }
 
-2.2.47 HeapQualifierSetRef
+#### 2.2.47 HeapQualifierSetRef
 
 HeapQualifierSetRef MUST be a HeapRef (section 2.2.69) to a single QualifierSet (section 2.2.59) in
 the current heap.
 
  HeapQualifierSetRef = HeapRef
 
-2.2.48 InputSignature
+#### 2.2.48 InputSignature
 
 InputSignature specifies the input signature for the method.
 
@@ -1858,13 +1776,14 @@ Release: April 23, 2024
 
 25 / 74
 
-2.2.49 OutputSignature
+
+#### 2.2.49 OutputSignature
 
 OutputSignature specifies the output signature for the method.
 
  OutputSignature = MethodSignature
 
-2.2.50 MethodSignature
+#### 2.2.50 MethodSignature
 
 The InputSignature and OutputSignature fields MUST be a HeapRef to the
 MethodSignatureBlock (section 2.2.70) in the MethodHeap (section 2.2.52). This is because the input
@@ -1878,14 +1797,14 @@ To encode a MethodSignature as a CIM class object, the encoding rules, as specif
 conventions for content, such as the name of the class and how to indicate in and out parameter flow
 by using qualifiers.
 
-2.2.51 HeapMethodSignatureBlockRef
+#### 2.2.51 HeapMethodSignatureBlockRef
 
 HeapMethodSignatureBlockRef MUST be a HeapRef to the MethodSignatureBlock (section 2.2.70) in
 the current Heap (section 2.2.66).
 
  HeapMethodSignatureBlockRef = HeapRef
 
-2.2.52 MethodHeap
+#### 2.2.52 MethodHeap
 
 MethodHeap contains information about all the methods, for example, their names, parameters, and
 types.
@@ -1895,7 +1814,7 @@ types.
 All HeapItem entries in the Heap MUST be referenced by a valid HeapRef in the MethodsPart
 encoding block.
 
-2.2.53 InstanceType
+#### 2.2.53 InstanceType
 
 The InstanceType block is used to encode a CIM instance of a CIM class.
 
@@ -1918,7 +1837,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The CIM class name to which the CIM instance belongs is referenced by InstanceClassName.
+
+The CIM class name to which the CIM instance belongs is referenced by InstanceClassName.
 
 The actual instance-level data is in NdTable and InstanceData; any instance-level qualifiers are in
 InstanceQualifierSet. Because default values from CIM class definitions might be used in a CIM
@@ -1928,19 +1848,19 @@ default value is in use for each property.
 The values for any referenced items anywhere in the InstanceType encoding block MUST be contained
 in the InstanceHeap.
 
-2.2.54 InstanceFlags
+#### 2.2.54 InstanceFlags
 
 InstanceFlags is reserved and MUST be zero.
 
  InstanceFlags = OCTET
 
-2.2.55 InstanceClassName
+#### 2.2.55 InstanceClassName
 
 InstanceClassName is a string reference to a class name in the InstanceHeap.
 
  InstanceClassName = HeapStringRef
 
-2.2.56 InstanceData
+#### 2.2.56 InstanceData
 
 InstanceData values are stored in a ValueTable similar to how classes are stored in a ValueTable. The
 only difference is that InstanceData values in a ValueTable MUST contain references to the
@@ -1948,20 +1868,20 @@ InstanceHeap whenever a HeapRef occurs.
 
  InstanceData = ValueTable
 
-2.2.57 InstanceQualifierSet
+#### 2.2.57 InstanceQualifierSet
 
 InstanceQualifierSet is the CIM qualifier set that SHOULD apply to the entire instance, as opposed to
 qualifiers within individual properties.
 
  InstanceQualifierSet = QualifierSet InstancePropQualifierSet
 
-2.2.58 InstanceHeap
+#### 2.2.58 InstanceHeap
 
 InstanceHeap is the value heap for the current instance.
 
  InstanceHeap = Heap
 
-2.2.59 QualifierSet
+#### 2.2.59 QualifierSet
 
 QualifierSet represents a set of qualifiers. Qualifiers are applied to a CIM class; to a CIM instance;
 to properties within a CIM class; or to instances, methods, and individual parameters within methods,
@@ -1976,7 +1896,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The length of the QualifierSet is indicated by the EncodingLength.
+
+The length of the QualifierSet is indicated by the EncodingLength.
 
 This is followed by a series of CIM qualifier values of variable length. Each CIM qualifier value begins
 where the previous one ends. There are no delimiters between qualifiers; nor is there any indexing
@@ -1985,7 +1906,7 @@ mechanism to access a specific qualifier.
 Because each CIM qualifier block is a known length, the end of the QualifierSet is reached where the
 value (EncodingLength – 4) is equal to the length of the set of CIM qualifier blocks that follow it.
 
-2.2.60 Qualifier
+#### 2.2.60 Qualifier
 
 Qualifier defines a single qualifier.
 
@@ -1995,7 +1916,7 @@ Qualifier defines a single qualifier.
 The CIM qualifier consists of the name, flavor, and data type of the qualifier, and the actual value, as
 specified in [DMTF-DSP0004] section 4.5.4.
 
-2.2.61 QualifierName
+#### 2.2.61 QualifierName
 
 QualifierName is a CIM qualifier name and MUST be a HeapRef to an Encoded-String in the current
 heap.
@@ -2005,7 +1926,7 @@ heap.
 Class qualifiers MUST be located in the ClassHeap; CIM instance qualifiers MUST be located in the
 InstanceHeap; and method qualifiers MUST be located in the MethodHeap.
 
-2.2.62 QualifierFlavor
+#### 2.2.62 QualifierFlavor
 
 QualifierFlavor indicates the origin and propagation rules for the qualifier.
 
@@ -2063,7 +1984,8 @@ cannot be overridden
 
 28 / 74
 
-Qualifier flavor
+
+Qualifier flavor
 
 Corresponding
 DMTF Qualifier
@@ -2126,20 +2048,20 @@ values
 The meanings and combinations of usage for the standard CIM qualifier flavors are as specified in
 [DMTF-DSP0004].
 
-2.2.63 QualifierType
+#### 2.2.63 QualifierType
 
 QualifierType is a CIM qualifier and MUST be any valid CimType (section 2.2.82).
 
  QualifierType = CimType
 
-2.2.64 QualifierValue
+#### 2.2.64 QualifierValue
 
 QualifierValue is the value of a CIM qualifier and MUST be a valid EncodedValue based on the
 QualifierType.
 
  QualifierValue = EncodedValue
 
-2.2.65 InstancePropQualifierSet
+#### 2.2.65 InstancePropQualifierSet
 
 InstancePropQualifierSet is a CIM qualifier set for instances that have properties with instance-level
 qualifiers. Because this rarely occurs, there is a flag octet that signals whether there are CIM qualifier
@@ -2156,7 +2078,8 @@ Release: April 23, 2024
 
 29 / 74
 
-If the InstPropQualSetFlag is set to 2, the QualifierSet sequence MUST be populated. There MUST be
+
+If the InstPropQualSetFlag is set to 2, the QualifierSet sequence MUST be populated. There MUST be
 one QualifierSet for each CIM property in the class, and the properties are in the same order that
 occurs in the PropertyLookupTable.
 
@@ -2177,7 +2100,7 @@ that qualifier set).
 
 For examples, see section 3.1.
 
-2.2.66 Heap
+#### 2.2.66 Heap
 
 A Heap consists of a length and a linear series of HeapItem entries. A Heap is loosely defined and
 consists of the HeapItem blocks in any order. However, there are three separate Heaps that MUST be
@@ -2206,7 +2129,7 @@ HeapItem MUST have exactly one HeapRef in some other data structure that points 
 HeapItem entries MUST NOT be shared. That is, there MUST NOT exist two HeapRef values that point
 to the same HeapItem.
 
-2.2.67 HeapItem
+#### 2.2.67 HeapItem
 
 HeapItem is one of the following data block types. Every HeapItem MUST have a corresponding
 HeapRef (section 2.2.69).
@@ -2220,20 +2143,21 @@ Release: April 23, 2024
 
 30 / 74
 
-      Encoded-Array / QualifierSet / ObjectBlock / MethodSignatureBlock
+
+      Encoded-Array / QualifierSet / ObjectBlock / MethodSignatureBlock
 
 The HeapRef that points to a specified HeapItem is not inferable from the HeapItem itself. Although all
 HeapRefs point to HeapItems, there is no way to navigate from the HeapItem back to the HeapRef
 that points to it. HeapRefs can only be located by following the various encoding rules in
 EncodingUnit (section 2.2.1).
 
-2.2.68 HeapStringRef
+#### 2.2.68 HeapStringRef
 
 HeapStringRef MUST be a reference to an Encoded-String on the current Heap.
 
  HeapStringRef = HeapRef
 
-2.2.69 HeapRef
+#### 2.2.69 HeapRef
 
 HeapRef is a reference to any HeapItem and is expressed in 31 bits. If the HeapItem (section 2.2.67)
 referred to is a string, and the most significant bit of the 32-bit HeapStringRef (section 2.2.68) value
@@ -2246,7 +2170,7 @@ If the value of HeapRef is 0xFFFFFFFF, then HeapItem is not present and MUST be 
 the most significant bit of the 32-bit value is clear, the reference is an offset to a HeapItem in the
 Heap.
 
-2.2.70 MethodSignatureBlock
+#### 2.2.70 MethodSignatureBlock
 
 MethodSignatureBlock is a block used to encode a set of in parameters or out parameters for a
 method definition in a CIM class. MethodSignatureBlock is simply an ObjectBlock using the method
@@ -2257,7 +2181,7 @@ parameters of a method as described in section 2.3.3.
 
  MethodSignatureBlock = EncodingLength [ObjectBlock]
 
-2.2.71 EncodedValue
+#### 2.2.71 EncodedValue
 
 EncodedValue is an encoded value that is used everywhere to represent numerical and string values.
 
@@ -2279,7 +2203,8 @@ Release: April 23, 2024
 
 31 / 74
 
-If the value is of type CIM-TYPE-STRING, CIM-TYPE-DATETIME, or CIM-TYPE-REFERENCE, the
+
+If the value is of type CIM-TYPE-STRING, CIM-TYPE-DATETIME, or CIM-TYPE-REFERENCE, the
 EncodedValue is a HeapRef (section 2.2.69) to that Encoded-String. The value of types CIM-TYPE-
 DATETIME and CIM-TYPE-REFERENCE are encoded as strings, as specified in 2.3.1 and 2.3.2
 respectively.
@@ -2296,7 +2221,7 @@ required for the property type as defined above.
 
  EncodedValue = NumericValue / HeapRef / BOOL / NoValue
 
-2.2.72 NumericValue
+#### 2.2.72 NumericValue
 
 NumericValue is any numerical value, whether integer or real, that is valid within the CIM type
 system.
@@ -2393,7 +2318,8 @@ Release: April 23, 2024
 
 32 / 74
 
-
+
+
 
 The CIM Boolean type has its own encoding that is specified in the BOOL (section 2.2.75) encoding
 rule.
@@ -2402,7 +2328,7 @@ rule.
 
 Floating point values, as specified in [IEEE754], MUST be encoded as little-endian.
 
-2.2.73 EncodingLength
+#### 2.2.73 EncodingLength
 
 EncodingLength is a simple 32-bit unsigned value that establishes the encoding length in octets of
 one of the other defined units in this specification. This value MUST include its own length as part of
@@ -2411,13 +2337,13 @@ the EncodingLength UINT32.
 
  EncodingLength = UINT32
 
-2.2.74 NoValue
+#### 2.2.74 NoValue
 
 NoValue is used when a default value does not occur in a CIM class definition for a specific CIM
 property, and a slot in the ValueTable must be filled for that property. In this, all the OCTETs
 reserved for the property MUST be set to %xFF, and the value is ignored.
 
-2.2.75 BOOL
+#### 2.2.75 BOOL
 
 BOOL is used to represent logical TRUE or logical FALSE and consists of a 16-bit value.
 
@@ -2426,14 +2352,14 @@ BOOL is used to represent logical TRUE or logical FALSE and consists of a 16-bit
 The encoding for logical FALSE is all bits set to zero (0x0), and the encoding for logical TRUE is all
 bits set to 1 or 0xFFFF.
 
-2.2.76 ReservedOctet
+#### 2.2.76 ReservedOctet
 
 ReservedOctet is a reserved OCTET that MUST be set to 0 and is used in several places in the
 encoding.
 
  ReservedOctet = OCTET
 
-2.2.77 Signature
+#### 2.2.77 Signature
 
 Signature is the leading signature on the entire EncodingUnit block and MUST consist of a literal 32-bit
 value.
@@ -2442,7 +2368,7 @@ value.
 
 This is used to verify that the CIM object that is being processed conforms to this specification.
 
-2.2.78 Encoded-String
+#### 2.2.78 Encoded-String
 
 Encoded-String is a special data type that is the only means of representing strings.
 
@@ -2456,7 +2382,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   Character = AnsiCharacter / UnicodeCharacter
+
+   Character = AnsiCharacter / UnicodeCharacter
    Null = Character
    AnsiCharacter = OCTET
    UnicodeCharacter = 2OCTET
@@ -2493,7 +2420,7 @@ accompanied by the appropriate Encoded-String-Flag value at the beginning of the
 For any specified CIM object encoding as a whole, the individual strings might or might not use the
 optimization, depending precisely on which characters are present in the string.
 
-2.2.79 Encoded-Array
+#### 2.2.79 Encoded-Array
 
 Encoded-Array is used to encode an array in the Heap.
 
@@ -2505,7 +2432,7 @@ element of an array MUST be of the same CimBaseType.
 
 ArrayCount MUST be present, but there can be zero EncodedValue entries if ArrayCount is zero.
 
-2.2.80 DictionaryReference
+#### 2.2.80 DictionaryReference
 
 DictionaryReference is used to encode extremely common strings to prevent them from taking up
 space in the Heap. Whenever a reference to an Encoded-String occurs, if the string matches any of
@@ -2522,7 +2449,8 @@ Release: April 23, 2024
 
 34 / 74
 
-   ; %d0   Encoded/Decoded as quote character
+
+   ; %d0   Encoded/Decoded as quote character
    ; %d1   Encoded/Decoded as "key"
    ; %d2   Encoded/Decoded as ""
    ; %d3   Encoded/Decoded as "read"
@@ -2539,7 +2467,7 @@ a normal HeapRef.
 
 This technique only applies if the type of the item being pointed to is a string.
 
-2.2.81 BIT
+#### 2.2.81 BIT
 
 BIT is a simple bit field that consists of 1 bit, either set or clear.
 
@@ -2547,7 +2475,7 @@ BIT is a simple bit field that consists of 1 bit, either set or clear.
 
 It is only used by the NdTable rule.
 
-2.2.82 CimType
+#### 2.2.82 CimType
 
 CimType is a 32-bit value of which only the lower 16 bits are used. It indicates the type of the value
 according to the CIM type system.
@@ -2587,7 +2515,8 @@ Release: April 23, 2024
 
 35 / 74
 
-bitwise OR operation with the CimArrayFlag value (0x2000) that results in the most significant octet
+
+bitwise OR operation with the CimArrayFlag value (0x2000) that results in the most significant octet
 containing 0x20 and the lower octet containing the value of the CimBaseType.
 
 For example, to encode an array of CIM-TYPE-STRING, the CimType binary encoding would be
@@ -2647,7 +2576,8 @@ Release: April 23, 2024
 
 36 / 74
 
-2.3  Special Data Type Encodings
+
+### 2.3 Special Data Type Encodings
 
 The various CIM data types have special binary encodings that are implied by the ABNF rules that are
 specified in sections 2.2.72 and 2.2.79. However, three special cases require further techniques: the
@@ -2655,7 +2585,7 @@ CIM DateTime type, CIM reference types, and the encoding of method signatures fo
 These encodings affect only the format of the values and do not introduce new binary-level encoding
 rules.
 
-2.3.1  CIM DateTime Type
+#### 2.3.1 CIM DateTime Type
 
 The CIM DateTime type is a string that has the specific format that is specified in [DMTF-DSP0004]
 section 2.2.1.
@@ -2675,7 +2605,7 @@ datetime.
 
 If the CIM qualifier is omitted, the system MUST treat the DateTime type as a standard string.
 
-2.3.2  CIM Reference Types
+#### 2.3.2 CIM Reference Types
 
 A CIM reference type is a string that contains the CIM object path to another CIM object, as specified
 in [DMTF-DSP0004] section 5.3.2. The CIM reference type is essentially a pointer type that allows
@@ -2698,7 +2628,7 @@ referenced. If the reference is untyped, "<cimClass>" MUST be set to the string 
 
 The CIMTYPE CIM qualifier MUST be specified.
 
-2.3.3  CIM Methods
+#### 2.3.3 CIM Methods
 
 The method signature (that is, the return type) input parameters and output parameters are encoded
 by using embedded CIM object encodings. Methods are as specified in [DMTF-DSP0004] section 4.9
@@ -2719,7 +2649,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- class MyClass2  :  MyClass
+
+ class MyClass2  :  MyClass
  {
    [execute, performance={"fast", "sideffects"}]
    uint32 Restart([in] string ServiceName, [out] int32 Status);
@@ -2790,7 +2721,8 @@ Release: April 23, 2024
 
 38 / 74
 
-2.3.4  Heap Encoding
+
+#### 2.3.4 Heap Encoding
 
 HeapItems in the Heap typically occur in any order as long as the Heap references to them (that is,
 any rules that reduce to HeapRef) are correct. For example, PropertyInfo blocks occur in an order that
@@ -2828,7 +2760,8 @@ Release: April 23, 2024
 
 39 / 74
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 This section illustrates a simple example of the binary encoding for a simple CIM class definition and
 its instances. The MOF textual representation is used, as specified in [DMTF-DSP0004].
@@ -2890,7 +2823,8 @@ Release: April 23, 2024
 
 40 / 74
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -3009,7 +2943,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -3137,7 +3072,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -3263,7 +3199,8 @@ Release: April 23, 2024
 
 43 / 74
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -3372,7 +3309,8 @@ Release: April 23, 2024
 
 44 / 74
 
-     00 00 00 11 00 00 00 0A 00 00 80 03 08 00 00 00
+
+     00 00 00 11 00 00 00 0A 00 00 80 03 08 00 00 00
      4D 00 00 00 00 75 69 6E 74 33 32 00 00 44 61 74
      61 31 00 08 00 00 00 01 00 04 00 00 00 01 00 00
      00 27 00 00 00 0A 00 00 80 03 08 00 00 00 91 00
@@ -3469,7 +3407,8 @@ Release: April 23, 2024
 
 45 / 74
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -3600,7 +3539,8 @@ Release: April 23, 2024
 
 46 / 74
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -3732,7 +3672,8 @@ Release: April 23, 2024
 
 47 / 74
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -3858,7 +3799,8 @@ Release: April 23, 2024
 
 48 / 74
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -3979,7 +3921,8 @@ Release: April 23, 2024
 
 49 / 74
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -4103,7 +4046,8 @@ Release: April 23, 2024
 
 50 / 74
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -4221,7 +4165,8 @@ Release: April 23, 2024
 
 51 / 74
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -4349,7 +4294,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Relevant
+
+Relevant
 offset
 
  Octet
@@ -4449,7 +4395,7 @@ MethodsPart::MethodHeap::HeapLength zero length method heap.
 
 END OF OBJECT
 
-3.1  Instance Encoding
+### 3.1 Instance Encoding
 
 Using the CIM class example from section 3 as a basis, the following CIM instance encoding is
 presented.
@@ -4461,7 +4407,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- instance of MyClass
+
+ instance of MyClass
  {
     Id = 123;
     Data1 = "StringField";
@@ -4537,7 +4484,8 @@ Release: April 23, 2024
 
 54 / 74
 
- Relevant offset
+
+ Relevant offset
 
  Octet
 values
@@ -4667,7 +4615,8 @@ Release: April 23, 2024
 
 55 / 74
 
- Relevant offset
+
+ Relevant offset
 
  Octet
 values
@@ -4774,7 +4723,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Octet
+
+Octet
 values
 
 04 00 00
@@ -4800,7 +4750,7 @@ The Heap is longer in order to accommodate the name of the CIM qualifier test.
 
 The remainder of the Heap.
 
-3.2  Class Encoding with Methods
+### 3.2 Class Encoding with Methods
 
 Classes that contain methods have an extra encoding block called MethodsPart in the ABNF
 encoding. The MethodsPart only applies to CIM objects that are encoded as CIM class definitions
@@ -4853,7 +4803,8 @@ Release: April 23, 2024
 
 57 / 74
 
- 32 00 00 64 65 66 61 75 6C 74 56 61 6C 75 65 00
+
+ 32 00 00 64 65 66 61 75 6C 74 56 61 6C 75 65 00
  00 00 00 00 00 00 0C 00 00 00 00 00 00 73 00 00
  00 80
  80 01 00 00 00 00 00 00 00 11 00 00 00 1b 00 00
@@ -4930,7 +4881,8 @@ Release: April 23, 2024
 
 58 / 74
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -5003,7 +4955,8 @@ Release: April 23, 2024
 
 59 / 74
 
- Relevant
+
+ Relevant
 offset
 
  Octet
@@ -5097,7 +5050,8 @@ Release: April 23, 2024
 
 60 / 74
 
- Relevant
+
+ Relevant
 offset
 
  Octet
@@ -5211,7 +5165,8 @@ Release: April 23, 2024
 
 61 / 74
 
- Relevant
+
+ Relevant
 offset
 
  Octet
@@ -5309,7 +5264,8 @@ Release: April 23, 2024
 
 62 / 74
 
- Relevant
+
+ Relevant
 offset
 
  Octet
@@ -5452,7 +5408,8 @@ Release: April 23, 2024
 
 63 / 74
 
- Relevant
+
+ Relevant
 offset
 
  Octet
@@ -5590,7 +5547,8 @@ Windows Management Instrumentation Encoding Version 1.0 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Relevant
+
+ Relevant
 offset
 
  Octet
@@ -5679,7 +5637,8 @@ Release: April 23, 2024
 
 65 / 74
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 Because this specification only specifies an encoding, there are no security-specific considerations.
 There are no fields within the encoding associated with security.
@@ -5691,7 +5650,8 @@ Release: April 23, 2024
 
 66 / 74
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5755,7 +5715,8 @@ Release: April 23, 2024
 
 67 / 74
 
-6  Appendix B: ABNF Encoding Definition
+
+## 6 Appendix B: ABNF Encoding Definition
 
  ;
  ;--- Main block
@@ -5831,7 +5792,8 @@ Release: April 23, 2024
 
 68 / 74
 
- MethodPadding = 3OCTET
+
+ MethodPadding = 3OCTET
  MethodOrigin = UINT32         ; CIM class in DerivationList
  MethodQualifiers = HeapQualifierSetRef
  InputSignature = MethodSignature
@@ -5908,7 +5870,8 @@ Release: April 23, 2024
 
 69 / 74
 
- DictionaryReference = %d0 / %d1 / %d2 / %d3 / %d4 / %d5 /
+
+ DictionaryReference = %d0 / %d1 / %d2 / %d3 / %d4 / %d5 /
        %d6 / %d7 / %d8 / %d9 / %d10
    ; %d0   Encoded/Decoded as quote character
    ; %d1   Encoded/Decoded as "key"
@@ -5985,7 +5948,8 @@ Release: April 23, 2024
 
 70 / 74
 
- CIM-ARRAY-SINT16 =%d8194
+
+ CIM-ARRAY-SINT16 =%d8194
  CIM-ARRAY-UINT16 =%d8210
  CIM-ARRAY-SINT32 = %d8195
  CIM-ARRAY-UINT32 = %d8201
@@ -6007,7 +5971,8 @@ Release: April 23, 2024
 
 71 / 74
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6051,7 +6016,8 @@ Release: April 23, 2024
 
 72 / 74
 
-8  Index
+
+## 8 Index
 A
 
 ABNF encoding definition 67
@@ -6181,7 +6147,8 @@ Release: April 23, 2024
 
 73 / 74
 
-O
+
+O
 
 ObjectBlock 14
 ObjectEncodingLength 14

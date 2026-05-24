@@ -63,7 +63,8 @@ Release: June 14, 2022
 
 1 / 61
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -195,228 +196,99 @@ Release: June 14, 2022
 
 2 / 61
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ...................................................................................................... 10
-Overview ........................................................................................................ 17
-Audience ......................................................................................................... 20
+## Table of Contents
 
-1.1
-1.2
-1.3
-1.4
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Audience](#14-audience)
+- [2 Application Services](#2-application-services)
+  - [2.1 Overview](#21-overview)
+  - [2.2 Application Server Protocols](#22-application-server-protocols)
+    - [2.2.1 Component Object Model (COM)](#221-component-object-model-com)
+      - [2.2.1.1 Component Object Model Plus (COM+)](#2211-component-object-model-plus-com)
+      - [2.2.1.2 COM+ Remote Administration Protocol (COMA)](#2212-com-remote-administration-protocol-coma)
+      - [2.2.1.3 COM+ Event System Protocol (COMEV)](#2213-com-event-system-protocol-comev)
+      - [2.2.1.4 COM+ Tracker Service Protocol (COMT)](#2214-com-tracker-service-protocol-comt)
+      - [2.2.1.5 COM+ Queued Components Protocol (COMQC)](#2215-com-queued-components-protocol-comqc)
+    - [2.2.2 Transaction Processing Services](#222-transaction-processing-services)
+    - [2.2.3 Message Queuing (MSMQ)](#223-message-queuing-msmq)
+  - [2.3 Core Services Protocols](#23-core-services-protocols)
+    - [2.3.1 IManagedObject Interface Protocol](#231-imanagedobject-interface-protocol)
+      - [2.3.1.1 IRemoteDispatch Interface](#2311-iremotedispatch-interface)
+    - [2.3.2 OLE Automation Protocol](#232-ole-automation-protocol)
+    - [2.3.3 Remote Data Services Transport Protocol](#233-remote-data-services-transport-protocol)
+    - [2.3.4 Session Multiplex Protocol](#234-session-multiplex-protocol)
+    - [2.3.5 SQL Server Resolution Protocol](#235-sql-server-resolution-protocol)
+  - [2.4 Internet Information Services](#24-internet-information-services)
+    - [2.4.1 Internet Information Services (IIS) Application Host COM Protocol](#241-internet-information-services-iis-application-host-com-protocol)
+    - [2.4.2 Internet Information Services (IIS) IMSAdminBaseW Remote Protocol](#242-internet-information-services-iis-imsadminbasew-remote-protocol)
+    - [2.4.3 Internet Information Services (IIS) Inetinfo Remote protocol](#243-internet-information-services-iis-inetinfo-remote-protocol)
+    - [2.4.4 Internet Information Services (IIS) ServiceControl Protocol](#244-internet-information-services-iis-servicecontrol-protocol)
+  - [2.5 .NET Framework Protocols](#25-net-framework-protocols)
+- [3 Collaboration and Communication](#3-collaboration-and-communication)
+  - [3.1 Collaboration Protocols](#31-collaboration-protocols)
+  - [3.2 Media Services Protocols](#32-media-services-protocols)
+- [4 Device-Specific Protocols](#4-device-specific-protocols)
+- [5 Directory Services](#5-directory-services)
+  - [5.1 Overview](#51-overview)
+- [6 File, Fax, and Printing Services](#6-file-fax-and-printing-services)
+  - [6.1 Overview](#61-overview)
+  - [6.2 Content Caching Protocols](#62-content-caching-protocols)
+  - [6.3 DFS and File Replication Protocols](#63-dfs-and-file-replication-protocols)
+  - [6.4 File Access Services Protocols](#64-file-access-services-protocols)
+  - [6.5 File Services Management Protocols](#65-file-services-management-protocols)
+  - [6.6 Print and Fax Services Protocols](#66-print-and-fax-services-protocols)
+  - [6.7 Storage Services Protocols](#67-storage-services-protocols)
+  - [6.8 Virtual Storage Protocols](#68-virtual-storage-protocols)
+- [7 Networking](#7-networking)
+  - [7.1 Networking Services](#71-networking-services)
+    - [7.1.1 DHCP Extensions](#711-dhcp-extensions)
+    - [7.1.2 IP Address Management](#712-ip-address-management)
+    - [7.1.3 Network Access Protection (NAP)](#713-network-access-protection-nap)
+    - [7.1.4 Windows Name Resolution](#714-windows-name-resolution)
+  - [7.2 Presentation Layer Technologies](#72-presentation-layer-technologies)
+    - [7.2.1 SSL/TLS](#721-ssltls)
+  - [7.3 Session Layer Technologies](#73-session-layer-technologies)
+    - [7.3.1 RPC](#731-rpc)
+    - [7.3.2 DCOM](#732-dcom)
+    - [7.3.3 SOAP](#733-soap)
+    - [7.3.4 HTTP](#734-http)
+    - [7.3.5 Peer to Peer Grouping](#735-peer-to-peer-grouping)
+  - [7.4 Transport Layer Technologies](#74-transport-layer-technologies)
+    - [7.4.1 IP Over HTTP Proxy Traversal](#741-ip-over-http-proxy-traversal)
+    - [7.4.2 IPC Mechanisms for SMB](#742-ipc-mechanisms-for-smb)
+      - [7.4.2.1 Named Pipes](#7421-named-pipes)
+      - [7.4.2.2 Mailslot Names](#7422-mailslot-names)
+  - [7.5 Network Layer Technologies](#75-network-layer-technologies)
+    - [7.5.1 IPsec (DirectAccess) Overview](#751-ipsec-directaccess-overview)
+    - [7.5.2 Security Associations](#752-security-associations)
+    - [7.5.3 Security Policy Database Structure](#753-security-policy-database-structure)
+    - [7.5.4 IPsec Policy Specification Formats](#754-ipsec-policy-specification-formats)
+    - [7.5.5 IPsec Encapsulations](#755-ipsec-encapsulations)
+  - [7.6 Link Layer Technologies](#76-link-layer-technologies)
+- [8 Remote Connectivity](#8-remote-connectivity)
+  - [8.1 Overview](#81-overview)
+- [9 Security and Identity Management](#9-security-and-identity-management)
+  - [9.1 Overview](#91-overview)
+  - [9.2 Authentication](#92-authentication)
+  - [9.3 Authorization](#93-authorization)
+  - [9.4 Certificate Services](#94-certificate-services)
+  - [9.5 Claim-Based Access Control](#95-claim-based-access-control)
+  - [9.6 Federation Services](#96-federation-services)
+  - [9.7 Impersonation](#97-impersonation)
+  - [9.8 Rights Management Services](#98-rights-management-services)
+- [10 Systems Management](#10-systems-management)
+  - [10.1 Overview](#101-overview)
+  - [10.2 Monitoring Services Protocols](#102-monitoring-services-protocols)
+  - [10.3 Server Management Protocols](#103-server-management-protocols)
+  - [10.4 WINS Management Protocol](#104-wins-management-protocol)
+- [11 Microsoft Implementations](#11-microsoft-implementations)
+- [12 Change Tracking](#12-change-tracking)
 
-2.3
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2
-2.2.3
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2  Application Services .............................................................................................. 21
-Overview ........................................................................................................ 21
-Application Server Protocols .............................................................................. 21
-Component Object Model (COM) ................................................................... 22
-Component Object Model Plus (COM+) .................................................... 22
-COM+ Remote Administration Protocol (COMA)......................................... 23
-COM+ Event System Protocol (COMEV) ................................................... 24
-COM+ Tracker Service Protocol (COMT) ................................................... 24
-COM+ Queued Components Protocol (COMQC) ......................................... 24
-Transaction Processing Services ................................................................... 25
-Message Queuing (MSMQ) ........................................................................... 25
-Core Services Protocols ..................................................................................... 26
-IManagedObject Interface Protocol ............................................................... 26
-IRemoteDispatch Interface ..................................................................... 27
-OLE Automation Protocol ............................................................................. 27
-Remote Data Services Transport Protocol ...................................................... 27
-Session Multiplex Protocol ............................................................................ 27
-SQL Server Resolution Protocol .................................................................... 28
-Internet Information Services ............................................................................ 28
-Internet Information Services (IIS) Application Host COM Protocol.................... 29
-Internet Information Services (IIS) IMSAdminBaseW Remote Protocol .............. 29
-Internet Information Services (IIS) Inetinfo Remote protocol ........................... 29
-Internet Information Services (IIS) ServiceControl Protocol ............................. 30
-.NET Framework Protocols ................................................................................. 30
-
-2.4.1
-2.4.2
-2.4.3
-2.4.4
-
-2.3.2
-2.3.3
-2.3.4
-2.3.5
-
-2.3.1.1
-
-2.3.1
-
-2.4
-
-2.5
-
-3  Collaboration and Communication ......................................................................... 31
-Collaboration Protocols ..................................................................................... 31
-Media Services Protocols ................................................................................... 31
-
-3.1
-3.2
-
-4  Device-Specific Protocols ...................................................................................... 32
-
-5  Directory Services ................................................................................................. 34
-Overview ........................................................................................................ 34
-
-5.1
-
-6  File, Fax, and Printing Services.............................................................................. 35
-Overview ........................................................................................................ 35
-Content Caching Protocols ................................................................................. 35
-DFS and File Replication Protocols ...................................................................... 35
-File Access Services Protocols ............................................................................ 36
-File Services Management Protocols ................................................................... 38
-Print and Fax Services Protocols ......................................................................... 38
-Storage Services Protocols ................................................................................ 39
-Virtual Storage Protocols ................................................................................... 39
-
-6.1
-6.2
-6.3
-6.4
-6.5
-6.6
-6.7
-6.8
-
-7.1
-
-7  Networking............................................................................................................ 40
-Networking Services ......................................................................................... 40
-DHCP Extensions ........................................................................................ 40
-IP Address Management .............................................................................. 41
-Network Access Protection (NAP) .................................................................. 41
-Windows Name Resolution ........................................................................... 42
-Presentation Layer Technologies ........................................................................ 43
-
-7.1.1
-7.1.2
-7.1.3
-7.1.4
-
-7.2
-
-[MS-WPO] - v20220614
-Windows Protocols Overview
-Copyright © 2022 Microsoft Corporation
-Release: June 14, 2022
-
-3 / 61
-
-7.3
-
-7.2.1
-
-7.3.1
-7.3.2
-7.3.3
-7.3.4
-7.3.5
-
-7.4.1
-7.4.2
-
-7.4
-
-7.5
-
-7.5.1
-7.5.2
-7.5.3
-7.5.4
-7.5.5
-
-7.6
-
-SSL/TLS .................................................................................................... 43
-Session Layer Technologies ............................................................................... 43
-RPC .......................................................................................................... 43
-DCOM ....................................................................................................... 43
-SOAP ........................................................................................................ 44
-HTTP ......................................................................................................... 44
-Peer to Peer Grouping ................................................................................. 45
-Transport Layer Technologies ............................................................................ 45
-IP Over HTTP Proxy Traversal ....................................................................... 45
-IPC Mechanisms for SMB ............................................................................. 45
-Named Pipes ........................................................................................ 46
-Mailslot Names ..................................................................................... 46
-Network Layer Technologies .............................................................................. 46
-IPsec (DirectAccess) Overview ..................................................................... 46
-Security Associations .................................................................................. 47
-Security Policy Database Structure ............................................................... 48
-IPsec Policy Specification Formats ................................................................. 49
-IPsec Encapsulations ................................................................................... 49
-Link Layer Technologies .................................................................................... 49
-
-7.4.2.1
-7.4.2.2
-
-8  Remote Connectivity ............................................................................................. 51
-Overview ........................................................................................................ 51
-
-8.1
-
-9  Security and Identity Management ........................................................................ 52
-Overview ........................................................................................................ 52
-Authentication ................................................................................................. 52
-Authorization ................................................................................................... 52
-Certificate Services .......................................................................................... 52
-Claim-Based Access Control............................................................................... 52
-Federation Services .......................................................................................... 53
-Impersonation ................................................................................................. 53
-Rights Management Services ............................................................................. 53
-
-9.1
-9.2
-9.3
-9.4
-9.5
-9.6
-9.7
-9.8
-
-10  Systems Management............................................................................................ 55
-10.1  Overview ........................................................................................................ 55
-10.2  Monitoring Services Protocols ............................................................................ 55
-10.3
-Server Management Protocols ............................................................................ 56
-10.4  WINS Management Protocol .............................................................................. 57
-
-11  Microsoft Implementations ................................................................................... 59
-
-12  Change Tracking .................................................................................................... 60
-
-13  Index ..................................................................................................................... 61
-
-[MS-WPO] - v20220614
-Windows Protocols Overview
-Copyright © 2022 Microsoft Corporation
-Release: June 14, 2022
-
-4 / 61
-
-1  Introduction
+## 1 Introduction
 
 This document provides an overview of Windows interoperability technologies and the protocols
 required for their implementation. It is intended for use with the technology overview documents for
@@ -430,7 +302,7 @@ individual technical documents referenced here and in the overview documents. Th
 used by the versions of Windows listed in section 11. A list of technology areas and their
 corresponding protocol specifications is available in [MS-DOCO] section 4.2.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -487,7 +359,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Common Internet File System (CIFS): The "NT LM 0.12" / NT LAN Manager dialect of the
+
+Common Internet File System (CIFS): The "NT LM 0.12" / NT LAN Manager dialect of the
 Server Message Block (SMB) Protocol, as implemented in Windows NT. The CIFS name
 originated in the 1990's as part of an attempt to create an Internet standard for SMB, based
 upon the then-current Windows NT implementation.
@@ -562,7 +435,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-extended mode (EM): An optional phase of AuthIP negotiation during which the peers perform a
+
+extended mode (EM): An optional phase of AuthIP negotiation during which the peers perform a
 second round of authentication. This phase does not exist in the Internet Key Exchange
 (IKE) protocol.
 
@@ -635,7 +509,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Internetwork Packet Exchange (IPX): A protocol that provides connectionless datagram
+
+Internetwork Packet Exchange (IPX): A protocol that provides connectionless datagram
 
 delivery of messages. See [IPX].
 
@@ -711,7 +586,8 @@ Release: June 14, 2022
 
 8 / 61
 
-PeerDist Content Encoding: A way of presenting an HTTP entity-body (defined in [RFC2616])
+
+PeerDist Content Encoding: A way of presenting an HTTP entity-body (defined in [RFC2616])
 through its metadata, in the form of a Content Information Data Structure, as defined in [MS-
 PCCRC] section 2.3, which is derived from the content using algorithms described in [MS-
 PCCRC] sections 2.1 and 2.2.
@@ -790,7 +666,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-transaction: A unit of interaction that guarantees the ACID properties— atomicity, consistency,
+
+transaction: A unit of interaction that guarantees the ACID properties— atomicity, consistency,
 isolation, and durability—as specified by the MSDTC Connection Manager: OleTx Transaction
 Protocol ([MS-DTCO])
 
@@ -841,7 +718,7 @@ operate as an update server.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -866,7 +743,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Note Registration is required to download the document.
+
+Note Registration is required to download the document.
 
 [ECMA-376] ECMA International, "Office Open XML File Formats", https://www.ecma-
 international.org/publications-and-standards/standards/ecma-376/
@@ -934,7 +812,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-[MS-COM] Microsoft Corporation, "Component Object Model Plus (COM+) Protocol".
+
+[MS-COM] Microsoft Corporation, "Component Object Model Plus (COM+) Protocol".
 
 [MS-DCOM] Microsoft Corporation, "Distributed Component Object Model (DCOM) Remote Protocol".
 
@@ -1002,7 +881,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-[MS-GRVPROT] Microsoft Corporation, "Groove Protocols Overview".
+
+[MS-GRVPROT] Microsoft Corporation, "Groove Protocols Overview".
 
 [MS-H245] Microsoft Corporation, "H.245 Protocol: Microsoft Extensions".
 
@@ -1069,7 +949,8 @@ Release: June 14, 2022
 
 13 / 61
 
-[MS-NFPB] Microsoft Corporation, "Near Field Proximity: Bidirectional Services Protocol".
+
+[MS-NFPB] Microsoft Corporation, "Near Field Proximity: Bidirectional Services Protocol".
 
 [MS-NFPS] Microsoft Corporation, "Near Field Proximity: Sharing Protocol".
 
@@ -1137,7 +1018,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-[MS-SCMR] Microsoft Corporation, "Service Control Manager Remote Protocol".
+
+[MS-SCMR] Microsoft Corporation, "Service Control Manager Remote Protocol".
 
 [MS-SDP] Microsoft Corporation, "Session Description Protocol (SDP) Extensions".
 
@@ -1203,7 +1085,8 @@ Release: June 14, 2022
 
 15 / 61
 
-[MSDFS] Microsoft Corporation, "How DFS Works", March 2003, http://technet.microsoft.com/en-
+
+[MSDFS] Microsoft Corporation, "How DFS Works", March 2003, http://technet.microsoft.com/en-
 us/library/cc782417%28WS.10%29.aspx
 
 [MSDN-DevInOutCtrl] Microsoft Corporation, "Device Input and Output Control (IOCTL)",
@@ -1268,7 +1151,8 @@ Release: June 14, 2022
 
 16 / 61
 
-[RFC3986] Berners-Lee, T., Fielding, R., and Masinter, L., "Uniform Resource Identifier (URI): Generic
+
+[RFC3986] Berners-Lee, T., Fielding, R., and Masinter, L., "Uniform Resource Identifier (URI): Generic
 Syntax", STD 66, RFC 3986, January 2005, https://www.rfc-editor.org/info/rfc3986
 
 [RFC4109] Hoffman, P., "Algorithms for Internet Key Exchange version 1 (IKEv1)", RFC 4109, May
@@ -1319,7 +1203,7 @@ Microsoft Press, 2005, ISBN: 0735619174.
 Version 1.2, May 2009, http://docs.oasis-open.org/wsfed/federation/v1.2/os/ws-federation-1.2-spec-
 os.html
 
-1.3  Overview
+### 1.3 Overview
 
 Most Windows interoperability protocols are described in the following technology overview
 documents.
@@ -1331,7 +1215,8 @@ Release: June 14, 2022
 
 17 / 61
 
-Short
+
+Short
 Name
 
 Overview Document
@@ -1466,7 +1351,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Short
+
+Short
 Name
 
 Overview Document
@@ -1608,7 +1494,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Short
+
+Short
 Name
 
 Overview Document
@@ -1627,7 +1514,7 @@ worldwide. Microsoft actively participates and contributes to the standardizatio
 standards bodies and develops implementations to make Windows interoperable with other products
 that use these protocols.
 
-1.4  Audience
+### 1.4 Audience
 
 This document provides software developers and IT professionals with an overview of the protocols
 and services described in the Windows Open Specifications. This document is intended to provide a
@@ -1674,9 +1561,10 @@ Release: June 14, 2022
 
 20 / 61
 
-2  Application Services
 
-2.1  Overview
+## 2 Application Services
+
+### 2.1 Overview
 
 Application services enable the components of an application to interact with components of other
 applications and thereby permit processes running on one or more computers and on disparate
@@ -1718,7 +1606,7 @@ This section describes the following protocol group:
 
 .NET Framework Protocols (section 2.5)
 
-2.2  Application Server Protocols
+### 2.2 Application Server Protocols
 
 Application server protocols provide an environment in which applications can interoperate, regardless
 of whether they run on remote computers, or whether the computers run different operating systems.
@@ -1746,13 +1634,14 @@ Release: June 14, 2022
 
 21 / 61
 
-provides a conceptual overview, functional architecture, and use cases of the Microsoft Message
+
+provides a conceptual overview, functional architecture, and use cases of the Microsoft Message
 Queuing protocols.
 
 Note  The term application server sometimes includes web server software and web services.
 However, in this document, those technologies are treated separately.
 
-2.2.1  Component Object Model (COM)
+#### 2.2.1 Component Object Model (COM)
 
 COM was introduced in the early 1990s as a platform-independent object-oriented technology that
 allowed developers to create software components that could interact regardless of the language in
@@ -1787,7 +1676,7 @@ Component Object Model Plus (COM+) Queued Components Protocol
 
 [MC-COMQC]
 
-2.2.1.1  Component Object Model Plus (COM+)
+##### 2.2.1.1 Component Object Model Plus (COM+)
 
 The Component Object Model Plus (COM+) protocol [MS-COM] extended DCOM by providing facilities
 to add transactions, synchronization, multiple object class configurations, security, and other
@@ -1823,7 +1712,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-call chain, where each element in the collection represents a caller in the ORPC call chain. At any point
+
+call chain, where each element in the collection represents a caller in the ORPC call chain. At any point
 in the call chain, an object can query the security attributes associated with each upstream caller. See
 [MS-COM] section 1.3.4 for more information.
 
@@ -1838,7 +1728,7 @@ object classes.
 The layering of the COM+ protocol with the other protocols in its stack is illustrated in [MS-COM]
 section 1.3.
 
-2.2.1.2  COM+ Remote Administration Protocol (COMA)
+##### 2.2.1.2 COM+ Remote Administration Protocol (COMA)
 
 The COM+ Remote Administration Protocol (COMA) specified in [MS-COM], enables remote clients to
 register, import, remove, configure, control, and monitor components and conglomerations for an
@@ -1893,7 +1783,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-2.2.1.3  COM+ Event System Protocol (COMEV)
+
+##### 2.2.1.3 COM+ Event System Protocol (COMEV)
 
 The COM+ Event System Protocol (COMEV) [MS-COMEV], provides a way to manage events and
 subscriptions on a remote machine. The protocol is exposed as a set of DCOM interfaces.
@@ -1923,7 +1814,7 @@ than 100 event types and subscribers. Also, the protocol is intended for scenari
 the event store (due to adding, reading, updating, or deleting subscriptions and events) is not very
 frequent (on the order of once every few minutes).
 
-2.2.1.4  COM+ Tracker Service Protocol (COMT)
+##### 2.2.1.4 COM+ Tracker Service Protocol (COMT)
 
 The Component Object Model Plus (COM+) Tracker Service Protocol, [MS-COMT] enables remote
 clients to monitor instances of components running on a server. The server end of the protocol tracks
@@ -1946,7 +1837,7 @@ This protocol is most appropriate for monitoring running instances of components
 information is used for informational purposes. It is not appropriate when this information is required
 for correct behavior of a client application.
 
-2.2.1.5  COM+ Queued Components Protocol (COMQC)
+##### 2.2.1.5 COM+ Queued Components Protocol (COMQC)
 
 The Component Object Model Plus (COM+) Queued Components Protocol (COMQC) [MC-COMQC]
 enables a client to invoke methods asynchronously on a server in scenarios of limited or intermittent
@@ -1961,7 +1852,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-The Component Object Model Plus (COM+) Queued Components Protocol interacts with the MSMQ
+
+The Component Object Model Plus (COM+) Queued Components Protocol interacts with the MSMQ
 protocols. The layering of the protocol stack is illustrated in [MC-COMQC] section 1.3.
 
 COMQC relies on DCE 1.1: Remote Procedure Call [C706] and the OLE Automation Protocol [MS-
@@ -1991,7 +1883,7 @@ not have constant connectivity and a message queuing mechanism is available. It 
 for use when the client application relies on output parameter values or return values from the
 method calls.
 
-2.2.2  Transaction Processing Services
+#### 2.2.2 Transaction Processing Services
 
 Transaction Processing Services, defined in Transaction Processing Services Overview [MS-TPSOD],
 provides services for systems that require transactions to be coordinated in a distributed system.
@@ -2008,7 +1900,7 @@ However, a transaction cannot be rolled back once it successfully completes.
 
 The transaction processing protocols are listed in [MS-TPSOD] section 2.2.
 
-2.2.3  Message Queuing (MSMQ)
+#### 2.2.3 Message Queuing (MSMQ)
 
 The Message Queuing protocols, defined in the Message Queuing Protocols Overview [MS-MQOD],
 provide a communications service that decouples the act of sending a message from the act of
@@ -2024,7 +1916,8 @@ Release: June 14, 2022
 
 25 / 61
 
-2.3  Core Services Protocols
+
+### 2.3 Core Services Protocols
 
 Windows core services protocols are listed in the following table.
 
@@ -2052,7 +1945,7 @@ SQL Server Resolution Protocol
 
 [MC-SQLR]
 
-2.3.1  IManagedObject Interface Protocol
+#### 2.3.1 IManagedObject Interface Protocol
 
 .NET Framework 2.0 is an application development platform that provides several hosting interfaces
 that developers can use to integrate the common language runtime (CLR) into applications to provide
@@ -2099,12 +1992,13 @@ Release: June 14, 2022
 
 26 / 61
 
-If the given object does not match the current CLR instance and process division, the CLR calls
+
+If the given object does not match the current CLR instance and process division, the CLR calls
 IManagedObject::GetSerializedBuffer to return a binary representation of a managed object, as
 specified by the .NET Remoting: Binary Format Data Structure [MS-NRBF]. The caller on the client CLR
 is responsible for interpreting the deserialized opaque object reference.
 
-2.3.1.1  IRemoteDispatch Interface
+##### 2.3.1.1 IRemoteDispatch Interface
 
 A server object can associate itself with a unique identity that the client can use to track multiple
 instances of the server object. The server implements the IServicedComponentInfo interface to
@@ -2117,7 +2011,7 @@ the wire and to authenticate requests issued against the infrastructure.
 
 This protocol allows for encodings as defined in [MS-NRTP] and [MS-NRBF].
 
-2.3.2  OLE Automation Protocol
+#### 2.3.2 OLE Automation Protocol
 
 The OLE Automation Protocol, specified in [MS-OAUT], allows applications, called automation clients,
 to create, activate, set properties, or call methods on automation objects that other applications
@@ -2137,7 +2031,7 @@ across a distributed environment. It allows exposed objects from many applicatio
 single programming environment. It enables objects to be accessed from any scripting environment or
 programming tool that implements automation.
 
-2.3.3  Remote Data Services Transport Protocol
+#### 2.3.3 Remote Data Services Transport Protocol
 
 The Remote Data Services Transport Protocol, specified in [MS-ADTG], is an application-level protocol
 for distributed applications. Remote data services (RDS) specifies a protocol that enables query and
@@ -2151,7 +2045,7 @@ by SOAP and by DCOM, which is layered on RPC extensions specified in [MS-RPCE] b
 over HTTP. It is recommended that new implementations of client/server applications use SOAP and
 DCOM over HTTP.
 
-2.3.4  Session Multiplex Protocol
+#### 2.3.4 Session Multiplex Protocol
 
 Session Multiplex Protocol [MC-SMP] is an application protocol that facilitates session management by
 providing a mechanism to create multiple lightweight communication channels (sessions) over a
@@ -2163,7 +2057,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-lower-layer transport connection. SMP does this by multiplexing data streams from different sessions
+
+lower-layer transport connection. SMP does this by multiplexing data streams from different sessions
 on top of a single reliable stream-oriented transport connection.
 
 SMP is useful for situations in which database connections from the client and server are synchronous,
@@ -2184,7 +2079,7 @@ higher-layer protocol for SMP.
 SMP is appropriate for multiplexing several sessions over synchronous connections where network or
 local connectivity is available.
 
-2.3.5  SQL Server Resolution Protocol
+#### 2.3.5 SQL Server Resolution Protocol
 
 The SQL Server Resolution Protocol (SSRP) [MC-SQLR] is a simple application-level protocol for the
 transfer of requests and responses between clients and database server discovery services. To
@@ -2203,7 +2098,7 @@ Internet Protocol version 6 (IPv6) [RFC2460].
 The SQL Server Resolution Protocol is appropriate for retrieving database endpoint information or for
 database instance enumeration in scenarios where network or local connectivity is available.
 
-2.4  Internet Information Services
+### 2.4 Internet Information Services
 
 Internet Information Services (IIS) is software that supports the operation of web servers. IIS
 includes a set of web server feature modules, also called extensions. The extensions are mutually
@@ -2232,7 +2127,8 @@ Release: June 14, 2022
 
 28 / 61
 
-  Application request routing
+
+  Application request routing
 
   Database manager
 
@@ -2258,14 +2154,14 @@ Internet Information Services (IIS): ServiceControl Protocol
 
 [MS-IISS]
 
-2.4.1  Internet Information Services (IIS) Application Host COM Protocol
+#### 2.4.1 Internet Information Services (IIS) Application Host COM Protocol
 
 The Internet Information Services (IIS) Application Host COM Protocol [MC-IISA] provides read/write
 access to administrative configuration data that is located on a remote server. The administrative
 configuration data is implementation-specific for each server. This protocol is based on DCOM [MS-
 DCOM].
 
-2.4.2  Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
+#### 2.4.2 Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 
 The IIS IMSAdminBaseW Remote Protocol [MS-IMSA] is a client/server protocol that is used to
 manage a hierarchically configured (metabase) data store on a remote IIS server. It also provides
@@ -2284,7 +2180,7 @@ This protocol is based on DCOM and uses Remote Procedure Call Extensions [MS-RPC
 This protocol is appropriate for use when an application needs to configure an IIS metabase server
 remotely.
 
-2.4.3  Internet Information Services (IIS) Inetinfo Remote protocol
+#### 2.4.3 Internet Information Services (IIS) Inetinfo Remote protocol
 
 The IIS Inetinfo Remote protocol [MS-IRP] provides functionality that enables remote administration
 of an Internet server that implements protocols such as HTTP or FTP. This protocol also provides
@@ -2302,7 +2198,8 @@ Release: June 14, 2022
 
 29 / 61
 
-2.4.4  Internet Information Services (IIS) ServiceControl Protocol
+
+#### 2.4.4 Internet Information Services (IIS) ServiceControl Protocol
 
 The IIS ServiceControl Protocol, specified in [MS-IISS], provides a mechanism for remote control of
 Internet services as a single unit on a server. Using this protocol, a client can do the following:
@@ -2322,9 +2219,9 @@ server side implements support for the DCOM interface to manage the Internet ser
 protocol's client side invokes method calls on the interface to control the services on the server. The
 DCOM calls use standard DCOM marshaling.
 
-2.5
+### 2.5 .NET Framework Protocols
 
-.NET Framework Protocols
+
 
 .NET Framework provides developers with a foundation on which to build applications that
 communicate based on industry standards. As an application development platform, .NET Framework
@@ -2345,9 +2242,10 @@ Release: June 14, 2022
 
 30 / 61
 
-3  Collaboration and Communication
 
-3.1  Collaboration Protocols
+## 3 Collaboration and Communication
+
+### 3.1 Collaboration Protocols
 
 Collaboration protocols enable people to collaborate in desktop or browser-based workspaces to
 achieve their common goals. These services also provide a manageable infrastructure and extensible
@@ -2411,7 +2309,7 @@ GRVPROT].
 The collaboration protocols implemented in Exchange Server are covered in the Exchange Server
 Protocols System Overview [MS-OXPROTO].
 
-3.2  Media Services Protocols
+### 3.2 Media Services Protocols
 
 Media services protocols enable network communications between a client and a server that hosts and
 delivers media across a network. Media services protocols enable content to be streamed over the
@@ -2428,7 +2326,8 @@ Release: June 14, 2022
 
 31 / 61
 
-4  Device-Specific Protocols
+
+## 4 Device-Specific Protocols
 
 The following documents describe the Windows interoperability services for interacting with devices.
 
@@ -2556,7 +2455,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Protocol
+
+Protocol
 
 Specification
 short name
@@ -2599,9 +2499,10 @@ Release: June 14, 2022
 
 33 / 61
 
-5  Directory Services
 
-5.1  Overview
+## 5 Directory Services
+
+### 5.1 Overview
 
 Active Directory is a directory service (DS) that defines the data structure and services that
 provide the means to store, manage, and retrieve the identities and relationships of users, groups,
@@ -2625,9 +2526,10 @@ Release: June 14, 2022
 
 34 / 61
 
-6  File, Fax, and Printing Services
 
-6.1  Overview
+## 6 File, Fax, and Printing Services
+
+### 6.1 Overview
 
 Windows file services includes protocols that enable file access, file management, content caching,
 creation and management of collaborative websites, and remote storage management. The print and
@@ -2656,7 +2558,7 @@ Print and fax services protocols (section 6.6)
 
   Virtual storage protocols (section 6.8)
 
-6.2  Content Caching Protocols
+### 6.2 Content Caching Protocols
 
 Content caching enables the retrieval of content from networked computers. It supports content
 discovery, transport, data structures used for content, and the encryption process for securing
@@ -2674,7 +2576,7 @@ The content caching protocols are described fully in the Content Caching and Ret
 Overview [MS-CCROD] section 2.1.2. This section describes the relationship among the protocols
 required for content caching and retrieval and section 2.2 lists the member protocols.
 
-6.3  DFS and File Replication Protocols
+### 6.3 DFS and File Replication Protocols
 
 Distributed File System (DFS) offer wide area network (WAN)-friendly replication and simplified,
 fault-tolerant access to geographically dispersed files. DFS allows administrators to group shared
@@ -2698,7 +2600,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-implementation uses Server Message Block (SMB) to perform the actual file manipulations; an
+
+implementation uses Server Message Block (SMB) to perform the actual file manipulations; an
 alternate implementation can use other file-sharing protocols.
 
 The Distributed File System Replication Protocol, specified in [MS-FRS2], is the successor to FRS.
@@ -2744,7 +2647,7 @@ An overview of DFS and file replication can be found in the File Services Manage
 Overview [MS-FSMOD]. Information on the DFS namespace is provided in [MS-DFSC] and in the File
 Access Services Protocol Overview [MS-FASOD].
 
-6.4  File Access Services Protocols
+### 6.4 File Access Services Protocols
 
 File access services enable applications to discover, access, and share files that are hosted on or made
 available by a file server, using a network between them, in a secure and managed environment. File
@@ -2778,7 +2681,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-WPO].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
@@ -2816,7 +2720,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Provider selection is invoked as part of all UNC name-based I/O requests. When Windows receives a
+
+Provider selection is invoked as part of all UNC name-based I/O requests. When Windows receives a
 UNC request, it accesses all of the installed providers in order to determine which provider, or
 providers, can accept the request. Further details on the process are available in [WININTERNALS]
 section 13.
@@ -2844,7 +2749,7 @@ to device-specific behavior, such as failover clustering, that are not part of t
 more information on these IOCTLs, which are defined in the Windows SDK header file, winioctl.h, see
 [MSDN-DevInOutCtrl].
 
-6.5  File Services Management Protocols
+### 6.5 File Services Management Protocols
 
 The File Services Management protocols allow an administrator to remotely configure and manage file
 servers. They also support Distributed File System (DFS) replication and file replication operations.
@@ -2859,7 +2764,7 @@ organization.
 The member protocols are listed in [MS-FSMOD] section 2.2, and the protocol layering relationship for
 the File Services Management protocols is described and illustrated in [MS-FSMOD] section 2.1.5.
 
-6.6  Print and Fax Services Protocols
+### 6.6 Print and Fax Services Protocols
 
 The print services protocols provide mechanisms for managing and gaining access to print services in
 a distributed environment. Using print services protocols, clients can print to or obtain printer drivers
@@ -2882,7 +2787,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-The print services protocols can be deployed within a domain-based network or in a home or
+
+The print services protocols can be deployed within a domain-based network or in a home or
 workgroup environment. For Windows implementations, each print client can also act as a print server
 and share locally connected printers with other print clients.
 
@@ -2923,7 +2829,7 @@ routing and transmission of fax jobs. To print an inbound fax, the fax services 
 API calls and printer drivers to send the fax to a print queue in a manner identical to that of other
 printing applications. The TIFF data format is converted locally to a print system-specific data format.
 
-6.7  Storage Services Protocols
+### 6.7 Storage Services Protocols
 
 The Storage Services Protocols Overview [MS-STOROD] describes the protocols required for
 configuring and administering storage services operations in Windows such as managing disks and
@@ -2931,7 +2837,7 @@ volumes, backing up and restoring data, managing removable media and the media l
 control, and file encryption and decryption. [MS-STOROD] section 2.2 lists the storage services
 protocols.
 
-6.8  Virtual Storage Protocols
+### 6.8 Virtual Storage Protocols
 
 The Virtual Storage Protocols Overview [MS-VSOD] describes the functionality and relationships
 among the virtual storage protocols, which provide a way for a client to access, read, and write to
@@ -2946,11 +2852,12 @@ Release: June 14, 2022
 
 39 / 61
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-WPO].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
-7  Networking
+## 7 Networking
 
 This section provides a high-level description of the Windows networking technologies and the
 Microsoft extensions to networking standards for Windows. The following diagram depicts the
@@ -2958,9 +2865,9 @@ organization of these technologies in this document.
 
 Figure 2: Organization of networking technologies
 
-7.1  Networking Services
+### 7.1 Networking Services
 
-7.1.1  DHCP Extensions
+#### 7.1.1 DHCP Extensions
 
 The Dynamic Host Configuration Protocol (DHCP), specified in [RFC2131], provides a framework
 for passing configuration information to hosts on a TCP/IP network. Windows extends this framework
@@ -2976,7 +2883,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Protocol
+
+Protocol
 
 Dynamic Host
 Configuration Protocol
@@ -3039,7 +2947,7 @@ accessing and administering the DHCP server. DHCPM is the
 management protocol that defines the RPC interfaces for remotely
 accessing and administering the DHCP server.
 
-7.1.2  IP Address Management
+#### 7.1.2 IP Address Management
 
 The IP Address Management (IPAM) Management protocols specified in [MS-IPAMM] and [MS-
 IPAMM2] are used to remotely retrieve and manage data in the IPAM data store. The IPAM data store
@@ -3065,7 +2973,7 @@ Enhanced multiserver management capabilities for DHCP servers including failover
 
   Added support for an external SQL server database to be used as the IPAM data store.
 
-7.1.3  Network Access Protection (NAP)
+#### 7.1.3 Network Access Protection (NAP)
 
 The network access protection (NAP) protocols are described in the Network Access Protection
 Protocols Overview [MS-NAPOD].
@@ -3077,7 +2985,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-7.1.4  Windows Name Resolution
+
+#### 7.1.4 Windows Name Resolution
 
 Name resolution is the function of resolving a name to one or more IP addresses. Name resolution in
 Windows can resolve DNS fully qualified domain names (FQDNs) and single label names. Single label
@@ -3139,9 +3048,10 @@ Release: June 14, 2022
 
 42 / 61
 
-7.2  Presentation Layer Technologies
 
-7.2.1  SSL/TLS
+### 7.2 Presentation Layer Technologies
+
+#### 7.2.1 SSL/TLS
 
 The Secure Sockets Layer (SSL)/Transport Layer Security (TLS) authentication mechanism is
 used to authenticate a server to a client with the option for mutual authentication.
@@ -3150,9 +3060,9 @@ The differences between SSL/TLS authentication [RFC5246] TLS v1.2, [RFC8446] TLS
 Microsoft implementation of SSL/TLS are defined in the Transport Layer Security (TLS) Profile [MS-
 TLSP].
 
-7.3  Session Layer Technologies
+### 7.3 Session Layer Technologies
 
-7.3.1  RPC
+#### 7.3.1 RPC
 
 RPC is an interprocess communication (IPC) mechanism that enables data exchange and the
 invocation of functionality that resides in a different process. The different process can be on the same
@@ -3206,7 +3116,7 @@ Location
 Services
 Extensions
 
-7.3.2  DCOM
+#### 7.3.2 DCOM
 
 The Distributed Component Object Model (DCOM) Remote Protocol [MS-DCOM] is appropriate for
 applications that require a distributed object-based architecture. It provides mechanisms for exposing
@@ -3224,13 +3134,14 @@ Release: June 14, 2022
 
 43 / 61
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-WPO].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
 Figure 3: DCOM remote protocol stack
 
-7.3.3  SOAP
+#### 7.3.3 SOAP
 
 SOAP is a lightweight protocol intended for exchanging structured information in a decentralized,
 distributed environment. SOAP uses XML technologies to define an extensible messaging framework,
@@ -3242,7 +3153,7 @@ Windows makes extensive use of SOAP in numerous protocols such as the .NET Binar
 Extension, specified in [MC-NBFSE] and SOAP Over WebSocket Protocol Binding, specified in [MS-
 SWSB].
 
-7.3.4  HTTP
+#### 7.3.4 HTTP
 
 The Peer Content Caching and Retrieval: HTTP Extensions Protocol specified in [MS-PCCRTP] extends
 HTTP 1.1, defined in [RFC2068], to allow an HTTP 1.1 client and HTTP 1.1 server to encode content
@@ -3260,7 +3171,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-7.3.5  Peer to Peer Grouping
+
+#### 7.3.5 Peer to Peer Grouping
 
 Peer-to-peer grouping is a security layer on top of peer-to-peer graphing, using the peer-to-peer
 graphing AUTHO_INFO message ([MS-PPGRH] section 2.2.2.1) as a transport. Windows uses peer-to-
@@ -3315,9 +3227,9 @@ for peer name resolutions between nodes. Enables applications to use
 registered peer names to obtain corresponding endpoint information
 such as IP addresses and ports.
 
-7.4  Transport Layer Technologies
+### 7.4 Transport Layer Technologies
 
-7.4.1  IP Over HTTP Proxy Traversal
+#### 7.4.1 IP Over HTTP Proxy Traversal
 
 Many private networks are protected by HTTP proxies and other firewalls that cannot forward IPsec-
 encapsulated packets. However, these gateways and proxies commonly can forward HTTP traffic. The
@@ -3330,7 +3242,7 @@ corporate network. Thus, a corporate network can deploy end-to-end IPsec securit
 end-to-end IPsec connectivity even if some of the gateways in the network do not support forwarding
 of IPsec packets.
 
-7.4.2  IPC Mechanisms for SMB
+#### 7.4.2 IPC Mechanisms for SMB
 
 Inter-Process Communication (IPC) enables a developer to write a distributed client-server
 application in which the server component is portable to all systems that implement IPC. The IPC
@@ -3349,7 +3261,8 @@ Release: June 14, 2022
 
 45 / 61
 
-7.4.2.1  Named Pipes
+
+##### 7.4.2.1 Named Pipes
 
 A named pipe is a logical connection, similar to a TCP session, between a client and server that are
 involved in a Common Internet File System (CIFS)/SMB/SMB Version 2 and Version 3 connection.
@@ -3367,20 +3280,20 @@ SMB clients access named pipe endpoints using the named pipe share named "IPC$".
 pipe share allows only named pipe operations and Distributed File System (DFS) referral requests
 to itself. The data that is carried over IPC$ is an implementation detail of SMB [MS-CIFS].
 
-7.4.2.2  Mailslot Names
+##### 7.4.2.2 Mailslot Names
 
 The Remote Mailslot Protocol [MS-MAIL] is a unidirectional IPC protocol in which a mailslot server
 creates a mailslot to which the mailslot client can write messages. The server then reads these
 messages, thus achieving communication between the client and server. A mailslot is represented
 locally on the server as a file.
 
-7.5  Network Layer Technologies
+### 7.5 Network Layer Technologies
 
 The primary Microsoft network layer protocols are classified as Internet Protocol security (IPsec)
 protocols [RFC4301]. The following sections describe the secure end-to-end IP communications in
 Windows.
 
-7.5.1  IPsec (DirectAccess) Overview
+#### 7.5.1 IPsec (DirectAccess) Overview
 
 Because IP network traffic can flow across a wide variety of networks, including networks populated or
 even controlled by hostile parties, end hosts communicating using IP face a variety of threats. These
@@ -3411,7 +3324,8 @@ Release: June 14, 2022
 
 46 / 61
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-WPO].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -3445,7 +3359,7 @@ Layer 2 Tunneling Protocol (L2TP) IPsec Extensions
 
 [MS-L2TPIE]
 
-7.5.2  Security Associations
+#### 7.5.2 Security Associations
 
 IPsec relies on the concept of a security association, which consists of a shared state, primarily
 cryptographic keys and parameters, maintained between two endpoints to secure traffic between
@@ -3462,7 +3376,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-After a security association is established, a host prepares to send an IPsec packet by marking the
+
+After a security association is established, a host prepares to send an IPsec packet by marking the
 packet with a Security Parameter Index (SPI) ([RFC4303] section 2.1) from the security association
 shared state and performing the cryptographic and digital signing operations parameterized by the
 state in the security association ([RFC4301] section 5.1). The receiving host's IPsec layer uses the SPI
@@ -3495,7 +3410,7 @@ addresses, transport protocol (such as TCP), and transport source and destinatio
 filters in the SPD to determine whether the packet requires additional IPsec processing such as
 encryption and/or digital signing.
 
-7.5.3  Security Policy Database Structure
+#### 7.5.3 Security Policy Database Structure
 
 In Windows, the IPsec SPD for every host can be remotely managed via GPOs [MS-GPIPSEC] [MS-
 GPFAS]. The structure of the Windows IPsec SPD is derived from the structure defined in [RFC4301]
@@ -3530,11 +3445,12 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-cryptographic protection, such as whether to use Encapsulating Security Payload (ESP) mode
+
+cryptographic protection, such as whether to use Encapsulating Security Payload (ESP) mode
 ([RFC4303] section 2) or authentication header (AH) ([RFC4302] section 2), and which algorithms,
 modes, and key lengths to use.
 
-7.5.4  IPsec Policy Specification Formats
+#### 7.5.4 IPsec Policy Specification Formats
 
 The IPsec SPD rules are specified in one of the two formats.
 
@@ -3583,7 +3499,7 @@ negotiation.
 
 MM SA negotiation.
 
-7.5.5  IPsec Encapsulations
+#### 7.5.5 IPsec Encapsulations
 
 Windows IPsec supports the following encapsulation modes:
 
@@ -3595,7 +3511,7 @@ Tunnel Mode encapsulation: Used for an IPsec protected tunnel from a host H to a
 
 ([RFC4303] section 3.1.2).
 
-7.6  Link Layer Technologies
+### 7.6 Link Layer Technologies
 
 Most Windows Link Layer protocols are classified as either infrared or wireless, depending on the
 physical medium that is used.
@@ -3607,7 +3523,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-
+
+
 
 Infrared protocols mapped to the Link Layer provide a mechanism for rapid and impromptu
 communication among computers and infrared devices over infrared links. These protocols also
@@ -3726,9 +3643,10 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-8  Remote Connectivity
 
-8.1  Overview
+## 8 Remote Connectivity
+
+### 8.1 Overview
 
 Remote connectivity encompasses the Remote Desktop (RD) protocols, which support scenarios that
 allow users to access applications and data on a remote computer over the network. When a user
@@ -3747,9 +3665,10 @@ Release: June 14, 2022
 
 51 / 61
 
-9  Security and Identity Management
 
-9.1  Overview
+## 9 Security and Identity Management
+
+### 9.1 Overview
 
 The following overview documents describe the foundational security and identity concepts in
 Windows.
@@ -3772,7 +3691,7 @@ Windows.
 
 Additional concepts of impersonation and federation services are described in this section.
 
-9.2  Authentication
+### 9.2 Authentication
 
 Authentication enables two communicating entities to establish the identity of one or both parties. It is
 presumed that the communication medium between the two entities is completely hostile, and that an
@@ -3789,13 +3708,13 @@ single server, and the server is required only to address the identity of the cl
 
 See [MS-AUTHSOD] section 1.1.2 for a description of pre-GSS authentication.
 
-9.3  Authorization
+### 9.3 Authorization
 
 After an identity is suitably authenticated, authorization provides access to resources. The
 Authorization Protocols Overview [MS-AZOD] describes the authorization protocols used by Windows.
 The authorization protocols are listed in [MS-AZOD] section 2.2.
 
-9.4  Certificate Services
+### 9.4 Certificate Services
 
 Certificate Services provide support for public key cryptography by issuing and managing certificates
 that bind an identity (such as a person, device or service) to a corresponding private key.
@@ -3803,7 +3722,7 @@ that bind an identity (such as a person, device or service) to a corresponding p
 Certificate Services protocols are described fully in the Certificate Services Protocols Overview [MS-
 CERSOD].
 
-9.5  Claim-Based Access Control
+### 9.5 Claim-Based Access Control
 
 Claim-based access control (CBAC) is a form of authorization management implemented in Windows
 Server 2012 operating system and Windows Server 2012 R2 operating system. A claim is an attribute
@@ -3817,10 +3736,11 @@ Release: June 14, 2022
 
 52 / 61
 
-For more information on claims and claim-based access control, see [MS-AZOD] section 1.1.1.11  and
+
+For more information on claims and claim-based access control, see [MS-AZOD] section 1.1.1.11  and
 [MS-AZOD] section 2.1.4.3.
 
-9.6  Federation Services
+### 9.6 Federation Services
 
 Active Directory Federation Services (AD FS) is the Microsoft implementation of federation
 services and supports the WS-Federation Passive Requestor Profile defined in [WSFederation1.2]. AD
@@ -3829,7 +3749,7 @@ access to one or more protected Internet-facing applications, even when the user
 applications are located in different networks or organizations. AD FS protocols are described fully in
 [MS-ADFSOD].
 
-9.7  Impersonation
+### 9.7 Impersonation
 
 Authentication protocols specified in [MS-KILE] and [MS-APDS], transport authorization data based on
 security identifiers (SIDs) and populate the user SID and security group SIDs in the
@@ -3864,7 +3784,7 @@ A few other SMB operations perform authorization decisions based on the authenti
 context, such as TreeConnect, Access-Based Directory Enumeration (ABDE) in SMB2 and quota info.
 However, none of these operations provide an impersonation level.
 
-9.8  Rights Management Services
+### 9.8 Rights Management Services
 
 Rights Management Services (RMS) is a Microsoft technology designed to restrict information access in
 an enterprise environment. RMS helps enterprise customers control and protect critical digital
@@ -3883,7 +3803,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-control lists, and encryption in transit. These methods help organizations control access to sensitive
+
+control lists, and encryption in transit. These methods help organizations control access to sensitive
 data, but authorized users are still free to do whatever they want with the information.
 
 Active Directory Rights Management Services (AD RMS), introduced in Windows Server 2008 R2
@@ -3900,9 +3821,10 @@ Release: June 14, 2022
 
 54 / 61
 
-10  Systems Management
 
-10.1  Overview
+## 10 Systems Management
+
+### 10.1 Overview
 
 The systems management protocols enable network communication between Windows clients and
 servers for system administration. Several subsets of protocols provide broad systems management
@@ -3953,7 +3875,7 @@ Logging off users.
 
 [MS-WSP].
 
-10.2  Monitoring Services Protocols
+### 10.2 Monitoring Services Protocols
 
 Monitoring services protocols provide mechanisms for monitoring performance, logging events, and
 reporting errors on remote computers in a distributed network. Monitoring services protocols enable
@@ -3973,7 +3895,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Monitoring services protocols are used for browsing performance counters (performance counters are
+
+Monitoring services protocols are used for browsing performance counters (performance counters are
 a simple way of exposing state information that can be sampled or polled), and querying and
 retrieving performance counter values from a network server. These protocols aid in controlling data
 collection on a network. The control includes creating, starting, stopping, scheduling, creating alerts,
@@ -4022,7 +3945,7 @@ to manage and report on the collected data.
 
 To specify the data retention and reporting policies for the logged data.
 
-10.3  Server Management Protocols
+### 10.3 Server Management Protocols
 
 Server management protocols provide mechanisms for configuring and managing individual server
 roles for a device, for remotely accessing and administering a DHCP server, and for gathering
@@ -4076,7 +3999,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-A client can also enumerate DNS zones and the DNS records stored in one or more zones. The client
+
+A client can also enumerate DNS zones and the DNS records stored in one or more zones. The client
 can also add, delete, or modify DNS zones or the DNS records held in zones as required.
 
 Server management protocols also enable service monitoring as well as creating, updating, and
@@ -4129,7 +4053,7 @@ then executing the tasks when the criteria are met. The Task Scheduler can be us
 such as starting an application, sending an email, or showing a message box. Task Scheduler services
 are provided by the Task Scheduler Service Remoting Protocol [MS-TSCH].
 
-10.4  WINS Management Protocol
+### 10.4 WINS Management Protocol
 
 Windows Internet Name Service (WINS) is the Microsoft implementation of NetBIOS Name
 Server (NBNS), a name server for NetBIOS names. WINS is used by hosts running NetBIOS over
@@ -4147,7 +4071,8 @@ Windows Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Because the NetBIOS protocol, defined in [RFC1002], does not support the mapping between NetBIOS
+
+Because the NetBIOS protocol, defined in [RFC1002], does not support the mapping between NetBIOS
 names and IPv6 addresses, the Remote Administrative Interface: WINS protocol applies only to IPv4
 addresses. It does not apply to IPv6 addresses.
 
@@ -4158,7 +4083,8 @@ Release: June 14, 2022
 
 58 / 61
 
-11  Microsoft Implementations
+
+## 11 Microsoft Implementations
 
 The information in this overview is applicable to the following versions of Windows:
 
@@ -4222,7 +4148,8 @@ Release: June 14, 2022
 
 59 / 61
 
-12  Change Tracking
+
+## 12 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4266,7 +4193,8 @@ Release: June 14, 2022
 
 60 / 61
 
-13  Index
+
+13  Index
 A
 
 Application services overview 21

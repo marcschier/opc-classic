@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 29
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -286,7 +287,8 @@ Release: April 23, 2024
 
 2 / 29
 
-Date
+
+Date
 
 Revision
 History
@@ -417,165 +419,69 @@ Release: April 23, 2024
 
 3 / 29
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Server Security Settings](#211-server-security-settings)
+    - [2.1.2 Client Security Settings](#212-client-security-settings)
+    - [2.1.3 RPC as Transport](#213-rpc-as-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Messages](#221-messages)
+      - [2.2.1.1 Endpoint Header](#2211-endpoint-header)
+      - [2.2.1.2 Operation Header](#2212-operation-header)
+        - [2.2.1.2.1 Packet Type](#22121-packet-type)
+      - [2.2.1.3 Variables Section](#2213-variables-section)
+        - [2.2.1.3.1 Variable Description Block](#22131-variable-description-block)
+        - [2.2.1.3.2 Variable Types](#22132-variable-types)
+          - [2.2.1.3.2.1 Base Types](#221321-base-types)
+          - [2.2.1.3.2.2 Type Modifiers](#221322-type-modifiers)
+        - [2.2.1.3.3 Variable Value Length](#22133-variable-value-length)
+          - [2.2.1.3.3.1 Variables without Type Modifiers](#221331-variables-without-type-modifiers)
+          - [2.2.1.3.3.2 Variables with WDSCPL_VAR_ARRAY Type Modifier](#221332-variables-with-wdscplvararray-type-modifier)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Configuration](#3111-configuration)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Service Providers Initialization](#3131-service-providers-initialization)
+      - [3.1.3.2 RPC Server Initialization](#3132-rpc-server-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 WdsRpcMessage (opnum 0)](#3141-wdsrpcmessage-opnum-0)
+      - [3.1.4.2 Failure Cases](#3142-failure-cases)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-
-2.2
-
-2.2.1
-
-2.2.1.1
-2.2.1.2
-
-2.1.1
-2.1.2
-2.1.3
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Server Security Settings .............................................................................. 11
-Client Security Settings ............................................................................... 11
-RPC as Transport ........................................................................................ 11
-Common Data Types ........................................................................................ 11
-Messages ................................................................................................... 12
-Endpoint Header ................................................................................... 12
-Operation Header .................................................................................. 13
-Packet Type .................................................................................... 13
-Variables Section .................................................................................. 14
-Variable Description Block ................................................................ 14
-Variable Types ................................................................................ 15
-Base Types ............................................................................... 15
-Type Modifiers ........................................................................... 16
-Variable Value Length ...................................................................... 16
-Variables without Type Modifiers .................................................. 16
-Variables with WDSCPL_VAR_ARRAY Type Modifier ........................ 16
-
-2.2.1.3.2.1
-2.2.1.3.2.2
-
-2.2.1.3.3.1
-2.2.1.3.3.2
-
-2.2.1.3.1
-2.2.1.3.2
-
-2.2.1.2.1
-
-2.2.1.3.3
-
-2.2.1.3
-
-3.1
-
-3.1.4
-
-3.1.1
-
-3.1.1.1
-
-3.1.2
-3.1.3
-
-3.1.3.1
-3.1.3.2
-
-3  Protocol Details ..................................................................................................... 18
-Server Details .................................................................................................. 18
-Abstract Data Model .................................................................................... 18
-Configuration........................................................................................ 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Service Providers Initialization ................................................................ 18
-RPC Server Initialization ........................................................................ 19
-Message Processing Events and Sequencing Rules .......................................... 19
-WdsRpcMessage (opnum 0) ................................................................... 19
-Failure Cases ........................................................................................ 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 21
-Client Details ................................................................................................... 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.1.4.1
-3.1.4.2
-
-3.1.5
-3.1.6
-
-3.2
-
-4  Protocol Examples ................................................................................................. 23
-
-5  Security ................................................................................................................. 24
-
-4 / 29
-
-[MS-WDSC] - v20240423
-Windows Deployment Services Control Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5.1
-5.2
-
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-6  Appendix A: Full IDL .............................................................................................. 25
-
-7  Appendix B: Product Behavior ............................................................................... 26
-
-8  Change Tracking .................................................................................................... 27
-
-9  Index ..................................................................................................................... 28
-
-[MS-WDSC] - v20240423
-Windows Deployment Services Control Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 29
-
-1  Introduction
+## 1 Introduction
 
 The Windows Deployment Services (WDS) Control Protocol specifies an RPC interface that provides the
 ability to remotely invoke services provided by WDS Server. It is a client/server protocol which uses
@@ -585,7 +491,7 @@ server and receive replies.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -650,7 +556,8 @@ Release: April 23, 2024
 
 6 / 29
 
-security provider: A Component Object Model (COM) object that provides methods that return
+
+security provider: A Component Object Model (COM) object that provides methods that return
 
 custom information about the security of a site.
 
@@ -679,14 +586,14 @@ extensible mechanism to allow service providers to provide services to clients.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -709,7 +616,7 @@ Note Registration is required to download the document.
 [RFC4122] Leach, P., Mealling, M., and Salz, R., "A Universally Unique Identifier (UUID) URN
 Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -720,11 +627,12 @@ Release: April 23, 2024
 
 7 / 29
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-WDSC].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
-1.3  Overview
+### 1.3 Overview
 
 Windows Deployment Services (WDS) Control Protocol is a generic client/server protocol which is used
 to invoke services provided by Service Providers in WDS Server. The WDS Control Protocol is a
@@ -771,7 +679,7 @@ The following diagram shows a client making a request to the WDS Server:
 
 Figure 1: Client to server request
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The WDS Control Protocol relies on RPC, as defined in [MS-RPCE], as the transport. It uses RPC to
 send the request to the WDS Server and receive replies.
@@ -785,13 +693,14 @@ Release: April 23, 2024
 
 8 / 29
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-WDSC].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 Figure 2: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol is implemented on top of RPC and, as a result, has the prerequisites identified in [MS-
 RPCE].
@@ -801,7 +710,7 @@ this protocol, as well as an Endpoint GUID, security (authenticated or unauthent
 requirements, an OpCode, variables required for each service the client intends to invoke, and
 variables used by these services to return the results.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable when an application needs to invoke services provided by Service Providers
 residing on WDS Server.
@@ -813,7 +722,8 @@ Release: April 23, 2024
 
 9 / 29
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -837,7 +747,7 @@ the protocol.
 version to use. Instead, this protocol uses only the interface version number specified in the IDL
 for versioning and capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Vendors can add new Service Providers by generating a new globally unique identifier (GUID) as
 specified in [RFC4122], and exposing new OpCodes for the Service Providers.
@@ -846,7 +756,7 @@ This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Vendo
 those values with their indicated meaning. Choosing any other value runs the risk of a collision in the
 future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -870,9 +780,10 @@ Release: April 23, 2024
 
 10 / 29
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 All implementations MUST support RPC over TCP with dynamic endpoints.
 
@@ -881,7 +792,7 @@ The protocol MUST use the following UUID: 1A927394-352E-4553-AE3F-7CF4AAFCA620.
 WDS Control Protocol uses RPC to transport the request packet from client to WDS Server and to
 transport the reply packet back to the client.
 
-2.1.1  Server Security Settings
+#### 2.1.1 Server Security Settings
 
 The WDS Control Protocol uses Security Service Provider (SSP) security provided by RPC as specified
 in [MS-RPCE] for sessions. The server SHOULD register the following SSPs, as supported security
@@ -897,7 +808,7 @@ The WDS Server MUST allow authenticated and unauthenticated access to RPC client
 Server SHOULD support the maximum number of concurrent calls supported by RPC, as specified in
 [MS-RPCE] section 3.3.1.5.8.
 
-2.1.2  Client Security Settings
+#### 2.1.2 Client Security Settings
 
 The client MUST choose the security settings as required by the Service Provider for a given
 Endpoint GUID. An Endpoint GUID is a unique GUID used to identify a set of RPC services provided
@@ -913,13 +824,13 @@ A client communicating to WDS Server using authentication MUST use
 RPC_C_AUTHN_LEVEL_PKT_PRIVACY. An unauthenticated client SHOULD use
 RPC_AUTHN_LEVEL_NONE.
 
-2.1.3  RPC as Transport
+#### 2.1.3 RPC as Transport
 
 WDS Control Protocol uses RPC to transport a packet to the WDS Server. The request packet acts as
 the input parameter for the RPC function call. The reply packet from WDS Server is transported back
 to the client as an output parameter of the RPC function call.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 The base types used by the WDS Control Protocol are defined as the RPC base types. Additional data
 types are specified in [C706] and [MS-RPCE].
@@ -931,11 +842,12 @@ Release: April 23, 2024
 
 11 / 29
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-WDSC].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-2.2.1  Messages
+#### 2.2.1 Messages
 
 The following diagram illustrates the overall structure of request and reply packets.
 
@@ -953,7 +865,7 @@ MUST specify the variables as expected by the client for the service invoked on 
 
 All multibyte values specified in this document are in little-endian format unless specified otherwise.
 
-2.2.1.1  Endpoint Header
+##### 2.2.1.1 Endpoint Header
 
 The Endpoint Header is defined as follows:
 
@@ -989,7 +901,8 @@ Release: April 23, 2024
 
 12 / 29
 
-...
+
+...
 
 ...
 
@@ -1007,7 +920,7 @@ Endpoint-GUID (16 bytes): MUST be set to the Endpoint GUID, as specified in [MS-
 
 Reserved (16 bytes): MUST be set to zeros.
 
-2.2.1.2  Operation Header
+##### 2.2.1.2 Operation Header
 
 The Operation Header is defined as follows:
 
@@ -1052,7 +965,7 @@ results are communicated to the client.
 
 Variable-Count (4 bytes): MUST set to the number of variables in the Variables Section.
 
-2.2.1.2.1 Packet Type
+###### 2.2.1.2.1 Packet Type
 
 The Packet Type field in the Operation Header SHOULD be set to the value in the following table. The
 receiver MAY validate the Packet Type before accepting the packet.<1>
@@ -1064,7 +977,8 @@ Release: April 23, 2024
 
 13 / 29
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-WDSC].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1086,7 +1000,7 @@ WDSCPL_PACKET_REPLY
 The reply packet from WDS Server SHOULD set the packet type to this value. The
 client SHOULD NOT reject a packet if the packet type is not properly set.
 
-2.2.1.3  Variables Section
+##### 2.2.1.3 Variables Section
 
 The Variables Section in the request packet is used to specify parameters required by the service
 being invoked on WDS Server. In reply packets from WDS Server, the variables are used to
@@ -1097,7 +1011,7 @@ Operation Header. Each variable is defined using Variable Description Block as d
 
 Figure 4: Variables section
 
-2.2.1.3.1 Variable Description Block
+###### 2.2.1.3.1 Variable Description Block
 
 The Variable Description Block is defined as follows:
 
@@ -1133,7 +1047,8 @@ Release: April 23, 2024
 
 14 / 29
 
-Array-Size
+
+Array-Size
 
 Variable-Value (variable)
 
@@ -1165,7 +1080,7 @@ Padding_end (variable): Padding MAY be set to zero and MUST be ignored by receiv
 Padding_end size MUST be such that the total size (in bytes) of the Variable Description Block is
 evenly divisible by 16.
 
-2.2.1.3.2 Variable Types
+###### 2.2.1.3.2 Variable Types
 
 WDS Control Protocol supports multiple data types. The identifier for each data type is a four bytes
 unsigned numeric value. The identifier for data type consists of the base data type and set of optional
@@ -1188,7 +1103,7 @@ Type Modifier
 
 If a data type does not have a type modifier then the type modifier MUST be set to zero.
 
-2.2.1.3.2.1  Base Types
+###### 2.2.1.3.2.1 Base Types
 
 WDS Control Protocol supports following base data types:
 
@@ -1237,7 +1152,8 @@ Windows Deployment Services Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Base Type
+
+Base Type
 
 0x0004
 
@@ -1280,7 +1196,7 @@ length
 Variable
 length
 
-2.2.1.3.2.2  Type Modifiers
+###### 2.2.1.3.2.2 Type Modifiers
 
 No
 
@@ -1310,12 +1226,12 @@ Specifies that the value contains an array of base data type.
 
 0x1000
 
-2.2.1.3.3 Variable Value Length
+###### 2.2.1.3.3 Variable Value Length
 
 The count of bytes that hold the value for a variable in Variable Description Block are computed using
 the Value-Length and Array-Size fields of the Variable Description Block.
 
-2.2.1.3.3.1  Variables without Type Modifiers
+###### 2.2.1.3.3.1 Variables without Type Modifiers
 
 For data types without any type modifiers, the Array-Size field SHOULD be set to zero.
 
@@ -1325,7 +1241,7 @@ section 2.2.1.3.2.1.
 For variable length data types the Value-Length field MUST specify the total number of bytes
 containing the value.
 
-2.2.1.3.3.2  Variables with WDSCPL_VAR_ARRAY Type Modifier
+###### 2.2.1.3.3.2 Variables with WDSCPL_VAR_ARRAY Type Modifier
 
 For fixed length data types the Value-Length field SHOULD be set to the size in bytes as specified in
 section 2.2.1.3.2.1.
@@ -1345,7 +1261,8 @@ Release: April 23, 2024
 
 16 / 29
 
-The individual elements of the array are accessed using a 0-based index with a maximum value for
+
+The individual elements of the array are accessed using a 0-based index with a maximum value for
 the index being (Array-Size - 1).
 
 To access a value at a specified index, multiply the Value-Length by the index to obtain an offset
@@ -1359,13 +1276,14 @@ Release: April 23, 2024
 
 17 / 29
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
+
+### 3.1 Server Details
 
 This section specifies the WDS Server Control Protocol behavior.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model for handling the WDS Control Protocol by a WDS Server.
 The described model is provided to explain how the protocol behaves. Implementations are not
@@ -1399,7 +1317,7 @@ details provided by a Service Provider when registering an Endpoint GUID can be 
 
 Endpoint GUID.
 
-3.1.1.1  Configuration
+##### 3.1.1.1 Configuration
 
 The list of names used as (name, value) pair in WDS Server Configuration information are given
 below:
@@ -1408,16 +1326,16 @@ ServiceProviderList: A list of modules that will be loaded during WDS Server ini
 
 module represents a Service Provider.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are required for WDS Server beyond those used internally by RPC to implement resiliency
 to network outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 At initialization time, WDS Server MUST initialize all registered Service Providers and RPC server.
 
-3.1.3.1  Service Providers Initialization
+##### 3.1.3.1 Service Providers Initialization
 
 WDS Server: MUST read the configuration (as defined in section 3.1.1.1) and initialize each Service
 Provider. Each Service Provider MUST register all Endpoint GUIDs it is to offer clients using WDS
@@ -1430,17 +1348,18 @@ Windows Deployment Services Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-GUID: A 128 bit value, which uniquely identifies that Endpoint GUID.
+
+GUID: A 128 bit value, which uniquely identifies that Endpoint GUID.
 
 SecurityAccess: MUST specify if WDS Server allows authenticated and/or unauthenticated clients to
 invoke services offered by Service Provider under this Endpoint GUID.
 
-3.1.3.2  RPC Server Initialization
+##### 3.1.3.2 RPC Server Initialization
 
 The WDS Server Control Provider server MUST register the RPC interface and begin listening on the
 RPC transport as specified in section 2.1.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 Methods in RPC Opnum Order
 
@@ -1454,7 +1373,7 @@ packet.
 
 Opnum: 0
 
-3.1.4.1  WdsRpcMessage (opnum 0)
+##### 3.1.4.1 WdsRpcMessage (opnum 0)
 
 The WdsRpcMessage (opnum 0) method sends the request packet to the server and returns the
 corresponding reply packet.
@@ -1504,7 +1423,8 @@ Windows Deployment Services Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Server MUST search through the list of registered Endpoint GUIDs to match the Endpoint GUID
+
+  Server MUST search through the list of registered Endpoint GUIDs to match the Endpoint GUID
 
 specified in the Endpoint Header. If no match is found, the server MUST return a failure.
 
@@ -1562,7 +1482,7 @@ section 3.1.4.2.
 
 packet provided by Service Provider.
 
-3.1.4.2  Failure Cases
+##### 3.1.4.2 Failure Cases
 
 WDS Server MUST return a failure status for the RPC call if it encounters any failure before passing
 the request to a Service Provider, or after the reply packet has been handed to WDS Server by a
@@ -1575,7 +1495,7 @@ Service Providers MAY construct a reply packet and set the failure error code in
 (section 2.2.1.2). In this case, the RPC call succeeds, but the OpCode-ErrorCode field in the Operation
 Header MUST contain the appropriate error code.<2>
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
@@ -1586,20 +1506,21 @@ Release: April 23, 2024
 
 20 / 29
 
-3.1.6  Other Local Events
+
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible handling of WDS Control Protocol by clients to
 participate in this protocol. The described model is provided to facilitate the explanation of how the
 protocol behaves. This document does not mandate that implementations adhere to this model as long
 as their external behavior is consistent with that described in this document.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The clients MAY request a timeout for the operation when using WDS Control Protocol. If a timeout is
 specified and a request to WDS Server does not complete before the timeout, then WDS Control
@@ -1609,11 +1530,11 @@ If client does not request a timeout, then WDS Control Protocol requires no time
 internally by RPC to implement resiliency to network outages, as specified in [MS-RPCE] section
 3.2.3.2.1.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The client MUST provide information to WDS Control Protocol to uniquely identify the service to be
 invoked. It MUST include all variables required by service being invoked. The following is the list of
@@ -1651,7 +1572,8 @@ Release: April 23, 2024
 
 21 / 29
 
-1.  Validate the Endpoint Header (section 2.2.1.1), Operation Header (section 2.2.1.2) and Variables
+
+1.  Validate the Endpoint Header (section 2.2.1.1), Operation Header (section 2.2.1.2) and Variables
 
 Section (section 2.2.1.3).
 
@@ -1661,13 +1583,13 @@ Section (section 2.2.1.3).
 
 (0x00000000), the WDS Control Protocol MAY return the same error code to the client.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 The timer event is start just before the RPC call is initiated. If the timer expires and the RPC call has
 still not completed, the WDS Control Protocol MUST cancel the RPC call and return the appropriate
 error code to the client.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -1678,11 +1600,12 @@ Release: April 23, 2024
 
 22 / 29
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-WDSC].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
  The following diagram illustrates a client invoking a service provided by Service Provider on a WDS
 Server:
@@ -1696,13 +1619,14 @@ Release: April 23, 2024
 
 23 / 29
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1713,7 +1637,8 @@ Release: April 23, 2024
 
 24 / 29
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" refers to the IDL
 found in [MS-DTYP] Appendix A.
@@ -1744,7 +1669,8 @@ Release: April 23, 2024
 
 25 / 29
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1791,7 +1717,8 @@ Release: April 23, 2024
 
 26 / 29
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1835,7 +1762,8 @@ Release: April 23, 2024
 
 27 / 29
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -1966,7 +1894,8 @@ Release: April 23, 2024
 
 28 / 29
 
-W
+
+W
 
 WdsRpcMessage (opnum 0) 19
 WdsRpcMessage (opnum 0) method 19

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 14
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 14
 
-Date
+
+Date
 
 Revision
 History
@@ -443,77 +445,37 @@ Release: April 23, 2024
 
 3 / 14
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 MIME Parts Ordering in Multipart/Related XOP Package Extension](#131-mime-parts-ordering-in-multipartrelated-xop-package-extension)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Ordering of the MIME Parts in XOP Packages](#221-ordering-of-the-mime-parts-in-xop-packages)
+- [3 Protocol Details](#3-protocol-details)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 MIME Multipart/Related XOP Package Ordering](#41-mime-multipartrelated-xop-package-ordering)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-MIME Parts Ordering in Multipart/Related XOP Package Extension ....................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Ordering of the MIME Parts in XOP Packages .................................................... 8
-
-2.1
-2.2
-
-2.2.1
-
-3  Protocol Details ....................................................................................................... 9
-
-4  Protocol Examples ................................................................................................. 10
-MIME Multipart/Related XOP Package Ordering .................................................... 10
-
-4.1
-
-5  Security ................................................................................................................. 11
-Security Considerations for Implementers ........................................................... 11
-Index of Security Parameters ............................................................................ 11
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 12
-
-7  Change Tracking .................................................................................................... 13
-
-8  Index ..................................................................................................................... 14
-
-[MS-XOPP] - v20240423
-XML-binary Optimized Packaging (XOP) Profile
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 14
-
-1  Introduction
+## 1 Introduction
 
 XML-binary Optimized Packaging (XOP), as specified in [XML-XOP], defines a method for the
 efficient serialization of XML Information Sets (XML Infosets) that have certain types of content.
@@ -525,7 +487,7 @@ how these XML Infosets are transmitted between network nodes.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -561,14 +523,14 @@ the XOP document and any optimized content from the original XML Infoset, as des
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -581,7 +543,8 @@ Release: April 23, 2024
 
 5 / 14
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2387] Levinson, E., "The MIME Multipart/Related Content-type", RFC 2387, August 1998,
@@ -590,19 +553,19 @@ https://www.rfc-editor.org/info/rfc2387
 [XML-XOP] Gudgin, M., Mendelsohn, N., Nottingham, M., and Ruellan, H., "XML-binary Optimized
 Packaging", January 25, 2005, http://www.w3.org/TR/2005/REC-xop10-20050125
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [SOAP-MTOM] Gudgin, M., Medelsohn, N., Nottingham, M., and Ruellan, H., "SOAP Message
 Transmission Optimization Mechanism", W3C Recommendation, 25 January 2005,
 http://www.w3.org/TR/2005/REC-soap12-mtom-20050125/
 
-1.3  Overview
+### 1.3 Overview
 
 The XML-binary Optimized Packaging (XOP) Profile provides extensions that enable more efficient
 implementations of [XML-XOP] to be built by requiring certain ordering of the Multipurpose Internet
 Mail Extensions (MIME) XML Information Set (XML Infoset) parts in the XOP package.
 
-1.3.1  MIME Parts Ordering in Multipart/Related XOP Package Extension
+#### 1.3.1 MIME Parts Ordering in Multipart/Related XOP Package Extension
 
 The standard XOP implementation, as specified in [XML-XOP] section 4.1, is not allowed to consider
 the ordering of MIME parts to be significant to XOP processing or to the construction of the XOP
@@ -612,17 +575,17 @@ XOP] to allow for the ordering of the MIME parts, as described in section 2.2.1.
 enable the creation of more efficient implementations for processing an XML Infoset packaged in
 MIME Multipart/Related XOP packages when streaming.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The XML-binary Optimized Packaging (XOP) Profile is an extension of [XML-XOP]. The extensions
 specified in this document [MS-XOPP] do not introduce any new protocol relationships beyond those
 specified in [XML-XOP] Appendix A.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 There are no prerequisites or preconditions beyond those specified in [XML-XOP] Appendix A.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The MIME Parts Ordering in Multipart/Related XOP Package Extension specified in section 1.3.1 is
 applicable when an XOP Infoset packaged in a MIME Multipart/Related XOP package is processed in
@@ -634,7 +597,7 @@ not specify their own packaging mechanism.
 If broad interoperability with implementations strictly compliant with [XML-XOP] is desired, these
 extensions might not be a suitable choice.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There is no versioning or capability negotiation beyond that specified in [XML-XOP].
 
@@ -645,11 +608,12 @@ XML-binary Optimized Packaging (XOP) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields beyond those specified in [XML-XOP].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments beyond those specified in [XML-XOP].
 
@@ -660,19 +624,20 @@ Release: April 23, 2024
 
 7 / 14
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This specification defines only serialization rules for XOP packages and does not define how XOP
 packages are transmitted on the network. As such, it does not have a transport.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Except as specified in section 2.2.1, the syntax used for specifying MIME Multipart/Related XOP
 packaging is as specified in [XML-XOP] section 3, [XML-XOP] section 4.1, and [RFC2387].
 
-2.2.1  Ordering of the MIME Parts in XOP Packages
+#### 2.2.1 Ordering of the MIME Parts in XOP Packages
 
 The extensions provided by the XML–binary Optimized Packaging (XOP) Profile override the following
 text located in [XML-XOP] section 4.1:
@@ -692,7 +657,8 @@ Release: April 23, 2024
 
 8 / 14
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The XML-binary Optimized Packaging (XOP) Profile does not introduce any new protocol roles or
 change any existing protocol roles that are defined in [XML-XOP].
@@ -704,9 +670,10 @@ Release: April 23, 2024
 
 9 / 14
 
-4  Protocol Examples
 
-4.1  MIME Multipart/Related XOP Package Ordering
+## 4 Protocol Examples
+
+### 4.1 MIME Multipart/Related XOP Package Ordering
 
 The XML-binary Optimized Packaging (XOP) Profile does not introduce any new protocol roles or
 change any existing protocol roles that are defined in [XML-XOP]. Examples of how MIME
@@ -719,13 +686,14 @@ Release: April 23, 2024
 
 10 / 14
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations are the same as those specified in [XML-XOP] section 6.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -736,7 +704,8 @@ Release: April 23, 2024
 
 11 / 14
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -800,7 +769,8 @@ Release: April 23, 2024
 
 12 / 14
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -844,7 +814,8 @@ Release: April 23, 2024
 
 13 / 14
 
-   informative 6
+
+   informative 6
    normative 5
 Relationship to other protocols 6
 
@@ -866,7 +837,7 @@ V
 Vendor-extensible fields 7
 Versioning 6
 
-8  Index
+## 8 Index
 A
 
 Applicability 6

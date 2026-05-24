@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 54
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 54
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: April 23, 2024
 
 3 / 54
 
-Date
+
+Date
 
 Revision
 History
@@ -563,272 +566,111 @@ Release: April 23, 2024
 
 4 / 54
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 HTTP Header Fields](#221-http-header-fields)
+      - [2.2.1.1 Content-Type](#2211-content-type)
+        - [2.2.1.1.1 application/x-wms-pushsetup](#22111-applicationx-wms-pushsetup)
+        - [2.2.1.1.2 application/x-wms-pushstart](#22112-applicationx-wms-pushstart)
+      - [2.2.1.2 Cache-Control](#2212-cache-control)
+      - [2.2.1.3 Cookie](#2213-cookie)
+        - [2.2.1.3.1 push-id](#22131-push-id)
+      - [2.2.1.4 Pragma](#2214-pragma)
+        - [2.2.1.4.1 no-cache](#22141-no-cache)
+        - [2.2.1.4.2 timeout](#22142-timeout)
+      - [2.2.1.5 Server](#2215-server)
+      - [2.2.1.6 Set-Cookie](#2216-set-cookie)
+      - [2.2.1.7 Supported](#2217-supported)
+      - [2.2.1.8 User-Agent](#2218-user-agent)
+      - [2.2.1.9 X-Accept-Authentication](#2219-x-accept-authentication)
+      - [2.2.1.10 X-Accept-Proxy-Authentication](#22110-x-accept-proxy-authentication)
+    - [2.2.2 Request Types](#222-request-types)
+      - [2.2.2.1 PushSetup Request](#2221-pushsetup-request)
+        - [2.2.2.1.1 Template-URL](#22211-template-url)
+        - [2.2.2.1.2 AutoDestroy](#22212-autodestroy)
+      - [2.2.2.2 PushStart Request](#2222-pushstart-request)
+    - [2.2.3 Packet Types](#223-packet-types)
+      - [2.2.3.1 Common Definitions](#2231-common-definitions)
+        - [2.2.3.1.1 Framing Header](#22311-framing-header)
+      - [2.2.3.2 $C (Stream Change Notification)](#2232-c-stream-change-notification)
+      - [2.2.3.3 $D (Data)](#2233-d-data)
+      - [2.2.3.4 $E (End-of-Stream Notification)](#2234-e-end-of-stream-notification)
+      - [2.2.3.5 $F (Filler)](#2235-f-filler)
+      - [2.2.3.6 $H (Header)](#2236-h-header)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Request to Configure the Server](#3141-request-to-configure-the-server)
+        - [3.1.4.1.1 Sending the PushSetup Request](#31411-sending-the-pushsetup-request)
+      - [3.1.4.2 Request to Start Streaming Content](#3142-request-to-start-streaming-content)
+        - [3.1.4.2.1 Sending the PushStart Request](#31421-sending-the-pushstart-request)
+      - [3.1.4.3 ASF Packet Is Available to Send](#3143-asf-packet-is-available-to-send)
+      - [3.1.4.4 Notification of the Last Packet](#3144-notification-of-the-last-packet)
+      - [3.1.4.5 Notification of New ASF Header File](#3145-notification-of-new-asf-header-file)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a PushSetup Response](#3151-receiving-a-pushsetup-response)
+      - [3.1.5.2 Receiving a PushStart Response](#3152-receiving-a-pushstart-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 TCP Connection Is Disconnected](#3171-tcp-connection-is-disconnected)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Administrative Disconnect](#3241-administrative-disconnect)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a PushSetup Request](#3251-receiving-a-pushsetup-request)
+      - [3.2.5.2 Receiving a PushStart Request](#3252-receiving-a-pushstart-request)
+        - [3.2.5.2.1 Sending a PushStart Response](#32521-sending-a-pushstart-response)
+      - [3.2.5.3 Receiving an $H Packet](#3253-receiving-an-h-packet)
+      - [3.2.5.4 Receiving a $D Packet](#3254-receiving-a-d-packet)
+      - [3.2.5.5 Receiving an $E Packet](#3255-receiving-an-e-packet)
+      - [3.2.5.6 Receiving a $C Packet](#3256-receiving-a-c-packet)
+      - [3.2.5.7 Receiving an $F Packet](#3257-receiving-an-f-packet)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Idle-Timeout Timer Expires](#3261-idle-timeout-timer-expires)
+      - [3.2.6.2 Inactivity-Timeout Timer Expires](#3262-inactivity-timeout-timer-expires)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 TCP Connection Is Disconnected](#3271-tcp-connection-is-disconnected)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 General Push Distribution Sequence](#41-general-push-distribution-sequence)
+  - [4.2 General Push Distribution Sequence with $F Packets](#42-general-push-distribution-sequence-with-f-packets)
+  - [4.3 Push Distribution with AutoDestroy and Template-URL](#43-push-distribution-with-autodestroy-and-template-url)
+  - [4.4 General Push Distribution Sequence with $C Packet](#44-general-push-distribution-sequence-with-c-packet)
+  - [4.5 General Push Distribution Sequence with Server and Proxy Server](#45-general-push-distribution-sequence-with-server-and-proxy-server)
+  - [4.6 Server Push State Diagram](#46-server-push-state-diagram)
+    - [4.6.1 Expanded Streaming State Diagram](#461-expanded-streaming-state-diagram)
+  - [4.7 Client Push State Diagram](#47-client-push-state-diagram)
+    - [4.7.1 Expanded PushState_InProgress Diagram](#471-expanded-pushstateinprogress-diagram)
+  - [4.8 Message Exchange During Push Distribution](#48-message-exchange-during-push-distribution)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.4
-
-2.2.1.1
-
-2.2.1.3.1
-
-2.2.1.2
-2.2.1.3
-
-2.2.1.4.1
-2.2.1.4.2
-
-2.2.1.1.1
-2.2.1.1.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-HTTP Header Fields ..................................................................................... 11
-Content-Type ....................................................................................... 11
-application/x-wms-pushsetup ........................................................... 12
-application/x-wms-pushstart ............................................................. 12
-Cache-Control ...................................................................................... 12
-Cookie ................................................................................................. 12
-push-id .......................................................................................... 12
-Pragma ................................................................................................ 12
-no-cache ........................................................................................ 13
-timeout .......................................................................................... 13
-Server ................................................................................................. 13
-Set-Cookie ........................................................................................... 13
-Supported ............................................................................................ 13
-User-Agent ........................................................................................... 13
-X-Accept-Authentication ........................................................................ 14
-X-Accept-Proxy-Authentication ............................................................... 14
-Request Types............................................................................................ 14
-PushSetup Request ............................................................................... 15
-Template-URL ................................................................................. 16
-AutoDestroy ................................................................................... 16
-PushStart Request ................................................................................ 17
-Packet Types .............................................................................................. 18
-Common Definitions .............................................................................. 18
-Framing Header .............................................................................. 18
-$C (Stream Change Notification) ............................................................. 19
-$D (Data) ............................................................................................ 19
-$E (End-of-Stream Notification) .............................................................. 19
-$F (Filler) ............................................................................................. 20
-$H (Header) ......................................................................................... 20
-
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-2.2.1.10
-
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-
-2.2.2.1.1
-2.2.2.1.2
-
-2.2.3.1.1
-
-2.2.2.1
-
-2.2.2.2
-
-2.2.3.1
-
-2.2.2
-
-2.2.3
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 21
-Client Details ................................................................................................... 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Request to Configure the Server ............................................................. 21
-Sending the PushSetup Request ........................................................ 22
-Request to Start Streaming Content ........................................................ 22
-
-3.1.4.1.1
-
-3.1.4.1
-
-3.1.4.2
-
-[MS-WMHTTP] - v20240423
-Windows Media HTTP Push Distribution Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 54
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.1.4.2.1
-
-3.1.4.3
-3.1.4.4
-3.1.4.5
-
-3.1.5.1
-3.1.5.2
-
-3.1.5
-
-3.1.6
-3.1.7
-
-3.1.7.1
-
-Sending the PushStart Request ......................................................... 23
-ASF Packet Is Available to Send .............................................................. 24
-Notification of the Last Packet ................................................................ 24
-Notification of New ASF Header File ......................................................... 25
-Message Processing Events and Sequencing Rules .......................................... 26
-Receiving a PushSetup Response ............................................................ 26
-Receiving a PushStart Response ............................................................. 27
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 28
-TCP Connection Is Disconnected ............................................................. 28
-Server Details .................................................................................................. 28
-Abstract Data Model .................................................................................... 28
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 29
-Administrative Disconnect ...................................................................... 29
-Message Processing Events and Sequencing Rules .......................................... 29
-Receiving a PushSetup Request .............................................................. 29
-Receiving a PushStart Request ............................................................... 31
-Sending a PushStart Response .......................................................... 32
-Receiving an $H Packet .......................................................................... 32
-Receiving a $D Packet ........................................................................... 32
-Receiving an $E Packet .......................................................................... 33
-Receiving a $C Packet ........................................................................... 33
-Receiving an $F Packet .......................................................................... 33
-Timer Events .............................................................................................. 34
-Idle-Timeout Timer Expires .................................................................... 34
-Inactivity-Timeout Timer Expires ............................................................ 34
-Other Local Events ...................................................................................... 34
-TCP Connection Is Disconnected ............................................................. 34
-
-3.2.4.1
-
-3.2.5.1
-3.2.5.2
-
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-
-3.2.6
-
-3.2.6.1
-3.2.6.2
-
-3.2.7
-
-3.2.7.1
-
-3.2.5.2.1
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-
-4  Protocol Examples ................................................................................................. 35
-General Push Distribution Sequence ................................................................... 35
-General Push Distribution Sequence with $F Packets ............................................ 36
-Push Distribution with AutoDestroy and Template-URL .......................................... 38
-General Push Distribution Sequence with $C Packet .............................................. 39
-General Push Distribution Sequence with Server and Proxy Server ......................... 41
-Server Push State Diagram ............................................................................... 42
-Expanded Streaming State Diagram .............................................................. 44
-Client Push State Diagram ................................................................................. 45
-Expanded PushState_InProgress Diagram ...................................................... 46
-Message Exchange During Push Distribution ........................................................ 47
-
-4.7.1
-
-4.6.1
-
-4.7
-
-4.8
-
-5  Security ................................................................................................................. 49
-Security Considerations for Implementers ........................................................... 49
-Index of Security Parameters ............................................................................ 49
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 50
-
-7  Change Tracking .................................................................................................... 52
-
-8  Index ..................................................................................................................... 53
-
-[MS-WMHTTP] - v20240423
-Windows Media HTTP Push Distribution Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 54
-
-1  Introduction
+## 1 Introduction
 
 The Windows Media HTTP Push Distribution Protocol is based on the Hypertext Transfer Protocol
 (HTTP) (as specified in [RFC2616]). It is used for transferring real-time multimedia data (for example,
@@ -839,7 +681,7 @@ Encoder software development kit (SDK). For more information, see [WMESDK].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -876,14 +718,14 @@ streaming: The act of transferring content from a sender to a receiver.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -896,7 +738,8 @@ Release: April 23, 2024
 
 7 / 54
 
-[ASF] Microsoft Corporation, "Advanced Systems Format Specification", December 2004,
+
+[ASF] Microsoft Corporation, "Advanced Systems Format Specification", December 2004,
 https://download.microsoft.com/download/7/9/0/790fecaa-f64a-4a5e-a430-
 0bccdab3f1b4/ASF_Specification.doc
 
@@ -940,11 +783,11 @@ Authentication in Microsoft Windows", RFC 4559, June 2006, https://www.rfc-edito
 [WMESDK] Microsoft Corporation, "Windows Media Encoder 9 Series SDK",
 https://msdn.microsoft.com/en-us/library/windows/desktop/dd873819(v=vs.85).aspx
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows Media HTTP Push Distribution Protocol is used for transferring real-time multimedia data
 (for example, audio and video) from a client to a server. Push distribution is ideal for broadcasting
@@ -962,7 +805,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-client, and the entity that responds to the HTTP connection is referred to as the server. With the
+
+client, and the entity that responds to the HTTP connection is referred to as the server. With the
 Windows Media HTTP Push Distribution Protocol, multimedia data flows from the client to the server—
 the opposite of other streaming protocols, such as the Windows Media HTTP Streaming Protocol as
 specified in [MS-WMSP].
@@ -970,7 +814,7 @@ specified in [MS-WMSP].
 For the purposes of this specification, the terms client and encoder have the same meaning and are
 used interchangeably.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on HTTP as specified in [RFC2616]. Either HTTP version 1.1 or HTTP version 1.0
 can be used with this protocol. However the benefits exposed through HTTP version 1.1 might not be
@@ -979,12 +823,12 @@ available when using HTTP version 1.0.
 This protocol also uses headers, packet types, and other components from the Windows Media HTTP
 Streaming Protocol, as specified in [MS-WMSP].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol does not provide a mechanism for a client to discover the URL to the server. Thus, it is a
 prerequisite that the client obtain a URL to the server before this protocol can be used.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is suitable for "streaming" delivery of broadcast multimedia data. The term streaming
 means that the data is transmitted at a fixed rate or at a rate that is related to the rate at which the
@@ -999,7 +843,7 @@ allows B to transmit multimedia data to A.
 If none of the preceding applies, it might be more appropriate to use the Windows Media HTTP
 Streaming Protocol (as specified in [MS-WMSP]) to transfer the data instead of using this protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1031,17 +875,18 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-components are frequently updated independently of the rest of the operating system. Instead, the
+
+components are frequently updated independently of the rest of the operating system. Instead, the
 protocol versioning mechanism relies on the version number of the software product that is sending
 the request or the response to be stated on the User-Agent (section 2.2.1.8) and
 Server (section 2.2.1.5) headers, respectively.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULTs as specified in [MS-DTYP].  Vendors are free to choose their own values,
 as long as the C bit (0x20000000) is set, indicating that it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1052,9 +897,10 @@ Release: April 23, 2024
 
 10 / 54
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Windows Media HTTP Push Distribution Protocol uses HTTP, as specified in [RFC2616], as the
 transport layer.
@@ -1067,7 +913,7 @@ access authentication schemes are implementation-specific. Clients SHOULD use th
 Authentication (section 2.2.1.9) header to specify the preferred list of authentication schemes. Details
 about HTTP access authentication are as specified in [RFC2616] section 11.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section includes the following:
 
@@ -1082,7 +928,7 @@ how each request type is mapped to HTTP.
 Packet Types (section 2.2.3) specifies the syntax for the binary packet format that is used in the
 payloads of the HTTP messages.
 
-2.2.1  HTTP Header Fields
+#### 2.2.1 HTTP Header Fields
 
 The Windows Media HTTP Push Distribution Protocol uses existing headers as specified in [RFC2616]
 and [MS-WMSP]. Some headers defined by these specifications are further restrained by the Windows
@@ -1104,7 +950,7 @@ This section defines the syntax of the HTTP headers that use the Augmented Backu
 (ABNF) syntax, as specified in [RFC4234]. Any ABNF syntax rules that are not specified in [RFC4234]
 use the ABNF extensions that are as specified in [RFC2616] or [MS-WMSP].
 
-2.2.1.1  Content-Type
+##### 2.2.1.1 Content-Type
 
 The Content-Type header specifies the type of data that is included in the message payload (that is,
 the message body of a POST request).
@@ -1120,29 +966,30 @@ Release: April 23, 2024
 
 11 / 54
 
-                 "application/x-wms-pushstart"
+
+                 "application/x-wms-pushstart"
 
  Content-Type  = "Content-Type: " Ctype [";charset=UTF-8"] CRLF
 
 Example: Content-Type: application/x-wms-pushsetup;charset=UTF-8
 
-2.2.1.1.1 application/x-wms-pushsetup
+###### 2.2.1.1.1 application/x-wms-pushsetup
 
 This content-type is used in a POST request to initiate the push distribution session with a server.
 For more details, see the definition of the PushSetup request (section 2.2.2.1).
 
-2.2.1.1.2 application/x-wms-pushstart
+###### 2.2.1.1.2 application/x-wms-pushstart
 
 This content-type specifies that the message body of the POST request contains packet types as
 specified in section 2.2.3. For more details, see the definition of the PushStart
 request (section 2.2.2.2).
 
-2.2.1.2  Cache-Control
+##### 2.2.1.2 Cache-Control
 
 The Cache-Control header field is defined only for use in responses sent to a client; However, the
 header is not used by clients that implement the Windows Media HTTP Push Distribution Protocol.
 
-2.2.1.3  Cookie
+##### 2.2.1.3 Cookie
 
 The syntax of the Cookie header MUST conform to the format as specified in [RFC2109].
 
@@ -1157,7 +1004,7 @@ The syntax of the Cookie header is defined as follows.
 
 Example: Cookie: push-id=0
 
-2.2.1.3.1 push-id
+###### 2.2.1.3.1 push-id
 
 The value of this cookie, which consists of an array of characters, identifies the streaming session.
 The session identifier is assigned by the server in the response to the PushSetup request. The
@@ -1168,7 +1015,7 @@ The syntax of the push-id cookie is defined as follows.
  session-id    = 1*VCHAR      ; any combination of characters except 0
  push-id       = "push-id="    ( "0" / session-id )
 
-2.2.1.4  Pragma
+##### 2.2.1.4 Pragma
 
 The Windows Media HTTP Push Distribution Protocol uses the HTTP Pragma header field to
 communicate information specific to the operation of the protocol. The Pragma header consists of one
@@ -1181,7 +1028,8 @@ Release: April 23, 2024
 
 12 / 54
 
-Details about the handling of error conditions related to Pragma header tokens are as specified in [MS-
+
+Details about the handling of error conditions related to Pragma header tokens are as specified in [MS-
 WMSP] section 2.2.1.4.
 
 The Pragma header field is defined only for use in responses sent to a client; however, the header is
@@ -1190,15 +1038,15 @@ not used by clients that implement the Windows Media HTTP Push Distribution Prot
 The Pragma header tokens used by the Windows Media HTTP Push Distribution Protocol are defined in
 the following two sections.
 
-2.2.1.4.1 no-cache
+###### 2.2.1.4.1 no-cache
 
 Details about the no-cache token are as specified in [MS-WMSP] section 2.2.1.4.12.
 
-2.2.1.4.2 timeout
+###### 2.2.1.4.2 timeout
 
 Details about the timeout token are as specified in [MS-WMSP] section 2.2.1.4.29.
 
-2.2.1.5  Server
+##### 2.2.1.5 Server
 
 The Server header specifies the major and minor version numbers of the software product that is
 responding to the HTTP request.
@@ -1207,7 +1055,7 @@ This header is defined only for use in responses sent to a client.
 
 Details about the Server header are as specified in [MS-WMSP] section 2.2.1.5.
 
-2.2.1.6  Set-Cookie
+##### 2.2.1.6 Set-Cookie
 
 The syntax of the Set-Cookie header MUST conform to the format as specified in [RFC2109].
 
@@ -1223,7 +1071,7 @@ The syntax of the Set-Cookie header is defined as follows.
 
 Example: Set-Cookie: push-id=1234567890
 
-2.2.1.7  Supported
+##### 2.2.1.7 Supported
 
 The Supported header is used for specifying features of the protocol that are supported by the server.
 
@@ -1232,7 +1080,7 @@ header are supported in the Windows Media HTTP Push Distribution protocol.
 
 For information about the Supported header, see [MS-WMSP] section 2.2.1.7.
 
-2.2.1.8  User-Agent
+##### 2.2.1.8 User-Agent
 
 The User-Agent header specifies the major and minor version number of the software product that is
 sending the HTTP request.
@@ -1246,7 +1094,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The syntax of the User-Agent header is defined as follows.
+
+The syntax of the User-Agent header is defined as follows.
 
  major = 1*2DIGIT
  minor = 1*2DIGIT ["." 1*4DIGIT "." 1*4DIGIT]
@@ -1280,20 +1129,20 @@ the table.
 
  0
 
-2.2.1.9  X-Accept-Authentication
+##### 2.2.1.9 X-Accept-Authentication
 
 The X-Accept-Authentication header specifies the authentication schemes that the client supports.
 
 Details about the X-Accept-Authentication header are as specified in [MS-WMSP] section 2.2.1.9.
 
-2.2.1.10
+##### 2.2.1.10 X-Accept-Proxy-Authentication
 
-X-Accept-Proxy-Authentication
+
 
 The X-Accept-Proxy-Authentication header is not used by clients or servers that implement the
 Windows Media HTTP Push Distribution Protocol.
 
-2.2.2  Request Types
+#### 2.2.2 Request Types
 
 The Windows Media HTTP Push Distribution Protocol defines requests that a client can send to a
 server.
@@ -1323,9 +1172,10 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                               / entity-header ) CRLF )
 
-2.2.2.1  PushSetup Request
+                               / entity-header ) CRLF )
+
+##### 2.2.2.1 PushSetup Request
 
 The purpose of the PushSetup request is to request permission to start streaming Advanced
 Systems Format (ASF) data packets to the server.
@@ -1389,7 +1239,8 @@ Release: April 23, 2024
 
 15 / 54
 
- WMS-PushSetResp-Headers = *( PushSetResp-Header-REQ
+
+ WMS-PushSetResp-Headers = *( PushSetResp-Header-REQ
                             / PushSetResp-Header-OPT
                             / PushSetResp-Pragma
                             / HTTP-Header-Types )
@@ -1414,7 +1265,7 @@ Release: April 23, 2024
 
  PushSetResp-Token-OPT    = timeout       ; section 2.2.1.4.2
 
-2.2.2.1.1 Template-URL
+###### 2.2.2.1.1 Template-URL
 
 This directive instructs the server to create a new publishing point that will be identified by using the
 URL that is specified on the request line of the POST request. The new publishing point SHOULD be
@@ -1440,7 +1291,7 @@ The syntax of the Template-URL directive is defined as follows.
 
 Example: Template-URL: "/pub"
 
-2.2.2.1.2 AutoDestroy
+###### 2.2.2.1.2 AutoDestroy
 
 This directive requests the server to destroy the publishing point at the end of the streaming
 session.
@@ -1456,7 +1307,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-of the streaming session. By keeping the publishing point, the client (or possibly a different client) can
+
+of the streaming session. By keeping the publishing point, the client (or possibly a different client) can
 connect to the server at a later time and start streaming data to the same publishing point.
 
 If the AutoDestroy directive is not specified, the server MUST assume a value of 0.
@@ -1467,7 +1319,7 @@ The syntax of the AutoDestroy directive is defined as follows.
 
 Example: AutoDestroy: 1
 
-2.2.2.2  PushStart Request
+##### 2.2.2.2 PushStart Request
 
 The purpose of the PushStart request is to stream ASF data packets to the server. The message body
 of the first PushStart request that the client sends after the PushSetup request always begins with an
@@ -1524,7 +1376,8 @@ Release: April 23, 2024
 
 17 / 54
 
- WMS-PushStrtResp-Headers = *( PushStrtResp-Header-REQ
+
+ WMS-PushStrtResp-Headers = *( PushStrtResp-Header-REQ
                                / PushStrtResp-Header-OPT
                                / PushStrtResp-Pragma
                                / HTTP-Header-Types )
@@ -1546,7 +1399,7 @@ Release: April 23, 2024
 
  PushStrtResp-Token-OPT    = timeout; section 2.2.1.4.2
 
-2.2.3  Packet Types
+#### 2.2.3 Packet Types
 
 This section defines the packet types used by the Windows Media HTTP Push Distribution Protocol. The
 packets appear in the message body of a PushStart request (section 2.2.2.2) sent by the client to the
@@ -1566,12 +1419,12 @@ packet types.
 
 The remaining sections describe individual packet types.
 
-2.2.3.1  Common Definitions
+##### 2.2.3.1 Common Definitions
 
 All integer fields are transmitted in little-endian byte order. If a field is set to an invalid value, clients
 are free to handle that situation in an implementation-specific manner.
 
-2.2.3.1.1 Framing Header
+###### 2.2.3.1.1 Framing Header
 
 The Framing header is used by all packet types and is used as specified in [MS-WMSP] section
 2.2.3.1.1 with the following additional details.
@@ -1590,7 +1443,8 @@ Release: April 23, 2024
 
 18 / 54
 
-2.2.3.2  $C (Stream Change Notification)
+
+##### 2.2.3.2 $C (Stream Change Notification)
 
 The $C (Stream Change Notification) packet is used to send the new ASF file header to the server
 when the client has switched to the next entry in a playlist or otherwise made a change to the ASF
@@ -1608,7 +1462,7 @@ entire ASF Header Object (as specified in [ASF] section 3.1), plus the 50-byte f
 the ASF Data Object (as specified in [ASF] section 5.1). The size of the ASF file header MUST NOT be
 larger than 65,527 bytes.
 
-2.2.3.3  $D (Data)
+##### 2.2.3.3 $D (Data)
 
 The $D (Data) packet is used by the client to transfer an ASF data packet to the server.
 
@@ -1625,7 +1479,7 @@ before encapsulating the ASF data packet in the $D packet. If the Padding Data f
 Padding Length field in the ASF payload parsing information section ([ASF] section 5.2.2) MUST be
 updated to indicate a nonexistent Padding Data field.
 
-2.2.3.4  $E (End-of-Stream Notification)
+##### 2.2.3.4 $E (End-of-Stream Notification)
 
 The $E (End-of-Stream Notification) packet is used by the client to specify that the last $D (Data)
 packet for the content has been transmitted. The $E packet also specifies whether this was the last
@@ -1667,12 +1521,13 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-of any HRESULT code other than S_FALSE implies that the client has finished streaming and no more
+
+of any HRESULT code other than S_FALSE implies that the client has finished streaming and no more
 $D packets will be transmitted until the next PushStart request.
 
 Unlike other packet types, the $E packet does not have a Payload field.
 
-2.2.3.5  $F (Filler)
+##### 2.2.3.5 $F (Filler)
 
 The purpose of the $F (Filler) packet is to increase the size of the message body of the POST request
 in order to ensure that the total length of the message body equals the size specified by the client in
@@ -1688,7 +1543,7 @@ Reason: This field MUST NOT be present.
 The variable-size Payload field MUST consist of zero or more padding bytes. The maximum size of
 this field is 65,531 bytes. Each byte SHOULD be set to 0x00 and MUST be ignored by the server.
 
-2.2.3.6  $H (Header)
+##### 2.2.3.6 $H (Header)
 
 The $H (Header) packet is used to send the first ASF file header to the server.
 
@@ -1711,11 +1566,12 @@ Release: April 23, 2024
 
 20 / 54
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1739,22 +1595,22 @@ InitialRequest: A flag that is set to 1 if the client has already connected to t
 
 value of this variable is 0.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Client implementations MAY implement an additional timer at their discretion to recover from the
 situation that an HTTP response from the server does not arrive in a timely manner. The expiration
 time of such a timer is implementation-specific.<1>
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Initialization of the protocol occurs when the higher layer configures the server to receive streaming
 content. This event is specified in section 3.1.4.1.
 
 The variables specified by the abstract data model MUST initially assume their default values, if any.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Request to Configure the Server
+##### 3.1.4.1 Request to Configure the Server
 
 When the higher layer needs to configure the server to receive content, it MUST cause the client to
 send a PushSetup request to the server as detailed in the remainder of this section.
@@ -1777,13 +1633,14 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-permitted, in which case the TCP connection is made to the proxy server specified by the higher layer
+
+permitted, in which case the TCP connection is made to the proxy server specified by the higher layer
 instead of to the server specified in the URL. If a proxy server is used, the value of the UsingProxy flag
 in the abstract data model MUST be set to 1.
 
 Next, the client MUST send the PushSetup request to the server, as specified in section 3.1.4.1.1.
 
-3.1.4.1.1 Sending the PushSetup Request
+###### 3.1.4.1.1 Sending the PushSetup Request
 
 The PushSetup request MUST adhere to the syntax specified in section 2.2.2.1.
 
@@ -1825,7 +1682,7 @@ the publishing point to be removed.
 After sending the request, the client MUST wait for the response to be received. How to process the
 response is specified in section 3.1.5.1.
 
-3.1.4.2  Request to Start Streaming Content
+##### 3.1.4.2 Request to Start Streaming Content
 
 When a higher layer requests that the streaming of content starts, it causes the client to send a
 PushStart request to the server.
@@ -1845,13 +1702,14 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Next, the client MUST send the PushStart request to the server, as specified in section 3.1.4.2.1.
+
+Next, the client MUST send the PushStart request to the server, as specified in section 3.1.4.2.1.
 
 Immediately after sending the HTTP request line and the HTTP headers of the PushStart request, the
 client MUST send the $H packet to the server. Thus, the message body of the PushStart request
 begins with the $H packet.
 
-3.1.4.2.1 Sending the PushStart Request
+###### 3.1.4.2.1 Sending the PushStart Request
 
 If the TCP connection that was used for sending the most recent HTTP request to the server was
 closed, the client MUST establish a new TCP connection to the server by using the IP address and port
@@ -1910,7 +1768,8 @@ Release: April 23, 2024
 
 23 / 54
 
-If a PushStart request has not been previously and successfully sent, then the client MUST send the
+
+If a PushStart request has not been previously and successfully sent, then the client MUST send the
 $H packet at this time, as specified in section 3.1.4.2, and Length-Remaining MUST be decreased by
 the number of bytes in the $H packet.
 
@@ -1920,7 +1779,7 @@ sending of this request might trigger events from the higher layer.
 The client MUST then wait for a higher-layer triggered event or for the response to the PushStart
 request to be received. How to process the response is specified in section 3.1.5.2.
 
-3.1.4.3  ASF Packet Is Available to Send
+##### 3.1.4.3 ASF Packet Is Available to Send
 
 Notification that an ASF packet is available to send occurs while the client is sending a PushStart
 request, as specified in section 3.1.4.2.1. At this point, the client has already sent the request line and
@@ -1961,7 +1820,7 @@ the PushStart request to be received.
 
 How to process the response to the PushStart request is specified in section 3.1.5.2.
 
-3.1.4.4  Notification of the Last Packet
+##### 3.1.4.4 Notification of the Last Packet
 
 Notification that the last ASF packet has been sent occurs while the client is sending a PushStart
 request, as specified in section 3.1.4.2.1. At this point, the client has already sent the PushStart
@@ -1975,7 +1834,8 @@ Release: April 23, 2024
 
 24 / 54
 
-The value of the Length-Remaining variable in the abstract data model MUST be greater than zero.
+
+The value of the Length-Remaining variable in the abstract data model MUST be greater than zero.
 If the value of the Length-Remaining variable is zero, the notification cannot be accepted at this
 time, and the higher layer MUST hold on to the notification (that is, queue it) until Length-
 Remaining becomes greater than zero.
@@ -2011,7 +1871,7 @@ layer triggered event or for the response to the PushStart request to be receive
 
 How to process the response to the PushStart request is specified in section 3.1.5.2.
 
-3.1.4.5  Notification of New ASF Header File
+##### 3.1.4.5 Notification of New ASF Header File
 
 As a prerequisite for notification that a new ASF header file is available, the higher layer MUST already
 have notified the server that it has sent the last ASF data packet for the previous playlist entry, as
@@ -2042,7 +1902,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-$F packets equal the value of Length-Remaining. The value of Length-Remaining MUST then be
+
+$F packets equal the value of Length-Remaining. The value of Length-Remaining MUST then be
 set to zero.
 
 If the client is sending one or more $F packets, the ASF file header MUST be returned to the higher
@@ -2061,9 +1922,9 @@ the PushStart request to be received.
 
 How to process the response to the PushStart request is specified in section 3.1.5.2.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving a PushSetup Response
+##### 3.1.5.1 Receiving a PushSetup Response
 
 The client MUST verify that the response adheres to the syntax specified in section 2.2.2.1.
 
@@ -2109,7 +1970,8 @@ Release: April 23, 2024
 
 26 / 54
 
-3.  If the Via header (as specified in [RFC2616] section 14.45) is present in the response, the value
+
+3.  If the Via header (as specified in [RFC2616] section 14.45) is present in the response, the value
 
 of the UsingProxy flag in the abstract data model MUST be set to one.
 
@@ -2123,7 +1985,7 @@ the PushStart request.
 possible to start streaming data to the server. The client MUST wait for a higher-layer triggered
 event.
 
-3.1.5.2  Receiving a PushStart Response
+##### 3.1.5.2 Receiving a PushStart Response
 
 The client MUST verify that the response adheres to the syntax specified in section 2.2.2.2.
 
@@ -2162,7 +2024,7 @@ Note  Proxy servers that only support HTTP 1.0 are not likely to send the Via he
 
 4.  The client MUST send a PushStart request  to the server, as specified in section 3.1.4.2.1.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
@@ -2173,19 +2035,20 @@ Release: April 23, 2024
 
 27 / 54
 
-3.1.7  Other Local Events
 
-3.1.7.1  TCP Connection Is Disconnected
+#### 3.1.7 Other Local Events
+
+##### 3.1.7.1 TCP Connection Is Disconnected
 
 If the TCP connection to the server is disconnected when the client has sent a request (but before it
 has completely received the response), and it was not the client itself that initiated the disconnection,
 the client MUST report this as an error to the higher layer.<6>
 
-3.2  Server Details
+### 3.2 Server Details
 
 None.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2202,7 +2065,7 @@ Push-ID: This string variable stores an identifier assigned by the server for th
 
 session. The initial value is undefined.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Idle-Timeout: This timer is used for cleaning up unused session states during a HTTP PushStart
 interaction. If the client has not sent any new $H, $D and $C packets (within the timeout period), then
@@ -2217,7 +2080,7 @@ of this timer allows the server to delete the session state. The minimum allowed
 period is zero seconds; there is no maximum value. The default value of this timer is 120
 seconds.<7>
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization of the protocol occurs when a PushSetup request is received and the request did not
 specify a push-id cookie on the Cookie header or the value of the push-id cookie did not match the
@@ -2240,12 +2103,13 @@ Release: April 23, 2024
 
 28 / 54
 
-If the Inactivity-Timer is already running during the initialization of the protocol, then its state MUST
+
+If the Inactivity-Timer is already running during the initialization of the protocol, then its state MUST
 NOT be changed; otherwise, the inactivity timer MUST be stopped.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Administrative Disconnect
+##### 3.2.4.1 Administrative Disconnect
 
 This event occurs when the server is receiving the message body of a PushStart
 request (section 2.2.2.2) and the server administrator wants to disconnect a client from the server.
@@ -2261,9 +2125,9 @@ After having sent the response, if any, the server MUST close the TCP connection
 
 The server MUST delete all session state.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a PushSetup Request
+##### 3.2.5.1 Receiving a PushSetup Request
 
 The server MUST inspect the User-Agent header in the HTTP request. If the User-Agent header is
 missing, or if the user-agent-data parameter on the User-Agent header does not adhere to the syntax
@@ -2306,7 +2170,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the authentication schemes that the client listed on the X-Accept-Authentication header in the request,
+
+the authentication schemes that the client listed on the X-Accept-Authentication header in the request,
 if that header is present. If the X-Accept-Authentication header is not present, then the server MUST
 use one of the authentication schemes that are enabled for the content.
 
@@ -2373,7 +2238,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Inactivity-Timeout timer MUST be started if it is not already running or restarted if it is already
+
+The Inactivity-Timeout timer MUST be started if it is not already running or restarted if it is already
 running.
 
 The server MUST wait for the PushStart request to be received. As soon as the request line and all of
@@ -2381,7 +2247,7 @@ the HTTP headers in the PushStart request have been received, the server MUST pr
 specified in section 3.2.5.2. The server MUST NOT wait for the entire message body of the PushStart
 request to be received before processing the request.
 
-3.2.5.2  Receiving a PushStart Request
+##### 3.2.5.2 Receiving a PushStart Request
 
 The server MUST validate that the HTTP request line and the HTTP message headers adhere to the
 syntax for PushStart requests (section 2.2.2.2). If the validation fails, the server MUST respond with a
@@ -2439,14 +2305,15 @@ Release: April 23, 2024
 
 31 / 54
 
-message body. If this is the first PushStart request received for this session, the first packet MUST be
+
+message body. If this is the first PushStart request received for this session, the first packet MUST be
 an $H packet.
 
 How to process a $C packet is specified in section 3.2.5.6. How to process a $D packet is specified in
 section 3.2.5.4. How to process an $E packet is specified in section 3.2.5.5. How to process an $F
 packet is specified in section 3.2.5.7. How to process an $H packet is specified in section 3.2.5.3.
 
-3.2.5.2.1 Sending a PushStart Response
+###### 3.2.5.2.1 Sending a PushStart Response
 
 The PushStart response MUST follow the rules as specified in section 2.2.2.2.
 
@@ -2473,7 +2340,7 @@ received, as soon as the request line and all of the HTTP headers in that reques
 the server MUST process the rules as specified in section 3.2.5.2. The server MUST NOT wait for the
 entire message body of the PushStart request to be received before processing the request.
 
-3.2.5.3  Receiving an $H Packet
+##### 3.2.5.3 Receiving an $H Packet
 
 The server MUST validate that the packet adheres to the syntax for $H (Header) (section 2.2.3.6)
 packets.
@@ -2489,7 +2356,7 @@ event or for a $D, $E, or $F packet.
 How to process a $D packet is specified in section 3.2.5.4. How to process an $E packet is specified in
 section 3.2.5.5. How to process an $F packet is specified in section 3.2.5.7.
 
-3.2.5.4  Receiving a $D Packet
+##### 3.2.5.4 Receiving a $D Packet
 
 The server MUST validate that the packet adheres to the syntax for $D (Data) (section 2.2.3.3)
 packets.
@@ -2506,13 +2373,14 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Otherwise, the server MUST restart the Idle-Timeout timer and MUST wait for a higher-layer triggered
+
+Otherwise, the server MUST restart the Idle-Timeout timer and MUST wait for a higher-layer triggered
 event or for a $D, $E, or $F packet.
 
 How to process an $E packet is specified in section 3.2.5.5. How to process an $F packet is specified in
 section 3.2.5.7.
 
-3.2.5.5  Receiving an $E Packet
+##### 3.2.5.5 Receiving an $E Packet
 
 The server MUST validate that the packet adheres to the syntax for $E (End-of-Stream
 Notification) (section 2.2.3.4) packets.
@@ -2536,7 +2404,7 @@ event or for a $C, $E, or $F packet.
 How to process a $C packet is specified in section 3.2.5.6. How to process an $F packet is specified in
 section 3.2.5.7.<14>
 
-3.2.5.6  Receiving a $C Packet
+##### 3.2.5.6 Receiving a $C Packet
 
 The server MUST validate that the packet adheres to the syntax for $C (Stream Change
 Notification) (section 2.2.3.2) packets.
@@ -2552,7 +2420,7 @@ event or for a $D, $E, or $F packet.
 How to process a $D packet is specified in section 3.2.5.4. How to process an $E packet is specified in
 section 3.2.5.5. How to process an $F packet is specified in section 3.2.5.7.
 
-3.2.5.7  Receiving an $F Packet
+##### 3.2.5.7 Receiving an $F Packet
 
 The server MUST validate that the packet adheres to the syntax for $F (Filler) (section 2.2.3.5)
 packets.
@@ -2572,9 +2440,10 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.6  Timer Events
 
-3.2.6.1  Idle-Timeout Timer Expires
+#### 3.2.6 Timer Events
+
+##### 3.2.6.1 Idle-Timeout Timer Expires
 
 If the server is currently receiving a PushStart request, the server MUST send a PushStart response
 with some suitable HTTP status code, such as 408. The response MUST be sent immediately, that is,
@@ -2588,7 +2457,7 @@ After having sent the response, if any, the server MUST close the TCP connection
 
 The server MUST delete all session state.
 
-3.2.6.2  Inactivity-Timeout Timer Expires
+##### 3.2.6.2 Inactivity-Timeout Timer Expires
 
 If the value of the AutoDestroy flag in the abstract data model is TRUE, the server SHOULD remove
 the "publishing point", that is, the resource identified by the client in the PushStart request.
@@ -2597,9 +2466,9 @@ If the server has a TCP connection to the client, the connection MUST be closed.
 
 The server MUST then delete all session state.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  TCP Connection Is Disconnected
+##### 3.2.7.1 TCP Connection Is Disconnected
 
 If the TCP connection to the client is disconnected when the server has started to receive a request
 but before it has completely received the entire request (including the message body) and it was not
@@ -2619,9 +2488,10 @@ Release: April 23, 2024
 
 34 / 54
 
-4  Protocol Examples
 
-4.1  General Push Distribution Sequence
+## 4 Protocol Examples
+
+### 4.1 General Push Distribution Sequence
 
 The following sequence occurs between a client and a server during a push distribution.
 
@@ -2656,7 +2526,8 @@ Release: April 23, 2024
 
 35 / 54
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-WMHTTP].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -2684,7 +2555,7 @@ E4: The server restarts the Idle-Timer.
 
   C1: The client closes the TCP connection.
 
-4.2  General Push Distribution Sequence with $F Packets
+### 4.2 General Push Distribution Sequence with $F Packets
 
 The following sequence occurs between a client and a server during a push distribution.
 
@@ -2701,7 +2572,8 @@ Release: April 23, 2024
 
 36 / 54
 
-Note  The HTTP exchanges required for authentication are defined by the selected authentication
+
+Note  The HTTP exchanges required for authentication are defined by the selected authentication
 scheme.
 
 3.  If authentication is not required, or if authentication has succeeded, the server responds with a
@@ -2746,14 +2618,15 @@ Release: April 23, 2024
 
 37 / 54
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-WMHTTP].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
 Figure 2: General push distribution sequence with $F packets and multiple PushStart
 requests
 
-4.3  Push Distribution with AutoDestroy and Template-URL
+### 4.3 Push Distribution with AutoDestroy and Template-URL
 
 The following sequence occurs between a client and a server during a push distribution when the
 AutoDestroy (section 2.2.2.1.2) directive is specified.
@@ -2773,7 +2646,8 @@ Release: April 23, 2024
 
 38 / 54
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-WMHTTP].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -2804,7 +2678,7 @@ Figure 3: Push distribution with AutoDestroy
 In the preceding diagram, the P1 callout identifies where the server obtains the settings to use from
 the publishing point specified in the Template_URL
 
-4.4  General Push Distribution Sequence with $C Packet
+### 4.4 General Push Distribution Sequence with $C Packet
 
 The following sequence occurs between a client and a server during a push distribution:
 
@@ -2815,7 +2689,8 @@ Release: April 23, 2024
 
 39 / 54
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-WMHTTP].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -2859,7 +2734,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.5  General Push Distribution Sequence with Server and Proxy Server
+
+### 4.5 General Push Distribution Sequence with Server and Proxy Server
 
 The following sequence occurs between a client, a proxy server and a server during a push
 distribution.
@@ -2934,7 +2810,8 @@ Release: April 23, 2024
 
 41 / 54
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-WMHTTP].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
@@ -2944,7 +2821,7 @@ the server, then the client sends multiple PushStart requests (as specified in s
 
 Figure 5: General push distribution sequence with Server and Proxy Server
 
-4.6  Server Push State Diagram
+### 4.6 Server Push State Diagram
 
 The push state diagram reflects the server's states during the push distribution sequence specified in
 section 4.1.
@@ -2956,7 +2833,8 @@ Release: April 23, 2024
 
 42 / 54
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-WMHTTP].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -2984,7 +2862,8 @@ Release: April 23, 2024
 
 43 / 54
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-WMHTTP].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
@@ -2999,7 +2878,7 @@ If, while processing the packets, the Idle-Timeout timer expires or the server r
 with the Reason field not equal to 0x00000001, then the server closes the session as specified in
 section 3.2.6.1. $E packet processing is specified in section 3.2.5.5.
 
-4.6.1  Expanded Streaming State Diagram
+#### 4.6.1 Expanded Streaming State Diagram
 
 The expanded streaming state diagram reflects the valid transactions between received packets. This
 diagram is a more detailed view of the "streaming state" in the server push state diagram in section
@@ -3026,7 +2905,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-WMHTTP].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
@@ -3037,7 +2917,7 @@ section 3.2.5.5.
 If the server receives an $F packet, the server will expect to receive either a $C, $D, $E, or $F packet.
 Information on processing the $F packets can be found in section 3.2.5.7.
 
-4.7  Client Push State Diagram
+### 4.7 Client Push State Diagram
 
 The push state diagram reflects the client's states during the push distribution sequence specified in
 section 4.1.
@@ -3058,7 +2938,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-WMHTTP].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
@@ -3079,7 +2960,7 @@ PushStart_InProgress state, then the client waits for a response to the PushStar
 in section 3.1.4.4. If the client is in PushStart_InProgress state and it receives a response to a
 PushStart request, then it transitions to the PushSetup Complete state.
 
-4.7.1  Expanded PushState_InProgress Diagram
+#### 4.7.1 Expanded PushState_InProgress Diagram
 
 The expanded PushState_InProgress diagram reflects the valid transactions between received
 packets. This diagram is a more detailed view of the "streaming state" in the client push state diagram
@@ -3100,7 +2981,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If this is not the first PushStart request, then the client will enter this state diagram at the last
+
+If this is not the first PushStart request, then the client will enter this state diagram at the last
 packet previously sent.
 
 If the client has sent a $C, $D, or $H packet, the client will expect to send either a $D, $E, or $F
@@ -3115,7 +2997,7 @@ $E packets can be found in section 3.1.4.4.
 If the client is sending an $F packet, the client will expect to send either a $C, $D, $E, or $F packet.
 Information on sending the $F packets can be found in section 3.1.4.3.
 
-4.8  Message Exchange During Push Distribution
+### 4.8 Message Exchange During Push Distribution
 
 The following example illustrates the exchange of messages between a client and a server during a
 push distribution. This example does not show the binary object headers, such as $C or $H.
@@ -3173,7 +3055,8 @@ Release: April 23, 2024
 
 47 / 54
 
- com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
+
+ com.microsoft.wm.fastcache, com.microsoft.wm.startupprofile
  Content-Length: 0
 
  POST /pubPoint HTTP/1.1
@@ -3230,9 +3113,10 @@ Release: April 23, 2024
 
 48 / 54
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The protocol is vulnerable to a session hijacking attack in which the attacker guesses the value of the
 push-id (section 2.2.1.3.1) cookie on the Set-Cookie header and the TCP port number used by the
@@ -3247,7 +3131,7 @@ The protocol does not provide support for encryption at the transport level. A c
 with mutual authentication risks sending sensitive data to a spurious/malicious server, therefore each
 implementer needs to validate the server's identity if NTLM is used during the PushStart request.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -3264,7 +3148,8 @@ Release: April 23, 2024
 
 49 / 54
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3332,7 +3217,8 @@ Windows Media HTTP Push Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<2> Section 3.1.4.1.1: Windows Media Format 9 Series SDK, Windows Media Format 9.5 SDK,
+
+<2> Section 3.1.4.1.1: Windows Media Format 9 Series SDK, Windows Media Format 9.5 SDK,
 Windows Vista and later list support for NTLM authentication (as specified in [MS-NLMP]) and Digest
 authentication (as specified in [RFC2617]). Support for SPNEGO-based Kerberos authentication, as
 specified in [RFC4559], is also listed if this is enabled in Internet Explorer. Although Basic
@@ -3398,7 +3284,8 @@ Release: April 23, 2024
 
 51 / 54
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3442,7 +3329,8 @@ Release: April 23, 2024
 
 52 / 54
 
-8  Index
+
+## 8 Index
 $
 
 $C (Stream Change Notification) (section 2.2.3.2 19,
@@ -3579,7 +3467,8 @@ Packet types 18
 
 53 / 54
 
-Tracking changes 52
+
+Tracking changes 52
 Transport 11
 Triggered events - higher-layer
    client 21

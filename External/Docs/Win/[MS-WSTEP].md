@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 43
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 43
 
-Date
+
+Date
 
 Revision
 History
@@ -446,235 +448,98 @@ Release: April 23, 2024
 
 3 / 43
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 SecurityTokenService Server Details](#31-securitytokenservice-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Authentication](#3111-authentication)
+        - [3.1.1.1.1 Kerberos Authentication](#31111-kerberos-authentication)
+        - [3.1.1.1.2 X.509v3 Certificate Authentication](#31112-x509v3-certificate-authentication)
+        - [3.1.1.1.3 Username and Password Authentication](#31113-username-and-password-authentication)
+        - [3.1.1.1.4 No (Anonymous) Authentication](#31114-no-anonymous-authentication)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 wst:RequestSecurityToken2](#3141-wstrequestsecuritytoken2)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 wst:RequestSecurityTokenMsg](#314111-wstrequestsecuritytokenmsg)
+          - [3.1.4.1.1.2 wst:RequestSecurityTokenResponseCollectionMsg](#314112-wstrequestsecuritytokenresponsecollectionmsg)
+        - [3.1.4.1.2 Elements](#31412-elements)
+          - [3.1.4.1.2.1 wstep:CertificateEnrollmentWSDetail](#314121-wstepcertificateenrollmentwsdetail)
+          - [3.1.4.1.2.2 DispositionMessage](#314122-dispositionmessage)
+          - [3.1.4.1.2.3 wst:KeyExchangeToken](#314123-wstkeyexchangetoken)
+          - [3.1.4.1.2.4 RequestID](#314124-requestid)
+          - [3.1.4.1.2.5 wst:RequestSecurityToken](#314125-wstrequestsecuritytoken)
+          - [3.1.4.1.2.6 RequestSecurityTokenResponseCollection](#314126-requestsecuritytokenresponsecollection)
+          - [3.1.4.1.2.7 wst:RequestType](#314127-wstrequesttype)
+          - [3.1.4.1.2.8 wst:TokenType](#314128-wsttokentype)
+        - [3.1.4.1.3 Complex Types](#31413-complex-types)
+          - [3.1.4.1.3.1 DispositionMessageType](#314131-dispositionmessagetype)
+          - [3.1.4.1.3.2 wst:RequestedSecurityTokenType](#314132-wstrequestedsecuritytokentype)
+          - [3.1.4.1.3.3 wst:RequestSecurityTokenType](#314133-wstrequestsecuritytokentype)
+          - [3.1.4.1.3.4 wst:RequestSecurityTokenResponseType](#314134-wstrequestsecuritytokenresponsetype)
+          - [3.1.4.1.3.5 wst:RequestSecurityTokenResponseCollectionType](#314135-wstrequestsecuritytokenresponsecollectiontype)
+          - [3.1.4.1.3.6 wst:RequestTypeEnum](#314136-wstrequesttypeenum)
+          - [3.1.4.1.3.7 wstep:CertificateEnrollmentWSDetailType](#314137-wstepcertificateenrollmentwsdetailtype)
+        - [3.1.4.1.4 Attributes](#31414-attributes)
+      - [3.1.4.2 Processing Rules](#3142-processing-rules)
+        - [3.1.4.2.1 WSTEP Action: Request Security Token Processing Rules](#31421-wstep-action-request-security-token-processing-rules)
+          - [3.1.4.2.1.1 New and Renewal Request Processing](#314211-new-and-renewal-request-processing)
+          - [3.1.4.2.1.2 QueryTokenStatus Request Processing](#314212-querytokenstatus-request-processing)
+        - [3.1.4.2.2 KET Action: Request Security Token Processing Rules](#31422-ket-action-request-security-token-processing-rules)
+          - [3.1.4.2.2.1 Key Exchange Token Request Processing](#314221-key-exchange-token-request-processing)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 RequestSecurityToken Request/Response Message Sequence](#41-requestsecuritytoken-requestresponse-message-sequence)
+    - [4.1.1 Standard Certificate Request](#411-standard-certificate-request)
+      - [4.1.1.1 RequestSecurityToken Message (Issue Request)](#4111-requestsecuritytoken-message-issue-request)
+      - [4.1.1.2 Server RequestSecurityToken Response](#4112-server-requestsecuritytoken-response)
+    - [4.1.2 Key Exchange Token Request](#412-key-exchange-token-request)
+      - [4.1.2.1 Client Exchange Token Request](#4121-client-exchange-token-request)
+      - [4.1.2.2 Server Key Exchange Token Response](#4122-server-key-exchange-token-response)
+    - [4.1.3 Retrieval of a previously pended certificate request with Query Token Status](#413-retrieval-of-a-previously-pended-certificate-request-with-query-token-status)
+      - [4.1.3.1 Client Request](#4131-client-request)
+    - [4.1.4 Message exchange with a server fault](#414-message-exchange-with-a-server-fault)
+      - [4.1.4.1 Client Request](#4141-client-request)
+      - [4.1.4.2 Server Fault Response](#4142-server-fault-response)
+    - [4.1.5 Certificate Renewal](#415-certificate-renewal)
+      - [4.1.5.1 Client Renewal Request](#4151-client-renewal-request)
+      - [4.1.5.2 Server Request Security Token Response](#4152-server-request-security-token-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Common Message Syntax ................................................................................. 13
-Namespaces .............................................................................................. 13
-Messages ................................................................................................... 13
-Elements ................................................................................................... 13
-Complex Types ........................................................................................... 13
-Simple Types ............................................................................................. 13
-Attributes .................................................................................................. 14
-Groups ...................................................................................................... 14
-Attribute Groups ......................................................................................... 14
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.1
-
-3.1.4.1
-
-3.1.1.1
-
-3.1.4.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.1.1
-3.1.4.1.1.2
-
-3.1.1.1.1
-3.1.1.1.2
-3.1.1.1.3
-3.1.1.1.4
-
-3  Protocol Details ..................................................................................................... 15
-SecurityTokenService Server Details ................................................................... 15
-Abstract Data Model .................................................................................... 16
-Authentication ...................................................................................... 16
-Kerberos Authentication ................................................................... 16
-X.509v3 Certificate Authentication ..................................................... 16
-Username and Password Authentication ............................................. 16
-No (Anonymous) Authentication ........................................................ 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 17
-wst:RequestSecurityToken2 ................................................................... 17
-Messages ....................................................................................... 17
-wst:RequestSecurityTokenMsg .................................................... 17
-wst:RequestSecurityTokenResponseCollectionMsg .......................... 17
-Elements ........................................................................................ 17
-wstep:CertificateEnrollmentWSDetail ............................................ 17
-DispositionMessage .................................................................... 18
-wst:KeyExchangeToken .............................................................. 18
-RequestID ................................................................................. 18
-wst:RequestSecurityToken .......................................................... 18
-RequestSecurityTokenResponseCollection ..................................... 18
-wst:RequestType ....................................................................... 18
-wst:TokenType .......................................................................... 19
-Complex Types ............................................................................... 19
-DispositionMessageType ............................................................. 19
-wst:RequestedSecurityTokenType ................................................ 19
-wst:RequestSecurityTokenType ................................................... 20
-wst:RequestSecurityTokenResponseType ...................................... 21
-wst:RequestSecurityTokenResponseCollectionType ........................ 22
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-3.1.4.1.2.3
-3.1.4.1.2.4
-3.1.4.1.2.5
-3.1.4.1.2.6
-3.1.4.1.2.7
-3.1.4.1.2.8
-
-3.1.4.1.3.1
-3.1.4.1.3.2
-3.1.4.1.3.3
-3.1.4.1.3.4
-3.1.4.1.3.5
-
-3.1.4.1.3
-
-3.1.4.1.2
-
-[MS-WSTEP] - v20240423
-WS-Trust X.509v3 Token Enrollment Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 43
-
-3.1.4.1.4
-
-3.1.4.2
-
-3.1.4.2.1
-
-3.1.4.1.3.6
-3.1.4.1.3.7
-
-wst:RequestTypeEnum ............................................................... 23
-wstep:CertificateEnrollmentWSDetailType ..................................... 23
-Attributes ....................................................................................... 24
-Processing Rules ................................................................................... 24
-WSTEP Action: Request Security Token Processing Rules ...................... 24
-New and Renewal Request Processing .......................................... 24
-QueryTokenStatus Request Processing ......................................... 25
-KET Action: Request Security Token Processing Rules .......................... 25
-Key Exchange Token Request Processing ...................................... 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-
-3.1.4.2.1.1
-3.1.4.2.1.2
-
-3.1.4.2.2
-
-3.1.4.2.2.1
-
-3.1.5
-3.1.6
-
-4.1
-
-4.1.2
-
-4.1.1
-
-4.1.1.1
-4.1.1.2
-
-4.1.2.1
-4.1.2.2
-
-4  Protocol Examples ................................................................................................. 27
-RequestSecurityToken Request/Response Message Sequence ................................ 27
-Standard Certificate Request ........................................................................ 27
-RequestSecurityToken Message (Issue Request) ....................................... 27
-Server RequestSecurityToken Response ................................................... 28
-Key Exchange Token Request ....................................................................... 30
-Client Exchange Token Request .............................................................. 30
-Server Key Exchange Token Response ..................................................... 31
-Retrieval of a previously pended certificate request with Query Token Status ..... 32
-Client Request ...................................................................................... 32
-Message exchange with a server fault ........................................................... 32
-Client Request ...................................................................................... 32
-Server Fault Response ........................................................................... 32
-Certificate Renewal ..................................................................................... 33
-Client Renewal Request ......................................................................... 33
-Server Request Security Token Response ................................................. 35
-
-4.1.4.1
-4.1.4.2
-
-4.1.5.1
-4.1.5.2
-
-4.1.3.1
-
-4.1.3
-
-4.1.4
-
-4.1.5
-
-5  Security ................................................................................................................. 38
-Security Considerations for Implementers ........................................................... 38
-Index of Security Parameters ............................................................................ 38
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 39
-
-7  Appendix B: Product Behavior ............................................................................... 40
-
-8  Change Tracking .................................................................................................... 41
-
-9  Index ..................................................................................................................... 42
-
-[MS-WSTEP] - v20240423
-WS-Trust X.509v3 Token Enrollment Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 43
-
-1  Introduction
+## 1 Introduction
 
 The WS-Trust X.509v3 Token Enrollment Extensions are extensions of WS-Trust that are used by a
 system to request that a certificate be issued.
@@ -686,7 +551,7 @@ response based on the request type.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -744,7 +609,8 @@ Release: April 23, 2024
 
 6 / 43
 
-SOAP fault: A container for error and status information within a SOAP message. See [SOAP1.2-
+
+SOAP fault: A container for error and status information within a SOAP message. See [SOAP1.2-
 
 1/2007] section 5.4 for more information.
 
@@ -785,14 +651,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -816,7 +682,8 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC3066] Alvestrand, H., "Tags for the Identification of Languages", BCP 47, RFC 3066, January
+
+[RFC3066] Alvestrand, H., "Tags for the Identification of Languages", BCP 47, RFC 3066, January
 2001, https://www.rfc-editor.org/info/rfc3066
 
 [RFC3852] Housley, R., "Cryptographic Message Syntax (CMS)", RFC 3852, July 2004,
@@ -855,7 +722,7 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DUBUISSON] Dubuisson, O., "ASN.1 Communication between Heterogeneous Systems", Morgan
 Kaufmann, October 2000, ISBN: 0126333610.
@@ -863,7 +730,7 @@ Kaufmann, October 2000, ISBN: 0126333610.
 [SCEP] Nourse, A., and Vilhuber, J. Ed., "Cisco Systems' Simple Certificate Enrollment Protocol", April
 2009, http://tools.ietf.org/html/draft-nourse-scep-19
 
-1.3  Overview
+### 1.3 Overview
 
 The WS-Trust X.509v3 Token Enrollment Extensions (WSTEP) defines the token enrollment profile for
 WS-Trust [WSTrust1.3] to allow a client to request X.509v3 certificates.
@@ -881,7 +748,8 @@ Release: April 23, 2024
 
 8 / 43
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-WSTEP].images/page009-img01.png)
 ![Extracted image 2 from page 9]([MS-WSTEP].images/page009-img02.png)
 <!-- /Extracted images from page 9 -->
@@ -911,7 +779,8 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-WSTEP].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-WSTEP].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
@@ -927,7 +796,7 @@ this is the same as an issue request, as the message format is unchanged.
 
 Figure 4: Typical sequence for a certificate renewal request
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following figure shows the WSTEP Protocol stack diagram.
 
@@ -938,7 +807,8 @@ Release: April 23, 2024
 
 10 / 43
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-WSTEP].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -948,22 +818,22 @@ The WSTEP protocol specification is a profile of the WS-Trust Protocol [WSTrust1
 the SOAP and Hypertext Transfer Protocol over Secure Sockets Layer (HTTPS) protocols for
 messaging and security.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The WSTEP protocol specification facilitates the issuance of X.509v3 certificates. A server
 implementation of the protocol requires the functionality of a certificate authority, capable of
 interpreting requests in at least one of PKCS#7, PKCS#10, or Certificate Management Messages
 over CMS (CMC).
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The WSTEP protocol specification is applicable only for requests for X.509v3 certificates.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The WSTEP protocol specification does not include versioning and capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The WSTEP protocol specification does not include any vendor-extensible fields.  WSTEP adheres to
 the WS-Trust 1.3 [WSTrust1.3] provided extension points.
@@ -975,7 +845,8 @@ Release: April 23, 2024
 
 11 / 43
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -986,20 +857,21 @@ Release: April 23, 2024
 
 12 / 43
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 SOAP version 1.2 MUST be used for messaging for the WSTEP protocol. HTTPS protocol MUST be
 used as the transport.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses the
 XML schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and the Web Services Description
 Language (WSDL) as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces, using the mechanisms specified
 in [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1046,19 +918,19 @@ wstep
 
 This document
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 None.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 This specification does not define any common XML schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 The WSTEP protocol specification does not define any common XML schema simple type definitions.
 
@@ -1069,15 +941,16 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.6  Attributes
+
+#### 2.2.6 Attributes
 
 The WSTEP protocol specification does not define any common XML schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 The WSTEP protocol specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 The WSTEP protocol specification does not define any common XML schema attribute group
 definitions.
@@ -1089,11 +962,12 @@ Release: April 23, 2024
 
 14 / 43
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-WSTEP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The client side of this protocol is a simple pass-through. No additional timers or other state is required
 on the client side of this protocol. Calls made by the higher-layer protocol or application are passed
@@ -1103,7 +977,7 @@ the higher-layer protocol or application.
 This section addresses the message processing model for the protocol. It includes related information
 required by an implementation to successfully send and consume protocol messages.
 
-3.1  SecurityTokenService Server Details
+### 3.1 SecurityTokenService Server Details
 
 The SecurityTokenService hosts a message endpoint that receives RequestSecurityToken
 messages. When received, the server processes the client request and sends it to the certificate
@@ -1124,11 +998,12 @@ Release: April 23, 2024
 
 15 / 43
 
-The certificate authority MAY have additional requirements that MUST be met in order to issue an
+
+The certificate authority MAY have additional requirements that MUST be met in order to issue an
 X.509v3 certificate, such as manager approval, payment processing, or validation of request
 information.  In these instances, a certificate authority response indicating the issuance is pending.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 A server supporting the WSTEP protocol maintains a relationship to an issuer which processes
 messages submitted by the server. When communicating with requestors, a server can support a
@@ -1146,40 +1021,40 @@ DefaultLanguage: The default language for the server. DefaultLanguage is of type
 
 set of supported languages is defined in [RFC3066].
 
-3.1.1.1  Authentication
+##### 3.1.1.1 Authentication
 
 The WS-Trust X.509v3 Token Enrollment Extensions use the authentication provisions in WS-Security
 ([WSS]) for the X.509v3 Security Token issuer to authenticate the X.509v3 Security Token requestor.
 This section defines the schema used to express the credential descriptor for each supported
 credential type.
 
-3.1.1.1.1 Kerberos Authentication
+###### 3.1.1.1.1 Kerberos Authentication
 
 Authentication using Kerberos is done at the transport layer.
 
-3.1.1.1.2 X.509v3 Certificate Authentication
+###### 3.1.1.1.2 X.509v3 Certificate Authentication
 
 Authentication using X.509v3 certificates is done at the transport level using Transport Level
 Security (TLS) 1.2 as defined in [RFC5246].
 
-3.1.1.1.3 Username and Password Authentication
+###### 3.1.1.1.3 Username and Password Authentication
 
 The username and password credential is provided in a request message using the WS-Security
 Username Token Profile 1.0. The username is provided as defined in section 3.1 of the Ws-Security
 document [WSSUTP].
 
-3.1.1.1.4 No (Anonymous) Authentication
+###### 3.1.1.1.4 No (Anonymous) Authentication
 
 If no authentication is provided at either the transport layer or the message layer, the request is
 considered to be anonymous. Anonymous authentication is supported only for renewal requests,
 where the signature from the existing certificate on the request object serves as authentication for
 the X.509v3 Security Token requestor.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The SupportedLanguages object MUST be initialized with the set of languages that the server
 supports.
@@ -1191,11 +1066,12 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The DefaultLanguage parameter MUST be initialized with the language that is to be used by the server
+
+The DefaultLanguage parameter MUST be initialized with the language that is to be used by the server
 when a request does not define a language preference, or the preference is not in
 SupportedLanguages.<1>
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 Operation
 
@@ -1208,7 +1084,7 @@ of pending certificate status, and the request of the server key exchange
 certificate. The wst:RequestSecurityToken2 operation is defined in WS-Trust 1.3
 [WSTrust1.3].
 
-3.1.4.1  wst:RequestSecurityToken2
+##### 3.1.4.1 wst:RequestSecurityToken2
 
 The wst:RequestSecurityToken2 operation provides the mechanism for certificate enrollment
 requests, retrieval of pending certificate status, and the request of the server key exchange
@@ -1226,11 +1102,11 @@ wst:RequestSecurityTokenMsg message consists of a single object definition: the 
 The client request is made using the acceptable SOAP actions as defined in section 3.1.4.2 and
 RequestType values, as defined in section 3.1.4.1.2.7.
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
 The following WSDL message definitions are specific to this operation.
 
-3.1.4.1.1.1  wst:RequestSecurityTokenMsg
+###### 3.1.4.1.1.1 wst:RequestSecurityTokenMsg
 
 The wst:RequestSecurityTokenMsg is an incoming message, and is defined in WS-Trust 1.3
 [WSTrust1.3] WSDL.
@@ -1239,7 +1115,7 @@ wst:RequestSecurityToken: An instance of a wst:RequestSecurityTokenType complex 
 defined in section 3.1.4.1.3.3. The wst:RequestSecurityToken element defines the client
 request and the required information for it to be processed.
 
-3.1.4.1.1.2  wst:RequestSecurityTokenResponseCollectionMsg
+###### 3.1.4.1.1.2 wst:RequestSecurityTokenResponseCollectionMsg
 
 The wst:RequestSecurityTokenResponseCollectionMsg is an outgoing message, and is defined in WS-
 Trust 1.3 [WSTrust1.3] WSDL.
@@ -1249,7 +1125,7 @@ wst:RequestSecurityTokenResponseCollectionMsg: An instance of a
 wst:RequestSecurityTokenResponseCollection element as defined in section 3.1.4.1.2.6. This
 element contains the results of the client request.
 
-3.1.4.1.2 Elements
+###### 3.1.4.1.2 Elements
 
 [MS-WSTEP] - v20240423
 WS-Trust X.509v3 Token Enrollment Extensions
@@ -1258,7 +1134,8 @@ Release: April 23, 2024
 
 17 / 43
 
-3.1.4.1.2.1  wstep:CertificateEnrollmentWSDetail
+
+###### 3.1.4.1.2.1 wstep:CertificateEnrollmentWSDetail
 
 The wstep:CertificateEnrollmentWSDetail element is used to convey additional information to a
 client as part of the SOAP fault structure when a server returns a SOAP fault.
@@ -1272,7 +1149,7 @@ wstep:CertificateEnrollmentWSDetail: An instance of a
 additional information, the wstep:CertificateEnrollmentWSDetail SHOULD be omitted in the
 SOAP fault.
 
-3.1.4.1.2.2  DispositionMessage
+###### 3.1.4.1.2.2 DispositionMessage
 
  <xs:element name="DispositionMessage"
  type="wstep:DispositionMessageType" nillable="true" />
@@ -1281,7 +1158,7 @@ DispositionMessage: An instance of a DispositionMessageType object as defined in
 
 3.1.4.1.3.1.
 
-3.1.4.1.2.3  wst:KeyExchangeToken
+###### 3.1.4.1.2.3 wst:KeyExchangeToken
 
 The <wst:KeyExchangeToken> element is defined in WS-Trust 1.3 [WSTrust1.3] section 8.4.
 
@@ -1289,14 +1166,14 @@ wst:KeyExchangeToken: The wst:KeyExchangeToken element provides a key exchange t
 
 can be used in certificate enrollment requests that include the private key.
 
-3.1.4.1.2.4  RequestID
+###### 3.1.4.1.2.4 RequestID
 
  <xs:element name="RequestID"
  type="xs:string" nillable="true"/>
 
 RequestID: A string identifier used to identify a request.
 
-3.1.4.1.2.5  wst:RequestSecurityToken
+###### 3.1.4.1.2.5 wst:RequestSecurityToken
 
 The <wst:RequestSecurityToken> element is defined in WS-Trust 1.3 [WSTrust1.3], section 3.1.
 
@@ -1304,7 +1181,7 @@ wst:RequestSecurityToken: An instance of a wst:RequestSecurityTokenType object a
 
 in section 3.1.4.1.3.3.
 
-3.1.4.1.2.6  RequestSecurityTokenResponseCollection
+###### 3.1.4.1.2.6 RequestSecurityTokenResponseCollection
 
 The RequestSecurityTokenResponseCollection is defined in WS-Trust 1.3 [WSTrust1.3], section 3.2.
 
@@ -1312,7 +1189,7 @@ RequestSecurityTokenResponseCollection: An instance of a
 
 wst:RequestSecurityTokenResponseCollectionType object as specified in section 3.1.4.1.3.5.
 
-3.1.4.1.2.7  wst:RequestType
+###### 3.1.4.1.2.7 wst:RequestType
 
 The <wst:RequestType> element is defined in [WSTrust1.3] section 3.1.
 
@@ -1327,7 +1204,8 @@ Release: April 23, 2024
 
 18 / 43
 
-The <wst:RequestType> MUST have one of the following values:
+
+The <wst:RequestType> MUST have one of the following values:
 
  "http://docs.oasis-open.org/ws-sx/ws-trust/200512/Issue"
  "http://schemas.microsoft.com/windows/pki/2009/01/enrollment/QueryTokenStatus"
@@ -1335,7 +1213,7 @@ Release: April 23, 2024
 
 If the <wst:RequestType> has any other value, the server MUST respond with a SOAP fault.
 
-3.1.4.1.2.8  wst:TokenType
+###### 3.1.4.1.2.8 wst:TokenType
 
 The <TokenType> element is defined in [WSTrust1.3], section 3.1.
 
@@ -1344,11 +1222,11 @@ wst:TokenType: For the X.509v3 enrollment extension to WS-Trust, the <wst:tokent
 MUST be http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-
 1.0#X509v3.
 
-3.1.4.1.3 Complex Types
+###### 3.1.4.1.3 Complex Types
 
 The following XML schema complex type definitions are specific to this operation.
 
-3.1.4.1.3.1  DispositionMessageType
+###### 3.1.4.1.3.1 DispositionMessageType
 
 The DispositionMessageType is an extension to the string type that allows an attribute definition of the
 language for the string. The DispositionMessageType is used to provide additional information about
@@ -1370,7 +1248,7 @@ xml:lang: The language reference  xml:lang, indicating the natural or formal lan
 
 element content is written in.
 
-3.1.4.1.3.2  wst:RequestedSecurityTokenType
+###### 3.1.4.1.3.2 wst:RequestedSecurityTokenType
 
 The wst:RequestedSecurityTokenType is defined in WS-Trust XML schema definition (XSD)
 [WSTrust1.3Schema].
@@ -1392,7 +1270,8 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     <xs:element ref="wsse:SecurityTokenReference" />
+
+     <xs:element ref="wsse:SecurityTokenReference" />
 
 The server SHOULD<2> include the end entity certificate in the RequestedSecurityToken response.
 The ValueType of the BinarySecurityToken element for this RequestedSecurityToken response
@@ -1409,7 +1288,7 @@ Request can be retrieved. The server MUST provide its own URI as the value of th
 <wsse:BinarySecurityTokenReference:Reference> element as specified in [WSTrust1.3] section
 4.2.
 
-3.1.4.1.3.3  wst:RequestSecurityTokenType
+###### 3.1.4.1.3.3 wst:RequestSecurityTokenType
 
 The wst:RequestSecurityTokenType complex type contains the elements for the security token
 request in the RequestSecurityTokenMsg message. It is the client-provided object for a certificate
@@ -1465,7 +1344,8 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WSTEP extends <wst:RequestSecurityTokenType> with the following elements:
+
+WSTEP extends <wst:RequestSecurityTokenType> with the following elements:
 
  <xs:element ref="wsse:BinarySecurityToken" minOccurs="0"
  maxOccurs="1" />
@@ -1500,7 +1380,7 @@ is no extra information to be passed.
 
 wstep:RequestID: An instance of wstep:RequestID as specified in section 3.1.4.1.2.4.
 
-3.1.4.1.3.4  wst:RequestSecurityTokenResponseType
+###### 3.1.4.1.3.4 wst:RequestSecurityTokenResponseType
 
 The wst:RequestSecurityTokenResponseType contains the elements that are part of a server response
 to a wst:RequestSecurityToken message. wst:RequestSecurityTokenResponseType is defined in the
@@ -1538,7 +1418,8 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       <xs:element ref='wst:Encryption' minOccurs='0' />
+
+       <xs:element ref='wst:Encryption' minOccurs='0' />
        <xs:element ref='wst:EncryptionAlgorithm' minOccurs='0' />
        <xs:element ref='wst:CanonicalizationAlgorithm' minOccurs='0' />
        <xs:element ref='wst:ProofEncryption' minOccurs='0' />
@@ -1593,7 +1474,7 @@ wstep:RequestID: An instance of a wstep:RequestID as defined in section 3.1.4.1.
 
 conveys the request identifier of the originating request.
 
-3.1.4.1.3.5  wst:RequestSecurityTokenResponseCollectionType
+###### 3.1.4.1.3.5 wst:RequestSecurityTokenResponseCollectionType
 
 The <wst:RequestSecurityTokenResponseCollectionType> is defined in the [WSTrust1.3] XML schema
 definition (XSD) as a collection of one or more <wst:RequestSecurityTokenResponse> elements. The
@@ -1611,7 +1492,8 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   <xs:documentation>
+
+   <xs:documentation>
  The <wst:RequestSecurityTokenResponseCollection> element (RSTRC) MUST be used to return a
 security token or response to a security token request on the final
 response.</xs:documentation>
@@ -1627,7 +1509,7 @@ wst:RequestSecurityTokenResponse: An instance of a wst:RequestSecurityTokenRespo
 object. The <wst:RequestSecurityTokenResponseCollectionType> MUST contain only one
 <RequestSecurityTokenResponse> element.
 
-3.1.4.1.3.6  wst:RequestTypeEnum
+###### 3.1.4.1.3.6 wst:RequestTypeEnum
 
 The <wst:RequestTypeEnum> is defined in WS-Trust [WSTrust1.3] XML schema definition (XSD).
 WSTEP defines the following values for <wst:RequestTypeEnum>.
@@ -1642,7 +1524,7 @@ and the issue request type defined in [WSTrust1.3] XML schema definition (XSD):
 
  "http://docs.oasis-open.org/ws-sx/ws-trust/200512/Issue"
 
-3.1.4.1.3.7  wstep:CertificateEnrollmentWSDetailType
+###### 3.1.4.1.3.7 wstep:CertificateEnrollmentWSDetailType
 
 The <wstep:CertificateEnrollmentWSDetailType> contains additional information pertaining to error
 conditions.
@@ -1676,7 +1558,8 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-wstep:InvalidRequest: If the request is denied by the Issuer the server MUST return true. For other
+
+wstep:InvalidRequest: If the request is denied by the Issuer the server MUST return true. For other
 
 errors the wstep:InvalidRequest SHOULD be false.
 
@@ -1684,11 +1567,11 @@ wstep:RequestID: If the Issuer provides a wstep:RequestID to the server, it MUST
 client. If no wstep:RequestID is provided by the Issuer, the wstep:RequestID element must be
 specified as nil.
 
-3.1.4.1.4 Attributes
+###### 3.1.4.1.4 Attributes
 
 There are no attributes that are specific to this operation.
 
-3.1.4.2  Processing Rules
+##### 3.1.4.2 Processing Rules
 
 An incoming SOAP message MUST be processed to evaluate the SOAP actions and authentication
 information.
@@ -1705,7 +1588,7 @@ follow the Key Exchange Token Processing Rules per section 3.1.4.2.2.
 
 If any other SOAP action is defined, the server SHOULD respond with a SOAP fault.
 
-3.1.4.2.1 WSTEP Action: Request Security Token Processing Rules
+###### 3.1.4.2.1 WSTEP Action: Request Security Token Processing Rules
 
 A <wst:RequestSecurityTokenMsg> MUST contain a <wst:RequestType> element as defined in
 section 3.1.4.1.2.7. If the <wst:RequestType> element is absent, nil, or undefined, the server MUST
@@ -1723,7 +1606,7 @@ process the request per section 3.1.4.2.1.2.
 
 If the <wst:RequestType> is any other value, the server MUST respond with a SOAP fault.
 
-3.1.4.2.1.1  New and Renewal Request Processing
+###### 3.1.4.2.1.1 New and Renewal Request Processing
 
 A wst:RequestSecurityToken message with a wst:RequestType value of "http://docs.oasis-
 open.org/ws-sx/ws-trust/200512/Issue" is used for the purposes of issuing an X.509v3 certificate or
@@ -1746,7 +1629,8 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST provide the wsse:BinarySecurityToken to the Issuer and SHOULD provide the
+
+The server MUST provide the wsse:BinarySecurityToken to the Issuer and SHOULD provide the
 auth:AdditionalContext (see section 3.1.4.1.3.3) to the Issuer.
 
 If the Issuer responds with an error, the server MUST respond with a SOAP fault. If the Issuer
@@ -1755,7 +1639,7 @@ wst:RequestSecurityTokenResponseCollectionMsg message. If the Issuer responds wi
 issued certificate, the server MUST respond with a
 wst:RequestSecurityTokenResponseCollectionMsg message providing the issued certificate.
 
-3.1.4.2.1.2  QueryTokenStatus Request Processing
+###### 3.1.4.2.1.2 QueryTokenStatus Request Processing
 
 A wst:RequestSecurityToken message with a <wst:RequestType> of
 "http://schemas.microsoft.com/windows/pki/2009/01/enrollment/QueryTokenStatus" is used to
@@ -1775,7 +1659,7 @@ wst:RequestSecurityTokenResponseCollectionMsg message.  If the Issuer responds w
 issued certificate, the server MUST respond with a
 wst:RequestSecurityTokenResponseCollectionMsg message providing the issued certificate.
 
-3.1.4.2.2 KET Action: Request Security Token Processing Rules
+###### 3.1.4.2.2 KET Action: Request Security Token Processing Rules
 
 A wst:RequestSecurityTokenMsg MUST contain a <wst:RequestType> element as defined in
 section 3.1.4.1.2.7. If the <wst:RequestType> element is absent, nil, or undefined, the server MUST
@@ -1786,7 +1670,7 @@ MUST process the request per section 3.1.4.2.2.1.
 
 If the <wst:RequestType> is any other value, the server MUST respond with a SOAP fault.
 
-3.1.4.2.2.1  Key Exchange Token Request Processing
+###### 3.1.4.2.2.1 Key Exchange Token Request Processing
 
 A RequestSecurityToken message of wst:RequestType of "http://docs.oasis-open.org/ws-sx/ws-
 trust/200512/KET" is used to retrieve the Key Exchange Token.
@@ -1811,11 +1695,12 @@ Release: April 23, 2024
 
 25 / 43
 
-3.1.5  Timer Events
+
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -1826,16 +1711,17 @@ Release: April 23, 2024
 
 26 / 43
 
-4  Protocol Examples
 
-4.1  RequestSecurityToken Request/Response Message Sequence
+## 4 Protocol Examples
+
+### 4.1 RequestSecurityToken Request/Response Message Sequence
 
 In the following message sequence, the username/password authentication headers have been
 included in the message sequences for clarity.
 
-4.1.1  Standard Certificate Request
+#### 4.1.1 Standard Certificate Request
 
-4.1.1.1  RequestSecurityToken Message (Issue Request)
+##### 4.1.1.1 RequestSecurityToken Message (Issue Request)
 
     <s:Envelope xmlns:a="http://www.w3.org/2005/08/addressing"
  xmlns:s="http://www.w3.org/2003/05/soap-envelope">
@@ -1893,7 +1779,8 @@ Release: April 23, 2024
 
 27 / 43
 
-4.1.1.2  Server RequestSecurityToken Response
+
+##### 4.1.1.2 Server RequestSecurityToken Response
 
    <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
  xmlns:a="http://www.w3.org/2005/08/addressing">
@@ -1969,7 +1856,8 @@ Release: April 23, 2024
 
 28 / 43
 
-aWMlMjBLZXklMjBTZXJ2aWNlcyxDTj1TZXJ2aWNlcyxDTj1Db25maWd1cmF0aW9u
+
+aWMlMjBLZXklMjBTZXJ2aWNlcyxDTj1TZXJ2aWNlcyxDTj1Db25maWd1cmF0aW9u
 LERDPWQ5LTEzNTFDMDQwNkEsREM9bnR0ZXN0LERDPW1pY3Jvc29mdCxEQz1jb20/
 Y0FDZXJ0aWZpY2F0ZT9iYXNlP29iamVjdENsYXNzPWNlcnRpZmljYXRpb25BdXRo
 b3JpdHkwDQYJKoZIhvcNAQEFBQADggEBACUFJf5b34y2bob4+rmjcJ2F4MRRg8C3
@@ -2047,7 +1935,8 @@ Release: April 23, 2024
 
 29 / 43
 
-eTXL+066yjKNzeK3Dajc/2OT5s/h4Mba6RGMwxyOrFDnQ4HN7uFdB/aGs0QlFN3q
+
+eTXL+066yjKNzeK3Dajc/2OT5s/h4Mba6RGMwxyOrFDnQ4HN7uFdB/aGs0QlFN3q
 k8g50C5vwfP8OI9hoRjvlc0RB6lzXWcuarYZD1iCFwIDAQABo4IDFjCCAxIwRAYJ
 KoZIhvcNAQkPBDcwNTAOBggqhkiG9w0DAgICAIAwDgYIKoZIhvcNAwQCAgCAMAcG
 BSsOAwIHMAoGCCqGSIb3DQMHMBcGCSsGAQQBgjcUAgQKHggAVQBzAGUAcjCB2gYI
@@ -2079,9 +1968,9 @@ xmlns="http://schemas.microsoft.com/windows/pki/2009/01/enrollment">61</RequestI
    </s:Body>
    </s:Envelope>
 
-4.1.2  Key Exchange Token Request
+#### 4.1.2 Key Exchange Token Request
 
-4.1.2.1  Client Exchange Token Request
+##### 4.1.2.1 Client Exchange Token Request
 
    <s:Envelope xmlns:a="http://www.w3.org/2005/08/addressing"
  xmlns:s="http://www.w3.org/2003/05/soap-envelope">
@@ -2113,7 +2002,8 @@ Release: April 23, 2024
 
 30 / 43
 
-4.1.2.2  Server Key Exchange Token Response
+
+##### 4.1.2.2 Server Key Exchange Token Response
 
    <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
  xmlns:a="http://www.w3.org/2005/08/addressing">
@@ -2183,9 +2073,10 @@ Release: April 23, 2024
 
 31 / 43
 
-4.1.3  Retrieval of a previously pended certificate request with Query Token Status
 
-4.1.3.1  Client Request
+#### 4.1.3 Retrieval of a previously pended certificate request with Query Token Status
+
+##### 4.1.3.1 Client Request
 
    <s:Envelope xmlns:a="http://www.w3.org/2005/08/addressing"
  xmlns:s="http://www.w3.org/2003/05/soap-envelope">
@@ -2211,13 +2102,13 @@ xmlns="http://schemas.microsoft.com/windows/pki/2009/01/enrollment">65</RequestI
    </s:Body>
    </s:Envelope>
 
-4.1.4  Message exchange with a server fault
+#### 4.1.4 Message exchange with a server fault
 
-4.1.4.1  Client Request
+##### 4.1.4.1 Client Request
 
 See section 4.1.1.1 for an example of a client request.
 
-4.1.4.2  Server Fault Response
+##### 4.1.4.2 Server Fault Response
 
    <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
  xmlns:a="http://www.w3.org/2005/08/addressing">
@@ -2251,7 +2142,8 @@ WS-Trust X.509v3 Token Enrollment Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- send the exception information back to the client, or turn on tracing as per
+
+ send the exception information back to the client, or turn on tracing as per
   the Microsoft .NET Framework 3.0 SDK documentation and inspect the server
  trace logs.</s:Text>
    </s:Reason>
@@ -2259,9 +2151,9 @@ Release: April 23, 2024
    </s:Body>
    </s:Envelope>
 
-4.1.5  Certificate Renewal
+#### 4.1.5 Certificate Renewal
 
-4.1.5.1  Client Renewal Request
+##### 4.1.5.1 Client Renewal Request
 
    <s:Envelope xmlns:a="http://www.w3.org/2005/08/addressing"
  xmlns:s="http://www.w3.org/2003/05/soap-envelope">
@@ -2323,7 +2215,8 @@ Release: April 23, 2024
 
 33 / 43
 
-MDQwNkEuTlRURVNULk1JQ1JPU09GVC5DT00wggEiMA0GCSqGSIb3DQEBAQUAA4IB
+
+MDQwNkEuTlRURVNULk1JQ1JPU09GVC5DT00wggEiMA0GCSqGSIb3DQEBAQUAA4IB
 DwAwggEKAoIBAQCUIUF1eKRjXgCHj0u0lmiL+Gq1uG85wgfsz2th+w0jM+BA+lKL
 e57dbCc+FqzpZqJruPgGDSAfMP4o6Kk8roM/4kPEVSJYIBidnC3hRx2txSR7HrcS
 Lo8/xhnxWY7m8WjpCfro2mBV/JbOnTT5KfU0Z+YSSCGzEVahJqN2Wj11z3VBZ8YC
@@ -2401,7 +2294,8 @@ Release: April 23, 2024
 
 34 / 43
 
-AgEBMEEwMzEbMBkGA1UECxMSTWljcm9zb2Z0IFBLSSBUZWFtMRQwEgYDVQQDDAtG
+
+AgEBMEEwMzEbMBkGA1UECxMSTWljcm9zb2Z0IFBLSSBUZWFtMRQwEgYDVQQDDAtG
 Ql9FbnRTdWJDQQIKGNnfBgAAAAAAPjAJBgUrDgMCGgUAMA0GCSqGSIb3DQEBAQUA
 BIIBAFO6/80HTk6v4fX5rYijOEpz43tvLOQk/0SfXeg4Nlm47SAzqDzNSZ3QljLJ
 vZoBnz4E2vc1ITZsLYpMN0o4rxflZwc+2X7MtoYbnbmVllZnTnQINDfbmIiXyi+L
@@ -2415,7 +2309,7 @@ YQ13sBxWI1sFuxMsmzwQ1TJrFauvjoPt96HfloG96p9w8D1zKxt1hqCI+XqIIqur
    </s:Body>
    </s:Envelope>
 
-4.1.5.2  Server Request Security Token Response
+##### 4.1.5.2 Server Request Security Token Response
 
    <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
  xmlns:a="http://www.w3.org/2005/08/addressing">
@@ -2474,7 +2368,8 @@ Release: April 23, 2024
 
 35 / 43
 
-MRUwEwYDVQQDDAxGQl9FbnRSb290Q0EwHhcNMDkwMzAzMDMyNjE2WhcNMTEwMzAz
+
+MRUwEwYDVQQDDAxGQl9FbnRSb290Q0EwHhcNMDkwMzAzMDMyNjE2WhcNMTEwMzAz
 MDMzNjE2WjAzMRswGQYDVQQLExJNaWNyb3NvZnQgUEtJIFRlYW0xFDASBgNVBAMM
 C0ZCX0VudFN1YkNBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzqtl
 8VMe3t1durXs81ORjWBWoxDQtTPJAlYNQdqvS+H2HutrUNjvW/+vKOAm0ib8GR3u
@@ -2551,7 +2446,8 @@ Release: April 23, 2024
 
 36 / 43
 
-deTO8i8ksQ+aO/LsbEShmK/qWmHnnQ45Z8bWxkpvt7EtxpYGwQiZt6lU2oQt/UYL
+
+deTO8i8ksQ+aO/LsbEShmK/qWmHnnQ45Z8bWxkpvt7EtxpYGwQiZt6lU2oQt/UYL
 hZBPEYQC1KpgCTMmVuzk6NdEim2z7RXUMIFBmjDTAh6M9FdLmMKQDw==</BinarySecurityToken>
    <RequestedSecurityToken>
    <BinarySecurityToken
@@ -2611,13 +2507,14 @@ Release: April 23, 2024
 
 37 / 43
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2628,7 +2525,8 @@ Release: April 23, 2024
 
 38 / 43
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 The WSTEP protocol is a profile extension of WS-Trust1.3. As such, it does not have a WSDL.
 
@@ -2679,7 +2577,8 @@ Release: April 23, 2024
 
 39 / 43
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2786,7 +2685,8 @@ Release: April 23, 2024
 
 40 / 43
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2840,7 +2740,8 @@ Release: April 23, 2024
 
 41 / 43
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model 16
@@ -2976,7 +2877,8 @@ Prerequisites 11
 
 42 / 43
 
-Processing rules
+
+Processing rules
    Issue request 24
    Key Exchange Token request 25
    overview 24
