@@ -1,4 +1,4 @@
-# OCMDA001 — Legacy OPC DA server construction
+# OCMDA001 — OPC DA server construction
 
 `OCMDA001` reports `new OpcCom.Da.Server(url)` and `new OpcCom.Server()` constructor usage. `Opc.Classic.Da` uses async connection factories and async disposal so connection setup can honor cancellation, retries, and DI-managed options.
 

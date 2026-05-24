@@ -1,4 +1,4 @@
-# OCMDA003 — Legacy OPC DA synchronous Read
+# OCMDA003 — OPC DA synchronous Read
 
 `OCMDA003` reports synchronous `group.Read(items)` usage. The `Opc.Classic.Da` replacement is an async read abstraction such as `IOpcDaSyncIO.ReadAsync(items, ct)` so polling loops and UI applications do not block while waiting for DA values.
 

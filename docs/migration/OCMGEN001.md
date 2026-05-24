@@ -14,4 +14,4 @@ using OpcRcw.Da;
 using Opc.Classic.Da;
 ```
 
-Add the appropriate `Opc.Classic.*` NuGet package to the consuming project, then resolve type-level API differences with the DA, AE, HDA, and Core migration diagnostics.
+Add the appropriate `Opc.Classic.*` NuGet package to the consuming project, then resolve type-level API differences with the DA, AE, HDA, and Core diagnostic pages.

@@ -1,4 +1,4 @@
-# OCMAE001 — Legacy OPC AE event subscriptions
+# OCMAE001 — OPC AE event subscriptions
 
 `OCMAE001` reports `IOPCEventSubscription` variable or parameter usage, which usually indicates callback-based AE subscription plumbing from the OPC Foundation API or `OpcRcw.Ae`. `Opc.Classic.Ae` models event notifications as an async stream.
 

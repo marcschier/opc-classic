@@ -14,4 +14,4 @@ var value = new VariantValue(rawValue);
 var value = OpcVariant.FromObject(rawValue);
 ```
 
-For native buffers, use the closest `OpcVariant.FromXxx(...)` factory provided by `Opc.Classic.Core` and remove direct `Marshal.GetObjectForNativeVariant` or `Marshal.GetNativeVariantForObject` calls.
+For native buffers, use the closest `OpcVariant.FromXxx(...)` factory provided by `Opc.Classic.Core` and remove direct platform marshaling calls such as `Marshal.GetObjectForNativeVariant` or `Marshal.GetNativeVariantForObject`.
